@@ -1594,6 +1594,10 @@
    "source": "The extension asks the host which file types to take, checks each download against them, and cancels the browser's download only after the app has accepted it; otherwise the browser keeps it.",
    "text": "Ekstensi menanyakan host jenis berkas mana yang akan diambil, memeriksa setiap unduhan terhadapnya, dan membatalkan unduhan peramban hanya setelah aplikasi menerimanya; jika tidak, peramban tetap menyimpannya."
   },
+  "292621fe40d7beca": {
+   "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
+   "text": "Setiap video dimulai dengan tanda centang. Hapus centang pada video yang tidak Anda inginkan, atau gunakan <g1>Pilih semua</g1> dan <g2>Jangan pilih apa pun</g2>. Video pribadi dan yang dihapus berwarna abu-abu dan tidak dapat dicentang."
+  },
   "296bb6abbc747f28": {
    "source": "If it gives up and shows <g1>Error</g1>:",
    "text": "Jika MDM menyerah dan menunjukkan <g1>Galat</g1>:"
@@ -1745,6 +1749,10 @@
   "2ca80e0dcb3b659c": {
    "source": "1. Put the downloads in a queue",
    "text": "1. Masukkan unduhan ke dalam antrean"
+  },
+  "2cb242c75b5117f9": {
+   "source": "A channel is listed 50 videos at a time, newest first. <g1>Load more</g1> lists the next 50.",
+   "text": "Saluran dicantumkan 50 video sekaligus, yang terbaru lebih dulu. <g1>Muat lebih banyak</g1> akan mencantumkan 50 video berikutnya."
   },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
@@ -2910,10 +2918,6 @@
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Setiap bahasa tampilan yang ditawarkan Windows 11, dipilih berdasarkan bendera saat pertama kali dijalankan atau kapan saja di Tampilan → Bahasa. Bahasa Arab, Ibrani, Persia, Urdu, dan Uyghur ditata dari kanan ke kiri."
   },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "Semuanya dapat dilakukan dari keyboard, dan MDM bekerja dengan pembaca layar (seperti Narrator dan NVDA di Windows): jendela, dialog, dan menunya memberi tahu mereka apa setiap kontrol dan statusnya, serta daftar unduhan membaca nama, status, dan ukuran setiap unduhan."
-  },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
    "text": "Menghidupkan atau mematikan API otomatisasi aplikasi yang sedang berjalan."
@@ -3145,6 +3149,10 @@
   "55a4316a9df511bb": {
    "source": "A small file",
    "text": "File kecil"
+  },
+  "55ecea9df3d3ed23": {
+   "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
+   "text": "Tempel alamat daftar putar (<x1/>) atau video saluran (<x2/>) lalu klik <g3>Cari</g3>. Alih-alih kualitas satu video, jendela ini mencantumkan video-video dalam daftar, masing-masing dengan durasinya."
   },
   "560b06bdc37086ad": {
    "source": "Previous image",
@@ -3750,10 +3758,6 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>Properti</g1> — ubah nama, jenis file, dan foldernya. Umum dan Torrent hanya mengubah foldernya. Kategori yang diganti namanya mempertahankan foldernya; kategori bawaan mempertahankan namanya dalam bahasa Anda sampai Anda mengganti namanya."
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Diperiksa Oktober 2026 · sumber di bawah</g2>"
@@ -4141,10 +4145,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM dapat dijalankan tanpa jendelanya dengan tiga cara:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Pengaturan Proksi / Socks MDM adalah untuk unduhan web dan FTP. Torrent juga dapat menggunakan SOCKS5: atur proksi <x1/> di <g2>Opsi → Proksi / Socks</g2> dan aktifkan <g3>Gunakan proksi</g3> di Pengaturan torrent. Proksi hanya mencakup koneksi ke rekan dan pelacak web, jadi dengan itu MDM mematikan DHT, penemuan rekan lokal, koneksi masuk, dan pelacak UDP. Jika proksi hilang dari Proksi / Socks saat pengaturan itu aktif, torrent tidak akan dimulai daripada melewatinya."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4534,6 +4534,10 @@
    "source": "Torrents",
    "text": "Torrent"
   },
+  "7c13b99aeb6bd7c5": {
+   "source": "A playlist is listed whole, as its videos come in: the line above the list says how far it is (\"Listing the videos: 1,200 of 6,000\"). <g1>Stop listing</g1> keeps the ones listed so far, and <g2>List the rest</g2> carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and <g3>List the rest</g3> tries again from there.",
+   "text": "Daftar putar dicantumkan seluruhnya, seiring video-videonya masuk: baris di atas daftar menunjukkan seberapa jauh prosesnya (\"Mencantumkan video: 1.200 dari 6.000\"). <g1>Hentikan pencantuman</g1> menyimpan yang sudah dicantumkan sejauh ini, dan <g2>Daftar sisanya</g2> melanjutkannya dari sana. Jika situs berhenti merespons di tengah jalan (YouTube mungkin, jika terlalu sering diminta), jendela akan mengatakan setelah berapa video dan mengapa, dan <g3>Daftar sisanya</g3> mencoba lagi dari sana."
+  },
   "7c14c17b996d02f7": {
    "source": "explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language.",
    "text": "menjelaskan istilah-istilah kunci (unduh, antrean, kategori, koneksi, lanjutkan…). Terjemahkan setiap istilah dengan cara yang sama di mana pun, seperti yang dikatakan Windows dalam bahasa Anda."
@@ -4621,6 +4625,10 @@
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
    "text": "<g1>Opsi → Proksi / Socks → Adaptor jaringan</g1> menahan koneksi MDM ke satu adaptor, biasanya milik VPN (<g2>Opsi</g2>). Di Linux dan macOS, mesin torrent mengikat setiap soket ke sana: rekan, pelacak, DHT, dan port pendengarnya. UPnP dan penemuan rekan lokal dimatikan saat itu, karena mereka berbicara ke jaringan lokal daripada melalui adaptor. Jika adaptor hilang, mesin berhenti, dan mulai lagi melalui adaptor saat kembali."
+  },
+  "7db9ed501785d447": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>Kualitas</g1> berlaku untuk setiap video: <g2>Kualitas terbaik</g2>, <g3>Hingga</g3> tinggi tertentu (setiap video dengan tinggi tersebut, atau yang terdekat di bawahnya), <g4>Hanya audio, asli</g4>, <g5>Hanya audio MP3</g5>, <g6>Hanya audio OPUS</g6> atau <g7>Hanya audio FLAC</g7>. Tanpa ffmpeg, hanya kualitas yang disertai suara yang ditawarkan, dan tidak ada MP3, Opus, atau FLAC."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5069,6 +5077,10 @@
   "89f549746c4017f3": {
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
    "text": "<g1>Dibuat oleh GitHub Actions</g1><g2>tidak pernah di laptop seseorang</g2>"
+  },
+  "89fa61b2290f1772": {
+   "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
+   "text": "<g1>Unduh Sekarang</g1> menambahkan setiap video sebagai unduhan tersendiri dan memulai antrean utama, yang menjalankan sebanyak yang Anda atur di <g2>Penjadwal</g2> (<g3>Unduh N berkas secara bersamaan</g3>). <g4>Nanti</g4> menambahkannya tanpa memulai. Menambahkan lebih dari 500 sekaligus akan meminta konfirmasi terlebih dahulu."
   },
   "89fc33b1b049584c": {
    "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
@@ -5981,10 +5993,6 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "Jalankan <x1/> saat MDM berjalan."
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "Daftar putar dan campuran"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6914,6 +6922,10 @@
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
    "text": "Untuk angka, atur <g1>Ukuran wildcard</g1> ke jumlah digit. Dengan 3, file-nya adalah <x2/>, <x3/> dan seterusnya."
   },
+  "bc9abb4c3d1c81e8": {
+   "source": "MDM lists at most 20,000 videos of one list.",
+   "text": "MDM mencantumkan paling banyak 20.000 video dari satu daftar."
+  },
   "bcb140c9553a0b1a": {
    "source": "Light / dark",
    "text": "Terang / gelap"
@@ -7510,6 +7522,10 @@
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "Ini hanya untuk akun Windows Anda. <x1/> membatalkannya. Kemudian muat ekstensi seperti di atas, dari folder <x2/> di zip."
   },
+  "ceafeaa62d5e59ca": {
+   "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
+   "text": "Video-video tersebut masuk ke folder yang dinamai sesuai daftar, di dalam <g1>Simpan ke</g1>, masing-masing dengan judulnya sendiri."
+  },
   "cee8fa5faa008467": {
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
    "text": "Untuk menyimpan daftar Anda sendiri, gunakan <g1>Tugas → Ekspor → Ke file teks</g1> (satu alamat per baris) atau <g2>Ke file ekspor IDM</g2>."
@@ -7705,6 +7721,10 @@
   "d4c66a15e09e8ca8": {
    "source": "<g1>Offer to download links copied to the clipboard</g1> — when you copy a link whose file type is on the <g2>File types</g2> page, <g3>Download File Info</g3> opens with it, ready to start (or the download starts at once, with <g4>Show start download dialog</g4> off). On by default.",
    "text": "<g1>Tawarkan untuk mengunduh tautan yang disalin ke papan klip</g1> — saat Anda menyalin tautan yang jenis filenya ada di halaman <g2>Jenis file</g2>, <g3>Info File Unduhan</g3> akan terbuka dengannya, siap untuk memulai (atau unduhan dimulai sekaligus, dengan <g4>Tampilkan dialog mulai unduhan</g4> mati). Aktif secara default."
+  },
+  "d4c9212e6107e470": {
+   "source": "Playlists and channels",
+   "text": "Daftar putar dan saluran"
   },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
@@ -8678,6 +8698,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "Sertifikat server diperiksa terhadap sertifikat tepercaya Windows (atau sistem), seperti untuk <x1/>."
   },
+  "f10113695e758efd": {
+   "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
+   "text": "Video-video dari daftar putar atau saluran, satu baris setiap video sesuai daftar: lokasi, durasi, judul, dan alamatnya."
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8873,6 +8897,10 @@
   "f7a4f8dcbb4812c2": {
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "Di Chrome, Edge, dan Brave Anda dapat membatasi ekstensi ke beberapa situs (klik kanan tombol bilah alatnya → <g1>Ini dapat membaca dan mengubah data situs</g1>). Di situs yang mungkin tidak dapat dibacanya, ekstensi tidak dapat meneruskan login Anda, jadi ekstensi menyerahkan unduhan ke browser. Pilih <g2>Di semua situs</g2> untuk membiarkan MDM mengambil unduhan di mana saja."
+  },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "Mengunduh video dari daftar putar atau saluran satu per satu, ke dalam folder yang dinamai sesuai daftar di dalam <x1/>. <x2/> adalah satu kualitas untuk semua, seperti untuk <x3/> (secara default yang terbaik dari setiap video; <x4/> = hingga 720p; <x5/> = suara asli; <x6/>, <x7/>, <x8/> seperti untuk <x9/>)."
   },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",

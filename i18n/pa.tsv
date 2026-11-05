@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ਚੁਣਿਆ ਗਿਆ|{n} ਚੁਣੇ ਗਏ
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} ਵੀਡੀਓ|{title}: {count} ਵੀਡੀਓ
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} ਵਿੱਚੋਂ {total} ਵੀਡੀਓ ਸੂਚੀਬੱਧ|{title}: {listed} ਵਿੱਚੋਂ {total} ਵੀਡੀਓ ਸੂਚੀਬੱਧ
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ਇੱਕ ਡੀਬ੍ਰਿਡ ਸੇਵਾ (Real-Debrid) ਤੁਹਾਡੇ ਆਪਣੇ ਭੁਗਤਾਨ ਕੀਤੇ ਖਾਤੇ ਨਾਲ ਇੱਕ ਫਾਈਲ ਹੋਸਟ ਦਾ ਲਿੰਕ ਡਾਊਨਲੋਡ ਕਰਦੀ ਹੈ ਅਤੇ MDM ਨੂੰ ਇੱਕ ਸਿੱਧਾ ਲਿੰਕ ਦਿੰਦੀ ਹੈ। ਸਿਰਫ਼ ਆਪਣਾ ਖਾਤਾ ਵਰਤੋ: ਇੱਕ ਖਾਤਾ ਜਾਂ ਇਸਦੇ ਲਿੰਕ ਸਾਂਝੇ ਕਰਨ ਨਾਲ ਸੇਵਾਵਾਂ ਦੀਆਂ ਸ਼ਰਤਾਂ ਦੀ ਉਲੰਘਣਾ ਹੁੰਦੀ ਹੈ ਅਤੇ ਇਸਨੂੰ ਮੁਅੱਤਲ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ। ਬ੍ਰਾਊਜ਼ਰ ਦੁਆਰਾ ਪਹਿਲਾਂ ਹੀ ਸ਼ੁਰੂ ਕੀਤੇ ਡਾਊਨਲੋਡ ਜਿਵੇਂ ਹਨ, ਉਵੇਂ ਹੀ ਰਹਿਣਗੇ।
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ਇੱਕ ਡੀਬ੍ਰਿਡ ਸੇਵਾ (ਰੀਅਲ-ਡੀਬ੍ਰਿਡ) ਤੁਹਾਡੇ ਆਪਣੇ ਭੁਗਤਾਨ ਕੀਤੇ ਖਾਤੇ ਨਾਲ ਇੱਕ ਫਾਈਲ ਹੋਸਟ ਦਾ ਲਿੰਕ ਡਾਊਨਲੋਡ ਕਰਦੀ ਹੈ ਅਤੇ MDM ਨੂੰ ਇੱਕ ਸਿੱਧਾ ਲਿੰਕ ਦਿੰਦੀ ਹੈ। ਸਿਰਫ਼ ਆਪਣਾ ਖਾਤਾ ਵਰਤੋ: ਇੱਕ ਖਾਤਾ ਜਾਂ ਇਸਦੇ ਲਿੰਕਾਂ ਨੂੰ ਸਾਂਝਾ ਕਰਨਾ ਸੇਵਾਵਾਂ ਦੀਆਂ ਸ਼ਰਤਾਂ ਦੀ ਉਲੰਘਣਾ ਕਰਦਾ ਹੈ ਅਤੇ ਇਸਨੂੰ ਮੁਅੱਤਲ ਕਰ ਸਕਦਾ ਹੈ। ਬ੍ਰਾਊਜ਼ਰ ਦੁਆਰਾ ਪਹਿਲਾਂ ਹੀ ਸ਼ੁਰੂ ਕੀਤੇ ਗਏ ਡਾਊਨਲੋਡ ਜਿਵੇਂ ਹਨ, ਉਵੇਂ ਹੀ ਰਹਿਣਗੇ।
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	ਸ਼੍ਰੇਣੀ ਸ਼ਾਮਲ ਕਰੋ
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	ਕਈ ਡਾਊਨਲੋਡ ਸ਼ਾਮਲ ਕਰੋ
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,6 +180,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	ਟੋਰੈਂਟ ਸ਼ਾਮਲ ਕਰੋ
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	{n} ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੀਏ? ਹਰੇਕ ਵੀਡੀਓ ਨੂੰ ਆਪਣੀ ਕਤਾਰ ਮਿਲੇਗੀ।
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -290,6 +308,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ਸਿਰਫ਼ ਆਡੀਓ {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	ਸਿਰਫ਼ ਆਡੀਓ, ਮੂਲ
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +329,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	ਬੈਚ ਡਾਊਨਲੋਡ
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	ਵਧੀਆ ਕੁਆਲਿਟੀ
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -878,7 +904,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ਪ੍ਰਯੋਗਾਤਮਕ: Real-Debrid ਦੇ ਜਨਤਕ API ਦਸਤਾਵੇਜ਼ਾਂ ਤੋਂ ਬਣਾਇਆ ਗਿਆ, ਅਜੇ ਤੱਕ ਇੱਕ ਅਸਲੀ ਖਾਤੇ ਨਾਲ ਪੁਸ਼ਟੀ ਨਹੀਂ ਕੀਤੀ ਗਈ।
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ਪ੍ਰਯੋਗਾਤਮਕ: ਰੀਅਲ-ਡੀਬ੍ਰਿਡ ਦੇ ਜਨਤਕ API ਦਸਤਾਵੇਜ਼ਾਂ ਤੋਂ ਬਣਾਇਆ ਗਿਆ, ਅਜੇ ਤੱਕ ਇੱਕ ਅਸਲੀ ਖਾਤੇ ਨਾਲ ਪੁਸ਼ਟੀ ਨਹੀਂ ਕੀਤੀ ਗਈ।
 #. message or event log entry in the main window
 #, machine
 	Export	ਨਿਰਯਾਤ
@@ -1009,7 +1035,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	ਮੁਫਤ ਖਾਤਾ: ਲਿੰਕਾਂ ਲਈ ਪ੍ਰੀਮੀਅਮ ਦੀ ਲੋੜ ਹੈ
+	free account: links need premium	ਮੁਫ਼ਤ ਖਾਤਾ: ਲਿੰਕਾਂ ਨੂੰ ਪ੍ਰੀਮੀਅਮ ਦੀ ਲੋੜ ਹੈ
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1027,6 +1053,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	ਇੱਕ ਪੰਨੇ ਤੋਂ (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	ਇੱਕ ਪਲੇਲਿਸਟ ਤੋਂ (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ਇੱਕ ਟੋਰੈਂਟ ਫਾਈਲ ਤੋਂ
@@ -1289,10 +1319,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ਬ੍ਰਾਊਜ਼ਰ ਤੋਂ ਲਿੰਕ
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	ਬਾਕੀ ਸੂਚੀਬੱਧ ਕਰੋ
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	{n} ਵੀਡੀਓ ਤੋਂ ਬਾਅਦ ਸੂਚੀਬੱਧ ਕਰਨਾ ਬੰਦ ਹੋ ਗਿਆ: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	ਵੀਡੀਓ ਸੂਚੀਬੱਧ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	ਵੀਡੀਓ ਸੂਚੀਬੱਧ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ: {total} ਵਿੱਚੋਂ {n}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	ਪਤਿਆਂ ਦੀਆਂ ਸੂਚੀਆਂ
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	ਹੋਰ ਲੋਡ ਕਰੋ
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1676,6 +1729,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	ਸਿਰਫ਼ MP4 ਅਤੇ MKV ਵੀਡੀਓ ਹੀ ਉਪਸਿਰਲੇਖ ਰੱਖ ਸਕਦੇ ਹਨ
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	ਸਿਰਫ਼ ਪਹਿਲੇ {n} ਵੀਡੀਓ ਸੂਚੀਬੱਧ ਹਨ।
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ਸਿਰਫ਼ ਜਦੋਂ ਮੈਂ ਕੰਪਿਊਟਰ ਦੀ ਵਰਤੋਂ ਕਰ ਰਿਹਾ ਹੋਵਾਂ
@@ -1837,6 +1895,7 @@
 	Put them into the video	ਉਹਨਾਂ ਨੂੰ ਵੀਡੀਓ ਵਿੱਚ ਪਾਓ
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	ਗੁਣਵੱਤਾ
 #. text in the Scheduler window
@@ -1995,7 +2054,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ਇੱਕ ਫੋਲਡਰ ਚੁਣੋ
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	ਸਾਰੇ ਚੁਣੋ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2064,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ਇਸ ਤੱਕ ਹਰੇਕ ਡਾਊਨਲੋਡ ਚੁਣੋ
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	ਕੋਈ ਨਹੀਂ ਚੁਣੋ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2289,6 +2350,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ਡਾਊਨਲੋਡ ਬੰਦ ਕਰੋ
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	ਸੂਚੀਬੱਧ ਕਰਨਾ ਬੰਦ ਕਰੋ
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ਮੁੱਖ ਡਾਊਨਲੋਡ ਕਤਾਰ ਬੰਦ ਕਰੋ
@@ -2644,6 +2709,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ਇਹ ਇੰਸਟਾਲ ਕੀਤੀ ਕਾਪੀ ਹੈ, ਪੋਰਟੇਬਲ ਨਹੀਂ
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	ਇਸ ਸੂਚੀ ਵਿੱਚ ਕੋਈ ਵੀਡੀਓ ਨਹੀਂ ਹੈ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2818,6 +2887,10 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	ਉੱਪਰ
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	{height}p ਤੱਕ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2930,9 +3003,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	ਵੀਡੀਓ ਪੰਨੇ ਇਸਦੀ ਵਰਤੋਂ ਨਹੀਂ ਕਰ ਸਕਦੇ ਹਨ।
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	ਵੀਡੀਓ
 #. text in the Options window
 #, machine
 	Virus checking settings	ਵਾਇਰਸ ਜਾਂਚ ਸੈਟਿੰਗਾਂ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	ਸੂਚੀ ਲਈ ਉਡੀਕ ਕਰੋ, ਜਾਂ ਸੂਚੀਬੱਧ ਕਰਨਾ ਬੰਦ ਕਰੋ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3231,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ਆਟੋ)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{total} ਵਿੱਚੋਂ {n} ਚੁਣੇ ਗਏ
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3167,7 +3253,7 @@
 	{service} asks you to allow this computer first: see its email	{service} ਤੁਹਾਨੂੰ ਪਹਿਲਾਂ ਇਸ ਕੰਪਿਊਟਰ ਨੂੰ ਇਜਾਜ਼ਤ ਦੇਣ ਲਈ ਕਹਿੰਦਾ ਹੈ: ਇਸਦੀ ਈਮੇਲ ਦੇਖੋ
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} ਇਸ ਫਾਈਲ ਹੋਸਟ ਤੱਕ ਹੁਣੇ ਪਹੁੰਚ ਨਹੀਂ ਸਕਦਾ; MDM ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੇਗਾ
+	{service} can't reach this file host right now; MDM will try again later	{service} ਇਸ ਫਾਈਲ ਹੋਸਟ ਤੱਕ ਹੁਣੇ ਨਹੀਂ ਪਹੁੰਚ ਸਕਦਾ; MDM ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੇਗਾ
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3187,11 +3273,11 @@
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}: ਖਾਤਾ ਲੌਕ ਕੀਤਾ ਗਿਆ ਹੈ ਜਾਂ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ
+	{service}: the account is locked or not activated	{service}: ਖਾਤਾ ਲੌਕ ਹੈ ਜਾਂ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: ਫਾਈਲ ਫਾਈਲ ਹੋਸਟ ਤੋਂ ਗਾਇਬ ਹੈ ਜਾਂ ਅਣਉਪਲਬਧ ਹੈ
+	{service}: the file is gone or unavailable on the file host	{service}: ਫਾਈਲ ਫਾਈਲ ਹੋਸਟ ਤੋਂ ਗਾਇਬ ਹੋ ਗਈ ਹੈ ਜਾਂ ਉਪਲਬਧ ਨਹੀਂ ਹੈ
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine

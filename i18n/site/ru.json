@@ -1594,6 +1594,10 @@
    "source": "The extension asks the host which file types to take, checks each download against them, and cancels the browser's download only after the app has accepted it; otherwise the browser keeps it.",
    "text": "Расширение запрашивает у хоста, какие типы файлов перехватывать, проверяет каждую загрузку на соответствие им и отменяет загрузку браузера только после того, как приложение ее приняло; в противном случае браузер сохраняет ее."
   },
+  "292621fe40d7beca": {
+   "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
+   "text": "Все видео изначально отмечены. Снимите отметки с тех, которые вам не нужны, или используйте <g1>Выбрать все</g1> и <g2>Снять выделение</g2>. Приватные и удалённые видео отображаются серым цветом и не могут быть отмечены."
+  },
   "296bb6abbc747f28": {
    "source": "If it gives up and shows <g1>Error</g1>:",
    "text": "Если попытки прекращаются и отображается <g1>Ошибка</g1>:"
@@ -1745,6 +1749,10 @@
   "2ca80e0dcb3b659c": {
    "source": "1. Put the downloads in a queue",
    "text": "1. Добавьте загрузки в очередь"
+  },
+  "2cb242c75b5117f9": {
+   "source": "A channel is listed 50 videos at a time, newest first. <g1>Load more</g1> lists the next 50.",
+   "text": "Канал отображается по 50 видео за раз, начиная с самых новых. <g1>Загрузить ещё</g1> отображает следующие 50."
   },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
@@ -2910,10 +2918,6 @@
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Все языки, предлагаемые Windows 11, выбираются по флагу при первом запуске или в любое время в меню Вид → Язык. Арабский, иврит, персидский, урду и уйгурский языки отображаются справа налево."
   },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "Всё можно сделать с клавиатуры, и MDM работает со скринридерами (такими как Narrator и NVDA в Windows): его окна, диалоги и меню сообщают им, что представляет собой каждый элемент управления и его состояние, а список загрузок читает название, статус и размер каждой загрузки."
-  },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
    "text": "Включает или выключает API автоматизации запущенного приложения."
@@ -3145,6 +3149,10 @@
   "55a4316a9df511bb": {
    "source": "A small file",
    "text": "Небольшой файл"
+  },
+  "55ecea9df3d3ed23": {
+   "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
+   "text": "Вставьте адрес плейлиста (<x1/>) или видео канала (<x2/>) и нажмите <g3>Найти</g3>. Вместо вариантов качества одного видео, в окне отображаются видео из списка, каждое со своей длиной."
   },
   "560b06bdc37086ad": {
    "source": "Previous image",
@@ -3750,10 +3758,6 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>Свойства</g1> — изменить имя, типы файлов и папку. Категории «Общие» и «Торренты» меняют только свою папку. Переименованная категория сохраняет свою папку; встроенная категория сохраняет свое имя на вашем языке, пока вы ее не переименуете."
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager против IDM 6.42</g1><g2>Проверено в октябре 2026 · источники ниже</g2>"
@@ -4141,10 +4145,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM можно управлять без его окна тремя способами:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Настройки Прокси / Socks в MDM предназначены для загрузок из интернета и FTP. Торренты также могут использовать SOCKS5: установите <x1/> прокси в <g2>Параметры → Прокси / Socks</g2> и включите <g3>Использовать прокси</g3> в Настройках торрента. Прокси охватывает только соединения с пирами и веб-трекерами, поэтому при его использовании MDM отключает DHT, обнаружение локальных пиров, входящие соединения и UDP-трекеры. Если прокси исчезает из Прокси / Socks, пока этот переключатель включён, торренты не запускаются, а не обходят его."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4534,6 +4534,10 @@
    "source": "Torrents",
    "text": "Торренты"
   },
+  "7c13b99aeb6bd7c5": {
+   "source": "A playlist is listed whole, as its videos come in: the line above the list says how far it is (\"Listing the videos: 1,200 of 6,000\"). <g1>Stop listing</g1> keeps the ones listed so far, and <g2>List the rest</g2> carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and <g3>List the rest</g3> tries again from there.",
+   "text": "Весь плейлист отображается по мере поступления видео: строка над списком показывает прогресс («Перечисление видео: 1200 из 6000»). <g1>Остановить список</g1> сохраняет уже перечисленные видео, а <g2>Перечислить остальные</g2> продолжает с того места. Если сайт перестает отвечать на полпути (YouTube может так делать при слишком частых запросах), окно сообщает, после скольких видео и почему, а <g3>Перечислить остальные</g3> пытается снова с этого места."
+  },
   "7c14c17b996d02f7": {
    "source": "explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language.",
    "text": "объясняет ключевые термины (загрузка, очередь, категория, соединение, возобновление…). Переводите каждый из них одинаково везде, так, как это говорит Windows на вашем языке."
@@ -4621,6 +4625,10 @@
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
    "text": "<g1>Параметры → Прокси / Socks → Сетевой адаптер</g1> привязывает соединения MDM к одному адаптеру, обычно VPN (<g2>Параметры</g2>). В Linux и macOS торрент-движок привязывает к нему все сокеты: пиры, трекеры, DHT и его порт для прослушивания. UPnP и обнаружение локальных пиров при этом отключаются, так как они взаимодействуют с локальной сетью, а не через адаптер. Если адаптер исчезает, движок останавливается и снова запускается через адаптер, когда тот возвращается."
+  },
+  "7db9ed501785d447": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>Качество</g1> применяется ко всем видео: <g2>Лучшее качество</g2>, <g3>До</g3> определённой высоты (каждое видео этой высоты или ближайшее ниже), <g4>Только аудио, оригинал</g4>, <g5>Только аудио MP3</g5>, <g6>Только аудио OPUS</g6> или <g7>Только аудио FLAC</g7>. Без ffmpeg предлагаются только те качества, которые идут со звуком, и нет MP3, Opus или FLAC."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5069,6 +5077,10 @@
   "89f549746c4017f3": {
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
    "text": "<g1>Собрано GitHub Actions</g1><g2>никогда не на чьём-то ноутбуке</g2>"
+  },
+  "89fa61b2290f1772": {
+   "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
+   "text": "<g1>Загрузить сейчас</g1> добавляет каждое видео как отдельную загрузку и запускает основную очередь, которая одновременно обрабатывает столько файлов, сколько вы установили в <g2>Планировщик</g2> (<g3>Загружать N файлов одновременно</g3>). <g4>Позже</g4> добавляет их без запуска. Добавление более 500 файлов одновременно требует подтверждения."
   },
   "89fc33b1b049584c": {
    "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
@@ -5981,10 +5993,6 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "Запустите <x1/> при работающем MDM."
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "Плейлисты и миксы"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6914,6 +6922,10 @@
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
    "text": "Для чисел установите <g1>Размер подстановочного знака</g1> равным количеству цифр. При значении 3 файлы будут <x2/>, <x3/> и так далее."
   },
+  "bc9abb4c3d1c81e8": {
+   "source": "MDM lists at most 20,000 videos of one list.",
+   "text": "MDM отображает не более 20 000 видео из одного списка."
+  },
   "bcb140c9553a0b1a": {
    "source": "Light / dark",
    "text": "Светлая / тёмная"
@@ -7510,6 +7522,10 @@
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "Это только для вашей учётной записи Windows. <x1/> отменяет это. Затем загрузите расширение, как описано выше, из папки <x2/> zip-архива."
   },
+  "ceafeaa62d5e59ca": {
+   "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
+   "text": "Видео сохраняются в папку, названную по имени списка, внутри папки <g1>Сохранить в</g1>, каждое под своим названием."
+  },
   "cee8fa5faa008467": {
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
    "text": "Чтобы сохранить свой список, используйте <g1>Задачи → Экспорт → В текстовый файл</g1> (один адрес на строку) или <g2>В IDM файл экспорта</g2>."
@@ -7705,6 +7721,10 @@
   "d4c66a15e09e8ca8": {
    "source": "<g1>Offer to download links copied to the clipboard</g1> — when you copy a link whose file type is on the <g2>File types</g2> page, <g3>Download File Info</g3> opens with it, ready to start (or the download starts at once, with <g4>Show start download dialog</g4> off). On by default.",
    "text": "<g1>Предлагать загрузить ссылки, скопированные в буфер обмена</g1> — когда вы копируете ссылку, тип файла которой указан на странице <g2>Типы файлов</g2>, открывается окно <g3>Информация о загружаемом файле</g3>, готовое к началу загрузки (или загрузка начинается сразу, если <g4>Показывать диалоговое окно начала загрузки</g4> отключено). По умолчанию включено."
+  },
+  "d4c9212e6107e470": {
+   "source": "Playlists and channels",
+   "text": "Плейлисты и каналы"
   },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
@@ -8678,6 +8698,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "Сертификат сервера проверяется по доверенным сертификатам Windows (или системы), как для <x1/>."
   },
+  "f10113695e758efd": {
+   "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
+   "text": "Видео из плейлиста или канала, по одному в строке, как они перечислены: их место, длительность, название и адрес."
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8873,6 +8897,10 @@
   "f7a4f8dcbb4812c2": {
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "В Chrome, Edge и Brave вы можете ограничить расширение определенными сайтами (щелкните правой кнопкой мыши кнопку расширения на панели инструментов → <g1>Может читать и изменять данные сайта</g1>). На сайте, который оно не может читать, расширение не может передать ваш вход в систему, поэтому оно оставляет загрузку браузеру. Выберите <g2>На всех сайтах</g2>, чтобы MDM мог перехватывать загрузки везде."
+  },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "Загружает видео из плейлиста или канала одно за другим в папку, названную по имени списка, внутри <x1/>. <x2/> — это одно качество для всех, как для <x3/> (по умолчанию лучшее качество каждого видео; <x4/> = до 720p; <x5/> = оригинальный звук; <x6/>, <x7/>, <x8/> как для <x9/>)."
   },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",

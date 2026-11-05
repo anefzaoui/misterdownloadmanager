@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} magħżul|{n} magħżul|{n} magħżul|{n} magħżul|{n} magħżul
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} vidjo|{title}: {count} vidjows|{title}: {count} vidjows|{title}: {count} vidjows|{title}: {count} vidjows
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} minn {total} vidjo elenkati|{title}: {listed} minn {total} vidjows elenkati|{title}: {listed} minn {total} vidjows elenkati|{title}: {listed} minn {total} vidjows elenkati|{title}: {listed} minn {total} vidjows elenkati
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Servizz ta' debrid (Real-Debrid) iniżżel link ta' host tal-fajls bil-kont imħallas tiegħek u jagħti lil MDM link dirett. Uża l-kont tiegħek biss: il-qsim ta' kont jew il-links tiegħu jikser it-termini tas-servizzi u jista' jwassal biex jiġi sospiż. It-tniżżil li l-browser diġà beda jibqa' kif inhu.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Servizz ta' debrid (Real-Debrid) iniżżel link ta' host tal-fajls bil-kont imħallas tiegħek u jagħti lil MDM link dirett. Uża l-kont tiegħek biss: il-qsim ta' kont jew il-links tiegħu jikser it-termini tas-servizzi u jista' jwassal biex jiġi sospiż. It-tniżżil li diġà beda l-browser jibqa' kif inhu.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	Żid kategorija
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	Żid ħafna downloads
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,6 +180,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Żid torrent
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	Żid {n} downloads mal-lista? Kull vidjo jieħu r-ringiela tiegħu.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -280,7 +298,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Nistaqsi lis-servizz...
+	Asking the service...	Qed nistaqsi lis-servizz...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -290,6 +308,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Awdjo biss {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	Awdjo biss, oriġinali
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +329,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Tniżżil f'lott
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	L-aqwa kwalità
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -878,7 +904,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Sperimentali: mibni mid-dokumentazzjoni tal-API pubblika ta' Real-Debrid, għadu mhux ikkonfermat b'kont reali.
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Sperimentali: mibni mid-dokumentazzjoni pubblika tal-API ta' Real-Debrid, għadu mhux ikkonfermat b'kont reali.
 #. message or event log entry in the main window
 #, machine
 	Export	Esportazzjoni
@@ -1027,6 +1053,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	minn paġna (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	minn playlist (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	minn fajl torrent
@@ -1289,10 +1319,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Links mill-brawżer
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	Elenka l-bqija
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	L-elenkar waqaf wara {n} vidjos: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	Qed jelenka l-vidjos: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	Qed jelenka l-vidjos: {n} minn {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	Listi ta' indirizzi
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	Għabbi aktar
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1676,6 +1729,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Il-vidjos MP4 u MKV biss jistgħu jżommu sottotitli
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	L-ewwel {n} vidjos biss huma elenkati.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Biss waqt li nkun qed nuża l-kompjuter
@@ -1798,7 +1856,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	premium, {days} jum(i) li fadal
+	premium, {days} days left	premium, fadal {days} jum/jiem
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1837,6 +1895,7 @@
 	Put them into the video	Poġġihom fil-vidjo
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	Kwalità
 #. text in the Scheduler window
@@ -1995,7 +2054,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Agħżel fowlder
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Agħżel kollox
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2064,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Agħżel kull tniżżil sa dan
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	Agħżel xejn
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2156,7 +2217,7 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	Idħalt bħala {user} ({state})
+	Signed in as {user} ({state})	Idħolt bħala {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
@@ -2289,6 +2350,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Waqqaf it-tniżżil fi
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	Waqqaf l-elenkar
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Waqqaf il-kju prinċipali tat-tniżżil
@@ -2644,6 +2709,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Din hija l-kopja installata, mhux waħda portabbli
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	Din il-lista m'għandhiex vidjos
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2818,6 +2887,10 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	Fuq
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	Sa {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2930,9 +3003,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	Il-paġni tal-vidjow ma jistgħux jużawh s'issa.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	Vidjos
 #. text in the Options window
 #, machine
 	Virus checking settings	Settings tal-kontroll tal-virus
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	Stenna l-lista, jew waqqaf l-elenkar
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3231,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (awtomatiku)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{n} minn {total} magħżula
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3160,7 +3246,7 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} jitlob li nnaqqsu r-ritmu; MDM jerġa' jipprova f'minuta
+	{service} asks to slow down; MDM will try again in a minute	{service} jitlob biex innaqqsu r-ritmu; MDM jerġa' jipprova f'minuta
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
@@ -3191,7 +3277,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: il-fajl spiċċa jew mhux disponibbli fuq il-file host
+	{service}: the file is gone or unavailable on the file host	{service}: il-fajl mar jew mhux disponibbli fuq il-file host
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -3202,7 +3288,7 @@
 	{service}: this needs a premium account	{service}: dan jeħtieġ kont premium
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: wisq tniżżil f'daqqa permezz tal-kont tiegħek; MDM jerġa' jipprova
+	{service}: too many downloads at once through your account; MDM will try again	{service}: wisq downloads f'daqqa permezz tal-kont tiegħek; MDM jerġa' jipprova
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine

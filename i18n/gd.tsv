@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} air a thaghadh|{n} air a thaghadh|{n} air a thaghadh|{n} air a thaghadh
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} bhidio|{title}: {count} bhidio|{title}: {count} bhidio|{title}: {count} bhidio
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} de {total} bhidio air an liostadh|{title}: {listed} de {total} bhidio air an liostadh|{title}: {listed} de {total} bhidio air an liostadh|{title}: {listed} de {total} bhidio air an liostadh
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Bidh seirbheis dì-bhrisidh (Real-Debrid) a’ luchdachadh sìos ceangal aoigh faidhle leis a’ chunntas pàighte agad fhèin agus a’ toirt ceangal dìreach do MDM. Na cleachd ach do chunntas fhèin: bidh roinneadh cunntais no a cheanglaichean a’ briseadh teirmichean nan seirbheisean agus faodaidh e a bhith air a chuir dheth. Bidh luchdachadh sìos a thòisich am brabhsair mu thràth a’ fuireach mar a tha iad.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Bidh seirbheis dì-bhrìd (Real-Debrid) a’ luchdachadh sìos ceangal aoigh faidhle leis a’ chunntas pàighte agad fhèin agus a’ toirt ceangal dìreach do MDM. Na cleachd ach do chunntas fhèin: bidh roinneadh cunntais no a cheanglaichean a’ briseadh teirmichean nan seirbheisean agus faodaidh e a bhith air a chuir dheth. Bidh luchdachadh sìos a thòisich am brabhsair mu thràth a’ fuireach mar a tha iad.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	Cuir roinn-seòrsa ris
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	Cuir iomadh luchdachadh a-nuas ris
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,6 +180,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Cuir torrent ris
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	Cuir {n} luchdachadh a-nuas ris an liosta? Gheibh gach bhidio an sreath aice fhèin.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -290,6 +308,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Fuaim a-mhàin {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	Fuaim a-mhàin, tùsail
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +329,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Luchdachadh sìos baidse
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	Càileachd as fheàrr
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -546,7 +572,7 @@
 	Day, month, year	Latha, mìos, bliadhna
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Cunntasan seirbheis dì-bhrisidh
+	Debrid service accounts	Cunntasan seirbheis dì-bhrìd
 #. text in the Scheduler window
 #, machine
 	December	Dùbhlachd
@@ -1028,6 +1054,10 @@
 #, machine
 	from a page (yt-dlp)	bho dhuilleag (yt-dlp)
 #. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	bho chlàr-cluiche (yt-dlp)
+#. message or event log entry in the main window
 #, machine
 	from a torrent file	bho fhaidhle torrent
 #. text in the Batch download window
@@ -1289,10 +1319,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Ceanglaichean bhon bhrabhsair
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	Dèan liostadh air a’ chòrr
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	Stad an liostadh an dèidh {n} bhidio: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	A’ liostadh nam bhideothan: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	A’ liostadh nam bhideothan: {n} de {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	Liostaichean sheòlaidhean
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	Luchdaich barrachd
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1676,6 +1729,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Chan urrainn ach bhideothan MP4 is MKV fo-thiotalan a chumail
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	Chan eil ach a’ chiad {n} bhidio air an liostadh.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	A-mhàin fhad 's a tha mi a' cleachdadh a' choimpiutair
@@ -1798,7 +1856,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	prìomhachas, {days} latha air fhàgail
+	premium, {days} days left	prìomhachas, {days} làithean air fhàgail
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1837,6 +1895,7 @@
 	Put them into the video	Cuir a-steach don bhideo iad
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	Càileachd
 #. text in the Scheduler window
@@ -1995,7 +2054,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Tagh pasgan
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Tagh na h-uile
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2064,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Tagh a h-uile luchdachadh a-nuas suas chun an fhear seo
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	Na tagh gin
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2156,11 +2217,11 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	Air a shoidhnigeadh a-steach mar {user} ({state})
+	Signed in as {user} ({state})	Air a chlàradh a-steach mar {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	air a shoidhnigeadh a-mach: clàraich a-steach a-rithist
+	signed out: sign in again	air a chlàradh a-mach: clàraich a-steach a-rithist
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Ainm làraich/Ceangal luchdaich sìos/Duilleag-lìn phàrant/Iomradh
@@ -2289,6 +2350,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Stad luchdachadh sìos aig
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	Stad an liostadh
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stad prìomh chiudha luchdachadh sìos
@@ -2644,6 +2709,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	’S e an leth-bhreac stàlaichte a tha seo, chan e leth-bhreac so-ghiùlain
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	Chan eil bhideothan sam bith air an liosta seo
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2795,7 +2864,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Taip an còd seo aig {page} agus leig le MDM; a’ feitheamh riut (thig an còd gu crìch ann an {time}).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Taidhp an còd seo aig {page} agus leig le MDM; a’ feitheamh riut (thig an còd gu crìch ann an {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2818,6 +2887,10 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	Suas
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	Suas gu {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2930,9 +3003,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	Chan urrainn duilleagan bhidio a chleachdadh fhathast.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	Bhideothan
 #. text in the Options window
 #, machine
 	Virus checking settings	Roghainnean sgrùdaidh bhìorais
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	Fuirich ris an liosta, no stad an liostadh
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3231,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (fèin-ghluasadach)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{n} de {total} air an taghadh
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3160,26 +3246,26 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	Tha {service} ag iarraidh slaodachadh; feuchaidh MDM a-rithist ann am mionaid
+	{service} asks to slow down; MDM will try again in a minute	tha {service} ag iarraidh slaodachadh; feuchaidh MDM a-rithist ann am mionaid
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	Tha {service} ag iarraidh ort an coimpiutair seo a cheadachadh an toiseach: faic am post-d aige
+	{service} asks you to allow this computer first: see its email	tha {service} ag iarraidh ort an coimpiutair seo a cheadachadh an toiseach: faic am post-d aige
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	Chan urrainn do {service} an aoigh faidhle seo a ruighinn an-dràsta; feuchaidh MDM a-rithist nas fhaide air adhart
+	{service} can't reach this file host right now; MDM will try again later	chan urrainn do {service} an aoigh faidhle seo a ruighinn an-dràsta; feuchaidh MDM a-rithist nas fhaide air adhart
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	Chan eil {service} a’ freagairt; feuch a-rithist nas fhaide air adhart
+	{service} is not responding; try again later	chan eil {service} a’ freagairt; feuch a-rithist nas fhaide air adhart
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	Tha {service} a’ diùltadh a’ cheangal seo (VPN no seòladh frithealaiche?)
+	{service} refuses this connection (a VPN or server address?)	tha {service} a’ diùltadh a’ cheangail seo (VPN no seòladh frithealaiche?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	Cha toir {service} am faidhle seo
+	{service} won't give this file	cha toir {service} am faidhle seo
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -3206,7 +3292,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: tha do chrìoch airson an aoigh-fhaidhle seo air a chleachdadh suas an-dràsta
+	{service}: your limit for this file host is used up for now	{service}: tha do chrìoch airson an òstair fhaidhlichean seo air a chleachdadh suas an-dràsta
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine

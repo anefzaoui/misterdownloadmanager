@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} wedi'i ddewis|{n} wedi'i ddewis|{n} wedi'i ddewis|{n} wedi'i ddewis|{n} wedi'i ddewis|{n} wedi'i ddewis
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} fideo|{title}: {count} fideo|{title}: {count} fideo|{title}: {count} fideo|{title}: {count} fideo|{title}: {count} fideo
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} o {total} fideo wedi'u rhestru|{title}: {listed} o {total} fideo wedi'u rhestru|{title}: {listed} o {total} fideo wedi'u rhestru|{title}: {listed} o {total} fideo wedi'u rhestru|{title}: {listed} o {total} fideo wedi'u rhestru|{title}: {listed} o {total} fideo wedi'u rhestru
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Mae gwasanaeth dadfridio (Real-Debrid) yn lawrlwytho dolen gwesteiwr ffeiliau gyda’ch cyfrif taledig eich hun ac yn rhoi dolen uniongyrchol i MDM. Defnyddiwch eich cyfrif eich hun yn unig: mae rhannu cyfrif neu ei ddolenni yn torri telerau’r gwasanaethau a gall arwain at ei atal. Mae lawrlwythiadau y mae’r porwr eisoes wedi’u cychwyn yn aros fel y maent.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Mae gwasanaeth debrid (Real-Debrid) yn lawrlwytho dolen gwesteiwr ffeiliau gyda'ch cyfrif taledig eich hun ac yn rhoi dolen uniongyrchol i MDM. Defnyddiwch eich cyfrif eich hun yn unig: mae rhannu cyfrif neu ei ddolenni yn torri telerau'r gwasanaethau a gall arwain at ei atal. Mae lawrlwythiadau y mae'r porwr eisoes wedi'u cychwyn yn aros fel y maent.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	Ychwanegu categori
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	Ychwanegu llawer o lawrlwythiadau
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,6 +180,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Ychwanegu cenllif
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	Ychwanegu {n} lawrlwythiad at y rhestr? Mae pob fideo’n cael ei res ei hun.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -290,6 +308,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Sain yn unig {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	Sain yn unig, gwreiddiol
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +329,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Lawrlwytho swp
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	Ansawdd gorau
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -546,7 +572,7 @@
 	Day, month, year	Diwrnod, mis, blwyddyn
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Cyfrifon gwasanaeth dadfridio
+	Debrid service accounts	Cyfrifon gwasanaeth debrid
 #. text in the Scheduler window
 #, machine
 	December	Rhagfyr
@@ -657,7 +683,7 @@
 #. button in the Options window
 #. button (short): move the account down the list
 #, machine
-	Down	I Lawr
+	Down	I lawr
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Lawrlwytho
@@ -707,7 +733,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Lawrlwytho dolenni gwesteiwr ffeiliau a gefnogir drwy’r cyfrifon hyn
+	Download supported file-host links through these accounts	Lawrlwytho dolenni gwesteiwr ffeiliau a gefnogir trwy'r cyfrifon hyn
 #. window title in the Download video window
 #, machine
 	Download video from a page	Lawrlwytho fideo o dudalen
@@ -878,7 +904,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Arbrofol: wedi’i adeiladu o ddogfennaeth API cyhoeddus Real-Debrid, heb ei gadarnhau eto gyda chyfrif go iawn.
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Arbrofol: wedi'i adeiladu o ddogfennaeth API cyhoeddus Real-Debrid, heb ei gadarnhau eto gyda chyfrif go iawn.
 #. message or event log entry in the main window
 #, machine
 	Export	Allforio
@@ -956,7 +982,7 @@
 #. button in the Options window
 #. button: open the service's page that shows the user's API token
 #, machine
-	Find my token	Dod o hyd i fy nhocyn
+	Find my token	Dod o hyd i fy thocyn
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1027,6 +1053,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	o dudalen (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	o restr chwarae (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	o ffeil cenllif
@@ -1289,10 +1319,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Dolenni o'r porwr
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	Rhestru'r gweddill
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	Stopiwyd rhestru ar ôl {n} fideo: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	Yn rhestru'r fideos: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	Yn rhestru'r fideos: {n} o {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	Rhestrau o gyfeiriadau
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	Llwytho mwy
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1676,6 +1729,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Dim ond fideos MP4 ac MKV all ddal isdeitlau
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	Dim ond y {n} fideo cyntaf sydd wedi'u rhestru.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Dim ond tra byddaf yn defnyddio'r cyfrifiadur
@@ -1837,6 +1895,7 @@
 	Put them into the video	Eu rhoi yn y fideo
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	Ansawdd
 #. text in the Scheduler window
@@ -1995,7 +2054,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Dewiswch ffolder
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Dewis popeth
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2064,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Dewis pob lawrlwythiad hyd at hwn
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	Dim dewis
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2289,6 +2350,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Stopio lawrlwytho am
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	Stopio rhestru
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stopio prif giw lawrlwytho
@@ -2402,7 +2467,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	mae’r cod wedi dod i ben: mewngofnodwch eto
+	the code expired: sign in again	daeth y cod i ben: mewngofnodwch eto
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2644,6 +2709,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Dyma'r copi wedi'i osod, nid un cludadwy
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	Nid oes fideos yn y rhestr hon
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2795,7 +2864,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Teipiwch y cod hwn yn {page} a chaniatáu MDM; yn aros amdanoch chi (mae’r cod yn dod i ben mewn {time}).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Teipiwch y cod hwn yn {page} a chaniatáu MDM; yn aros amdanoch chi (mae'r cod yn dod i ben mewn {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2817,7 +2886,11 @@
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
-	Up	I Fyny
+	Up	I fyny
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	Hyd at {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2871,7 +2944,7 @@
 #. button in the Options window
 #. button: sign in with the token typed in
 #, machine
-	Use the token	Defnyddio’r tocyn
+	Use the token	Defnyddio'r tocyn
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Eu defnyddio ar gyfer y cenllif hwn? Cedwir yr hyn sy'n cyfateb, ac amnewidir y gweddill.
@@ -2930,9 +3003,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	Ni all tudalennau fideo ei ddefnyddio eto.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	Fideos
 #. text in the Options window
 #, machine
 	Virus checking settings	Gosodiadau gwirio firws
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	Arhoswch am y rhestr, neu stopiwch restru
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3231,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (awtomatig)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{n} o {total} wedi'u dewis
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3164,7 +3250,7 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	Mae {service} yn gofyn i chi ganiatáu’r cyfrifiadur hwn yn gyntaf: gweler ei e-bost
+	{service} asks you to allow this computer first: see its email	Mae {service} yn gofyn i chi ganiatáu'r cyfrifiadur hwn yn gyntaf: gweler ei e-bost
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	Ni all {service} gyrraedd y gwesteiwr ffeiliau hwn ar hyn o bryd; bydd MDM yn ceisio eto yn ddiweddarach
@@ -3179,7 +3265,7 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	Ni fydd {service} yn rhoi’r ffeil hon
+	{service} won't give this file	Ni fydd {service} yn rhoi'r ffeil hon
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -3187,26 +3273,26 @@
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}: mae’r cyfrif wedi’i gloi neu heb ei actifadu
+	{service}: the account is locked or not activated	{service}: mae'r cyfrif wedi'i gloi neu heb ei actifadu
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: mae’r ffeil wedi mynd neu ar gael ar y gwesteiwr ffeiliau
+	{service}: the file is gone or unavailable on the file host	{service}: mae'r ffeil wedi mynd neu ar gael ar y gwesteiwr ffeiliau
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
-	{service}: this file is password-protected	{service}: mae’r ffeil hon wedi’i diogelu gan gyfrinair
+	{service}: this file is password-protected	{service}: mae'r ffeil hon wedi'i diogelu gan gyfrinair
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
 	{service}: this needs a premium account	{service}: mae angen cyfrif premiwm ar hyn
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: gormod o lawrlwythiadau ar unwaith drwy’ch cyfrif; bydd MDM yn ceisio eto
+	{service}: too many downloads at once through your account; MDM will try again	{service}: gormod o lawrlwythiadau ar unwaith trwy'ch cyfrif; bydd MDM yn ceisio eto
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: mae eich terfyn ar gyfer y gwesteiwr ffeiliau hwn wedi'i ddefnyddio am y tro
+	{service}: your limit for this file host is used up for now	{service}: mae eich terfyn ar gyfer y gwesteiwr ffeiliau hwn wedi'i ddefnyddio i fyny am y tro
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine

@@ -1594,6 +1594,10 @@
    "source": "The extension asks the host which file types to take, checks each download against them, and cancels the browser's download only after the app has accepted it; otherwise the browser keeps it.",
    "text": "تطلب الإضافة من المضيف أنواع الملفات التي يجب أخذها، وتفحص كل تنزيل مقابلها، وتلغي تنزيل المتصفح فقط بعد أن يقبله التطبيق؛ وإلا فإن المتصفح يحتفظ به."
   },
+  "292621fe40d7beca": {
+   "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
+   "text": "يبدأ كل فيديو محددا. ألغ تحديد الفيديوهات التي لا تريدها، أو استخدم <g1>تحديد الكل</g1> و<g2>إلغاء تحديد الكل</g2>. الفيديوهات الخاصة والمحذوفة تكون باهتة ولا يمكن تحديدها."
+  },
   "296bb6abbc747f28": {
    "source": "If it gives up and shows <g1>Error</g1>:",
    "text": "إذا استسلم وعرض <g1>خطأ</g1>:"
@@ -1745,6 +1749,10 @@
   "2ca80e0dcb3b659c": {
    "source": "1. Put the downloads in a queue",
    "text": "1. ضع التنزيلات في قائمة انتظار"
+  },
+  "2cb242c75b5117f9": {
+   "source": "A channel is listed 50 videos at a time, newest first. <g1>Load more</g1> lists the next 50.",
+   "text": "تدرج القناة 50 فيديو في كل مرة، الأحدث أولا. <g1>تحميل المزيد</g1> يدرج الـ 50 التالية."
   },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
@@ -2910,10 +2918,6 @@
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "كل لغة عرض يوفرها Windows 11، يتم اختيارها بالعلم عند التشغيل الأول أو في أي وقت من عرض → اللغة. يتم عرض اللغات العربية والعبرية والفارسية والأردية والأويغورية من اليمين إلى اليسار."
   },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "يمكن إنجاز كل شيء من لوحة المفاتيح، ويعمل MDM مع قارئات الشاشة (مثل Narrator و NVDA على Windows): تخبر نوافذه ومربعات الحوار والقوائم الخاصة به قارئات الشاشة عن كل عنصر تحكم وحالته، وتقرأ قائمة التنزيلات اسم كل تنزيل وحالته وحجمه."
-  },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
    "text": "تشغيل أو إيقاف واجهة برمجة تطبيقات الأتمتة للتطبيق قيد التشغيل."
@@ -3145,6 +3149,10 @@
   "55a4316a9df511bb": {
    "source": "A small file",
    "text": "ملف صغير"
+  },
+  "55ecea9df3d3ed23": {
+   "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
+   "text": "الصق عنوان قائمة تشغيل (<x1/>) أو فيديوهات قناة (<x2/>) وانقر على <g3>بحث</g3>. بدلا من جودات فيديو واحد، تعرض النافذة فيديوهات القائمة، كل منها بمدته."
   },
   "560b06bdc37086ad": {
    "source": "Previous image",
@@ -3750,10 +3758,6 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>خصائص</g1> — لتغيير اسمها وأنواع ملفاتها ومجلدها. الفئتان عام والتورنت تغيران مجلديهما فقط. الفئة التي أعيد تسميتها تحتفظ بمجلدها؛ والفئة المضمنة تحتفظ باسمها بلغتك حتى تعيد تسميتها."
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "إظهار قائمة السياق"
-  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager مقابل IDM 6.42</g1><g2>تم التحقق في أكتوبر 2026 · المصادر أدناه</g2>"
@@ -4141,10 +4145,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "يمكن تشغيل MDM بدون نافذته بثلاث طرق:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "إعدادات الوكيل / SOCKS في MDM مخصصة لتنزيلات الويب و FTP. يمكن للتورنت استخدام SOCKS5 أيضا: قم بتعيين وكيل <x1/> في <g2>الخيارات ← الوكيل / SOCKS</g2> وقم بتشغيل <g3>استخدام الوكيل</g3> في إعدادات التورنت. يغطي الوكيل الاتصالات بالأقران والمتتبعات عبر الويب فقط، لذلك معه يقوم MDM بإيقاف تشغيل DHT، واكتشاف الأقران المحليين، والاتصالات الواردة، ومتتبعات UDP. إذا اختفى الوكيل من الوكيل / SOCKS بينما هذا المفتاح قيد التشغيل، فلن تبدأ التورنت بدلا من تجاوزها."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4534,6 +4534,10 @@
    "source": "Torrents",
    "text": "التورنت"
   },
+  "7c13b99aeb6bd7c5": {
+   "source": "A playlist is listed whole, as its videos come in: the line above the list says how far it is (\"Listing the videos: 1,200 of 6,000\"). <g1>Stop listing</g1> keeps the ones listed so far, and <g2>List the rest</g2> carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and <g3>List the rest</g3> tries again from there.",
+   "text": "تدرج قائمة التشغيل كاملة، فور توفر مقاطع الفيديو الخاصة بها: يوضح السطر الموجود أعلى القائمة مدى التقدم (\"إدراج مقاطع الفيديو: 1,200 من 6,000\"). يحفظ زر <g1>إيقاف الإدراج</g1> المقاطع المدرجة حتى الآن، ويستكمل زر <g2>إدراج البقية</g2> من حيث توقف. إذا توقف الموقع عن الاستجابة في منتصف العملية (قد يحدث ذلك مع YouTube عند كثرة الطلبات)، ستوضح النافذة بعد كم مقطع فيديو ولماذا، ويحاول زر <g3>إدراج البقية</g3> مرة أخرى من تلك النقطة."
+  },
   "7c14c17b996d02f7": {
    "source": "explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language.",
    "text": "يشرح المصطلحات الرئيسية (تنزيل، قائمة انتظار، فئة، اتصال، استئناف...). ترجم كل واحد بنفس الطريقة في كل مكان، بالطريقة التي يقولها Windows بلغتك."
@@ -4621,6 +4625,10 @@
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
    "text": "تبقي <g1>الخيارات ← الوكيل / SOCKS ← محول الشبكة</g1> اتصالات MDM على محول واحد، عادة ما يكون محول VPN (<g2>الخيارات</g2>). على نظامي Linux و macOS، يربط محرك التورنت كل مقبس به: الأقران، المتتبعات، DHT ومنفذ الاستماع الخاص به. يتم إيقاف تشغيل UPnP واكتشاف الأقران المحليين حينها، لأنهما يتحدثان إلى الشبكة المحلية بدلا من المرور عبر المحول. إذا اختفى المحول، يتوقف المحرك، ويبدأ مرة أخرى عبر المحول عند عودته."
+  },
+  "7db9ed501785d447": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>الجودة</g1> تنطبق على كل فيديو: <g2>أفضل جودة</g2>، <g3>حتى</g3> ارتفاع معين (كل فيديو بهذا الارتفاع، أو الأقرب تحته)، <g4>صوت فقط، أصلي</g4>، <g5>صوت فقط MP3</g5>، <g6>صوت فقط OPUS</g6> أو <g7>صوت فقط FLAC</g7>. بدون ffmpeg، لا تعرض إلا الجودات التي تأتي مع صوتها، ولا يتوفر MP3 أو Opus أو FLAC."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5069,6 +5077,10 @@
   "89f549746c4017f3": {
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
    "text": "<g1>بني بواسطة GitHub Actions</g1><g2>ليس أبدا على حاسوب شخصي</g2>"
+  },
+  "89fa61b2290f1772": {
+   "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
+   "text": "يضيف <g1>تنزيل الآن</g1> كل فيديو كتنزيل خاص به ويبدأ قائمة الانتظار الرئيسية، التي تشغل العدد الذي تحدده في <g2>الجدولة</g2> (<g3>تنزيل N ملفات في نفس الوقت</g3>). يضيفها <g4>لاحقا</g4> دون بدء التشغيل. إضافة أكثر من 500 في وقت واحد يطلب التأكيد أولا."
   },
   "89fc33b1b049584c": {
    "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
@@ -5981,10 +5993,6 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "شغل <x1/> مع تشغيل MDM."
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "قوائم التشغيل والمزيجات"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6914,6 +6922,10 @@
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
    "text": "بالنسبة للأرقام، اضبط <g1>حجم حرف البدل</g1> على عدد الأرقام. مع 3، تكون الملفات <x2/>، <x3/> وهكذا."
   },
+  "bc9abb4c3d1c81e8": {
+   "source": "MDM lists at most 20,000 videos of one list.",
+   "text": "يدرج MDM 20,000 فيديو كحد أقصى من قائمة واحدة."
+  },
   "bcb140c9553a0b1a": {
    "source": "Light / dark",
    "text": "فاتح / داكن"
@@ -7510,6 +7522,10 @@
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "هذا لحساب Windows الخاص بك فقط. <x1/> يلغي ذلك. ثم حمل الإضافة كما هو موضح أعلاه، من مجلد <x2/> الخاص بالملف المضغوط."
   },
+  "ceafeaa62d5e59ca": {
+   "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
+   "text": "تذهب الفيديوهات إلى مجلد يحمل اسم القائمة، داخل <g1>حفظ في</g1>، كل منها تحت عنوانه الخاص."
+  },
   "cee8fa5faa008467": {
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
    "text": "لحفظ قائمتك الخاصة، استخدم <g1>المهام ← تصدير ← إلى ملف نصي</g1> (عنوان واحد لكل سطر) أو <g2>إلى ملف تصدير IDM</g2>."
@@ -7705,6 +7721,10 @@
   "d4c66a15e09e8ca8": {
    "source": "<g1>Offer to download links copied to the clipboard</g1> — when you copy a link whose file type is on the <g2>File types</g2> page, <g3>Download File Info</g3> opens with it, ready to start (or the download starts at once, with <g4>Show start download dialog</g4> off). On by default.",
    "text": "<g1>عرض تنزيل الروابط المنسوخة إلى الحافظة</g1> — عند نسخ رابط لنوع ملف موجود في صفحة <g2>أنواع الملفات</g2>، تفتح <g3>معلومات ملف التنزيل</g3> معه، جاهزة للبدء (أو يبدأ التنزيل فورا، مع إيقاف تشغيل <g4>إظهار مربع حوار بدء التنزيل</g4>). تشغيل افتراضيا."
+  },
+  "d4c9212e6107e470": {
+   "source": "Playlists and channels",
+   "text": "قوائم التشغيل والقنوات"
   },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
@@ -8678,6 +8698,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "يتم التحقق من شهادة الخادم مقابل الشهادات الموثوقة في Windows (أو النظام)، كما هو الحال مع <x1/>."
   },
+  "f10113695e758efd": {
+   "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
+   "text": "مقاطع فيديو قائمة تشغيل أو قناة، كل مقطع في سطر منفصل كما هي مدرجة: مكانها، مدتها، عنوانها، وعنوانها الإلكتروني."
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "تحديد الكل"
@@ -8873,6 +8897,10 @@
   "f7a4f8dcbb4812c2": {
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "في Chrome وEdge وBrave، يمكنك تقييد الامتداد على بعض المواقع (انقر بزر الفأرة الأيمن على زر شريط أدواته → <g1>يمكنه قراءة وتغيير بيانات الموقع</g1>). في موقع قد لا يتمكن من قراءته، لا يمكن للامتداد تمرير تسجيل دخولك، لذا يترك التنزيل للمتصفح. اختر <g2>على جميع المواقع</g2> للسماح لـ MDM بالتقاط التنزيلات في كل مكان."
+  },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "تنزيل فيديوهات قائمة تشغيل أو قناة واحدا تلو الآخر، في مجلد يحمل اسم القائمة داخل <x1/>. <x2/> هي جودة واحدة للكل، كما هو الحال بالنسبة لـ <x3/> (افتراضيا الأفضل لكل فيديو؛ <x4/> = حتى 720p؛ <x5/> = الصوت الأصلي؛ <x6/>، <x7/>، <x8/> كما هو الحال بالنسبة لـ <x9/>)."
   },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",

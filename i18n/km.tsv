@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} បានជ្រើសរើស
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}៖ វីដេអូ {count}
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}៖ វីដេអូ {listed} ក្នុងចំណោម {total} ត្រូវបានរាយបញ្ជី
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	សេវាកម្ម debrid (Real-Debrid) ទាញយកតំណរបស់ម៉ាស៊ីនឯកសារដោយប្រើគណនីបង់ប្រាក់ផ្ទាល់ខ្លួនរបស់អ្នក ហើយផ្ដល់ឱ្យ MDM នូវតំណផ្ទាល់។ ប្រើតែគណនីផ្ទាល់ខ្លួនរបស់អ្នកប៉ុណ្ណោះ៖ ការចែករំលែកគណនី ឬតំណរបស់វាបំពានលក្ខខណ្ឌសេវាកម្ម ហើយអាចបណ្ដាលឱ្យគណនីត្រូវបានផ្អាក។ ការទាញយកដែលកម្មវិធីរុករកបានចាប់ផ្ដើមរួចហើយ នឹងនៅដដែល។
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	សេវាកម្ម​ដឺប្រ៊ីដ (Real-Debrid) ទាញយក​តំណ​របស់​ម៉ាស៊ីន​ឯកសារ​ដោយ​ប្រើ​គណនី​បង់ប្រាក់​ផ្ទាល់ខ្លួន​របស់​អ្នក ហើយ​ផ្ដល់​តំណ​ផ្ទាល់​ទៅ MDM។ ប្រើ​តែ​គណនី​ផ្ទាល់ខ្លួន​របស់​អ្នក​ប៉ុណ្ណោះ៖ ការ​ចែករំលែក​គណនី ឬ​តំណ​របស់​វា​បំពាន​លក្ខខណ្ឌ​សេវាកម្ម ហើយ​អាច​បណ្ដាល​ឱ្យ​គណនី​ត្រូវ​បាន​ផ្អាក។ ការ​ទាញយក​ដែល​កម្មវិធី​រុករក​បាន​ចាប់ផ្ដើម​រួចហើយ​នៅ​តែ​ដដែល។
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -126,7 +135,7 @@
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
-	Add an account	បន្ថែមគណនី
+	Add an account	បន្ថែម​គណនី
 #. text in the tray icon's menu
 #, machine
 	Add batch download	បន្ថែមការទាញយកជាបាច់
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	បន្ថែមប្រភេទ
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	បន្ថែមការទាញយកជាច្រើន
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,6 +180,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	បន្ថែម Torrent
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	បន្ថែមការទាញយក {n} ទៅក្នុងបញ្ជី? វីដេអូនីមួយៗទទួលបានជួរដេកផ្ទាល់ខ្លួន។
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -280,7 +298,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	កំពុងសួរទៅសេវាកម្ម...
+	Asking the service...	កំពុង​សួរ​សេវាកម្ម...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -290,6 +308,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	សំឡេងតែប៉ុណ្ណោះ {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	សំឡេងតែប៉ុណ្ណោះ ដើម
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +329,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	ទាញយកជាបាច់
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	គុណភាពល្អបំផុត
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -510,7 +536,7 @@
 #. button in the Options window
 #. button: copy the sign-in code
 #, machine
-	Copy code	ចម្លងកូដ
+	Copy code	ចម្លង​កូដ
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -546,7 +572,7 @@
 	Day, month, year	ថ្ងៃ ខែ ឆ្នាំ
 #. page title in the Options window
 #, machine
-	Debrid service accounts	គណនីសេវាកម្ម Debrid
+	Debrid service accounts	គណនី​សេវាកម្ម​ដឺប្រ៊ីដ
 #. text in the Scheduler window
 #, machine
 	December	ធ្នូ
@@ -657,7 +683,7 @@
 #. button in the Options window
 #. button (short): move the account down the list
 #, machine
-	Down	ចុះក្រោម
+	Down	ចុះ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	ទាញយក
@@ -707,7 +733,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	ទាញយកតំណម៉ាស៊ីនឯកសារដែលបានគាំទ្រតាមរយៈគណនីទាំងនេះ
+	Download supported file-host links through these accounts	ទាញយក​តំណ​ម៉ាស៊ីន​ឯកសារ​ដែល​បាន​គាំទ្រ​តាមរយៈ​គណនី​ទាំងនេះ
 #. window title in the Download video window
 #, machine
 	Download video from a page	ទាញយកវីដេអូពីទំព័រ
@@ -878,7 +904,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ពិសោធន៍៖ បង្កើតឡើងពីឯកសារ API សាធារណៈរបស់ Real-Debrid មិនទាន់បានបញ្ជាក់ជាមួយគណនីពិតប្រាកដនៅឡើយទេ។
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ពិសោធន៍៖ បង្កើត​ពី​ឯកសារ​ API សាធារណៈ​របស់ Real-Debrid មិន​ទាន់​បាន​បញ្ជាក់​ជាមួយ​គណនី​ពិត​នៅ​ឡើយ​ទេ។
 #. message or event log entry in the main window
 #, machine
 	Export	នាំចេញ
@@ -956,7 +982,7 @@
 #. button in the Options window
 #. button: open the service's page that shows the user's API token
 #, machine
-	Find my token	ស្វែងរកថូខឹនរបស់ខ្ញុំ
+	Find my token	ស្វែងរក​ថូខឹន​របស់​ខ្ញុំ
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1009,7 +1035,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	គណនីឥតគិតថ្លៃ៖ តំណត្រូវការ Premium
+	free account: links need premium	គណនី​ឥត​គិត​ថ្លៃ៖ តំណ​ត្រូវ​ការ​គណនី​ពិសេស
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1027,6 +1053,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	ពីទំព័រ (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	ពីបញ្ជីចាក់ (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ពីឯកសារ torrent
@@ -1289,10 +1319,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	តំណភ្ជាប់ពីកម្មវិធីរុករក
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	រាយបញ្ជីដែលនៅសល់
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	ការរាយបញ្ជីបានឈប់បន្ទាប់ពីវីដេអូ {n}៖ {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	កំពុងរាយបញ្ជីវីដេអូ៖ {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	កំពុងរាយបញ្ជីវីដេអូ៖ {n} ក្នុងចំណោម {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	បញ្ជីអាសយដ្ឋាន
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	ផ្ទុកបន្ថែមទៀត
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1611,7 +1664,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	មិនគាំទ្រដោយសេវាកម្មនេះ
+	not supported by this service	មិន​គាំទ្រ​ដោយ​សេវាកម្ម​នេះ​ទេ
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	មិនប្រើ៖ ផ្នែកឯកសារត្រូវបានសរសេរនៅជាប់នឹងឯកសារ
@@ -1676,6 +1729,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	មានតែវីដេអូ MP4 និង MKV ប៉ុណ្ណោះដែលអាចផ្ទុកចំណងជើងរងបាន
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	មានតែវីដេអូ {n} ដំបូងប៉ុណ្ណោះដែលត្រូវបានរាយបញ្ជី។
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	តែនៅពេលខ្ញុំកំពុងប្រើកុំព្យូទ័រ
@@ -1704,7 +1762,7 @@
 #. button in the Options window
 #. button: open the service's page where the code is typed
 #, machine
-	Open the page	បើកទំព័រ
+	Open the page	បើក​ទំព័រ
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1732,7 +1790,7 @@
 	Options on completion	ជម្រើសនៅពេលបញ្ចប់
 #. text in the Options window
 #, machine
-	Or paste your API token:	ឬបិទភ្ជាប់ថូខឹន API របស់អ្នក៖
+	Or paste your API token:	ឬ​បិទភ្ជាប់​ថូខឹន API របស់​អ្នក៖
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	អាសយដ្ឋានទំព័រ
@@ -1794,11 +1852,11 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
-	premium	ពិសេស
+	premium	គណនី​ពិសេស
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	Premium, នៅសល់ {days} ថ្ងៃ
+	premium, {days} days left	គណនី​ពិសេស នៅ​សល់ {days} ថ្ងៃ
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1837,6 +1895,7 @@
 	Put them into the video	ដាក់ពួកវាចូលក្នុងវីដេអូ
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	គុណភាព
 #. text in the Scheduler window
@@ -1995,7 +2054,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ជ្រើសរើសថតឯកសារ
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	ជ្រើសរើសទាំងអស់
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2064,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ជ្រើសរើសរាល់ការទាញយកទាំងអស់រហូតដល់ឯកសារនេះ
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	មិនជ្រើសរើសអ្វីទាំងអស់
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2152,15 +2213,15 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
-	Sign in in the browser	ចូលក្នុងកម្មវិធីរុករក
+	Sign in in the browser	ចូល​ក្នុង​កម្មវិធី​រុករក
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	បានចូលជា {user} ({state})
+	Signed in as {user} ({state})	បាន​ចូល​ជា {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	បានចេញ៖ សូមចូលម្ដងទៀត
+	signed out: sign in again	បាន​ចេញ៖ សូម​ចូល​ម្ដង​ទៀត
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	ឈ្មោះគេហទំព័រ/តំណទាញយក/ទំព័របណ្ដាញមេ/អ្នកបញ្ជូន
@@ -2289,6 +2350,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	បញ្ឈប់ការទាញយកនៅម៉ោង
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	បញ្ឈប់ការរាយបញ្ជី
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	បញ្ឈប់ជួរទាញយកមេ
@@ -2402,7 +2467,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	កូដបានផុតកំណត់៖ សូមចូលម្ដងទៀត
+	the code expired: sign in again	កូដ​បាន​ផុត​កំណត់៖ សូម​ចូល​ម្ដង​ទៀត
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2644,6 +2709,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	នេះគឺជាច្បាប់ចម្លងដែលបានដំឡើង មិនមែនជាច្បាប់ចម្លងចល័តទេ
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	បញ្ជីនេះគ្មានវីដេអូទេ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2795,7 +2864,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	វាយកូដនេះនៅ {page} ហើយអនុញ្ញាត MDM; កំពុងរង់ចាំអ្នក (កូដផុតកំណត់ក្នុង {time})។
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	វាយ​កូដ​នេះ​នៅ {page} ហើយ​អនុញ្ញាត MDM; កំពុង​រង់ចាំ​អ្នក (កូដ​ផុត​កំណត់​ក្នុង {time})។
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2817,7 +2886,11 @@
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
-	Up	ឡើងលើ
+	Up	ឡើង
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	រហូតដល់ {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2871,7 +2944,7 @@
 #. button in the Options window
 #. button: sign in with the token typed in
 #, machine
-	Use the token	ប្រើថូខឹន
+	Use the token	ប្រើ​ថូខឹន
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ប្រើពួកវាសម្រាប់តូរ៉ិននេះ? អ្វីដែលត្រូវគ្នាត្រូវបានរក្សាទុក អ្វីដែលនៅសល់ត្រូវបានជំនួស។
@@ -2930,9 +3003,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	ទំព័រវីដេអូ​មិន​អាច​ប្រើ​វា​បាន​នៅ​ឡើយ​ទេ។
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	វីដេអូ
 #. text in the Options window
 #, machine
 	Virus checking settings	ការកំណត់ការត្រួតពិនិត្យមេរោគ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	រង់ចាំបញ្ជី ឬបញ្ឈប់ការរាយបញ្ជី
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3231,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ស្វ័យប្រវត្តិ)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{n} ក្នុងចំណោម {total} បានជ្រើសរើស
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3160,49 +3246,49 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} សុំឱ្យបន្ថយល្បឿន; MDM នឹងព្យាយាមម្ដងទៀតក្នុងមួយនាទី
+	{service} asks to slow down; MDM will try again in a minute	{service} សុំ​ឱ្យ​បន្ថយ​ល្បឿន; MDM នឹង​ព្យាយាម​ម្ដង​ទៀត​ក្នុង​មួយ​នាទី
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} សុំឱ្យអ្នកអនុញ្ញាតកុំព្យូទ័រនេះជាមុនសិន៖ សូមមើលអ៊ីមែលរបស់វា
+	{service} asks you to allow this computer first: see its email	{service} សុំ​ឱ្យ​អ្នក​អនុញ្ញាត​កុំព្យូទ័រ​នេះ​ជាមុន​សិន៖ សូម​មើល​អ៊ីមែល​របស់​វា
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} មិនអាចទៅដល់ម៉ាស៊ីនឯកសារនេះបានទេឥឡូវនេះ; MDM នឹងព្យាយាមម្ដងទៀតនៅពេលក្រោយ
+	{service} can't reach this file host right now; MDM will try again later	{service} មិន​អាច​ទៅ​ដល់​ម៉ាស៊ីន​ឯកសារ​នេះ​បាន​ទេ​ឥឡូវ​នេះ; MDM នឹង​ព្យាយាម​ម្ដង​ទៀត​នៅ​ពេល​ក្រោយ
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	{service} មិនឆ្លើយតប; សូមព្យាយាមម្ដងទៀតនៅពេលក្រោយ
+	{service} is not responding; try again later	{service} មិន​ឆ្លើយតប​ទេ; សូម​ព្យាយាម​ម្ដង​ទៀត​នៅ​ពេល​ក្រោយ
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} បដិសេធការតភ្ជាប់នេះ (VPN ឬអាសយដ្ឋានម៉ាស៊ីនមេ?)
+	{service} refuses this connection (a VPN or server address?)	{service} បដិសេធ​ការ​តភ្ជាប់​នេះ (VPN ឬ​អាសយដ្ឋាន​ម៉ាស៊ីន​មេ?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} នឹងមិនផ្ដល់ឯកសារនេះទេ
+	{service} won't give this file	{service} នឹង​មិន​ផ្ដល់​ឯកសារ​នេះ​ទេ
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}៖ សូមចូលម្ដងទៀត (ជម្រើស → គណនី)
+	{service}: sign in again (Options → Accounts)	{service}៖ សូម​ចូល​ម្ដង​ទៀត (ជម្រើស → គណនី)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}៖ គណនីត្រូវបានចាក់សោ ឬមិនបានធ្វើឱ្យសកម្ម
+	{service}: the account is locked or not activated	{service}៖ គណនី​ត្រូវ​បាន​ចាក់សោ ឬ​មិន​បាន​ធ្វើ​ឱ្យ​សកម្ម
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}៖ ឯកសារបានបាត់ ឬមិនអាចប្រើបាននៅលើម៉ាស៊ីនឯកសារ
+	{service}: the file is gone or unavailable on the file host	{service}៖ ឯកសារ​បាន​បាត់ ឬ​មិន​មាន​នៅ​លើ​ម៉ាស៊ីន​ឯកសារ
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
-	{service}: this file is password-protected	{service}៖ ឯកសារនេះត្រូវបានការពារដោយពាក្យសម្ងាត់
+	{service}: this file is password-protected	{service}៖ ឯកសារ​នេះ​ត្រូវ​បាន​ការពារ​ដោយ​ពាក្យ​សម្ងាត់
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
-	{service}: this needs a premium account	{service}៖ នេះត្រូវការគណនី Premium
+	{service}: this needs a premium account	{service}៖ នេះ​ត្រូវ​ការ​គណនី​ពិសេស
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}៖ ការទាញយកច្រើនពេកក្នុងពេលតែមួយតាមរយៈគណនីរបស់អ្នក; MDM នឹងព្យាយាមម្ដងទៀត
+	{service}: too many downloads at once through your account; MDM will try again	{service}៖ ការ​ទាញយក​ច្រើន​ពេក​ក្នុង​ពេល​តែ​មួយ​តាមរយៈ​គណនី​របស់​អ្នក; MDM នឹង​ព្យាយាម​ម្ដង​ទៀត
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine

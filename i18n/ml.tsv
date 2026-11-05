@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} തിരഞ്ഞെടുത്തു|{n} തിരഞ്ഞെടുത്തു
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} വീഡിയോ|{title}: {count} വീഡിയോകൾ
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {total} വീഡിയോകളിൽ {listed} എണ്ണം ലിസ്റ്റ് ചെയ്‌തു|{title}: {total} വീഡിയോകളിൽ {listed} എണ്ണം ലിസ്റ്റ് ചെയ്‌തു
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ഒരു ഡെബ്രിഡ് സേവനം (Real-Debrid) നിങ്ങളുടെ സ്വന്തം പണമടച്ച അക്കൗണ്ട് ഉപയോഗിച്ച് ഒരു ഫയൽ ഹോസ്റ്റിന്റെ ലിങ്ക് ഡൗൺലോഡ് ചെയ്യുകയും MDM-ന് ഒരു നേരിട്ടുള്ള ലിങ്ക് നൽകുകയും ചെയ്യുന്നു. നിങ്ങളുടെ സ്വന്തം അക്കൗണ്ട് മാത്രം ഉപയോഗിക്കുക: ഒരു അക്കൗണ്ട് അല്ലെങ്കിൽ അതിന്റെ ലിങ്കുകൾ പങ്കിടുന്നത് സേവനങ്ങളുടെ നിബന്ധനകൾ ലംഘിക്കുകയും അത് താൽക്കാലികമായി നിർത്തലാക്കാൻ ഇടയാക്കുകയും ചെയ്യും. ബ്രൗസർ ഇതിനകം ആരംഭിച്ച ഡൗൺലോഡുകൾ അതുപോലെ നിലനിൽക്കും.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ഒരു ഡെബ്രിഡ് സേവനം (Real-Debrid) നിങ്ങളുടെ സ്വന്തം പണമടച്ച അക്കൗണ്ട് ഉപയോഗിച്ച് ഒരു ഫയൽ ഹോസ്റ്റിന്റെ ലിങ്ക് ഡൗൺലോഡ് ചെയ്യുകയും MDM-ന് ഒരു നേരിട്ടുള്ള ലിങ്ക് നൽകുകയും ചെയ്യുന്നു. നിങ്ങളുടെ സ്വന്തം അക്കൗണ്ട് മാത്രം ഉപയോഗിക്കുക: ഒരു അക്കൗണ്ട് അല്ലെങ്കിൽ അതിന്റെ ലിങ്കുകൾ പങ്കിടുന്നത് സേവനങ്ങളുടെ നിബന്ധനകൾ ലംഘിക്കുകയും അത് താൽക്കാലികമായി നിർത്തലാക്കാൻ ഇടയാക്കുകയും ചെയ്യും. ബ്രൗസർ ഇതിനകം ആരംഭിച്ച ഡൗൺലോഡുകൾ അതുപോലെതന്നെ തുടരും.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	വിഭാഗം ചേർക്കുക
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	നിരവധി ഡൗൺലോഡുകൾ ചേർക്കുക
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,6 +180,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	ടോറന്റ് ചേർക്കുക
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	പട്ടികയിലേക്ക് {n} ഡൗൺലോഡുകൾ ചേർക്കണോ? ഓരോ വീഡിയോയ്ക്കും അതിൻ്റേതായ നിര ലഭിക്കും.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -290,6 +308,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ഓഡിയോ മാത്രം {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	ഓഡിയോ മാത്രം, ഒറിജിനൽ
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +329,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	ബാച്ച് ഡൗൺലോഡ്
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	മികച്ച നിലവാരം
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -1028,6 +1054,10 @@
 #, machine
 	from a page (yt-dlp)	ഒരു പേജിൽ നിന്ന് (yt-dlp)
 #. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	ഒരു പ്ലേലിസ്റ്റിൽ നിന്ന് (yt-dlp)
+#. message or event log entry in the main window
 #, machine
 	from a torrent file	ഒരു ടോറന്റ് ഫയലിൽ നിന്ന്
 #. text in the Batch download window
@@ -1289,10 +1319,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ബ്രൗസറിൽ നിന്നുള്ള ലിങ്കുകൾ
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	ബാക്കിയുള്ളവ ലിസ്റ്റ് ചെയ്യുക
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	{n} വീഡിയോകൾക്ക് ശേഷം ലിസ്റ്റിംഗ് നിർത്തി: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	വീഡിയോകൾ ലിസ്റ്റ് ചെയ്യുന്നു: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	വീഡിയോകൾ ലിസ്റ്റ് ചെയ്യുന്നു: {total}-ൽ {n}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	വിലാസങ്ങളുടെ ലിസ്റ്റുകൾ
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	കൂടുതൽ ലോഡ് ചെയ്യുക
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1676,6 +1729,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	MP4, MKV വീഡിയോകൾക്ക് മാത്രമേ സബ്‌ടൈറ്റിലുകൾ ഉൾക്കൊള്ളാൻ കഴിയൂ
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	ആദ്യത്തെ {n} വീഡിയോകൾ മാത്രമാണ് ലിസ്റ്റ് ചെയ്തിരിക്കുന്നത്.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ഞാൻ കമ്പ്യൂട്ടർ ഉപയോഗിക്കുമ്പോൾ മാത്രം
@@ -1837,6 +1895,7 @@
 	Put them into the video	അവ വീഡിയോയിൽ ചേർക്കുക
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	ഗുണമേന്മ
 #. text in the Scheduler window
@@ -1995,7 +2054,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	എല്ലാം തിരഞ്ഞെടുക്കുക
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2064,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ഇതുവരെയുള്ള എല്ലാ ഡൗൺലോഡുകളും തിരഞ്ഞെടുക്കുക
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	ഒന്നും തിരഞ്ഞെടുക്കരുത്
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2289,6 +2350,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ഡൗൺലോഡ് നിർത്തുക
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	ലിസ്റ്റിംഗ് നിർത്തുക
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	പ്രധാന ഡൗൺലോഡ് ക്യൂ നിർത്തുക
@@ -2644,6 +2709,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ഇത് ഇൻസ്റ്റാൾ ചെയ്ത കോപ്പിയാണ്, പോർട്ടബിൾ കോപ്പിയല്ല
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	ഈ ലിസ്റ്റിൽ വീഡിയോകളൊന്നുമില്ല
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2818,6 +2887,10 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	മുകളിലേക്ക്
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	{height}p വരെ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2930,9 +3003,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	വീഡിയോ പേജുകൾക്ക് ഇത് ഇതുവരെ ഉപയോഗിക്കാൻ കഴിയില്ല.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	വീഡിയോകൾ
 #. text in the Options window
 #, machine
 	Virus checking settings	വൈറസ് പരിശോധന ക്രമീകരണങ്ങൾ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	ലിസ്റ്റിനായി കാത്തിരിക്കുക, അല്ലെങ്കിൽ ലിസ്റ്റിംഗ് നിർത്തുക
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3231,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ഓട്ടോ)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{total}-ൽ {n} എണ്ണം തിരഞ്ഞെടുത്തു
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3164,10 +3250,10 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} ഈ കമ്പ്യൂട്ടറിന് ആദ്യം അനുമതി നൽകാൻ ആവശ്യപ്പെടുന്നു: അതിന്റെ ഇമെയിൽ കാണുക
+	{service} asks you to allow this computer first: see its email	{service} ആദ്യം ഈ കമ്പ്യൂട്ടറിന് അനുമതി നൽകാൻ ആവശ്യപ്പെടുന്നു: അതിന്റെ ഇമെയിൽ കാണുക
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} ഈ ഫയൽ ഹോസ്റ്റിൽ ഇപ്പോൾ എത്താൻ കഴിയില്ല; MDM പിന്നീട് വീണ്ടും ശ്രമിക്കും
+	{service} can't reach this file host right now; MDM will try again later	{service} ഇപ്പോൾ ഈ ഫയൽ ഹോസ്റ്റിൽ എത്താൻ കഴിയില്ല; MDM പിന്നീട് വീണ്ടും ശ്രമിക്കും
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3187,7 +3273,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}: അക്കൗണ്ട് ലോക്ക് ചെയ്തിരിക്കുകയാണ് അല്ലെങ്കിൽ സജീവമാക്കിയിട്ടില്ല
+	{service}: the account is locked or not activated	{service}: അക്കൗണ്ട് ലോക്ക് ചെയ്തിരിക്കുന്നു അല്ലെങ്കിൽ സജീവമാക്കിയിട്ടില്ല
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
@@ -3195,18 +3281,18 @@
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
-	{service}: this file is password-protected	{service}: ഈ ഫയൽ പാസ്‌വേഡ് ഉപയോഗിച്ച് സംരക്ഷിച്ചിരിക്കുന്നു
+	{service}: this file is password-protected	{service}: ഈ ഫയൽ പാസ്‌വേഡ് സംരക്ഷിതമാണ്
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
 	{service}: this needs a premium account	{service}: ഇതിന് ഒരു പ്രീമിയം അക്കൗണ്ട് ആവശ്യമാണ്
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: നിങ്ങളുടെ അക്കൗണ്ടിലൂടെ ഒരേ സമയം വളരെയധികം ഡൗൺലോഡുകൾ; MDM വീണ്ടും ശ്രമിക്കും
+	{service}: too many downloads at once through your account; MDM will try again	{service}: നിങ്ങളുടെ അക്കൗണ്ടിലൂടെ ഒരേ സമയം നിരവധി ഡൗൺലോഡുകൾ; MDM വീണ്ടും ശ്രമിക്കും
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: ഈ ഫയൽ ഹോസ്റ്റിനായുള്ള നിങ്ങളുടെ പരിധി ഇപ്പോൾ തീർന്നു
+	{service}: your limit for this file host is used up for now	{service}: ഈ ഫയൽ ഹോസ്റ്റിനായുള്ള നിങ്ങളുടെ പരിധി ഇപ്പോൾ ഉപയോഗിച്ചുതീർന്നു
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine

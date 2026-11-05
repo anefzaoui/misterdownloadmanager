@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	Выбрана {n}|Выбрано {n}|Выбрано {n}
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} видео|{title}: {count} видео|{title}: {count} видео
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} из {total} видео в списке|{title}: {listed} из {total} видео в списке|{title}: {listed} из {total} видео в списке
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Сервис дебрида (Real-Debrid) загружает ссылку файлового хоста с вашей собственной платной учетной записи и предоставляет MDM прямую ссылку. Используйте только свою учетную запись: совместное использование учетной записи или ее ссылок нарушает условия обслуживания и может привести к ее блокировке. Загрузки, уже начатые браузером, остаются без изменений.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Служба дебрида (Real-Debrid) загружает ссылку файлового хоста с вашей собственной платной учетной записи и предоставляет MDM прямую ссылку. Используйте только свою учетную запись: совместное использование учетной записи или ее ссылок нарушает условия обслуживания и может привести к ее блокировке. Загрузки, уже начатые браузером, остаются без изменений.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	Добавить категорию
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	Добавить много загрузок
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,6 +180,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Добавить торрент
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	Добавить {n} загрузок в список? Каждое видео получит отдельную строку.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -280,7 +298,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Запрос к сервису...
+	Asking the service...	Запрос к службе...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -290,6 +308,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Только аудио {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	Только аудио, оригинал
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +329,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Пакетная загрузка
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	Лучшее качество
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -546,7 +572,7 @@
 	Day, month, year	День, месяц, год
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Учетные записи сервисов дебрида
+	Debrid service accounts	Учетные записи службы дебрида
 #. text in the Scheduler window
 #, machine
 	December	Декабрь
@@ -1009,7 +1035,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	бесплатная учетная запись: для ссылок нужен премиум
+	free account: links need premium	бесплатная учетная запись: для ссылок требуется премиум
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1027,6 +1053,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	со страницы (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	из плейлиста (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	из torrent-файла
@@ -1289,10 +1319,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Ссылки из браузера
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	Показать остальное
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	Список остановлен после {n} видео: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	Список видео: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	Список видео: {n} из {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	Списки адресов
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	Загрузить ещё
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1611,7 +1664,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	не поддерживается этим сервисом
+	not supported by this service	не поддерживается этой службой
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Не используется: части файла записываются рядом с файлом
@@ -1676,6 +1729,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Субтитры могут содержать только видео MP4 и MKV
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	Перечислены только первые {n} видео.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Только когда я использую компьютер
@@ -1837,6 +1895,7 @@
 	Put them into the video	Встроить в видео
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	Качество
 #. text in the Scheduler window
@@ -1995,7 +2054,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Выбор папки
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Выбрать все
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2064,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Выбрать все загрузки до этой
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	Снять выделение
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2058,10 +2119,10 @@
 #. text in the Options window
 #. column title: the debrid service (Real-Debrid…)
 #, machine
-	Service	Сервис
+	Service	Служба
 #. text in the Options window
 #, machine
-	Service:	Сервис:
+	Service:	Служба:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2160,7 +2221,7 @@
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	вы вышли: войдите снова
+	signed out: sign in again	вышли: войдите снова
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Имя сайта/Ссылка для загрузки/Родительская веб-страница/Реферер
@@ -2289,6 +2350,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Остановить загрузку в
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	Остановить перечисление
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Остановить основную очередь загрузки
@@ -2644,6 +2709,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Это установленная копия, а не портативная
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	В этом списке нет видео
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2818,6 +2887,10 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	Вверх
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	До {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2930,9 +3003,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	Видеостраницы пока не могут использовать его.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	Видео
 #. text in the Options window
 #, machine
 	Virus checking settings	Настройки проверки на вирусы
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	Дождитесь списка или остановите перечисление
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3231,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (авто)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	Выбрано {n} из {total}
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3164,7 +3250,7 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} просит сначала разрешить этот компьютер: проверьте свою электронную почту
+	{service} asks you to allow this computer first: see its email	{service} просит сначала разрешить этот компьютер: см. его электронное письмо
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} не может связаться с этим файловым хостом прямо сейчас; MDM повторит попытку позже
@@ -3175,7 +3261,7 @@
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} отказывает в этом подключении (VPN или адрес сервера?)
+	{service} refuses this connection (a VPN or server address?)	{service} отклоняет это подключение (VPN или адрес сервера?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
@@ -3199,14 +3285,14 @@
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
-	{service}: this needs a premium account	{service}: для этого нужна премиум-учетная запись
+	{service}: this needs a premium account	{service}: для этого требуется премиум-аккаунт
 #. text in errors.rs
 #, machine
 	{service}: too many downloads at once through your account; MDM will try again	{service}: слишком много загрузок одновременно через вашу учетную запись; MDM повторит попытку
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: ваш лимит для этого файлового хоста исчерпан
+	{service}: your limit for this file host is used up for now	{service}: ваш лимит для этого файлового хоста пока исчерпан
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine

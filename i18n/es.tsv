@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} seleccionado|{n} seleccionados
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} vídeo|{title}: {count} vídeos
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} de {total} vídeo listado|{title}: {listed} de {total} vídeos listados
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un servicio de debrid (Real-Debrid) descarga un enlace de un servidor de archivos con su propia cuenta de pago y le da a MDM un enlace directo. Use solo su propia cuenta: compartir una cuenta o sus enlaces infringe los términos del servicio y puede provocar su suspensión. Las descargas que el navegador ya inició permanecen como están.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un servicio de debrid (Real-Debrid) descarga un enlace de un host de archivos con su propia cuenta de pago y le da a MDM un enlace directo. Use solo su propia cuenta: compartir una cuenta o sus enlaces infringe los términos del servicio y puede provocar su suspensión. Las descargas que el navegador ya inició permanecen como están.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -126,7 +135,7 @@
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
-	Add an account	Agregar una cuenta
+	Add an account	Añadir una cuenta
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Añadir descarga por lotes
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	Añadir categoría
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	Añadir muchas descargas
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,11 +180,16 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Añadir torrent
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	¿Añadir {n} descargas a la lista? Cada vídeo tendrá su propia fila.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Add...	Agregar...
+	Add...	Añadir...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -290,6 +308,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Solo audio {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	Solo audio, original
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +329,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	Descarga por lotes
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	Mejor calidad
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -707,7 +733,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Descargar enlaces de servidores de archivos compatibles a través de estas cuentas
+	Download supported file-host links through these accounts	Descargar enlaces de hosts de archivos compatibles a través de estas cuentas
 #. window title in the Download video window
 #, machine
 	Download video from a page	Descargar vídeo de una página
@@ -1009,7 +1035,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	cuenta gratuita: los enlaces necesitan premium
+	free account: links need premium	cuenta gratuita: los enlaces requieren premium
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1027,6 +1053,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	desde una página (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	de una lista de reproducción (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	desde un archivo torrent
@@ -1289,10 +1319,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Enlaces del navegador
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	Listar el resto
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	Listado detenido después de {n} vídeos: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	Listando los vídeos: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	Listando los vídeos: {n} de {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	Listas de direcciones
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	Cargar más
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1676,6 +1729,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Solo los vídeos MP4 y MKV pueden contener subtítulos
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	Solo se muestran los primeros {n} vídeos.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Solo mientras uso el equipo
@@ -1798,7 +1856,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	premium, quedan {days} días
+	premium, {days} days left	premium, {days} días restantes
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1837,6 +1895,7 @@
 	Put them into the video	Ponerlos en el vídeo
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	Calidad
 #. text in the Scheduler window
@@ -1995,7 +2054,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Seleccionar una carpeta
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Seleccionar todo
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2064,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Seleccionar todas las descargas hasta esta
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	No seleccionar ninguno
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2289,6 +2350,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Detener descarga a las
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	Detener listado
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Detener cola de descarga principal
@@ -2644,6 +2709,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Esta es la copia instalada, no una portátil
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	Esta lista no tiene vídeos
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2818,6 +2887,10 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	Arriba
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	Hasta {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2930,9 +3003,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	Las páginas de vídeo no pueden usarlo todavía.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	Vídeos
 #. text in the Options window
 #, machine
 	Virus checking settings	Configuración de análisis de virus
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	Espere a la lista o detenga el listado
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3231,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (auto)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{n} de {total} elegidos
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3167,7 +3253,7 @@
 	{service} asks you to allow this computer first: see its email	{service} le pide que autorice este equipo primero: consulte su correo electrónico
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} no puede llegar a este servidor de archivos ahora mismo; MDM lo intentará de nuevo más tarde
+	{service} can't reach this file host right now; MDM will try again later	{service} no puede llegar a este host de archivos ahora mismo; MDM lo intentará de nuevo más tarde
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3179,7 +3265,7 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} no entregará este archivo
+	{service} won't give this file	{service} no proporcionará este archivo
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -3191,7 +3277,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: el archivo ha desaparecido o no está disponible en el servidor de archivos
+	{service}: the file is gone or unavailable on the file host	{service}: el archivo ha desaparecido o no está disponible en el host de archivos
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine

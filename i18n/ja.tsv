@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n}個を選択済み
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} 個の動画
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {total} 個の動画中 {listed} 個をリスト表示
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -92,7 +101,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	デブリットサービス (Real-Debrid) は、ご自身の有料アカウントでファイルホストのリンクをダウンロードし、MDM に直接リンクを提供します。ご自身のアカウントのみを使用してください。アカウントまたはそのリンクを共有すると、サービスの規約に違反し、アカウントが停止される可能性があります。ブラウザーが既に開始したダウンロードはそのまま維持されます。
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	デブリットサービス (Real-Debrid) は、ご自身の有料アカウントでファイルホストのリンクをダウンロードし、MDM に直接リンクを提供します。ご自身のアカウントのみを使用してください。アカウントまたはそのリンクを共有すると、サービスの規約に違反し、アカウントが停止される可能性があります。ブラウザーが既に開始したダウンロードはそのまま残ります。
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -137,6 +146,10 @@
 #. text in categories.rs
 #, machine
 	Add category	カテゴリの追加
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	多数のダウンロードを追加
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,11 +180,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	トレントを追加
-#. button in the Options window
-#. button: add a debrid service account (opens the sign-in)
-#. the trailing ... means it opens a window: keep it
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
 #, machine
-	Add...	追加...
+	Add {n} downloads to the list? Each video gets its own row.	{n} 個のダウンロードをリストに追加しますか? 各動画は個別の行になります。
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -290,6 +303,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	オーディオのみ {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	音声のみ、オリジナル
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +324,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	バッチ ダウンロード
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	最高品質
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -507,10 +528,6 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	コピー
-#. button in the Options window
-#. button: copy the sign-in code
-#, machine
-	Copy code	コードをコピー
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -654,10 +671,6 @@
 #. text in a download's progress window
 #, machine
 	Done	完了
-#. button in the Options window
-#. button (short): move the account down the list
-#, machine
-	Down	下へ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	ダウンロード
@@ -704,10 +717,6 @@
 #. tab title: how the download is going
 #, machine
 	Download status	ダウンロードの状態
-#. checkbox in the Options window
-#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
-#, machine
-	Download supported file-host links through these accounts	これらのアカウントでサポートされているファイルホストのリンクをダウンロードする
 #. window title in the Download video window
 #, machine
 	Download video from a page	ページからビデオをダウンロード
@@ -953,10 +962,6 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ファイルの検索
-#. button in the Options window
-#. button: open the service's page that shows the user's API token
-#, machine
-	Find my token	トークンを見つける
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1027,6 +1032,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	ページから (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	プレイリストから (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	トレントファイルから
@@ -1289,10 +1298,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ブラウザーからのリンク
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	残りをリスト
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	{n} 個の動画をリストした後に停止しました: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	動画をリスト中: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	動画をリスト中: {total} 個中 {n} 個
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	アドレスの一覧
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	さらに読み込む
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1676,6 +1708,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	字幕を格納できるのは MP4 および MKV ビデオのみです
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	最初の {n} 個の動画のみがリストされています。
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	コンピューターを使用している間のみ
@@ -1701,10 +1738,6 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	完了したら次のファイルを開く:
-#. button in the Options window
-#. button: open the service's page where the code is typed
-#, machine
-	Open the page	ページを開く
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1732,7 +1765,7 @@
 	Options on completion	完了時のオプション
 #. text in the Options window
 #, machine
-	Or paste your API token:	または API トークンを貼り付けます:
+	Or paste your API token:	または、API トークンを貼り付けます:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ページ アドレス
@@ -1837,6 +1870,7 @@
 	Put them into the video	ビデオに埋め込む
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	品質
 #. text in the Scheduler window
@@ -1995,7 +2029,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	フォルダーの選択
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	すべて選択
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2039,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	これまでのすべてのダウンロードを選択
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	選択解除
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2149,10 +2185,6 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	シャットダウン
-#. button in the Options window
-#. button: sign in to the debrid service in the browser, by typing a code there
-#, machine
-	Sign in in the browser	ブラウザーでサインイン
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -2289,6 +2321,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ダウンロードを停止する時刻
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	リストを停止
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	メインダウンロードキューを停止
@@ -2644,6 +2680,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	これはインストールされたコピーであり、ポータブル版ではありません
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	このリストには動画がありません
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2814,10 +2854,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	不明
-#. button in the Options window
-#. button (short): move the account up the list (accounts are asked in the list's order)
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
-	Up	上へ
+	Up to {height}p	{height}p まで
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2868,10 +2908,6 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	プロキシを使用する ([オプション] → [プロキシ / SOCKS]、SOCKS5)
-#. button in the Options window
-#. button: sign in with the token typed in
-#, machine
-	Use the token	トークンを使用
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	このトレントにこれらを使用しますか? 一致するものは保持され、残りは置き換えられます。
@@ -2930,9 +2966,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	動画ページではまだ使用できません。
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	動画
 #. text in the Options window
 #, machine
 	Virus checking settings	ウイルス チェック設定
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	リストを待つか、リストを停止してください
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3150,6 +3194,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (自動)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{total} 個中 {n} 個を選択済み
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3160,11 +3209,11 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} が速度を落とすよう要求しています。MDM は 1 分後に再試行します
+	{service} asks to slow down; MDM will try again in a minute	{service} が速度を落とすように要求しています。MDM は 1 分後に再試行します
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} がこのコンピューターを最初に許可するよう要求しています: メールを確認してください
+	{service} asks you to allow this computer first: see its email	{service} がまずこのコンピューターを許可するように要求しています: メールを確認してください
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} は現在このファイルホストに到達できません。MDM は後で再試行します
@@ -3175,7 +3224,7 @@
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} がこの接続を拒否しています (VPN またはサーバーアドレスですか？)
+	{service} refuses this connection (a VPN or server address?)	{service} がこのコンピューターのアドレスを拒否しています (VPN またはサーバーアドレスですか?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine

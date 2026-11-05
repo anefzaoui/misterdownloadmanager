@@ -1594,6 +1594,10 @@
    "source": "The extension asks the host which file types to take, checks each download against them, and cancels the browser's download only after the app has accepted it; otherwise the browser keeps it.",
    "text": "拡張機能はホストにどのファイルタイプを取得するかを尋ね、それらに対して各ダウンロードをチェックし、アプリがそれを受け入れた後にのみブラウザのダウンロードをキャンセルします。そうでない場合、ブラウザはそれを保持します。"
   },
+  "292621fe40d7beca": {
+   "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
+   "text": "すべての動画は最初からチェックが入っています。不要なものはチェックを外すか、<g1>すべて選択</g1>と<g2>選択解除</g2>を使用してください。非公開の動画や削除された動画はグレー表示され、チェックを入れることはできません。"
+  },
   "296bb6abbc747f28": {
    "source": "If it gives up and shows <g1>Error</g1>:",
    "text": "MDMが諦めて「<g1>エラー</g1>」と表示された場合："
@@ -1745,6 +1749,10 @@
   "2ca80e0dcb3b659c": {
    "source": "1. Put the downloads in a queue",
    "text": "1. ダウンロードをキューに入れる"
+  },
+  "2cb242c75b5117f9": {
+   "source": "A channel is listed 50 videos at a time, newest first. <g1>Load more</g1> lists the next 50.",
+   "text": "チャンネルは、新しいものから順に50本の動画ずつリストされます。<g1>さらに読み込む</g1>をクリックすると、次の50本がリストされます。"
   },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
@@ -2910,10 +2918,6 @@
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Windows 11が提供するすべての表示言語に対応しており、初回起動時に旗のアイコンで選択するか、「表示」→「言語」でいつでも変更できます。アラビア語、ヘブライ語、ペルシア語、ウルドゥー語、ウイグル語は右から左に表示されます。"
   },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "すべての操作はキーボードから実行でき、MDMはスクリーンリーダー（WindowsのナレーターやNVDAなど）に対応しています。ウィンドウ、ダイアログ、メニューは、各コントロールとその状態をスクリーンリーダーに伝え、ダウンロードリストは各ダウンロードの名前、ステータス、サイズを読み上げます。"
-  },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
    "text": "実行中のアプリの自動化APIをオンまたはオフにします。"
@@ -3145,6 +3149,10 @@
   "55a4316a9df511bb": {
    "source": "A small file",
    "text": "小さなファイル"
+  },
+  "55ecea9df3d3ed23": {
+   "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
+   "text": "プレイリスト（<x1/>）またはチャンネルの動画（<x2/>）のアドレスを貼り付け、<g3>検索</g3>をクリックします。1つの動画の品質の代わりに、ウィンドウにはリストの動画がそれぞれ長さとともに表示されます。"
   },
   "560b06bdc37086ad": {
    "source": "Previous image",
@@ -3750,10 +3758,6 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>プロパティ</g1> — 名前、ファイルの種類、フォルダーを変更します。「一般」と「トレント」はフォルダーのみを変更します。名前を変更したカテゴリはフォルダーを保持します。組み込みのカテゴリは、名前を変更するまでお使いの言語で名前を保持します。"
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager 対 IDM 6.42</g1><g2>2026年10月確認 · 参照元は下記</g2>"
@@ -4141,10 +4145,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDMは、ウィンドウを表示せずに次の3つの方法で操作できます。"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5を使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにします。プロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア検出、受信接続、UDPトラッカーをオフにします。そのスイッチがオンの間にプロキシがプロキシ / SOCKSからなくなると、トレントはそれを回避するのではなく、開始されません。"
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4534,6 +4534,10 @@
    "source": "Torrents",
    "text": "トレント"
   },
+  "7c13b99aeb6bd7c5": {
+   "source": "A playlist is listed whole, as its videos come in: the line above the list says how far it is (\"Listing the videos: 1,200 of 6,000\"). <g1>Stop listing</g1> keeps the ones listed so far, and <g2>List the rest</g2> carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and <g3>List the rest</g3> tries again from there.",
+   "text": "プレイリストは、動画が追加されるにつれて全体が一覧表示されます。リストの上の行には、どこまで進んだかが表示されます（「動画を一覧表示中: 6,000件中1,200件」）。<g1>一覧表示を停止</g1>すると、それまでに一覧表示されたものが保持され、<g2>残りを一覧表示</g2>すると、そこから続行されます。サイトが途中で応答しなくなった場合（YouTubeは、頻繁に要求されるとそうなることがあります）、ウィンドウには何件の動画の後で、なぜそうなったかが表示され、<g3>残りを一覧表示</g3>すると、そこから再試行されます。"
+  },
   "7c14c17b996d02f7": {
    "source": "explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language.",
    "text": "は主要な用語（ダウンロード、キュー、カテゴリ、接続、再開など）を説明しています。それぞれの用語は、Windowsがあなたの言語で表現する方法と同じように、どこでも同じように翻訳してください。"
@@ -4621,6 +4625,10 @@
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
    "text": "<g1>オプション → プロキシ / SOCKS → ネットワークアダプター</g1>は、MDMの接続を1つのアダプター（通常はVPNのもの）に保持します（<g2>オプション</g2>）。LinuxとmacOSでは、トレントエンジンはすべてのソケットをそれにバインドします。ピア、トラッカー、DHT、およびそのリスニングポートです。UPnPとローカルピア検出は、アダプター経由ではなくローカルネットワークと通信するため、その場合はオフになります。アダプターがなくなるとエンジンは停止し、戻るとアダプター経由で再び開始します。"
+  },
+  "7db9ed501785d447": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>品質</g1>はすべての動画に適用されます。<g2>最高品質</g2>、高さ<g3>まで</g3>（各動画はその高さか、それより近い低い方）、<g4>音声のみ、オリジナル</g4>、<g5>音声のみ MP3</g5>、<g6>音声のみ OPUS</g6>、または<g7>音声のみ FLAC</g7>。ffmpegがない場合、音声付きの品質のみが提供され、MP3、Opus、FLACは提供されません。"
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5069,6 +5077,10 @@
   "89f549746c4017f3": {
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
    "text": "<g1>GitHub Actions でビルド</g1><g2>個人のラップトップでは行いません</g2>"
+  },
+  "89fa61b2290f1772": {
+   "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
+   "text": "<g1>今すぐダウンロード</g1>をクリックすると、各動画が個別のダウンロードとして追加され、メインキューが開始されます。メインキューは、<g2>スケジューラ</g2>（<g3>同時にN個のファイルをダウンロード</g3>）で設定した数だけ同時に実行されます。<g4>後で</g4>をクリックすると、開始せずに動画が追加されます。一度に500個以上追加する場合は、最初に確認を求められます。"
   },
   "89fc33b1b049584c": {
    "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
@@ -5981,10 +5993,6 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "MDMが実行されている状態で<x1/>を実行してください。"
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "プレイリストとミックス"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6914,6 +6922,10 @@
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
    "text": "数字の場合、<g1>ワイルドカード サイズ</g1>を桁数に設定します。3の場合、ファイルは<x2/>、<x3/>などになります。"
   },
+  "bc9abb4c3d1c81e8": {
+   "source": "MDM lists at most 20,000 videos of one list.",
+   "text": "MDMは、1つのリストにつき最大20,000本の動画をリストします。"
+  },
   "bcb140c9553a0b1a": {
    "source": "Light / dark",
    "text": "ライト / ダーク"
@@ -7510,6 +7522,10 @@
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "これはあなたのWindowsアカウントのみに適用されます。<x1/>で元に戻せます。その後、上記のように、zipの<x2/>フォルダーから拡張機能を読み込みます。"
   },
+  "ceafeaa62d5e59ca": {
+   "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
+   "text": "動画は、<g1>保存先</g1>内のリスト名と同じ名前のフォルダーに、それぞれ独自のタイトルで保存されます。"
+  },
   "cee8fa5faa008467": {
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
    "text": "独自のリストを保存するには、<g1>タスク → エクスポート → テキスト ファイルへ</g1>（1行に1アドレス）または<g2>IDM エクスポート ファイルへ</g2>を使用します。"
@@ -7705,6 +7721,10 @@
   "d4c66a15e09e8ca8": {
    "source": "<g1>Offer to download links copied to the clipboard</g1> — when you copy a link whose file type is on the <g2>File types</g2> page, <g3>Download File Info</g3> opens with it, ready to start (or the download starts at once, with <g4>Show start download dialog</g4> off). On by default.",
    "text": "<g1>クリップボードにコピーされたリンクをダウンロードするよう提案する</g1> — <g2>ファイルの種類</g2>ページにあるファイルタイプのリンクをコピーすると、<g3>ダウンロード ファイル情報</g3>が開き、ダウンロードを開始する準備ができます（または、<g4>ダウンロード開始ダイアログを表示</g4>がオフの場合、ダウンロードはすぐに開始されます）。既定ではオンです。"
+  },
+  "d4c9212e6107e470": {
+   "source": "Playlists and channels",
+   "text": "プレイリストとチャンネル"
   },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
@@ -8678,6 +8698,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "サーバーの証明書は、<x1/>と同様に、Windows（またはシステムの）信頼された証明書に対してチェックされます。"
   },
+  "f10113695e758efd": {
+   "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
+   "text": "プレイリストやチャンネルの動画を、リストに表示されている順に1行ずつ表示します。場所、長さ、タイトル、アドレスが含まれます。"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8873,6 +8897,10 @@
   "f7a4f8dcbb4812c2": {
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "Chrome、Edge、Brave では、拡張機能を一部のサイトに制限できます（ツールバーボタンを右クリック → <g1>このサイトデータを読み取り、変更できます</g1>）。読み取れないサイトでは、拡張機能がサインインを渡せないため、ダウンロードをブラウザーに残します。<g2>すべてのサイトで</g2> を選択すると、MDM がどこからでもダウンロードを取得できるようになります。"
+  },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "<x1/>内のリスト名フォルダーに、プレイリストまたはチャンネルの動画を次々にダウンロードします。<x2/>は<x3/>の場合と同様に、すべてに1つの品質を適用します（デフォルトでは各動画の最高品質。<x4/> = 最大720p。<x5/> = オリジナルサウンド。<x6/>、<x7/>、<x8/>は<x9/>の場合と同様）。"
   },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",

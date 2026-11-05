@@ -25,6 +25,7 @@ mod model;
 mod netwatch;
 mod options;
 mod pacfetch;
+mod playlistdlg;
 mod progress;
 mod properties;
 mod queue;

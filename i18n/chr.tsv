@@ -43,6 +43,15 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ᎠᏑᏰᏛ|{n} ᎠᏑᏰᏛ
+#. count in playlistdlg.rs
+#. in Download video: a playlist title then how many videos it has ({count})
+#. {count} = a number (keep the braces as they are)
+#, machine
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} ᎠᏰᎵ ᏗᏟᎶᏍᏔᏅᎯ|{title}: {count} ᏗᏟᎶᏍᏔᏅᎯ
+#. count in playlistdlg.rs
+#. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
+#, machine
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} ᎤᏓᎷᎸ {total} ᎠᏰᎵ ᏗᏟᎶᏍᏔᏅᎯ|{title}: {listed} ᎤᏓᎷᎸ {total} ᏗᏟᎶᏍᏔᏅᎯ
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -89,10 +98,6 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ
-#. text in the Options window
-#. Options → Accounts: what these accounts are, and the services' rule against sharing
-#, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ᎠᏰᎵ ᏗᎦᏃᎴᏍᎩ (Real-Debrid) ᏗᎦᏃᎴᏍᎪ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᏗᎦᏃᎴᏍᎩ ᎤᏤᎵᎦ ᏗᏕᎬᏔᏛᎢ ᏕᎬᏔᏍᎪᎢ ᏣᏤᎵᎦ ᏧᎬᏩᎶᏗ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ, ᎠᎴ MDM  direto ᏗᏕᎬᏔᏛ ᏕᎬᏔᏍᎪᎢ. ᏣᏤᎵᎦᏉ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᎢᎬᏔᏅᎭ: ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᎠᎴ ᎾᏍᎩ ᏗᏕᎬᏔᏛ ᎢᏧᎳᎭ ᎢᎬᏔᏅᎯ ᏂᏚᏳᎪᏛᎾ ᎨᏐᎢ ᎠᎴ ᎾᏍᎩ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᏕᎨᏒ ᎢᎬᏩᎵᏍᏔᏂᏓᏍᏗ ᎨᏐᎢ. ᏗᎦᏃᎴᏍᏗ ᎾᏍᎩ ᎢᏳᏰᎢ ᎢᎬᏱ ᎢᎬᏩᎴᏅᎲᎯ ᎨᏒ ᎾᏍᎩᏯᏉ ᎨᏎᏍᏗ.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -137,6 +142,10 @@
 #. text in categories.rs
 #, machine
 	Add category	ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ
+#. text in playlistdlg.rs
+#. title of the question asked before a playlist adds many downloads
+#, machine
+	Add many downloads	ᎤᏂᏣᏘ ᏗᎦᏁᏟᏴᏍᏗ ᏗᏟᎶᏍᏔᏅᎯ ᏕᎭᏢᏍᎬᎢ
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -167,6 +176,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ
+#. text in playlistdlg.rs
+#. asked before a playlist adds many downloads at once; {n} is how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Add {n} downloads to the list? Each video gets its own row.	{n} ᏗᏟᎶᏍᏔᏅᎯ ᏕᎭᏢᏍᎬᎢ ᎯᎠ ᎢᎬᎾᏗ? ᏂᎦᎥ ᏗᏟᎶᏍᏔᏅᎯ ᎤᏩᏒ ᎤᏤᎵ ᎨᏒᎢ.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -280,7 +294,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	ᎠᏎᏍᏙᏗ ᏓᏓᏛᏛᎲᏍᎦ...
+	Asking the service...	ᎠᏎᏍᏙᏗ ᏓᏓᏛᏛᏂ...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -290,6 +304,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ {type}
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
+#, machine
+	Audio only, original	ᎠᎾᏬᏂᏍᎬᏉ, ᎤᏙᎯᏳᎢ
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
@@ -307,6 +325,10 @@
 #. window title in the Batch download window
 #, machine
 	Batch download	ᎤᎾᏓᏟᏌᏃᏅᎯ ᏗᎦᏃᏍᏓᏅᎢ
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video's best
+#, machine
+	Best quality	ᎤᏟ ᎣᏍᏛ ᎢᏳᏍᏗ
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -510,7 +532,7 @@
 #. button in the Options window
 #. button: copy the sign-in code
 #, machine
-	Copy code	ᎠᏰᎸᏗ ᏗᎪᏪᎵ ᏚᏟᎶᏍᏓ
+	Copy code	ᏗᎪᏪᎶᏗ ᏚᏟᎶᏍᏓ
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -546,7 +568,7 @@
 	Day, month, year	ᎢᎦ, ᎠᎴᏅᏙᏗ, ᏑᏕᏘᏴᏛ
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Debrid service ᏗᏎᏍᏙᏗ
+	Debrid service accounts	Debrid ᏗᏂᏍᏕᎵᏍᎩ ᎠᏎᏍᏙᏗ
 #. text in the Scheduler window
 #, machine
 	December	ᎥᏍᎩᏱ
@@ -707,7 +729,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	ᏗᎧᏃᏗᏱ ᏗᎪᏪᎵ-ᏗᎧᏃᏗᏱ ᏗᏕᎬᏔᏅᎢ ᎾᏍᎩ ᏗᏎᏍᏙᏗ ᏗᎬᏔᏅᎢ
+	Download supported file-host links through these accounts	ᏗᏂᏍᏕᎵᏍᎩ ᏗᎪᏪᎶᏗ ᏗᎬᏔᏂᏓᏍᏗ ᏗᎪᏪᎶᏗ-ᏗᏂᏍᏕᎵᏍᎩ ᏗᏓᏚᎪᏗ
 #. window title in the Download video window
 #, machine
 	Download video from a page	ᏗᏗᏍᎪᏗᏱ ᏗᏓᏟᎶᏍᏗ ᏗᏓᏟᎶᏍᏔᏅᎢ
@@ -875,10 +897,6 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	ᎤᏚᎩ ᎢᎬᏒᎯ checksum ᎢᏗᏢ ({algorithm})
-#. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
-#, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ᎠᏓᎪᎵᏰᏗ: Real-Debrid ᎤᏤᎵᎦ ᎤᏂᎪᎵᏰᏗ API ᏗᏕᎬᏔᏛ ᎢᎬᏔᏅᎯ ᎤᎾᏙᏢᏅᎯ, ᎥᏝᏃ ᎢᎬᏂᎨᏒ ᎢᎬᏩᎵᏍᏔᏅᎯ ᏱᎩ ᎤᏙᎯᏳᏒ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᎢᎬᏔᏅᎯ.
 #. message or event log entry in the main window
 #, machine
 	Export	ᎦᎴᏴᏔᏅ
@@ -956,7 +974,7 @@
 #. button in the Options window
 #. button: open the service's page that shows the user's API token
 #, machine
-	Find my token	ᎠᏆᏤᎵ token ᎤᎾᏙᎴᎰᎯᏍᏗ
+	Find my token	ᎠᏆᏤᎵ ᏗᎪᏪᎶᏗ ᏗᎪᏪᎶᏗ ᏗᎪᏪᎶᏗ
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1009,7 +1027,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	ᎠᏎᏍᏙᏗ ᏂᎨᏒᎾ: ᏗᏕᎬᏔᏅᎢ premium ᎤᏚᎵᎭ
+	free account: links need premium	ᎠᎦᏛᎴᏂᏍᏗ ᏗᎪᏪᎶᏗ: ᏗᏓᏚᎪᏗ ᎤᏟ ᎢᎦᎢ ᎤᏚᎸᏗ
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1027,6 +1045,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from, in its log: a playlist or channel, by yt-dlp
+#, machine
+	from a playlist (yt-dlp)	ᏗᏟᎶᏍᏔᏅᎯ ᎢᎬᎾᏗ (yt-dlp)
 #. message or event log entry in the main window
 #, machine
 	from a torrent file	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
@@ -1168,7 +1190,7 @@
 	In a queue	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	In the categories: the selected category's menu	ᏗᎦᎴᏴᏔᏅᎯ: ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
+	In the categories: the selected category's menu	ᏗᎦᏃᏍᏓᏗᏍᏗ ᎢᎬᎾᏗ: ᎢᏳᏍᏗ ᏗᎦᏃᏍᏓᏗᏍᏗ ᎤᏤᎵ ᎢᎬᎾᏗ
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1289,10 +1311,33 @@
 #. in Import, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ
+#. text in playlistdlg.rs
+#. button in Download video: go on listing a playlist from where it stopped
+#, machine
+	List the rest	ᎤᏓᎷᎸ ᎢᎬᎾᏗ
+#. text in playlistdlg.rs
+#. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
+#. {n} = a number; {error} = an error message (keep the braces as they are)
+#, machine
+	Listing stopped after {n} videos: {error}	ᏗᏟᎶᏍᏔᏅᎯ ᏕᎭᏢᏍᎬᎢ {n} ᎤᏓᎷᎸ ᎤᎵᏍᏛ: {error}
+#. text in playlistdlg.rs
+#. in Download video, while a channel is listed: {n} videos listed so far
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n}	ᏗᏟᎶᏍᏔᏅᎯ ᏕᎭᏢᏍᎬᎢ: {n}
+#. text in playlistdlg.rs
+#. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Listing the videos: {n} of {total}	ᏗᏟᎶᏍᏔᏅᎯ ᏕᎭᏢᏍᎬᎢ: {n} ᎤᏓᎷᎸ {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	ᏗᎦᏛᏗ ᏚᎾᏓᏟᎶᏍᏗ
+#. text in playlistdlg.rs
+#. button in Download video for a channel: list its next videos
+#, machine
+	Load more	ᎤᏟ ᎢᎦᎢ ᏕᎭᏢᏍᎬᎢ
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1434,7 +1479,7 @@
 	Move a page up / down	ᎦᎴᏴᏔᏅ ᎤᎾᏙᎴᎰᎯᏍᏗ / ᎦᎴᏴᏔᏅ ᎤᎾᏙᎴᎰᎯᏍᏗ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
+	Move between the categories and the download list	ᏗᎦᏃᏍᏓᏗᏍᏗ ᎢᎬᎾᏗ ᎠᎴ ᏗᏟᎶᏍᏔᏅᎯ ᎢᎬᎾᏗ ᏕᎭᏢᏍᎬᎢ
 #. text in the Scheduler window
 #, machine
 	Move down	ᎭᏫᏂᏗᏢ ᏫᎦᎾᏄᎪᎢ
@@ -1611,7 +1656,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	ᎾᏍᎩ ᎠᏎᏍᏙᏗ ᎥᏝ ᏱᏚᏍᏕᎵᎭ
+	not supported by this service	ᎯᎠ ᏗᏂᏍᏕᎵᏍᎩ ᎥᏝ ᎯᎠ ᏗᎪᏪᎶᏗ ᏗᏂᏍᏕᎵᏍᎩ ᏱᏓᏂᏍᏕᎵᏍᎪᎢ
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	ᎥᏝ ᏗᎪᏪᎵ ᏗᏟᏍᏔᏅᎢ: ᏗᎪᏪᎵ ᏗᏟᏍᏔᏅᎢ ᎯᎠ ᏗᎪᏪᎵ ᏗᏟᏍᏔᏅᎢ
@@ -1676,6 +1721,11 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	MP4 ᎠᎴ MKV ᏗᏟᎶᏍᏔᏅᎯ ᎤᏩᏒ ᏗᎪᏪᎵ ᏗᎬᏔᏅᎯ
+#. text in playlistdlg.rs
+#. in Download video, a list longer than MDM lists: only its first {n} videos are shown
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Only the first {n} videos are listed.	ᎤᏓᎷᎸ {n} ᏗᏟᎶᏍᏔᏅᎯ ᏕᎭᏢᏍᎬᎢ.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ᎠᏴᏉ ᎢᏗᏙᎯ
@@ -1704,7 +1754,7 @@
 #. button in the Options window
 #. button: open the service's page where the code is typed
 #, machine
-	Open the page	ᎤᎾᏙᎴᎰᎯᏍᏗ
+	Open the page	ᎤᏟ ᎢᎦᎢ ᏗᏓᏚᎪᏗ
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1732,7 +1782,7 @@
 	Options on completion	ᏗᏟᎶᏍᏔᏅ ᎿᏉ ᎠᏍᏆᏛᎯᏍᏗ
 #. text in the Options window
 #, machine
-	Or paste your API token:	ᎠᎴ ᏣᏤᎵ API token ᎭᏢᎾ:
+	Or paste your API token:	ᎠᎴ ᎯᏴᏔᏅᎭ ᎯᎠ ᎯᎠ ᏗᎪᏪᎶᏗ ᏗᎪᏪᎶᏗ:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ᎦᏃᎴᏍᏗ ᎤᏤᎵᎦ ᏗᎦᏛᏗ
@@ -1798,7 +1848,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	premium, {days} ᎢᎦ ᎤᏃᎴᎢ
+	premium, {days} days left	ᎤᏟ ᎢᎦᎢ, {days} ᎢᎦ ᎤᎷᎯᏍᏗ
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1837,6 +1887,7 @@
 	Put them into the video	ᏗᏟᎶᏍᏔᏅᎯ ᏗᎪᏪᎵ ᏗᎬᏔᏅᎯ
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+#. label before the quality chosen for all of a playlist's videos
 #, machine
 	Quality	ᎦᎸᏉᏗᏳ
 #. text in the Scheduler window
@@ -1995,7 +2046,8 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ᎦᏟ &
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: tick every video
 #, machine
 	Select all	ᏂᎦᏗᏳ ᏘᏅᎦ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2004,7 +2056,8 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ᏂᎦᏗᏳ ᏗᎦᏃᏍᏓᏁᏗ ᏘᏅᎦ ᎯᎠᏃ ᎢᏴᏛ
-#. button in the Add torrent window; button in transfer.rs
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
+#. button in Download video for a playlist: untick every video
 #, machine
 	Select none	ᎥᏝ ᎢᎸᏢ ᏘᏅᎦ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -2058,10 +2111,10 @@
 #. text in the Options window
 #. column title: the debrid service (Real-Debrid…)
 #, machine
-	Service	ᎠᏎᏍᏙᏗ
+	Service	ᏗᏂᏍᏕᎵᏍᎩ
 #. text in the Options window
 #, machine
-	Service:	ᎠᏎᏍᏙᏗ:
+	Service:	ᏗᏂᏍᏕᎵᏍᎩ:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2149,14 +2202,14 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	ᎠᎴᏅᏗ
-#. text in the Options window
-#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
-	Signed in as {user} ({state})	ᏫᏴᎸᎯ {user} ({state})
+	Sign in in the browser	ᏗᏂᏍᏕᎵᏍᎩ ᏗᎪᏪᎶᏗ ᏗᎪᏪᎶᏗ
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	ᏫᏴᎸᎯ ᏂᎨᏒᎾ: ᏔᎵᏁ ᏫᏴᎸᎦ
+	signed out: sign in again	ᏗᎪᏪᎶᏗ ᎥᏝ ᏱᏚᎸᏫᏍᏓᏁᎭ: ᏔᎵᏁ ᏗᎪᏪᎶᏗ
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	ᎦᏟᏗ ᏚᏙᎥ/ᏗᏗᏍᎪᏗ ᏗᏕᎪᏗ/ᎤᎾᏙᏢᏒ ᎤᎾᏙᏢᏒ ᎦᏟᏗ/ᏗᏓᏁᏟᏴᏍᎩ
@@ -2285,6 +2338,10 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	ᏗᏗᏍᎪᏗ ᎤᎾᎴᏅᏗ
+#. button in playlistdlg.rs
+#. button in Download video: stop listing a playlist's videos (those listed stay)
+#, machine
+	Stop listing	ᏕᎭᏢᏍᎬᎢ ᎤᎵᏍᏛ
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ᎤᎾᎴᏅᏗ ᎤᎾᏙᏢᏒ ᏗᏗᏍᎪᏗ ᎦᏟᏗ
@@ -2398,7 +2455,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	ᎠᏎᎯ ᎤᎵᏍᏆᏛ: ᏔᎵᏁ ᏫᏴᎸᎦ
+	the code expired: sign in again	ᏗᎪᏪᎶᏗ ᎤᎵᏍᏆᏗᏒ: ᏔᎵᏁ ᏗᎪᏪᏪᎶᏗ
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2640,6 +2697,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ᎯᎠ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ, ᎥᏝ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ
+#. text in playlistdlg.rs
+#. in Download video, a playlist or channel that lists no video
+#, machine
+	This list has no videos	ᎯᎠ ᎢᎬᎾᏗ ᎥᏝ ᏗᏟᎶᏍᏔᏅᎯ ᏱᎩ
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -2787,11 +2848,6 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	ᎪᏪᎸ ᎤᎾᏓᏟᏌᏅᎯ ᏚᏙᎥ
-#. text in the Options window
-#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
-#. {time} = a time of day (keep the braces as they are)
-#, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	ᎯᎠ ᎠᏎᎯ ᏫᏴᎸᎦ {page} ᎠᎴ MDM ᎤᎵᏍᎪᎸᏓ; ᏂᎯ ᎨᏣᏓᏅᏖᏗ (ᎠᏎᎯ ᎤᎵᏍᏆᏗᏍᏗ ᎨᏒ {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2814,6 +2870,10 @@
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
 	Up	ᎦᎸᎳᏗ
+#. text in playlistdlg.rs
+#. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
+#, machine
+	Up to {height}p	ᎤᏓᎷᎸ {height}p
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2864,6 +2924,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	ᎬᏗ proxy (Options → Proxy / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	ᏗᎪᏪᎶᏗ ᏗᎬᏔᏂᏓᏍᏗ
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ᏗᏙᏓᎸᏍᏗ ᎯᎠ ᎢᏗᏟᏴᏔᏅᎯ? ᎾᏍᎩ ᎢᏳᏍᏗ ᏗᏙᏓᎸᏍᏗ ᎨᏒ ᏗᎦᏘᏍᏗ ᎨᏒ, ᏅᏩᏓᎴ ᏗᏙᏓᎸᏍᏗ ᎨᏒ ᏗᏓᏁᏟᏴᏍᏗ ᎨᏒ.
@@ -2922,9 +2986,17 @@
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
 	Video pages can't use it yet.	ᎤᎾᏛᏁᎶᏗ ᏚᏆᏚᏓ ᎥᏝ ᏳᏅᏗ Ꭰեռ.
+#. text in playlistdlg.rs
+#. what a screen reader calls the list of a playlist's videos
+#, machine
+	Videos	ᏗᏟᎶᏍᏔᏅᎯ
 #. text in the Options window
 #, machine
 	Virus checking settings	ᎤᏕᏯᏙᏗ ᏗᎦᏁᎶᏗ ᏗᏙᎳᏤᏗ
+#. tooltip (why a control is greyed) in the Download video window
+#. why Download Now is greyed: a playlist's videos are still being listed
+#, machine
+	Wait for the list, or stop listing	ᎢᎬᎾᏗ ᎤᏓᎷᎸ, ᎠᎴ ᏕᎭᏢᏍᎬᎢ ᎤᎵᏍᏛ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -3142,6 +3214,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ᎤᏩᏒ)
+#. text in playlistdlg.rs
+#. in Download video for a playlist: how many videos are ticked, of how many
+#. {n} = a number (keep the braces as they are)
+#, machine
+	{n} of {total} chosen	{n} ᎤᏓᎷᎸ {total} ᏕᎦᏑᏰᏛ
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3150,55 +3227,9 @@
 #, machine
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
-#. a debrid service's error: too many requests; MDM waits and retries
-#, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} ᎤᏚᎵᎭ ᎤᏍᎦᏅᏗᏱ; MDM ᏔᎵᏁ ᎤᏕᎵᏓ ᎨᏎᏍᏗ ᏑᏓᎵᏍᎪᎯ ᎢᏯᏔᏅᎯ
-#. text in errors.rs
-#. a debrid service's error: it wants the user to allow this computer (it sent an email)
-#, machine
-	{service} asks you to allow this computer first: see its email	{service} ᎤᏚᎵᎭ ᎯᎠ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᎢᎬᏱ ᎯᏍᏕᎵᏍᏗᏱ: ᎾᏍᎩ ᎤᏤᎵᎦ ᏗᎦᎴᏴᏔᏅᎯ ᏫᎪᏅ
-#. text in errors.rs
-#, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} ᎥᏝ ᎯᎠ ᏗᎦᏃᎴᏍᎩ ᎢᎬᏩᎵᏍᏔᏂᏓᏍᏗ ᏱᎩ ᎪᎯ ᎨᏒᎢ; MDM ᏔᎵᏁ ᎤᏕᎵᏓ ᎨᏎᏍᏗ ᎣᏂᏗᏢ
-#. text in errors.rs
-#. a debrid service's error: it isn't answering
-#, machine
-	{service} is not responding; try again later	{service} ᎥᏝ ᎤᏁᏨᎯ ᏱᎩ; ᏔᎵᏁ ᎤᏕᎵᏓ ᎨᏎᏍᏗ ᎣᏂᏗᏢ
-#. text in errors.rs
-#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
-#, machine
-	{service} refuses this connection (a VPN or server address?)	{service} ᎥᏝ ᎯᎠ ᏗᏕᎬᏔᏛ ᏱᏚᎵᏍᎪᎸᏓ (VPN ᎠᎴ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᏗᏕᎬᏔᏛ?)
-#. text in errors.rs
-#. a debrid service's error: it won't give this file (not allowed)
-#, machine
-	{service} won't give this file	{service} ᎥᏝ ᎯᎠ ᏗᎦᏃᎴᏍᎩ ᏱᏚᎵᏍᎪᎸᏓ
-#. text in errors.rs
-#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
-#, machine
-	{service}: sign in again (Options → Accounts)	{service}: ᏔᎵᏁ ᏫᏴᎸᎦ (ᏗᎪᎵᏰᏗ → ᎢᏗᏓᏟᎶᏍᏔᏅᎯ)
-#. text in errors.rs
-#. a debrid service's error: the account is locked, banned or not activated
-#, machine
-	{service}: the account is locked or not activated	{service}: ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᎤᎵᏍᏚᎢᏛ ᎠᎴ ᎥᏝ ᎢᎬᏩᎵᏍᏔᏅᎯ ᏱᎩ
-#. text in errors.rs
-#. a debrid service's error: the file is gone from its host
-#, machine
-	{service}: the file is gone or unavailable on the file host	{service}: ᏗᎦᏃᎴᏍᎩ ᎤᎵᏍᏆᏛ ᎠᎴ ᎥᏝ ᎢᎬᏩᎵᏍᏔᏅᎯ ᏱᎩ ᏗᎦᏃᎴᏍᎩ ᎤᏤᎵᎦ
-#. text in errors.rs
-#. a debrid service's error: the file has a password
-#, machine
-	{service}: this file is password-protected	{service}: ᎯᎠ ᏗᎦᏃᎴᏍᎩ ᎤᎵᏍᏚᎢᏛ ᎨᏐᎢ
-#. text in errors.rs
-#. a debrid service's error: the account has no premium (or it ended)
-#, machine
-	{service}: this needs a premium account	{service}: ᎯᎠ ᎤᏚᎵᎭ ᎤᏟ ᎢᎦᎢ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ
-#. text in errors.rs
-#, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: ᎤᏟ ᎢᎦᎢ ᏗᎦᏃᎴᏍᏗ ᎢᏧᎳᎭ ᏣᏤᎵᎦ ᎢᏗᏓᏟᎶᏍᏔᏅᎯ ᎢᎬᏔᏅᎯ; MDM ᏔᎵᏁ ᎤᏕᎵᏓ ᎨᏎᏍᏗ
-#. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: ᏣᎳᎩ ᎯᎠ ᎢᎦᎢ ᏗᏟᎶᏍᏔᏅᎢ ᎤᎵᏍᏆᏗᏓ
+	{service}: your limit for this file host is used up for now	{service}: ᎯᎠ ᎢᏗᏴᏍᏗ ᎢᏣᏤᎵᎦ ᎿᏉ ᎤᎵᏍᏆᏓ
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3473,7 +3504,7 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Shift+F10 / Menu	Shift+F10 / ᏗᎦᎴᏴᏔᏅᎯ
+key	Shift+F10 / Menu	Shift+F10 / ᎢᎬᎾᏗ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

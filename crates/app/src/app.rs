@@ -2531,6 +2531,61 @@ impl App {
         self.dirty = true;
     }
 
+    /// A playlist's videos (#69), one download each, into its folder: names picked with the
+    /// folder read once (naming::Stems), added at once and saved once, then queued (Download
+    /// Now starts the main queue, so its "N at the same time" applies).
+    fn add_playlist(&mut self, add: crate::playlistdlg::PlaylistAdd) {
+        let started = Instant::now();
+        let folder = add.folder;
+        let in_use = self
+            .items
+            .iter()
+            .filter(|i| i.dest.parent() == Some(folder.as_path()))
+            .filter_map(|i| i.dest.file_stem())
+            .map(|s| s.to_string_lossy().into_owned())
+            .collect::<Vec<_>>();
+        let mut stems = mdm_engine::naming::Stems::new(&folder, in_use);
+        self.items.reserve(add.entries.len());
+        let mut ids = Vec::with_capacity(add.entries.len());
+        for (page, title) in add.entries {
+            let stem = mdm_engine::naming::sanitize(&title);
+            let dest = stems.pick(&format!("{stem}.{}", add.ext));
+            let id = self.push_item(
+                page,
+                dest,
+                Category::Video,
+                String::new(),
+                None,
+                None,
+                add.context.clone(),
+                // i18n: where a download came from, in its log: a playlist or channel, by yt-dlp
+                crate::i18n::mark("from a playlist (yt-dlp)"),
+            );
+            // push_item adds at the end: no search through the list for each one.
+            if let Some(item) = self.items.last_mut() {
+                item.video = Some(model::VideoSpec {
+                    selector: add.selector.clone(),
+                    subs: Default::default(),
+                });
+            }
+            ids.push(id);
+        }
+        let Some(&first) = ids.first() else { return };
+        self.selection.set(first);
+        if add.start_now {
+            self.queues[0].items.extend(ids.iter().copied());
+            self.start_queue(0);
+        } else {
+            self.queue_later(ids.clone(), self.settings.queue_panel_later);
+        }
+        self.dirty = true;
+        eprintln!(
+            "playlist: {} downloads added in {} ms",
+            ids.len(),
+            started.elapsed().as_millis()
+        ); // not translated: a log line
+    }
+
     /// Start a video item: yt-dlp (installed and verified) downloads it.
     fn start_video(&mut self, id: u64, show: bool) {
         let tools = mdm_tools::tools_dir();
@@ -5851,9 +5906,12 @@ impl App {
             match v.show(ctx, &self.rt) {
                 Outcome::Open => {}
                 Outcome::Closed => self.video_dlg = None,
-                Outcome::Done(add) => {
+                Outcome::Done(out) => {
                     self.video_dlg = None;
-                    self.add_video(add);
+                    match out {
+                        crate::videodlg::VideoOut::One(add) => self.add_video(add),
+                        crate::videodlg::VideoOut::Many(add) => self.add_playlist(add),
+                    }
                 }
             }
         }
