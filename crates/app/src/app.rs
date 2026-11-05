@@ -1898,21 +1898,28 @@ impl App {
         let can_hide = !crate::unix::on_wayland();
         #[cfg(not(target_os = "linux"))]
         let can_hide = true;
-        // On the change to minimized only: brought back, the window may still read minimized
-        // for a frame or two.
-        let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
-        let was = egui::Id::unique("main-was-minimized");
-        let was_minimized = ctx.data(|d| d.get_temp::<bool>(was)).unwrap_or(false);
-        ctx.data_mut(|d| d.insert_temp(was, minimized));
-        if self.tray.is_some()
+        let wanted = self.tray.is_some()
             && self.settings.minimize_to_tray
             && can_hide
-            && !self.hidden
             && !self.exiting
-            && minimized
-            && !was_minimized
-            && self.tray_shown()
-        {
+            && self.tray_shown();
+        // Windows: the minimize command itself is caught (win32), so the window goes straight to
+        // the tray, never minimized (an idle app runs no frame while minimized: it wouldn't see).
+        #[cfg(windows)]
+        let minimize = crate::win32::main_minimize_to_tray(ctx, wanted);
+        // Elsewhere: on the change to minimized (brought back, the window may still read
+        // minimized for a frame or two). It is seen at the next frame the app runs; macOS doesn't
+        // report it at all while running (egui#3494), so there Minimize stays in the Dock.
+        #[cfg(not(windows))]
+        let minimize = {
+            let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+            let was = egui::Id::unique("main-was-minimized");
+            let was_minimized = ctx.data(|d| d.get_temp::<bool>(was)).unwrap_or(false);
+            ctx.data_mut(|d| d.insert_temp(was, minimized));
+            wanted && minimized && !was_minimized
+        };
+        if minimize && !self.hidden {
+            tracing::info!("minimized to the notification area");
             ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
             self.hidden = true;
         }

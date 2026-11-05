@@ -332,6 +332,74 @@ mod frame_tests {
     }
 }
 
+/// The main window's "Minimize to the notification area" (#63): its minimize command (title bar,
+/// system menu, taskbar) asks the app to hide it instead. The app can't see the window go
+/// minimized: an idle app runs no frame while minimized, so it would never know.
+struct MainMinimize {
+    hwnd: isize,
+    ctx: Option<egui::Context>,
+    enabled: bool,
+    asked: bool,
+}
+
+thread_local! {
+    static MAIN_MINIMIZE: std::cell::RefCell<MainMinimize> = const {
+        std::cell::RefCell::new(MainMinimize { hwnd: 0, ctx: None, enabled: false, asked: false })
+    };
+}
+
+unsafe extern "system" fn main_minimize_proc(
+    hwnd: HWND,
+    msg: u32,
+    wparam: WPARAM,
+    lparam: LPARAM,
+    _id: usize,
+    _data: usize,
+) -> LRESULT {
+    use windows_sys::Win32::UI::WindowsAndMessaging::WM_SYSCOMMAND;
+    const SC_MINIMIZE: usize = 0xF020;
+    if msg == WM_SYSCOMMAND && (wparam & 0xFFF0) == SC_MINIMIZE {
+        let caught = MAIN_MINIMIZE.with(|m| {
+            let Ok(mut m) = m.try_borrow_mut() else {
+                return false;
+            };
+            if !m.enabled {
+                return false;
+            }
+            m.asked = true;
+            if let Some(ctx) = &m.ctx {
+                ctx.request_repaint();
+            }
+            true
+        });
+        if caught {
+            return 0;
+        }
+    }
+    unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) }
+}
+
+/// Keep the main window's minimize command in step with "Minimize to the notification area"
+/// (`enabled`: the option is on and a tray shows MDM's icon). Call every frame (cheap once the
+/// window is found). True once after the command came: hide the window now.
+pub fn main_minimize_to_tray(ctx: &egui::Context, enabled: bool) -> bool {
+    MAIN_MINIMIZE.with(|m| {
+        let Ok(mut m) = m.try_borrow_mut() else {
+            return false;
+        };
+        if m.hwnd == 0
+            && let Some(hwnd) = find_own_window(crate::MAIN_TITLE)
+        {
+            // SAFETY: our own window; the proc lives as long as the program.
+            unsafe { SetWindowSubclass(hwnd, Some(main_minimize_proc), 0x7a1, 0) };
+            m.hwnd = hwnd as isize;
+            m.ctx = Some(ctx.clone());
+        }
+        m.enabled = enabled;
+        std::mem::take(&mut m.asked)
+    })
+}
+
 /// Menu windows answer mouse-activation with "don't activate": clicking an item must not take
 /// focus from the main window (which would close the menu before the click completes).
 unsafe extern "system" fn menu_proc(
