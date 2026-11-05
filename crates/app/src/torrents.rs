@@ -154,11 +154,21 @@ pub struct Remote {
 /// Fetch a .torrent from the web with MDM's own downloader, as `remote` says; at most
 /// `mdm_torrent::MAX_TORRENT_FILE` (a bigger file isn't a torrent, and is stopped there).
 pub async fn fetch_torrent(remote: Remote) -> Result<Vec<u8>, String> {
+    let not = || crate::errors::torrent(&mdm_torrent::TorrentError::NotATorrent);
+    fetch_small(remote, mdm_torrent::MAX_TORRENT_FILE)
+        .await?
+        .ok_or_else(not)
+}
+
+/// Fetch a small file from the web (a .torrent, an RSS feed) with MDM's own downloader, as
+/// `remote` says, into memory: None when it is bigger than `max` bytes (stopped there). Its
+/// temporary file, resume state and part file are removed.
+pub async fn fetch_small(remote: Remote, max: u64) -> Result<Option<Vec<u8>>, String> {
     use mdm_engine::download::{Destination, Download, Request};
     let dir = state_dir().ok_or(crate::i18n::t("no data folder"))?;
     std::fs::create_dir_all(&dir).map_err(|e| e.to_string())?;
     let path = dir.join(format!(
-        "fetched-{}.torrent",
+        "fetched-{}.part-of-mdm",
         std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map_or(0, |d| d.as_nanos())
@@ -173,7 +183,6 @@ pub async fn fetch_torrent(remote: Remote) -> Result<Vec<u8>, String> {
     );
     let too_big = loop {
         let s = dl.snapshot();
-        let max = mdm_torrent::MAX_TORRENT_FILE;
         if s.size.is_some_and(|z| z > max) || s.downloaded > max {
             dl.cancel();
             break true;
@@ -185,13 +194,12 @@ pub async fn fetch_torrent(remote: Remote) -> Result<Vec<u8>, String> {
     };
     let res = dl.wait().await;
     let bytes = if too_big {
-        Err(crate::errors::torrent(
-            &mdm_torrent::TorrentError::NotATorrent,
-        ))
+        Ok(None)
     } else {
         match res {
-            Ok(_) => mdm_torrent::read_file(&path)
-                .map_err(|_| crate::errors::torrent(&mdm_torrent::TorrentError::NotATorrent)),
+            Ok(_) => std::fs::read(&path)
+                .map(|b| (b.len() as u64 <= max).then_some(b))
+                .map_err(|e| e.to_string()),
             Err(e) => Err(crate::errors::describe(&e)),
         }
     };
@@ -608,6 +616,20 @@ enum RunState {
     Failed(String),
 }
 
+/// Off-screen test runs only (MDM_OFFSCREEN): peers every torrent added tries first, from
+/// MDM_LAB_PEERS (`127.0.0.1:6881,…`), the local test swarm (`crates/torrent/examples/swarm.rs`):
+/// with no DHT, no local discovery and no incoming connections, a test copy finds it so.
+fn lab_peers() -> Vec<std::net::SocketAddr> {
+    if !crate::offscreen() {
+        return Vec::new();
+    }
+    std::env::var("MDM_LAB_PEERS")
+        .unwrap_or_default()
+        .split(',')
+        .filter_map(|a| a.trim().parse().ok())
+        .collect()
+}
+
 /// A running torrent download.
 pub struct Run {
     state: Arc<Mutex<RunState>>,
@@ -698,7 +720,7 @@ impl Run {
                         &bytes,
                         &spec2.folder,
                         spec2.files.clone(),
-                        Vec::new(),
+                        lab_peers(),
                         false,
                     )
                     .await

@@ -31,6 +31,8 @@ mod properties;
 mod queue;
 mod quota;
 mod regional;
+mod rss;
+mod rssdlg;
 mod scheduler;
 mod scrollbar;
 mod selection;
