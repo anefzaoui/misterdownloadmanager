@@ -886,6 +886,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "MDM را باز بگذارید. بستن پنجره اصلی مشکلی ندارد: MDM در سینی سیستم به کار خود ادامه می‌دهد. از <g1>وظایف ← خروج</g1> استفاده نکنید."
   },
+  "17c258da3c18b1a9": {
+   "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
+   "text": "فایل <x1/> که از یک آدرس وب دریافت می‌شود، همان بررسی‌هایی را طی می‌کند که فایلی که از دیسک باز می‌شود، و MDM حداکثر 10 مگابایت از آن را می‌خواند."
+  },
   "17eecf94501281e0": {
    "source": "For Fedora, openSUSE and RHEL: <x1/>.",
    "text": "برای فدورا، openSUSE و RHEL: <x1/>."
@@ -2150,6 +2154,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "بارگیری‌های انتخاب‌شده را حذف می‌کند (ابتدا می‌پرسد)"
   },
+  "38c2835e2c5124e2": {
+   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>. Tick or untick a file's box to change what is downloaded, even while the torrent runs. At least one file stays ticked. If you untick everything still missing, the torrent finishes. If a finished torrent that isn't running gets a file back, it waits as stopped until you resume it, so nothing downloads unseen.",
+   "text": "<g1>فایل‌ها</g1> — هر فایل، اندازه آن و میزان تکمیل آن. فایل‌هایی که تیک آن‌ها را برداشته‌اید، <g2>رد شده</g2> را نشان می‌دهند. برای تغییر آنچه دانلود می‌شود، حتی در حین اجرای تورنت، تیک یا عدم تیک جعبه یک فایل را بزنید. حداقل یک فایل تیک‌خورده باقی می‌ماند. اگر تیک تمام چیزهایی که هنوز موجود نیستند را بردارید، تورنت به پایان می‌رسد. اگر یک تورنت تکمیل‌شده که در حال اجرا نیست، فایلی را دوباره دریافت کند، به صورت متوقف‌شده منتظر می‌ماند تا شما آن را از سر بگیرید، تا چیزی بدون مشاهده دانلود نشود."
+  },
   "38d4b8570c497ca6": {
    "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
    "text": "تنظیمات پروکسی / SOCKS در MDM برای دانلودهای وب و FTP است. تورنت‌ها نیز می‌توانند از SOCKS5 استفاده کنند: یک پروکسی <x1/> را در <g2>گزینه‌ها ← پروکسی / SOCKS</g2> تنظیم کنید و <g3>استفاده از پروکسی</g3> را در تنظیمات تورنت روشن کنید. پروکسی فقط اتصالات به همتایان و ردیاب‌های وب را پوشش می‌دهد، بنابراین با آن MDM، DHT، کشف همتایان محلی، اتصالات ورودی و ردیاب‌های UDP را خاموش می‌کند؛ و هیچ سوکت UDP به سمت شبکه باز نمی‌کند. اگر پروکسی از پروکسی / SOCKS حذف شود در حالی که آن سوئیچ روشن است، تورنت‌ها شروع نمی‌شوند و از آن عبور نمی‌کنند."
@@ -2514,10 +2522,6 @@
    "source": "The download list →",
    "text": "لیست دانلود ←"
   },
-  "427727d08d8b3a51": {
-   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
-   "text": "یک تورنت نام ردیاب‌هایی را که MDM برای همتایان درخواست می‌کند، مشخص می‌کند. MDM با ردیابی در رایانه خود یا شبکه محلی شما (<x1/>، <x2/>، <x3/> و موارد مشابه) تماس نمی‌گیرد، بنابراین یک تورنت نمی‌تواند MDM را وادار کند که درخواست‌هایی را به شبکه‌ای که در آن قرار دارد ارسال کند."
-  },
   "4285db6a822d0753": {
    "source": "<g1><g2>Yes</g2></g1><g3>MIT</g3>",
    "text": "<g1><g2>بله</g2></g1><g3>MIT</g3>"
@@ -2658,6 +2662,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>دانلودها</g1>: نصب‌کننده Windows، یک فایل فشرده قابل حمل و یک فایل فشرده ساده، افزونه مرورگر به تنهایی (یک فایل فشرده برای مرورگرهای Chromium، یک <x2/> برای Firefox، همیشه نسخه برنامه)، و <g3>macOS و Linux برای امتحان</g3>: یک <x4/> جهانی و یک AppImage، <x5/>، <x6/> و <x7/>، با علامت <x8/> زیرا توسط ما آزمایش نشده‌اند. در آنجا، MDM خود را به Chrome، Edge، Brave، Vivaldi و Firefox متصل می‌کند، نماد سینی خود را دارد، از ظاهر روشن یا تاریک سیستم پیروی می‌کند و از فونت‌های سیستم و ffmpeg استفاده می‌کند. به ما بگویید که چگونه برای شما کار می‌کنند."
   },
+  "465d49cb6ee5a2c9": {
+   "source": "Torrent commands",
+   "text": "دستورات تورنت"
+  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>DNS از طریق HTTPS</g1> (پیش‌فرض) یا <g2>DNS از طریق TLS</g2>: رمزگذاری شده، بنابراین هیچ‌کس در مسیر نمی‌تواند نام‌هایی را که جستجو می‌کنید ببیند یا تغییر دهد."
@@ -2757,6 +2765,10 @@
   "49cf385ddabeea71": {
    "source": "<g1>PAC</g1><g2>proxy scripts</g2>",
    "text": "<g1>PAC</g1><g2>اسکریپت‌های پراکسی</g2>"
+  },
+  "49e22ffa819f63a8": {
+   "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
+   "text": "روی یک تورنت در لیست راست‌کلیک کرده و <g1>تورنت</g1> را باز کنید:"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3341,6 +3353,10 @@
   "5c4282dcd31a167d": {
    "source": "Why IDM users switch",
    "text": "چرا کاربران IDM تغییر می‌کنند"
+  },
+  "5c676fc93de738f4": {
+   "source": "<g1>Copy magnet link</g1> — copies a magnet link for the torrent, with its trackers.",
+   "text": "<g1>کپی پیوند مگنت</g1> — یک پیوند مگنت برای تورنت، همراه با ردیاب‌های آن، کپی می‌کند."
   },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
@@ -4886,6 +4902,10 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "در زمان شروع، صف به خودی خود آغاز می‌شود. در صبح، فایل‌های تکمیل‌شده در بخش <g1>تکمیل‌شده</g1> در دسته‌بندی‌ها قرار دارند."
   },
+  "846220c931fb3c98": {
+   "source": "A <x1/> file's web address works too: paste it into <g2>Add URL</g2> or <g3>Torrent</g3>, or let the browser hand the download over. MDM fetches the file, with the browser's cookies when the browser sent it, and <g4>Add torrent</g4> shows what it holds. The browser hands <x5/> downloads over when <x6/> is in <g7>Options → File types</g7>, or when you choose <g8>Download with Mister Download Manager</g8> on the link. A command line with <x9/> (silent) saves the <x10/> file itself, like any file. MDM fetches at most 10 MB: anything bigger isn't a <x11/> file.",
+   "text": "آدرس وب یک فایل <x1/> نیز کار می‌کند: آن را در <g2>افزودن URL</g2> یا <g3>تورنت</g3> جای‌گذاری کنید، یا بگذارید مرورگر دانلود را تحویل دهد. MDM فایل را، با کوکی‌های مرورگر در صورتی که مرورگر آن را فرستاده باشد، دریافت می‌کند و <g4>افزودن تورنت</g4> محتویات آن را نشان می‌دهد. مرورگر دانلودهای <x5/> را زمانی تحویل می‌دهد که <x6/> در <g7>گزینه‌ها ← انواع فایل</g7> باشد، یا زمانی که شما <g8>دانلود با Mister Download Manager</g8> را روی پیوند انتخاب کنید. یک خط فرمان با <x9/> (بی‌صدا) خود فایل <x10/> را، مانند هر فایل دیگری، ذخیره می‌کند. MDM حداکثر 10 مگابایت را دریافت می‌کند: هر چیزی بزرگتر از آن یک فایل <x11/> نیست."
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "تورنت‌ها و امنیت شما"
@@ -5986,6 +6006,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "<x1/> را در حالی که MDM در حال اجراست، اجرا کنید."
   },
+  "a43f559b321cf278": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
+   "text": "تورنت نام ردیاب‌هایی است که MDM برای همتایان از آن‌ها درخواست می‌کند. MDM با ردیاب روی رایانه شما یا شبکه محلی شما (<x1/>، <x2/>، <x3/> و موارد مشابه) تماس نمی‌گیرد، بنابراین تورنت نمی‌تواند MDM را وادار کند که درخواست‌هایی را به شبکه‌ای که در آن قرار دارد ارسال کند. <g4>افزودن ردیاب‌ها...</g4> از همین قانون پیروی می‌کند: چنین آدرسی را رد می‌کند و دلیل آن را به شما می‌گوید، به جای اینکه آدرسی را نگه دارد که هرگز درخواست نمی‌شود."
+  },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "یک بارگیری متوقف یا خراب شده را از فایل <x1/> کنار آن ادامه دهید."
@@ -6061,6 +6085,10 @@
   "a65e3187925f9f37": {
    "source": "256 KiB file over a fast local link",
    "text": "فایل 256 کیلوبایتی از طریق یک لینک محلی سریع"
+  },
+  "a66ea1a086f2705b": {
+   "source": "<g1>Add trackers...</g1> — adds trackers, one address a line (<x2/>, <x3/> or <x4/>). They are kept with the torrent, after the ones it has, and the <g5>Trackers</g5> tab shows them. A tracker on your computer or your local network is refused: MDM never contacts those (<g6>why</g6>).",
+   "text": "<g1>افزودن ردیاب‌ها...</g1> — ردیاب‌ها را اضافه می‌کند، هر آدرس در یک خط (<x2/>، <x3/> یا <x4/>). آن‌ها با تورنت، پس از ردیاب‌هایی که دارد، نگهداری می‌شوند و تب <g5>ردیاب‌ها</g5> آن‌ها را نشان می‌دهد. یک ردیاب روی رایانه شما یا شبکه محلی شما رد می‌شود: MDM هرگز با آن‌ها تماس نمی‌گیرد (<g6>چرا</g6>)."
   },
   "a67015ec28a9f976": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the…",
@@ -6766,6 +6794,10 @@
    "source": "Install with the setup",
    "text": "نصب با برنامه نصب"
   },
+  "b88bda5a82ad2252": {
+   "source": "Each command's outcome goes into the torrent's event log; hover its <g1>Status</g1> cell in the list to read it.",
+   "text": "نتیجه هر دستور به گزارش رویداد تورنت می‌رود؛ برای خواندن آن، نشانگر ماوس را روی سلول <g1>وضعیت</g1> آن در لیست نگه دارید."
+  },
   "b89df2939f6581e5": {
    "source": "Properties",
    "text": "ویژگی‌ها"
@@ -7346,6 +7378,10 @@
    "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
    "text": "MDM تورنت را می‌خواند و فایل‌های آن را به صورت یک درخت پوشه نمایش می‌دهد. یک فایل <x1/> بلافاصله خوانده می‌شود. یک پیوند مگنت ابتدا باید فهرست فایل‌ها را از سایر همتایان دریافت کند که ممکن است یک یا دو دقیقه طول بکشد."
   },
+  "c991e64b857c5509": {
+   "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
+   "text": "<g1>اعلام مجدد</g1> — از ردیاب‌های تورنت می‌خواهد که اکنون دوباره همتایان را درخواست کنند، به جای اینکه منتظر دور بعدی آن‌ها بماند. این کار در حالی که تورنت در حال اجرا یا اشتراک‌گذاری است، کار می‌کند."
+  },
   "c9d39512b1b393af": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
    "text": "Google Chrome، Microsoft Edge، Brave، Opera و Vivaldi از طریق افزونه مرورگر MDM و مرورگرهای مبتنی بر آنها مانند Helium. پشتیبانی از Firefox که Zen و LibreWolf را نیز پوشش می‌دهد، نوشته شده و در حال آزمایش است. این افزونه دانلودها را با کوکی‌ها و ارجاع‌دهنده آنها به MDM می‌دهد، بنابراین فایل‌های پشت ورود به سیستم همچنان کار می‌کنند و <g1>دانلود با Mister Download Manager</g1> را به منوی راست‌کلیک و دکمه <g2>دانلود ویدیو</g2> را روی ویدیوها اضافه می‌کند. به <g3>یکپارچه‌سازی مرورگر</g3> مراجعه کنید."
@@ -7397,10 +7433,6 @@
   "cb14776e505e0089": {
    "source": "Can I download without the browser extension?",
    "text": "آیا می‌توانم بدون افزونه مرورگر دانلود کنم؟"
-  },
-  "cb390e5dc0af4469": {
-   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>.",
-   "text": "<g1>فایل‌ها</g1> — هر فایل، اندازه آن و میزان تکمیل آن. فایل‌هایی که تیکشان را برداشته‌اید، <g2>رد شده</g2> را نشان می‌دهند."
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -8581,6 +8613,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>چه اتفاقی افتاد:</g1> خطا و مکانی در کد MDM که در آن اتفاق افتاد."
+  },
+  "ee9034f4bfe810cf": {
+   "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
+   "text": "<g1>بررسی مجدد فایل‌ها</g1> — هر قطعه از فایل‌های تورنت را می‌خواند و بررسی می‌کند، برای مثال پس از اینکه فایل‌ها را جابجا کردید یا دیسک خطاهایی داشت. یک تورنت در حال اجرا پس از آن ادامه می‌یابد و آنچه را که از دست رفته است دریافت می‌کند. یک تورنت متوقف‌شده، متوقف می‌ماند. گزارش رویداد آن نشان می‌دهد که چه مقدار پیدا شده است: یک تورنت تکمیل‌شده با یک قطعه آسیب‌دیده متوقف می‌شود، و از سر گرفتن آن قطعه را دوباره دریافت می‌کند."
   },
   "eea0683af36fb9e8": {
    "source": "Something not working? We'd like to know.",

@@ -1231,7 +1231,7 @@ impl AddTrackers {
         for line in self.text.lines().map(str::trim).filter(|l| !l.is_empty()) {
             let tracker = url::Url::parse(line)
                 .ok()
-                .filter(|u| matches!(u.scheme(), "http" | "https" | "udp"));
+                .filter(|u| matches!(u.scheme(), "http" | "https" | "udp") && u.host().is_some());
             if tracker.is_none() {
                 return Err(crate::i18n::fmt(
                     // i18n: Add trackers: a line that isn't a tracker's address (http, https or udp)
@@ -1288,7 +1288,7 @@ impl AddTrackers {
                 let before = self.text.clone();
                 let field = winui::multiline_light(
                     ui,
-                    r(o, 14.0, 32.0, 432.0, 150.0),
+                    r(o, 14.0, 32.0, 432.0, 140.0),
                     &mut self.text,
                     "add-trackers",
                     true,
@@ -1308,16 +1308,8 @@ impl AddTrackers {
                         winui::MUTED(),
                     ),
                 };
-                winui::fit(
-                    ui,
-                    &p,
-                    o.x + 14.0,
-                    o.y + 202.0,
-                    &line,
-                    color,
-                    o.x + 446.0,
-                    ("add-trackers", 2),
-                );
+                // Two lines' room: a translated reason is long.
+                winui::paragraph(&p, o.x + 14.0, o.y + 190.0, &line, color, o.x + 446.0, 14.0);
                 let ok = winui::button(
                     ui,
                     r(o, 288.0, 218.0, 77.0, 21.0),
@@ -1505,6 +1497,30 @@ fn mixed_mark(p: &egui::Painter, glyph: Pos2) {
 mod tests {
     use super::*;
     use mdm_torrent::FileEntry;
+
+    /// Add trackers (#39): one address a line, each once; anything else, or a tracker on this
+    /// computer or the local network, is refused.
+    #[test]
+    fn typed_tracker_addresses() {
+        let mut d = AddTrackers::new(1, "x");
+        d.text =
+            " http://t.example/announce \n\nudp://t.example:1337\nhttp://t.example/announce".into();
+        assert_eq!(
+            d.addresses().unwrap(),
+            ["http://t.example/announce", "udp://t.example:1337"]
+        );
+        for bad in [
+            "udp://",
+            "wss://t.example/a",
+            "not a url",
+            "http://192.168.1.1/a",
+            "http://localhost/a",
+            " ",
+        ] {
+            d.text = bad.into();
+            assert!(d.addresses().is_err(), "{bad:?}");
+        }
+    }
 
     /// Torrent settings' share ratio box: a comma or a point, kept in hundredths.
     #[test]

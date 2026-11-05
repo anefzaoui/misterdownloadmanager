@@ -996,6 +996,42 @@ mod tests {
         );
     }
 
+    /// #39: a .torrent's web address, by its path, the name the browser gave or its type.
+    #[test]
+    fn torrent_addresses_are_recognised() {
+        let u = |s: &str| url::Url::parse(s).unwrap();
+        assert!(is_torrent_url(
+            &u("https://x.example/a/Set.TORRENT?k=1"),
+            None,
+            None
+        ));
+        assert!(is_torrent_url(
+            &u("http://x.example/dl?id=7"),
+            Some("set.torrent"),
+            None
+        ));
+        assert!(is_torrent_url(
+            &u("http://x.example/dl?id=7"),
+            None,
+            Some("application/x-bittorrent; charset=binary")
+        ));
+        assert!(!is_torrent_url(
+            &u("http://x.example/set.zip"),
+            Some("set.zip"),
+            Some("application/zip")
+        ));
+        assert!(!is_torrent_url(
+            &u("ftp://x.example/set.torrent"),
+            None,
+            None
+        ));
+        assert!(!is_torrent_url(
+            &u("http://x.example/set.torrent.html"),
+            None,
+            None
+        ));
+    }
+
     #[test]
     fn magnet_links_carry_the_name() {
         let u = magnet_url("0123456789abcdef0123456789abcdef01234567", "A & B");

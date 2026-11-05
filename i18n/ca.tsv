@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} fitxer|{n} fitxers
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n} fitxer triat per baixar|{n} fitxers triats per baixar
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} seleccionada|{n} seleccionades
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n} rastrejador afegit|{n} rastrejadors afegits
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	un servidor d'aquest ordinador ha enviat la baixada a un altre lloc, que no passaria per {adapter}
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	No es contacta mai amb un rastrejador d'aquest ordinador o de la xarxa local: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Quant a Mister Download Manager
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Afegeix torrent
+#. window title in the Add torrent window
+#, machine
+	Add trackers	Afegeix rastrejadors
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	Pregunta-ho amb:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	S'ha tornat a demanar companys als rastrejadors
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	S'està demanant la llista de fitxers als parells. Els enllaços magnet poden trigar un minut o dos.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Comproveu la vostra connexió i torneu-ho a provar, o obteniu-los més tard des de la finestra de vídeo.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	Comprovat: {have} de {total} allà
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	S'està comprovant cada peça de nou
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	Introduïu un nom per a la nova cua que serà
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	Introduïu l'adreça d'un rastrejador, una per línia
 #. window title in a dialog box
 #, machine
 	Enter new address to download	Introduïu la nova adreça per baixar
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	Continua compartint torrents un cop finalitzats
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	Es manté amb el torrent, després dels rastrejadors que ja té.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Dreceres de teclat
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Sense proxy/socks
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	No s'ha afegit cap rastrejador: ja els té
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	No és una suma de comprovació que es pugui llegir
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	No és una adreça de rastrejador: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	no hi ha prou espai al disc: es necessiten {needed}, {free} lliures
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	A punt: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	La reanunciació ha fallat: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	S'estan rebent dades...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	La recomprovació ha fallat: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	la suma de comprovació {algorithm} del fitxer no coincideix (les dades es conserven; torneu-lo a baixar)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	No s'han pogut triar els fitxers: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	el torrent ja no hi és
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	No s'han pogut afegir els rastrejadors: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	Rastrejadors
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	Rastrejadors per afegir a {name}, una adreça per línia:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Velocitat de transferència
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	Afegeix descàrrega per lots des del por
 #, machine
 menu	Add category	Afegeix categoria
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	Afegeix rastrejadors...
+#. menu command in the main window
 #, machine
 menu	Arrange files	Organitza fitxers
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	Cerca &actualitzacions...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	Esborra tots els &filtres
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	Copia l'enllaç magnet
 #. menu command in the main window
 #, machine
 menu	Create new queue	Crea una cua nova
@@ -3705,6 +3780,14 @@ menu	Properties	Propietats
 #, machine
 menu	R&edownload	&Torna a baixar
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	Reanuncia
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	Recomprova els fitxers
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	Torna a baixar
@@ -3791,6 +3874,10 @@ menu	To &text file...	A fitxer de &text...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	Barra d'eines
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	Torrent
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

@@ -166,10 +166,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "إجابات حول Mister Download Manager: هل هو مجاني، هل هو آمن، كيف يقارن بـ IDM، المتصفحات، مقاطع الفيديو، التورنت، السرعة، Mac و Linux، والمزيد."
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>تحديد التحميل لجميع التورنتات إلى</g1> — متوقف افتراضيا. يحدد ما ترسله جميع التورنتات معا إلى النظراء الآخرين، أثناء التنزيل وأثناء المشاركة. يطبق حد التحميل الخاص بالتورنت، في نافذة التقدم الخاصة به، بالإضافة إلى ذلك."
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "يبدأ قائمة انتظار التنزيل الرئيسية؛ <x1/>."
@@ -178,6 +174,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "إذا كانت بعض ملفات التورنت موجودة بالفعل في المجلد، يسألك MDM قبل استخدامها. <g1>نعم</g1> يبقيها للتورنت: يتحقق MDM منها، ويحتفظ بما يتطابق مع التورنت ويحمل الباقي، وهذه هي الطريقة التي تستكمل بها تحميلا بدأ في مكان آخر أو تشارك ملفات لديك بالفعل. <g2>لا</g2> (الخيار الافتراضي) يعود، حتى تتمكن من اختيار مجلد آخر ولا يتم الكتابة فوق أي من ملفاتك."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "في Firefox، يرى MDM الوكيل الذي استخدمه طلب المتصفح الخاص بالملف، بما في ذلك الوكلاء الذين يختارهم امتداد VPN لكل طلب. في Chrome وEdge وBrave وOpera وVivaldi، يرى إعدادات وكيل المتصفح."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "يرفض MDM التورنت الذي يحتوي على أسماء ملفات لا يستطيع نظامك كتابتها بأمان، ويذكر الاسم، ولا يكتب شيئا."
@@ -185,10 +185,6 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "مجاني ومفتوح المصدر. الواجهة التي تعرفها بالفعل، محرك أسرع في الأسفل، تورنت وفيديو مدمجان."
-  },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (حوالي 80 ميجابايت) يدمج الفيديو والصوت عندما يفصلهما الموقع، وهو ما تفعله معظم المواقع للجودات العالية، ويحول الصوت إلى MP3. انقر على <g2>تثبيت ffmpeg</g2> عندما يعرضه MDM. يتحقق MDM منه بمقارنته بمجموع الفحص التي ينشرها إصداره."
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -249,6 +245,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> لتوزيعات Debian و Ubuntu، <g2>.rpm</g2> لتوزيعة Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "عندما لا يستخدم المتصفح وكيلا، ويتم اختيار <g1>لا يوجد وكيل/SOCKS</g1>، يستخدم MDM إعدادات وكيل Windows، كما تفعل المتصفحات."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -886,6 +886,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "اترك MDM يعمل. إغلاق النافذة الرئيسية لا بأس به: يستمر MDM في العمل في علبة النظام. لا تستخدم <g1>المهام ← إنهاء</g1>."
   },
+  "17c258da3c18b1a9": {
+   "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
+   "text": "يخضع ملف <x1/> الذي يتم جلبه من عنوان ويب لنفس الفحوصات التي يخضع لها الملف الذي يتم فتحه من القرص، ويقرأ MDM 10 ميجابايت كحد أقصى منه."
+  },
   "17eecf94501281e0": {
    "source": "For Fedora, openSUSE and RHEL: <x1/>.",
    "text": "لفيدورا، أوبن سوزي وRHEL: <x1/>."
@@ -965,6 +969,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "إجابات مختصرة على أكثر الأسئلة شيوعا، مع رابط للدليل الكامل لكل منها."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "أذوناتها، ولماذا: <g1>التنزيلات</g1> لرؤية التنزيلات وتسليمها؛ <g2>ملفات تعريف الارتباط</g2> لكي تعمل التنزيلات التي تم تسجيل الدخول إليها في MDM؛ <g3>nativeMessaging</g3> للتحدث مع MDM؛ <g4>contextMenus</g4> لعناصر النقر بزر الماوس الأيمن؛ <g5>storage</g5> لإعداداتها؛ <g6>webRequest</g6> لرؤية النماذج المرسلة وتدفقات الفيديو المحملة (لا تغير شيئا)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome و Edge ومتصفحات Chromium الأخرى) لتنزيل الملفات التي سيفتحها المتصفح (ملف PDF) بدلا من ذلك، لأنواع الملفات التي يأخذها MDM؛ في Firefox، تقوم <g8>webRequestBlocking</g8> بذلك؛ <g9>scripting</g9> لقراءة روابط الصفحة عندما تطلب ذلك، ولإضافة زر الفيديو إلى الصفحات المفتوحة بالفعل عند تثبيت الإضافة؛ <g10>proxy</g10> لقراءة الوكيل الذي يستخدمه المتصفح، بحيث تمر التنزيلات المأخوذة من متصفح خلف VPN أو إضافة وكيل من خلاله أيضا (لا تغير وكيل المتصفح أبدا)؛ الوصول إلى جميع المواقع لأن التنزيلات ومقاطع الفيديو يمكن أن تأتي من أي موقع."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1790,10 +1798,6 @@
    "source": "The server",
    "text": "الخادم"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "اختر واحدة. بدون ffmpeg، تظهر فقط الجودات التي تأتي مع صوتها، ولا يوجد MP3 (يصنعه ffmpeg)."
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "إرسال تنزيلات المتصفح إلى MDM ←"
@@ -2150,6 +2154,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "حذف التنزيلات المحددة (يسأل أولا)"
   },
+  "38c2835e2c5124e2": {
+   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>. Tick or untick a file's box to change what is downloaded, even while the torrent runs. At least one file stays ticked. If you untick everything still missing, the torrent finishes. If a finished torrent that isn't running gets a file back, it waits as stopped until you resume it, so nothing downloads unseen.",
+   "text": "<g1>الملفات</g1> — كل ملف، حجمه ومقدار ما تم منه. الملفات التي ألغيت تحديدها تظهر <g2>تم التخطي</g2>. حدد أو ألغ تحديد مربع الملف لتغيير ما يتم تنزيله، حتى أثناء تشغيل التورنت. يبقى ملف واحد على الأقل محددا. إذا ألغيت تحديد كل ما لا يزال مفقودا، ينتهي التورنت. إذا استعاد تورنت مكتمل غير قيد التشغيل ملفا، فإنه ينتظر متوقفا حتى تستأنفه، حتى لا يتم تنزيل أي شيء دون رؤيته."
+  },
   "38d4b8570c497ca6": {
    "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
    "text": "إعدادات الوكيل / SOCKS في MDM هي لتنزيلات الويب و FTP. يمكن للتورنت استخدام وكيل SOCKS5 أيضا: قم بتعيين وكيل <x1/> في <g2>الخيارات ← الوكيل / SOCKS</g2> وقم بتشغيل <g3>استخدام الوكيل</g3> في إعدادات التورنت. يغطي الوكيل الاتصالات مع النظراء ومتتبعات الويب فقط، لذلك معه يقوم MDM بإيقاف تشغيل DHT، واكتشاف النظراء المحليين، والاتصالات الواردة، ومتتبعات UDP؛ ولا يفتح أي مقبس UDP نحو الشبكة على الإطلاق. إذا اختفى الوكيل من الوكيل / SOCKS بينما هذا المفتاح قيد التشغيل، فلن تبدأ التورنت بدلا من تجاوز الوكيل."
@@ -2197,10 +2205,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows، المحمول أو المضغوط العادي"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>فتح روابط magnet وملفات .torrent باستخدام Mister Download Manager</g1> — يقوم Windows بعد ذلك بفتح روابط magnet في متصفحك وملفات <x2/> في مستكشف الملفات باستخدام MDM. هذا لحساب Windows الخاص بك فقط؛ يبقى البرنامج الذي اخترته في <g3>فتح باستخدام</g3> في Windows هو الأول. يمكن للإعدادات تشغيله لك."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2518,10 +2522,6 @@
    "source": "The download list →",
    "text": "قائمة التنزيلات →"
   },
-  "427727d08d8b3a51": {
-   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
-   "text": "يسمي التورنت المتتبعات التي يطلبها MDM للأقران. لا يتصل MDM بمتتبع على جهاز الكمبيوتر الخاص بك أو شبكتك المحلية (<x1/>، <x2/>، <x3/> وما شابه)، لذلك لا يمكن للتورنت أن يجعل MDM يرسل طلبات إلى الشبكة التي يتواجد فيها."
-  },
   "4285db6a822d0753": {
    "source": "<g1><g2>Yes</g2></g1><g3>MIT</g3>",
    "text": "<g1><g2>نعم</g2></g1><g3>MIT</g3>"
@@ -2662,6 +2662,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>التنزيلات</g1>: مثبت Windows، ملف مضغوط محمول وملف مضغوط عادي، إضافة المتصفح بمفردها (ملف مضغوط لمتصفحات Chromium، <x2/> لـ Firefox، دائما إصدار التطبيق)، و<g3>إصدارات macOS وLinux للتجربة</g3>: <x4/> عالمي وAppImage، <x5/>، <x6/> و<x7/>، معلمة بـ <x8/> لأننا لم نختبرها. هناك، يربط MDM نفسه بـ Chrome، Edge، Brave، Vivaldi وFirefox، ولديه أيقونة في علبة النظام، ويتبع مظهر النظام الفاتح أو الداكن ويستخدم خطوط النظام وffmpeg. أخبرنا كيف تعمل معك."
   },
+  "465d49cb6ee5a2c9": {
+   "source": "Torrent commands",
+   "text": "أوامر التورنت"
+  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>DNS عبر HTTPS</g1> (الافتراضي) أو <g2>DNS عبر TLS</g2>: مشفر، بحيث لا يرى أحد في الطريق أو يغير الأسماء التي تبحث عنها."
@@ -2761,6 +2765,10 @@
   "49cf385ddabeea71": {
    "source": "<g1>PAC</g1><g2>proxy scripts</g2>",
    "text": "<g1>PAC</g1><g2> لبرامج الوكيل</g2>"
+  },
+  "49e22ffa819f63a8": {
+   "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
+   "text": "انقر بزر الماوس الأيمن على تورنت في القائمة وافتح <g1>تورنت</g1>:"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3346,6 +3354,10 @@
    "source": "Why IDM users switch",
    "text": "لماذا يتحول مستخدمو IDM"
   },
+  "5c676fc93de738f4": {
+   "source": "<g1>Copy magnet link</g1> — copies a magnet link for the torrent, with its trackers.",
+   "text": "<g1>نسخ رابط المغناطيس</g1> — ينسخ رابط مغناطيس للتورنت، مع متتبعاته."
+  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>اختر مشكلة</g1><g2>اطلع على المشاكل المفتوحة وقدم يد المساعدة.</g2>"
@@ -3822,6 +3834,10 @@
    "source": "Queue downloads for later →",
    "text": "تنزيلات قائمة الانتظار لوقت لاحق ←"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>استخدام وكيل/SOCKS من طلب المتصفح…</g1> — مفعل افتراضيا. أي تنزيل يأخذه MDM من المتصفح يمر عبر الوكيل الذي استخدمه المتصفح لذلك. هذا هو الوكيل الذي يحدده امتداد VPN أو الوكيل، أو الوكيل اليدوي الخاص بالمتصفح، أو نص التكوين التلقائي للوكيل الخاص به. بدون ذلك، سيغادر التنزيل من عنوانك الخاص، وسيفشل المحتوى المحدود ببلد VPN، أو بعنوانه. يقرأ امتداد المتصفح هذا الوكيل ويسلمه إلى MDM مع كل تنزيل."
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "نعم: وكلاء HTTP وSOCKS، وسكربتات التهيئة التلقائية للوكيل (PAC)، في <g1>الخيارات → الوكيل / SOCKS</g1>. انظر <g2>الخيارات</g2>."
@@ -4233,10 +4249,6 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>أعلى</g1> / <g2>أسفل</g2>، <g3>يسار</g3> / <g4>يمين</g4>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>استخدام وكيل/SOCKS من طلب المتصفح…</g1> — تشغيل افتراضيا. مع <g2>لا يوجد وكيل/SOCKS</g2>، يجعل MDM يستخدم إعدادات وكيل Windows، كما تفعل المتصفحات."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4889,6 +4901,10 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "في وقت البدء، تبدأ قائمة الانتظار من تلقاء نفسها. في الصباح، تكون الملفات المكتملة تحت <g1>مكتمل</g1> في الفئات."
+  },
+  "846220c931fb3c98": {
+   "source": "A <x1/> file's web address works too: paste it into <g2>Add URL</g2> or <g3>Torrent</g3>, or let the browser hand the download over. MDM fetches the file, with the browser's cookies when the browser sent it, and <g4>Add torrent</g4> shows what it holds. The browser hands <x5/> downloads over when <x6/> is in <g7>Options → File types</g7>, or when you choose <g8>Download with Mister Download Manager</g8> on the link. A command line with <x9/> (silent) saves the <x10/> file itself, like any file. MDM fetches at most 10 MB: anything bigger isn't a <x11/> file.",
+   "text": "عنوان الويب لملف <x1/> يعمل أيضا: الصقه في <g2>إضافة URL</g2> أو <g3>تورنت</g3>، أو دع المتصفح يسلم التنزيل. يجلب MDM الملف، مع ملفات تعريف الارتباط الخاصة بالمتصفح عندما يرسلها المتصفح، وتظهر <g4>إضافة تورنت</g4> ما يحتويه. يسلم المتصفح تنزيلات <x5/> عندما تكون <x6/> في <g7>الخيارات ← أنواع الملفات</g7>، أو عندما تختار <g8>تنزيل باستخدام Mister Download Manager</g8> على الرابط. يحفظ سطر الأوامر مع <x9/> (صامت) ملف <x10/> نفسه، مثل أي ملف. يجلب MDM 10 ميجابايت كحد أقصى: أي شيء أكبر ليس ملف <x11/>."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5546,10 +5562,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "ثبت MDM باستخدام برنامج الإعداد، وحافظ على تحديد <g1>إعداد تكامل المتصفح (Chrome, Edge, Brave, Firefox)</g1>. هذا يسجل المساعد. (النسخة المحمولة لا تستطيع فعل ذلك؛ انظر <g2>الوضع المحمول</g2>)."
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "أذوناته، ولماذا: <g1>التنزيلات</g1> لرؤية التنزيلات وتسليمها؛ <g2>ملفات تعريف الارتباط</g2> حتى تعمل التنزيلات المسجلة الدخول في MDM؛ <g3>nativeMessaging</g3> للتحدث إلى MDM؛ <g4>contextMenus</g4> لعناصر النقر بزر الماوس الأيمن؛ <g5>storage</g5> لإعداداته؛ <g6>webRequest</g6> لرؤية النماذج المرسلة وتدفقات الفيديو المحملة (لا يغير شيئا)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome وEdge ومتصفحات Chromium الأخرى) لتنزيل الملفات التي سيفتحها المتصفح (ملف PDF) بدلا من ذلك، لأنواع الملفات التي يتولى MDM أمرها؛ في Firefox، يقوم <g8>webRequestBlocking</g8> بذلك؛ <g9>scripting</g9> لقراءة روابط الصفحة عندما تطلب ذلك، ولإضافة زر الفيديو إلى الصفحات المفتوحة بالفعل عند تثبيت الملحق؛ الوصول إلى جميع المواقع لأن التنزيلات ومقاطع الفيديو يمكن أن تأتي من أي موقع."
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "يتم التحقق من كل من العنوان الذي نقرت عليه والعنوان الذي أدت إليه إعادة التوجيه، لذلك يظل الموقع الذي استبعدته مستبعدا حتى عندما يرسلك إلى خادم آخر. كل شيء آخر يبقى مع المتصفح. تصل التغييرات في الخيارات إلى المتصفح في غضون دقيقة؛ لا تحتاج إلى إعادة تشغيله."
@@ -5581,10 +5593,6 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "ما يمكن للآخرين رؤيته"
-  },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "انتظر القائمة. تعرض كل دقة مع حجمها، الأفضل أولا، ثم <g1>صوت فقط</g1> بتنسيق الموقع الخاص (M4A أو WebM، كما يقدمه الموقع)، ثم <g2>صوت فقط MP3</g2> بأفضل معدل بت متغير (VBR) وبمعدلات 320، 256، 192 و 128 كيلوبت في الثانية."
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -5902,6 +5910,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>سطر الأوامر والأتمتة</g2></g1> — مفاتيح سطر الأوامر الخاصة بـ IDM، أداة <x3/>، وواجهة برمجة تطبيقات الأتمتة التي يمكن للبرامج الأخرى استخدامها."
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "عندما يستخدم المتصفح وكيلا لهذا التنزيل (يتم تعيينه بواسطة VPN أو إضافة وكيل، أو في إعداداته)، فإن الإضافة تمرر <g1>عنوان الوكيل</g1>، أو <g2>برنامج نصي لتكوين الوكيل التلقائي</g2>، بحيث يقوم MDM بالتنزيل عبر نفس الوكيل. لا تقرأ أو تمرر بيانات تسجيل الدخول للوكيل أبدا. تلاحظ فقط أن الوكيل طلب واحدا، حتى يتمكن MDM من إخبارك بأنه لا يمكنه استخدام هذا الوكيل."
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "الرئيسية"
@@ -5994,6 +6006,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "شغل <x1/> مع تشغيل MDM."
   },
+  "a43f559b321cf278": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
+   "text": "التورنت يسمي المتتبعات التي يطلبها MDM من الأقران. لا يتصل MDM بمتتبع على جهاز الكمبيوتر الخاص بك أو شبكتك المحلية (<x1/>، <x2/>، <x3/> وما شابه)، لذلك لا يمكن للتورنت أن يجعل MDM يرسل طلبات إلى الشبكة التي يتواجد فيها. <g4>إضافة متتبعات...</g4> تتبع نفس القاعدة: ترفض مثل هذا العنوان وتخبرك بالسبب، بدلا من الاحتفاظ بعنوان لن يتم طلبه أبدا."
+  },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "متابعة تنزيل متوقف مؤقتا أو معطل من ملف <x1/> المجاور له."
@@ -6069,6 +6085,10 @@
   "a65e3187925f9f37": {
    "source": "256 KiB file over a fast local link",
    "text": "ملف بحجم 256 كيلوبايت عبر رابط محلي سريع"
+  },
+  "a66ea1a086f2705b": {
+   "source": "<g1>Add trackers...</g1> — adds trackers, one address a line (<x2/>, <x3/> or <x4/>). They are kept with the torrent, after the ones it has, and the <g5>Trackers</g5> tab shows them. A tracker on your computer or your local network is refused: MDM never contacts those (<g6>why</g6>).",
+   "text": "<g1>إضافة متتبعات...</g1> — يضيف متتبعات، عنوان واحد في كل سطر (<x2/>، <x3/> أو <x4/>). يتم الاحتفاظ بها مع التورنت، بعد تلك التي لديه، وتظهرها علامة التبويب <g5>المتتبعات</g5>. يتم رفض المتتبع الموجود على جهاز الكمبيوتر الخاص بك أو شبكتك المحلية: لا يتصل MDM أبدا بتلك (<g6>لماذا</g6>)."
   },
   "a67015ec28a9f976": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the…",
@@ -6377,10 +6397,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "يقوم MDM بتنزيل ما تشير إليه، تماما كما يفعل متصفح الويب، ولكن بشكل أسرع وبتحكم أكبر. إنه مصمم للتنزيلات اليومية: البرامج والتحديثات، المستندات، ملفاتك الخاصة من التخزين السحابي، مقاطع الفيديو والموسيقى التي يسمح لك بحفظها، صور Linux وتورنت أخرى يشاركها صانعوها، وأي شيء آخر يحق لك تنزيله."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "تنزيل فيديو؛ <x1/> يأخذ محدد جودة من <x2/> (<x3/> = أفضل ملف واحد؛ <x4/>، <x5/>، <x6/> أو <x7/> = الصوت كملف MP3 بمعدل البت هذا، <x8/> بأفضل معدل متغير له؛ يتطلب MP3 برنامج ffmpeg). <x9/> يحفظ الترجمات بجانبه: رموز اللغة من <x10/> (<x11/>)، أو <x12/> لكل لغة قدمها الرافع؛ <x13/> يأخذ التسميات التوضيحية التلقائية للموقع بدلا من ذلك؛ <x14/> يضعها في الفيديو (يتطلب ffmpeg، MP4 أو MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6777,6 +6793,10 @@
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "التثبيت باستخدام الإعداد"
+  },
+  "b88bda5a82ad2252": {
+   "source": "Each command's outcome goes into the torrent's event log; hover its <g1>Status</g1> cell in the list to read it.",
+   "text": "تذهب نتيجة كل أمر إلى سجل أحداث التورنت؛ مرر مؤشر الماوس فوق خلية <g1>الحالة</g1> الخاصة به في القائمة لقراءتها."
   },
   "b89df2939f6581e5": {
    "source": "Properties",
@@ -7358,6 +7378,10 @@
    "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
    "text": "يقرأ MDM ملف التورنت ويعرض ملفاته كشجرة مجلدات. يتم قراءة ملف <x1/> دفعة واحدة. أما رابط magnet فيجب عليه أولا الحصول على قائمة الملفات من الأقران الآخرين، وقد يستغرق ذلك دقيقة أو دقيقتين."
   },
+  "c991e64b857c5509": {
+   "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
+   "text": "<g1>إعادة الإعلان</g1> — يطلب من متتبعات التورنت الأقران مرة أخرى الآن، بدلا من انتظار جولتهم التالية. يعمل أثناء تشغيل التورنت أو مشاركته."
+  },
   "c9d39512b1b393af": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
    "text": "يعمل مع Google Chrome وMicrosoft Edge وBrave وOpera وVivaldi، من خلال إضافة متصفح MDM، والمتصفحات المبنية عليها مثل Helium. دعم Firefox، الذي يشمل أيضا Zen وLibreWolf، مكتوب وقيد الاختبار. تسلم الإضافة التنزيلات إلى MDM مع ملفات تعريف الارتباط والمرجع الخاص بها، لذلك لا تزال الملفات التي تتطلب تسجيل الدخول تعمل، وتضيف <g1>تنزيل باستخدام Mister Download Manager</g1> إلى قائمة النقر بزر الفأرة الأيمن وزر <g2>تنزيل الفيديو</g2> فوق مقاطع الفيديو. انظر <g3>تكامل المتصفح</g3>."
@@ -7409,10 +7433,6 @@
   "cb14776e505e0089": {
    "source": "Can I download without the browser extension?",
    "text": "هل يمكنني التنزيل بدون إضافة المتصفح؟"
-  },
-  "cb390e5dc0af4469": {
-   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>.",
-   "text": "<g1>الملفات</g1> — كل ملف وحجمه ومقدار ما تم إنجازه منه. الملفات التي ألغيت تحديدها تظهر <g2>تم التخطي</g2>."
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -7974,6 +7994,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "نعم. يقبل MDM مفاتيح سطر الأوامر المألوفة لبرنامج IDM، ويأتي مع misterdownloadmanager-cli لتنزيل الملفات من الطرفية، ولديه واجهة برمجة تطبيقات (API) محلية مؤمنة برمز مميز للتحكم الآلي، يمكنها عرض التنزيلات وإيقافها مؤقتا وبدئها وإزالتها. تكون واجهة برمجة التطبيقات هذه غير نشطة حتى تقوم بتشغيلها. انظر سطر الأوامر والأتمتة."
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "لا يمكن مشاركة الوكيل الذي يطلب تسجيل دخول يمنحه امتداد VPN لنفسه: لا يوجد برنامج آخر لديه هذا التسجيل. يتوقف التنزيل حينها ويذكر ذلك، بدلا من المضي قدما بدون الوكيل. استخدم تطبيق VPN الخاص بك، أو اختر محوله ضمن <g1>محول الشبكة</g1>."
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "يجد خادم النسخة المحمولة MDM الخاص بها بنفسه، من مجلدها الخاص."
@@ -8466,10 +8490,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "للاحتفاظ بتنزيلات موقع ما في المتصفح بشكل دائم، استخدم <g1>عدم أخذ التنزيلات أبدا من</g1> زر شريط الأدوات، أو أضف الموقع إلى <g2>عدم بدء التنزيل تلقائيا من المواقع التالية</g2>. للاحتفاظ بنوع ملف في المتصفح، قم بإزالته من قائمة أنواع الملفات."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "خيار الصوت فقط (<g1>صوت فقط</g1>، MP3) لا يحتوي على ترجمات."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "افتح إعدادات Windows ← التطبيقات، ثم ابحث عن Mister Download Manager واختر إلغاء التثبيت. سيسألك برنامج إلغاء التثبيت عما إذا كنت تريد حذف قائمة التنزيلات والإعدادات الخاصة بك أيضا. لا يتم المساس بالملفات التي قمت بتنزيلها أبدا. بالنسبة للنسخة المحمولة، احذف مجلدها."
@@ -8593,6 +8613,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>ما حدث:</g1> الخطأ والمكان في كود MDM حيث حدث."
+  },
+  "ee9034f4bfe810cf": {
+   "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
+   "text": "<g1>إعادة فحص الملفات</g1> — يقرأ كل جزء من ملفات التورنت ويتحقق منه، على سبيل المثال بعد نقل الملفات أو حدوث أخطاء في القرص. يستمر التورنت قيد التشغيل بعد ذلك ويجلب ما هو مفقود. يبقى التورنت المتوقف متوقفا. يسجل سجل الأحداث الخاص به مقدار ما تم العثور عليه: يصبح التورنت المكتمل الذي يحتوي على جزء تالف متوقفا، واستئنافه يجلب الجزء مرة أخرى."
   },
   "eea0683af36fb9e8": {
    "source": "Something not working? We'd like to know.",
@@ -9205,54 +9229,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "عناوين التنزيل أو أسماء الملفات الخاصة بك؛"
-  },
-  "045b50361ed710f2": {
-   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
-   "text": "في Firefox، يرى MDM الوكيل الذي استخدمه طلب المتصفح الخاص بالملف، بما في ذلك الوكلاء الذين يختارهم امتداد VPN لكل طلب. في Chrome وEdge وBrave وOpera وVivaldi، يرى إعدادات وكيل المتصفح."
-  },
-  "05bd7f3cbec0de04": {
-   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
-   "text": "عندما لا يستخدم المتصفح وكيلا، ويتم اختيار <g1>لا يوجد وكيل/SOCKS</g1>، يستخدم MDM إعدادات وكيل Windows، كما تفعل المتصفحات."
-  },
-  "19bbae838750029a": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "أذوناتها، ولماذا: <g1>التنزيلات</g1> لرؤية التنزيلات وتسليمها؛ <g2>ملفات تعريف الارتباط</g2> لكي تعمل التنزيلات التي تم تسجيل الدخول إليها في MDM؛ <g3>nativeMessaging</g3> للتحدث مع MDM؛ <g4>contextMenus</g4> لعناصر النقر بزر الماوس الأيمن؛ <g5>storage</g5> لإعداداتها؛ <g6>webRequest</g6> لرؤية النماذج المرسلة وتدفقات الفيديو المحملة (لا تغير شيئا)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome و Edge ومتصفحات Chromium الأخرى) لتنزيل الملفات التي سيفتحها المتصفح (ملف PDF) بدلا من ذلك، لأنواع الملفات التي يأخذها MDM؛ في Firefox، تقوم <g8>webRequestBlocking</g8> بذلك؛ <g9>scripting</g9> لقراءة روابط الصفحة عندما تطلب ذلك، ولإضافة زر الفيديو إلى الصفحات المفتوحة بالفعل عند تثبيت الإضافة؛ <g10>proxy</g10> لقراءة الوكيل الذي يستخدمه المتصفح، بحيث تمر التنزيلات المأخوذة من متصفح خلف VPN أو إضافة وكيل من خلاله أيضا (لا تغير وكيل المتصفح أبدا)؛ الوصول إلى جميع المواقع لأن التنزيلات ومقاطع الفيديو يمكن أن تأتي من أي موقع."
-  },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "يمكن إنجاز كل شيء من لوحة المفاتيح، ويعمل MDM مع قارئات الشاشة (مثل Narrator و NVDA على Windows): تخبر نوافذه ومربعات الحوار والقوائم الخاصة به قارئات الشاشة عن كل عنصر تحكم وحالته، وتقرأ قائمة التنزيلات اسم كل تنزيل وحالته وحجمه."
-  },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "إظهار قائمة السياق"
-  },
-  "690e87be87eb0c8f": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
-   "text": "<g1>استخدام وكيل/SOCKS من طلب المتصفح…</g1> — مفعل افتراضيا. أي تنزيل يأخذه MDM من المتصفح يمر عبر الوكيل الذي استخدمه المتصفح لذلك. هذا هو الوكيل الذي يحدده امتداد VPN أو الوكيل، أو الوكيل اليدوي الخاص بالمتصفح، أو نص التكوين التلقائي للوكيل الخاص به. بدون ذلك، سيغادر التنزيل من عنوانك الخاص، وسيفشل المحتوى المحدود ببلد VPN، أو بعنوانه. يقرأ امتداد المتصفح هذا الوكيل ويسلمه إلى MDM مع كل تنزيل."
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "إعدادات الوكيل / SOCKS في MDM مخصصة لتنزيلات الويب و FTP. يمكن للتورنت استخدام SOCKS5 أيضا: قم بتعيين وكيل <x1/> في <g2>الخيارات ← الوكيل / SOCKS</g2> وقم بتشغيل <g3>استخدام الوكيل</g3> في إعدادات التورنت. يغطي الوكيل الاتصالات بالأقران والمتتبعات عبر الويب فقط، لذلك معه يقوم MDM بإيقاف تشغيل DHT، واكتشاف الأقران المحليين، والاتصالات الواردة، ومتتبعات UDP. إذا اختفى الوكيل من الوكيل / SOCKS بينما هذا المفتاح قيد التشغيل، فلن تبدأ التورنت بدلا من تجاوزها."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "لتوجيه <g1>كل شيء</g1> عبر شبكة أخرى، استخدم VPN لجهاز الكمبيوتر بأكمله. لا يستطيع MDM ربط التورنت بمحول شبكة واحد على Windows."
-  },
-  "a1280a73f600eb05": {
-   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
-   "text": "عندما يستخدم المتصفح وكيلا لهذا التنزيل (يتم تعيينه بواسطة VPN أو إضافة وكيل، أو في إعداداته)، فإن الإضافة تمرر <g1>عنوان الوكيل</g1>، أو <g2>برنامج نصي لتكوين الوكيل التلقائي</g2>، بحيث يقوم MDM بالتنزيل عبر نفس الوكيل. لا تقرأ أو تمرر بيانات تسجيل الدخول للوكيل أبدا. تلاحظ فقط أن الوكيل طلب واحدا، حتى يتمكن MDM من إخبارك بأنه لا يمكنه استخدام هذا الوكيل."
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "قوائم التشغيل والمزيجات"
-  },
-  "db74b9137912e0a2": {
-   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
-   "text": "لا يمكن مشاركة الوكيل الذي يطلب تسجيل دخول يمنحه امتداد VPN لنفسه: لا يوجد برنامج آخر لديه هذا التسجيل. يتوقف التنزيل حينها ويذكر ذلك، بدلا من المضي قدما بدون الوكيل. استخدم تطبيق VPN الخاص بك، أو اختر محوله ضمن <g1>محول الشبكة</g1>."
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "تنزيل ملف بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، اختياريا مسمى (<x5/>). <x6/> يختار DNS: <x7/> (الافتراضي)؛ خدمة وكيفية طلبها، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ عناوين خوادم DNS، <x13/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام."
   }
  }
 }

@@ -166,10 +166,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "关于 Mister Download Manager 的解答：它是否免费、是否安全、与 IDM 的比较、浏览器、视频、种子、速度、Mac 和 Linux 等。"
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和分享时向其他对等点发送的总量。torrent 进度窗口中自己的上传限制会在此基础上生效。"
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "启动主下载队列；<x1/>。"
@@ -178,6 +174,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "如果 torrent 的某些文件已在文件夹中，MDM 会在使用前询问。选择<g1>是</g1>会将它们用于 torrent：MDM 会检查它们，保留与 torrent 匹配的部分并下载其余部分，这样您就可以继续在其他地方开始的下载或共享您已有的文件。选择<g2>否</g2>（默认）会返回，以便您可以选择另一个文件夹，并且您的任何内容都不会被覆盖。"
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "在 Firefox 中，MDM 会看到浏览器自身对文件请求所使用的代理，包括 VPN 扩展为每个请求选择的代理。在 Chrome、Edge、Brave、Opera 和 Vivaldi 中，它会看到浏览器的代理设置。"
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM 会拒绝包含您的系统无法安全写入的文件名的 torrent，并会说明是哪个文件名，且不会写入任何内容。"
@@ -185,10 +185,6 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "免费开源。您已熟悉的界面，更快的底层引擎，内置种子下载和视频下载功能。"
-  },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1>（约 80 MB）用于合并视频和音频，当网站将它们分开存储时（大多数网站为了提供更高质量的视频都会这样做），并能将音频转换为 MP3。当 MDM 提示时，点击<g2>安装 ffmpeg</g2>。MDM 会根据其发布版本提供的校验和进行检查。"
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -249,6 +245,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "适用于 Debian 和 Ubuntu 的 <g1>.deb</g1>，适用于 Fedora 的 <g2>.rpm</g2>"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "当浏览器未使用代理，并且选择了<g1>无代理/SOCKS</g1>时，MDM 会像浏览器一样使用 Windows 的代理设置。"
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -886,6 +886,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "让 MDM 保持运行。关闭主窗口没关系：MDM 会在系统托盘中继续运行。不要使用<g1>任务 → 退出</g1>。"
   },
+  "17c258da3c18b1a9": {
+   "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
+   "text": "从网址获取的 <x1/> 文件会经过与从磁盘打开的文件相同的检查，MDM 最多读取 10 MB 的内容。"
+  },
   "17eecf94501281e0": {
    "source": "For Fedora, openSUSE and RHEL: <x1/>.",
    "text": "适用于 Fedora、openSUSE 和 RHEL：<x1/>。"
@@ -965,6 +969,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "这里是人们最常问的问题的简短回答，每个问题都附有完整指南的链接。"
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "其权限及原因：<g1>下载</g1>用于查看和移交下载；<g2>Cookie</g2>用于使已登录的下载在 MDM 中工作；<g3>nativeMessaging</g3>用于与 MDM 通信；<g4>contextMenus</g4>用于右键菜单项；<g5>存储</g5>用于其设置；<g6>webRequest</g6>用于查看提交的表单和加载的视频流（它不更改任何内容）；<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge 和其他 Chromium 浏览器）用于将浏览器将打开的文件（PDF）下载，而不是打开，适用于 MDM 支持的类型；在 Firefox 中，<g8>webRequestBlocking</g8>执行此操作；<g9>scripting</g9>用于在您请求时读取页面链接，并在安装扩展程序时将视频按钮添加到已打开的页面；<g10>proxy</g10>用于读取浏览器使用的代理，以便从 VPN 或代理扩展程序后面的浏览器获取的下载也通过它（它从不更改浏览器的代理）；访问所有站点，因为下载和视频可以来自任何站点。"
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1790,10 +1798,6 @@
    "source": "The server",
    "text": "服务器"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "选择一个。如果没有 ffmpeg，则只会列出自带音频的质量选项，并且没有 MP3（MP3 由 ffmpeg 生成）。"
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "将浏览器下载发送到 MDM →"
@@ -2150,6 +2154,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "删除所选下载（先询问）"
   },
+  "38c2835e2c5124e2": {
+   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>. Tick or untick a file's box to change what is downloaded, even while the torrent runs. At least one file stays ticked. If you untick everything still missing, the torrent finishes. If a finished torrent that isn't running gets a file back, it waits as stopped until you resume it, so nothing downloads unseen.",
+   "text": "<g1>文件</g1> — 每个文件、其大小以及完成的进度。未勾选的文件显示<g2>已跳过</g2>。勾选或取消勾选文件的框以更改下载内容，即使种子正在运行。至少有一个文件保持勾选状态。如果您取消勾选所有仍缺失的文件，则种子完成。如果一个已完成但未运行的种子重新获得一个文件，它会保持停止状态，直到您恢复它，这样就不会在不知情的情况下下载任何内容。"
+  },
   "38d4b8570c497ca6": {
    "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
    "text": "MDM 的代理/Socks 设置适用于网页和 FTP 下载。种子也可以使用 SOCKS5 代理：在<g2>选项 → 代理/Socks</g2>中设置<x1/>代理，并在种子设置中打开<g3>使用代理</g3>。代理仅覆盖与对等点和网页追踪器的连接，因此 MDM 会关闭 DHT、本地对等点发现、传入连接和 UDP 追踪器；它根本不会向网络打开 UDP 套接字。如果在代理/Socks 中代理消失而该开关仍处于打开状态，则种子不会启动，而不是绕过代理。"
@@ -2197,10 +2205,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows，便携版或普通 zip"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g1> — 然后 Windows 会在您的浏览器中用 MDM 打开磁力链接，并在资源管理器中用 MDM 打开 <x2/> 文件。这仅适用于您的 Windows 账户；您在 Windows 的<g3>打开方式</g3>中选择的程序仍然优先。安装程序可以为您打开此选项。"
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2518,10 +2522,6 @@
    "source": "The download list →",
    "text": "下载列表 →"
   },
-  "427727d08d8b3a51": {
-   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
-   "text": "种子会命名 MDM 请求对等点的跟踪器。MDM 不会联系您自己计算机或本地网络上的跟踪器（<x1/>、<x2/>、<x3/> 等），因此种子无法使 MDM 向其所在的网络发送请求。"
-  },
   "4285db6a822d0753": {
    "source": "<g1><g2>Yes</g2></g1><g3>MIT</g3>",
    "text": "<g1><g2>是</g2></g1><g3>MIT</g3>"
@@ -2662,6 +2662,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>下载</g1>：Windows 安装程序、便携式 zip 和普通 zip、独立的浏览器扩展程序（Chromium 浏览器为 zip，Firefox 为 <x2/>，始终与应用版本一致），以及<g3>可试用的 macOS 和 Linux 版本</g3>：通用 <x4/> 和 AppImage、<x5/>、<x6/> 和 <x7/>，标记为 <x8/>，因为我们尚未对其进行测试。在这些版本中，MDM 会自动连接到 Chrome、Edge、Brave、Vivaldi 和 Firefox，拥有托盘图标，遵循系统的浅色或深色外观，并使用系统字体和 ffmpeg。请告诉我们它们对您来说如何。"
   },
+  "465d49cb6ee5a2c9": {
+   "source": "Torrent commands",
+   "text": "种子命令"
+  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>DNS over HTTPS</g1>（默认）或 <g2>DNS over TLS</g2>：加密，因此途中没有人能看到或更改您查询的名称。"
@@ -2761,6 +2765,10 @@
   "49cf385ddabeea71": {
    "source": "<g1>PAC</g1><g2>proxy scripts</g2>",
    "text": "<g1>PAC</g1><g2>代理脚本</g2>"
+  },
+  "49e22ffa819f63a8": {
+   "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
+   "text": "右键单击列表中的种子，然后打开<g1>种子</g1>："
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3346,6 +3354,10 @@
    "source": "Why IDM users switch",
    "text": "IDM 用户为何转用"
   },
+  "5c676fc93de738f4": {
+   "source": "<g1>Copy magnet link</g1> — copies a magnet link for the torrent, with its trackers.",
+   "text": "<g1>复制磁力链接</g1> — 复制种子的磁力链接，包括其跟踪器。"
+  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>选择一个议题</g1><g2>看看有哪些开放的议题，并提供帮助。</g2>"
@@ -3822,6 +3834,10 @@
    "source": "Queue downloads for later →",
    "text": "将下载加入队列以便稍后下载 →"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>使用浏览器请求中的代理/SOCKS…</g1> — 默认开启。MDM 从浏览器获取的下载会通过浏览器用于该下载的代理。这包括 VPN 或代理扩展设置的代理、浏览器自己的手动代理或其代理自动配置脚本。如果没有它，下载将从您自己的地址发出，并且受限于 VPN 国家或其地址的内容将失败。浏览器扩展会读取该代理并将其与每个下载一起交给 MDM。"
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "可以：在<g1>选项 → 代理/Socks</g1>中支持 HTTP 和 SOCKS 代理，以及代理自动配置 (PAC) 脚本。请参阅<g2>选项</g2>。"
@@ -4233,10 +4249,6 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>上</g1> / <g2>下</g2>，<g3>左</g3> / <g4>右</g4>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>使用来自浏览器请求的代理/SOCKS…</g1> — 默认开启。在<g2>无代理/SOCKS</g2>模式下，它使 MDM 使用 Windows 的代理设置，就像浏览器一样。"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4889,6 +4901,10 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "在开始时间，队列会自动启动。早上，已完成的文件会在类别下的<g1>已完成</g1>中。"
+  },
+  "846220c931fb3c98": {
+   "source": "A <x1/> file's web address works too: paste it into <g2>Add URL</g2> or <g3>Torrent</g3>, or let the browser hand the download over. MDM fetches the file, with the browser's cookies when the browser sent it, and <g4>Add torrent</g4> shows what it holds. The browser hands <x5/> downloads over when <x6/> is in <g7>Options → File types</g7>, or when you choose <g8>Download with Mister Download Manager</g8> on the link. A command line with <x9/> (silent) saves the <x10/> file itself, like any file. MDM fetches at most 10 MB: anything bigger isn't a <x11/> file.",
+   "text": "<x1/>文件的网址也适用：将其粘贴到<g2>添加 URL</g2>或<g3>种子</g3>中，或者让浏览器将下载任务交给 MDM。MDM 会获取文件，如果浏览器发送了文件，则会带上浏览器的 Cookie，<g4>添加种子</g4>会显示其内容。当<x6/>在<g7>选项 → 文件类型</g7>中，或者当您在链接上选择<g8>使用 Mister Download Manager 下载</g8>时，浏览器会将<x5/>下载任务交给 MDM。带有<x9/>（静默）的命令行会像任何文件一样保存<x10/>文件本身。MDM 最多获取 10 MB：任何大于此的文件都不是<x11/>文件。"
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5546,10 +5562,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "使用安装程序安装 MDM 时，请勾选 <g1>设置浏览器集成（Chrome, Edge, Brave, Firefox）</g1>。这将注册辅助程序。（便携版无法执行此操作；请参阅<g2>便携模式</g2>。）"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "其权限及原因：<g1>下载</g1>用于查看和移交下载；<g2>Cookie</g2> 用于使登录后的下载在 MDM 中工作；<g3>原生消息</g3> 用于与 MDM 通信；<g4>上下文菜单</g4> 用于右键菜单项；<g5>存储</g5> 用于其设置；<g6>网络请求</g6> 用于查看提交的表单和加载的视频流（它不改变任何内容）；<g7>带主机访问的声明式网络请求</g7>（Chrome、Edge 和其他 Chromium 浏览器）用于将浏览器会打开的文件（PDF）改为下载，适用于 MDM 处理的类型；在 Firefox 中，<g8>网络请求阻止</g8> 实现此功能；<g9>脚本</g9> 用于在您请求时读取页面链接，并在安装扩展时将视频按钮添加到已打开的页面；访问所有网站是因为下载和视频可以来自任何网站。"
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "您点击的地址和其重定向到的地址都会被检查，因此即使您被发送到另一个服务器，您排除的网站仍会被排除。其他所有内容都将由浏览器处理。选项中的更改会在一分钟内到达浏览器；您无需重新启动浏览器。"
@@ -5581,10 +5593,6 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "其他人可以看到什么"
-  },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "等待列表显示。它会显示每个分辨率及其大小，最佳的排在最前面，然后是网站自身格式的<g1>仅音频</g1>（M4A 或 WebM，取决于网站提供的方式），接着是最佳可变比特率（VBR）以及 320、256、192 和 128 kbps 的<g2>仅音频 MP3</g2>。"
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -5902,6 +5910,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>命令行和自动化</g2></g1> — IDM 的命令行开关、<x3/> 工具以及其他程序可以使用的自动化 API。"
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "当浏览器对该下载使用代理时（由 VPN 或代理扩展程序或在其设置中设置），该扩展程序会传递<g1>代理地址</g1>或其<g2>代理自动配置脚本</g2>，以便 MDM 通过同一代理下载。它从不读取或传递代理的登录信息。它只记录代理请求了一个，因此 MDM 可以告诉您它无法使用该代理。"
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "主页"
@@ -5994,6 +6006,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "在 MDM 运行时运行<x1/>。"
   },
+  "a43f559b321cf278": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
+   "text": "种子会指定 MDM 请求对等点的跟踪器。MDM 不会联系您自己计算机或本地网络上的跟踪器（<x1/>、<x2/>、<x3/> 等），因此种子无法让 MDM 向其所在的网络发送请求。<g4>添加跟踪器...</g4> 遵循相同的规则：它会拒绝此类地址并告知您原因，而不是保留一个永远不会被请求的地址。"
+  },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "从旁边的 <x1/> 文件继续暂停或中断的下载。"
@@ -6069,6 +6085,10 @@
   "a65e3187925f9f37": {
    "source": "256 KiB file over a fast local link",
    "text": "通过快速本地链接下载 256 KiB 文件"
+  },
+  "a66ea1a086f2705b": {
+   "source": "<g1>Add trackers...</g1> — adds trackers, one address a line (<x2/>, <x3/> or <x4/>). They are kept with the torrent, after the ones it has, and the <g5>Trackers</g5> tab shows them. A tracker on your computer or your local network is refused: MDM never contacts those (<g6>why</g6>).",
+   "text": "<g1>添加跟踪器...</g1> — 添加跟踪器，每行一个地址（<x2/>、<x3/>或<x4/>）。它们与种子一起保存，在其已有的跟踪器之后，<g5>跟踪器</g5>选项卡会显示它们。您计算机或本地网络上的跟踪器会被拒绝：MDM 绝不会联系这些跟踪器（<g6>原因</g6>）。"
   },
   "a67015ec28a9f976": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the…",
@@ -6377,10 +6397,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM 像网页浏览器一样下载您指定的内容，只是速度更快，控制更多。它专为日常下载而设计：软件和更新、文档、您自己的云存储文件、您可以保存的视频和音乐、Linux 镜像以及制造商分享的其他种子文件，以及您有权下载的任何其他内容。"
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "下载视频；<x1/> 从 <x2/> 获取质量选择器（<x3/> = 最佳单文件；<x4/>、<x5/>、<x6/> 或 <x7/> = 该比特率的 MP3 音频，<x8/> 为最佳可变比特率；MP3 需要 ffmpeg）。<x9/> 在旁边保存字幕：语言代码来自 <x10/>（<x11/>），或 <x12/> 表示上传者提供的所有字幕；<x13/> 改为获取网站的自动字幕；<x14/> 将它们嵌入视频中（需要 ffmpeg，MP4 或 MKV）。"
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6777,6 +6793,10 @@
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "通过安装程序安装"
+  },
+  "b88bda5a82ad2252": {
+   "source": "Each command's outcome goes into the torrent's event log; hover its <g1>Status</g1> cell in the list to read it.",
+   "text": "每个命令的结果都会进入种子的事件日志；将鼠标悬停在列表中的<g1>状态</g1>单元格上即可阅读。"
   },
   "b89df2939f6581e5": {
    "source": "Properties",
@@ -7358,6 +7378,10 @@
    "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
    "text": "MDM 读取种子并将其文件显示为文件夹树。<x1/> 文件会立即读取。磁力链接首先需要从其他对等方获取文件列表，这可能需要一两分钟。"
   },
+  "c991e64b857c5509": {
+   "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
+   "text": "<g1>重新发布</g1> — 立即再次向种子的跟踪器请求对等点，而不是等待下一轮。它在种子运行或共享时有效。"
+  },
   "c9d39512b1b393af": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
    "text": "通过 MDM 浏览器扩展，支持 Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi，以及基于它们构建的浏览器，例如 Helium。对 Firefox（也包括 Zen 和 LibreWolf）的支持已完成编写，正在测试中。该扩展会将下载任务及其 Cookie 和 referrer 移交给 MDM，因此需要登录才能下载的文件仍然有效，它还会将<g1>使用 Mister Download Manager 下载</g1>添加到右键菜单，并在视频上方添加一个<g2>下载视频</g2>按钮。请参阅<g3>浏览器集成</g3>。"
@@ -7409,10 +7433,6 @@
   "cb14776e505e0089": {
    "source": "Can I download without the browser extension?",
    "text": "没有浏览器扩展可以下载吗？"
-  },
-  "cb390e5dc0af4469": {
-   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>.",
-   "text": "<g1>文件</g1> — 每个文件、其大小以及完成的进度。您取消勾选的文件会显示<g2>已跳过</g2>。"
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -7974,6 +7994,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "是。MDM 接受 IDM 熟悉的命令行开关，附带 misterdownloadmanager-cli 用于从终端下载，并具有一个本地的、受令牌保护的自动化 API，可以列出、暂停、开始和删除下载。此 API 默认关闭，直到您将其打开。请参阅命令行和自动化。"
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "需要 VPN 扩展自身提供登录信息的代理无法共享：没有其他程序拥有该登录信息。下载将停止并显示此信息，而不是在没有代理的情况下进行。请使用 VPN 自己的应用程序，或在<g1>网络适配器</g1>下选择其适配器。"
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "便携版服务器会从其自身文件夹中自动找到便携版 MDM。"
@@ -8466,10 +8490,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "要永久将某个网站的下载保留在浏览器中，请使用工具栏按钮的 <g1>从不接管来自</g1>，或将该网站添加到 <g2>不自动从以下网站开始下载</g2>。要将某种文件类型保留在浏览器中，请将其从文件类型列表中删除。"
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "仅声音选项（<g1>仅音频</g1>，MP3）没有字幕。"
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "打开 Windows 设置 → 应用，找到 Mister Download Manager 并选择“卸载”。卸载程序会询问是否同时删除您的下载列表和设置。您已下载的文件永远不会被触及。对于便携版，请删除其文件夹。"
@@ -8593,6 +8613,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>发生了什么：</g1>错误以及 MDM 代码中发生错误的位置。"
+  },
+  "ee9034f4bfe810cf": {
+   "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
+   "text": "<g1>重新检查文件</g1> — 读取种子文件的每个部分并进行检查，例如在您移动文件或磁盘出现错误之后。运行中的种子会继续运行并获取缺失的部分。已停止的种子保持停止状态。其事件日志会显示找到多少内容：已完成的种子如果损坏了一个部分，则会变为停止状态，恢复它会再次获取该部分。"
   },
   "eea0683af36fb9e8": {
    "source": "Something not working? We'd like to know.",
@@ -9205,54 +9229,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "您的下载地址或文件名；"
-  },
-  "045b50361ed710f2": {
-   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
-   "text": "在 Firefox 中，MDM 会看到浏览器自身对文件请求所使用的代理，包括 VPN 扩展为每个请求选择的代理。在 Chrome、Edge、Brave、Opera 和 Vivaldi 中，它会看到浏览器的代理设置。"
-  },
-  "05bd7f3cbec0de04": {
-   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
-   "text": "当浏览器未使用代理，并且选择了<g1>无代理/SOCKS</g1>时，MDM 会像浏览器一样使用 Windows 的代理设置。"
-  },
-  "19bbae838750029a": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "其权限及原因：<g1>下载</g1>用于查看和移交下载；<g2>Cookie</g2>用于使已登录的下载在 MDM 中工作；<g3>nativeMessaging</g3>用于与 MDM 通信；<g4>contextMenus</g4>用于右键菜单项；<g5>存储</g5>用于其设置；<g6>webRequest</g6>用于查看提交的表单和加载的视频流（它不更改任何内容）；<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge 和其他 Chromium 浏览器）用于将浏览器将打开的文件（PDF）下载，而不是打开，适用于 MDM 支持的类型；在 Firefox 中，<g8>webRequestBlocking</g8>执行此操作；<g9>scripting</g9>用于在您请求时读取页面链接，并在安装扩展程序时将视频按钮添加到已打开的页面；<g10>proxy</g10>用于读取浏览器使用的代理，以便从 VPN 或代理扩展程序后面的浏览器获取的下载也通过它（它从不更改浏览器的代理）；访问所有站点，因为下载和视频可以来自任何站点。"
-  },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "所有操作都可以通过键盘完成，MDM 支持屏幕阅读器（例如 Windows 上的讲述人 (Narrator) 和 NVDA）：其窗口、对话框和菜单会告知屏幕阅读器每个控件的名称和状态，下载列表会朗读每个下载的名称、状态和大小。"
-  },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
-  "690e87be87eb0c8f": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
-   "text": "<g1>使用浏览器请求中的代理/SOCKS…</g1> — 默认开启。MDM 从浏览器获取的下载会通过浏览器用于该下载的代理。这包括 VPN 或代理扩展设置的代理、浏览器自己的手动代理或其代理自动配置脚本。如果没有它，下载将从您自己的地址发出，并且受限于 VPN 国家或其地址的内容将失败。浏览器扩展会读取该代理并将其与每个下载一起交给 MDM。"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDM 的代理/Socks 设置适用于网页和 FTP 下载。种子也可以使用 SOCKS5 代理：在<g2>选项 → 代理/Socks</g2>中设置<x1/>代理，并在“种子设置”中打开<g3>使用代理</g3>。代理仅覆盖与对等点和网页跟踪器的连接，因此 MDM 会关闭 DHT、本地对等点发现、传入连接和 UDP 跟踪器。如果该开关打开时代理从“代理/Socks”中消失，则种子不会启动，而不是绕过它。"
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "要通过另一个网络路由<g1>所有内容</g1>，请为整个计算机使用 VPN。MDM 无法将种子绑定到 Windows 上的一个网络适配器。"
-  },
-  "a1280a73f600eb05": {
-   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
-   "text": "当浏览器对该下载使用代理时（由 VPN 或代理扩展程序或在其设置中设置），该扩展程序会传递<g1>代理地址</g1>或其<g2>代理自动配置脚本</g2>，以便 MDM 通过同一代理下载。它从不读取或传递代理的登录信息。它只记录代理请求了一个，因此 MDM 可以告诉您它无法使用该代理。"
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "播放列表和混音"
-  },
-  "db74b9137912e0a2": {
-   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
-   "text": "需要 VPN 扩展自身提供登录信息的代理无法共享：没有其他程序拥有该登录信息。下载将停止并显示此信息，而不是在没有代理的情况下进行。请使用 VPN 自己的应用程序，或在<g1>网络适配器</g1>下选择其适配器。"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。<x6/> 选择 DNS：<x7/>（默认）；服务及其查询方式，<x8/>、<x9/>、<x10/>、<x11/>、<x12/>；DNS 服务器地址，<x13/>；或 DNS-over-HTTPS 地址。它从不回退到系统 DNS。"
   }
  }
 }

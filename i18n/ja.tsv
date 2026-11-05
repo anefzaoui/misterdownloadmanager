@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} 個のファイル
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n}個のファイルがダウンロード対象として選択されました
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n}個を選択済み
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n}個のトラッカーが追加されました
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	このコンピューター上のサーバーがダウンロードを別の場所に送信しました。これは {adapter} を通過しません。
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	このコンピューターまたはローカルネットワーク上のトラッカーには、決して接続しません: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager について
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	トレントを追加
+#. window title in the Add torrent window
+#, machine
+	Add trackers	トラッカーの追加
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	次で問い合わせる:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	トラッカーにピアを再要求しました
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ピアにファイル リストを要求しています。マグネット リンクには 1、2 分かかる場合があります。
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	接続を確認してから再試行するか、後で動画ウィンドウから取得してください。
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	確認済み: {total}中{have}
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	すべてのピースを再確認しています
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	新しいキューの名前を入力してください
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	トラッカーのアドレスを1行に1つ入力してください
 #. window title in a dialog box
 #, machine
 	Enter new address to download	ダウンロードする新しいアドレスを入力してください
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	完了後もトレントを共有し続ける
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	トレントが持つトラッカーの後ろに、トレントと共に保持されます。
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	キーボード ショートカット
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	プロキシ/SOCKS なし
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	トラッカーは追加されませんでした: すでに存在します
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	読み取れないチェックサムです
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	トラッカーアドレスではありません: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	ディスク領域が不足しています: {needed} 必要、{free} 空き
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	準備完了: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	再アナウンスに失敗しました: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	データを受信しています...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	再確認に失敗しました: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	ファイルの {algorithm} チェックサムが一致しません (データは保持されます。再ダウンロードしてください)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	ファイルを選択できませんでした: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	トレントがセッションにありません
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	トラッカーを追加できませんでした: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	トラッカー
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	{name}に追加するトラッカーを1行に1つ入力してください:
 #. text in a download's progress window
 #, machine
 	Transfer rate	転送速度

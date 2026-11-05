@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} 個檔案
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n}個檔案已選取以下載
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} 個已選取
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n}個追蹤器已新增
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	此電腦上的伺服器將下載傳送到其他位置，但無法透過 {adapter} 傳送
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	不會聯絡此電腦或區域網路上的追蹤器：{line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	關於 Mister Download Manager
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	新增 torrent
+#. window title in the Add torrent window
+#, machine
+	Add trackers	新增追蹤器
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	使用以下方式詢問:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	再次向追蹤器要求對等點
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	正在向對等點請求檔案清單。Magnet 連結可能需要一到兩分鐘。
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	檢查您的連線，然後再試一次，或稍後從影片視窗取得。
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	已檢查：{have} / {total}
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	正在再次檢查每個區塊
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	輸入新佇列的名稱，它將會是
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	輸入追蹤器位址，一行一個
 #. window title in a dialog box
 #, machine
 	Enter new address to download	輸入要下載的新位址
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	完成後繼續分享 torrent
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	與種子一起保留，在它已有的追蹤器之後。
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	鍵盤快速鍵
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	無 Proxy/SOCKS
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	未新增追蹤器：它已擁有
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	這不是可讀取的總和檢查碼
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	不是追蹤器位址：{line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	磁碟空間不足: 需要 {needed}，可用 {free}
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	已就緒：{list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	重新發佈失敗：{error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	正在接收資料...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	重新檢查失敗：{error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	檔案的 {algorithm} 總和檢查碼不符 (資料已保留；請重新下載)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	無法選擇檔案：{error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	Torrent 已不存在
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	無法新增追蹤器：{error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	追蹤器
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	要新增至 {name} 的追蹤器，一行一個位址：
 #. text in a download's progress window
 #, machine
 	Transfer rate	傳輸速率
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	從剪貼簿新增批次下載(&C)
 #, machine
 menu	Add category	新增類別
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	新增追蹤器...
+#. menu command in the main window
 #, machine
 menu	Arrange files	整理檔案
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	檢查更新(&U)...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	清除所有篩選器(&F)
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	複製磁力連結
 #. menu command in the main window
 #, machine
 menu	Create new queue	建立新佇列
@@ -3705,6 +3780,14 @@ menu	Properties	內容
 #, machine
 menu	R&edownload	重新&下載
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	重新宣告
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	重新檢查檔案
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	重新下載
@@ -3791,6 +3874,10 @@ menu	To &text file...	匯出至文字檔案(&T)...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	工具列
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	Torrent
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

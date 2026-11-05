@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} bestand|{n} bestanden
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n} bestand gekozen om te downloaden|{n} bestanden gekozen om te downloaden
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} geselecteerd|{n} geselecteerd
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n} tracker toegevoegd|{n} trackers toegevoegd
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	een server op deze computer heeft de download elders naartoe gestuurd, wat niet via {adapter} zou gaan
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	Een tracker op deze computer of het lokale netwerk wordt nooit gecontacteerd: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Over Mister Download Manager
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Torrent toevoegen
+#. window title in the Add torrent window
+#, machine
+	Add trackers	Trackers toevoegen
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	Vraag het met:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	De trackers opnieuw om peers gevraagd
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Bestandslijst opvragen bij peers. Magnet-links kunnen een minuut of twee duren.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Controleer uw verbinding en probeer het opnieuw, of haal ze later op via het videovenster.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	Gecontroleerd: {have} van {total} aanwezig
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	Elk stuk opnieuw controleren
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	Voer een naam in voor de nieuwe wachtrij die zal zijn
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	Voer het adres van een tracker in, één per regel
 #. window title in a dialog box
 #, machine
 	Enter new address to download	Voer nieuw adres in om te downloaden
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	Torrents blijven delen nadat ze voltooid zijn
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	Blijft bij de torrent, na de trackers die het al heeft.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Toetsenbordsneltoetsen
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Geen proxy/SOCKS
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	Geen tracker toegevoegd: deze heeft ze al
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	Geen controlegetal dat kan worden gelezen
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	Geen trackeradres: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	niet genoeg schijfruimte: {needed} nodig, {free} vrij
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	Klaar: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	Opnieuw aankondigen mislukt: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	Gegevens ontvangen...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	Opnieuw controleren mislukt: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	de {algorithm}-controlesom van het bestand komt niet overeen (de gegevens worden bewaard; download het opnieuw)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	De bestanden konden niet worden gekozen: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	de torrent is er niet meer
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	De trackers konden niet worden toegevoegd: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	Trackers
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	Trackers om toe te voegen aan {name}, één adres per regel:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Overdrachtssnelheid
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	Batchdownload toevoegen vanaf &klembord
 #, machine
 menu	Add category	Categorie toevoegen
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	Trackers toevoegen...
+#. menu command in the main window
 #, machine
 menu	Arrange files	Bestanden rangschikken
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	Controleren op &updates...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	Alle &filters wissen
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	Magnetlink kopiëren
 #. menu command in the main window
 #, machine
 menu	Create new queue	Nieuwe wachtrij maken
@@ -3705,6 +3780,14 @@ menu	Properties	Eigenschappen
 #, machine
 menu	R&edownload	Opnieuw &downloaden
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	Opnieuw aankondigen
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	Bestanden opnieuw controleren
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	Opnieuw downloaden
@@ -3791,6 +3874,10 @@ menu	To &text file...	Naar &tekstbestand...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	Werkbalk
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	Torrent
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

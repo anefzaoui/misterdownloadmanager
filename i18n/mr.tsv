@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} फाइल|{n} फाइल्स
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n} फाइल डाउनलोड करण्यासाठी निवडली|{n} फाइल्स डाउनलोड करण्यासाठी निवडल्या
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} निवडले|{n} निवडले
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n} ट्रॅकर जोडला|{n} ट्रॅकर्स जोडले
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	या संगणकावरील सर्व्हरने डाउनलोड इतरत्र पाठवले, जे {adapter} द्वारे जाणार नाही
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	या संगणकावरील किंवा स्थानिक नेटवर्कवरील ट्रॅकरशी कधीही संपर्क साधला जात नाही: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager बद्दल
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	टॉरेंट जोडा
+#. window title in the Add torrent window
+#, machine
+	Add trackers	ट्रॅकर्स जोडा
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	यासोबत विचारा:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	ट्रॅकर्सना पुन्हा पीअर्ससाठी विचारले
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	फाइल सूचीसाठी पीअर्सना विचारत आहे. मॅग्नेट लिंक्सना एक किंवा दोन मिनिटे लागू शकतात.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	तुमचे कनेक्शन तपासा, नंतर पुन्हा प्रयत्न करा किंवा नंतर व्हिडिओ विंडोमधून मिळवा.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	तपासले: {total} पैकी {have} तिथे आहे
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	प्रत्येक भाग पुन्हा तपासत आहे
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	नवीन रांगेसाठी नाव प्रविष्ट करा जे असेल
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	ट्रॅकरचा पत्ता, प्रत्येक ओळीत एक, प्रविष्ट करा
 #. window title in a dialog box
 #, machine
 	Enter new address to download	डाउनलोड करण्यासाठी नवीन पत्ता प्रविष्ट करा
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	टॉरंट पूर्ण झाल्यावर ते शेअर करत रहा
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	टॉरेंटमध्ये, त्याच्या ट्रॅकर्सनंतर ठेवले.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	कीबोर्ड शॉर्टकट्स
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	प्रॉक्सी/SOCKS नाही
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	कोणताही ट्रॅकर जोडला नाही: तो आधीच आहे
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	हे वाचू शकेल असा चेकसम नाही
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	ट्रॅकरचा पत्ता नाही: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	पुरेशी डिस्क जागा नाही: {needed} आवश्यक, {free} उपलब्ध
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	तयार: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	पुन्हा घोषणा अयशस्वी झाली: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	डेटा प्राप्त करत आहे...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	पुन्हा तपासणी अयशस्वी झाली: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	फाइलचा {algorithm} चेकसम जुळत नाही (डेटा ठेवला आहे; तो पुन्हा डाउनलोड करा)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	फाइल्स निवडता आल्या नाहीत: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	टॉरेंट आता तिथे नाही
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	ट्रॅकर्स जोडता आले नाहीत: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	ट्रॅकर्स
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	{name} मध्ये ट्रॅकर्स जोडण्यासाठी, प्रत्येक ओळीत एक पत्ता:
 #. text in a download's progress window
 #, machine
 	Transfer rate	हस्तांतरण दर
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	क्लिपबोर्डमधू�
 #, machine
 menu	Add category	श्रेणी जोडा
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	ट्रॅकर्स जोडा...
+#. menu command in the main window
 #, machine
 menu	Arrange files	फाइल्सची मांडणी करा
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	&अपडेट्स तपासा...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	सर्व &फिल्टर्स साफ करा
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	मॅग्नेट लिंक कॉपी करा
 #. menu command in the main window
 #, machine
 menu	Create new queue	नवीन रांग तयार करा
@@ -3705,6 +3780,14 @@ menu	Properties	गुणधर्म
 #, machine
 menu	R&edownload	पुन्हा डाउनलोड करा(&e)
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	पुन्हा घोषणा करा
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	फाइल्स पुन्हा तपासा
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	पुन्हा डाउनलोड करा
@@ -3791,6 +3874,10 @@ menu	To &text file...	टेक्स्ट फाइलमध्ये(&t)...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	टूलबार
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	टॉरेंट
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

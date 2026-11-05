@@ -166,10 +166,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager に関する回答：無料か、安全か、IDMとの比較、ブラウザー、ビデオ、トレント、速度、MacとLinuxなど。"
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>すべてのトレントのアップロードを次の値に制限する:</g1> — デフォルトではオフです。ダウンロード中および共有中に、すべてのトレントが他のピアに送信する合計量を制限します。トレント自身のアップロード制限は、その進行状況ウィンドウで、この制限に加えて適用されます。"
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "メインのダウンロードキューを開始します。<x1/>。"
@@ -178,6 +174,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "トレントのファイルの一部がすでにフォルダーにある場合、MDMはそれらを使用する前に確認します。<g1>はい</g1>を選択すると、それらはトレントのために保持されます。MDMはそれらをチェックし、トレントと一致するものを保持し、残りをダウンロードします。これは、他の場所で開始したダウンロードを続行したり、すでに持っているファイルを共有したりする方法です。<g2>いいえ</g2>（デフォルト）を選択すると、元に戻り、別のフォルダーを選択できるため、既存のファイルが上書きされることはありません。"
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Firefoxでは、MDMはブラウザ自身のファイルリクエストが使用したプロキシ（VPN拡張機能が各リクエストに選択するものを含む）を認識します。Chrome、Edge、Brave、Opera、Vivaldiでは、ブラウザのプロキシ設定を認識します。"
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDMは、システムが安全に書き込めないファイル名を持つトレントを拒否し、どのファイル名であるかを伝え、何も書き込みません。"
@@ -185,10 +185,6 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "無料でオープンソース。おなじみのインターフェースと、より高速なエンジンを搭載し、トレントとビデオダウンロード機能を内蔵しています。"
-  },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1>（約80 MB）は、多くのサイトが高品質のために動画と音声を別々に保存している場合、それらを結合し、音声をMP3に変換します。MDMが提供する際に<g2>ffmpeg をインストール</g2>をクリックしてください。MDMは、公開されているチェックサムと照合して確認します。"
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -249,6 +245,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "DebianとUbuntu向け<g1>.deb</g1>、Fedora向け<g2>.rpm</g2>"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "ブラウザがプロキシを使用せず、<g1>プロキシ/SOCKS なし</g1>が選択されている場合、MDMはブラウザと同様にWindowsのプロキシ設定を使用します。"
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -886,6 +886,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "MDMを実行したままにします。メインウィンドウを閉じても問題ありません。MDMはトレイで実行を続けます。<g1>タスク → 終了</g1>は使用しないでください。"
   },
+  "17c258da3c18b1a9": {
+   "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
+   "text": "ウェブアドレスから取得した<x1/>ファイルは、ディスクから開いたファイルと同じチェックを受け、MDMは最大10MBまで読み取ります。"
+  },
   "17eecf94501281e0": {
    "source": "For Fedora, openSUSE and RHEL: <x1/>.",
    "text": "Fedora、openSUSE、RHELの場合：<x1/>。"
@@ -965,6 +969,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "よくある質問への短い回答と、完全なガイドへのリンクです。"
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "その権限と理由：ダウンロードを表示してMDMに渡すための<g1>downloads</g1>；MDMでサインインしたダウンロードが機能するための<g2>cookies</g2>；MDMと通信するための<g3>nativeMessaging</g3>；右クリック項目用の<g4>contextMenus</g4>；設定用の<g5>storage</g5>；送信されたフォームと読み込まれたビデオストリームを見るための<g6>webRequest</g6>（何も変更しません）；ブラウザが開くファイル（PDFなど）をMDMが処理するタイプの場合に代わりにダウンロードさせるための<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他のChromiumブラウザ）；Firefoxでは<g8>webRequestBlocking</g8>がそれを行います；要求されたときにページのリンクを読み取り、拡張機能がインストールされたときにすでに開いているページにビデオボタンを追加するための<g9>scripting</g9>；ブラウザが使用するプロキシを読み取り、VPNまたはプロキシ拡張機能の背後にあるブラウザからのダウンロードもそれを通るようにするための<g10>proxy</g10>（ブラウザのプロキシを変更することはありません）；ダウンロードやビデオはどのサイトからでも来る可能性があるため、すべてのサイトへのアクセス。"
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1790,10 +1798,6 @@
    "source": "The server",
    "text": "サーバー"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "いずれかを選択してください。ffmpegがない場合、音声が付属している品質のみがリストに表示され、MP3は表示されません（MP3はffmpegが作成します）。"
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "ブラウザのダウンロードをMDMに送信する →"
@@ -2150,6 +2154,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "選択したダウンロードを削除 (最初に確認)"
   },
+  "38c2835e2c5124e2": {
+   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>. Tick or untick a file's box to change what is downloaded, even while the torrent runs. At least one file stays ticked. If you untick everything still missing, the torrent finishes. If a finished torrent that isn't running gets a file back, it waits as stopped until you resume it, so nothing downloads unseen.",
+   "text": "<g1>ファイル</g1> — 各ファイル、そのサイズ、完了した割合。チェックを外したファイルは<g2>スキップ済み</g2>と表示されます。トレントの実行中でも、ファイルのボックスにチェックを入れたり外したりして、ダウンロードする内容を変更できます。少なくとも1つのファイルはチェックされたままになります。まだ不足しているすべてのファイルのチェックを外すと、トレントは完了します。実行中でない完了したトレントにファイルが戻された場合、再開するまで停止したままになり、何も見えないままダウンロードされることはありません。"
+  },
   "38d4b8570c497ca6": {
    "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
    "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5プロキシを使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにしてください。このプロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア探索、受信接続、UDPトラッカーをオフにします。ネットワークに対してUDPソケットを一切開きません。このスイッチがオンの状態でプロキシ / SOCKSからプロキシがなくなると、トレントはプロキシを迂回せずに開始されません。"
@@ -2197,10 +2205,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows、ポータブルまたはプレーンなzip"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>Mister Download Manager でマグネットリンクと .torrent ファイルを開く</g1> — これにより、Windows はブラウザでマグネットリンクを、エクスプローラーで <x2/> ファイルを MDM で開きます。これは Windows アカウントのみに適用されます。Windows の<g3>プログラムから開く</g3>で選択したプログラムが優先されます。セットアップでこれをオンにすることもできます。"
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2518,10 +2522,6 @@
    "source": "The download list →",
    "text": "ダウンロードリスト →"
   },
-  "427727d08d8b3a51": {
-   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
-   "text": "トレントは、MDMがピアを要求するトラッカーの名前を付けます。MDMは、自分のコンピューターやローカルネットワーク上のトラッカー（<x1/>、<x2/>、<x3/>など）に連絡しないため、トレントがMDMに、それが存在するネットワークにリクエストを送信させることはできません。"
-  },
   "4285db6a822d0753": {
    "source": "<g1><g2>Yes</g2></g1><g3>MIT</g3>",
    "text": "<g1><g2>はい</g2></g1><g3>MIT</g3>"
@@ -2662,6 +2662,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>ダウンロード</g1>: Windowsインストーラー、ポータブルzip、プレーンzip、ブラウザ拡張機能単体（Chromiumブラウザ用zip、Firefox用<x2/>、常にアプリのバージョン）、および<g3>試用版macOSとLinux</g3>: ユニバーサル<x4/>とAppImage、<x5/>、<x6/>、<x7/>。これらは当社でテストされていないため<x8/>とマークされています。これらでは、MDMはChrome、Edge、Brave、Vivaldi、Firefoxに接続し、トレイアイコンを持ち、システムのライトまたはダークの外観に従い、システムのフォントとffmpegを使用します。これらの動作についてご意見をお聞かせください。"
   },
+  "465d49cb6ee5a2c9": {
+   "source": "Torrent commands",
+   "text": "トレントコマンド"
+  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>DNS over HTTPS</g1>（デフォルト）または <g2>DNS over TLS</g2>：暗号化されているため、途中で誰も検索した名前を見たり変更したりできません。"
@@ -2761,6 +2765,10 @@
   "49cf385ddabeea71": {
    "source": "<g1>PAC</g1><g2>proxy scripts</g2>",
    "text": "<g1>PAC</g1><g2>プロキシスクリプト</g2>"
+  },
+  "49e22ffa819f63a8": {
+   "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
+   "text": "リスト内のトレントを右クリックし、<g1>トレント</g1>を開きます。"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3346,6 +3354,10 @@
    "source": "Why IDM users switch",
    "text": "IDMユーザーが乗り換える理由"
   },
+  "5c676fc93de738f4": {
+   "source": "<g1>Copy magnet link</g1> — copies a magnet link for the torrent, with its trackers.",
+   "text": "<g1>マグネットリンクをコピー</g1> — トレントのマグネットリンクを、そのトラッカーと共にコピーします。"
+  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>課題を選ぶ</g1><g2>公開されているものを見て、手伝ってください。</g2>"
@@ -3822,6 +3834,10 @@
    "source": "Queue downloads for later →",
    "text": "ダウンロードをキューに入れて後で実行する →"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>ブラウザのリクエストからのプロキシ/SOCKSを使用…</g1> — デフォルトでオン。MDMがブラウザから取得するダウンロードは、ブラウザがそのために使用したプロキシを経由します。これは、VPNまたはプロキシ拡張機能が設定したもの、ブラウザ自身の手動プロキシ、またはそのプロキシ自動設定スクリプトです。これがないと、ダウンロードはユーザー自身のIPアドレスから行われ、VPNの国またはそのIPアドレスに限定されたコンテンツは失敗します。ブラウザ拡張機能はそのプロキシを読み取り、各ダウンロードとともにMDMに渡します。"
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "はい。<g1>オプション → プロキシ / SOCKS</g1>で、HTTPおよびSOCKSプロキシ、およびプロキシ自動設定（PAC）スクリプトに対応しています。<g2>オプション</g2>を参照してください。"
@@ -4233,10 +4249,6 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>上</g1> / <g2>下</g2>、<g3>左</g3> / <g4>右</g4>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>ブラウザのリクエストからプロキシ/SOCKS を使用する…</g1> — 既定でオンになっています。<g2>プロキシ/SOCKS なし</g2>の場合、ブラウザと同様に、MDM は Windows のプロキシ設定を使用します。"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4889,6 +4901,10 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "開始時刻になるとキューは自動的に開始されます。朝には、完了したファイルはカテゴリの<g1>完了</g1>の下にあります。"
+  },
+  "846220c931fb3c98": {
+   "source": "A <x1/> file's web address works too: paste it into <g2>Add URL</g2> or <g3>Torrent</g3>, or let the browser hand the download over. MDM fetches the file, with the browser's cookies when the browser sent it, and <g4>Add torrent</g4> shows what it holds. The browser hands <x5/> downloads over when <x6/> is in <g7>Options → File types</g7>, or when you choose <g8>Download with Mister Download Manager</g8> on the link. A command line with <x9/> (silent) saves the <x10/> file itself, like any file. MDM fetches at most 10 MB: anything bigger isn't a <x11/> file.",
+   "text": "<x1/>ファイルのウェブアドレスも使えます。<g2>URL を追加</g2>または<g3>トレント</g3>に貼り付けるか、ブラウザにダウンロードを渡させます。MDMは、ブラウザが送信した場合はブラウザのCookieと共にファイルをフェッチし、<g4>トレントを追加</g4>にその内容が表示されます。ブラウザは、<g7>オプション → ファイルの種類</g7>に<x6/>がある場合、またはリンクで<g8>Mister Download Manager でダウンロード</g8>を選択した場合に<x5/>ダウンロードを渡します。<x9/>（サイレント）付きのコマンドラインは、他のファイルと同様に<x10/>ファイル自体を保存します。MDMは最大10MBまでフェッチします。それより大きいものは<x11/>ファイルではありません。"
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5546,10 +5562,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "セットアップでMDMをインストールし、<g1>ブラウザー統合をセットアップする（Chrome、Edge、Brave、Firefox）</g1>にチェックを入れたままにします。これによりヘルパーが登録されます。（ポータブル版ではこれができません。<g2>ポータブルモード</g2>を参照してください。）"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "その権限と理由：<g1>ダウンロード</g1>はダウンロードを表示して引き渡すため。<g2>クッキー</g2>はサインインしたダウンロードがMDMで機能するため。<g3>ネイティブメッセージング</g3>はMDMと通信するため。<g4>コンテキストメニュー</g4>は右クリック項目用。<g5>ストレージ</g5>は設定用。<g6>ウェブ要求</g6>は送信されたフォームと読み込まれたビデオストリームを見るため（何も変更しません）。<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他のChromiumブラウザ）は、ブラウザが開くファイル（PDFなど）を代わりにダウンロードさせるため、MDMが処理するタイプの場合。Firefoxでは、<g8>webRequestBlocking</g8>がそれを行います。<g9>スクリプト</g9>は、要求時にページのリンクを読み取るため、および拡張機能がインストールされたときに既に開いているページにビデオボタンを追加するため。すべてのサイトへのアクセスは、ダウンロードとビデオがどのサイトからでも来る可能性があるためです。"
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "クリックしたアドレスと、リダイレクトによって到達したアドレスの両方がチェックされるため、除外したサイトは、別のサーバーに送信された場合でも除外されたままになります。それ以外のすべてはブラウザーに残されます。オプションの変更は1分以内にブラウザーに反映されます。再起動する必要はありません。"
@@ -5581,10 +5593,6 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "他の人が見ることができるもの"
-  },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "リストが表示されるまでお待ちください。各解像度がサイズとともに表示され、最適なものが最初に表示されます。次に、サイト独自の形式（サイトが提供するM4AまたはWebM）の<g1>音声のみ</g1>、そして最適な可変ビットレート（VBR）および320、256、192、128 kbpsの<g2>音声のみ MP3</g2>が表示されます。"
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -5902,6 +5910,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>コマンドラインと自動化</g2></g1> — IDMのコマンドラインスイッチ、<x3/> ツール、および他のプログラムが使用できる自動化API。"
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "ブラウザがそのダウンロードにプロキシを使用している場合（VPNまたはプロキシ拡張機能、あるいはブラウザの設定で設定されている場合）、拡張機能は<g1>プロキシのアドレス</g1>、または<g2>プロキシ自動設定スクリプト</g2>を渡すため、MDMは同じプロキシを介してダウンロードします。プロキシのログイン情報を読み取ったり渡したりすることは決してありません。プロキシがログイン情報を要求したことのみを記録し、MDMがそのプロキシを使用できないことを通知できるようにします。"
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "ホーム"
@@ -5994,6 +6006,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "MDMが実行されている状態で<x1/>を実行してください。"
   },
+  "a43f559b321cf278": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
+   "text": "トレントは、MDMがピアを要求するトラッカーの名前です。MDMは、お使いのコンピューターやローカルネットワーク（<x1/>、<x2/>、<x3/>など）上のトラッカーには接続しないため、トレントによってMDMがそのネットワークにリクエストを送信することはありません。<g4>トラッカーの追加...</g4>も同じルールに従います。そのようなアドレスは拒否され、その理由が通知されます。これは、決して要求されないアドレスを保持するよりも良いからです。"
+  },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "一時停止または中断されたダウンロードを、隣にある<x1/>ファイルから再開します。"
@@ -6069,6 +6085,10 @@
   "a65e3187925f9f37": {
    "source": "256 KiB file over a fast local link",
    "text": "高速ローカルリンク経由の256 KiBファイル"
+  },
+  "a66ea1a086f2705b": {
+   "source": "<g1>Add trackers...</g1> — adds trackers, one address a line (<x2/>, <x3/> or <x4/>). They are kept with the torrent, after the ones it has, and the <g5>Trackers</g5> tab shows them. A tracker on your computer or your local network is refused: MDM never contacts those (<g6>why</g6>).",
+   "text": "<g1>トラッカーの追加...</g1> — トラッカーを追加します（1行に1アドレス、<x2/>、<x3/>、または<x4/>）。それらはトレントと共に、既存のものの後に保持され、<g5>トラッカー</g5>タブに表示されます。お使いのコンピュータまたはローカルネットワーク上のトラッカーは拒否されます。MDMはそれらに連絡することはありません（<g6>理由</g6>）。"
   },
   "a67015ec28a9f976": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the…",
@@ -6377,10 +6397,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM は、ウェブブラウザと同じように、指定されたものをダウンロードします。ただし、より高速で、より詳細な制御が可能です。ソフトウェアやアップデート、ドキュメント、クラウドストレージからの自分のファイル、保存が許可されている動画や音楽、作成者が共有する Linux イメージやその他のトレントなど、ダウンロードする権利があるものすべてを日常的にダウンロードするために作られています。"
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "動画をダウンロードします。<x1/>は<x2/>から品質セレクターを受け取ります（<x3/> = 最良の単一ファイル、<x4/>、<x5/>、<x6/>、または<x7/> = そのビットレートのMP3形式の音声、<x8/> = 最良の可変ビットレートの音声。MP3にはffmpegが必要です）。<x9/>は字幕をその横に保存します。<x10/>からの言語コード（<x11/>）、またはアップローダーが提供したすべての字幕には<x12/>を使用します。<x13/>は代わりにサイトの自動キャプションを使用します。<x14/>はそれらを動画に埋め込みます（ffmpeg、MP4またはMKVが必要です）。"
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6777,6 +6793,10 @@
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "セットアップによるインストール"
+  },
+  "b88bda5a82ad2252": {
+   "source": "Each command's outcome goes into the torrent's event log; hover its <g1>Status</g1> cell in the list to read it.",
+   "text": "各コマンドの結果はトレントのイベントログに入ります。リストの<g1>状態</g1>セルにカーソルを合わせると読むことができます。"
   },
   "b89df2939f6581e5": {
    "source": "Properties",
@@ -7358,6 +7378,10 @@
    "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
    "text": "MDM はトレントを読み取り、そのファイルをフォルダーツリーとして表示します。<x1/> ファイルは一度に読み取られます。マグネットリンクは、まず他のピアからファイルリストを取得する必要があり、これには1〜2分かかる場合があります。"
   },
+  "c991e64b857c5509": {
+   "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
+   "text": "<g1>再アナウンス</g1> — 次のラウンドを待つ代わりに、今すぐトレントのトラッカーにピアを再度要求します。トレントが実行中または共有中に機能します。"
+  },
   "c9d39512b1b393af": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
    "text": "Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi、およびHeliumなどのそれらをベースにしたブラウザは、MDMブラウザ拡張機能を通じて動作します。ZenやLibreWolfも含むFirefoxのサポートは、現在開発中でテスト中です。この拡張機能は、ダウンロードをクッキーとリファラーと共にMDMに渡し、サインインが必要なファイルもダウンロードできるようにします。また、右クリックメニューに<g1>Mister Download Manager でダウンロード</g1>を追加し、動画の上に<g2>動画をダウンロード</g2>ボタンを表示します。<g3>ブラウザ統合</g3>をご覧ください。"
@@ -7409,10 +7433,6 @@
   "cb14776e505e0089": {
    "source": "Can I download without the browser extension?",
    "text": "ブラウザ拡張機能なしでダウンロードできますか？"
-  },
-  "cb390e5dc0af4469": {
-   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>.",
-   "text": "<g1>ファイル</g1> — 各ファイル、そのサイズ、完了した割合。チェックを外したファイルは<g2>スキップ済み</g2>と表示されます。"
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -7974,6 +7994,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "はい。MDMはIDMでおなじみのコマンドラインスイッチに対応しており、ターミナルからダウンロードするためのmisterdownloadmanager-cliが付属しています。また、ダウンロードのリスト表示、一時停止、開始、削除ができる、トークンで保護されたローカルの自動化APIも備えています。このAPIは、有効にするまでオフになっています。コマンドラインと自動化をご覧ください。"
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "VPN拡張機能が自身に与えるログインを要求するプロキシは共有できません。他のプログラムはそのログインを持たないためです。その場合、ダウンロードはプロキシなしで進行するのではなく、停止してその旨を伝えます。VPN自身のアプリを使用するか、<g1>ネットワークアダプター</g1>でそのアダプターを選択してください。"
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "ポータブル版のサーバーは、自身のフォルダーからポータブル版のMDMを自動的に見つけます。"
@@ -8466,10 +8490,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "サイトのダウンロードを永続的にブラウザーに残すには、ツールバーボタンの<g1>決してダウンロードを取得しない</g1>を使用するか、サイトを<g2>以下のサイトからの自動ダウンロードを開始しない</g2>に追加します。ファイルの種類をブラウザーに残すには、ファイルの種類リストから削除します。"
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "音声のみの選択（<g1>音声のみ</g1>、MP3）には字幕はありません。"
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windowsの「設定」→「アプリ」を開き、「Mister Download Manager」を見つけて「アンインストール」を選択してください。アンインストーラーは、ダウンロードリストと設定も削除するかどうかを尋ねます。ダウンロードしたファイルは一切変更されません。ポータブル版の場合は、そのフォルダーを削除してください。"
@@ -8593,6 +8613,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>何が起こったか:</g1> エラーと、MDM のコード内でそれが起こった場所。"
+  },
+  "ee9034f4bfe810cf": {
+   "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
+   "text": "<g1>ファイルの再確認</g1> — トレントのファイルのすべてのピースを読み取り、チェックします。例えば、ファイルを移動した後やディスクにエラーがあった場合などです。実行中のトレントはその後も続行し、不足しているものをフェッチします。停止中のトレントは停止したままです。イベントログには見つかった量が示されます。破損したピースを持つ完了したトレントは停止状態になり、再開するとそのピースが再度フェッチされます。"
   },
   "eea0683af36fb9e8": {
    "source": "Something not working? We'd like to know.",
@@ -9205,54 +9229,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "ダウンロードアドレスまたはファイル名。"
-  },
-  "045b50361ed710f2": {
-   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
-   "text": "Firefoxでは、MDMはブラウザ自身のファイルリクエストが使用したプロキシ（VPN拡張機能が各リクエストに選択するものを含む）を認識します。Chrome、Edge、Brave、Opera、Vivaldiでは、ブラウザのプロキシ設定を認識します。"
-  },
-  "05bd7f3cbec0de04": {
-   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
-   "text": "ブラウザがプロキシを使用せず、<g1>プロキシ/SOCKS なし</g1>が選択されている場合、MDMはブラウザと同様にWindowsのプロキシ設定を使用します。"
-  },
-  "19bbae838750029a": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "その権限と理由：ダウンロードを表示してMDMに渡すための<g1>downloads</g1>；MDMでサインインしたダウンロードが機能するための<g2>cookies</g2>；MDMと通信するための<g3>nativeMessaging</g3>；右クリック項目用の<g4>contextMenus</g4>；設定用の<g5>storage</g5>；送信されたフォームと読み込まれたビデオストリームを見るための<g6>webRequest</g6>（何も変更しません）；ブラウザが開くファイル（PDFなど）をMDMが処理するタイプの場合に代わりにダウンロードさせるための<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他のChromiumブラウザ）；Firefoxでは<g8>webRequestBlocking</g8>がそれを行います；要求されたときにページのリンクを読み取り、拡張機能がインストールされたときにすでに開いているページにビデオボタンを追加するための<g9>scripting</g9>；ブラウザが使用するプロキシを読み取り、VPNまたはプロキシ拡張機能の背後にあるブラウザからのダウンロードもそれを通るようにするための<g10>proxy</g10>（ブラウザのプロキシを変更することはありません）；ダウンロードやビデオはどのサイトからでも来る可能性があるため、すべてのサイトへのアクセス。"
-  },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "すべての操作はキーボードから実行でき、MDMはスクリーンリーダー（WindowsのナレーターやNVDAなど）に対応しています。ウィンドウ、ダイアログ、メニューは、各コントロールとその状態をスクリーンリーダーに伝え、ダウンロードリストは各ダウンロードの名前、ステータス、サイズを読み上げます。"
-  },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
-  "690e87be87eb0c8f": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
-   "text": "<g1>ブラウザのリクエストからのプロキシ/SOCKSを使用…</g1> — デフォルトでオン。MDMがブラウザから取得するダウンロードは、ブラウザがそのために使用したプロキシを経由します。これは、VPNまたはプロキシ拡張機能が設定したもの、ブラウザ自身の手動プロキシ、またはそのプロキシ自動設定スクリプトです。これがないと、ダウンロードはユーザー自身のIPアドレスから行われ、VPNの国またはそのIPアドレスに限定されたコンテンツは失敗します。ブラウザ拡張機能はそのプロキシを読み取り、各ダウンロードとともにMDMに渡します。"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5を使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにします。プロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア検出、受信接続、UDPトラッカーをオフにします。そのスイッチがオンの間にプロキシがプロキシ / SOCKSからなくなると、トレントはそれを回避するのではなく、開始されません。"
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "<g1>すべて</g1>を別のネットワーク経由でルーティングするには、コンピューター全体でVPNを使用してください。MDMは、Windowsでトレントを1つのネットワークアダプターに結び付けることはできません。"
-  },
-  "a1280a73f600eb05": {
-   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
-   "text": "ブラウザがそのダウンロードにプロキシを使用している場合（VPNまたはプロキシ拡張機能、あるいはブラウザの設定で設定されている場合）、拡張機能は<g1>プロキシのアドレス</g1>、または<g2>プロキシ自動設定スクリプト</g2>を渡すため、MDMは同じプロキシを介してダウンロードします。プロキシのログイン情報を読み取ったり渡したりすることは決してありません。プロキシがログイン情報を要求したことのみを記録し、MDMがそのプロキシを使用できないことを通知できるようにします。"
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "プレイリストとミックス"
-  },
-  "db74b9137912e0a2": {
-   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
-   "text": "VPN拡張機能が自身に与えるログインを要求するプロキシは共有できません。他のプログラムはそのログインを持たないためです。その場合、ダウンロードはプロキシなしで進行するのではなく、停止してその旨を伝えます。VPN自身のアプリを使用するか、<g1>ネットワークアダプター</g1>でそのアダプターを選択してください。"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "最大8接続（<x1/>、1～128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止、<x3/>で再開します。<x4/>は完了したファイルをチェックします。オプションで名前を指定して（<x5/>）Hex MD5、SHA-1、SHA-256、SHA-512、またはCRC32をチェックします。<x6/>はDNSを選択します。<x7/>（デフォルト）、サービスと問い合わせ方法（<x8/>、<x9/>、<x10/>、<x11/>、<x12/>）、DNSサーバーのアドレス（<x13/>）、またはDNS-over-HTTPSアドレスです。システムのDNSには決してフォールバックしません。"
   }
  }
 }

@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} fail
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n} fail dipilih untuk dimuat turun
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} dipilih
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n} penjejak ditambahkan
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	pelayan pada komputer ini menghantar muat turun ke tempat lain, yang tidak akan melalui {adapter}
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	Penjejak pada komputer ini atau rangkaian tempatan tidak pernah dihubungi: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Perihal Mister Download Manager
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Tambah torrent
+#. window title in the Add torrent window
+#, machine
+	Add trackers	Tambah penjejak
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	Tanya dengan:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	Meminta penjejak untuk rakan sebaya sekali lagi
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Meminta senarai fail daripada rakan sebaya. Pautan magnet mungkin mengambil masa seminit atau dua.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Semak sambungan anda, kemudian cuba lagi, atau dapatkannya kemudian daripada tetingkap video.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	Disemak: {have} daripada {total} ada
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	Menyemak setiap bahagian sekali lagi
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	Masukkan nama untuk baris gilir baharu yang akan
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	Masukkan alamat penjejak, satu baris
 #. window title in a dialog box
 #, machine
 	Enter new address to download	Masukkan alamat baharu untuk dimuat turun
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	Teruskan perkongsian torrent selepas selesai
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	Disimpan dengan torrent, selepas penjejak yang dimilikinya.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Pintasan papan kekunci
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Tiada proksi/socks
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	Tiada penjejak ditambahkan: ia sudah memilikinya
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	Bukan jumlah hasil tambah yang boleh dibaca ini
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	Bukan alamat penjejak: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	ruang cakera tidak mencukupi: {needed} diperlukan, {free} tersedia
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	Sedia: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	Pengumuman semula gagal: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	Menerima data...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	Semakan semula gagal: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	jumlah semak {algorithm} fail tidak sepadan (data disimpan; muat turun semula)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	Fail tidak dapat dipilih: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	torrent tiada lagi
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	Penjejak tidak dapat ditambahkan: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	Penjejak
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	Penjejak untuk ditambahkan pada {name}, satu alamat sebaris:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Kadar pemindahan
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	Tambah muat turun kelompok daripada &pap
 #, machine
 menu	Add category	Tambah kategori
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	Tambah penjejak...
+#. menu command in the main window
 #, machine
 menu	Arrange files	Susun fail
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	Semak kemas &kini...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	Kosongkan semua &penapis
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	Salin pautan magnet
 #. menu command in the main window
 #, machine
 menu	Create new queue	Cipta baris gilir baharu
@@ -3705,6 +3780,14 @@ menu	Properties	Sifat
 #, machine
 menu	R&edownload	Muat &turun semula
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	Umumkan semula
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	Semak semula fail
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	Muat turun semula
@@ -3791,6 +3874,10 @@ menu	To &text file...	Ke fail &teks...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	Bar alat
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	Torrent
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

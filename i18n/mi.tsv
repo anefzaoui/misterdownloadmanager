@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} kōnae
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	Kua kōwhiria te kōnae {n} hei tikiake
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} i kōwhiria
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	Kua tāpirihia te kaiwhai {n}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	i tukuna e tētahi tūmau i tēnei rorohiko te tikiake ki wāhi kē, e kore e haere mā {adapter}
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	Kāore rawa he kaiwhai i tēnei rorohiko, i te whatunga ā-rohe rānei e whakapā atu: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mō Mister Download Manager
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Tāpiri awa
+#. window title in the Add torrent window
+#, machine
+	Add trackers	Tāpiri kaiwhai
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	Pātai ki a ia mā:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	Kua tono anō i ngā kaiwhai mō ngā hoa
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	E pātai ana ki ngā hoa mō te rārangi kōnae. Ka roa pea ngā hononga autō i te meneti kotahi, e rua rānei.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Tirohia tō hononga, kātahi ka ngana anō, ka tiki rānei i muri mai i te matapihi ataata.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	Kua tirohia: {have} o {total} kei reira
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	E tirohia anō ana ia wāhanga
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	Whakaurua he ingoa mō te rārangi hou ka
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	Whakaurua te wāhitau o tētahi kaiwhai, kotahi te rārangi
 #. window title in a dialog box
 #, machine
 	Enter new address to download	Whakaurua he wāhitau hou hei tikiake
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	Kia tūhura tonu i ngā awa i muri i te otinga
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	Ka puritia ki te awa, i muri i ngā kaiwhai kei a ia.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Poto papapātuhi
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Kāore he takawaenga/socks
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	Kāore he kaiwhai i tāpirihia: kei a ia kē
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	Ehara i te takitaki ka taea te pānui e tēnei
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	Ehara i te wāhitau kaiwhai: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	kāore i rahi te wāhi kōpae: {needed} e hiahiatia ana, {free} e wātea ana
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	Kua rite: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	I rahua te panui anō: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	E whiwhi raraunga ana...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	I rahua te tirotiro anō: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	kāore te {algorithm} checksum o te kōnae e ōrite (kei te puritia ngā raraunga; tikina anō)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	Kāore i taea te kōwhiri i ngā kōnae: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	kāore te awa i reira
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	Kāore i taea te tāpiri i ngā kaiwhai: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	Ngā Kaitātari
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	Ngā kaiwhai hei tāpiri ki {name}, kotahi te wāhitau i te rārangi:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Auau whakawhiti
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	Tāpiri tikiake puranga mai i te &papato
 #, machine
 menu	Add category	Tāpiri kāwai
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	Tāpiri kaiwhai...
+#. menu command in the main window
 #, machine
 menu	Arrange files	Whakaraupapa kōnae
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	Tirohia ngā &whakahou...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	Whakawātea ngā &tātari katoa
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	Tārua hononga autō
 #. menu command in the main window
 #, machine
 menu	Create new queue	Waihanga rārangi hou
@@ -3705,6 +3780,14 @@ menu	Properties	Ngā Āhuatanga
 #, machine
 menu	R&edownload	Tī&taha anō
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	Panui anō
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	Tirohia anō ngā kōnae
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	Tītaha anō
@@ -3791,6 +3874,10 @@ menu	To &text file...	Ki te kōnae &kuputuhi...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	Paemahi
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	Awa
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

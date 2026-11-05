@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} ಫೈಲ್|{n} ಫೈಲ್‌ಗಳು
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n} ಫೈಲ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ|{n} ಫೈಲ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ|{n} ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n} ಟ್ರ್ಯಾಕರ್ ಸೇರಿಸಲಾಗಿದೆ|{n} ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿರುವ ಸರ್ವರ್ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಬೇರೆಡೆಗೆ ಕಳುಹಿಸಿದೆ, ಅದು {adapter} ಮೂಲಕ ಹೋಗುವುದಿಲ್ಲ
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಅಥವಾ ಸ್ಥಳೀಯ ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿರುವ ಟ್ರ್ಯಾಕರ್ ಅನ್ನು ಎಂದಿಗೂ ಸಂಪರ್ಕಿಸಲಾಗುವುದಿಲ್ಲ: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ಬಗ್ಗೆ
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	ಟೊರೆಂಟ್ ಸೇರಿಸಿ
+#. window title in the Add torrent window
+#, machine
+	Add trackers	ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸೇರಿಸಿ
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	ಇದರೊಂದಿಗೆ ಕೇಳಿ:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	ಟ್ರ್ಯಾಕರ್‌ಗಳಿಂದ ಪೀರ್‌ಗಳನ್ನು ಮತ್ತೆ ಕೇಳಲಾಗಿದೆ
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ಫೈಲ್ ಪಟ್ಟಿಗಾಗಿ ಪೀರ್‌ಗಳನ್ನು ಕೇಳಲಾಗುತ್ತಿದೆ. ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳು ಒಂದು ಅಥವಾ ಎರಡು ನಿಮಿಷ ತೆಗೆದುಕೊಳ್ಳಬಹುದು.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ, ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ, ಅಥವಾ ನಂತರ ವೀಡಿಯೊ ವಿಂಡೋದಿಂದ ಅವುಗಳನ್ನು ಪಡೆಯಿರಿ.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	ಪರಿಶೀಲಿಸಲಾಗಿದೆ: {total} ರಲ್ಲಿ {have} ಇದೆ
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	ಪ್ರತಿ ಭಾಗವನ್ನು ಮತ್ತೆ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	ಹೊಸ ಕ್ಯೂಗೆ ಹೆಸರನ್ನು ನಮೂದಿಸಿ
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	ಟ್ರ್ಯಾಕರ್‌ನ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ, ಒಂದು ಸಾಲಿಗೆ ಒಂದು
 #. window title in a dialog box
 #, machine
 	Enter new address to download	ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಹೊಸ ವಿಳಾಸವನ್ನು ನಮೂದಿಸಿ
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	ಟೊರೆಂಟ್‌ಗಳು ಮುಗಿದ ನಂತರವೂ ಹಂಚಿಕೊಳ್ಳಿ
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	ಟೊರೆಂಟ್‌ನೊಂದಿಗೆ ಇರಿಸಲಾಗಿದೆ, ಅದು ಹೊಂದಿರುವ ಟ್ರ್ಯಾಕರ್‌ಗಳ ನಂತರ.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	ಕೀಬೋರ್ಡ್ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳು
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	ಯಾವುದೇ ಪ್ರಾಕ್ಸಿ/SOCKS ಇಲ್ಲ
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	ಯಾವುದೇ ಟ್ರ್ಯಾಕರ್ ಸೇರಿಸಲಾಗಿಲ್ಲ: ಅದು ಈಗಾಗಲೇ ಅವುಗಳನ್ನು ಹೊಂದಿದೆ
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	ಇದು ಓದಬಹುದಾದ ಚೆಕ್‌ಸಮ್ ಅಲ್ಲ
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	ಟ್ರ್ಯಾಕರ್ ವಿಳಾಸವಲ್ಲ: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	ಸಾಕಷ್ಟು ಡಿಸ್ಕ್ ಸ್ಥಳವಿಲ್ಲ: {needed} ಅಗತ್ಯವಿದೆ, {free} ಲಭ್ಯವಿದೆ
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	ಸಿದ್ಧವಾಗಿದೆ: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	ಮರುಘೋಷಣೆ ವಿಫಲವಾಗಿದೆ: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	ಡೇಟಾವನ್ನು ಸ್ವೀಕರಿಸಲಾಗುತ್ತಿದೆ...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	ಮರುಪರಿಶೀಲನೆ ವಿಫಲವಾಗಿದೆ: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	ಫೈಲ್‌ನ {algorithm} ಚೆಕ್‌ಸಮ್ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ (ಡೇಟಾವನ್ನು ಇರಿಸಲಾಗಿದೆ; ಅದನ್ನು ಮರು-ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	ಫೈಲ್‌ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	ಟೊರೆಂಟ್ ಇನ್ನು ಮುಂದೆ ಇಲ್ಲ
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	ಟ್ರ್ಯಾಕರ್‌ಗಳು
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	{name} ಗೆ ಸೇರಿಸಲು ಟ್ರ್ಯಾಕರ್‌ಗಳು, ಒಂದು ಸಾಲಿಗೆ ಒಂದು ವಿಳಾಸ:
 #. text in a download's progress window
 #, machine
 	Transfer rate	ವರ್ಗಾವಣೆ ದರ
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್�
 #, machine
 menu	Add category	ವರ್ಗವನ್ನು ಸೇರಿಸಿ
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	ಟ್ರ್ಯಾಕರ್‌ಗಳನ್ನು ಸೇರಿಸಿ...
+#. menu command in the main window
 #, machine
 menu	Arrange files	ಫೈಲ್‌ಗಳನ್ನು ವ್ಯವಸ್ಥೆಗೊಳಿಸಿ
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪ�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	ಎಲ್ಲಾ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ(&f)
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್ ನಕಲಿಸಿ
 #. menu command in the main window
 #, machine
 menu	Create new queue	ಹೊಸ ಕ್ಯೂ ರಚಿಸಿ
@@ -3705,6 +3780,14 @@ menu	Properties	ಪ್ರಾಪರ್ಟೀಸ್
 #, machine
 menu	R&edownload	ಮ&ತ್ತೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	ಮರುಘೋಷಿಸಿ
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	ಫೈಲ್‌ಗಳನ್ನು ಮರುಪರಿಶೀಲಿಸಿ
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	ಮತ್ತೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ
@@ -3791,6 +3874,10 @@ menu	To &text file...	ಪಠ್ಯ ಫೈಲ್‌ಗೆ(&t)...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	ಟೂಲ್‌ಬಾರ್
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	ಟೊರೆಂಟ್
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

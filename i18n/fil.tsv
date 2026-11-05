@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} file|{n} (na) file
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n} file ang piniling i-download|{n} na file ang piniling i-download
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} napili|{n} napili
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n} tracker ang idinagdag|{n} na tracker ang idinagdag
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	Nagpadala ang isang server sa computer na ito ng download sa ibang lugar, na hindi dadaan sa {adapter}
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	Hindi kailanman kinokontak ang tracker sa computer na ito o sa lokal na network: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Tungkol sa Mister Download Manager
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Magdagdag ng torrent
+#. window title in the Add torrent window
+#, machine
+	Add trackers	Magdagdag ng mga tracker
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	Tanungin ito gamit ang:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	Muling hiniling ang mga tracker para sa mga peer
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Humihingi ng listahan ng file sa mga peer. Maaaring tumagal ng isa o dalawang minuto ang mga magnet link.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Suriin ang iyong koneksyon, pagkatapos ay subukang muli, o kunin ang mga ito sa ibang pagkakataon mula sa window ng video.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	Sinuri: {have} ng {total} doon
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	Sinusuri muli ang bawat piraso
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	Maglagay ng pangalan para sa bagong queue na magiging
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	Ilagay ang address ng tracker, isa bawat linya
 #. window title in a dialog box
 #, machine
 	Enter new address to download	Maglagay ng bagong address para i-download
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	Ipagpatuloy ang pagbabahagi ng mga torrent pagkatapos nilang matapos
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	Pinananatili sa torrent, pagkatapos ng mga tracker na mayroon ito.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Mga keyboard shortcut
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Walang proxy/socks
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	Walang tracker na idinagdag: mayroon na ito
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	Hindi ito checksum na mababasa
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	Hindi address ng tracker: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	hindi sapat ang espasyo sa disk: kailangan ng {needed}, {free} ang libre
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	Handa na: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	Nabigo ang muling pag-anunsyo: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	Tumatanggap ng data...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	Nabigo ang muling pagsusuri: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	hindi tugma ang checksum na {algorithm} ng file (pinanatili ang data; i-download muli)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	Hindi mapili ang mga file: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	wala na ang torrent
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	Hindi maidagdag ang mga tracker: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	Mga Tracker
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	Mga tracker na idaragdag sa {name}, isang address bawat linya:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Rate ng paglilipat
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	Magdagdag ng batch download mula sa &cli
 #, machine
 menu	Add category	Magdagdag ng kategorya
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	Magdagdag ng mga tracker...
+#. menu command in the main window
 #, machine
 menu	Arrange files	Ayusin ang mga file
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	Tingnan kung may mga &update...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	I-clear ang lahat ng &filter
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	Kopyahin ang magnet link
 #. menu command in the main window
 #, machine
 menu	Create new queue	Gumawa ng bagong queue
@@ -3705,6 +3780,14 @@ menu	Properties	Mga Katangian
 #, machine
 menu	R&edownload	I-re&download
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	Muling i-anunsyo
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	Muling suriin ang mga file
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	I-redownload
@@ -3791,6 +3874,10 @@ menu	To &text file...	Sa &text file...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	Toolbar
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	Torrent
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

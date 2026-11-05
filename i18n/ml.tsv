@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} ഫയൽ|{n} ഫയലുകൾ
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n} ഫയൽ ഡൗൺലോഡ് ചെയ്യാൻ തിരഞ്ഞെടുത്തു|{n} ഫയലുകൾ ഡൗൺലോഡ് ചെയ്യാൻ തിരഞ്ഞെടുത്തു
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} തിരഞ്ഞെടുത്തു|{n} തിരഞ്ഞെടുത്തു
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n} ട്രാക്കർ ചേർത്തു|{n} ട്രാക്കറുകൾ ചേർത്തു
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	ഈ കമ്പ്യൂട്ടറിലെ ഒരു സെർവർ ഡൗൺലോഡ് മറ്റൊരിടത്തേക്ക് അയച്ചു, അത് {adapter} വഴി പോകില്ല
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	ഈ കമ്പ്യൂട്ടറിലോ ലോക്കൽ നെറ്റ്‌വർക്കിലോ ഉള്ള ഒരു ട്രാക്കറുമായി ഒരിക്കലും ബന്ധപ്പെടില്ല: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager-നെക്കുറിച്ച്
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	ടോറന്റ് ചേർക്കുക
+#. window title in the Add torrent window
+#, machine
+	Add trackers	ട്രാക്കറുകൾ ചേർക്കുക
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	ഇതുപയോഗിച്ച് ചോദിക്കുക:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	ട്രാക്കറുകളോട് പിയറുകൾക്കായി വീണ്ടും ആവശ്യപ്പെട്ടു
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ഫയൽ ലിസ്റ്റിനായി പിയറുകളോട് ചോദിക്കുന്നു. മാഗ്നറ്റ് ലിങ്കുകൾക്ക് ഒന്നോ രണ്ടോ മിനിറ്റ് എടുത്തേക്കാം.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	നിങ്ങളുടെ കണക്ഷൻ പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ പിന്നീട് വീഡിയോ വിൻഡോയിൽ നിന്ന് അവ നേടുക.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	പരിശോധിച്ചു: {total} ഉള്ളതിൽ {have} ഉണ്ട്
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	എല്ലാ ഭാഗങ്ങളും വീണ്ടും പരിശോധിക്കുന്നു
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	പുതിയ ക്യൂവിനായി ഒരു പേര് നൽകുക
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	ഒരു ട്രാക്കറിന്റെ വിലാസം ഓരോ വരിയിലും നൽകുക
 #. window title in a dialog box
 #, machine
 	Enter new address to download	ഡൗൺലോഡ് ചെയ്യാൻ പുതിയ വിലാസം നൽകുക
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	ടോറന്റുകൾ പൂർത്തിയാക്കിയ ശേഷം പങ്കിടുന്നത് തുടരുക
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	ടോറന്റിനൊപ്പം, അതിലുള്ള ട്രാക്കറുകൾക്ക് ശേഷം സൂക്ഷിച്ചു.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	കീബോർഡ് കുറുക്കുവഴികൾ
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	പ്രോക്സി/SOCKS ഇല്ല
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	ട്രാക്കർ ചേർത്തിട്ടില്ല: ഇതിനകം അതിലുണ്ട്
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	ഇതിന് വായിക്കാൻ കഴിയുന്ന ചെക്ക്സം അല്ല
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	ഒരു ട്രാക്കർ വിലാസമല്ല: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	മതിയായ ഡിസ്ക് സ്ഥലം ഇല്ല: {needed} ആവശ്യമാണ്, {free} സൗജന്യം
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	തയ്യാറാണ്: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	വീണ്ടും പ്രഖ്യാപിക്കുന്നത് പരാജയപ്പെട്ടു: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	ഡാറ്റ സ്വീകരിക്കുന്നു...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	വീണ്ടും പരിശോധിക്കുന്നത് പരാജയപ്പെട്ടു: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	ഫയലിന്റെ {algorithm} ചെക്ക്‌സം പൊരുത്തപ്പെടുന്നില്ല (ഡാറ്റ സൂക്ഷിച്ചിരിക്കുന്നു; അത് വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	ഫയലുകൾ തിരഞ്ഞെടുക്കാൻ കഴിഞ്ഞില്ല: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	ടോറന്റ് ഇനി അവിടെയില്ല
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	ട്രാക്കറുകൾ ചേർക്കാൻ കഴിഞ്ഞില്ല: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	ട്രാക്കറുകൾ
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	{name} എന്നതിലേക്ക് ചേർക്കേണ്ട ട്രാക്കറുകൾ, ഓരോ വരിയിലും ഒരു വിലാസം:
 #. text in a download's progress window
 #, machine
 	Transfer rate	കൈമാറ്റ നിരക്ക്
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	ക്ലിപ്പ്ബോർഡി�
 #, machine
 menu	Add category	വിഭാഗം ചേർക്കുക
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	ട്രാക്കറുകൾ ചേർക്കുക...
+#. menu command in the main window
 #, machine
 menu	Arrange files	ഫയലുകൾ ക്രമീകരിക്കുക
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	&അപ്‌ഡേറ്റുകൾക്കായ�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	എല്ലാ &ഫിൽട്ടറുകളും മായ്ക്കുക
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	മാഗ്നറ്റ് ലിങ്ക് പകർത്തുക
 #. menu command in the main window
 #, machine
 menu	Create new queue	പുതിയ ക്യൂ ഉണ്ടാക്കുക
@@ -3705,6 +3780,14 @@ menu	Properties	പ്രോപ്പർട്ടികൾ
 #, machine
 menu	R&edownload	വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക(&e)
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	വീണ്ടും പ്രഖ്യാപിക്കുക
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	ഫയലുകൾ വീണ്ടും പരിശോധിക്കുക
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	വീണ്ടും ഡൗൺലോഡ് ചെയ്യുക
@@ -3791,6 +3874,10 @@ menu	To &text file...	ടെക്സ്റ്റ് ഫയലിലേക്ക
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	ടൂൾബാർ
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	ടോറന്റ്
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

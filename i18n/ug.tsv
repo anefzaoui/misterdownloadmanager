@@ -40,9 +40,19 @@
 #, machine
 @plural	{n} file|{n} files	{n} ھۆججەت|{n} ھۆججەت
 #. count in the main window
+#. event log entry: the files ticked in a torrent's Files tab changed; {n} of them are ticked now
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file chosen to download|{n} files chosen to download	{n} ھۆججەت تاللانغان|{n} ھۆججەت تاللانغان
+#. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} تاللانغان|{n} تاللانغان
+#. count in the main window
+#. event log entry: trackers were added to the torrent
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker added|{n} trackers added	{n} ئىزلىگۈچى قوشۇلدى|{n} ئىزلىگۈچى قوشۇلدى
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -110,6 +120,10 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	بۇ كومپيۇتېردىكى مۇلازىمېتىر چۈشۈرۈشنى باشقا جايغا ئەۋەتتى، بۇ {adapter} ئارقىلىق ئۆتمەيدۇ
+#. text in the Add torrent window
+#. Add trackers: MDM never contacts a tracker on this computer or the local network
+#, machine
+	A tracker on this computer or the local network is never contacted: {line}	بۇ كومپيۇتېر ياكى يەرلىك تورغا جايلاشقان ئىزلىگۈچى بىلەن ھەرگىز ئالاقىلاشمايدۇ: {line}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ھەققىدە
@@ -164,6 +178,9 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	توررېنت قوشۇش
+#. window title in the Add torrent window
+#, machine
+	Add trackers	ئىزلىگۈچى قوشۇش
 #. text in playlistdlg.rs
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
@@ -270,6 +287,10 @@
 #. text in the Options window
 #, machine
 	Ask it with:	بۇنىڭ بىلەن سوراڭ:
+#. message or event log entry in the main window
+#. event log entry: the torrent's trackers were asked for peers again (Reannounce)
+#, machine
+	Asked the trackers for peers again	ئىزلىگۈچىلەردىن قايتا تورداش تەلەپ قىلىندى
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ھۆججەت تىزىملىكى ئۈچۈن تورداشلارنى سوراۋاتىدۇ. ماگنىت ئۇلىنىشلىرى بىر-ئىككى مىنۇت ۋاقىت كېتىشى مۇمكىن.
@@ -400,6 +421,14 @@
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	باغلىنىشىڭىزنى تەكشۈرۈپ قايتا سىناڭ ياكى كېيىن سىن كۆزنىكىدىن ئېلىڭ.
+#. message or event log entry in the main window
+#. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
+#, machine
+	Checked: {have} of {total} there	تەكشۈرۈلدى: {total} نىڭ {have} ى بار
+#. message or event log entry in the main window
+#. event log entry: a torrent's files are being read and checked again (Recheck)
+#, machine
+	Checking every piece again	ھەر بىر بۆلەك قايتا تەكشۈرۈلۈۋاتىدۇ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -814,6 +843,10 @@
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	يېڭى ئۆچرەتكە ئىسىم كىرگۈزۈڭ
+#. text in the Add torrent window
+#. Add trackers: OK with an empty box
+#, machine
+	Enter a tracker's address, one a line	ئىزلىگۈچىنىڭ ئادرېسىنى بىر قۇرغا بىرنى كىرگۈزۈڭ
 #. window title in a dialog box
 #, machine
 	Enter new address to download	چۈشۈرۈش ئۈچۈن يېڭى ئادرېس كىرگۈزۈڭ
@@ -1214,6 +1247,10 @@
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	تاماملانغاندىن كېيىن توررېنتنى داۋاملىق ھەمبەھىرلەش
+#. text in the Add torrent window
+#. Add trackers: under the box
+#, machine
+	Kept with the torrent, after the trackers it has.	تورېنت بىلەن ساقلىنىدۇ، ئۇنىڭدىكى ئىزلىگۈچىلەردىن كېيىن.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	كۇنۇپكا تاختىسى تېزلەتمىلىرى
@@ -1568,6 +1605,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	ۋاكالەتچى/SOCKS يوق
+#. message or event log entry in the main window
+#. event log entry: Add trackers changed nothing, the torrent had them all
+#, machine
+	No tracker added: it has them already	ئىزلىگۈچى قوشۇلمىدى: ئۇلار ئاللىبۇرۇن بار
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -1592,6 +1633,10 @@
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	بۇ ئوقۇيالايدىغان تەكشۈرۈش يىغىندىسى ئەمەس
+#. text in the Add torrent window
+#. Add trackers: a line that isn't a tracker's address (http, https or udp)
+#, machine
+	Not a tracker address: {line}	ئىزلىگۈچى ئادرېسى ئەمەس: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	دىسكا بوشلۇقى يېتەرلىك ئەمەس: {needed} كېرەك، {free} بوش
@@ -1860,6 +1905,11 @@
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
 	Ready: {list}	تەييار: {list}
+#. message or event log entry in the main window
+#. event log entry: Reannounce failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Reannounce failed: {error}	قايتا ئېلان قىلىش مەغلۇپ بولدى: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -1868,6 +1918,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Receiving data...	سانلىق مەلۇمات قوبۇل قىلىۋاتىدۇ...
+#. message or event log entry in the main window
+#. event log entry: Recheck failed, with the reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Recheck failed: {error}	قايتا تەكشۈرۈش مەغلۇپ بولدى: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -2469,6 +2524,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	ھۆججەتنىڭ {algorithm} تەكشۈرۈش يىغىندىسى ماس كەلمەيدۇ (سانلىق مەلۇمات ساقلاندى؛ قايتا چۈشۈرۈڭ)
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The files could not be chosen: {error}	ھۆججەتلەرنى تاللىغىلى بولمىدى: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2562,6 +2621,10 @@
 #. an error: the torrent is gone from the torrent session
 #, machine
 	the torrent is no longer there	توررېنت ئەمدى يوق
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The trackers could not be added: {error}	ئىزلىگۈچىلەرنى قوشقىلى بولمىدى: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2703,6 +2766,11 @@
 #. tab title: the servers that list the peers
 #, machine
 	Trackers	ئىزقوغلىغۇچىلار
+#. text in the Add torrent window
+#. Add trackers: above the box; {name} is the torrent's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Trackers to add to {name}, one address a line:	{name} غا قوشۇلىدىغان ئىزلىگۈچىلەر، ھەر بىر قۇرغا بىر ئادرېس:
 #. text in a download's progress window
 #, machine
 	Transfer rate	يۆتكەش سۈرئىتى
@@ -3540,6 +3608,10 @@ menu	Add batch download from &clipboard	چاپلاقتىن توپ ھالەتتە
 #, machine
 menu	Add category	تۈر قوشۇش
 #. menu command in the main window
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	Add trackers...	ئىزلىگۈچى قوشۇش...
+#. menu command in the main window
 #, machine
 menu	Arrange files	ھۆججەتلەرنى رەتلەش
 #. menu command in the main window
@@ -3608,6 +3680,9 @@ menu	Check for &updates...	يېڭىلانمىلارنى تەكشۈرۈش(&U)...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	Clear all &filters	بارلىق &سۈزگۈچلەرنى تازىلاش
+#. menu command in the main window
+#, machine
+menu	Copy magnet link	ماگنىت ئۇلىنىشىنى كۆچۈرۈش
 #. menu command in the main window
 #, machine
 menu	Create new queue	يېڭى ئۆچرەت قۇرۇش
@@ -3705,6 +3780,14 @@ menu	Properties	خاسلىقلار
 #, machine
 menu	R&edownload	قايتا چۈشۈرۈش(&e)
 #. menu command in the main window
+#. right-click → Torrent: ask the torrent's trackers for peers again now
+#, machine
+menu	Reannounce	قايتا ئېلان قىلىش
+#. menu command in the main window
+#. right-click → Torrent: read every piece of the torrent's files again and check it
+#, machine
+menu	Recheck files	ھۆججەتلەرنى قايتا تەكشۈرۈش
+#. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	قايتا چۈشۈرۈش
@@ -3791,6 +3874,10 @@ menu	To &text file...	تېكىست ھۆججىتىگە(&t)...
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
 menu	Toolbar	قورال بالدىقى
+#. menu command in the main window
+#. right-click menu: the submenu of a torrent's own commands
+#, machine
+menu	Torrent	تورېنت
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

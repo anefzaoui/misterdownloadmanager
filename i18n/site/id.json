@@ -166,10 +166,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Jawaban tentang Mister Download Manager: apakah gratis, apakah aman, perbandingannya dengan IDM, peramban, video, torrent, kecepatan, Mac dan Linux, dan lainnya."
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>Batasi pengunggahan untuk semua torrent hingga</g1> — mati secara default. Membatasi apa yang semua torrent Anda kirimkan bersama ke rekan lain, saat mereka mengunduh dan saat mereka berbagi. Batas unggah torrent sendiri, di jendela progresnya, berlaku di atasnya."
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Memulai antrean unduhan utama; <x1/>."
@@ -178,6 +174,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Jika beberapa berkas torrent sudah ada di folder, MDM akan bertanya sebelum menggunakannya. <g1>Ya</g1> akan menyimpannya untuk torrent: MDM akan memeriksa berkas-berkas tersebut, menyimpan yang cocok dengan torrent, dan mengunduh sisanya. Ini adalah cara untuk melanjutkan unduhan yang dimulai di tempat lain atau berbagi berkas yang sudah Anda miliki. <g2>Tidak</g2> (standar) akan kembali, sehingga Anda bisa memilih folder lain dan tidak ada berkas Anda yang ditimpa."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "Di Firefox, MDM melihat proksi yang digunakan oleh permintaan peramban itu sendiri untuk berkas, termasuk yang dipilih oleh ekstensi VPN untuk setiap permintaan. Di Chrome, Edge, Brave, Opera, dan Vivaldi, MDM melihat pengaturan proksi peramban."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM akan menolak torrent dengan nama berkas yang tidak dapat ditulis dengan aman oleh sistem Anda, memberitahukan nama berkas tersebut, dan tidak menulis apa pun."
@@ -185,10 +185,6 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Gratis dan sumber terbuka. Antarmuka yang sudah Anda kenal, mesin yang lebih cepat di baliknya, torrent dan video bawaan."
-  },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (sekitar 80 MB) menggabungkan video dan suaranya saat situs memisahkannya, yang dilakukan sebagian besar situs untuk kualitas yang lebih tinggi, dan mengubah suara menjadi MP3. Klik <g2>Instal ffmpeg</g2> saat MDM menawarkannya. MDM memeriksanya dengan checksum yang diterbitkan rilisnya."
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -249,6 +245,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> untuk Debian dan Ubuntu, <g2>.rpm</g2> untuk Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "Ketika peramban tidak menggunakan proksi, dan <g1>Tanpa proksi/socks</g1> dipilih, MDM menggunakan pengaturan proksi Windows, seperti yang dilakukan peramban."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -886,6 +886,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "Biarkan MDM berjalan. Menutup jendela utama tidak masalah: MDM tetap berjalan di baki sistem. Jangan gunakan <g1>Tugas → Keluar</g1>."
   },
+  "17c258da3c18b1a9": {
+   "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
+   "text": "File <x1/> yang diambil dari alamat web melewati pemeriksaan yang sama dengan file yang dibuka dari disk, dan MDM membaca paling banyak 10 MB darinya."
+  },
   "17eecf94501281e0": {
    "source": "For Fedora, openSUSE and RHEL: <x1/>.",
    "text": "Untuk Fedora, openSUSE, dan RHEL: <x1/>."
@@ -965,6 +969,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Jawaban singkat untuk pertanyaan yang paling sering diajukan, masing-masing dengan tautan ke panduan lengkap."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "Izinnya, dan alasannya: <g1>downloads</g1> untuk melihat dan menyerahkan unduhan; <g2>cookies</g2> agar unduhan yang masuk berfungsi di MDM; <g3>nativeMessaging</g3> untuk berkomunikasi dengan MDM; <g4>contextMenus</g4> untuk item klik kanan; <g5>storage</g5> untuk pengaturannya; <g6>webRequest</g6> untuk melihat formulir yang dikirimkan dan aliran video yang dimuat (tidak mengubah apa pun); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge, dan peramban Chromium lainnya) agar berkas yang akan dibuka peramban (PDF) diunduh sebagai gantinya, untuk jenis yang diambil MDM; di Firefox, <g8>webRequestBlocking</g8> melakukan hal itu; <g9>scripting</g9> untuk membaca tautan halaman saat Anda meminta, dan untuk menambahkan tombol video ke halaman yang sudah terbuka saat ekstensi diinstal; <g10>proxy</g10> untuk membaca proksi yang digunakan peramban, sehingga unduhan yang diambil dari peramban di balik VPN atau ekstensi proksi juga melewatinya (tidak pernah mengubah proksi peramban); akses ke semua situs karena unduhan dan video dapat berasal dari situs mana pun."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1790,10 +1798,6 @@
    "source": "The server",
    "text": "Server"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "Pilih salah satu. Tanpa ffmpeg, hanya kualitas yang disertai suaranya yang terdaftar, dan tidak ada MP3 (ffmpeg yang membuatnya)."
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "Kirim unduhan browser ke MDM →"
@@ -2150,6 +2154,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Hapus unduhan yang dipilih (tanya dulu)"
   },
+  "38c2835e2c5124e2": {
+   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>. Tick or untick a file's box to change what is downloaded, even while the torrent runs. At least one file stays ticked. If you untick everything still missing, the torrent finishes. If a finished torrent that isn't running gets a file back, it waits as stopped until you resume it, so nothing downloads unseen.",
+   "text": "<g1>File</g1> — setiap file, ukurannya, dan seberapa banyak yang sudah selesai. File yang tidak Anda centang akan menunjukkan <g2>Dilewati</g2>. Centang atau hapus centang kotak file untuk mengubah apa yang diunduh, bahkan saat torrent berjalan. Setidaknya satu file tetap tercentang. Jika Anda menghapus centang semua yang masih belum ada, torrent akan selesai. Jika torrent yang sudah selesai dan tidak berjalan mendapatkan file kembali, ia akan menunggu dalam keadaan berhenti sampai Anda melanjutkannya, sehingga tidak ada yang terunduh tanpa terlihat."
+  },
   "38d4b8570c497ca6": {
    "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
    "text": "Pengaturan Proksi / Socks di MDM adalah untuk unduhan web dan FTP. Torrent juga bisa memakai SOCKS5: atur proksi <x1/> di <g2>Opsi → Proksi / Socks</g2> dan nyalakan <g3>Gunakan proksi</g3> di Pengaturan torrent. Proksi hanya mencakup koneksi ke rekan dan pelacak web, jadi dengan itu MDM mematikan DHT, penemuan rekan lokal, koneksi masuk, dan pelacak UDP; MDM sama sekali tidak membuka soket UDP ke jaringan. Jika proksi tidak ada lagi dari Proksi / Socks saat sakelar itu menyala, torrent tidak akan mulai daripada melewatinya."
@@ -2197,10 +2205,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, zip portabel atau biasa"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>Buka tautan magnet dan file .torrent dengan Mister Download Manager</g1> — Windows kemudian membuka tautan magnet di browser Anda dan file <x2/> di Explorer dengan MDM. Ini hanya untuk akun Windows Anda; program yang Anda pilih di <g3>Buka dengan</g3> Windows tetap menjadi yang utama. Pengaturan dapat mengaktifkannya untuk Anda."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2518,10 +2522,6 @@
    "source": "The download list →",
    "text": "Daftar unduhan →"
   },
-  "427727d08d8b3a51": {
-   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
-   "text": "Torrent menamai pelacak yang diminta MDM untuk rekan. MDM tidak menghubungi pelacak di komputer Anda sendiri atau jaringan lokal Anda (<x1/>, <x2/>, <x3/> dan sejenisnya), sehingga torrent tidak dapat membuat MDM mengirim permintaan ke jaringan tempatnya berada."
-  },
   "4285db6a822d0753": {
    "source": "<g1><g2>Yes</g2></g1><g3>MIT</g3>",
    "text": "<g1><g2>Ya</g2></g1><g3>MIT</g3>"
@@ -2662,6 +2662,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>Unduhan</g1>: pemasang Windows, zip portabel dan zip biasa, ekstensi browser sendiri (zip untuk browser Chromium, <x2/> untuk Firefox, selalu versi aplikasi), dan <g3>macOS dan Linux untuk dicoba</g3>: <x4/> universal dan AppImage, <x5/>, <x6/> dan <x7/>, ditandai <x8/> karena belum diuji oleh kami. Di sana, MDM menghubungkan dirinya ke Chrome, Edge, Brave, Vivaldi, dan Firefox, memiliki ikon baki, mengikuti tampilan terang atau gelap sistem dan menggunakan font dan ffmpeg sistem. Beri tahu kami bagaimana mereka bekerja untuk Anda."
   },
+  "465d49cb6ee5a2c9": {
+   "source": "Torrent commands",
+   "text": "Perintah torrent"
+  },
   "4693601d27da4c66": {
    "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
    "text": "<g1>DNS melalui HTTPS</g1> (bawaan) atau <g2>DNS melalui TLS</g2>: terenkripsi, sehingga tidak ada seorang pun di tengah jalan yang melihat atau mengubah nama yang Anda cari."
@@ -2761,6 +2765,10 @@
   "49cf385ddabeea71": {
    "source": "<g1>PAC</g1><g2>proxy scripts</g2>",
    "text": "<g1>Skrip proksi</g1><g2>PAC</g2>"
+  },
+  "49e22ffa819f63a8": {
+   "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
+   "text": "Klik kanan torrent di daftar dan buka <g1>Torrent</g1>:"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3346,6 +3354,10 @@
    "source": "Why IDM users switch",
    "text": "Mengapa pengguna IDM beralih"
   },
+  "5c676fc93de738f4": {
+   "source": "<g1>Copy magnet link</g1> — copies a magnet link for the torrent, with its trackers.",
+   "text": "<g1>Salin tautan magnet</g1> — menyalin tautan magnet untuk torrent, beserta pelacaknya."
+  },
   "5cb4c44654c9c90d": {
    "source": "<g1>Pick an issue</g1><g2>See what's open and lend a hand.</g2>",
    "text": "<g1>Pilih masalah</g1><g2>Lihat apa yang terbuka dan bantu.</g2>"
@@ -3822,6 +3834,10 @@
    "source": "Queue downloads for later →",
    "text": "Antrekan unduhan untuk nanti →"
   },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>Gunakan proksi/socks dari permintaan peramban…</g1> — aktif secara baku. Unduhan yang MDM ambil dari peramban akan melalui proksi yang digunakan peramban untuk unduhan tersebut. Itu adalah proksi yang diatur oleh ekstensi VPN atau proksi, proksi manual peramban itu sendiri, atau skrip konfigurasi otomatis proksi. Tanpa itu, unduhan akan berasal dari alamat Anda sendiri, dan konten yang terbatas pada negara VPN, atau alamatnya, akan gagal. Ekstensi peramban membaca proksi tersebut dan menyerahkannya ke MDM dengan setiap unduhan."
+  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "Ya: proksi HTTP dan SOCKS, serta skrip konfigurasi otomatis proksi (PAC), di <g1>Opsi → Proksi / Socks</g1>. Lihat <g2>Opsi</g2>."
@@ -4233,10 +4249,6 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>Atas</g1> / <g2>Bawah</g2>, <g3>Kiri</g3> / <g4>Kanan</g4>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>Gunakan proksi/socks dari permintaan browser…</g1> — aktif secara default. Dengan <g2>Tanpa proksi/socks</g2>, ini membuat MDM menggunakan pengaturan proksi Windows, seperti yang dilakukan browser."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4889,6 +4901,10 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Pada waktu mulai, antrean akan berjalan dengan sendirinya. Di pagi hari, file yang sudah selesai berada di bawah <g1>Selesai</g1> dalam kategori."
+  },
+  "846220c931fb3c98": {
+   "source": "A <x1/> file's web address works too: paste it into <g2>Add URL</g2> or <g3>Torrent</g3>, or let the browser hand the download over. MDM fetches the file, with the browser's cookies when the browser sent it, and <g4>Add torrent</g4> shows what it holds. The browser hands <x5/> downloads over when <x6/> is in <g7>Options → File types</g7>, or when you choose <g8>Download with Mister Download Manager</g8> on the link. A command line with <x9/> (silent) saves the <x10/> file itself, like any file. MDM fetches at most 10 MB: anything bigger isn't a <x11/> file.",
+   "text": "Alamat web file <x1/> juga bisa: tempelkan ke <g2>Tambah URL</g2> atau <g3>Torrent</g3>, atau biarkan peramban menyerahkan unduhan. MDM mengambil file, dengan kuki peramban jika peramban yang mengirimnya, dan <g4>Tambahkan torrent</g4> menunjukkan isinya. Peramban menyerahkan unduhan <x5/> saat <x6/> ada di <g7>Opsi → Jenis file</g7>, atau saat Anda memilih <g8>Unduh dengan Mister Download Manager</g8> pada tautan. Baris perintah dengan <x9/> (senyap) menyimpan file <x10/> itu sendiri, seperti file lainnya. MDM mengambil paling banyak 10 MB: yang lebih besar bukan file <x11/>."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5546,10 +5562,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "Instal MDM dengan program penyiapan dan biarkan <g1>Siapkan integrasi browser (Chrome, Edge, Brave, Firefox)</g1> tetap dicentang. Ini akan mendaftarkan pembantu. (Salinan portabel tidak dapat melakukan ini; lihat <g2>Mode portabel</g2>.)"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "Izinnya, dan alasannya: <g1>downloads</g1> untuk melihat dan menyerahkan unduhan; <g2>cookies</g2> agar unduhan yang masuk berfungsi di MDM; <g3>nativeMessaging</g3> untuk berkomunikasi dengan MDM; <g4>contextMenus</g4> untuk item klik kanan; <g5>storage</g5> untuk pengaturannya; <g6>webRequest</g6> untuk melihat formulir yang dikirimkan dan aliran video yang dimuat (tidak mengubah apa pun); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge, dan peramban Chromium lainnya) agar berkas yang akan dibuka peramban (PDF) diunduh sebagai gantinya, untuk jenis yang ditangani MDM; di Firefox, <g8>webRequestBlocking</g8> melakukan hal itu; <g9>scripting</g9> untuk membaca tautan halaman saat Anda meminta, dan untuk menambahkan tombol video ke halaman yang sudah terbuka saat ekstensi diinstal; akses ke semua situs karena unduhan dan video dapat berasal dari situs mana pun."
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "Baik alamat yang Anda klik maupun alamat yang dihasilkan oleh pengalihan diperiksa, sehingga situs yang Anda kecualikan tetap dikecualikan meskipun situs tersebut mengirim Anda ke server lain. Semua yang lain tetap ditangani oleh browser. Perubahan di Opsi akan mencapai browser dalam waktu satu menit; Anda tidak perlu memulai ulang browser."
@@ -5581,10 +5593,6 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "Apa yang dapat dilihat orang lain"
-  },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "Tunggu daftar. Daftar ini menunjukkan setiap resolusi dengan ukurannya, yang terbaik terlebih dahulu, lalu <g1>Hanya audio</g1> dalam format situs itu sendiri (M4A atau WebM, sesuai yang disajikan situs), lalu <g2>Hanya audio MP3</g2> pada bitrate variabel (VBR) terbaiknya dan pada 320, 256, 192, dan 128 kbps."
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -5902,6 +5910,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>Baris perintah dan otomatisasi</g2></g1> — sakelar baris perintah IDM, alat <x3/>, dan API otomatisasi yang dapat digunakan program lain."
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "Ketika peramban menggunakan proksi untuk unduhan tersebut (diatur oleh VPN atau ekstensi proksi, atau di pengaturannya), ekstensi meneruskan <g1>alamat proksi</g1>, atau <g2>skrip konfigurasi otomatis proksi</g2>, sehingga MDM mengunduh melalui proksi yang sama. Ekstensi tidak pernah membaca atau meneruskan login proksi. Ekstensi hanya mencatat bahwa proksi meminta login, sehingga MDM dapat memberi tahu Anda bahwa ia tidak dapat menggunakan proksi tersebut."
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "Beranda"
@@ -5994,6 +6006,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "Jalankan <x1/> saat MDM berjalan."
   },
+  "a43f559b321cf278": {
+   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
+   "text": "Torrent menyebutkan pelacak yang MDM tanyai untuk rekan. MDM tidak menghubungi pelacak di komputer Anda sendiri atau jaringan lokal Anda (<x1/>, <x2/>, <x3/>, dan sejenisnya), jadi torrent tidak dapat membuat MDM mengirim permintaan ke jaringan tempatnya berada. <g4>Tambahkan pelacak...</g4> mengikuti aturan yang sama: ia menolak alamat tersebut dan memberi tahu Anda alasannya, daripada menyimpan alamat yang tidak akan pernah ditanyakan."
+  },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
    "text": "Lanjutkan unduhan yang dijeda atau rusak dari file <x1/> di sampingnya."
@@ -6069,6 +6085,10 @@
   "a65e3187925f9f37": {
    "source": "256 KiB file over a fast local link",
    "text": "File 256 KiB melalui tautan lokal cepat"
+  },
+  "a66ea1a086f2705b": {
+   "source": "<g1>Add trackers...</g1> — adds trackers, one address a line (<x2/>, <x3/> or <x4/>). They are kept with the torrent, after the ones it has, and the <g5>Trackers</g5> tab shows them. A tracker on your computer or your local network is refused: MDM never contacts those (<g6>why</g6>).",
+   "text": "<g1>Tambahkan pelacak...</g1> — menambahkan pelacak, satu alamat per baris (<x2/>, <x3/> atau <x4/>). Pelacak disimpan bersama torrent, setelah yang sudah ada, dan tab <g5>Pelacak</g5> menunjukkannya. Pelacak di komputer Anda atau jaringan lokal Anda ditolak: MDM tidak pernah menghubungi pelacak tersebut (<g6>mengapa</g6>)."
   },
   "a67015ec28a9f976": {
    "source": "Yes. MDM writes its progress as it goes, so after a lost connection, a crash or a restart it carries on where it stopped. Before resuming it checks that the…",
@@ -6377,10 +6397,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM mengunduh apa pun yang Anda tunjuk, seperti peramban web, hanya saja lebih cepat dan dengan kontrol lebih. Ini dibuat untuk unduhan sehari-hari: perangkat lunak dan pembaruan, dokumen, file Anda sendiri dari penyimpanan cloud, video dan musik yang boleh Anda simpan, citra Linux dan torrent lain yang dibagikan oleh pembuatnya, serta apa pun yang Anda berhak unduh."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "Unduh video; <x1/> mengambil pemilih kualitas dari <x2/> (<x3/> = file tunggal terbaik; <x4/>, <x5/>, <x6/> atau <x7/> = suara sebagai MP3 pada bitrate tersebut, <x8/> pada bitrate variabel terbaiknya; MP3 memerlukan ffmpeg). <x9/> menyimpan subtitle di sampingnya: kode bahasa dari <x10/> (<x11/>), atau <x12/> untuk setiap bahasa yang diberikan pengunggah; <x13/> mengambil teks otomatis situs sebagai gantinya; <x14/> menempatkannya ke dalam video (memerlukan ffmpeg, MP4 atau MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6777,6 +6793,10 @@
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "Instal dengan pengaturan"
+  },
+  "b88bda5a82ad2252": {
+   "source": "Each command's outcome goes into the torrent's event log; hover its <g1>Status</g1> cell in the list to read it.",
+   "text": "Hasil setiap perintah masuk ke log kejadian torrent; arahkan kursor ke sel <g1>Status</g1> di daftar untuk membacanya."
   },
   "b89df2939f6581e5": {
    "source": "Properties",
@@ -7358,6 +7378,10 @@
    "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
    "text": "MDM membaca torrent dan menampilkan file-nya sebagai pohon folder. File <x1/> langsung dibaca. Tautan magnet harus terlebih dahulu mendapatkan daftar file dari rekan lain, yang bisa memakan waktu satu atau dua menit."
   },
+  "c991e64b857c5509": {
+   "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
+   "text": "<g1>Umumkan ulang</g1> — meminta pelacak torrent untuk rekan lagi sekarang, alih-alih menunggu giliran berikutnya. Ini berfungsi saat torrent berjalan atau dibagikan."
+  },
   "c9d39512b1b393af": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
    "text": "Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi, melalui ekstensi peramban MDM, serta peramban berbasis Chromium seperti Helium. Dukungan Firefox, yang juga mencakup Zen dan LibreWolf, sudah ditulis dan sedang diuji. Ekstensi ini menyerahkan unduhan ke MDM beserta kuki dan perujuknya, sehingga berkas di balik login tetap dapat diunduh, dan ekstensi ini menambahkan <g1>Unduh dengan Mister Download Manager</g1> ke menu klik kanan serta tombol <g2>Unduh video</g2> di atas video. Lihat <g3>Integrasi peramban</g3>."
@@ -7409,10 +7433,6 @@
   "cb14776e505e0089": {
    "source": "Can I download without the browser extension?",
    "text": "Bisakah saya mengunduh tanpa ekstensi peramban?"
-  },
-  "cb390e5dc0af4469": {
-   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>.",
-   "text": "<g1>File</g1> — setiap file, ukurannya, dan seberapa banyak yang sudah selesai. File yang Anda hapus centangnya menunjukkan <g2>Dilewati</g2>."
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -7974,6 +7994,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Ya. MDM menerima perintah baris perintah IDM yang sudah dikenal, dilengkapi dengan misterdownloadmanager-cli untuk mengunduh dari terminal, dan memiliki API otomatisasi lokal yang dilindungi token yang dapat mencantumkan, menjeda, memulai, dan menghapus unduhan. API ini nonaktif sampai Anda mengaktifkannya. Lihat Baris perintah dan otomatisasi."
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "Proksi yang meminta login yang diberikan oleh ekstensi VPN itu sendiri tidak dapat dibagikan: tidak ada program lain yang memiliki login tersebut. Unduhan kemudian berhenti dan memberitahukannya, daripada berjalan tanpa proksi. Gunakan aplikasi VPN itu sendiri, atau pilih adaptornya di bawah <g1>Adaptor jaringan</g1>."
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "Server dari salinan portabel akan menemukan MDM salinan portabel itu sendiri, dari foldernya sendiri."
@@ -8466,10 +8490,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Untuk menyimpan unduhan situs di browser secara permanen, gunakan <g1>Jangan pernah mengambil unduhan dari</g1> tombol bilah alat, atau tambahkan situs ke <g2>Jangan mulai mengunduh secara otomatis dari situs berikut</g2>. Untuk menyimpan jenis file di browser, hapus dari daftar jenis file."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "Pilihan hanya suara (<g1>Hanya audio</g1>, MP3) tidak memiliki subtitel."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Buka Pengaturan Windows → Aplikasi, cari Mister Download Manager dan pilih Hapus Instalasi. Penghapus instalasi akan menanyakan apakah Anda ingin menghapus daftar unduhan dan pengaturan Anda juga. File yang Anda unduh tidak akan pernah disentuh. Untuk salinan portabel, hapus foldernya."
@@ -8593,6 +8613,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>Apa yang terjadi:</g1> kesalahan dan tempat dalam kode MDM di mana itu terjadi."
+  },
+  "ee9034f4bfe810cf": {
+   "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
+   "text": "<g1>Periksa ulang file</g1> — membaca setiap bagian dari file torrent dan memeriksanya, misalnya setelah Anda memindahkan file atau disk mengalami kesalahan. Torrent yang sedang berjalan akan melanjutkan setelahnya dan mengambil apa yang hilang. Torrent yang berhenti akan tetap berhenti. Log kejadiannya mengatakan berapa banyak yang ditemukan: torrent yang selesai dengan bagian yang rusak menjadi berhenti, dan melanjutkannya akan mengambil bagian itu lagi."
   },
   "eea0683af36fb9e8": {
    "source": "Something not working? We'd like to know.",
@@ -9205,54 +9229,6 @@
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
    "text": "alamat unduhan atau nama file Anda;"
-  },
-  "045b50361ed710f2": {
-   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
-   "text": "Di Firefox, MDM melihat proksi yang digunakan oleh permintaan peramban itu sendiri untuk berkas, termasuk yang dipilih oleh ekstensi VPN untuk setiap permintaan. Di Chrome, Edge, Brave, Opera, dan Vivaldi, MDM melihat pengaturan proksi peramban."
-  },
-  "05bd7f3cbec0de04": {
-   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
-   "text": "Ketika peramban tidak menggunakan proksi, dan <g1>Tanpa proksi/socks</g1> dipilih, MDM menggunakan pengaturan proksi Windows, seperti yang dilakukan peramban."
-  },
-  "19bbae838750029a": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "Izinnya, dan alasannya: <g1>downloads</g1> untuk melihat dan menyerahkan unduhan; <g2>cookies</g2> agar unduhan yang masuk berfungsi di MDM; <g3>nativeMessaging</g3> untuk berkomunikasi dengan MDM; <g4>contextMenus</g4> untuk item klik kanan; <g5>storage</g5> untuk pengaturannya; <g6>webRequest</g6> untuk melihat formulir yang dikirimkan dan aliran video yang dimuat (tidak mengubah apa pun); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge, dan peramban Chromium lainnya) agar berkas yang akan dibuka peramban (PDF) diunduh sebagai gantinya, untuk jenis yang diambil MDM; di Firefox, <g8>webRequestBlocking</g8> melakukan hal itu; <g9>scripting</g9> untuk membaca tautan halaman saat Anda meminta, dan untuk menambahkan tombol video ke halaman yang sudah terbuka saat ekstensi diinstal; <g10>proxy</g10> untuk membaca proksi yang digunakan peramban, sehingga unduhan yang diambil dari peramban di balik VPN atau ekstensi proksi juga melewatinya (tidak pernah mengubah proksi peramban); akses ke semua situs karena unduhan dan video dapat berasal dari situs mana pun."
-  },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "Semuanya dapat dilakukan dari keyboard, dan MDM bekerja dengan pembaca layar (seperti Narrator dan NVDA di Windows): jendela, dialog, dan menunya memberi tahu mereka apa setiap kontrol dan statusnya, serta daftar unduhan membaca nama, status, dan ukuran setiap unduhan."
-  },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
-  "690e87be87eb0c8f": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
-   "text": "<g1>Gunakan proksi/socks dari permintaan peramban…</g1> — aktif secara baku. Unduhan yang MDM ambil dari peramban akan melalui proksi yang digunakan peramban untuk unduhan tersebut. Itu adalah proksi yang diatur oleh ekstensi VPN atau proksi, proksi manual peramban itu sendiri, atau skrip konfigurasi otomatis proksi. Tanpa itu, unduhan akan berasal dari alamat Anda sendiri, dan konten yang terbatas pada negara VPN, atau alamatnya, akan gagal. Ekstensi peramban membaca proksi tersebut dan menyerahkannya ke MDM dengan setiap unduhan."
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Pengaturan Proksi / Socks MDM adalah untuk unduhan web dan FTP. Torrent juga dapat menggunakan SOCKS5: atur proksi <x1/> di <g2>Opsi → Proksi / Socks</g2> dan aktifkan <g3>Gunakan proksi</g3> di Pengaturan torrent. Proksi hanya mencakup koneksi ke rekan dan pelacak web, jadi dengan itu MDM mematikan DHT, penemuan rekan lokal, koneksi masuk, dan pelacak UDP. Jika proksi hilang dari Proksi / Socks saat pengaturan itu aktif, torrent tidak akan dimulai daripada melewatinya."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "Untuk merutekan <g1>semuanya</g1> melalui jaringan lain, gunakan VPN untuk seluruh komputer. MDM tidak dapat mengikat torrent ke satu adaptor jaringan di Windows."
-  },
-  "a1280a73f600eb05": {
-   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
-   "text": "Ketika peramban menggunakan proksi untuk unduhan tersebut (diatur oleh VPN atau ekstensi proksi, atau di pengaturannya), ekstensi meneruskan <g1>alamat proksi</g1>, atau <g2>skrip konfigurasi otomatis proksi</g2>, sehingga MDM mengunduh melalui proksi yang sama. Ekstensi tidak pernah membaca atau meneruskan login proksi. Ekstensi hanya mencatat bahwa proksi meminta login, sehingga MDM dapat memberi tahu Anda bahwa ia tidak dapat menggunakan proksi tersebut."
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "Daftar putar dan campuran"
-  },
-  "db74b9137912e0a2": {
-   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
-   "text": "Proksi yang meminta login yang diberikan oleh ekstensi VPN itu sendiri tidak dapat dibagikan: tidak ada program lain yang memiliki login tersebut. Unduhan kemudian berhenti dan memberitahukannya, daripada berjalan tanpa proksi. Gunakan aplikasi VPN itu sendiri, atau pilih adaptornya di bawah <g1>Adaptor jaringan</g1>."
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "Mengunduh file dengan hingga 8 koneksi (<x1/>, 1 hingga 128), menampilkan progres. <x2/> menjeda; <x3/> melanjutkan. <x4/> memeriksa file yang sudah selesai: hex MD5, SHA-1, SHA-256, SHA-512, atau CRC32, dengan nama opsional (<x5/>). <x6/> memilih DNS: <x7/> (default); layanan dan cara memintanya, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; alamat server DNS, <x13/>; atau alamat DNS-over-HTTPS. Ini tidak pernah kembali ke DNS sistem."
   }
  }
 }
