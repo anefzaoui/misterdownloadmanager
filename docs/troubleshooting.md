@@ -55,6 +55,16 @@ See [If a video won't download](video.md#if-a-video-wont-download).
 
 A magnet link has to get the torrent's file list from other peers first. That can take a minute or two, and longer for torrents with few peers. If nobody answers in about three minutes, MDM gives up; try again later, or use the `.torrent` file if the site offers one.
 
+## MDM uses a lot of memory
+
+Task Manager shows several figures, and they mean different things:
+
+- **Memory** (on the Processes tab) is what MDM holds for itself alone, its *private working set*. With the window open and nothing downloading, that is about 50 MB.
+- **Working set** (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.
+- **Commit size** is memory MDM has reserved, whether in use or not.
+
+Closed to the notification area, MDM gives its memory back to Windows: **Memory** drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (**View → Language**) loads fonts for every script while it's open; MDM lets them go when it closes.
+
 ## The setup or MDM won't start
 
 - If Windows says **Windows protected your PC**, click **More info**, check that the file is `MisterDownloadManager-<version>-setup.exe` from the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page, then click **Run anyway**.

@@ -1458,6 +1458,19 @@ pub fn thread_id() -> u32 {
     unsafe { windows_sys::Win32::System::Threading::GetCurrentThreadId() }
 }
 
+/// Give this process's working set back to the system while the window is hidden (#72): the
+/// pages go to the standby list, still in RAM, and come back on first touch (soft faults, no
+/// disk). What Task Manager's "Memory" column shows for a tray app is this working set.
+pub fn trim_working_set() {
+    use windows_sys::Win32::System::ProcessStatus::EmptyWorkingSet;
+    use windows_sys::Win32::System::Threading::GetCurrentProcess;
+    // SAFETY: a plain call on this process's own pseudo-handle.
+    let ok = unsafe { EmptyWorkingSet(GetCurrentProcess()) } != 0;
+    if !ok {
+        tracing::debug!("EmptyWorkingSet failed");
+    }
+}
+
 /// Thread `tid`'s processor time so far, and this process's page faults so far (soft ones
 /// included: Windows counts no hard faults per process here): crash.rs's freeze notes.
 pub fn thread_usage(tid: u32) -> Option<crate::crash::Usage> {

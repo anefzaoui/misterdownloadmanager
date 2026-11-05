@@ -117,6 +117,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
+  closed to the tray, MDM gives the memory it isn't using back to Windows. Task Manager's
+  **Memory** drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to
+  about 14 MB), and is given back again every 10 minutes while MDM stays there. After the
+  language list (which needs a font for every script) closes, those fonts are let go: about 70 MB
+  less than before. On Linux the heap's free memory goes back to the system the same way.
+  [MDM uses a lot of memory](docs/troubleshooting.md#mdm-uses-a-lot-of-memory) explains
+  Task Manager's figures.
 - **Freeze reports say what kind of freeze it was** ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   MDM measures how much processor time the window got while it didn't answer. The report then
   says whether it ran all along (a loop), waited (a deadlock, or the disk or the network), or
@@ -169,6 +177,19 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A video download could fail in MDM while yt-dlp went on and finished it**
+  ([#79](https://github.com/anefzaoui/misterdownloadmanager/issues/79)). A line yt-dlp printed in
+  the system's code page rather than UTF-8 (a title in Turkish or Russian on some Windows) ended
+  MDM's reading there, and the finished file was then "not said". yt-dlp now always writes
+  UTF-8, every line is read to the end, and the saved file is also found by its name. Whenever
+  MDM gives a video download up, it ends yt-dlp and everything yt-dlp started, so nothing goes
+  on downloading unseen.
+- **YouTube: "Requested format is not available" after MDM moved a video to another server**
+  ([#94](https://github.com/anefzaoui/misterdownloadmanager/issues/94)). When the servers this
+  computer can reach don't serve the chosen quality, MDM downloads the nearest quality below it
+  (always a video, never the sound alone) and says so in the download's log. With no video left
+  at all, it tries the page's own servers. A server yt-dlp couldn't resolve or reach is avoided on
+  the next look-up. The log also names the qualities a move left out.
 - **Lists read as blank items to screen readers** ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)):
   the rows of Download video's qualities, Add torrent's files, the language picker, Options
   (browsers, sounds, the file-type and site lists), the Scheduler and Import now have their names

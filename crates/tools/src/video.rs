@@ -248,8 +248,9 @@ type Child = Arc<Mutex<Option<proc::Spawned>>>;
 
 /// How one run of yt-dlp ended.
 enum Attempt {
-    /// The video saved, and the subtitles that didn't come with it.
-    Done(PathBuf, Vec<SubProblem>),
+    /// The video saved, the subtitles that didn't come with it, and the quality yt-dlp chose
+    /// (`137+251 1920x1080`).
+    Done(PathBuf, Vec<SubProblem>, Option<String>),
     Stopped,
     /// `rerouted`: links were moved to other servers for this run.
     Failed {
@@ -258,9 +259,55 @@ enum Attempt {
     },
 }
 
-/// Runs the download; once more with a fresh look-up when a run whose links had to be moved to
-/// other servers fails (new links, often other servers: YouTube's alternatives refuse some
-/// streams some of the time).
+/// End yt-dlp and everything it started (#79): whenever the download is given up, nothing may
+/// go on downloading unseen (Windows: its job, the launcher's child and ffmpeg with it).
+fn end(child: &Child) {
+    let mut slot = child.lock().unwrap_or_else(|e| e.into_inner());
+    if let Some(mut s) = slot.take() {
+        s.kill();
+    }
+}
+
+/// The format selector in yt-dlp's arguments (`-f <selector>`).
+fn selector_of(ours: &[String]) -> Option<&str> {
+    ours.iter()
+        .position(|a| a == "-f")
+        .and_then(|i| ours.get(i + 1))
+        .map(String::as_str)
+}
+
+/// `ours` with another format selector.
+fn with_selector(ours: &[String], selector: &str) -> Vec<String> {
+    let mut out = ours.to_vec();
+    if let Some(i) = out.iter().position(|a| a == "-f")
+        && let Some(s) = out.get_mut(i + 1)
+    {
+        *s = selector.to_owned();
+    }
+    out
+}
+
+/// The nearest quality to a choice from the window (`bv*[height=1080]+ba/b[height=1080]`) when
+/// that one isn't offered (#94: the servers this PC reaches don't serve it): the best at or below
+/// that height, else the best video there is, always a video (`b` alone would take a sound-only
+/// format when no video is left; live 2026-11-05). None when the choice names no height.
+fn relaxed(selector: &str) -> Option<String> {
+    selector
+        .contains("[height=")
+        .then(|| format!("{}/bv*+ba/bv*", selector.replace("[height=", "[height<=")))
+}
+
+/// Runs the download, and again when a run fails in a way a new look-up can mend:
+/// - a media server yt-dlp couldn't reach (it resolved when looked up, then didn't: #94) is
+///   treated as dead, so its streams move to an alternative;
+/// - a run whose links had to be moved to other servers gets one fresh look-up (new links, often
+///   other servers: YouTube's alternatives refuse some streams some of the time);
+/// - the chosen quality not offered at all (left out by the move, #94) falls back to the nearest
+///   one below it, said in the log; never the whole download's failure while another quality
+///   is there;
+/// - no video left at all after the move: once more on the page's own servers, unmoved.
+///
+/// Whenever it is given up, yt-dlp's whole job is ended (#79).
 fn supervise(
     exe: &Path,
     url: &str,
@@ -270,10 +317,24 @@ fn supervise(
     expected: Option<u64>,
     retry: Option<&SubsRetry>,
 ) {
-    for n in 0..2 {
-        match attempt(exe, url, ours, progress, child, expected, retry) {
+    let mut ours = ours.to_vec();
+    let mut dead: std::collections::BTreeSet<String> = Default::default();
+    let mut looked_again = false;
+    let mut relaxed_to: Option<String> = None;
+    let mut reroute = true;
+    let mut last = String::from("yt-dlp stopped");
+    for _ in 0..5 {
+        match attempt(
+            exe, url, &ours, progress, child, expected, retry, &dead, reroute,
+        ) {
             Attempt::Stopped => return,
-            Attempt::Done(f, problems) => {
+            Attempt::Done(f, problems, quality) => {
+                end(child);
+                if relaxed_to.is_some()
+                    && let Some(q) = quality
+                {
+                    note(progress, format!("Downloaded {q} instead"));
+                }
                 // The saved file's own size: a merged video or a converted MP3 isn't the size
                 // of what came down.
                 let saved = std::fs::metadata(&f).ok().map(|m| m.len());
@@ -291,21 +352,59 @@ fn supervise(
                 }
                 return;
             }
-            Attempt::Failed { error, rerouted } if rerouted && n == 0 => {
-                progress.lock().unwrap().events.push((
-                    std::time::SystemTime::now(),
-                    format!("{error}; looking the page up again"),
-                ));
-            }
-            Attempt::Failed { error, .. } => {
-                let mut p = progress.lock().unwrap();
-                if p.state != State::Stopped {
-                    p.speed = 0.0;
-                    p.state = State::Failed(error);
+            Attempt::Failed { error, rerouted } => {
+                end(child);
+                let gone: Vec<String> = servers::unreachable_in(&error)
+                    .into_iter()
+                    .filter(|h| !dead.contains(h))
+                    .collect();
+                // On the page's own servers (no moving any more), an unreachable one is the end:
+                // another look-up would go to it again (live 2026-11-05).
+                if !gone.is_empty() && reroute {
+                    for h in &gone {
+                        note(
+                            progress,
+                            format!(
+                                "The server {h} couldn't be reached; looking the page up again without it"
+                            ),
+                        );
+                    }
+                    dead.extend(gone);
+                } else if servers::format_unavailable(&error) && rerouted && !looked_again {
+                    looked_again = true;
+                    note(progress, format!("{error}; looking the page up again"));
+                } else if servers::format_unavailable(&error)
+                    && relaxed_to.is_none()
+                    && let Some(sel) = selector_of(&ours).and_then(relaxed)
+                {
+                    note(
+                        progress,
+                        "The chosen quality isn't offered by the servers this computer can reach; downloading the nearest quality below it".into(),
+                    );
+                    ours = with_selector(&ours, &sel);
+                    relaxed_to = Some(sel);
+                } else if servers::format_unavailable(&error) && rerouted && reroute {
+                    note(
+                        progress,
+                        "No video the servers this computer can reach serve is left; trying the page's own servers".into(),
+                    );
+                    reroute = false;
+                } else if rerouted && !looked_again {
+                    looked_again = true;
+                    note(progress, format!("{error}; looking the page up again"));
+                } else {
+                    last = error;
+                    break;
                 }
-                return;
+                last = error;
             }
         }
+    }
+    end(child);
+    let mut p = progress.lock().unwrap();
+    if p.state != State::Stopped {
+        p.speed = 0.0;
+        p.state = State::Failed(last);
     }
 }
 
@@ -384,6 +483,8 @@ struct Ran {
     status: std::io::Result<std::process::ExitStatus>,
     /// Where it said it saved the file (`MDMF`).
     saved: Option<PathBuf>,
+    /// The quality it chose (`MDMQ`).
+    quality: Option<String>,
     warnings: Vec<String>,
     /// What it said when it failed.
     failure: String,
@@ -418,9 +519,24 @@ fn run(
         }
     };
     let mut saved = None;
-    for line in BufReader::new(stdout).lines().map_while(Result::ok) {
+    let mut quality = None;
+    // Every line to the end, read as bytes (#79): a line that isn't UTF-8 (a title in a legacy
+    // code page) used to end the reading there, while yt-dlp went on; it is read leniently now,
+    // and the saved file is also found by its name (`attempt`).
+    let mut reader = BufReader::new(stdout);
+    let mut buf = Vec::new();
+    loop {
+        buf.clear();
+        match reader.read_until(b'\n', &mut buf) {
+            Ok(0) | Err(_) => break,
+            Ok(_) => {}
+        }
+        let text = String::from_utf8_lossy(&buf);
+        let line = text.trim_end_matches(['\r', '\n']);
         if let Some(rest) = line.strip_prefix("MDMF ") {
             saved = Some(PathBuf::from(rest.trim()));
+        } else if let Some(rest) = line.strip_prefix("MDMQ ") {
+            quality = Some(rest.trim().to_owned());
         } else if let Some(rest) = line.strip_prefix("MDMP ")
             && let Some(m) = meter.as_deref_mut()
         {
@@ -453,9 +569,36 @@ fn run(
     Ok(Some(Ran {
         status,
         saved,
+        quality,
         warnings,
         failure,
     }))
+}
+
+/// The media file yt-dlp saved under our output name (`<dir>/<stem>.%(ext)s`), when it didn't say
+/// where, or said it in a form that names no file (#79). Its subtitles (`<stem>.<lang>.srt`) and
+/// unfinished parts don't count; the newest one wins.
+fn saved_by_name(ours: &[String]) -> Option<PathBuf> {
+    const MEDIA: [&str; 15] = [
+        "mp4", "mkv", "webm", "mov", "m4v", "m4a", "mp3", "opus", "ogg", "oga", "flac", "wav",
+        "aac", "flv", "3gp",
+    ];
+    let template = ours
+        .iter()
+        .position(|a| a == "-o")
+        .and_then(|i| ours.get(i + 1))?;
+    let t = Path::new(template);
+    let dir = t.parent()?;
+    let stem = t
+        .file_name()?
+        .to_string_lossy()
+        .strip_suffix(".%(ext)s")?
+        .replace("%%", "%");
+    MEDIA
+        .iter()
+        .map(|ext| dir.join(format!("{stem}.{ext}")))
+        .filter(|p| p.is_file())
+        .max_by_key(|p| std::fs::metadata(p).and_then(|m| m.modified()).ok())
 }
 
 /// Wait `d`, or less if the download is stopped meanwhile (false then).
@@ -470,9 +613,11 @@ fn pause(d: std::time::Duration, progress: &Mutex<Progress>) -> bool {
     progress.lock().unwrap().state != State::Stopped
 }
 
-/// One run: look the page up, move links off unreachable servers, download from that list.
-/// Subtitles the site refused are asked for once more after a pause (`retry`), beside the video;
-/// the ones still refused are reported with it, never failing it.
+/// One run: look the page up, move links off unreachable servers (and off `dead`, the ones an
+/// earlier run couldn't reach), download from that list. Subtitles the site refused are asked
+/// for once more after a pause (`retry`), beside the video; the ones still refused are reported
+/// with it, never failing it.
+#[allow(clippy::too_many_arguments)]
 fn attempt(
     exe: &Path,
     url: &str,
@@ -481,21 +626,40 @@ fn attempt(
     child: &Child,
     expected: Option<u64>,
     retry: Option<&SubsRetry>,
+    dead: &std::collections::BTreeSet<String>,
+    reroute: bool,
 ) -> Attempt {
     let failed = |error: String, rerouted: bool| Attempt::Failed { error, rerouted };
     let mut info = match look_up(exe, url) {
         Ok(v) => v,
         Err(e) => return failed(e, false),
     };
-    let prober = servers::Prober::new();
-    let swaps = servers::reroute(&mut info, servers::reachable, |l, h| prober.serves(l, h));
-    for (dead, alt) in &swaps {
+    let changed = if reroute {
+        let prober = servers::Prober::new();
+        servers::reroute(
+            &mut info,
+            |h| !dead.contains(h) && servers::reachable(h),
+            |l, h| prober.serves(l, h),
+        )
+    } else {
+        servers::Rerouted::default()
+    };
+    for (gone, alt) in &changed.swaps {
         note(
             progress,
-            format!("The server {dead} can't be reached; downloading from {alt}"),
+            format!("The server {gone} can't be reached; downloading from {alt}"),
         );
     }
-    let rerouted = !swaps.is_empty();
+    if !changed.left_out.is_empty() {
+        note(
+            progress,
+            format!(
+                "Not served by the servers this computer can reach, so left out: {}",
+                changed.left_out.join(", ")
+            ),
+        );
+    }
+    let rerouted = !changed.is_empty();
     let file = info_file();
     if let Err(e) = std::fs::write(&file, info.to_string()) {
         return failed(format!("Cannot write the video information: {e}"), rerouted);
@@ -507,10 +671,15 @@ fn attempt(
         Ok(None) => return Attempt::Stopped,
         Err(e) => return failed(e, rerouted),
     };
+    let quality = ran.quality.clone();
     let video = match (&ran.status, ran.saved) {
         // `--ignore-errors` (subtitles asked) lets yt-dlp end well with no file: the file
         // itself is the proof.
         (Ok(s), Some(f)) if s.success() && f.is_file() => f,
+        // It said where, in a form that names no file (#79), or didn't say: our own name for it.
+        (Ok(s), _) if s.success() && saved_by_name(ours).is_some() => {
+            saved_by_name(ours).expect("just found")
+        }
         (Ok(s), Some(_)) if s.success() => {
             return failed(
                 "yt-dlp said it saved the file, but it isn't there".into(),
@@ -524,7 +693,7 @@ fn attempt(
     };
     let refused = subtitle_failures(&ran.warnings);
     if refused.is_empty() {
-        return Attempt::Done(video, Vec::new());
+        return Attempt::Done(video, Vec::new(), quality);
     }
     for (code, why) in &refused {
         note(
@@ -545,14 +714,14 @@ fn attempt(
             format!("Asking for the subtitles again in {} s", delay.as_secs()),
         );
         if !pause(delay, progress) {
-            return Attempt::Done(video, Vec::new());
+            return Attempt::Done(video, Vec::new(), quality);
         }
         let codes: Vec<String> = refused.iter().map(|(c, _)| c.clone()).collect();
         match run(exe, &r.args(&codes), &file, progress, child, None) {
             Ok(Some(again)) if again.status.as_ref().is_ok_and(|s| s.success()) => {
                 still = subtitle_failures(&again.warnings);
             }
-            Ok(None) => return Attempt::Done(video, Vec::new()),
+            Ok(None) => return Attempt::Done(video, Vec::new(), quality.clone()),
             _ => {}
         }
     }
@@ -583,7 +752,7 @@ fn attempt(
             }
         }
     }
-    Attempt::Done(video, problems)
+    Attempt::Done(video, problems, quality)
 }
 
 /// A line for the download's log (English, as yt-dlp's own).
@@ -621,6 +790,9 @@ fn template_text(s: &str) -> String {
 const PROGRESS: &str = "download:MDMP %(progress.downloaded_bytes)s %(progress.total_bytes)s %(progress.total_bytes_estimate)s %(progress.speed)s";
 /// The final file: `MDMF <path>`.
 const FINAL: &str = "after_move:MDMF %(filepath)s";
+/// The quality yt-dlp chose, before it downloads: `MDMQ <format id> <resolution>` (the log names
+/// it when it isn't the one asked for, #94).
+const QUALITY: &str = "video:MDMQ %(format_id)s %(resolution)s";
 
 impl VideoJob {
     /// Download `url` in format `selector` to `dir/<stem>.<ext>`, at most `rate` bytes/s;
@@ -666,6 +838,8 @@ impl VideoJob {
             PROGRESS.into(),
             "--print".into(),
             FINAL.into(),
+            "--print".into(),
+            QUALITY.into(),
         ];
         if let Some(r) = rate {
             ours.extend(["--limit-rate".into(), r.to_string()]);
@@ -742,6 +916,8 @@ impl VideoJob {
                     )
                 });
                 if std::panic::catch_unwind(run).is_err() {
+                    // Given up: nothing may go on downloading unseen (#79).
+                    end(&child);
                     let mut p = progress.lock().unwrap_or_else(|e| e.into_inner());
                     if p.state == State::Running {
                         p.speed = 0.0;
@@ -1034,6 +1210,61 @@ mod tests {
             .map(|p| p.file_name().unwrap().to_string_lossy().into_owned())
             .collect();
         assert_eq!(names, ["Talk.en-orig.vtt", "Talk.fr.srt"]);
+    }
+
+    /// #94: a window's choice falls back to the nearest quality below it, then to the best;
+    /// choices without a height (audio, "b") have no fallback; the selector is swapped in place.
+    #[test]
+    fn a_missing_quality_falls_back_to_the_nearest_below() {
+        assert_eq!(
+            relaxed("bv*[height=1080]+ba/b[height=1080]").as_deref(),
+            Some("bv*[height<=1080]+ba/b[height<=1080]/bv*+ba/bv*")
+        );
+        assert_eq!(relaxed("ba/b"), None);
+        assert_eq!(relaxed("b"), None);
+        let ours: Vec<String> = ["-f", "bv*[height=720]+ba/b[height=720]", "-o", "x"]
+            .map(String::from)
+            .to_vec();
+        assert_eq!(selector_of(&ours), Some("bv*[height=720]+ba/b[height=720]"));
+        assert_eq!(
+            with_selector(&ours, "b"),
+            ["-f", "b", "-o", "x"].map(String::from)
+        );
+    }
+
+    /// #79: the saved file found by our own output name: the media file, not its subtitles,
+    /// its unfinished part or another video's file; `%` in a title as it was written.
+    #[test]
+    fn the_saved_file_is_found_by_its_name() {
+        let dir = tempfile::tempdir().unwrap();
+        for f in [
+            "Şirin 100% ğüş.mp4",
+            "Şirin 100% ğüş.ru.srt",
+            "Şirin 100% ğüş.f137.mp4.part",
+            "Other.mp4",
+        ] {
+            std::fs::write(dir.path().join(f), b"x").unwrap();
+        }
+        let template = dir
+            .path()
+            .join(format!("{}.%(ext)s", template_text("Şirin 100% ğüş")));
+        let ours: Vec<String> = vec!["-o".into(), template.to_string_lossy().into_owned()];
+        assert_eq!(
+            saved_by_name(&ours)
+                .unwrap()
+                .file_name()
+                .unwrap()
+                .to_string_lossy(),
+            "Şirin 100% ğüş.mp4"
+        );
+        let none: Vec<String> = vec![
+            "-o".into(),
+            dir.path()
+                .join("Missing.%(ext)s")
+                .to_string_lossy()
+                .into_owned(),
+        ];
+        assert_eq!(saved_by_name(&none), None);
     }
 
     #[test]
