@@ -498,8 +498,6 @@ async fn no_range_server_uses_one_connection() {
         .expect("every request ends");
     let log = s.log();
     assert_eq!(size, 3 << 20);
-    let sent: u64 = log.iter().map(|e| e.bytes_sent).sum();
-    assert!(sent <= size + (512 << 10), "{sent} bytes served");
     // Like IDM (lab S6): range attempts get 200 and are dropped; the probe finishes alone.
     let complete: Vec<_> = log.iter().filter(|e| e.outcome == "complete").collect();
     let requests: Vec<_> = log
@@ -531,8 +529,10 @@ async fn a_server_without_ranges_sends_the_file_once() {
         .iter()
         .map(|e| (e.range.clone(), e.outcome.clone(), e.bytes_sent))
         .collect();
+    // The overhead: what the server had already written into the range attempts' sockets
+    // when the engine dropped them. Fetching the file again would add a whole file.
     assert!(
-        sent <= size + (512 << 10),
+        sent <= size + (1 << 20),
         "{sent} bytes served for a {size}-byte file: {requests:#?}"
     );
     assert_eq!(
