@@ -4269,6 +4269,10 @@ menu	Add category	Kategória hozzáadása
 #, machine
 menu	Add trackers...	Nyomkövetők hozzáadása...
 #. menu command in the main window
+#. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+#, machine
+menu	Applies the next time MDM starts	A következő MDM indításkor lép érvénybe
+#. menu command in the main window
 #, machine
 menu	Arrange files	Fájlok rendezése
 #. menu command in the main window
@@ -4359,10 +4363,22 @@ menu	Delete	Törlés
 #, machine
 menu	Delete from queue	Törlés a sorból
 #. menu command in the main window
+#. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+#, machine
+menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Direct3D didn't start here: OpenGL draws	A Direct3D nem indult el: az OpenGL rajzol
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Download &video from a page...	&Videó letöltése egy oldalról...
+#. menu command in the main window
+#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#, machine
+menu	Draw with	Rajzolás ezzel
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -4429,6 +4445,10 @@ menu	Open folder	Mappa megnyitása
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Open with...	Megnyitás ezzel...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name, usually kept as is
+#, machine
+menu	OpenGL	OpenGL
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

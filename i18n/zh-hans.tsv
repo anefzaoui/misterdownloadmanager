@@ -4269,6 +4269,10 @@ menu	Add category	添加类别
 #, machine
 menu	Add trackers...	添加跟踪器...
 #. menu command in the main window
+#. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+#, machine
+menu	Applies the next time MDM starts	下次 MDM 启动时应用
+#. menu command in the main window
 #, machine
 menu	Arrange files	整理文件
 #. menu command in the main window
@@ -4359,10 +4363,22 @@ menu	Delete	删除
 #, machine
 menu	Delete from queue	从队列中删除
 #. menu command in the main window
+#. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+#, machine
+menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Direct3D didn't start here: OpenGL draws	Direct3D 未在此处启动: OpenGL 绘制
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Download &video from a page...	从页面下载视频(&V)...
+#. menu command in the main window
+#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#, machine
+menu	Draw with	绘制方式
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -4429,6 +4445,10 @@ menu	Open folder	打开文件夹
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Open with...	打开方式...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name, usually kept as is
+#, machine
+menu	OpenGL	OpenGL
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
