@@ -68,7 +68,7 @@
   },
   "021dced76e91e8e1": {
    "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
-   "text": "<g1>Woher es kommt:</g1> MDM lädt gallery-dl von seinen Releases auf Codeberg herunter. Es akzeptiert es nur, wenn die Prüfsummenliste des Releases mit dem in MDM angehefteten Schlüssel des Autors von gallery-dl signiert ist und das Programm dieser Liste entspricht. Es behält die vorherige Version und kehrt nie zu einer älteren zurück. Unter Windows und Linux (x86-64) installiert MDM es; unter macOS installieren Sie es mit Homebrew (<x2/>) oder pip und wählen es unter <g3>Helfer...</g3> aus."
+   "text": "<g1>Woher es kommt:</g1> MDM lädt gallery-dl von seinen Releases auf Codeberg herunter. Es akzeptiert es nur, wenn die Prüfsummenliste des Releases mit dem in MDM hinterlegten Schlüssel des gallery-dl-Autors signiert ist und das Programm dieser Liste entspricht. Es behält die vorherige Version bei und kehrt niemals zu einer älteren zurück. Unter Windows und Linux (x86-64) installiert MDM es; unter macOS installieren Sie es mit Homebrew (<x2/>) oder pip und wählen es unter <g3>Helfer...</g3> aus."
   },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
@@ -352,7 +352,7 @@
   },
   "084f72ae121f3c2a": {
    "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
-   "text": "<g1>Löschen</g1> entfernt die Galerie aus der Liste. Ihr Ordner und die Bilder bleiben erhalten, auch wenn Sie das Kästchen zum Löschen von Dateien ankreuzen: Löschen Sie den Ordner selbst, wenn Sie ihn entfernen möchten."
+   "text": "<g1>Löschen</g1> entfernt die Galerie aus der Liste. Ihr Ordner und die Bilder bleiben erhalten, auch wenn Sie das Kontrollkästchen zum Löschen von Dateien aktivieren: Löschen Sie den Ordner selbst, wenn Sie ihn entfernen möchten."
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -644,7 +644,7 @@
   },
   "10e37230420403da": {
    "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
-   "text": "Unter macOS kann ein VPN, das sich neu verbindet, eine neue Schnittstelle erhalten (<x1/> anstelle von <x2/>): Wählen Sie diese erneut aus."
+   "text": "Unter macOS kann ein VPN, das sich wieder verbindet, eine neue Schnittstelle erhalten (<x1/> anstelle von <x2/>): Wählen Sie sie erneut aus."
   },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
@@ -1000,7 +1000,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Unter Windows kann die Torrent-Engine noch nicht an einen Adapter gebunden werden. Daher starten Torrents nicht, solange einer ausgewählt ist (\"Torrents können unter Windows noch nicht über einen ausgewählten Netzwerkadapter laufen\"), anstatt ihn zu umgehen. Tracker-Namen werden weiterhin vom DNS des Systems aufgelöst."
+   "text": "Unter Windows kann die Torrent-Engine noch nicht an einen Adapter gebunden werden. Daher starten Torrents nicht, solange einer ausgewählt ist (\"Torrents können unter Windows noch nicht über einen ausgewählten Netzwerkadapter geleitet werden\"), anstatt ihn zu umgehen. Tracker-Namen werden weiterhin vom DNS des Systems aufgelöst."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1172,7 +1172,7 @@
   },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
-   "text": "MDM lädt die Bilder einer Galerie (eine Wikimedia Commons-Kategorie, ein Flickr-Album, eine DeviantArt-Galerie, ein Imgur-Album und viele mehr) mit gallery-dl herunter…"
+   "text": "MDM lädt die Bilder einer Galerie (eine Wikimedia Commons-Kategorie, ein Flickr-Album, eine DeviantArt-Galerie, ein Imgur-Album und viele mehr) mit gallery-dl herunter..."
   },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
@@ -2130,6 +2130,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Ausgewählte Downloads löschen (fragt zuerst)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Die Proxy-/SOCKS-Einstellungen von MDM sind für Web- und FTP-Downloads. Torrents können ebenfalls einen SOCKS5-Proxy verwenden: Richten Sie einen <x1/> Proxy unter <g2>Optionen → Proxy / SOCKS</g2> ein und aktivieren Sie <g3>Proxy verwenden</g3> in den Torrent-Einstellungen. Der Proxy deckt nur Verbindungen zu Peers und Web-Trackern ab, daher deaktiviert MDM damit DHT, lokale Peer-Erkennung, eingehende Verbindungen und UDP-Tracker; es öffnet überhaupt keine UDP-Sockets zum Netzwerk. Wenn der Proxy aus den Proxy-/SOCKS-Einstellungen entfernt wird, während dieser Schalter aktiviert ist, starten Torrents nicht, anstatt ihn zu umgehen."
+  },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
    "text": "<g1>Ihre eigene Kopie:</g1> <g2>Helfer...</g2> (im Galeriefenster oder im Videofenster) listet yt-dlp, ffmpeg und gallery-dl auf, und <g3>Anderes Programm verwenden...</g3> nimmt Ihre eigene Kopie von jedem anstelle der von MDM."
@@ -2760,7 +2764,7 @@
   },
   "4b6da766cbb50be6": {
    "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
-   "text": "MDM öffnet <g1>Galerie herunterladen</g1>, anstatt die Seite als Datei herunterzuladen. Klicken Sie beim ersten Mal auf <g2>gallery-dl installieren</g2>."
+   "text": "MDM öffnet <g1>Galerie herunterladen</g1>, anstatt die Seite als Datei herunterzuladen. Beim ersten Mal klicken Sie auf <g2>gallery-dl installieren</g2>."
   },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
@@ -3552,7 +3556,7 @@
   },
   "6216638d7aa4db3f": {
    "source": "Check <g1>Save to</g1> (the General category's folder by default). The pictures go into a folder of their own there, named after the gallery.",
-   "text": "Prüfen Sie <g1>Speichern unter</g1> (standardmäßig der Ordner der Kategorie Allgemein). Die Bilder werden dort in einen eigenen Ordner gelegt, der nach der Galerie benannt ist."
+   "text": "Überprüfen Sie <g1>Speichern unter</g1> (standardmäßig der Ordner der Kategorie „Allgemein“). Die Bilder werden dort in einen eigenen Ordner verschoben, der nach der Galerie benannt ist."
   },
   "62296921bc8016ff": {
    "source": "<g1>Always turn on Speed Limiter on Mister Download Manager startup</g1> turns it on each time MDM starts.",
@@ -4114,10 +4118,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM kann auf drei Arten ohne sein Fenster gesteuert werden:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Die Proxy-/SOCKS-Einstellungen von MDM gelten für Web- und FTP-Downloads. Torrents können auch einen SOCKS5-Proxy verwenden: Legen Sie einen <x1/>-Proxy unter <g2>Optionen → Proxy / SOCKS</g2> fest und aktivieren Sie <g3>Proxy verwenden</g3> in den Torrent-Einstellungen. Der Proxy deckt nur Verbindungen zu Peers und Web-Trackern ab, daher deaktiviert MDM damit das DHT, die lokale Peer-Erkennung, eingehende Verbindungen und UDP-Tracker. Wenn der Proxy aus den Proxy-/SOCKS-Einstellungen entfernt wird, während dieser Schalter aktiviert ist, starten Torrents nicht, anstatt ihn zu umgehen."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "Fortschrittsfenster eines Videos"
@@ -4152,7 +4152,7 @@
   },
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
-   "text": "Lädt die Bilder einer Galerie (eine Wikimedia Commons-Kategorie, ein Flickr-Album, ...) in einen danach benannten Ordner in <x1/> herunter; <x2/> nimmt höchstens so viele, die ersten, die die Website auflistet. Bei erneutem Start werden nur die neuen heruntergeladen."
+   "text": "Lädt die Bilder einer Galerie (eine Wikimedia Commons-Kategorie, ein Flickr-Album, ...) in einen Ordner, der nach ihr benannt ist, innerhalb von <x1/> herunter; <x2/> nimmt höchstens so viele, die ersten, die die Website auflistet. Wenn es erneut gestartet wird, ruft es nur die neuen ab."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4584,7 +4584,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Optionen → Proxy / SOCKS → Netzwerkadapter</g1> bindet die Verbindungen von MDM an einen Adapter, normalerweise den eines VPNs (<g2>Optionen</g2>). Unter Linux und macOS bindet die Torrent-Engine jeden Socket daran: Peers, Tracker, das DHT und seinen Listening-Port. UPnP und die lokale Peer-Erkennung werden dann deaktiviert, da sie mit dem lokalen Netzwerk statt über den Adapter kommunizieren. Wenn der Adapter wegfällt, stoppt die Engine und startet wieder über den Adapter, sobald dieser wieder verfügbar ist."
+   "text": "Unter <g1>Optionen → Proxy / SOCKS → Netzwerkadapter</g1> werden die Verbindungen von MDM an einen Adapter gebunden, normalerweise den eines VPNs (<g2>Optionen</g2>). Unter Linux und macOS bindet die Torrent-Engine jeden Socket daran: Peers, Tracker, das DHT und seinen Listening-Port. UPnP und die lokale Peer-Erkennung werden dann deaktiviert, da sie mit dem lokalen Netzwerk statt über den Adapter kommunizieren. Wenn der Adapter wegfällt, stoppt die Engine und startet wieder über den Adapter, sobald dieser wieder verfügbar ist."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5200,7 +5200,7 @@
   },
   "8ebacedce5c28ec5": {
    "source": "Add URL sends these to the gallery window: - Wikimedia Commons categories; - Flickr photographers and albums; - DeviantArt and ArtStation galleries; - Imgur albums; - Pixiv artists and works; - Pinterest boards and pins; - Danbooru and Gelbooru searches; - Tumblr blogs; - Bluesky profiles.",
-   "text": "URL hinzufügen sendet diese an das Galeriefenster: - Wikimedia Commons-Kategorien; - Flickr-Fotografen und -Alben; - DeviantArt- und ArtStation-Galerien; - Imgur-Alben; - Pixiv-Künstler und -Werke; - Pinterest-Boards und -Pins; - Danbooru- und Gelbooru-Suchen; - Tumblr-Blogs; - Bluesky-Profile."
+   "text": "„URL hinzufügen“ sendet diese an das Galeriefenster: – Wikimedia Commons-Kategorien; – Flickr-Fotografen und -Alben; – DeviantArt- und ArtStation-Galerien; – Imgur-Alben; – Pixiv-Künstler und -Werke; – Pinterest-Boards und -Pins; – Danbooru- und Gelbooru-Suchen; – Tumblr-Blogs; – Bluesky-Profile."
   },
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
@@ -5368,7 +5368,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "Lädt eine Datei mit bis zu 8 Verbindungen (<x1/>, 1 bis 128) herunter und zeigt den Fortschritt an. <x2/> pausiert den Vorgang; <x3/> setzt ihn fort. <x4/> prüft die fertige Datei: Hex-MD5, SHA-1, SHA-256, SHA-512 oder CRC32, optional benannt (<x5/>). <x6/> wählt den DNS: <x7/> (die Standardeinstellung); einen Dienst und wie man ihn anfragt, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; die Adressen der DNS-Server, <x13/>; oder eine DNS-over-HTTPS-Adresse. Es wird nie auf den System-DNS zurückgegriffen. <x14/> sendet jede Verbindung über einen Netzwerkadapter, anhand seines Namens (<x15/>, <x16/>) oder einer seiner Adressen; wenn er nicht verbunden ist, wird nichts gesendet und der Download schlägt fehl."
+   "text": "Lädt eine Datei mit bis zu 8 Verbindungen herunter (<x1/>, 1 bis 128), zeigt den Fortschritt an. <x2/> pausiert; <x3/> setzt fort. <x4/> prüft die fertige Datei: Hex-MD5, SHA-1, SHA-256, SHA-512 oder CRC32, optional benannt (<x5/>). <x6/> wählt den DNS: <x7/> (Standard); einen Dienst und wie er abgefragt wird, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; Adressen von DNS-Servern, <x13/>; oder eine DNS-over-HTTPS-Adresse. Es wird niemals auf den System-DNS zurückgegriffen. <x14/> sendet jede Verbindung über einen Netzwerkadapter, anhand seines Namens (<x15/>, <x16/>) oder einer seiner Adressen; wenn er nicht verbunden ist, wird nichts gesendet und der Download schlägt fehl."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5832,7 +5832,7 @@
   },
   "a0f44b2041902a09": {
    "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
-   "text": "gallery-dl prüft die Adresse auf Ihrem Computer, ohne online zu gehen. Wenn die Zeile <g1>gallery-dl kann die Dateien dieser Galerie herunterladen</g1> anzeigt, sind Sie bereit."
+   "text": "gallery-dl überprüft die Adresse auf Ihrem Computer, ohne online zu gehen. Wenn die Zeile <g1>gallery-dl kann die Dateien dieser Galerie herunterladen</g1> anzeigt, sind Sie bereit."
   },
   "a111ff2e536e8112": {
    "source": "Linux <g1>x86-64</g1>",
@@ -6296,7 +6296,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Netzwerkadapter</g1> – <g2>Beliebig (System wählt)</g2> ist die Standardeinstellung. Wenn Sie einen Adapter auswählen, normalerweise den Ihres VPNs, laufen alle von MDM geöffneten Verbindungen darüber oder gar nicht. Das betrifft Downloads, FTP, den von Ihnen gewählten DNS, MDMs eigene Downloads und die Update-Prüfung. Es funktioniert wie ein Kill Switch: Wenn der Adapter getrennt wird oder das VPN ausgeschaltet ist, geht nichts über Ihre normale Verbindung. Laufende Downloads stoppen mit „… ist nicht verbunden“ und starten wieder, wenn der Adapter verfügbar ist. Die Zeile unter der Liste zeigt die Adresse des Adapters oder dass er nicht verbunden ist."
+   "text": "<g1>Netzwerkadapter</g1> – <g2>Beliebig (System wählt)</g2> ist die Standardeinstellung. Wählen Sie einen Adapter, normalerweise den Ihres VPNs, und jede Verbindung, die MDM öffnet, wird darüber hergestellt oder gar nicht. Das betrifft Downloads, FTP, den von Ihnen gewählten DNS, MDMs eigene Downloads und die Update-Prüfung. Es funktioniert wie ein Kill Switch: Wenn der Adapter getrennt wird oder das VPN ausgeschaltet ist, geht nichts über Ihre normale Verbindung. Laufende Downloads stoppen mit „… ist nicht verbunden“ und starten wieder, wenn der Adapter zurück ist. Die Zeile unter der Liste zeigt die Adresse des Adapters oder dass er nicht verbunden ist."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6544,7 +6544,7 @@
   },
   "b2fc02b26cb8300d": {
    "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
-   "text": "Installiert oder aktualisiert gallery-dl für Bildergalerien: Die Prüfsummenliste wird mit dem Signierschlüssel des Autors abgeglichen, das Programm mit dieser Liste (Windows und Linux x86-64; ansonsten selbst installieren)."
+   "text": "Installiert oder aktualisiert gallery-dl für Bildergalerien: Die Prüfsummenliste wird mit dem Signierschlüssel des Autors abgeglichen, das Programm mit dieser Liste (Windows und Linux x86-64; andernfalls selbst installieren)."
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -7400,7 +7400,7 @@
   },
   "cce4b744dcc264df": {
    "source": "Optionally, type a number in <g1>Files at most</g1> to download only the first ones the site lists. On most sites those are the newest. Leave it empty for all of them.",
-   "text": "Geben Sie optional eine Zahl in <g1>Dateien höchstens</g1> ein, um nur die ersten von der Website aufgelisteten herunterzuladen. Auf den meisten Websites sind das die neuesten. Lassen Sie es leer für alle."
+   "text": "Geben Sie optional eine Zahl in <g1>Dateien höchstens</g1> ein, um nur die ersten von der Website aufgelisteten herunterzuladen. Auf den meisten Websites sind dies die neuesten. Lassen Sie das Feld leer für alle."
   },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
@@ -9080,7 +9080,7 @@
   },
   "ff26f3ab22a86c09": {
    "source": "installs or updates gallery-dl, verified in the same way.",
-   "text": "installiert oder aktualisiert gallery-dl, auf die gleiche Weise verifiziert."
+   "text": "installiert oder aktualisiert gallery-dl, auf die gleiche Weise überprüft."
   },
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",

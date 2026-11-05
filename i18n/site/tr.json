@@ -68,7 +68,7 @@
   },
   "021dced76e91e8e1": {
    "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
-   "text": "<g1>Nereden geldiği:</g1> MDM, gallery-dl'yi Codeberg'deki sürümlerinden indirir. Yalnızca sürümün sağlama toplamı listesi gallery-dl'nin yazarının MDM'de sabitlenmiş anahtarı tarafından imzalandığında ve program bu listeyle eşleştiğinde kabul eder. Önceki sürümü saklar ve asla daha eski bir sürüme geri dönmez. Windows ve Linux'ta (x86-64) MDM onu yükler; macOS'ta, Homebrew (<x2/>) veya pip ile yükleyin ve <g3>Yardımcılar...</g3> içinde seçin."
+   "text": "<g1>Nereden geldiği:</g1> MDM, gallery-dl'yi Codeberg'deki sürümlerinden indirir. Sadece sürümün sağlama toplamı listesi gallery-dl'nin yazarının MDM'de sabitlenmiş anahtarı tarafından imzalandığında ve program bu listeyle eşleştiğinde kabul eder. Önceki sürümü saklar ve asla daha eski bir sürüme geri dönmez. Windows ve Linux (x86-64) üzerinde MDM onu kurar; macOS'ta, Homebrew (<x2/>) veya pip ile kurun ve <g3>Yardımcılar...</g3> bölümünde seçin."
   },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
@@ -352,7 +352,7 @@
   },
   "084f72ae121f3c2a": {
    "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
-   "text": "<g1>Sil</g1>, galeriyi listeden kaldırır. Klasörü ve resimleri kalır, dosyaları silme kutucuğunu işaretleseniz bile: gitmesini istiyorsanız klasörü kendiniz silin."
+   "text": "<g1>Sil</g1>, galeriyi listeden çıkarır. Klasörü ve resimleri kalır, dosyaları silme kutucuğunu işaretleseniz bile: gitmesini istiyorsanız klasörü kendiniz silin."
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -644,7 +644,7 @@
   },
   "10e37230420403da": {
    "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
-   "text": "macOS'ta yeniden bağlanan bir VPN yeni bir arayüz alabilir (<x1/> yerine <x2/>): tekrar seçin."
+   "text": "macOS'ta yeniden bağlanan bir VPN yeni bir arayüz alabilir (<x1/> yerine <x2/>): onu tekrar seçin."
   },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
@@ -1000,7 +1000,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windows'ta torrent motoru henüz bir bağdaştırıcıya bağlanamıyor. Bu nedenle, bir bağdaştırıcı seçildiğinde torrentler başlamaz (\"Windows'ta torrentler henüz seçilen bir ağ bağdaştırıcısı üzerinden gidemez\"), bunun yerine onu atlamaz. İzleyici adları hala sistemin DNS'i tarafından aranır."
+   "text": "Windows'ta torrent motoru henüz bir bağdaştırıcıya bağlanamıyor. Bu nedenle, bir bağdaştırıcı seçildiğinde torrentler başlamaz (\"torrentler Windows'ta seçilen bir ağ bağdaştırıcısı üzerinden henüz gidemez\"), etrafından dolaşmak yerine. İzleyici adları hala sistemin DNS'i tarafından aranır."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1172,7 +1172,7 @@
   },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
-   "text": "MDM, bir galerinin (bir Wikimedia Commons kategorisi, bir Flickr albümü, bir DeviantArt galerisi, bir Imgur albümü ve daha fazlası) resimlerini gallery-dl ile indirir…"
+   "text": "MDM, bir galerinin (bir Wikimedia Commons kategorisi, bir Flickr albümü, bir DeviantArt galerisi, bir Imgur albümü ve daha fazlası) resimlerini gallery-dl ile indirir..."
   },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
@@ -2008,7 +2008,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "Bu bilgisayarın kendisine olan bağlantılar (<x1/>) bağlı değildir. Bu bilgisayardaki bir proxy indirmeleri taşır ve onları nereye göndereceği ona kalmıştır."
+   "text": "Bu bilgisayarın kendisine olan bağlantılar (<x1/>) bağlı değildir. Bu bilgisayardaki bir proxy indirmeleri taşır ve onları nereye göndereceği ona bağlıdır."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2130,9 +2130,13 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Seçili indirmeleri sil (önce sorar)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM'nin Ara Sunucu / Socks ayarları web ve FTP indirmeleri içindir. Torrentler de bir SOCKS5 kullanabilir: <g2>Seçenekler → Ara Sunucu / Socks</g2> bölümünde bir <x1/> ara sunucu ayarlayın ve Torrent ayarlarında <g3>Ara sunucuyu kullan</g3> seçeneğini açın. Ara sunucu yalnızca eşlere ve web izleyicilere olan bağlantıları kapsar, bu nedenle MDM bununla DHT'yi, yerel eş keşfini, gelen bağlantıları ve UDP izleyicilerini kapatır; ağa doğru hiçbir UDP soketi açmaz. Bu anahtar açıkken Ara Sunucu / Socks'tan ara sunucu giderse, torrentler onu atlamak yerine başlamaz."
+  },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
-   "text": "<g1>Kendi kopyanız:</g1> <g2>Yardımcılar...</g2> (galeri penceresinde veya video penceresinde) yt-dlp, ffmpeg ve gallery-dl'yi listeler ve <g3>Başka bir program kullan...</g3> MDM'nin kopyası yerine her birinin kendi kopyanızı alır."
+   "text": "<g1>Kendi kopyanız:</g1> <g2>Yardımcılar...</g2> (galeri penceresinde veya video penceresinde) yt-dlp, ffmpeg ve gallery-dl'yi listeler ve <g3>Başka bir program kullan...</g3> MDM'nin kopyası yerine her birinin kendi kopyanızı kullanır."
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2428,7 +2432,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "Sistemin DNS'i adları kendi yöntemleriyle sorar ve Windows her bağdaştırıcı üzerinden sorabilir. Adları bağdaştırıcının içinde de tutmak için, <g1>Bağlantı</g1> → <g2>DNS</g2> altında bir DNS seçin: MDM daha sonra onu bağdaştırıcı üzerinden sorar."
+   "text": "Sistemin DNS'i adları kendi yöntemleriyle sorar ve Windows her bağdaştırıcı üzerinden sorabilir. Adları bağdaştırıcının içinde de tutmak için <g1>Bağlantı</g1> → <g2>DNS</g2> altında bir DNS seçin: MDM daha sonra onu bağdaştırıcı üzerinden sorar."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -2760,7 +2764,7 @@
   },
   "4b6da766cbb50be6": {
    "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
-   "text": "MDM, sayfayı bir dosya olarak indirmek yerine <g1>Galeri indir</g1> penceresini açar. İlk kez kullanıyorsanız, <g2>gallery-dl'yi yükle</g2>'ye tıklayın."
+   "text": "MDM, sayfayı dosya olarak indirmek yerine <g1>Galeri indir</g1> penceresini açar. İlk kez kullanıyorsanız, <g2>gallery-dl'yi yükle</g2>'ye tıklayın."
   },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
@@ -3324,7 +3328,7 @@
   },
   "5cf4f742d0a41f0e": {
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
-   "text": "bir galeriyi kendi adıyla bir klasöre indirir. Bkz. <g1>Komut satırı ve otomasyon</g1>."
+   "text": "bir galeriyi kendi adını taşıyan bir klasöre indirir. Bkz. <g1>Komut satırı ve otomasyon</g1>."
   },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
@@ -3388,7 +3392,7 @@
   },
   "5ea1452a0cb5fbf8": {
    "source": "Stop, delete",
-   "text": "Durdur, sil"
+   "text": "Dur, sil"
   },
   "5ea184bc04ad2f73": {
    "source": "See <g1>If a video won't download</g1>.",
@@ -3552,7 +3556,7 @@
   },
   "6216638d7aa4db3f": {
    "source": "Check <g1>Save to</g1> (the General category's folder by default). The pictures go into a folder of their own there, named after the gallery.",
-   "text": "<g1>Kaydedileceği yer</g1>'i kontrol edin (varsayılan olarak Genel kategorisinin klasörü). Resimler, galeri adıyla kendi klasörlerine gider."
+   "text": "<g1>Kaydedileceği yer</g1>'i kontrol edin (varsayılan olarak Genel kategorisinin klasörü). Resimler, orada, galeri adını taşıyan kendi klasörlerine gider."
   },
   "62296921bc8016ff": {
    "source": "<g1>Always turn on Speed Limiter on Mister Download Manager startup</g1> turns it on each time MDM starts.",
@@ -3676,7 +3680,7 @@
   },
   "647d714bfaad02a5": {
    "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
-   "text": "<g1>Ağ bağdaştırıcısı:</g1> yt-dlp gibi, gallery-dl de tek bir ağ bağdaştırıcısına bağlı tutulamaz. Bir tane seçili olsa bile (<g2>Seçenekler → Ara Sunucu / Socks → Ağ bağdaştırıcısı</g2>), galeriler başlamaz."
+   "text": "<g1>Ağ bağdaştırıcısı:</g1> yt-dlp gibi, gallery-dl tek bir ağ bağdaştırıcısına bağlı tutulamaz. Bir tane seçildiğinde (<g2>Seçenekler → Ara Sunucu / Socks → Ağ bağdaştırıcısı</g2>), galeriler başlamaz."
   },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
@@ -3740,7 +3744,7 @@
   },
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
-   "text": "Her <g1>şeyi</g1> başka bir ağ üzerinden yönlendirmek için tüm bilgisayar için bir VPN kullanın."
+   "text": "Her <g1>şeyi</g1> başka bir ağ üzerinden yönlendirmek için, tüm bilgisayar için bir VPN kullanın."
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -3772,7 +3776,7 @@
   },
   "687eb3437405d3f6": {
    "source": "A picture's own address (one ending in <x1/> or <x2/>) downloads as a file, as before.",
-   "text": "Bir resmin kendi adresi (<x1/> veya <x2/> ile biten bir adres) eskisi gibi bir dosya olarak indirilir."
+   "text": "Bir resmin kendi adresi (<x1/> veya <x2/> ile biten) eskisi gibi bir dosya olarak indirilir."
   },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
@@ -3784,7 +3788,7 @@
   },
   "689d48a0fd15b011": {
    "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
-   "text": "Henüz klasöründe olmayan resimleri almak için bitmiş bir galeriyi tekrar başlatın (<g1>Sürdür</g1>). gallery-dl, zaten orada olanları atlar."
+   "text": "Bitmiş bir galeriyi tekrar başlatın (<g1>Sürdür</g1>) sadece henüz klasöründe olmayan resimleri almak için. gallery-dl zaten orada olanları atlar."
   },
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
@@ -4114,10 +4118,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM, penceresi olmadan üç şekilde çalıştırılabilir:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDM'nin Ara Sunucu / Socks ayarları web ve FTP indirmeleri içindir. Torrentler de bir SOCKS5 kullanabilir: <g2>Seçenekler → Ara Sunucu / Socks</g2> bölümünde bir <x1/> ara sunucu ayarlayın ve Torrent ayarlarında <g3>Ara sunucuyu kullan</g3> seçeneğini açın. Ara sunucu yalnızca eşlere ve web izleyicilerine olan bağlantıları kapsar, bu nedenle MDM bununla DHT'yi, yerel eş keşfini, gelen bağlantıları ve UDP izleyicilerini kapatır. Bu anahtar açıkken ara sunucu Ara Sunucu / Socks bölümünden kaybolursa, torrentler onu atlamak yerine başlamaz."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "Bir videonun ilerleme penceresi"
@@ -4152,7 +4152,7 @@
   },
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
-   "text": "Bir galerinin resimlerini (bir Wikimedia Commons kategorisi, bir Flickr albümü, ...) <x1/> içine kendi adıyla bir klasöre indirin; <x2/> en fazla o kadarını, sitenin listelediği ilkleri alır. Tekrar başlatıldığında, yalnızca yenilerini getirir."
+   "text": "Bir galerinin resimlerini (bir Wikimedia Commons kategorisi, bir Flickr albümü, ...) <x1/> içine, galeri adıyla bir klasöre indirin; <x2/> en fazla o kadarını, sitenin listelediği ilkleri alır. Tekrar başlatıldığında, yalnızca yenilerini getirir."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4584,7 +4584,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Seçenekler → Ara Sunucu / Socks → Ağ bağdaştırıcısı</g1>, MDM'nin bağlantılarını genellikle bir VPN'e ait olan tek bir bağdaştırıcıya (<g2>Seçenekler</g2>) bağlar. Linux ve macOS'ta torrent motoru her soketi buna bağlar: eşler, izleyiciler, DHT ve dinleme portu. UPnP ve yerel eş keşfi bu durumda kapatılır, çünkü bunlar bağdaştırıcı üzerinden değil, yerel ağ ile iletişim kurar. Bağdaştırıcı giderse motor durur ve geri geldiğinde bağdaştırıcı üzerinden tekrar başlar."
+   "text": "<g1>Seçenekler → Ara Sunucu / Socks → Ağ bağdaştırıcısı</g1> MDM'nin bağlantılarını tek bir bağdaştırıcıya, genellikle bir VPN'inkine (<g2>Seçenekler</g2>) bağlar. Linux ve macOS'ta torrent motoru her soketi buna bağlar: eşler, izleyiciler, DHT ve dinleme portu. UPnP ve yerel eş keşfi kapatılır, çünkü bunlar bağdaştırıcı üzerinden değil, yerel ağla konuşur. Bağdaştırıcı giderse, motor durur ve geri geldiğinde bağdaştırıcı üzerinden tekrar başlar."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -4808,7 +4808,7 @@
   },
   "8362706ee6422965": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
-   "text": "MDM, bir galerinin (bir Wikimedia Commons kategorisi, bir Flickr albümü, bir DeviantArt galerisi, bir Imgur albümü ve daha fazlası) resimlerini, yüzlerce siteyi okuyan ücretsiz bir program olan <g1>gallery-dl</g1> ile indirir. Videolar için yt-dlp gibi, bu da isteğe bağlı bir yardımcıdır: MDM, ilk ihtiyacınız olduğunda onu yükler veya kendi kopyanızı kullanır."
+   "text": "MDM, yüzlerce siteyi okuyan ücretsiz bir program olan <g1>gallery-dl</g1> ile bir galerinin (bir Wikimedia Commons kategorisi, bir Flickr albümü, bir DeviantArt galerisi, bir Imgur albümü ve daha fazlası) resimlerini indirir. Videolar için yt-dlp gibi, bu isteğe bağlı bir yardımcıdır: MDM, ilk ihtiyacınız olduğunda onu kurar veya kendi kopyanızı kullanır."
   },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
@@ -5144,7 +5144,7 @@
   },
   "8d6911b8ed8eb4d4": {
    "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
-   "text": "<g1>Nasıl sorduğu:</g1> gallery-dl, sitelere MDM olarak, saniyede en fazla bir resim sorar. Wikimedia sunucuları, daha hızlı veya isimsiz soran araçları reddeder. Sizin hiçbir yapılandırma dosyanızı kullanmaz."
+   "text": "<g1>Nasıl sorduğu:</g1> gallery-dl, sitelere MDM gibi, saniyede en fazla bir resim sorar. Wikimedia sunucuları, daha hızlı veya isimsiz soran araçları reddeder. Sizin hiçbir yapılandırma dosyanızı kullanmaz."
   },
   "8d82bd27db3d3e27": {
    "source": "In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with <x1/>.",
@@ -5368,7 +5368,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "İlerlemeyi göstererek 8 bağlantıya kadar (<x1/>, 1 ila 128) bir dosya indirin. <x2/> duraklatır; <x3/> devam ettirir. <x4/> bitmiş dosyayı kontrol eder: isteğe bağlı olarak adlandırılmış (<x5/>) hex MD5, SHA-1, SHA-256, SHA-512 veya CRC32. <x6/> DNS'i seçer: <x7/> (varsayılan); bir hizmet ve ona nasıl sorulacağı, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS sunucularının adresleri, <x13/>; veya bir DNS-over-HTTPS adresi. Asla sistemin DNS'ine geri dönmez. <x14/> her bağlantıyı adıyla (<x15/>, <x16/>) veya adreslerinden biriyle tek bir ağ bağdaştırıcısı üzerinden gönderir; bağlı değilse hiçbir şey gönderilmez ve indirme başarısız olur."
+   "text": "İlerleme göstererek bir dosyayı en fazla 8 bağlantıyla (<x1/>, 1 ila 128) indirin. <x2/> duraklatır; <x3/> devam ettirir. <x4/> bitmiş dosyayı kontrol eder: onaltılık MD5, SHA-1, SHA-256, SHA-512 veya CRC32, isteğe bağlı olarak adlandırılmış (<x5/>). <x6/> DNS'i seçer: <x7/> (varsayılan); bir hizmet ve ona nasıl sorulacağı, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS sunucularının adresleri, <x13/>; veya bir DNS-over-HTTPS adresi. Asla sistemin DNS'ine geri dönmez. <x14/> her bağlantıyı adıyla (<x15/>, <x16/>) veya adreslerinden biriyle tek bir ağ bağdaştırıcısı üzerinden gönderir; bağlı değilse hiçbir şey gönderilmez ve indirme başarısız olur."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5392,7 +5392,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "Henüz bağdaştırıcıya bağlı değil, bu yüzden bir tane seçildiğinde başlamazlar:"
+   "text": "Henüz bağdaştırıcıya bağlı değil, bu yüzden biri seçiliyken başlamazlar:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -6296,7 +6296,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Ağ bağdaştırıcısı</g1> — <g2>Herhangi biri (sistem seçer)</g2> varsayılandır. Bir bağdaştırıcı seçin, genellikle VPN'inizinkini, MDM'nin açtığı her bağlantı onun üzerinden gider veya hiç gitmez. Bu, indirmeleri, FTP'yi, seçtiğiniz DNS'i, MDM'nin kendi indirmelerini ve güncelleme kontrolünü kapsar. Bir kill switch gibi çalışır: bağdaştırıcı bağlantısı kesildiğinde veya VPN kapatıldığında, normal bağlantınız üzerinden hiçbir şey gitmez. Çalışan indirmeler \"… bağlı değil\" ile durur ve bağdaştırıcı geri geldiğinde tekrar başlar. Listenin altındaki satır bağdaştırıcının adresini veya bağlı olmadığını gösterir."
+   "text": "<g1>Ağ bağdaştırıcısı</g1> — <g2>Herhangi biri (sistem seçer)</g2> varsayılandır. Bir bağdaştırıcı, genellikle VPN'inizinki, seçtiğinizde MDM'nin açtığı her bağlantı onun üzerinden gider veya hiç gitmez. Bu, indirmeleri, FTP'yi, seçtiğiniz DNS'i, MDM'nin kendi indirmelerini ve güncelleme kontrolünü kapsar. Bir kill switch gibi çalışır: bağdaştırıcı bağlantısı kesildiğinde veya VPN kapatıldığında, normal bağlantınız üzerinden hiçbir şey gitmez. Çalışan indirmeler \"… bağlı değil\" mesajıyla durur ve bağdaştırıcı geri geldiğinde tekrar başlar. Listenin altındaki satır bağdaştırıcının adresini veya bağlı olmadığını gösterir."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6544,7 +6544,7 @@
   },
   "b2fc02b26cb8300d": {
    "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
-   "text": "Resim galerileri için gallery-dl'yi kurun veya güncelleyin: sağlama toplamı listesi yazarının imzalama anahtarına göre, program ise bu listeye göre kontrol edilir (Windows ve Linux x86-64; başka yerlerde kendiniz kurun)."
+   "text": "Resim galerileri için gallery-dl'yi kurun veya güncelleyin: sağlama toplamı listesi yazarının imzalama anahtarıyla, program da o listeyle kontrol edilir (Windows ve Linux x86-64; diğer yerlerde kendiniz kurun)."
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -7092,7 +7092,7 @@
   },
   "c3da286564016a74": {
    "source": "Which addresses open the gallery window",
-   "text": "Hangi adresler galeri penceresini açar"
+   "text": "Galeri penceresini hangi adresler açar"
   },
   "c3e54652a3021b62": {
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
@@ -7804,7 +7804,7 @@
   },
   "d880c385e71b0520": {
    "source": "The gallery gets one row in the list. Its size grows as the pictures arrive, and its log says how many were saved. Each picture is marked as downloaded from the internet, as any download is.",
-   "text": "Galeri, listede tek bir satır alır. Resimler geldikçe boyutu büyür ve günlüğü kaç tanesinin kaydedildiğini gösterir. Her resim, herhangi bir indirme gibi, internetten indirilmiş olarak işaretlenir."
+   "text": "Galeri listede tek bir satır alır. Resimler geldikçe boyutu büyür ve günlüğü kaç tanesinin kaydedildiğini gösterir. Her resim, herhangi bir indirme gibi, internetten indirilmiş olarak işaretlenir."
   },
   "d891713dc4499493": {
    "source": "<g1>Enter did two things</g1>: with Cancel or a check box focused, Enter also pressed OK.",
@@ -8048,7 +8048,7 @@
   },
   "e0e426203d8a6245": {
    "source": "(implicit TLS; <x1/> with TLS is fine).",
-   "text": "(örtük TLS; <x1/> TLS ile sorun yok)."
+   "text": "(örtük TLS; <x1/> ile TLS sorunsuz)."
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
@@ -9080,7 +9080,7 @@
   },
   "ff26f3ab22a86c09": {
    "source": "installs or updates gallery-dl, verified in the same way.",
-   "text": "gallery-dl'yi aynı şekilde doğrulanmış olarak yükler veya günceller."
+   "text": "gallery-dl'yi aynı şekilde doğrulanmış olarak kurar veya günceller."
   },
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",

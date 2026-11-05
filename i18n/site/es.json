@@ -68,7 +68,7 @@
   },
   "021dced76e91e8e1": {
    "source": "<g1>Where it comes from:</g1> MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (<x2/>) or pip and choose it in <g3>Helpers...</g3>.",
-   "text": "<g1>De dónde viene:</g1> MDM descarga gallery-dl de sus lanzamientos en Codeberg. Lo acepta solo cuando la lista de sumas de comprobación del lanzamiento está firmada por la clave del autor de gallery-dl, fijada en MDM, y el programa coincide con esa lista. Mantiene la versión anterior y nunca vuelve a una más antigua. En Windows y en Linux (x86-64) MDM lo instala; en macOS, instálalo con Homebrew (<x2/>) o pip y elígelo en <g3>Ayudantes...</g3>."
+   "text": "<g1>De dónde viene:</g1> MDM descarga gallery-dl de sus lanzamientos en Codeberg. Lo acepta solo cuando la lista de sumas de verificación del lanzamiento está firmada por la clave del autor de gallery-dl, anclada en MDM, y el programa coincide con esa lista. Mantiene la versión anterior y nunca vuelve a una más antigua. En Windows y en Linux (x86-64) MDM lo instala; en macOS, instálalo con Homebrew (<x2/>) o pip y elígelo en <g3>Ayudantes...</g3>."
   },
   "022606906a44694b": {
    "source": "<g1>Download Mister Download Manager</g1> and install it; keep <g2>Set up browser integration</g2> ticked.",
@@ -352,7 +352,7 @@
   },
   "084f72ae121f3c2a": {
    "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
-   "text": "<g1>Eliminar</g1> quita la galería de la lista. Su carpeta y sus imágenes permanecen, incluso si marcas la casilla para eliminar archivos: elimina la carpeta tú mismo si quieres que desaparezca."
+   "text": "<g1>Eliminar</g1> quita la galería de la lista. Su carpeta y sus imágenes se mantienen, incluso si marcas la casilla para eliminar archivos: elimina la carpeta tú mismo si quieres que desaparezca."
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -1000,7 +1000,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "En Windows, el motor de torrents aún no puede vincularse a un adaptador. Por lo tanto, los torrents no se inician mientras se elige uno (\"los torrents aún no pueden pasar por un adaptador de red elegido en Windows\"), en lugar de evitarlo. Los nombres de los rastreadores todavía son buscados por el DNS del sistema."
+   "text": "En Windows, el motor de torrents aún no puede vincularse a un adaptador. Por lo tanto, los torrents no se inician mientras se elige uno (\"los torrents aún no pueden pasar por un adaptador de red elegido en Windows\"), en lugar de evitarlo. Los nombres de los rastreadores siguen siendo buscados por el DNS del sistema."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1172,7 +1172,7 @@
   },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
-   "text": "MDM descarga las imágenes de una galería (una categoría de Wikimedia Commons, un álbum de Flickr, una galería de DeviantArt, un álbum de Imgur y muchas más) con gallery-dl…"
+   "text": "MDM descarga las imágenes de una galería (una categoría de Wikimedia Commons, un álbum de Flickr, una galería de DeviantArt, un álbum de Imgur y muchos más) con gallery-dl…"
   },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
@@ -2008,7 +2008,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "Las conexiones a este propio equipo (<x1/>) no están vinculadas. Un proxy en este equipo transporta las descargas, y dónde las envía depende de él."
+   "text": "Las conexiones a este propio equipo (<x1/>) no están vinculadas. Un proxy en este equipo gestiona las descargas, y adónde las envía depende de él."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2129,6 +2129,10 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "Eliminar las descargas seleccionadas (pregunta primero)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "La configuración de Proxy/Socks de MDM es para descargas web y FTP. Los torrents también pueden usar un SOCKS5: configure un <x1/> proxy en <g2>Opciones → Proxy/Socks</g2> y active <g3>Usar el proxy</g3> en Configuración de torrents. El proxy solo cubre las conexiones a pares y rastreadores web, por lo que con él MDM desactiva DHT, el descubrimiento local de pares, las conexiones entrantes y los rastreadores UDP; no abre ningún socket UDP hacia la red. Si el proxy desaparece de Proxy/Socks mientras ese interruptor está activado, los torrents no se inician en lugar de omitirlo."
   },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
@@ -2428,7 +2432,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "El DNS del sistema pregunta los nombres a su manera, y Windows puede preguntar a través de cada adaptador. Para mantener los nombres también dentro del adaptador, elija un DNS en <g1>Conexión</g1> → <g2>DNS</g2>: MDM entonces lo pregunta a través del adaptador."
+   "text": "El DNS del sistema pregunta los nombres a su manera, y Windows puede preguntar a través de cada adaptador. Para mantener los nombres también dentro del adaptador, elija un DNS en <g1>Conexión</g1> → <g2>DNS</g2>: MDM lo preguntará a través del adaptador."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -2556,7 +2560,7 @@
   },
   "447b0cdb28e67b18": {
    "source": "<g1>Stop</g1> ends gallery-dl and everything it started. The pictures saved so far stay.",
-   "text": "<g1>Detener</g1> finaliza gallery-dl y todo lo que inició. Las imágenes guardadas hasta ahora permanecen."
+   "text": "<g1>Detener</g1> finaliza gallery-dl y todo lo que inició. Las imágenes guardadas hasta el momento se mantienen."
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -3676,7 +3680,7 @@
   },
   "647d714bfaad02a5": {
    "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
-   "text": "<g1>Adaptador de red:</g1> al igual que yt-dlp, gallery-dl no puede limitarse a un solo adaptador de red. Mientras se elige uno (<g2>Opciones → Proxy/Socks → Adaptador de red:</g2>), las galerías no se inician."
+   "text": "<g1>Adaptador de red:</g1> como yt-dlp, gallery-dl no puede limitarse a un adaptador de red. Mientras se elige uno (<g2>Opciones → Proxy/Socks → Adaptador de red</g2>), las galerías no se inician."
   },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
@@ -4114,10 +4118,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM se puede controlar sin su ventana de tres maneras:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "La configuración de Proxy/Socks de MDM es para descargas web y FTP. Los torrents también pueden usar uno SOCKS5: configura un proxy <x1/> en <g2>Opciones → Proxy/Socks</g2> y activa <g3>Usar el proxy</g3> en Configuración de torrents. El proxy cubre solo las conexiones a pares y rastreadores web, por lo que con él MDM desactiva la DHT, el descubrimiento de pares locales, las conexiones entrantes y los rastreadores UDP. Si el proxy desaparece de Proxy/Socks mientras ese interruptor está activado, los torrents no se inician en lugar de evitarlo."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "Ventana de progreso de un vídeo"
@@ -4152,7 +4152,7 @@
   },
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
-   "text": "Descarga las imágenes de una galería (una categoría de Wikimedia Commons, un álbum de Flickr, ...) en una carpeta con su nombre dentro de <x1/>; <x2/> toma como máximo esa cantidad, las primeras que el sitio enumera. Si se inicia de nuevo, solo descarga las nuevas."
+   "text": "Descarga las imágenes de una galería (una categoría de Wikimedia Commons, un álbum de Flickr,...) en una carpeta con su nombre dentro de <x1/>; <x2/> descarga como máximo esa cantidad, las primeras que el sitio lista. Si se inicia de nuevo, solo descarga las nuevas."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4584,7 +4584,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Opciones → Proxy/Socks → Adaptador de red</g1> mantiene las conexiones de MDM a un adaptador, normalmente el de una VPN (<g2>Opciones</g2>). En Linux y macOS, el motor de torrents vincula todos los sockets a él: pares, rastreadores, la DHT y su puerto de escucha. UPnP y el descubrimiento de pares locales se desactivan entonces, porque se comunican con la red local en lugar de a través del adaptador. Si el adaptador desaparece, el motor se detiene y se reinicia a través del adaptador cuando este vuelve."
+   "text": "Las conexiones de MDM se mantienen en un adaptador, normalmente el de una VPN, en <g1>Opciones → Proxy/Socks → Adaptador de red</g1> (<g2>Opciones</g2>). En Linux y macOS, el motor de torrents vincula todos los sockets a él: pares, rastreadores, la DHT y su puerto de escucha. UPnP y el descubrimiento de pares locales se desactivan entonces, porque se comunican con la red local en lugar de a través del adaptador. Si el adaptador desaparece, el motor se detiene y se reinicia a través del adaptador cuando este vuelve."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -4808,7 +4808,7 @@
   },
   "8362706ee6422965": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
-   "text": "MDM descarga las imágenes de una galería (una categoría de Wikimedia Commons, un álbum de Flickr, una galería de DeviantArt, un álbum de Imgur y muchas más) con <g1>gallery-dl</g1>, un programa gratuito que lee varios cientos de sitios. Al igual que yt-dlp para vídeos, es un ayudante opcional: MDM lo instala la primera vez que lo necesitas, o utiliza tu propia copia."
+   "text": "MDM descarga las imágenes de una galería (una categoría de Wikimedia Commons, un álbum de Flickr, una galería de DeviantArt, un álbum de Imgur y muchos más) con <g1>gallery-dl</g1>, un programa gratuito que lee varios cientos de sitios. Como yt-dlp para vídeos, es un ayudante opcional: MDM lo instala la primera vez que lo necesitas, o usa tu propia copia."
   },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
@@ -5368,7 +5368,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "Descarga un archivo con hasta 8 conexiones (<x1/>, de 1 a 128), mostrando el progreso. <x2/> lo pausa; <x3/> lo continúa. <x4/> comprueba el archivo terminado: hex MD5, SHA-1, SHA-256, SHA-512 o CRC32, opcionalmente nombrado (<x5/>). <x6/> elige el DNS: <x7/> (el predeterminado); un servicio y cómo consultarlo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; las direcciones de los servidores DNS, <x13/>; o una dirección DNS-over-HTTPS. Nunca recurre al DNS del sistema. <x14/> envía cada conexión a través de un adaptador de red, por su nombre (<x15/>, <x16/>) o una de sus direcciones; cuando no está conectado, no se envía nada y la descarga falla."
+   "text": "Descarga un archivo con hasta 8 conexiones (<x1/>, de 1 a 128), mostrando el progreso. <x2/> lo pausa; <x3/> lo continúa. <x4/> comprueba el archivo terminado: hex MD5, SHA-1, SHA-256, SHA-512 o CRC32, opcionalmente con nombre (<x5/>). <x6/> elige el DNS: <x7/> (el predeterminado); un servicio y cómo consultarlo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; las direcciones de los servidores DNS, <x13/>; o una dirección DNS-over-HTTPS. Nunca recurre al DNS del sistema. <x14/> envía cada conexión a través de un adaptador de red, por su nombre (<x15/>, <x16/>) o una de sus direcciones; cuando no está conectado, no se envía nada y la descarga falla."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -6048,7 +6048,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "Cómo funciona: Windows vincula la propia dirección del adaptador. Windows entonces envía esos paquetes solo a través de ese adaptador (su modelo de host fuerte). Linux vincula el dispositivo en sí (Linux 5.7 o posterior), y macOS vincula la interfaz. Una dirección de un tipo que el adaptador no tiene (IPv6 en una VPN solo IPv4) es rechazada, no enviada a su alrededor."
+   "text": "Cómo funciona: Windows vincula la dirección propia del adaptador. Windows luego envía esos paquetes solo a través de ese adaptador (su modelo de host fuerte). Linux vincula el dispositivo en sí (Linux 5.7 o posterior), y macOS vincula la interfaz. Una dirección de un tipo que el adaptador no tiene (IPv6 en una VPN solo IPv4) es rechazada, no enviada a su alrededor."
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6296,7 +6296,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Adaptador de red</g1>: <g2>Cualquiera (el sistema elige)</g2> es la opción predeterminada. Elija un adaptador, normalmente el de su VPN, y cada conexión que MDM abra saldrá a través de él, o no saldrá en absoluto. Esto cubre las descargas, FTP, el DNS que haya elegido, las propias descargas de MDM y la comprobación de actualizaciones. Funciona como un interruptor de seguridad: cuando el adaptador se desconecta, o la VPN se apaga, nada sale a través de su conexión normal. Las descargas en curso se detienen con «… no está conectado» y se reanudan cuando el adaptador vuelve a estar disponible. La línea debajo de la lista muestra la dirección del adaptador, o que no está conectado."
+   "text": "<g1>Adaptador de red</g1>: <g2>Cualquiera (el sistema elige)</g2> es la opción predeterminada. Elija un adaptador, normalmente el de su VPN, y todas las conexiones que MDM abra saldrán a través de él, o no saldrán en absoluto. Esto cubre las descargas, FTP, el DNS que haya elegido, las propias descargas de MDM y la comprobación de actualizaciones. Funciona como un interruptor de seguridad: cuando el adaptador se desconecta, o la VPN se apaga, nada sale a través de su conexión normal. Las descargas en curso se detienen con «… no está conectado» y se reanudan cuando el adaptador vuelve a estar disponible. La línea debajo de la lista muestra la dirección del adaptador, o que no está conectado."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6544,7 +6544,7 @@
   },
   "b2fc02b26cb8300d": {
    "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
-   "text": "Instala o actualiza gallery-dl, para galerías de imágenes: su lista de sumas de comprobación se verifica con la clave de firma de su autor, el programa con esa lista (Windows y Linux x86-64; en otros lugares, instálalo tú mismo)."
+   "text": "Instala o actualiza gallery-dl para galerías de imágenes: su lista de sumas de comprobación se verifica con la clave de firma de su autor, y el programa con esa lista (Windows y Linux x86-64; en otros sistemas, instálalo tú mismo)."
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -7400,7 +7400,7 @@
   },
   "cce4b744dcc264df": {
    "source": "Optionally, type a number in <g1>Files at most</g1> to download only the first ones the site lists. On most sites those are the newest. Leave it empty for all of them.",
-   "text": "Opcionalmente, escribe un número en <g1>Archivos como máximo</g1> para descargar solo los primeros que el sitio lista. En la mayoría de los sitios esos son los más nuevos. Déjalo vacío para descargarlos todos."
+   "text": "Opcionalmente, escribe un número en <g1>Archivos como máximo</g1> para descargar solo los primeros que el sitio lista. En la mayoría de los sitios, esos son los más nuevos. Déjalo vacío para descargarlos todos."
   },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
@@ -7804,7 +7804,7 @@
   },
   "d880c385e71b0520": {
    "source": "The gallery gets one row in the list. Its size grows as the pictures arrive, and its log says how many were saved. Each picture is marked as downloaded from the internet, as any download is.",
-   "text": "La galería obtiene una fila en la lista. Su tamaño crece a medida que llegan las imágenes, y su registro indica cuántas se guardaron. Cada imagen se marca como descargada de internet, como cualquier descarga."
+   "text": "La galería aparece en una fila en la lista. Su tamaño aumenta a medida que llegan las imágenes, y su registro indica cuántas se guardaron. Cada imagen se marca como descargada de internet, como cualquier descarga."
   },
   "d891713dc4499493": {
    "source": "<g1>Enter did two things</g1>: with Cancel or a check box focused, Enter also pressed OK.",

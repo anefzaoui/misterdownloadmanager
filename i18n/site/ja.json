@@ -352,7 +352,7 @@
   },
   "084f72ae121f3c2a": {
    "source": "<g1>Delete</g1> takes the gallery off the list. Its folder and pictures stay, even if you tick the box to delete files: delete the folder yourself if you want it gone.",
-   "text": "<g1>削除</g1> は、リストからギャラリーを削除します。ファイルを削除するチェックボックスをオンにしても、そのフォルダーと画像は残ります。削除したい場合は、自分でフォルダーを削除してください。"
+   "text": "<g1>削除</g1> はリストからギャラリーを削除します。ファイルを削除するチェックボックスをオンにしても、そのフォルダーと画像は残ります。削除したい場合は、自分でフォルダーを削除してください。"
   },
   "0869fe82a1a9be89": {
    "source": "Or right-click a queue under <g1>Queues</g1> and choose <g2>Start now</g2> or <g3>Stop</g3>.",
@@ -644,7 +644,7 @@
   },
   "10e37230420403da": {
    "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
-   "text": "macOSでは、再接続するVPNが新しいインターフェース (<x1/>の代わりに<x2/>) を取得する場合があります。その場合は再度選択してください。"
+   "text": "macOSでは、再接続するVPNは新しいインターフェース（<x1/>の代わりに<x2/>）を取得する場合があります。その場合は再度選択してください。"
   },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
@@ -1000,7 +1000,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windowsでは、トレントエンジンはまだアダプターにバインドできません。そのため、アダプターが選択されている間はトレントは開始されません（「Windowsでは、選択されたネットワークアダプター経由でトレントを開始できません」）。トラッカー名は引き続きシステムのDNSによって検索されます。"
+   "text": "Windowsでは、トレントエンジンはまだアダプターにバインドできません。そのため、アダプターが選択されている間はトレントが開始されず（「Windowsでは、選択されたネットワークアダプター経由でトレントを開始できません」）、アダプターを迂回することもありません。トラッカー名は引き続きシステムのDNSによって検索されます。"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1172,7 +1172,7 @@
   },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
-   "text": "MDM は、gallery-dl を使用して、ギャラリー (Wikimedia Commons カテゴリ、Flickr アルバム、DeviantArt ギャラリー、Imgur アルバムなど) の画像をダウンロードします。"
+   "text": "MDM は、数百ものサイトを読み込む無料プログラム gallery-dl を使用して、ギャラリー (Wikimedia Commons のカテゴリ、Flickr のアルバム、DeviantArt のギャラリー、Imgur のアルバムなど) の画像をダウンロードします。"
   },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
@@ -2008,7 +2008,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "このコンピューター自体への接続 (<x1/>) はバインドされません。このコンピューター上のプロキシがダウンロードを運び、どこに送信するかはプロキシ次第です。"
+   "text": "このコンピューター自体への接続（<x1/>）はバインドされません。このコンピューター上のプロキシがダウンロードを運び、どこに送信するかはプロキシ次第です。"
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2130,9 +2130,13 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "選択したダウンロードを削除 (最初に確認)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5プロキシを使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにしてください。このプロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア探索、受信接続、UDPトラッカーをオフにします。ネットワークに対してUDPソケットを一切開きません。このスイッチがオンの状態でプロキシ / SOCKSからプロキシがなくなると、トレントはプロキシを迂回せずに開始されません。"
+  },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
-   "text": "<g1>ユーザー自身のコピー:</g1> <g2>ヘルパー...</g2> (ギャラリーウィンドウまたはビデオウィンドウ内) には、yt-dlp、ffmpeg、および gallery-dl がリストされており、<g3>別のプログラムを使用...</g3> は、MDM の代わりにそれぞれのユーザー自身のコピーを使用します。"
+   "text": "<g1>自身のコピー:</g1> <g2>ヘルパー...</g2> (ギャラリーウィンドウまたはビデオウィンドウ内) には yt-dlp、ffmpeg、gallery-dl がリストされており、<g3>別のプログラムを使用...</g3> を選択すると、MDM の代わりにそれぞれの自身のコピーを使用できます。"
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2428,7 +2432,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "システムのDNSは独自の方法で名前を問い合わせ、Windowsはすべてのアダプターを介して問い合わせる場合があります。名前もアダプター内に保持するには、<g1>接続</g1> → <g2>DNS</g2>でDNSを選択してください。MDMはアダプターを介してそれを問い合わせます。"
+   "text": "システムのDNSは独自の方法で名前を問い合わせ、Windowsはすべてのアダプターを介して問い合わせる場合があります。名前もアダプター内に保持するには、<g1>接続</g1> → <g2>DNS</g2>でDNSを選択してください。MDMはそれをアダプターを通して問い合わせます。"
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -2760,7 +2764,7 @@
   },
   "4b6da766cbb50be6": {
    "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
-   "text": "MDM は、ページをファイルとしてダウンロードする代わりに、<g1>ギャラリーをダウンロード</g1> を開きます。初回は、<g2>gallery-dl をインストール</g2> をクリックします。"
+   "text": "MDM は、ページをファイルとしてダウンロードする代わりに、<g1>ギャラリーをダウンロード</g1> を開きます。初回は <g2>gallery-dl をインストール</g2> をクリックします。"
   },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
@@ -3156,7 +3160,7 @@
   },
   "5704b78ea54419dd": {
    "source": "Click <g1>Add URL</g1> and paste the gallery's address, for example <x2/>.",
-   "text": "<g1>URL を追加</g1> をクリックし、ギャラリーのアドレス (例: <x2/>) を貼り付けます。"
+   "text": "<g1>URL を追加</g1> をクリックし、ギャラリーのアドレスを貼り付けます。例: <x2/>。"
   },
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
@@ -3544,7 +3548,7 @@
   },
   "61c0ff783f077afd": {
    "source": "Get the new pictures later",
-   "text": "後で新しい画像を取得する"
+   "text": "新しい画像を後で取得する"
   },
   "61e77c7c55f48e1e": {
    "source": "4. Decide what happens at the end (optional)",
@@ -3676,7 +3680,7 @@
   },
   "647d714bfaad02a5": {
    "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
-   "text": "<g1>ネットワーク アダプター:</g1> yt-dlp と同様に、gallery-dl は 1 つのネットワーク アダプターに限定することはできません。1 つが選択されている間 (<g2>オプション → プロキシ / SOCKS → ネットワーク アダプター</g2>)、ギャラリーは開始されません。"
+   "text": "<g1>ネットワーク アダプター:</g1> yt-dlp と同様に、gallery-dl は 1 つのネットワーク アダプターに固定することはできません。1 つが選択されている間 (<g2>オプション → プロキシ / SOCKS → ネットワーク アダプター</g2>)、ギャラリーは開始されません。"
   },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
@@ -3738,6 +3742,10 @@
    "source": "Reinstall MDM to restore its files.",
    "text": "MDMを再インストールしてファイルを復元してください。"
   },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "コンピューター全体のVPNを使用し、<g1>すべて</g1>を別のネットワーク経由でルーティングします。"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows、macOS"
@@ -3780,7 +3788,7 @@
   },
   "689d48a0fd15b011": {
    "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
-   "text": "完了したギャラリーを再度開始 (<g1>再開</g1>) すると、まだフォルダーにない画像のみが取得されます。gallery-dl は、すでにそこにある画像をスキップします。"
+   "text": "完了したギャラリーを再度開始 (<g1>再開</g1>) すると、まだフォルダーにない画像のみが取得されます。gallery-dl は、すでに存在する画像をスキップします。"
   },
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
@@ -4110,10 +4118,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDMは、ウィンドウを表示せずに次の3つの方法で操作できます。"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDMのプロキシ / SOCKS設定は、ウェブおよびFTPダウンロード用です。トレントもSOCKS5を使用できます。<g2>オプション → プロキシ / SOCKS</g2>で<x1/>プロキシを設定し、トレント設定で<g3>プロキシを使用する</g3>をオンにします。プロキシはピアとウェブトラッカーへの接続のみをカバーするため、MDMはDHT、ローカルピア検出、受信接続、UDPトラッカーをオフにします。そのスイッチがオンの間にプロキシがプロキシ / SOCKSからなくなると、トレントはそれを回避するのではなく、開始されません。"
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "動画の進捗ウィンドウ"
@@ -4148,7 +4152,7 @@
   },
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
-   "text": "ギャラリーの画像（Wikimedia Commonsカテゴリ、Flickrアルバムなど）を、<x1/>内のそのギャラリー名と同じ名前のフォルダーにダウンロードします。<x2/>は、サイトがリストする最初のものから最大その数だけ取得します。再度開始すると、新しいものだけをフェッチします。"
+   "text": "ギャラリーの画像（Wikimedia Commonsのカテゴリ、Flickrのアルバムなど）を<x1/>内のその名前のフォルダーにダウンロードします。<x2/>は最大でその数だけ、サイトがリストする最初のものを取得します。再度開始すると、新しいものだけをフェッチします。"
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4580,7 +4584,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>オプション → プロキシ / SOCKS → ネットワークアダプター</g1>は、MDMの接続を1つのアダプター（通常はVPNのアダプター）に保持します（<g2>オプション</g2>）。LinuxとmacOSでは、トレントエンジンはすべてのソケットをそれにバインドします。ピア、トラッカー、DHT、およびそのリスニングポートです。UPnPとローカルピア検出は、アダプター経由ではなくローカルネットワークと通信するため、その場合はオフになります。アダプターがなくなるとエンジンは停止し、戻るとアダプター経由で再び開始します。"
+   "text": "<g1>オプション → プロキシ / SOCKS → ネットワークアダプター</g1>は、MDMの接続を1つのアダプター（通常はVPNのもの）に保持します（<g2>オプション</g2>）。LinuxとmacOSでは、トレントエンジンはすべてのソケットをそれにバインドします。ピア、トラッカー、DHT、およびそのリスニングポートです。UPnPとローカルピア検出は、アダプター経由ではなくローカルネットワークと通信するため、その場合はオフになります。アダプターがなくなるとエンジンは停止し、戻るとアダプター経由で再び開始します。"
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -4804,7 +4808,7 @@
   },
   "8362706ee6422965": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
-   "text": "MDM は、数百のサイトを読み込む無料プログラムである <g1>gallery-dl</g1> を使用して、ギャラリー (Wikimedia Commons カテゴリ、Flickr アルバム、DeviantArt ギャラリー、Imgur アルバムなど) の画像をダウンロードします。動画用の yt-dlp と同様に、これはオプションのヘルパーです。MDM は、初めて必要になったときにインストールするか、ユーザー自身のコピーを使用します。"
+   "text": "MDM は、数百ものサイトを読み込む無料プログラム <g1>gallery-dl</g1> を使用して、ギャラリー (Wikimedia Commons のカテゴリ、Flickr のアルバム、DeviantArt のギャラリー、Imgur のアルバムなど) の画像をダウンロードします。動画用の yt-dlp と同様に、これはオプションのヘルパーです。MDM は、初めて必要になったときにインストールするか、ユーザー自身のコピーを使用します。"
   },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
@@ -5140,7 +5144,7 @@
   },
   "8d6911b8ed8eb4d4": {
    "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
-   "text": "<g1>要求方法:</g1> gallery-dl は、MDM としてサイトに要求し、最大で 1 秒に 1 枚の画像を要求します。Wikimedia のサーバーは、より速く、または名前なしで要求するツールを拒否します。ユーザーの設定ファイルは使用しません。"
+   "text": "<g1>要求方法:</g1> gallery-dl は MDM としてサイトに要求し、最大で 1 秒に 1 枚の画像を要求します。Wikimedia のサーバーは、より速く、または名前なしで要求するツールを拒否します。ユーザーの設定ファイルは使用しません。"
   },
   "8d82bd27db3d3e27": {
    "source": "In a Wayland session (GNOME, KDE Plasma and others), MDM's windows run through XWayland when it is there: Wayland doesn't let a program place its own windows, so MDM's menus and drop-down lists would open in the middle of the screen. To run on Wayland itself anyway, start it with <x1/>.",
@@ -5196,7 +5200,7 @@
   },
   "8ebacedce5c28ec5": {
    "source": "Add URL sends these to the gallery window: - Wikimedia Commons categories; - Flickr photographers and albums; - DeviantArt and ArtStation galleries; - Imgur albums; - Pixiv artists and works; - Pinterest boards and pins; - Danbooru and Gelbooru searches; - Tumblr blogs; - Bluesky profiles.",
-   "text": "URL を追加 は、これらをギャラリーウィンドウに送信します: - Wikimedia Commons カテゴリ; - Flickr 写真家とアルバム; - DeviantArt と ArtStation ギャラリー; - Imgur アルバム; - Pixiv アーティストと作品; - Pinterest ボードとピン; - Danbooru と Gelbooru 検索; - Tumblr ブログ; - Bluesky プロフィール。"
+   "text": "URL を追加 は、以下のものをギャラリーウィンドウに送信します: - Wikimedia Commons のカテゴリ; - Flickr の写真家とアルバム; - DeviantArt と ArtStation のギャラリー; - Imgur のアルバム; - Pixiv のアーティストと作品; - Pinterest のボードとピン; - Danbooru と Gelbooru の検索; - Tumblr のブログ; - Bluesky のプロフィール。"
   },
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
@@ -5364,7 +5368,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "最大8接続（<x1/>、1～128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止、<x3/>で再開します。<x4/>は完了したファイルをチェックします：16進数のMD5、SHA-1、SHA-256、SHA-512、またはCRC32で、オプションで名前を指定できます（<x5/>）。<x6/>はDNSを選択します：<x7/>（デフォルト）。サービスとその問い合わせ方法、<x8/>、<x9/>、<x10/>、<x11/>、<x12/>。DNSサーバーのアドレス、<x13/>。またはDNS-over-HTTPSアドレス。システムのDNSには決してフォールバックしません。<x14/>は、名前（<x15/>、<x16/>）またはそのアドレスのいずれかによって、すべての接続を1つのネットワークアダプター経由で送信します。接続されていない場合、何も送信されず、ダウンロードは失敗します。"
+   "text": "最大8接続（<x1/>、1～128）でファイルをダウンロードし、進行状況を表示します。<x2/>で一時停止し、<x3/>で続行します。<x4/>は完了したファイルをチェックします。オプションで名前を指定して（<x5/>）、MD5、SHA-1、SHA-256、SHA-512、またはCRC32の16進数値をチェックします。<x6/>はDNSを選択します。<x7/>（デフォルト）。サービスと問い合わせ方法、<x8/>、<x9/>、<x10/>、<x11/>、<x12/>。DNSサーバーのアドレス、<x13/>。またはDNS-over-HTTPSアドレス。システムのDNSには決してフォールバックしません。<x14/>は、名前（<x15/>、<x16/>）またはアドレスのいずれかによって、すべての接続を1つのネットワークアダプター経由で送信します。接続されていない場合、何も送信されず、ダウンロードは失敗します。"
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5388,7 +5392,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "まだアダプターに保持されていないため、選択されている間は開始されません:"
+   "text": "まだアダプターに保持されていないため、アダプターが選択されている間は開始されません。"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -6044,7 +6048,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "保持の仕組み: Windowsはアダプター自身のアドレスをバインドします。Windowsは、そのパケットをそのアダプターのみを通して送信します (その強力なホストモデル)。Linuxはデバイス自体をバインドし (Linux 5.7以降)、macOSはインターフェースをバインドします。アダプターが持たない種類のアドレス (IPv4のみのVPN上のIPv6) は拒否され、迂回して送信されることはありません。"
+   "text": "保持の仕組み：Windowsはアダプター自身のアドレスをバインドします。Windowsはこれらのパケットをそのアダプターのみを通して送信します（その強力なホストモデル）。Linuxはデバイス自体をバインドし（Linux 5.7以降）、macOSはインターフェースをバインドします。アダプターが持たない種類のアドレス（IPv4のみのVPN上のIPv6）は拒否され、迂回して送信されることはありません。"
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6292,7 +6296,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>ネットワークアダプター</g1> — <g2>任意 (システムが選択)</g2>が既定です。アダプター (通常はVPNのもの) を選択すると、MDMが開くすべての接続がそれを通して行われるか、まったく行われません。これには、ダウンロード、FTP、選択したDNS、MDM自身のダウンロード、更新チェックが含まれます。これはキルスイッチとして機能します。アダプターが切断されたり、VPNがオフになったりすると、通常の接続からは何も送信されません。実行中のダウンロードは「…が接続されていません」と表示されて停止し、アダプターが戻ると再開します。リストの下の行には、アダプターのアドレス、または接続されていないことが表示されます。"
+   "text": "<g1>ネットワークアダプター</g1> — <g2>任意 (システムが選択)</g2>がデフォルトです。アダプター（通常はVPNのもの）を選択すると、MDMが開くすべての接続がそれを通して行われるか、まったく行われません。これにはダウンロード、FTP、選択したDNS、MDM自身のダウンロード、更新チェックが含まれます。これはキルスイッチとして機能します。アダプターが切断されたり、VPNがオフになったりすると、通常の接続からは何も送信されません。実行中のダウンロードは「…が接続されていません」と表示されて停止し、アダプターが戻ると再開します。リストの下の行には、アダプターのアドレス、または接続されていないことが表示されます。"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6540,7 +6544,7 @@
   },
   "b2fc02b26cb8300d": {
    "source": "Install or update gallery-dl, for image galleries: its checksum list is checked against its author's signing key, the program against that list (Windows and Linux x86-64; elsewhere install it yourself).",
-   "text": "画像ギャラリー用のgallery-dlをインストールまたは更新します。そのチェックサムリストは作者の署名キーと照合され、プログラムはそのリストと照合されます（WindowsおよびLinux x86-64。それ以外の環境ではご自身でインストールしてください）。"
+   "text": "画像ギャラリー用のgallery-dlをインストールまたは更新します。そのチェックサムリストは作者の署名キーと照合され、プログラムはそのリストと照合されます（WindowsおよびLinux x86-64の場合。それ以外の場合はご自身でインストールしてください）。"
   },
   "b3192a3bf72c5c3b": {
    "source": "The app and the extension collect no personal data from anyone, children included. The website's visit counter doesn't know who you are or how old you are.",
@@ -7040,7 +7044,7 @@
   },
   "c1efc95d5de8c996": {
    "source": "torrents on Windows;",
-   "text": "Windows上のトレント;"
+   "text": "Windows上のトレント。"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -7396,7 +7400,7 @@
   },
   "cce4b744dcc264df": {
    "source": "Optionally, type a number in <g1>Files at most</g1> to download only the first ones the site lists. On most sites those are the newest. Leave it empty for all of them.",
-   "text": "必要に応じて、<g1>最大ファイル数</g1> に数値を入力して、サイトにリストされている最初のものだけをダウンロードします。ほとんどのサイトでは、これらが最新のものです。すべてをダウンロードするには、空のままにします。"
+   "text": "オプションで、<g1>最大ファイル数</g1> に数値を入力すると、サイトにリストされている最初の数枚だけをダウンロードできます。ほとんどのサイトでは、これらが最新のものです。すべてをダウンロードする場合は空のままにします。"
   },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
@@ -7800,7 +7804,7 @@
   },
   "d880c385e71b0520": {
    "source": "The gallery gets one row in the list. Its size grows as the pictures arrive, and its log says how many were saved. Each picture is marked as downloaded from the internet, as any download is.",
-   "text": "ギャラリーはリストに 1 行表示されます。画像の到着に合わせてサイズが大きくなり、ログには保存された画像の数が表示されます。各画像は、他のダウンロードと同様に、インターネットからダウンロードされたものとしてマークされます。"
+   "text": "ギャラリーはリストに 1 行表示されます。画像の到着とともにサイズが大きくなり、ログには保存された画像の数が表示されます。各画像は、他のダウンロードと同様に、インターネットからダウンロードされたものとしてマークされます。"
   },
   "d891713dc4499493": {
    "source": "<g1>Enter did two things</g1>: with Cancel or a check box focused, Enter also pressed OK.",
@@ -8044,7 +8048,7 @@
   },
   "e0e426203d8a6245": {
    "source": "(implicit TLS; <x1/> with TLS is fine).",
-   "text": "(暗黙のTLS; <x1/>とTLSは問題ありません)。"
+   "text": "（暗黙のTLS。<x1/>とTLSは問題ありません）。"
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
@@ -8488,7 +8492,7 @@
   },
   "edc9abcb08e77b81": {
    "source": "<g1><g2>Image galleries</g2></g1> — download a gallery's pictures (Wikimedia Commons, Flickr, DeviantArt and many more) with gallery-dl.",
-   "text": "<g1><g2>画像ギャラリー</g2></g1> — gallery-dlを使ってギャラリーの画像（Wikimedia Commons、Flickr、DeviantArtなど多数）をダウンロードします。"
+   "text": "<g1><g2>画像ギャラリー</g2></g1> — gallery-dl を使ってギャラリーの画像（Wikimedia Commons、Flickr、DeviantArt など多数）をダウンロードします。"
   },
   "edf69d8463a4ea4c": {
    "source": "<g1></g1>Free",
@@ -8636,7 +8640,7 @@
   },
   "f208414e0c06341b": {
    "source": "video pages (yt-dlp can't be held to an adapter);",
-   "text": "動画ページ (yt-dlpはアダプターに保持できません);"
+   "text": "動画ページ（yt-dlpはアダプターに保持できません）。"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",

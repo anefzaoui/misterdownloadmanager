@@ -1172,7 +1172,7 @@
   },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
-   "text": "MDM downloadt de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, een DeviantArt-galerij, een Imgur-album en nog veel meer) met gallery-dl…"
+   "text": "MDM downloadt de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, een DeviantArt-galerij, een Imgur-album en nog veel meer) met gallery-dl..."
   },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
@@ -2130,9 +2130,13 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Geselecteerde downloads verwijderen (vraagt eerst)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM's Proxy/Socks-instellingen zijn voor web- en FTP-downloads. Torrents kunnen ook een SOCKS5-proxy gebruiken: stel een <x1/> proxy in via <g2>Opties → Proxy/Socks</g2> en schakel <g3>Gebruik de proxy</g3> in bij de Torrent-instellingen. De proxy dekt alleen verbindingen met peers en webtrackers, dus daarmee schakelt MDM DHT, lokale peer-detectie, inkomende verbindingen en UDP-trackers uit; het opent helemaal geen UDP-socket naar het netwerk. Als de proxy verdwijnt uit Proxy/Socks terwijl die schakelaar aanstaat, starten torrents niet in plaats van eromheen te gaan."
+  },
   "39202940bfd37e73": {
    "source": "<g1>Your own copy:</g1> <g2>Helpers...</g2> (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and <g3>Use another program...</g3> takes your own copy of each instead of MDM's.",
-   "text": "<g1>Uw eigen exemplaar:</g1> <g2>Hulpprogramma's...</g2> (in het galerijvenster of het videovenster) vermeldt yt-dlp, ffmpeg en gallery-dl, en <g3>Ander programma gebruiken...</g3> neemt uw eigen exemplaar van elk in plaats van dat van MDM."
+   "text": "<g1>Uw eigen kopie:</g1> <g2>Hulpprogramma's...</g2> (in het galerijvenster of het videovenster) vermeldt yt-dlp, ffmpeg en gallery-dl, en <g3>Ander programma gebruiken...</g3> neemt uw eigen kopie van elk in plaats van die van MDM."
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -3676,7 +3680,7 @@
   },
   "647d714bfaad02a5": {
    "source": "<g1>Network adapter:</g1> like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (<g2>Options → Proxy / Socks → Network adapter</g2>), galleries don't start.",
-   "text": "<g1>Netwerkadapter:</g1> net als yt-dlp kan gallery-dl niet aan één netwerkadapter worden gekoppeld. Zolang er één is gekozen (<g2>Opties → Proxy/Socks → Netwerkadapter</g2>), starten galerijen niet."
+   "text": "<g1>Netwerkadapter:</g1> net als yt-dlp kan gallery-dl niet aan één netwerkadapter worden gekoppeld. Zolang er één is gekozen (<g2>Opties → Proxy/Socks → Netwerkadapter:</g2>), starten galerijen niet."
   },
   "648b3c118f4bb30b": {
    "source": "<g1>The project on GitHub</g1><g2>Code, issues and every release</g2>",
@@ -3772,7 +3776,7 @@
   },
   "687eb3437405d3f6": {
    "source": "A picture's own address (one ending in <x1/> or <x2/>) downloads as a file, as before.",
-   "text": "Het eigen adres van een afbeelding (een eindigend op <x1/> of <x2/>) wordt als een bestand gedownload, zoals voorheen."
+   "text": "Het eigen adres van een afbeelding (een eindigend op <x1/> of <x2/>) wordt gedownload als een bestand, zoals voorheen."
   },
   "6881e899825efad9": {
    "source": "<g1><g2>Command line and automation</g2></g1>: IDM's switches (<x3/>), <x4/> (files, videos, torrents) and a local, token-protected automation API that lists, pauses, starts, removes and deletes downloads.",
@@ -3784,7 +3788,7 @@
   },
   "689d48a0fd15b011": {
    "source": "Start a finished gallery again (<g1>Resume</g1>) to fetch only the pictures that aren't in its folder yet. gallery-dl skips the ones already there.",
-   "text": "Start een voltooide galerij opnieuw (<g1>Hervatten</g1>) om alleen de afbeeldingen op te halen die nog niet in de map staan. gallery-dl slaat de afbeeldingen over die er al zijn."
+   "text": "Start een voltooide galerij opnieuw (<g1>Hervatten</g1>) om alleen de afbeeldingen op te halen die nog niet in de map staan. gallery-dl slaat de reeds aanwezige over."
   },
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
@@ -4114,10 +4118,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM kan op drie manieren zonder venster worden aangestuurd:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "MDM's Proxy/Socks-instellingen zijn voor web- en FTP-downloads. Torrents kunnen ook een SOCKS5-proxy gebruiken: stel een <x1/> proxy in via <g2>Opties → Proxy/Socks</g2> en schakel <g3>Gebruik de proxy</g3> in bij Torrent-instellingen. De proxy dekt alleen verbindingen met peers en webtrackers, dus hiermee schakelt MDM de DHT, lokale peer-detectie, inkomende verbindingen en UDP-trackers uit. Als de proxy verdwenen is uit Proxy/Socks terwijl die schakelaar aanstaat, starten torrents niet in plaats van eromheen te gaan."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "Voortgangsvenster van een video"
@@ -4152,7 +4152,7 @@
   },
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
-   "text": "Download de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, ...) naar een map die ernaar is genoemd binnen <x1/>; <x2/> neemt er maximaal zoveel, de eerste die de site vermeldt. Opnieuw gestart, haalt het alleen de nieuwe op."
+   "text": "Download de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, ...) naar een map die ernaar is genoemd in <x1/>; <x2/> neemt er maximaal zoveel, de eerste die de site vermeldt. Als het opnieuw wordt gestart, haalt het alleen de nieuwe op."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4584,7 +4584,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Opties → Proxy/Socks → Netwerkadapter</g1> bindt MDM's verbindingen aan één adapter, meestal die van een VPN (<g2>Opties</g2>). Op Linux en macOS bindt de torrent-engine elke socket eraan: peers, trackers, de DHT en de luisterpoort. UPnP en lokale peer-detectie worden dan uitgeschakeld, omdat ze met het lokale netwerk communiceren in plaats van via de adapter. Als de adapter verdwijnt, stopt de engine, en start deze opnieuw via de adapter wanneer deze terug is."
+   "text": "<g1>Opties → Proxy/Socks → Netwerkadapter</g1> verbindt MDM met één adapter, meestal die van een VPN (<g2>Opties</g2>). Op Linux en macOS bindt de torrent-engine elke socket eraan: peers, trackers, de DHT en de luisterpoort. UPnP en lokale peer-detectie worden dan uitgeschakeld, omdat ze met het lokale netwerk communiceren in plaats van via de adapter. Als de adapter wegvalt, stopt de engine, en start deze weer via de adapter wanneer deze terug is."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -4808,7 +4808,7 @@
   },
   "8362706ee6422965": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with <g1>gallery-dl</g1>, a free program that reads several hundred sites. Like yt-dlp for videos, it's an optional helper: MDM installs it the first time you need it, or uses your own copy.",
-   "text": "MDM downloadt de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, een DeviantArt-galerij, een Imgur-album en nog veel meer) met <g1>gallery-dl</g1>, een gratis programma dat honderden sites leest. Net als yt-dlp voor video's is het een optioneel hulpprogramma: MDM installeert het de eerste keer dat u het nodig heeft, of gebruikt uw eigen exemplaar."
+   "text": "MDM downloadt de afbeeldingen van een galerij (een Wikimedia Commons-categorie, een Flickr-album, een DeviantArt-galerij, een Imgur-album en nog veel meer) met <g1>gallery-dl</g1>, een gratis programma dat honderden sites leest. Net als yt-dlp voor video's is het een optioneel hulpprogramma: MDM installeert het de eerste keer dat u het nodig hebt, of gebruikt uw eigen kopie."
   },
   "8362eb1c5519a907": {
    "source": "Put downloads in a queue",
@@ -5368,7 +5368,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "Download een bestand met maximaal 8 verbindingen (<x1/>, 1 tot 128), met voortgangsweergave. <x2/> pauzeert het; <x3/> gaat verder. <x4/> controleert het voltooide bestand: hex MD5, SHA-1, SHA-256, SHA-512 of CRC32, optioneel benoemd (<x5/>). <x6/> kiest de DNS: <x7/> (de standaard); een dienst en hoe deze te bevragen, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; adressen van DNS-servers, <x13/>; of een DNS-over-HTTPS-adres. Het valt nooit terug op de DNS van het systeem. <x14/> stuurt elke verbinding via één netwerkadapter, op naam (<x15/>, <x16/>) of één van de adressen; wanneer deze niet is verbonden, wordt er niets verzonden en mislukt de download."
+   "text": "Download een bestand met maximaal 8 verbindingen (<x1/>, 1 tot 128), met voortgangsweergave. <x2/> pauzeert; <x3/> gaat verder. <x4/> controleert het voltooide bestand: hex MD5, SHA-1, SHA-256, SHA-512 of CRC32, optioneel benoemd (<x5/>). <x6/> kiest de DNS: <x7/> (de standaard); een service en hoe deze te bevragen, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; adressen van DNS-servers, <x13/>; of een DNS-over-HTTPS-adres. Het valt nooit terug op de DNS van het systeem. <x14/> stuurt elke verbinding via één netwerkadapter, op naam (<x15/>, <x16/>) of één van de adressen; als deze niet is verbonden, wordt er niets verzonden en mislukt de download."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5392,7 +5392,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "Nog niet aan de adapter gebonden, dus ze starten niet terwijl er een is gekozen:"
+   "text": "Nog niet aan de adapter gekoppeld, dus ze starten niet terwijl er een is gekozen:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5832,7 +5832,7 @@
   },
   "a0f44b2041902a09": {
    "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
-   "text": "gallery-dl controleert het adres op uw computer, zonder online te gaan. Wanneer de regel luidt <g1>gallery-dl kan de bestanden van deze galerij downloaden</g1>, bent u klaar."
+   "text": "gallery-dl controleert het adres op uw computer, zonder online te gaan. Wanneer de regel <g1>gallery-dl kan de bestanden van deze galerij downloaden</g1> aangeeft, bent u klaar."
   },
   "a111ff2e536e8112": {
    "source": "Linux <g1>x86-64</g1>",
@@ -8640,7 +8640,7 @@
   },
   "f208414e0c06341b": {
    "source": "video pages (yt-dlp can't be held to an adapter);",
-   "text": "videopagina's (yt-dlp kan niet aan een adapter worden gebonden);"
+   "text": "videopagina's (yt-dlp kan niet aan een adapter worden gekoppeld);"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
