@@ -177,7 +177,12 @@ impl Listing {
                         break None;
                     };
                     match s.child.try_wait() {
-                        Ok(Some(st)) => break (!st.success()).then(|| s.failure().to_string()),
+                        // Its last words read outside the lock (`failure` may wait for them).
+                        Ok(Some(st)) => {
+                            let ended = slot.take().expect("checked");
+                            drop(slot);
+                            break (!st.success()).then(|| ended.failure().to_string());
+                        }
                         Ok(None) => {}
                         Err(_) => break None,
                     }
