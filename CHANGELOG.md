@@ -54,9 +54,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   then downloaded with all of MDM's connections, pause and resume, from Add URL, the browser's
   link menu and batch downloads. When the direct link expires, MDM asks the
   service for a new one. The direct link is never shown or copied, and the sign-in is sealed for
-  your Windows account. AllDebrid and Premiumize come next. See
+  your Windows account. See
   [Debrid service accounts](docs/debrid.md). Experimental: built from Real-Debrid's public API
   documentation, not yet confirmed with a real account.
+- **AllDebrid and Premiumize accounts, experimental**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): Options → Accounts now
+  takes all three services. AllDebrid signs in by a PIN in the browser or with an API key, and
+  MDM waits while it prepares a slow link. Premiumize signs in with its API key. Each service is
+  asked well under its request limit. Experimental like Real-Debrid: built from the services'
+  public API documentation, not yet confirmed with a real paid account.
 - The proxy's password in Options → Proxy / Socks is now sealed on disk too on Windows, like
   Sites Logins' passwords.
 - **Image galleries** ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58)): a
@@ -310,6 +316,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   view (the last qualities of Download video, a long playlist, the downloads) are there too,
   named, with their place ("12 of 40"), and can be scrolled into view or selected. A list of
   thousands offers 300 rows around the view, so it stays as fast.
+- **Screen readers see a window's contents the first time they read it**
+  ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131)): a window read for the
+  first time (Link grabber, Options, About...) showed only its title bar until it was drawn
+  again. It now answers with what it shows at once, as soon as a screen reader is running.
+- **A magnet link could wait minutes for its file list** ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92)):
+  in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest
+  of the session once a computer it asked was gone, so a magnet its trackers didn't serve never
+  got its file list. The updated torrent library keeps going, and a test keeps it that way.
+  **Add torrent** now shows the wait: the peers found, from the trackers, the DHT or the local
+  network, and how many answered. After 30 seconds without an answer, it says what may be in
+  the way.
 - **Numbers are written the interface language's way** ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128)):
   counts, sizes, speeds, percentages and the list's columns group and point their digits as the
   chosen language does (German `10.200` and `1,50 MB`, French `10 200`, Hindi `1,00,000`),

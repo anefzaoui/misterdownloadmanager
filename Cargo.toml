@@ -57,6 +57,7 @@ windows-sys = { version = "0.61.2", features = [
     "Win32_System_Registry",
     "Win32_System_SystemInformation",
     "Win32_System_Threading",
+    "Win32_UI_Accessibility",
     "Win32_UI_Controls",
     "Win32_UI_HiDpi",
     "Win32_UI_Input_KeyboardAndMouse",
@@ -252,32 +253,34 @@ opt-level = 3
 [profile.dev.package."*"]
 debug = "line-tables-only"
 
-# storytold's egui fork (as storytold/craft-libs, D-003) plus two MDM commits on anefzaoui/egui
+# storytold's egui fork (as storytold/craft-libs, D-003) plus three MDM commits on anefzaoui/egui
 # (branch mdm-accesskit-windows): every window created hidden gets an AccessKit adapter, so
-# screen readers read the dialogs and menus; and a dialog opened while the main window is
-# minimized no longer panics (emilk/egui#8470). craft-libs can take the same commits to share
+# screen readers read the dialogs and menus; a dialog opened while the main window is
+# minimized no longer panics (emilk/egui#8470); and a window's first accessibility request is
+# answered with its last tree, not an empty placeholder (#131). craft-libs can take the same commits to share
 # one egui again.
 [patch.crates-io]
-# librqbit 9.1.0 with per-torrent rate limits that change while a torrent runs (#39), until
-# upstream has them (ikatson/rqbit); every crate of that repository from the same commit.
-librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "bea3d67f857da6abe580361d9ba2a4746cc1b144" }
-ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
-emath = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
-epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
-epaint_default_fonts = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
-egui = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
-egui-winit = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
-egui_glow = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
-egui_extras = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
-eframe = { git = "https://github.com/anefzaoui/egui.git", rev = "60b5751250171425d239f6580aaca7fc13d60c64" }
+# librqbit 9.1.0 with per-torrent rate limits that change while a torrent runs (#39), and a
+# magnet lookup's progress counted (#92), until upstream has them (ikatson/rqbit); every crate
+# of that repository from the same commit.
+librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "9753b21b64bfd1eb74dc8c488763b67edba2bd26" }
+ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
+emath = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
+epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
+epaint_default_fonts = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
+egui = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
+egui-winit = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
+egui_glow = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
+egui_extras = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
+eframe = { git = "https://github.com/anefzaoui/egui.git", rev = "2385050619bb5c0233204184ce638678dfc2f340" }
 winit = { git = "https://github.com/storytold/winit.git", rev = "a517b3846ee8457d84ee4975110bfda6797c44dc" }

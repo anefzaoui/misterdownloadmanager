@@ -673,7 +673,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
         Cmd::TorrentInfo { source } => {
             let (t, _dir) = torrents().await?;
             let m = t
-                .metadata(&torrent_source(&source)?, Duration::from_secs(180))
+                .metadata(&torrent_source(&source)?, Duration::from_secs(180), None)
                 .await?;
             let files = m.files.iter().enumerate().filter(|(_, f)| !f.padding);
             if json {
@@ -704,7 +704,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
         } => {
             let (t, _dir) = torrents().await?;
             let m = t
-                .metadata(&torrent_source(&source)?, Duration::from_secs(180))
+                .metadata(&torrent_source(&source)?, Duration::from_secs(180), None)
                 .await?;
             // The app asks first; here, the flag says yes (#40).
             let there = m.existing_in(&output);

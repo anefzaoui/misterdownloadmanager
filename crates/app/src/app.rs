@@ -347,6 +347,8 @@ pub struct App {
     /// Link grabber (#37): links from the browser, Tasks → Import, drops and pastes, in
     /// packages to tick before adding.
     grabber: Option<crate::grabber::Grabber>,
+    /// When `follow_assistive_technology` last asked (#131).
+    assistive_checked: Option<Instant>,
     /// Archives extracted when their download completes (#37).
     extracts: crate::extractq::Extracts,
     /// Add category / Properties from the Categories tree.
@@ -795,6 +797,7 @@ impl App {
             category_dlg: None,
             category_for_file_info: false,
             grabber: None,
+            assistive_checked: None,
             extracts: Default::default(),
             queue_pick: None,
             drop_target: None,
@@ -2484,6 +2487,27 @@ impl App {
         }
     }
 
+    /// While an assistive technology is listening (a screen reader running, #131), every window
+    /// builds its accessibility tree with each frame, so the first time one is read it answers
+    /// with its contents rather than an empty window (egui keeps the last tree for that). Asked
+    /// once a second; never turned off here (the platform says when nobody listens any more).
+    fn follow_assistive_technology(&mut self, ctx: &egui::Context) {
+        if self
+            .assistive_checked
+            .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
+        {
+            return;
+        }
+        self.assistive_checked = Some(Instant::now());
+        #[cfg(windows)]
+        let listening = crate::win32::assistive_technology_listening();
+        #[cfg(not(windows))]
+        let listening = crate::unix::assistive_technology_listening();
+        if listening {
+            ctx.enable_accesskit();
+        }
+    }
+
     /// Options → General → "Offer to download links copied to the clipboard": a newly copied
     /// link to a listed file type (Options → File types) is handled as if a browser had sent
     /// it, so Download File Info opens with it (unless that window is turned off). Only read,
@@ -3164,7 +3188,7 @@ impl App {
                     }
                 };
                 let t = host.session(known).await?;
-                t.metadata(&src, std::time::Duration::from_secs(180))
+                t.metadata(&src, std::time::Duration::from_secs(180), None)
                     .await
                     .map_err(|e| crate::errors::torrent(&e))
             }
@@ -6905,6 +6929,7 @@ impl eframe::App for App {
         crate::settings::share_dns(self.settings.dns());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
+        self.follow_assistive_technology(&ctx);
         self.network_adapter_tick(&ctx);
         self.debrid_tick();
         dialogs::publish_main_rect(&ctx);

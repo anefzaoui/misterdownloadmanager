@@ -7,7 +7,8 @@ use std::collections::HashSet;
 use std::net::{Ipv4Addr, SocketAddr};
 use std::num::NonZeroU32;
 use std::path::{Path, PathBuf};
-use std::sync::Arc;
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+use std::sync::{Arc, OnceLock};
 use std::time::Duration;
 
 /// The library itself, for what this wrapper doesn't cover (making torrents, tests).
@@ -320,8 +321,12 @@ pub struct Config {
     pub proxy: Option<String>,
     /// A blocklist MDM converted (`blocklist::convert`, P2P lines): peers in it are refused.
     pub blocklist: Option<PathBuf>,
-    /// Tests: no trackers, no DHT, local peers only.
+    /// Tests: no trackers, local peers only, everything on loopback; no DHT unless
+    /// `dht_bootstrap` names its nodes.
     pub offline: bool,
+    /// The DHT's first nodes (`host:port`); None: librqbit's own (public routers). Tests and test
+    /// tools name nodes on loopback.
+    pub dht_bootstrap: Option<Vec<String>>,
     /// Options → Proxy / Socks → Network adapter (#35): the device every socket of the session is
     /// held to (librqbit's `bind_device_name`: Linux SO_BINDTODEVICE, macOS IP_BOUND_IF), and
     /// whether it has IPv4 only. UPnP and local peer discovery are off then: they speak to the
@@ -344,7 +349,60 @@ impl Config {
             proxy: None,
             blocklist: None,
             offline: false,
+            dht_bootstrap: None,
             bind: None,
+        }
+    }
+}
+
+/// A magnet's metadata lookup as it goes (`Torrents::metadata`), shared with whoever shows the
+/// wait (#92): the sources asked, the peers they gave, and how many answered.
+#[derive(Default)]
+pub struct Lookup {
+    engine: Arc<librqbit::MetadataProgress>,
+    trackers: AtomicUsize,
+    dht_on: AtomicBool,
+    dht: OnceLock<librqbit::dht::Dht>,
+}
+
+/// What a lookup has got so far (`Lookup::status`).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct LookupStatus {
+    /// The trackers asked (those MDM may contact, `trackers`).
+    pub trackers: usize,
+    /// Whether the DHT is asked (Torrent settings, no proxy).
+    pub dht: bool,
+    /// The nodes the DHT knows now: few or none means it can't reach the network.
+    pub dht_nodes: usize,
+    /// Peer addresses each source gave (repeats included).
+    pub from_trackers: usize,
+    pub from_dht: usize,
+    pub from_lsd: usize,
+    /// Different peers asked for the file list.
+    pub peers: usize,
+    /// Peers that answered.
+    pub connected: usize,
+    /// Peers given up on.
+    pub failed: usize,
+}
+
+impl Lookup {
+    pub fn status(&self) -> LookupStatus {
+        let e = &self.engine;
+        let n = |c: &AtomicUsize| c.load(Ordering::Relaxed);
+        LookupStatus {
+            trackers: n(&self.trackers),
+            dht: self.dht_on.load(Ordering::Relaxed),
+            dht_nodes: self.dht.get().map_or(0, |d| {
+                let s = d.stats();
+                s.routing_table_size + s.routing_table_size_v6
+            }),
+            from_trackers: n(&e.from_trackers),
+            from_dht: n(&e.from_dht),
+            from_lsd: n(&e.from_lsd),
+            peers: n(&e.peers),
+            connected: n(&e.connected),
+            failed: n(&e.failed),
         }
     }
 }
@@ -383,7 +441,10 @@ impl Torrents {
         std::fs::create_dir_all(&cfg.state_dir).map_err(engine)?;
         let proxied = cfg.proxy.is_some();
         let v4_only = cfg.bind.as_ref().is_some_and(|(_, v4)| *v4);
-        let dht = (cfg.dht && !cfg.offline && !proxied).then(|| librqbit::DhtSessionConfig {
+        // Offline only without one named: a test's DHT on loopback is still on.
+        let dht_on = cfg.dht && !proxied && (!cfg.offline || cfg.dht_bootstrap.is_some());
+        let dht = dht_on.then(|| librqbit::DhtSessionConfig {
+            bootstrap_addrs: cfg.dht_bootstrap.clone(),
             persistence: Some(librqbit::dht::DhtPersistenceConfig {
                 dump_interval: None,
                 config_filename: Some(cfg.state_dir.join("dht.json")),
@@ -469,17 +530,38 @@ impl Torrents {
         })
     }
 
-    /// The file list, without downloading. A magnet asks the swarm, for at most `wait`.
-    pub async fn metadata(&self, src: &Source, wait: Duration) -> Result<Meta, TorrentError> {
+    /// The file list, without downloading. A magnet asks the swarm, for at most `wait`; how
+    /// that goes counts in `lookup`, if given.
+    pub async fn metadata(
+        &self,
+        src: &Source,
+        wait: Duration,
+        lookup: Option<&Lookup>,
+    ) -> Result<Meta, TorrentError> {
         let add = match src {
             // Only the trackers MDM may contact (#40, `trackers`).
-            Source::Magnet(m) => AddTorrent::from_url(trackers::filter_magnet(m, self.proxied)),
+            Source::Magnet(m) => {
+                let m = trackers::filter_magnet(m, self.proxied);
+                if let Some(l) = lookup {
+                    l.trackers
+                        .store(trackers::in_magnet(&m).len(), Ordering::Relaxed);
+                }
+                AddTorrent::from_url(m)
+            }
             Source::File(b) => AddTorrent::from_bytes(
                 trackers::filter_torrent(b, self.proxied).unwrap_or_else(|| b.clone()),
             ),
         };
+        if let Some(l) = lookup {
+            let dht = self.session.get_dht();
+            l.dht_on.store(dht.is_some(), Ordering::Relaxed);
+            if let Some(d) = dht {
+                let _ = l.dht.set(d.clone());
+            }
+        }
         let opts = AddTorrentOptions {
             list_only: true,
+            metadata_progress: lookup.map(|l| l.engine.clone()),
             ..Default::default()
         };
         let res = tokio::time::timeout(wait, self.session.add_torrent(add, Some(opts)))
@@ -906,7 +988,7 @@ mod tests {
         for name in bad {
             let bytes = torrent_naming(name);
             let listed = t
-                .metadata(&Source::File(bytes.clone()), Duration::from_secs(5))
+                .metadata(&Source::File(bytes.clone()), Duration::from_secs(5), None)
                 .await;
             assert!(
                 matches!(listed, Err(TorrentError::UnsafeName(ref u)) if u.path == format!("folder/{name}")),
@@ -924,6 +1006,7 @@ mod tests {
             .metadata(
                 &Source::File(torrent_naming("fine.bin")),
                 Duration::from_secs(5),
+                None,
             )
             .await
             .unwrap();
@@ -1102,7 +1185,11 @@ mod tests {
             .await
             .unwrap();
         let meta = seeder
-            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10))
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
             .await
             .unwrap();
         assert_eq!(meta.name, "set");
@@ -1282,7 +1369,11 @@ mod tests {
             .await
             .unwrap();
         let meta = seeder
-            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10))
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
             .await
             .unwrap();
         let hash = seeder
@@ -1355,7 +1446,11 @@ mod tests {
             .await
             .unwrap();
         let meta = seeder
-            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10))
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
             .await
             .unwrap();
         let hash = seeder
@@ -1418,6 +1513,145 @@ mod tests {
         leecher.stop().await;
     }
 
+    /// A DHT node on loopback for tests: it answers every query with itself and the `gone` nodes
+    /// as the nodes it knows (their ids next to the target, so they get asked), and a
+    /// `get_peers` with `peer` (BEP 5, enough for librqbit).
+    async fn dht_node_with(peer: SocketAddr, gone: Vec<SocketAddr>) -> SocketAddr {
+        let sock = tokio::net::UdpSocket::bind((Ipv4Addr::LOCALHOST, 0))
+            .await
+            .unwrap();
+        let addr = sock.local_addr().unwrap();
+        let compact = |a: SocketAddr| match a {
+            SocketAddr::V4(a) => [a.ip().octets().as_slice(), &a.port().to_be_bytes()].concat(),
+            SocketAddr::V6(_) => unreachable!("loopback IPv4"),
+        };
+        tokio::spawn(async move {
+            let id = [0x42u8; 20];
+            let mut buf = [0u8; 2048];
+            loop {
+                let Ok((n, from)) = sock.recv_from(&mut buf).await else {
+                    continue;
+                };
+                let q = &buf[..n];
+                // The transaction id: "1:t" then its length and bytes.
+                let Some(at) = q.windows(3).position(|w| w == b"1:t") else {
+                    continue;
+                };
+                let rest = &q[at + 3..];
+                let Some(colon) = rest.iter().position(|b| *b == b':') else {
+                    continue;
+                };
+                let Some(len) = std::str::from_utf8(&rest[..colon])
+                    .ok()
+                    .and_then(|l| l.parse::<usize>().ok())
+                    .filter(|l| colon + 1 + l <= rest.len())
+                else {
+                    continue;
+                };
+                let mut nodes = id.to_vec();
+                nodes.extend(compact(addr));
+                let target = q
+                    .windows(11)
+                    .position(|w| w == b"6:target20:")
+                    .and_then(|i| q.get(i + 11..i + 31));
+                if let Some(target) = target {
+                    for (k, g) in gone.iter().enumerate() {
+                        let mut near = target.to_vec();
+                        near[19] ^= k as u8 + 1;
+                        nodes.extend(near);
+                        nodes.extend(compact(*g));
+                    }
+                }
+                let mut r = b"d1:rd2:id20:".to_vec();
+                r.extend(id);
+                r.extend(format!("5:nodes{}:", nodes.len()).as_bytes());
+                r.extend(nodes);
+                if q.windows(11).any(|w| w == b"9:get_peers") {
+                    r.extend(b"5:token2:tk6:valuesl6:");
+                    r.extend(compact(peer));
+                    r.extend(b"e");
+                }
+                r.extend(format!("e1:t{len}:").as_bytes());
+                r.extend(&rest[colon + 1..colon + 1 + len]);
+                r.extend(b"1:y1:re");
+                let _ = sock.send_to(&r, from).await;
+            }
+        });
+        addr
+    }
+
+    /// #92: a magnet's file list comes through the DHT after nodes that are gone answered with
+    /// an ICMP "port unreachable". On Windows that error makes the DHT socket's next receive
+    /// fail, and librqbit's DHT (9.0.1, in MDM 0.2.4) stopped for the rest of the session on it:
+    /// a magnet the trackers didn't serve then never resolved. The lookup counts what it got.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_magnet_resolves_through_the_dht_after_unreachable_nodes() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        std::fs::write(src.join("a.bin"), vec![7u8; 100_000]).unwrap();
+        std::fs::write(src.join("b.bin"), vec![9u8; 50_000]).unwrap();
+        let torrent = make_torrent(&src).await;
+        let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while seeder.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(std::time::Instant::now() < deadline, "seeder never checked");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        // Nodes that are gone: nothing listens there any more, so each request to one comes
+        // back as an ICMP error.
+        let gone = (0..7)
+            .map(|_| {
+                std::net::UdpSocket::bind((Ipv4Addr::LOCALHOST, 0))
+                    .unwrap()
+                    .local_addr()
+                    .unwrap()
+            })
+            .collect();
+        let node = dht_node_with(seeder.listen_addr().expect("seeder listens"), gone).await;
+        let leecher = Torrents::start(Config {
+            dht: true,
+            dht_bootstrap: Some(vec![node.to_string()]),
+            ..offline(&tmp.path().join("s2"))
+        })
+        .await
+        .unwrap();
+        // Its bootstrap asks them; their errors come back while nothing else arrives.
+        tokio::time::sleep(Duration::from_secs(1)).await;
+
+        let lookup = Lookup::default();
+        let t = std::time::Instant::now();
+        let meta = leecher
+            .metadata(
+                &Source::Magnet(format!("magnet:?xt=urn:btih:{hash}")),
+                Duration::from_secs(20),
+                Some(&lookup),
+            )
+            .await
+            .unwrap();
+        let took = t.elapsed();
+        assert_eq!(meta.info_hash, hash);
+        assert_eq!(meta.total(), 150_000);
+        let s = lookup.status();
+        assert!(s.dht && s.trackers == 0, "{s:?}");
+        assert!(s.from_dht >= 1 && s.peers >= 1 && s.connected >= 1, "{s:?}");
+        assert!(s.dht_nodes >= 1, "the node it asked is known: {s:?}");
+        // librqbit asks again each second while its DHT knows no node; then it is at once.
+        assert!(
+            took < Duration::from_secs(10),
+            "the file list took {took:?}"
+        );
+        eprintln!("#92: the file list through the DHT in {took:?}");
+        seeder.stop().await;
+        leecher.stop().await;
+    }
+
     #[tokio::test]
     async fn junk_is_not_a_torrent() {
         let tmp = tempfile::tempdir().unwrap();
@@ -1431,6 +1665,7 @@ mod tests {
             .metadata(
                 &Source::File(b"not a torrent".to_vec()),
                 Duration::from_secs(5),
+                None,
             )
             .await
             .unwrap_err();

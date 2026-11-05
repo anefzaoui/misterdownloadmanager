@@ -210,3 +210,244 @@ pub async fn disable(headers: HeaderMap) -> Response {
         None => bad_token(),
     }
 }
+
+// ---- AllDebrid (#44 phase 2), as https://docs.alldebrid.com/ documents it ----------------------
+//
+// Envelopes `{"status":"success","data":…}` / `{"status":"error","error":{"code","message"}}`
+// (HTTP 200). Tokens: `good` premium, `free` not. Links as Real-Debrid's fake, plus
+// `delayed=N`: the link is "being generated" for N polls of `link/delayed`. The PIN is allowed
+// after two polls of `pin/check`, giving the apikey `good`.
+
+type Delayed = HashMap<i64, (u32, String)>;
+static AD_DELAYED: Mutex<Option<Delayed>> = Mutex::new(None);
+static AD_PINS: Mutex<Option<HashMap<String, u32>>> = Mutex::new(None);
+
+fn ad_ok(data: serde_json::Value) -> Response {
+    axum::Json(json!({"status": "success", "data": data})).into_response()
+}
+
+fn ad_error(code: &str) -> Response {
+    axum::Json(
+        json!({"status": "error", "error": {"code": code, "message": format!("lab: {code}")}}),
+    )
+    .into_response()
+}
+
+/// Some(premium?) for the request's token (AllDebrid's and Premiumize's fakes).
+fn bearer(headers: &HeaderMap) -> Option<bool> {
+    match headers
+        .get(header::AUTHORIZATION)?
+        .to_str()
+        .ok()?
+        .strip_prefix("Bearer ")?
+    {
+        "good" => Some(true),
+        "free" => Some(false),
+        _ => None,
+    }
+}
+
+/// The fake host's direct link on this lab for `link` (its size, name, address), or why not:
+/// "unsupported", "gone", "down".
+fn direct_for(headers: &HeaderMap, link: &url::Url) -> Result<(u64, String, String), &'static str> {
+    if link.host_str() != Some(HOSTER) {
+        return Err("unsupported");
+    }
+    let flags: HashMap<String, String> = link.query_pairs().into_owned().collect();
+    if flags.contains_key("gone") {
+        return Err("gone");
+    }
+    if flags.contains_key("down") {
+        return Err("down");
+    }
+    let parts: Vec<&str> = link
+        .path_segments()
+        .map(|s| s.collect())
+        .unwrap_or_default();
+    let ["file", size, name] = parts.as_slice() else {
+        return Err("gone");
+    };
+    let lab = headers
+        .get(header::HOST)
+        .and_then(|h| h.to_str().ok())
+        .unwrap_or("127.0.0.1");
+    let mut direct = format!(
+        "http://{lab}/gen/{size}/{name}?seed={}",
+        seed(&format!("{HOSTER}/file/{size}/{name}"))
+    );
+    if let Some(r) = flags.get("rate") {
+        direct.push_str(&format!("&rate={r}"));
+    }
+    if let Some(ttl) = flags.get("ttl_ms").and_then(|t| t.parse::<u64>().ok()) {
+        direct.push_str(&format!("&expires={}", unix_ms() + ttl));
+    }
+    Ok((
+        crate::content::parse_size(size).unwrap_or(0),
+        name.to_string(),
+        direct,
+    ))
+}
+
+/// `GET /ad/v4/user`.
+pub async fn ad_user(headers: HeaderMap) -> Response {
+    let Some(premium) = bearer(&headers) else {
+        return ad_error("AUTH_BAD_APIKEY");
+    };
+    let until = if premium {
+        unix_ms() / 1000 + 30 * 86400
+    } else {
+        0
+    };
+    ad_ok(
+        json!({"user": {"username": "labuser", "email": "lab@example.invalid",
+        "isPremium": premium, "isSubscribed": premium, "isTrial": false, "premiumUntil": until}}),
+    )
+}
+
+/// `GET /ad/v4/hosts/domains` (public).
+pub async fn ad_domains() -> Response {
+    ad_ok(json!({"hosts": [HOSTER, "hoster2.test"], "streams": [], "redirectors": []}))
+}
+
+/// `POST /ad/v4/link/unlock`, form `link`, `password`.
+pub async fn ad_unlock(headers: HeaderMap, body: Bytes) -> Response {
+    let Some(premium) = bearer(&headers) else {
+        return ad_error("AUTH_BAD_APIKEY");
+    };
+    let form: HashMap<String, String> = serde_urlencoded::from_bytes(&body).unwrap_or_default();
+    let Some(link) = form.get("link").and_then(|l| url::Url::parse(l).ok()) else {
+        return ad_error("LINK_IS_MISSING");
+    };
+    if link.host_str() == Some(HOSTER) && !premium {
+        return ad_error("MUST_BE_PREMIUM");
+    }
+    let (size, name, direct) = match direct_for(&headers, &link) {
+        Ok(d) => d,
+        Err("unsupported") => return ad_error("LINK_HOST_NOT_SUPPORTED"),
+        Err("down") => return ad_error("LINK_HOST_UNAVAILABLE"),
+        Err(_) => return ad_error("LINK_DOWN"),
+    };
+    let polls: u32 = link
+        .query_pairs()
+        .find(|(k, _)| k == "delayed")
+        .and_then(|(_, v)| v.parse().ok())
+        .unwrap_or(0);
+    if polls > 0 {
+        let id = (unix_ms() % 1_000_000_000) as i64;
+        AD_DELAYED
+            .lock()
+            .unwrap()
+            .get_or_insert_with(HashMap::new)
+            .insert(id, (polls, direct));
+        return ad_ok(json!({"link": "", "host": "hostertest", "filename": name,
+            "filesize": size, "id": "LAB", "hostDomain": HOSTER, "delayed": id}));
+    }
+    ad_ok(
+        json!({"link": direct, "host": "hostertest", "filename": name, "paws": false,
+        "filesize": size, "streams": [], "id": "LAB", "hostDomain": HOSTER}),
+    )
+}
+
+/// `POST /ad/v4/link/delayed`, form `id`.
+pub async fn ad_delayed(headers: HeaderMap, body: Bytes) -> Response {
+    if bearer(&headers).is_none() {
+        return ad_error("AUTH_BAD_APIKEY");
+    }
+    let form: HashMap<String, String> = serde_urlencoded::from_bytes(&body).unwrap_or_default();
+    let id: i64 = form.get("id").and_then(|i| i.parse().ok()).unwrap_or(-1);
+    let mut all = AD_DELAYED.lock().unwrap();
+    let Some((left, link)) = all.get_or_insert_with(HashMap::new).get_mut(&id) else {
+        return ad_error("DELAYED_INVALID_ID");
+    };
+    if *left > 0 {
+        *left -= 1;
+        return ad_ok(json!({"status": 1, "time_left": 1}));
+    }
+    ad_ok(json!({"status": 2, "time_left": 0, "link": link.clone()}))
+}
+
+/// `GET /ad/v4.1/pin/get`.
+pub async fn ad_pin() -> Response {
+    let check = format!("chk-{}", unix_ms());
+    AD_PINS
+        .lock()
+        .unwrap()
+        .get_or_insert_with(HashMap::new)
+        .insert(check.clone(), 0);
+    ad_ok(json!({"pin": "LABP", "check": check, "expires_in": 120,
+        "user_url": "https://alldebrid.com/pin/?pin=LABP", "base_url": "https://alldebrid.com/pin/"}))
+}
+
+/// `POST /ad/v4/pin/check`, form `check`, `pin`.
+pub async fn ad_pin_check(body: Bytes) -> Response {
+    let form: HashMap<String, String> = serde_urlencoded::from_bytes(&body).unwrap_or_default();
+    let check = form.get("check").cloned().unwrap_or_default();
+    if form.get("pin").map(String::as_str) != Some("LABP") {
+        return ad_error("PIN_INVALID");
+    }
+    let mut all = AD_PINS.lock().unwrap();
+    let Some(n) = all.get_or_insert_with(HashMap::new).get_mut(&check) else {
+        return ad_error("PIN_EXPIRED");
+    };
+    *n += 1;
+    if *n <= 2 {
+        return ad_ok(json!({"activated": false, "expires_in": 100}));
+    }
+    ad_ok(json!({"activated": true, "expires_in": 100, "apikey": "good"}))
+}
+
+// ---- Premiumize (#44 phase 2), as https://www.premiumize.me/api documents it ------------------
+//
+// `{"status":"success",…}` / `{"status":"error","message","code"}`, HTTP 200 for business
+// errors. Tokens `good` (premium) and `free`. Its service "hostertest" has the alias hoster.test.
+
+fn pm_error(code: &str) -> Response {
+    axum::Json(json!({"status": "error", "message": format!("lab: {code}"), "code": code}))
+        .into_response()
+}
+
+/// `GET /pm/api/account/info`.
+pub async fn pm_account(headers: HeaderMap) -> Response {
+    let Some(premium) = bearer(&headers) else {
+        return pm_error("authentication_failed");
+    };
+    let until = premium.then(|| unix_ms() / 1000 + 30 * 86400);
+    axum::Json(json!({"status": "success", "customer_id": "1234567",
+        "premium_until": until, "limit_used": 0.1, "booster_points": 0}))
+    .into_response()
+}
+
+/// `GET /pm/api/services/list`.
+pub async fn pm_services(headers: HeaderMap) -> Response {
+    if bearer(&headers).is_none() {
+        return pm_error("authentication_failed");
+    }
+    axum::Json(
+        json!({"status": "success", "cache": [], "directdl": ["hostertest"],
+        "queue": [], "fairusefactor": {"hostertest": 1},
+        "aliases": {"hostertest": [HOSTER]}, "regexpatterns": {}}),
+    )
+    .into_response()
+}
+
+/// `POST /pm/api/transfer/directdl`, form `src`.
+pub async fn pm_directdl(headers: HeaderMap, body: Bytes) -> Response {
+    let Some(premium) = bearer(&headers) else {
+        return pm_error("authentication_failed");
+    };
+    if !premium {
+        return pm_error("permission_denied");
+    }
+    let form: HashMap<String, String> = serde_urlencoded::from_bytes(&body).unwrap_or_default();
+    let Some(link) = form.get("src").and_then(|l| url::Url::parse(l).ok()) else {
+        return pm_error("not_found");
+    };
+    match direct_for(&headers, &link) {
+        Ok((size, name, direct)) => axum::Json(json!({"status": "success",
+            "content": [{"path": name, "size": size, "link": direct}]}))
+        .into_response(),
+        Err("unsupported") => pm_error("service_unsupported"),
+        Err("down") => pm_error("service_down"),
+        Err(_) => pm_error("not_found"),
+    }
+}

@@ -340,6 +340,16 @@ impl LabServer {
                 get(debrid::device_credentials),
             )
             .route("/rd/oauth/v2/token", post(debrid::token))
+            // A fake AllDebrid and a fake Premiumize (#44 phase 2).
+            .route("/ad/v4/user", get(debrid::ad_user))
+            .route("/ad/v4/hosts/domains", get(debrid::ad_domains))
+            .route("/ad/v4/link/unlock", post(debrid::ad_unlock))
+            .route("/ad/v4/link/delayed", post(debrid::ad_delayed))
+            .route("/ad/v4.1/pin/get", get(debrid::ad_pin))
+            .route("/ad/v4/pin/check", post(debrid::ad_pin_check))
+            .route("/pm/api/account/info", get(debrid::pm_account))
+            .route("/pm/api/services/list", get(debrid::pm_services))
+            .route("/pm/api/transfer/directdl", post(debrid::pm_directdl))
             // RSS feeds for the app's RSS tests (#39, `feeds`).
             .route("/rss/shows.xml", get(crate::feeds::shows))
             .route("/rss/dir.xml", get(crate::feeds::dir))
@@ -447,6 +457,8 @@ GET /files/{name}   a real file from --files DIR (Range too; 404 without --files
 GET /redirect?to=URL[&ttl_ms=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms
 /rd/rest/1.0/{user,hosts/domains,unrestrict/link,disable_access_token}, /rd/oauth/v2/{device/code,device/credentials,token}
                                               a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE]
+/ad/v4/{user,hosts/domains,link/unlock,link/delayed,pin/check}, /ad/v4.1/pin/get      a fake AllDebrid: the same tokens and links, plus delayed=N
+/pm/api/{account/info,services/list,transfer/directdl}      a fake Premiumize: the same tokens and links
 GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]   a page that sends the browser on to URL (meta refresh or Refresh header)
 
 RSS    made-up feeds for the RSS feeds window (#39); never real ones
