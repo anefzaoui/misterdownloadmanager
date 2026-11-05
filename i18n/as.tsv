@@ -89,6 +89,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< বিৱৰণ লুকুৱাওক
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	এটা ডেব্ৰিড সেৱাই (Real-Debrid) আপোনাৰ নিজৰ পেইড একাউণ্টৰ সৈতে এটা ফাইল হোষ্টৰ লিংক ডাউনল'ড কৰে আৰু MDM-ক এটা পোনপটীয়া লিংক দিয়ে। কেৱল আপোনাৰ নিজৰ একাউণ্ট ব্যৱহাৰ কৰক: এটা একাউণ্ট বা ইয়াৰ লিংক শ্বেয়াৰ কৰিলে সেৱাৰ চৰ্তাৱলী উলংঘা হয় আৰু ইয়াক স্থগিত কৰিব পাৰি। ব্ৰাউজাৰে ইতিমধ্যে আৰম্ভ কৰা ডাউনল'ডবোৰ যেনেকৈ আছে তেনেকৈয়ে থাকিব।
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -108,9 +112,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	ইনকামিং সংযোগ গ্ৰহণ কৰক
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	একাউণ্ট
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	একাউণ্টসমূহ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	এটা ডাউনলোড যোগ কৰক (URL যোগ কৰক)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	এটা একাউণ্ট যোগ কৰক
 #. text in the tray icon's menu
 #, machine
 	Add batch download	বেচ ডাউনলোড যোগ কৰক
@@ -151,6 +167,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	টৰেণ্ট যোগ কৰক
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	যোগ কৰক...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,6 +276,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ফাইল তালিকাৰ বাবে পিয়াৰসকলক সোধা হৈছে। মেগনেট লিংকত এক বা দুই মিনিট লাগিব পাৰে।
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	সেৱাক সুধি আছে...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -472,6 +498,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	কপি কৰক
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	ক'ড কপি কৰক
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -505,6 +535,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	দিন, মাহ, বছৰ
+#. page title in the Options window
+#, machine
+	Debrid service accounts	ডেব্ৰিড সেৱা একাউণ্টসমূহ
 #. text in the Scheduler window
 #, machine
 	December	ডিচেম্বৰ
@@ -612,6 +645,10 @@
 #. text in a download's progress window
 #, machine
 	Done	সম্পূৰ্ণ হ'ল
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	তললৈ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	ডাউনল'ড
@@ -654,6 +691,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	ডাউনল'ড স্থিতি
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	এই একাউণ্টসমূহৰ জৰিয়তে সমৰ্থিত ফাইল-হোষ্ট লিংকসমূহ ডাউনল'ড কৰক
 #. window title in the Download video window
 #, machine
 	Download video from a page	এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনল'ড কৰক
@@ -883,6 +924,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ফাইল বিচাৰক
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	মোৰ টোকেন বিচাৰক
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -928,6 +973,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	শুক্ৰ
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	ফ্ৰী একাউণ্ট: লিংকসমূহৰ বাবে প্ৰিমিয়ামৰ প্ৰয়োজন
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1486,6 +1535,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	এতিয়া নহয়? পিছত Task → এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনল'ড কৰক-ৰ পৰা সিহঁতক পাওক।
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	এই সেৱাৰ দ্বাৰা সমৰ্থিত নহয়
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	ব্যৱহাৰ কৰা হোৱা নাই: ফাইলৰ অংশসমূহ ফাইলৰ কাষত লিখা হয়
@@ -1575,6 +1628,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	সম্পূৰ্ণ হ’লে তলৰ ফাইলটো খোলক:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	পৃষ্ঠাখন খোলক
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1600,6 +1657,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	সম্পূৰ্ণ হোৱাৰ পিছত বিকল্পসমূহ
+#. text in the Options window
+#, machine
+	Or paste your API token:	বা আপোনাৰ API টোকেন পেষ্ট কৰক:
 #. text in the Download video window
 #, machine
 	Page address	পৃষ্ঠাৰ ঠিকনা
@@ -1658,6 +1718,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	প'ৰ্ট:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	প্ৰিমিয়াম
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	প্ৰিমিয়াম, {days} দিন বাকী
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1914,6 +1982,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	ছাৰ্ভাৰসমূহ:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	সেৱা
+#. text in the Options window
+#, machine
+	Service:	সেৱা:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1992,6 +2067,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	বন্ধ কৰক
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	ব্ৰাউজাৰত ছাইন ইন কৰক
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	{user} হিচাপে ছাইন ইন কৰা হৈছে ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	ছাইন আউট কৰা হৈছে: পুনৰ ছাইন ইন কৰক
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	ছাইটৰ নাম/ডাউনলোড লিংক/পেৰেণ্ট ৱেব পৃষ্ঠা/ৰেফাৰাৰ
@@ -2096,6 +2183,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	আৰম্ভ হৈছে...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	স্থিতি
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2213,6 +2304,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	ক্লিপব’ৰ্ড ব্যস্ত: পুনৰ চেষ্টা কৰক।
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	ক'ডৰ ম্যাদ উকলি গৈছে: পুনৰ ছাইন ইন কৰক
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2601,6 +2696,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	শাৰীৰ নাম টাইপ কৰক
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page}-ত এই ক'ডটো টাইপ কৰক আৰু MDM-ক অনুমতি দিয়ক; আপোনাৰ বাবে অপেক্ষা কৰি আছে (ক'ডটোৰ ম্যাদ {time}-ত উকলি যাব)।
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2619,6 +2719,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	অজ্ঞাত
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	ওপৰলৈ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2669,6 +2773,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	প্ৰক্সি ব্যৱহাৰ কৰক (বিকল্প → প্ৰক্সি / ছক্স, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	টোকেন ব্যৱহাৰ কৰক
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	এই টৰেন্টৰ বাবে এইবোৰ ব্যৱহাৰ কৰিবনে? যি মিল খায় সেয়া ৰখা হ'ব, বাকীখিনি সলনি কৰা হ'ব।
@@ -2958,6 +3066,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service}-এ লাহে লাহে কৰিবলৈ কৈছে; MDM-এ এক মিনিটৰ পিছত পুনৰ চেষ্টা কৰিব
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service}-এ আপোনাক প্ৰথমে এই কম্পিউটাৰটোৰ অনুমতি দিবলৈ কৈছে: ইয়াৰ ইমেইল চাওক
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service}-এ এই ফাইল হোষ্টলৈ এতিয়া পাব নোৱাৰে; MDM-এ পিছত পুনৰ চেষ্টা কৰিব
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service}-এ সঁহাৰি দিয়া নাই; পিছত পুনৰ চেষ্টা কৰক
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service}-এ এই সংযোগ অস্বীকাৰ কৰিছে (এটা VPN বা চাৰ্ভাৰ ঠিকনা?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service}-এ এই ফাইলটো নিদিব
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: পুনৰ ছাইন ইন কৰক (বিকল্পসমূহ → একাউণ্টসমূহ)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: একাউণ্টটো লক কৰা হৈছে বা সক্ৰিয় কৰা হোৱা নাই
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: ফাইল হোষ্টত ফাইলটো নাই বা উপলব্ধ নহয়
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: এই ফাইলটো পাছৱৰ্ড-সুৰক্ষিত
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: ইয়াৰ বাবে এটা প্ৰিমিয়াম একাউণ্টৰ প্ৰয়োজন
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: আপোনাৰ একাউণ্টৰ জৰিয়তে একেলগে বহুতো ডাউনল'ড; MDM-এ পুনৰ চেষ্টা কৰিব
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: এই ফাইল হোষ্টৰ বাবে আপোনাৰ সীমা এতিয়াৰ বাবে শেষ হৈছে
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

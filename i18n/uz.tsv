@@ -89,6 +89,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Tafsilotlarni yashirish
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid xizmati (Real-Debrid) fayl xostining havolasini oʻzingizning pullik hisobingiz bilan yuklab oladi va MDMga toʻgʻridan-toʻgʻri havola beradi. Faqat oʻzingizning hisobingizdan foydalaning: hisob yoki uning havolalarini boʻlishish xizmat shartlarini buzadi va uni toʻxtatib qoʻyishi mumkin. Brauzer allaqachon boshlagan yuklamalar oʻz holicha qoladi.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -108,9 +112,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	Kiruvchi ulanishlarni qabul qilish
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	Hisob
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	Hisoblar
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Yuklab olish qoʻshish (URL qoʻshish)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	Hisob qoʻshish
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Paketli yuklab olishni qoʻshish
@@ -151,6 +167,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Torrent qoʻshish
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	Qoʻshish...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,6 +276,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Fayl roʻyxati uchun tengdoshlardan soʻralmoqda. Magnit havolalar bir-ikki daqiqa vaqt olishi mumkin.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	Xizmatdan soʻralmoqda...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -472,6 +498,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Nusxalash
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	Koddan nusxa olish
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -505,6 +535,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	Kun, oy, yil
+#. page title in the Options window
+#, machine
+	Debrid service accounts	Debrid xizmati hisoblari
 #. text in the Scheduler window
 #, machine
 	December	Dekabr
@@ -612,6 +645,10 @@
 #. text in a download's progress window
 #, machine
 	Done	Bajarildi
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	Pastga
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Yuklab olish
@@ -654,6 +691,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	Yuklab olish holati
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	Qoʻllab-quvvatlanadigan fayl-xost havolalarini ushbu hisoblar orqali yuklab olish
 #. window title in the Download video window
 #, machine
 	Download video from a page	Sahifadan videoni yuklab olish
@@ -883,6 +924,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Faylni topish
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	Tokenimni topish
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -928,6 +973,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Ju
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	bepul hisob: havolalar uchun premium kerak
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1486,6 +1535,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	Hozir emasmi? Ularni keyinroq Vazifalar → Sahifadan videoni yuklab olish orqali oling.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	ushbu xizmat tomonidan qoʻllab-quvvatlanmaydi
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Ishlatilmaydi: fayl qismlari fayl yoniga yoziladi
@@ -1575,6 +1628,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Tugallangach, quyidagi faylni ochish:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	Sahifani ochish
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1600,6 +1657,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Tugallangach, parametrlar
+#. text in the Options window
+#, machine
+	Or paste your API token:	Yoki API tokeningizni joylashtiring:
 #. text in the Download video window
 #, machine
 	Page address	Sahifa manzili
@@ -1658,6 +1718,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Port:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	premium
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	premium, {days} kun qoldi
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1914,6 +1982,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	Serverlar:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	Xizmat
+#. text in the Options window
+#, machine
+	Service:	Xizmat:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1992,6 +2067,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Oʻchirish
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	Brauzerda tizimga kirish
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	{user} ({state}) sifatida tizimga kirilgan
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	tizimdan chiqilgan: qayta tizimga kiring
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Sayt nomi/Yuklab olish havolasi/Asosiy veb-sahifa/Referer
@@ -2096,6 +2183,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Boshlanmoqda...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	Holat
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2213,6 +2304,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Bufer band: qayta urinib koʻring.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	kod muddati tugadi: qayta tizimga kiring
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2601,6 +2696,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Navbat nomini kiriting
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Ushbu kodni {page} sahifasiga kiriting va MDMga ruxsat bering; sizni kutmoqda (kod {time} da tugaydi).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2619,6 +2719,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	nomaʼlum
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	Yuqoriga
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2669,6 +2773,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	Proksidan foydalanish (Parametrlar → Proksi / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	Tokendan foydalanish
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Ularni ushbu torrent uchun ishlatasizmi? Mos keladiganlari saqlanadi, qolganlari almashtiriladi.
@@ -2958,6 +3066,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} sekinlashishni soʻraydi; MDM bir daqiqadan soʻng qayta urinadi
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} avval ushbu kompyuterga ruxsat berishingizni soʻraydi: uning elektron pochtasini tekshiring
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} hozirda ushbu fayl xostiga ulanolmaydi; MDM keyinroq qayta urinadi
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} javob bermayapti; keyinroq qayta urinib koʻring
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} ushbu ulanishni rad etadi (VPN yoki server manzili?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} ushbu faylni bermaydi
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: qayta tizimga kiring (Parametrlar → Hisoblar)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: hisob bloklangan yoki faollashtirilmagan
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: fayl fayl xostidan yoʻqolgan yoki mavjud emas
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: ushbu fayl parol bilan himoyalangan
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: buning uchun premium hisob kerak
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: hisobingiz orqali bir vaqtning oʻzida juda koʻp yuklamalar; MDM qayta urinadi
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: ushbu fayl xosti uchun limitlaringiz hozircha tugadi
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

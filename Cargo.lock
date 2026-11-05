@@ -4323,6 +4323,7 @@ dependencies = [
  "libc",
  "mdm-cli",
  "mdm-crash",
+ "mdm-debrid",
  "mdm-engine",
  "mdm-ipc",
  "mdm-labserver",
@@ -4388,6 +4389,21 @@ dependencies = [
  "url",
  "windows-sys 0.61.2",
  "zip",
+]
+
+[[package]]
+name = "mdm-debrid"
+version = "0.2.4"
+dependencies = [
+ "futures",
+ "mdm-engine",
+ "mdm-labserver",
+ "reqwest 0.13.5",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tokio-util",
+ "url",
 ]
 
 [[package]]
@@ -4463,6 +4479,7 @@ dependencies = [
  "sha2",
  "tokio",
  "tokio-rustls",
+ "url",
 ]
 
 [[package]]

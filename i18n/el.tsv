@@ -89,6 +89,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Απόκρυψη λεπτομερειών
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Μια υπηρεσία debrid (Real-Debrid) κατεβάζει έναν σύνδεσμο φιλοξενίας αρχείων με τον δικό σας πληρωμένο λογαριασμό και δίνει στο MDM έναν άμεσο σύνδεσμο. Χρησιμοποιήστε μόνο τον δικό σας λογαριασμό: η κοινή χρήση ενός λογαριασμού ή των συνδέσμων του παραβιάζει τους όρους των υπηρεσιών και μπορεί να οδηγήσει σε αναστολή του. Οι λήψεις που έχουν ήδη ξεκινήσει από το πρόγραμμα περιήγησης παραμένουν ως έχουν.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -108,9 +112,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	Αποδοχή εισερχόμενων συνδέσεων
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	Λογαριασμός
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	Λογαριασμοί
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Προσθήκη λήψης (Προσθήκη URL)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	Προσθήκη λογαριασμού
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Προσθήκη ομαδικής λήψης
@@ -151,6 +167,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Προσθήκη torrent
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	Προσθήκη...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,6 +276,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Ζητούνται από ομότιμους χρήστες η λίστα αρχείων. Οι σύνδεσμοι Magnet ενδέχεται να χρειαστούν ένα ή δύο λεπτά.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	Ζητείται από την υπηρεσία...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -472,6 +498,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Αντιγραφή
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	Αντιγραφή κωδικού
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -505,6 +535,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	Ημέρα, μήνας, έτος
+#. page title in the Options window
+#, machine
+	Debrid service accounts	Λογαριασμοί υπηρεσίας Debrid
 #. text in the Scheduler window
 #, machine
 	December	Δεκέμβριος
@@ -612,6 +645,10 @@
 #. text in a download's progress window
 #, machine
 	Done	Ολοκληρώθηκε
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	Κάτω
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Λήψη
@@ -654,6 +691,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	Κατάσταση λήψης
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	Λήψη υποστηριζόμενων συνδέσμων φιλοξενίας αρχείων μέσω αυτών των λογαριασμών
 #. window title in the Download video window
 #, machine
 	Download video from a page	Λήψη βίντεο από μια σελίδα
@@ -883,6 +924,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Εύρεση αρχείου
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	Εύρεση του διακριτικού μου
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -928,6 +973,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Πα
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	δωρεάν λογαριασμός: οι σύνδεσμοι χρειάζονται premium
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1486,6 +1535,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	Όχι τώρα; Αποκτήστε τα αργότερα από Εργασίες → Λήψη βίντεο από μια σελίδα.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	δεν υποστηρίζεται από αυτήν την υπηρεσία
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Δεν χρησιμοποιείται: τα μέρη του αρχείου γράφονται δίπλα στο αρχείο
@@ -1575,6 +1628,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Άνοιγμα του ακόλουθου αρχείου μετά την ολοκλήρωση:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	Άνοιγμα της σελίδας
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1600,6 +1657,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Επιλογές κατά την ολοκλήρωση
+#. text in the Options window
+#, machine
+	Or paste your API token:	Ή επικολλήστε το διακριτικό API σας:
 #. text in the Download video window
 #, machine
 	Page address	Διεύθυνση σελίδας
@@ -1658,6 +1718,10 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Θύρα:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	premium, {days} ημέρες απομένουν
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1914,6 +1978,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	Διακομιστές:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	Υπηρεσία
+#. text in the Options window
+#, machine
+	Service:	Υπηρεσία:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1992,6 +2063,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Τερματισμός λειτουργίας
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	Σύνδεση στο πρόγραμμα περιήγησης
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	Συνδεδεμένος ως {user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	αποσυνδεδεμένος: συνδεθείτε ξανά
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Όνομα τοποθεσίας/Σύνδεσμος λήψης/Γονική ιστοσελίδα/Παραπομπή
@@ -2096,6 +2179,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Εκκίνηση...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	Κατάσταση
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2213,6 +2300,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Το πρόχειρο είναι απασχολημένο: δοκιμάστε ξανά.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	ο κωδικός έληξε: συνδεθείτε ξανά
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2601,6 +2692,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Πληκτρολογήστε το όνομα της ουράς
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Πληκτρολογήστε αυτόν τον κωδικό στη διεύθυνση {page} και επιτρέψτε στο MDM. Αναμονή για εσάς (ο κωδικός λήγει σε {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2619,6 +2715,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	άγνωστο
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	Πάνω
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2669,6 +2769,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	Χρήση του διακομιστή μεσολάβησης (Επιλογές → Διακομιστής μεσολάβησης / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	Χρήση του διακριτικού
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Να τα χρησιμοποιήσετε για αυτό το torrent; Ό,τι ταιριάζει διατηρείται, τα υπόλοιπα αντικαθίστανται.
@@ -2958,6 +3062,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	Η υπηρεσία {service} ζητά να επιβραδύνουμε. Το MDM θα προσπαθήσει ξανά σε ένα λεπτό.
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	Η υπηρεσία {service} σας ζητά να επιτρέψετε πρώτα αυτόν τον υπολογιστή: δείτε το email της
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	Η υπηρεσία {service} δεν μπορεί να φτάσει αυτόν τον φιλοξενητή αρχείων αυτήν τη στιγμή. Το MDM θα προσπαθήσει ξανά αργότερα.
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	Η υπηρεσία {service} δεν ανταποκρίνεται. Δοκιμάστε ξανά αργότερα.
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	Η υπηρεσία {service} αρνείται αυτήν τη σύνδεση (διεύθυνση VPN ή διακομιστή;)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	Η υπηρεσία {service} δεν θα δώσει αυτό το αρχείο
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: συνδεθείτε ξανά (Επιλογές → Λογαριασμοί)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: ο λογαριασμός είναι κλειδωμένος ή δεν έχει ενεργοποιηθεί
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: το αρχείο έχει φύγει ή δεν είναι διαθέσιμο στον φιλοξενητή αρχείων
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: αυτό το αρχείο προστατεύεται με κωδικό πρόσβασης
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: αυτό απαιτεί λογαριασμό premium
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: πάρα πολλές λήψεις ταυτόχρονα μέσω του λογαριασμού σας. Το MDM θα προσπαθήσει ξανά
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: το όριό σας για αυτόν τον φιλοξενητή αρχείων έχει εξαντληθεί προς το παρόν
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

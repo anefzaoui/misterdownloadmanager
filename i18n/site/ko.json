@@ -454,6 +454,10 @@
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1> and save your list.",
    "text": "IDM에서 <g1>작업 → 내보내기 → IDM 내보내기 파일</g1>을 선택하고 목록을 저장하세요."
   },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>지원되는 파일 호스트 링크를 이 계정을 통해 다운로드</g1>를 사용하여 이 기능을 켜고 끌 수 있습니다."
+  },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
    "text": "문제의 <x1/>:"
@@ -862,6 +866,10 @@
    "source": "Download Mister Download Manager",
    "text": "Mister Download Manager 다운로드"
   },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "MDM은 서비스를 통해 다운로드하는 링크와 계정 토큰만 서비스에 보냅니다. 그 외에는 아무것도 보내지 않습니다."
+  },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "MDM을 실행 상태로 둡니다. 메인 창을 닫아도 괜찮습니다. MDM은 트레이에서 계속 실행됩니다. <g1>작업 → 끝내기</g1>를 사용하지 마세요."
@@ -1154,6 +1162,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "설치 프로그램이 수행할 작업을 선택하세요: - <g1>브라우저 통합 설정(Chrome, Edge, Brave, Firefox)</g1> - <g2>.torrent 파일 및 마그넷 링크를 Mister Download Manager로 열기</g2> - <g3>Windows 시작 시 Mister Download Manager 시작</g3> - <g4>바탕 화면 바로 가기 만들기</g4> (선택하지 않으면 비활성화)"
   },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "계정 추가"
+  },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
    "text": "<x1/> <g2>오픈 소스 · GPL-3.0</g2>"
@@ -1218,6 +1230,10 @@
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "MDM은 링크가 온 웹 페이지(알고 있는 경우)와 다운로드의 <g1>파일 속성</g1>을 엽니다."
   },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "목록에는 호스트의 링크가 유지됩니다. 직접 링크는 절대 표시되거나 복사되지 않습니다. 서비스는 공유를 금지합니다. 직접 링크는 다운로드의 재개 데이터에만 존재하며, 만료되면 MDM은 서비스에 새 링크를 요청합니다."
+  },
   "1fd04f332635d14c": {
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "진행 창에서 <g1>다시 시작 기능</g1>을 확인하십시오. <g2>아니요</g2>는 서버가 파일을 부분적으로 보낼 수 없음을 의미합니다. MDM은 하나의 연결을 사용하며, 중단된 다운로드는 다시 시작해야 합니다. 이러한 서버의 경우 다운로드를 중지하지 말고, 서버가 연결을 끊을 수 있는 매우 낮은 속도 제한을 피하십시오."
@@ -1229,6 +1245,10 @@
   "20614bb35ecf2799": {
    "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
    "text": "페이지 로드의 리디렉션 시작 및 종료 위치를 (메모리에 2분 동안) 기록하여 MDM이 최종 주소뿐만 아니라 클릭한 주소도 얻을 수 있도록 합니다."
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "MDM은 호스트 또는 링크 목록을 제공하지 않습니다. 서비스가 지원하는 호스트를 알려줍니다."
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1413,6 +1433,10 @@
   "2542aeb0c43a3ce6": {
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "MDM이 연결되어 있어도 다운로드가 브라우저에 남아 있습니다"
+  },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "Real-Debrid와 같은 디브리드 서비스는 파일 호스트에서 자체 서버로 파일을 다운로드하는 유료 계정입니다. 호스트의 대기 시간, 속도 제한 및 캡차 없이 일반적인 직접 링크를 반환합니다. MDM에 계정을 등록하면 서비스가 지원하는 호스트의 링크가 서비스를 통해 잠금 해제된 다음, MDM이 모든 연결, 일시 중지 및 재개를 통해 다른 파일처럼 다운로드합니다."
   },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
@@ -1689,6 +1713,10 @@
   "2c532cfa46f94b69": {
    "source": "Changed",
    "text": "변경됨"
+  },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "URL 추가, 클립보드, 브라우저의 <g1>Mister Download Manager으로 다운로드</g1> 링크 메뉴 및 일괄 다운로드는 서비스가 링크의 호스트를 지원하는 경우 계정을 통해 처리됩니다."
   },
   "2c7829692534192e": {
    "source": "In your browser, right-click the link to the file and choose <g1>Copy link</g1>.",
@@ -2570,6 +2598,10 @@
    "source": "Video from pages",
    "text": "페이지에서 비디오 다운로드"
   },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "브라우저가 이미 시작한 다운로드(MDM이 브라우저에서 인계받은 다운로드)는 호스트가 이미 파일을 보내고 있으므로 그대로 다운로드됩니다."
+  },
   "45cafb7bca129310": {
    "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
    "text": "<g1><g2>브라우저 통합</g2></g1> — Chrome, Edge, Brave 및 Firefox용 확장 프로그램, MDM이 가져가는 다운로드, 그리고 MDM이 실행되지 않을 때 발생하는 일."
@@ -2634,6 +2666,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from this site or the project's GitHub releases.",
    "text": "MDM에는 애드웨어, 스파이웨어, 번들 제공 또는 추적 기능이 없습니다. 전체 소스 코드가 공개되어 있으므로 누구나 MDM이 무엇을 하는지 확인할 수 있으며, 모든 릴리스는 GitHub 서버에서 해당 코드로 빌드되므로 빌드를 검사할 수 있습니다. 동영상 다운로드를 위해 가져올 수 있는 도우미 프로그램은 실행 전에 확인됩니다. yt-dlp는 개발자의 서명 키에 대해, ffmpeg는 게시된 체크섬에 대해 확인됩니다. MDM은 이 사이트 또는 프로젝트의 GitHub 릴리스에서만 다운로드하십시오."
   },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "로그인 정보 저장 위치"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "옵션의 연결 설정 →"
@@ -2669,6 +2705,10 @@
   "495fc31d3efbd9c0": {
    "source": "Windows <g1>10 and 11 · 64-bit</g1>",
    "text": "Windows <g1>10 및 11 · 64비트</g1>"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>디브리드 서비스 계정</g2></g1> — Real-Debrid: 본인 계정을 통해 파일 호스트 링크를 이용할 수 있습니다."
   },
   "4979f4438a0093f1": {
    "source": "Help → Keyboard shortcuts shows the Mac's keys on a Mac.",
@@ -3070,6 +3110,10 @@
    "source": "macOS",
    "text": "macOS"
   },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "디브리드 서비스 계정 — Mister Download Manager 도움말"
+  },
   "553151825917c170": {
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "저희 벤치마크: 동일한 PC에서 IDM 6.42(라이선스 사본)와 MDM을 동일한 로컬 테스트 서버에 대해 번갈아 실행; 중앙값, Mann-Whitney p &lt; 0.001 · <g1>차트, 보고서 및 원본 데이터</g1>"
@@ -3261,6 +3305,10 @@
   "5b4c0d90aeddada8": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "확장 프로그램이 로드되어 켜져 있나요? 브라우저의 확장 프로그램 페이지에서 <g1>Mister Download Manager</g1>를 찾아보세요. Firefox에서는 임시 애드온이 재시작 후 사라집니다. <g2>브라우저 통합</g2>을 참조하세요."
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux 및 macOS</g1>: MDM 설정의 데이터 폴더에 저장되며, 사용자만 읽을 수 있습니다(0700). 아직 시스템 키체인에는 저장되지 않습니다. 키체인에 저장하는 것이 계획되어 있습니다."
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3669,6 +3717,10 @@
   "66e4fe28b447c606": {
    "source": "Shift+F10",
    "text": "Shift+F10"
+  },
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "MDM은 토큰을 이벤트 로그, 충돌 보고서, 자동화 API 또는 명령줄 출력에 절대 기록하지 않습니다."
   },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
@@ -4446,6 +4498,10 @@
    "source": "Apple Silicon",
    "text": "Apple Silicon"
   },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "현재 Real-Debrid가 작동합니다. AllDebrid와 Premiumize는 다음으로 지원될 예정입니다."
+  },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
@@ -4770,6 +4826,10 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "시작 시간에 대기열이 자동으로 시작됩니다. 아침에는 완료된 파일이 카테고리의 <g1>완료됨</g1> 아래에 있습니다."
   },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "디브리드 서비스 계정(Real-Debrid): <g1>추가...</g1>를 통해 브라우저에서 코드로 로그인하거나 API 토큰으로 로그인할 수 있습니다. 그러면 서비스가 지원하는 호스트의 링크가 해당 서비스를 통해 다운로드됩니다. 목록의 순서는 계정이 요청되는 순서입니다. <g2>디브리드 서비스 계정</g2>을 참조하세요."
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "토렌트와 보안"
@@ -4846,6 +4906,10 @@
    "source": "See <g1>Browser integration</g1>.",
    "text": "<g1>브라우저 통합</g1>을 참조하십시오."
   },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "서비스가 제공할 수 없는 링크는 목록에 이유를 표시합니다. 다시 로그인해야 함, 프리미엄 필요, 호스트 다운(MDM이 나중에 다시 시도), 파일 없음 등."
+  },
   "86e5c2477f430964": {
    "source": "Tutorial: catch downloads from your browser →",
    "text": "튜토리얼: 브라우저에서 다운로드 캡처 →"
@@ -4861,6 +4925,10 @@
   "876deb86ce5482ee": {
    "source": "Crash reports — Mister Download Manager help",
    "text": "충돌 보고서 — Mister Download Manager 도움말"
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "계정"
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
@@ -5121,6 +5189,10 @@
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
    "text": "두 개의 연결을 허용하는 서버. MDM은 이를 학습하고 두 개를 유지합니다. IDM은 480개를 열었습니다."
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "MDM은 계정을 확인하고 계정 이름과 프리미엄 여부를 표시합니다. <g1>확인</g1>을 클릭하면 계정이 유지됩니다."
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -6562,6 +6634,10 @@
    "source": "The same, for a Mac with an Intel processor (About This Mac shows a <g1>Processor</g1>).",
    "text": "Intel 프로세서가 탑재된 Mac(이 Mac에 관하여에 <g1>프로세서</g1>가 표시됨)의 경우에도 동일합니다."
   },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "자신의 계정만 사용하십시오. 계정 또는 링크를 공유하면 서비스 약관을 위반하게 되며 계정이 정지될 수 있습니다."
+  },
   "b6d4a1b792cd9316": {
    "source": "To back up your list, quit MDM (<g1>Tasks → Exit</g1>) and copy <x2/>.",
    "text": "목록을 백업하려면 MDM을 종료(<g1>작업 → 끝내기</g1>)하고 <x2/>를 복사하세요."
@@ -6922,6 +6998,10 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "도움말 → 업데이트 확인에서 <g1>지금 업데이트</g1>: MDM은 Windows(설치, 휴대용 및 일반 zip), Mac 및 Linux(AppImage, .tar.gz; .deb 또는 .rpm은 시스템 설치 관리자에서 열림)에서 새 버전을 다운로드하고, 확인하고, 설치하고, 다시 시작합니다. 이제 모든 릴리스에 포함된 MDM의 릴리스 키로 서명된 체크섬 목록에 나열된 파일만 설치합니다(<x2/>). 이 방식으로 첫 번째 업데이트는 0.2.1에서 다음 버전으로 진행됩니다."
   },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "Real-Debrid와 같은 디브리드 서비스는 파일 호스트에서 자체 서버로 파일을 다운로드하는 유료 계정입니다. 호스트의 대기 시간, 속도 제한 및 캡차 없이 일반적인 직접 링크를 반환합니다. MDM에 계정을 등록하면 서비스가 지원하는 호스트의 링크가 서비스를 통해 잠금 해제된 다음, MDM이 모든 연결, 일시 중지 및 재개를 통해 다른 파일처럼 다운로드합니다."
+  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "비디오 위 다운로드 단추"
@@ -6945,6 +7025,10 @@
   "c1d36b87b24557b5": {
    "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
    "text": "방해가 되지 않습니다. 비디오에 마우스를 가져갈 때만 표시되고(또는 플레이어가 키보드 포커스를 가질 때; <g1>Tab</g1>을 누르면 버튼으로 이동), 포인터가 멈추면 흐려지며, 작은 비디오와 짧은 음소거 루프(애니메이션 그림, 배경)는 제외됩니다. 전체 화면에서는 플레이어가 허용하는 경우 비디오를 따라갑니다. 복사 방지된 비디오(DRM)에서는 비디오를 저장할 수 없다고 표시됩니다."
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "디브리드 서비스 계정"
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -7125,6 +7209,10 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
+  },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "내 계정, 내 규칙"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -7409,6 +7497,10 @@
   "d02f2759845c4f95": {
    "source": "<g1>Daily</g1>, on the days you tick.",
    "text": "체크한 요일에 <g1>매일</g1>."
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1>: MDM 설정에 Windows 계정(DPAPI)으로 봉인됩니다. 다른 계정이나 컴퓨터의 설정 사본은 이를 읽을 수 없습니다. 해당 계정이나 컴퓨터에서 다시 로그인해야 합니다."
   },
   "d038e13f6f88e7cc": {
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
@@ -7838,6 +7930,10 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "HTTP, BitTorrent, 마그넷 및 ed2k를 지원하며 REST API를 통해 거의 모든 곳에서 실행 가능"
   },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "서비스를 선택한 다음 다음 중 하나를 수행합니다. - <g1>브라우저에서 로그인</g1>: MDM이 코드를 표시하고 서비스 페이지를 엽니다. 거기에 코드를 입력하고 MDM을 허용합니다. 대화 상자가 자동으로 이를 감지합니다. - 또는 <g2>API 토큰</g2>을 붙여넣은 다음(<g3>내 토큰 찾기</g3>를 클릭하면 토큰이 표시되는 서비스 페이지가 열립니다), <g4>토큰 사용</g4>을 클릭합니다."
+  },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
    "text": "Flatpak 또는 Snap으로 설치된 브라우저는 샌드박스에서 실행되므로 외부 프로그램을 시작하지 못할 수 있으며, MDM에 연결하지 못할 수도 있습니다. Flatpak 브라우저(예: Zen의 <x1/>)는 MDM의 도우미를 시작할 수 없으므로 MDM은 <g2>브라우저에 Mister Download Manager 추가</g2>에 해당 브라우저를 표시하지 않습니다. 브라우저 통합을 사용하려면 배포판 패키지(또는 브라우저 제작사의 자체 <x3/>, <x4/>, tarball 또는 AppImage)에서 브라우저를 설치하세요."
@@ -8105,6 +8201,10 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>클라이언트.</g1> IDM과 MDM 모두 기본 설정(8개 연결)으로, 동일하게 문서화된 명령줄 <x2/>를 통해 다운로드를 수행했습니다. 둘 다 IDM의 임시 폴더가 있는 드라이브에 저장하므로, 교차 드라이브 복사 비용이 발생하지 않습니다."
+  },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "목록의 순서는 계정이 요청되는 순서입니다. 링크는 해당 호스트를 지원하는 첫 번째 계정을 통해 처리됩니다. <g1>위로</g1> 및 <g2>아래로</g2>를 사용하여 순서를 변경할 수 있습니다."
   },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
@@ -8502,6 +8602,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "서버의 인증서는 <x1/>와 마찬가지로 Windows(또는 시스템)의 신뢰할 수 있는 인증서와 비교하여 확인됩니다."
   },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "링크 처리 방식"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8765,6 +8869,10 @@
   "f9de9c27524eaf61": {
    "source": "No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also <g1>what MDM is made for</g1>.",
    "text": "아니요. MDM은 의도적으로 복사 방지(DRM) 기능을 해제하지 않습니다. 보호된 동영상은 계속 보호됩니다. <g1>MDM의 목적</g1>도 참조하세요."
+  },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "옵션 → 계정 → 추가..."
   },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",

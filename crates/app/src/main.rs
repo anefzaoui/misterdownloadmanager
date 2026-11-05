@@ -7,6 +7,7 @@ mod checksum;
 mod chrome;
 mod crash;
 mod crashui;
+mod debrid;
 mod dialogs;
 mod droptarget;
 mod errors;

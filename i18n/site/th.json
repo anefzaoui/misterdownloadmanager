@@ -454,6 +454,10 @@
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1> and save your list.",
    "text": "ใน IDM ให้เลือก <g1>งาน → ส่งออก → ส่งออกไปยังไฟล์ IDM</g1> แล้วบันทึกรายการของคุณ"
   },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>ดาวน์โหลดลิงก์โฮสต์ไฟล์ที่รองรับผ่านบัญชีเหล่านี้</g1> จะเปิดและปิดการทำงานทั้งหมด"
+  },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
    "text": "<x1/> จากปัญหา:"
@@ -862,6 +866,10 @@
    "source": "Download Mister Download Manager",
    "text": "ดาวน์โหลด Mister Download Manager"
   },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "MDM จะส่งเฉพาะลิงก์ที่คุณดาวน์โหลดผ่านบริการและโทเค็นบัญชีของคุณเท่านั้น ไม่มีอย่างอื่น"
+  },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "ปล่อยให้ MDM ทำงาน การปิดหน้าต่างหลักไม่เป็นไร: MDM จะยังคงทำงานอยู่ในถาดระบบ อย่าใช้ <g1>งาน → ออก</g1>"
@@ -1154,6 +1162,10 @@
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "เลือกสิ่งที่ตัวติดตั้งควรทำ: - <g1>ตั้งค่าการรวมเข้ากับเบราว์เซอร์ (Chrome, Edge, Brave, Firefox)</g1> - <g2>เปิดไฟล์ .torrent และลิงก์แม่เหล็กด้วย Mister Download Manager</g2> - <g3>เริ่ม Mister Download Manager เมื่อ Windows เริ่มต้น</g3> - <g4>สร้างทางลัดบนเดสก์ท็อป</g4> (ปิดอยู่เว้นแต่คุณจะเลือก)"
   },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "เพิ่มบัญชีของคุณ"
+  },
   "1e19df04a325bd30": {
    "source": "<x1/> <g2>Open source · GPL-3.0</g2>",
    "text": "<x1/> <g2>โอเพนซอร์ส · GPL-3.0</g2>"
@@ -1218,6 +1230,10 @@
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "MDM จะเปิดหน้าเว็บที่ลิงก์มาจาก (หากทราบ) และหน้า <g1>คุณสมบัติของไฟล์</g1> ของรายการดาวน์โหลด"
   },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "รายการจะเก็บลิงก์ของโฮสต์ไว้ ลิงก์ตรงจะไม่แสดงหรือคัดลอก: บริการห้ามการแชร์ ลิงก์จะอยู่ในข้อมูลการดำเนินการต่อของการดาวน์โหลดเท่านั้น และเมื่อหมดอายุ MDM จะขอลิงก์ใหม่จากบริการ"
+  },
   "1fd04f332635d14c": {
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "ดูที่ <g1>ความสามารถในการดำเนินการต่อ</g1> ในหน้าต่างความคืบหน้า <g2>ไม่</g2> หมายความว่าเซิร์ฟเวอร์ไม่สามารถส่งไฟล์เป็นส่วนๆ ได้ MDM จะใช้การเชื่อมต่อเดียว และการดาวน์โหลดที่หยุดจะต้องเริ่มใหม่ สำหรับเซิร์ฟเวอร์ดังกล่าว ให้หลีกเลี่ยงการหยุดการดาวน์โหลด และหลีกเลี่ยงการจำกัดความเร็วที่ต่ำมาก ซึ่งอาจทำให้เซิร์ฟเวอร์ตัดการเชื่อมต่อ"
@@ -1229,6 +1245,10 @@
   "20614bb35ecf2799": {
    "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
    "text": "ส่วนขยายจะบันทึกจุดเริ่มต้นและจุดสิ้นสุดของการเปลี่ยนเส้นทางของการโหลดหน้าเว็บ (ในหน่วยความจำ, เป็นเวลาสองนาที) เพื่อให้ MDM ได้รับที่อยู่ที่คุณคลิก ไม่ใช่แค่ที่อยู่ปลายทางเท่านั้น"
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "MDM ไม่ได้จัดส่งรายการโฮสต์หรือลิงก์ใดๆ บริการจะระบุว่ารองรับโฮสต์ใดบ้าง"
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1413,6 +1433,10 @@
   "2542aeb0c43a3ce6": {
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "การดาวน์โหลดยังคงอยู่กับเบราว์เซอร์แม้ว่า MDM จะเชื่อมต่ออยู่"
+  },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "บริการ Debrid เช่น Real-Debrid คือบัญชีแบบชำระเงินที่ดาวน์โหลดไฟล์จากโฮสต์ไฟล์บนเซิร์ฟเวอร์ของตนเอง โดยจะส่งลิงก์ตรงกลับมาให้ โดยไม่มี..."
   },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
@@ -1689,6 +1713,10 @@
   "2c532cfa46f94b69": {
    "source": "Changed",
    "text": "เปลี่ยนแปลง"
+  },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "เพิ่ม URL, คลิปบอร์ด, เมนูลิงก์ <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> ของเบราว์เซอร์ และการดาวน์โหลดแบบกลุ่มจะผ่านบัญชีเมื่อบริการรองรับโฮสต์ของลิงก์นั้น"
   },
   "2c7829692534192e": {
    "source": "In your browser, right-click the link to the file and choose <g1>Copy link</g1>.",
@@ -2570,6 +2598,10 @@
    "source": "Video from pages",
    "text": "วิดีโอจากหน้าเว็บ"
   },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "การดาวน์โหลดที่เบราว์เซอร์เริ่มไปแล้ว (MDM รับช่วงต่อจากเบราว์เซอร์) จะถูกดาวน์โหลดตามเดิม: โฮสต์กำลังส่งไฟล์อยู่แล้ว"
+  },
   "45cafb7bca129310": {
    "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
    "text": "<g1><g2>การผสานรวมกับเบราว์เซอร์</g2></g1> — ส่วนขยายสำหรับ Chrome, Edge, Brave และ Firefox, การดาวน์โหลดที่โปรแกรมรับมา, และสิ่งที่เกิดขึ้นเมื่อ MDM ไม่ทำงาน"
@@ -2634,6 +2666,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from this site or the project's GitHub releases.",
    "text": "MDM ไม่มีแอดแวร์ สปายแวร์ ข้อเสนอแบบรวม หรือการติดตามใดๆ ซอร์สโค้ดทั้งหมดเป็นสาธารณะ ทุกคนสามารถตรวจสอบได้ว่าโปรแกรมทำอะไร และทุกเวอร์ชันที่เผยแพร่ก็สร้างขึ้นจากโค้ดนั้นโดยเซิร์ฟเวอร์ของ GitHub ซึ่งสามารถตรวจสอบกระบวนการสร้างได้ โปรแกรมเสริมที่สามารถดึงมาใช้กับวิดีโอจะได้รับการยืนยันก่อนที่จะทำงาน: yt-dlp จะตรวจสอบกับคีย์ลงนามของนักพัฒนา และ ffmpeg จะตรวจสอบกับผลรวมตรวจสอบที่เผยแพร่ ดาวน์โหลด MDM จากเว็บไซต์นี้เท่านั้น หรือจากหน้า GitHub releases ของโปรเจกต์"
   },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "ที่เก็บข้อมูลการลงชื่อเข้าใช้"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "การตั้งค่าการเชื่อมต่อในตัวเลือก →"
@@ -2669,6 +2705,10 @@
   "495fc31d3efbd9c0": {
    "source": "Windows <g1>10 and 11 · 64-bit</g1>",
    "text": "Windows <g1>10 และ 11 · 64-บิต</g1>"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>บัญชีบริการ Debrid</g2></g1> — Real-Debrid: ลิงก์จากผู้ให้บริการไฟล์ผ่านบัญชีของคุณเอง"
   },
   "4979f4438a0093f1": {
    "source": "Help → Keyboard shortcuts shows the Mac's keys on a Mac.",
@@ -3070,6 +3110,10 @@
    "source": "macOS",
    "text": "macOS"
   },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "บัญชีบริการ Debrid — วิธีใช้ Mister Download Manager"
+  },
   "553151825917c170": {
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "เกณฑ์มาตรฐานของเรา: IDM 6.42 (ลิขสิทธิ์) และ MDM บนพีซีเครื่องเดียวกัน เทียบกับเซิร์ฟเวอร์ทดสอบในเครื่องเดียวกัน โดยสลับการทำงาน; ค่ามัธยฐาน, Mann-Whitney p &lt; 0.001 · <g1>แผนภูมิ, รายงาน และข้อมูลดิบ</g1>"
@@ -3261,6 +3305,10 @@
   "5b4c0d90aeddada8": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "ส่วนขยายโหลดและเปิดอยู่หรือไม่? มองหา <g1>Mister Download Manager</g1> ในหน้าส่วนขยายของเบราว์เซอร์ ใน Firefox ส่วนเสริมชั่วคราวจะหายไปหลังจากการรีสตาร์ท ดู <g2>การทำงานร่วมกับเบราว์เซอร์</g2>"
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux และ macOS</g1>: ในการตั้งค่าของ MDM ในโฟลเดอร์ข้อมูลที่คุณเท่านั้นที่สามารถอ่านได้ (0700) ยังไม่ได้อยู่ในพวงกุญแจของระบบ การเก็บไว้ในพวงกุญแจมีแผนจะดำเนินการ"
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3669,6 +3717,10 @@
   "66e4fe28b447c606": {
    "source": "Shift+F10",
    "text": "Shift+F10"
+  },
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "MDM จะไม่เขียนโทเค็นลงในบันทึกเหตุการณ์, รายงานข้อขัดข้อง, API อัตโนมัติ หรือเอาต์พุตของบรรทัดคำสั่ง"
   },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
@@ -4446,6 +4498,10 @@
    "source": "Apple Silicon",
    "text": "Apple Silicon"
   },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "Real-Debrid ใช้งานได้แล้ว AllDebrid และ Premiumize จะตามมาในภายหลัง"
+  },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
    "text": "Vivaldi"
@@ -4770,6 +4826,10 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "เมื่อถึงเวลาเริ่มต้น คิวจะเริ่มทำงานเอง ในตอนเช้า ไฟล์ที่ดาวน์โหลดเสร็จสิ้นจะอยู่ใน <g1>เสร็จสิ้น</g1> ในหมวดหมู่ต่างๆ"
   },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "บัญชีบริการ Debrid ของคุณ (Real-Debrid): <g1>เพิ่ม...</g1> เพื่อลงชื่อเข้าใช้ด้วยรหัสในเบราว์เซอร์หรือด้วยโทเค็น API ของคุณ จากนั้นลิงก์จากโฮสต์ที่บริการรองรับจะถูกดาวน์โหลดผ่านบริการนั้น ลำดับในรายการคือลำดับที่บัญชีจะถูกเรียกใช้ ดู <g2>บัญชีบริการ Debrid</g2>"
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "ทอร์เรนต์และความปลอดภัยของคุณ"
@@ -4846,6 +4906,10 @@
    "source": "See <g1>Browser integration</g1>.",
    "text": "ดู <g1>การรวมเบราว์เซอร์</g1>"
   },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "ลิงก์ที่บริการไม่สามารถให้ได้จะระบุเหตุผลในรายการ: ลงชื่อเข้าใช้อีกครั้ง, ต้องใช้พรีเมียม, โฮสต์ล่ม (MDM จะลองอีกครั้งในภายหลัง), ไฟล์หายไป และอื่นๆ"
+  },
   "86e5c2477f430964": {
    "source": "Tutorial: catch downloads from your browser →",
    "text": "บทช่วยสอน: ดักจับการดาวน์โหลดจากเบราว์เซอร์ของคุณ →"
@@ -4861,6 +4925,10 @@
   "876deb86ce5482ee": {
    "source": "Crash reports — Mister Download Manager help",
    "text": "รายงานข้อขัดข้อง — วิธีใช้ Mister Download Manager"
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "บัญชี"
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
@@ -5121,6 +5189,10 @@
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
    "text": "เซิร์ฟเวอร์ที่อนุญาตการเชื่อมต่อสองครั้ง MDM เรียนรู้และจำกัดไว้ที่สอง; IDM เปิด 480"
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "MDM จะตรวจสอบบัญชีและแสดงชื่อและสถานะว่าเป็นบัญชีพรีเมียมหรือไม่ <g1>ตกลง</g1> เพื่อเก็บไว้"
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -6562,6 +6634,10 @@
    "source": "The same, for a Mac with an Intel processor (About This Mac shows a <g1>Processor</g1>).",
    "text": "เช่นเดียวกัน สำหรับ Mac ที่ใช้โปรเซสเซอร์ Intel (เกี่ยวกับ Mac เครื่องนี้ จะแสดง <g1>โปรเซสเซอร์</g1>)"
   },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "ใช้บัญชีของคุณเองเท่านั้น การแชร์บัญชีหรือลิงก์จะละเมิดข้อกำหนดของบริการและอาจทำให้บัญชีถูกระงับ"
+  },
   "b6d4a1b792cd9316": {
    "source": "To back up your list, quit MDM (<g1>Tasks → Exit</g1>) and copy <x2/>.",
    "text": "หากต้องการสำรองรายการของคุณ ให้ออกจาก MDM (<g1>งาน → ออก</g1>) และคัดลอก <x2/>"
@@ -6922,6 +6998,10 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "<g1>อัปเดตเดี๋ยวนี้</g1> ในวิธีใช้ → ตรวจหาการอัปเดต: MDM จะดาวน์โหลดเวอร์ชันใหม่, ตรวจสอบ, ติดตั้งและรีสตาร์ท บน Windows (โปรแกรมติดตั้ง, แบบพกพาและไฟล์ zip ธรรมดา), Mac และ Linux (AppImage, .tar.gz; ไฟล์ .deb หรือ .rpm จะเปิดในโปรแกรมติดตั้งของระบบ) มันจะติดตั้งเฉพาะไฟล์ที่ระบุในรายการตรวจสอบผลรวมที่ลงนามโดยคีย์เผยแพร่ของ MDM ซึ่งทุกเวอร์ชันตอนนี้มี (<x2/>) การอัปเดตครั้งแรกด้วยวิธีนี้จะเป็นจาก 0.2.1 ไปยังเวอร์ชันถัดไป"
   },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "บริการ Debrid เช่น Real-Debrid คือบัญชีแบบชำระเงินที่ดาวน์โหลดไฟล์จากโฮสต์ไฟล์บนเซิร์ฟเวอร์ของตนเอง โดยจะส่งลิงก์ตรงกลับมาให้ โดยไม่มีการรอคอย, การจำกัดความเร็ว และ Captcha ของโฮสต์ เมื่อคุณมีบัญชีใน MDM ลิงก์จากโฮสต์ที่บริการของคุณรองรับจะถูกปลดล็อกผ่านบริการ จากนั้น MDM จะดาวน์โหลดเหมือนไฟล์ทั่วไป: ทั้งหมดเป็นการเชื่อมต่อ, การหยุดชั่วคราว และการดำเนินการต่อ"
+  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "ปุ่มดาวน์โหลดบนวิดีโอ"
@@ -6945,6 +7025,10 @@
   "c1d36b87b24557b5": {
    "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
    "text": "ปุ่มนี้จะไม่รบกวน: จะแสดงเฉพาะเมื่อคุณชี้ไปที่วิดีโอ (หรือผู้เล่นมีโฟกัสของแป้นพิมพ์; <g1>Tab</g1> จะย้ายไปยังปุ่ม) จะจางหายไปเมื่อตัวชี้หยุดนิ่ง และจะไม่แสดงกับวิดีโอขนาดเล็กและลูปสั้นๆ ที่ไม่มีเสียง (ภาพเคลื่อนไหว, พื้นหลัง) ในโหมดเต็มหน้าจอ ปุ่มจะตามวิดีโอเมื่อผู้เล่นอนุญาต สำหรับวิดีโอที่มีการป้องกันการคัดลอก (DRM) จะระบุว่าไม่สามารถบันทึกวิดีโอได้"
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "บัญชีบริการ Debrid"
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -7125,6 +7209,10 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
+  },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "บัญชีของคุณ กฎของคุณ"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -7409,6 +7497,10 @@
   "d02f2759845c4f95": {
    "source": "<g1>Daily</g1>, on the days you tick.",
    "text": "<g1>รายวัน</g1> ในวันที่คุณเลือก"
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1>: ถูกเข้ารหัสสำหรับบัญชี Windows ของคุณ (DPAPI) ในการตั้งค่าของ MDM การคัดลอกการตั้งค่าไปยังบัญชีหรือคอมพิวเตอร์อื่นจะไม่สามารถอ่านได้: ต้องลงชื่อเข้าใช้อีกครั้งที่นั่น"
   },
   "d038e13f6f88e7cc": {
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
@@ -7838,6 +7930,10 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "ทำงานได้เกือบทุกที่ รองรับ HTTP, BitTorrent, magnet และ ed2k พร้อม REST API"
   },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "เลือกบริการ จากนั้น: - <g1>ลงชื่อเข้าใช้ในเบราว์เซอร์</g1>: MDM จะแสดงรหัสและเปิดหน้าบริการ พิมพ์รหัสที่นั่นและอนุญาต MDM กล่องโต้ตอบจะแจ้งให้ทราบเอง - หรือวาง <g2>โทเค็น API</g2> ของคุณ (<g3>ค้นหาโทเค็นของฉัน</g3> จะเปิดหน้าบริการที่แสดงโทเค็น) จากนั้น <g4>ใช้โทเค็น</g4>"
+  },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
    "text": "เบราว์เซอร์ที่ติดตั้งเป็น Flatpak หรือ Snap ทำงานในแซนด์บ็อกซ์ที่อาจป้องกันไม่ให้เริ่มโปรแกรมภายนอก ดังนั้นอาจไม่สามารถเข้าถึง MDM ได้ เบราว์เซอร์ Flatpak (เช่น Zen's <x1/>) ไม่สามารถเริ่มตัวช่วยของ MDM ได้ ดังนั้น MDM จึงไม่แสดงรายการใน <g2>เพิ่ม Mister Download Manager ไปยังเบราว์เซอร์ของคุณ</g2> ติดตั้งเบราว์เซอร์จากแพ็คเกจของการแจกจ่ายของคุณ (หรือ <x3/>, <x4/>, tarball หรือ AppImage ของผู้ผลิตเบราว์เซอร์เอง) เพื่อใช้การรวมเบราว์เซอร์"
@@ -8105,6 +8201,10 @@
   "e5221875f2db4e0e": {
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>ไคลเอนต์</g1> IDM และ MDM ทั้งคู่ใช้การตั้งค่าเริ่มต้น (8 การเชื่อมต่อ) แต่ละตัวได้รับไฟล์ดาวน์โหลดผ่านบรรทัดคำสั่งที่ระบุไว้เหมือนกัน: <x2/> ทั้งคู่บันทึกไปยังไดรฟ์ที่เก็บโฟลเดอร์ชั่วคราวของ IDM ดังนั้นจึงไม่มีการคัดลอกข้ามไดรฟ์"
+  },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "ลำดับในรายการคือลำดับที่บัญชีจะถูกเรียกใช้: ลิงก์จะผ่านบัญชีแรกที่บริการรองรับโฮสต์นั้น <g1>ขึ้น</g1> และ <g2>ลง</g2> เพื่อเปลี่ยนลำดับ"
   },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
@@ -8502,6 +8602,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "ใบรับรองของเซิร์ฟเวอร์จะถูกตรวจสอบกับใบรับรองที่เชื่อถือได้ของ Windows (หรือของระบบ) เช่นเดียวกับ <x1/>"
   },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "จะเกิดอะไรขึ้นกับลิงก์"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8765,6 +8869,10 @@
   "f9de9c27524eaf61": {
    "source": "No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also <g1>what MDM is made for</g1>.",
    "text": "ไม่ MDM ไม่ได้ออกแบบมาเพื่อถอดรหัสการป้องกันการคัดลอก (DRM) วิดีโอที่ได้รับการป้องกันจะยังคงได้รับการป้องกันอยู่ โปรดดู <g1>MDM สร้างมาเพื่ออะไร</g1> ด้วย"
+  },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "ตัวเลือก → บัญชี → เพิ่ม..."
   },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",

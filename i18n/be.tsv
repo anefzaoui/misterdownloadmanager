@@ -89,6 +89,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Схаваць падрабязнасці
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Сэрвіс дэбрыда (Real-Debrid) спампоўвае спасылку файлавага хоста з вашым уласным платным уліковым запісам і дае MDM прамую спасылку. Выкарыстоўвайце толькі свой уласны ўліковы запіс: сумеснае выкарыстанне ўліковага запісу або яго спасылак парушае ўмовы сэрвісаў і можа прывесці да яго прыпынення. Спампоўкі, якія ўжо пачаў браўзер, застаюцца без змен.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -108,9 +112,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	Прымаць уваходныя злучэнні
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	Уліковы запіс
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	Уліковыя запісы
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Дадаць спампоўку (Дадаць URL)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	Дадаць уліковы запіс
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Дадаць пакетную спампоўку
@@ -151,6 +167,11 @@
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Дадаць торэнт
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	Дадаць...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,6 +276,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Запыт спісу файлаў у піраў. Магнітныя спасылкі могуць заняць хвіліну-дзве.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	Запыт сэрвісу...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -472,6 +498,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Капіяваць
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	Капіраваць код
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -505,6 +535,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	Дзень, месяц, год
+#. page title in the Options window
+#, machine
+	Debrid service accounts	Уліковыя запісы сэрвісу дэбрыда
 #. text in the Scheduler window
 #, machine
 	December	Снежань
@@ -612,6 +645,10 @@
 #. text in a download's progress window
 #, machine
 	Done	Гатова
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	Уніз
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Загрузка
@@ -654,6 +691,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	Статус загрузкі
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	Спампоўваць падтрымоўваныя спасылкі файлавых хостаў праз гэтыя ўліковыя запісы
 #. window title in the Download video window
 #, machine
 	Download video from a page	Спампаваць відэа са старонкі
@@ -883,6 +924,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Знайсці файл
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	Знайсці мой токен
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -928,6 +973,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Пт
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	бясплатны ўліковы запіс: спасылкі патрабуюць прэміум
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1486,6 +1535,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	Не цяпер? Атрымайце іх пазней у раздзеле «Задачы → Спампаваць відэа са старонкі».
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	не падтрымліваецца гэтым сэрвісам
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Не выкарыстоўваецца: часткі файла запісваюцца побач з файлам
@@ -1575,6 +1628,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Адкрыць наступны файл пасля завяршэння:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	Адкрыць старонку
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1600,6 +1657,9 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Параметры пасля завяршэння
+#. text in the Options window
+#, machine
+	Or paste your API token:	Ці ўстаўце свой токен API:
 #. text in the Download video window
 #, machine
 	Page address	Адрас старонкі
@@ -1658,6 +1718,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Порт:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	прэміум
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	прэміум, засталося {days} дзён
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1914,6 +1982,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	Серверы:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	Сэрвіс
+#. text in the Options window
+#, machine
+	Service:	Сэрвіс:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1992,6 +2067,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Выключыць
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	Увайсці ў браўзеры
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	Увайшлі як {user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	выйшлі: увайдзіце зноў
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Назва сайта/Спасылка для загрузкі/Бацькоўская вэб-старонка/Рэферэр
@@ -2096,6 +2183,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Запуск...
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	Стан
 #. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -2213,6 +2304,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Буфер абмену заняты: паспрабуйце яшчэ раз.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	тэрмін дзеяння кода скончыўся: увайдзіце зноў
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2601,6 +2696,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Увядзіце назву чаргі
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Увядзіце гэты код на {page} і дазвольце MDM; чакаем вас (тэрмін дзеяння кода скончыцца праз {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2619,6 +2719,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	невядома
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	Уверх
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2669,6 +2773,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	Выкарыстоўваць проксі (Параметры → Проксі / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	Выкарыстаць токен
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Выкарыстоўваць іх для гэтага торэнта? Тое, што супадае, застаецца, астатняе замяняецца.
@@ -2958,6 +3066,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} просіць запаволіцца; MDM паспрабуе зноў праз хвіліну
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} просіць вас спачатку дазволіць гэты камп'ютар: глядзіце яго электронны ліст
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} не можа дасягнуць гэтага файлавага хоста прама зараз; MDM паспрабуе зноў пазней
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} не адказвае; паспрабуйце зноў пазней
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} адмаўляе гэтае злучэнне (VPN або адрас сервера?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} не дасць гэты файл
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: увайдзіце зноў (Параметры → Уліковыя запісы)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: уліковы запіс заблакаваны або не актываваны
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: файл знік або недаступны на файлавым хосце
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: гэты файл абаронены паролем
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: для гэтага патрэбны прэміум-уліковы запіс
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: занадта шмат спамповак адначасова праз ваш уліковы запіс; MDM паспрабуе зноў
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: ваш ліміт для гэтага файлавага хоста выкарыстаны на дадзены момант
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine

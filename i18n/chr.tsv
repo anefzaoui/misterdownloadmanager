@@ -604,6 +604,10 @@
 #. text in a download's progress window
 #, machine
 	Done	ᎤᏍᏆᏛᎯ
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	Իջեցնել
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	ᎠᏯᏙᎯᏍᏗ
@@ -2584,6 +2588,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	ᏄᏬᎵᏍᏔᏅᎾ
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	Վերև
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2860,6 +2868,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} ᎢᏳᏟᎶᏓ {m} ᎢᏯᏔᏬᏍᏔᏅᎯ
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} ᎥᏝ ᏫᎬᎷᏗᏍᎬᎾ ᎨᏒ {adapter} ᎢᏳᏩᏂᏌᏛ: ᎥᏝ ᎾᏍᎩ ᎢᏳᏍᏗ ᎤᏤᎵᏛ ᎢᏗᏢ (IPv4 ᎠᎴ IPv6) ᏱᎩ
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2903,6 +2915,60 @@
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} ᎤᏚᎵᎭ ᎢᏴᏓᏛ ᎢᏗᎦᎢ, MDM ᏔᎵᏁ ᏓᎪᎾᏙᏓᏏ ᏑᏟᎶᏓ ᎢᏴᏓᏛ
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} ᏂᎯᎢ ᎠᏓᏅᏖᏍᎬᎢ ᎯᎾᏄᎪᏫᏍᏗᏱ ᎯᎠ ᏗᏟᎶᏍᏔᏅᎯ: ᎯᎪᏩᏛ ᎾᏍᎩ ᎤᏤᎵ ᎠᎦᏅᏔᏅᎯ
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} ᎥᏝ ᎾᎿᏂ ᏱᎦᎷᎩ ᎯᎠ ᏗᏟᎶᏍᏔᏅᎯ ᎤᎾᏗᏅᏗᏱ ᎪᎯ ᎨᏒᎢ; MDM ᏔᎵᏁ ᏓᎦᏟᎶᏍᏔᏂ ᎣᏂᏱ
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} ᎥᏝ ᏱᎦᏁᏟᏴᏍᎦ; ᏔᎵᏁ ᎯᎪᎾᏛ ᎣᏂᏱ
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} ᎥᏝ ᏱᏓᏓᏂᎸᎦ ᎯᎠ ᏗᏓᏚᎪᏗ (VPN ᎪᏪᎵ ᎠᎴ ᏗᏟᎶᏍᏔᏅᎯ ᎪᏪᎵ?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} ᎥᏝ ᏱᏓᏁᎵ ᎯᎠ ᏗᏟᎶᏍᏔᏅᎯ
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: ᏔᎵᏁ ᎯᏴᎵ (ᏗᏟᎶᏍᏔᏅᎯ → ᏗᎦᏟᎶᏍᏔᏅᎯ)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: ᏗᏟᎶᏍᏔᏅᎯ ᎤᏍᏚᏢᏔᏅᎯ ᎠᎴ ᎥᏝ ᏱᏚᏓᎴᏅᏓ
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: ᏗᏟᎶᏍᏔᏅᎯ ᎤᏲᎱᏒᎯ ᎠᎴ ᎥᏝ ᏱᎦᏚᏓᎴᏅᏓ ᏗᏟᎶᏍᏔᏅᎯ ᎤᎾᏗᏅᏗᏱ
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: ᎯᎠ ᏗᏟᎶᏍᏔᏅᎯ ᎤᏍᏚᏢᏔᏅᎯ ᎪᏪᎵ ᎤᏍᏚᏢᏔᏅᎯ
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: ᎯᎠ ᎤᏚᎵᎭ ᎤᏟ ᎢᎦᎢ ᏗᏟᎶᏍᏔᏅᎯ
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: ᎤᏟ ᎢᎦᎢ ᏗᏟᎶᏍᏔᏅᎯ ᎢᏴᏓᏆᏍᏗ ᎯᎠ ᏗᏟᎶᏍᏔᏅᎯ; MDM ᏔᎵᏁ ᏓᎦᏟᎶᏍᏔᏂ
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: ᎯᎠ ᏗᏟᎶᏍᏔᏅᎯ ᎤᎾᏗᏅᏗᏱ ᎯᎠ ᎤᏟ ᎢᎦᎢ ᎤᏩᏔᏅᎯ ᎪᎯ ᎨᏒᎢ
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -2915,6 +2981,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} ᎢᏯᏔᏬᏍᏔᏅᎯ
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ᎥᏝ ᏱᎦᎷᎩ ᎯᎠ ᎤᏩᏔᏅᎯ ᏚᎾᏓᏚᎪᏗ ({adapter}) ᎪᎯ ᎨᏒᎢ
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
