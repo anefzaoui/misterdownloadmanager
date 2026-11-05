@@ -49,6 +49,11 @@ pub struct Faults {
     /// (HEAD and ranges included) gets 410 Gone.
     #[serde(deserialize_with = "flag_opt")]
     pub once: Option<bool>,
+    /// Never send the file's byte at this offset: a response that reaches it stops there and
+    /// waits until the server's faults no longer say so ([`crate::LabServer::set_faults`]; a
+    /// URL's own value is never lifted). A download can't finish meanwhile, only be stopped.
+    #[serde(deserialize_with = "size_opt")]
+    pub stall_at: Option<u64>,
 }
 
 impl Faults {
@@ -79,6 +84,7 @@ impl Faults {
                 .clone()
                 .or(self.require_referer.clone()),
             once: over.once.or(self.once),
+            stall_at: over.stall_at.or(self.stall_at),
         }
     }
 }
