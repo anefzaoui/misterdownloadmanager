@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Відповіді про Mister Download Manager: чи безкоштовний він, чи безпечний, як він порівнюється з IDM, браузери, відео, торренти, швидкість, Mac і Linux та інше."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Обмежити надсилання для всіх торентів до</g1> — за замовчуванням вимкнено. Обмежує те, що всі ваші торенти разом надсилають іншим пірам, під час завантаження та під час роздачі. Власне обмеження надсилання торента, у вікні його прогресу, застосовується поверх цього."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Запускає головну чергу завантажень; <x1/>."
@@ -980,7 +984,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "У Windows торрент-рушій ще не може прив’язуватися до адаптера. Тому торренти не запускаються, поки вибрано адаптер («торренти ще не можуть проходити через вибраний мережевий адаптер у Windows»), замість того, щоб обходити його. Імена трекерів все ще шукаються за допомогою системного DNS."
+   "text": "У Windows торрент-рушій ще не може прив’язуватися до адаптера. Тому торренти не запускаються, поки вибрано адаптер (\"торренти ще не можуть проходити через вибраний мережевий адаптер у Windows\"), замість того, щоб обходити його. Імена трекерів все ще шукаються за допомогою системного DNS."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1988,7 +1992,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "З’єднання з цим комп’ютером (<x1/>) не прив’язані. Проксі на цьому комп’ютері здійснює завантаження, і куди він їх надсилає, залежить від нього."
+   "text": "З'єднання з цим комп'ютером (<x1/>) не прив'язуються. Проксі-сервер на цьому комп'ютері здійснює завантаження, і куди він їх надсилає, залежить від нього."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2110,6 +2114,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Видалити вибрані завантаження (запитує спочатку)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Налаштування проксі / Socks у MDM призначені для завантажень з вебу та FTP. Торренти також можуть використовувати SOCKS5: встановіть проксі <x1/> у <g2>Параметри → Проксі / Socks</g2> та увімкніть <g3>Використовувати проксі</g3> в налаштуваннях торрентів. Проксі охоплює лише з’єднання з пірами та веб-трекерами, тому з ним MDM вимикає DHT, виявлення локальних пірів, вхідні з’єднання та UDP-трекери; він взагалі не відкриває UDP-сокет до мережі. Якщо проксі зникне з Проксі / Socks, коли цей перемикач увімкнено, торренти не запускатимуться, а не обходитимуть його."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>Системні діалогові вікна файлів більше не заморожують інші вікна MDM</g1>, поки вони відкриті."
@@ -2149,6 +2157,10 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, портативна або звичайний zip"
+  },
+  "39aae84ac9399153": {
+   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
+   "text": "<g1>Відкривати magnet-посилання та файли .torrent за допомогою Mister Download Manager</g1> — тоді Windows відкриватиме magnet-посилання у вашому браузері та файли <x2/> у Провіднику за допомогою MDM. Це стосується лише вашого облікового запису Windows; програма, яку ви вибрали в меню <g3>Відкрити за допомогою</g3> Windows, залишається першою. Програма встановлення може увімкнути це для вас."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -4508,7 +4520,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Параметри → Проксі / Socks → Мережевий адаптер</g1> прив’язує з’єднання MDM до одного адаптера, зазвичай VPN (<g2>Параметри</g2>). У Linux та macOS торрент-рушій прив’язує до нього кожен сокет: піри, трекери, DHT та його порт для прослуховування. UPnP та виявлення локальних пірів тоді вимикаються, оскільки вони спілкуються з локальною мережею, а не через адаптер. Якщо адаптер зникає, рушій зупиняється і знову запускається через адаптер, коли він повертається."
+   "text": "У <g1>Параметри → Проксі / Socks → Мережевий адаптер</g1> MDM прив’язує свої з’єднання до одного адаптера, зазвичай VPN (<g2>Параметри</g2>). У Linux та macOS торрент-рушій прив’язує до нього кожен сокет: піри, трекери, DHT та його порт для прослуховування. UPnP та виявлення локальних пірів вимикаються, оскільки вони спілкуються з локальною мережею, а не через адаптер. Якщо адаптер зникає, рушій зупиняється і знову запускається через адаптер, коли той повертається."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5280,7 +5292,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "Завантажити файл, використовуючи до 8 з’єднань (<x1/>, від 1 до 128), з відображенням прогресу. <x2/> призупиняє завантаження; <x3/> продовжує. <x4/> перевіряє завершений файл: шістнадцятковий MD5, SHA-1, SHA-256, SHA-512 або CRC32, за бажанням з назвою (<x5/>). <x6/> вибирає DNS: <x7/> (за замовчуванням); сервіс та спосіб запиту, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; адреси DNS-серверів, <x13/>; або адресу DNS-over-HTTPS. Він ніколи не повертається до системного DNS. <x14/> надсилає кожне з’єднання через один мережевий адаптер, за його назвою (<x15/>, <x16/>) або однією з його адрес; якщо він не підключений, нічого не надсилається, і завантаження не вдається."
+   "text": "Завантажити файл, використовуючи до 8 з’єднань (<x1/>, від 1 до 128), з відображенням прогресу. <x2/> призупиняє завантаження; <x3/> продовжує. <x4/> перевіряє завершений файл: шістнадцятковий MD5, SHA-1, SHA-256, SHA-512 або CRC32, за бажанням з назвою (<x5/>). <x6/> вибирає DNS: <x7/> (за замовчуванням); сервіс і спосіб запиту, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; адреси DNS-серверів, <x13/>; або адресу DNS-over-HTTPS. Він ніколи не повертається до системного DNS. <x14/> надсилає кожне з’єднання через один мережевий адаптер, за його назвою (<x15/>, <x16/>) або однією з його адрес; якщо він не підключений, нічого не надсилається, і завантаження не вдається."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5304,7 +5316,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "Ще не прив’язані до адаптера, тому вони не запускаються, поки вибрано один:"
+   "text": "Ще не прив'язані до адаптера, тому вони не запускаються, поки вибрано один:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5960,7 +5972,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "Як це працює: Windows прив’язує власну адресу адаптера. Потім Windows надсилає ці пакети лише через цей адаптер (її модель сильного хоста). Linux прив’язує сам пристрій (Linux 5.7 або новіший), а macOS прив’язує інтерфейс. Адреса типу, якого адаптер не має (IPv6 на VPN лише для IPv4), відхиляється, а не надсилається навколо нього."
+   "text": "Як це працює: Windows прив'язує власну адресу адаптера. Потім Windows надсилає ці пакети лише через цей адаптер (її модель сильного хоста). Linux прив'язує сам пристрій (Linux 5.7 або новіший), а macOS прив'язує інтерфейс. Адреса типу, якого адаптер не має (IPv6 на VPN лише для IPv4), відхиляється, а не надсилається навколо нього."
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6208,7 +6220,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Мережевий адаптер</g1> — за замовчуванням <g2>Будь-який (система вибирає)</g2>. Виберіть адаптер, зазвичай ваш VPN, і кожне з’єднання, яке відкриває MDM, проходитиме через нього, або не проходитиме взагалі. Це стосується завантажень, FTP, вибраного вами DNS, власних завантажень MDM та перевірки оновлень. Це працює як аварійний вимикач: коли адаптер відключається або VPN вимикається, нічого не проходить через ваше звичайне з’єднання. Запущені завантаження зупиняються з повідомленням «… не підключено» і відновлюються, коли адаптер повертається. Рядок під списком показує адресу адаптера або те, що він не підключений."
+   "text": "<g1>Мережевий адаптер</g1> — <g2>Будь-який (система вибирає)</g2> є типовим. Виберіть адаптер, зазвичай ваш VPN, і кожне з'єднання, яке відкриває MDM, проходить через нього або не проходить взагалі. Це стосується завантажень, FTP, обраного вами DNS, власних завантажень MDM та перевірки оновлень. Це працює як аварійний вимикач: коли адаптер відключається або VPN вимикається, нічого не проходить через ваше звичайне з'єднання. Завантаження, що виконуються, зупиняються з повідомленням «… не підключено» і відновлюються, коли адаптер знову підключається. Рядок під списком показує адресу адаптера або те, що він не підключений."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -8528,7 +8540,7 @@
   },
   "f208414e0c06341b": {
    "source": "video pages (yt-dlp can't be held to an adapter);",
-   "text": "відеосторінки (yt-dlp не може бути прив’язаний до адаптера);"
+   "text": "відеосторінки (yt-dlp не може бути прив'язаний до адаптера);"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",

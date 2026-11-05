@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Respostas sobre o Mister Download Manager: se é gratuito, se é seguro, como se compara com o IDM, navegadores, vídeos, torrents, velocidade, Mac e Linux, e muito mais."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Limitar carregamento para todos os torrents para</g1> — desativado por predefinição. Limita o que todos os seus torrents juntos enviam para outros peers, enquanto descarregam e enquanto partilham. O limite de carregamento próprio de um torrent, na sua janela de progresso, aplica-se adicionalmente a este."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Inicia a fila de transferências principal; <x1/>."
@@ -980,7 +984,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "No Windows, o motor de torrents ainda não consegue ligar-se a um adaptador. Assim, os torrents não iniciam enquanto um é escolhido (\"os torrents ainda não podem passar por um adaptador de rede escolhido no Windows\"), em vez de o contornarem. Os nomes dos trackers ainda são procurados pelo DNS do sistema."
+   "text": "No Windows, o motor de torrents ainda não consegue ligar-se a um adaptador. Assim, os torrents não iniciam enquanto um é escolhido (\"os torrents ainda não podem passar por um adaptador de rede escolhido no Windows\"), em vez de o contornar. Os nomes dos trackers ainda são procurados pelo DNS do sistema."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2110,6 +2114,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Eliminar as transferências selecionadas (pergunta primeiro)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "As definições de Proxy / Socks do MDM são para transferências web e FTP. Os torrents também podem usar um SOCKS5: defina um <x1/> proxy em <g2>Opções → Proxy / Socks</g2> e ative <g3>Usar o proxy</g3> nas Definições de torrent. O proxy cobre apenas as ligações a pares e a rastreadores web, por isso, com ele, o MDM desativa o DHT, a descoberta local de pares, as ligações de entrada e os rastreadores UDP; não abre qualquer socket UDP para a rede. Se o proxy for removido de Proxy / Socks enquanto essa opção estiver ativada, os torrents não iniciarão em vez de contorná-lo."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>Os diálogos de ficheiros do sistema já não bloqueiam as outras janelas do MDM</g1> enquanto estão abertos."
@@ -2149,6 +2157,10 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, o zip portátil ou simples"
+  },
+  "39aae84ac9399153": {
+   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
+   "text": "<g1>Abrir links magnet e ficheiros .torrent com o Mister Download Manager</g1> — o Windows abre então links magnet no seu navegador e ficheiros <x2/> no Explorador com o MDM. Isto é apenas para a sua conta do Windows; um programa que escolheu em <g3>Abrir com</g3> do Windows permanece em primeiro lugar. A configuração pode ativá-lo para si."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2400,7 +2412,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "O DNS do sistema pede os nomes à sua maneira, e o Windows pode pedir através de cada placa. Para manter os nomes também dentro da placa, escolha um DNS em <g1>Ligação</g1> → <g2>DNS</g2>: o MDM pede-o então através da placa."
+   "text": "O DNS do sistema pede os nomes à sua maneira, e o Windows pode pedir por cada placa. Para manter os nomes também dentro da placa, escolha um DNS em <g1>Ligação</g1> → <g2>DNS</g2>: o MDM pede-o então através da placa."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -3676,7 +3688,7 @@
   },
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
-   "text": "Para encaminhar <g1>tudo</g1> através de outra rede, use uma VPN para todo o computador."
+   "text": "Para encaminhar <g1>tudo</g1> através de outra rede, use uma VPN para o computador inteiro."
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -4508,7 +4520,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Opções → Proxy / Socks → Adaptador de rede</g1> mantém as ligações do MDM a um adaptador, geralmente o de uma VPN (<g2>Opções</g2>). No Linux e macOS, o motor de torrents liga cada socket a ele: pares, trackers, o DHT e a sua porta de escuta. O UPnP e a descoberta de pares locais são desativados, porque comunicam com a rede local em vez de o fazerem através do adaptador. Se o adaptador desaparecer, o motor para, e recomeça através do adaptador quando este volta."
+   "text": "<g1>Opções → Proxy / Socks → Adaptador de rede</g1> mantém as ligações do MDM a um adaptador, geralmente o de uma VPN (<g2>Opções</g2>). No Linux e macOS, o motor de torrents liga cada socket a ele: pares, trackers, o DHT e a sua porta de escuta. O UPnP e a descoberta de pares locais são desativados, porque comunicam com a rede local em vez de através do adaptador. Se o adaptador desaparecer, o motor para, e recomeça através do adaptador quando este volta."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5280,7 +5292,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "Transfere um ficheiro com até 8 ligações (<x1/>, 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o ficheiro terminado: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>). <x6/> escolhe o DNS: <x7/> (o predefinido); um serviço e como o consultar, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; endereços de servidores DNS, <x13/>; ou um endereço DNS-over-HTTPS. Nunca recorre ao DNS do sistema. <x14/> envia cada ligação através de um adaptador de rede, pelo seu nome (<x15/>, <x16/>) ou um dos seus endereços; quando não está ligado, nada é enviado e a transferência falha."
+   "text": "Transfere um ficheiro com até 8 ligações (<x1/>, 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o ficheiro terminado: MD5, SHA-1, SHA-256, SHA-512 ou CRC32 em hexadecimal, opcionalmente com nome (<x5/>). <x6/> escolhe o DNS: <x7/> (o predefinido); um serviço e como o consultar, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; os endereços dos servidores DNS, <x13/>; ou um endereço DNS-over-HTTPS. Nunca volta ao DNS do sistema. <x14/> envia cada ligação através de um adaptador de rede, pelo nome (<x15/>, <x16/>) ou por um dos seus endereços; quando não está ligado, nada é enviado e a transferência falha."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5304,7 +5316,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "Ainda não estão associados à placa, por isso não iniciam enquanto uma está selecionada:"
+   "text": "Ainda não associados à placa, por isso não iniciam enquanto uma está escolhida:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5960,7 +5972,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "Como funciona: o Windows associa o endereço da própria placa. O Windows envia esses pacotes apenas através dessa placa (o seu modelo de \"strong host\"). O Linux associa o próprio dispositivo (Linux 5.7 ou mais recente), e o macOS associa a interface. Um endereço de um tipo que a placa não tem (IPv6 numa VPN apenas IPv4) é recusado, não sendo enviado através dela."
+   "text": "Como funciona: o Windows associa o endereço da própria placa. O Windows envia esses pacotes apenas através dessa placa (o seu modelo de anfitrião forte). O Linux associa o próprio dispositivo (Linux 5.7 ou mais recente), e o macOS associa a interface. Um endereço de um tipo que a placa não tem (IPv6 numa VPN apenas IPv4) é recusado, não é enviado por ela."
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6208,7 +6220,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Placa de rede</g1> — <g2>Qualquer (o sistema escolhe)</g2> é a predefinição. Escolha uma placa, geralmente a da sua VPN, e todas as ligações que o MDM abrir passarão por ela, ou não passarão de todo. Isso abrange transferências, FTP, o DNS que escolheu, as próprias transferências do MDM e a verificação de atualizações. Funciona como um \"kill switch\": quando a placa se desliga, ou a VPN é desativada, nada sai pela sua ligação normal. As transferências em curso param com \"… não está ligado\" e recomeçam quando a placa está de volta. A linha abaixo da lista mostra o endereço da placa, ou que não está ligada."
+   "text": "<g1>Placa de rede</g1> — <g2>Qualquer (o sistema escolhe)</g2> é a predefinição. Escolha uma placa, geralmente a da sua VPN, e todas as ligações que o MDM abrir sairão por ela, ou não sairão de todo. Isso abrange transferências, FTP, o DNS que escolheu, as próprias transferências do MDM e a verificação de atualizações. Funciona como um kill switch: quando a placa se desliga, ou a VPN é desligada, nada sai pela sua ligação normal. As transferências em curso param com \"… não está ligado\" e recomeçam quando a placa está de volta. A linha por baixo da lista mostra o endereço da placa, ou que não está ligada."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",

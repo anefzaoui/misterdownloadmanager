@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager hakkında cevaplar: ücretsiz mi, güvenli mi, IDM ile karşılaştırması, tarayıcılar, videolar, torrentler, hız, Mac ve Linux ve daha fazlası."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Tüm torrentler için karşıya yüklemeyi şuna sınırla</g1> — varsayılan olarak kapalıdır. Tüm torrentlerinizin diğer eşlere gönderdiği toplam veriyi, hem indirirken hem de paylaşırken sınırlar. Bir torrentin kendi yükleme limiti, ilerleme penceresinde, bunun üzerine uygulanır."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Ana indirme kuyruğunu başlatır; <x1/>."
@@ -980,7 +984,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windows'ta torrent motoru henüz bir bağdaştırıcıya bağlanamıyor. Bu yüzden, bir bağdaştırıcı seçildiğinde torrentler başlamaz (\"torrentler Windows'ta seçilen bir ağ bağdaştırıcısı üzerinden henüz gidemez\"), etrafından dolaşmak yerine. İzleyici adları hala sistemin DNS'i tarafından aranır."
+   "text": "Windows'ta torrent motoru henüz bir bağdaştırıcıya bağlanamıyor. Bu nedenle, bir bağdaştırıcı seçildiğinde torrentler başlamaz (\"torrentler Windows'ta seçilen bir ağ bağdaştırıcısı üzerinden henüz gidemez\"), etrafından dolaşmak yerine. İzleyici adları hala sistemin DNS'i tarafından aranır."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1988,7 +1992,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "Bu bilgisayarın kendisine (<x1/>) yapılan bağlantılar bağlı değildir. Bu bilgisayardaki bir proxy indirmeleri taşır ve onları nereye göndereceği ona bağlıdır."
+   "text": "Bu bilgisayarın kendisine olan bağlantılar (<x1/>) bağlı değildir. Bu bilgisayardaki bir proxy indirmeleri taşır ve onları nereye göndereceği ona bağlıdır."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2110,6 +2114,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Seçili indirmeleri sil (önce sorar)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM'nin Ara Sunucu / Socks ayarları web ve FTP indirmeleri içindir. Torrentler de bir SOCKS5 kullanabilir: <g2>Seçenekler → Ara Sunucu / Socks</g2> bölümünde bir <x1/> ara sunucu ayarlayın ve Torrent ayarlarında <g3>Ara sunucuyu kullan</g3> seçeneğini açın. Ara sunucu yalnızca eşlere ve web izleyicilere olan bağlantıları kapsar, bu nedenle MDM bununla DHT'yi, yerel eş keşfini, gelen bağlantıları ve UDP izleyicilerini kapatır; ağa doğru hiçbir UDP soketi açmaz. Bu anahtar açıkken Ara Sunucu / Socks'tan ara sunucu giderse, torrentler onu atlamak yerine başlamaz."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>Sistem dosya iletişim kutuları</g1> açıkken MDM'nin diğer pencerelerini artık dondurmaz."
@@ -2149,6 +2157,10 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, taşınabilir veya düz zip"
+  },
+  "39aae84ac9399153": {
+   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
+   "text": "<g1>Magnet bağlantılarını ve .torrent dosyalarını Mister Download Manager ile aç</g1> — Windows daha sonra tarayıcınızdaki magnet bağlantılarını ve Gezgin'deki <x2/> dosyalarını MDM ile açar. Bu yalnızca Windows hesabınız içindir; Windows'un <g3>Birlikte aç</g3> bölümünde seçtiğiniz bir program ilk sırada kalır. Kurulum bunu sizin için açabilir."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2400,7 +2412,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "Sistemin DNS'i adları kendi yöntemleriyle sorar ve Windows her bağdaştırıcı üzerinden sorabilir. Adları bağdaştırıcının içinde tutmak için, <g1>Bağlantı</g1> → <g2>DNS</g2> altında bir DNS seçin: MDM daha sonra onu bağdaştırıcı üzerinden sorar."
+   "text": "Sistemin DNS'i adları kendi yöntemleriyle sorar ve Windows her bağdaştırıcı üzerinden sorabilir. Adları bağdaştırıcının içinde de tutmak için <g1>Bağlantı</g1> → <g2>DNS</g2> altında bir DNS seçin: MDM daha sonra onu bağdaştırıcı üzerinden sorar."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -4508,7 +4520,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Seçenekler → Ara Sunucu / Socks → Ağ bağdaştırıcısı</g1>, MDM'nin bağlantılarını genellikle bir VPN'e ait olan tek bir bağdaştırıcıda tutar (<g2>Seçenekler</g2>). Linux ve macOS'ta torrent motoru her soketi buna bağlar: eşler, izleyiciler, DHT ve dinleme portu. UPnP ve yerel eş keşfi bu durumda kapatılır, çünkü bunlar bağdaştırıcı üzerinden değil, yerel ağ ile konuşur. Bağdaştırıcı giderse, motor durur ve geri geldiğinde bağdaştırıcı üzerinden tekrar başlar."
+   "text": "<g1>Seçenekler → Ara Sunucu / Socks → Ağ bağdaştırıcısı</g1> MDM'nin bağlantılarını tek bir bağdaştırıcıya, genellikle bir VPN'inkine (<g2>Seçenekler</g2>) bağlar. Linux ve macOS'ta torrent motoru her soketi buna bağlar: eşler, izleyiciler, DHT ve dinleme portu. UPnP ve yerel eş keşfi kapatılır, çünkü bunlar bağdaştırıcı üzerinden değil, yerel ağla konuşur. Bağdaştırıcı giderse, motor durur ve geri geldiğinde bağdaştırıcı üzerinden tekrar başlar."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5280,7 +5292,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "İndirme ilerlemesini göstererek, en fazla 8 bağlantıyla (<x1/>, 1 ila 128) bir dosya indirin. <x2/> duraklatır; <x3/> devam ettirir. <x4/> bitmiş dosyayı kontrol eder: isteğe bağlı olarak adlandırılmış (<x5/>) hex MD5, SHA-1, SHA-256, SHA-512 veya CRC32. <x6/> DNS'i seçer: <x7/> (varsayılan); bir hizmet ve ona nasıl sorulacağı, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS sunucularının adresleri, <x13/>; veya bir DNS-over-HTTPS adresi. Asla sistemin DNS'ine geri dönmez. <x14/> her bağlantıyı, adıyla (<x15/>, <x16/>) veya adreslerinden biriyle tek bir ağ bağdaştırıcısı üzerinden gönderir; bağlı değilse hiçbir şey gönderilmez ve indirme başarısız olur."
+   "text": "İlerleme göstererek bir dosyayı en fazla 8 bağlantıyla (<x1/>, 1 ila 128) indirin. <x2/> duraklatır; <x3/> devam ettirir. <x4/> bitmiş dosyayı kontrol eder: onaltılık MD5, SHA-1, SHA-256, SHA-512 veya CRC32, isteğe bağlı olarak adlandırılmış (<x5/>). <x6/> DNS'i seçer: <x7/> (varsayılan); bir hizmet ve ona nasıl sorulacağı, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS sunucularının adresleri, <x13/>; veya bir DNS-over-HTTPS adresi. Asla sistemin DNS'ine geri dönmez. <x14/> her bağlantıyı adıyla (<x15/>, <x16/>) veya adreslerinden biriyle tek bir ağ bağdaştırıcısı üzerinden gönderir; bağlı değilse hiçbir şey gönderilmez ve indirme başarısız olur."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5304,7 +5316,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "Henüz bağdaştırıcıya bağlı değil, bu yüzden bir tane seçiliyken başlamazlar:"
+   "text": "Henüz bağdaştırıcıya bağlı değil, bu yüzden biri seçiliyken başlamazlar:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -6208,7 +6220,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Ağ bağdaştırıcısı</g1> — <g2>Herhangi biri (sistem seçer)</g2> varsayılandır. Bir bağdaştırıcı, genellikle VPN'inizinkini seçtiğinizde, MDM'nin açtığı her bağlantı onun üzerinden gider veya hiç gitmez. Bu, indirmeleri, FTP'yi, seçtiğiniz DNS'i, MDM'nin kendi indirmelerini ve güncelleme kontrolünü kapsar. Bir kill switch gibi çalışır: bağdaştırıcı bağlantısı kesildiğinde veya VPN kapatıldığında, normal bağlantınız üzerinden hiçbir şey gitmez. Çalışan indirmeler \"… bağlı değil\" mesajıyla durur ve bağdaştırıcı geri geldiğinde tekrar başlar. Listenin altındaki satır, bağdaştırıcının adresini veya bağlı olmadığını gösterir."
+   "text": "<g1>Ağ bağdaştırıcısı</g1> — <g2>Herhangi biri (sistem seçer)</g2> varsayılandır. Bir bağdaştırıcı, genellikle VPN'inizinki, seçtiğinizde MDM'nin açtığı her bağlantı onun üzerinden gider veya hiç gitmez. Bu, indirmeleri, FTP'yi, seçtiğiniz DNS'i, MDM'nin kendi indirmelerini ve güncelleme kontrolünü kapsar. Bir kill switch gibi çalışır: bağdaştırıcı bağlantısı kesildiğinde veya VPN kapatıldığında, normal bağlantınız üzerinden hiçbir şey gitmez. Çalışan indirmeler \"… bağlı değil\" mesajıyla durur ve bağdaştırıcı geri geldiğinde tekrar başlar. Listenin altındaki satır bağdaştırıcının adresini veya bağlı olmadığını gösterir."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -7940,7 +7952,7 @@
   },
   "e0e426203d8a6245": {
    "source": "(implicit TLS; <x1/> with TLS is fine).",
-   "text": "(örtük TLS; <x1/> TLS ile sorun yok)."
+   "text": "(örtük TLS; <x1/> ile TLS sorunsuz)."
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",

@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Respuestas sobre Mister Download Manager: si es gratis, si es seguro, cómo se compara con IDM, navegadores, vídeos, torrents, velocidad, Mac y Linux, y más."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Limitar subida para todos los torrents a</g1> — desactivado por defecto. Limita lo que todos tus torrents juntos envían a otros pares, mientras descargan y mientras comparten. El propio límite de subida de un torrent, en su ventana de progreso, se aplica además de este."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Inicia la cola principal de descargas; <x1/>."
@@ -980,7 +984,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "En Windows, el motor de torrents aún no puede enlazarse a un adaptador. Por lo tanto, los torrents no se inician mientras se elige uno (\"los torrents aún no pueden pasar por un adaptador de red elegido en Windows\"), en lugar de evitarlo. Los nombres de los rastreadores siguen siendo buscados por el DNS del sistema."
+   "text": "En Windows, el motor de torrents aún no puede vincularse a un adaptador. Por lo tanto, los torrents no se inician mientras se elige uno (\"los torrents aún no pueden pasar por un adaptador de red elegido en Windows\"), en lugar de evitarlo. Los nombres de los rastreadores siguen siendo buscados por el DNS del sistema."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1988,7 +1992,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "Las conexiones a este propio equipo (<x1/>) no están vinculadas. Un proxy en este equipo transporta las descargas, y dónde las envía depende de él."
+   "text": "Las conexiones a este propio equipo (<x1/>) no están vinculadas. Un proxy en este equipo gestiona las descargas, y adónde las envía depende de él."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2110,6 +2114,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Eliminar las descargas seleccionadas (pregunta primero)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "La configuración de Proxy/Socks de MDM es para descargas web y FTP. Los torrents también pueden usar un SOCKS5: configure un <x1/> proxy en <g2>Opciones → Proxy/Socks</g2> y active <g3>Usar el proxy</g3> en Configuración de torrents. El proxy solo cubre las conexiones a pares y rastreadores web, por lo que con él MDM desactiva DHT, el descubrimiento local de pares, las conexiones entrantes y los rastreadores UDP; no abre ningún socket UDP hacia la red. Si el proxy desaparece de Proxy/Socks mientras ese interruptor está activado, los torrents no se inician en lugar de omitirlo."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>Los diálogos de archivos del sistema ya no congelan las otras ventanas de MDM</g1> mientras están abiertos."
@@ -2149,6 +2157,10 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, el zip portátil o simple"
+  },
+  "39aae84ac9399153": {
+   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
+   "text": "<g1>Abrir enlaces magnet y archivos .torrent con Mister Download Manager</g1> — Windows abrirá entonces los enlaces magnet en su navegador y los archivos <x2/> en el Explorador con MDM. Esto es solo para su cuenta de Windows; un programa que haya elegido en <g3>Abrir con</g3> de Windows seguirá siendo el primero. La instalación puede activarlo por usted."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2400,7 +2412,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "El DNS del sistema pregunta los nombres a su manera, y Windows puede preguntar a través de cada adaptador. Para mantener los nombres también dentro del adaptador, elija un DNS en <g1>Conexión</g1> → <g2>DNS</g2>: MDM entonces lo pregunta a través del adaptador."
+   "text": "El DNS del sistema pregunta los nombres a su manera, y Windows puede preguntar a través de cada adaptador. Para mantener los nombres también dentro del adaptador, elija un DNS en <g1>Conexión</g1> → <g2>DNS</g2>: MDM lo preguntará a través del adaptador."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -4508,7 +4520,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Opciones → Proxy/Socks → Adaptador de red</g1> mantiene las conexiones de MDM a un adaptador, normalmente el de una VPN (<g2>Opciones</g2>). En Linux y macOS, el motor de torrents enlaza todos los sockets a él: pares, rastreadores, la DHT y su puerto de escucha. UPnP y el descubrimiento de pares locales se desactivan entonces, porque se comunican con la red local en lugar de a través del adaptador. Si el adaptador desaparece, el motor se detiene y se reinicia a través del adaptador cuando este vuelve."
+   "text": "Las conexiones de MDM se mantienen en un adaptador, normalmente el de una VPN, en <g1>Opciones → Proxy/Socks → Adaptador de red</g1> (<g2>Opciones</g2>). En Linux y macOS, el motor de torrents vincula todos los sockets a él: pares, rastreadores, la DHT y su puerto de escucha. UPnP y el descubrimiento de pares locales se desactivan entonces, porque se comunican con la red local en lugar de a través del adaptador. Si el adaptador desaparece, el motor se detiene y se reinicia a través del adaptador cuando este vuelve."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5280,7 +5292,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "Descarga un archivo con hasta 8 conexiones (<x1/>, de 1 a 128), mostrando el progreso. <x2/> lo pausa; <x3/> continúa. <x4/> comprueba el archivo terminado: MD5, SHA-1, SHA-256, SHA-512 o CRC32 hexadecimal, opcionalmente con nombre (<x5/>). <x6/> elige el DNS: <x7/> (el predeterminado); un servicio y cómo consultarlo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; direcciones de servidores DNS, <x13/>; o una dirección DNS-over-HTTPS. Nunca recurre al DNS del sistema. <x14/> envía cada conexión a través de un adaptador de red, por su nombre (<x15/>, <x16/>) o una de sus direcciones; si no está conectado, no se envía nada y la descarga falla."
+   "text": "Descarga un archivo con hasta 8 conexiones (<x1/>, de 1 a 128), mostrando el progreso. <x2/> lo pausa; <x3/> lo continúa. <x4/> comprueba el archivo terminado: hex MD5, SHA-1, SHA-256, SHA-512 o CRC32, opcionalmente con nombre (<x5/>). <x6/> elige el DNS: <x7/> (el predeterminado); un servicio y cómo consultarlo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; las direcciones de los servidores DNS, <x13/>; o una dirección DNS-over-HTTPS. Nunca recurre al DNS del sistema. <x14/> envía cada conexión a través de un adaptador de red, por su nombre (<x15/>, <x16/>) o una de sus direcciones; cuando no está conectado, no se envía nada y la descarga falla."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5960,7 +5972,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "Cómo se mantiene: Windows vincula la propia dirección del adaptador. Windows luego envía esos paquetes solo a través de ese adaptador (su modelo de host fuerte). Linux vincula el dispositivo en sí (Linux 5.7 o posterior), y macOS vincula la interfaz. Una dirección de un tipo que el adaptador no tiene (IPv6 en una VPN solo IPv4) es rechazada, no enviada a su alrededor."
+   "text": "Cómo funciona: Windows vincula la dirección propia del adaptador. Windows luego envía esos paquetes solo a través de ese adaptador (su modelo de host fuerte). Linux vincula el dispositivo en sí (Linux 5.7 o posterior), y macOS vincula la interfaz. Una dirección de un tipo que el adaptador no tiene (IPv6 en una VPN solo IPv4) es rechazada, no enviada a su alrededor."
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -8528,7 +8540,7 @@
   },
   "f208414e0c06341b": {
    "source": "video pages (yt-dlp can't be held to an adapter);",
-   "text": "páginas de vídeo (yt-dlp no puede vincularse a un adaptador);"
+   "text": "páginas de vídeo (yt-dlp no se puede vincular a un adaptador);"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",

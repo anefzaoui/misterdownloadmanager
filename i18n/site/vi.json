@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Trả lời các câu hỏi về Mister Download Manager: nó có miễn phí không, có an toàn không, so sánh với IDM, trình duyệt, video, torrent, tốc độ, Mac và Linux, và nhiều hơn nữa."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Giới hạn tải lên cho tất cả torrent thành</g1> — tắt theo mặc định. Giới hạn tổng dung lượng mà tất cả các torrent của bạn gửi cho các người ngang hàng khác, trong khi chúng tải xuống và trong khi chúng chia sẻ. Giới hạn tải lên riêng của một torrent, trong cửa sổ tiến trình của nó, sẽ được áp dụng thêm vào trên giới hạn này."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Bắt đầu hàng đợi tải xuống chính; <x1/>."
@@ -980,7 +984,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Trên Windows, công cụ torrent chưa thể liên kết với bộ điều hợp. Vì vậy, torrent không bắt đầu khi một bộ điều hợp được chọn (\"torrent chưa thể đi qua bộ điều hợp mạng đã chọn trên Windows\"), thay vì đi vòng qua nó. Tên trình theo dõi vẫn được tra cứu bởi DNS của hệ thống."
+   "text": "Trên Windows, công cụ torrent chưa thể liên kết với bộ điều hợp. Vì vậy, torrent không khởi động khi một bộ điều hợp được chọn (\"torrent chưa thể đi qua bộ điều hợp mạng đã chọn trên Windows\"), thay vì đi vòng qua nó. Tên trình theo dõi vẫn được tra cứu bởi DNS của hệ thống."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1988,7 +1992,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "Các kết nối đến chính máy tính này (<x1/>) không bị ràng buộc. Một proxy trên máy tính này thực hiện các lượt tải xuống, và nơi nó gửi chúng là tùy thuộc vào nó."
+   "text": "Các kết nối đến chính máy tính này (<x1/>) không bị ràng buộc. Một proxy trên máy tính này mang các lượt tải xuống, và nơi nó gửi chúng là tùy thuộc vào nó."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2110,6 +2114,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "Xóa các bản tải xuống đã chọn (hỏi trước)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "Cài đặt Proxy / Socks của MDM dành cho tải xuống web và FTP. Torrent cũng có thể dùng SOCKS5: hãy đặt proxy <x1/> trong <g2>Tùy chọn → Proxy / Socks</g2> và bật <g3>Sử dụng proxy</g3> trong Cài đặt torrent. Proxy chỉ bao gồm các kết nối đến các peer và trình theo dõi web, vì vậy với nó, MDM sẽ tắt DHT, khám phá peer cục bộ, các kết nối đến và trình theo dõi UDP; nó không mở bất kỳ socket UDP nào ra mạng. Nếu proxy bị xóa khỏi Proxy / Socks trong khi công tắc đó đang bật, torrent sẽ không bắt đầu thay vì bỏ qua nó."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>Hộp thoại tệp hệ thống không còn làm đóng băng các cửa sổ khác của MDM</g1> khi chúng đang mở."
@@ -2149,6 +2157,10 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows, bản di động hoặc tệp zip thông thường"
+  },
+  "39aae84ac9399153": {
+   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
+   "text": "<g1>Mở liên kết magnet và tệp .torrent bằng Mister Download Manager</g1> — Windows sau đó sẽ mở liên kết magnet trong trình duyệt của bạn và tệp <x2/> trong Explorer bằng MDM. Điều này chỉ dành cho tài khoản Windows của bạn; một chương trình bạn đã chọn trong <g3>Mở bằng</g3> của Windows vẫn là ưu tiên hàng đầu. Trình cài đặt có thể bật tính năng này cho bạn."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -4508,7 +4520,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Tùy chọn → Proxy / Socks → Bộ điều hợp mạng</g1> giữ các kết nối của MDM với một bộ điều hợp, thường là của VPN (<g2>Tùy chọn</g2>). Trên Linux và macOS, công cụ torrent liên kết mọi socket với nó: các peer, trình theo dõi, DHT và cổng nghe của nó. UPnP và khám phá peer cục bộ sau đó bị tắt, vì chúng nói chuyện với mạng cục bộ thay vì qua bộ điều hợp. Nếu bộ điều hợp biến mất, công cụ sẽ dừng và nó sẽ khởi động lại qua bộ điều hợp khi nó quay lại."
+   "text": "<g1>Tùy chọn → Proxy / Socks → Bộ điều hợp mạng</g1> giữ các kết nối của MDM với một bộ điều hợp, thường là của VPN (<g2>Tùy chọn</g2>). Trên Linux và macOS, công cụ torrent liên kết mọi socket với nó: các peer, trình theo dõi, DHT và cổng nghe của nó. UPnP và khám phá peer cục bộ sau đó bị tắt, vì chúng nói chuyện với mạng cục bộ thay vì qua bộ điều hợp. Nếu bộ điều hợp biến mất, công cụ sẽ dừng và nó sẽ khởi động lại qua bộ điều hợp khi nó trở lại."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5960,7 +5972,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "Cách nó giữ: Windows liên kết địa chỉ riêng của bộ điều hợp. Windows sau đó chỉ gửi các gói đó qua bộ điều hợp đó (mô hình máy chủ mạnh của nó). Linux liên kết chính thiết bị (Linux 5.7 trở lên), và macOS liên kết giao diện. Một địa chỉ mà bộ điều hợp không có (IPv6 trên VPN chỉ IPv4) sẽ bị từ chối, không được gửi xung quanh nó."
+   "text": "Cách nó giữ: Windows liên kết địa chỉ riêng của bộ điều hợp. Windows sau đó chỉ gửi các gói đó qua bộ điều hợp đó (mô hình máy chủ mạnh của nó). Linux liên kết chính thiết bị (Linux 5.7 trở lên), và macOS liên kết giao diện. Một địa chỉ thuộc loại mà bộ điều hợp không có (IPv6 trên VPN chỉ IPv4) sẽ bị từ chối, không được gửi vòng quanh nó."
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6208,7 +6220,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Bộ điều hợp mạng</g1> — <g2>Bất kỳ (hệ thống tự chọn)</g2> là mặc định. Chọn một bộ điều hợp, thường là của VPN của bạn, và mọi kết nối MDM mở ra đều đi qua nó, hoặc không đi qua. Điều này bao gồm các lượt tải xuống, FTP, DNS bạn đã chọn, các lượt tải xuống của MDM và kiểm tra cập nhật. Nó hoạt động như một công tắc ngắt mạch: khi bộ điều hợp bị ngắt kết nối, hoặc VPN bị tắt, không có gì đi ra qua kết nối thông thường của bạn. Các lượt tải xuống đang chạy dừng lại với “… không được kết nối” và bắt đầu lại khi bộ điều hợp hoạt động trở lại. Dòng bên dưới danh sách hiển thị địa chỉ của bộ điều hợp, hoặc cho biết nó không được kết nối."
+   "text": "<g1>Bộ điều hợp mạng</g1> — <g2>Bất kỳ (hệ thống tự chọn)</g2> là mặc định. Chọn một bộ điều hợp, thường là của VPN của bạn, và mọi kết nối MDM mở ra sẽ đi qua đó, hoặc không đi đâu cả. Điều đó bao gồm các lượt tải xuống, FTP, DNS bạn đã chọn, các lượt tải xuống của MDM và kiểm tra cập nhật. Nó hoạt động như một công tắc ngắt mạch: khi bộ điều hợp bị ngắt kết nối, hoặc VPN bị tắt, không có gì đi ra qua kết nối thông thường của bạn. Các lượt tải xuống đang chạy sẽ dừng với “… không được kết nối” và bắt đầu lại khi bộ điều hợp hoạt động trở lại. Dòng bên dưới danh sách hiển thị địa chỉ của bộ điều hợp, hoặc cho biết nó không được kết nối."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",

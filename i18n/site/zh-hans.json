@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "关于 Mister Download Manager 的解答：它是否免费、是否安全、与 IDM 的比较、浏览器、视频、种子、速度、Mac 和 Linux 等。"
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和分享时向其他对等点发送的总量。torrent 进度窗口中自己的上传限制会在此基础上生效。"
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "启动主下载队列；<x1/>。"
@@ -980,7 +984,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "在Windows上，torrent引擎尚无法绑定到适配器。因此，当选择了一个适配器时，torrent不会启动（“在Windows上，torrent尚不能通过所选的网络适配器”），而不是绕过它。跟踪器名称仍然由系统的DNS查找。"
+   "text": "在Windows上，洪流引擎尚无法绑定到适配器。因此，在选择适配器时，洪流不会启动（“洪流尚无法通过Windows上选定的网络适配器”），而不是绕过它。跟踪器名称仍然由系统的DNS查找。"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1988,7 +1992,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "到此计算机本身的连接（<x1/>）未绑定。此计算机上的代理负责下载，发送到何处由它决定。"
+   "text": "到此计算机本身的连接（<x1/>）未绑定。此计算机上的代理负责下载，它将下载发送到何处取决于它。"
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2110,6 +2114,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "删除所选下载（先询问）"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM 的代理/Socks 设置适用于网页和 FTP 下载。种子也可以使用 SOCKS5 代理：在<g2>选项 → 代理/Socks</g2>中设置<x1/>代理，并在种子设置中打开<g3>使用代理</g3>。代理仅覆盖与对等点和网页追踪器的连接，因此 MDM 会关闭 DHT、本地对等点发现、传入连接和 UDP 追踪器；它根本不会向网络打开 UDP 套接字。如果在代理/Socks 中代理消失而该开关仍处于打开状态，则种子不会启动，而不是绕过代理。"
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>系统文件对话框打开时不再冻结 MDM 的其他窗口</g1>。"
@@ -2149,6 +2157,10 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows，便携版或普通 zip"
+  },
+  "39aae84ac9399153": {
+   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
+   "text": "<g1>使用 Mister Download Manager 打开磁力链接和 .torrent 文件</g1> — 然后 Windows 会在您的浏览器中用 MDM 打开磁力链接，并在资源管理器中用 MDM 打开 <x2/> 文件。这仅适用于您的 Windows 账户；您在 Windows 的<g3>打开方式</g3>中选择的程序仍然优先。安装程序可以为您打开此选项。"
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2400,7 +2412,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "系统的 DNS 以自己的方式查询名称，Windows 可能会通过每个适配器查询。要将名称也保留在适配器内，请在<g1>连接</g1> → <g2>DNS</g2>下选择一个 DNS：MDM 然后通过适配器查询它。"
+   "text": "系统的 DNS 以自己的方式查询名称，Windows 可能会通过每个适配器查询。为了也将名称保留在适配器内部，请在<g1>连接</g1> → <g2>DNS</g2>下选择一个 DNS：MDM 随后会通过该适配器查询它。"
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -4508,7 +4520,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>选项 → 代理/Socks → 网络适配器</g1>将MDM的连接绑定到一个适配器，通常是VPN的（<g2>选项</g2>）。在Linux和macOS上，torrent引擎会将每个套接字绑定到它：对等点、跟踪器、DHT及其监听端口。UPnP和本地对等点发现会因此关闭，因为它们与本地网络通信而不是通过适配器。如果适配器消失，引擎会停止，并在适配器恢复时再次通过它启动。"
+   "text": "<g1>选项 → 代理/Socks → 网络适配器</g1>将MDM的连接绑定到一个适配器，通常是VPN的（<g2>选项</g2>）。在Linux和macOS上，洪流引擎会将每个套接字绑定到它：对等点、跟踪器、DHT及其监听端口。UPnP和本地对等点发现功能将关闭，因为它们与本地网络通信，而不是通过适配器。如果适配器消失，引擎将停止，并在适配器恢复时再次通过它启动。"
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5280,7 +5292,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。<x6/> 选择 DNS：<x7/>（默认）；服务及其查询方式，<x8/>、<x9/>、<x10/>、<x11/>、<x12/>；DNS 服务器地址，<x13/>；或 DNS-over-HTTPS 地址。它绝不会回退到系统的 DNS。<x14/> 通过一个网络适配器发送每个连接，通过其名称（<x15/>，<x16/>）或其某个地址；当它未连接时，不发送任何内容，下载失败。"
+   "text": "下载文件，最多 8 个连接（<x1/>，1 到 128），显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。<x6/> 选择 DNS：<x7/>（默认）；服务及其查询方式，<x8/>、<x9/>、<x10/>、<x11/>、<x12/>；DNS 服务器地址，<x13/>；或 DNS-over-HTTPS 地址。它从不回退到系统 DNS。<x14/> 通过一个网络适配器发送每个连接，通过其名称（<x15/>、<x16/>）或其某个地址；当它未连接时，不发送任何内容，下载失败。"
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5960,7 +5972,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "它如何保持：Windows 绑定适配器自己的地址。然后 Windows 仅通过该适配器发送这些数据包（其强主机模型）。Linux 绑定设备本身（Linux 5.7 或更高版本），macOS 绑定接口。适配器没有的地址类型（仅 IPv4 VPN 上的 IPv6）将被拒绝，而不会绕过它发送。"
+   "text": "它如何保持：Windows 绑定适配器自己的地址。然后 Windows 只通过该适配器发送这些数据包（其强主机模型）。Linux 绑定设备本身（Linux 5.7 或更高版本），macOS 绑定接口。适配器不具备的地址类型（例如仅支持 IPv4 的 VPN 上的 IPv6）将被拒绝，而不会绕过它发送。"
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6208,7 +6220,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>网络适配器</g1> — <g2>任何（系统选择）</g2>是默认设置。选择一个适配器，通常是您的 VPN 适配器，MDM 打开的每个连接都将通过它发出，否则不发出。这包括下载、FTP、您选择的 DNS、MDM 自己的下载和更新检查。它充当一个终止开关：当适配器断开连接或 VPN 关闭时，任何内容都不会通过您的正常连接发出。正在进行的下载会因“……未连接”而停止，并在适配器恢复后重新开始。列表下方的行显示适配器的地址，或显示它未连接。"
+   "text": "<g1>网络适配器</g1> — <g2>任何（系统选择）</g2>是默认设置。选择一个适配器，通常是您的 VPN 适配器，MDM 打开的每个连接都将通过它发出，否则就无法发出。这包括下载、FTP、您选择的 DNS、MDM 自己的下载和更新检查。它起到一个终止开关的作用：当适配器断开连接，或 VPN 关闭时，任何数据都不会通过您的正常连接发出。正在进行的下载会显示“……未连接”并停止，当适配器恢复时会重新开始。列表下方的行显示适配器的地址，或显示其未连接。"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
