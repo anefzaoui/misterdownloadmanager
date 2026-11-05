@@ -166,10 +166,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "پاسخ‌هایی درباره Mister Download Manager: آیا رایگان است، آیا ایمن است، مقایسه آن با IDM، مرورگرها، ویدئوها، تورنت‌ها، سرعت، Mac و Linux و موارد دیگر."
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>محدود کردن بارگذاری برای همه تورنت‌ها به</g1> — به طور پیش‌فرض خاموش است. این گزینه میزان ارسال تمام تورنت‌های شما را به سایر همتایان، هم هنگام دانلود و هم هنگام اشتراک‌گذاری، محدود می‌کند. محدودیت بارگذاری خود یک تورنت، در پنجره پیشرفت آن، علاوه بر این اعمال می‌شود."
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "صف اصلی دانلود را شروع می‌کند؛ <x1/>."
@@ -178,6 +174,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "اگر بعضی از فایل‌های تورنت از قبل در پوشه باشند، MDM قبل از استفاده از آن‌ها سؤال می‌کند. <g1>بله</g1> آن‌ها را برای تورنت نگه می‌دارد: MDM آن‌ها را بررسی می‌کند، آنچه را که با تورنت مطابقت دارد نگه می‌دارد و بقیه را دانلود می‌کند، که به این ترتیب می‌توانید دانلود شروع شده در جای دیگر را ادامه دهید یا فایل‌هایی را که از قبل دارید به اشتراک بگذارید. <g2>خیر</g2> (پیش‌فرض) به عقب برمی‌گردد، بنابراین می‌توانید پوشه دیگری را انتخاب کنید و هیچ یک از فایل‌های شما بازنویسی نمی‌شود."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "در Firefox، MDM پراکسی را که درخواست خود مرورگر برای فایل استفاده کرده است، از جمله پراکسی‌هایی که یک افزونه VPN برای هر درخواست انتخاب می‌کند، می‌بیند. در Chrome، Edge، Brave، Opera و Vivaldi، تنظیمات پراکسی مرورگر را می‌بیند."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM تورنتی را که نام فایل‌های آن را سیستم شما نمی‌تواند با اطمینان بنویسد، رد می‌کند، نام آن را می‌گوید و چیزی نمی‌نویسد."
@@ -185,10 +185,6 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "رایگان و متن‌باز. رابط کاربری که از قبل می‌شناسید، یک موتور سریع‌تر در زیر، تورنت‌ها و ویدئو به صورت داخلی."
-  },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (حدود 80 مگابایت) وقتی یک سایت ویدئو و صدای آن را جدا نگه می‌دارد (که بیشتر سایت‌ها برای کیفیت‌های بالاتر این کار را می‌کنند)، آن‌ها را به هم می‌چسباند و صدا را به MP3 تبدیل می‌کند. وقتی MDM آن را پیشنهاد داد، روی <g2>نصب ffmpeg</g2> کلیک کنید. MDM آن را با چک‌سام‌هایی که انتشارش منتشر می‌کند، بررسی می‌کند."
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -249,6 +245,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> برای دبیان و اوبونتو، <g2>.rpm</g2> برای فدورا"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "هنگامی که مرورگر از پراکسی استفاده نکرده است و <g1>بدون پراکسی/SOCKS</g1> انتخاب شده است، MDM از تنظیمات پراکسی Windows استفاده می‌کند، همانطور که مرورگرها انجام می‌دهند."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -966,6 +966,10 @@
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "پاسخ‌های کوتاه به پرتکرارترین سؤالات، هر کدام با پیوندی به راهنمای کامل."
   },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "مجوزهای آن و دلیل آنها: <g1>دانلودها</g1> برای مشاهده و تحویل دانلودها؛ <g2>کوکی‌ها</g2> تا دانلودهای وارد شده در MDM کار کنند؛ <g3>nativeMessaging</g3> برای ارتباط با MDM؛ <g4>contextMenus</g4> برای گزینه‌های کلیک راست؛ <g5>storage</g5> برای تنظیمات آن؛ <g6>webRequest</g6> برای مشاهده فرم‌های ارسال شده و جریان‌های ویدیویی بارگذاری شده (هیچ چیز را تغییر نمی‌دهد)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome، Edge و سایر مرورگرهای Chromium) برای دانلود فایل‌هایی که مرورگر باز می‌کند (مانند PDF) به جای باز کردن آنها، برای انواع فایل‌هایی که MDM پشتیبانی می‌کند؛ در Firefox، <g8>webRequestBlocking</g8> این کار را انجام می‌دهد؛ <g9>scripting</g9> برای خواندن لینک‌های یک صفحه در صورت درخواست شما، و برای افزودن دکمه ویدیو به صفحات از قبل باز شده هنگام نصب افزونه؛ <g10>proxy</g10> برای خواندن پراکسی مورد استفاده مرورگر، تا دانلودهای گرفته شده از مرورگری که پشت VPN یا افزونه پراکسی است نیز از طریق آن انجام شود (هرگز پراکسی مرورگر را تغییر نمی‌دهد)؛ دسترسی به همه سایت‌ها به این دلیل که دانلودها و ویدیوها می‌توانند از هر سایتی باشند."
+  },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
    "text": "وقتی مرورگر نمی‌تواند یک دانلود را به MDM واگذار کند، خودش دانلود را نگه می‌دارد، بنابراین چیزی از دست نمی‌رود. دکمه نوار ابزار افزونه سپس یک علامت تعجب قرمز (!) نشان می‌دهد. روی آن کلیک کنید..."
@@ -1594,6 +1598,10 @@
    "source": "The extension asks the host which file types to take, checks each download against them, and cancels the browser's download only after the app has accepted it; otherwise the browser keeps it.",
    "text": "افزونه از میزبان می‌پرسد که کدام انواع فایل را بگیرد، هر بارگیری را با آنها بررسی می‌کند، و بارگیری مرورگر را فقط پس از پذیرش آن توسط برنامه لغو می‌کند؛ در غیر این صورت مرورگر آن را نگه می‌دارد."
   },
+  "292621fe40d7beca": {
+   "source": "Every video starts ticked. Untick the ones you don't want, or use <g1>Select all</g1> and <g2>Select none</g2>. Private and deleted videos are greyed out and can't be ticked.",
+   "text": "هر ویدیو تیک خورده شروع می‌شود. آنهایی را که نمی‌خواهید، تیکشان را بردارید، یا از <g1>انتخاب همه</g1> و <g2>هیچ‌کدام را انتخاب نکن</g2> استفاده کنید. ویدیوهای خصوصی و حذف شده خاکستری هستند و نمی‌توان آنها را تیک زد."
+  },
   "296bb6abbc747f28": {
    "source": "If it gives up and shows <g1>Error</g1>:",
    "text": "اگر تسلیم شود و <g1>خطا</g1> را نشان دهد:"
@@ -1746,6 +1754,10 @@
    "source": "1. Put the downloads in a queue",
    "text": "1. بارگیری‌ها را در یک صف قرار دهید"
   },
+  "2cb242c75b5117f9": {
+   "source": "A channel is listed 50 videos at a time, newest first. <g1>Load more</g1> lists the next 50.",
+   "text": "یک کانال 50 ویدیو در هر بار، جدیدترین‌ها اول، لیست می‌شود. <g1>بارگذاری بیشتر</g1> 50 ویدیوی بعدی را لیست می‌کند."
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>مرور</g1> — پوشه آن را در اکسپلورر باز کنید."
@@ -1781,10 +1793,6 @@
   "2d6f7386c4547cc8": {
    "source": "The server",
    "text": "سرور"
-  },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "یکی را انتخاب کنید. بدون ffmpeg، فقط کیفیت‌هایی که با صدای خود همراه هستند لیست می‌شوند و هیچ MP3 (ffmpeg آن را می‌سازد) وجود ندارد."
   },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
@@ -2189,10 +2197,6 @@
   "3999413326f52d09": {
    "source": "Windows, the portable or plain zip",
    "text": "Windows، نسخه پرتابل یا فایل فشرده"
-  },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>باز کردن پیوندهای مگنت و فایل‌های تورنت با Mister Download Manager</g1> — سپس Windows پیوندهای مگنت را در مرورگر شما و فایل‌های <x2/> را در اکسپلورر با MDM باز می‌کند. این فقط برای حساب Windows شماست؛ برنامه‌ای که در <g3>باز کردن با</g3> Windows انتخاب کرده‌اید، اولویت دارد. تنظیمات می‌تواند این را برای شما روشن کند."
   },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
@@ -2910,10 +2914,6 @@
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "هر زبان نمایشی که Windows 11 ارائه می‌دهد، با انتخاب پرچم در اولین راه‌اندازی یا هر زمان در نما → زبان. عربی، عبری، فارسی، اردو و اویغوری از راست به چپ چیده شده‌اند."
   },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "همه کارها را می‌توان با صفحه‌کلید انجام داد و MDM با صفحه‌خوان‌ها (مانند Narrator و NVDA در Windows) کار می‌کند: پنجره‌ها، کادرهای گفتگو و منوهای آن به صفحه‌خوان‌ها می‌گویند که هر کنترل چیست و وضعیت آن چگونه است، و لیست دانلود نام، وضعیت و حجم هر دانلود را می‌خواند."
-  },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
    "text": "API اتوماسیون برنامه در حال اجرا را روشن یا خاموش کنید."
@@ -3145,6 +3145,10 @@
   "55a4316a9df511bb": {
    "source": "A small file",
    "text": "یک فایل کوچک"
+  },
+  "55ecea9df3d3ed23": {
+   "source": "Paste the address of a playlist (<x1/>) or a channel's videos (<x2/>) and click <g3>Look up</g3>. Instead of one video's qualities, the window lists the list's videos, each with its length.",
+   "text": "آدرس یک لیست پخش (<x1/>) یا ویدیوهای یک کانال (<x2/>) را بچسبانید و روی <g3>جستجو</g3> کلیک کنید. به جای کیفیت‌های یک ویدیو، پنجره ویدیوهای لیست را، هر کدام با طول خود، لیست می‌کند."
   },
   "560b06bdc37086ad": {
    "source": "Previous image",
@@ -3750,10 +3754,6 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>ویژگی‌ها</g1> — نام، انواع فایل و پوشه آن را تغییر دهید. فقط عمومی و تورنت‌ها پوشه خود را تغییر می‌دهند. یک دسته‌بندی تغییرنام‌یافته پوشه خود را حفظ می‌کند؛ یک دسته‌بندی داخلی نام خود را به زبان شما حفظ می‌کند تا زمانی که آن را تغییر نام دهید."
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
-  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager در برابر IDM 6.42</g1><g2>بررسی شده در اکتبر 2026 · منابع در پایین</g2>"
@@ -3817,6 +3817,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "صف‌بندی بارگیری‌ها برای بعد →"
+  },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>استفاده از پراکسی/SOCKS از درخواست مرورگر…</g1> — به‌طور پیش‌فرض روشن است. دانلودی که MDM از مرورگر می‌گیرد، از پراکسی‌ای عبور می‌کند که مرورگر برای آن استفاده کرده است. این همان پراکسی است که یک افزونه VPN یا پراکسی تنظیم کرده، پراکسی دستی خود مرورگر، یا اسکریپت پیکربندی خودکار پراکسی آن. بدون آن، دانلود از آدرس خود شما انجام می‌شود و محتوایی که به کشور VPN یا آدرس آن محدود شده است، با شکست مواجه می‌شود. افزونه مرورگر آن پراکسی را می‌خواند و با هر دانلود به MDM می‌دهد."
   },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
@@ -4142,10 +4146,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM را می‌توان بدون پنجره‌اش به سه روش کنترل کرد:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "تنظیمات پروکسی / SOCKS MDM برای بارگیری‌های وب و FTP است. تورنت‌ها نیز می‌توانند از یک SOCKS5 استفاده کنند: یک پروکسی <x1/> را در <g2>گزینه‌ها → پروکسی / SOCKS</g2> تنظیم کنید و <g3>استفاده از پروکسی</g3> را در تنظیمات تورنت روشن کنید. پروکسی فقط اتصالات به همتایان و ردیاب‌های وب را پوشش می‌دهد، بنابراین با آن MDM DHT، کشف همتایان محلی، اتصالات ورودی و ردیاب‌های UDP را خاموش می‌کند. اگر پروکسی از پروکسی / SOCKS در حالی که آن سوئیچ روشن است، حذف شود، تورنت‌ها به جای اینکه از آن عبور کنند، شروع نمی‌شوند."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "پنجره پیشرفت دانلود ویدئو"
@@ -4233,10 +4233,6 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>بالا</g1> / <g2>پایین</g2>، <g3>چپ</g3> / <g4>راست</g4>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>استفاده از پراکسی/SOCKS از درخواست مرورگر…</g1> — به‌طور پیش‌فرض فعال است. با <g2>بدون پراکسی/SOCKS</g2>، MDM از تنظیمات پراکسی Windows استفاده می‌کند، همان‌طور که مرورگرها انجام می‌دهند."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4534,6 +4530,10 @@
    "source": "Torrents",
    "text": "تورنت‌ها"
   },
+  "7c13b99aeb6bd7c5": {
+   "source": "A playlist is listed whole, as its videos come in: the line above the list says how far it is (\"Listing the videos: 1,200 of 6,000\"). <g1>Stop listing</g1> keeps the ones listed so far, and <g2>List the rest</g2> carries on from there. If the site stops answering part-way (YouTube may, when it's asked too often), the window says after how many videos and why, and <g3>List the rest</g3> tries again from there.",
+   "text": "یک فهرست پخش به طور کامل فهرست می‌شود، همانطور که ویدیوهای آن می‌آیند: خط بالای فهرست نشان می‌دهد که چقدر پیش رفته است («فهرست کردن ویدیوها: 1200 از 6000»). <g1>توقف لیست کردن</g1> مواردی را که تا کنون فهرست شده‌اند نگه می‌دارد و <g2>فهرست کردن بقیه</g2> از آنجا ادامه می‌دهد. اگر سایت در میانه راه پاسخ ندهد (YouTube ممکن است، وقتی بیش از حد از آن درخواست شود)، پنجره پس از چند ویدیو و چرا، این را می‌گوید و <g3>فهرست کردن بقیه</g3> دوباره از آنجا تلاش می‌کند."
+  },
   "7c14c17b996d02f7": {
    "source": "explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language.",
    "text": "اصطلاحات کلیدی (دانلود، صف، دسته، اتصال، از سرگیری و غیره) را توضیح می‌دهد. هر یک را در همه جا به یک روش ترجمه کنید، همانطور که Windows در زبان شما آن را بیان می‌کند."
@@ -4621,6 +4621,10 @@
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
    "text": "<g1>گزینه‌ها → پروکسی / SOCKS → آداپتور شبکه</g1> اتصالات MDM را به یک آداپتور، معمولا VPN، محدود می‌کند (<g2>گزینه‌ها</g2>). در Linux و macOS، موتور تورنت هر سوکت را به آن متصل می‌کند: همتایان، ردیاب‌ها، DHT و پورت گوش دادن آن. UPnP و کشف همتایان محلی در این حالت خاموش می‌شوند، زیرا آنها به جای عبور از آداپتور، با شبکه محلی صحبت می‌کنند. اگر آداپتور از بین برود، موتور متوقف می‌شود و زمانی که آداپتور بازگردد، دوباره از طریق آن شروع به کار می‌کند."
+  },
+  "7db9ed501785d447": {
+   "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
+   "text": "<g1>کیفیت</g1> برای هر ویدئو اعمال می‌شود: <g2>بهترین کیفیت</g2>، <g3>تا</g3> یک ارتفاع (هر ویدئو با آن ارتفاع یا نزدیک‌ترین ارتفاع پایین‌تر)، <g4>فقط صدا، اصلی</g4>، <g5>فقط صدا MP3</g5>، <g6>فقط صدا OPUS</g6> یا <g7>فقط صدا FLAC</g7>. بدون ffmpeg، فقط کیفیت‌هایی ارائه می‌شوند که همراه با صدای خود هستند و MP3، Opus یا FLAC ارائه نمی‌شوند."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5069,6 +5073,10 @@
   "89f549746c4017f3": {
    "source": "<g1>Built by GitHub Actions</g1><g2>never on someone's laptop</g2>",
    "text": "<g1>ساخته شده توسط GitHub Actions</g1><g2>هرگز روی لپ‌تاپ کسی نیست</g2>"
+  },
+  "89fa61b2290f1772": {
+   "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
+   "text": "<g1>اکنون بارگیری کن</g1> هر ویدیو را به عنوان یک بارگیری جداگانه اضافه می‌کند و صف اصلی را شروع می‌کند، که به تعداد دلخواه شما در <g2>زمان‌بند</g2> (<g3>بارگیری N فایل به طور همزمان</g3>) اجرا می‌شود. <g4>بعدا</g4> آنها را بدون شروع اضافه می‌کند. اضافه کردن بیش از 500 مورد به طور همزمان ابتدا سوال می‌کند."
   },
   "89fc33b1b049584c": {
    "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
@@ -5534,10 +5542,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "MDM را با برنامه نصب‌کننده نصب کنید و تیک <g1>تنظیم یکپارچه‌سازی مرورگر (Chrome, Edge, Brave, Firefox)</g1> را فعال نگه دارید. این کار برنامه کمکی را ثبت می‌کند. (نسخه قابل حمل نمی‌تواند این کار را انجام دهد؛ به <g2>حالت قابل حمل</g2> مراجعه کنید.)"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "مجوزهای آن و دلیل آن‌ها: <g1>downloads</g1> برای دیدن و تحویل دادن بارگیری‌ها؛ <g2>cookies</g2> برای اینکه بارگیری‌های واردشده به حساب کاربری در MDM کار کنند؛ <g3>nativeMessaging</g3> برای گفتگو با MDM؛ <g4>contextMenus</g4> برای گزینه‌های کلیک راست؛ <g5>storage</g5> برای تنظیمات آن؛ <g6>webRequest</g6> برای دیدن فرم‌های ارسال‌شده و جریان‌های ویدیویی بارگذاری‌شده (چیزی را تغییر نمی‌دهد)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome، Edge و سایر مرورگرهای Chromium) برای اینکه فایل‌هایی که مرورگر باز می‌کند (یک PDF) به جای آن بارگیری شوند، برای انواع فایل‌هایی که MDM می‌پذیرد؛ در Firefox، <g8>webRequestBlocking</g8> این کار را انجام می‌دهد؛ <g9>scripting</g9> برای خواندن پیوندهای یک صفحه وقتی شما درخواست می‌کنید، و برای افزودن دکمه ویدیو به صفحات از قبل بازشده هنگام نصب افزونه؛ دسترسی به همه سایت‌ها به این دلیل که بارگیری‌ها و ویدیوها می‌توانند از هر سایتی باشند."
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "هم آدرسی که روی آن کلیک کردید و هم آدرسی که تغییر مسیرها به آن منجر شد، بررسی می‌شوند، بنابراین سایتی که شما آن را مستثنی کرده‌اید، حتی زمانی که شما را به سرور دیگری می‌فرستد، مستثنی باقی می‌ماند. هر چیز دیگری با مرورگر باقی می‌ماند. تغییرات در گزینه‌ها ظرف یک دقیقه به مرورگر می‌رسند؛ نیازی به راه‌اندازی مجدد آن ندارید."
@@ -5569,10 +5573,6 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "آنچه دیگران می‌توانند ببینند"
-  },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "منتظر لیست بمانید. این لیست هر رزولوشن را با اندازه آن، بهترین کیفیت در ابتدا، سپس <g1>فقط صدا</g1> با فرمت خود سایت (M4A یا WebM، همانطور که سایت ارائه می‌دهد)، سپس <g2>فقط صدا MP3</g2> با بهترین نرخ بیت متغیر (VBR) و در 320، 256، 192 و 128 کیلوبیت بر ثانیه نشان می‌دهد."
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -5890,6 +5890,10 @@
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>خط فرمان و اتوماسیون</g2></g1> — سوئیچ‌های خط فرمان IDM، ابزار <x3/>، و API اتوماسیون که برنامه‌های دیگر می‌توانند از آن استفاده کنند."
   },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "وقتی مرورگر برای آن دانلود از یک پروکسی استفاده می‌کند (که توسط VPN یا افزونه پروکسی یا در تنظیمات آن تنظیم شده است)، افزونه <g1>آدرس پروکسی</g1> یا <g2>اسکریپت پیکربندی خودکار پروکسی</g2> را ارسال می‌کند تا MDM از طریق همان پروکسی دانلود کند. هرگز اطلاعات ورود به پروکسی را نمی‌خواند یا ارسال نمی‌کند. فقط اشاره می‌کند که یک پروکسی درخواست کرده است، تا MDM بتواند به شما بگوید که نمی‌تواند از آن پروکسی استفاده کند."
+  },
   "a135171e6e928076": {
    "source": "Home",
    "text": "خانه"
@@ -5981,10 +5985,6 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "<x1/> را در حالی که MDM در حال اجراست، اجرا کنید."
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "لیست‌های پخش و میکس‌ها"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6369,10 +6369,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM هر چیزی را که به آن اشاره کنید، دانلود می‌کند، همان‌طور که یک مرورگر وب انجام می‌دهد، فقط سریع‌تر و با کنترل بیشتر. این برنامه برای دانلودهای روزمره ساخته شده است: نرم‌افزار و به‌روزرسانی‌ها، اسناد، فایل‌های خودتان از فضای ذخیره‌سازی ابری، ویدیوها و موسیقی‌هایی که اجازه ذخیره آن‌ها را دارید، ایمیج‌های Linux و سایر تورنت‌هایی که توسط سازندگانشان به اشتراک گذاشته شده‌اند، و هر چیز دیگری که حق دانلود آن را دارید."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "یک ویدئو را بارگیری می‌کند؛ <x1/> یک انتخابگر کیفیت را از <x2/> می‌گیرد (<x3/> = بهترین فایل تکی؛ <x4/>، <x5/>، <x6/> یا <x7/> = صدا به صورت MP3 با آن نرخ بیت، <x8/> با بهترین نرخ بیت متغیر آن؛ MP3 به ffmpeg نیاز دارد). <x9/> زیرنویس‌ها را در کنار آن ذخیره می‌کند: کدهای زبان از <x10/> (<x11/>)، یا <x12/> برای هر کدام که آپلودکننده داده است؛ <x13/> به جای آن زیرنویس‌های خودکار سایت را می‌گیرد؛ <x14/> آنها را در ویدئو قرار می‌دهد (به ffmpeg، MP4 یا MKV نیاز دارد)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6913,6 +6909,10 @@
   "bc83548866edf95a": {
    "source": "For numbers, set <g1>Wildcard size</g1> to the number of digits. With 3, the files are <x2/>, <x3/> and so on.",
    "text": "برای اعداد، <g1>اندازه نویسه عام</g1> را روی تعداد ارقام تنظیم کنید. با 3، فایل‌ها <x2/>، <x3/> و غیره هستند."
+  },
+  "bc9abb4c3d1c81e8": {
+   "source": "MDM lists at most 20,000 videos of one list.",
+   "text": "MDM حداکثر 20,000 ویدیو از یک لیست را لیست می‌کند."
   },
   "bcb140c9553a0b1a": {
    "source": "Light / dark",
@@ -7510,6 +7510,10 @@
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "این فقط برای حساب Windows شماست. <x1/> آن را لغو می‌کند. سپس افزونه را مانند بالا، از پوشه <x2/> فایل zip بارگذاری کنید."
   },
+  "ceafeaa62d5e59ca": {
+   "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
+   "text": "ویدیوها در پوشه‌ای به نام لیست، در داخل <g1>ذخیره در</g1>، هر کدام با عنوان خود، قرار می‌گیرند."
+  },
   "cee8fa5faa008467": {
    "source": "To save your own list, use <g1>Tasks → Export → To text file</g1> (one address per line) or <g2>To IDM export file</g2>.",
    "text": "برای ذخیره لیست خود، از <g1>وظایف ← خروجی گرفتن ← به فایل متنی</g1> (یک آدرس در هر خط) یا <g2>به فایل صادراتی IDM</g2> استفاده کنید."
@@ -7705,6 +7709,10 @@
   "d4c66a15e09e8ca8": {
    "source": "<g1>Offer to download links copied to the clipboard</g1> — when you copy a link whose file type is on the <g2>File types</g2> page, <g3>Download File Info</g3> opens with it, ready to start (or the download starts at once, with <g4>Show start download dialog</g4> off). On by default.",
    "text": "<g1>پیشنهاد دانلود پیوندهای کپی‌شده در کلیپ‌بورد</g1> — هنگامی که پیوندی را کپی می‌کنید که نوع فایل آن در صفحه <g2>انواع فایل</g2> است، <g3>اطلاعات فایل بارگیری</g3> با آن باز می‌شود و آماده شروع است (یا دانلود بلافاصله شروع می‌شود، با خاموش بودن <g4>نمایش کادر گفتگوی شروع دانلود</g4>). به طور پیش‌فرض روشن است."
+  },
+  "d4c9212e6107e470": {
+   "source": "Playlists and channels",
+   "text": "لیست‌های پخش و کانال‌ها"
   },
   "d4d2535439e2c024": {
    "source": "Coming from IDM?",
@@ -7953,6 +7961,10 @@
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "بله. MDM سوئیچ‌های خط فرمان آشنای IDM را می‌پذیرد، برای بارگیری از ترمینال همراه با misterdownloadmanager-cli ارائه می‌شود و یک API اتوماسیون محلی و محافظت‌شده با توکن دارد که می‌تواند بارگیری‌ها را فهرست، متوقف، شروع و حذف کند. این API تا زمانی که آن را روشن نکنید، خاموش است. به خط فرمان و اتوماسیون مراجعه کنید."
+  },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "پراکسی‌ای که برای ورود به سیستم نیاز به نام کاربری و رمز عبور دارد و افزونه VPN آن را خودش می‌دهد، قابل اشتراک‌گذاری نیست: هیچ برنامه دیگری آن نام کاربری و رمز عبور را ندارد. در این صورت، دانلود متوقف می‌شود و این موضوع را اعلام می‌کند، به جای اینکه بدون پراکسی ادامه یابد. از برنامه خود VPN استفاده کنید، یا آداپتور آن را در قسمت <g1>آداپتور شبکه</g1> انتخاب کنید."
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -8446,10 +8458,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "برای نگه داشتن دانلودهای یک سایت در مرورگر برای همیشه، از <g1>هرگز دانلودها را از</g1> دکمه نوار ابزار استفاده کنید، یا سایت را به <g2>از سایت‌های زیر به صورت خودکار دانلود را شروع نکن</g2> اضافه کنید. برای نگه داشتن یک نوع فایل در مرورگر، آن را از فهرست انواع فایل حذف کنید."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "انتخاب فقط صدا (<g1>فقط صدا</g1>، MP3) زیرنویس ندارد."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "تنظیمات Windows → برنامه‌ها را باز کنید، Mister Download Manager را پیدا کرده و حذف نصب را انتخاب کنید. حذف‌کننده می‌پرسد که آیا فهرست بارگیری و تنظیمات شما نیز حذف شود یا خیر. فایل‌هایی که بارگیری کرده‌اید هرگز دست‌نخورده باقی می‌مانند. برای نسخه قابل حمل، پوشه آن را حذف کنید."
@@ -8678,6 +8686,10 @@
    "source": "The server's certificate is checked against Windows' (or the system's) trusted certificates, as for <x1/>.",
    "text": "گواهی سرور مانند <x1/> در برابر گواهی‌های مورد اعتماد Windows (یا سیستم) بررسی می‌شود."
   },
+  "f10113695e758efd": {
+   "source": "A playlist's or channel's videos, one line each as they're listed: its place, length, title and address.",
+   "text": "ویدئوهای یک فهرست پخش یا کانال، هر کدام در یک سطر به ترتیبی که فهرست شده‌اند: مکان، مدت، عنوان و نشانی آن."
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -8873,6 +8885,10 @@
   "f7a4f8dcbb4812c2": {
    "source": "In Chrome, Edge and Brave you can limit an extension to some sites (right-click its toolbar button → <g1>This can read and change site data</g1>). On a site it may not read, the extension can't pass your sign-in on, so it leaves the download to the browser. Choose <g2>On all sites</g2> to let MDM take downloads everywhere.",
    "text": "در Chrome، Edge و Brave می‌توانید یک افزونه را به برخی سایت‌ها محدود کنید (روی دکمه نوار ابزار آن راست‌کلیک کنید ← <g1>این می‌تواند داده‌های سایت را بخواند و تغییر دهد</g1>). در سایتی که ممکن است نتواند بخواند، افزونه نمی‌تواند ورود شما را منتقل کند، بنابراین دانلود را به مرورگر واگذار می‌کند. <g2>در همه سایت‌ها</g2> را انتخاب کنید تا MDM بتواند دانلودها را از همه جا دریافت کند."
+  },
+  "f7a564cd33c36a16": {
+   "source": "Download a playlist's or channel's videos one after another, into a folder named after the list inside <x1/>. <x2/> is one quality for all, as for <x3/> (by default each video's best; <x4/> = up to 720p; <x5/> = the original sound; <x6/>, <x7/>, <x8/> as for <x9/>).",
+   "text": "ویدیوهای یک فهرست پخش یا کانال را یکی پس از دیگری، در پوشه‌ای به نام فهرست در <x1/> بارگیری کنید. <x2/> یک کیفیت برای همه است، مانند <x3/> (به‌طور پیش‌فرض بهترین کیفیت هر ویدیو؛ <x4/> = تا 720p؛ <x5/> = صدای اصلی؛ <x6/>، <x7/>، <x8/> مانند <x9/>)."
   },
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",

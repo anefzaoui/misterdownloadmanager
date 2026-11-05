@@ -75,6 +75,11 @@ struct Message {
     post_type: Option<String>,
     /// From a private window.
     private: bool,
+    /// The browser's proxy for `url` (#42): its address, or its auto-config script, and whether it
+    /// asked for a login (see mdm_ipc::Command).
+    proxy: Option<String>,
+    proxy_pac: Option<String>,
+    proxy_login: bool,
     /// The user asked for this download (right-click → Download with Mister Download Manager):
     /// Options' automatic-capture rules don't apply, as IDM's "Download with IDM" takes any link.
     explicit: bool,
@@ -371,8 +376,45 @@ fn to_command(m: Message) -> mdm_ipc::Command {
         post_type: m.post.as_ref().and(some(m.post_type)),
         post: m.post,
         private: m.private,
+        proxy: m.proxy.as_deref().and_then(browser_proxy),
+        proxy_pac: m
+            .proxy_pac
+            .filter(|s| s.len() <= PAC_MAX && s.contains("FindProxyForURL")),
+        proxy_login: m.proxy_login,
         ..Default::default()
     }
+}
+
+/// The largest proxy auto-config script taken from the browser (#42).
+const PAC_MAX: usize = 256 * 1024;
+
+/// The browser's proxy (#42) if it is one the app can use: `scheme://host:port`, the scheme
+/// http, https, socks4 or socks5(h), the host a name or an IP address (IPv6 in brackets), nothing
+/// after the port. Anything else is dropped (the app then uses its own proxy settings).
+fn browser_proxy(s: &str) -> Option<String> {
+    let s = s.trim();
+    let (scheme, rest) = s.split_once("://")?;
+    if !matches!(scheme, "http" | "https" | "socks4" | "socks5" | "socks5h") {
+        return None;
+    }
+    let (host, port) = rest.rsplit_once(':')?;
+    let port: u16 = port.parse().ok().filter(|p| *p > 0)?;
+    let ok_host = match host.strip_prefix('[').and_then(|h| h.strip_suffix(']')) {
+        Some(v6) => {
+            !v6.is_empty()
+                && v6
+                    .chars()
+                    .all(|c| c.is_ascii_hexdigit() || c == ':' || c == '.')
+        }
+        None => {
+            !host.is_empty()
+                && host.len() <= 253
+                && host
+                    .chars()
+                    .all(|c| c.is_ascii_alphanumeric() || c == '.' || c == '-')
+        }
+    };
+    ok_host.then(|| format!("{scheme}://{host}:{port}"))
 }
 
 /// Why a command didn't reach the app.
@@ -1002,5 +1044,47 @@ mod tests {
             "empty filename means: let Mister Download Manager decide"
         );
         assert!(!c.later && !c.silent);
+        assert_eq!((c.proxy, c.proxy_pac, c.proxy_login), (None, None, false));
+    }
+
+    #[test]
+    fn the_browsers_proxy_goes_with_the_download() {
+        let m: Message = serde_json::from_str(
+            r#"{"url":"https://x/a.zip","proxy":"socks5h://vpn.example:1080","proxyLogin":true}"#,
+        )
+        .unwrap();
+        let c = to_command(m);
+        assert_eq!(c.proxy.as_deref(), Some("socks5h://vpn.example:1080"));
+        assert!(c.proxy_login);
+        let pac = r#"{"url":"https://x/a.zip","proxyPac":"function FindProxyForURL(u, h) { return \"PROXY p:8080\"; }"}"#;
+        assert!(
+            to_command(serde_json::from_str(pac).unwrap())
+                .proxy_pac
+                .is_some()
+        );
+        // Only proxies the app can use, written as expected.
+        for good in [
+            "http://10.0.0.1:3128",
+            "https://p.example:443",
+            "socks4://[::1]:1080",
+        ] {
+            assert_eq!(browser_proxy(good).as_deref(), Some(good));
+        }
+        for bad in [
+            "ftp://p:21",
+            "http://p",
+            "http://p:0",
+            "http://user:pw@p:8080",
+            "http://p:8080/path",
+            "socks5://bad host:1080",
+        ] {
+            assert_eq!(browser_proxy(bad), None, "{bad}");
+        }
+        let not_pac = r#"{"url":"https://x/a.zip","proxyPac":"alert(1)"}"#;
+        assert!(
+            to_command(serde_json::from_str(not_pac).unwrap())
+                .proxy_pac
+                .is_none()
+        );
     }
 }

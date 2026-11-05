@@ -269,6 +269,26 @@
           "description": "From a private (incognito) window: the download is never written to the saved list.",
           "type": "boolean"
         },
+        "proxy": {
+          "default": null,
+          "description": "From the browser (#42): the proxy it uses for this address (\"http://host:port\",\n\"https://…\", \"socks5h://…\", \"socks4://…\"), set by a VPN or proxy extension or its\nsettings; or its proxy auto-config script's text. The app downloads through the same\none (Options → Proxy / Socks → \"Use proxy/socks from a browser's request\").",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "proxy_login": {
+          "default": false,
+          "description": "That proxy asked the browser for a login, which the extension that set it answers with\nits own: no other program can have it.",
+          "type": "boolean"
+        },
+        "proxy_pac": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "query": {
           "default": null,
           "description": "Automation API (off by default, beyond IDM): `\"list\"` asks for every download as JSON.",

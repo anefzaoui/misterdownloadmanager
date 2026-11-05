@@ -472,6 +472,43 @@ impl Settings {
         }
     }
 
+    /// The proxy for a download that came with `context` (#42): the browser's own, when it used
+    /// one for it (a VPN or proxy extension, or its settings) and "Use proxy/socks from a
+    /// browser's request" is on; else [`Self::proxy`]. A proxy the extension logs in to is
+    /// refused (`browser_proxy_refused`), never replaced by a direct connection.
+    pub fn proxy_for(&self, context: &mdm_ipc::Command) -> mdm_engine::Proxy {
+        use mdm_engine::Proxy;
+        if self.proxy_from_browser {
+            if let Some(url) = &context.proxy {
+                return Proxy::Manual {
+                    url: url.clone(),
+                    login: None,
+                    http: true,
+                    https: true,
+                };
+            }
+            if let Some(script) = &context.proxy_pac {
+                return Proxy::Pac {
+                    script: std::sync::Arc::from(script.as_str()),
+                };
+            }
+        }
+        self.proxy()
+    }
+
+    /// Why a download from the browser can't start (#42): its proxy asks for a login that the
+    /// VPN or proxy extension gives, which MDM can't have. Going around it would show the
+    /// user's own address, so the download stops and says so.
+    pub fn browser_proxy_refused(&self, context: &mdm_ipc::Command) -> Option<String> {
+        (self.proxy_from_browser && context.proxy_login).then(|| {
+            // i18n: an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+            crate::i18n::t(
+                "the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks",
+            )
+            .to_owned()
+        })
+    }
+
     /// Options → Connection → DNS for the engine. A setting that can't work (no server typed,
     /// an address that isn't one) gives the system's DNS; Options won't take one with OK.
     pub fn dns(&self) -> mdm_engine::DnsChoice {

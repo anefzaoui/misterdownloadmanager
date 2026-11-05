@@ -11,7 +11,7 @@ const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
 // answer to a download; `types` its Options -> File types when the rules are asked (`host: false`:
 // the host isn't registered and every native message fails, as the browser says then).
 // `appName`: what runtime.getBrowserInfo says (Firefox's family only; "Zen").
-function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = true, finished, panelOn, access = true, rules = {}, appName }) {
+function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = true, finished, panelOn, access = true, rules = {}, appName, proxy }) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
   const calls = { push: (c) => raw.push(JSON.parse(JSON.stringify(c))) };
@@ -76,6 +76,7 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
       onBeforeSendHeaders: event("beforeSendHeaders"),
       onHeadersReceived: event("headersReceived"),
       onResponseStarted: event("responseStarted"),
+      onAuthRequired: event("authRequired"),
     },
     scripting: {
       executeScript: async ({ func, args }) => (func ? [{ result: ["https://x/1.zip", "https://x/2.zip"] }] : []),
@@ -98,6 +99,8 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
   };
   if (!firefox) api.declarativeNetRequest = { getSessionRules: async () => [], updateSessionRules: async (r) => calls.push(["dnr", r]) };
   if (appName) api.runtime.getBrowserInfo = async () => ({ name: appName, vendor: "Mozilla", version: "1.0" });
+  // `proxy`: what proxy.settings.get says (#42; Chromium {mode, rules, pacScript}, Firefox {proxyType, …}).
+  if (proxy) api.proxy = { settings: { get: async () => ({ value: proxy, levelOfControl: "controlled_by_other_extensions" }) } };
   return { api, calls: raw, listeners, store };
 }
 
@@ -509,6 +512,73 @@ const ok = (what) => {
     assert.ok(english[`status_${why}`], `status_${why}`);
   }
   ok("translations complete");
+}
+
+// #42: the browser's proxy goes with the download, so the app uses the same one.
+{
+  // Chromium, a VPN extension's fixed SOCKS5 proxy: remote DNS (socks5h), as Chromium does.
+  const proxy = { mode: "fixed_servers", rules: { singleProxy: { scheme: "socks5", host: "vpn.example", port: 1080 }, bypassList: ["<local>"] } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy });
+  load(api, false);
+  listeners.determining({ id: 31, url: "https://files.example/p.zip", filename: "p.zip" }, () => {});
+  await settle();
+  const m = natives(calls)[0];
+  assert.equal(m.proxy, "socks5h://vpn.example:1080");
+  assert.equal(m.proxyLogin, undefined);
+  ok("Chrome: the extension's SOCKS5 proxy goes with the download");
+}
+{
+  // Its bypass list: a local name goes direct, so nothing is sent.
+  const proxy = { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "p", port: 8080 }, bypassList: ["*.intranet.example"] } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy });
+  load(api, false);
+  listeners.determining({ id: 32, url: "https://files.intranet.example/p.zip", filename: "p.zip" }, () => {});
+  await settle();
+  assert.equal(natives(calls)[0].proxy, undefined);
+  ok("Chrome: an address on the bypass list goes without the proxy");
+}
+{
+  // A proxy that asked for a login (the VPN extension answers it): flagged for the app.
+  const proxy = { mode: "fixed_servers", rules: { proxyForHttps: { scheme: "https", host: "gw.vpn.example", port: 443 } } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy });
+  load(api, false);
+  listeners.authRequired({ isProxy: true, challenger: { host: "gw.vpn.example", port: 443 } });
+  listeners.determining({ id: 33, url: "https://x/q.zip", filename: "q.zip" }, () => {});
+  await settle();
+  const m = natives(calls)[0];
+  assert.deepEqual([m.proxy, m.proxyLogin], ["https://gw.vpn.example:443", true]);
+  ok("Chrome: a proxy that asks for a login is flagged");
+}
+{
+  // A PAC script set by the extension: its text goes.
+  const data = 'function FindProxyForURL(u, h) { return "PROXY p:3128"; }';
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy: { mode: "pac_script", pacScript: { data } } });
+  load(api, false);
+  listeners.determining({ id: 34, url: "https://x/r.zip", filename: "r.zip" }, () => {});
+  await settle();
+  assert.equal(natives(calls)[0].proxyPac, data);
+  ok("Chrome: a PAC script's text goes with the download");
+}
+{
+  // Firefox: the proxy its own request for the file took (proxy.onRequest extensions too).
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  listeners.responseStarted({ url: "https://x/s.zip", proxyInfo: { type: "socks", host: "10.8.0.1", port: 1080, proxyDNS: true, username: "u" } });
+  listeners.created({ id: 35, url: "https://x/s.zip", filename: "C:\\dl\\s.zip" });
+  await settle();
+  const m = natives(calls)[0];
+  assert.deepEqual([m.proxy, m.proxyLogin], ["socks5h://10.8.0.1:1080", true]);
+  ok("Firefox: the request's own proxy goes, its login flagged");
+}
+{
+  // No proxy API (or none in use): nothing extra.
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  listeners.determining({ id: 36, url: "https://x/t.zip", filename: "t.zip" }, () => {});
+  await settle();
+  const m = natives(calls)[0];
+  assert.deepEqual([m.proxy, m.proxyPac, m.proxyLogin], [undefined, undefined, undefined]);
+  ok("no proxy: nothing extra goes");
 }
 
 console.log(`extension: ${passed} checks passed`);
