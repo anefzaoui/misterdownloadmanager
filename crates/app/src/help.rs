@@ -370,7 +370,8 @@ impl Updates {
                         crate::i18n::t("Downloading the update... {percent}"),
                         &[(
                             "percent",
-                            &fraction.map_or(String::new(), |f| format!("{:.0}%", f * 100.0)),
+                            &fraction
+                                .map_or(String::new(), |f| crate::i18n::percent(f64::from(f), 0)),
                         )],
                     );
                     winui::text(&p, status_rc.left(), status_rc.top() + 9.0, &line, ink);

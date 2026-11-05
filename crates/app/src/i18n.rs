@@ -1,7 +1,9 @@
 //! The interface language (M16, D-019). craft-i18n reads MDM's catalogs (`i18n/<locale>.tsv`,
 //! embedded at build time) and looks the English source text up: a missing translation is the
 //! English itself. The language follows Windows' display language until the user picks one in
-//! View → Language; numbers follow the Windows region (craft-i18n's format).
+//! View → Language; numbers are grouped and pointed as the interface language writes them
+//! (CLDR, through craft-i18n's format), or as the system region does when it is in that same
+//! language (#128).
 //!
 //! `t("Options")` for a label, `tc("menu", "&Options")` where the same English needs different
 //! translations, `tn(n, "{n} file", "{n} files")` for counts. Text that is data (file names,
@@ -11,7 +13,7 @@
 use std::sync::{OnceLock, RwLock};
 
 pub use craft_i18n::Lang;
-use craft_i18n::{Embedded, I18n};
+use craft_i18n::{Digits, Embedded, Format, I18n, Region};
 
 /// Every catalog in one brotli stream, and each locale's code and range in the unpacked text
 /// (build.rs).
@@ -65,7 +67,7 @@ pub fn lang() -> Lang {
         return l;
     }
     let l = i18n().system_lang();
-    *CURRENT.write().unwrap() = Some(l);
+    use_lang(l);
     l
 }
 
@@ -74,7 +76,33 @@ pub fn set_lang(code: Option<&str>) {
     let l = code
         .and_then(|c| i18n().from_code(c))
         .unwrap_or_else(|| i18n().system_lang());
+    use_lang(l);
+}
+
+/// The interface language becomes `l`, and numbers (counts, sizes, speeds, percentages) are
+/// written its way from now on.
+fn use_lang(l: Lang) {
     *CURRENT.write().unwrap() = Some(l);
+    i18n().set_format(number_format(i18n().code(l), &Region::system()));
+}
+
+/// How numbers are written in the interface language `code` (#128): as the system region
+/// writes them when it is in that language (Swiss German's `1’234.5`, a separator the user set in
+/// Windows), else as CLDR writes the language: German `1.234,5`, French `1 234,5` (narrow
+/// no-break space), Hindi `12,34,567`, Arabic `1,234.5` (CLDR writes Arabic without a country in
+/// Latin digits; an Egyptian region, `ar-EG`, gives `١٬٢٣٤٫٥`).
+pub fn number_format(code: &str, system: &Region) -> Format {
+    let language = |tag: &str| {
+        tag.split(['-', '_'])
+            .next()
+            .unwrap_or_default()
+            .to_ascii_lowercase()
+    };
+    if language(&system.numbers) == language(code) {
+        Format::new(system, Digits::Locale)
+    } else {
+        Format::from_tag(code)
+    }
 }
 
 /// The interface language's code (`en`, `ar`…).
@@ -128,12 +156,33 @@ pub fn isolate(value: &str) -> String {
     craft_i18n::isolate(value)
 }
 
-/// A whole number as the interface language writes it (English: plain digits, as IDM).
+/// A whole number as the interface language writes it (English: plain digits, as IDM):
+/// `10200`, `10.200`, `10 200`.
 pub fn integer(n: u64) -> String {
     if code() == "en" {
         n.to_string()
     } else {
         i18n().format().integer(n)
+    }
+}
+
+/// `v` with `decimals` digits after the decimal mark, as the interface language writes it
+/// (English: `1234.50`, as IDM; German `1.234,50`).
+pub fn decimal(v: f64, decimals: usize) -> String {
+    if code() == "en" {
+        format!("{v:.decimals$}")
+    } else {
+        i18n().format().number(v, decimals)
+    }
+}
+
+/// `ratio` as a percentage with `decimals` digits, as the interface language writes it (English:
+/// `13.38%`, as IDM; German `13,38 %`, Turkish `%13,38`).
+pub fn percent(ratio: f64, decimals: usize) -> String {
+    if code() == "en" {
+        format!("{:.decimals$}%", 100.0 * ratio)
+    } else {
+        i18n().format().percent(ratio, decimals)
     }
 }
 
@@ -235,5 +284,79 @@ mod tests {
             }
         }
         assert!(!i.rtl(Lang::EN));
+    }
+
+    const NNBSP: char = '\u{202f}';
+
+    /// #128: numbers are grouped and pointed as the interface language writes them, whatever the
+    /// system's region (here the United States'), and as the region does when it is in the same
+    /// language.
+    #[test]
+    fn numbers_follow_the_interface_language() {
+        let us = Region::from_tag("en-US");
+        for (code, n, count, size) in [
+            ("en", 10_200, "10,200".to_owned(), "1,234.50".to_owned()),
+            ("de", 10_200, "10.200".to_owned(), "1.234,50".to_owned()),
+            (
+                "fr",
+                10_200,
+                format!("10{NNBSP}200"),
+                format!("1{NNBSP}234,50"),
+            ),
+            // CLDR writes Arabic without a country in Latin digits, grouped the English way.
+            ("ar", 10_200, "10,200".to_owned(), "1,234.50".to_owned()),
+            // Hindi groups by lakh and crore.
+            (
+                "hi",
+                10_010_200,
+                "1,00,10,200".to_owned(),
+                "1,234.50".to_owned(),
+            ),
+        ] {
+            let f = number_format(code, &us);
+            assert_eq!(f.integer(n), count, "{code}");
+            assert_eq!(f.number(1234.5, 2), size, "{code}");
+        }
+        // A region in the interface's language keeps its own way, and a separator the user set.
+        let swiss = Region::from_tag("de-CH");
+        assert_eq!(
+            number_format("de", &swiss).integer(10_200),
+            Format::from_tag("de-CH").integer(10_200)
+        );
+        assert_ne!(number_format("de", &swiss).integer(10_200), "10.200");
+        let egypt = Region::from_tag("ar-EG");
+        assert_eq!(number_format("ar", &egypt).integer(10_200), "١٠٬٢٠٠");
+        assert_eq!(number_format("de", &egypt).integer(10_200), "10.200");
+        let mut own = Region::from_tag("de-DE");
+        own.grouping = Some(Some('\''));
+        assert_eq!(number_format("de", &own).integer(10_200), "10'200");
+        // Catalog codes with a country or a script are read too.
+        assert_eq!(number_format("pt-br", &us).integer(10_200), "10.200");
+        assert_eq!(number_format("zh-hans", &us).integer(10_200), "10,200");
+    }
+
+    /// Counts, sizes and speeds take their numbers from that format, beside the catalogs' units
+    /// (the way the list, the progress window and the playlist dialog write them).
+    #[test]
+    fn counts_sizes_and_speeds_in_the_interface_language() {
+        let us = Region::from_tag("en-US");
+        let codes: Vec<&str> = catalogs().iter().map(|c| c.0).collect();
+        let (i, _) = I18n::new(catalogs(), &codes);
+        let fr_count = format!("10{NNBSP}200");
+        for (code, count, size, speed) in [
+            ("de", "10.200", "1,50", "512,000"),
+            ("fr", fr_count.as_str(), "1,50", "512,000"),
+            ("ar", "10,200", "1.50", "512.000"),
+            ("hi", "10,200", "1.50", "512.000"),
+        ] {
+            let l = i.from_code(code).expect(code);
+            i.set_format(number_format(code, &us));
+            let videos = craft_i18n::strip_isolates(&i.trn(l, 10_200, "{n} video", "{n} videos"));
+            assert!(videos.contains(count), "{code}: {videos}");
+            let mb = craft_i18n::strip_isolates(&i.measure(l, 1.5, 2, "{n} MB"));
+            assert!(mb.contains(size), "{code}: {mb}");
+            let rate = craft_i18n::strip_isolates(&i.measure(l, 512.0, 3, "{n} KB/sec"));
+            assert!(rate.contains(speed), "{code}: {rate}");
+        }
     }
 }

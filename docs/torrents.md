@@ -8,7 +8,7 @@ MDM downloads BitTorrent files from magnet links and `.torrent` files. Torrents 
 
 1. Click **Add Torrent** on the toolbar to choose a `.torrent` file. Or click the arrow next to it and choose **Open torrent file...** or **Add magnet link...** (also under **Tasks**).
 2. **Add torrent** opens. Paste a magnet link into **Torrent**, or click **...** to choose a `.torrent` file, then click **Look up**.
-3. MDM reads the torrent and shows its files as a folder tree. A `.torrent` file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.
+3. MDM reads the torrent and shows its files as a folder tree. A `.torrent` file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, **Add torrent** shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.
 4. Untick the folders or files you don't want. **Select all** and **Select none** help with big torrents. **Selected** shows how many files and how much data you picked.
 5. Check **Save to**. **Files go to** shows the exact folder. Torrents have their own category, so by default this is `Downloads\Torrents`.
 6. Click **Download Now**, or **Later** to add it to the list without starting.

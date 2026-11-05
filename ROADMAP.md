@@ -13,6 +13,13 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Magnet links get their file list in seconds again: the DHT keeps going after a computer it
+  asked is gone, and Add torrent shows the wait (peers found, from where, what may be in the
+  way) ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92))
+- ✅ Two engine tests that failed now and then on busy machines are reliable
+  ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123))
+- ✅ Numbers are grouped and pointed the interface language's way (German `10.200`, `1,50 MB`)
+  ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128))
 - ✅ The extension's button lists the media the tab has loaded (HLS and DASH streams, video and
   sound files), to download a stream the page won't give up; copy-protected ones are shown as
   protected, never downloaded ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38))
@@ -126,8 +133,10 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 A link grabber with packages, and auto-extract of archives
-  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
+- 📋 Where a download's server is: its country, flag and ping, from an offline database
+  ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
+- 📋 The Scheduler wakes the computer from sleep to run a queue
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
   File Info, the command line using the accounts, torrents through the service, the system
   keychains for the sign-ins
@@ -135,8 +144,11 @@ Everything below ships together, in one release.
 
 ### Network
 
-- 📋 Video pages, and torrents on Windows, through a chosen network adapter
+- 📋 Torrents on Windows through a chosen network adapter
+  ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)), and video pages too
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
+- 📋 Control MDM from a phone or another computer on the local network, off by default
+  ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
 
 ### Browser extension
 

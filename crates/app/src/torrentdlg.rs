@@ -9,7 +9,7 @@ use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
 use egui::{Color32, Pos2, Rect, Stroke, Ui, pos2, vec2};
-use mdm_torrent::{Meta, Source};
+use mdm_torrent::{Lookup, LookupStatus, Meta, Source};
 
 use crate::dialogs::{Outcome, window};
 use crate::model::{Category, category_folder};
@@ -59,6 +59,8 @@ pub struct TorrentDialog {
     lookup_task: Option<tokio::task::JoinHandle<()>>,
     /// When the lookup started (the loading state counts the seconds).
     started: Option<Instant>,
+    /// How the lookup goes: peers found, from where, how many answered (#92).
+    progress: Option<Arc<Lookup>>,
     meta: Option<Meta>,
     chosen: Vec<bool>,
     /// The file tree's scroll and selection.
@@ -102,6 +104,95 @@ pub(crate) fn spinner(ui: &Ui, center: Pos2, radius: f32) {
     ui.ctx().request_repaint();
 }
 
+/// How long a magnet's lookup goes on before it says what may be wrong (#92).
+const HINT_AFTER: u64 = 30;
+
+/// What a magnet's lookup shows while it waits (#92): what is happening now, where the peers
+/// came from, and after `HINT_AFTER` seconds, what may be wrong.
+fn lookup_lines(s: &LookupStatus, secs: u64) -> (String, String, Option<&'static str>) {
+    use crate::i18n::{fmt, t, tn};
+    let now = if s.connected > 0 {
+        tn(
+            s.connected as u64,
+            // i18n: while a magnet link's file list is fetched; {n} = peers that answered
+            "Connected to {n} peer, getting the file list...",
+            "Connected to {n} peers, getting the file list...",
+        )
+    } else if s.peers > 0 {
+        tn(
+            s.peers as u64,
+            // i18n: while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+            "Found {n} peer, connecting...",
+            "Found {n} peers, connecting...",
+        )
+    } else {
+        // i18n: while a magnet link's file list is fetched, before any peer is found
+        t("Looking for peers...").to_owned()
+    };
+    // i18n: a number of peers (computers sharing a torrent), after where they came from
+    let peers = |n: usize| tn(n as u64, "{n} peer", "{n} peers");
+    let mut parts = vec![if s.trackers > 0 {
+        fmt(
+            &tn(
+                s.trackers as u64,
+                // i18n: where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+                "{n} tracker: {peers}",
+                "{n} trackers: {peers}",
+            ),
+            &[("peers", &peers(s.from_trackers))],
+        )
+    } else {
+        // i18n: the magnet link names no tracker (a server that lists a torrent's peers)
+        t("No trackers").to_owned()
+    }];
+    parts.push(if s.dht {
+        fmt(
+            &tn(
+                s.dht_nodes as u64,
+                // i18n: where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+                "DHT, {n} node: {peers}",
+                "DHT, {n} nodes: {peers}",
+            ),
+            &[("peers", &peers(s.from_dht))],
+        )
+    } else {
+        // i18n: the DHT (finding peers without trackers) is turned off in Torrent settings
+        t("DHT off").to_owned()
+    });
+    if s.from_lsd > 0 {
+        parts.push(fmt(
+            // i18n: where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+            t("Local network: {peers}"),
+            &[("peers", &peers(s.from_lsd))],
+        ));
+    }
+    let sources = parts.join("   ·   ");
+    let hint = if secs < HINT_AFTER || s.connected > 0 {
+        None
+    } else if s.peers > 0 {
+        // i18n: a magnet link's lookup, after 30 seconds: peers are known but none answered
+        Some(t(
+            "Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.",
+        ))
+    } else if !s.dht && s.trackers == 0 {
+        // i18n: a magnet link's lookup, after 30 seconds: it can't find any peer at all
+        Some(t(
+            "This magnet link names no trackers and the DHT is off, so no peer can be found.",
+        ))
+    } else if s.dht && s.dht_nodes == 0 {
+        // i18n: a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+        Some(t(
+            "The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.",
+        ))
+    } else {
+        // i18n: a magnet link's lookup, after 30 seconds without a peer
+        Some(t(
+            "No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.",
+        ))
+    };
+    (now, sources, hint)
+}
+
 impl TorrentDialog {
     /// `source`: a magnet link, a .torrent path or a .torrent's web address (`remote`: how to
     /// ask for it) to look up at once, or None (the clipboard's magnet, if any, is offered and
@@ -135,6 +226,7 @@ impl TorrentDialog {
             lookup: None,
             lookup_task: None,
             started: None,
+            progress: None,
             meta: None,
             chosen: Vec::new(),
             rows: Default::default(),
@@ -177,11 +269,13 @@ impl TorrentDialog {
             });
         let not_found = crate::i18n::t("Enter a magnet link or choose a .torrent file").to_owned();
         let slot: Slot = Arc::new(Mutex::new(None));
-        let (out, host, known, ctx) = (
+        let progress = Arc::new(Lookup::default());
+        let (out, host, known, ctx, watch) = (
             slot.clone(),
             self.host.clone(),
             self.known.clone(),
             ctx.clone(),
+            progress.clone(),
         );
         let task = rt.spawn(async move {
             let src = match (magnet, web) {
@@ -216,7 +310,7 @@ impl TorrentDialog {
             };
             let res = match host.session(known).await {
                 Ok(t) => t
-                    .metadata(&src, METADATA_WAIT)
+                    .metadata(&src, METADATA_WAIT, Some(&watch))
                     .await
                     .map_err(|e| crate::errors::torrent(&e)),
                 Err(e) => Err(e),
@@ -227,6 +321,7 @@ impl TorrentDialog {
         self.lookup = Some(slot);
         self.lookup_task = Some(task);
         self.started = Some(Instant::now());
+        self.progress = Some(progress);
         self.meta = None;
         self.rows = Default::default();
         self.error = None;
@@ -636,16 +731,38 @@ impl TorrentDialog {
 
         if self.lookup.is_some() {
             let c = body.center();
-            spinner(ui, pos2(c.x, c.y - 14.0), 12.0);
-            let note = if self.from_magnet {
-                crate::i18n::t(
-                    "Asking peers for the file list. Magnet links can take a minute or two.",
-                )
-            } else {
-                crate::i18n::t("Reading the file list...")
+            let centred = |s: &str, y: f32, color: Color32| {
+                let w = winui::text_width(&p, s);
+                text(&p, c.x - w / 2.0, y, s, color);
             };
-            let w = winui::text_width(&p, note);
-            text(&p, c.x - w / 2.0, c.y + 22.0, note, winui::MUTED());
+            let progress = self.progress.as_ref().filter(|_| self.from_magnet);
+            let Some(progress) = progress else {
+                spinner(ui, pos2(c.x, c.y - 14.0), 12.0);
+                centred(
+                    crate::i18n::t("Reading the file list..."),
+                    c.y + 22.0,
+                    winui::MUTED(),
+                );
+                return;
+            };
+            // A magnet (#92): what is happening, where the peers come from, and after a while
+            // without one, what may be wrong.
+            spinner(ui, pos2(c.x, c.y - 34.0), 12.0);
+            let secs = self.started.map_or(0, |s| s.elapsed().as_secs());
+            let (now, sources, hint) = lookup_lines(&progress.status(), secs);
+            centred(&now, c.y + 2.0, winui::TEXT());
+            centred(&sources, c.y + 22.0, winui::MUTED());
+            if let Some(hint) = hint {
+                winui::paragraph(
+                    &p,
+                    body.left() + 24.0,
+                    c.y + 52.0,
+                    hint,
+                    winui::MUTED(),
+                    body.right() - 24.0,
+                    16.0,
+                );
+            }
             return;
         }
         if self.meta.is_none() {
@@ -1474,6 +1591,62 @@ fn visible_rows(tree: &[Node], open: &[bool]) -> Vec<usize> {
 mod tests {
     use super::*;
     use mdm_torrent::FileEntry;
+
+    /// #92: a magnet's wait says what is happening and where the peers came from; after
+    /// `HINT_AFTER` without an answer, what may be wrong.
+    #[test]
+    fn a_magnets_wait_explains_itself() {
+        let none = LookupStatus {
+            trackers: 21,
+            dht: true,
+            dht_nodes: 0,
+            ..Default::default()
+        };
+        let (now, sources, hint) = lookup_lines(&none, 5);
+        assert_eq!(now, "Looking for peers...");
+        assert_eq!(sources, "21 trackers: 0 peers   ·   DHT, 0 nodes: 0 peers");
+        assert_eq!(hint, None, "not before {HINT_AFTER} s");
+        let (_, _, hint) = lookup_lines(&none, HINT_AFTER);
+        assert!(hint.unwrap().starts_with("The DHT reached no one"));
+        let (_, _, hint) = lookup_lines(
+            &LookupStatus {
+                dht_nodes: 300,
+                ..none
+            },
+            HINT_AFTER,
+        );
+        assert!(hint.unwrap().starts_with("No peers yet"));
+        let (_, sources, hint) = lookup_lines(&LookupStatus::default(), HINT_AFTER);
+        assert_eq!(sources, "No trackers   ·   DHT off");
+        assert!(hint.unwrap().contains("DHT is off"));
+
+        let found = LookupStatus {
+            trackers: 1,
+            dht: true,
+            dht_nodes: 120,
+            from_trackers: 1,
+            from_dht: 40,
+            from_lsd: 2,
+            peers: 41,
+            ..Default::default()
+        };
+        let (now, sources, hint) = lookup_lines(&found, HINT_AFTER);
+        assert_eq!(now, "Found 41 peers, connecting...");
+        assert_eq!(
+            sources,
+            "1 tracker: 1 peer   ·   DHT, 120 nodes: 40 peers   ·   Local network: 2 peers"
+        );
+        assert!(hint.unwrap().starts_with("Peers were found"));
+        let (now, _, hint) = lookup_lines(
+            &LookupStatus {
+                connected: 1,
+                ..found
+            },
+            100,
+        );
+        assert_eq!(now, "Connected to 1 peer, getting the file list...");
+        assert_eq!(hint, None, "it is getting there");
+    }
 
     /// Add trackers (#39): one address a line, each once; anything else, or a tracker on this
     /// computer or the local network, is refused.

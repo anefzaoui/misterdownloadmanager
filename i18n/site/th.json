@@ -6334,6 +6334,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "เรียกใช้ <x1/> โดยที่ MDM กำลังทำงานอยู่"
   },
+  "a43367ad93483b7d": {
+   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, <g2>Add torrent</g2> shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.",
+   "text": "MDM จะอ่านไฟล์ทอร์เรนต์และแสดงไฟล์เหล่านั้นเป็นโครงสร้างโฟลเดอร์ ไฟล์ <x1/> จะถูกอ่านทันที ส่วนลิงก์แม่เหล็กจะต้องดึงรายการไฟล์จากเพียร์อื่น ๆ ก่อน ซึ่งโดยปกติจะใช้เวลาไม่กี่วินาที ในขณะที่รอ <g2>เพิ่มทอร์เรนต์</g2> จะแสดงจำนวนเพียร์ที่พบจากแทร็กเกอร์, DHT หรือเครือข่ายท้องถิ่นของคุณ และจำนวนที่ตอบกลับ หลังจาก 30 วินาทีที่ไม่มีการตอบกลับ ระบบจะแจ้งว่าอาจมีอะไรขัดขวางอยู่ เช่น ลิงก์ที่ไม่มีแทร็กเกอร์ในขณะที่ DHT ปิดอยู่ หรือไฟร์วอลล์, VPN หรือเครือข่ายที่บล็อก BitTorrent"
+  },
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "ทอร์เรนต์จะระบุตัวติดตามที่ MDM ใช้เพื่อขอ peer โดย MDM จะไม่ติดต่อตัวติดตามบนคอมพิวเตอร์ของคุณเองหรือเครือข่ายภายในของคุณ (<x1/>, <x2/>, <x3/> และอื่น ๆ) ดังนั้นทอร์เรนต์จึงไม่สามารถทำให้ MDM ส่งคำขอเข้าสู่เครือข่ายที่อยู่ได้ <g4>เพิ่มตัวติดตาม...</g4> ก็ใช้กฎเดียวกัน: จะปฏิเสธที่อยู่ดังกล่าวและแจ้งเหตุผลให้คุณทราบ แทนที่จะเก็บที่อยู่ที่จะไม่มีการร้องขอ"

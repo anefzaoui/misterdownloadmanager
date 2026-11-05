@@ -6334,6 +6334,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "Запустите <x1/> при работающем MDM."
   },
+  "a43367ad93483b7d": {
+   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, <g2>Add torrent</g2> shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.",
+   "text": "MDM считывает торрент и показывает его файлы в виде дерева папок. <x1/> файл считывается сразу. Магнитная ссылка сначала должна получить список файлов от других пиров, обычно в течение нескольких секунд. Пока она ждет, <g2>Добавить торрент</g2> показывает, сколько пиров она нашла (из трекеров, DHT или вашей локальной сети) и сколько ответили. Через 30 секунд без ответа она сообщает, что может быть причиной: ссылка без трекеров при выключенном DHT, или брандмауэр, VPN или сеть, блокирующая BitTorrent."
+  },
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "Торрент содержит имена трекеров, к которым MDM обращается за пирами. MDM не связывается с трекерами на вашем компьютере или в вашей локальной сети (<x1/>, <x2/>, <x3/> и тому подобное), поэтому торрент не может заставить MDM отправлять запросы в сеть, в которой он находится. <g4>Добавить трекеры...</g4> следует тому же правилу: он отклоняет такой адрес и объясняет причину, вместо того чтобы сохранять тот, к которому никогда не будет обращаться."

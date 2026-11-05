@@ -424,7 +424,7 @@ impl ReportWindow {
 
         // What is happening behind it.
         let status: Option<String> = if let Some((done, total)) = fetching {
-            let mb = |b: u64| format!("{:.1}", b as f64 / 1_048_576.0);
+            let mb = |b: u64| crate::i18n::decimal(b as f64 / 1_048_576.0, 1);
             Some(crate::i18n::fmt(
                 // i18n: crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
                 crate::i18n::t(

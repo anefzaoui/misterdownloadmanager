@@ -10,10 +10,24 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Extracted {n} file to {folder}|Extracted {n} files to {folder}
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Found {n} peer, connecting...|Found {n} peers, connecting...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
@@ -55,6 +69,10 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+@plural	{n} peer|{n} peers	{n} peer|{n} peers
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
@@ -62,6 +80,10 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 @plural	{n} tracker added|{n} trackers added	{n} tracker added|{n} trackers added
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} tracker: {peers}|{n} trackers: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -302,8 +324,6 @@
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 	Asked the trackers for peers again	Asked the trackers for peers again
-#. text in the Add torrent window
-	Asking peers for the file list. Magnet links can take a minute or two.	Asking peers for the file list. Magnet links can take a minute or two.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -573,6 +593,9 @@
 	Description or part of the description	Description or part of the description
 #. text in a download's Properties window
 	Description:	Description:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+	DHT off	DHT off
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	disk error: {error}	disk error: {error}
@@ -1175,6 +1198,9 @@
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 	Load more	Load more
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+	Local network: {peers}	Local network: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1187,6 +1213,10 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 	Look up the new address first	Look up the new address first
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+	Looking for peers...	Looking for peers...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 	Looking for this problem on GitHub…	Looking for this problem on GitHub…
@@ -1389,11 +1419,17 @@
 	No mail app: the message is copied, paste it in your mail.	No mail app: the message is copied, paste it in your mail.
 #. text in errors.rs
 	no peer sent the torrent's file list in time	no peer sent the torrent's file list in time
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.
 #. text in the Options window
 	No proxy/socks	No proxy/socks
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	No tracker added: it has them already
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+	No trackers	No trackers
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 	No video found on this page. Play the video, then use the Download video button over it.	No video found on this page. Play the video, then use the Download video button over it.
@@ -1570,6 +1606,9 @@
 #. text in a download's progress window
 #. tab title: the other computers sharing the torrent
 	Peers	Peers
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.
 #. option (radio button) in the Scheduler window
 	Periodic synchronization	Periodic synchronization
 #. text in a download's progress window
@@ -2106,6 +2145,9 @@
 	the connection closed before the part was complete	the connection closed before the part was complete
 #. text in errors.rs
 	the connection was lost while receiving data	the connection was lost while receiving data
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.
 #. text in errors.rs
 	the disk is full	the disk is full
 #. tooltip (why a control is greyed) in a download's Properties window
@@ -2278,6 +2320,9 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 	This list has no videos	This list has no videos
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	This magnet link names no trackers and the DHT is off, so no peer can be found.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	This needs ffmpeg

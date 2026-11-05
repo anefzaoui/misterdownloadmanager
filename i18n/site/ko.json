@@ -6334,6 +6334,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "MDM이 실행 중인 상태에서 <x1/>을 실행하세요."
   },
+  "a43367ad93483b7d": {
+   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, <g2>Add torrent</g2> shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.",
+   "text": "MDM은 토렌트를 읽고 해당 파일을 폴더 트리로 표시합니다. <x1/> 파일은 즉시 읽힙니다. 마그넷 링크는 먼저 다른 피어로부터 파일 목록을 가져와야 하며, 일반적으로 몇 초 내에 완료됩니다. 기다리는 동안 <g2>토렌트 추가</g2>는 트래커, DHT 또는 로컬 네트워크에서 찾은 피어 수와 응답한 피어 수를 보여줍니다. 30초 동안 응답이 없으면 방해가 될 수 있는 요인(예: DHT가 꺼져 있는 동안 트래커가 없는 링크, 방화벽, VPN 또는 BitTorrent를 차단하는 네트워크)을 알려줍니다."
+  },
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "토렌트는 MDM이 피어를 요청하는 트래커의 이름을 지정합니다. MDM은 사용자 컴퓨터나 로컬 네트워크(<x1/>, <x2/>, <x3/> 등)의 트래커에 연결하지 않으므로, 토렌트가 MDM으로 하여금 MDM이 위치한 네트워크로 요청을 보내도록 할 수 없습니다. <g4>트래커 추가...</g4>도 동일한 규칙을 따릅니다. 요청되지 않을 주소를 유지하는 대신, 그러한 주소를 거부하고 그 이유를 알려줍니다."

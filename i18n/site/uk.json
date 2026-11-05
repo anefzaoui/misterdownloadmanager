@@ -6334,6 +6334,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "Запустіть <x1/>, коли MDM запущено."
   },
+  "a43367ad93483b7d": {
+   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, <g2>Add torrent</g2> shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.",
+   "text": "MDM читає торрент і показує його файли як дерево папок. <x1/> файл читається одразу. Магнітне посилання спочатку має отримати список файлів від інших пірів, зазвичай протягом кількох секунд. Поки воно чекає, <g2>Додати торрент</g2> показує, скільки пірів воно знайшло (з трекерів, DHT або вашої локальної мережі) і скільки відповіли. Після 30 секунд без відповіді воно повідомляє, що може бути перешкодою: посилання без трекерів, коли DHT вимкнено, або брандмауер, VPN чи мережа, що блокує BitTorrent."
+  },
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "Торрент називає трекери, до яких MDM звертається по піри. MDM не контактує з трекером на вашому комп’ютері або у вашій локальній мережі (<x1/>, <x2/>, <x3/> тощо), тому торрент не може змусити MDM надсилати запити в мережу, в якій він знаходиться. <g4>Додати трекери...</g4> дотримується того ж правила: він відхиляє таку адресу і пояснює чому, замість того, щоб зберігати ту, до якої ніколи не буде звернення."

@@ -6334,6 +6334,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "在 MDM 运行时运行<x1/>。"
   },
+  "a43367ad93483b7d": {
+   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, <g2>Add torrent</g2> shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.",
+   "text": "MDM 读取种子文件，并将其文件显示为文件夹树。一个 <x1/> 文件会立即读取。磁力链接需要先从其他对等点获取文件列表，通常在几秒钟内完成。在等待期间，<g2>添加种子</g2> 会显示它从跟踪器、DHT 或本地网络中找到的对等点数量，以及有多少对等点做出了响应。如果在 30 秒内没有响应，它会说明可能存在的问题：一个没有跟踪器且 DHT 已关闭的链接，或者防火墙、VPN 或阻止 BitTorrent 的网络。"
+  },
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "种子会指定 MDM 请求对等点的跟踪器。MDM 不会联系您自己计算机或本地网络上的跟踪器（<x1/>、<x2/>、<x3/> 等），因此种子无法让 MDM 向其所在的网络发送请求。<g4>添加跟踪器...</g4> 遵循相同的规则：它会拒绝此类地址并告知您原因，而不是保留一个永远不会被请求的地址。"

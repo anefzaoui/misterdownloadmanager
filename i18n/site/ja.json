@@ -6334,6 +6334,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "MDMが実行されている状態で<x1/>を実行してください。"
   },
+  "a43367ad93483b7d": {
+   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, <g2>Add torrent</g2> shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.",
+   "text": "MDMはトレントを読み込み、そのファイルをフォルダーツリーとして表示します。<x1/>ファイルは一度に読み込まれます。マグネットリンクは、まず他のピアからファイルリストを取得する必要がありますが、通常は数秒以内です。待機中、<g2>トレントを追加</g2>は、トラッカー、DHT、またはローカルネットワークから見つかったピアの数と、応答したピアの数を示します。30秒間応答がない場合、DHTがオフの状態でトラッカーのないリンク、またはBitTorrentをブロックするファイアウォール、VPN、ネットワークなど、何が妨げになっている可能性があるかを伝えます。"
+  },
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "トレントは、MDMがピアを要求するトラッカーの名前です。MDMは、お使いのコンピューターやローカルネットワーク（<x1/>、<x2/>、<x3/>など）上のトラッカーには接続しないため、トレントによってMDMがそのネットワークにリクエストを送信することはありません。<g4>トラッカーの追加...</g4>も同じルールに従います。そのようなアドレスは拒否され、その理由が通知されます。これは、決して要求されないアドレスを保持するよりも良いからです。"

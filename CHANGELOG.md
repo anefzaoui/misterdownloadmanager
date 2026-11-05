@@ -241,6 +241,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: two engine tests no longer fail now and then**
+  ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123)): the pause-and-resume
+  and event-log tests no longer depend on how fast the machine is. The lab server can hold a
+  byte back until a test lets it go (`stall_at`), and a test can wait until every request it
+  made is in the server's log.
 - **Torrents behind a proxy open no UDP socket toward the network**: UDP trackers were already
   left out there; now their client stays on this computer too.
 - **Developers: tests no longer make Windows Firewall ask about them.** The torrent tests and
@@ -306,6 +311,18 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A magnet link could wait minutes for its file list** ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92)):
+  in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest
+  of the session once a computer it asked was gone, so a magnet its trackers didn't serve never
+  got its file list. The updated torrent library keeps going, and a test keeps it that way.
+  **Add torrent** now shows the wait: the peers found, from the trackers, the DHT or the local
+  network, and how many answered. After 30 seconds without an answer, it says what may be in
+  the way.
+- **Numbers are written the interface language's way** ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128)):
+  counts, sizes, speeds, percentages and the list's columns group and point their digits as the
+  chosen language does (German `10.200` and `1,50 MB`, French `10 200`, Hindi `1,00,000`),
+  whatever the Windows region; a region in the same language keeps its own way (Swiss German
+  `10’200`). English is unchanged.
 - **A finished torrent's progress window lost its tabs while it was still shared**: Files, Peers,
   Trackers, Pieces and General (with the share ratio) said "Shown while the torrent is
   downloading." They now stay for as long as the torrent is shared.

@@ -651,3 +651,40 @@ async fn help_lists_the_routes() {
         assert!(help.contains(word), "{word}");
     }
 }
+
+/// `stall_at` (#123): a response stops at that byte and goes on once the server's faults are
+/// changed; a request that starts past it isn't held; `settled` waits for every request's entry.
+#[tokio::test]
+async fn a_stall_holds_a_byte_back_until_lifted() {
+    let s = server("stall_at=64K").await;
+    let mut r = reqwest::get(s.url("/gen/256K/s.bin?seed=5")).await.unwrap();
+    let mut got = Vec::new();
+    while got.len() < 64 * 1024 {
+        got.extend_from_slice(&r.chunk().await.unwrap().unwrap());
+    }
+    assert_eq!(got.len(), 64 * 1024, "nothing past the stall");
+    // Held: no byte comes while the stall stands.
+    let more = tokio::time::timeout(Duration::from_millis(300), r.chunk()).await;
+    assert!(more.is_err(), "the stall let bytes through");
+    // Past the stall point, a range is served at once.
+    let tail = reqwest::Client::new()
+        .get(s.url("/gen/256K/s.bin?seed=5"))
+        .header("Range", "bytes=131072-")
+        .send()
+        .await
+        .unwrap()
+        .bytes()
+        .await
+        .unwrap();
+    assert_eq!(tail, expected(5, 128 * 1024, 128 * 1024));
+    s.set_faults(Faults::default());
+    while let Some(c) = r.chunk().await.unwrap() {
+        got.extend_from_slice(&c);
+    }
+    assert_eq!(got, expected(5, 0, 256 * 1024));
+    tokio::time::timeout(Duration::from_secs(20), s.settled())
+        .await
+        .expect("every request is logged");
+    assert_eq!(s.log().len(), 2);
+    assert!(s.log().iter().all(|e| e.outcome == "complete"));
+}

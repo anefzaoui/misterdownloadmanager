@@ -54,6 +54,21 @@ fn public(ip: IpAddr) -> bool {
     }
 }
 
+/// A magnet link's trackers (`tr=`), each once, in its order.
+pub fn in_magnet(magnet: &str) -> Vec<String> {
+    let Some((_, query)) = magnet.split_once('?') else {
+        return Vec::new();
+    };
+    let mut out: Vec<String> = Vec::new();
+    for (k, v) in url::form_urlencoded::parse(query.as_bytes()) {
+        let v = v.trim();
+        if k.eq_ignore_ascii_case("tr") && !v.is_empty() && !out.iter().any(|t| t == v) {
+            out.push(v.to_owned());
+        }
+    }
+    out
+}
+
 /// A magnet link with only the trackers MDM may contact.
 pub fn filter_magnet(magnet: &str, proxied: bool) -> String {
     let Some((head, query)) = magnet.split_once('?') else {
@@ -324,6 +339,11 @@ mod tests {
             "magnet:?xt=urn:btih:abc&dn=x&tr=udp%3A%2F%2Ft.example%3A1337"
         );
         assert_eq!(filter_magnet(m, true), "magnet:?xt=urn:btih:abc&dn=x");
+        assert_eq!(
+            in_magnet(&format!("{m}&tr=udp%3A%2F%2Ft.example%3A1337&tr=")),
+            ["udp://t.example:1337", "http://127.0.0.1/a"]
+        );
+        assert!(in_magnet("magnet:?xt=urn:btih:abc").is_empty());
     }
 
     /// Add trackers (#39): new ones after the ones there, each once, keys still sorted, the info
