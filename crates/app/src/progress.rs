@@ -780,11 +780,19 @@ impl Progress {
             left + 237.0,
             "save-to-label",
         );
+        // From the label's width: its rect is mirrored in a right-to-left interface.
+        let at = (left + label.width() + 6.0).max(o.x + 90.0);
+        crate::fileicons::paint_at(
+            ui,
+            &p,
+            crate::fileicons::Kind::File(&item.file_name),
+            egui::pos2(at, o.y + 33.0),
+            16.0,
+        );
         winui::fit_middle(
             ui,
             &p,
-            // From the label's width: its rect is mirrored in a right-to-left interface.
-            (left + label.width() + 6.0).max(o.x + 90.0),
+            at + crate::fileicons::INDENT,
             o.y + 45.0,
             &display_path(&item.dest),
             winui::TEXT(),

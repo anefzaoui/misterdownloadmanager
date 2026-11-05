@@ -398,6 +398,142 @@ async function siteAccess(url) {
   }
 }
 
+// ---- the browser's proxy (#42) -------------------------------------------------------------
+
+// A VPN or proxy extension is a proxy for the browser only: the app downloads through the same
+// one (Options → Proxy / Socks → "Use proxy/socks from a browser's request"), or the download
+// would leave from the user's own address. What goes with each download:
+// - `proxy`: the proxy the browser uses for its address, "scheme://host:port";
+// - `proxyPac`: the browser's proxy auto-config script (its text), when it uses one;
+// - `proxyLogin`: that proxy asked the browser for a login. The extension that set it answers
+//   with its own, which no other program can have: the app says so rather than going without.
+// Firefox tells each request's proxy (`proxyInfo`), what proxy extensions set per request
+// (`proxy.onRequest`) included; Chromium only the proxy settings.
+const proxyLogins = new Set();
+const proxyUsed = new Map();
+const PAC_MAX = 256 * 1024;
+
+if (ext.webRequest && ext.webRequest.onAuthRequired) {
+  try {
+    ext.webRequest.onAuthRequired.addListener(
+      (d) => {
+        if (d.isProxy && d.challenger) proxyLogins.add(`${d.challenger.host}:${d.challenger.port}`.toLowerCase());
+      },
+      { urls: ["<all_urls>"] },
+    );
+  } catch {
+    // Not offered here: no login is noticed.
+  }
+}
+if (FIREFOX && ext.webRequest && ext.webRequest.onResponseStarted) {
+  ext.webRequest.onResponseStarted.addListener(
+    (d) => {
+      if (!d.proxyInfo || d.proxyInfo.type === "direct") return;
+      forget(proxyUsed, 120000);
+      proxyUsed.set(d.url, { info: d.proxyInfo, at: Date.now() });
+    },
+    { urls: ["<all_urls>"] },
+  );
+}
+
+const hostPort = (host, port) => `${String(host).includes(":") ? `[${host}]` : host}:${port}`;
+
+// "scheme://host:port" for one of the browser's proxy descriptions, or null.
+function proxyUrl(scheme, host, port, remoteDns) {
+  if (!host || !port) return null;
+  const s = String(scheme || "http").toLowerCase();
+  const kind =
+    s === "socks" || s === "socks5" ? (remoteDns === false ? "socks5" : "socks5h") : s === "socks4" ? "socks4" : s === "https" ? "https" : s === "http" ? "http" : null;
+  return kind ? `${kind}://${hostPort(host, port)}` : null;
+}
+
+// Does `pattern` (a proxy bypass entry: "<local>", "*.example.com", ".example.com", "host",
+// "host:port") cover `u`? CIDR entries aren't read (the proxy is then used).
+function bypassed(pattern, u) {
+  const p = String(pattern || "").trim().toLowerCase();
+  if (!p) return false;
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  if (p === "<local>") return !host.includes(".") || host === "localhost" || host === "127.0.0.1" || host === "::1";
+  const bare = p.replace(/^[a-z]+:\/\//, "").replace(/:\d+$/, "");
+  if (bare.startsWith("*.")) return host.endsWith(bare.slice(1));
+  if (bare.startsWith(".")) return host.endsWith(bare) || host === bare.slice(1);
+  return host === bare;
+}
+
+async function pacText(url) {
+  try {
+    const r = await withTimeout(fetch(url, { credentials: "omit" }), 10000);
+    if (!r.ok) return null;
+    const text = await r.text();
+    return text.length <= PAC_MAX && /FindProxyForURL/.test(text) ? text : null;
+  } catch {
+    return null;
+  }
+}
+
+// What the app needs to download `url` through the browser's proxy: {} when it uses none (or
+// the system's, which the app reads itself).
+async function browserProxy(url, incognito) {
+  let u;
+  try {
+    u = new URL(url);
+  } catch {
+    return {};
+  }
+  const login = (host, port) => proxyLogins.has(`${host}:${port}`.toLowerCase());
+  // Firefox: the proxy its own request for this address went through.
+  const used = proxyUsed.get(url);
+  if (used) {
+    const p = used.info;
+    const proxy = proxyUrl(p.type, p.host, p.port, p.proxyDNS);
+    if (!proxy) return {};
+    return { proxy, ...(p.username || login(p.host, p.port) ? { proxyLogin: true } : {}) };
+  }
+  if (!ext.proxy || !ext.proxy.settings) return {};
+  let v;
+  try {
+    v = (await ext.proxy.settings.get(incognito ? { incognito: true } : {})).value || {};
+  } catch {
+    return {};
+  }
+  // Chromium: {mode, rules, pacScript}.
+  if (v.mode === "fixed_servers" && v.rules) {
+    const r = v.rules;
+    if ((r.bypassList || []).some((b) => bypassed(b, u))) return {};
+    const s = r.singleProxy || (u.protocol === "https:" ? r.proxyForHttps : r.proxyForHttp) || r.fallbackProxy;
+    const proxy = s && proxyUrl(s.scheme, s.host, s.port || (s.scheme === "https" ? 443 : 80));
+    if (!proxy) return {};
+    return { proxy, ...(login(s.host, s.port) ? { proxyLogin: true } : {}) };
+  }
+  if (v.mode === "pac_script" && v.pacScript) {
+    const text = v.pacScript.data || (v.pacScript.url ? await pacText(v.pacScript.url) : null);
+    return text ? { proxyPac: text } : {};
+  }
+  // Firefox: {proxyType, http, ssl, socks, socksVersion, proxyDNS, autoConfigUrl, passthrough}.
+  if (v.proxyType === "manual") {
+    if (String(v.passthrough || "").split(/[,\s]+/).some((b) => bypassed(b, u))) return {};
+    const pick = (hp) => {
+      const m = /^\[?([^\]]+?)\]?:(\d+)$/.exec(String(hp || "").trim());
+      return m ? { host: m[1], port: Number(m[2]) } : null;
+    };
+    const http = pick(v.http);
+    const ssl = v.httpProxyAll ? http : pick(v.ssl);
+    const socks = pick(v.socks);
+    const s = (u.protocol === "https:" ? ssl : http) || null;
+    const proxy = s
+      ? proxyUrl("http", s.host, s.port)
+      : socks && proxyUrl(v.socksVersion === 4 ? "socks4" : "socks5", socks.host, socks.port, v.proxyDNS);
+    if (!proxy) return {};
+    const at = s || socks;
+    return { proxy, ...(login(at.host, at.port) ? { proxyLogin: true } : {}) };
+  }
+  if (v.proxyType === "autoConfig" && v.autoConfigUrl) {
+    const text = await pacText(v.autoConfigUrl);
+    return text ? { proxyPac: text } : {};
+  }
+  return {};
+}
+
 // `explicit`: the user asked for this one (the right-click item), so Options' automatic-capture
 // rules (file types, excluded sites) don't apply; the host checks them for everything else.
 async function handOff(d) {
@@ -412,6 +548,8 @@ async function handOff(d) {
     ...(d.post ? { post: d.post.body, postType: d.post.type || "" } : {}),
     ...(d.incognito ? { private: true } : {}),
     ...(d.explicit ? { explicit: true } : {}),
+    // Through the browser's proxy too (#42): the one its own request for the file took.
+    ...(await browserProxy(d.finalUrl || d.url, d.incognito)),
   };
   return native(message);
 }

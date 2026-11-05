@@ -170,10 +170,6 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Ответы о Mister Download Manager: бесплатен ли он, безопасен ли, как он сравнивается с IDM, браузеры, видео, торренты, скорость, Mac и Linux и многое другое."
   },
-  "03f25752c573e3ff": {
-   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
-   "text": "<g1>Ограничить отдачу для всех торрентов до</g1> — по умолчанию отключено. Ограничивает общую скорость отдачи всех ваших торрентов другим пирам, как во время загрузки, так и во время раздачи. Собственное ограничение отдачи торрента, установленное в окне его прогресса, применяется поверх этого ограничения."
-  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Запускает основную очередь загрузок; <x1/>."
@@ -182,6 +178,10 @@
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "Если некоторые файлы торрента уже есть в папке, MDM спрашивает, прежде чем использовать их. <g1>Да</g1> сохраняет их для торрента: MDM проверяет их, оставляет то, что соответствует торренту, и загружает остальное. Так вы можете продолжить загрузку, начатую в другом месте, или поделиться файлами, которые у вас уже есть. <g2>Нет</g2> (по умолчанию) возвращает вас назад, чтобы вы могли выбрать другую папку, и ничего из вашего не будет перезаписано."
   },
+  "045b50361ed710f2": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
+   "text": "В Firefox MDM видит прокси, который использовал собственный запрос браузера для файла, включая те, которые расширение VPN выбирает для каждого запроса. В Chrome, Edge, Brave, Opera и Vivaldi он видит настройки прокси браузера."
+  },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
    "text": "MDM отклоняет торрент с именами файлов, которые ваша система не может безопасно записать, указывает, какое имя, и ничего не записывает."
@@ -189,10 +189,6 @@
   "047d41a834df5979": {
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Бесплатно и с открытым исходным кодом. Знакомый интерфейс, более быстрый движок, встроенные торренты и видео."
-  },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (около 80 МБ) объединяет видео и звук, когда сайт хранит их по отдельности (что большинство сайтов делает для более высокого качества), и преобразует звук в MP3. Нажмите <g2>Установить ffmpeg</g2>, когда MDM предложит это. MDM проверяет его по контрольным суммам, опубликованным в его релизе."
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -253,6 +249,10 @@
   "05ae27da0376b80e": {
    "source": "<g1>.deb</g1> for Debian and Ubuntu, <g2>.rpm</g2> for Fedora",
    "text": "<g1>.deb</g1> для Debian и Ubuntu, <g2>.rpm</g2> для Fedora"
+  },
+  "05bd7f3cbec0de04": {
+   "source": "When the browser used no proxy, and <g1>No proxy/socks</g1> is chosen, MDM uses Windows' proxy settings, as browsers do.",
+   "text": "Если браузер не использовал прокси и выбрано <g1>Без прокси/SOCKS</g1>, MDM использует настройки прокси Windows, как это делают браузеры."
   },
   "05e4107afbf16316": {
    "source": "Open it with <g1>Scheduler</g1> on the toolbar or <g2>Downloads → Scheduler</g2>. Right-clicking a queue and choosing <g3>Schedule</g3> or <g4>Edit queue</g4> opens it on that queue.",
@@ -474,6 +474,10 @@
    "source": "In IDM, choose <g1>Tasks → Export → To IDM export file</g1> and save your list.",
    "text": "В IDM выберите <g1>Задачи → Экспорт → В IDM файл экспорта</g1> и сохраните свой список."
   },
+  "0b0116419017071b": {
+   "source": "<g1>Download supported file-host links through these accounts</g1> turns it all off and on.",
+   "text": "<g1>Загружать поддерживаемые ссылки файловых хостов через эти учетные записи</g1> включает и выключает все это."
+  },
   "0b2740fc08d56719": {
    "source": "A <x1/> from an issue:",
    "text": "<x1/> из проблемы:"
@@ -509,10 +513,6 @@
   "0b887cd1b7283f73": {
    "source": "Change which file types MDM takes →",
    "text": "Изменить типы файлов, которые перехватывает MDM →"
-  },
-  "0b8bc8a6db629a4c": {
-   "source": "Select part of a page and right-click it for <g1>Download selected links with Mister Download Manager</g1>, or right-click the page for <g2>Download all links with Mister Download Manager</g2>: the links open in <g3>Import</g3>, where you tick the ones you want.",
-   "text": "Выделите часть страницы и щёлкните по ней правой кнопкой мыши для <g1>Загрузить выбранные ссылки с Mister Download Manager</g1>, или щёлкните правой кнопкой мыши по странице для <g2>Загрузить все ссылки с Mister Download Manager</g2>: ссылки откроются в <g3>Импорт</g3>, где вы отметите нужные."
   },
   "0ba1ab7afd650160": {
    "source": "Getting started — Mister Download Manager help",
@@ -898,6 +898,10 @@
    "source": "Download Mister Download Manager",
    "text": "Загрузить Mister Download Manager"
   },
+  "16e51d663458d0c2": {
+   "source": "MDM sends the service only the links you download through it, and your account's token. Nothing else.",
+   "text": "MDM отправляет службе только те ссылки, которые вы загружаете через нее, и токен вашей учетной записи. Больше ничего."
+  },
   "1745fe3e724c0846": {
    "source": "<g1><g2>Link grabber and archives</g2></g1> — many links at once, in packages; zip, 7z and rar archives extracted when they are downloaded.",
    "text": "<g1><g2>Перехват ссылок и архивы</g2></g1> — много ссылок сразу, пакетами; архивы zip, 7z и rar распаковываются после загрузки."
@@ -989,6 +993,10 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "Краткие ответы на самые частые вопросы со ссылкой на полное руководство."
+  },
+  "19bbae838750029a": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "Его разрешения и причины: <g1>downloads</g1> для просмотра и передачи загрузок; <g2>cookies</g2>, чтобы загрузки с авторизацией работали в MDM; <g3>nativeMessaging</g3> для связи с MDM; <g4>contextMenus</g4> для элементов контекстного меню; <g5>storage</g5> для его настроек; <g6>webRequest</g6> для просмотра отправленных форм и загруженных видеопотоков (ничего не меняет); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge и другие браузеры на Chromium) для загрузки файлов, которые браузер открыл бы (PDF), вместо этого, для типов, которые MDM принимает; в Firefox <g8>webRequestBlocking</g8> делает это; <g9>scripting</g9> для чтения ссылок страницы по вашему запросу и для добавления кнопки видео на уже открытые страницы при установке расширения; <g10>proxy</g10> для чтения того, какой прокси использует браузер, чтобы загрузки, взятые из браузера за VPN или прокси-расширением, также проходили через него (никогда не меняет прокси браузера); доступ ко всем сайтам, потому что загрузки и видео могут поступать с любого сайта."
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1110,10 +1118,6 @@
    "source": "Select or unselect the download with the dotted outline",
    "text": "Выбрать или отменить выбор загрузки с пунктирной рамкой"
   },
-  "1bdc6a06e3384bd1": {
-   "source": "<g1>Tasks</g1> — add downloads, torrents, batch downloads and videos; show the drop target; import and export the list; exit.",
-   "text": "<g1>Задачи</g1> — добавить загрузки, торренты, пакетные загрузки и видео; показать область перетаскивания; импортировать и экспортировать список; выйти."
-  },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>Фокус клавиатуры терялся</g1>, когда кнопка становилась серой или Escape закрывал выпадающий список: Tab начинал сначала в верхней части окна. Теперь он перемещается дальше или возвращается, как в Windows."
@@ -1178,6 +1182,10 @@
    "source": "MDM runs on 64-bit Windows 10 and Windows 11. Builds for macOS and Linux are new: see <g1>On a Mac or Linux</g1>.",
    "text": "MDM работает на 64-разрядных Windows 10 и Windows 11. Сборки для macOS и Linux являются новыми: см. <g1>На Mac или Linux</g1>."
   },
+  "1cf59e936ec9e349": {
+   "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
+   "text": "Найден ли <g1>7-Zip</g1>: он нужен для архивов 7z и RAR."
+  },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
    "text": "Главное окно на арабском языке, с расположением элементов справа налево."
@@ -1213,6 +1221,10 @@
   "1dd3fad91652b5ff": {
    "source": "Pick what the setup should do: - <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> - <g2>Open .torrent files and magnet links with Mister Download Manager</g2> - <g3>Start Mister Download Manager when Windows starts</g3> - <g4>Create a desktop shortcut</g4> (off unless you tick it)",
    "text": "Выберите, что должна сделать программа установки: – <g1>Настроить интеграцию с браузером (Chrome, Edge, Brave, Firefox)</g1> – <g2>Открывать файлы .torrent и magnet-ссылки с помощью Mister Download Manager</g2> – <g3>Запускать Mister Download Manager при запуске Windows</g3> – <g4>Создать ярлык на рабочем столе</g4> (отключено, если вы не отметите)"
+  },
+  "1ddd137e20fb9434": {
+   "source": "Add your account",
+   "text": "Добавить учетную запись"
   },
   "1e06a14724b6ac4b": {
    "source": "MDM downloads the pictures of a gallery (a Wikimedia Commons category, a Flickr album, a DeviantArt gallery, an Imgur album and many more) with gallery-dl…",
@@ -1282,6 +1294,10 @@
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "MDM открывает веб-страницу, с которой пришла ссылка (если она известна), и <g1>Свойства файла</g1> загрузки."
   },
+  "1fc4673dc3cdd511": {
+   "source": "The list keeps the host's link. The direct link is never shown or copied: the services forbid sharing it. It lives only in the download's resume data, and when it expires MDM asks the service for a new one.",
+   "text": "Список сохраняет ссылку хостинга. Прямая ссылка никогда не показывается и не копируется: службы запрещают ее распространение. Она хранится только в данных для возобновления загрузки, и когда она истекает, MDM запрашивает у службы новую."
+  },
   "1fd04f332635d14c": {
    "source": "Look at <g1>Resume capability</g1> in the progress window. <g2>No</g2> means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.",
    "text": "Посмотрите на <g1>Возможность возобновления</g1> в окне хода выполнения. <g2>Нет</g2> означает, что сервер не может отправлять файл по частям. MDM в этом случае использует одно соединение, и загрузку, которая остановилась, приходится начинать заново. Для таких серверов избегайте остановки загрузки и очень низкого ограничения скорости, что может привести к разрыву соединения сервером."
@@ -1293,6 +1309,10 @@
   "20614bb35ecf2799": {
    "source": "It notes where page loads' redirects started and ended (in memory, for two minutes), so MDM gets the address you clicked, not only where it led.",
    "text": "Расширение запоминает, где начались и закончились перенаправления загрузок страниц (в памяти, на две минуты), чтобы MDM получал адрес, по которому вы кликнули, а не только тот, куда он привел."
+  },
+  "2062fec7c828d892": {
+   "source": "MDM ships no list of hosts or links; the service says which hosts it supports.",
+   "text": "MDM не поставляет список хостингов или ссылок; служба сама сообщает, какие хостинги она поддерживает."
   },
   "2074b7c27e1d1876": {
    "source": "Choose the <x1/> folder inside MDM's folder. If you installed MDM for yourself, that is <x2/>; you can paste that path into the folder box.",
@@ -1486,6 +1506,10 @@
    "source": "Downloads stay with the browser although MDM is connected",
    "text": "Загрузки остаются в браузере, хотя MDM подключен"
   },
+  "254858789074bb69": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without…",
+   "text": "Служба дебрида, например Real-Debrid, — это платный аккаунт, который загружает файлы с файловых хостингов на свои собственные серверы. Она возвращает простую прямую ссылку, без..."
+  },
   "255bafc95ef4cb55": {
    "source": "Video downloads in detail →",
    "text": "Подробности загрузки видео →"
@@ -1537,10 +1561,6 @@
   "26ae5fbaf85f0fa2": {
    "source": "The portable copy of MDM runs from any folder, including a USB stick, without installing anything.",
    "text": "Портативная копия MDM запускается из любой папки, в том числе с USB-накопителя, без установки."
-  },
-  "26b803c1a0aa9d3e": {
-   "source": "Untick the addresses you don't want (<g1>Select all</g1> and <g2>Select none</g2> help), then click <g3>OK</g3>.",
-   "text": "Снимите отметки с адресов, которые вам не нужны (помогут <g1>Выбрать все</g1> и <g2>Снять выделение</g2>), затем нажмите <g3>ОК</g3>."
   },
   "26ee23631d3f7d09": {
    "source": "If an error message quotes something you typed, that text is in the report, so read it before sending.",
@@ -1774,6 +1794,10 @@
    "source": "Changed",
    "text": "Изменено"
   },
+  "2c6c86430d025b2e": {
+   "source": "Add URL, the clipboard, the browser's <g1>Download with Mister Download Manager</g1> link menu, and batch downloads go through the account when its service supports the link's host.",
+   "text": "Добавить URL, буфер обмена, меню ссылок браузера <g1>Загрузить с помощью Mister Download Manager</g1> и пакетные загрузки проходят через учетную запись, если ее служба поддерживает хостинг ссылки."
+  },
   "2c7829692534192e": {
    "source": "In your browser, right-click the link to the file and choose <g1>Copy link</g1>.",
    "text": "В браузере щёлкните правой кнопкой мыши по ссылке на файл и выберите <g1>Копировать ссылку</g1>."
@@ -1845,10 +1869,6 @@
   "2d6f7386c4547cc8": {
    "source": "The server",
    "text": "Сервер"
-  },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "Выберите один вариант. Без ffmpeg будут перечислены только те качества, которые поставляются со звуком, и не будет MP3 (его создает ffmpeg)."
   },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
@@ -2262,10 +2282,6 @@
    "source": "Windows, the portable or plain zip",
    "text": "Windows, портативная или обычная zip-версия"
   },
-  "39aae84ac9399153": {
-   "source": "<g1>Open magnet links and .torrent files with Mister Download Manager</g1> — Windows then opens magnet links in your browser and <x2/> files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' <g3>Open with</g3> stays first. The setup can turn it on for you.",
-   "text": "<g1>Открывать magnet-ссылки и .torrent-файлы с помощью Mister Download Manager</g1> — тогда Windows будет открывать magnet-ссылки в вашем браузере и <x2/>-файлы в Проводнике с помощью MDM. Это только для вашей учетной записи Windows; программа, которую вы выбрали в Windows в меню <g3>Открыть с помощью</g3>, останется первой. Установка может включить это для вас."
-  },
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
    "text": "Для видеостраниц MDM загружает yt-dlp (и ffmpeg, если вы хотите объединенные качества) при первом использовании."
@@ -2273,6 +2289,10 @@
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
    "text": "Нажмите <g1>ОК</g1>."
+  },
+  "39f0061bac128459": {
+   "source": "<g1>Options → Archives</g1> says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the <g2>7-Zip needed</g2> window says so, with a <g3>Get 7-Zip</g3> button.",
+   "text": "В <g1>Параметры → Архивы</g1> указано, был ли найден 7-Zip. Без него архив 7z или RAR не будет извлечён, и окно <g2>Требуется 7-Zip</g2> сообщит об этом, предложив кнопку <g3>Получить 7-Zip</g3>."
   },
   "3a14e0e8b14737d7": {
    "source": "Choose <g1>Downloads → Speed Limiter → Turn on</g1>.",
@@ -2686,6 +2706,10 @@
    "source": "Preliminary results from {date}. A full re-run is under way; these numbers will be replaced when it finishes.",
    "text": "Предварительные результаты от {date}. Выполняется полный повторный запуск; эти числа будут заменены после его завершения."
   },
+  "44c0ee7163ab2934": {
+   "source": "<g1>Experimental:</g1> built from Real-Debrid's public API documentation, not yet confirmed with a real account. If something doesn't work with your account, please <g2>open an issue</g2> (never paste your token in it).",
+   "text": "<g1>Экспериментально:</g1> создано на основе общедоступной документации API Real-Debrid, пока не подтверждено реальным аккаунтом. Если что-то не работает с вашим аккаунтом, пожалуйста, <g2>создайте обращение</g2> (никогда не вставляйте в него свой токен)."
+  },
   "44e6a85b74a3eb0a": {
    "source": "Prism",
    "text": "Prism"
@@ -2709,6 +2733,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "Видео со страниц"
+  },
+  "45bc5ceaa76685a9": {
+   "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
+   "text": "Загрузка, которую браузер уже начал (MDM перехватил ее у браузера), загружается как есть: хостинг уже отправляет файл."
   },
   "45cafb7bca129310": {
    "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
@@ -2774,6 +2802,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from this site or the project's GitHub releases.",
    "text": "MDM не содержит рекламы, шпионского ПО, навязанных предложений или отслеживания. Весь его исходный код является общедоступным, поэтому любой может проверить, что он делает, и каждый выпуск собирается из этого кода серверами GitHub, где сборка может быть проверена. Вспомогательные программы, которые он может загружать для видео, проверяются перед запуском: yt-dlp — по ключу подписи его разработчиков, ffmpeg — по опубликованным контрольным суммам. Загружайте MDM только с этого сайта или из релизов проекта на GitHub."
   },
+  "47c3467a6b20a446": {
+   "source": "Where the sign-in is kept",
+   "text": "Где хранится вход в систему"
+  },
   "4815da8b9e60dc32": {
    "source": "Connection settings in Options →",
    "text": "Настройки подключения в Параметрах →"
@@ -2809,6 +2841,10 @@
   "495fc31d3efbd9c0": {
    "source": "Windows <g1>10 and 11 · 64-bit</g1>",
    "text": "Windows <g1>10 и 11 · 64-бит</g1>"
+  },
+  "496e926e46524176": {
+   "source": "<g1><g2>Debrid service accounts</g2></g1> — Real-Debrid: file-host links through your own account.",
+   "text": "<g1><g2>Учетные записи службы дебрида</g2></g1> — Real-Debrid: ссылки файловых хостингов через вашу учетную запись."
   },
   "4979f4438a0093f1": {
    "source": "Help → Keyboard shortcuts shows the Mac's keys on a Mac.",
@@ -3001,10 +3037,6 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Все языки, предлагаемые Windows 11, выбираются по флагу при первом запуске или в любое время в меню Вид → Язык. Арабский, иврит, персидский, урду и уйгурский языки отображаются справа налево."
-  },
-  "4f4c098768b05078": {
-   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
-   "text": "Всё можно сделать с клавиатуры, и MDM работает со скринридерами (такими как Narrator и NVDA в Windows): его окна, диалоги и меню сообщают им, что представляет собой каждый элемент управления и его состояние, а список загрузок читает название, статус и размер каждой загрузки."
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3230,6 +3262,10 @@
    "source": "macOS",
    "text": "macOS"
   },
+  "55217534c366257f": {
+   "source": "Debrid service accounts — Mister Download Manager help",
+   "text": "Учетные записи службы дебрида — справка Mister Download Manager"
+  },
   "553151825917c170": {
    "source": "Our benchmark: IDM 6.42 (licensed copy) and MDM on the same PC, against the same local test server, in alternating runs; medians, Mann-Whitney p &lt; 0.001 · <g1>charts, report and raw data</g1>",
    "text": "Наш тест: IDM 6.42 (лицензионная копия) и MDM на одном ПК, с одним и тем же локальным тестовым сервером, в чередующихся запусках; медианы, Манн-Уитни p &lt; 0.001 · <g1>графики, отчёт и исходные данные</g1>"
@@ -3449,6 +3485,10 @@
   "5b4c0d90aeddada8": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "Расширение загружено и включено? Найдите <g1>Mister Download Manager</g1> на странице расширений браузера. В Firefox временное дополнение исчезает после перезапуска. См. <g2>Интеграция с браузером</g2>."
+  },
+  "5bc4b6e9ef830d3c": {
+   "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
+   "text": "<g1>Linux и macOS</g1>: в настройках MDM, в папке данных, которую можете читать только вы (0700), пока не в системной связке ключей. Хранение в связке ключей планируется."
   },
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
@@ -3882,9 +3922,9 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>Свойства</g1> — изменить имя, типы файлов и папку. Категории «Общие» и «Торренты» меняют только свою папку. Переименованная категория сохраняет свою папку; встроенная категория сохраняет свое имя на вашем языке, пока вы ее не переименуете."
   },
-  "66e4fe28b447c606": {
-   "source": "Shift+F10",
-   "text": "Shift+F10"
+  "670bb10cde757ad1": {
+   "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
+   "text": "MDM никогда не записывает токен в свой журнал событий, отчеты о сбоях, API автоматизации или вывод командной строки."
   },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
@@ -3953,6 +3993,10 @@
   "68b88047fcca2939": {
    "source": "Queue downloads for later →",
    "text": "Поставить загрузки в очередь на потом →"
+  },
+  "690e87be87eb0c8f": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
+   "text": "<g1>Использовать прокси/SOCKS из запроса браузера…</g1> — включено по умолчанию. Загрузка, которую MDM получает от браузера, проходит через прокси, который браузер использовал для неё. Это тот прокси, который установлен расширением VPN или прокси, собственный ручной прокси браузера или его скрипт автонастройки прокси. Без него загрузка пошла бы с вашего собственного адреса, и контент, ограниченный страной VPN или его адресом, не загрузился бы. Расширение браузера считывает этот прокси и передаёт его MDM с каждой загрузкой."
   },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
@@ -4298,10 +4342,6 @@
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM можно управлять без его окна тремя способами:"
   },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "Настройки Прокси / Socks в MDM предназначены для загрузок из интернета и FTP. Торренты также могут использовать SOCKS5: установите <x1/> прокси в <g2>Параметры → Прокси / Socks</g2> и включите <g3>Использовать прокси</g3> в Настройках торрента. Прокси охватывает только соединения с пирами и веб-трекерами, поэтому при его использовании MDM отключает DHT, обнаружение локальных пиров, входящие соединения и UDP-трекеры. Если прокси исчезает из Прокси / Socks, пока этот переключатель включён, торренты не запускаются, а не обходят его."
-  },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
    "text": "Окно хода загрузки видео"
@@ -4389,10 +4429,6 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>Вверх</g1> / <g2>Вниз</g2>, <g3>Влево</g3> / <g4>Вправо</g4>"
-  },
-  "72f381013a320442": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
-   "text": "<g1>Использовать прокси/SOCKS из запроса браузера…</g1> — включено по умолчанию. При выборе <g2>Без прокси/SOCKS</g2> это заставляет MDM использовать настройки прокси Windows, как это делают браузеры."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -4725,6 +4761,10 @@
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
    "text": "Apple Silicon"
+  },
+  "7c840c91cbf164f3": {
+   "source": "Real-Debrid works now. AllDebrid and Premiumize come next.",
+   "text": "Real-Debrid работает сейчас. AllDebrid и Premiumize будут следующими."
   },
   "7c949f90bb503dc8": {
    "source": "Vivaldi",
@@ -5066,6 +5106,10 @@
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "В установленное время очередь запустится сама. Утром завершённые файлы будут находиться в категориях <g1>Завершено</g1>."
   },
+  "8477274e64c2a9d3": {
+   "source": "Your debrid service account (Real-Debrid): <g1>Add...</g1> signs in by code in the browser or with your API token; a link from a host the service supports is then downloaded through it. The list's order is the order accounts are asked. See <g2>Debrid service accounts</g2>.",
+   "text": "Ваша учетная запись службы дебрида (Real-Debrid): <g1>Добавить...</g1> выполняет вход по коду в браузере или с помощью вашего токена API; ссылка с поддерживаемого службой хоста затем загружается через нее. Порядок в списке — это порядок, в котором запрашиваются учетные записи. См. <g2>Учетные записи службы дебрида</g2>."
+  },
   "847835563c342573": {
    "source": "Torrents and your security",
    "text": "Торренты и ваша безопасность"
@@ -5142,6 +5186,10 @@
    "source": "See <g1>Browser integration</g1>.",
    "text": "См. <g1>Интеграция с браузером</g1>."
   },
+  "86e57342ae9eaa60": {
+   "source": "A link the service can't give says why in the list: sign in again, premium needed, the host is down (MDM tries again later), the file is gone, and so on.",
+   "text": "Ссылка, которую служба не может предоставить, указывает причину в списке: войдите снова, требуется премиум, хостинг не работает (MDM повторит попытку позже), файл удален и так далее."
+  },
   "86e5c2477f430964": {
    "source": "Tutorial: catch downloads from your browser →",
    "text": "Учебник: перехват загрузок из браузера →"
@@ -5157,6 +5205,10 @@
   "876deb86ce5482ee": {
    "source": "Crash reports — Mister Download Manager help",
    "text": "Отчеты о сбоях — Справка Mister Download Manager"
+  },
+  "876df42999b76ac6": {
+   "source": "Accounts",
+   "text": "Учетные записи"
   },
   "877fc06837396c8e": {
    "source": "<g1>Save As</g1> — the folder and file name. You can type another, pick one of the last 20 folders you saved to from the arrow at its end, or choose a folder with <g2>...</g2>.",
@@ -5429,6 +5481,10 @@
   "8f5c1305e03b1090": {
    "source": "A server that allows two connections. MDM learns it and keeps to two; IDM opened 480.",
    "text": "Сервер, который допускает два соединения. MDM узнаёт это и поддерживает два; IDM открыл 480."
+  },
+  "8f7481f4372a14d6": {
+   "source": "MDM checks the account and shows its name and whether it is premium. <g1>OK</g1> keeps it.",
+   "text": "MDM проверяет учетную запись и показывает ее имя, а также является ли она премиум. <g1>ОК</g1> сохраняет ее."
   },
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
@@ -5722,10 +5778,6 @@
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "Установите MDM с помощью программы установки и оставьте флажок <g1>Настроить интеграцию с браузером (Chrome, Edge, Brave, Firefox)</g1> включённым. Это регистрирует вспомогательную программу. (Портативная версия не может этого сделать; см. <g2>Портативный режим</g2>.)"
   },
-  "9752e164b9235433": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; access to all sites because downloads and videos can come from any site.",
-   "text": "Его разрешения и их назначение: <g1>downloads</g1> для просмотра и передачи загрузок; <g2>cookies</g2>, чтобы загрузки с авторизацией работали в MDM; <g3>nativeMessaging</g3> для связи с MDM; <g4>contextMenus</g4> для пунктов контекстного меню; <g5>storage</g5> для его настроек; <g6>webRequest</g6> для просмотра отправленных форм и загруженных видеопотоков (ничего не меняет); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge и другие браузеры на базе Chromium), чтобы файлы, которые браузер открыл бы (PDF), вместо этого загружались, для типов, которые перехватывает MDM; в Firefox это делает <g8>webRequestBlocking</g8>; <g9>scripting</g9> для чтения ссылок страницы по вашему запросу и для добавления кнопки видео на уже открытые страницы при установке расширения; доступ ко всем сайтам, потому что загрузки и видео могут приходить с любого сайта."
-  },
   "976e1bc04dee0c02": {
    "source": "Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.",
    "text": "Проверяются как адрес, по которому вы кликнули, так и тот, на который привели его перенаправления, поэтому исключённый вами сайт остаётся исключённым, даже если он перенаправляет вас на другой сервер. Всё остальное остаётся в браузере. Изменения в параметрах достигают браузера в течение минуты; перезапускать его не нужно."
@@ -5737,10 +5789,6 @@
   "979e9bd41ea38bec": {
    "source": "With <g1>Options → General → Offer to download links copied to the clipboard</g1> ticked (it is, unless you turned it off), when you copy a link to a file type in <g2>Options → File types</g2> (ZIP, EXE, MP4, PDF and many more), <g3>Download File Info</g3> opens with it filled in, ready for <g4>Start Download</g4>. Links to other pages are left alone. With <g5>Options → Downloads → Show start download dialog</g5> off, the download starts at once instead. Only links copied while MDM runs are taken, never one that was already there.",
    "text": "Если отмечено <g1>Параметры → Общие → Предлагать загрузить ссылки, скопированные в буфер обмена</g1> (это так, если вы не отключили), то при копировании ссылки на файл типа из <g2>Параметры → Типы файлов</g2> (ZIP, EXE, MP4, PDF и многие другие) открывается окно <g3>Информация о загружаемом файле</g3> с уже заполненными данными, готовое к <g4>Начать загрузку</g4>. Ссылки на другие страницы игнорируются. Если <g5>Параметры → Загрузки → Показывать диалоговое окно начала загрузки</g5> отключено, загрузка начинается сразу. Учитываются только ссылки, скопированные во время работы MDM, а не те, что уже были в буфере."
-  },
-  "97a76af3bb50222e": {
-   "source": "Whether <g1>7-Zip</g1> was found: RAR archives are extracted by it.",
-   "text": "Была ли найдена программа <g1>7-Zip</g1>: ею извлекаются RAR-архивы."
   },
   "97ad3e2d32e206b2": {
    "source": "Does it support proxies?",
@@ -5761,10 +5809,6 @@
   "97ec4888f860947d": {
    "source": "What other people can see",
    "text": "Что могут видеть другие люди"
-  },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "Дождитесь списка. Он показывает каждое разрешение с его размером, сначала лучшее, затем <g1>Только аудио</g1> в собственном формате сайта (M4A или WebM, как предоставляет сайт), затем <g2>Только аудио MP3</g2> с лучшим переменным битрейтом (VBR) и с битрейтом 320, 256, 192 и 128 кбит/с."
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -6046,10 +6090,6 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built…",
    "text": "MDM не содержит рекламы, шпионского ПО, навязанных предложений или отслеживания. Весь его исходный код является общедоступным, поэтому любой может проверить, что он делает, и каждый выпуск собирается…"
   },
-  "a02445ca780f3ef8": {
-   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "Одно окно egui, отрисованное по фиксированным пиксельным координатам, плюс один непосредственный видовой экран для каждого диалога. <x1/> хранит состояние (загрузки, очереди, настройки, выделение в списке) и преобразует команды меню, панели инструментов, клавиш и IPC в действия. Каждый диалог является собственным модулем и возвращает <x2/> (открыт, закрыт, завершен со значением). Вызовы, специфичные для Windows, ограничены <x3/>, а их аналоги для Linux и macOS — <x4/> (начиная с сессии, хоста браузеров, звуков, показать в папке, обработчика сбоев); все остальные файлы — безопасный, переносимый Rust. Шрифты берутся из системы: папка Fonts в Windows, системные шрифты macOS, fontconfig в Linux (<x5/>)."
-  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "Перевод, который длиннее английского, заканчивается на <g1>...</g1>, если он не помещается; наведите на него указатель, чтобы прочитать полностью."
@@ -6089,6 +6129,10 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>Командная строка и автоматизация</g2></g1> — параметры командной строки IDM, инструмент <x3/> и API автоматизации, который могут использовать другие программы."
+  },
+  "a1280a73f600eb05": {
+   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
+   "text": "Когда браузер использует прокси для загрузки (установленный VPN или расширением прокси, либо в его настройках), расширение передает <g1>адрес прокси</g1> или его <g2>скрипт автонастройки прокси</g2>, чтобы MDM загружал через тот же прокси. Оно никогда не читает и не передает логин прокси. Оно лишь отмечает, что прокси запросил его, чтобы MDM мог сообщить вам, что не может использовать этот прокси."
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -6189,10 +6233,6 @@
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "Запустите <x1/> при работающем MDM."
-  },
-  "a4263adda2169cf6": {
-   "source": "Playlists and mixes",
-   "text": "Плейлисты и миксы"
   },
   "a4573dce0e5e5aa1": {
    "source": "Continue a paused or broken download from the <x1/> file next to it.",
@@ -6357,10 +6397,6 @@
   "a839d0f1595e9f40": {
    "source": "<g1>Resume</g1>, <g2>Stop</g2>, <g3>Remove</g3> and the queue commands then act on all the selected downloads. The other commands need one download. The full list of keys is in <g4>Keyboard shortcuts</g4>.",
    "text": "Команды <g1>Продолжить</g1>, <g2>Остановить</g2>, <g3>Удалить</g3> и команды очереди затем действуют на все выбранные загрузки. Для других команд нужна одна загрузка. Полный список клавиш находится в разделе <g4>Сочетания клавиш</g4>."
-  },
-  "a857d379729447f1": {
-   "source": "Open Downloads → Options, or click Options on the toolbar. The window has eight pages on two rows of tabs. OK saves your changes; closing the window or…",
-   "text": "Откройте Загрузки → Параметры или нажмите Параметры на панели инструментов. Окно имеет восемь страниц, расположенных в два ряда вкладок. ОК сохраняет ваши изменения; закрытие окна или..."
   },
   "a86bb434620d319d": {
    "source": "Yes, built in: open a .torrent file or paste a magnet link, tick the files you want in the folder tree, and the torrent downloads in the same list as…",
@@ -6589,10 +6625,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM загружает то, на что вы ему указываете, так же, как это делает веб-браузер, только быстрее и с большим контролем. Он создан для повседневных загрузок: программного обеспечения и обновлений, документов, ваших собственных файлов из облачного хранилища, видео и музыки, которые вам разрешено сохранять, образов Linux и других торрентов, распространяемых их создателями, а также всего остального, что вы имеете право загружать."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "Загрузить видео; <x1/> принимает селектор качества из <x2/> (<x3/> = лучший отдельный файл; <x4/>, <x5/>, <x6/> или <x7/> = звук в формате MP3 с указанным битрейтом, <x8/> с лучшим переменным битрейтом; для MP3 требуется ffmpeg). <x9/> сохраняет субтитры рядом: коды языков из <x10/> (<x11/>), или <x12/> для всех, предоставленных загрузчиком; <x13/> использует автоматические субтитры сайта вместо этого; <x14/> встраивает их в видео (требуется ffmpeg, MP4 или MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -6922,6 +6954,10 @@
    "source": "The same, for a Mac with an Intel processor (About This Mac shows a <g1>Processor</g1>).",
    "text": "То же самое для Mac с процессором Intel (Об этом Mac показывает <g1>Процессор</g1>)."
   },
+  "b6c6533af9e6a7eb": {
+   "source": "Use only your own account. Sharing an account or its links breaks the services' terms and can get the account suspended.",
+   "text": "Используйте только свою учетную запись. Совместное использование учетной записи или ее ссылок нарушает условия обслуживания и может привести к блокировке учетной записи."
+  },
   "b6d4a1b792cd9316": {
    "source": "To back up your list, quit MDM (<g1>Tasks → Exit</g1>) and copy <x2/>.",
    "text": "Чтобы создать резервную копию списка, закройте MDM (<g1>Задачи → Выход</g1>) и скопируйте <x2/>."
@@ -7174,10 +7210,6 @@
    "source": "<g1>Number of retries for each file if downloading failed</g1> — how often a failed download is tried again before the queue gives up on it. Without it, MDM keeps trying.",
    "text": "<g1>Количество повторных попыток для каждого файла в случае сбоя загрузки</g1> — как часто будет повторяться неудачная загрузка, прежде чем очередь откажется от нее. Без этого MDM будет продолжать попытки."
   },
-  "bde4e642fb008c91": {
-   "source": "Drag a link from a browser (or a page's text with links in it) onto the list to add it: one link opens <g1>Download File Info</g1>, several open <g2>Import</g2> to choose which to add. Drop a <x3/> file to add the torrent, or a list of addresses (<x4/>, <x5/>) to import it. The list is outlined while something you can drop is over it. On macOS and Linux, files can be dropped (links from a browser only on Windows).",
-   "text": "Перетащите ссылку из браузера (или текст страницы со ссылками в нем) в список, чтобы добавить ее: одна ссылка открывает <g1>Информация о загружаемом файле</g1>, несколько открывают <g2>Импорт</g2> для выбора, какие добавить. Перетащите файл <x3/>, чтобы добавить торрент, или список адресов (<x4/>, <x5/>), чтобы импортировать его. Список выделяется, когда над ним находится что-то, что можно перетащить. В macOS и Linux файлы можно перетаскивать (ссылки из браузера только в Windows)."
-  },
   "bdee109ce7ca5da7": {
    "source": "There are several ways to give MDM something to download. Most of them end in the same window, <g1>Download File Info</g1>, where you choose where the file goes.",
    "text": "Есть несколько способов указать MDM, что загружать. Большинство из них приводят к одному и тому же окну, <g1>Информация о загружаемом файле</g1>, где вы выбираете место сохранения файла."
@@ -7286,6 +7318,10 @@
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "<g1>Обновить сейчас</g1> в «Справка → Проверить обновления»: MDM загружает новую версию, проверяет ее, устанавливает и перезапускается в Windows (установщик, портативная и обычная zip-версия), Mac и Linux (AppImage, .tar.gz; .deb или .rpm открывается в системном установщике). Устанавливаются только файлы, перечисленные в списке контрольных сумм, подписанном ключом выпуска MDM, который теперь есть в каждом выпуске (<x2/>). Первое обновление таким способом будет с 0.2.1 до следующей версии."
   },
+  "c174d7018b6d1a5b": {
+   "source": "A debrid service, such as Real-Debrid, is a paid account that downloads files from file hosts on its own servers. It hands back a plain direct link, without the host's waits, speed caps and captchas. With your account in MDM, a link from a host your service supports is unlocked through the service, then downloaded by MDM like any file: all its connections, pause and resume.",
+   "text": "Служба дебрида, например Real-Debrid, — это платный аккаунт, который загружает файлы с файловых хостингов на свои собственные серверы. Она возвращает простую прямую ссылку, без ожиданий, ограничений скорости и капч хостинга. С вашей учетной записью в MDM ссылка с хостинга, поддерживаемого вашей службой, разблокируется через службу, а затем загружается MDM как любой файл: со всеми его соединениями, паузами и возобновлениями."
+  },
   "c1899b1d4f5b3ff2": {
    "source": "The download button over videos",
    "text": "Кнопка загрузки над видео"
@@ -7309,6 +7345,10 @@
   "c1d36b87b24557b5": {
    "source": "It stays out of the way: it shows only while you point at a video (or the player has the keyboard's focus; <g1>Tab</g1> then moves to the button), fades when the pointer rests, and leaves out small videos and short muted loops (animated pictures, backgrounds). In fullscreen it follows the video when the player allows it. On a copy-protected video (DRM) it says that the video can't be saved.",
    "text": "Она не мешает: появляется только при наведении на видео (или когда плеер имеет фокус клавиатуры; затем <g1>Tab</g1> перемещает фокус на кнопку), исчезает при остановке указателя и не появляется для маленьких видео и коротких беззвучных циклов (анимированные изображения, фоны). В полноэкранном режиме она следует за видео, если плеер это позволяет. На видео с защитой от копирования (DRM) она сообщает, что видео не может быть сохранено."
+  },
+  "c1d77bb835bb6ef4": {
+   "source": "Debrid service accounts",
+   "text": "Учетные записи службы дебрида"
   },
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
@@ -7501,6 +7541,10 @@
   "c79406ca412c46e6": {
    "source": "<g1>Tab</g1> / <g2>Shift+Tab</g2>",
    "text": "<g1>Tab</g1> / <g2>Shift+Tab</g2>"
+  },
+  "c79d3d545a5bebd2": {
+   "source": "Your account, your rules",
+   "text": "Ваша учетная запись, ваши правила"
   },
   "c7be639a8acd89dc": {
    "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
@@ -7770,10 +7814,6 @@
    "source": "Browsers built on them work too: Chromium and Helium take the extension as Chrome does, Zen and LibreWolf as Firefox does. On Windows, Zen has a bug of its own (see <g1>The browser and MDM aren't connected</g1>).",
    "text": "Браузеры, построенные на их основе, также работают: Chromium и Helium используют расширение как Chrome, а Zen и LibreWolf — как Firefox. В Windows у Zen есть собственный баг (см. <g1>Браузер и MDM не подключены</g1>)."
   },
-  "cf86019a0378cdea": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start. <g2>Tasks → Import → From IDM export file</g2> reads an <x3/> file, with each download's referrer and cookies.",
-   "text": "Загрузки добавляются в <g1>Основная очередь загрузки</g1>, готовые к запуску. <g2>Задачи → Импорт → Из файла экспорта IDM</g2> считывает файл <x3/>, содержащий реферер и куки для каждой загрузки."
-  },
   "cf98a5beeacc1f82": {
    "source": "Report what's broken, ask for what's missing, fix a translation or send a pull request. The maintainer reads every issue.",
    "text": "Сообщите о проблемах, предложите новые функции, исправьте перевод или отправьте pull-запрос. Разработчик читает каждое обращение."
@@ -7809,6 +7849,10 @@
   "d02f2759845c4f95": {
    "source": "<g1>Daily</g1>, on the days you tick.",
    "text": "<g1>Ежедневно</g1>, в отмеченные вами дни."
+  },
+  "d0352efdbc9db51b": {
+   "source": "<g1>Windows</g1>: sealed for your Windows account (DPAPI), in MDM's settings. A copy of the settings on another account or computer can't read it: sign in again there.",
+   "text": "<g1>Windows</g1>: запечатано для вашей учетной записи Windows (DPAPI), в настройках MDM. Копия настроек на другой учетной записи или компьютере не может ее прочитать: войдите там снова."
   },
   "d038e13f6f88e7cc": {
    "source": "For files whose names differ only by a number or a letter, such as <x1/> to <x2/>:",
@@ -8006,10 +8050,6 @@
    "source": "First start and the language",
    "text": "Первый запуск и язык"
   },
-  "d5dffd9c89c8cb45": {
-   "source": "MDM extracts <g1>ZIP</g1> (including AES-encrypted and Deflate64 ones), <g2>7Z</g2> (including encrypted ones), <g3>TAR</g3>, <g4>TAR.GZ</g4>, <g5>TAR.XZ</g5>, and single <g6>.gz</g6> and <g7>.xz</g7> files itself. <g8>RAR</g8> goes through <g9>7-Zip</g9>, when it is installed: RAR's own extraction code can't be part of a free program like MDM. <g10>Options → Archives</g10> says whether 7-Zip was found.",
-   "text": "MDM самостоятельно извлекает файлы <g1>ZIP</g1> (включая зашифрованные AES и Deflate64), <g2>7Z</g2> (включая зашифрованные), <g3>TAR</g3>, <g4>TAR.GZ</g4>, <g5>TAR.XZ</g5>, а также отдельные файлы <g6>.gz</g6> и <g7>.xz</g7>. <g8>RAR</g8> извлекается через <g9>7-Zip</g9>, если он установлен: собственный код извлечения RAR не может быть частью бесплатной программы, такой как MDM. В <g10>Параметры → Архивы</g10> указано, был ли найден 7-Zip."
-  },
   "d5fe497b710d26d8": {
    "source": "Install or update the helpers videos need: yt-dlp (checked against its signing key) and ffmpeg (Windows; on macOS and Linux MDM uses the system's).",
    "text": "Установить или обновить вспомогательные программы, необходимые для видео: yt-dlp (проверяется по его ключу подписи) и ffmpeg (Windows; в macOS и Linux MDM использует системные)."
@@ -8101,6 +8141,10 @@
   "d82903fa7d227c82": {
    "source": "Benchmark scenario",
    "text": "Сценарий тестирования"
+  },
+  "d830def677dfb3f0": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
+   "text": "Одно окно egui, отрисованное по фиксированным координатам пикселей, плюс один непосредственный видовой экран на каждое диалоговое окно. <x1/> хранит состояние (загрузки, очереди, настройки, выбор в списке) и преобразует команды меню, панели инструментов, клавиш и IPC в действия. Каждое диалоговое окно является собственным модулем и возвращает <x2/> (открыто, закрыто, выполнено со значением). Вызовы, предназначенные только для Windows, ограничены <x3/>, а их аналоги для Linux и macOS — <x4/> (начиная с сеанса, хоста браузеров, звуков, показа в папке, обработчика сбоев); все остальные файлы — это безопасный, переносимый Rust. Шрифты берутся из системы: папка Fonts в Windows, системные шрифты macOS, fontconfig в Linux (<x5/>). То же самое касается значков перед именами файлов (<x6/>): системные списки изображений оболочки Windows, Finder macOS (NSWorkspace), тема значков рабочего стола Linux (<x7/>, shared-mime-info и Icon Theme Specification). Каждый тип ищется один раз для каждого размера пикселя в фоновом потоке. Значки Tango (в комплекте) используются до тех пор, пока системный значок не будет готов, и везде, где у системы его нет."
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
@@ -8214,6 +8258,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Да. MDM поддерживает привычные параметры командной строки IDM, поставляется с misterdownloadmanager-cli для загрузок из терминала и имеет локальный API автоматизации, защищенный токеном, который может перечислять, приостанавливать, запускать и удалять загрузки. API отключен, пока вы его не включите. См. Командная строка и автоматизация."
   },
+  "db74b9137912e0a2": {
+   "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
+   "text": "Прокси, который запрашивает логин, предоставляемый самим расширением VPN, не может быть общим: ни у одной другой программы нет этого логина. Загрузка тогда останавливается и сообщает об этом, вместо того чтобы идти без прокси. Используйте собственное приложение VPN или выберите его адаптер в разделе <g1>Сетевой адаптер</g1>."
+  },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
    "text": "Сервер портативной копии сам находит MDM портативной копии в своей папке."
@@ -8261,6 +8309,10 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "Работает почти везде, с HTTP, BitTorrent, magnet и ed2k, а также REST API"
+  },
+  "dd915e88440c78b0": {
+   "source": "Pick the service, then either: - <g1>Sign in in the browser</g1>: MDM shows a code and opens the service's page. Type the code there and allow MDM. The dialog notices on its own. - or paste your <g2>API token</g2> (<g3>Find my token</g3> opens the service's page that shows it), then <g4>Use the token</g4>.",
+   "text": "Выберите службу, затем: – <g1>Войти в браузере</g1>: MDM покажет код и откроет страницу службы. Введите код там и разрешите MDM. Диалог сам это заметит. – или вставьте свой <g2>токен API</g2> (<g3>Найти мой токен</g3> открывает страницу службы, которая его показывает), затем <g4>Использовать токен</g4>."
   },
   "dd95eb457eff61cf": {
    "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
@@ -8542,6 +8594,10 @@
    "source": "<g1>Clients.</g1> IDM and MDM, both at default settings (8 connections), each given the download through the same documented command line: <x2/>. Both save to the drive that holds IDM's temporary folder, so neither pays a cross-drive copy.",
    "text": "<g1>Клиенты.</g1> IDM и MDM, оба с настройками по умолчанию (8 соединений), каждому загрузка предоставлялась через одну и ту же документированную командную строку: <x2/>. Оба сохраняют на диск, где находится временная папка IDM, поэтому ни один не тратит время на копирование между дисками."
   },
+  "e52b31d58add8742": {
+   "source": "The list's order is the order accounts are asked: a link goes through the first account whose service supports its host. <g1>Up</g1> and <g2>Down</g2> change it.",
+   "text": "Порядок в списке — это порядок, в котором запрашиваются учетные записи: ссылка проходит через первую учетную запись, служба которой поддерживает ее хостинг. <g1>Вверх</g1> и <g2>Вниз</g2> изменяют его."
+  },
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
    "text": "Программа поставляется <g1>без каких-либо гарантий</g1>: используйте её на свой страх и риск."
@@ -8726,13 +8782,13 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Чтобы навсегда оставить загрузки с сайта в браузере, используйте <g1>Никогда не перехватывать загрузки с</g1> кнопки на панели инструментов или добавьте сайт в <g2>Не начинать загрузку автоматически со следующих сайтов</g2>. Чтобы оставить тип файла в браузере, удалите его из списка типов файлов."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "Выбор только звука (<g1>Только аудио</g1>, MP3) не имеет субтитров."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Откройте «Настройки» Windows → «Приложения», найдите Mister Download Manager и выберите «Удалить». Программа удаления спросит, нужно ли также удалить список загрузок и настройки. Загруженные вами файлы никогда не затрагиваются. Для портативной версии просто удалите её папку."
+  },
+  "ea9e193924daa5af": {
+   "source": "MDM itself extracts zip archives (AES-encrypted and Deflate64 ones too), tar, tar.gz and tar.xz archives, and single <x1/> and <x2/> files.",
+   "text": "MDM сам распаковывает архивы zip (в том числе зашифрованные AES и Deflate64), tar, tar.gz и tar.xz, а также отдельные файлы <x1/> и <x2/>."
   },
   "eac1d064497401fd": {
    "source": "It comes with every download of MDM, next to the app (the installer puts it in MDM's folder). It works on its own: the app needn't run, except for <x1/> and <x2/>.",
@@ -8966,6 +9022,10 @@
    "source": "<g1>Save to</g1>: the folder its files go to. When a package holds several kinds of files, the box says <g2>Each file's category folder</g2>: each file goes to its category's folder (<g3>Options → Save to</g3>), as Import always did.",
    "text": "<g1>Сохранить в</g1>: папка, в которую помещаются его файлы. Если пакет содержит несколько типов файлов, в поле отображается <g2>Папка категории каждого файла</g2>: каждый файл помещается в папку своей категории (<g3>Параметры → Сохранить в</g3>), как это всегда делал Импорт."
   },
+  "f1693c50a75a5859": {
+   "source": "What happens to a link",
+   "text": "Что происходит со ссылкой"
+  },
   "f16f4d30aa6137c4": {
    "source": "Ctrl+A",
    "text": "Ctrl+A"
@@ -9033,10 +9093,6 @@
   "f313ce0fb2d7fe17": {
    "source": "<g1>Peers</g1> — the computers you are downloading from, with how much you received from and sent to each.",
    "text": "<g1>Пиры</g1> — компьютеры, с которых вы загружаете, с указанием объема полученных и отправленных данных каждому."
-  },
-  "f326e0e0a7971afa": {
-   "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has eight pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
-   "text": "Откройте <g1>Загрузки → Параметры</g1> или нажмите <g2>Параметры</g2> на панели инструментов. Окно имеет восемь страниц на двух рядах вкладок. <g3>ОК</g3> сохраняет изменения; закрытие окна или нажатие <g4>Esc</g4> отменяет их."
   },
   "f344e5dfcec067d9": {
    "source": "The downloads go to a queue. As with Download Later, MDM asks which queue unless you turn off <g1>Options → Downloads → Show queue selection panel on closing batch download dialogs</g1>.",
@@ -9114,10 +9170,6 @@
    "source": "Free forever, no ads, no trial",
    "text": "Бесплатно навсегда, без рекламы, без пробного периода"
   },
-  "f59f701cec440f8e": {
-   "source": "Pick the file. <g1>Import downloads</g1> lists every web address MDM found in it.",
-   "text": "Выберите файл. В окне <g1>Импорт загрузок</g1> будет перечислен каждый веб-адрес, найденный MDM в файле."
-  },
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",
    "text": "<g1><g2>Добавление загрузок</g2></g1> — «Добавить URL», буфер обмена, область перетаскивания, пакетные загрузки и списки ссылок, а также «Начать загрузку» против «Загрузить позже»."
@@ -9186,6 +9238,10 @@
    "source": "Wait while MDM looks the page up. The list of qualities appears, best first, with <g1>Audio only</g1> at the end: the sound as the site has it, then, with ffmpeg (next step), as an MP3 at its best variable bitrate or at 320, 256, 192 or 128 kbps.",
    "text": "Подождите, пока MDM загрузит страницу. Появится список качеств, лучшие — в начале, а в конце — <g1>Только аудио</g1>: звук в том виде, в каком он есть на сайте, затем, с помощью ffmpeg (следующий шаг), в формате MP3 с наилучшим переменным битрейтом или 320, 256, 192 или 128 кбит/с."
   },
+  "f7f4e5c7a18c04f0": {
+   "source": "<g1>7z and RAR archives need 7-Zip</g1>, a free program (<g2>7-zip.org</g2>). MDM runs it when it is installed, for split and encrypted archives too. RAR's own extraction code can't be part of a free program like MDM, and 7-Zip extracts 7z best.",
+   "text": "<g1>Для архивов 7z и RAR нужен 7-Zip</g1> — бесплатная программа (<g2>7-zip.org</g2>). MDM запускает её, если она установлена, в том числе для разделённых и зашифрованных архивов. Собственный код извлечения RAR не может быть частью бесплатной программы, такой как MDM, а 7-Zip лучше всего извлекает 7z."
+  },
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Остановить раздачу после раздачи в течение … минут</g1> — или как только он раздавался столько времени за все свои запуски. По умолчанию отключено."
@@ -9249,6 +9305,10 @@
   "f9de9c27524eaf61": {
    "source": "No. MDM doesn't break copy protection (DRM), by design. Videos that are protected stay protected. See also <g1>what MDM is made for</g1>.",
    "text": "Нет. MDM намеренно не обходит защиту от копирования (DRM). Защищенные видео остаются защищенными. Смотрите также <g1>для чего предназначен MDM</g1>."
+  },
+  "f9fc95028964f92c": {
+   "source": "Options → Accounts → Add...",
+   "text": "Параметры → Учетные записи → Добавить..."
   },
   "fa0a1cf86da0a4cd": {
    "source": "<g1>1.0×</g1><g2>faster</g2>",

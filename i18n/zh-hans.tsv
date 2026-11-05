@@ -12,11 +12,6 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	是否确定要从 Mister Download Manager 下载列表中删除这 {n} 个下载？
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {n} is a number of files, {folder} where they went
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	已将 {n} 个文件提取到 {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -39,22 +34,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n}个正在下载
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	已省略 {n} 个条目（链接或指向文件夹外部的名称）
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
+#. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
-#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} 个文件
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} 个文件已存在同名文件，并已编号
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -111,24 +95,13 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24 小时制 (21:41)
-#. window title in extracting archives (a download's log, the Archive password window)
-#. window title: 7-Zip (a program's name) must be installed
-#, machine
-	7-Zip needed	需要 7-Zip
-#. text in the Options window
-#. Options → Archives: {path} is where 7-Zip's program is
-#, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	7z 和 RAR 存档由 7-Zip ({path}) 提取。
-#. text in the Options window
-#. Options → Archives, when 7-Zip isn't installed
-#, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z 和 RAR 存档需要 7-Zip (7-zip.org)，但它未安装。
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	7z and RAR archives need 7-Zip, which isn't installed	7z 和 RAR 存档需要 7-Zip，但它未安装
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< 隐藏详细信息
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	网盘服务（如 Real-Debrid）会使用您的付费帐户下载文件托管链接，并向 MDM 提供直接链接。请仅使用您自己的帐户：共享帐户或其链接会违反服务条款，并可能导致帐户被暂停。浏览器已开始的下载将保持不变。
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -141,10 +114,6 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	此计算机上的服务器将下载发送到其他位置，但无法通过 {adapter} 进行
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	a volume of it is missing	缺少其中一个卷
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	关于 Mister Download Manager
@@ -152,9 +121,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	接受传入连接
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	帐户
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	帐户
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	添加下载（添加 URL）
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	添加帐户
 #. text in the tray icon's menu
 #, machine
 	Add batch download	添加批量下载
@@ -190,8 +171,7 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	添加免费扩展：您在浏览器中下载的文件会到这里，视频会获得一个下载按钮。
-#. message or event log entry in the main window; text in the Link grabber window
-#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
+#. message or event log entry in the main window
 #, machine
 	Add to queue	添加到队列
 #. text in a dialog box
@@ -205,6 +185,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	将 {n} 个下载添加到列表？每个视频占一行。
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	添加...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,10 +240,6 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	正在下载: {path}
-#. text in the Link grabber window
-#. Link grabber: the package of links the download list has already
-#, machine
-	Already in the list	已在列表中
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -277,10 +258,6 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	始终为深色
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Always into a folder named after it	始终放入以其命名的文件夹中
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	在 Mister Download Manager 启动时始终开启限速器
@@ -304,20 +281,6 @@
 #. text in the Scheduler window
 #, machine
 	April	四月
-#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
-#. what a screen reader calls the Archive password window's box
-#. what a screen reader calls Link grabber's password box
-#, machine
-	Archive password	存档密码
-#. group box title in the Options window; text in the Options window
-#. Options → Archives: group box title
-#. tab title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives	存档
-#. text in the Options window
-#. Options page title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives and Link grabber	存档和链接抓取器
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -331,6 +294,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	正在向对等方请求文件列表。磁力链接可能需要一两分钟。
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	正在请求服务...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -375,7 +343,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	恢复 {names} 的默认设置：名称、文件类型和文件夹？您自己的类别、“常规”和“种子”保持不变。已移至“常规”的下载项将保留在那里。
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	浏览
@@ -389,17 +357,13 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	浏览器/系统集成
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server asked to try later (429, 503)
-#, machine
-	Busy, try later	繁忙，请稍后重试
 #. message or event log entry in the main window
 #, machine
 	by batch download	通过批量下载
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	通过链接抓取器
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+	by import	通过导入
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	取消
@@ -452,10 +416,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	更改上次选择的“{category}”类别的文件夹
-#. text in the Link grabber window
-#. Link grabber button (IDM's): tick every link
-#, machine
-	Check all	全选
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	检查更新
@@ -491,7 +451,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	正在检查 {name}（{n} / {total}）...
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	正在检查...
@@ -573,15 +533,14 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	复制
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	复制代码
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	复制报告
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {name} is the archive's file name, {why} the reason
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Couldn't extract {name}: {why}	无法提取 {name}：{why}
 #. window title in a dialog box
 #, machine
 	Create folder	创建文件夹
@@ -611,6 +570,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	日、月、年
+#. page title in the Options window
+#, machine
+	Debrid service accounts	网盘服务帐户
 #. text in the Scheduler window
 #, machine
 	December	十二月
@@ -637,10 +599,6 @@
 #. verb: delete the item
 #, machine
 	Delete	删除
-#. checkbox in the Link grabber window
-#. Link grabber check box: after extracting, the archives go to the Recycle Bin
-#, machine
-	Delete archives after extracting	提取后删除存档
 #. window title in a dialog box
 #, machine
 	Delete category	删除类别
@@ -722,6 +680,10 @@
 #. text in a download's progress window
 #, machine
 	Done	完成
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	下移
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	下载
@@ -768,6 +730,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	下载状态
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	通过这些帐户下载受支持的文件托管链接
 #. window title in the Download video window
 #, machine
 	Download video from a page	从页面下载视频
@@ -853,10 +819,6 @@
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	每个连接都采用系统路由。
-#. text in the Link grabber window
-#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
-#, machine
-	Each file's category folder	每个文件的类别文件夹
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -939,6 +901,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	已设置预期校验和 ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	实验性：根据 Real-Debrid 的公共 API 文档构建，尚未通过真实帐户确认。
 #. message or event log entry in the main window
 #, machine
 	Export	导出
@@ -948,27 +914,6 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	扩展名用空格分隔，例如 MP4 MKV R0*
-#. button in extracting archives (a download's log, the Archive password window)
-#. button: extract the archive with the password typed
-#, machine
-	Extract	提取
-#. checkbox in the Options window
-#. Options → Archives check box (a Link grabber package has its own "Extract when done")
-#, machine
-	Extract archives when their download completes	下载完成后提取存档
-#. text in the Link grabber window
-#. Link grabber check box: extract the package's archives once they are downloaded
-#, machine
-	Extract when done	完成后提取
-#. text in extracting archives (a download's log, the Archive password window)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting the archive...	正在提取存档...
-#. message or event log entry in the main window
-#. a download's status: its archive is being extracted (#37)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting...	正在提取...
 #. text in the Scheduler window
 #, machine
 	February	二月
@@ -1034,6 +979,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	查找文件
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	查找我的令牌
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1083,6 +1032,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	周五
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	免费帐户：链接需要高级版
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1147,10 +1100,6 @@
 #. tab title: general information
 #, machine
 	General	常规
-#. text in extracting archives (a download's log, the Archive password window)
-#. button: opens 7-Zip's website (7-Zip is a program's name)
-#, machine
-	Get 7-Zip	获取 7-Zip
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1206,10 +1155,6 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	隐藏到通知区域
-#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
-#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
-#, machine
-	Hide web pages	隐藏网页
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	按住 Alt 键并单击链接，让浏览器下载而不是 Mister Download Manager。
@@ -1245,12 +1190,19 @@
 #. message or event log entry in the main window
 #, machine
 	Import	导入
+#. window title in transfer.rs
+#, machine
+	Import downloads	导入下载
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	在队列中
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	在类别中：所选类别的菜单
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	在列表中
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1263,10 +1215,6 @@
 #. the torrent's identifier
 #, machine
 	Info hash	信息哈希
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window, under why
-#, machine
-	Install 7-Zip (free), then right-click the download and choose Extract.	安装 7-Zip（免费），然后右键单击下载并选择“提取”。
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1279,10 +1227,6 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	安装 yt-dlp
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Into a folder named after it, when it holds several things	当其包含多个项目时，放入以其命名的文件夹中
 #. text in a dialog box
 #, machine
 	Invalid address	地址无效
@@ -1290,35 +1234,10 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	IP 地址（可选）：
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it holds too many files or folders	它包含太多文件或文件夹
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is damaged, or not the archive its name says	它已损坏，或者不是其名称所说的存档
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is not an archive MDM extracts	它不是 MDM 提取的存档
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it needs a password	它需要密码
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	它会告诉您网络上的计算机您拥有哪些种子。
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it was stopped	它已停止
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	it would write {size}, more than the {limit} there is room or reason for	它将写入 {size}，超出 {limit} 的可用空间或合理范围
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1396,17 +1315,8 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	将所有 torrent 的上传限制为
-#. window title in the Link grabber window; group box title in the Options window
-#. Options → Archives: group box title
-#, machine
-	Link grabber	链接抓取器
-#. text in the Link grabber window
-#. what a screen reader calls Link grabber's list
-#, machine
-	Links	链接
-#. message or event log entry in the main window; text in the Link grabber window
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: a page in the browser
-#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	来自浏览器的链接
 #. text in playlistdlg.rs
@@ -1441,10 +1351,6 @@
 #. noun: the user name and password section
 #, machine
 	Login	登录
-#. checkbox in the Options window
-#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
-#, machine
-	Look links up when they arrive (name, size, online)	链接到达时查找（名称、大小、在线）
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	查找
@@ -1625,22 +1531,17 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	否
-#. text in the Link grabber window; text in the Add torrent window
+#. text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	名称
-#. text in categories.rs; text in the Link grabber window
-#. Link grabber: the package's name (a label before its box)
+#. text in categories.rs
 #, machine
 	Name:	名称:
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	主机文件中的名称和本地名称（单个词、.local、.lan）仍使用系统的 DNS。视频页面和 torrent 跟踪器目前使用系统的 DNS。
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server wants a login (401, 403)
-#, machine
-	Needs a login	需要登录
 #. text in the Options window
 #, machine
 	Network adapter:	网络适配器:
@@ -1760,6 +1661,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	暂不？稍后从“任务”→“从页面下载视频”获取它们。
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	此服务不支持
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	未使用：文件部分写入文件旁边
@@ -1795,11 +1700,7 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	提供下载复制到剪贴板的链接
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
-#, machine
-	Offline ({status})	离线 ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
 #, machine
 	OK	确定
 #. text in a download's progress window
@@ -1817,10 +1718,6 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	一次性下载
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server has the file
-#, machine
-	Online	在线
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1862,6 +1759,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	完成后打开以下文件:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	打开页面
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1887,35 +1788,25 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	完成时选项
-#. text in the Link grabber window
-#. Link grabber: the box that edits the selected package
+#. text in the Options window
 #, machine
-	Package	包
+	Or paste your API token:	或粘贴您的 API 令牌：
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	页面地址
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	密码
-#. text in the Link grabber window; text in the Options window
-#. Link grabber: the package's archives' password (a label before its box)
+#. text in the Options window
 #, machine
 	Password:	密码:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	粘贴磁力链接或选择 .torrent 文件，然后查找。
-#. text in the Link grabber window
-#. Link grabber, while it is empty
-#, machine
-	Paste links here (Ctrl+V), or send a page's links from the browser.	在此处粘贴链接 (Ctrl+V)，或从浏览器发送页面链接。
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	粘贴下载页面提供的校验和
-#. text in the Link grabber window
-#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
-#, machine
-	Pasted	已粘贴
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1958,6 +1849,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	端口:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	高级版
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	高级版，剩余 {days} 天
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2132,10 +2031,6 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	保存到:
-#. text in the Link grabber window
-#. Link grabber: the folder the package's files go to (a label before its box)
-#, machine
-	Save to:	保存到:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -2159,7 +2054,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	选择一个文件夹
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	全选
@@ -2169,7 +2064,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	选择此下载之前的所有下载
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: untick every video
 #, machine
 	Select none	不选
@@ -2221,6 +2116,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	服务器：
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	服务
+#. text in the Options window
+#, machine
+	Service:	服务：
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2308,6 +2210,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	关机
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	在浏览器中登录
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	已登录为 {user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	已注销：请重新登录
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	站点名称/下载链接/父网页/引用页
@@ -2328,7 +2242,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	网站以单独的视频和音频形式发送其最佳质量。ffmpeg 将它们合并成一个可在任何地方播放的文件。
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -2368,11 +2282,6 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	源代码
-#. text in the Link grabber window
-#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
-#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
-#, machine
-	Source: {source}	来源: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2380,10 +2289,6 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	速度限制器设置
-#. text in the Link grabber window
-#. Link grabber button: download the ticked links now
-#, machine
-	Start	开始
 #. button in a dialog box
 #, machine
 	Start Download	开始下载
@@ -2426,7 +2331,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	正在启动...
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	状态
+#. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -2480,10 +2389,6 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	下载完成后停止
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Straight into the archive's folder	直接放入存档文件夹
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2511,10 +2416,6 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	同步队列
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	任务 → 链接抓取器，或浏览器的“下载所有链接”：一个拆分\n存档的卷是一个包，页面上的其他链接是另一个包。
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	告诉朋友
@@ -2548,20 +2449,6 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	地址必须是 http(s) 或 ftp(s) 地址
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Recycle Bin: it was kept	无法将存档移至回收站：已保留
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Trash: it was kept	无法将存档移至废纸篓：已保留
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Recycle Bin	存档已移至回收站
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Trash	存档已移至废纸篓
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	最佳音质（MP3、Opus 和 FLAC）需要 ffmpeg（约 80 MB）。
@@ -2569,6 +2456,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	最佳音质（MP3、Opus 和 FLAC）需要 ffmpeg：请使用系统的包管理器（或 Homebrew）安装。
+#. text in the settings
+#. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+#, machine
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	浏览器的代理（VPN 或代理扩展）要求仅该扩展具有的登录名：请使用 VPN 自己的应用，或在“选项”→“代理/SOCKS”中选择其网络适配器
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2577,6 +2468,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	剪贴板正忙：请重试。
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	代码已过期：请重新登录
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2696,10 +2591,6 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	网络适配器 {adapter} 未连接
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	the password is wrong	密码错误
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	路径对于 Windows 来说太长: {path}
@@ -2780,14 +2671,6 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	获取此文件的网页：
-#. text in the Options window
-#. Options → Archives check box
-#, machine
-	Then move the archives to the Recycle Bin	然后将存档移至回收站
-#. text in the Options window
-#. Options → Archives check box (Linux and macOS)
-#, machine
-	Then move the archives to the Trash	然后将存档移至废纸篓
 #. text in categories.rs
 #, machine
 	There is already a category with this name	已存在同名类别
@@ -2981,6 +2864,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	键入队列名称
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	在 {page} 输入此代码并允许 MDM；正在等待（代码在 {time} 后过期）。
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2988,10 +2876,6 @@
 #. text in a download's Properties window
 #, machine
 	Type:	类型:
-#. text in the Link grabber window
-#. Link grabber button (IDM's): untick every link
-#, machine
-	Uncheck all	取消全选
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -3003,6 +2887,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	未知
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	上移
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -3057,6 +2945,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	使用代理(“选项”→“代理/Socks”，SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	使用令牌
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	将它们用于此 torrent 吗？匹配项将保留，其余项将替换。
@@ -3085,10 +2977,6 @@
 #. text in a download's progress window
 #, machine
 	Value	值
-#. text in the Link grabber window
-#. Link grabber: the package of links that belong to no other
-#, machine
-	Various files	各种文件
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3126,11 +3014,6 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	病毒检查设置
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
-#. {n} = a number (keep the braces as they are)
-#, machine
-	volume {n} of it is missing	缺少卷 {n}
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -3152,13 +3035,12 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Web
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	在 {file} 中找到的网址：
 #. text in the Scheduler window
 #, machine
 	Wednesday	星期三
-#. text in the Options window
-#. Options → Archives: a label before the list of where extracted files go
-#, machine
-	What an archive holds goes:	存档内容去向：
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -3189,11 +3071,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	写入日期和时间
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Wrong password for {name}. Type it again:	{name} 的密码错误。请重新输入：
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -3244,10 +3121,6 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: 查找视频
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP、7Z、RAR、TAR、GZ 和 XZ；拆分存档（.part1.rar、.7z.001）在\n所有卷都存在时。已存在的文件将保留：新文件将编号。
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -3352,16 +3225,6 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} 无法下载: {error}
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 是 7z 或 RAR 存档。MDM 使用 7-Zip 提取这些文件，但 7-Zip 未安装。
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is protected by a password:	{name} 受密码保护：
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -3377,13 +3240,67 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} chosen	已选择 {n} / {total}
-#. text in the Link grabber window
+#. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	已选择 {total} 中的 {n} 个
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} 要求放慢速度；MDM 将在一分钟后重试
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} 要求您先允许此计算机：请查看其电子邮件
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} 暂时无法访问此文件主机；MDM 将稍后重试
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} 没有响应；请稍后重试
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} 拒绝此连接（VPN 或服务器地址？）
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} 不会提供此文件
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}：请重新登录（选项 → 帐户）
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}：帐户已锁定或未激活
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}：文件已从文件主机中删除或不可用
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}：此文件受密码保护
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}：这需要高级帐户
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}：您的帐户同时下载过多；MDM 将重试
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}：您暂时已用完此文件主机的限额
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}：{message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -3719,12 +3636,6 @@ menu	&Keyboard shortcuts	键盘快捷方式(&K)
 #, machine
 menu	&Language...	语言(&L)...
 #. menu command in the main window
-#. Tasks menu: open Link grabber (links in packages, to tick before adding)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	&Link grabber...	链接抓取器(&L)...
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	选项(&O)
@@ -3894,10 +3805,6 @@ menu	E&xport	导出(&X)
 #. menu command in the main window
 #, machine
 menu	Edit queue	编辑队列
-#. menu command in the main window
-#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
-#, machine
-menu	Extract	提取
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	查找 (Ctrl-F)
@@ -4145,3 +4052,274 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/秒
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	已将 {n} 个文件提取到 {folder}
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	已省略 {n} 个条目（链接或指向文件夹外部的名称）
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} 个文件已存在同名文件，并已编号
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	需要 7-Zip
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z 和 RAR 存档由 7-Zip ({path}) 提取。
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z 和 RAR 存档需要 7-Zip (7-zip.org)，但它未安装。
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	7z 和 RAR 存档需要 7-Zip，但它未安装
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	缺少其中一个卷
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	已在列表中
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	始终放入以其命名的文件夹中
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	存档密码
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	存档
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	存档和链接抓取器
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	繁忙，请稍后重试
+#. message or event log entry in the main window
+#, machine
+	by Link grabber	通过链接抓取器
+#. text in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	全选
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	无法提取 {name}：{why}
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	提取后删除存档
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	每个文件的类别文件夹
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	提取
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	下载完成后提取存档
+#. text in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	完成后提取
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	正在提取存档...
+#. message or event log entry in the main window
+#. a download's status: its archive is being extracted (#37)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting...	正在提取...
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	获取 7-Zip
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	隐藏网页
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	安装 7-Zip（免费），然后右键单击下载并选择“提取”。
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	当其包含多个项目时，放入以其命名的文件夹中
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	它包含太多文件或文件夹
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	它已损坏，或者不是其名称所说的存档
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	它不是 MDM 提取的存档
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	它需要密码
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	它已停止
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	它将写入 {size}，超出 {limit} 的可用空间或合理范围
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	链接抓取器
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	链接
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	链接到达时查找（名称、大小、在线）
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	需要登录
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	离线 ({status})
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	在线
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	包
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	在此处粘贴链接 (Ctrl+V)，或从浏览器发送页面链接。
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	已粘贴
+#. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
+#, machine
+	Save to:	保存到:
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	来源: {source}
+#. text in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	开始
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	直接放入存档文件夹
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	任务 → 链接抓取器，或浏览器的“下载所有链接”：一个拆分\n存档的卷是一个包，页面上的其他链接是另一个包。
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	无法将存档移至回收站：已保留
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	无法将存档移至废纸篓：已保留
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	存档已移至回收站
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	存档已移至废纸篓
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	密码错误
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	然后将存档移至回收站
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	然后将存档移至废纸篓
+#. text in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	取消全选
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	各种文件
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	缺少卷 {n}
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	存档内容去向：
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	{name} 的密码错误。请重新输入：
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP、7Z、RAR、TAR、GZ 和 XZ；拆分存档（.part1.rar、.7z.001）在\n所有卷都存在时。已存在的文件将保留：新文件将编号。
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 是 7z 或 RAR 存档。MDM 使用 7-Zip 提取这些文件，但 7-Zip 未安装。
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} 受密码保护：
+#. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	链接抓取器(&L)...
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	提取

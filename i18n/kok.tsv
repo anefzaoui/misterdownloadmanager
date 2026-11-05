@@ -12,11 +12,6 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager डावनलोड लिस्टींतल्यान {n} डावनलोड काडून उडोवंक तुमकां खात्री आसा?|Mister Download Manager डावनलोड लिस्टींतल्यान हे {n} डावनलोड काडून उडोवंक तुमकां खात्री आसा?
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {n} is a number of files, {folder} where they went
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} फाइल {folder} कडेन काडली|{n} फायली {folder} कडेन काडल्यो
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -39,22 +34,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} डाउनलोड करता|{n} डाउनलोड करता
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} नोंदी भायर उडयल्यो (एक दुवो, वा फोल्डर भायर व्हरपी नांव)|{n} नोंदी भायर उडयल्यो (दुवे, वा फोल्डर भायर व्हरपी नांवां)
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
+#. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
-#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} फायल|{n} फायली
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} फायलीक पयलींच थंय आशिल्ल्या फायलीचें नांव आशिल्लें आनी ताका क्रमांक दिलो|{n} फायलींक पयलींच थंय आशिल्ल्या फायलींचें नांव आशिल्लें आनी तांकां क्रमांक दिलो
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -111,24 +95,13 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-वर (21:41)
-#. window title in extracting archives (a download's log, the Archive password window)
-#. window title: 7-Zip (a program's name) must be installed
-#, machine
-	7-Zip needed	7-Zip जाय पडटा
-#. text in the Options window
-#. Options → Archives: {path} is where 7-Zip's program is
-#, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	7z ani RAR आर्कायव्ह 7-Zip ({path}) वरवीं काडटात.
-#. text in the Options window
-#. Options → Archives, when 7-Zip isn't installed
-#, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z आनी RAR आर्कायव्ह खातीर 7-Zip (7-zip.org) जाय, जें इन्स्टॉल करूंक ना.
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	7z and RAR archives need 7-Zip, which isn't installed	7z आनी RAR आर्कायव्ह खातीर 7-Zip जाय, जें इन्स्टॉल करूंक ना
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< तपशील लिपयचें
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	एक डीब्रिड सेवा (Real-Debrid) तुमच्या स्वतःच्या सशुल्क खात्यान फाइल होस्टाची लिंक डाउनलोड करता आनी MDM क एक थेट लिंक दिता. फक्त तुमचें स्वतःचें खातें वापरचें: खातें वा ताच्यो लिंक्स शेअर केल्यार सेवेचे नेम मोडटात आनी तें सस्पेंड जावंक शकता. ब्राउझरान पयलींच सुरू केल्ले डाउनलोड जशे आसात तशेच उरतात.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -141,10 +114,6 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	ह्या संगणकाचेर आशिल्ल्या सर्व्हरान डाउनलोड दुसरीकडेन धाडलें, जें {adapter} वरवीं वचचें ना
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	a volume of it is missing	ताचो एक व्हॉल्यूम ना
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager विशीं
@@ -152,9 +121,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	येवपी जोडणी मान्य करा
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	खातें
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	खातीं
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	एक डाउनलोड जोडचें (URL जोडचें)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	एक खातें जोडचें
 #. text in the tray icon's menu
 #, machine
 	Add batch download	बॅच डाउनलोड जोडचें
@@ -190,8 +171,7 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	फुकट एक्स्टॅन्शन जोडात: तुमच्या ब्राउजरांत डौनलोड केल्ल्यो फायली हांगा येतात, आनी व्हिडियोंक डौनलोड बटण मेळटा.
-#. message or event log entry in the main window; text in the Link grabber window
-#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
+#. message or event log entry in the main window
 #, machine
 	Add to queue	रांगेंत जोडचें
 #. text in a dialog box
@@ -205,6 +185,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	यादींत {n} डाउनलोड जोडचे? दरेक विड्योक ताची स्वताची वळ मेळटा.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	जोडचें...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,10 +240,6 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	पयलींच डाउनलोड जाता: {path}
-#. text in the Link grabber window
-#. Link grabber: the package of links the download list has already
-#, machine
-	Already in the list	पयलींच वळेरेंत आसा
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -277,10 +258,6 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	सदैव गडद
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Always into a folder named after it	सदांच ताच्या नांवाच्या फोल्डरान
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager सुरू करतना सदांच गती मर्यादीत करपी चालू करचें
@@ -304,20 +281,6 @@
 #. text in the Scheduler window
 #, machine
 	April	एप्रिल
-#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
-#. what a screen reader calls the Archive password window's box
-#. what a screen reader calls Link grabber's password box
-#, machine
-	Archive password	आर्काइव्ह पासवर्ड
-#. group box title in the Options window; text in the Options window
-#. Options → Archives: group box title
-#. tab title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives	आर्काइव्ह
-#. text in the Options window
-#. Options page title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives and Link grabber	आर्काइव्ह आनी लिंक ग्रॅबर
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -331,6 +294,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	फायल वळेरी खातीर पियर्स विचारप. मॅग्नेट लिंक्स एक वा दोन मिनटां घेवंक शकतात.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	सेवेक विचारप...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -375,7 +343,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	जशे धाडले तशे {names} परत हाडात: तांची नांवां, फायल प्रकार आनी फोल्डर? तुमच्यो स्वताच्या वर्गवारी, सामान्य आनी टॉरेंट जशे आसात तशेच उरतले. सामान्यात पयलींच हालयल्ले डाउनलोड थंयच उरतले.
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ब्राउज करा
@@ -389,17 +357,13 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ब्राउजर/सिस्टम एकीकरण
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server asked to try later (429, 503)
-#, machine
-	Busy, try later	व्यस्त, उपरांत प्रयत्न करात
 #. message or event log entry in the main window
 #, machine
 	by batch download	बॅच डाउनलोड करून
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	लिंक ग्रॅबरान
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+	by import	आयात करून
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	रद्द करा
@@ -452,10 +416,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	निमण्या निवडलेल्याचेर "{category}" श्रेणी खातीर फोल्डर बदला
-#. text in the Link grabber window
-#. Link grabber button (IDM's): tick every link
-#, machine
-	Check all	सगळे तपासचे
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	अद्यतनां खातीर तपासणी करात
@@ -491,7 +451,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	{name} तपासता ({n} {total} पैकी)...
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	तपासणी करता...
@@ -573,15 +533,14 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	कॉपी करा
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	कोड कॉपी करचो
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	अहवाल कॉपी करचो
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {name} is the archive's file name, {why} the reason
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Couldn't extract {name}: {why}	{name} काडूंक शकलो ना: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	फोल्डर तयार करा
@@ -611,6 +570,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	दीस, म्हयनो, वर्स
+#. page title in the Options window
+#, machine
+	Debrid service accounts	डीब्रिड सेवा खातीं
 #. text in the Scheduler window
 #, machine
 	December	डिसेंबर
@@ -637,10 +599,6 @@
 #. verb: delete the item
 #, machine
 	Delete	काडून उडोव
-#. checkbox in the Link grabber window
-#. Link grabber check box: after extracting, the archives go to the Recycle Bin
-#, machine
-	Delete archives after extracting	काडल्या उपरांत आर्काइव्ह काडून उडोवचे
 #. window title in a dialog box
 #, machine
 	Delete category	वर्ग काडून उडोवचो
@@ -722,6 +680,10 @@
 #. text in a download's progress window
 #, machine
 	Done	जालां
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	सकयल
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	डाउनलोड कर
@@ -768,6 +730,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	डाउनलोड स्थिती
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	ह्या खात्यांवरवीं समर्थीत फाइल-होस्ट लिंक्स डाउनलोड करच्यो
 #. window title in the Download video window
 #, machine
 	Download video from a page	एका पाना वयल्यान व्हिडिओ डाउनलोड करात
@@ -853,10 +819,6 @@
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	दरेक जोडणी प्रणालीचो मार्ग घेता.
-#. text in the Link grabber window
-#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
-#, machine
-	Each file's category folder	प्रत्येक फायलीचो वर्ग फोल्डर
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -939,6 +901,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	अपेक्षित चेकसम सेट केला ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	प्रयोगात्मक: Real-Debrid च्या सार्वजनिक API डॉक्युमेंटेशनांतल्यान तयार केल्लें, अजून खऱ्या खात्यान पुष्टी जावंक ना.
 #. message or event log entry in the main window
 #, machine
 	Export	निर्यात कर
@@ -948,27 +914,6 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	विस्तार स्पेसानी वेगळे केल्ले, देखीक MP4 MKV R0*
-#. button in extracting archives (a download's log, the Archive password window)
-#. button: extract the archive with the password typed
-#, machine
-	Extract	काडचें
-#. checkbox in the Options window
-#. Options → Archives check box (a Link grabber package has its own "Extract when done")
-#, machine
-	Extract archives when their download completes	जेन्ना आर्काइव्ह डाउनलोड पुराय जाता तेन्ना तीं काडून उडोवचीं
-#. text in the Link grabber window
-#. Link grabber check box: extract the package's archives once they are downloaded
-#, machine
-	Extract when done	जातकच काडचें
-#. text in extracting archives (a download's log, the Archive password window)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting the archive...	आर्काइव्ह काडटा...
-#. message or event log entry in the main window
-#. a download's status: its archive is being extracted (#37)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting...	काडटा...
 #. text in the Scheduler window
 #, machine
 	February	फेब्रुवारी
@@ -1034,6 +979,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	फायल सोद
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	माझो टोकन सोदचो
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1083,6 +1032,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	शुक्र
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	फ्री खातें: लिंक्स खातीर प्रीमियम जाय
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1147,10 +1100,6 @@
 #. tab title: general information
 #, machine
 	General	सामान्य
-#. text in extracting archives (a download's log, the Archive password window)
-#. button: opens 7-Zip's website (7-Zip is a program's name)
-#, machine
-	Get 7-Zip	7-Zip मेळोवचें
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1206,10 +1155,6 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	अधिसूचोवणी क्षेत्रांत लिपय
-#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
-#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
-#, machine
-	Hide web pages	वेब पानां लिपय
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	ब्रावझराक Mister Download Manager बदला डाउनलोड करपाक दिवपाक लिंक क्लिक करतना Alt धरून दवरात.
@@ -1245,12 +1190,19 @@
 #. message or event log entry in the main window
 #, machine
 	Import	आयात कर
+#. window title in transfer.rs
+#, machine
+	Import downloads	डाउनलोड आयात कर
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	एका रांकेत
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	श्रेणींनीत: निवडिल्ले श्रेणीचें मेनू
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	यादींत
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1263,10 +1215,6 @@
 #. the torrent's identifier
 #, machine
 	Info hash	माहिती हॅश
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window, under why
-#, machine
-	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (फुकट) इन्स्टॉल करात, मागीर डावनलोडाचेर उजवें क्लिक करून Extract निवडात.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1279,10 +1227,6 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp स्थापीत कर
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Into a folder named after it, when it holds several things	जेन्ना तातूंत जायत्यो गजाली आसतात, तेन्ना ताच्या नांवाच्या फोल्डरान
 #. text in a dialog box
 #, machine
 	Invalid address	अवैध पत्तो
@@ -1290,35 +1234,10 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	IP पत्ते (पर्यायी):
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it holds too many files or folders	तातूंत खूब फायली वा फोल्डर आसात
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is damaged, or not the archive its name says	तें खराब जालां, वा ताच्या नांवा प्रमाणें आर्काइव्ह न्हय
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is not an archive MDM extracts	तें MDM काडपी आर्काइव्ह न्हय
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it needs a password	ताका पासवर्ड जाय
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	तुमच्या नेटवर्कारच्या संगणकांक तुमकां खंयचे टॉरेंट आसात तें सांगता.
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it was stopped	तें थांबयलें
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	it would write {size}, more than the {limit} there is room or reason for	तें {size} बरयतले, थंय आशिल्ल्या {limit} परस चड सुवात वा कारण
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1396,17 +1315,8 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	सगळ्या टॉरेंटांचें अपलोडिंग मर्यादीत करात:
-#. window title in the Link grabber window; group box title in the Options window
-#. Options → Archives: group box title
-#, machine
-	Link grabber	लिंक ग्रॅबर
-#. text in the Link grabber window
-#. what a screen reader calls Link grabber's list
-#, machine
-	Links	दुवे
-#. message or event log entry in the main window; text in the Link grabber window
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: a page in the browser
-#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ब्रावझरा कडल्यान लिंक्स
 #. text in playlistdlg.rs
@@ -1441,10 +1351,6 @@
 #. noun: the user name and password section
 #, machine
 	Login	लॉगिन
-#. checkbox in the Options window
-#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
-#, machine
-	Look links up when they arrive (name, size, online)	जेन्ना दुवे येतात तेन्ना ते पळोवचे (नांव, आकार, ऑनलायन)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	सोद
@@ -1625,22 +1531,17 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	न.
-#. text in the Link grabber window; text in the Add torrent window
+#. text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	नांव
-#. text in categories.rs; text in the Link grabber window
-#. Link grabber: the package's name (a label before its box)
+#. text in categories.rs
 #, machine
 	Name:	नांव:
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	तुमच्या होस्ट फायलींतलीं नांवां आनी थळावी नांवां (एकूच उतरां, .local, .lan) सिस्टमाच्या DNS कडेन उरतात. व्हिडियो पानां आनी टॉरेंट ट्रॅकर सद्यापुरते सिस्टमाचो DNS वापरतात.
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server wants a login (401, 403)
-#, machine
-	Needs a login	लॉगिन जाय
 #. text in the Options window
 #, machine
 	Network adapter:	नेटवर्क अडॅप्टर:
@@ -1760,6 +1661,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	आतां न्हय? मागीर कार्यां → एका पाना वयल्यान व्हिडिओ डाउनलोड करात हातूंतल्यान तीं मेळोवचीं.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	ह्या सेवेन समर्थीत ना
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	वापरना: फायलीचे भाग फायली भोंवतणी बरयल्यात
@@ -1795,11 +1700,7 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	क्लिपबोर्डांत कॉपी केल्ले दुवे डाउनलोड करपाक दिवचें
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
-#, machine
-	Offline ({status})	ऑफलायन ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
 #, machine
 	OK	ठीक आसा
 #. text in a download's progress window
@@ -1817,10 +1718,6 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	एक फावट डाउनलोड करप
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server has the file
-#, machine
-	Online	ऑनलायन
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1862,6 +1759,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	जातकच सकयल दिल्लें फायल उगड:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	पान उगडचें
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1887,35 +1788,25 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	पुराय जातकच विकल्प
-#. text in the Link grabber window
-#. Link grabber: the box that edits the selected package
+#. text in the Options window
 #, machine
-	Package	पॅकेज
+	Or paste your API token:	वा तुमचो API टोकन पेस्ट करात:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	पानाचो पत्तो
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	पासवर्ड
-#. text in the Link grabber window; text in the Options window
-#. Link grabber: the package's archives' password (a label before its box)
+#. text in the Options window
 #, machine
 	Password:	पासवर्ड:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	एक मॅग्नेट लिंक पेस्ट करात वा एक .torrent फायल वेंचून काडात, मागीर सोदात.
-#. text in the Link grabber window
-#. Link grabber, while it is empty
-#, machine
-	Paste links here (Ctrl+V), or send a page's links from the browser.	दुवे हांगा पेस्ट करात (Ctrl+V), वा ब्राउझरांतल्यान पानाचे दुवे धाडात.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	डाउनलोडच्या पानाचेर दिल्लो चेकसम पेस्ट कर
-#. text in the Link grabber window
-#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
-#, machine
-	Pasted	पेस्ट केलें
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1958,6 +1849,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	पोर्ट:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	प्रीमियम
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	प्रीमियम, {days} दीस उरल्यात
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2132,10 +2031,6 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	हांगा सांबाळ:
-#. text in the Link grabber window
-#. Link grabber: the folder the package's files go to (a label before its box)
-#, machine
-	Save to:	हांगा सांबाळचें:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -2159,7 +2054,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	एक फोल्डर निवडात
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	सगळें निवडात
@@ -2169,7 +2064,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ह्या डाउनलोड मेरेन सगळे डाउनलोड निवडात
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: untick every video
 #, machine
 	Select none	कांयच निवडूंक ना
@@ -2221,6 +2116,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	सर्व्हर:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	सेवा
+#. text in the Options window
+#, machine
+	Service:	सेवा:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2308,6 +2210,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	बंद कर
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	ब्राउझरांत साइन इन करचें
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	{user} म्हूण साइन इन केल्लें ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	साइन आउट केल्लें: परत साइन इन करचें
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	सायट नांव/डाउनलोड लिंक/पालक वेब पान/रेफरर
@@ -2328,7 +2242,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	साइट्स तांची सगळ्यांत बरी गुणवत्ता वेगळ्या व्हिडिओ आनी ऑडिओ म्हूण धाडटात. ffmpeg तीं एकठांय करून एका फायलींत घालता जी खंयच्याय सुवातेर चलता.
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -2368,11 +2282,6 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	मूळ कोड
-#. text in the Link grabber window
-#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
-#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
-#, machine
-	Source: {source}	स्रोत: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2380,10 +2289,6 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	गती मर्यादीत करपी मांडावळ
-#. text in the Link grabber window
-#. Link grabber button: download the ticked links now
-#, machine
-	Start	सुरू करा
 #. button in a dialog box
 #, machine
 	Start Download	डाउनलोड सुरू कर
@@ -2426,7 +2331,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	सुरू जाता...
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	स्थिती
+#. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -2480,10 +2389,6 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	डाउनलोड सोंपता तेन्ना थांबता
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Straight into the archive's folder	आर्काइव्हच्या फोल्डरांत थेट
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2511,10 +2416,6 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	एकठांय करपाची रांग
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	कार्यां → दुवो ग्राबर, वा ब्राउझराचें "सगळे दुवे डावनलोड करा": एक फांट्या आर्काइव्हचे व्हॉल्यूम एक पॅकेज आसता, पानाचे हेर दुवे दुसरे आसतात.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	एका इश्टाक सांग
@@ -2548,20 +2449,6 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	पतो http(s) वा ftp(s) पतो आसूंक जाय
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Recycle Bin: it was kept	आर्काइव्ह रिसायकल बिनांत व्हरपाक शकलो ना: तो दवरलो
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Trash: it was kept	आर्काइव्ह ट्रॅशांत व्हरपाक शकलो ना: तो दवरलो
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Recycle Bin	आर्काइव्ह रिसायकल बिनांत व्हरलो
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Trash	आर्काइव्ह ट्रॅशांत व्हरलो
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	उत्तम गुणवत्ता, MP3, Opus आनी FLAC हांकां ffmpeg (सुमार 80 MB) जाय पडटा.
@@ -2569,6 +2456,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	उत्तम गुणवत्ता, MP3, Opus आनी FLAC हांकां ffmpeg जाय पडटा: तुमच्या सिस्टिमच्या पॅकेज मॅनेजरा वरवीं (वा Homebrew) तें स्थापीत करात.
+#. text in the settings
+#. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+#, machine
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ब्राउझराचो प्रॉक्सी (VPN वा प्रॉक्सी एक्स्टेंशन) फक्त त्या एक्स्टेंशन कडेन आशिल्लो लॉगइन मागता: VPN चें स्वताचें ॲप वापरचें, वा ऑप्शन्स → प्रॉक्सी / SOCKS हातूंत ताचो नेटवर्क ॲडाप्टर निवडचो
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2577,6 +2468,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	क्लिपबोर्ड व्यस्त आसा: परत प्रयत्न करात.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	कोड कालबाह्य जालो: परत साइन इन करचें
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2696,10 +2591,6 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	नेटवर्क अडॅप्टर {adapter} जोडला ना
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	the password is wrong	पासवर्ड चुकला
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	Windows खातीर मार्ग खूब लांब आसा: {path}
@@ -2780,14 +2671,6 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ही फाइल मेळिल्ली वेब पेज:
-#. text in the Options window
-#. Options → Archives check box
-#, machine
-	Then move the archives to the Recycle Bin	मागीर आर्काइव्ह रिसायकल बिनांत व्हरचे
-#. text in the Options window
-#. Options → Archives check box (Linux and macOS)
-#, machine
-	Then move the archives to the Trash	मागीर आर्काइव्ह ट्रॅशांत व्हरचे
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ह्या नांवाचो वर्ग पयलींच आसा
@@ -2981,6 +2864,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	रांगेचें नांव टायप कर
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	हो कोड {page} हांगा टायप करात आनी MDM क परवानगी दियात; तुमची वाट पळयता (कोड {time} भितर कालबाह्य जाता).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2988,10 +2876,6 @@
 #. text in a download's Properties window
 #, machine
 	Type:	प्रकार:
-#. text in the Link grabber window
-#. Link grabber button (IDM's): untick every link
-#, machine
-	Uncheck all	सगळे अनचेक करा
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -3003,6 +2887,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	अज्ञात
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	वयल्यान
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -3057,6 +2945,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	प्रॉक्सी वापरचें (पर्याय → प्रॉक्सी / सॉक्स, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	टोकन वापरचें
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ह्या टॉरेंटा खातीर तांचो वापर करचो? जें जुळटा तें दवरलें वतलें, बाकीचें बदललें वतलें.
@@ -3085,10 +2977,6 @@
 #. text in a download's progress window
 #, machine
 	Value	मोल
-#. text in the Link grabber window
-#. Link grabber: the package of links that belong to no other
-#, machine
-	Various files	विविध फायली
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3126,11 +3014,6 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	व्हायरस तपासणी सेटींग
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
-#. {n} = a number (keep the braces as they are)
-#, machine
-	volume {n} of it is missing	ताचो व्हॉल्यूम {n} ना
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -3152,13 +3035,12 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	वेब
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	{file} त मेळिल्ले वेब पत्तो:
 #. text in the Scheduler window
 #, machine
 	Wednesday	बुधवार
-#. text in the Options window
-#. Options → Archives: a label before the list of where extracted files go
-#, machine
-	What an archive holds goes:	आर्काइव्हान दवरिल्लें वता:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -3189,11 +3071,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	तारखा आनी वेळा बरयात
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Wrong password for {name}. Type it again:	{name} खातीर पासवर्ड चुकला. तो परतून टायप करा:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -3244,10 +3121,6 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: व्हिडिओ सोदता
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ आनी XZ; एक फांट्या आर्काइव्ह (.part1.rar, .7z.001) दर एक व्हॉल्यूम भितर आसता. थंय पयलींच आशिल्ली फाइल दवरल्या: नवें क्रमांकित केलां.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -3352,16 +3225,6 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} डावनलोड करूंक शकलो ना: {error}
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} एक 7z वा RAR आर्कायव्ह आसा. MDM तीं 7-Zip वरवीं काडटा, जें इन्स्टॉल करूंक ना.
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is protected by a password:	{name} पासवर्डान सुरक्षित आसा:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -3377,13 +3240,67 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} chosen	{total} पैकी {n} निवडल्यात
-#. text in the Link grabber window
+#. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} पैकीं {n} निवडले
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} हळू करपाक सांगता; MDM एक मिनटा भितर परत प्रयत्न करतलो
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} पयलीं ह्या कंप्युटराक परवानगी दिवपाक सांगता: ताचो ईमेल पळयात
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} ह्या वेळार ह्या फाइल होस्टा मेरेन पावंक शकना; MDM उपरांत परत प्रयत्न करतलो
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} प्रतिसाद दिना; उपरांत परत प्रयत्न करात
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} हें कनेक्शन न्हयकारता (VPN वा सर्व्हर ॲड्रेस?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} ही फाइल दिना
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: परत साइन इन करचें (पर्याय → खातीं)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: खातें लॉक केल्लें वा सक्रिय ना
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: फाइल फाइल होस्टा वयल्यान गेली वा उपलब्ध ना
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: ही फाइल पासवर्ड-संरक्षित आसा
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: हाका प्रीमियम खातें जाय
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: तुमच्या खात्यांतल्यान एकाच वेळार खूब डाउनलोड; MDM परत प्रयत्न करतलो
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: ह्या फायल होस्टा खातीर तुमची मर्यादा आतां सोंपल्या
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -3719,12 +3636,6 @@ menu	&Keyboard shortcuts	किबोर्ड शॉर्टकट्स (&K)
 #, machine
 menu	&Language...	&भास...
 #. menu command in the main window
-#. Tasks menu: open Link grabber (links in packages, to tick before adding)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	&Link grabber...	&दुवो ग्राबर...
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	पर्याय (&O)
@@ -3894,10 +3805,6 @@ menu	E&xport	&निर्यात करात
 #. menu command in the main window
 #, machine
 menu	Edit queue	रांग संपादीत करात
-#. menu command in the main window
-#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
-#, machine
-menu	Extract	काढून घेवचें
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	सोदात (Ctrl-F)
@@ -4145,3 +4052,274 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/सेकंद
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} फाइल {folder} कडेन काडली|{n} फायली {folder} कडेन काडल्यो
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} नोंदी भायर उडयल्यो (एक दुवो, वा फोल्डर भायर व्हरपी नांव)|{n} नोंदी भायर उडयल्यो (दुवे, वा फोल्डर भायर व्हरपी नांवां)
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} फायलीक पयलींच थंय आशिल्ल्या फायलीचें नांव आशिल्लें आनी ताका क्रमांक दिलो|{n} फायलींक पयलींच थंय आशिल्ल्या फायलींचें नांव आशिल्लें आनी तांकां क्रमांक दिलो
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	7-Zip जाय पडटा
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z ani RAR आर्कायव्ह 7-Zip ({path}) वरवीं काडटात.
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z आनी RAR आर्कायव्ह खातीर 7-Zip (7-zip.org) जाय, जें इन्स्टॉल करूंक ना.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	7z आनी RAR आर्कायव्ह खातीर 7-Zip जाय, जें इन्स्टॉल करूंक ना
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	ताचो एक व्हॉल्यूम ना
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	पयलींच वळेरेंत आसा
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	सदांच ताच्या नांवाच्या फोल्डरान
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	आर्काइव्ह पासवर्ड
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	आर्काइव्ह
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	आर्काइव्ह आनी लिंक ग्रॅबर
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	व्यस्त, उपरांत प्रयत्न करात
+#. message or event log entry in the main window
+#, machine
+	by Link grabber	लिंक ग्रॅबरान
+#. text in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	सगळे तपासचे
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	{name} काडूंक शकलो ना: {why}
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	काडल्या उपरांत आर्काइव्ह काडून उडोवचे
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	प्रत्येक फायलीचो वर्ग फोल्डर
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	काडचें
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	जेन्ना आर्काइव्ह डाउनलोड पुराय जाता तेन्ना तीं काडून उडोवचीं
+#. text in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	जातकच काडचें
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	आर्काइव्ह काडटा...
+#. message or event log entry in the main window
+#. a download's status: its archive is being extracted (#37)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting...	काडटा...
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	7-Zip मेळोवचें
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	वेब पानां लिपय
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (फुकट) इन्स्टॉल करात, मागीर डावनलोडाचेर उजवें क्लिक करून Extract निवडात.
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	जेन्ना तातूंत जायत्यो गजाली आसतात, तेन्ना ताच्या नांवाच्या फोल्डरान
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	तातूंत खूब फायली वा फोल्डर आसात
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	तें खराब जालां, वा ताच्या नांवा प्रमाणें आर्काइव्ह न्हय
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	तें MDM काडपी आर्काइव्ह न्हय
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	ताका पासवर्ड जाय
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	तें थांबयलें
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	तें {size} बरयतले, थंय आशिल्ल्या {limit} परस चड सुवात वा कारण
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	लिंक ग्रॅबर
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	दुवे
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	जेन्ना दुवे येतात तेन्ना ते पळोवचे (नांव, आकार, ऑनलायन)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	लॉगिन जाय
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	ऑफलायन ({status})
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	ऑनलायन
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	पॅकेज
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	दुवे हांगा पेस्ट करात (Ctrl+V), वा ब्राउझरांतल्यान पानाचे दुवे धाडात.
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	पेस्ट केलें
+#. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
+#, machine
+	Save to:	हांगा सांबाळचें:
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	स्रोत: {source}
+#. text in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	सुरू करा
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	आर्काइव्हच्या फोल्डरांत थेट
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	कार्यां → दुवो ग्राबर, वा ब्राउझराचें "सगळे दुवे डावनलोड करा": एक फांट्या आर्काइव्हचे व्हॉल्यूम एक पॅकेज आसता, पानाचे हेर दुवे दुसरे आसतात.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	आर्काइव्ह रिसायकल बिनांत व्हरपाक शकलो ना: तो दवरलो
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	आर्काइव्ह ट्रॅशांत व्हरपाक शकलो ना: तो दवरलो
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	आर्काइव्ह रिसायकल बिनांत व्हरलो
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	आर्काइव्ह ट्रॅशांत व्हरलो
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	पासवर्ड चुकला
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	मागीर आर्काइव्ह रिसायकल बिनांत व्हरचे
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	मागीर आर्काइव्ह ट्रॅशांत व्हरचे
+#. text in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	सगळे अनचेक करा
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	विविध फायली
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	ताचो व्हॉल्यूम {n} ना
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	आर्काइव्हान दवरिल्लें वता:
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	{name} खातीर पासवर्ड चुकला. तो परतून टायप करा:
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ आनी XZ; एक फांट्या आर्काइव्ह (.part1.rar, .7z.001) दर एक व्हॉल्यूम भितर आसता. थंय पयलींच आशिल्ली फाइल दवरल्या: नवें क्रमांकित केलां.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} एक 7z वा RAR आर्कायव्ह आसा. MDM तीं 7-Zip वरवीं काडटा, जें इन्स्टॉल करूंक ना.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} पासवर्डान सुरक्षित आसा:
+#. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	&दुवो ग्राबर...
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	काढून घेवचें

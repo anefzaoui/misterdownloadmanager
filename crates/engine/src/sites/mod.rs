@@ -21,6 +21,11 @@ pub enum Refusal {
     NoAccess,
     /// A Drive folder: it lists files, it isn't one.
     Folder,
+    /// A service account's refusal to unlock the link (#44, `crate::unlock`).
+    Service {
+        service: String,
+        fault: crate::unlock::ServiceFault,
+    },
 }
 
 impl std::fmt::Display for Refusal {
@@ -41,6 +46,7 @@ impl std::fmt::Display for Refusal {
                  downloading"
             ),
             Refusal::Folder => write!(f, "this is a Google Drive folder, not a file"),
+            Refusal::Service { service, fault } => write!(f, "{service}: {fault}"),
         }
     }
 }

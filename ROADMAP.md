@@ -25,8 +25,12 @@ Everything below ships together, in one release.
   later ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)), and a download
   finishing during a save no longer fails ([#116](https://github.com/anefzaoui/misterdownloadmanager/issues/116))
 - ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
+- ✅ Real-Debrid (experimental): file-host links downloaded through your own account (Options → Accounts)
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
+- ✅ Downloads from a browser behind a VPN or proxy extension go through the same proxy
+  ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
   and the main window's Minimize, with the tray's "Downloads in progress"
   ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
@@ -84,8 +88,12 @@ Everything below ships together, in one release.
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
 - ✅ The built-in categories can be renamed, given other file types and deleted, and restored
   ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93))
-- ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
-  a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
+- ✅ A file-type icon before every file name, in every window that names a file (the download
+  list, Download File Info, Properties, Download complete, Add torrent, a torrent's files, the
+  Scheduler, Batch download, Download video and its playlists), each the system's own icon for
+  its type (Windows Explorer's, macOS Finder's, the Linux desktop's icon theme), sharp at every
+  display scale
+  ([#122](https://github.com/anefzaoui/misterdownloadmanager/issues/122)), and every
   list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),
   inside their list, with their place in it ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102));
   the Categories pane, the menu bar and every right-click menu too, with Shift+F10 and the Menu key
@@ -113,14 +121,16 @@ Everything below ships together, in one release.
 ### Downloads and windows
 
 - 📋 Debrid services: Real-Debrid, AllDebrid, Premiumize
+- 📋 A link grabber with packages, and auto-extract of archives
+  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
+- 📋 Debrid services, the rest: AllDebrid and Premiumize, torrents through the service, the system
+  keychains for the sign-ins
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
 ### Network
 
 - 📋 Video pages, and torrents on Windows, through a chosen network adapter
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
-- 📋 Downloads follow a browser's VPN or proxy extension
-  ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 
 ### Browser extension
 

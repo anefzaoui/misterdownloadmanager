@@ -42,6 +42,7 @@ rfd = "0.17.2"
 unicode-segmentation = "1.13.3"
 # Crash and freeze reports: the monitor, minidumps, symbolicated stacks, release logs.
 mdm-crash.workspace = true
+mdm-debrid.workspace = true
 tracing.workspace = true
 # Unpacks the translation catalogs (i18n.rs, packed by build.rs); already in the tree through
 # reqwest's brotli support.
@@ -68,6 +69,12 @@ tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] 
 # The desktop's light or dark preference from the freedesktop portal (unix.rs); already in the
 # tree through the tray (ksni) and AccessKit, with the same features.
 zbus = { version = "5.19.0", default-features = false, features = ["async-io", "blocking-api"] }
+
+# macOS: Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6.5"
+objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation"] }
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation"] }
 
 # Crash reports on Linux and macOS: thread and process ids, signals (unix.rs).
 [target.'cfg(unix)'.dependencies]

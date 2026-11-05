@@ -12,11 +12,6 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	האם למחוק הורדה {n} מרשימת ההורדות של Mister Download Manager?|האם למחוק {n} הורדות אלה מרשימת ההורדות של Mister Download Manager?|האם למחוק {n} הורדות אלה מרשימת ההורדות של Mister Download Manager?
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {n} is a number of files, {folder} where they went
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	חולץ קובץ אחד ({n}) אל {folder}|חולצו {n} קבצים אל {folder}|חולצו {n} קבצים אל {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -39,22 +34,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} בהורדה|{n} בהורדה|{n} בהורדה
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	ערך אחד ({n}) הושמט (קישור, או שם המוביל אל מחוץ לתיקיה)|{n} ערכים הושמטו (קישורים, או שמות המובילים אל מחוץ לתיקיה)|{n} ערכים הושמטו (קישורים, או שמות המובילים אל מחוץ לתיקיה)
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
+#. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
-#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	קובץ {n}|קבצים {n}|קבצים {n}
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	קובץ אחד ({n}) כבר היה קיים בשם זה ומוספר|{n} קבצים כבר היו קיימים בשם זה ומוספרו|{n} קבצים כבר היו קיימים בשם זה ומוספרו
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -63,11 +47,11 @@
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-@plural	{title}: {count} video|{title}: {count} videos	{title}: סרטון {count}|{title}: {count} סרטונים|{title}: {count} סרטונים
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} סרטון וידאו|{title}: {count} סרטוני וידאו|{title}: {count} סרטוני וידאו
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
-@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} מתוך {total} סרטונים ברשימה|{title}: {listed} מתוך {total} סרטונים ברשימה|{title}: {listed} מתוך {total} סרטונים ברשימה
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: מוצג {listed} מתוך {total} סרטון וידאו|{title}: מוצגים {listed} מתוך {total} סרטוני וידאו|{title}: מוצגים {listed} מתוך {total} סרטוני וידאו
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -111,24 +95,13 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24 שעות (21:41)
-#. window title in extracting archives (a download's log, the Archive password window)
-#. window title: 7-Zip (a program's name) must be installed
-#, machine
-	7-Zip needed	נדרש 7-Zip
-#. text in the Options window
-#. Options → Archives: {path} is where 7-Zip's program is
-#, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	ארכיוני 7z ו-RAR נחלצים על ידי 7-Zip ({path}).
-#. text in the Options window
-#. Options → Archives, when 7-Zip isn't installed
-#, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	ארכיוני 7z ו-RAR דורשים את 7-Zip (7-zip.org), שאינו מותקן.
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	7z and RAR archives need 7-Zip, which isn't installed	ארכיוני 7z ו-RAR דורשים את 7-Zip, שאינו מותקן
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< הסתר פרטים
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	שירות Debrid (Real-Debrid) מוריד קישור של מארח קבצים באמצעות החשבון בתשלום שלך ומספק ל-MDM קישור ישיר. השתמש רק בחשבון שלך: שיתוף חשבון או קישוריו מפר את תנאי השירות ועלול להוביל להשעייתו. הורדות שהדפדפן כבר התחיל יישארו כפי שהן.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -141,10 +114,6 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	שרת במחשב זה שלח את ההורדה למקום אחר, והיא לא תעבור דרך {adapter}
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	a volume of it is missing	חסר כרך שלו
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	אודות Mister Download Manager
@@ -152,9 +121,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	קבל חיבורים נכנסים
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	חשבון
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	חשבונות
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	הוסף הורדה (הוסף URL)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	הוספת חשבון
 #. text in the tray icon's menu
 #, machine
 	Add batch download	הוסף הורדת אצווה
@@ -190,8 +171,7 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	הוסף את ההרחבה החינמית: קבצים שתוריד בדפדפן שלך יגיעו לכאן, וסרטונים יקבלו לחצן הורדה.
-#. message or event log entry in the main window; text in the Link grabber window
-#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
+#. message or event log entry in the main window
 #, machine
 	Add to queue	הוסף לתור
 #. text in a dialog box
@@ -205,6 +185,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	להוסיף {n} הורדות לרשימה? כל סרטון יקבל שורה משלו.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	הוסף...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,10 +240,6 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	כבר מורד: {path}
-#. text in the Link grabber window
-#. Link grabber: the package of links the download list has already
-#, machine
-	Already in the list	כבר ברשימה
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -277,10 +258,6 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	תמיד כהה
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Always into a folder named after it	תמיד לתוך תיקיה שנקראת על שמו
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	הפעל תמיד את מגביל המהירות בעת הפעלת Mister Download Manager
@@ -304,20 +281,6 @@
 #. text in the Scheduler window
 #, machine
 	April	אפריל
-#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
-#. what a screen reader calls the Archive password window's box
-#. what a screen reader calls Link grabber's password box
-#, machine
-	Archive password	סיסמת ארכיון
-#. group box title in the Options window; text in the Options window
-#. Options → Archives: group box title
-#. tab title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives	ארכיונים
-#. text in the Options window
-#. Options page title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives and Link grabber	ארכיונים ולוכד קישורים
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -331,6 +294,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	מבקש עמיתים עבור רשימת הקבצים. קישורי מגנט עשויים להימשך דקה או שתיים.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	שואל את השירות...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -375,7 +343,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	לשחזר את {names} למצבם המקורי: השמות, סוגי הקבצים והתיקיות שלהם? הקטגוריות שלך, כללי וטורנטים יישארו כפי שהן. הורדות שכבר הועברו לכללי יישארו שם.
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	עיון
@@ -389,17 +357,13 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	שילוב דפדפן/מערכת
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server asked to try later (429, 503)
-#, machine
-	Busy, try later	תפוס, נסה שוב מאוחר יותר
 #. message or event log entry in the main window
 #, machine
 	by batch download	לפי הורדת אצווה
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	על ידי לוכד קישורים
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+	by import	לפי ייבוא
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ביטול
@@ -452,10 +416,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	שנה תיקיה עבור קטגוריה "{category}" בבחירה האחרונה
-#. text in the Link grabber window
-#. Link grabber button (IDM's): tick every link
-#, machine
-	Check all	סמן הכל
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	בדוק עדכונים
@@ -491,7 +451,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	בודק את {name} ({n} מתוך {total})...
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	בודק...
@@ -573,15 +533,14 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	העתק
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	העתק קוד
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	העתק דוח
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {name} is the archive's file name, {why} the reason
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Couldn't extract {name}: {why}	לא ניתן לחלץ את {name}: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	צור תיקיה
@@ -611,6 +570,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	יום, חודש, שנה
+#. page title in the Options window
+#, machine
+	Debrid service accounts	חשבונות שירות Debrid
 #. text in the Scheduler window
 #, machine
 	December	דצמבר
@@ -637,10 +599,6 @@
 #. verb: delete the item
 #, machine
 	Delete	מחק
-#. checkbox in the Link grabber window
-#. Link grabber check box: after extracting, the archives go to the Recycle Bin
-#, machine
-	Delete archives after extracting	מחק ארכיונים לאחר חילוץ
 #. window title in a dialog box
 #, machine
 	Delete category	מחיקת קטגוריה
@@ -722,6 +680,10 @@
 #. text in a download's progress window
 #, machine
 	Done	בוצע
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	למטה
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	הורד
@@ -768,6 +730,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	מצב הורדה
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	הורד קישורי מארחי קבצים נתמכים דרך חשבונות אלה
 #. window title in the Download video window
 #, machine
 	Download video from a page	הורדת וידאו מדף
@@ -853,10 +819,6 @@
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	כל חיבור עובר דרך נתיב המערכת.
-#. text in the Link grabber window
-#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
-#, machine
-	Each file's category folder	תיקיית הקטגוריה של כל קובץ
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -939,6 +901,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	סכום בדיקה צפוי הוגדר ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ניסיוני: נבנה מתיעוד ה-API הציבורי של Real-Debrid, טרם אושר עם חשבון אמיתי.
 #. message or event log entry in the main window
 #, machine
 	Export	ייצוא
@@ -948,27 +914,6 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	סיומות מופרדות ברווחים, לדוגמה MP4 MKV R0*
-#. button in extracting archives (a download's log, the Archive password window)
-#. button: extract the archive with the password typed
-#, machine
-	Extract	חלץ
-#. checkbox in the Options window
-#. Options → Archives check box (a Link grabber package has its own "Extract when done")
-#, machine
-	Extract archives when their download completes	חלץ ארכיונים כאשר ההורדה שלהם מסתיימת
-#. text in the Link grabber window
-#. Link grabber check box: extract the package's archives once they are downloaded
-#, machine
-	Extract when done	חלץ בסיום
-#. text in extracting archives (a download's log, the Archive password window)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting the archive...	מחולץ את הארכיון...
-#. message or event log entry in the main window
-#. a download's status: its archive is being extracted (#37)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting...	החילוץ מתבצע...
 #. text in the Scheduler window
 #, machine
 	February	פברואר
@@ -1034,6 +979,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	מצא קובץ
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	מצא את האסימון שלי
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1083,6 +1032,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	ו׳
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	חשבון חינמי: קישורים דורשים פרימיום
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1147,10 +1100,6 @@
 #. tab title: general information
 #, machine
 	General	כללי
-#. text in extracting archives (a download's log, the Archive password window)
-#. button: opens 7-Zip's website (7-Zip is a program's name)
-#, machine
-	Get 7-Zip	קבל 7-Zip
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1206,10 +1155,6 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	הסתר לאזור ההודעות
-#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
-#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
-#, machine
-	Hide web pages	הסתר דפי אינטרנט
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	החזק את Alt תוך כדי לחיצה על קישור כדי לאפשר לדפדפן להוריד אותו במקום Mister Download Manager.
@@ -1245,12 +1190,19 @@
 #. message or event log entry in the main window
 #, machine
 	Import	ייבוא
+#. window title in transfer.rs
+#, machine
+	Import downloads	ייבוא הורדות
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	בתור
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	בקטגוריות: תפריט הקטגוריה הנבחרת
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	ברשימה
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1263,10 +1215,6 @@
 #. the torrent's identifier
 #, machine
 	Info hash	גיבוב מידע
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window, under why
-#, machine
-	Install 7-Zip (free), then right-click the download and choose Extract.	התקן את 7-Zip (חינם), ולאחר מכן לחץ באמצעות לחצן העכבר הימני על ההורדה ובחר חלץ.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1279,10 +1227,6 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	התקן את yt-dlp
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Into a folder named after it, when it holds several things	לתוך תיקיה שנקראת על שמו, כאשר היא מכילה מספר דברים
 #. text in a dialog box
 #, machine
 	Invalid address	כתובת לא חוקית
@@ -1290,35 +1234,10 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	כתובות IP (אופציונלי):
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it holds too many files or folders	הוא מכיל יותר מדי קבצים או תיקיות
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is damaged, or not the archive its name says	הוא פגום, או לא הארכיון ששמו מציין
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is not an archive MDM extracts	הוא אינו ארכיון ש- MDM מחלץ
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it needs a password	הוא דורש סיסמה
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	הוא מודיע למחשבים ברשת שלך אילו טורנטים יש לך.
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it was stopped	הוא נעצר
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	it would write {size}, more than the {limit} there is room or reason for	הוא יכתוב {size}, יותר מה- {limit} שיש מקום או סיבה עבורו
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1396,17 +1315,8 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	הגבלת העלאה עבור כל הטורנטים ל-
-#. window title in the Link grabber window; group box title in the Options window
-#. Options → Archives: group box title
-#, machine
-	Link grabber	לוכד קישורים
-#. text in the Link grabber window
-#. what a screen reader calls Link grabber's list
-#, machine
-	Links	קישורים
-#. message or event log entry in the main window; text in the Link grabber window
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: a page in the browser
-#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	קישורים מהדפדפן
 #. text in playlistdlg.rs
@@ -1441,10 +1351,6 @@
 #. noun: the user name and password section
 #, machine
 	Login	כניסה
-#. checkbox in the Options window
-#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
-#, machine
-	Look links up when they arrive (name, size, online)	חפש קישורים כשהם מגיעים (שם, גודל, מקוון)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	חפש
@@ -1625,22 +1531,17 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	מס'.
-#. text in the Link grabber window; text in the Add torrent window
+#. text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	שם
-#. text in categories.rs; text in the Link grabber window
-#. Link grabber: the package's name (a label before its box)
+#. text in categories.rs
 #, machine
 	Name:	שם:
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	שמות בקובץ המארחים שלך ושמות מקומיים (מילים בודדות, .local, .lan) נשארים עם ה-DNS של המערכת. דפי וידאו וגששי טורנט משתמשים ב-DNS של המערכת לעת עתה.
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server wants a login (401, 403)
-#, machine
-	Needs a login	דורש התחברות
 #. text in the Options window
 #, machine
 	Network adapter:	מתאם רשת:
@@ -1760,6 +1661,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	לא עכשיו? קבל אותם מאוחר יותר מתוך משימות ← הורד וידאו מדף.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	לא נתמך על ידי שירות זה
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	לא בשימוש: חלקי קובץ נכתבים ליד הקובץ
@@ -1795,11 +1700,7 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	הצע להוריד קישורים שהועתקו ללוח
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
-#, machine
-	Offline ({status})	לא מקוון ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
 #, machine
 	OK	אישור
 #. text in a download's progress window
@@ -1817,10 +1718,6 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	הורדה חד-פעמית
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server has the file
-#, machine
-	Online	מקוון
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1862,6 +1759,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	פתח את הקובץ הבא לאחר השלמה:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	פתח את הדף
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1887,35 +1788,25 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	אפשרויות בסיום
-#. text in the Link grabber window
-#. Link grabber: the box that edits the selected package
+#. text in the Options window
 #, machine
-	Package	חבילה
+	Or paste your API token:	או הדבק את אסימון ה-API שלך:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	כתובת דף
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	סיסמה
-#. text in the Link grabber window; text in the Options window
-#. Link grabber: the package's archives' password (a label before its box)
+#. text in the Options window
 #, machine
 	Password:	סיסמה:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	הדבק קישור מגנט או בחר קובץ .torrent, ולאחר מכן חפש.
-#. text in the Link grabber window
-#. Link grabber, while it is empty
-#, machine
-	Paste links here (Ctrl+V), or send a page's links from the browser.	הדבק קישורים כאן (Ctrl+V), או שלח קישורי דף מהדפדפן.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	הדבק את סכום הבדיקה שמופיע בדף ההורדה
-#. text in the Link grabber window
-#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
-#, machine
-	Pasted	הודבק
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1958,6 +1849,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	יציאה:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	פרימיום
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	פרימיום, נותרו {days} ימים
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2132,10 +2031,6 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	שמור אל:
-#. text in the Link grabber window
-#. Link grabber: the folder the package's files go to (a label before its box)
-#, machine
-	Save to:	שמור אל:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -2159,7 +2054,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	בחר תיקיה
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	בחר הכל
@@ -2169,7 +2064,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	בחר כל הורדה עד לזו
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: untick every video
 #, machine
 	Select none	אל תבחר כלום
@@ -2221,6 +2116,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	שרתים:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	שירות
+#. text in the Options window
+#, machine
+	Service:	שירות:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2308,6 +2210,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	כיבוי
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	התחבר בדפדפן
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	מחובר כ-{user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	התנתק: התחבר שוב
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	שם אתר/קישור הורדה/דף אינטרנט הורה/מפנה
@@ -2328,7 +2242,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	אתרים שולחים את האיכות הטובה ביותר שלהם כווידאו ושמע נפרדים. ffmpeg מחבר אותם יחד לקובץ אחד שפועל בכל מקום.
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -2368,11 +2282,6 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	קוד מקור
-#. text in the Link grabber window
-#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
-#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
-#, machine
-	Source: {source}	מקור: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2380,10 +2289,6 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	הגדרות מגביל מהירות
-#. text in the Link grabber window
-#. Link grabber button: download the ticked links now
-#, machine
-	Start	התחל
 #. button in a dialog box
 #, machine
 	Start Download	התחל הורדה
@@ -2426,7 +2331,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	מפעיל...
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	מצב
+#. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -2480,10 +2389,6 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	נעצר כשההורדה מסתיימת
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Straight into the archive's folder	ישירות לתיקיית הארכיון
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2511,10 +2416,6 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	תור סנכרון
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	משימות ← לוכד קישורים, או "הורד את כל הקישורים" בדפדפן: כרכי ארכיון\nמפוצל הם חבילה אחת, שאר הקישורים בדף הם חבילה אחרת.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ספר לחבר
@@ -2548,20 +2449,6 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	הכתובת חייבת להיות כתובת http(s) או ftp(s)
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Recycle Bin: it was kept	הארכיון לא הועבר לסל המיחזור: הוא נשמר
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Trash: it was kept	הארכיון לא הועבר לאשפה: הוא נשמר
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Recycle Bin	הארכיון הועבר לסל המיחזור
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Trash	הארכיון הועבר לאשפה
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	האיכויות הטובות ביותר, MP3, Opus ו-FLAC, דורשות את ffmpeg (כ-80 מגה-בייט).
@@ -2569,6 +2456,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	האיכויות הטובות ביותר, MP3, Opus ו-FLAC, דורשות את ffmpeg: התקן אותו באמצעות מנהל החבילות של המערכת שלך (או Homebrew).
+#. text in the settings
+#. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+#, machine
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ה-proxy של הדפדפן (הרחבת VPN או proxy) מבקש פרטי כניסה שיש רק להרחבה זו: השתמש באפליקציה של ה-VPN, או בחר את מתאם הרשת שלה באפשרויות ← Proxy / Socks
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2577,6 +2468,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	הלוח תפוס: נסה שוב.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	הקוד פג תוקף: התחבר שוב
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2696,10 +2591,6 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	מתאם הרשת {adapter} אינו מחובר
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	the password is wrong	הסיסמה שגויה
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	הנתיב ארוך מדי עבור Windows: {path}
@@ -2780,14 +2671,6 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	דף האינטרנט שממנו הושג קובץ זה:
-#. text in the Options window
-#. Options → Archives check box
-#, machine
-	Then move the archives to the Recycle Bin	לאחר מכן העבר את הארכיונים לסל המיחזור
-#. text in the Options window
-#. Options → Archives check box (Linux and macOS)
-#, machine
-	Then move the archives to the Trash	לאחר מכן העבר את הארכיונים לאשפה
 #. text in categories.rs
 #, machine
 	There is already a category with this name	קיימת כבר קטגוריה בשם זה
@@ -2981,6 +2864,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	הקלד את שם התור
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	הקלד קוד זה ב-{page} ואפשר ל-MDM; ממתין לך (הקוד יפוג בעוד {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2988,10 +2876,6 @@
 #. text in a download's Properties window
 #, machine
 	Type:	סוג:
-#. text in the Link grabber window
-#. Link grabber button (IDM's): untick every link
-#, machine
-	Uncheck all	בטל בחירת הכל
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -3003,6 +2887,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	לא ידוע
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	למעלה
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -3057,6 +2945,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	השתמש בפרוקסי (אפשרויות ← פרוקסי / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	השתמש באסימון
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	האם להשתמש בהם עבור טורנט זה? מה שמתאים לו נשמר, השאר מוחלף.
@@ -3085,10 +2977,6 @@
 #. text in a download's progress window
 #, machine
 	Value	ערך
-#. text in the Link grabber window
-#. Link grabber: the package of links that belong to no other
-#, machine
-	Various files	קבצים שונים
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3126,11 +3014,6 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	הגדרות בדיקת וירוסים
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
-#. {n} = a number (keep the braces as they are)
-#, machine
-	volume {n} of it is missing	חסר כרך {n} ממנו
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -3152,13 +3035,12 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	אינטרנט
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	כתובות אינטרנט שנמצאו ב- {file}:
 #. text in the Scheduler window
 #, machine
 	Wednesday	יום רביעי
-#. text in the Options window
-#. Options → Archives: a label before the list of where extracted files go
-#, machine
-	What an archive holds goes:	תוכן ארכיון עובר:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -3189,11 +3071,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	כתיבת תאריכים ושעות
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Wrong password for {name}. Type it again:	סיסמה שגויה עבור {name}. הקלד אותה שוב:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -3244,10 +3121,6 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: מוצא את הווידאו
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ו-XZ; ארכיון מפוצל (part1.rar, .7z.001) לאחר שכל הכרכים נמצאים. קובץ שכבר קיים נשמר: החדש ממוספר.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -3352,16 +3225,6 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	לא ניתן היה להוריד את {name}: {error}
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} הוא ארכיון 7z או RAR. MDM מחלץ אותם באמצעות 7-Zip, שאינו מותקן.
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is protected by a password:	{name} מוגן באמצעות סיסמה:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -3377,13 +3240,67 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} chosen	{n} מתוך {total} נבחרו
-#. text in the Link grabber window
+#. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} מתוך {total} נבחרו
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} מבקש להאט; MDM ינסה שוב בעוד דקה
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} מבקש שתאשר מחשב זה תחילה: ראה את הדוא"ל שלו
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} לא יכול להגיע למארח קבצים זה כרגע; MDM ינסה שוב מאוחר יותר
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} אינו מגיב; נסה שוב מאוחר יותר
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} מסרב לחיבור זה (כתובת VPN או שרת?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} לא יספק קובץ זה
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: התחבר שוב (אפשרויות ← חשבונות)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: החשבון נעול או לא הופעל
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: הקובץ נעלם או אינו זמין במארח הקבצים
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: קובץ זה מוגן באמצעות סיסמה
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: נדרש חשבון פרימיום
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: יותר מדי הורדות בו-זמנית דרך החשבון שלך; MDM ינסה שוב
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: המגבלה שלך עבור מארח קבצים זה נוצלה לעת עתה
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -3719,12 +3636,6 @@ menu	&Keyboard shortcuts	&קיצורי מקלדת
 #, machine
 menu	&Language...	שפ&ה...
 #. menu command in the main window
-#. Tasks menu: open Link grabber (links in packages, to tick before adding)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	&Link grabber...	לוכד &קישורים...
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&אפשרויות
@@ -3894,10 +3805,6 @@ menu	E&xport	&ייצוא
 #. menu command in the main window
 #, machine
 menu	Edit queue	ערוך תור
-#. menu command in the main window
-#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
-#, machine
-menu	Extract	חלץ
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	מצא (Ctrl-F)
@@ -4145,3 +4052,274 @@ unit	{n} MB	{n} מ"ב
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} מ"ב/שנייה
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	חולץ קובץ אחד ({n}) אל {folder}|חולצו {n} קבצים אל {folder}|חולצו {n} קבצים אל {folder}
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	ערך אחד ({n}) הושמט (קישור, או שם המוביל אל מחוץ לתיקיה)|{n} ערכים הושמטו (קישורים, או שמות המובילים אל מחוץ לתיקיה)|{n} ערכים הושמטו (קישורים, או שמות המובילים אל מחוץ לתיקיה)
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	קובץ אחד ({n}) כבר היה קיים בשם זה ומוספר|{n} קבצים כבר היו קיימים בשם זה ומוספרו|{n} קבצים כבר היו קיימים בשם זה ומוספרו
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	נדרש 7-Zip
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	ארכיוני 7z ו-RAR נחלצים על ידי 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	ארכיוני 7z ו-RAR דורשים את 7-Zip (7-zip.org), שאינו מותקן.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	ארכיוני 7z ו-RAR דורשים את 7-Zip, שאינו מותקן
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	חסר כרך שלו
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	כבר ברשימה
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	תמיד לתוך תיקיה שנקראת על שמו
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	סיסמת ארכיון
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	ארכיונים
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	ארכיונים ולוכד קישורים
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	תפוס, נסה שוב מאוחר יותר
+#. message or event log entry in the main window
+#, machine
+	by Link grabber	על ידי לוכד קישורים
+#. text in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	סמן הכל
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	לא ניתן לחלץ את {name}: {why}
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	מחק ארכיונים לאחר חילוץ
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	תיקיית הקטגוריה של כל קובץ
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	חלץ
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	חלץ ארכיונים כאשר ההורדה שלהם מסתיימת
+#. text in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	חלץ בסיום
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	מחולץ את הארכיון...
+#. message or event log entry in the main window
+#. a download's status: its archive is being extracted (#37)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting...	החילוץ מתבצע...
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	קבל 7-Zip
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	הסתר דפי אינטרנט
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	התקן את 7-Zip (חינם), ולאחר מכן לחץ באמצעות לחצן העכבר הימני על ההורדה ובחר חלץ.
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	לתוך תיקיה שנקראת על שמו, כאשר היא מכילה מספר דברים
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	הוא מכיל יותר מדי קבצים או תיקיות
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	הוא פגום, או לא הארכיון ששמו מציין
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	הוא אינו ארכיון ש- MDM מחלץ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	הוא דורש סיסמה
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	הוא נעצר
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	הוא יכתוב {size}, יותר מה- {limit} שיש מקום או סיבה עבורו
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	לוכד קישורים
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	קישורים
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	חפש קישורים כשהם מגיעים (שם, גודל, מקוון)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	דורש התחברות
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	לא מקוון ({status})
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	מקוון
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	חבילה
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	הדבק קישורים כאן (Ctrl+V), או שלח קישורי דף מהדפדפן.
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	הודבק
+#. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
+#, machine
+	Save to:	שמור אל:
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	מקור: {source}
+#. text in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	התחל
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	ישירות לתיקיית הארכיון
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	משימות ← לוכד קישורים, או "הורד את כל הקישורים" בדפדפן: כרכי ארכיון\nמפוצל הם חבילה אחת, שאר הקישורים בדף הם חבילה אחרת.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	הארכיון לא הועבר לסל המיחזור: הוא נשמר
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	הארכיון לא הועבר לאשפה: הוא נשמר
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	הארכיון הועבר לסל המיחזור
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	הארכיון הועבר לאשפה
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	הסיסמה שגויה
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	לאחר מכן העבר את הארכיונים לסל המיחזור
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	לאחר מכן העבר את הארכיונים לאשפה
+#. text in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	בטל בחירת הכל
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	קבצים שונים
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	חסר כרך {n} ממנו
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	תוכן ארכיון עובר:
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	סיסמה שגויה עבור {name}. הקלד אותה שוב:
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ו-XZ; ארכיון מפוצל (part1.rar, .7z.001) לאחר שכל הכרכים נמצאים. קובץ שכבר קיים נשמר: החדש ממוספר.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} הוא ארכיון 7z או RAR. MDM מחלץ אותם באמצעות 7-Zip, שאינו מותקן.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} מוגן באמצעות סיסמה:
+#. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	לוכד &קישורים...
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	חלץ

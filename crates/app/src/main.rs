@@ -7,6 +7,7 @@ mod checksum;
 mod chrome;
 mod crash;
 mod crashui;
+mod debrid;
 mod dialogs;
 mod droptarget;
 mod errors;
@@ -49,6 +50,8 @@ mod videodlg;
 #[cfg(windows)]
 mod win32;
 mod winui;
+#[cfg(any(target_os = "linux", test))]
+mod xdgicons;
 
 /// The main window's title (dialogs find their owner by it).
 pub const MAIN_TITLE: &str = concat!("Mister Download Manager ", env!("CARGO_PKG_VERSION"));

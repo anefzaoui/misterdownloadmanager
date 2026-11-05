@@ -54,7 +54,11 @@ The box under the list edits the package you selected:
 
 ## Extracting archives
 
-MDM extracts **ZIP** (including AES-encrypted and Deflate64 ones), **TAR**, **TAR.GZ**, **TAR.XZ**, and single **.gz** and **.xz** files itself. **7z and RAR need [7-Zip](https://www.7-zip.org/)** (free): MDM runs it when it is installed, split archives (`.7z.001`, `.part1.rar`) and encrypted ones included. RAR's own extraction code can't be part of a free program like MDM, and 7-Zip extracts 7z best. **Options → Archives** says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the **7-Zip needed** window says so, with a **Get 7-Zip** button.
+MDM itself extracts zip archives (AES-encrypted and Deflate64 ones too), tar, tar.gz and tar.xz archives, and single `.gz` and `.xz` files.
+
+**7z and RAR archives need 7-Zip**, a free program ([7-zip.org](https://www.7-zip.org/)). MDM runs it when it is installed, for split and encrypted archives too. RAR's own extraction code can't be part of a free program like MDM, and 7-Zip extracts 7z best.
+
+**Options → Archives** says whether 7-Zip was found. Without it, a 7z or RAR archive isn't extracted, and the **7-Zip needed** window says so, with a **Get 7-Zip** button.
 
 An archive is extracted:
 

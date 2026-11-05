@@ -20,6 +20,7 @@
 // clipboard. Every process started here is stopped at the end.
 import { spawn, spawnSync } from "node:child_process";
 import fs from "node:fs";
+import http from "node:http";
 import net from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -30,6 +31,11 @@ export const exe = (name) => path.join(release, process.platform === "win32" ? `
 const work = path.join(root, "target", "e2e");
 const PORT = 8101;
 const LAB = `http://127.0.0.1:${PORT}`;
+// The proxy case (#42): a proxy on 127.0.0.1 that alone knows the name lab.mdm.test (the lab
+// server), standing for a VPN extension's proxy.
+const PROXY_PORT = 8102;
+const PROXY_HOST = "lab.mdm.test";
+const proxyLog = [];
 
 const pf = process.env.ProgramFiles || "C:\\Program Files";
 const pf86 = process.env["ProgramFiles(x86)"] || "C:\\Program Files (x86)";
@@ -260,6 +266,14 @@ async function chromium(bin, profile, dl, page, ready) {
       key,
       pill,
       trace,
+      // Run `expression` in the extension's service worker (the proxy case sets the browser's proxy
+      // there, as a VPN extension does).
+      inExtension: async (expression) => {
+        const s = (await cdp.send("Target.attachToTarget", { targetId: sw.targetId, flatten: true })).sessionId;
+        const r = await cdp.send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true }, s);
+        if (r.exceptionDetails) throw new Error(`in the extension: ${r.exceptionDetails.text} ${expression}`);
+        return r.result.value;
+      },
       close: () => {
         killTree(proc);
         killProfile(profile);
@@ -662,6 +676,44 @@ async function videoButton(session, never) {
 
 class Skip extends Error {}
 
+// A forward proxy on 127.0.0.1 (#42): plain requests in absolute form and CONNECT tunnels, the
+// name lab.mdm.test sent to the lab server, every request logged ({method, target}).
+function startProxy() {
+  const to = (host, port) => (host === PROXY_HOST ? ["127.0.0.1", PORT] : [host, Number(port) || 80]);
+  const server = http.createServer((req, res) => {
+    proxyLog.push({ method: req.method, target: req.url });
+    let u;
+    try {
+      u = new URL(req.url);
+    } catch {
+      res.writeHead(400).end();
+      return;
+    }
+    const [host, port] = to(u.hostname, u.port);
+    const up = http.request({ host, port, method: req.method, path: u.pathname + u.search, headers: req.headers }, (r) => {
+      res.writeHead(r.statusCode || 502, r.headers);
+      r.pipe(res);
+    });
+    up.on("error", () => (res.headersSent ? res.destroy() : res.writeHead(502).end()));
+    req.pipe(up);
+  });
+  server.on("connect", (req, client, head) => {
+    proxyLog.push({ method: "CONNECT", target: req.url });
+    const [h, p] = req.url.split(":");
+    const [host, port] = to(h, p);
+    const up = net.connect(port, host, () => {
+      client.write("HTTP/1.1 200 Connection Established\r\n\r\n");
+      up.write(head);
+      up.pipe(client);
+      client.pipe(up);
+    });
+    up.on("error", () => client.destroy());
+    client.on("error", () => up.destroy());
+  });
+  server.listen(PROXY_PORT, "127.0.0.1");
+  return server;
+}
+
 // A link on a page, clicked as a user does.
 async function clickLink(t, link) {
   await t.session.navigate(`${LAB}/page?link=${encodeURIComponent(link)}`);
@@ -676,6 +728,31 @@ async function mdmRequests(p) {
 }
 
 const CASES = {
+  // #42: the browser behind a proxy extension. The extension sets the browser's proxy, as a VPN
+  // extension does; the file's host (lab.mdm.test) is known to that proxy only, so MDM can only
+  // download it through the same proxy, which the extension handed over with the download.
+  async proxy(t) {
+    if (!t.session.inExtension) throw new Skip("Firefox: its per-request proxy (proxyInfo) is covered by tools/extension/test.mjs");
+    const set = `chrome.proxy.settings.set({ value: { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "127.0.0.1", port: ${PROXY_PORT} } } }, scope: "regular" }).then(() => "set")`;
+    await t.session.inExtension(set);
+    try {
+      proxyLog.length = 0;
+      // An .xz: Internet Download Manager, when installed and running, catches the usual types
+      // (.zip…) from every host but 127.0.0.1 and would take this download first. MDM's list has
+      // .xz for this run (see `auto_types` below): the test stays about MDM.
+      const file = `e2e-proxy-${t.name}.xz`;
+      await clickLink(t, `http://${PROXY_HOST}:${PORT}/gen/1M/${file}`);
+      await arrived(file, 1 << 20, "");
+      await keptNothing(t.dl);
+      const via = proxyLog.filter((e) => e.target.includes(file));
+      // The browser's own request, then MDM's: both through the proxy.
+      if (via.length < 2) throw new Error(`only ${via.length} request(s) through the proxy: ${JSON.stringify(proxyLog)}`);
+      return `${via.length} requests for the file through the browser's proxy (the browser's, then MDM's)`;
+    } finally {
+      await t.session.inExtension(`chrome.proxy.settings.clear({ scope: "regular" }).then(() => "cleared")`).catch(() => {});
+    }
+  },
+
   // A .zip link, throttled (the browser's download is held while MDM is asked: Firefox pauses it)
   // and at full speed.
   async link(t) {
@@ -930,6 +1007,8 @@ async function run() {
         extension_never_ask: true,
         show_start_dialog: false,
         automation_api: true,
+        // The default types plus XZ, for the proxy case (a type other download managers leave alone).
+        auto_types: "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF WAV WMA WMV XZ Z ZIP",
         category_dirs: dirs,
       },
     }),
@@ -940,6 +1019,7 @@ async function run() {
 
   before = new Set(appProcesses().map(([pid]) => pid));
   const server = spawn(exe("labserver"), ["--bind", `127.0.0.1:${PORT}`], { stdio: "ignore", windowsHide: true });
+  const proxy = startProxy();
   const nmhost = exe("misterdownloadmanager-nmhost");
   const results = [];
   try {
@@ -1010,6 +1090,7 @@ async function run() {
     await stopApp().catch(() => {});
     for (const pid of ourPids()) spawnSync("taskkill", ["/T", "/F", "/PID", String(pid)]);
     killTree(server);
+    proxy.close();
   }
   for (const [name, label, status, detail, ms] of results) {
     console.log(`${name.padEnd(8)} ${label.padEnd(9)} ${status.padEnd(8)} ${(ms / 1000).toFixed(1).padStart(5)}s  ${detail}`);

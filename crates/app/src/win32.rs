@@ -13,8 +13,7 @@ use windows_sys::Win32::Graphics::Gdi::{
 use windows_sys::Win32::Storage::FileSystem::FILE_ATTRIBUTE_NORMAL;
 use windows_sys::Win32::System::Threading::GetCurrentProcessId;
 use windows_sys::Win32::UI::Shell::{
-    DefSubclassProc, SHFILEINFOW, SHGFI_ICON, SHGFI_USEFILEATTRIBUTES, SHGetFileInfoW,
-    SetWindowSubclass,
+    DefSubclassProc, SHFILEINFOW, SHGFI_USEFILEATTRIBUTES, SHGetFileInfoW, SetWindowSubclass,
 };
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     DestroyIcon, EnumWindows, GWL_EXSTYLE, GWL_STYLE, GetIconInfo, GetWindowLongPtrW,
@@ -641,10 +640,14 @@ pub fn drag_file_out(title: &str, file: &std::path::Path) -> Result<(), String> 
     let hwnd = own_capture()
         .or_else(|| find_own_window(title))
         .ok_or("window not found")?;
-    let ext = file.extension().and_then(|e| e.to_str()).unwrap_or("");
-    let preview = shell_icon_large(ext)
-        .and_then(|rgba| {
-            let img = image::RgbaImage::from_raw(32, 32, rgba)?;
+    let name = file.file_name().and_then(|n| n.to_str()).unwrap_or("");
+    let what = crate::fileicons::What::of(crate::fileicons::Kind::File(name));
+    let preview = file_icon(&what, 32)
+        .and_then(|icon| {
+            let crate::fileicons::Native::Rgba { side, rgba, .. } = icon else {
+                return None;
+            };
+            let img = image::RgbaImage::from_raw(side, side, rgba)?;
             let mut png = Vec::new();
             img.write_to(&mut std::io::Cursor::new(&mut png), image::ImageFormat::Png)
                 .ok()?;
@@ -1222,10 +1225,145 @@ pub fn work_area(x: i32, y: i32) -> Option<[i32; 4]> {
     }
 }
 
-/// The shell's 32 × 32 icon for files with extension `ext`, as RGBA: the picture under the
-/// pointer while a file is dragged out (lists draw fileicons.rs's icons instead).
-pub fn shell_icon_large(ext: &str) -> Option<Vec<u8>> {
-    icon_for(&format!("file.{ext}"), FILE_ATTRIBUTE_NORMAL, 0, 32)
+/// The shell's icon for a file type or a folder (fileicons.rs), as Explorer shows it, from the
+/// system image list that fits `px` pixels: small, large, extra large (16, 32, 48 at 100 %, more
+/// with the system's scale), then jumbo (256) for anything bigger. The file need not exist. Run
+/// on fileicons.rs's lookup thread: the first lookup of a type loads its shell handler.
+///
+/// One lookup at a time in the process (the drag picture asks from the UI thread): two threads
+/// in the shell at once could miss an icon. A miss is tried once more (a handler's first load).
+pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
+    static ONE_AT_A_TIME: std::sync::Mutex<()> = std::sync::Mutex::new(());
+    let _held = ONE_AT_A_TIME.lock().unwrap_or_else(|e| e.into_inner());
+    file_icon_once(what, px).or_else(|| file_icon_once(what, px))
+}
+
+fn file_icon_once(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
+    use crate::fileicons::What;
+    use windows_sys::Win32::Storage::FileSystem::FILE_ATTRIBUTE_DIRECTORY;
+    use windows_sys::Win32::UI::Shell::SHGFI_SYSICONINDEX;
+    com_on_this_thread();
+    let (name, attrs) = match what {
+        What::FolderOpen => return list_icon(open_folder_index()?, px),
+        What::Folder => ("folder".to_string(), FILE_ATTRIBUTE_DIRECTORY),
+        What::File(Some(ext)) => (format!("file.{ext}"), FILE_ATTRIBUTE_NORMAL),
+        What::File(None) => ("file".to_string(), FILE_ATTRIBUTE_NORMAL),
+    };
+    let wide: Vec<u16> = name.encode_utf16().chain([0]).collect();
+    // SAFETY: `info` is a zeroed SHFILEINFOW of the stated size; the name is NUL-terminated;
+    // with SHGFI_USEFILEATTRIBUTES the file need not exist. SYSICONINDEX returns no icon to free.
+    let index = unsafe {
+        let mut info: SHFILEINFOW = zeroed();
+        let ok = SHGetFileInfoW(
+            wide.as_ptr(),
+            attrs,
+            &mut info,
+            size_of::<SHFILEINFOW>() as u32,
+            SHGFI_SYSICONINDEX | SHGFI_USEFILEATTRIBUTES,
+        );
+        if ok == 0 {
+            return None;
+        }
+        info.iIcon
+    };
+    list_icon(index, px)
+}
+
+/// The system image lists' icon `index` at the list that fits `px` pixels (see `file_icon`).
+fn list_icon(index: i32, px: u32) -> Option<crate::fileicons::Native> {
+    use windows_sys::Win32::UI::Shell::{SHIL_EXTRALARGE, SHIL_JUMBO, SHIL_LARGE, SHIL_SMALL};
+    let mut got: Option<(u32, Vec<u8>)> = None;
+    for list in [SHIL_SMALL, SHIL_LARGE, SHIL_EXTRALARGE, SHIL_JUMBO] {
+        if got.as_ref().is_some_and(|(side, _)| *side >= px) {
+            break;
+        }
+        let Some((side, rgba)) = image_list_icon(list, index) else {
+            continue;
+        };
+        // A type with no picture that big gets its smaller one in the jumbo list's top-left
+        // corner: keep the smaller one then.
+        if list == SHIL_JUMBO
+            && let Some((prev, _)) = &got
+            && drawn_within(&rgba, side, *prev)
+        {
+            break;
+        }
+        got = Some((side, rgba));
+    }
+    let (side, rgba) = got?;
+    Some(crate::fileicons::Native::Rgba {
+        side,
+        rgba,
+        premultiplied: false,
+    })
+}
+
+/// Whether every visible pixel of the `side`-square `rgba` lies in its top-left `within` square.
+fn drawn_within(rgba: &[u8], side: u32, within: u32) -> bool {
+    rgba.as_chunks::<4>().0.iter().enumerate().all(|(i, c)| {
+        let (x, y) = (i as u32 % side, i as u32 / side);
+        c[3] == 0 || (x < within && y < within)
+    })
+}
+
+/// COM for this thread (apartment-threaded, as the shell's icon handlers expect), once.
+fn com_on_this_thread() {
+    use windows_sys::Win32::System::Com::{COINIT_APARTMENTTHREADED, CoInitializeEx};
+    thread_local!(static DONE: std::cell::Cell<bool> = const { std::cell::Cell::new(false) });
+    DONE.with(|done| {
+        if !done.replace(true) {
+            // SAFETY: no reserved pointer; the thread keeps COM for its lifetime.
+            unsafe { CoInitializeEx(std::ptr::null(), COINIT_APARTMENTTHREADED as u32) };
+        }
+    });
+}
+
+/// The start of the shell's `IImageList` vtable (commoncontrols.h), as far as `GetIcon`. The list
+/// is called through it rather than comctl32's `ImageList_GetIcon`, which needs the version 6
+/// controls to read the shell's lists.
+#[repr(C)]
+struct ImageListVtbl {
+    _query_interface: usize,
+    _add_ref: usize,
+    release: unsafe extern "system" fn(*mut c_void) -> u32,
+    // Add, ReplaceIcon, SetOverlayImage, Replace, AddMasked, Draw, Remove.
+    _before_get_icon: [usize; 7],
+    get_icon: unsafe extern "system" fn(
+        *mut c_void,
+        i32,
+        u32,
+        *mut windows_sys::Win32::UI::WindowsAndMessaging::HICON,
+    ) -> windows_sys::core::HRESULT,
+}
+
+/// IID_IImageList, {46EB5926-582E-4017-9FDF-E8998DAA0950}.
+const IID_IMAGE_LIST: windows_sys::core::GUID = windows_sys::core::GUID {
+    data1: 0x46EB_5926,
+    data2: 0x582E,
+    data3: 0x4017,
+    data4: [0x9F, 0xDF, 0xE8, 0x99, 0x8D, 0xAA, 0x09, 0x50],
+};
+
+/// Icon `index` of the system image list `list` (SHIL_*), as (side, RGBA).
+fn image_list_icon(list: u32, index: i32) -> Option<(u32, Vec<u8>)> {
+    use windows_sys::Win32::UI::Controls::ILD_TRANSPARENT;
+    use windows_sys::Win32::UI::Shell::SHGetImageList;
+    // SAFETY: SHGetImageList hands out an IImageList with a reference for us, released below; the
+    // vtable is read only as far as GetIcon, whose icon hicon_rgba takes and destroys.
+    unsafe {
+        let mut list_ptr: *mut c_void = std::ptr::null_mut();
+        if SHGetImageList(list as i32, &IID_IMAGE_LIST, &mut list_ptr) < 0 || list_ptr.is_null() {
+            return None;
+        }
+        let vtbl = &**(list_ptr as *const *const ImageListVtbl);
+        let mut icon = std::ptr::null_mut();
+        let hr = (vtbl.get_icon)(list_ptr, index, ILD_TRANSPARENT, &mut icon);
+        (vtbl.release)(list_ptr);
+        if hr < 0 || icon.is_null() {
+            return None;
+        }
+        hicon_rgba(icon)
+    }
 }
 
 /// Windows' type name for a file name ("BIN File", "Compressed (zipped) Folder").
@@ -1248,66 +1386,43 @@ pub fn type_name(file_name: &str) -> Option<String> {
     }
 }
 
-/// RGBA pixels (size × size) of the shell icon for `path`; `extra` adds SHGFI flags.
-fn icon_for(path: &str, attrs: u32, extra: u32, size: i32) -> Option<Vec<u8>> {
-    let name: Vec<u16> = path.encode_utf16().chain([0]).collect();
-    unsafe {
-        let mut info: SHFILEINFOW = zeroed();
-        let ok = SHGetFileInfoW(
-            name.as_ptr(),
-            attrs,
-            &mut info,
-            size_of::<SHFILEINFOW>() as u32,
-            SHGFI_ICON | SHGFI_USEFILEATTRIBUTES | extra,
-        );
-        if ok == 0 || info.hIcon.is_null() {
-            return None;
-        }
-        hicon_rgba(info.hIcon, size)
-    }
-}
-
-/// RGBA pixels (size × size) of icon, which is destroyed.
+/// `icon`'s pixels as (side, straight RGBA), at the size its bitmap has; the icon is destroyed.
+/// An icon without alpha (an old one) takes its transparency from its mask.
 unsafe fn hicon_rgba(
     icon: windows_sys::Win32::UI::WindowsAndMessaging::HICON,
-    size: i32,
-) -> Option<Vec<u8>> {
+) -> Option<(u32, Vec<u8>)> {
+    use windows_sys::Win32::Graphics::Gdi::{BITMAP, GetObjectW};
     unsafe {
         let mut ii: ICONINFO = zeroed();
         let got = GetIconInfo(icon, &mut ii) != 0;
         let mut out = None;
         if got && !ii.hbmColor.is_null() {
-            let mut bmi: BITMAPINFO = zeroed();
-            bmi.bmiHeader = BITMAPINFOHEADER {
-                biSize: size_of::<BITMAPINFOHEADER>() as u32,
-                biWidth: size,
-                biHeight: -size, // top-down
-                biPlanes: 1,
-                biBitCount: 32,
-                biCompression: BI_RGB,
-                ..zeroed()
-            };
-            let mut px = vec![0u8; (size * size * 4) as usize];
-            let dc = GetDC(std::ptr::null_mut());
-            let lines = GetDIBits(
-                dc,
-                ii.hbmColor,
-                0,
-                size as u32,
-                px.as_mut_ptr() as *mut c_void,
-                &mut bmi,
-                DIB_RGB_COLORS,
-            );
-            ReleaseDC(std::ptr::null_mut(), dc);
-            if lines == size {
-                let has_alpha = px.chunks(4).any(|c| c[3] != 0);
-                for c in px.chunks_mut(4) {
-                    c.swap(0, 2); // BGRA → RGBA
-                    if !has_alpha {
-                        c[3] = 255; // legacy icons without alpha
+            let mut bm: BITMAP = zeroed();
+            let have = GetObjectW(
+                ii.hbmColor as _,
+                size_of::<BITMAP>() as i32,
+                &mut bm as *mut BITMAP as *mut c_void,
+            ) != 0;
+            let side = bm.bmWidth;
+            if have
+                && side > 0
+                && side == bm.bmHeight.abs()
+                && side <= 1024
+                && let Some(mut px) = dib_rgba(ii.hbmColor, side)
+            {
+                if !px.as_chunks::<4>().0.iter().any(|c| c[3] != 0) {
+                    // The mask: white (set) where the icon is transparent.
+                    let mask = (!ii.hbmMask.is_null())
+                        .then(|| dib_rgba(ii.hbmMask, side))
+                        .flatten();
+                    for (i, c) in px.as_chunks_mut::<4>().0.iter_mut().enumerate() {
+                        c[3] = match &mask {
+                            Some(m) if m[i * 4] != 0 => 0,
+                            _ => 255,
+                        };
                     }
                 }
-                out = Some(px);
+                out = Some((side as u32, px));
             }
         }
         if got {
@@ -1319,20 +1434,54 @@ unsafe fn hicon_rgba(
     }
 }
 
-/// Windows' own large (32 × 32) "open folder" icon, as RGBA (Download complete).
-pub fn folder_open_icon_large() -> Option<Vec<u8>> {
+/// The first `side` × `side` pixels of `bitmap`, top-down, as RGBA (32 bits per pixel).
+unsafe fn dib_rgba(
+    bitmap: windows_sys::Win32::Graphics::Gdi::HBITMAP,
+    side: i32,
+) -> Option<Vec<u8>> {
+    unsafe {
+        let mut bmi: BITMAPINFO = zeroed();
+        bmi.bmiHeader = BITMAPINFOHEADER {
+            biSize: size_of::<BITMAPINFOHEADER>() as u32,
+            biWidth: side,
+            biHeight: -side, // top-down
+            biPlanes: 1,
+            biBitCount: 32,
+            biCompression: BI_RGB,
+            ..zeroed()
+        };
+        let mut px = vec![0u8; (side * side * 4) as usize];
+        let dc = GetDC(std::ptr::null_mut());
+        let lines = GetDIBits(
+            dc,
+            bitmap,
+            0,
+            side as u32,
+            px.as_mut_ptr() as *mut c_void,
+            &mut bmi,
+            DIB_RGB_COLORS,
+        );
+        ReleaseDC(std::ptr::null_mut(), dc);
+        (lines == side).then(|| {
+            for c in px.as_chunks_mut::<4>().0 {
+                c.swap(0, 2); // BGRA → RGBA
+            }
+            px
+        })
+    }
+}
+
+/// Windows' own "open folder" (Download complete's, as IDM shows), as its system image list index.
+fn open_folder_index() -> Option<i32> {
     use windows_sys::Win32::UI::Shell::{
-        SHGSI_ICON, SHGSI_LARGEICON, SHGetStockIconInfo, SHSTOCKICONINFO, SIID_FOLDEROPEN,
+        SHGSI_SYSICONINDEX, SHGetStockIconInfo, SHSTOCKICONINFO, SIID_FOLDEROPEN,
     };
+    // SAFETY: `info` is zeroed with its size set; SYSICONINDEX returns no icon to free.
     unsafe {
         let mut info: SHSTOCKICONINFO = zeroed();
         info.cbSize = size_of::<SHSTOCKICONINFO>() as u32;
-        if SHGetStockIconInfo(SIID_FOLDEROPEN, SHGSI_ICON | SHGSI_LARGEICON, &mut info) != 0
-            || info.hIcon.is_null()
-        {
-            return None;
-        }
-        hicon_rgba(info.hIcon, 32)
+        (SHGetStockIconInfo(SIID_FOLDEROPEN, SHGSI_SYSICONINDEX, &mut info) == 0)
+            .then_some(info.iSysImageIndex)
     }
 }
 

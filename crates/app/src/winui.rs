@@ -1845,10 +1845,37 @@ pub fn readonly_field(
 ) -> Response {
     // `fill`: the surface it sits on (kept for its callers; the read-only look has its own).
     let _ = fill;
+    readonly_with_icon(ui, rc, value, ltr, id, None)
+}
+
+/// [`readonly_field`] holding a file name, after its type's icon (the shared file icons).
+pub fn readonly_file(
+    ui: &mut Ui,
+    rc: Rect,
+    name: &str,
+    id: impl std::hash::Hash + std::fmt::Debug,
+) -> Response {
+    let icon = (!name.is_empty()).then_some(crate::fileicons::Kind::File(name));
+    readonly_with_icon(ui, rc, name, true, id, icon)
+}
+
+fn readonly_with_icon(
+    ui: &mut Ui,
+    rc: Rect,
+    value: &str,
+    ltr: bool,
+    id: impl std::hash::Hash + std::fmt::Debug,
+    icon: Option<crate::fileicons::Kind>,
+) -> Response {
     field_frame(ui.painter(), rc, FieldLook::ReadOnly);
     let p = ui.painter().clone();
     // From the field's leading edge (an English pen in its English rect).
-    let e = rect(rc);
+    let mut e = rect(rc);
+    if let Some(kind) = icon {
+        let top = e.top() + ((e.height() - 16.0) / 2.0).floor();
+        crate::fileicons::paint_at(ui, &p, kind, pos2(e.left() + 3.0, top), 16.0);
+        e.min.x += crate::fileicons::INDENT - 2.0;
+    }
     let shown = ellipsize(&p, &tahoma(), value, e.width() - 9.0);
     let cut = shown != value;
     let shown = if ltr && rtl() {

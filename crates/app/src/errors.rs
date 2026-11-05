@@ -106,6 +106,51 @@ pub fn describe(e: &Error) -> String {
 }
 
 /// A site's refusal to give the file (Google Drive, #34), with what to do about it.
+/// A debrid service's refusal (#44), `{service}` its name ("Real-Debrid").
+pub fn service(service: &str, fault: &mdm_engine::ServiceFault) -> String {
+    use mdm_engine::ServiceFault as F;
+    let text = match fault {
+        // i18n: a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+        F::SignIn => t("{service}: sign in again (Options → Accounts)"),
+        // i18n: a debrid service's error: it wants the user to allow this computer (it sent an email)
+        F::NeedsApproval => t("{service} asks you to allow this computer first: see its email"),
+        // i18n: a debrid service's error: the account is locked, banned or not activated
+        F::AccountBlocked => t("{service}: the account is locked or not activated"),
+        // i18n: a debrid service's error: the account has no premium (or it ended)
+        F::NotPremium => t("{service}: this needs a premium account"),
+        // i18n: a debrid service's error: it can't reach the file's host now; MDM retries later
+        F::HostDown => {
+            t("{service} can't reach this file host right now; MDM will try again later")
+        }
+        // i18n: a debrid service's error: the account's limit (traffic) for this host is used up
+        F::LimitReached => t("{service}: your limit for this file host is used up for now"),
+        // i18n: a debrid service's error: too many downloads at once through the account
+        F::TooManyActive => {
+            t("{service}: too many downloads at once through your account; MDM will try again")
+        }
+        // i18n: a debrid service's error: it refuses this computer's address (a VPN or a server address)
+        F::IpRefused => t("{service} refuses this connection (a VPN or server address?)"),
+        // i18n: a debrid service's error: the file is gone from its host
+        F::FileUnavailable => t("{service}: the file is gone or unavailable on the file host"),
+        // i18n: a debrid service's error: it won't give this file (not allowed)
+        F::FileRefused => t("{service} won't give this file"),
+        // i18n: a debrid service's error: the file has a password
+        F::PasswordNeeded => t("{service}: this file is password-protected"),
+        // i18n: a debrid service's error: too many requests; MDM waits and retries
+        F::TooManyRequests(_) => t("{service} asks to slow down; MDM will try again in a minute"),
+        // i18n: a debrid service's error: it isn't answering
+        F::ServiceDown => t("{service} is not responding; try again later"),
+        F::Other(message) => {
+            return fmt(
+                // i18n: a debrid service's error in its own words (English); {service} its name
+                t("{service}: {message}"),
+                &[("service", service), ("message", &ltr(message))],
+            );
+        }
+    };
+    fmt(text, &[("service", service)])
+}
+
 fn refusal(r: &Refusal) -> String {
     match r {
         Refusal::Drive { message } => fmt(
@@ -129,6 +174,7 @@ fn refusal(r: &Refusal) -> String {
             // i18n: a download's error: the address is a Google Drive folder, which isn't one file
             t("this is a Google Drive folder, not a file").to_owned()
         }
+        Refusal::Service { service, fault } => self::service(service, fault),
     }
 }
 

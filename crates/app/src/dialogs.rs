@@ -1120,11 +1120,7 @@ pub struct Complete {
 }
 
 impl Complete {
-    pub fn show(
-        &mut self,
-        ctx: &egui::Context,
-        icons: &mut crate::chrome::ShellIcons,
-    ) -> Outcome<()> {
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
         let id = format!("complete-{}", self.id);
         self.seen |= notice_seen(ctx, &id);
         notice(
@@ -1137,11 +1133,13 @@ impl Complete {
             !self.seen,
             |ui, o| {
                 let p = ui.painter().clone();
-                // Windows' own open-folder icon (IDM shows an open folder here).
-                icons.paint(
+                // The system's open folder (IDM shows one here): the shared file icons'.
+                crate::fileicons::paint_at(
                     ui,
-                    crate::chrome::IconKey::FolderOpenLarge,
+                    &p,
+                    crate::fileicons::Kind::FolderOpen,
                     o + vec2(10.0, 11.0),
+                    32.0,
                 );
                 winui::text(
                     &p,
@@ -2460,7 +2458,21 @@ impl ExistingFiles {
                     18.0,
                 );
                 let path_y = o.y + 21.0 + lines as f32 * 18.0;
-                let (rect, cut) = winui::text_fit(&p, left, path_y, &first, ink, right);
+                crate::fileicons::paint_at(
+                    ui,
+                    &p,
+                    crate::fileicons::Kind::File(&self.first),
+                    egui::pos2(left, path_y - 12.0),
+                    16.0,
+                );
+                let (rect, cut) = winui::text_fit(
+                    &p,
+                    left + crate::fileicons::INDENT,
+                    path_y,
+                    &first,
+                    ink,
+                    right,
+                );
                 if cut {
                     winui::full_on_hover(ui, rect, "existing-files-path", &first);
                 }

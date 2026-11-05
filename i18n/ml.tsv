@@ -12,11 +12,6 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് {n} ഡൗൺലോഡ് ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?|Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് ഈ {n} ഡൗൺലോഡുകൾ ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {n} is a number of files, {folder} where they went
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{folder} എന്നതിലേക്ക് {n} ഫയൽ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌തു|{folder} എന്നതിലേക്ക് {n} ഫയലുകൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌തു
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -39,22 +34,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} ഡൗൺലോഡ് ചെയ്യുന്നു|{n} ഡൗൺലോഡ് ചെയ്യുന്നു
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} എൻട്രി ഒഴിവാക്കി (ഒരു ലിങ്ക് അല്ലെങ്കിൽ ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേര്)|{n} എൻട്രികൾ ഒഴിവാക്കി (ലിങ്കുകൾ അല്ലെങ്കിൽ ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേരുകൾ)
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
+#. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
-#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ഫയൽ|{n} ഫയലുകൾ
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ഫയലിന് അവിടെയുള്ള ഒരു ഫയലിന്റെ പേരുണ്ടായിരുന്നു, അത് നമ്പർ നൽകി|{n} ഫയലുകൾക്ക് അവിടെയുള്ള ഒരു ഫയലിന്റെ പേരുണ്ടായിരുന്നു, അത് നമ്പർ നൽകി
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -111,24 +95,13 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-മണിക്കൂർ (21:41)
-#. window title in extracting archives (a download's log, the Archive password window)
-#. window title: 7-Zip (a program's name) must be installed
-#, machine
-	7-Zip needed	7-Zip ആവശ്യമാണ്
-#. text in the Options window
-#. Options → Archives: {path} is where 7-Zip's program is
-#, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	7z, RAR ആർക്കൈവുകൾ 7-Zip ({path}) ഉപയോഗിച്ച് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു.
-#. text in the Options window
-#. Options → Archives, when 7-Zip isn't installed
-#, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z, RAR ആർക്കൈവുകൾക്ക് 7-Zip (7-zip.org) ആവശ്യമാണ്, അത് ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല.
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	7z and RAR archives need 7-Zip, which isn't installed	7z, RAR ആർക്കൈവുകൾക്ക് 7-Zip ആവശ്യമാണ്, അത് ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< വിശദാംശങ്ങൾ മറയ്ക്കുക
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ഒരു ഡെബ്രിഡ് സേവനം (Real-Debrid) നിങ്ങളുടെ സ്വന്തം പണമടച്ച അക്കൗണ്ട് ഉപയോഗിച്ച് ഒരു ഫയൽ ഹോസ്റ്റിന്റെ ലിങ്ക് ഡൗൺലോഡ് ചെയ്യുകയും MDM-ന് ഒരു നേരിട്ടുള്ള ലിങ്ക് നൽകുകയും ചെയ്യുന്നു. നിങ്ങളുടെ സ്വന്തം അക്കൗണ്ട് മാത്രം ഉപയോഗിക്കുക: ഒരു അക്കൗണ്ട് അല്ലെങ്കിൽ അതിന്റെ ലിങ്കുകൾ പങ്കിടുന്നത് സേവനങ്ങളുടെ നിബന്ധനകൾ ലംഘിക്കുകയും അത് താൽക്കാലികമായി നിർത്തലാക്കാൻ ഇടയാക്കുകയും ചെയ്യും. ബ്രൗസർ ഇതിനകം ആരംഭിച്ച ഡൗൺലോഡുകൾ അതുപോലെതന്നെ തുടരും.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -141,10 +114,6 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	ഈ കമ്പ്യൂട്ടറിലെ ഒരു സെർവർ ഡൗൺലോഡ് മറ്റൊരിടത്തേക്ക് അയച്ചു, അത് {adapter} വഴി പോകില്ല
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	a volume of it is missing	അതിന്റെ ഒരു വോളിയം കാണുന്നില്ല
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager-നെക്കുറിച്ച്
@@ -152,9 +121,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	ഇൻകമിംഗ് കണക്ഷനുകൾ സ്വീകരിക്കുക
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	അക്കൗണ്ട്
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	അക്കൗണ്ടുകൾ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ഒരു ഡൗൺലോഡ് ചേർക്കുക (URL ചേർക്കുക)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	ഒരു അക്കൗണ്ട് ചേർക്കുക
 #. text in the tray icon's menu
 #, machine
 	Add batch download	ബാച്ച് ഡൗൺലോഡ് ചേർക്കുക
@@ -190,8 +171,7 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	സൗജന്യ എക്സ്റ്റൻഷൻ ചേർക്കുക: നിങ്ങളുടെ ബ്രൗസറിൽ ഡൗൺലോഡ് ചെയ്യുന്ന ഫയലുകൾ ഇവിടെയെത്തും, വീഡിയോകൾക്ക് ഒരു ഡൗൺലോഡ് ബട്ടൺ ലഭിക്കും.
-#. message or event log entry in the main window; text in the Link grabber window
-#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
+#. message or event log entry in the main window
 #, machine
 	Add to queue	ക്യൂവിലേക്ക് ചേർക്കുക
 #. text in a dialog box
@@ -205,6 +185,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	പട്ടികയിലേക്ക് {n} ഡൗൺലോഡുകൾ ചേർക്കണോ? ഓരോ വീഡിയോയ്ക്കും അതിൻ്റേതായ നിര ലഭിക്കും.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	ചേർക്കുക...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,10 +240,6 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ഇതിനകം ഡൗൺലോഡ് ചെയ്യുന്നു: {path}
-#. text in the Link grabber window
-#. Link grabber: the package of links the download list has already
-#, machine
-	Already in the list	ലിസ്റ്റിൽ ഇതിനകം ഉണ്ട്
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -277,10 +258,6 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	എല്ലായ്‌പ്പോഴും ഇരുണ്ടത്
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Always into a folder named after it	എല്ലായ്‌പ്പോഴും അതിൻ്റെ പേരുള്ള ഒരു ഫോൾഡറിലേക്ക്
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager ആരംഭിക്കുമ്പോൾ സ്പീഡ് ലിമിറ്റർ എപ്പോഴും ഓണാക്കുക
@@ -304,20 +281,6 @@
 #. text in the Scheduler window
 #, machine
 	April	ഏപ്രിൽ
-#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
-#. what a screen reader calls the Archive password window's box
-#. what a screen reader calls Link grabber's password box
-#, machine
-	Archive password	ആർക്കൈവ് പാസ്‌വേഡ്
-#. group box title in the Options window; text in the Options window
-#. Options → Archives: group box title
-#. tab title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives	ആർക്കൈവുകൾ
-#. text in the Options window
-#. Options page title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives and Link grabber	ആർക്കൈവുകളും ലിങ്ക് ഗ്രാബറും
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -331,6 +294,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ഫയൽ ലിസ്റ്റിനായി പിയറുകളോട് ചോദിക്കുന്നു. മാഗ്നറ്റ് ലിങ്കുകൾക്ക് ഒന്നോ രണ്ടോ മിനിറ്റ് എടുത്തേക്കാം.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	സേവനത്തോട് ചോദിക്കുന്നു...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -375,7 +343,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} അവ ഷിപ്പ് ചെയ്തതുപോലെ തിരികെ കൊണ്ടുവരണോ: അവയുടെ പേരുകൾ, ഫയൽ തരങ്ങൾ, ഫോൾഡറുകൾ എന്നിവ? നിങ്ങളുടെ സ്വന്തം വിഭാഗങ്ങളായ ജനറൽ, ടോറന്റുകൾ എന്നിവ നിലവിലുള്ളതുപോലെ തുടരും. ജനറലിലേക്ക് മാറ്റിയ ഡൗൺലോഡുകൾ അവിടെത്തന്നെ തുടരും.
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ബ്രൗസ് ചെയ്യുക
@@ -389,17 +357,13 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ബ്രൗസർ/സിസ്റ്റം സംയോജനം
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server asked to try later (429, 503)
-#, machine
-	Busy, try later	തിരക്കിലാണ്, പിന്നീട് ശ്രമിക്കുക
 #. message or event log entry in the main window
 #, machine
 	by batch download	ബാച്ച് ഡൗൺലോഡ് വഴി
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	ലിങ്ക് ഗ്രാബർ വഴി
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+	by import	ഇറക്കുമതി വഴി
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	റദ്ദാക്കുക
@@ -452,10 +416,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	അവസാനം തിരഞ്ഞെടുത്തതിൽ "{category}" വിഭാഗത്തിനായുള്ള ഫോൾഡർ മാറ്റുക
-#. text in the Link grabber window
-#. Link grabber button (IDM's): tick every link
-#, machine
-	Check all	എല്ലാം തിരഞ്ഞെടുക്കുക
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുക
@@ -491,7 +451,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	{name} ({n} of {total}) പരിശോധിക്കുന്നു...
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	പരിശോധിക്കുന്നു...
@@ -573,15 +533,14 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	പകർത്തുക
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	കോഡ് പകർത്തുക
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	റിപ്പോർട്ട് പകർത്തുക
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {name} is the archive's file name, {why} the reason
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Couldn't extract {name}: {why}	{name} എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യാനായില്ല: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	ഫോൾഡർ സൃഷ്ടിക്കുക
@@ -611,6 +570,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	ദിവസം, മാസം, വർഷം
+#. page title in the Options window
+#, machine
+	Debrid service accounts	ഡെബ്രിഡ് സേവന അക്കൗണ്ടുകൾ
 #. text in the Scheduler window
 #, machine
 	December	ഡിസംബർ
@@ -637,10 +599,6 @@
 #. verb: delete the item
 #, machine
 	Delete	ഇല്ലാതാക്കുക
-#. checkbox in the Link grabber window
-#. Link grabber check box: after extracting, the archives go to the Recycle Bin
-#, machine
-	Delete archives after extracting	എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌ത ശേഷം ആർക്കൈവുകൾ ഇല്ലാതാക്കുക
 #. window title in a dialog box
 #, machine
 	Delete category	വിഭാഗം ഇല്ലാതാക്കുക
@@ -722,6 +680,10 @@
 #. text in a download's progress window
 #, machine
 	Done	ചെയ്തു
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	താഴേക്ക്
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	ഡൗൺലോഡ് ചെയ്യുക
@@ -768,6 +730,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	ഡൗൺലോഡ് നില
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	ഈ അക്കൗണ്ടുകളിലൂടെ പിന്തുണയ്ക്കുന്ന ഫയൽ-ഹോസ്റ്റ് ലിങ്കുകൾ ഡൗൺലോഡ് ചെയ്യുക
 #. window title in the Download video window
 #, machine
 	Download video from a page	ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക
@@ -853,10 +819,6 @@
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	ഓരോ കണക്ഷനും സിസ്റ്റത്തിന്റെ റൂട്ട് എടുക്കുന്നു.
-#. text in the Link grabber window
-#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
-#, machine
-	Each file's category folder	ഓരോ ഫയലിന്റെയും വിഭാഗം ഫോൾഡർ
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -939,6 +901,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	പ്രതീക്ഷിക്കുന്ന ചെക്ക്സം സജ്ജീകരിച്ചു ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	പരീക്ഷണാത്മകം: Real-Debrid-ന്റെ പൊതു API ഡോക്യുമെന്റേഷനിൽ നിന്ന് നിർമ്മിച്ചത്, ഒരു യഥാർത്ഥ അക്കൗണ്ട് ഉപയോഗിച്ച് ഇതുവരെ സ്ഥിരീകരിച്ചിട്ടില്ല.
 #. message or event log entry in the main window
 #, machine
 	Export	എക്‌സ്‌പോർട്ട് ചെയ്യുക
@@ -948,27 +914,6 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	സ്പേസുകൾ ഉപയോഗിച്ച് വേർതിരിച്ച എക്സ്റ്റൻഷനുകൾ, ഉദാഹരണത്തിന് MP4 MKV R0*
-#. button in extracting archives (a download's log, the Archive password window)
-#. button: extract the archive with the password typed
-#, machine
-	Extract	എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
-#. checkbox in the Options window
-#. Options → Archives check box (a Link grabber package has its own "Extract when done")
-#, machine
-	Extract archives when their download completes	ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ ആർക്കൈവുകൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
-#. text in the Link grabber window
-#. Link grabber check box: extract the package's archives once they are downloaded
-#, machine
-	Extract when done	പൂർത്തിയാകുമ്പോൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
-#. text in extracting archives (a download's log, the Archive password window)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting the archive...	ആർക്കൈവ് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു...
-#. message or event log entry in the main window
-#. a download's status: its archive is being extracted (#37)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting...	എക്‌സ്‌ട്രാക്‌റ്റുചെയ്യുന്നു...
 #. text in the Scheduler window
 #, machine
 	February	ഫെബ്രുവരി
@@ -1034,6 +979,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	ഫയൽ കണ്ടെത്തുക
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	എന്റെ ടോക്കൺ കണ്ടെത്തുക
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1083,6 +1032,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	വെ
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	സൗജന്യ അക്കൗണ്ട്: ലിങ്കുകൾക്ക് പ്രീമിയം ആവശ്യമാണ്
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1147,10 +1100,6 @@
 #. tab title: general information
 #, machine
 	General	പൊതുവായത്
-#. text in extracting archives (a download's log, the Archive password window)
-#. button: opens 7-Zip's website (7-Zip is a program's name)
-#, machine
-	Get 7-Zip	7-Zip നേടുക
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1206,10 +1155,6 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	അറിയിപ്പ് ഏരിയയിലേക്ക് മറയ്ക്കുക
-#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
-#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
-#, machine
-	Hide web pages	വെബ് പേജുകൾ മറയ്ക്കുക
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager ഡൗൺലോഡ് ചെയ്യുന്നതിനു പകരം ബ്രൗസറിനെക്കൊണ്ട് ഡൗൺലോഡ് ചെയ്യാൻ, ഒരു ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുമ്പോൾ Alt അമർത്തിപ്പിടിക്കുക.
@@ -1245,12 +1190,19 @@
 #. message or event log entry in the main window
 #, machine
 	Import	ഇറക്കുമതി ചെയ്യുക
+#. window title in transfer.rs
+#, machine
+	Import downloads	ഡൗൺലോഡുകൾ ഇറക്കുമതി ചെയ്യുക
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ഒരു ക്യൂവിൽ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	വിഭാഗങ്ങളിൽ: തിരഞ്ഞെടുത്ത വിഭാഗത്തിന്റെ മെനു
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	ലിസ്റ്റിൽ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1263,10 +1215,6 @@
 #. the torrent's identifier
 #, machine
 	Info hash	വിവര ഹാഷ്
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window, under why
-#, machine
-	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (സൗജന്യം) ഇൻസ്റ്റാൾ ചെയ്യുക, തുടർന്ന് ഡൗൺലോഡിൽ റൈറ്റ്-ക്ലിക്ക് ചെയ്ത് എക്‌സ്‌ട്രാക്‌റ്റ് തിരഞ്ഞെടുക്കുക.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1279,10 +1227,6 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ഇൻസ്റ്റാൾ ചെയ്യുക
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Into a folder named after it, when it holds several things	അതിൽ നിരവധി കാര്യങ്ങൾ ഉള്ളപ്പോൾ, അതിൻ്റെ പേരുള്ള ഒരു ഫോൾഡറിലേക്ക്
 #. text in a dialog box
 #, machine
 	Invalid address	അസാധുവായ വിലാസം
@@ -1290,35 +1234,10 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	IP വിലാസങ്ങൾ (ഓപ്ഷണൽ):
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it holds too many files or folders	അതിൽ വളരെയധികം ഫയലുകളോ ഫോൾഡറുകളോ ഉണ്ട്
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is damaged, or not the archive its name says	അതിന് കേടുപാടുകൾ സംഭവിച്ചു, അല്ലെങ്കിൽ അതിന്റെ പേര് പറയുന്ന ആർക്കൈവ് അല്ല
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is not an archive MDM extracts	ഇതൊരു MDM എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്ന ആർക്കൈവ് അല്ല
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it needs a password	അതിന് ഒരു പാസ്‌വേഡ് ആവശ്യമാണ്
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	നിങ്ങളുടെ നെറ്റ്‌വർക്കിലെ കമ്പ്യൂട്ടറുകളോട് നിങ്ങൾക്ക് ഏതൊക്കെ ടോറന്റുകളുണ്ടെന്ന് ഇത് പറയുന്നു.
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it was stopped	അത് നിർത്തി
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	it would write {size}, more than the {limit} there is room or reason for	അത് {size} എഴുതും, അവിടെയുള്ള {limit} സ്ഥലത്തേക്കാൾ കൂടുതലാണ്
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1396,17 +1315,8 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	എല്ലാ ടോറന്റുകൾക്കുമുള്ള അപ്‌ലോഡിംഗ് ഇതിലേക്ക് പരിമിതപ്പെടുത്തുക
-#. window title in the Link grabber window; group box title in the Options window
-#. Options → Archives: group box title
-#, machine
-	Link grabber	ലിങ്ക് ഗ്രാബർ
-#. text in the Link grabber window
-#. what a screen reader calls Link grabber's list
-#, machine
-	Links	ലിങ്കുകൾ
-#. message or event log entry in the main window; text in the Link grabber window
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: a page in the browser
-#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ബ്രൗസറിൽ നിന്നുള്ള ലിങ്കുകൾ
 #. text in playlistdlg.rs
@@ -1441,10 +1351,6 @@
 #. noun: the user name and password section
 #, machine
 	Login	ലോഗിൻ
-#. checkbox in the Options window
-#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
-#, machine
-	Look links up when they arrive (name, size, online)	ലിങ്കുകൾ വരുമ്പോൾ അവയെ നോക്കുക (പേര്, വലുപ്പം, ഓൺലൈൻ)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	തിരയുക
@@ -1625,22 +1531,17 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	നമ്പർ
-#. text in the Link grabber window; text in the Add torrent window
+#. text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	പേര്
-#. text in categories.rs; text in the Link grabber window
-#. Link grabber: the package's name (a label before its box)
+#. text in categories.rs
 #, machine
 	Name:	പേര്:
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	നിങ്ങളുടെ ഹോസ്റ്റ് ഫയലിലെ പേരുകളും പ്രാദേശിക പേരുകളും (ഒറ്റ വാക്കുകൾ, .local, .lan) സിസ്റ്റത്തിന്റെ DNS-ൽ തുടരും. വീഡിയോ പേജുകളും ടോറന്റ് ട്രാക്കറുകളും തൽക്കാലം സിസ്റ്റത്തിന്റെ DNS ഉപയോഗിക്കുന്നു.
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server wants a login (401, 403)
-#, machine
-	Needs a login	ലോഗിൻ ആവശ്യമാണ്
 #. text in the Options window
 #, machine
 	Network adapter:	നെറ്റ്‌വർക്ക് അഡാപ്റ്റർ:
@@ -1760,6 +1661,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	ഇപ്പോൾ വേണ്ടേ? പിന്നീട് ടാസ്‌ക്കുകൾ → ഒരു പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക എന്നതിൽ നിന്ന് അവ നേടുക.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	ഈ സേവനം പിന്തുണയ്ക്കുന്നില്ല
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	ഉപയോഗിക്കുന്നില്ല: ഫയൽ പൂർത്തിയാകുമ്പോൾ ഫയൽ ഭാഗങ്ങൾ അതിനടുത്തേക്ക് എഴുതുന്നു
@@ -1795,11 +1700,7 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തിയ ലിങ്കുകൾ ഡൗൺലോഡ് ചെയ്യാൻ വാഗ്ദാനം ചെയ്യുക
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
-#, machine
-	Offline ({status})	ഓഫ്‌ലൈൻ ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
 #, machine
 	OK	ശരി
 #. text in a download's progress window
@@ -1817,10 +1718,6 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ഒറ്റത്തവണ ഡൗൺലോഡ്
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server has the file
-#, machine
-	Online	ഓൺലൈൻ
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1862,6 +1759,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	പൂർത്തിയാകുമ്പോൾ താഴെ പറയുന്ന ഫയൽ തുറക്കുക:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	പേജ് തുറക്കുക
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1887,35 +1788,25 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	പൂർത്തിയാകുമ്പോഴുള്ള ഓപ്ഷനുകൾ
-#. text in the Link grabber window
-#. Link grabber: the box that edits the selected package
+#. text in the Options window
 #, machine
-	Package	പാക്കേജ്
+	Or paste your API token:	അല്ലെങ്കിൽ നിങ്ങളുടെ API ടോക്കൺ ഒട്ടിക്കുക:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	പേജ് വിലാസം
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	പാസ്‌വേഡ്
-#. text in the Link grabber window; text in the Options window
-#. Link grabber: the package's archives' password (a label before its box)
+#. text in the Options window
 #, machine
 	Password:	പാസ്‌വേഡ്:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	ഒരു മാഗ്നറ്റ് ലിങ്ക് ഒട്ടിക്കുക അല്ലെങ്കിൽ ഒരു .torrent ഫയൽ തിരഞ്ഞെടുക്കുക, തുടർന്ന് തിരയുക.
-#. text in the Link grabber window
-#. Link grabber, while it is empty
-#, machine
-	Paste links here (Ctrl+V), or send a page's links from the browser.	ലിങ്കുകൾ ഇവിടെ ഒട്ടിക്കുക (Ctrl+V), അല്ലെങ്കിൽ ഒരു പേജിന്റെ ലിങ്കുകൾ ബ്രൗസറിൽ നിന്ന് അയയ്ക്കുക.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ഡൗൺലോഡിന്റെ പേജ് നൽകുന്ന ചെക്ക്സം ഒട്ടിക്കുക
-#. text in the Link grabber window
-#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
-#, machine
-	Pasted	ഒട്ടിച്ചത്
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1958,6 +1849,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	പോർട്ട്:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	പ്രീമിയം
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	പ്രീമിയം, {days} ദിവസം ബാക്കി
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2132,10 +2031,6 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ഇതിലേക്ക് സംരക്ഷിക്കുക:
-#. text in the Link grabber window
-#. Link grabber: the folder the package's files go to (a label before its box)
-#, machine
-	Save to:	ഇതിലേക്ക് സംരക്ഷിക്കുക:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -2159,7 +2054,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	എല്ലാം തിരഞ്ഞെടുക്കുക
@@ -2169,7 +2064,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ഇതുവരെയുള്ള എല്ലാ ഡൗൺലോഡുകളും തിരഞ്ഞെടുക്കുക
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: untick every video
 #, machine
 	Select none	ഒന്നും തിരഞ്ഞെടുക്കരുത്
@@ -2221,6 +2116,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	സെർവറുകൾ:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	സേവനം
+#. text in the Options window
+#, machine
+	Service:	സേവനം:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2308,6 +2210,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	ഷട്ട് ഡൗൺ ചെയ്യുക
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	ബ്രൗസറിൽ സൈൻ ഇൻ ചെയ്യുക
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	{user} ആയി സൈൻ ഇൻ ചെയ്തു ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	സൈൻ ഔട്ട് ചെയ്തു: വീണ്ടും സൈൻ ഇൻ ചെയ്യുക
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	സൈറ്റിന്റെ പേര്/ഡൗൺലോഡ് ലിങ്ക്/മാതൃ വെബ് പേജ്/റഫറർ
@@ -2328,7 +2242,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	സൈറ്റുകൾ അവയുടെ മികച്ച ഗുണനിലവാരം പ്രത്യേക വീഡിയോയും ഓഡിയോയും ആയി അയയ്ക്കുന്നു. ffmpeg അവയെ എവിടെയും പ്ലേ ചെയ്യാൻ കഴിയുന്ന ഒരു ഫയലായി ഒരുമിപ്പിക്കുന്നു.
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -2368,11 +2282,6 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	സോഴ്സ് കോഡ്
-#. text in the Link grabber window
-#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
-#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
-#, machine
-	Source: {source}	ഉറവിടം: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2380,10 +2289,6 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	സ്പീഡ് ലിമിറ്റർ ക്രമീകരണങ്ങൾ
-#. text in the Link grabber window
-#. Link grabber button: download the ticked links now
-#, machine
-	Start	ആരംഭിക്കുക
 #. button in a dialog box
 #, machine
 	Start Download	ഡൗൺലോഡ് ആരംഭിക്കുക
@@ -2426,7 +2331,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ആരംഭിക്കുന്നു...
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	നില
+#. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -2480,10 +2389,6 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ നിർത്തുന്നു
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Straight into the archive's folder	നേരിട്ട് ആർക്കൈവിന്റെ ഫോൾഡറിലേക്ക്
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2511,10 +2416,6 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	സമന്വയ ക്യൂ
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ടാസ്ക്കുകൾ → ലിങ്ക് ഗ്രാബർ, അല്ലെങ്കിൽ ബ്രൗസറിന്റെ "എല്ലാ ലിങ്കുകളും ഡൗൺലോഡ് ചെയ്യുക": ഒരു സ്പ്ലിറ്റ്\nആർക്കൈവിന്റെ വോള്യങ്ങൾ ഒരു പാക്കേജാണ്, ഒരു പേജിലെ മറ്റ് ലിങ്കുകൾ മറ്റൊന്ന്.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ഒരു സുഹൃത്തിനോട് പറയുക
@@ -2548,20 +2449,6 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	വിലാസം ഒരു http(s) അല്ലെങ്കിൽ ftp(s) വിലാസമായിരിക്കണം
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Recycle Bin: it was kept	ആർക്കൈവ് റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റാൻ കഴിഞ്ഞില്ല: അത് സൂക്ഷിച്ചു
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Trash: it was kept	ആർക്കൈവ് ട്രാഷിലേക്ക് മാറ്റാൻ കഴിഞ്ഞില്ല: അത് സൂക്ഷിച്ചു
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Recycle Bin	ആർക്കൈവ് റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റി
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Trash	ആർക്കൈവ് ട്രാഷിലേക്ക് മാറ്റി
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	മികച്ച ഗുണമേന്മകളായ MP3, Opus, FLAC എന്നിവയ്ക്ക് ffmpeg (ഏകദേശം 80 MB) ആവശ്യമാണ്.
@@ -2569,6 +2456,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	മികച്ച ഗുണമേന്മകളായ MP3, Opus, FLAC എന്നിവയ്ക്ക് ffmpeg ആവശ്യമാണ്: നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ പാക്കേജ് മാനേജർ (അല്ലെങ്കിൽ Homebrew) ഉപയോഗിച്ച് ഇത് ഇൻസ്റ്റാൾ ചെയ്യുക.
+#. text in the settings
+#. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+#, machine
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ബ്രൗസറിന്റെ പ്രോക്സിക്ക് (ഒരു VPN അല്ലെങ്കിൽ പ്രോക്സി എക്സ്റ്റൻഷൻ) ആ എക്സ്റ്റൻഷന് മാത്രമുള്ള ഒരു ലോഗിൻ ആവശ്യമാണ്: VPN-ന്റെ സ്വന്തം ആപ്പ് ഉപയോഗിക്കുക, അല്ലെങ്കിൽ ഓപ്ഷനുകൾ → പ്രോക്സി / SOCKS-ൽ അതിന്റെ നെറ്റ്‌വർക്ക് അഡാപ്റ്റർ തിരഞ്ഞെടുക്കുക
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2577,6 +2468,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	ക്ലിപ്പ്ബോർഡ് തിരക്കിലാണ്: വീണ്ടും ശ്രമിക്കുക.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	കോഡ് കാലഹരണപ്പെട്ടു: വീണ്ടും സൈൻ ഇൻ ചെയ്യുക
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2696,10 +2591,6 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	{adapter} എന്ന നെറ്റ്‌വർക്ക് അഡാപ്റ്റർ കണക്റ്റ് ചെയ്തിട്ടില്ല
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	the password is wrong	പാസ്‌വേഡ് തെറ്റാണ്
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	പാത Windows-ന് വളരെ വലുതാണ്: {path}
@@ -2780,14 +2671,6 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ഈ ഫയൽ ലഭിച്ച വെബ് പേജ്:
-#. text in the Options window
-#. Options → Archives check box
-#, machine
-	Then move the archives to the Recycle Bin	തുടർന്ന് ആർക്കൈവുകൾ റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റുക
-#. text in the Options window
-#. Options → Archives check box (Linux and macOS)
-#, machine
-	Then move the archives to the Trash	തുടർന്ന് ആർക്കൈവുകൾ ട്രാഷിലേക്ക് മാറ്റുക
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ഈ പേരിൽ ഒരു വിഭാഗം ഇതിനകം ഉണ്ട്
@@ -2981,6 +2864,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	ക്യൂവിന്റെ പേര് ടൈപ്പ് ചെയ്യുക
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page} എന്നതിൽ ഈ കോഡ് ടൈപ്പ് ചെയ്ത് MDM-ന് അനുമതി നൽകുക; നിങ്ങൾക്കായി കാത്തിരിക്കുന്നു (കോഡ് {time} സമയത്തിനുള്ളിൽ കാലഹരണപ്പെടും).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2988,10 +2876,6 @@
 #. text in a download's Properties window
 #, machine
 	Type:	തരം:
-#. text in the Link grabber window
-#. Link grabber button (IDM's): untick every link
-#, machine
-	Uncheck all	എല്ലാം അൺചെക്ക് ചെയ്യുക
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -3003,6 +2887,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	അജ്ഞാതം
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	മുകളിലേക്ക്
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -3057,6 +2945,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	പ്രോക്സി ഉപയോഗിക്കുക (ഓപ്ഷനുകൾ → പ്രോക്സി / സോക്സ്, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	ടോക്കൺ ഉപയോഗിക്കുക
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	ഈ ടോറൻ്റിനായി അവ ഉപയോഗിക്കണോ? പൊരുത്തപ്പെടുന്നവ നിലനിർത്തും, ബാക്കിയുള്ളവ മാറ്റിസ്ഥാപിക്കും.
@@ -3085,10 +2977,6 @@
 #. text in a download's progress window
 #, machine
 	Value	മൂല്യം
-#. text in the Link grabber window
-#. Link grabber: the package of links that belong to no other
-#, machine
-	Various files	വിവിധ ഫയലുകൾ
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3126,11 +3014,6 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	വൈറസ് പരിശോധന ക്രമീകരണങ്ങൾ
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
-#. {n} = a number (keep the braces as they are)
-#, machine
-	volume {n} of it is missing	അതിന്റെ വോള്യം {n} കാണുന്നില്ല
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -3152,13 +3035,12 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	വെബ്
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	{file} എന്നതിൽ കണ്ടെത്തിയ വെബ് വിലാസങ്ങൾ:
 #. text in the Scheduler window
 #, machine
 	Wednesday	ബുധനാഴ്ച
-#. text in the Options window
-#. Options → Archives: a label before the list of where extracted files go
-#, machine
-	What an archive holds goes:	ഒരു ആർക്കൈവിൽ അടങ്ങിയിരിക്കുന്നത് പോകുന്നത്:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -3189,11 +3071,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	തീയതികളും സമയങ്ങളും എഴുതുക
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Wrong password for {name}. Type it again:	{name} എന്നതിനായുള്ള പാസ്‌വേഡ് തെറ്റാണ്. അത് വീണ്ടും ടൈപ്പ് ചെയ്യുക:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -3244,10 +3121,6 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: വീഡിയോ കണ്ടെത്തുന്നു
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ, XZ; ഒരു സ്പ്ലിറ്റ് ആർക്കൈവ് (.part1.rar, .7z.001) ഓരോ\nവോള്യവും ഉള്ളപ്പോൾ. അവിടെ ഇതിനകം ഒരു ഫയൽ ഉണ്ടെങ്കിൽ അത് സൂക്ഷിക്കും: പുതിയതിന് നമ്പർ നൽകും.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -3352,16 +3225,6 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} ഡൗൺലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} ഒരു 7z അല്ലെങ്കിൽ RAR ആർക്കൈവാണ്. MDM അവ 7-Zip ഉപയോഗിച്ച് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു, അത് ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല.
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is protected by a password:	{name} ഒരു പാസ്‌വേഡ് ഉപയോഗിച്ച് സംരക്ഷിച്ചിരിക്കുന്നു:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -3377,13 +3240,67 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} chosen	{total}-ൽ {n} എണ്ണം തിരഞ്ഞെടുത്തു
-#. text in the Link grabber window
+#. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} എണ്ണത്തിൽ {n} തിരഞ്ഞെടുത്തു
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	{service} വേഗത കുറയ്ക്കാൻ ആവശ്യപ്പെടുന്നു; MDM ഒരു മിനിറ്റിനുള്ളിൽ വീണ്ടും ശ്രമിക്കും
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	{service} ആദ്യം ഈ കമ്പ്യൂട്ടറിന് അനുമതി നൽകാൻ ആവശ്യപ്പെടുന്നു: അതിന്റെ ഇമെയിൽ കാണുക
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	{service} ഇപ്പോൾ ഈ ഫയൽ ഹോസ്റ്റിൽ എത്താൻ കഴിയില്ല; MDM പിന്നീട് വീണ്ടും ശ്രമിക്കും
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	{service} പ്രതികരിക്കുന്നില്ല; പിന്നീട് വീണ്ടും ശ്രമിക്കുക
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	{service} ഈ കണക്ഷൻ നിരസിക്കുന്നു (ഒരു VPN അല്ലെങ്കിൽ സെർവർ വിലാസമാണോ?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	{service} ഈ ഫയൽ നൽകില്ല
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: വീണ്ടും സൈൻ ഇൻ ചെയ്യുക (ഓപ്ഷനുകൾ → അക്കൗണ്ടുകൾ)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: അക്കൗണ്ട് ലോക്ക് ചെയ്തിരിക്കുന്നു അല്ലെങ്കിൽ സജീവമാക്കിയിട്ടില്ല
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: ഫയൽ ഹോസ്റ്റിൽ നിന്ന് ഫയൽ പോയി അല്ലെങ്കിൽ ലഭ്യമല്ല
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: ഈ ഫയൽ പാസ്‌വേഡ് സംരക്ഷിതമാണ്
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: ഇതിന് ഒരു പ്രീമിയം അക്കൗണ്ട് ആവശ്യമാണ്
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: നിങ്ങളുടെ അക്കൗണ്ടിലൂടെ ഒരേ സമയം നിരവധി ഡൗൺലോഡുകൾ; MDM വീണ്ടും ശ്രമിക്കും
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: ഈ ഫയൽ ഹോസ്റ്റിനായുള്ള നിങ്ങളുടെ പരിധി ഇപ്പോൾ ഉപയോഗിച്ചുതീർന്നു
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -3719,12 +3636,6 @@ menu	&Keyboard shortcuts	കീബോർഡ് കുറുക്കുവഴി
 #, machine
 menu	&Language...	ഭാ&ഷ...
 #. menu command in the main window
-#. Tasks menu: open Link grabber (links in packages, to tick before adding)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	&Link grabber...	ലിങ്ക് &ഗ്രാബർ...
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	ഓപ്ഷനുകൾ(&O)
@@ -3894,10 +3805,6 @@ menu	E&xport	&എക്സ്പോർട്ട് ചെയ്യുക
 #. menu command in the main window
 #, machine
 menu	Edit queue	ക്യൂ എഡിറ്റ് ചെയ്യുക
-#. menu command in the main window
-#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
-#, machine
-menu	Extract	എക്‌സ്‌ട്രാക്റ്റ് ചെയ്യുക
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	കണ്ടെത്തുക (Ctrl-F)
@@ -4145,3 +4052,274 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/സെക്കൻഡ്
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{folder} എന്നതിലേക്ക് {n} ഫയൽ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌തു|{folder} എന്നതിലേക്ക് {n} ഫയലുകൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌തു
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} എൻട്രി ഒഴിവാക്കി (ഒരു ലിങ്ക് അല്ലെങ്കിൽ ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേര്)|{n} എൻട്രികൾ ഒഴിവാക്കി (ലിങ്കുകൾ അല്ലെങ്കിൽ ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേരുകൾ)
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ഫയലിന് അവിടെയുള്ള ഒരു ഫയലിന്റെ പേരുണ്ടായിരുന്നു, അത് നമ്പർ നൽകി|{n} ഫയലുകൾക്ക് അവിടെയുള്ള ഒരു ഫയലിന്റെ പേരുണ്ടായിരുന്നു, അത് നമ്പർ നൽകി
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	7-Zip ആവശ്യമാണ്
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z, RAR ആർക്കൈവുകൾ 7-Zip ({path}) ഉപയോഗിച്ച് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു.
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z, RAR ആർക്കൈവുകൾക്ക് 7-Zip (7-zip.org) ആവശ്യമാണ്, അത് ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	7z, RAR ആർക്കൈവുകൾക്ക് 7-Zip ആവശ്യമാണ്, അത് ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	അതിന്റെ ഒരു വോളിയം കാണുന്നില്ല
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	ലിസ്റ്റിൽ ഇതിനകം ഉണ്ട്
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	എല്ലായ്‌പ്പോഴും അതിൻ്റെ പേരുള്ള ഒരു ഫോൾഡറിലേക്ക്
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	ആർക്കൈവ് പാസ്‌വേഡ്
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	ആർക്കൈവുകൾ
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	ആർക്കൈവുകളും ലിങ്ക് ഗ്രാബറും
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	തിരക്കിലാണ്, പിന്നീട് ശ്രമിക്കുക
+#. message or event log entry in the main window
+#, machine
+	by Link grabber	ലിങ്ക് ഗ്രാബർ വഴി
+#. text in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	എല്ലാം തിരഞ്ഞെടുക്കുക
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	{name} എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യാനായില്ല: {why}
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌ത ശേഷം ആർക്കൈവുകൾ ഇല്ലാതാക്കുക
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	ഓരോ ഫയലിന്റെയും വിഭാഗം ഫോൾഡർ
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ ആർക്കൈവുകൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
+#. text in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	പൂർത്തിയാകുമ്പോൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	ആർക്കൈവ് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു...
+#. message or event log entry in the main window
+#. a download's status: its archive is being extracted (#37)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting...	എക്‌സ്‌ട്രാക്‌റ്റുചെയ്യുന്നു...
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	7-Zip നേടുക
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	വെബ് പേജുകൾ മറയ്ക്കുക
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (സൗജന്യം) ഇൻസ്റ്റാൾ ചെയ്യുക, തുടർന്ന് ഡൗൺലോഡിൽ റൈറ്റ്-ക്ലിക്ക് ചെയ്ത് എക്‌സ്‌ട്രാക്‌റ്റ് തിരഞ്ഞെടുക്കുക.
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	അതിൽ നിരവധി കാര്യങ്ങൾ ഉള്ളപ്പോൾ, അതിൻ്റെ പേരുള്ള ഒരു ഫോൾഡറിലേക്ക്
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	അതിൽ വളരെയധികം ഫയലുകളോ ഫോൾഡറുകളോ ഉണ്ട്
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	അതിന് കേടുപാടുകൾ സംഭവിച്ചു, അല്ലെങ്കിൽ അതിന്റെ പേര് പറയുന്ന ആർക്കൈവ് അല്ല
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	ഇതൊരു MDM എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്ന ആർക്കൈവ് അല്ല
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	അതിന് ഒരു പാസ്‌വേഡ് ആവശ്യമാണ്
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	അത് നിർത്തി
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	അത് {size} എഴുതും, അവിടെയുള്ള {limit} സ്ഥലത്തേക്കാൾ കൂടുതലാണ്
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	ലിങ്ക് ഗ്രാബർ
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	ലിങ്കുകൾ
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	ലിങ്കുകൾ വരുമ്പോൾ അവയെ നോക്കുക (പേര്, വലുപ്പം, ഓൺലൈൻ)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	ലോഗിൻ ആവശ്യമാണ്
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	ഓഫ്‌ലൈൻ ({status})
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	ഓൺലൈൻ
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	പാക്കേജ്
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	ലിങ്കുകൾ ഇവിടെ ഒട്ടിക്കുക (Ctrl+V), അല്ലെങ്കിൽ ഒരു പേജിന്റെ ലിങ്കുകൾ ബ്രൗസറിൽ നിന്ന് അയയ്ക്കുക.
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	ഒട്ടിച്ചത്
+#. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
+#, machine
+	Save to:	ഇതിലേക്ക് സംരക്ഷിക്കുക:
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	ഉറവിടം: {source}
+#. text in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	ആരംഭിക്കുക
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	നേരിട്ട് ആർക്കൈവിന്റെ ഫോൾഡറിലേക്ക്
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ടാസ്ക്കുകൾ → ലിങ്ക് ഗ്രാബർ, അല്ലെങ്കിൽ ബ്രൗസറിന്റെ "എല്ലാ ലിങ്കുകളും ഡൗൺലോഡ് ചെയ്യുക": ഒരു സ്പ്ലിറ്റ്\nആർക്കൈവിന്റെ വോള്യങ്ങൾ ഒരു പാക്കേജാണ്, ഒരു പേജിലെ മറ്റ് ലിങ്കുകൾ മറ്റൊന്ന്.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	ആർക്കൈവ് റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റാൻ കഴിഞ്ഞില്ല: അത് സൂക്ഷിച്ചു
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	ആർക്കൈവ് ട്രാഷിലേക്ക് മാറ്റാൻ കഴിഞ്ഞില്ല: അത് സൂക്ഷിച്ചു
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	ആർക്കൈവ് റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റി
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	ആർക്കൈവ് ട്രാഷിലേക്ക് മാറ്റി
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	പാസ്‌വേഡ് തെറ്റാണ്
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	തുടർന്ന് ആർക്കൈവുകൾ റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റുക
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	തുടർന്ന് ആർക്കൈവുകൾ ട്രാഷിലേക്ക് മാറ്റുക
+#. text in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	എല്ലാം അൺചെക്ക് ചെയ്യുക
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	വിവിധ ഫയലുകൾ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	അതിന്റെ വോള്യം {n} കാണുന്നില്ല
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	ഒരു ആർക്കൈവിൽ അടങ്ങിയിരിക്കുന്നത് പോകുന്നത്:
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	{name} എന്നതിനായുള്ള പാസ്‌വേഡ് തെറ്റാണ്. അത് വീണ്ടും ടൈപ്പ് ചെയ്യുക:
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ, XZ; ഒരു സ്പ്ലിറ്റ് ആർക്കൈവ് (.part1.rar, .7z.001) ഓരോ\nവോള്യവും ഉള്ളപ്പോൾ. അവിടെ ഇതിനകം ഒരു ഫയൽ ഉണ്ടെങ്കിൽ അത് സൂക്ഷിക്കും: പുതിയതിന് നമ്പർ നൽകും.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} ഒരു 7z അല്ലെങ്കിൽ RAR ആർക്കൈവാണ്. MDM അവ 7-Zip ഉപയോഗിച്ച് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു, അത് ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} ഒരു പാസ്‌വേഡ് ഉപയോഗിച്ച് സംരക്ഷിച്ചിരിക്കുന്നു:
+#. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	ലിങ്ക് &ഗ്രാബർ...
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	എക്‌സ്‌ട്രാക്റ്റ് ചെയ്യുക

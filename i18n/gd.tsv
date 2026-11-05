@@ -12,11 +12,6 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	A bheil thu cinnteach gu bheil thu airson an luchdachadh a-nuas {n} a sguabadh às bho liosta luchdachaidhean a-nuas Mister Download Manager?|A bheil thu cinnteach gu bheil thu airson na luchdachaidhean a-nuas {n} seo a sguabadh às bho liosta luchdachaidhean a-nuas Mister Download Manager?|A bheil thu cinnteach gu bheil thu airson na luchdachaidhean a-nuas {n} seo a sguabadh às bho liosta luchdachaidhean a-nuas Mister Download Manager?|A bheil thu cinnteach gu bheil thu airson na luchdachaidhean a-nuas {n} seo a sguabadh às bho liosta luchdachaidhean a-nuas Mister Download Manager?
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {n} is a number of files, {folder} where they went
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Thug {n} faidhle a-mach gu {folder}|Thug {n} faidhlichean a-mach gu {folder}|Thug {n} faidhlichean a-mach gu {folder}|Thug {n} faidhlichean a-mach gu {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -39,22 +34,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} a’ luchdachadh sìos|{n} a’ luchdachadh sìos|{n} a’ luchdachadh sìos|{n} a’ luchdachadh sìos
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	Chaidh {n} inntrigeadh fhàgail a-mach (ceangal, no ainm a tha a’ dol taobh a-muigh a’ phasgan)|Chaidh {n} inntrigeadh fhàgail a-mach (ceanglaichean, no ainmean a tha a’ dol taobh a-muigh a’ phasgan)|Chaidh {n} inntrigeadh fhàgail a-mach (ceanglaichean, no ainmean a tha a’ dol taobh a-muigh a’ phasgan)|Chaidh {n} inntrigeadh fhàgail a-mach (ceanglaichean, no ainmean a tha a’ dol taobh a-muigh a’ phasgan)
-#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
+#. count in the Batch download window; count in the Add torrent window
 #. how many files the pattern gives in all
-#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} faidhle|{n} faidhlichean|{n} faidhlichean|{n} faidhlichean
-#. count in extracting archives (a download's log, the Archive password window)
-#. in a download's log, after extracting
-#. {n} = a number (keep the braces as they are)
-#, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Bha ainm faidhle a bha ann mu thràth air {n} faidhle agus fhuair e àireamh|Bha ainm faidhle a bha ann mu thràth air {n} faidhlichean agus fhuair iad àireamh|Bha ainm faidhle a bha ann mu thràth air {n} faidhlichean agus fhuair iad àireamh|Bha ainm faidhle a bha ann mu thràth air {n} faidhlichean agus fhuair iad àireamh
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -111,24 +95,13 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-uair (21:41)
-#. window title in extracting archives (a download's log, the Archive password window)
-#. window title: 7-Zip (a program's name) must be installed
-#, machine
-	7-Zip needed	Feumach 7-Zip
-#. text in the Options window
-#. Options → Archives: {path} is where 7-Zip's program is
-#, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	Tha tasglannan 7z is RAR air an toirt a-mach le 7-Zip ({path}).
-#. text in the Options window
-#. Options → Archives, when 7-Zip isn't installed
-#, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	Feumaidh tasglannan 7z is RAR 7-Zip (7-zip.org), nach eil air a stàladh.
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	7z and RAR archives need 7-Zip, which isn't installed	Feumaidh tasglannan 7z is RAR 7-Zip, nach eil air a stàladh
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Falaich mion-fhiosrachadh
+#. text in the Options window
+#. Options → Accounts: what these accounts are, and the services' rule against sharing
+#, machine
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Bidh seirbheis dì-bhrìd (Real-Debrid) a’ luchdachadh sìos ceangal aoigh faidhle leis a’ chunntas pàighte agad fhèin agus a’ toirt ceangal dìreach do MDM. Na cleachd ach do chunntas fhèin: bidh roinneadh cunntais no a cheanglaichean a’ briseadh teirmichean nan seirbheisean agus faodaidh e a bhith air a chuir dheth. Bidh luchdachadh sìos a thòisich am brabhsair mu thràth a’ fuireach mar a tha iad.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -141,10 +114,6 @@
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
 	a server on this computer sent the download elsewhere, which would not go through {adapter}	chuir frithealaiche air a’ choimpiutair seo an luchdachadh sìos gu àite eile, rud nach rachadh tro {adapter}
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	a volume of it is missing	tha tomhas-lìonaidh dheth a dhìth
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mu Mister Download Manager
@@ -152,9 +121,21 @@
 #. Torrent settings: other peers may connect to this computer
 #, machine
 	Accept incoming connections	Gabhaibh ri ceanglaichean a tha a’ tighinn a-steach
+#. text in the Options window
+#. column title: the account's name at the service
+#, machine
+	Account	Cunntas
+#. text in the Options window
+#. tab title: the user's debrid service accounts (Real-Debrid…)
+#, machine
+	Accounts	Cunntasan
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Cuir luchdachadh a-nuas ris (Cuir URL ris)
+#. window title in the Options window
+#. window title: adding a debrid service account (Real-Debrid…)
+#, machine
+	Add an account	Cuir cunntas ris
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Cuir luchdachadh a-nuas baidse ris
@@ -190,8 +171,7 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Cuir ris an leudachan an-asgaidh: thig faidhlichean a luchdaicheas tu sìos sa bhrabhsair agad an-seo, agus gheibh bhideothan putan Luchdaich sìos.
-#. message or event log entry in the main window; text in the Link grabber window
-#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
+#. message or event log entry in the main window
 #, machine
 	Add to queue	Cuir ri ciudha
 #. text in a dialog box
@@ -205,6 +185,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Add {n} downloads to the list? Each video gets its own row.	Cuir {n} luchdachadh a-nuas ris an liosta? Gheibh gach bhidio an sreath aice fhèin.
+#. button in the Options window
+#. button: add a debrid service account (opens the sign-in)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Add...	Cuir ris...
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -255,10 +240,6 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ga luchdachadh sìos mu thràth: {path}
-#. text in the Link grabber window
-#. Link grabber: the package of links the download list has already
-#, machine
-	Already in the list	Ann an liosta mu thràth
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -277,10 +258,6 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	An-còmhnaidh dorcha
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Always into a folder named after it	An-còmhnaidh ann am pasgan air a bheil an t-ainm fhèin
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Tionndaidh air an Luathadair-cuingeachaidh an-còmhnaidh nuair a thòisicheas Mister Download Manager
@@ -304,20 +281,6 @@
 #. text in the Scheduler window
 #, machine
 	April	Giblean
-#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
-#. what a screen reader calls the Archive password window's box
-#. what a screen reader calls Link grabber's password box
-#, machine
-	Archive password	Facal-faire tasglainn
-#. group box title in the Options window; text in the Options window
-#. Options → Archives: group box title
-#. tab title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives	Tasglannan
-#. text in the Options window
-#. Options page title: extracting downloaded archives, and Link grabber
-#, machine
-	Archives and Link grabber	Tasglannan is Glacair-cheanglaichean
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -331,6 +294,11 @@
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Ag iarraidh liosta nam faidhlichean air co-aoisean. Faodaidh ceanglaichean magnet mionaid no dhà a ghabhail.
+#. text in the Options window
+#. Options → Add an account: the sign-in is starting or being checked
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking the service...	A’ faighneachd don t-seirbheis...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -375,7 +343,7 @@
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Thoir air ais {names} mar a chaidh an cur air falbh: an ainmean, seòrsaichean faidhle agus pasganan? Fuirichidh na roinnean agad fhèin, Coitcheann agus Torrents mar a tha iad. Fuirichidh luchdachadh a-nuas a chaidh a ghluasad gu Coitcheann an sin.
-#. text in the Link grabber window; button in the Link grabber window; button in the Options window
+#. button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	Brabhsaich
@@ -389,17 +357,13 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Amalachadh Brabhsair/Siostam
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server asked to try later (429, 503)
-#, machine
-	Busy, try later	Trang, feuch a-rithist nas fhaide air adhart
 #. message or event log entry in the main window
 #, machine
 	by batch download	le luchdachadh sìos baidse
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	le Link grabber
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+	by import	le in-mhalairt
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Sguir dheth
@@ -452,10 +416,6 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	Atharraich pasgan airson roinn "{category}" air an fhear mu dheireadh a chaidh a thaghadh
-#. text in the Link grabber window
-#. Link grabber button (IDM's): tick every link
-#, machine
-	Check all	Tagh na h-uile
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	Thoir sùil airson ùrachaidhean
@@ -491,7 +451,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	A’ sgrùdadh {name} ({n} de {total})...
-#. text in the Checksum window; text in the Link grabber window
+#. text in the Checksum window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	A' sgrùdadh...
@@ -573,15 +533,14 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	Dèan lethbhreac
+#. button in the Options window
+#. button: copy the sign-in code
+#, machine
+	Copy code	Dèan lethbhreac den chòd
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	Dèan lethbhreac dhen aithisg
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: {name} is the archive's file name, {why} the reason
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Couldn't extract {name}: {why}	Cha b’ urrainn dhuinn {name} a thoirt a-mach: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Cruthaich pasgan
@@ -611,6 +570,9 @@
 #. a date's order: day first (30/10/2026)
 #, machine
 	Day, month, year	Latha, mìos, bliadhna
+#. page title in the Options window
+#, machine
+	Debrid service accounts	Cunntasan seirbheis dì-bhrìd
 #. text in the Scheduler window
 #, machine
 	December	Dùbhlachd
@@ -637,10 +599,6 @@
 #. verb: delete the item
 #, machine
 	Delete	Sguab às
-#. checkbox in the Link grabber window
-#. Link grabber check box: after extracting, the archives go to the Recycle Bin
-#, machine
-	Delete archives after extracting	Sguab às tasglannan an dèidh an toirt a-mach
 #. window title in a dialog box
 #, machine
 	Delete category	Sguab às roinn
@@ -722,6 +680,10 @@
 #. text in a download's progress window
 #, machine
 	Done	Dèanta
+#. button in the Options window
+#. button (short): move the account down the list
+#, machine
+	Down	Sìos
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Luchdaich sìos
@@ -768,6 +730,10 @@
 #. tab title: how the download is going
 #, machine
 	Download status	Inbhe luchdaich sìos
+#. checkbox in the Options window
+#. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
+#, machine
+	Download supported file-host links through these accounts	Luchdaich sìos ceanglaichean aoigh faidhle le taic tro na cunntasan sin
 #. window title in the Download video window
 #, machine
 	Download video from a page	Luchdaich sìos bhidio bho dhuilleag
@@ -853,10 +819,6 @@
 #. Options → Network adapter: what "Any" means
 #, machine
 	Each connection takes the system's route.	Bidh gach ceangal a’ gabhail slighe an t-siostaim.
-#. text in the Link grabber window
-#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
-#, machine
-	Each file's category folder	Pasgan roinn-seòrsa gach faidhle
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -939,6 +901,10 @@
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
 	Expected checksum set ({algorithm})	Suim-dearbhaidh ris a bheil dùil air a suidheachadh ({algorithm})
+#. text in the Options window
+#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#, machine
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Deuchainneach: air a thogail bho sgrìobhainnean API poblach Real-Debrid, gun a bhith air a dhearbhadh fhathast le fìor chunntas.
 #. message or event log entry in the main window
 #, machine
 	Export	Às-phortaich
@@ -948,27 +914,6 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Leudachain air an sgaradh le beàrnan, mar eisimpleir MP4 MKV R0*
-#. button in extracting archives (a download's log, the Archive password window)
-#. button: extract the archive with the password typed
-#, machine
-	Extract	Thoir a-mach
-#. checkbox in the Options window
-#. Options → Archives check box (a Link grabber package has its own "Extract when done")
-#, machine
-	Extract archives when their download completes	Thoir a-mach tasglannan nuair a bhios an luchdachadh sìos deiseil
-#. text in the Link grabber window
-#. Link grabber check box: extract the package's archives once they are downloaded
-#, machine
-	Extract when done	Thoir a-mach nuair a bhios e deiseil
-#. text in extracting archives (a download's log, the Archive password window)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting the archive...	A’ toirt a-mach an tasglainn...
-#. message or event log entry in the main window
-#. a download's status: its archive is being extracted (#37)
-#. the trailing ... means it is still going on: keep it
-#, machine
-	Extracting...	’Ga thoirt a-mach...
 #. text in the Scheduler window
 #, machine
 	February	An Gearran
@@ -1034,6 +979,10 @@
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Lorg faidhle
+#. button in the Options window
+#. button: open the service's page that shows the user's API token
+#, machine
+	Find my token	Lorg an tòcan agam
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -1083,6 +1032,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	DiF
+#. text in debrid.rs
+#. Options → Accounts: a debrid account without premium (it can't unlock links)
+#, machine
+	free account: links need premium	cunntas an-asgaidh: feumaidh ceanglaichean prìomhachas
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1147,10 +1100,6 @@
 #. tab title: general information
 #, machine
 	General	Coitcheann
-#. text in extracting archives (a download's log, the Archive password window)
-#. button: opens 7-Zip's website (7-Zip is a program's name)
-#, machine
-	Get 7-Zip	Faigh 7-Zip
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1206,10 +1155,6 @@
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
 	Hide to the notification area	Falaich dhan raon-fiosrachaidh
-#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
-#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
-#, machine
-	Hide web pages	Falaich duilleagan-lìn
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Cùm Alt fhad ’s a bhriogas tu air ceangal gus am brabhsair a leigeil ga luchdachadh a-nuas an àite Mister Download Manager.
@@ -1245,12 +1190,19 @@
 #. message or event log entry in the main window
 #, machine
 	Import	Import
+#. window title in transfer.rs
+#, machine
+	Import downloads	Import luchdachadh sìos
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Ann an ciudha
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Anns na roinnean: clàr-taice na roinne taghte
+#. text in transfer.rs
+#. in Import, after an address the download list has already
+#, machine
+	in the list	anns an liosta
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1263,10 +1215,6 @@
 #. the torrent's identifier
 #, machine
 	Info hash	Hash fiosrachaidh
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window, under why
-#, machine
-	Install 7-Zip (free), then right-click the download and choose Extract.	Stàlaich 7-Zip (saor an-asgaidh), an uair sin dèan briogadh deas air an luchdachadh a-nuas agus tagh Thoir a-mach.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1279,10 +1227,6 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Stàlaich yt-dlp
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Into a folder named after it, when it holds several things	Ann am pasgan air a bheil an t-ainm fhèin, nuair a chumas e grunn rudan
 #. text in a dialog box
 #, machine
 	Invalid address	Seòladh mì-dhligheach
@@ -1290,35 +1234,10 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	Seòlaidhean IP (roghainneil):
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it holds too many files or folders	tha cus fhaidhlichean no phasganan ann
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is damaged, or not the archive its name says	tha e air a mhilleadh, no chan e an tasglainn a tha an t-ainm ag ràdh
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it is not an archive MDM extracts	chan e tasglainn a th’ ann a bheir MDM a-mach
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it needs a password	feumaidh e facal-faire
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	Innsidh e do na coimpiutairean air an lìonra agad dè na sruthan a th’ agad.
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	it was stopped	chaidh stad a chur air
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	it would write {size}, more than the {limit} there is room or reason for	sgrìobhadh e {size}, barrachd air an {limit} a tha de rùm no de dh’adhbhar ann
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1396,17 +1315,8 @@
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
 	Limit uploading for all torrents to	Cuingich luchdachadh suas airson gach sruth gu
-#. window title in the Link grabber window; group box title in the Options window
-#. Options → Archives: group box title
-#, machine
-	Link grabber	Link grabber
-#. text in the Link grabber window
-#. what a screen reader calls Link grabber's list
-#, machine
-	Links	Ceanglaichean
-#. message or event log entry in the main window; text in the Link grabber window
+#. message or event log entry in the main window
 #. in Import, where the addresses came from: a page in the browser
-#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Ceanglaichean bhon bhrabhsair
 #. text in playlistdlg.rs
@@ -1441,10 +1351,6 @@
 #. noun: the user name and password section
 #, machine
 	Login	Log a-steach
-#. checkbox in the Options window
-#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
-#, machine
-	Look links up when they arrive (name, size, online)	Coimhead suas ceanglaichean nuair a ruigeas iad (ainm, meud, air-loidhne)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Lorg
@@ -1625,22 +1531,17 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	Àir.
-#. text in the Link grabber window; text in the Add torrent window
+#. text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	Ainm
-#. text in categories.rs; text in the Link grabber window
-#. Link grabber: the package's name (a label before its box)
+#. text in categories.rs
 #, machine
 	Name:	Ainm:
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Fanaidh ainmean san fhaidhle òstach agad agus ainmean ionadail (faclan singilte, .local, .lan) le DNS an t-siostaim. Cleachdaidh duilleagan bhidio agus lorgairean torrent DNS an t-siostaim an-dràsta.
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server wants a login (401, 403)
-#, machine
-	Needs a login	Feumaidh e logadh a-steach
 #. text in the Options window
 #, machine
 	Network adapter:	Adaptar lìonraidh:
@@ -1760,6 +1661,10 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	Chan ann an-dràsta? Faigh iad nas fhaide air adhart bho Gnìomhan → Luchdaich sìos bhidio bho dhuilleag.
+#. text in debrid.rs
+#. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
+#, machine
+	not supported by this service	gun taic leis an t-seirbheis seo
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Gun chleachdadh: tha pàirtean faidhle sgrìobhte ri taobh an fhaidhle
@@ -1795,11 +1700,7 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Tairg luchdachadh sìos cheanglaichean a chaidh a chopaigeadh dhan chlàr-bhòrd
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
-#, machine
-	Offline ({status})	Far-loidhne ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
 #, machine
 	OK	Ceart gu leòr
 #. text in a download's progress window
@@ -1817,10 +1718,6 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Luchdachadh sìos aon-ùine
-#. text in the Link grabber window
-#. Link grabber, a link's status: the server has the file
-#, machine
-	Online	Air-loidhne
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1862,6 +1759,10 @@
 #. checkbox in the Scheduler window
 #, machine
 	Open the following file when done:	Fosgail am faidhle a leanas nuair a bhios e deiseil:
+#. button in the Options window
+#. button: open the service's page where the code is typed
+#, machine
+	Open the page	Fosgail an duilleag
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
@@ -1887,35 +1788,25 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Roghainnean nuair a bhios e deiseil
-#. text in the Link grabber window
-#. Link grabber: the box that edits the selected package
+#. text in the Options window
 #, machine
-	Package	Pasgan
+	Or paste your API token:	No cuir a-steach an tòcan API agad:
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Seòladh duilleige
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Facal-faire
-#. text in the Link grabber window; text in the Options window
-#. Link grabber: the package's archives' password (a label before its box)
+#. text in the Options window
 #, machine
 	Password:	Facal-faire:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Cuir a-steach ceangal magnet no tagh faidhle .torrent, an uairsin Lorg.
-#. text in the Link grabber window
-#. Link grabber, while it is empty
-#, machine
-	Paste links here (Ctrl+V), or send a page's links from the browser.	Cuir ceanglaichean an seo (Ctrl+V), no cuir ceanglaichean duilleige bhon bhrobhsair.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Cuir a-steach an t-seic-suim a tha duilleag an luchdaich a-nuas a’ toirt seachad
-#. text in the Link grabber window
-#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
-#, machine
-	Pasted	Air a phasgadh
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1958,6 +1849,14 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Port:
+#. text in debrid.rs
+#. Options → Accounts: a debrid account with premium (no end date given)
+#, machine
+	premium	prìomhachas
+#. text in debrid.rs
+#. Options → Accounts: a debrid account's state; {days} the days of premium left
+#, machine
+	premium, {days} days left	prìomhachas, {days} làithean air fhàgail
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -2132,10 +2031,6 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Sàbhail Gu:
-#. text in the Link grabber window
-#. Link grabber: the folder the package's files go to (a label before its box)
-#, machine
-	Save to:	Sàbhail gu:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -2159,7 +2054,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Tagh pasgan
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: tick every video
 #, machine
 	Select all	Tagh na h-uile
@@ -2169,7 +2064,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Tagh a h-uile luchdachadh a-nuas suas chun an fhear seo
-#. button in playlistdlg.rs; button in the Add torrent window
+#. button in playlistdlg.rs; button in the Add torrent window; button in transfer.rs
 #. button in Download video for a playlist: untick every video
 #, machine
 	Select none	Na tagh gin
@@ -2221,6 +2116,13 @@
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
 #, machine
 	Servers:	Frithealaichean:
+#. text in the Options window
+#. column title: the debrid service (Real-Debrid…)
+#, machine
+	Service	Seirbheis
+#. text in the Options window
+#, machine
+	Service:	Seirbheis:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2308,6 +2210,18 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Dùin sìos
+#. button in the Options window
+#. button: sign in to the debrid service in the browser, by typing a code there
+#, machine
+	Sign in in the browser	Clàraich a-steach sa bhrobhsair
+#. text in the Options window
+#. Options → Add an account: signed in; {user} the account's name, {state} premium or not
+#, machine
+	Signed in as {user} ({state})	Air a chlàradh a-steach mar {user} ({state})
+#. text in the Options window
+#. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+#, machine
+	signed out: sign in again	air a chlàradh a-mach: clàraich a-steach a-rithist
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Ainm làraich/Ceangal luchdaich sìos/Duilleag-lìn phàrant/Iomradh
@@ -2328,7 +2242,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Cuiridh làraich an càileachd as fheàrr aca mar bhidio is claisneachd air leth. Cuiridh ffmpeg ri chèile iad ann an aon fhaidhle a chluicheas an àite sam bith.
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -2368,11 +2282,6 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	Còd stòr
-#. text in the Link grabber window
-#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
-#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
-#, machine
-	Source: {source}	Tobar: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2380,10 +2289,6 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Roghainnean Luathadair-luathais
-#. text in the Link grabber window
-#. Link grabber button: download the ticked links now
-#, machine
-	Start	Tòisich
 #. button in a dialog box
 #, machine
 	Start Download	Tòisich Luchdachadh sìos
@@ -2426,7 +2331,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	A’ tòiseachadh...
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Options window
+#. column title: the account's state (premium, days left)
+#, machine
+	State	Inbhe
+#. text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -2480,10 +2389,6 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Stadaidh e nuair a bhios an luchdachadh sìos deiseil
-#. text in the Options window
-#. Options → Archives: where extracted files go
-#, machine
-	Straight into the archive's folder	Dìreach a-steach do phasgan an tasglainn
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2511,10 +2416,6 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	Ciudha sioncronachaidh
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Gnìomhan → Glacair-cheanglaichean, no am brabhsair “Luchdaich sìos a h-uile ceangal”: tha leabhraichean tasglainn\nsgoilte mar aon phasgan, agus ceanglaichean eile duilleige mar phasgan eile.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Innis do charaid
@@ -2548,20 +2449,6 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Feumaidh an seòladh a bhith na sheòladh http(s) no ftp(s)
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Recycle Bin: it was kept	Cha b' urrainn an tasglann a ghluasad chun a' Bhiona Ath-chuairteachaidh: chaidh a chumail
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	The archive could not be moved to the Trash: it was kept	Cha b' urrainn an tasglann a ghluasad chun a' Bhiona-sgudail: chaidh a chumail
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log: the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Recycle Bin	Chaidh an tasglann a ghluasad chun a' Bhiona Ath-chuairteachaidh
-#. text in extracting archives (a download's log, the Archive password window)
-#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
-#, machine
-	The archive was moved to the Trash	Chaidh an tasglann a ghluasad chun a' Bhiona-sgudail
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Feumaidh na càileachdan as fheàrr, MP3, Opus is FLAC, ffmpeg (mu 80 MB).
@@ -2569,6 +2456,10 @@
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Feumaidh na càileachdan as fheàrr, MP3, Opus is FLAC, ffmpeg: stàlaich e le manaidsear pacaid an t-siostaim agad (no Homebrew).
+#. text in the settings
+#. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
+#, machine
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	tha progsaidh a' bhrabhsair (leudachan VPN no progsaidh) ag iarraidh logadh a-steach nach eil ach aig an leudachan sin: cleachd aplacaid an VPN fhèin, no tagh an adapter lìonraidh aige ann an Roghainnean → Progsaidh / Socks
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2577,6 +2468,10 @@
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
 	The clipboard is busy: try again.	Tha am bòrd-bhualaidh trang: feuch ris a-rithist.
+#. text in debrid.rs
+#. Options → Accounts: the sign-in code ran out before it was used
+#, machine
+	the code expired: sign in again	thàinig an còd gu crìch: clàraich a-steach a-rithist
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2696,10 +2591,6 @@
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
 	the network adapter {adapter} is not connected	chan eil an t-adaptar lìonraidh {adapter} ceangailte
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
-#, machine
-	the password is wrong	tha am facal-faire ceàrr
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	tha an t-slighe ro fhada airson Windows: {path}
@@ -2780,14 +2671,6 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	An duilleag-lìn às an deach am faidhle seo fhaighinn:
-#. text in the Options window
-#. Options → Archives check box
-#, machine
-	Then move the archives to the Recycle Bin	An uairsin gluais na tasglannan chun a' Bhiona Ath-chuairteachaidh
-#. text in the Options window
-#. Options → Archives check box (Linux and macOS)
-#, machine
-	Then move the archives to the Trash	An uairsin gluais na tasglannan chun a' Bhiona-sgudail
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Tha roinn leis an ainm seo ann mu thràth
@@ -2981,6 +2864,11 @@
 #. why OK is greyed when naming a new queue
 #, machine
 	Type the queue's name	Taidhp ainm a’ chiudha
+#. text in the Options window
+#. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Taidhp an còd seo aig {page} agus leig le MDM; a’ feitheamh riut (thig an còd gu crìch ann an {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2988,10 +2876,6 @@
 #. text in a download's Properties window
 #, machine
 	Type:	Seòrsa:
-#. text in the Link grabber window
-#. Link grabber button (IDM's): untick every link
-#, machine
-	Uncheck all	Dì-tagh na h-uile
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -3003,6 +2887,10 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	neo-aithnichte
+#. button in the Options window
+#. button (short): move the account up the list (accounts are asked in the list's order)
+#, machine
+	Up	Suas
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -3057,6 +2945,10 @@
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
 	Use the proxy (Options → Proxy / Socks, SOCKS5)	Cleachd am progsaidh (Roghainnean → Progsaidh / Socks, SOCKS5)
+#. button in the Options window
+#. button: sign in with the token typed in
+#, machine
+	Use the token	Cleachd an tòcan
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	An cleachd thu iad airson an toirrent seo? Thèid na tha a’ freagairt a chumail, thèid an còrr a chur na àite.
@@ -3085,10 +2977,6 @@
 #. text in a download's progress window
 #, machine
 	Value	Luach
-#. text in the Link grabber window
-#. Link grabber: the package of links that belong to no other
-#, machine
-	Various files	Faidhlichean eadar-dhealaichte
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3126,11 +3014,6 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Roghainnean sgrùdaidh bhìorais
-#. text in extracting archives (a download's log, the Archive password window)
-#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
-#. {n} = a number (keep the braces as they are)
-#, machine
-	volume {n} of it is missing	tha leabhar {n} dheth a dhìth
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -3152,13 +3035,12 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Lìon
+#. text in transfer.rs
+#, machine
+	Web addresses found in {file}:	Seòlaidhean-lìn a chaidh a lorg ann an {file}:
 #. text in the Scheduler window
 #, machine
 	Wednesday	Diciadain
-#. text in the Options window
-#. Options → Archives: a label before the list of where extracted files go
-#, machine
-	What an archive holds goes:	Tha na tha ann an tasglann a' dol:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -3189,11 +3071,6 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Sgrìobh cinn-latha is uairean
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Wrong password for {name}. Type it again:	Facal-faire ceàrr airson {name}. Taidhp a-rithist e:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -3244,10 +3121,6 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: a' lorg a' bhidio
-#. text in the Options window
-#. \\n starts a new line: break lines where they fit the translation
-#, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ agus XZ; tasglann sgoilte (.part1.rar, .7z.001) aon uair\n's a tha gach leabhar a-staigh. Tha faidhle a tha ann mu thràth air a chumail: tha am fear ùr air a àireamhachadh.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -3352,16 +3225,6 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	Cha b’ urrainn {name} a luchdachadh a-nuas: {error}
-#. text in extracting archives (a download's log, the Archive password window)
-#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	’S e tasglann 7z no RAR a th’ ann an {name}. Bidh MDM gan toirt a-mach le 7-Zip, nach eil air a stàladh.
-#. text in extracting archives (a download's log, the Archive password window)
-#. in Archive password: {name} is the archive's file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	{name} is protected by a password:	Tha {name} air a dhìon le facal-faire:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -3377,13 +3240,67 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} chosen	{n} de {total} air an taghadh
-#. text in the Link grabber window
+#. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} de {total} air a thaghadh
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
+#. text in errors.rs
+#. a debrid service's error: too many requests; MDM waits and retries
+#, machine
+	{service} asks to slow down; MDM will try again in a minute	tha {service} ag iarraidh slaodachadh; feuchaidh MDM a-rithist ann am mionaid
+#. text in errors.rs
+#. a debrid service's error: it wants the user to allow this computer (it sent an email)
+#, machine
+	{service} asks you to allow this computer first: see its email	tha {service} ag iarraidh ort an coimpiutair seo a cheadachadh an toiseach: faic am post-d aige
+#. text in errors.rs
+#, machine
+	{service} can't reach this file host right now; MDM will try again later	chan urrainn do {service} an aoigh faidhle seo a ruighinn an-dràsta; feuchaidh MDM a-rithist nas fhaide air adhart
+#. text in errors.rs
+#. a debrid service's error: it isn't answering
+#, machine
+	{service} is not responding; try again later	chan eil {service} a’ freagairt; feuch a-rithist nas fhaide air adhart
+#. text in errors.rs
+#. a debrid service's error: it refuses this computer's address (a VPN or a server address)
+#, machine
+	{service} refuses this connection (a VPN or server address?)	tha {service} a’ diùltadh a’ cheangail seo (VPN no seòladh frithealaiche?)
+#. text in errors.rs
+#. a debrid service's error: it won't give this file (not allowed)
+#, machine
+	{service} won't give this file	cha toir {service} am faidhle seo
+#. text in errors.rs
+#. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
+#, machine
+	{service}: sign in again (Options → Accounts)	{service}: clàraich a-steach a-rithist (Roghainnean → Cunntasan)
+#. text in errors.rs
+#. a debrid service's error: the account is locked, banned or not activated
+#, machine
+	{service}: the account is locked or not activated	{service}: tha an cunntas glaiste no gun a bhith air a ghnìomhachadh
+#. text in errors.rs
+#. a debrid service's error: the file is gone from its host
+#, machine
+	{service}: the file is gone or unavailable on the file host	{service}: tha am faidhle air falbh no neo-ruigsinneach air aoigh an fhaidhle
+#. text in errors.rs
+#. a debrid service's error: the file has a password
+#, machine
+	{service}: this file is password-protected	{service}: tha am faidhle seo air a dhìon le facal-faire
+#. text in errors.rs
+#. a debrid service's error: the account has no premium (or it ended)
+#, machine
+	{service}: this needs a premium account	{service}: feumaidh seo cunntas prìomhachais
+#. text in errors.rs
+#, machine
+	{service}: too many downloads at once through your account; MDM will try again	{service}: cus luchdachadh sìos aig an aon àm tron chunntas agad; feuchaidh MDM a-rithist
+#. text in errors.rs
+#. a debrid service's error: the account's limit (traffic) for this host is used up
+#, machine
+	{service}: your limit for this file host is used up for now	{service}: tha do chrìoch airson an òstair fhaidhlichean seo air a chleachdadh suas an-dràsta
+#. text in errors.rs
+#. a debrid service's error in its own words (English); {service} its name
+#, machine
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -3719,12 +3636,6 @@ menu	&Keyboard shortcuts	Ath-ghoiridean &meur-chlàir
 #, machine
 menu	&Language...	Càna&n...
 #. menu command in the main window
-#. Tasks menu: open Link grabber (links in packages, to tick before adding)
-#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
-#. the trailing ... means it opens a window: keep it
-#, machine
-menu	&Link grabber...	Glac&adair-cheangail...
-#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&Roghainnean
@@ -3894,10 +3805,6 @@ menu	E&xport	E&xport
 #. menu command in the main window
 #, machine
 menu	Edit queue	Deasaich ciudha
-#. menu command in the main window
-#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
-#, machine
-menu	Extract	Thoir a-mach
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	Lorg (Ctrl-F)
@@ -4145,3 +4052,274 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/diog
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Thug {n} faidhle a-mach gu {folder}|Thug {n} faidhlichean a-mach gu {folder}|Thug {n} faidhlichean a-mach gu {folder}|Thug {n} faidhlichean a-mach gu {folder}
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	Chaidh {n} inntrigeadh fhàgail a-mach (ceangal, no ainm a tha a’ dol taobh a-muigh a’ phasgan)|Chaidh {n} inntrigeadh fhàgail a-mach (ceanglaichean, no ainmean a tha a’ dol taobh a-muigh a’ phasgan)|Chaidh {n} inntrigeadh fhàgail a-mach (ceanglaichean, no ainmean a tha a’ dol taobh a-muigh a’ phasgan)|Chaidh {n} inntrigeadh fhàgail a-mach (ceanglaichean, no ainmean a tha a’ dol taobh a-muigh a’ phasgan)
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Bha ainm faidhle a bha ann mu thràth air {n} faidhle agus fhuair e àireamh|Bha ainm faidhle a bha ann mu thràth air {n} faidhlichean agus fhuair iad àireamh|Bha ainm faidhle a bha ann mu thràth air {n} faidhlichean agus fhuair iad àireamh|Bha ainm faidhle a bha ann mu thràth air {n} faidhlichean agus fhuair iad àireamh
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	Feumach 7-Zip
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	Tha tasglannan 7z is RAR air an toirt a-mach le 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	Feumaidh tasglannan 7z is RAR 7-Zip (7-zip.org), nach eil air a stàladh.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	Feumaidh tasglannan 7z is RAR 7-Zip, nach eil air a stàladh
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	tha tomhas-lìonaidh dheth a dhìth
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	Ann an liosta mu thràth
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	An-còmhnaidh ann am pasgan air a bheil an t-ainm fhèin
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	Facal-faire tasglainn
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	Tasglannan
+#. text in the Options window
+#. Options page title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives and Link grabber	Tasglannan is Glacair-cheanglaichean
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	Trang, feuch a-rithist nas fhaide air adhart
+#. message or event log entry in the main window
+#, machine
+	by Link grabber	le Link grabber
+#. text in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	Tagh na h-uile
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	Cha b’ urrainn dhuinn {name} a thoirt a-mach: {why}
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	Sguab às tasglannan an dèidh an toirt a-mach
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	Pasgan roinn-seòrsa gach faidhle
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	Thoir a-mach
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	Thoir a-mach tasglannan nuair a bhios an luchdachadh sìos deiseil
+#. text in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	Thoir a-mach nuair a bhios e deiseil
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	A’ toirt a-mach an tasglainn...
+#. message or event log entry in the main window
+#. a download's status: its archive is being extracted (#37)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting...	’Ga thoirt a-mach...
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	Faigh 7-Zip
+#. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	Falaich duilleagan-lìn
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	Stàlaich 7-Zip (saor an-asgaidh), an uair sin dèan briogadh deas air an luchdachadh a-nuas agus tagh Thoir a-mach.
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	Ann am pasgan air a bheil an t-ainm fhèin, nuair a chumas e grunn rudan
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	tha cus fhaidhlichean no phasganan ann
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	tha e air a mhilleadh, no chan e an tasglainn a tha an t-ainm ag ràdh
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	chan e tasglainn a th’ ann a bheir MDM a-mach
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	feumaidh e facal-faire
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	chaidh stad a chur air
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	sgrìobhadh e {size}, barrachd air an {limit} a tha de rùm no de dh’adhbhar ann
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	Link grabber
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	Ceanglaichean
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	Coimhead suas ceanglaichean nuair a ruigeas iad (ainm, meud, air-loidhne)
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	Feumaidh e logadh a-steach
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	Far-loidhne ({status})
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	Air-loidhne
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	Pasgan
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	Cuir ceanglaichean an seo (Ctrl+V), no cuir ceanglaichean duilleige bhon bhrobhsair.
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	Air a phasgadh
+#. text in the Link grabber window
+#. Link grabber: the folder the package's files go to (a label before its box)
+#, machine
+	Save to:	Sàbhail gu:
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	Tobar: {source}
+#. text in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	Tòisich
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	Dìreach a-steach do phasgan an tasglainn
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Gnìomhan → Glacair-cheanglaichean, no am brabhsair “Luchdaich sìos a h-uile ceangal”: tha leabhraichean tasglainn\nsgoilte mar aon phasgan, agus ceanglaichean eile duilleige mar phasgan eile.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	Cha b' urrainn an tasglann a ghluasad chun a' Bhiona Ath-chuairteachaidh: chaidh a chumail
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	Cha b' urrainn an tasglann a ghluasad chun a' Bhiona-sgudail: chaidh a chumail
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	Chaidh an tasglann a ghluasad chun a' Bhiona Ath-chuairteachaidh
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	Chaidh an tasglann a ghluasad chun a' Bhiona-sgudail
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	tha am facal-faire ceàrr
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	An uairsin gluais na tasglannan chun a' Bhiona Ath-chuairteachaidh
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	An uairsin gluais na tasglannan chun a' Bhiona-sgudail
+#. text in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	Dì-tagh na h-uile
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	Faidhlichean eadar-dhealaichte
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	tha leabhar {n} dheth a dhìth
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	Tha na tha ann an tasglann a' dol:
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	Facal-faire ceàrr airson {name}. Taidhp a-rithist e:
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ agus XZ; tasglann sgoilte (.part1.rar, .7z.001) aon uair\n's a tha gach leabhar a-staigh. Tha faidhle a tha ann mu thràth air a chumail: tha am fear ùr air a àireamhachadh.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	’S e tasglann 7z no RAR a th’ ann an {name}. Bidh MDM gan toirt a-mach le 7-Zip, nach eil air a stàladh.
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	Tha {name} air a dhìon le facal-faire:
+#. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	Glac&adair-cheangail...
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	Thoir a-mach

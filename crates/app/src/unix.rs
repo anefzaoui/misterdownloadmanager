@@ -379,6 +379,146 @@ pub fn on_a_screen(_x: i32, _y: i32) -> bool {
     true
 }
 
+// ---- File icons (fileicons.rs) -----------------------------------------------------------------
+
+/// `win32::file_icon` on Linux: the desktop icon theme's file for a type, as its file manager
+/// shows it (xdgicons.rs): the type's MIME type from shared-mime-info, its icon names, looked up
+/// in the desktop's theme (read once: KDE's kdeglobals, GNOME's gsettings, GTK's settings.ini),
+/// the themes it inherits, Adwaita and Breeze when installed, then hicolor. None when no theme
+/// has one (fileicons.rs then draws Tango's).
+#[cfg(target_os = "linux")]
+pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
+    use crate::fileicons::{Native, What};
+    use crate::xdgicons::{Dirs, Icons, MimeDb};
+    static LOOKUP: std::sync::OnceLock<(MimeDb, Icons)> = std::sync::OnceLock::new();
+    let (mime, icons) = LOOKUP.get_or_init(|| {
+        let var = |n: &str| std::env::var(n).ok();
+        let dirs = Dirs::new(
+            var("HOME").as_deref(),
+            var("XDG_DATA_HOME").as_deref(),
+            var("XDG_DATA_DIRS").as_deref(),
+        );
+        let kde = var("XDG_CURRENT_DESKTOP").is_some_and(|d| d.to_uppercase().contains("KDE"));
+        let theme = icon_theme(kde);
+        tracing::info!("file icons: the {:?} icon theme", theme);
+        let default = if kde { "breeze" } else { "Adwaita" };
+        let themes = [theme.as_deref().unwrap_or(default), "Adwaita", "breeze"];
+        (MimeDb::load(&dirs.data), Icons::new(&dirs.icons, &themes))
+    });
+    let names = match what {
+        What::Folder => vec!["folder".to_string()],
+        What::FolderOpen => vec!["folder-open".to_string(), "folder".to_string()],
+        What::File(ext) => {
+            let found = ext
+                .as_ref()
+                .and_then(|e| mime.mime_for(&format!("file.{e}")));
+            mime.icon_names(found.unwrap_or("application/octet-stream"))
+        }
+    };
+    icons.find(&names, px).map(Native::File)
+}
+
+/// The desktop's icon theme name: KDE's (`kdeglobals` [Icons] Theme) first on KDE, else GNOME's
+/// (`gsettings`), then GTK's `settings.ini`.
+#[cfg(target_os = "linux")]
+fn icon_theme(kde: bool) -> Option<String> {
+    use crate::xdgicons::ini_value;
+    let config = std::env::var_os("XDG_CONFIG_HOME")
+        .map(PathBuf::from)
+        .filter(|p| p.is_absolute())
+        .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".config")))?;
+    let read = |rel: &str| std::fs::read_to_string(config.join(rel)).ok();
+    let kdeglobals = || ini_value(&read("kdeglobals")?, "Icons", "Theme");
+    let gnome = || {
+        let out = Command::new("gsettings")
+            .args(["get", "org.gnome.desktop.interface", "icon-theme"])
+            .stdin(Stdio::null())
+            .stderr(Stdio::null())
+            .output()
+            .ok()?;
+        let name = String::from_utf8_lossy(&out.stdout)
+            .trim()
+            .trim_matches('\'')
+            .to_string();
+        (out.status.success() && !name.is_empty()).then_some(name)
+    };
+    let gtk = || {
+        ["gtk-4.0/settings.ini", "gtk-3.0/settings.ini"]
+            .iter()
+            .find_map(|f| ini_value(&read(f)?, "Settings", "gtk-icon-theme-name"))
+    };
+    if kde {
+        kdeglobals().or_else(gnome).or_else(gtk)
+    } else {
+        gnome().or_else(gtk).or_else(kdeglobals)
+    }
+}
+
+/// `win32::file_icon` on macOS: Finder's icon for a type (NSWorkspace), drawn at `px` pixels
+/// into a bitmap of our own (AppKit picks the icon's picture made for that size).
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
+    use crate::fileicons::{Native, What};
+    use objc2::AllocAnyThread as _;
+    use objc2_app_kit::{NSBitmapImageRep, NSDeviceRGBColorSpace, NSGraphicsContext, NSWorkspace};
+    use objc2_foundation::{NSPoint, NSRect, NSSize, NSString};
+    // An extension, or a type identifier where there is none.
+    let ty = match what {
+        // Finder has no open folder of its own: its folder.
+        What::Folder | What::FolderOpen => "public.folder".to_string(),
+        What::File(Some(ext)) => ext.clone(),
+        What::File(None) => "public.data".to_string(),
+    };
+    let side = px.clamp(1, 1024) as usize;
+    objc2::rc::autoreleasepool(|_| {
+        #[allow(deprecated)] // iconForContentType needs a UTType; this takes the extension as is.
+        let image = NSWorkspace::sharedWorkspace().iconForFileType(&NSString::from_str(&ty));
+        // SAFETY: no planes, so the bitmap allocates and owns its pixels: 8-bit RGBA, packed rows
+        // (0 lets it choose the row length and bits per pixel). The colour space name is AppKit's
+        // own constant.
+        let rep = unsafe {
+            NSBitmapImageRep::initWithBitmapDataPlanes_pixelsWide_pixelsHigh_bitsPerSample_samplesPerPixel_hasAlpha_isPlanar_colorSpaceName_bytesPerRow_bitsPerPixel(
+                NSBitmapImageRep::alloc(),
+                std::ptr::null_mut(),
+                side as isize,
+                side as isize,
+                8,
+                4,
+                true,
+                false,
+                NSDeviceRGBColorSpace,
+                0,
+                0,
+            )
+        }?;
+        let gc = NSGraphicsContext::graphicsContextWithBitmapImageRep(&rep)?;
+        NSGraphicsContext::saveGraphicsState_class();
+        NSGraphicsContext::setCurrentContext(Some(&gc));
+        let edge = side as f64;
+        image.drawInRect(NSRect::new(NSPoint::new(0.0, 0.0), NSSize::new(edge, edge)));
+        gc.flushGraphics();
+        NSGraphicsContext::restoreGraphicsState_class();
+        let row = rep.bytesPerRow() as usize;
+        let data = rep.bitmapData();
+        if data.is_null() || row < side * 4 {
+            return None;
+        }
+        let mut rgba = Vec::with_capacity(side * side * 4);
+        for y in 0..side {
+            // SAFETY: the bitmap holds `side` rows of `row` bytes, alive while `rep` is.
+            rgba.extend_from_slice(unsafe {
+                std::slice::from_raw_parts(data.add(y * row), side * 4)
+            });
+        }
+        Some(Native::Rgba {
+            side: side as u32,
+            rgba,
+            premultiplied: true,
+        })
+    })
+}
+
 // ---- Crash reports (crash.rs, mdm-crash) -------------------------------------------------------
 
 static CRASH_HANDLER: std::sync::OnceLock<mdm_crash::crash_handler::CrashHandler> =
