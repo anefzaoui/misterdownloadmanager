@@ -457,8 +457,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Bangla shows Bangladesh's flag instead of India's, in the language picker, on the website and
   in the README ([#27](https://github.com/anefzaoui/misterdownloadmanager/issues/27)).
 - MDM closed with an internal error when a window opened while the main window was minimized
-  or hidden, for example Download File Info for a browser download
-  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22)). The cause was in egui,
+  or hidden in the notification area, for example Download File Info for a download from the
+  browser, or Add torrent for a magnet link opened in the browser
+  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22),
+  [#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145)). The cause was in egui,
   the toolkit MDM is drawn with ([emilk/egui#8470](https://github.com/emilk/egui/issues/8470)),
   and is fixed in MDM's copy of it.
 - **View → Dark Mode support** did nothing on Linux: MDM asked the window system for the
