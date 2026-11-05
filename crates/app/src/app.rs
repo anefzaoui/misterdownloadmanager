@@ -1806,10 +1806,7 @@ impl App {
     /// Whether the tray icon is shown somewhere (Linux: a tray host is there; asked when the
     /// window is closed, the host may come and go).
     fn tray_shown(&self) -> bool {
-        #[cfg(target_os = "linux")]
-        return crate::unix::tray_host();
-        #[cfg(not(target_os = "linux"))]
-        true
+        crate::tray::available()
     }
 
     /// The tray icon: created once, its commands run, and closing the window hides it there.
@@ -1839,10 +1836,19 @@ impl App {
                 None => crate::MAIN_TITLE.to_owned(),
             };
             t.set_tooltip(&tip);
+            // "Downloads in progress": each running download, to show its progress window (#63).
+            let running: Vec<(u64, String)> = self
+                .items
+                .iter()
+                .filter(|i| i.live.is_some())
+                .map(|i| (i.id, i.file_name.clone()))
+                .collect();
+            t.set_downloads(&running);
         }
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
+            tracing::info!("tray: {c:?}");
             let cmd = match c {
                 TrayCmd::Show => {
                     self.show_window(ctx);
@@ -1857,6 +1863,10 @@ impl App {
                 TrayCmd::StopQueue => Cmd::StopQueue(0),
                 TrayCmd::Options => Cmd::Options,
                 TrayCmd::Exit => Cmd::Exit,
+                TrayCmd::ShowDownload(id) => {
+                    self.open_item(id);
+                    continue;
+                }
             };
             self.run(cmd, None, ctx);
         }
@@ -1880,6 +1890,31 @@ impl App {
                 ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
                 self.hidden = true;
             }
+        }
+        // Options → General → "Minimize to the notification area" (#63): Minimize hides the
+        // window there too, where a tray shows the icon. Wayland can't hide a window: there it
+        // stays minimized, in the dock, as it was.
+        #[cfg(target_os = "linux")]
+        let can_hide = !crate::unix::on_wayland();
+        #[cfg(not(target_os = "linux"))]
+        let can_hide = true;
+        // On the change to minimized only: brought back, the window may still read minimized
+        // for a frame or two.
+        let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+        let was = egui::Id::unique("main-was-minimized");
+        let was_minimized = ctx.data(|d| d.get_temp::<bool>(was)).unwrap_or(false);
+        ctx.data_mut(|d| d.insert_temp(was, minimized));
+        if self.tray.is_some()
+            && self.settings.minimize_to_tray
+            && can_hide
+            && !self.hidden
+            && !self.exiting
+            && minimized
+            && !was_minimized
+            && self.tray_shown()
+        {
+            ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
+            self.hidden = true;
         }
         // Hidden, the window gets no paint messages: keep the clock (queues, scheduler,
         // download limits) running.
@@ -2692,6 +2727,9 @@ impl App {
         } else if !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
+        } else if let Some(p) = self.progress.iter_mut().find(|p| p.id == id && p.hidden) {
+            // Hidden in the tray (#63): back, as it was.
+            p.hidden = false;
         } else {
             // Open already, behind: to the front.
             dialogs::raise(
@@ -5407,8 +5445,17 @@ impl App {
         }
         self.finish_stopped();
         let mut actions = Vec::new();
+        // A progress window can be hidden in the tray only when there is one to bring it back.
+        let tray = self.tray.is_some() && crate::tray::available();
         for p in &mut self.progress {
             p.keep_sharing = self.settings.torrent_keep_sharing;
+            p.tray = tray;
+            p.minimize_to_tray = self.settings.minimize_to_tray;
+            // Hidden: not shown (its window is gone) until the tray or the list brings it back.
+            if p.hidden && tray {
+                continue;
+            }
+            p.hidden = false;
             if let Some(item) = self.items.iter().find(|i| i.id == p.id) {
                 actions.push((p.id, p.show(ctx, item, item.snap.as_ref())));
             }
@@ -5423,6 +5470,11 @@ impl App {
                     self.progress.retain(|p| p.id != id);
                 }
                 progress::Action::Close => self.progress.retain(|p| p.id != id),
+                progress::Action::Hide => {
+                    if let Some(p) = self.progress.iter_mut().find(|p| p.id == id) {
+                        p.hidden = true;
+                    }
+                }
                 progress::Action::Limit(limit, remember) => {
                     if let Some(item) = self.item(id) {
                         if let Some(l) = item.live.as_ref() {

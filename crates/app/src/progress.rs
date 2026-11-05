@@ -113,6 +113,13 @@ pub struct Progress {
     show_complete: bool,
     /// Torrent settings' "Keep sharing torrents after they finish" (the General tab says so).
     pub keep_sharing: bool,
+    /// Hidden in the notification area (#63): not shown, its tab and choices kept for when it
+    /// comes back (the tray's "Downloads in progress", or the download double-clicked).
+    pub hidden: bool,
+    /// A tray shows MDM's icon, so the window can be hidden there (set by the app each frame).
+    pub tray: bool,
+    /// Options → General → "Minimize to the notification area": Minimize hides it there too.
+    pub minimize_to_tray: bool,
     /// Options on completion, used when "Show download complete dialog" is off.
     hang_up: bool,
     exit: bool,
@@ -132,6 +139,8 @@ pub enum Action {
     Limit(Option<u64>, bool),
     /// Close the dialog, keep downloading.
     Close,
+    /// Hide the dialog in the notification area, keep downloading (#63).
+    Hide,
 }
 
 impl Progress {
@@ -149,6 +158,9 @@ impl Progress {
             remember: false,
             show_complete,
             keep_sharing: false,
+            hidden: false,
+            tray: false,
+            minimize_to_tray: false,
             hang_up: false,
             exit: false,
             turn_off_on: false,
@@ -192,12 +204,17 @@ impl Progress {
         if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0]) {
             builder = builder.with_position(p);
         }
+        // Minimize hides it in the notification area when asked (and a tray can bring it back).
+        let minimize_hides = self.tray && self.minimize_to_tray;
         let action = ctx.show_viewport_immediate(
             ViewportId::from_hash_of(("progress", self.id)),
             builder,
             |ui, _| {
                 if ui.ctx().input(|i| i.viewport().close_requested()) {
                     return Action::Close;
+                }
+                if minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true)) {
+                    return Action::Hide;
                 }
                 let action = egui::CentralPanel::no_frame()
                     .frame(egui::Frame::new().fill(winui::BG()))
@@ -229,7 +246,7 @@ impl Progress {
                 ctx.data_mut(|d| d.insert_temp(applied, client));
             }
         }
-        let closing = matches!(action, Action::Close | Action::Cancel);
+        let closing = matches!(action, Action::Close | Action::Cancel | Action::Hide);
         crate::dialogs::keep_theme(
             ctx,
             ViewportId::from_hash_of(("progress", self.id)),
@@ -244,6 +261,9 @@ impl Progress {
         };
         if matches!(action, Action::Close | Action::Cancel) {
             crate::dialogs::forget_place(ctx, key);
+        }
+        // Gone (hidden keeps its place): the next window gets its thin frame again.
+        if closing {
             ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
         }
         action
@@ -258,7 +278,7 @@ impl Progress {
         frac: f64,
     ) -> Action {
         let p = ui.painter().clone();
-        self.tabs(ui, o);
+        let hide = self.tabs(ui, o);
         match self.tab {
             Tab::Status => status_page(ui, o, item, snap, frac),
             Tab::Limiter => {
@@ -276,7 +296,7 @@ impl Progress {
         // The progress bar: IDM's green on the shared, themed track.
         winui::meter(&p, r(o, 17.0, 180.0, 513.0, 16.0), frac as f32);
 
-        let mut action = Action::None;
+        let mut action = if hide { Action::Hide } else { Action::None };
         let details_label = if self.details {
             crate::i18n::mark("<< Hide details")
         } else {
@@ -357,8 +377,9 @@ impl Progress {
         action
     }
 
-    /// Classic 3-D tabs over a raised page frame (spec "Tab strip").
-    fn tabs(&mut self, ui: &mut Ui, o: Pos2) {
+    /// Classic 3-D tabs over a raised page frame (spec "Tab strip"); with a tray, the "hide to
+    /// the notification area" button at the row's end. True when that button is pressed.
+    fn tabs(&mut self, ui: &mut Ui, o: Pos2) -> bool {
         // The shared tab strip (the torrent tabs' too): one look in both themes, one Tab stop with
         // the arrows, sized to the translated labels. It had two of its own (classic 3-D in dark).
         let tabs = [
@@ -371,7 +392,9 @@ impl Progress {
         ];
         let p = ui.painter().clone();
         let english: Vec<&str> = tabs.iter().map(|t| t.1).collect();
-        let light: Vec<winui::LightTab> = winui::tab_row(&p, &english, 20.0, 525.0, 2.0, 8.0)
+        // The tabs end before the hide button when it's there (long translations shorten first).
+        let right = if self.tray { 500.0 } else { 525.0 };
+        let light: Vec<winui::LightTab> = winui::tab_row(&p, &english, 20.0, right, 2.0, 8.0)
             .into_iter()
             .zip(tabs.iter())
             .map(|((x0, x1, _), (_, label))| winui::LightTab {
@@ -385,6 +408,17 @@ impl Progress {
         if let Some(i) = winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0), &light, current) {
             self.tab = tabs[i].0;
         }
+        // MDM's (#63): IDM puts this in its title bar, which here is the system's own (it takes
+        // no buttons of ours), so it sits at the tab row's end, over the page's corner.
+        self.tray
+            && winui::to_tray_button(
+                ui,
+                r(o, 507.0, 6.0, 22.0, 20.0),
+                "progress-hide",
+                // i18n: tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+                crate::i18n::mark("Hide to the notification area"),
+            )
+            .clicked()
     }
 
     /// The Speed Limiter tab, live for this download. Returns true when "Hide tab" is pressed.

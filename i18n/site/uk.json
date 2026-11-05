@@ -910,10 +910,6 @@
    "source": "Path",
    "text": "Шлях"
   },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "Клацніть правою кнопкою миші, щоб відкрити <g1>Додати нове завантаження</g1>, <g2>Додати пакетне завантаження</g2>, <g3>Обмежувач швидкості</g3>, <g4>Планувальник</g4>, головну чергу завантажень, <g5>Параметри</g5> та <g6>Вихід</g6>."
-  },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
    "text": "<g1>Трекери</g1> — трекери торрента. Без них піри надходять з DHT та інших пірів."
@@ -2454,6 +2450,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Завантаження → Запустити чергу</g1> та <g2>Завантаження → Зупинити чергу</g2> також їх перераховують."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "Згортання також приховує головне вікно там, якщо увімкнено <g1>Згортати в область сповіщень</g1> у <g2>Параметри → Загальні</g2>. За замовчуванням воно увімкнене."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Інтеграція з браузером — Довідка Mister Download Manager"
@@ -2981,6 +2981,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Чи працює він на Windows 7 або 8?"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>Згортати в область сповіщень</g1> — Згортання приховує головне вікно та вікно прогресу завантаження в області сповіщень, як і закриття головного вікна; завантаження тривають. Увімкнено за замовчуванням. Неактивне, якщо піктограма MDM не відображається в системному треї (деякі робочі столи Linux); у сеансі Wayland головне вікно залишається згорнутим у доці, оскільки Wayland не може приховати вікно."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5010,6 +5014,10 @@
    "source": "Proxy / Socks",
    "text": "Проксі / Socks"
   },
+  "8e05f083af06bd00": {
+   "source": "A download's progress window can go there as well, with its Minimize or with the button at the end of its tab row (an arrow into a tray). To bring it back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "Вікно прогресу завантаження також може бути згорнуте туди за допомогою кнопки «Згорнути» або кнопки в кінці рядка вкладок (стрілка в трей). Щоб повернути його, виберіть його в <g1>Завантаження виконуються</g1> або двічі клацніть завантаження у списку."
+  },
   "8e12c185ccf34fa4": {
    "source": "<g1>Controls that didn't react to the mouse</g1>: the ▾ of Address and Save As (Add URL, Download File Info), the drop-down lists, check boxes, radio buttons, the Categories pane's ×, the Scheduler's date button and calendar, scroll bars and the list's column headers now show when the pointer is over them and when they're pressed, as Windows' own controls do; an arrow stays pressed while its list is open.",
    "text": "<g1>Елементи керування, які не реагували на мишу</g1>: ▾ у «Адреса» та «Зберегти як» (Додати URL, Інформація про файл завантаження), спадні списки, прапорці, радіокнопки, × на панелі «Категорії», кнопка дати та календар Планувальника, смуги прокрутки та заголовки стовпців списку тепер показують, коли вказівник знаходиться над ними та коли вони натиснуті, як це роблять власні елементи керування Windows; стрілка залишається натиснутою, поки її список відкритий."
@@ -5077,6 +5085,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "Копія <x1/> не має інсталятора, але ви можете зареєструвати допоміжну програму самостійно. Відкрийте командний рядок у папці MDM та виконайте:"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "Клацніть його правою кнопкою миші, щоб відкрити <g1>Додати нове завантаження</g1>, <g2>Додати пакетне завантаження</g2>, <g3>Завантаження виконуються</g3>, <g4>Обмежувач швидкості</g4>, <g5>Планувальник</g5>, головну чергу завантажень, <g6>Параметри</g6> та <g7>Вихід</g7>."
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7681,6 +7693,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "Браузер запустив помічника MDM, але він зупинився, перш ніж відповісти. Звичайні причини — програмне забезпечення безпеки."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>Завантаження виконуються</g1> відображає запущені завантаження. Виберіть одне, щоб побачити вікно його прогресу."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

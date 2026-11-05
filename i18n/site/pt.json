@@ -910,10 +910,6 @@
    "source": "Path",
    "text": "Caminho"
   },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "Clique com o botão direito para <g1>Adicionar novo download</g1>, <g2>Adicionar download em lote</g2>, <g3>Limitador de Velocidade</g3>, <g4>Agendador</g4>, a fila principal de downloads, <g5>Opções</g5> e <g6>Sair</g6>."
-  },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
    "text": "<g1>Trackers</g1> — os trackers do torrent. Sem nenhum, os pares vêm do DHT e de outros pares."
@@ -2454,6 +2450,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Transferências → Iniciar fila</g1> e <g2>Transferências → Parar fila</g2> também as listam."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "Minimizar também esconde a janela principal lá, enquanto <g1>Minimizar para a área de notificação</g1> está ativado em <g2>Opções → Geral</g2>. Está ativado por predefinição."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Integração com o navegador — Ajuda do Mister Download Manager"
@@ -2981,6 +2981,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Funciona no Windows 7 ou 8?"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>Minimizar para a área de notificação</g1> — Minimizar esconde a janela principal e a janela de progresso de um download na área de notificação, tal como fechar a janela principal faz; os downloads continuam. Ativado por predefinição. Desativado onde não há uma bandeja para mostrar o ícone do MDM (alguns ambientes de trabalho Linux); numa sessão Wayland, a janela principal permanece minimizada na dock, uma vez que o Wayland não consegue esconder uma janela."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5010,6 +5014,10 @@
    "source": "Proxy / Socks",
    "text": "Proxy / Socks"
   },
+  "8e05f083af06bd00": {
+   "source": "A download's progress window can go there as well, with its Minimize or with the button at the end of its tab row (an arrow into a tray). To bring it back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "A janela de progresso de um download também pode ir para lá, com o seu Minimizar ou com o botão no final da sua linha de separadores (uma seta para um tabuleiro). Para a trazer de volta, escolha-a em <g1>Transferências em curso</g1>, ou faça duplo clique no download na lista."
+  },
   "8e12c185ccf34fa4": {
    "source": "<g1>Controls that didn't react to the mouse</g1>: the ▾ of Address and Save As (Add URL, Download File Info), the drop-down lists, check boxes, radio buttons, the Categories pane's ×, the Scheduler's date button and calendar, scroll bars and the list's column headers now show when the pointer is over them and when they're pressed, as Windows' own controls do; an arrow stays pressed while its list is open.",
    "text": "<g1>Controlos que não reagiam ao rato</g1>: o ▾ de Endereço e Guardar como (Adicionar URL, Informações do Ficheiro de Transferência), as listas pendentes, caixas de seleção, botões de rádio, o × do painel de Categorias, o botão de data e calendário do Agendador, as barras de deslocamento e os cabeçalhos de coluna da lista agora mostram quando o ponteiro está sobre eles e quando são pressionados, como os próprios controlos do Windows; uma seta permanece pressionada enquanto a sua lista está aberta."
@@ -5077,6 +5085,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "A cópia <x1/> não tem instalador, mas pode registar o auxiliar manualmente. Abra uma linha de comandos na pasta do MDM e execute:"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "Clique com o botão direito do rato para <g1>Adicionar novo download</g1>, <g2>Adicionar download em lote</g2>, <g3>Transferências em curso</g3>, <g4>Limitador de Velocidade</g4>, <g5>Agendador</g5>, a fila de downloads principal, <g6>Opções</g6> e <g7>Sair</g7>."
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7681,6 +7693,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "O navegador iniciou o auxiliar do MDM, mas este parou antes de responder. O software de segurança é a causa habitual."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>Transferências em curso</g1> lista os downloads em execução. Escolha um para ver a sua janela de progresso."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

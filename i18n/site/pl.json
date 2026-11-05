@@ -910,10 +910,6 @@
    "source": "Path",
    "text": "Ścieżka"
   },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "Kliknij ją prawym przyciskiem myszy, aby uzyskać <g1>Dodaj nowe pobieranie</g1>, <g2>Dodaj pobieranie wsadowe</g2>, <g3>Ogranicznik prędkości</g3>, <g4>Harmonogram</g4>, główną kolejkę pobierania, <g5>Opcje</g5> i <g6>Wyjście</g6>."
-  },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
    "text": "<g1>Trackery</g1> — trackery torrenta. Bez nich uczestnicy pochodzą z DHT i innych uczestników."
@@ -2454,6 +2450,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "Opcje <g1>Pobrane pliki → Rozpocznij kolejkę</g1> i <g2>Pobrane pliki → Zatrzymaj kolejkę</g2> również je wyświetlają."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "Minimalizowanie również ukrywa tam główne okno, gdy opcja <g1>Minimalizuj do obszaru powiadomień</g1> jest włączona w <g2>Opcje → Ogólne</g2>. Jest ona domyślnie włączona."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Integracja z przeglądarką — pomoc Mister Download Manager"
@@ -2981,6 +2981,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Czy działa na Windows 7 lub 8?"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>Minimalizuj do obszaru powiadomień</g1> — Minimalizacja ukrywa okno główne i okno postępu pobierania w obszarze powiadomień, tak jak zamknięcie okna głównego; pobieranie trwa. Domyślnie włączone. Wyszare, gdy żaden zasobnik nie wyświetla ikony MDM (niektóre pulpity Linux); w sesji Wayland okno główne pozostaje zminimalizowane w doku, ponieważ Wayland nie może ukryć okna."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5010,6 +5014,10 @@
    "source": "Proxy / Socks",
    "text": "Serwer proxy / Socks"
   },
+  "8e05f083af06bd00": {
+   "source": "A download's progress window can go there as well, with its Minimize or with the button at the end of its tab row (an arrow into a tray). To bring it back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "Okno postępu pobierania również może się tam znaleźć, za pomocą przycisku Minimalizuj lub przycisku na końcu wiersza jego zakładek (strzałka do zasobnika). Aby je przywrócić, wybierz je w <g1>Pobieranie w toku</g1> lub kliknij dwukrotnie pobieranie na liście."
+  },
   "8e12c185ccf34fa4": {
    "source": "<g1>Controls that didn't react to the mouse</g1>: the ▾ of Address and Save As (Add URL, Download File Info), the drop-down lists, check boxes, radio buttons, the Categories pane's ×, the Scheduler's date button and calendar, scroll bars and the list's column headers now show when the pointer is over them and when they're pressed, as Windows' own controls do; an arrow stays pressed while its list is open.",
    "text": "<g1>Kontrolki, które nie reagowały na mysz</g1>: ▾ w Adres i Zapisz jako (Dodaj URL, Informacje o pliku do pobrania), rozwijane listy, pola wyboru, przyciski radiowe, × w panelu Kategorie, przycisk daty i kalendarz w Harmonogramie, paski przewijania i nagłówki kolumn listy pokazują teraz, gdy wskaźnik jest nad nimi i gdy są wciśnięte, tak jak robią to kontrolki Windows; strzałka pozostaje wciśnięta, gdy jej lista jest otwarta."
@@ -5077,6 +5085,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "Wersja <x1/> nie ma instalatora, ale możesz samodzielnie zarejestrować program pomocniczy. Otwórz wiersz poleceń w folderze MDM i uruchom:"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "Kliknij prawym przyciskiem myszy, aby uzyskać dostęp do <g1>Dodaj nowe pobieranie</g1>, <g2>Dodaj pobieranie wsadowe</g2>, <g3>Pobieranie w toku</g3>, <g4>Ogranicznik prędkości</g4>, <g5>Harmonogram</g5>, głównej kolejki pobierania, <g6>Opcje</g6> i <g7>Zakończ</g7>."
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7681,6 +7693,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "Przeglądarka uruchomiła pomocnika MDM, ale zatrzymał się on przed odpowiedzią. Zwykle przyczyną jest oprogramowanie zabezpieczające."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>Pobieranie w toku</g1> wyświetla listę aktywnych pobierań. Wybierz jedno, aby zobaczyć okno postępu."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

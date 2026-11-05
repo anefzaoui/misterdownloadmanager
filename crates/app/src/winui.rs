@@ -4163,6 +4163,35 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
     resp.on_hover_text(crate::i18n::t(tip))
 }
 
+/// The flat icon button with our "to the notification area" glyph, an arrow down into a tray,
+/// drawn in the text ink (both themes; symmetric, so right to left needs no mirror): hides a
+/// window to the tray (#63). `tip` is English, translated here.
+pub fn to_tray_button(ui: &mut Ui, rc: Rect, id: &str, tip: &str) -> Response {
+    let resp = icon_button_light(ui, rc, id, true, tip);
+    let p = ui.painter();
+    let c = rc.center().round();
+    let ink = Stroke::new(1.4, LIGHT_TEXT());
+    p.line_segment([c + vec2(0.0, -6.0), c + vec2(0.0, 1.0)], ink);
+    p.add(egui::Shape::line(
+        vec![
+            c + vec2(-3.5, -2.5),
+            c + vec2(0.0, 1.0),
+            c + vec2(3.5, -2.5),
+        ],
+        ink,
+    ));
+    p.add(egui::Shape::line(
+        vec![
+            c + vec2(-6.5, 0.5),
+            c + vec2(-6.5, 5.0),
+            c + vec2(6.5, 5.0),
+            c + vec2(6.5, 0.5),
+        ],
+        ink,
+    ));
+    resp
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

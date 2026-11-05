@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
+  and the main window's Minimize, with the tray's "Downloads in progress"
+  ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
 - ✅ Video downloads: subtitles, beside the video or inside it
   ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
 - ✅ Torrent security: stricter file-name checks, no silent overwrite, files marked as downloaded
@@ -79,8 +82,6 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Hide a download's progress window to the tray
-  ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
 - 📋 A link grabber with packages, and auto-extract of archives
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
 - 📋 Debrid services: Real-Debrid, AllDebrid, Premiumize

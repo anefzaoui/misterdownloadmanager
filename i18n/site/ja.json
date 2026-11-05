@@ -910,10 +910,6 @@
    "source": "Path",
    "text": "パス"
   },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "右クリックすると、<g1>新しいダウンロードを追加</g1>、<g2>バッチ ダウンロードを追加</g2>、<g3>速度制限</g3>、<g4>スケジューラ</g4>、メインダウンロードキュー、<g5>オプション</g5>、<g6>終了</g6>が表示されます。"
-  },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
    "text": "<g1>トラッカー</g1> — トレントのトラッカー。トラッカーがない場合、ピアは DHT および他のピアから取得されます。"
@@ -2454,6 +2450,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>ダウンロード → キューを開始</g1>と<g2>ダウンロード → キューを停止</g2>にも表示されます。"
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "<g1>オプション → 一般</g1>で<g2>通知領域に最小化する</g2>がオンになっている場合、最小化するとメイン ウィンドウもそこに隠されます。これは既定でオンになっています。"
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "ブラウザー統合 — Mister Download Manager ヘルプ"
@@ -2981,6 +2981,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Windows 7または8で動作しますか？"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>通知領域に最小化する</g1> — この設定をオンにすると、メインウィンドウを閉じたり、ダウンロードの進行状況ウィンドウを閉じたりしたときに、メインウィンドウとダウンロードの進行状況ウィンドウが通知領域に隠されます。ダウンロードは続行されます。デフォルトでオンです。MDMのアイコンが表示されないトレイ（一部のLinuxデスクトップ）ではグレー表示されます。Waylandセッションではウィンドウを隠すことができないため、メインウィンドウはドックに最小化されたままになります。"
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -5010,6 +5014,10 @@
    "source": "Proxy / Socks",
    "text": "プロキシ / SOCKS"
   },
+  "8e05f083af06bd00": {
+   "source": "A download's progress window can go there as well, with its Minimize or with the button at the end of its tab row (an arrow into a tray). To bring it back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "ダウンロードの進行状況ウィンドウも、その最小化ボタン、またはタブ行の最後にあるボタン（トレイへの矢印）でそこへ移動できます。元に戻すには、<g1>進行中のダウンロード</g1>で選択するか、リスト内のダウンロードをダブルクリックします。"
+  },
   "8e12c185ccf34fa4": {
    "source": "<g1>Controls that didn't react to the mouse</g1>: the ▾ of Address and Save As (Add URL, Download File Info), the drop-down lists, check boxes, radio buttons, the Categories pane's ×, the Scheduler's date button and calendar, scroll bars and the list's column headers now show when the pointer is over them and when they're pressed, as Windows' own controls do; an arrow stays pressed while its list is open.",
    "text": "<g1>マウスに反応しなかったコントロール</g1>：アドレスと名前を付けて保存の▾（URLを追加、ダウンロード ファイル情報）、ドロップダウンリスト、チェックボックス、ラジオボタン、カテゴリペインの×、スケジューラのカレンダーボタンとカレンダー、スクロールバー、リストの列ヘッダーは、Windowsのコントロールと同様に、ポインターが上にあるときと押されたときに表示されるようになりました。矢印はリストが開いている間は押されたままになります。"
@@ -5077,6 +5085,10 @@
   "90b3e4ba23d3ab6b": {
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "<x1/>版にはインストーラーがありませんが、ヘルパーを自分で登録できます。MDMのフォルダーでコマンドプロンプトを開き、以下を実行します。"
+  },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "<g1>新しいダウンロードを追加</g1>、<g2>バッチ ダウンロードを追加</g2>、<g3>進行中のダウンロード</g3>、<g4>速度制限</g4>、<g5>スケジューラ</g5>、メインのダウンロード キュー、<g6>オプション</g6>、<g7>終了</g7>には、これを右クリックします。"
   },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
@@ -7681,6 +7693,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "ブラウザーはMDMのヘルパーを起動しましたが、応答する前に停止しました。セキュリティソフトウェアが一般的な原因です。"
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>進行中のダウンロード</g1>には、実行中のダウンロードが一覧表示されます。いずれかを選択すると、その進行状況ウィンドウが表示されます。"
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",

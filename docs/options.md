@@ -14,6 +14,7 @@ Some buttons are greyed. They belong to features that aren't built yet.
 - **Offer to download links copied to the clipboard** — when you copy a link whose file type is on the **File types** page, **Download File Info** opens with it, ready to start (or the download starts at once, with **Show start download dialog** off). On by default.
 - **Use advanced browser integration** — let the browser extension hand downloads to MDM. Turn it off to keep every download in the browser.
 - **Confirm before deleting downloads** — ask before taking downloads off the list. On by default; **Don't show this dialog again** in that question turns it off, and ticking it here turns it back on.
+- **Minimize to the notification area** — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.
 - **Capture downloads from the following browsers** — untick a browser to leave its downloads alone.
 - **Customize MDM Download panels in browsers → Edit...** — the download button over videos on web pages: turn it off, or list the sites it never shows on (separate them by spaces; `*.example.com` covers its subdomains). See [Browser integration](browser-integration.md#the-download-button-over-videos).
 
