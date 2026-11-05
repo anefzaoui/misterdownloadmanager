@@ -4170,7 +4170,7 @@ impl App {
 
         // Menu bar and its popups.
         if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
-            let clicked = ui.input(|x| x.pointer.any_released());
+            let clicked = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
             self.open_menu = if self.open_menu == Some(i) && clicked {
                 None
             } else {

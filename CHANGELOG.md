@@ -207,6 +207,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Screen readers can reach the Categories pane and the menus** ([#113](https://github.com/anefzaoui/misterdownloadmanager/issues/113)):
+  the pane reads as a tree (each category named with its count, open or shut, selected), the menu
+  bar and every right-click menu as menus whose items can be run, and **Shift+F10** or the
+  **Menu** key opens the selected category's menu. A menu opened from the keyboard no longer stays
+  invisible until the mouse moves.
 - **A video download could fail in MDM while yt-dlp went on and finished it**
   ([#79](https://github.com/anefzaoui/misterdownloadmanager/issues/79)). A line yt-dlp printed in
   the system's code page rather than UTF-8 (a title in Turkish or Russian on some Windows) ended
