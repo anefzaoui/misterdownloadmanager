@@ -27,6 +27,8 @@
   }
 }
 * { box-sizing: border-box; }
+/* The hidden attribute wins over a class's display ("How to fix it" showed while connected). */
+[hidden] { display: none !important; }
 body {
   margin: 0;
   width: 300px;
