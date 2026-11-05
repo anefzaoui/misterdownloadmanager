@@ -300,6 +300,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Screen readers see a window's contents the first time they read it**
+  ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131)): a window read for the
+  first time (Link grabber, Options, About...) showed only its title bar until it was drawn
+  again. It now answers with what it shows at once, as soon as a screen reader is running.
 - **A finished torrent's progress window lost its tabs while it was still shared**: Files, Peers,
   Trackers, Pieces and General (with the share ratio) said "Shown while the torrent is
   downloading." They now stay for as long as the torrent is shared.

@@ -706,6 +706,14 @@ pub fn on_a_screen(x: i32, y: i32) -> bool {
     !unsafe { MonitorFromPoint(POINT { x, y }, MONITOR_DEFAULTTONULL) }.is_null()
 }
 
+/// Whether an assistive technology (a screen reader, a UI Automation client) is listening to
+/// this desktop's windows now (#131): the windows then keep their accessibility tree ready, so
+/// a window read for the first time answers with its contents at once.
+pub fn assistive_technology_listening() -> bool {
+    // SAFETY: a plain query, no arguments.
+    unsafe { windows_sys::Win32::UI::Accessibility::UiaClientsAreListening() != 0 }
+}
+
 /// Rows a notch of the mouse wheel scrolls (Mouse settings → "lines to scroll at a time", 3
 /// unless changed); None when it is set to a screen at a time.
 pub fn wheel_lines() -> Option<f32> {

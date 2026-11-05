@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Screen readers see a window's contents the first time they read it, not only its title bar
+  ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131))
 - ✅ The extension's button lists the media the tab has loaded (HLS and DASH streams, video and
   sound files), to download a stream the page won't give up; copy-protected ones are shown as
   protected, never downloaded ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38))
