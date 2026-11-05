@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	չի հաջողվում վերսկսել՝ {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Ներբեռնումներ կատարել հետևյալ բրաուզերներից:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Ֆայլերը գնում են՝ {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Ֆայլերը հերթում
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	Windows-ում տորենտները դեռ չեն կարող անցնել ընտրված ցանցային ադապտերով
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Windows-ում տորենտները դեռ չեն կարող օգտագործել այն։
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Տեսանյութի որոնումները օգտագործում են yt-dlp (մոտ 23 ՄԲ, ստուգված է իր ստորագրության դեմ):
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Տեսանյութերի էջերն ու թորենթները դեռ չեն կարող օգտագործել այն։
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	Տեսանյութերի էջերը դեռ չեն կարող օգտագործել այն այս համակարգում։
+	Video pages can't use it yet.	Տեսանյութերի էջերը դեռ չեն կարող օգտագործել այն։
 #. text in the Options window
 #, machine
 	Virus checking settings	Վիրուսների ստուգման կարգավորումներ
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} վրկ
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what}-ը դեռ չի կարող անցնել ընտրված ցանցային ադապտերով ({adapter})
 #. text in the Download video window

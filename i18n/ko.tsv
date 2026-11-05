@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	다시 시작할 수 없음: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	다음 브라우저에서 다운로드 캡처:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	파일 저장 위치: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	큐의 파일
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	Windows에서는 선택한 네트워크 어댑터를 통해 토렌트를 사용할 수 없습니다.
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Windows에서는 아직 사용할 수 없습니다.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	비디오 조회는 yt-dlp를 사용합니다(약 23MB, 서명 확인).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	동영상 페이지 및 토렌트는 아직 사용할 수 없습니다.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	이 시스템에서는 아직 동영상 페이지에서 사용할 수 없습니다.
+	Video pages can't use it yet.	동영상 페이지는 아직 사용할 수 없습니다.
 #. text in the Options window
 #, machine
 	Virus checking settings	바이러스 검사 설정
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s}초
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what}은(는) 아직 선택한 네트워크 어댑터({adapter})를 통해 전송할 수 없습니다.
 #. text in the Download video window

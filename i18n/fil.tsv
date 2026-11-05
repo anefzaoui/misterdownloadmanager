@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	hindi maipagpatuloy: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Kuhain ang mga download mula sa mga sumusunod na browser:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Pumupunta ang mga file sa: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Mga file sa queue
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	hindi pa makadaan ang mga torrent sa napiling network adapter sa Windows
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Hindi pa ito magagamit ng mga torrent sa Windows.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Gumagamit ang mga paghahanap ng video ng yt-dlp (mga 23 MB, sinuri laban sa signature nito).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Hindi pa ito magagamit ng mga pahina ng video at torrent.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	Hindi pa ito magagamit ng mga page ng video sa system na ito.
+	Video pages can't use it yet.	Hindi pa ito magagamit ng mga pahina ng video.
 #. text in the Options window
 #, machine
 	Virus checking settings	Mga setting ng pagsusuri ng virus
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} seg
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	Hindi pa makadaan ang {what} sa napiling network adapter ({adapter})
 #. text in the Download video window

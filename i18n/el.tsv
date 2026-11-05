@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	δεν είναι δυνατή η συνέχιση: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Λήψη λήψεων από τα ακόλουθα προγράμματα περιήγησης:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Τα αρχεία πηγαίνουν σε: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Αρχεία στην ουρά
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	τα torrent δεν μπορούν να περάσουν μέσω ενός επιλεγμένου προσαρμογέα δικτύου στα Windows ακόμα
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Τα torrent δεν μπορούν να το χρησιμοποιήσουν στα Windows ακόμα.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Οι αναζητήσεις βίντεο χρησιμοποιούν το yt-dlp (περίπου 23 MB, ελέγχεται έναντι της υπογραφής του).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Οι σελίδες βίντεο και τα torrent δεν μπορούν να το χρησιμοποιήσουν ακόμα.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	Οι σελίδες βίντεο δεν μπορούν να το χρησιμοποιήσουν σε αυτό το σύστημα ακόμα.
+	Video pages can't use it yet.	Οι σελίδες βίντεο δεν μπορούν να το χρησιμοποιήσουν ακόμα.
 #. text in the Options window
 #, machine
 	Virus checking settings	Ρυθμίσεις ελέγχου ιών
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} δευτ.
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	Το {what} δεν μπορεί να περάσει μέσω ενός επιλεγμένου προσαρμογέα δικτύου ({adapter}) ακόμα
 #. text in the Download video window

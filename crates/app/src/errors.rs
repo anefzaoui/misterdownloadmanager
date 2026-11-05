@@ -173,7 +173,7 @@ pub fn adapter(e: &mdm_engine::NetError) -> String {
             &[("adapter", label)],
         ),
         N::NotSupported { label, what } => fmt(
-            // i18n: an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+            // i18n: an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
             t("{what} can't go through a chosen network adapter ({adapter}) yet"),
             &[("what", &ltr(what)), ("adapter", label)],
         ),

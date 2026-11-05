@@ -1796,9 +1796,6 @@
 #. text in torrent downloads
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 	torrents can't go through a chosen network adapter on Windows yet	torrents can't go through a chosen network adapter on Windows yet
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-	Torrents can't use it on Windows yet.	Torrents can't use it on Windows yet.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -1942,8 +1939,11 @@
 #. text in the Download video window
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video lookups use yt-dlp (about 23 MB, checked against its signature).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+	Video pages and torrents can't use it yet.	Video pages and torrents can't use it yet.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-	Video pages can't use it on this system yet.	Video pages can't use it on this system yet.
+	Video pages can't use it yet.	Video pages can't use it yet.
 #. text in the Options window
 	Virus checking settings	Virus checking settings
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2123,7 +2123,7 @@
 #. {s} = seconds (keep the braces as they are)
 	{s} sec	{s} sec
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} can't go through a chosen network adapter ({adapter}) yet
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why

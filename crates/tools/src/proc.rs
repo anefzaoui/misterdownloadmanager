@@ -45,38 +45,16 @@ pub fn route() -> mdm_engine::Route {
     ROUTE.read().unwrap().clone()
 }
 
-/// yt-dlp's arguments for the chosen adapter (#35), first of all: none when there's none.
-/// - Windows: its connections leave from the adapter's address (`--source-address`; the strong
-///   host model keeps them on that adapter), in that address's IP family only (`-4` / `-6`),
-///   and every stream downloaded by yt-dlp itself (`--downloader native`) rather than handed
-///   to ffmpeg, which would connect unbound.
-/// - Linux and macOS: an address alone doesn't hold a connection to an adapter there (they
-///   route by destination), and yt-dlp can't bind a device: refused rather than sent around it.
+/// yt-dlp and the chosen adapter (#35): nothing to add when there's none; refused while one is
+/// chosen, on every system, rather than sent around it. yt-dlp can't bind a device, and its
+/// `--source-address` was seen not to hold on Windows (yt-dlp 2026.10.26, given the address of
+/// an adapter without a route, still connected from the Ethernet adapter's), so its connections
+/// would leave by the normal route. The way to cover it is a proxy on this computer whose own
+/// connections MDM binds (a follow-up).
 fn route_args() -> Result<Vec<String>, ProcError> {
     match route() {
         mdm_engine::Route::Any => Ok(Vec::new()),
         mdm_engine::Route::Down { label } => Err(mdm_engine::NetError::Down { label }.into()),
-        #[cfg(windows)]
-        mdm_engine::Route::Bound(b) => {
-            let (ip, family) = match (b.v4, b.v6) {
-                (Some(v4), _) => (v4.to_string(), "-4"),
-                (None, Some(v6)) => (v6.to_string(), "-6"),
-                (None, None) => {
-                    return Err(mdm_engine::NetError::Down {
-                        label: b.label.clone(),
-                    }
-                    .into());
-                }
-            };
-            Ok(vec![
-                "--source-address".into(),
-                ip,
-                family.into(),
-                "--downloader".into(),
-                "native".into(),
-            ])
-        }
-        #[cfg(not(windows))]
         mdm_engine::Route::Bound(b) => Err(mdm_engine::NetError::NotSupported {
             label: b.label.clone(),
             what: "Video pages (yt-dlp)".into(),

@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	មិនអាចបន្តបានទេ៖ {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	ចាប់យកការទាញយកពីកម្មវិធីរុករកខាងក្រោម៖
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	ឯកសារទៅកាន់៖ {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ឯកសារនៅក្នុងជួរ
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	Torrents មិនអាចឆ្លងកាត់អាដាប់ទ័របណ្ដាញដែលបានជ្រើសរើសនៅលើ Windows បាននៅឡើយទេ។
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Torrents មិនអាចប្រើវាបាននៅលើ Windows នៅឡើយទេ។
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ការស្វែងរកវីដេអូប្រើ yt-dlp (ប្រហែល 23 MB ពិនិត្យប្រឆាំងនឹងហត្ថលេខារបស់វា)។
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	ទំព័រវីដេអូ និង​ឯកសារ torrent មិន​អាច​ប្រើ​វា​បាន​នៅ​ឡើយ​ទេ។
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	ទំព័រវីដេអូមិនអាចប្រើវាបាននៅលើប្រព័ន្ធនេះនៅឡើយទេ។
+	Video pages can't use it yet.	ទំព័រវីដេអូ​មិន​អាច​ប្រើ​វា​បាន​នៅ​ឡើយ​ទេ។
 #. text in the Options window
 #, machine
 	Virus checking settings	ការកំណត់ការត្រួតពិនិត្យមេរោគ
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} វិនាទី
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} មិនអាចឆ្លងកាត់អាដាប់ទ័របណ្ដាញដែលបានជ្រើសរើស ({adapter}) បាននៅឡើយទេ
 #. text in the Download video window

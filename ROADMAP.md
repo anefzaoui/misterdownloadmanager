@@ -108,7 +108,7 @@ Everything below ships together, in one release.
 
 ### Network
 
-- 📋 Torrents through a chosen network adapter on Windows, and video pages on Linux and macOS
+- 📋 Video pages, and torrents on Windows, through a chosen network adapter
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - 📋 Downloads follow a browser's VPN or proxy extension
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))

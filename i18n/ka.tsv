@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	გაგრძელება შეუძლებელია: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	ჩამოტვირთვების ჩაჭრა შემდეგი ბრაუზერებიდან:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	ფაილები გადადის: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ფაილები რიგში
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	ტორენტები ჯერ ვერ გაივლიან არჩეულ ქსელის ადაპტერს Windows-ზე
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	ტორენტებს ჯერ არ შეუძლიათ მისი გამოყენება Windows-ზე.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ვიდეოს ძიება იყენებს yt-dlp-ს (დაახლოებით 23 მბ, შემოწმებულია მის ხელმოწერასთან).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	ვიდეო გვერდები და ტორენტები ჯერ ვერ გამოიყენებენ.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	ვიდეო გვერდებს ჯერ არ შეუძლიათ მისი გამოყენება ამ სისტემაზე.
+	Video pages can't use it yet.	ვიდეო გვერდები ჯერ ვერ გამოიყენებენ.
 #. text in the Options window
 #, machine
 	Virus checking settings	ვირუსების შემოწმების პარამეტრები
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} წმ
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ჯერ ვერ გაივლის არჩეულ ქსელის ადაპტერს ({adapter})
 #. text in the Download video window

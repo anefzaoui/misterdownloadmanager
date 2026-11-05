@@ -1422,11 +1422,11 @@ impl OptionsDialog {
                 );
                 // What can't be held to it on this system (refused, not sent around it).
                 #[cfg(windows)]
-                // i18n: Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-                let not_yet = crate::i18n::t("Torrents can't use it on Windows yet.");
+                // i18n: Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+                let not_yet = crate::i18n::t("Video pages and torrents can't use it yet.");
                 #[cfg(not(windows))]
                 // i18n: Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-                let not_yet = crate::i18n::t("Video pages can't use it on this system yet.");
+                let not_yet = crate::i18n::t("Video pages can't use it yet.");
                 (format!("{line}\n{not_yet}"), true)
             }
         };

@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	পুনৰ আৰম্ভ কৰিব নোৱাৰি: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	নিম্নলিখিত ব্ৰাউজাৰসমূহৰ পৰা ডাউনলোডসমূহ কেপচাৰ কৰক:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	ফাইলসমূহ ইয়ালৈ যায়: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	শাৰীত থকা ফাইলসমূহ
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	Windows ত বাছনি কৰা নেটৱৰ্ক এডাপ্টাৰৰ জৰিয়তে টৰেণ্ট এতিয়াও যাব নোৱাৰে
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Windows ত টৰেণ্টে ইয়াক এতিয়াও ব্যৱহাৰ কৰিব নোৱাৰে।
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ভিডিঅ’ সন্ধানসমূহে yt-dlp ব্যৱহাৰ কৰে (প্ৰায় 23 MB, ইয়াৰ স্বাক্ষৰৰ বিৰুদ্ধে পৰীক্ষা কৰা হৈছে)।
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	ভিডিঅ' পৃষ্ঠা আৰু টৰেণ্টে ইয়াক এতিয়াও ব্যৱহাৰ কৰিব নোৱাৰে।
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	এই ছিষ্টেমত ভিডিঅ' পৃষ্ঠাবোৰে ইয়াক এতিয়াও ব্যৱহাৰ কৰিব নোৱাৰে।
+	Video pages can't use it yet.	ভিডিঅ' পৃষ্ঠাবোৰে ইয়াক এতিয়াও ব্যৱহাৰ কৰিব নোৱাৰে।
 #. text in the Options window
 #, machine
 	Virus checking settings	ভাইৰাছ পৰীক্ষাৰ ছেটিংছ
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} ছেকেণ্ড
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} এতিয়াও নিৰ্বাচিত নেটৱৰ্ক এডাপ্টাৰ ({adapter}) ৰ মাজেৰে যাব নোৱাৰে
 #. text in the Download video window

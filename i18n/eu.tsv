@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	ezin da berrekin: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Harrapatu deskargak arakatzaile hauetatik:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Fitxategiak hona doaz: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Ilarako fitxategiak
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	torrentak ezin dira oraindik Windows-eko sare-egokitzaile hautatu baten bidez joan
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Torrentak ezin dute oraindik erabili Windows-en.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Bideo-bilaketek yt-dlp erabiltzen dute (23 MB inguru, sinaduraren arabera egiaztatuta).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Bideo-orriek eta torrent-ek ezin dute oraindik erabili.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	Bideo-orriek ezin dute oraindik erabili sistema honetan.
+	Video pages can't use it yet.	Bideo-orriek ezin dute oraindik erabili.
 #. text in the Options window
 #, machine
 	Virus checking settings	Birusak egiaztatzeko ezarpenak
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} seg
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ezin da oraindik hautatutako sare-egokitzaile ({adapter}) baten bidez joan
 #. text in the Download video window

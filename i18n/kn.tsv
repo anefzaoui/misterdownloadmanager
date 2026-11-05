@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	ಪುನರಾರಂಭಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	ಕೆಳಗಿನ ಬ್ರೌಸರ್‌ಗಳಿಂದ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಸೆರೆಹಿಡಿಯಿರಿ:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	ಫೈಲ್‌ಗಳು ಇಲ್ಲಿಗೆ ಹೋಗುತ್ತವೆ: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ಕ್ಯೂನಲ್ಲಿರುವ ಫೈಲ್‌ಗಳು
 #. button in the Find window
@@ -2487,6 +2487,10 @@
 #, machine
 	Torrents	ಟೊರೆಂಟ್‌ಗಳು
 #. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	Windows ನಲ್ಲಿ ಟೊರೆಂಟ್‌ಗಳು ಆಯ್ಕೆ ಮಾಡಿದ ನೆಟ್‌ವರ್ಕ್ ಅಡಾಪ್ಟರ್ ಮೂಲಕ ಹೋಗಲು ಸಾಧ್ಯವಿಲ್ಲ.
+#. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2684,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ವೀಡಿಯೊ ಹುಡುಕಾಟಗಳು yt-dlp ಅನ್ನು ಬಳಸುತ್ತವೆ (ಸುಮಾರು 23 MB, ಅದರ ಸಹಿಯ ವಿರುದ್ಧ ಪರಿಶೀಲಿಸಲಾಗಿದೆ).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	ವೀಡಿಯೊ ಪುಟಗಳು ಮತ್ತು ಟೊರೆಂಟ್‌ಗಳು ಇದನ್ನು ಇನ್ನೂ ಬಳಸಲು ಸಾಧ್ಯವಿಲ್ಲ.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	ವೀಡಿಯೊ ಪುಟಗಳು ಈ ಸಿಸ್ಟಮ್‌ನಲ್ಲಿ ಇದನ್ನು ಇನ್ನೂ ಬಳಸಲು ಸಾಧ್ಯವಿಲ್ಲ.
+	Video pages can't use it yet.	ವೀಡಿಯೊ ಪುಟಗಳು ಇದನ್ನು ಇನ್ನೂ ಬಳಸಲು ಸಾಧ್ಯವಿಲ್ಲ.
 #. text in the Options window
 #, machine
 	Virus checking settings	ವೈರಸ್ ಪರಿಶೀಲನೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು
@@ -2927,7 +2935,7 @@
 #, machine
 	{s} sec	{s} ಸೆಕೆಂಡ್
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ಆಯ್ಕೆಮಾಡಿದ ನೆಟ್‌ವರ್ಕ್ ಅಡಾಪ್ಟರ್ ({adapter}) ಮೂಲಕ ಇನ್ನೂ ಹೋಗಲು ಸಾಧ್ಯವಿಲ್ಲ
 #. text in the Download video window

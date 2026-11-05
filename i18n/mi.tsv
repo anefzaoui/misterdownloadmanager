@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	kāore e taea te tīmata anō: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Hopu tikiake mai i ngā pūtirotiro e whai ake nei:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Ka haere ngā kōnae ki: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Ngā kōnae i roto i te rārangi
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	kāore e taea e ngā awa te haere mā tētahi pūurutau whatunga kua kōwhiria i runga i Windows i tēnei wā
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Kāore e taea e ngā awa te whakamahi i runga i Windows i tēnei wā.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Ka whakamahi ngā tirohanga ataata i te yt-dlp (tata ki te 23 MB, i tirohia ki tōna waitohu).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Kāore anō ngā whārangi ataata me ngā awa e āhei ki te whakamahi i tēnei.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	Kāore e taea e ngā whārangi ataata te whakamahi i runga i tēnei pūnaha i tēnei wā.
+	Video pages can't use it yet.	Kāore anō ngā whārangi ataata e āhei ki te whakamahi i tēnei.
 #. text in the Options window
 #, machine
 	Virus checking settings	Ngā tautuhinga tirotiro huaketo
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} hekona
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	Kāore e taea e {what} te haere mā tētahi pūurutau whatunga kua kōwhiria ({adapter}) i tēnei wā
 #. text in the Download video window

@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	फिर से शुरू नहीं कर सकता: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	निम्नलिखित ब्राउज़रों से डाउनलोड कैप्चर करें:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	फ़ाइलें यहाँ जाती हैं: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	कतार में फ़ाइलें
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	टॉरेंट अभी तक Windows पर चुने गए नेटवर्क एडाप्टर के माध्यम से नहीं जा सकते
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	टॉरेंट अभी तक Windows पर इसका उपयोग नहीं कर सकते।
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	वीडियो लुकअप yt-dlp का उपयोग करते हैं (लगभग 23 MB, इसकी हस्ताक्षर के विरुद्ध जाँच की गई)।
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	वीडियो पेज और टोरेंट अभी इसका उपयोग नहीं कर सकते हैं।
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	वीडियो पेज अभी तक इस सिस्टम पर इसका उपयोग नहीं कर सकते।
+	Video pages can't use it yet.	वीडियो पेज अभी इसका उपयोग नहीं कर सकते हैं।
 #. text in the Options window
 #, machine
 	Virus checking settings	वायरस जाँच सेटिंग्स
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} सेकंड
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} अभी तक चुने गए नेटवर्क एडाप्टर ({adapter}) के माध्यम से नहीं जा सकता
 #. text in the Download video window

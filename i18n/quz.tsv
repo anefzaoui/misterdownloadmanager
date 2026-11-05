@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	mana atinqachu qatiyta: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Kay wampunakunamanta uraykachiykunata hap'iy:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Willañiqikuna kayman rin: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Llaqtapi willañiqikuna
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	Torrents mana purinqakuchu akllasqa antañiqiq t'inkiywan Windowspi kunanraq
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	Torrents mana chayta Windowspi kunanraq llamk'achiyta atinchu.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videokunata maskay yt-dlp (yaqa 23 MB, firmanta qhawasqa) llamk'achin.
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Widyu p'anqakuna, turrentkunapas manaraqmi chaytaqa llamk'achiyta atinchu.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	Kunanraqqa videokuna mana chayta kay sistimapi llamk'achiyta atinchu.
+	Video pages can't use it yet.	Widyu p'anqakuna manaraqmi chaytaqa llamk'achiyta atinchu.
 #. text in the Options window
 #, machine
 	Virus checking settings	Virus qhawana wakichiykuna
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} seg
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} mana akllasqa antañiqiq t'inkiywan ({adapter}) kunanraq puriyta atinchu
 #. text in the Download video window

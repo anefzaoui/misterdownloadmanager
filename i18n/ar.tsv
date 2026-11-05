@@ -325,7 +325,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	تعذر الاستئناف: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	التقاط التنزيلات من المستعرضات التالية:
 #. text in extension.rs
@@ -861,7 +861,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	الملفات تذهب إلى: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	الملفات في قائمة الانتظار
 #. button in the Find window
@@ -2490,10 +2490,6 @@
 #. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
 #, machine
 	torrents can't go through a chosen network adapter on Windows yet	لا يمكن أن تمر التورنت عبر محول شبكة محدد على Windows بعد
-#. text in the Options window
-#. Options → Network adapter (Windows): torrents don't start while an adapter is chosen
-#, machine
-	Torrents can't use it on Windows yet.	لا يمكن للتورنت استخدامه على Windows بعد.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2692,9 +2688,13 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	تستخدم عمليات البحث عن الفيديو yt-dlp (حوالي 23 ميجابايت، تم التحقق منها مقابل توقيعها).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	لا يمكن لصفحات الفيديو والتورنت استخدامه بعد.
+#. text in the Options window
 #. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
 #, machine
-	Video pages can't use it on this system yet.	لا يمكن لصفحات الفيديو استخدامه على هذا النظام بعد.
+	Video pages can't use it yet.	لا يمكن لصفحات الفيديو استخدامه بعد.
 #. text in the Options window
 #, machine
 	Virus checking settings	إعدادات فحص الفيروسات
@@ -2935,7 +2935,7 @@
 #, machine
 	{s} sec	{s} ثانية
 #. text in errors.rs
-#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)", "A live stream") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	لا يمكن لـ {what} المرور عبر محول شبكة محدد ({adapter}) بعد
 #. text in the Download video window

@@ -79,11 +79,9 @@ More in [Connections and speed](connections-and-speed.md).
   - How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.
   - The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under [Connection](#connection) → **DNS**: MDM then asks it through the adapter.
   - Not held to the adapter yet, so they don't start while one is chosen:
+    - video pages (yt-dlp can't be held to an adapter);
     - torrents on Windows;
-    - video pages on Linux and macOS;
-    - live streams;
     - `ftps://` (implicit TLS; `ftp://` with TLS is fine).
-  - Video pages on Windows go through it from its address (yt-dlp's `--source-address`).
   - Connections to this computer itself (`localhost`) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.
   - On macOS a VPN that reconnects may get a new interface (`utun5` instead of `utun4`): pick it again.
 - **Use FTP in PASV mode** — on by default: for FTP downloads MDM opens the data connections itself (passive mode), which works through routers and firewalls. Turn it off only for a server that needs active mode (the server connects back to you). FTP never goes through the proxy above, so its **ftp** box stays greyed. See [FTP and FTPS](adding-downloads.md#ftp-and-ftps).

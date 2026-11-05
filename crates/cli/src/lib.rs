@@ -99,6 +99,10 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
+        /// The network adapter yt-dlp goes through (#35), as `get --adapter`: Windows only
+        /// (elsewhere video pages are refused while an adapter is chosen).
+        #[arg(long)]
+        adapter: Option<String>,
     },
     /// Make a .torrent of a file or folder (no trackers; peers find it through the DHT).
     TorrentCreate {
@@ -515,7 +519,14 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             subs,
             auto_subs,
             embed_subs,
+            adapter,
         } => {
+            if let Some(a) = adapter {
+                mdm_tools::proc::set_route(mdm_engine::net::route_for(
+                    &a,
+                    &mdm_engine::net::adapters(),
+                ));
+            }
             let subs = subs_arg(&subs, auto_subs, embed_subs);
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
