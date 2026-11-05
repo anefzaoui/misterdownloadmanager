@@ -220,7 +220,7 @@ impl OptionsDialog {
             cat_edit: None,
             restore_ask: None,
             learned,
-            seven_zip: mdm_extract::find_7zip(),
+            seven_zip: crate::extractq::seven_zip(),
             adapters: None,
         }
     }
@@ -1665,15 +1665,17 @@ impl OptionsDialog {
             Some(path) => (
                 crate::i18n::fmt(
                     // i18n: Options → Archives: {path} is where 7-Zip's program is
-                    crate::i18n::t("RAR archives are extracted by 7-Zip ({path})."),
+                    crate::i18n::t("7z and RAR archives are extracted by 7-Zip ({path})."),
                     &[("path", &crate::i18n::ltr(&path.display().to_string()))],
                 ),
                 LIGHT_TEXT(),
             ),
             None => (
                 // i18n: Options → Archives, when 7-Zip isn't installed
-                crate::i18n::t("RAR archives need 7-Zip (7-zip.org), which isn't installed.")
-                    .to_owned(),
+                crate::i18n::t(
+                    "7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.",
+                )
+                .to_owned(),
                 winui::ERROR(),
             ),
         };

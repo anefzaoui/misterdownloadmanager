@@ -5673,6 +5673,11 @@ impl App {
                 }
             }
         }
+        if let Some(d) = &mut self.extracts.needs_7zip
+            && !matches!(d.show(ctx), Outcome::Open)
+        {
+            self.extracts.needs_7zip = None;
+        }
         if let Some(d) = &mut self.extracts.ask {
             match d.show(ctx) {
                 Outcome::Open => {}

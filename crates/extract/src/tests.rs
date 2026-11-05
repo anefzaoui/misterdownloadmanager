@@ -16,7 +16,7 @@ fn run(
         subfolder,
         password: password.map(str::to_owned),
         limits: Limits::default(),
-        tool: None,
+        tool: find_7zip(),
         on_file: &mut on_file,
         cancel: None,
     };
@@ -206,32 +206,52 @@ fn limits_stop_a_bomb() {
     no_staging(&dest);
 }
 
-fn seven_of(src: &Path, archive: &Path, password: Option<&str>) {
-    match password {
-        Some(p) => sevenz_rust2::compress_to_path_encrypted(src, archive, p.into()).unwrap(),
-        None => sevenz_rust2::compress_to_path(src, archive).unwrap(),
-    }
+/// 7-Zip's own archives (`7z a`): plain, encrypted, or split in 100 KB volumes.
+fn seven_of(tool: &Path, src: &Path, archive: &Path, extra: &[&str]) {
+    let ok = std::process::Command::new(tool)
+        .arg("a")
+        .arg("-bso0")
+        .arg("-bsp0")
+        .args(extra)
+        .arg(archive)
+        .arg(src.join("*"))
+        .status()
+        .unwrap()
+        .success();
+    assert!(ok, "7-Zip couldn't make {}", archive.display());
 }
 
 #[test]
-fn sevenz_plain_encrypted_and_split() {
+fn sevenz_plain_encrypted_and_split_through_7zip() {
+    let Some(tool) = find_7zip() else {
+        eprintln!("7-Zip not found: skipped (no_7zip_says_so covers its absence)");
+        return;
+    };
     let t = tempfile::tempdir().unwrap();
     let src = t.path().join("src");
     std::fs::create_dir_all(src.join("inner")).unwrap();
     std::fs::write(src.join("a.txt"), b"alpha").unwrap();
-    std::fs::write(src.join("inner/b.bin"), vec![7u8; 300_000]).unwrap();
+    // Not compressible: the split below makes several volumes.
+    let mut x = 0x9E37_79B9_7F4A_7C15u64;
+    let noise: Vec<u8> = (0..300_000)
+        .map(|_| {
+            x ^= x << 13;
+            x ^= x >> 7;
+            x ^= x << 17;
+            x as u8
+        })
+        .collect();
+    std::fs::write(src.join("inner/b.bin"), &noise).unwrap();
     let plain = t.path().join("plain.7z");
-    seven_of(&src, &plain, None);
+    seven_of(&tool, &src, &plain, &[]);
     let dest = t.path().join("o1");
     let r = run(&plain, &dest, None, Subfolder::Smart).0.unwrap();
     assert_eq!(std::fs::read(r.folder.join("a.txt")).unwrap(), b"alpha");
-    assert_eq!(
-        std::fs::read(r.folder.join("inner/b.bin")).unwrap().len(),
-        300_000
-    );
+    assert_eq!(std::fs::read(r.folder.join("inner/b.bin")).unwrap(), noise);
+    no_staging(&dest);
 
     let enc = t.path().join("enc.7z");
-    seven_of(&src, &enc, Some("s3cret"));
+    seven_of(&tool, &src, &enc, &["-ps3cret"]);
     let dest = t.path().join("o2");
     assert!(matches!(
         run(&enc, &dest, None, Subfolder::Smart).0,
@@ -246,26 +266,52 @@ fn sevenz_plain_encrypted_and_split() {
         .unwrap();
     no_staging(&dest);
 
-    // Split in three, byte for byte, as 7-Zip's "Split to volumes" does.
-    let bytes = std::fs::read(&plain).unwrap();
-    let third = bytes.len() / 3 + 1;
-    let parts: Vec<PathBuf> = (1..=3)
-        .map(|n| t.path().join(format!("split.7z.{n:03}")))
-        .collect();
-    for (i, p) in parts.iter().enumerate() {
-        let end = ((i + 1) * third).min(bytes.len());
-        std::fs::write(p, &bytes[i * third..end]).unwrap();
-    }
+    // 7-Zip's "Split to volumes": split.7z.001, .002…
+    let split = t.path().join("split.7z");
+    seven_of(&tool, &src, &split, &["-v100k"]);
+    let first = t.path().join("split.7z.001");
+    assert!(t.path().join("split.7z.003").is_file());
     let dest = t.path().join("o3");
-    let r = run(&parts[0], &dest, None, Subfolder::Smart).0.unwrap();
+    let r = run(&first, &dest, None, Subfolder::Smart).0.unwrap();
     assert_eq!(r.folder, dest.join("split"));
-    assert!(r.folder.join("a.txt").is_file());
-    std::fs::remove_file(&parts[1]).unwrap();
+    assert_eq!(std::fs::read(r.folder.join("inner/b.bin")).unwrap(), noise);
+    std::fs::remove_file(t.path().join("split.7z.002")).unwrap();
     let dest = t.path().join("o4");
     assert!(matches!(
-        run(&parts[0], &dest, None, Subfolder::Smart).0,
+        run(&first, &dest, None, Subfolder::Smart).0,
         Err(Error::MissingVolume(2))
     ));
+    no_staging(&dest);
+}
+
+#[test]
+fn no_7zip_says_so() {
+    // A 7z (and a RAR) without 7-Zip: NoTool, which the app words as "7z and RAR archives need
+    // 7-Zip"; nothing is left behind.
+    let t = tempfile::tempdir().unwrap();
+    for (name, head) in [
+        ("x.7z", &[b'7', b'z', 0xBC, 0xAF, 0x27, 0x1C, 0, 4][..]),
+        ("y.rar", &b"Rar!\x1A\x07\x01\x00"[..]),
+    ] {
+        let a = t.path().join(name);
+        std::fs::write(&a, head).unwrap();
+        let dest = t.path().join("out");
+        let mut on_file = |_: &Path| {};
+        let mut policy = Policy {
+            dest: dest.clone(),
+            subfolder: Subfolder::Smart,
+            password: None,
+            limits: Limits::default(),
+            tool: None,
+            on_file: &mut on_file,
+            cancel: None,
+        };
+        assert!(
+            matches!(extract(&a, &mut policy), Err(Error::NoTool)),
+            "{name}"
+        );
+        no_staging(&dest);
+    }
 }
 
 #[test]

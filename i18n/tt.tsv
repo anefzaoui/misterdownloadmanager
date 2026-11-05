@@ -111,6 +111,21 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24 сәгатьле (21:41)
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	7-Zip кирәк
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z һәм RAR архивлары 7-Zip ({path}) ярдәмендә чыгарыла.
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z һәм RAR архивларына 7-Zip (7-zip.org) кирәк, ул урнаштырылмаган.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	7z һәм RAR архивларына 7-Zip кирәк, ул урнаштырылмаган
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Детальләрне яшерергә
@@ -1132,6 +1147,10 @@
 #. tab title: general information
 #, machine
 	General	Гомуми
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	7-Zip алу
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1244,6 +1263,10 @@
 #. the torrent's identifier
 #, machine
 	Info hash	Мәгълүмат хешы
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip'ны (бушлай) урнаштырыгыз, аннары йөкләнешкә уң төймә белән басыгыз һәм Чыгаруны сайлагыз.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1776,7 +1799,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	Офлайн ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ОК
 #. text in a download's progress window
@@ -1991,17 +2014,6 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Чиратлар
-#. text in the Options window
-#. Options → Archives: {path} is where 7-Zip's program is
-#, machine
-	RAR archives are extracted by 7-Zip ({path}).	RAR архивлары 7-Zip ({path}) тарафыннан чыгарыла.
-#. text in the Options window
-#. Options → Archives, when 7-Zip isn't installed
-#, machine
-	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR архивларына 7-Zip (7-zip.org) кирәк, ул урнаштырылмаган.
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	RAR archives need 7-Zip, which isn't installed	RAR архивларына 7-Zip кирәк, ул урнаштырылмаган
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3340,6 +3352,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} йөкләп булмады: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — 7z яки RAR архивы. MDM аларны 7-Zip белән чыгара, ул урнаштырылмаган.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

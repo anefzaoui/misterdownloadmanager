@@ -87,6 +87,17 @@
 #. text in the Options window
 #. a 24-hour clock, with an example
 	24-hour (21:41)	24-hour (21:41)
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+	7-Zip needed	7-Zip needed
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z and RAR archives are extracted by 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.
+#. text in extracting archives (a download's log, the Archive password window)
+	7z and RAR archives need 7-Zip, which isn't installed	7z and RAR archives need 7-Zip, which isn't installed
 #. text in a download's progress window
 	<< Hide details	<< Hide details
 #. text in the settings
@@ -828,6 +839,9 @@
 #. tab title: general settings
 #. tab title: general information
 	General	General
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+	Get 7-Zip	Get 7-Zip
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 	Get ready for video downloads	Get ready for video downloads
@@ -909,6 +923,9 @@
 #. text in a download's progress window
 #. the torrent's identifier
 	Info hash	Info hash
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+	Install 7-Zip (free), then right-click the download and choose Extract.	Install 7-Zip (free), then right-click the download and choose Extract.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 	Install ffmpeg	Install ffmpeg
@@ -1293,7 +1310,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 	Offline ({status})	Offline ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 	OK	OK
 #. text in a download's progress window
 	on download stop/resume	on download stop/resume
@@ -1449,14 +1466,6 @@
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 	Queues	Queues
-#. text in the Options window
-#. Options → Archives: {path} is where 7-Zip's program is
-	RAR archives are extracted by 7-Zip ({path}).	RAR archives are extracted by 7-Zip ({path}).
-#. text in the Options window
-#. Options → Archives, when 7-Zip isn't installed
-	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR archives need 7-Zip (7-zip.org), which isn't installed.
-#. text in extracting archives (a download's log, the Archive password window)
-	RAR archives need 7-Zip, which isn't installed	RAR archives need 7-Zip, which isn't installed
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 	Reading the crash data…	Reading the crash data…
@@ -2432,6 +2441,10 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 	{name} could not be downloaded: {error}	{name} could not be downloaded: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)

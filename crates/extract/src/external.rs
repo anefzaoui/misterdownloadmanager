@@ -1,5 +1,6 @@
-//! RAR through 7-Zip, run as its own program (#37): UnRAR's licence forbids using its code in a
-//! GPL program, so MDM never links it. 7-Zip writes into the staging folder; what it wrote is
+//! 7z and RAR through 7-Zip, run as its own program (#37): UnRAR's licence forbids using its
+//! code in a GPL program, so MDM never links it, and 7z's decoder isn't built in either (it cost
+//! about 1 MB). 7-Zip writes into the staging folder; what it wrote is
 //! then checked as our own entries are ([`safe::check_tree`]) before anything is moved into
 //! place.
 

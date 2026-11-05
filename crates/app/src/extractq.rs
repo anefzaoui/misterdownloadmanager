@@ -29,6 +29,8 @@ struct Job {
     files: Vec<PathBuf>,
     password: Option<String>,
     delete: bool,
+    /// Right-click → Extract (said again, a missing 7-Zip, each time).
+    by_hand: bool,
     subfolder: mdm_extract::Subfolder,
     /// Where the archive came from, for the mark on what it holds.
     url: url::Url,
@@ -52,6 +54,10 @@ pub struct Extracts {
     seen: HashSet<PathBuf>,
     /// An archive that needs its password (or another one): asked in a small window.
     pub ask: Option<PasswordDialog>,
+    /// A 7z or RAR archive and no 7-Zip: said in a small window (once a session when it was
+    /// extracted by itself; each time Extract is chosen).
+    pub needs_7zip: Option<ToolDialog>,
+    told_7zip: bool,
 }
 
 /// Is this file name an archive's (or one volume of one)? By name only: the first bytes decide
@@ -143,6 +149,7 @@ impl Extracts {
             archive,
             password: pkg.and_then(|p| p.password.clone()),
             delete: pkg.map_or(settings.extract_delete, |p| p.delete_after),
+            by_hand,
             subfolder: settings.extract_into(),
             url: first.url.clone(),
             referer: first.context.referer.clone(),
@@ -228,6 +235,10 @@ impl Extracts {
             Err(e) => {
                 self.seen.remove(&job.archive);
                 note(items, failed(&name, &e));
+                if matches!(e, Error::NoTool) && (job.by_hand || !self.told_7zip) {
+                    self.told_7zip = true;
+                    self.needs_7zip = Some(ToolDialog { name });
+                }
                 return;
             }
         };
@@ -303,6 +314,20 @@ impl Extracts {
     }
 }
 
+/// Tests only: the 7-Zip program to use instead of the one installed; empty or `none`: as if
+/// 7-Zip weren't installed (the "needs 7-Zip" message). Never set for users.
+const TEST_7ZIP: &str = "MDM_TEST_7ZIP";
+
+/// 7-Zip's program, which extracts 7z and RAR archives: the installed one (Options → Archives
+/// says which), or a test's `MDM_TEST_7ZIP`.
+pub fn seven_zip() -> Option<PathBuf> {
+    match std::env::var_os(TEST_7ZIP) {
+        Some(v) if v.is_empty() || v.eq_ignore_ascii_case("none") => None,
+        Some(v) => Some(PathBuf::from(v)),
+        None => mdm_extract::find_7zip(),
+    }
+}
+
 /// Tests only: archives "moved to the Recycle Bin" go into this folder instead, so a test never
 /// fills the real (per-user, shared) Recycle Bin or Trash. Never set for users.
 const TEST_TRASH: &str = "MDM_TEST_TRASH_DIR";
@@ -356,7 +381,7 @@ fn failed(name: &str, e: &Error) -> String {
         Error::TooMany => crate::i18n::t("it holds too many files or folders").to_owned(),
         // i18n: why an archive wasn't extracted (after "Couldn't extract {name}: "); 7-Zip is a program's name
         Error::NoTool => {
-            crate::i18n::t("RAR archives need 7-Zip, which isn't installed").to_owned()
+            crate::i18n::t("7z and RAR archives need 7-Zip, which isn't installed").to_owned()
         }
         // i18n: why an archive wasn't extracted (after "Couldn't extract {name}: ")
         Error::Unsupported => crate::i18n::t("it is not an archive MDM extracts").to_owned(),
@@ -422,11 +447,81 @@ fn run(job: &Job, cancel: &AtomicBool) -> Result<Report, Error> {
         subfolder: job.subfolder,
         password: job.password.clone(),
         limits,
-        tool: None,
+        tool: seven_zip(),
         on_file: &mut on_file,
         cancel: Some(cancel),
     };
     mdm_extract::extract(&job.archive, &mut policy)
+}
+
+/// "7-Zip needed": a 7z or RAR archive, and 7-Zip isn't installed. Get 7-Zip opens its site.
+pub struct ToolDialog {
+    name: String,
+}
+
+impl ToolDialog {
+    /// `Done(())` or Closed: the window goes.
+    pub fn show(&mut self, ctx: &egui::Context) -> Outcome<()> {
+        window(
+            ctx,
+            "needs-7zip",
+            // i18n: window title: 7-Zip (a program's name) must be installed
+            "7-Zip needed",
+            [400.0, 118.0],
+            false,
+            LIGHT_BG(),
+            |ui, o| {
+                let p = ui.painter().clone();
+                let line = crate::i18n::fmt(
+                    // i18n: in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+                    crate::i18n::t(
+                        "{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.",
+                    ),
+                    &[("name", &crate::i18n::isolate(&self.name))],
+                );
+                winui::paragraph(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 21.0,
+                    &line,
+                    LIGHT_TEXT(),
+                    o.x + 389.0,
+                    14.0,
+                );
+                winui::paragraph(
+                    &p,
+                    o.x + 11.0,
+                    o.y + 56.0,
+                    // i18n: in the "7-Zip needed" window, under why
+                    crate::i18n::t(
+                        "Install 7-Zip (free), then right-click the download and choose Extract.",
+                    ),
+                    winui::MUTED(),
+                    o.x + 389.0,
+                    14.0,
+                );
+                let row = winui::buttons_light_right(
+                    ui,
+                    o,
+                    389.0,
+                    86.0,
+                    &[
+                        // i18n: button: opens 7-Zip's website (7-Zip is a program's name)
+                        (crate::i18n::mark("Get 7-Zip"), ButtonKind::Normal),
+                        (crate::i18n::mark("OK"), ButtonKind::Default),
+                    ],
+                );
+                if row[0].clicked() {
+                    let _ = open::that_detached("https://www.7-zip.org/");
+                }
+                if row[1].clicked() || winui::escape_pressed(ui) || winui::enter_pressed(ui) {
+                    Outcome::Done(())
+                } else {
+                    Outcome::Open
+                }
+            },
+        )
+    }
 }
 
 /// "Password for an archive": asked when one is encrypted (again when the password was wrong).

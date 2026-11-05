@@ -13,8 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
-- ✅ Link grabber: links in packages, looked up for name and size; archives (zip, 7z, rar
-  through 7-Zip, tar) extracted when they are downloaded
+- ✅ Link grabber: links in packages, looked up for name and size; archives (zip and tar
+  built in; 7z and RAR need 7-Zip) extracted when they are downloaded
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)); collecting copied links
   comes later
 - ✅ Image galleries with gallery-dl: Wikimedia Commons, Flickr, DeviantArt and many more,

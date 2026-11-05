@@ -1,6 +1,7 @@
-//! Safe archive extraction (#37): zip (Deflate, Deflate64, AES), 7z (AES, split `.7z.001`), tar
-//! and its gz/xz forms, a single `.gz`/`.xz` file, and RAR through an external 7-Zip (UnRAR's
-//! licence forbids linking it into a GPL program).
+//! Safe archive extraction (#37): zip (Deflate, Deflate64, AES), tar and its gz/xz forms and a
+//! single `.gz`/`.xz` file in process; 7z (split `.7z.001` too) and RAR through an installed
+//! 7-Zip, run as its own program (UnRAR's licence forbids linking it into a GPL program, and a 7z
+//! decoder in MDM cost about 1 MB for a format most people who use it have 7-Zip for).
 //!
 //! Every archive is extracted into an empty staging folder beside the destination, each entry's
 //! path checked ([`safe`]), then moved into place: a folder named after the archive when it holds
@@ -12,7 +13,6 @@
 
 mod external;
 pub mod safe;
-mod sevenz;
 mod single;
 mod tar_fmt;
 pub mod volumes;
@@ -109,7 +109,8 @@ pub struct Policy<'a> {
     pub subfolder: Subfolder,
     pub password: Option<String>,
     pub limits: Limits,
-    /// 7-Zip's program, for RAR (None: looked for with [`find_7zip`]).
+    /// 7-Zip's program, for 7z and RAR ([`find_7zip`] finds it). None: not installed, and those
+    /// archives fail with [`Error::NoTool`].
     pub tool: Option<PathBuf>,
     /// Told every file put in place: the app marks it as downloaded from the internet, as the
     /// archive is.
@@ -148,7 +149,7 @@ pub enum Error {
     },
     /// More entries or deeper folders than allowed.
     TooMany,
-    /// RAR, and no 7-Zip was found.
+    /// 7z or RAR, and no 7-Zip was found.
     NoTool,
     /// Not an archive MDM extracts.
     Unsupported,
@@ -168,7 +169,7 @@ impl std::fmt::Display for Error {
                 write!(f, "would write {would} bytes (limit {limit})")
             }
             Error::TooMany => write!(f, "too many entries or folders too deep"),
-            Error::NoTool => write!(f, "no 7-Zip found for RAR"),
+            Error::NoTool => write!(f, "7z and RAR archives need 7-Zip, and none was found"),
             Error::Unsupported => write!(f, "not an archive MDM extracts"),
             Error::Cancelled => write!(f, "cancelled"),
             Error::Io(e) => write!(f, "{e}"),
@@ -212,15 +213,19 @@ pub fn extract(archive: &Path, policy: &mut Policy<'_>) -> Result<Report, Error>
     let mut w = safe::Writer::new(staging.path(), policy.limits, policy.cancel);
     let run = match format {
         Format::Zip => zip_fmt::extract(archive, &mut w, policy.password.as_deref()),
-        Format::SevenZip => sevenz::extract(archive, &mut w, policy.password.as_deref()),
         Format::Tar | Format::TarGz | Format::TarXz => tar_fmt::extract(archive, format, &mut w),
         Format::Gz | Format::Xz => single::extract(archive, format, &mut w),
-        Format::Rar => {
-            let tool = policy
-                .tool
-                .clone()
-                .or_else(find_7zip)
-                .ok_or(Error::NoTool)?;
+        Format::SevenZip | Format::Rar => {
+            let tool = policy.tool.clone().ok_or(Error::NoTool)?;
+            // A split 7z's volumes are all there before 7-Zip is asked (it would only say
+            // "unexpected end"): the first one missing is named.
+            let name = archive
+                .file_name()
+                .map(|s| s.to_string_lossy().into_owned())
+                .unwrap_or_default();
+            if volume_key(&name).is_some_and(|v| v.kind == VolumeKind::Split) {
+                volumes::MultiFile::open(archive)?.map_err(Error::MissingVolume)?;
+            }
             external::extract(&tool, archive, &mut w, policy.password.as_deref())
         }
     };

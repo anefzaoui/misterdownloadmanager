@@ -819,15 +819,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "block-padding"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "710f1dd022ef4e93f8a438b4ba958de7f64308434fa6a87104481645cc30068b"
-dependencies = [
- "hybrid-array",
-]
-
-[[package]]
 name = "block2"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1076,15 +1067,6 @@ dependencies = [
  "rustix 1.1.6",
  "wayland-backend",
  "wayland-client",
-]
-
-[[package]]
-name = "cbc"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce2dc9ee5f88d11e0beb842c88b33c8a5cf0d1329c4b19494af42b07dbfe8896"
-dependencies = [
- "cipher",
 ]
 
 [[package]]
@@ -3586,7 +3568,6 @@ version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3b5cf4372d022092674a83b8febf5865f7a573cc0c5baec5e49c879b6a20978f"
 dependencies = [
- "block-padding",
  "hybrid-array",
 ]
 
@@ -4554,7 +4535,6 @@ dependencies = [
  "flate2",
  "lzma-rust2",
  "mdm-engine",
- "sevenz-rust2",
  "tar",
  "tempfile",
  "tracing",
@@ -7405,23 +7385,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.9",
-]
-
-[[package]]
-name = "sevenz-rust2"
-version = "0.24.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30146010a60b5773ef63f7b0033576c7a0487ecc87a30d97b787ca8e27c85140"
-dependencies = [
- "aes",
- "cbc",
- "crc32fast",
- "flate2",
- "getrandom 0.4.3",
- "js-sys",
- "lzma-rust2",
- "sha2",
- "wasm-bindgen",
 ]
 
 [[package]]

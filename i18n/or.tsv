@@ -111,6 +111,21 @@
 #. a 24-hour clock, with an example
 #, machine
 	24-hour (21:41)	24-ଘଣ୍ଟା (21:41)
+#. window title in extracting archives (a download's log, the Archive password window)
+#. window title: 7-Zip (a program's name) must be installed
+#, machine
+	7-Zip needed	7-Zip ଆବଶ୍ୟକ
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z ଏବଂ RAR ଆର୍କାଇଭଗୁଡ଼ିକ 7-Zip ({path}) ଦ୍ୱାରା ଏକ୍ସଟ୍ରାକ୍ଟ ହୋଇଥାଏ।
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z ଏବଂ RAR ଆର୍କାଇଭଗୁଡ଼ିକ ପାଇଁ 7-Zip (7-zip.org) ଆବଶ୍ୟକ, ଯାହା ସ୍ଥାପିତ ହୋଇନାହିଁ।
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	7z and RAR archives need 7-Zip, which isn't installed	7z ଏବଂ RAR ଆର୍କାଇଭଗୁଡ଼ିକ ପାଇଁ 7-Zip ଆବଶ୍ୟକ, ଯାହା ସ୍ଥାପିତ ହୋଇନାହିଁ
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< ବିବରଣୀ ଲୁଚାନ୍ତୁ
@@ -1132,6 +1147,10 @@
 #. tab title: general information
 #, machine
 	General	ସାଧାରଣ
+#. text in extracting archives (a download's log, the Archive password window)
+#. button: opens 7-Zip's website (7-Zip is a program's name)
+#, machine
+	Get 7-Zip	7-Zip ପ୍ରାପ୍ତ କରନ୍ତୁ
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
@@ -1244,6 +1263,10 @@
 #. the torrent's identifier
 #, machine
 	Info hash	ସୂଚନା ହ୍ୟାସ୍
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window, under why
+#, machine
+	Install 7-Zip (free), then right-click the download and choose Extract.	7-Zip (ମାଗଣା) ସ୍ଥାପନ କରନ୍ତୁ, ତା’ପରେ ଡାଉନଲୋଡ୍ ଉପରେ ରାଇଟ୍-କ୍ଲିକ୍ କରନ୍ତୁ ଏବଂ ଏକ୍ସଟ୍ରାକ୍ଟ ବାଛନ୍ତୁ।
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1776,7 +1799,7 @@
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
 	Offline ({status})	ଅଫଲାଇନ୍ ({status})
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ଠିକ୍ ଅଛି
 #. text in a download's progress window
@@ -1991,17 +2014,6 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ଧାଡ଼ିଗୁଡ଼ିକ
-#. text in the Options window
-#. Options → Archives: {path} is where 7-Zip's program is
-#, machine
-	RAR archives are extracted by 7-Zip ({path}).	RAR ଆର୍କାଇଭ୍‌ଗୁଡ଼ିକୁ 7-Zip ({path}) ଦ୍ୱାରା ଏକ୍ସଟ୍ରାକ୍ଟ କରାଯାଏ।
-#. text in the Options window
-#. Options → Archives, when 7-Zip isn't installed
-#, machine
-	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR ଆର୍କାଇଭ୍‌ଗୁଡ଼ିକୁ 7-Zip (7-zip.org) ଦରକାର, ଯାହା ଇନଷ୍ଟଲ୍ ହୋଇନାହିଁ।
-#. text in extracting archives (a download's log, the Archive password window)
-#, machine
-	RAR archives need 7-Zip, which isn't installed	RAR ଆର୍କାଇଭ୍‌ଗୁଡ଼ିକୁ 7-Zip ଦରକାର, ଯାହା ଇନଷ୍ଟଲ୍ ହୋଇନାହିଁ
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3340,6 +3352,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} ଡାଉନଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} ହେଉଛି ଏକ 7z କିମ୍ବା RAR ଆର୍କାଇଭ୍। MDM ଏହାକୁ 7-Zip ସହିତ ଏକ୍ସଟ୍ରାକ୍ଟ କରେ, ଯାହା ସ୍ଥାପିତ ହୋଇନାହିଁ।
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
