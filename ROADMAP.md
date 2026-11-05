@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Screen readers reach every row of a list, in view or not (300 around the view in long lists)
+  ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111))
 - ✅ Two engine tests that failed now and then on busy machines are reliable
   ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123))
 - ✅ Numbers are grouped and pointed the interface language's way (German `10.200`, `1,50 MB`)

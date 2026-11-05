@@ -305,6 +305,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Screen readers reach every row of a list, not only those in view**
+  ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111)): a list's rows out of
+  view (the last qualities of Download video, a long playlist, the downloads) are there too,
+  named, with their place ("12 of 40"), and can be scrolled into view or selected. A list of
+  thousands offers 300 rows around the view, so it stays as fast.
 - **Numbers are written the interface language's way** ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128)):
   counts, sizes, speeds, percentages and the list's columns group and point their digits as the
   chosen language does (German `10.200` and `1,50 MB`, French `10 200`, Hindi `1,00,000`),
