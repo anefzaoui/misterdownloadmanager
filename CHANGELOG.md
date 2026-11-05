@@ -320,6 +320,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Less memory in the notification area, also after Minimize**
+  ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)): a window minimized to the
+  notification area (on by default) now gives its memory back too, as a closed one did; and both
+  give it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation
+  have brought some back (then every 10 minutes, as before).
 - **Screen readers see a window's contents the first time they read it**
   ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131)): a window read for the
   first time (Link grabber, Options, About...) showed only its title bar until it was drawn

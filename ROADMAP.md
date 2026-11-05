@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Less memory in the notification area after Minimize too, and again 2 minutes after hiding
+  ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Windows: draw with Direct3D 12 instead of OpenGL (**View → Draw with**), an option for now;
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
