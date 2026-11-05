@@ -710,7 +710,10 @@ impl Grabber {
                             );
                             let left = glyph.x + 19.0 + crate::fileicons::INDENT;
                             let name = crate::i18n::isolate(&pk.name);
-                            let r = winui::fit(
+                            // The name's English extent (fit's rect is on screen: mirrored in RTL).
+                            let shown_w =
+                                winui::text_width(clip, &name).min(state_x - 140.0 - left);
+                            winui::fit(
                                 ui,
                                 clip,
                                 left,
@@ -737,7 +740,7 @@ impl Grabber {
                             winui::fit(
                                 ui,
                                 clip,
-                                r.right() + 8.0,
+                                left + shown_w + 8.0,
                                 top + 13.0,
                                 &what,
                                 tint,
