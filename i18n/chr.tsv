@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ᎠᏎᎯᏍᏗ ᏗᏟᎶᏍᏔᏅᎢ. ᎾᏍᎩ GitHub ᏗᏂᏟᏍᏔᏅᎯ ᏗᏂᏅᏍᏗᏱ ᎾᏍᎩ ᏧᏂᏍᏕᎸᏗ ᎾᏍᎩ ᏧᏂᎧᏃᏗᏱ; ᏂᎦᎥ ᎾᎿᎢ ᏥᏕᎦᎧᏗ ᎾᏍᎩ ᎢᎬᏱ ᎨᏣᎪᎵᏰᏗ. ᎥᏝ ᎪᎱᏍᏗ ᎤᏩᏒᏉ ᏱᎦᎴᏴᏍᏗ: ᎦᎴᏴᏍᏗ ᎾᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎴᏴᏍᏗ ᎢᏣᏛᏁᏗ ᎢᏥᏃᏗᏱ, ᎢᏥᎧᏃᏗᏱ, ᎠᎴ ᎢᏥᏅᏍᏗᏱ.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	ᎯᎠ ᏗᎦחשᏙᏂ ᎤᎾᏓᏡᎩ ᎠᎦᏎᏍᏗᏍᎩ ᏓᎳᏗᏍᏗ ᏅᏩᏓᎴ ᎤᏓᏅᏒ, ᎾᏍᎩ ᎥᏝ ᏱᎦᎶᎯᏍᏗ {adapter} ᎬᏗ.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ
@@ -231,6 +235,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	{ms} ms ᎢᏯᏂᎢ ᎤᏁᏨ: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	ᏂᎦᎥ (ᎤᎾᏙᏢᏒ ᎠᏑᏰᏍᎪᎢ)
 #. text in the Scheduler window
 #, machine
 	April	ᎠᎾᏱᎵᏒ
@@ -256,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ᎧᏃᎩᏍᏗᏉ, ᎤᏙᎴᎰᏒ {type}
 #. text in the Scheduler window
 #, machine
 	August	ᎦᎶᏂ
@@ -299,7 +311,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	ᎤᎵᏍᏆᎸᏗ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ᎠᎦᏘᎴᎢ
@@ -366,6 +378,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	ᏓᎦᏃᏍᏓᏅᎢ ᏚᎾᏓᏁᏟᏴᏒᎢ...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	ᎠᏓᏁᏤᏗ ᎦᎴᏴᏔᏅᎯ gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -611,6 +628,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	ᏗᏗᏍᎪᏗᏱ "{name}" ᎢᎬᏱ ᎢᎬᏱ? ᎤᏍᏆᏛ ᏗᏓᏟᎶᏍᏗ ᏗᏓᏟᎶᏍᏔᏅᎢ ᎢᎬᏱ ᏗᏗᏍᎪᏗᏱ ᎤᏍᏆᏛ.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	ᏗᏗᏍᎪᏗᏱ ᎤᏍᏆᏛ
@@ -635,7 +656,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	ᏗᏗᏍᎪᏗᏱ ᏂᏓᎴᏅᎲᎾ {mb} ᎷᏴᎢ\n{hours} ᎢᏳᏩᎪᏗ
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	ᏗᏗᏍᎪᏗᏱ ᎪᎯ
 #. window title in the Options window
@@ -680,6 +701,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ᎠᎾᏛᏗ ᎠᎴ ᎠᎾᏙᎴᎰᏍᎬ ffmpeg (80 MB ᎢᏴ)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	ᎦᎴᏴᏔᏅᎯ gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -723,6 +748,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ᏔᎵᏁ ᎠᎾᏛᏗ ᎠᏕᎳᎰᏍᎦ
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	ᏌᏊᏊ ᎠᏓමුᏍᏙᏗ ᎤᎾᏙᏢᏒ ᎤᏑᏰᏒ ᎦᏅᏅ ᎠᏅᏗ.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -745,6 +774,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ᎦᎴᏴᏔᏅ
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	ᎤᏃᏒᎯ: ᏂᎦᏛ. ᎤᏟ ᎢᏤᎢᏍᏗ ᎢᎬᏱ ᎨᏐᎢ.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -775,6 +808,10 @@
 #. text in the Options window
 #, machine
 	Event	ᏄᎵᏍᏔᏅᎢ
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	ᏂᎦᏓ ᎠᏓමුᏍᏙᏗ ᎾᎿ ᎠᎶᎠ, {ip} ᏅᏓᏳᏓᎴᏅᏓ.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -850,6 +887,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	ᎢᏗᏟᏴᏔᏅᎯ ᎦᏳᎳ ᎾᎿᏂ
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	ᎦᎴᏴᏔᏅᎯ ᎤᏟ ᎢᎦᎢ
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -891,6 +932,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	ᎢᎬᏱᏱ ᏗᏓᎴᏂᏍᏗ:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ᎤᏙᎴᎰᏒ ᎧᏃᎩᏍᏗ ᏂᎦᎥᎢ, ᎠᏎᏃ ᎥᏝ ᎢᎦᎢ ᎣᏍᏛ ᎢᎬᏩᏁᏗ ᏱᎩ ᎾᏍᎩ ᎾᎿ ᎧᏃᎩᏍᏗ ᏂᎨᏒᎾ: ᎦᎸᏉᏗᏳᏉ ᎢᎦᎢ.
 #. text in categories.rs
 #, machine
 	Folder:	ᏗᏓᎴᏂᏍᏗ:
@@ -920,6 +965,10 @@
 #, machine
 	Friday	ᏧᎾ
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	ᏗᎦᎴᏴᏔᏅᎯ (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
 #. message or event log entry in the main window
@@ -944,6 +993,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	ᏗᎦᎴᏴᏔᏅᎯ gallery-dl (23 MB ᎢᏴᏛ, ᎤᏃᏒᎯ ᎤᏃᏒᎯ).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	ᏗᎦᎴᏴᏔᏅᎯ gallery-dl: ᏗᏣყენᏗ ᏗᏣყენᏗ (Homebrew, pip), ᎿᏉ ᏗᏣᏑᏰᏍᏗ ᏗᏣᏑᏰᏍᏗ.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ᎯᎠ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ. ᏗᏣᏁᏟᏴᏍᏗ ᏗᎦᎴᏴᏔᏅᎯ (Add URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ᎥᏝ ᏗᏣყენᏗ (Add URL ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -981,7 +1048,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	ᏗᏓᎴᏂᏍᏗ
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	ᏗᏓᏍᏕᎵᏍᎩ
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -994,7 +1065,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	ᏗᏓᎴᏂᏍᏗ &ᏗᏓᎴᏂᏍᏗ
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
 #. text in a download's progress window; text in standard windows
@@ -1042,6 +1113,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	ᏗᎦᎴᏴᏔᏅᎯ: ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1062,6 +1136,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ᎦᏴᏍᏗ
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	ᏗᏣყენᏗ gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1128,7 +1206,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	ᎤᎵᏍᏆᏛ ᎢᏗᏴᏍᏗ {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1238,6 +1316,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Minimize ᏫᎦᏅᏁᎸ notification area
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	ᎢᏯᏔᏬᏍᏔᏅ
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1297,6 +1379,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ᎦᎴᏴᏔᏅ ᎤᎾᏙᎴᎰᎯᏍᏗ / ᎦᎴᏴᏔᏅ ᎤᎾᏙᎴᎰᎯᏍᏗ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Scheduler window
 #, machine
 	Move down	ᎭᏫᏂᏗᏢ ᏫᎦᎾᏄᎪᎢ
@@ -1351,6 +1436,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Hosts file ᏗᎦᏙᎥ ᎠᎴ ᏗᎦᏙᎥ ᏗᎦᏙᎥ (ᎤᏩᏒ ᎧᏁᏨ, .local, .lan) system ᎤᏤᎵ DNS ᏕᎨᎭ. Video pages ᎠᎴ torrent trackers system ᎤᏤᎵ DNS ᏕᎨᎭ ᎪᎯ ᎨᏒᎢ.
+#. text in the Options window
+#, machine
+	Network adapter:	ᎠᎦᎾᏕᎾ ᎠᏓමුᏍᏗ:
 #. text in errors.rs
 #, machine
 	network error	ᎢᎬᎾᏕᏏᏗ ᎤᎵᏓᏍᏔᏅ
@@ -1581,7 +1669,7 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	ᏗᏟᎶᏍᏔᏅ ᎿᏉ ᎠᏍᏆᏛᎯᏍᏗ
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ᎦᏃᎴᏍᏗ ᎤᏤᎵᎦ ᏗᎦᏛᏗ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1801,7 +1889,7 @@
 #. text in a dialog box
 #, machine
 	Save As	ᏕᏣᏍᏆᏂᎪᏙᏗ
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	ᏕᏣᏍᏆᏂᎪᏙᏗ
@@ -1924,6 +2012,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	ᎦᏃᏍᏓᏁᏗ
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	ᎠᏯᏙᎮᏗ ᎤᏂᎴᏫᏒ {time} ᎢᎪᎯᏓ ᎤᏯᏙᎮᎸᎢ.
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	ᎠᏯᏙᎮᏗ ᎤᏂᎴᏫᏒ: ᎠᏯᏙᎮᏗ ᏗᏎᏍᏗ {ratio} ᎤᎷᏨ.
 #. text in the download list
 #, machine
 	Show	ᎬᏂᎨᏒᎢ
@@ -2070,6 +2167,11 @@
 #, machine
 	Started	ᎤᎾᎴᏅᏗ
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	ᏗᏓᎴᏅᏔᏅᎯ gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	ᎤᎾᎴᏅᏗ yt-dlp {version} ({format})
@@ -2095,6 +2197,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ᎤᎾᎴᏅᏗ ᎤᎾᏙᏢᏒ ᏗᏗᏍᎪᏗ ᎦᏟᏗ
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	ᎠᏯᏙᎮᏗ ᎤᏂᎴᏫᏍᏗ ᎤᏯᏙᎮᎸᎢ
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	ᎠᏯᏙᎮᏗ ᎤᏂᎴᏫᏍᏗ ᎠᏯᏙᎮᏗ ᏗᏎᏍᏗ ᎯᎠ ᎢᎦᎢ
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2108,6 +2218,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	ᎤᎾᎴᏅᏗ
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	ᎤᏂᎴᏫᏒ: ᎠᎦᎾᏕᎾ ᎠᏓමුᏍᏗ ᎤᏓᏁᏟᏴᏒ; ᏔᎵᏁ ᎤᎴᏅᏗ.
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	ᎤᏂᎴᏫᏒ: {adapter} ᎥᏝ ᎠᏓමුᏛ; ᏔᎵᏁ ᎠᏓමුᏛ ᎨᏎᏍᏗ ᎿᏊ.
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ᎤᎾᎴᏅᏗ ᎢᏳᏃ ᏗᏗᏍᎪᏗ ᏱᏚᎵᏍᏔᏁᎢ
@@ -2173,11 +2291,11 @@
 	The address must be an http(s) or ftp(s) address	ᎤᎾᏙᏢᏒ ᎢᏳᎵᏍᏙᏗᏱ http(s) ᎠᎴ ftp(s) ᎤᎾᏙᏢᏒ
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	ᎣᏍᏓ ᎢᏳᏍᏗ quality-ᎢᏳᏍᏗ ᎠᎴ MP3 ᎤᏚᎵᎭ ffmpeg (80 MB ᎢᏴ).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ᎣᏍᏛᎢ, MP3, Opus ᎠᎴ FLAC ᎤᏚᎳ ffmpeg (80 MB ᎢᏴᏛ).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	ffmpeg-ᎠᎴ MP3 ᎤᏟ ᎢᏴᏓᏓᏛᎢ ᎤᏚᎵᎭ: ᎯᏍᏓᏢᏓᏏ ᎾᏍᎩ ᎯᏴᏔᏅᎭ ᏣᏤᎵ ᏚᏓᏟᎶᏍᏔᏅᎯ ᏗᎧᎾᏩᏛᏍᏗ (ᎠᎴ Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ᎣᏍᏛᎢ, MP3, Opus ᎠᎴ FLAC ᎤᏚᎳ ffmpeg: ᏗᎧᏃᎩᏍᏗ ᎾᎿ ᏗᏟᎶᏍᏔᏅᎯ ᏗᏟᎶᏍᏔᏅᎯ (ᎠᎴ Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2301,6 +2419,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ᎾᏍᎩ ᏗᎦᏁᏟᏴᏍᏗ ᎥᏝ ᏰᎵ ᏱᎦᎴᏅᏍᎦ: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	ᎠᎦᎾᏕᎾ ᎠᏓමුᏍᏗ {adapter} ᎥᏝ ᎠᏓමුᏛ
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	ᏅᏃ ᎤᏟ ᎦᏅᎯᏓ Windows ᎤᏍᏆᎸᎡ: {path}
@@ -2492,6 +2614,10 @@
 #, machine
 	Torrents	ᎠᎹᏟᎢ
 #. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	ᏙᎴᏅᏓ ᎥᏝ ᏱᎦᎶᎯᏍᏗ ᎤᏑᏰᏒ ᎠᎦᎾᏕᎾ ᎠᏓමුᏍᏗ Windows ᎦᎸ.
+#. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2681,13 +2807,17 @@
 #. category name: video files
 #, machine
 	Video	ᏗᏟᎶᏍᏔᏅᎯ
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	ᏗᏟᎶᏍᏔᏅᎯ ᎢᎬᎾᎯᏍᏗᏍᎩ
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ᏗᏟᎶᏍᏔᏅᎯ ᏗᎦᏁᎶᏗ ᎬᏔᏅᎢ yt-dlp (23 MB ᎢᏴᏓ, ᎠᏓᏁᎶᏗ ᎤᏙᏢᏒᎢ).
+#. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	ᎤᎾᏛᏁᎶᏗ ᏚᏆᏚᏓ ᎠᎴ ᏙᎴᏅᏓ ᎥᏝ ᏳᏅᏗ Ꭰեռ.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	ᎤᎾᏛᏁᎶᏗ ᏚᏆᏚᏓ ᎥᏝ ᏳᏅᏗ Ꭰեռ.
 #. text in the Options window
 #, machine
 	Virus checking settings	ᎤᏕᏯᏙᏗ ᏗᎦᏁᎶᏗ ᏗᏙᎳᏤᏗ
@@ -2794,6 +2924,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ᏓᏓᏁᏟᏴᏍᎪᎢ ᏗᏟᎶᏍᏔᏅᎯ
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (ᎥᏝ ᎠᏓමුᏛ)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} ᎥᏝ ᎠᏓමුᏛ: ᎥᏝ ᎪᎱᏍᏗ ᏴᏓᎳᏗᏍᏗ ᏔᎵᏁ ᎠᏓමුᏛ ᎢᏳᏍᏗ.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2860,6 +2998,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} ᎢᏳᏟᎶᏓ {m} ᎢᏯᏔᏬᏍᏔᏅᎯ
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} ᎥᏝ ᏴᎦᎷᎩ {adapter} ᎬᏗ: ᎥᏝ ᎾᏍᎩ ᎢᏳᏍᏗ ᎤᏙᏪᎸ (IPv4 ᎠᎴ IPv6) ᏳᎭ.
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2915,7 +3057,11 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} ᎢᏯᏔᏬᏍᏔᏅᎯ
-#. text in the Download video window
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ᎥᏝ ᏴᎦᎶᎯᏍᏗ ᎤᏑᏰᏒ ᎠᎦᎾᏕᎾ ᎠᏓමුᏍᏗ ({adapter}) Ꭰեռ.
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3169,7 +3315,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / ᏗᎦᎴᏴᏔᏅᎯ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+ᎦᎸᎳᏗ / Shift+ᎦᏁᎳ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

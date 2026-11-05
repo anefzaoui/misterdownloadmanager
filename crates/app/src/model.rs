@@ -368,6 +368,10 @@ pub struct Item {
     /// A torrent or magnet (M15): its `url` is a magnet link, `dest` its folder or one file.
     #[serde(default)]
     pub torrent: Option<crate::torrents::TorrentSpec>,
+    /// An image gallery downloaded by gallery-dl (#58): its `url` is the gallery's page, `dest`
+    /// the folder its files go into.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub gallery: Option<GallerySpec>,
     /// The event log: (unix seconds, what happened), oldest first, the last `LOG` entries.
     #[serde(default)]
     pub log: Vec<(i64, String)>,
@@ -393,15 +397,70 @@ pub struct Item {
     pub notices: Vec<String>,
 }
 
-/// What runs a download: the engine (a file), yt-dlp (a video from a page), or librqbit (a
-/// torrent).
+/// What runs a download: the engine (a file), yt-dlp (a video from a page), gallery-dl (an
+/// image gallery, #58), or librqbit (a torrent).
 pub enum Job {
     File(Download),
     Video {
         job: mdm_tools::video::VideoJob,
         url: Url,
     },
+    Gallery {
+        job: mdm_tools::gallery::GalleryJob,
+        url: Url,
+    },
     Torrent(crate::torrents::Run),
+}
+
+/// A gallery download's choice (#58).
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct GallerySpec {
+    /// At most this many files (the first the site lists, on most the newest); none: all.
+    #[serde(default)]
+    pub limit: Option<u64>,
+}
+
+/// A helper's progress (yt-dlp's, gallery-dl's) as the engine's view: one segment when its size
+/// is known, no connections, its notes as events.
+fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapshot {
+    use mdm_tools::video::State as V;
+    let (state, file, error) = match p.state {
+        V::Running => (State::Downloading, None, None),
+        V::Done(f) => (State::Done, Some(f), None),
+        V::Failed(e) => (State::Failed, None, Some(e)),
+        V::Stopped => (State::Cancelled, None, None),
+    };
+    let size = p.total;
+    mdm_engine::Snapshot {
+        state,
+        url: url.clone(),
+        file,
+        size,
+        downloaded: p.downloaded,
+        resumable: Some(true),
+        segments: size
+            .map(|t| {
+                vec![mdm_engine::download::SegmentView {
+                    start: 0,
+                    cursor: p.downloaded.min(t),
+                    end: t,
+                }]
+            })
+            .unwrap_or_default(),
+        connections: Vec::new(),
+        error,
+        failure: None,
+        events: p
+            .events
+            .iter()
+            .enumerate()
+            .map(|(i, (at, text))| mdm_engine::download::Event {
+                seq: i as u64 + 1,
+                at: *at,
+                text: text.clone(),
+            })
+            .collect(),
+    }
 }
 
 impl Job {
@@ -410,47 +469,8 @@ impl Job {
         match self {
             Job::File(d) => d.snapshot(),
             Job::Torrent(t) => t.snapshot(),
-            Job::Video { job, url } => {
-                use mdm_tools::video::State as V;
-                let p = job.progress();
-                let (state, file, error) = match p.state {
-                    V::Running => (State::Downloading, None, None),
-                    V::Done(f) => (State::Done, Some(f), None),
-                    V::Failed(e) => (State::Failed, None, Some(e)),
-                    V::Stopped => (State::Cancelled, None, None),
-                };
-                let size = p.total;
-                mdm_engine::Snapshot {
-                    state,
-                    url: url.clone(),
-                    file,
-                    size,
-                    downloaded: p.downloaded,
-                    resumable: Some(true),
-                    segments: size
-                        .map(|t| {
-                            vec![mdm_engine::download::SegmentView {
-                                start: 0,
-                                cursor: p.downloaded.min(t),
-                                end: t,
-                            }]
-                        })
-                        .unwrap_or_default(),
-                    connections: Vec::new(),
-                    error,
-                    failure: None,
-                    events: p
-                        .events
-                        .iter()
-                        .enumerate()
-                        .map(|(i, (at, text))| mdm_engine::download::Event {
-                            seq: i as u64 + 1,
-                            at: *at,
-                            text: text.clone(),
-                        })
-                        .collect(),
-                }
-            }
+            Job::Video { job, url } => tool_snapshot(job.progress(), url),
+            Job::Gallery { job, url } => tool_snapshot(job.progress(), url),
         }
     }
 
@@ -458,6 +478,7 @@ impl Job {
         match self {
             Job::File(d) => d.cancel(),
             Job::Video { job, .. } => job.stop(),
+            Job::Gallery { job, .. } => job.stop(),
             Job::Torrent(t) => t.cancel(),
         }
     }
@@ -468,7 +489,7 @@ impl Job {
         match self {
             Job::File(d) => d.set_speed_limit(rate),
             Job::Torrent(t) => t.set_speed_limit(rate),
-            Job::Video { .. } => {}
+            Job::Video { .. } | Job::Gallery { .. } => {}
         }
     }
 
@@ -476,7 +497,7 @@ impl Job {
         match self {
             Job::File(d) => d.speed_limit(),
             Job::Torrent(t) => t.speed_limit(),
-            Job::Video { .. } => None,
+            Job::Video { .. } | Job::Gallery { .. } => None,
         }
     }
 }
@@ -603,6 +624,7 @@ impl Item {
             own_limit: None,
             video: None,
             torrent: None,
+            gallery: None,
             log: Vec::new(),
             name_from_url: false,
             live: None,
@@ -706,6 +728,21 @@ impl Item {
                         );
                     }
                 }
+                // A gallery's files (#58), each marked as downloaded from the web, as above.
+                if status == Status::Complete
+                    && let Some(Live {
+                        dl: Job::Gallery { job, url },
+                        ..
+                    }) = &self.live
+                    && matches!(url.scheme(), "http" | "https")
+                {
+                    for f in &job.saved() {
+                        #[cfg(windows)]
+                        crate::win32::mark_downloaded(f, url.as_str(), None);
+                        #[cfg(unix)]
+                        crate::unix::mark_downloaded(f, url.as_str(), None);
+                    }
+                }
                 for n in &notices {
                     self.note(n.clone());
                 }
@@ -715,6 +752,16 @@ impl Item {
             }
             None => false,
         }
+    }
+
+    /// Resume / Download Now may start it: not running, and not finished (a gallery finished
+    /// may start again: it fetches the files not there yet, #58).
+    pub fn can_start(&self) -> bool {
+        self.live.is_none()
+            && (matches!(
+                self.status,
+                Status::Queued | Status::Stopped | Status::Error
+            ) || (self.status == Status::Complete && self.gallery.is_some()))
     }
 
     pub fn rate(&self) -> f64 {

@@ -658,7 +658,7 @@ impl About {
 // Keyboard shortcuts
 
 /// Every shortcut the main window answers (keep in step with `app.rs` and `list.rs`).
-const SHORTCUTS: [(&str, &str); 21] = [
+const SHORTCUTS: [(&str, &str); 23] = [
     ("Ctrl+N", "Add a download (Add URL)"),
     ("Ctrl+F", "Find a download"),
     ("F3", "Find the next match"),
@@ -691,6 +691,11 @@ const SHORTCUTS: [(&str, &str); 21] = [
         "Jump to the download whose name starts with it",
     ),
     ("Shift+F10", "Open the selected download's menu"),
+    ("Tab", "Move between the categories and the download list"),
+    (
+        "Shift+F10 / Menu",
+        "In the categories: the selected category's menu",
+    ),
     ("Esc", "Close a menu or dialog"),
 ];
 

@@ -2250,7 +2250,7 @@ impl DeleteCategory {
             ctx,
             key,
             "Delete category",
-            [420.0, 150.0 + extra],
+            [500.0, 150.0 + extra],
             false,
             winui::LIGHT_BG(),
             |ui, o| {
@@ -2261,7 +2261,7 @@ impl DeleteCategory {
                     o.y + 22.0,
                     &text,
                     winui::LIGHT_TEXT(),
-                    o.x + 409.0,
+                    o.x + 489.0,
                     13.0,
                 );
                 grow_to(ui.ctx(), key, lines, 2);
@@ -2285,7 +2285,7 @@ impl DeleteCategory {
                 // i18n: button: deletes the category
                 let delete = winui::button_light(
                     ui,
-                    r(o, 254.0, 118.0, 73.0, 21.0),
+                    r(o, 334.0, 118.0, 73.0, 21.0),
                     "Delete",
                     ButtonKind::Default,
                     false,
@@ -2293,7 +2293,7 @@ impl DeleteCategory {
                 .clicked();
                 let cancel = winui::button_light(
                     ui,
-                    r(o, 335.0, 118.0, 73.0, 21.0),
+                    r(o, 415.0, 118.0, 73.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,

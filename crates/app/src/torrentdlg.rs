@@ -771,6 +771,28 @@ pub struct TorrentSettings {
     /// "Limit uploading to": on, and the KBytes/sec box's text.
     upload_on: bool,
     upload_kb: String,
+    /// Seeding limits: on, and their boxes' text (the ratio as typed, "2.00"; minutes).
+    stop_ratio_on: bool,
+    stop_ratio: String,
+    stop_min_on: bool,
+    stop_min: String,
+}
+
+/// Torrent settings' seeding limits as OK gives them (`Settings::torrent_stop_*`).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Seeding {
+    pub ratio_on: bool,
+    /// Hundredths: 200 is 2.00.
+    pub ratio: u32,
+    pub minutes_on: bool,
+    pub minutes: u32,
+}
+
+/// A typed share ratio ("2", "1.5", "0,75") in hundredths, at least 0.01; None when it isn't a
+/// number.
+fn ratio_hundredths(s: &str) -> Option<u32> {
+    let v: f64 = s.trim().replace(',', ".").parse().ok()?;
+    (v.is_finite() && v > 0.0).then(|| ((v * 100.0).round() as u32).clamp(1, 1_000_000))
 }
 
 /// Torrent settings → its network part: the settings' `torrent_*` fields.
@@ -818,6 +840,7 @@ pub struct TorrentChoice {
     pub assoc: bool,
     pub net: Net,
     pub upload: (bool, u64),
+    pub seeding: Seeding,
 }
 
 impl TorrentSettings {
@@ -835,6 +858,10 @@ impl TorrentSettings {
             socks: s.socks5_proxy().is_some(),
             upload_on: s.torrent_upload_on,
             upload_kb: s.torrent_upload_kb.max(1).to_string(),
+            stop_ratio_on: s.torrent_stop_ratio_on,
+            stop_ratio: format!("{:.2}", f64::from(s.torrent_stop_ratio.max(1)) / 100.0),
+            stop_min_on: s.torrent_stop_minutes_on,
+            stop_min: s.torrent_stop_minutes.max(1).to_string(),
         }
     }
 
@@ -843,7 +870,7 @@ impl TorrentSettings {
             ctx,
             "torrent-settings",
             "Torrent settings",
-            [470.0, 444.0],
+            [470.0, 492.0],
             false,
             winui::BG(),
             |ui, o| {
@@ -865,9 +892,61 @@ impl TorrentSettings {
                     o.x + 456.0,
                     ("torrent-settings", 1),
                 );
+                // Seeding limits (#39): only while sharing is on; off by default.
+                let share = self.share;
+                winui::checkbox_until(
+                    ui,
+                    pos2(o.x + 32.0, o.y + 60.0),
+                    &mut self.stop_ratio_on,
+                    // i18n: Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+                    "Stop sharing at a share ratio of",
+                    share,
+                    Some(326.0),
+                );
+                winui::edit_right(
+                    ui,
+                    r(o, 330.0, 57.0, 60.0, 22.0),
+                    &mut self.stop_ratio,
+                    share && self.stop_ratio_on,
+                );
+                self.stop_ratio
+                    .retain(|c| c.is_ascii_digit() || c == '.' || c == ',');
+                self.stop_ratio.truncate(6);
+                winui::checkbox_until(
+                    ui,
+                    pos2(o.x + 32.0, o.y + 84.0),
+                    &mut self.stop_min_on,
+                    // i18n: Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+                    "Stop sharing after sharing for",
+                    share,
+                    Some(326.0),
+                );
+                winui::edit_right(
+                    ui,
+                    r(o, 330.0, 81.0, 60.0, 22.0),
+                    &mut self.stop_min,
+                    share && self.stop_min_on,
+                );
+                self.stop_min.retain(|c| c.is_ascii_digit());
+                self.stop_min.truncate(6);
+                winui::fit(
+                    ui,
+                    &p,
+                    o.x + 396.0,
+                    o.y + 96.0,
+                    // i18n: Torrent settings: the unit after the minutes box
+                    crate::i18n::t("minutes"),
+                    if share && self.stop_min_on {
+                        winui::TEXT()
+                    } else {
+                        winui::MUTED()
+                    },
+                    o.x + 462.0,
+                    ("torrent-settings", 8),
+                );
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 60.0),
+                    pos2(o.x + 14.0, o.y + 108.0),
                     &mut self.assoc,
                     "Open magnet links and .torrent files with Mister Download Manager",
                     true,
@@ -876,7 +955,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 32.0,
-                    o.y + 88.0,
+                    o.y + 136.0,
                     // What the switch does is the system's: Windows asks per account, macOS and
                     // Linux register MDM as the handler.
                     if cfg!(windows) {
@@ -893,11 +972,11 @@ impl TorrentSettings {
                     o.x + 456.0,
                     ("torrent-settings", 2),
                 );
-                winui::etched_h(&p, o.x + 14.0, o.y + 102.0, 442.0);
+                winui::etched_h(&p, o.x + 14.0, o.y + 150.0, 442.0);
                 let n = &mut self.net;
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 112.0),
+                    pos2(o.x + 14.0, o.y + 160.0),
                     &mut n.incoming,
                     // i18n: Torrent settings: other peers may connect to this computer
                     "Accept incoming connections",
@@ -906,14 +985,14 @@ impl TorrentSettings {
                 winui::text_right(
                     &p,
                     o.x + 380.0,
-                    o.y + 126.0,
+                    o.y + 174.0,
                     // i18n: Torrent settings: the port to listen on (empty: any)
                     crate::i18n::t("Port:"),
                     winui::TEXT(),
                 );
                 winui::edit(
                     ui,
-                    r(o, 386.0, 110.0, 70.0, 22.0),
+                    r(o, 386.0, 158.0, 70.0, 22.0),
                     &mut self.port,
                     n.incoming,
                     false,
@@ -922,7 +1001,7 @@ impl TorrentSettings {
                 self.port.truncate(5);
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 32.0, o.y + 136.0),
+                    pos2(o.x + 32.0, o.y + 184.0),
                     &mut n.upnp,
                     // i18n: Torrent settings: ask the router (UPnP) to forward the port
                     "Map the port on the router (UPnP)",
@@ -930,7 +1009,7 @@ impl TorrentSettings {
                 );
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 160.0),
+                    pos2(o.x + 14.0, o.y + 208.0),
                     &mut n.dht,
                     // i18n: Torrent settings: the DHT, the network peers use to find each other
                     "Find peers through the DHT",
@@ -938,7 +1017,7 @@ impl TorrentSettings {
                 );
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 184.0),
+                    pos2(o.x + 14.0, o.y + 232.0),
                     &mut n.lsd,
                     // i18n: Torrent settings: local peer discovery
                     "Find peers on the local network",
@@ -948,7 +1027,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 32.0,
-                    o.y + 212.0,
+                    o.y + 260.0,
                     // i18n: Torrent settings, under "Find peers on the local network"
                     crate::i18n::t(
                         "It tells the computers on your network which torrents you have.",
@@ -962,7 +1041,7 @@ impl TorrentSettings {
                 let can_proxy = self.socks || n.proxy;
                 let proxy = winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 226.0),
+                    pos2(o.x + 14.0, o.y + 274.0),
                     &mut n.proxy,
                     // i18n: Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
                     "Use the proxy (Options → Proxy / Socks, SOCKS5)",
@@ -978,7 +1057,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 32.0,
-                    o.y + 254.0,
+                    o.y + 302.0,
                     // i18n: Torrent settings, under "Use the proxy"
                     crate::i18n::t(
                         "With it, incoming connections, the DHT and local peers are off.",
@@ -989,7 +1068,7 @@ impl TorrentSettings {
                 );
                 winui::checkbox(
                     ui,
-                    pos2(o.x + 14.0, o.y + 268.0),
+                    pos2(o.x + 14.0, o.y + 316.0),
                     &mut n.stop_idle,
                     // i18n: Torrent settings: stop listening when nothing needs the torrent engine
                     "Stop the torrent engine when no torrent is running",
@@ -997,7 +1076,7 @@ impl TorrentSettings {
                 );
                 winui::checkbox_until(
                     ui,
-                    pos2(o.x + 14.0, o.y + 292.0),
+                    pos2(o.x + 14.0, o.y + 340.0),
                     &mut self.upload_on,
                     // i18n: Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
                     "Limit uploading for all torrents to",
@@ -1006,7 +1085,7 @@ impl TorrentSettings {
                 );
                 winui::edit_right(
                     ui,
-                    r(o, 330.0, 289.0, 60.0, 22.0),
+                    r(o, 330.0, 337.0, 60.0, 22.0),
                     &mut self.upload_kb,
                     self.upload_on,
                 );
@@ -1016,7 +1095,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 396.0,
-                    o.y + 304.0,
+                    o.y + 352.0,
                     crate::i18n::t("KBytes/sec"),
                     if self.upload_on {
                         winui::TEXT()
@@ -1030,7 +1109,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 14.0,
-                    o.y + 330.0,
+                    o.y + 378.0,
                     // i18n: Torrent settings: the address of an IP blocklist (empty: none)
                     crate::i18n::t("Block the addresses in this list (P2P or eMule format):"),
                     winui::TEXT(),
@@ -1039,7 +1118,7 @@ impl TorrentSettings {
                 );
                 winui::edit(
                     ui,
-                    r(o, 14.0, 336.0, 442.0, 22.0),
+                    r(o, 14.0, 384.0, 442.0, 22.0),
                     &mut n.blocklist,
                     true,
                     false,
@@ -1048,7 +1127,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 14.0,
-                    o.y + 376.0,
+                    o.y + 424.0,
                     // i18n: Torrent settings, at the bottom
                     crate::i18n::t(
                         "Fetched again every 7 days. Changes apply when no torrent is running.",
@@ -1059,7 +1138,7 @@ impl TorrentSettings {
                 );
                 let ok = winui::button(
                     ui,
-                    r(o, 298.0, 412.0, 77.0, 21.0),
+                    r(o, 298.0, 460.0, 77.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,
@@ -1068,7 +1147,7 @@ impl TorrentSettings {
                 .clicked();
                 let cancel = winui::button(
                     ui,
-                    r(o, 381.0, 412.0, 77.0, 21.0),
+                    r(o, 381.0, 460.0, 77.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
@@ -1085,6 +1164,13 @@ impl TorrentSettings {
                         assoc: self.assoc,
                         net,
                         upload: (self.upload_on, self.upload_kb.parse().unwrap_or(0).max(1)),
+                        seeding: Seeding {
+                            ratio_on: self.stop_ratio_on,
+                            // Not a number: the default, 2.00.
+                            ratio: ratio_hundredths(&self.stop_ratio).unwrap_or(200),
+                            minutes_on: self.stop_min_on,
+                            minutes: self.stop_min.parse().unwrap_or(0).max(1),
+                        },
                     })
                 } else {
                     Outcome::Open
@@ -1244,6 +1330,18 @@ fn mixed_mark(p: &egui::Painter, glyph: Pos2) {
 mod tests {
     use super::*;
     use mdm_torrent::FileEntry;
+
+    /// Torrent settings' share ratio box: a comma or a point, kept in hundredths.
+    #[test]
+    fn typed_share_ratios() {
+        assert_eq!(ratio_hundredths("2"), Some(200));
+        assert_eq!(ratio_hundredths("1.5"), Some(150));
+        assert_eq!(ratio_hundredths("0,75"), Some(75));
+        assert_eq!(ratio_hundredths("0.001"), Some(1), "at least 0.01");
+        assert_eq!(ratio_hundredths(""), None);
+        assert_eq!(ratio_hundredths("0"), None);
+        assert_eq!(ratio_hundredths("1.2.3"), None);
+    }
 
     fn meta(paths: &[(&str, u64)]) -> Meta {
         Meta {
