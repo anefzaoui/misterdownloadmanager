@@ -1651,7 +1651,7 @@ impl OptionsDialog {
             o.y + 388.0,
             // i18n: Options → Accounts: what these accounts are, and the services' rule against sharing
             crate::i18n::t(
-                "A debrid service (Real-Debrid, AllDebrid, Premiumize) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
+                "A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
             ),
             LIGHT_TEXT(),
             o.x + 404.0,
