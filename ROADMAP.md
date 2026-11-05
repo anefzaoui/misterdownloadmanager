@@ -13,6 +13,14 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
+  another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
+- ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
+  and the main window's Minimize, with the tray's "Downloads in progress"
+  ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
+- ✅ Choose the DNS: Cloudflare, Google, Quad9, AdGuard, NextDNS or your own, over HTTPS, TLS or
+  plain, with a Test button and no silent fallback
+  ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - ✅ Less memory in the notification area: under 10 MB there, and the language list's fonts let
   go when it closes ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Video downloads: subtitles, beside the video or inside it
@@ -59,9 +67,12 @@ Everything below ships together, in one release.
   ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), and dragging the file out
   of Download complete works in every language
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
+- ✅ The built-in categories can be renamed, given other file types and deleted, and restored
+  ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93))
 - ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
   a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
-  list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95))
+  list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),
+  inside their list, with their place in it ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
@@ -93,8 +104,6 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Hide a download's progress window to the tray
-  ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
 - 📋 A link grabber with packages, and auto-extract of archives
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
 - 📋 Debrid services: Real-Debrid, AllDebrid, Premiumize
@@ -102,10 +111,8 @@ Everything below ships together, in one release.
 
 ### Network
 
-- 📋 Bind downloads to a network adapter (VPN), with a kill switch
+- 📋 Video pages, and torrents on Windows, through a chosen network adapter
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
-- 📋 Custom DNS, and DNS over HTTPS or TLS
-  ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - 📋 Downloads follow a browser's VPN or proxy extension
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 

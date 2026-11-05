@@ -7,7 +7,7 @@
 //! signature (`sparams`), so the same link works on the alternative.
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::net::{TcpStream, ToSocketAddrs};
+use std::net::ToSocketAddrs;
 use std::time::Duration;
 
 use reqwest::Url;
@@ -22,9 +22,11 @@ pub fn reachable(host: &str) -> bool {
     let Ok(addrs) = (host, 443).to_socket_addrs() else {
         return false;
     };
+    // Through the chosen network adapter, as yt-dlp's own connections go (#35).
+    let route = crate::proc::route();
     addrs
         .filter(|a| !a.ip().is_unspecified())
-        .any(|a| TcpStream::connect_timeout(&a, CONNECT).is_ok())
+        .any(|a| mdm_engine::net::tcp_connect_blocking(&route, a, CONNECT).is_ok())
 }
 
 /// Every string in `v` (links sit in `formats[].url`, `requested_formats`, fragments…).
@@ -76,11 +78,19 @@ impl Prober {
             .build()
             .expect("a runtime for the checks");
         // The client belongs to this runtime: made, used and dropped inside it.
+        // Through the chosen network adapter, as yt-dlp's own connections go (#35); none at all
+        // while it's down.
+        let route = crate::proc::route();
         let client = rt.block_on(async {
-            reqwest::Client::builder()
-                .timeout(Duration::from_secs(8))
-                .build()
-                .ok()
+            mdm_engine::net::client_builder(
+                &Default::default(),
+                &route,
+                "https://www.googlevideo.com/",
+            )
+            .ok()?
+            .timeout(Duration::from_secs(8))
+            .build()
+            .ok()
         });
         Prober { client, rt }
     }

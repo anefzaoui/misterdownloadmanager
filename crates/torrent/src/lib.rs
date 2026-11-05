@@ -304,6 +304,12 @@ pub struct Config {
     pub blocklist: Option<PathBuf>,
     /// Tests: no trackers, no DHT, local peers only.
     pub offline: bool,
+    /// Options → Proxy / Socks → Network adapter (#35): the device every socket of the session is
+    /// held to (librqbit's `bind_device_name`: Linux SO_BINDTODEVICE, macOS IP_BOUND_IF), and
+    /// whether it has IPv4 only. UPnP and local peer discovery are off then: they speak to the
+    /// local network, not through the adapter. Windows has no such binding in librqbit: the app
+    /// doesn't start torrents there while an adapter is chosen.
+    pub bind: Option<(String, bool)>,
 }
 
 impl Config {
@@ -319,6 +325,7 @@ impl Config {
             proxy: None,
             blocklist: None,
             offline: false,
+            bind: None,
         }
     }
 }
@@ -354,6 +361,7 @@ impl Torrents {
     pub async fn start(cfg: Config) -> Result<Torrents, TorrentError> {
         std::fs::create_dir_all(&cfg.state_dir).map_err(engine)?;
         let proxied = cfg.proxy.is_some();
+        let v4_only = cfg.bind.as_ref().is_some_and(|(_, v4)| *v4);
         let dht = (cfg.dht && !cfg.offline && !proxied).then(|| librqbit::DhtSessionConfig {
             persistence: Some(librqbit::dht::DhtPersistenceConfig {
                 dump_interval: None,
@@ -369,8 +377,8 @@ impl Torrents {
                 any.set_port(cfg.port.unwrap_or(0));
                 any
             },
-            enable_upnp_port_forwarding: cfg.upnp && !cfg.offline,
-            ipv4_only: cfg.offline,
+            enable_upnp_port_forwarding: cfg.upnp && !cfg.offline && cfg.bind.is_none(),
+            ipv4_only: cfg.offline || v4_only,
             ..Default::default()
         });
         // A list librqbit can't read would stop the session from starting: only a file there.
@@ -389,8 +397,13 @@ impl Torrents {
             }),
             blocklist_url,
             disable_trackers: cfg.offline,
-            disable_local_service_discovery: cfg.offline || !cfg.lsd || proxied,
-            ipv4_only: cfg.offline,
+            disable_local_service_discovery: cfg.offline
+                || !cfg.lsd
+                || proxied
+                || cfg.bind.is_some(),
+            ipv4_only: cfg.offline || v4_only,
+            // Every socket of the session held to the chosen adapter (#35).
+            bind_device_name: cfg.bind.as_ref().map(|(name, _)| name.clone()),
             fastresume: true,
             persistence: Some(SessionPersistenceConfig::Json {
                 folder: Some(cfg.state_dir.join("session")),

@@ -73,6 +73,10 @@ pub struct Settings {
     /// to the clipboard. On by default: without the browser extension, copying a link is the
     /// quickest way in.
     pub clipboard_autostart: bool,
+    /// General: Minimize hides the main window, and a download's progress window, to the
+    /// notification area, as closing the main window does (#63). On by default (the
+    /// maintainer's choice), for existing lists too. Only where a tray shows MDM's icon.
+    pub minimize_to_tray: bool,
     pub mv2_extensions: bool,
     pub advanced_integration: bool,
     /// General: "Capture downloads from the following browsers" (name, on).
@@ -125,6 +129,24 @@ pub struct Settings {
     pub proxy_http: bool,
     pub proxy_https: bool,
     pub proxy_ftp: bool,
+    /// Connection → DNS (#36): 0 the system's, 1 plain DNS, 2 DNS over TLS, 3 DNS over HTTPS.
+    pub dns_mode: u8,
+    /// A service of `mdm_engine::dns::PRESETS` by id, or "custom".
+    pub dns_provider: String,
+    /// Custom: the servers (plain, TLS) or the DoH server's addresses (optional), as typed.
+    pub dns_servers: String,
+    /// Custom DNS over TLS: the name the servers' certificate shows.
+    pub dns_tls_name: String,
+    /// Custom DNS over HTTPS: the address (`https://.../dns-query`).
+    pub dns_doh_url: String,
+    /// NextDNS: the configuration ID (six hex digits), or none.
+    pub dns_nextdns_id: String,
+    /// When the chosen DNS can't be reached, ask the system's (off: strict).
+    pub dns_fallback: bool,
+    /// Options → Proxy / Socks → Network adapter (#35): every connection goes through this
+    /// adapter (its name as the system shows it, or one of its addresses), or none at all; ""
+    /// lets the system choose.
+    pub net_adapter: String,
     /// "Use FTP in PASV mode": passive data connections (the client connects; works behind
     /// NAT), else active. Named anew when FTP arrived: `ftp_pasv` was saved as false while
     /// the box was greyed.
@@ -175,6 +197,9 @@ pub struct Settings {
     pub update_checked: i64,
     /// The user's categories (D-021), after IDM's and Torrents.
     pub custom_categories: Vec<crate::model::CustomCategory>,
+    /// The built-in categories the user renamed, gave other file types or deleted (#93); the
+    /// others are as shipped. Their folders stay in `category_dirs`.
+    pub builtin_categories: Vec<crate::model::BuiltinEdit>,
     /// Tasks → Show drop target: shown, and where (screen, logical points).
     pub drop_target: bool,
     pub drop_target_pos: Option<(i32, i32)>,
@@ -247,6 +272,7 @@ impl Default for Settings {
             helpers_asked: false,
             extension_never_ask: false,
             clipboard_autostart: true,
+            minimize_to_tray: true,
             mv2_extensions: true,
             advanced_integration: true,
             browsers: BROWSERS.iter().map(|b| (b.to_string(), true)).collect(),
@@ -282,6 +308,14 @@ impl Default for Settings {
             proxy_http: false,
             proxy_https: false,
             proxy_ftp: false,
+            dns_mode: 0,
+            dns_provider: "cloudflare".into(),
+            dns_servers: String::new(),
+            dns_tls_name: String::new(),
+            dns_doh_url: String::new(),
+            dns_nextdns_id: String::new(),
+            dns_fallback: false,
+            net_adapter: String::new(),
             ftp_passive: true,
             site_logins: Vec::new(),
             sounds: Default::default(),
@@ -305,6 +339,7 @@ impl Default for Settings {
             update_check: true,
             update_checked: 0,
             custom_categories: Vec::new(),
+            builtin_categories: Vec::new(),
             drop_target: false,
             drop_target_pos: None,
             video_subs: Default::default(),
@@ -396,6 +431,11 @@ impl Settings {
             lsd: self.torrent_lsd,
             proxy,
             blocklist,
+            // The chosen network adapter's device (#35; Linux and macOS, see torrents::route_refusal).
+            bind: match own_route() {
+                mdm_engine::Route::Bound(b) => Some((b.name.clone(), b.v6.is_none())),
+                _ => None,
+            },
             ..mdm_torrent::Config::new(state_dir)
         })
     }
@@ -430,6 +470,21 @@ impl Settings {
             _ if self.proxy_from_browser => Proxy::System,
             _ => Proxy::None,
         }
+    }
+
+    /// Options → Connection → DNS for the engine. A setting that can't work (no server typed,
+    /// an address that isn't one) gives the system's DNS; Options won't take one with OK.
+    pub fn dns(&self) -> mdm_engine::DnsChoice {
+        dns_choice(
+            self.dns_mode,
+            &self.dns_provider,
+            &self.dns_servers,
+            &self.dns_tls_name,
+            &self.dns_doh_url,
+            &self.dns_nextdns_id,
+            self.dns_fallback,
+        )
+        .unwrap_or_default()
     }
 
     /// The most connections Options → Connection lets a download use: 32, or 128 once more are
@@ -489,11 +544,19 @@ impl Settings {
             }
             return;
         }
-        let label = cat.label();
-        self.category_dirs.retain(|(c, _)| *c != *label);
+        // Under the built-in's shipped name: a rename keeps its folder.
+        let key = cat.key();
+        self.category_dirs.retain(|(c, _)| *c != *key);
         if let Some(d) = dir {
-            self.category_dirs.push((label.into_owned(), d));
+            self.category_dirs.push((key.into_owned(), d));
         }
+    }
+
+    /// Both category registries (the user's and the built-in ones' edits) from these settings,
+    /// for code that only has a `Category`.
+    pub fn publish_categories(&self) {
+        crate::model::set_custom(&self.custom_categories);
+        crate::model::set_builtin(&self.builtin_categories);
     }
 
     /// The per-download limit new downloads start with, bytes/s.
@@ -522,10 +585,121 @@ impl Settings {
     }
 }
 
+/// DNS mode numbers (`Settings::dns_mode`) as the engine's.
+pub fn dns_mode(n: u8) -> Option<mdm_engine::dns::Mode> {
+    use mdm_engine::dns::Mode;
+    match n {
+        1 => Some(Mode::Plain),
+        2 => Some(Mode::Tls),
+        3 => Some(Mode::Https),
+        _ => None,
+    }
+}
+
+/// The engine's DNS choice from Options → DNS's fields; `Err` says what is wrong.
+pub fn dns_choice(
+    mode: u8,
+    provider: &str,
+    servers: &str,
+    tls_name: &str,
+    doh_url: &str,
+    nextdns_id: &str,
+    fallback: bool,
+) -> Result<mdm_engine::DnsChoice, String> {
+    use mdm_engine::dns::{Dns, Mode, Preset, parse_servers, valid_nextdns_profile};
+    let Some(m) = dns_mode(mode) else {
+        return Ok(mdm_engine::DnsChoice::default());
+    };
+    let how = match m {
+        // i18n: a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+        Mode::Plain => crate::i18n::t("plain DNS"),
+        // i18n: a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+        Mode::Tls => crate::i18n::t("DNS over TLS"),
+        // i18n: a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+        Mode::Https => crate::i18n::t("DNS over HTTPS"),
+    };
+    if let Some(p) = Preset::by_id(provider) {
+        if !p.offers(m) {
+            return Err(crate::i18n::fmt(
+                // i18n: Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+                crate::i18n::t("{name} isn't offered as {how}."),
+                &[("name", p.name), ("how", how)],
+            ));
+        }
+        if !valid_nextdns_profile(nextdns_id) {
+            return Err(
+                // i18n: Options → DNS: the NextDNS configuration ID typed isn't one
+                crate::i18n::t("A NextDNS configuration ID is six letters and digits (0-9, a-f).")
+                    .to_owned(),
+            );
+        }
+        return Ok(p.choice(m, nextdns_id, fallback, format!("{} ({how})", p.name)));
+    }
+    // i18n: Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+    let label = crate::i18n::fmt(crate::i18n::t("your DNS ({how})"), &[("how", how)]);
+    let bad = |what: String| {
+        crate::i18n::fmt(
+            // i18n: Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+            crate::i18n::t("\"{what}\" isn't an IP address."),
+            &[("what", &what)],
+        )
+    };
+    // i18n: Options → DNS: no server address was typed
+    let none = || crate::i18n::t("Type at least one server address.").to_owned();
+    let dns = match m {
+        Mode::Plain => {
+            let s = parse_servers(servers, 53).map_err(bad)?;
+            if s.is_empty() {
+                return Err(none());
+            }
+            Dns::Plain(s)
+        }
+        Mode::Tls => {
+            let s = parse_servers(servers, 853).map_err(bad)?;
+            if s.is_empty() {
+                return Err(none());
+            }
+            let name = tls_name.trim();
+            if name.is_empty() {
+                return Err(
+                    // i18n: Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+                    crate::i18n::t("Type the name the server's certificate shows.").to_owned(),
+                );
+            }
+            Dns::Tls {
+                name: name.to_owned(),
+                servers: s,
+            }
+        }
+        Mode::Https => {
+            let url = doh_url.trim();
+            if !url.starts_with("https://") || url::Url::parse(url).is_err() {
+                // i18n: Options → DNS over HTTPS: the address typed isn't a valid https:// address
+                return Err(crate::i18n::t("Type the server's https:// address.").to_owned());
+            }
+            Dns::Https {
+                url: url.to_owned(),
+                bootstrap: parse_servers(servers, 0)
+                    .map_err(bad)?
+                    .into_iter()
+                    .map(|a| a.ip())
+                    .collect(),
+            }
+        }
+    };
+    Ok(mdm_engine::DnsChoice {
+        dns,
+        fallback,
+        label,
+    })
+}
+
 /// The proxy MDM's own downloads go through (its helpers, its updates, a crash report's
 /// symbols): Options → Proxy / Socks, kept in step by the app ([`share_proxy`]); Windows' own
 /// settings in a process without them (the crash monitor).
 static OWN_PROXY: std::sync::RwLock<Option<mdm_engine::Proxy>> = std::sync::RwLock::new(None);
+/// The same for Options → Connection → DNS ([`share_dns`]).
+static OWN_DNS: std::sync::RwLock<Option<mdm_engine::DnsChoice>> = std::sync::RwLock::new(None);
 
 /// Keep [`own_net`] on the settings' proxy (cheap when it didn't change).
 pub fn share_proxy(proxy: mdm_engine::Proxy) {
@@ -534,14 +708,43 @@ pub fn share_proxy(proxy: mdm_engine::Proxy) {
     }
 }
 
-/// How MDM downloads its own files: its engine, as itself, through the user's proxy.
+/// Keep [`own_net`] on the settings' DNS (cheap when it didn't change).
+pub fn share_dns(dns: mdm_engine::DnsChoice) {
+    if OWN_DNS.read().unwrap().as_ref() != Some(&dns) {
+        *OWN_DNS.write().unwrap() = Some(dns);
+    }
+}
+
+static OWN_ROUTE: std::sync::RwLock<mdm_engine::Route> =
+    std::sync::RwLock::new(mdm_engine::Route::Any);
+
+/// Keep [`own_net`], yt-dlp and the media-server checks on the chosen network adapter as it is
+/// now (#35; the adapter watch in `netwatch`).
+pub fn share_route(route: mdm_engine::Route) {
+    if *OWN_ROUTE.read().unwrap() != route {
+        *OWN_ROUTE.write().unwrap() = route.clone();
+    }
+    mdm_tools::proc::set_route(route);
+}
+
+/// The network adapter MDM's connections go through now (#35).
+pub fn own_route() -> mdm_engine::Route {
+    OWN_ROUTE.read().unwrap().clone()
+}
+
+/// How MDM downloads its own files: its engine, as itself, through the user's proxy, DNS and
+/// network adapter.
 pub fn own_net() -> mdm_engine::Options {
     let proxy = OWN_PROXY
         .read()
         .unwrap()
         .clone()
         .unwrap_or(mdm_engine::Proxy::System);
-    mdm_tools::net(proxy)
+    mdm_engine::Options {
+        dns: OWN_DNS.read().unwrap().clone().unwrap_or_default(),
+        route: own_route(),
+        ..mdm_tools::net(proxy)
+    }
 }
 
 #[cfg(test)]

@@ -43,6 +43,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} roghnaithe|{n} roghnaithe|{n} roghnaithe|{n} roghnaithe|{n} roghnaithe
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+#, machine
+	"{what}" isn't an IP address.	Ní seoladh IP é "{what}".
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -85,10 +89,18 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Folaigh sonraí
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+#, machine
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Is sé litir agus digit (0-9, a-f) é aitheantas cumraíochta NextDNS.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Sábháladh tuarascáil. Má sheolann tú chuig na forbróirí ar GitHub í, cabhraíonn sé leo seo a shocrú; is féidir leat gach a bhfuil inti a léamh thíos ar dtús. Ní sheoltar aon rud leis féin: osclaíonn Seol an fhoirm tuarascála i do bhrabhsálaí, líonta isteach, chun tú a sheiceáil agus a chur isteach.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	sheol freastalaí ar an ríomhaire seo an íoslódáil áit éigin eile, rud nach rachadh trí {adapter}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Maidir le Mister Download Manager
@@ -152,7 +164,8 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Seoladh athraithe go {host}
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Seoladh:
 #. window title in the Options window
@@ -213,6 +226,19 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	r.n.
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Another DNS...	DNS eile...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+#, machine
+	Answered in {ms} ms: {ip}	Freagraíodh i {ms} ms: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	Ar bith (roghnaíonn an córas)
 #. text in the Scheduler window
 #, machine
 	April	Aibreán
@@ -223,9 +249,17 @@
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Mar a scríobhann réigiún an chórais iad
+#. text in the Options window
+#, machine
+	Ask it with:	Fiafraigh de le:
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Ag iarraidh liosta comhad ar chomhghleacaithe. Féadfaidh sé nóiméad nó dhó a thógáil le naisc mhaighnéadacha.
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking...	Ag fiafraí...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -250,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Tá an dá cheann foinse oscailte. Faigheann MDM iad óna n-eisiúintí oifigiúla lena íoslódálaí féin agus seiceálann sé síniú gach comhaid sula ritheann sé. Thart ar 100 MB, uair amháin.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	An bhfuil tú ag iarraidh {names} a chur ar ais mar a seoladh iad: a n-ainmneacha, a gcineálacha comhaid agus a bhfillteáin? Fanann do chatagóirí féin, Ginearálta agus Torrent mar atá siad. Fanann íoslódálacha atá bogtha go Ginearálta ann.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -291,7 +328,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	ní féidir atosú: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Gabh íoslódálacha ó na brabhsálaithe seo a leanas:
 #. text in extension.rs
@@ -315,6 +352,10 @@
 #. text in categories.rs
 #, machine
 	Category properties	Airíonna catagóire
+#. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+#, machine
+	Certificate name:	Ainm na teastais:
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -374,11 +415,12 @@
 #. text in the Options window
 #, machine
 	Clock:	Clog:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 #, machine
 	Close	Dún
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -393,6 +435,10 @@
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
 	Compressed	Comhbhrúite
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+#, machine
+	Configuration ID:	Aitheantas cumraíochta:
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	Deimhnigh sula scriostar íoslódálacha
@@ -480,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Uimhir uas. ceangail réamhshocraithe
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Scrios
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Scrios an chatagóir
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Scrios an scuaine
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	An bhfuil tú cinnte gur mian leat an chatagóir "{category}" a scriosadh? Éiríonn a híoslódálacha Ginearálta; fanann a gcuid comhad san áit a bhfuil siad.
+	Delete the category "{category}"? Its files stay where they are.	An scriosfaidh tú an chatagóir “{category}”? Fanann a comhaid mar atá siad.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -521,6 +568,21 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	taispeánta i liosta na scuainí
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+#, machine
+	DNS over HTTPS	DNS thar HTTPS
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+#, machine
+	DNS over TLS	DNS thar TLS
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+#, machine
+	DNS settings	Socruithe DNS
+#. text in the Options window
+#, machine
+	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
 	Do not start downloading, only add files to the queue	Ná cuir tús le híoslódáil, ach cuir comhaid leis an scuaine amháin
@@ -643,6 +705,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	Íoslódálacha
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#, machine
+	Downloads in progress	Íoslódálacha ar siúl
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -665,6 +731,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Nasc íoslódála dúblach
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Tógann gach nasc bealach an chórais.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -717,6 +787,10 @@
 #. text in the Options window
 #, machine
 	Event	Imeacht
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Téann gach nasc tríd, ó {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -796,7 +870,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Téann comhaid chuig: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Comhaid sa scuaine
 #. button in the Find window
@@ -939,6 +1013,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Folaigh cluaisín
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+#, machine
+	Hide to the notification area	Folaigh go dtí an limistéar fógra
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Coinnigh Alt agus tú ag cliceáil ar nasc chun ligean don bhrabhsálaí é a íoslódáil in ionad Mister Download Manager.
@@ -964,6 +1042,10 @@
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	Má tá an comhad atá ann cheana críochnaithe, taispeáin dialóg críochnaithe íoslódála; murach sin, atosú é.
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+#, machine
+	If it can't be reached, use the system's DNS	Mura féidir é a bhaint amach, bain úsáid as DNS an chórais
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Déan neamhaird ar athruithe ama modhnaithe comhaid agus íoslódáil á atosú
@@ -1003,6 +1085,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Seoladh neamhbhailí
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+#, machine
+	IP addresses (optional):	Seoltaí IP (roghnach):
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -1141,6 +1227,10 @@
 #. group box title in the Options window
 #, machine
 	Max. connections number	Uaslíon na nasc
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+#, machine
+	Maximize	Uasmhéadaigh
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 #, machine
@@ -1156,6 +1246,14 @@
 #. the month (the fifth of the year)
 #, machine
 	May	Bealtaine
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+#, machine
+	Minimize	Íosmhéadaigh
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+#, machine
+	Minimize to the notification area	Íoslaghdaigh go dtí an limistéar fógra
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1218,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Bog síos
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Bog a chuid íoslódálacha go Ginearálta
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Bog nó athainmnigh an íoslódáil roghnaithe
@@ -1261,6 +1363,13 @@
 #. text in categories.rs
 #, machine
 	Name:	Ainm:
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+#, machine
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Fanann ainmneacha i do chomhad óstach agus ainmneacha áitiúla (focail aonair, .local, .lan) le DNS an chórais. Úsáideann leathanaigh físeáin agus rianaithe torrent DNS an chórais faoi láthair.
+#. text in the Options window
+#, machine
+	Network adapter:	Cuibheoir líonra:
 #. text in errors.rs
 #, machine
 	network error	earráid líonra
@@ -1530,6 +1639,10 @@
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	Píosaí
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+#, machine
+	plain DNS	Gnáth-DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -1652,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Bain den scuaine
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Bain a chuid íoslódálacha den liosta (bogann cinn reatha go Ginearálta)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1660,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Atosaigh MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Athchóirigh na catagóirí ionsuite
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1790,6 +1910,10 @@
 #. text in the Options window
 #, machine
 	Server:	Freastalaí:
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+#, machine
+	Servers:	Freastalaithe:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1802,6 +1926,11 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Socraigh é
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Settings...	Socruithe...
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1998,6 +2127,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Stoptha
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Stoptha: d'athraigh an cuibheoir líonra; ag tosú arís
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Stoptha: níl {adapter} nasctha; leanann sé ar aghaidh nuair a bhíonn sé ar ais
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Stopann nuair a chríochnaíonn an íoslódáil
@@ -2034,6 +2171,10 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	Eolaire sealadach
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+#, machine
+	Test	Tástáil
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -2187,6 +2328,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Níorbh fhéidir an liosta a shábháil: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	níl an cuibheoir líonra {adapter} nasctha
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	tá an cosán rófhada do Windows: {path}
@@ -2245,6 +2390,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Níorbh fhéidir na siombailí a fháil: léiríonn roinnt línte den tuarascáil seoltaí in ionad ainmneacha (is féidir leis na forbróirí iad a léamh fós).
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+#, machine
+	The system's DNS	DNS an chórais
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2374,6 +2523,10 @@
 #, machine
 	Torrents	Torrents
 #. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	ní féidir torrents a chur trí chuibheoir líonra roghnaithe ar Windows fós
+#. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2428,6 +2581,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Clóscríobh uimhir in Ó agus in Go
+#. text in the settings
+#. Options → DNS: no server address was typed
+#, machine
+	Type at least one server address.	Clóscríobh seoladh freastalaí amháin ar a laghad.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -2436,6 +2593,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Clóscríobh ainm an chomhaid in Sábháil Mar
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+#, machine
+	Type the name the server's certificate shows.	Clóscríobh an t-ainm a thaispeánann teastas an fhreastalaí.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -2563,6 +2724,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Úsáideann cuardaigh físeáin yt-dlp (thart ar 23 MB, seiceáilte i gcoinne a sínithe).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Ní féidir le leathanaigh físe agus torrentaí é a úsáid fós.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Ní féidir le leathanaigh físe é a úsáid fós.
+#. text in the Options window
 #, machine
 	Virus checking settings	Socruithe seiceála víreas
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2644,6 +2813,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Do bhrabhsálaí
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+#, machine
+	your DNS ({how})	do DNS ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -2664,6 +2837,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: aimsíonn sé an físeán
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (gan nasc)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	Níl {adapter} nasctha: ní íoslódáiltear aon rud go dtí go mbeidh sé ar ais.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2730,6 +2911,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} uair an chloig {m} nóim
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	Ní féidir {ip} a bhaint amach trí {adapter}: níl aon seoladh den chineál sin aige (IPv4 nó IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2756,6 +2941,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	Níorbh fhéidir {name} a íoslódáil: {error}
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} isn't offered as {how}.	Ní thairgtear {name} mar {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -2780,6 +2970,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} soic
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	Ní féidir {what} a choinneáil leis an gcuibheoir líonra roghnaithe ({adapter}) fós
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

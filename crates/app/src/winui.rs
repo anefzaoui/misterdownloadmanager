@@ -1201,10 +1201,18 @@ pub fn row_list(
     st.first = st.first.min(max_first);
     ev.focused = focused;
     let clip = p.with_clip_rect(rect(area));
+    // The rows (and what their painters put in them: a tree's check boxes) are the list's
+    // children in the accessibility tree, not its siblings (#102): a screen reader then says
+    // "4 of 12", and UI Automation's Selection finds them under the list.
+    let mut rows_ui = ui.new_child(
+        egui::UiBuilder::new()
+            .max_rect(rect(inner))
+            .accessibility_parent(resp.id),
+    );
     for i in st.first..n.min(st.first + page) {
         let top = inner.top() + 1.0 + row_h * (i - st.first) as f32;
         let row = Rect::from_min_max(pos2(inner.left(), top), pos2(right, top + row_h));
-        let r = ui.interact(rect(row), id.with(i), pointer_only());
+        let r = rows_ui.interact(rect(row), id.with(i), pointer_only());
         let selected = st.selected == Some(i);
         let fill = if selected && focused {
             Some(ROW_SELECTED())
@@ -1248,14 +1256,27 @@ pub fn row_list(
             },
             name: String::new(),
         };
-        paint(ui, &clip, i, row, &mut look);
+        // What the painter puts in the row (a tree's check box) belongs to the row: the row's
+        // node made first (named below, once its painter has said what it shows), so those
+        // controls find it as their parent.
+        ui.ctx().accesskit_node_builder(r.id, |_| {});
+        let mut row_ui = rows_ui.new_child(
+            egui::UiBuilder::new()
+                .max_rect(rect(row))
+                .accessibility_parent(r.id),
+        );
+        paint(&mut row_ui, &clip, i, row, &mut look);
         // Named by what its painter drew (#95: rows were read as blank items, and alike rows
         // couldn't be told apart by UI Automation).
         expose(&r, egui::Role::ListBoxOption, &look.name, true, None);
         // Selected as a list's item (UI Automation's SelectionItem), as the download list does;
         // expose's `on` would make it "toggled".
-        ui.ctx()
-            .accesskit_node_builder(r.id, |n| n.set_selected(selected));
+        // Its place among all the rows, not only those drawn (only the rows in view exist).
+        ui.ctx().accesskit_node_builder(r.id, |node| {
+            node.set_selected(selected);
+            node.set_position_in_set(i + 1);
+            node.set_size_of_set(n);
+        });
         if selected && focused {
             focus_ring(&clip, rect(row));
         }
@@ -3419,6 +3440,47 @@ pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on:
     });
 }
 
+/// A drop-down list for screen readers and UI Automation, whose list (the shared popup) they
+/// can't reach: Set value picks the item of that text (as shown, or as written), Expand and
+/// Collapse open and close the list. Returns the item picked this frame.
+pub fn assistive_choice(resp: &Response, items: &[&str], open: &mut bool) -> Option<usize> {
+    use egui::accesskit::{Action, ActionData};
+    let (value, expand, collapse) = resp.ctx.input(|i| {
+        let value = i
+            .accesskit_action_requests(resp.id, Action::SetValue)
+            .find_map(|r| match &r.data {
+                Some(ActionData::Value(v)) => Some(v.to_string()),
+                _ => None,
+            });
+        (
+            value,
+            i.has_accesskit_action_request(resp.id, Action::Expand),
+            i.has_accesskit_action_request(resp.id, Action::Collapse),
+        )
+    });
+    if expand {
+        *open = true;
+    }
+    if collapse {
+        *open = false;
+    }
+    let expanded = *open;
+    resp.ctx.accesskit_node_builder(resp.id, |n| {
+        n.add_action(Action::SetValue);
+        n.add_action(if expanded {
+            Action::Collapse
+        } else {
+            Action::Expand
+        });
+        n.set_expanded(expanded);
+    });
+    let value = value?;
+    let value = value.trim();
+    items
+        .iter()
+        .position(|s| crate::i18n::t(s) == value || *s == value)
+}
+
 /// Whether a screen reader or UI Automation set this control's value this frame (AccessKit's
 /// Set value), focused or not: such a value is meant at once, where a typed one waits for Enter
 /// or the focus to leave.
@@ -4062,6 +4124,9 @@ pub fn combo_light(
     // Items are shown in the interface language (data such as numbers passes through as is).
     let full = crate::i18n::t(items.get(selected).copied().unwrap_or(""));
     expose_value(&resp, egui::Role::ComboBox, full, enabled);
+    if enabled && let Some(i) = assistive_choice(&resp, items, &mut open) {
+        chosen = Some(i).filter(|i| *i != selected);
+    }
     // Cut with "..." before the chevron when too long (a translation), whole on hover.
     let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0);
     let drawn = text_start(
@@ -4203,6 +4268,282 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
     show_focus(ui, &resp, rc.shrink(2.0));
     // No label of its own: its tooltip says what it does (translated).
     resp.on_hover_text(crate::i18n::t(tip))
+}
+
+/// The flat icon button with our "to the notification area" glyph, drawn in the text ink: hides
+/// a window to the tray (#63) where the system draws the title bar (Linux, macOS). `tip` is
+/// English, translated here.
+#[cfg_attr(windows, allow(dead_code))]
+pub fn to_tray_button(ui: &mut Ui, rc: Rect, id: &str, tip: &str) -> Response {
+    let resp = icon_button_light(ui, rc, id, true, tip);
+    to_tray_glyph(
+        ui.painter(),
+        rc.center().round(),
+        Stroke::new(1.0, LIGHT_TEXT()),
+        rtl(),
+    );
+    resp
+}
+
+/// Our "minimize it away to the notification area" glyph (#63; our own drawing): Minimize's dash
+/// at its height, shortened to 6 of its 10 px on the start side, and from its end a 45° arrow
+/// (shaft about 5.7 px, open head) down towards the screen's corner where the tray is. No
+/// vertical arrow and no tray box, so it reads neither as "download" nor as "restore". Right to
+/// left it is mirrored, pointing down to the left: Windows in a right-to-left language mirrors its
+/// taskbar, the notification area at the bottom left, and our caption mirrors with it. Centred on
+/// `c` in `ink`. The title bar's hide button, and the tab-row button where the system draws the
+/// title bar.
+fn to_tray_glyph(p: &Painter, c: Pos2, ink: Stroke, rtl: bool) {
+    let s = if rtl { -1.0 } else { 1.0 };
+    let at = |x: f32, y: f32| c + vec2(s * x, y);
+    // The dash, where Minimize's is (y + 0.5 keeps a 1 px line on the pixel grid).
+    p.line_segment([at(-5.0, 0.5), at(1.0, 0.5)], ink);
+    // The arrow from the dash's end, down to the end side at 45°, and its open head; the head's
+    // strokes on half pixels, so they stay one pixel wide at 100 %.
+    p.line_segment([at(1.0, 0.5), at(4.5, 4.0)], ink);
+    p.add(egui::Shape::line(
+        vec![at(4.5, 1.5), at(4.5, 4.5), at(1.5, 4.5)],
+        ink,
+    ));
+}
+
+/// A title bar we draw ourselves, with Windows 11's caption buttons (#63). Used on Windows,
+/// where the progress window's frame is ours (win32::progress_frame); Linux and macOS keep the
+/// system's decorations, whose title bars take no buttons of ours (and Wayland places them
+/// itself), so the hide button sits in the tab row there.
+pub mod caption {
+    #![cfg_attr(not(windows), allow(dead_code))]
+    use super::*;
+
+    crate::theme::themed! {
+        /// A title bar we draw ourselves (Windows 11's caption, both themes).
+        pub CAPTION_BG = rgb(0x20, 0x20, 0x20), rgb(0xff, 0xff, 0xff);
+        pub CAPTION_INK = rgb(0xff, 0xff, 0xff), rgb(0x00, 0x00, 0x00);
+        /// A caption button's hover and pressed tints over the bar: WinUI's caption tokens, as
+        /// Windows Terminal ships them (#0FFFFFFF / #09000000, #0AFFFFFF / #06000000).
+        pub CAPTION_HOVER = Color32::from_rgba_unmultiplied(0xff, 0xff, 0xff, 0x0f),
+            Color32::from_rgba_unmultiplied(0x00, 0x00, 0x00, 0x09);
+        pub CAPTION_PRESSED = Color32::from_rgba_unmultiplied(0xff, 0xff, 0xff, 0x0a),
+            Color32::from_rgba_unmultiplied(0x00, 0x00, 0x00, 0x06);
+    }
+    /// The title and glyphs while the window isn't the active one, and a greyed button's: the
+    /// one disabled ink of every control.
+    fn caption_ink_inactive() -> Color32 {
+        TEXT_DISABLED()
+    }
+    /// Close's hover red with a white glyph; pressed, the red at 0.9 and the glyph at 0.7
+    /// (WinUI's, both themes).
+    const CLOSE_HOVER: Color32 = rgb(0xc4, 0x2b, 0x1c);
+    fn close_pressed() -> Color32 {
+        CLOSE_HOVER.gamma_multiply(0.9)
+    }
+
+    /// A drawn title bar's height and one caption button's width, in points (Windows 11's).
+    pub const CAPTION_H: f32 = 32.0;
+    pub const CAPTION_BUTTON_W: f32 = 46.0;
+    /// Where the window's icon ends: the system menu's place in the title bar.
+    pub const CAPTION_ICON_W: f32 = 32.0;
+
+    /// A caption button of a title bar we draw ourselves, from the window's end inwards: Close,
+    /// Maximize, Minimize, then ours.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+    pub enum CaptionButton {
+        Close,
+        Maximize,
+        Minimize,
+        /// Hide the window in the notification area (#63).
+        ToTray,
+    }
+
+    impl CaptionButton {
+        /// Its accessible name, English (translated where shown).
+        fn name(self) -> &'static str {
+            match self {
+                // i18n: a window's title-bar button: closes the window
+                CaptionButton::Close => crate::i18n::mark("Close"),
+                // i18n: a window's title-bar button: makes the window fill the screen
+                CaptionButton::Maximize => crate::i18n::mark("Maximize"),
+                // i18n: a window's title-bar button: minimizes the window
+                CaptionButton::Minimize => crate::i18n::mark("Minimize"),
+                // i18n: tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+                CaptionButton::ToTray => crate::i18n::mark("Hide to the notification area"),
+            }
+        }
+
+        /// Its glyph: Segoe Fluent's shapes drawn as our own 1 px vectors, 10 px across.
+        fn glyph(self, p: &Painter, c: Pos2, ink: Color32) {
+            let s = Stroke::new(1.0, ink);
+            match self {
+                CaptionButton::Minimize => {
+                    p.line_segment([c + vec2(-5.0, 0.5), c + vec2(5.0, 0.5)], s);
+                }
+                CaptionButton::Maximize => {
+                    p.rect_stroke(
+                        Rect::from_center_size(c, vec2(9.0, 9.0)),
+                        1.0,
+                        s,
+                        egui::StrokeKind::Inside,
+                    );
+                }
+                CaptionButton::Close => {
+                    p.line_segment([c + vec2(-5.0, -5.0), c + vec2(5.0, 5.0)], s);
+                    p.line_segment([c + vec2(-5.0, 5.0), c + vec2(5.0, -5.0)], s);
+                }
+                CaptionButton::ToTray => to_tray_glyph(p, c, s, rtl()),
+            }
+        }
+    }
+
+    /// Windows keeps the window's own title bar in UI Automation (its "TitleBar", built from the
+    /// window's styles, whatever is drawn): its Minimize, Maximize and Close are spoken, and work,
+    /// through the system. Ours would say them a second time, so they stay out of the
+    /// accessibility tree there; only our own button (Hide) is exposed. Brave and VS Code have no
+    /// such TitleBar only because Chromium's own provider replaces the window's; AccessKit's
+    /// doesn't, and the system menu, Alt+Space and taskbar minimize need the styles kept.
+    const SYSTEM_SPEAKS: bool = cfg!(windows);
+
+    /// Keep `resp`'s node out of the accessibility tree (screen readers hear the system's).
+    fn unspoken(ui: &Ui, resp: &Response) {
+        ui.ctx().accesskit_node_builder(resp.id, |n| n.set_hidden());
+    }
+
+    /// One caption button: Windows 11's 46 × 32, a hover and a pressed tint (Close turns red, its
+    /// glyph white), greyed when `enabled` is false, its glyph grey while the window is inactive.
+    /// Exposed as a button with its name; a tooltip only for ours (the system's have none).
+    fn caption_button(
+        ui: &mut Ui,
+        rc: Rect,
+        b: CaptionButton,
+        enabled: bool,
+        active: bool,
+    ) -> bool {
+        let sense = if enabled {
+            Sense::click()
+        } else {
+            Sense::hover()
+        };
+        let resp = ui.interact(rc, widget_id(ui, ("caption-button", b.name())), sense);
+        let name = crate::i18n::t(b.name());
+        if b == CaptionButton::ToTray || !SYSTEM_SPEAKS {
+            expose(&resp, egui::Role::Button, name, enabled, None);
+        } else {
+            unspoken(ui, &resp);
+        }
+        let p = ui.painter();
+        let hover = enabled && resp.hovered();
+        let pressed = enabled && resp.is_pointer_button_down_on();
+        let close = b == CaptionButton::Close;
+        let fill = match (pressed, hover, close) {
+            (true, _, true) => Some(close_pressed()),
+            (false, true, true) => Some(CLOSE_HOVER),
+            (true, _, false) => Some(CAPTION_PRESSED()),
+            (false, true, false) => Some(CAPTION_HOVER()),
+            _ => None,
+        };
+        if let Some(f) = fill {
+            p.rect_filled(rc, 0.0, f);
+        }
+        let ink = if close && pressed {
+            Color32::WHITE.gamma_multiply(0.7)
+        } else if close && hover {
+            Color32::WHITE
+        } else if !enabled || !active {
+            caption_ink_inactive()
+        } else {
+            CAPTION_INK()
+        };
+        b.glyph(p, rc.center().round(), ink);
+        show_focus(ui, &resp, rc.shrink(3.0));
+        let clicked = resp.clicked();
+        if b == CaptionButton::ToTray {
+            resp.on_hover_text(name);
+        }
+        clicked
+    }
+
+    /// What a drawn title bar did: the button pressed, and where its buttons and its icon are (in
+    /// points), for the window's hit test (win32::set_caption_hits).
+    pub struct TitleBar {
+        pub pressed: Option<CaptionButton>,
+        pub buttons: Vec<Rect>,
+        pub icon: Rect,
+    }
+
+    /// A title bar we draw ourselves (where the window's frame is ours: win32::thin_frame): the
+    /// window's icon and `title`, then `buttons` (each with its enabled state) from the window's end
+    /// inwards, mirrored right to left. The title is exposed as the bar's label. The rest of the bar
+    /// is the caption the system drags, snaps and opens the system menu from (win32's hit test):
+    /// egui only gets the buttons.
+    pub fn title_bar(
+        ui: &mut Ui,
+        rect: Rect,
+        title: &str,
+        buttons: &[(CaptionButton, bool)],
+    ) -> TitleBar {
+        let active = ui.ctx().input(|i| i.viewport().focused) != Some(false);
+        let rtl = rtl();
+        let p = ui.painter().clone();
+        p.rect_filled(rect, 0.0, CAPTION_BG());
+        let mut pressed = None;
+        let mut rects = Vec::with_capacity(buttons.len());
+        let bw = CAPTION_BUTTON_W;
+        for (i, (b, enabled)) in buttons.iter().enumerate() {
+            let k = i as f32;
+            let x0 = if rtl {
+                rect.left() + k * bw
+            } else {
+                rect.right() - (k + 1.0) * bw
+            };
+            let rc = Rect::from_min_size(pos2(x0, rect.top()), vec2(bw, rect.height()));
+            if caption_button(ui, rc, *b, *enabled, active) {
+                pressed = Some(*b);
+            }
+            rects.push(rc);
+        }
+        let buttons_w = bw * buttons.len() as f32;
+        let icon_c = if rtl {
+            pos2(rect.right() - 16.0, rect.center().y)
+        } else {
+            pos2(rect.left() + 16.0, rect.center().y)
+        };
+        egui::Image::new(egui::include_image!("../assets/icons/app/mdm-32.png"))
+            .paint_at(ui, Rect::from_center_size(icon_c.round(), vec2(16.0, 16.0)));
+        let font = segoe();
+        let room = rect.width() - CAPTION_ICON_W - buttons_w - 12.0;
+        let shown = ellipsize(&p, &font, title, room.max(0.0));
+        let ink = if active {
+            CAPTION_INK()
+        } else {
+            caption_ink_inactive()
+        };
+        let (anchor, x) = if rtl {
+            (egui::Align2::RIGHT_CENTER, rect.right() - CAPTION_ICON_W)
+        } else {
+            (egui::Align2::LEFT_CENTER, rect.left() + CAPTION_ICON_W)
+        };
+        let drawn = p.text(pos2(x, rect.center().y), anchor, &shown, font, ink);
+        let label = ui.interact(drawn, widget_id(ui, "caption-title"), Sense::hover());
+        // The window's own name says the title to screen readers (where the system speaks for
+        // the title bar); elsewhere the label does.
+        if SYSTEM_SPEAKS {
+            unspoken(ui, &label);
+        } else {
+            expose(&label, egui::Role::Label, title, true, None);
+        }
+        if shown != title {
+            label.on_hover_text(title);
+        }
+        let icon = if rtl {
+            Rect::from_min_max(pos2(rect.right() - CAPTION_ICON_W, rect.top()), rect.max)
+        } else {
+            Rect::from_min_size(rect.min, vec2(CAPTION_ICON_W, rect.height()))
+        };
+        TitleBar {
+            pressed,
+            buttons: rects,
+            icon,
+        }
+    }
 }
 
 #[cfg(test)]

@@ -43,6 +43,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} sélectionné|{n} sélectionnés
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+#, machine
+	"{what}" isn't an IP address.	"{what}" n'est pas une adresse IP.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -85,10 +89,18 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Masquer les détails
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+#, machine
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Un ID de configuration NextDNS est composé de six lettres et chiffres (0-9, a-f).
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Un rapport a été enregistré. L’envoyer aux développeurs sur GitHub les aide à résoudre ce problème ; vous pouvez lire tout ce qu’il contient ci-dessous. Rien n’est envoyé automatiquement : Envoyer ouvre le formulaire de rapport dans votre navigateur, prérempli, pour que vous puissiez le vérifier et le soumettre.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	un serveur sur cet ordinateur a redirigé le téléchargement ailleurs, ce qui ne passerait pas par {adapter}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	À propos de Mister Download Manager
@@ -152,7 +164,8 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Adresse changée en {host}
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Adresse :
 #. window title in the Options window
@@ -213,6 +226,19 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	AM
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Another DNS...	Autre DNS...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+#, machine
+	Answered in {ms} ms: {ip}	Répondu en {ms} ms : {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	N’importe laquelle (le système choisit)
 #. text in the Scheduler window
 #, machine
 	April	Avril
@@ -223,9 +249,17 @@
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Comme le système les écrit pour la région
+#. text in the Options window
+#, machine
+	Ask it with:	Interroger avec :
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Demande de la liste des fichiers aux pairs. Les liens magnet peuvent prendre une minute ou deux.
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking...	Interrogation...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -250,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Les deux sont open source. MDM les obtient de leurs versions officielles avec son propre téléchargeur et vérifie la signature de chaque fichier avant de l’exécuter. Environ 100 Mo, une seule fois.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Rétablir les catégories {names} telles qu’elles ont été livrées : leurs noms, types de fichiers et dossiers ? Vos propres catégories, Général et Torrents, restent telles quelles. Les téléchargements déjà déplacés vers Général y restent.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -291,7 +328,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	impossible de reprendre : {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Capturer les téléchargements des navigateurs suivants :
 #. text in extension.rs
@@ -315,6 +352,10 @@
 #. text in categories.rs
 #, machine
 	Category properties	Propriétés de la catégorie
+#. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+#, machine
+	Certificate name:	Nom du certificat :
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -374,11 +415,12 @@
 #. text in the Options window
 #, machine
 	Clock:	Horloge :
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 #, machine
 	Close	Fermer
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -393,6 +435,10 @@
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
 	Compressed	Compressé
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+#, machine
+	Configuration ID:	ID de configuration :
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	Confirmer avant de supprimer les téléchargements
@@ -480,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Nombre max. de connexions par défaut
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Supprimer
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Supprimer la catégorie
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Supprimer la file d’attente
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Supprimer la catégorie « {category} » ? Ses téléchargements deviennent Généraux ; leurs fichiers restent à leur emplacement.
+	Delete the category "{category}"? Its files stay where they are.	Supprimer la catégorie « {category} » ? Ses fichiers restent à leur emplacement.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -521,6 +568,21 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	affiché dans la liste des files d’attente
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+#, machine
+	DNS over HTTPS	DNS sur HTTPS
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+#, machine
+	DNS over TLS	DNS sur TLS
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+#, machine
+	DNS settings	Paramètres DNS
+#. text in the Options window
+#, machine
+	DNS:	DNS :
 #. checkbox in the Options window
 #, machine
 	Do not start downloading, only add files to the queue	Ne pas démarrer le téléchargement, ajouter seulement les fichiers à la file d’attente
@@ -643,6 +705,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	Téléchargements
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#, machine
+	Downloads in progress	Téléchargements en cours
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -665,6 +731,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Lien de téléchargement en double
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Chaque connexion prend l’itinéraire du système.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -717,6 +787,10 @@
 #. text in the Options window
 #, machine
 	Event	Événement
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Chaque connexion passe par là, depuis {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -796,7 +870,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Les fichiers vont dans : {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Fichiers dans la file d’attente
 #. button in the Find window
@@ -939,6 +1013,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Masquer l’onglet
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+#, machine
+	Hide to the notification area	Masquer dans la zone de notification
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Maintenez Alt enfoncé en cliquant sur un lien pour laisser le navigateur le télécharger au lieu de Mister Download Manager.
@@ -964,6 +1042,10 @@
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	Si le fichier existant est complet, afficher la boîte de dialogue de téléchargement terminé ; sinon, le reprendre.
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+#, machine
+	If it can't be reached, use the system's DNS	S'il est inaccessible, utiliser le DNS du système
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Ignorer les modifications de l’heure de modification du fichier lors de la reprise d’un téléchargement
@@ -1003,6 +1085,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Adresse non valide
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+#, machine
+	IP addresses (optional):	Adresses IP (facultatif) :
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -1141,6 +1227,10 @@
 #. group box title in the Options window
 #, machine
 	Max. connections number	Nombre max. de connexions
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+#, machine
+	Maximize	Agrandir
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 #, machine
@@ -1156,6 +1246,14 @@
 #. the month (the fifth of the year)
 #, machine
 	May	Mai
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+#, machine
+	Minimize	Réduire
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+#, machine
+	Minimize to the notification area	Réduire dans la zone de notification
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1218,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Déplacer vers le bas
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Déplacer ses téléchargements vers Général
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Déplacer ou renommer le téléchargement sélectionné
@@ -1261,6 +1363,13 @@
 #. text in categories.rs
 #, machine
 	Name:	Nom :
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+#, machine
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Les noms dans votre fichier hosts et les noms locaux (mots uniques, .local, .lan) restent avec le DNS du système. Les pages vidéo et les traqueurs de torrent utilisent le DNS du système pour l'instant.
+#. text in the Options window
+#, machine
+	Network adapter:	Carte réseau :
 #. text in errors.rs
 #, machine
 	network error	erreur réseau
@@ -1530,6 +1639,10 @@
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	Fragments
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+#, machine
+	plain DNS	DNS simple
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -1652,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Supprimer de la file d’attente
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Supprimer ses téléchargements de la liste (ceux en cours sont déplacés vers Général)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1660,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Redémarrer MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Rétablir les catégories intégrées
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -1790,6 +1910,10 @@
 #. text in the Options window
 #, machine
 	Server:	Serveur :
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+#, machine
+	Servers:	Serveurs :
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1802,6 +1926,11 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Configurer
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Settings...	Paramètres...
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -1998,6 +2127,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Arrêté
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Arrêté : la carte réseau a changé ; redémarrage
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Arrêté : {adapter} n’est pas connectée ; reprendra quand elle le sera
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	S’arrête lorsque le téléchargement est terminé
@@ -2034,6 +2171,10 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	Dossier temporaire
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+#, machine
+	Test	Tester
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -2187,6 +2328,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	La liste n’a pas pu être enregistrée : {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	la carte réseau {adapter} n’est pas connectée
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	le chemin est trop long pour Windows : {path}
@@ -2245,6 +2390,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Les symboles n’ont pas pu être récupérés : certaines lignes du rapport affichent des adresses au lieu de noms (les développeurs peuvent toujours les lire).
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+#, machine
+	The system's DNS	DNS du système
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2374,6 +2523,10 @@
 #, machine
 	Torrents	Torrents
 #. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	les torrents ne peuvent pas encore passer par une carte réseau choisie sous Windows
+#. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2428,6 +2581,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Tapez un nombre dans De et dans À
+#. text in the settings
+#. Options → DNS: no server address was typed
+#, machine
+	Type at least one server address.	Saisissez au moins une adresse de serveur.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -2436,6 +2593,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Tapez le nom du fichier dans Enregistrer sous
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+#, machine
+	Type the name the server's certificate shows.	Saisissez le nom indiqué sur le certificat du serveur.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -2563,6 +2724,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Les recherches de vidéos utilisent yt-dlp (environ 23 Mo, vérifié par sa signature).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Les pages vidéo et les torrents ne peuvent pas encore l’utiliser.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Les pages vidéo ne peuvent pas encore l’utiliser.
+#. text in the Options window
 #, machine
 	Virus checking settings	Paramètres de vérification antivirus
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2644,6 +2813,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Votre navigateur
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+#, machine
+	your DNS ({how})	votre DNS ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -2664,6 +2837,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp : trouve la vidéo
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (non connectée)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} n’est pas connectée : rien n’est téléchargé tant qu’elle n’est pas de retour.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2730,6 +2911,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} h {m} min
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} n’est pas accessible via {adapter} : elle n’a pas d’adresse de ce type (IPv4 ou IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2756,6 +2941,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} n’a pas pu être téléchargé : {error}
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} isn't offered as {how}.	{name} n'est pas proposé en tant que {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -2780,6 +2970,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} s
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ne peut pas encore passer par une carte réseau choisie ({adapter})
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

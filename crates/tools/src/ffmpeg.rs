@@ -108,7 +108,7 @@ pub async fn install_latest(
             "ffmpeg build for this system (install ffmpeg)".into(),
         ));
     }
-    let client = reqwest::Client::builder()
+    let client = mdm_engine::net::client_builder(&net.dns, &net.route, RELEASES)?
         .user_agent(crate::USER_AGENT)
         .build()?;
     let body = client

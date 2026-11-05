@@ -46,6 +46,104 @@ enum Sub {
     /// File types → "Don't start downloading automatically from the following addresses" →
     /// Edit list...: one address pattern per line.
     Addresses(String),
+    /// Connection → DNS → Settings...: how the DNS is asked, its servers, a test.
+    Dns(DnsEdit),
+}
+
+/// Connection → DNS's sub-dialog: a copy of the DNS fields, kept on OK.
+struct DnsEdit {
+    mode: u8,
+    provider: String,
+    servers: String,
+    tls_name: String,
+    doh_url: String,
+    nextdns_id: String,
+    fallback: bool,
+    /// The Test button's answer (shared with its thread): None while it runs.
+    test: Option<TestSlot>,
+}
+
+/// A test's answer line and whether it worked, filled in by its thread.
+type TestSlot = std::sync::Arc<std::sync::Mutex<Option<(String, bool)>>>;
+
+impl DnsEdit {
+    fn from(s: &Settings) -> Self {
+        DnsEdit {
+            mode: if s.dns_mode == 0 { 3 } else { s.dns_mode },
+            provider: s.dns_provider.clone(),
+            servers: s.dns_servers.clone(),
+            tls_name: s.dns_tls_name.clone(),
+            doh_url: s.dns_doh_url.clone(),
+            nextdns_id: s.dns_nextdns_id.clone(),
+            fallback: s.dns_fallback,
+            test: None,
+        }
+    }
+
+    fn choice(&self) -> Result<mdm_engine::DnsChoice, String> {
+        settings::dns_choice(
+            self.mode,
+            &self.provider,
+            &self.servers,
+            &self.tls_name,
+            &self.doh_url,
+            &self.nextdns_id,
+            self.fallback,
+        )
+    }
+
+    fn save(self, s: &mut Settings) {
+        s.dns_mode = self.mode;
+        s.dns_provider = self.provider;
+        s.dns_servers = self.servers.trim().to_owned();
+        s.dns_tls_name = self.tls_name.trim().to_owned();
+        s.dns_doh_url = self.doh_url.trim().to_owned();
+        s.dns_nextdns_id = self.nextdns_id.trim().to_lowercase();
+        s.dns_fallback = self.fallback;
+    }
+}
+
+/// Connection → DNS's list: the system's, the services by name, the user's own.
+fn dns_names() -> Vec<String> {
+    let mut out = vec![
+        // i18n: Options → Connection → DNS: the operating system's own DNS (the default)
+        crate::i18n::t("The system's DNS").to_owned(),
+    ];
+    out.extend(mdm_engine::dns::PRESETS.iter().map(|p| p.name.to_owned()));
+    // i18n: Options → Connection → DNS: a DNS server the user types in
+    out.push(crate::i18n::t("Another DNS...").to_owned());
+    out
+}
+
+fn dns_index(s: &Settings) -> usize {
+    if s.dns_mode == 0 {
+        return 0;
+    }
+    let presets = mdm_engine::dns::PRESETS;
+    presets
+        .iter()
+        .position(|p| p.id == s.dns_provider)
+        .map_or(presets.len() + 1, |i| i + 1)
+}
+
+fn set_dns_index(s: &mut Settings, i: usize) {
+    let presets = mdm_engine::dns::PRESETS;
+    if i == 0 {
+        s.dns_mode = 0;
+        return;
+    }
+    s.dns_provider = presets
+        .get(i - 1)
+        .map_or("custom".to_owned(), |p| p.id.to_owned());
+    if s.dns_mode == 0 {
+        s.dns_mode = 3;
+    }
+    // A service that isn't offered this way (NextDNS plain) moves to DNS over HTTPS.
+    if let (Some(p), Some(m)) = (presets.get(i - 1), settings::dns_mode(s.dns_mode))
+        && !p.offers(m)
+    {
+        s.dns_mode = 3;
+    }
 }
 
 pub struct OptionsDialog {
@@ -71,8 +169,12 @@ pub struct OptionsDialog {
     sub: Option<Sub>,
     /// Save to → New / Edit...: the category editor (D-021).
     cat_edit: Option<crate::categories::CategoryDialog>,
+    /// Save to → Restore the built-in categories: its question (#93).
+    restore_ask: Option<crate::dialogs::Confirm>,
     /// Connection caps the engine learned, shown as "(auto)" rows under Exceptions.
     learned: Vec<(String, u32)>,
+    /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
+    adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
 }
 
 impl OptionsDialog {
@@ -114,13 +216,15 @@ impl OptionsDialog {
             sound_rows: Default::default(),
             sub: None,
             cat_edit: None,
+            restore_ask: None,
             learned,
+            adapters: None,
         }
     }
 
     /// `Done(settings)` on OK.
     pub fn show(&mut self, ctx: &egui::Context, downloads: &std::path::Path) -> Outcome<Settings> {
-        let modal = self.sub.is_some() || self.cat_edit.is_some();
+        let modal = self.sub.is_some() || self.cat_edit.is_some() || self.restore_ask.is_some();
         let outcome = window(
             ctx,
             "options",
@@ -196,6 +300,21 @@ impl OptionsDialog {
                 }
             }
         }
+        if let Some(d) = &mut self.restore_ask {
+            match d.show(ctx) {
+                Outcome::Open => {}
+                Outcome::Closed => self.restore_ask = None,
+                Outcome::Done(()) => {
+                    self.restore_ask = None;
+                    // In this draft: Cancel undoes it, as it undoes the dialog's other edits.
+                    crate::categories::restore(&mut self.s);
+                    let cats = Category::all();
+                    self.category = self.category.min(cats.len() - 1);
+                    self.cat_dir =
+                        display_dir(&self.s.category_dir(cats[self.category], downloads));
+                }
+            }
+        }
         match outcome {
             Outcome::Done(()) => {
                 let mut s = self.s.clone();
@@ -233,7 +352,7 @@ impl OptionsDialog {
         if portable {
             s.launch_on_startup = false;
         }
-        let checks: [(f32, &mut bool, &str); 5] = [
+        let checks: [(f32, &mut bool, &str); 6] = [
             (
                 94.0,
                 &mut s.launch_on_startup,
@@ -261,30 +380,43 @@ impl OptionsDialog {
                 &mut s.confirm_delete,
                 crate::i18n::mark("Confirm before deleting downloads"),
             ),
+            // MDM's (#63): Minimize hides the main window and progress windows in the tray too.
+            // The browsers' group starts a row lower again, its list a row shorter (it scrolls).
+            (
+                191.0,
+                &mut s.minimize_to_tray,
+                // i18n: checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+                crate::i18n::mark("Minimize to the notification area"),
+            ),
         ];
+        // Greyed where no tray shows MDM's icon (some Linux desktops): nothing could bring the
+        // window back from there.
+        let tray = crate::tray::available();
         for (i, (y, v, label)) in checks.into_iter().enumerate() {
             // Portable: nothing is written to the registry, so no start with Windows. Manifest 2
             // extensions: an IDM-era Chrome policy with no meaning for MDM's extension (MV3):
             // shown as IDM has it, greyed (D-021).
-            let enabled = !(portable && i == 0) && i != 2;
+            let enabled = !(portable && i == 0) && i != 2 && (i != 5 || tray);
             winui::checkbox_light(ui, o + vec2(30.0, y), v, label, enabled);
         }
         group(
             ui,
             o,
             16.0,
-            196.0,
+            215.0,
             392.0,
-            198.0,
+            179.0,
             "Capture downloads from the following browsers:",
         );
         // Check list: one row per browser in the shared row list (Space ticks the selected
         // one; the box and its name tick it too).
         let browsers = &mut s.browsers;
+        // Named by its group's caption, which says what the list is (#102).
+        self.browser_rows.name = crate::i18n::t("Capture downloads from the following browsers:");
         let ev = winui::row_list(
             ui,
             "browsers",
-            r(o, 30.0, 206.0, 362.0, 116.0),
+            r(o, 30.0, 225.0, 362.0, 97.0),
             browsers.len(),
             17.0,
             &mut self.browser_rows,
@@ -363,7 +495,7 @@ impl OptionsDialog {
             winui::full_on_hover(ui, rect, ("general-right", 419), label);
         }
         // i18n: verb: edit the item
-        off(ui, r(o, 319.0, 406.0, 73.0, 21.0), "Edit...");
+        off(ui, r(o, 289.0, 406.0, 103.0, 21.0), "Edit...");
         // The download button over videos in the browsers (our own panel, Sub::Panels).
         let label = crate::i18n::t("Customize MDM Download panels in browsers");
         let (rect, cut) = winui::text_right(&p, o.x + 313.0, o.y + 452.0, label, LIGHT_TEXT());
@@ -571,7 +703,7 @@ impl OptionsDialog {
             self.cat_edit = Some(crate::categories::CategoryDialog::edit(cat, &folder));
         }
         let cat = cats[self.category];
-        let label = cat.label();
+        let label = cat.shown();
         let with_category = |template: &str| crate::i18n::fmt(template, &[("category", &label)]);
         let line = with_category(crate::i18n::t(
             "Automatically put in \"{category}\" category the following file types:",
@@ -654,6 +786,28 @@ impl OptionsDialog {
             o.x + 426.0,
             13.0,
         );
+        // #93: the built-in categories by file type as shipped again (beside OK, on this page).
+        if winui::button_light(
+            ui,
+            r(o, 21.0, 477.0, 232.0, 21.0),
+            "Restore the built-in categories",
+            ButtonKind::Normal,
+            false,
+        )
+        .clicked()
+        {
+            self.commit_cat_dir(downloads);
+            let text = crate::i18n::fmt(
+                crate::i18n::t(
+                    "Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.",
+                ),
+                &[("names", &crate::categories::restored_names())],
+            );
+            self.restore_ask = Some(crate::dialogs::Confirm::new(
+                crate::i18n::mark("Restore the built-in categories"),
+                text,
+            ));
+        }
     }
 
     /// The typed folder for the selected category becomes its own (or the default again).
@@ -995,6 +1149,47 @@ impl OptionsDialog {
             "Show warning before stopping downloads",
             on,
         );
+        // DNS (#36): who answers the names; the details in Settings....
+        // i18n: label before the choice of DNS (the service that turns names into addresses)
+        text(
+            &p,
+            o.x + 21.0,
+            o.y + 421.0,
+            crate::i18n::t("DNS:"),
+            LIGHT_TEXT(),
+        );
+        let names = dns_names();
+        let labels: Vec<&str> = names.iter().map(String::as_str).collect();
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 70.0, 406.0, 211.0, 21.0),
+            &labels,
+            dns_index(&self.s),
+            true,
+            "opt-dns",
+        ) {
+            set_dns_index(&mut self.s, i);
+            if i > 0 {
+                self.sub = Some(Sub::Dns(DnsEdit::from(&self.s)));
+            }
+        }
+        let kind = if self.s.dns_mode == 0 {
+            ButtonKind::Disabled
+        } else {
+            ButtonKind::Normal
+        };
+        // i18n: button: opens the DNS's details (how it's asked, its servers, a test)
+        if winui::button_light(
+            ui,
+            r(o, 289.0, 406.0, 103.0, 21.0),
+            "Settings...",
+            kind,
+            false,
+        )
+        .clicked()
+        {
+            self.sub = Some(Sub::Dns(DnsEdit::from(&self.s)));
+        }
     }
 
     fn proxy(&mut self, ui: &mut Ui, o: Pos2) {
@@ -1170,14 +1365,142 @@ impl OptionsDialog {
             ButtonKind::Disabled,
             false,
         );
-        winui::etched_h(&p, o.x + 21.0, o.y + 439.0, 381.0);
+        winui::etched_h(&p, o.x + 21.0, o.y + 447.0, 381.0);
         winui::checkbox_light(
             ui,
-            o + vec2(27.0, 445.0),
+            o + vec2(27.0, 453.0),
             &mut s.ftp_passive,
             "Use FTP in PASV mode",
             true,
         );
+        self.adapter_row(ui, o);
+    }
+
+    /// Proxy / Socks → Network adapter (#35): the adapter every connection goes through (a VPN's),
+    /// and what it is doing now. The list is the computer's adapters, read every 2 s; the one
+    /// chosen stays in it while it's gone, "(not connected)".
+    fn adapter_row(&mut self, ui: &mut Ui, o: Pos2) {
+        use mdm_engine::Route;
+        let stale = self
+            .adapters
+            .as_ref()
+            .is_none_or(|(at, _)| at.elapsed() >= std::time::Duration::from_secs(2));
+        if stale {
+            self.adapters = Some((std::time::Instant::now(), mdm_engine::net::adapters()));
+        }
+        let adapters = self
+            .adapters
+            .as_ref()
+            .map(|(_, a)| a.clone())
+            .unwrap_or_default();
+        let p = ui.painter().clone();
+        winui::etched_h(&p, o.x + 21.0, o.y + 372.0, 381.0);
+        // i18n: label before the choice of network adapter (Ethernet, Wi-Fi, a VPN's) every connection must go through
+        text(
+            &p,
+            o.x + 27.0,
+            o.y + 395.0,
+            crate::i18n::t("Network adapter:"),
+            LIGHT_TEXT(),
+        );
+        // The choices: any, then each adapter with its address (the ones with none too: a VPN
+        // switched off), the chosen one kept when it's gone.
+        let chosen = self.s.net_adapter.trim().to_owned();
+        let mut values: Vec<String> = vec![String::new()];
+        let mut labels: Vec<String> =
+            // i18n: Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+            vec![crate::i18n::t("Any (the system chooses)").to_owned()];
+        for a in &adapters {
+            let ip =
+                a.v4.first()
+                    .map(|v| v.to_string())
+                    .or(a.v6.first().map(|v| v.to_string()));
+            values.push(a.name.clone());
+            labels.push(match ip {
+                Some(ip) => format!("{} \u{2014} {ip}", a.name),
+                None => crate::i18n::fmt(
+                    // i18n: Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+                    crate::i18n::t("{adapter} (not connected)"),
+                    &[("adapter", &a.name)],
+                ),
+            });
+        }
+        if !chosen.is_empty() && !values.iter().any(|v| v.eq_ignore_ascii_case(&chosen)) {
+            values.push(chosen.clone());
+            labels.push(crate::i18n::fmt(
+                crate::i18n::t("{adapter} (not connected)"),
+                &[("adapter", &chosen)],
+            ));
+        }
+        let at = values
+            .iter()
+            .position(|v| v.eq_ignore_ascii_case(&chosen))
+            .unwrap_or(0);
+        let shown: Vec<&str> = labels.iter().map(String::as_str).collect();
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 130.0, 380.0, 265.0, 21.0),
+            &shown,
+            at,
+            true,
+            "opt-adapter",
+        ) {
+            self.s.net_adapter = values[i].clone();
+        }
+        // What it does now.
+        let (line, ok) = match mdm_engine::net::route_for(&self.s.net_adapter, &adapters) {
+            Route::Any => (
+                // i18n: Options → Network adapter: what "Any" means
+                crate::i18n::t("Each connection takes the system's route.").to_owned(),
+                true,
+            ),
+            Route::Down { label } => (
+                crate::i18n::fmt(
+                    // i18n: Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+                    crate::i18n::t(
+                        "{adapter} is not connected: nothing is downloaded until it is back.",
+                    ),
+                    &[("adapter", &label)],
+                ),
+                false,
+            ),
+            Route::Bound(b) => {
+                let ip = b.v4.map(|v| v.to_string()).or(b.v6.map(|v| v.to_string()));
+                let line = crate::i18n::fmt(
+                    // i18n: Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+                    crate::i18n::t("Every connection goes through it, from {ip}."),
+                    &[("ip", &crate::i18n::ltr(&ip.unwrap_or_default()))],
+                );
+                // What can't be held to it on this system (refused, not sent around it).
+                #[cfg(windows)]
+                // i18n: Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+                let not_yet = crate::i18n::t("Video pages and torrents can't use it yet.");
+                #[cfg(not(windows))]
+                // i18n: Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+                let not_yet = crate::i18n::t("Video pages can't use it yet.");
+                (format!("{line}\n{not_yet}"), true)
+            }
+        };
+        let color = if ok {
+            LIGHT_TEXT()
+        } else {
+            egui::Color32::from_rgb(0xC4, 0x2B, 0x1C)
+        };
+        // Up to two lines, each cut with "..." (whole on hover) when a translation is longer.
+        for (row, part) in line.lines().take(2).enumerate() {
+            let (rect, cut) = winui::label_into(
+                &p,
+                o.x + 27.0,
+                o.y + 422.0 + 15.0 * row as f32,
+                part,
+                color,
+                o.x + 400.0,
+                o.x + 27.0,
+            );
+            if cut {
+                winui::full_on_hover(ui, rect, ("opt-adapter-state", row), part);
+            }
+        }
     }
 
     fn logins(&mut self, ui: &mut Ui, o: Pos2) {
@@ -1747,6 +2070,23 @@ impl OptionsDialog {
                     Outcome::Closed => {}
                 }
             }
+            Sub::Dns(mut e) => {
+                let out = window(
+                    ctx,
+                    "opt-dns",
+                    // i18n: window title: the settings of the DNS chosen in Options → Connection
+                    "DNS settings",
+                    [400.0, 312.0],
+                    false,
+                    LIGHT_BG(),
+                    |ui, o| dns_dialog(ui, o, &mut e),
+                );
+                match out {
+                    Outcome::Open => self.sub = Some(Sub::Dns(e)),
+                    Outcome::Done(()) => e.save(&mut self.s),
+                    Outcome::Closed => {}
+                }
+            }
             Sub::Addresses(mut list) => {
                 let out = window(
                     ctx,
@@ -1943,6 +2283,209 @@ fn display_dir(dir: &std::path::Path) -> String {
 }
 
 /// OK / Cancel at (x, y), OK only when `valid`.
+/// Connection → DNS → Settings...: how it's asked, its servers, the fallback, a test.
+fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
+    use mdm_engine::dns::{Mode, Preset};
+    let p = ui.painter().clone();
+    let preset = Preset::by_id(&e.provider);
+    // i18n: Options → DNS settings: heading over the ways of asking the DNS
+    text(
+        &p,
+        o.x + 14.0,
+        o.y + 22.0,
+        crate::i18n::t("Ask it with:"),
+        LIGHT_TEXT(),
+    );
+    let modes = [
+        (1u8, Mode::Plain, "plain DNS"),
+        (2, Mode::Tls, "DNS over TLS"),
+        (3, Mode::Https, "DNS over HTTPS"),
+    ];
+    let mut clicked = Vec::new();
+    for (row, (n, m, caption)) in modes.iter().enumerate() {
+        let offered = preset.is_none_or(|p| p.offers(*m));
+        let r = winui::radio_light(
+            ui,
+            o + vec2(24.0, 32.0 + 20.0 * row as f32),
+            e.mode == *n,
+            caption,
+            offered,
+        );
+        if r.clicked() && offered {
+            e.mode = *n;
+        }
+        clicked.push(r);
+    }
+    if let Some(i) = winui::radio_keys(ui, &clicked) {
+        let (n, m, _) = modes[i];
+        if preset.is_none_or(|p| p.offers(m)) {
+            e.mode = n;
+        }
+    }
+    let field = |ui: &mut Ui, y: f32, label: &str, value: &mut String, enabled: bool| {
+        winui::text_right(
+            &p,
+            o.x + 130.0,
+            o.y + y + 14.0,
+            crate::i18n::t(label),
+            LIGHT_TEXT(),
+        );
+        winui::edit_light(ui, r(o, 138.0, y, 248.0, 21.0), value, enabled, false);
+    };
+    let mode = settings::dns_mode(e.mode).unwrap_or(Mode::Https);
+    match preset {
+        // A service: its servers as they are, NextDNS's configuration ID to type.
+        Some(pr) => {
+            let shown = match mode {
+                Mode::Plain => pr.plain.join(", "),
+                Mode::Tls => pr.tls_name.to_owned(),
+                Mode::Https => pr.doh.to_owned(),
+            };
+            // i18n: Options → DNS settings: label before the chosen service's server (an address)
+            winui::text_right(
+                &p,
+                o.x + 130.0,
+                o.y + 112.0,
+                crate::i18n::t("Server:"),
+                LIGHT_TEXT(),
+            );
+            let (rect, cut) = winui::label_into(
+                &p,
+                o.x + 138.0,
+                o.y + 112.0,
+                &shown,
+                LIGHT_DISABLED(),
+                o.x + 386.0,
+                o.x + 138.0,
+            );
+            if cut {
+                winui::full_on_hover(ui, rect, "dns-server", &shown);
+            }
+            if pr.id == "nextdns" {
+                // i18n: Options → DNS settings: NextDNS's own configuration ID (optional)
+                field(
+                    ui,
+                    122.0,
+                    "Configuration ID:",
+                    &mut e.nextdns_id,
+                    mode != Mode::Plain,
+                );
+            }
+        }
+        // The user's own DNS.
+        None => match mode {
+            // i18n: Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+            Mode::Plain => field(ui, 98.0, "Servers:", &mut e.servers, true),
+            Mode::Tls => {
+                field(ui, 98.0, "Servers:", &mut e.servers, true);
+                // i18n: Options → DNS over TLS: label before the name the server's certificate shows
+                field(ui, 124.0, "Certificate name:", &mut e.tls_name, true);
+            }
+            Mode::Https => {
+                // i18n: Options → DNS over HTTPS: label before the server's https:// address
+                field(ui, 98.0, "Address:", &mut e.doh_url, true);
+                // i18n: Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+                field(ui, 124.0, "IP addresses (optional):", &mut e.servers, true);
+            }
+        },
+    }
+    winui::checkbox_light(
+        ui,
+        o + vec2(14.0, 158.0),
+        &mut e.fallback,
+        // i18n: Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+        "If it can't be reached, use the system's DNS",
+        true,
+    );
+    winui::paragraph(
+        &p,
+        o.x + 14.0,
+        o.y + 192.0,
+        // i18n: Options → DNS settings: what the DNS choice covers and what it doesn't
+        crate::i18n::t(
+            "Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.",
+        ),
+        LIGHT_TEXT(),
+        o.x + 386.0,
+        14.0,
+    );
+    let choice = e.choice();
+    // Test: asks github.com through the choice, without falling back, on a thread of its own.
+    let running = e.test.as_ref().is_some_and(|t| t.lock().unwrap().is_none());
+    let kind = if choice.is_ok() && !running {
+        ButtonKind::Normal
+    } else {
+        ButtonKind::Disabled
+    };
+    // i18n: button: asks the chosen DNS for an address, to see it works
+    if winui::button_light(ui, r(o, 14.0, 232.0, 73.0, 21.0), "Test", kind, false).clicked()
+        && let Ok(c) = &choice
+    {
+        let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
+        e.test = Some(slot.clone());
+        let (c, ctx) = (c.clone(), ui.ctx().clone());
+        // Through the network adapter downloads use (#35).
+        let route = crate::settings::own_route();
+        std::thread::spawn(move || {
+            let result = tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .map_err(|e| e.to_string())
+                .and_then(|rt| {
+                    rt.block_on(mdm_engine::dns::test(&c, "github.com", &[], &route))
+                        .map_err(|e| e.to_string())
+                });
+            let line = match result {
+                Ok((took, ips)) => (
+                    crate::i18n::fmt(
+                        // i18n: Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+                        crate::i18n::t("Answered in {ms} ms: {ip}"),
+                        &[
+                            ("ms", &took.as_millis().to_string()),
+                            (
+                                "ip",
+                                &ips.first().map(|i| i.to_string()).unwrap_or_default(),
+                            ),
+                        ],
+                    ),
+                    true,
+                ),
+                Err(why) => (why, false),
+            };
+            *slot.lock().unwrap() = Some(line);
+            ctx.request_repaint();
+        });
+    }
+    let status = match (&choice, &e.test) {
+        (Err(why), _) => Some((why.clone(), false)),
+        (Ok(_), Some(t)) => Some(t.lock().unwrap().clone().unwrap_or_else(|| {
+            // i18n: Options → DNS settings: the test is running
+            (crate::i18n::t("Asking...").to_owned(), true)
+        })),
+        _ => None,
+    };
+    if let Some((line, ok)) = status {
+        let color = if ok {
+            LIGHT_TEXT()
+        } else {
+            egui::Color32::from_rgb(0xC4, 0x2B, 0x1C)
+        };
+        let (rect, cut) = winui::label_into(
+            &p,
+            o.x + 95.0,
+            o.y + 247.0,
+            &line,
+            color,
+            o.x + 386.0,
+            o.x + 95.0,
+        );
+        if cut {
+            winui::full_on_hover(ui, rect, "dns-test", &line);
+        }
+    }
+    ok_cancel(ui, o, 238.0, 278.0, choice.is_ok())
+}
+
 fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
     let kind = if valid {
         ButtonKind::Default

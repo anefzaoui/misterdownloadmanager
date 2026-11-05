@@ -610,6 +610,10 @@
    "source": "The browser extension",
    "text": "브라우저 확장 프로그램"
   },
+  "10068bf8d08f9e51": {
+   "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
+   "text": "다운로드 진행 창도 최소화 버튼이나 <g1>알림 영역으로 숨기기</g1> 버튼(아래쪽 모서리를 향한 짧은 대시와 화살표)을 사용하여 그곳으로 이동할 수 있습니다."
+  },
   "100ad6083d713ab8": {
    "source": "<g1><g2></g2></g1> <g3>Options where you expect them</g3> <g4>Every setting where an IDM user looks first: connections, proxies, folders, sounds.</g4>",
    "text": "<g1><g2></g2></g1> <g3>예상하는 위치에 있는 옵션</g3> <g4>IDM 사용자가 가장 먼저 찾는 모든 설정: 연결, 프록시, 폴더, 소리.</g4>"
@@ -921,10 +925,6 @@
   "19810b030c072070": {
    "source": "Path",
    "text": "경로"
-  },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "트레이 아이콘을 마우스 오른쪽 버튼으로 클릭하면 <g1>새 다운로드 추가</g1>, <g2>일괄 다운로드 추가</g2>, <g3>속도 제한</g3>, <g4>예약 관리자</g4>, 메인 다운로드 대기열, <g5>옵션</g5> 및 <g6>종료</g6>가 표시됩니다."
   },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
@@ -2470,6 +2470,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>다운로드 → 큐 시작</g1> 및 <g2>다운로드 → 큐 중지</g2>에도 나열됩니다."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "<g2>옵션 → 일반</g2>에서 <g1>알림 영역으로 최소화</g1>가 켜져 있으면 최소화 시 메인 창도 그곳에 숨겨집니다. 이 기능은 기본적으로 켜져 있습니다."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "브라우저 통합 — Mister Download Manager 도움말"
@@ -2578,13 +2582,13 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>다운로드</g1>: Windows 설치 프로그램, 휴대용 zip 및 일반 zip, 브라우저 확장 프로그램 자체(Chromium 브라우저용 zip, Firefox용 <x2/>, 항상 앱 버전), 그리고 <g3>macOS 및 Linux 시험판</g3>: 범용 <x4/> 및 AppImage, <x5/>, <x6/> 및 <x7/>, <x8/>로 표시되어 있습니다. 이는 저희가 테스트하지 않았기 때문입니다. 여기에서 MDM은 Chrome, Edge, Brave, Vivaldi 및 Firefox에 자체적으로 연결하고, 트레이 아이콘을 가지며, 시스템의 밝거나 어두운 모양을 따르고 시스템의 글꼴과 ffmpeg을 사용합니다. 어떻게 작동하는지 알려주십시오."
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>HTTPS를 통한 DNS</g1>(기본값) 또는 <g2>TLS를 통한 DNS</g2>: 암호화되어 있으므로 중간에 있는 누구도 사용자가 조회하는 이름을 보거나 변경할 수 없습니다."
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>다운로드 시작 시각</g1> — 시간, 그 다음 다음 중 하나:"
-  },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>속성</g1> — 폴더를 변경합니다 (사용자 지정 범주의 경우 이름과 파일 형식도 변경할 수 있습니다)."
   },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
@@ -2718,6 +2722,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM에는 애드웨어, 스파이웨어, 번들 제공 또는 추적 기능이 포함되어 있지 않습니다. 전체 소스 코드가 공개되어 있어 누구나 어떤 작업을 하는지 확인할 수 있으며, 모든 릴리스는 GitHub 서버에서 해당 코드로부터 빌드되어 빌드를 검사할 수 있습니다. 비디오를 위해 가져올 수 있는 도우미 프로그램은 실행 전에 확인됩니다. yt-dlp는 개발자의 서명 키에 대해, ffmpeg는 게시된 체크섬에 대해 확인됩니다. MDM은 <g1>이 사이트</g1> 또는 프로젝트의 GitHub 릴리스에서만 다운로드하십시오."
   },
+  "4bd53cf9b125f43b": {
+   "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
+   "text": "Windows에서는 이 버튼이 창 제목 표시줄의 최소화 버튼 왼쪽에 있으며, 제목 표시줄 메뉴(Alt+Space)에도 있습니다. Linux 및 macOS에서는 탭 줄 끝에 있습니다."
+  },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
    "text": "<g1>개발자 모드</g1>를 켭니다."
@@ -2741,6 +2749,10 @@
   "4cc91c2bee7141b6": {
    "source": "The programs, to unpack anywhere",
    "text": "어디든 압축을 풀 수 있는 프로그램"
+  },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — MDM의 다운로드, 자체 다운로드(도우미, 업데이트) 및 FTP를 위해 서버 이름을 주소로 변환하는 DNS입니다. <g2>시스템 DNS</g2>가 기본값입니다(Windows 11에서는 이미 암호화되어 있을 수 있으며, Windows 자체 네트워크 설정에 있음). 또는 <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> 또는 <g7>NextDNS</g7>를 선택하거나, <g8>다른 DNS...</g8>를 선택하여 직접 입력할 수 있습니다. <g9>설정...</g9>에서 요청 방식을 선택합니다."
   },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
@@ -2785,6 +2797,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "무료 오픈 소스입니다. 설치하고 링크를 클릭한 다음 모든 연결이 작동하는 것을 확인하세요."
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "호스트 파일의 이름과 로컬 이름(단일 단어, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>)은 시스템 DNS를 사용합니다. 비디오 페이지(yt-dlp) 및 토렌트 트래커는 여전히 시스템 DNS를 사용합니다. 프록시를 사용하는 경우 프록시가 사용자를 대신하여 연결하는 사이트의 이름을 조회합니다."
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -3005,6 +3021,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Windows 7 또는 8에서 실행되나요?"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>알림 영역으로 최소화</g1> — 이 옵션을 켜면 메인 창을 닫을 때처럼 메인 창과 다운로드 진행 창이 알림 영역으로 숨겨지고, 다운로드는 계속됩니다. 기본적으로 켜져 있습니다. MDM 아이콘을 표시할 트레이가 없는 경우(일부 Linux 데스크톱)에는 회색으로 표시됩니다. Wayland 세션에서는 Wayland가 창을 숨길 수 없으므로 메인 창이 독에 최소화된 상태로 유지됩니다."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -3622,6 +3642,10 @@
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>Windows 전용 호출은 <x2/>에 있습니다</g1>. 해당 Linux 및 macOS 호출은 <x3/>에 있습니다. 나머지 작업 공간은 안전하고 이식 가능한 Rust(<x4/>)입니다. Windows에서 <x5/>는 Linux 및 macOS용으로 여전히 빌드되는지 확인합니다."
   },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>속성</g1> — 이름, 파일 형식 및 폴더를 변경합니다. 일반 및 토렌트는 폴더만 변경합니다. 이름이 변경된 범주는 폴더를 유지하며, 기본 제공 범주는 이름을 변경하기 전까지 해당 언어로 된 이름을 유지합니다."
+  },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
    "text": "Shift+F10"
@@ -3645,6 +3669,10 @@
   "67f71066401d978a": {
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>복사 방지 기능 해제 없음.</g1> MDM은 DRM을 제거하거나 우회하지 않으며, 그럴 의도도 없습니다. 보호된 콘텐츠는 계속 보호됩니다."
+  },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>테스트</g1>는 github.com에 요청하고 걸린 시간을 보여줍니다."
   },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
@@ -3745,6 +3773,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "다른 시스템 및 파일"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>일반 DNS</g1>: 암호화되지 않습니다. MDM은 TCP를 통해 요청하며 UDP를 사용하지 않으므로 방화벽 예외가 필요하지 않습니다."
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4293,6 +4325,10 @@
   "79e494c172e7a660": {
    "source": "Troubleshooting",
    "text": "문제 해결"
+  },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "사용자 지정 DNS의 경우: 서버의 IP 주소, 인증서에 표시된 이름(TLS), 또는 <x1/> 주소(HTTPS, 아는 경우 IP 주소 포함)를 입력합니다. NextDNS는 구성 ID를 사용합니다."
   },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
@@ -5102,6 +5138,10 @@
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "<x1/> 버전에는 설치 프로그램이 없지만 도우미를 직접 등록할 수 있습니다. MDM 폴더에서 명령 프롬프트를 열고 다음을 실행합니다:"
   },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "<g1>새 다운로드 추가</g1>, <g2>일괄 다운로드 추가</g2>, <g3>진행 중인 다운로드</g3>, <g4>속도 제한</g4>, <g5>예약 관리자</g5>, 메인 다운로드 대기열, <g6>옵션</g6> 및 <g7>끝내기</g7>를 보려면 마우스 오른쪽 버튼으로 클릭하세요."
+  },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
    "text": "변경 사항을 보내려면:"
@@ -5285,14 +5325,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — 폴더 또는 USB 드라이브에서 실행"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "최대 8개 연결(<x1/>, 1~128개)로 파일을 다운로드하고 진행 상황을 표시합니다. <x2/>는 일시 중지하고, <x3/>는 계속합니다. <x4/>는 완료된 파일을 확인합니다: 16진수 MD5, SHA-1, SHA-256, SHA-512 또는 CRC32, 선택적으로 이름 지정(<x5/>)."
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>삭제</g1> — 자신만의 범주를 제거합니다. 해당 다운로드는 일반 범주로 이동하며, 파일은 원래 위치에 남아 있습니다."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7034,6 +7066,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "모든 버전은 <g1>릴리스</g1> 페이지에 있습니다. Windows용 파일은 세 가지입니다."
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>연결할 수 없는 경우 시스템 DNS 사용</g1>: 기본적으로 꺼져 있습니다. 따라서 응답하지 않는 DNS는 조용히 시스템 DNS에 조회를 표시하는 대신 해당 DNS의 이름을 포함한 메시지와 함께 다운로드를 중지합니다. DNS가 존재하지 않는다고 말하는 이름은 절대 대체되지 않습니다(이는 필터링 DNS를 무효화할 수 있습니다)."
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "중단된 다운로드 다시 시작 — Mister Download Manager 도움말"
@@ -7194,6 +7230,10 @@
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "가격 없이 <g1>Internet Download Manager (IDM)</g1>의 레이아웃을 원한다면, 무료 대안은 <g2>Mister Download Manager (MDM)</g2>입니다. Windows 10 및 11용 무료 오픈 소스 다운로드 관리자이며, macOS 및 Linux 빌드도 시험해 볼 수 있습니다. IDM처럼 보이고 작동하며, IDM 다운로드 목록을 가져오고, <g3>저희가 발표한 벤치마크</g3>에서 IDM 6.42보다 1GiB 파일을 5.4배 빠르게 다운로드했으며, 토렌트, 마그넷 링크 및 비디오도 다운로드합니다."
   },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "이것은 MDM에서 외부 연결을 기다리는 유일한 부분입니다. 다운로드, MDM의 DNS 선택(옵션 → 연결 → DNS), 업데이트 및 도우미는 외부로만 연결하므로 방화벽 예외가 필요하지 않습니다. 브라우저 확장 프로그램과 자동화 API는 이 컴퓨터에서만 MDM에 연결됩니다(127.0.0.1)."
+  },
   "cc126dc832a278c1": {
    "source": "Yes",
    "text": "예"
@@ -7277,6 +7317,10 @@
   "cf04b2764bc982a7": {
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
+  },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>삭제</g1> — 직접 만든 범주 또는 기본 제공 범주(일반 또는 토렌트 제외)를 제거합니다. MDM은 해당 다운로드에 대한 처리 방법을 묻습니다. <g2>다운로드를 일반으로 이동</g2>하거나 <g3>목록에서 다운로드 제거</g3> (실행 중인 다운로드는 대신 일반으로 이동)를 선택할 수 있습니다. 어떤 경우든 파일은 원래 위치에 유지됩니다. 이후 해당 형식의 파일은 해당 형식을 가진 다른 범주로 이동하거나 일반으로 이동합니다."
   },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
@@ -7586,6 +7630,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "파일 주소를 복사합니다(브라우저에서: 링크를 마우스 오른쪽 버튼으로 클릭 → <g1>링크 복사</g1>)."
   },
+  "d7cea04e06c4311d": {
+   "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "창을 다시 표시하려면 <g1>진행 중인 다운로드</g1>에서 선택하거나 목록에서 다운로드를 두 번 클릭하세요."
+  },
   "d7d319fcb24f7484": {
    "source": "Set it up",
    "text": "설정하기"
@@ -7709,6 +7757,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "브라우저가 MDM의 도우미를 시작했지만, 응답하기 전에 중지되었습니다. 보안 소프트웨어가 일반적인 원인입니다."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>진행 중인 다운로드</g1>는 실행 중인 다운로드 목록을 보여줍니다. 하나를 선택하여 진행 상황 창을 볼 수 있습니다."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",
@@ -7849,6 +7901,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "중단된 다운로드 다시 시작"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "최대 8개 연결(<x1/>, 1~128개)로 파일을 다운로드하고 진행 상황을 표시합니다. <x2/>는 일시 중지하고, <x3/>는 계속합니다. <x4/>는 완료된 파일을 확인합니다: 16진수 MD5, SHA-1, SHA-256, SHA-512 또는 CRC32이며, 선택적으로 이름 지정(<x5/>)할 수 있습니다. <x6/>는 DNS를 선택합니다: <x7/>(기본값); 서비스 및 요청 방법, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS 서버 주소, <x13/>; 또는 DNS-over-HTTPS 주소. 시스템 DNS로 절대 되돌아가지 않습니다."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8053,6 +8109,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1>는 영어 텍스트입니다. 그대로 두세요. <g2>translation</g2>만 변경하세요."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "기본 제공 범주를 원래 이름, 파일 형식 및 폴더로 되돌리려면 <g1>옵션 → 저장 위치 → 기본 제공 범주 복원</g1>을 사용하세요. 직접 만든 범주, 일반 및 토렌트는 그대로 유지됩니다."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

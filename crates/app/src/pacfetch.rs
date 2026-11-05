@@ -38,12 +38,23 @@ async fn fetch(address: &str) -> Result<String, String> {
     if let Ok(url) = url::Url::parse(address)
         && matches!(url.scheme(), "http" | "https")
     {
-        // Directly: the script says which proxy to use, it isn't fetched through one.
-        let client = reqwest::Client::builder()
-            .no_proxy()
-            .timeout(std::time::Duration::from_secs(20))
-            .build()
-            .map_err(|e| e.to_string())?;
+        // Directly: the script says which proxy to use, it isn't fetched through one. Through
+        // the chosen network adapter (#35): a script on the local network can't be reached
+        // through a VPN's, and the one saved last stays in use.
+        let local = mdm_engine::net::is_this_computer(url.host_str().unwrap_or(""));
+        let route = crate::settings::own_route();
+        mdm_engine::net::check_url(&route, &url).map_err(|e| e.to_string())?;
+        // The system's DNS (local network names), only the addresses the adapter reaches.
+        let resolver = mdm_engine::dns::client_resolver(&Default::default(), &route);
+        let client = mdm_engine::net::bind_client(
+            reqwest::Client::builder().no_proxy().dns_resolver(resolver),
+            &route,
+            local,
+        )
+        .map_err(|e| e.to_string())?
+        .timeout(std::time::Duration::from_secs(20))
+        .build()
+        .map_err(|e| e.to_string())?;
         let r = client.get(url).send().await.map_err(|e| e.to_string())?;
         if !r.status().is_success() {
             return Err(format!("HTTP {}", r.status()));

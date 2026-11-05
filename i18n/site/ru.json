@@ -610,6 +610,10 @@
    "source": "The browser extension",
    "text": "Расширение для браузера"
   },
+  "10068bf8d08f9e51": {
+   "source": "A download's progress window can go there as well, with its Minimize or with its <g1>Hide to the notification area</g1> button: a short dash with an arrow down to the corner.",
+   "text": "Окно хода загрузки также может быть скрыто туда с помощью кнопки «Свернуть» или <g1>«Скрыть в область уведомлений»</g1>: короткий дефис со стрелкой вниз в угол."
+  },
   "100ad6083d713ab8": {
    "source": "<g1><g2></g2></g1> <g3>Options where you expect them</g3> <g4>Every setting where an IDM user looks first: connections, proxies, folders, sounds.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Параметры там, где вы их ожидаете</g3> <g4>Все настройки там, где пользователь IDM ищет в первую очередь: соединения, прокси, папки, звуки.</g4>"
@@ -921,10 +925,6 @@
   "19810b030c072070": {
    "source": "Path",
    "text": "Путь"
-  },
-  "198d032cbe66c78c": {
-   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Speed Limiter</g3>, <g4>Scheduler</g4>, the main download queue, <g5>Options</g5> and <g6>Exit</g6>.",
-   "text": "Щелкните его правой кнопкой мыши, чтобы вызвать <g1>Добавить новую загрузку</g1>, <g2>Добавить пакетную загрузку</g2>, <g3>Ограничитель скорости</g3>, <g4>Планировщик</g4>, главную очередь загрузок, <g5>Параметры</g5> и <g6>Выход</g6>."
   },
   "198e0f8020d53f36": {
    "source": "<g1>Trackers</g1> — the torrent's trackers. With none, peers come from the DHT and other peers.",
@@ -2470,6 +2470,10 @@
    "source": "<g1>Downloads → Start queue</g1> and <g2>Downloads → Stop queue</g2> list them too.",
    "text": "<g1>Загрузки → Запустить очередь</g1> и <g2>Загрузки → Остановить очередь</g2> также отображают их список."
   },
+  "437da174af682fe3": {
+   "source": "Minimize hides the main window there too, while <g1>Minimize to the notification area</g1> is on in <g2>Options → General</g2>. It is on by default.",
+   "text": "Свернуть также скрывает главное окно там, если включена опция <g1>Сворачивать в область уведомлений</g1> в <g2>Параметры → Общие</g2>. Она включена по умолчанию."
+  },
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "Интеграция с браузером — справка Mister Download Manager"
@@ -2578,13 +2582,13 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>Загрузки</g1>: установщик Windows, портативный zip-архив и обычный zip-архив, расширение браузера отдельно (zip-архив для браузеров Chromium, <x2/> для Firefox, всегда версия приложения), а также <g3>macOS и Linux для тестирования</g3>: универсальный <x4/> и AppImage, <x5/>, <x6/> и <x7/>, помеченные <x8/>, потому что они не тестировались нами. Там MDM подключается к Chrome, Edge, Brave, Vivaldi и Firefox, имеет свой значок в трее, следует светлой или тёмной теме системы и использует системные шрифты и ffmpeg. Расскажите нам, как они работают для вас."
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>DNS поверх HTTPS</g1> (по умолчанию) или <g2>DNS поверх TLS</g2>: зашифровано, поэтому никто по пути не видит и не изменяет запрашиваемые вами имена."
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>Начать загрузку в</g1> — время, затем:"
-  },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>Свойства</g1> — изменить ее папку (а для ваших собственных категорий — ее имя и типы файлов)."
   },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
@@ -2718,6 +2722,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built from that code by GitHub's servers, where the build can be inspected. The helper programs it can fetch for videos are verified before they run: yt-dlp against its developers' signing key, ffmpeg against its published checksums. Download MDM only from <g1>this site</g1> or the project's GitHub releases.",
    "text": "MDM не содержит рекламного, шпионского ПО, встроенных предложений или отслеживания. Весь его исходный код является общедоступным, поэтому любой может проверить, что он делает, и каждый выпуск собирается из этого кода серверами GitHub, где сборку можно проверить. Вспомогательные программы, которые он может получать для видео, проверяются перед запуском: yt-dlp — по ключу подписи разработчиков, ffmpeg — по опубликованным контрольным суммам. Загружайте MDM только с <g1>этого сайта</g1> или из релизов проекта на GitHub."
   },
+  "4bd53cf9b125f43b": {
+   "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
+   "text": "В Windows эта кнопка находится в строке заголовка окна, слева от кнопки «Свернуть», а также в меню строки заголовка (Alt+Space). В Linux и macOS она находится в конце ряда вкладок."
+  },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
    "text": "Включите <g1>Режим разработчика</g1>."
@@ -2741,6 +2749,10 @@
   "4cc91c2bee7141b6": {
    "source": "The programs, to unpack anywhere",
    "text": "Программы, для распаковки в любом месте"
+  },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — какой DNS преобразует имена серверов в адреса для загрузок MDM, его собственных загрузок (помощники, обновления) и FTP. <g2>Системный DNS</g2> используется по умолчанию (в Windows 11 он уже может быть зашифрован в собственных сетевых настройках Windows). Или выберите <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> или <g7>NextDNS</g7>, либо <g8>Другой DNS...</g8>, чтобы ввести свой собственный; <g9>Настройки...</g9> выбирает способ запроса:"
   },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
@@ -2785,6 +2797,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "Бесплатно и с открытым исходным кодом. Установите, нажмите на ссылку и наблюдайте за работой каждого соединения."
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "Имена в вашем файле hosts и локальные имена (отдельные слова, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>) остаются с системным DNS. Видеостраницы (yt-dlp) и торрент-трекеры по-прежнему используют системный DNS. При использовании прокси-сервера прокси-сервер ищет имена сайтов, к которым он обращается для вас."
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -3005,6 +3021,10 @@
   "54778aac9d52aa03": {
    "source": "Does it run on Windows 7 or 8?",
    "text": "Работает ли он на Windows 7 или 8?"
+  },
+  "547a72b540a365fd": {
+   "source": "<g1>Minimize to the notification area</g1> — Minimize hides the main window, and a download's progress window, in the notification area, as closing the main window does; downloads go on. On by default. Greyed where no tray shows MDM's icon (some Linux desktops); in a Wayland session the main window stays minimized in the dock, since Wayland can't hide a window.",
+   "text": "<g1>Сворачивать в область уведомлений</g1> — Сворачивание скрывает главное окно и окно хода загрузки в области уведомлений, как и при закрытии главного окна; загрузки продолжаются. Включено по умолчанию. Недоступно, если в трее не отображается значок MDM (некоторые рабочие столы Linux); в сеансе Wayland главное окно остается свернутым в доке, так как Wayland не может скрыть окно."
   },
   "548e835fe163a7dd": {
    "source": "To add a download instead, send <x1/>.",
@@ -3622,6 +3642,10 @@
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>Вызовы, специфичные для Windows, находятся в <x2/></g1>, их аналоги для Linux и macOS — в <x3/>; остальная часть рабочей области — безопасный, переносимый Rust (<x4/>). В Windows <x5/> проверяет, что сборка для Linux и macOS по-прежнему работает."
   },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>Свойства</g1> — изменить имя, типы файлов и папку. Категории «Общие» и «Торренты» меняют только свою папку. Переименованная категория сохраняет свою папку; встроенная категория сохраняет свое имя на вашем языке, пока вы ее не переименуете."
+  },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
    "text": "Shift+F10"
@@ -3645,6 +3669,10 @@
   "67f71066401d978a": {
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>Без взлома защиты от копирования.</g1> MDM не удаляет и не обходит DRM, и не предназначен для этого. Защищенный контент остается защищенным."
+  },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>Тест</g1> запрашивает github.com и показывает, сколько времени это заняло."
   },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
@@ -3745,6 +3773,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "Другие системы и файлы"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>Обычный DNS</g1>: не зашифрован. MDM запрашивает его по TCP, никогда по UDP, поэтому ему никогда не требуется исключение в брандмауэре."
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4293,6 +4325,10 @@
   "79e494c172e7a660": {
    "source": "Troubleshooting",
    "text": "Устранение неполадок"
+  },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "Для вашего собственного DNS: IP-адреса серверов, имя, указанное в их сертификате (TLS), или <x1/> адрес (HTTPS, с его IP-адресами, если вы их знаете). NextDNS принимает ваш идентификатор конфигурации."
   },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
@@ -5102,6 +5138,10 @@
    "source": "The <x1/> copy has no installer, but you can register the helper yourself. Open a command prompt in MDM's folder and run:",
    "text": "Версия <x1/> не имеет установщика, но вы можете зарегистрировать вспомогательную программу самостоятельно. Откройте командную строку в папке MDM и выполните:"
   },
+  "90e1029ca6c017f8": {
+   "source": "Right-click it for <g1>Add new download</g1>, <g2>Add batch download</g2>, <g3>Downloads in progress</g3>, <g4>Speed Limiter</g4>, <g5>Scheduler</g5>, the main download queue, <g6>Options</g6> and <g7>Exit</g7>.",
+   "text": "Нажмите на него правой кнопкой мыши, чтобы открыть <g1>Добавить новую загрузку</g1>, <g2>Добавить пакетную загрузку</g2>, <g3>Загрузки в процессе</g3>, <g4>Ограничитель скорости</g4>, <g5>Планировщик</g5>, основную очередь загрузок, <g6>Параметры</g6> и <g7>Выход</g7>."
+  },
   "90f3bcea2077881f": {
    "source": "To send your changes:",
    "text": "Чтобы отправить свои изменения:"
@@ -5285,14 +5325,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — запускается из папки или с USB-накопителя"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "Загрузить файл, используя до 8 соединений (<x1/>, от 1 до 128), с отображением прогресса. <x2/> приостанавливает загрузку; <x3/> продолжает. <x4/> проверяет готовый файл: MD5, SHA-1, SHA-256, SHA-512 или CRC32 в шестнадцатеричном формате, с возможностью указания имени (<x5/>)."
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>Удалить</g1> — удалить одну из ваших собственных категорий. Ее загрузки становятся Общими; их файлы остаются на месте."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7034,6 +7066,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "Все версии находятся на странице <g1>Выпуски</g1>. Для Windows есть три файла:"
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>Если недоступно, использовать системный DNS</g1>: по умолчанию отключено, поэтому DNS, который не отвечает, останавливает загрузку с сообщением о нем, а не тихо показывает ваши запросы системному DNS. Имя, которое DNS считает несуществующим, никогда не возвращается к системному DNS (это отменило бы фильтрующий DNS)."
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "Возобновление прерванной загрузки — справка Mister Download Manager"
@@ -7194,6 +7230,10 @@
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "Если вам нужен интерфейс <g1>Internet Download Manager (IDM)</g1> без его цены, то бесплатная альтернатива — это <g2>Mister Download Manager (MDM)</g2>: бесплатный менеджер загрузок с открытым исходным кодом для Windows 10 и 11, с экспериментальными сборками для macOS и Linux. Он выглядит и работает как IDM, импортирует ваш список загрузок из IDM, загрузил файл размером 1 ГиБ в 5,4 раза быстрее, чем IDM 6.42, в <g3>нашем опубликованном тесте</g3>, а также загружает торренты, magnet-ссылки и видео."
   },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "Это единственная часть MDM, которая ожидает подключений извне. Загрузки, выбор DNS в MDM (Параметры → Подключение → DNS), его обновления и вспомогательные программы подключаются только наружу, поэтому им никогда не требуется исключение в брандмауэре; расширение для браузера и API автоматизации обращаются к MDM только на этом компьютере (127.0.0.1)."
+  },
   "cc126dc832a278c1": {
    "source": "Yes",
    "text": "Да"
@@ -7277,6 +7317,10 @@
   "cf04b2764bc982a7": {
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
+  },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>Удалить</g1> — удалить категорию, свою или встроенную (кроме «Общие» и «Торренты»). MDM спрашивает, что произойдет с ее загрузками: <g2>Переместить загрузки в «Общие»</g2> или <g3>Удалить загрузки из списка</g3> (загрузка, которая выполняется, перемещается в «Общие»). Их файлы в любом случае остаются на своих местах. С этого момента файлы этих типов переходят в другую категорию, которая их содержит, или в «Общие»."
   },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
@@ -7586,6 +7630,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "Скопируйте адрес файла (в браузере: щелкните правой кнопкой мыши по ссылке → <g1>Копировать ссылку</g1>)."
   },
+  "d7cea04e06c4311d": {
+   "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
+   "text": "Чтобы вернуть окно, выберите его в <g1>«Загрузки в процессе»</g1> или дважды щелкните загрузку в списке."
+  },
   "d7d319fcb24f7484": {
    "source": "Set it up",
    "text": "Настройка"
@@ -7709,6 +7757,10 @@
   "dbfaeb9bc058b8a9": {
    "source": "The browser started MDM's helper, but it stopped before answering. Security software is the usual cause.",
    "text": "Браузер запустил вспомогательную программу MDM, но она остановилась до ответа. Обычная причина — программное обеспечение безопасности."
+  },
+  "dc1a2189e80bed74": {
+   "source": "<g1>Downloads in progress</g1> lists the running downloads. Choose one to see its progress window.",
+   "text": "<g1>Загрузки в процессе</g1> показывает список текущих загрузок. Выберите одну, чтобы увидеть окно её прогресса."
   },
   "dc868ceecfac36d1": {
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",
@@ -7849,6 +7901,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Возобновить прерванную загрузку"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "Загрузить файл, используя до 8 соединений (<x1/>, от 1 до 128), с отображением прогресса. <x2/> приостанавливает загрузку; <x3/> продолжает. <x4/> проверяет готовый файл: шестнадцатеричный MD5, SHA-1, SHA-256, SHA-512 или CRC32, с возможностью указания имени (<x5/>). <x6/> выбирает DNS: <x7/> (по умолчанию); сервис и способ запроса, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; адреса DNS-серверов, <x13/>; или адрес DNS-over-HTTPS. Он никогда не возвращается к системному DNS."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8053,6 +8109,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> — это английский текст; оставьте его как есть. Изменяйте только <g2>translation</g2>."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "Чтобы вернуть встроенные категории в исходное состояние, с их именами, типами файлов и папками, используйте <g1>Параметры → Сохранить в → Восстановить встроенные категории</g1>. Ваши собственные категории, «Общие» и «Торренты» остаются без изменений."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

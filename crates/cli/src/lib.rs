@@ -52,6 +52,17 @@ enum Cmd {
         /// optionally named ("sha256:…").
         #[arg(long, value_parser = parse_checksum)]
         checksum: Option<mdm_engine::verify::Hash>,
+        /// The DNS that looks the names up: "system" (the default); a service and how to ask it,
+        /// "cloudflare-https", "quad9-tls", "google-plain", "adguard-https", "nextdns-tls"; DNS
+        /// servers' addresses, "9.9.9.9,149.112.112.112"; or a DNS-over-HTTPS address,
+        /// "https://dns.example/dns-query". No falling back to the system's DNS.
+        #[arg(long, default_value = "system", value_parser = parse_dns)]
+        dns: mdm_engine::DnsChoice,
+        /// The network adapter every connection goes through (#35): its name ("Ethernet",
+        /// "wg0") or one of its addresses. When it isn't there or has no address, nothing is
+        /// sent and the download fails.
+        #[arg(long)]
+        adapter: Option<String>,
     },
     /// The running app's downloads, as JSON (automation API; turn it on with `api on`).
     Status,
@@ -88,6 +99,10 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
+        /// The network adapter yt-dlp goes through (#35), as `get --adapter`: Windows only
+        /// (elsewhere video pages are refused while an adapter is chosen).
+        #[arg(long)]
+        adapter: Option<String>,
     },
     /// Make a .torrent of a file or folder (no trackers; peers find it through the DHT).
     TorrentCreate {
@@ -283,6 +298,8 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             connections,
             headers,
             checksum,
+            dns,
+            adapter,
         } => {
             let dest = if output.is_dir() {
                 Destination::Dir(output)
@@ -296,6 +313,11 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             };
             let opts = Options {
                 checksum,
+                dns,
+                // Worked out once, as the app does each second (a missing adapter: Down).
+                route: adapter.map_or(mdm_engine::Route::Any, |a| {
+                    mdm_engine::net::route_for(&a, &mdm_engine::net::adapters())
+                }),
                 ..opts(connections)
             };
             watch(Download::start(req, opts), json).await
@@ -497,7 +519,14 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             subs,
             auto_subs,
             embed_subs,
+            adapter,
         } => {
+            if let Some(a) = adapter {
+                mdm_tools::proc::set_route(mdm_engine::net::route_for(
+                    &a,
+                    &mdm_engine::net::adapters(),
+                ));
+            }
             let subs = subs_arg(&subs, auto_subs, embed_subs);
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
@@ -651,6 +680,48 @@ fn opts(connections: u32) -> Options {
         max_connections: connections,
         ..Options::default()
     }
+}
+
+/// `--dns`: see [`Cmd::Get`].
+fn parse_dns(s: &str) -> Result<mdm_engine::DnsChoice, String> {
+    use mdm_engine::DnsChoice;
+    use mdm_engine::dns::{Dns, Mode, Preset, parse_servers};
+    let s = s.trim();
+    if s.is_empty() || s.eq_ignore_ascii_case("system") {
+        return Ok(DnsChoice::default());
+    }
+    if s.starts_with("https://") {
+        return Ok(DnsChoice {
+            dns: Dns::Https {
+                url: s.to_owned(),
+                bootstrap: Vec::new(),
+            },
+            fallback: false,
+            label: s.to_owned(),
+        });
+    }
+    if let Some((id, how)) = s.rsplit_once('-')
+        && let Some(p) = Preset::by_id(&id.to_ascii_lowercase())
+    {
+        let mode = match how.to_ascii_lowercase().as_str() {
+            "plain" => Mode::Plain,
+            "tls" => Mode::Tls,
+            "https" => Mode::Https,
+            _ => return Err(format!("`{how}`: plain, tls or https")),
+        };
+        if !p.offers(mode) {
+            return Err(format!("{} isn't offered as {how}", p.name));
+        }
+        return Ok(p.choice(mode, "", false, format!("{} ({how})", p.name)));
+    }
+    let servers = parse_servers(s, 53).map_err(|bad| {
+        format!("`{bad}`: not a DNS server's address, a service or an https:// address")
+    })?;
+    Ok(DnsChoice {
+        dns: Dns::Plain(servers),
+        fallback: false,
+        label: s.to_owned(),
+    })
 }
 
 fn parse_checksum(s: &str) -> Result<mdm_engine::verify::Hash, String> {

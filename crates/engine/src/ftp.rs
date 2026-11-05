@@ -88,6 +88,11 @@ pub(crate) struct Site {
     read_timeout: Duration,
     /// `Options::hosts`: fixed addresses for names.
     hosts: Vec<(String, Vec<IpAddr>)>,
+    /// `Options::dns` and the certificates it may trust besides the system's.
+    dns: crate::dns::DnsChoice,
+    extra_roots: Vec<Vec<u8>>,
+    /// The network adapter its connections go through (#35).
+    route: crate::net::Route,
     tls: Option<tokio_rustls::TlsConnector>,
     /// The server offers `EPSV` (learned from `FEAT`): no address in the answer to get wrong
     /// behind NAT.
@@ -142,6 +147,9 @@ impl Site {
             connect_timeout: opts.connect_timeout,
             read_timeout: opts.read_timeout,
             hosts: opts.hosts.clone(),
+            dns: opts.dns.clone(),
+            extra_roots: opts.extra_roots.clone(),
+            route: opts.route.clone(),
             tls,
             epsv: AtomicBool::new(false),
             pool: Mutex::new(Vec::new()),
@@ -152,7 +160,22 @@ impl Site {
     /// A new session: connected, secured, logged in, binary.
     async fn connect(&self) -> Result<Session, Error> {
         let mut last = net(NetKind::Connect, "the server's name has no address");
-        for addr in self.addresses().await? {
+        let mut addrs = self.addresses().await?;
+        // Only those the chosen adapter can reach (#35); else say why none.
+        if let Some(first) = addrs.first() {
+            let refused = self.route.check(first.ip()).err();
+            addrs.retain(|a| self.route.check(a.ip()).is_ok());
+            if let (Some(e), true) = (refused, addrs.is_empty()) {
+                return Err(e.into());
+            }
+        }
+        if let crate::net::Route::Down { label } = &self.route {
+            return Err(crate::net::NetError::Down {
+                label: label.clone(),
+            }
+            .into());
+        }
+        for addr in addrs {
             match tokio::time::timeout(self.connect_timeout, self.open(addr)).await {
                 Ok(Ok(s)) => return Ok(s),
                 // Another address may answer; a refusal from the server itself won't change.
@@ -180,23 +203,51 @@ impl Site {
         }
         let found = tokio::time::timeout(
             self.connect_timeout,
-            tokio::net::lookup_host((self.host.as_str(), self.port)),
+            crate::dns::lookup(
+                &self.dns,
+                &self.host,
+                self.port,
+                &self.extra_roots,
+                &self.route,
+            ),
         )
         .await
         .map_err(|_| net(NetKind::Timeout, ""))?
         .map_err(|e| net(NetKind::Connect, &e.to_string()))?;
-        Ok(found.collect())
+        Ok(found
+            .into_iter()
+            .map(|ip| SocketAddr::new(ip, self.port))
+            .collect())
     }
 
     async fn open(&self, addr: SocketAddr) -> Result<Session, Error> {
         let connect = |e| failure(e, NetKind::Connect);
         let tls =
             || AsyncRustlsConnector::from(self.tls.clone().expect("TLS site has a connector"));
-        let mut s = match self.security {
-            Security::Implicit => Session::connect_secure_implicit(addr, tls(), &self.host)
-                .await
-                .map_err(connect)?,
-            _ => Session::connect(addr).await.map_err(connect)?,
+        let mut s = match (&self.security, &self.route) {
+            (Security::Implicit, crate::net::Route::Any) => {
+                Session::connect_secure_implicit(addr, tls(), &self.host)
+                    .await
+                    .map_err(connect)?
+            }
+            // suppaftp opens implicit TLS's connection itself (no way to give it a bound one):
+            // refused rather than sent around the adapter.
+            (Security::Implicit, route) => {
+                return Err(crate::net::NetError::NotSupported {
+                    label: route.label().unwrap_or_default().to_owned(),
+                    what: "ftps://".into(),
+                }
+                .into());
+            }
+            (_, crate::net::Route::Any) => Session::connect(addr).await.map_err(connect)?,
+            (_, route) => {
+                let stream = crate::net::tcp_connect(route, addr)
+                    .await
+                    .map_err(|e| connect(FtpError::ConnectionError(e)))?;
+                Session::connect_with_stream(stream)
+                    .await
+                    .map_err(connect)?
+            }
         };
         match self.security {
             Security::Explicit => s = s.into_secure(tls(), &self.host).await.map_err(connect)?,
@@ -228,6 +279,19 @@ impl Site {
             // A server behind NAT often answers PASV with its private address: connect to
             // the address the session already reached instead.
             s.set_passive_nat_workaround(true);
+        }
+        // Data connections through the chosen adapter too (#35). (Active mode listens on the
+        // control connection's own address, which already is the adapter's.)
+        if !self.route.is_any() {
+            let route = Arc::new(self.route.clone());
+            s = s.passive_stream_builder(move |addr| {
+                let route = route.clone();
+                Box::pin(async move {
+                    crate::net::tcp_connect(&route, addr)
+                        .await
+                        .map_err(FtpError::ConnectionError)
+                })
+            });
         }
         s
     }
@@ -402,8 +466,14 @@ impl Transfer {
 /// The client configuration for FTPS: the system's verifier (as reqwest uses for HTTPS), with
 /// `extra` certificates also trusted.
 fn connector(extra: &[Vec<u8>]) -> Result<tokio_rustls::TlsConnector, Error> {
+    let config = client_config(extra).map_err(|e| net(NetKind::Tls, &e.to_string()))?;
+    Ok(tokio_rustls::TlsConnector::from(Arc::new(config)))
+}
+
+/// MDM's own TLS client configuration (FTPS, DNS over TLS and HTTPS): the system's verifier, as
+/// reqwest uses for HTTPS, with `extra` certificates also trusted (the tests' own CA).
+pub(crate) fn client_config(extra: &[Vec<u8>]) -> Result<rustls::ClientConfig, rustls::Error> {
     use rustls_platform_verifier::Verifier;
-    let tls = |e: rustls::Error| net(NetKind::Tls, &e.to_string());
     let provider = Arc::new(rustls::crypto::aws_lc_rs::default_provider());
     let verifier = if extra.is_empty() {
         Verifier::new(provider.clone())
@@ -412,15 +482,12 @@ fn connector(extra: &[Vec<u8>]) -> Result<tokio_rustls::TlsConnector, Error> {
             extra.iter().map(|c| CertificateDer::from(c.clone())),
             provider.clone(),
         )
-    }
-    .map_err(tls)?;
-    let config = rustls::ClientConfig::builder_with_provider(provider)
-        .with_safe_default_protocol_versions()
-        .map_err(tls)?
+    }?;
+    Ok(rustls::ClientConfig::builder_with_provider(provider)
+        .with_safe_default_protocol_versions()?
         .dangerous()
         .with_custom_certificate_verifier(Arc::new(verifier))
-        .with_no_client_auth();
-    Ok(tokio_rustls::TlsConnector::from(Arc::new(config)))
+        .with_no_client_auth())
 }
 
 /// The login an `Authorization: Basic` header carries.

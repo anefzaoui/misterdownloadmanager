@@ -326,7 +326,7 @@ pub struct App {
     /// The category dialog was opened by Download File Info's "+" (its result is picked there).
     category_for_file_info: bool,
     /// Delete a category of the user's, asking first.
-    confirm_category_delete: Option<(u32, dialogs::Confirm)>,
+    confirm_category_delete: Option<dialogs::DeleteCategory>,
     /// File Properties windows, one per download.
     properties: Vec<crate::properties::Properties>,
     /// Verify checksum windows, one per download.
@@ -357,6 +357,11 @@ pub struct App {
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
     torrent_host: crate::torrents::Host,
+    /// Options → Proxy / Socks → Network adapter (#35): the watch, the route seen last frame, and
+    /// the downloads stopped because it changed, to start again when it allows.
+    netwatch: crate::netwatch::NetWatch,
+    route: mdm_engine::Route,
+    adapter_paused: Vec<u64>,
     find: Option<crate::find::Find>,
     /// The last search, for Find Next.
     last_find: Option<crate::find::Query>,
@@ -669,7 +674,7 @@ impl App {
             q.running = q.schedule.start_on_startup;
         }
         let (next_id, mut items) = (loaded.next_id, loaded.items);
-        crate::model::set_custom(&settings.custom_categories);
+        settings.publish_categories();
         // D-021: torrents are a category of their own (lists from before had them by file
         // type); their files stay where they are.
         for i in &mut items {
@@ -766,6 +771,9 @@ impl App {
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
+            netwatch: Default::default(),
+            route: mdm_engine::Route::Any,
+            adapter_paused: Vec::new(),
             find: None,
             last_find: None,
             notice: None,
@@ -1283,6 +1291,64 @@ impl App {
         }
     }
 
+    /// Each frame (#35): the route connections take, from the adapter watch. When it changes,
+    /// everything running stops (its connections were held to the route before, or to none;
+    /// sockets that are bound can't leak, this is so they don't wait for a timeout) and the
+    /// torrent session with it; what was stopped so starts again once the route lets it.
+    fn network_adapter_tick(&mut self, ctx: &egui::Context) {
+        let route = self.netwatch.route(&self.settings.net_adapter, ctx);
+        crate::settings::share_route(route.clone());
+        if route != self.route {
+            let before = std::mem::replace(&mut self.route, route.clone());
+            self.route_changed(&before);
+        }
+        if matches!(self.route, mdm_engine::Route::Down { .. }) || self.adapter_paused.is_empty() {
+            return;
+        }
+        // Started again once their jobs have ended.
+        let ready: Vec<u64> = self
+            .adapter_paused
+            .iter()
+            .copied()
+            .filter(|id| self.items.iter().any(|i| i.id == *id && i.live.is_none()))
+            .collect();
+        self.adapter_paused
+            .retain(|id| self.items.iter().any(|i| i.id == *id) && !ready.contains(id));
+        for id in ready {
+            self.start(id, false);
+        }
+    }
+
+    fn route_changed(&mut self, before: &mdm_engine::Route) {
+        let note = match &self.route {
+            mdm_engine::Route::Down { label } => crate::i18n::fmt(
+                // i18n: event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+                crate::i18n::t("Stopped: {adapter} is not connected; it goes on when it is back"),
+                &[("adapter", label)],
+            ),
+            // i18n: event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+            _ => crate::i18n::t("Stopped: the network adapter changed; starting again").to_owned(),
+        };
+        let mut stopped = Vec::new();
+        for i in &mut self.items {
+            if let Some(l) = &i.live {
+                l.dl.cancel();
+                i.note(note.clone());
+                stopped.push(i.id);
+            }
+        }
+        for id in stopped {
+            if !self.adapter_paused.contains(&id) {
+                self.adapter_paused.push(id);
+            }
+        }
+        // The torrent session's sockets were bound as things were.
+        if !before.is_any() || !self.route.is_any() {
+            self.torrent_host.stop_now(&self.rt);
+        }
+        self.dirty = true;
+    }
+
     /// Every 2 s (#40): Torrent settings for the next torrent session, and the running one stopped
     /// once no torrent has needed it for a minute (none running or sharing, no Add torrent open),
     /// when Torrent settings say so or their network settings changed.
@@ -1401,6 +1467,27 @@ impl App {
             "tray" => self.hide_to_tray(ctx),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
+            // category:Music / category-delete:Music — the Categories right-click menu's
+            // Properties and Delete for a category by name (#93; the docs' shots and checks);
+            // category-remove:Music opens Delete with "Remove its downloads" chosen.
+            "category" | "category-delete" | "category-remove" => {
+                if let Some(c) = Category::all()
+                    .into_iter()
+                    // `/show` arrives in lower case (mdm_ipc::parse_args).
+                    .find(|c| c.key().eq_ignore_ascii_case(tab) || c.shown().to_lowercase() == tab)
+                {
+                    let cmd = if window == "category" {
+                        Cmd::CategoryProps(c)
+                    } else {
+                        Cmd::DeleteCategory(c)
+                    };
+                    self.run(cmd, None, ctx);
+                    if window == "category-remove" {
+                        self.confirm_category_delete =
+                            self.confirm_category_delete.take().map(|d| d.removing());
+                    }
+                }
+            }
             "video-page" => self.run(Cmd::VideoPage, None, ctx),
             // Download video from a page → Helpers... (#51).
             "video-helpers" => {
@@ -1630,6 +1717,8 @@ impl App {
         let opts = Options {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy(),
+            dns: self.settings.dns(),
+            route: self.route.clone(),
             global: Some(self.global.clone()),
             host_limits: Some(self.host_limits.clone()),
             ignore_mtime: self.settings.ignore_mtime,
@@ -2013,10 +2102,7 @@ impl App {
     /// Whether the tray icon is shown somewhere (Linux: a tray host is there; asked when the
     /// window is closed, the host may come and go).
     fn tray_shown(&self) -> bool {
-        #[cfg(target_os = "linux")]
-        return crate::unix::tray_host();
-        #[cfg(not(target_os = "linux"))]
-        true
+        crate::tray::available()
     }
 
     /// The tray icon: created once, its commands run, and closing the window hides it there.
@@ -2046,10 +2132,19 @@ impl App {
                 None => crate::MAIN_TITLE.to_owned(),
             };
             t.set_tooltip(&tip);
+            // "Downloads in progress": each running download, to show its progress window (#63).
+            let running: Vec<(u64, String)> = self
+                .items
+                .iter()
+                .filter(|i| i.live.is_some())
+                .map(|i| (i.id, i.file_name.clone()))
+                .collect();
+            t.set_downloads(&running);
         }
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
+            tracing::info!("tray: {c:?}");
             let cmd = match c {
                 TrayCmd::Show => {
                     self.show_window(ctx);
@@ -2064,6 +2159,10 @@ impl App {
                 TrayCmd::StopQueue => Cmd::StopQueue(0),
                 TrayCmd::Options => Cmd::Options,
                 TrayCmd::Exit => Cmd::Exit,
+                TrayCmd::ShowDownload(id) => {
+                    self.open_item(id);
+                    continue;
+                }
             };
             self.run(cmd, None, ctx);
         }
@@ -2077,6 +2176,38 @@ impl App {
         {
             ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
             self.hide_to_tray(ctx);
+        }
+        // Options → General → "Minimize to the notification area" (#63): Minimize hides the
+        // window there too, where a tray shows the icon. Wayland can't hide a window: there it
+        // stays minimized, in the dock, as it was.
+        #[cfg(target_os = "linux")]
+        let can_hide = !crate::unix::on_wayland();
+        #[cfg(not(target_os = "linux"))]
+        let can_hide = true;
+        let wanted = self.tray.is_some()
+            && self.settings.minimize_to_tray
+            && can_hide
+            && !self.exiting
+            && self.tray_shown();
+        // Windows: the minimize command itself is caught (win32), so the window goes straight to
+        // the tray, never minimized (an idle app runs no frame while minimized: it wouldn't see).
+        #[cfg(windows)]
+        let minimize = crate::win32::main_minimize_to_tray(ctx, wanted);
+        // Elsewhere: on the change to minimized (brought back, the window may still read
+        // minimized for a frame or two). It is seen at the next frame the app runs; macOS doesn't
+        // report it at all while running (egui#3494), so there Minimize stays in the Dock.
+        #[cfg(not(windows))]
+        let minimize = {
+            let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+            let was = egui::Id::unique("main-was-minimized");
+            let was_minimized = ctx.data(|d| d.get_temp::<bool>(was)).unwrap_or(false);
+            ctx.data_mut(|d| d.insert_temp(was, minimized));
+            wanted && minimized && !was_minimized
+        };
+        if minimize && !self.hidden {
+            tracing::info!("minimized to the notification area");
+            ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
+            self.hidden = true;
         }
         // Hidden, the window gets no paint messages: keep the clock (queues, scheduler,
         // download limits) running.
@@ -2651,7 +2782,7 @@ impl App {
 
     /// Options → OK: keep the new settings and act on what changed.
     fn apply_options(&mut self, new: Settings) {
-        crate::model::set_custom(&new.custom_categories);
+        new.publish_categories();
         // Portable mode writes nothing outside its folder (the option is off there).
         if new.launch_on_startup != self.settings.launch_on_startup
             && mdm_ipc::portable_dir().is_none()
@@ -2903,6 +3034,9 @@ impl App {
         } else if !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
+        } else if let Some(p) = self.progress.iter_mut().find(|p| p.id == id && p.hidden) {
+            // Hidden in the tray (#63): back, as it was.
+            p.hidden = false;
         } else {
             // Open already, behind: to the front.
             dialogs::raise(
@@ -3182,17 +3316,10 @@ impl App {
                 let folder = self.settings.category_dir(c, &self.downloads);
                 self.category_dlg = Some(crate::categories::CategoryDialog::edit(c, &folder));
             }
-            Cmd::DeleteCategory(Category::Custom(id)) => {
-                let text = crate::i18n::fmt(
-                    crate::i18n::t(
-                        "Delete the category \"{category}\"? Its downloads become General; their files stay where they are.",
-                    ),
-                    &[("category", &Category::Custom(id).label())],
-                );
-                self.confirm_category_delete = Some((
-                    id,
-                    dialogs::Confirm::new(crate::i18n::mark("Delete category"), text),
-                ));
+            // The user's categories and the built-in ones by file type (#93); not General nor
+            // Torrents.
+            Cmd::DeleteCategory(c) if c.editable() => {
+                self.confirm_category_delete = Some(dialogs::DeleteCategory::new(c));
             }
             Cmd::DeleteCategory(_) => {}
             Cmd::ToggleDropTarget => {
@@ -3804,9 +3931,7 @@ impl App {
                     I("Add category", Cmd::AddCategory, true, false),
                     match cat {
                         // i18n: verb: deletes the category
-                        Some(c) if c.is_custom() => {
-                            I("Delete", Cmd::DeleteCategory(c), true, false)
-                        }
+                        Some(c) if c.editable() => I("Delete", Cmd::DeleteCategory(c), true, false),
                         // i18n: verb: deletes the category
                         _ => off("Delete"),
                     },
@@ -5274,15 +5399,26 @@ impl App {
                 }
             }
         }
-        if let Some((id, d)) = &mut self.confirm_category_delete {
+        if let Some(d) = &mut self.confirm_category_delete {
             match d.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed => self.confirm_category_delete = None,
-                Outcome::Done(()) => {
-                    let id = *id;
+                Outcome::Done(remove) => {
+                    let cat = d.category;
                     self.confirm_category_delete = None;
-                    crate::categories::delete(&mut self.settings, id, &mut self.items);
-                    let gone = Some(Category::Custom(id));
+                    // Off the list first (not their files); the running ones can't go, so they
+                    // move to General with the rest.
+                    if remove {
+                        let ids: Vec<u64> = self
+                            .items
+                            .iter()
+                            .filter(|i| i.category == cat && i.live.is_none())
+                            .map(|i| i.id)
+                            .collect();
+                        self.remove_downloads(&ids, false);
+                    }
+                    crate::categories::delete(&mut self.settings, cat, &mut self.items);
+                    let gone = Some(cat);
                     if matches!(self.view, View::Cat(c) if Some(c) == gone)
                         || matches!(self.view, View::Unfinished(c) | View::Finished(c) if c == gone)
                     {
@@ -5559,8 +5695,8 @@ impl App {
             match d.show(ctx, &self.downloads) {
                 Outcome::Open => {}
                 Outcome::Closed => {
-                    // Cancel: categories the dialog added or changed are undone.
-                    crate::model::set_custom(&self.settings.custom_categories);
+                    // Cancel: categories the dialog added, changed or restored are undone.
+                    self.settings.publish_categories();
                     self.options = None;
                 }
                 Outcome::Done(new) => {
@@ -5650,11 +5786,22 @@ impl App {
         }
         self.finish_stopped();
         let mut actions = Vec::new();
+        // A progress window can be hidden in the tray only when there is one to bring it back.
+        // Off-screen test copies have no tray icon: their windows are drawn as if they had one
+        // (the captures and the accessibility checks see the hide button).
+        let tray = (self.tray.is_some() || crate::offscreen()) && crate::tray::available();
         for p in &mut self.progress {
             p.keep_sharing = self.settings.torrent_keep_sharing;
             if p.host.is_none() {
                 p.host = Some(self.torrent_host.clone());
             }
+            p.tray = tray;
+            p.minimize_to_tray = self.settings.minimize_to_tray;
+            // Hidden: not shown (its window is gone) until the tray or the list brings it back.
+            if p.hidden && tray {
+                continue;
+            }
+            p.hidden = false;
             if let Some(item) = self.items.iter().find(|i| i.id == p.id) {
                 actions.push((p.id, p.show(ctx, item, item.snap.as_ref())));
             }
@@ -5669,6 +5816,11 @@ impl App {
                     self.progress.retain(|p| p.id != id);
                 }
                 progress::Action::Close => self.progress.retain(|p| p.id != id),
+                progress::Action::Hide => {
+                    if let Some(p) = self.progress.iter_mut().find(|p| p.id == id) {
+                        p.hidden = true;
+                    }
+                }
                 progress::Action::Limit(limit, remember) => {
                     if let Some(item) = self.item(id) {
                         if let Some(l) = item.live.as_ref() {
@@ -5722,8 +5874,10 @@ impl eframe::App for App {
             crate::win32::keep_from_foreground();
         }
         crate::settings::share_proxy(self.settings.proxy());
+        crate::settings::share_dns(self.settings.dns());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
+        self.network_adapter_tick(&ctx);
         dialogs::publish_main_rect(&ctx);
         while let Ok(inc) = self.commands.try_recv() {
             match inc.reply {
