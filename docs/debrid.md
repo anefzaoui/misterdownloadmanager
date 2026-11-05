@@ -8,6 +8,11 @@ resume.
 
 Real-Debrid works now. AllDebrid and Premiumize come next.
 
+> **Experimental:** built from Real-Debrid's public API documentation, not yet confirmed with a
+> real account. If something doesn't work with your account, please
+> [open an issue](https://github.com/anefzaoui/misterdownloadmanager/issues) (never paste your
+> token in it).
+
 ## Add your account
 
 1. **Options → Accounts → Add...**

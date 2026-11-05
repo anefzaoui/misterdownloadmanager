@@ -22,14 +22,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
-- **Real-Debrid accounts** ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)):
+- **Real-Debrid accounts, experimental** ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)):
   Options → Accounts keeps your debrid service account. Sign in by code in the browser, or with
   your API token. A link from a file host your service supports is unlocked through your account,
   then downloaded with all of MDM's connections, pause and resume, from Add URL, the browser's
   link menu and batch downloads. When the direct link expires, MDM asks the
   service for a new one. The direct link is never shown or copied, and the sign-in is sealed for
   your Windows account. AllDebrid and Premiumize come next. See
-  [Debrid service accounts](docs/debrid.md).
+  [Debrid service accounts](docs/debrid.md). Experimental: built from Real-Debrid's public API
+  documentation, not yet confirmed with a real account.
 - The proxy's password in Options → Proxy / Socks is now sealed on disk too on Windows, like
   Sites Logins' passwords.
 - **The built-in categories are yours to change** ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93)):

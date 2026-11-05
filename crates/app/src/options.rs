@@ -1542,7 +1542,7 @@ impl OptionsDialog {
         let (_, del_key) = report(
             ui,
             o,
-            r(o, 21.0, 93.0, 383.0, 200.0),
+            r(o, 21.0, 93.0, 383.0, 176.0),
             &[
                 // i18n: column title: the debrid service (Real-Debrid…)
                 (crate::i18n::mark("Service"), 110.0),
@@ -1560,7 +1560,7 @@ impl OptionsDialog {
         // i18n: button: add a debrid service account (opens the sign-in)
         let add = winui::button_light(
             ui,
-            r(o, 21.0, 301.0, 90.0, 21.0),
+            r(o, 21.0, 277.0, 90.0, 21.0),
             "Add...",
             ButtonKind::Normal,
             false,
@@ -1575,7 +1575,7 @@ impl OptionsDialog {
         };
         let remove = winui::button_light(
             ui,
-            r(o, 117.0, 301.0, 90.0, 21.0),
+            r(o, 117.0, 277.0, 90.0, 21.0),
             "Remove",
             kind(sel.is_some()),
             false,
@@ -1585,7 +1585,7 @@ impl OptionsDialog {
         // i18n: button (short): move the account up the list (accounts are asked in the list's order)
         let up = winui::button_light(
             ui,
-            r(o, 213.0, 301.0, 90.0, 21.0),
+            r(o, 213.0, 277.0, 90.0, 21.0),
             "Up",
             kind(sel.is_some_and(|i| i > 0)),
             false,
@@ -1594,7 +1594,7 @@ impl OptionsDialog {
         // i18n: button (short): move the account down the list
         let down = winui::button_light(
             ui,
-            r(o, 309.0, 301.0, 95.0, 21.0),
+            r(o, 309.0, 277.0, 95.0, 21.0),
             "Down",
             kind(sel.is_some_and(|i| i + 1 < rows.len())),
             false,
@@ -1616,9 +1616,24 @@ impl OptionsDialog {
                 self.account_rows.selected = Some(i + 1);
             }
         }
+        // Experimental until the service is confirmed with a real account (#44).
+        let p = ui.painter().clone();
+        let note = crate::i18n::t(
+            // i18n: Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+            "Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.",
+        );
+        winui::paragraph(
+            &p,
+            o.x + 21.0,
+            o.y + 308.0,
+            note,
+            egui::Color32::from_rgb(0x9D, 0x5D, 0x00),
+            o.x + 404.0,
+            14.0,
+        );
         winui::checkbox_light(
             ui,
-            o + vec2(21.0, 334.0),
+            o + vec2(21.0, 354.0),
             &mut self.s.debrid_on,
             // i18n: Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
             "Download supported file-host links through these accounts",
@@ -1628,7 +1643,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 21.0,
-            o.y + 372.0,
+            o.y + 388.0,
             // i18n: Options → Accounts: what these accounts are, and the services' rule against sharing
             crate::i18n::t(
                 "A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
