@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	兩者都是開放原始碼。MDM 會從其官方版本下載，並在執行前檢查每個檔案的簽章。大約 100 MB，一次。
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	還原 {names} 為出廠設定：其名稱、檔案類型和資料夾？您自己的類別、一般和 Torrent 保持不變。已移至一般的下載項目會保留在該處。
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	預設最大連線數
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	刪除
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	刪除類別
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	刪除佇列
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	刪除類別「{category}」？其下載項目將變為「一般」；其檔案仍保留在原處。
+	Delete the category "{category}"? Its files stay where they are.	刪除類別「{category}」？其檔案會保留在原處。
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	下移
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	將其下載移至「一般」
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	移動或重新命名選取的下載
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	從佇列中移除
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	將其下載從清單中移除 (執行中的下載會移至「一般」)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	重新啟動 MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	還原內建類別
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

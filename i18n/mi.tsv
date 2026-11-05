@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	E rua ngā mea e wātea ana. Ka tikiakehia e MDM mai i ō rātou tukunga mana mā tana ake kaiwhakatikiake, ā, ka tirohia te waitohu o ia kōnae i mua i te whakahaere. Tata ki te 100 MB, kotahi anake.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Whakahokia mai ngā {names} kia rite ki te wā i tukuna ai: ō rātou ingoa, momo kōnae me ngā kōpaki? Ko ō kāwai ake, ko te Whānui me ngā Torrents ka noho tonu. Ko ngā tikiake kua nekehia ki te Whānui ka noho tonu ki reira.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Tau hononga mōrahi taunoa
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Mukua
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Mukua te kāwai
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Mukua te rārangi
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Mukua te kāwai "{category}"? Ka noho ōna tikiake hei Whānui; ka noho ōna kōnae ki te wāhi e noho ana.
+	Delete the category "{category}"? Its files stay where they are.	Muku i te kāwai "{category}"? Ka noho tonu ōna kōnae ki te wāhi kei reira.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Nuku ki raro
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Nukuhia ōna tikiake ki te Whānui
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Nukuhia, whakaingoatia anō rānei te tikiake kua tohua
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Tangohia i te rārangi tatari
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Tangohia ōna tikiake i te rārangi (ka neke ngā mea e rere ana ki te Whānui)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Tīmata anō i te MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Whakahokia ngā kāwai i hangaia
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

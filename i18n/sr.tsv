@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Оба су отвореног кода. MDM их преузима из њихових званичних издања помоћу сопственог преузимача и проверава потпис сваке датотеке пре него што је покрене. Око 100 MB, једнократно.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Вратити {names} онако како су испоручени: њихова имена, типове датотека и фасцикле? Ваше сопствене категорије, Опште и Торенти остају такви какви јесу. Преузимања која су већ премештена у Опште остају тамо.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Подразумевани макс. број веза
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Избриши
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Избриши категорију
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Избриши ред чекања
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Избрисати категорију „{category}“? Њена преузимања постају Општа; њихове датотеке остају тамо где јесу.
+	Delete the category "{category}"? Its files stay where they are.	Избрисати категорију „{category}“? Њене датотеке остају тамо где јесу.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Помери доле
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Премести његова преузимања у Опште
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Помери или преименуј изабрано преузимање
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Уклони из реда чекања
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Уклони његова преузимања са листе (активна се премештају у Опште)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Поново покрени MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Врати подразумеване категорије
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

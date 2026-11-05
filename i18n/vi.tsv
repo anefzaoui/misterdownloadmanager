@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Cả hai đều là mã nguồn mở. MDM lấy chúng từ các bản phát hành chính thức của chúng bằng trình tải xuống riêng và kiểm tra chữ ký của từng tệp trước khi chạy. Khoảng 100 MB, một lần.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Khôi phục {names} về trạng thái ban đầu: tên, loại tệp và thư mục của chúng? Các danh mục của riêng bạn, Chung và Torrent vẫn giữ nguyên. Các bản tải xuống đã chuyển sang Chung vẫn ở đó.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Số kết nối tối đa mặc định
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Xóa
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Xóa danh mục
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Xóa hàng đợi
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Xóa danh mục "{category}"? Các bản tải xuống của danh mục này sẽ trở thành Chung; các tệp của chúng vẫn ở vị trí cũ.
+	Delete the category "{category}"? Its files stay where they are.	Xóa danh mục "{category}"? Các tệp của nó vẫn ở nguyên vị trí.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Di chuyển xuống
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Di chuyển các bản tải xuống của nó sang Chung
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Di chuyển hoặc đổi tên bản tải xuống đã chọn
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Xóa khỏi hàng đợi
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Xóa các bản tải xuống của nó khỏi danh sách (các bản đang chạy sẽ chuyển sang Chung)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Khởi động lại MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Khôi phục các danh mục tích hợp
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Hər ikisi açıq mənbəlidir. MDM onları öz yükləyicisi ilə rəsmi buraxılışlarından əldə edir və işə salmazdan əvvəl hər faylın imzasını yoxlayır. Təxminən 100 MB, bir dəfə.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} kateqoriyalarını ilkin vəziyyətinə qaytarmaq istəyirsiniz? Yəni adlarını, fayl növlərini və qovluqlarını? Öz kateqoriyalarınız, Ümumi və Torrentlər olduğu kimi qalacaq. Ümumi kateqoriyasına köçürülmüş yükləmələr orada qalacaq.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Defolt maks. qoşulma sayı
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Sil
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Kateqoriyanı sil
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Növbəni sil
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" kateqoriyasını silmək istəyirsiniz? Yükləmələri Ümumi kateqoriyasına keçəcək; faylları yerində qalacaq.
+	Delete the category "{category}"? Its files stay where they are.	"{category}" kateqoriyasını silmək istəyirsiniz? Onun faylları olduğu yerdə qalacaq.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Aşağı köçür
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Yükləmələrini Ümumi kateqoriyasına köçür
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Seçilmiş yükləməni köçürün və ya adını dəyişdirin
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Növbədən çıxar
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Yükləmələrini siyahıdan sil (işləyənlər Ümumi kateqoriyasına köçürülür)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM-i yenidən başlat
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Daxili kateqoriyaları bərpa et
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

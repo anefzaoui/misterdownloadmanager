@@ -1988,7 +1988,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "لا يتم ربط الاتصالات بهذا الكمبيوتر نفسه (<x1/>). يقوم وكيل على هذا الكمبيوتر بحمل التنزيلات، ويعود الأمر إليه في تحديد مكان إرسالها."
+   "text": "الاتصالات بهذا الكمبيوتر نفسه (<x1/>) غير مرتبطة. يقوم وكيل على هذا الكمبيوتر بنقل التنزيلات، ويعود إليه تحديد مكان إرسالها."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2109,6 +2109,10 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "حذف التنزيلات المحددة (يسأل أولا)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "إعدادات الوكيل / SOCKS في MDM هي لتنزيلات الويب و FTP. يمكن للتورنت استخدام وكيل SOCKS5 أيضا: قم بتعيين وكيل <x1/> في <g2>الخيارات ← الوكيل / SOCKS</g2> وقم بتشغيل <g3>استخدام الوكيل</g3> في إعدادات التورنت. يغطي الوكيل الاتصالات مع النظراء ومتتبعات الويب فقط، لذلك معه يقوم MDM بإيقاف تشغيل DHT، واكتشاف النظراء المحليين، والاتصالات الواردة، ومتتبعات UDP؛ ولا يفتح أي مقبس UDP نحو الشبكة على الإطلاق. إذا اختفى الوكيل من الوكيل / SOCKS بينما هذا المفتاح قيد التشغيل، فلن تبدأ التورنت بدلا من تجاوز الوكيل."
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2404,7 +2408,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "يسأل DNS الخاص بالنظام عن الأسماء بطريقته الخاصة، وقد يسأل Windows عبر كل محول. للاحتفاظ بالأسماء داخل المحول أيضا، اختر DNS ضمن <g1>الاتصال</g1> ← <g2>DNS</g2>: ثم يسأله MDM عبر المحول."
+   "text": "يطلب DNS الخاص بالنظام الأسماء بطريقته الخاصة، وقد يطلب Windows عبر كل محول. للحفاظ على الأسماء داخل المحول أيضا، اختر DNS ضمن <g1>الاتصال</g1> → <g2>DNS</g2>: ثم يطلبه MDM عبر المحول."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -2605,10 +2609,6 @@
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>بدء التنزيل في</g1> — وقت، ثم إما:"
-  },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>خصائص</g1> — تغيير مجلدها (وبالنسبة لفئاتك الخاصة، اسمها وأنواع ملفاتها)."
   },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
@@ -3662,6 +3662,10 @@
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>توجد استدعاءات Windows فقط في <x2/></g1>، ونظيراتها في Linux و macOS في <x3/>؛ بقية مساحة العمل آمنة، Rust محمولة (<x4/>). على Windows، يتحقق <x5/> من أنه لا يزال يبني لـ Linux و macOS."
   },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>خصائص</g1> — لتغيير اسمها وأنواع ملفاتها ومجلدها. الفئتان عام والتورنت تغيران مجلديهما فقط. الفئة التي أعيد تسميتها تحتفظ بمجلدها؛ والفئة المضمنة تحتفظ باسمها بلغتك حتى تعيد تسميتها."
+  },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
    "text": "إظهار قائمة السياق"
@@ -4045,10 +4049,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "يمكن تشغيل MDM بدون نافذته بثلاث طرق:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "إعدادات الوكيل / SOCKS في MDM مخصصة لتنزيلات الويب و FTP. يمكن للتورنت استخدام SOCKS5 أيضا: قم بتعيين وكيل <x1/> في <g2>الخيارات ← الوكيل / SOCKS</g2> وقم بتشغيل <g3>استخدام الوكيل</g3> في إعدادات التورنت. يغطي الوكيل الاتصالات بالأقران والمتتبعات عبر الويب فقط، لذلك معه يقوم MDM بإيقاف تشغيل DHT، واكتشاف الأقران المحليين، والاتصالات الواردة، ومتتبعات UDP. إذا اختفى الوكيل من الوكيل / SOCKS بينما هذا المفتاح قيد التشغيل، فلن تبدأ التورنت بدلا من تجاوزها."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4512,7 +4512,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "تبقي <g1>الخيارات ← الوكيل / SOCKS ← محول الشبكة</g1> اتصالات MDM على محول واحد، وعادة ما يكون محول VPN (<g2>الخيارات</g2>). على نظامي Linux و macOS، يربط محرك التورنت كل مقبس به: النظراء، المتتبعات، DHT ومنفذ الاستماع الخاص به. يتم إيقاف تشغيل UPnP واكتشاف النظراء المحليين عندئذ، لأنهما يتحدثان إلى الشبكة المحلية بدلا من المرور عبر المحول. إذا اختفى المحول، يتوقف المحرك، ويبدأ مرة أخرى عبر المحول عندما يعود."
+   "text": "تبقي <g1>الخيارات ← الوكيل / SOCKS ← محول الشبكة</g1> اتصالات MDM على محول واحد، عادة ما يكون محول VPN (<g2>الخيارات</g2>). على نظامي Linux و macOS، يربط محرك التورنت كل مقبس به: الأقران، المتتبعات، DHT ومنفذ الاستماع الخاص به. يتم إيقاف تشغيل UPnP واكتشاف الأقران المحليين حينها، لأنهما يتحدثان إلى الشبكة المحلية بدلا من المرور عبر المحول. إذا اختفى المحول، يتوقف المحرك، ويبدأ مرة أخرى عبر المحول عند عودته."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5284,7 +5284,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "تنزيل ملف بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، مع تسمية اختيارية (<x5/>). <x6/> يختار DNS: <x7/> (الافتراضي)؛ خدمة وكيفية طلبها، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ عناوين خوادم DNS، <x13/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام. <x14/> يرسل كل اتصال عبر محول شبكة واحد، باسمه (<x15/>، <x16/>) أو أحد عناوينه؛ عندما لا يكون متصلا، لا يتم إرسال أي شيء ويفشل التنزيل."
+   "text": "نزل ملفا بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، مع تسمية اختيارية (<x5/>). <x6/> يختار DNS: <x7/> (الافتراضي)؛ خدمة وكيفية طلبها، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ عناوين خوادم DNS، <x13/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام. <x14/> يرسل كل اتصال عبر محول شبكة واحد، باسمه (<x15/>، <x16/>) أو أحد عناوينه؛ عندما لا يكون متصلا، لا يتم إرسال أي شيء ويفشل التنزيل."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5308,7 +5308,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "لم يتم ربطها بالمحول بعد، لذا لا تبدأ بينما يتم اختيار واحد:"
+   "text": "لم يتم ربطها بالمحول بعد، لذلك لا تبدأ بينما يتم اختيار واحد:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5357,10 +5357,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — يعمل من مجلد أو ذاكرة USB"
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>حذف</g1> — إزالة إحدى فئاتك الخاصة. تصبح تنزيلاتها عامة؛ وتبقى ملفاتها حيث هي."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -5964,7 +5960,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "كيفية الاحتفاظ: يربط Windows عنوان المحول الخاص به. ثم يرسل Windows هذه الحزم فقط عبر هذا المحول (نموذج المضيف القوي الخاص به). يربط Linux الجهاز نفسه (Linux 5.7 أو أحدث)، ويربط macOS الواجهة. يتم رفض عنوان من نوع لا يملكه المحول (IPv6 على VPN يدعم IPv4 فقط)، ولا يتم إرساله حوله."
+   "text": "كيف يعمل: يربط Windows عنوان المحول الخاص به. ثم يرسل Windows هذه الحزم فقط من خلال هذا المحول (نموذج المضيف القوي الخاص به). يربط Linux الجهاز نفسه (Linux 5.7 أو أحدث)، ويربط macOS الواجهة. يتم رفض عنوان من نوع لا يملكه المحول (IPv6 على VPN يدعم IPv4 فقط)، ولا يتم إرساله حوله."
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6212,7 +6208,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>محول الشبكة</g1> — <g2>أي (يختاره النظام)</g2> هو الافتراضي. اختر محولا، عادة محول VPN الخاص بك، وستمر جميع الاتصالات التي يفتحها MDM من خلاله، أو لن تمر على الإطلاق. يشمل ذلك التنزيلات، وFTP، وDNS الذي اخترته، وتنزيلات MDM الخاصة، والتحقق من التحديثات. يعمل كمفتاح إيقاف: عندما ينقطع المحول، أو يتم إيقاف تشغيل VPN، لا يمر أي شيء عبر اتصالك العادي. تتوقف التنزيلات الجارية برسالة \"...غير متصل\" وتستأنف عندما يعود المحول. يعرض السطر الموجود أسفل القائمة عنوان المحول، أو أنه غير متصل."
+   "text": "<g1>محول الشبكة</g1> — <g2>أي (يختاره النظام)</g2> هو الافتراضي. اختر محولا، وعادة ما يكون محول VPN الخاص بك، وستمر كل الاتصالات التي يفتحها MDM من خلاله، أو لن تمر على الإطلاق. وهذا يشمل التنزيلات، وFTP، وDNS الذي اخترته، وتنزيلات MDM الخاصة، وفحص التحديثات. يعمل هذا كمفتاح إيقاف: عندما ينقطع المحول، أو يتم إيقاف تشغيل VPN، لا يخرج أي شيء عبر اتصالك العادي. تتوقف التنزيلات الجارية مع رسالة \"… غير متصل\" وتبدأ مرة أخرى عندما يعود المحول. يعرض السطر الموجود أسفل القائمة عنوان المحول، أو أنه غير متصل."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -7366,6 +7362,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>حذف</g1> — لإزالة فئة، سواء كانت من صنعك أو مضمنة (وليس عام أو التورنت). يسألك MDM عما سيحدث لتنزيلاتها: <g2>نقل تنزيلاته إلى عام</g2>، أو <g3>إزالة تنزيلاته من القائمة</g3> (التنزيل الذي يعمل ينتقل إلى عام بدلا من ذلك). تبقى ملفاتها في مكانها في كلتا الحالتين. ومن ثم، تنتقل ملفات أنواعها إلى فئة أخرى تحتوي عليها، أو إلى عام."
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "هل لديك بالفعل yt-dlp أو ffmpeg لبرنامج آخر؟ استخدمها بدلا من نسخة ثانية: في <g1>تنزيل الفيديو من صفحة</g1>، انقر على <g2>المساعدون...</g2>، ثم <g3>استخدام برنامج آخر...</g3> بجانب yt-dlp أو ffmpeg، واختر البرنامج. يقوم MDM بتشغيله مرة واحدة للتحقق من أنه هذا البرنامج، ويستخدمه من ذلك الحين فصاعدا، بما في ذلك سطر الأوامر. لا يقوم MDM بتحديث برنامج اخترته: حافظ على تحديثه بنفسك (yt-dlp: <x4/>، أو مدير الحزم الخاص بك). <g5>استخدام نسخة MDM الخاصة</g5> يعود إلى النسخة التي يقوم MDM بتنزيلها والتحقق منها."
@@ -8153,6 +8153,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> هو النص الإنجليزي؛ اتركه كما هو. غير <g2>translation</g2> فقط."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "لإعادة الفئات المضمنة كما كانت، بأسمائها وأنواع ملفاتها ومجلداتها، استخدم <g1>الخيارات ← حفظ في ← استعادة الفئات المضمنة</g1>. تبقى فئاتك الخاصة، وعام، والتورنت كما هي."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

@@ -22,9 +22,11 @@ async fn main() {
     let out = PathBuf::from(out);
     let torrent = std::fs::read(file).expect("the .torrent file");
     // It only dials out (to the peers LSD names), so it doesn't listen: no incoming
-    // connections, and no firewall question about them.
+    // connections, and no firewall question about them. Its UDP tracker client stays on
+    // loopback too (listen_ip), with nothing on every address.
     let t = Torrents::start(Config {
         listen: false,
+        listen_ip: Some(std::net::IpAddr::V4(std::net::Ipv4Addr::LOCALHOST)),
         upnp: false,
         dht: false,
         lsd: true,

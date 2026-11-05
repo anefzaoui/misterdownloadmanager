@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	It-tnejn huma open source. MDM iġibhom mir-rilaxxi uffiċjali tagħhom bid-downloader tiegħu stess u jiċċekkja l-firma ta' kull fajl qabel ma jaħdem. Madwar 100 MB, darba.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Tirritorna {names} kif kienu meta ġew rilaxxati: l-ismijiet, it-tipi ta' fajls u l-fowlders tagħhom? Il-kategoriji tiegħek stess, Ġenerali u Torrents jibqgħu kif inhuma. Downloads diġà mċaqalqa għal Ġenerali jibqgħu hemm.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Numru default massimu ta' konnessjonijiet
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Ħassar
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Ħassar kategorija
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Ħassar kju
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Ħassar il-kategorija "{category}"? It-tniżżil tagħha jsir Ġenerali; il-fajls tagħhom jibqgħu fejn qegħdin.
+	Delete the category "{category}"? Its files stay where they are.	Ħassar il-kategorija "{category}"? Il-fajls tagħha jibqgħu fejn qegħdin.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Mexxi 'l isfel
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Mexxi t-tniżżil tagħha għal Ġenerali
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Mexxi jew semmi mill-ġdid it-tniżżil magħżul
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Neħħi mill-kju
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Neħħi t-tniżżil tagħha mil-lista (dawk li qed jaħdmu jmorru għal Ġenerali)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Erġa' ibda l-MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Irrestawra l-kategoriji integrati
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

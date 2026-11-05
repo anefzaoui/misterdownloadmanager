@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ಎರಡೂ ಓಪನ್ ಸೋರ್ಸ್ ಆಗಿವೆ. MDM ತನ್ನದೇ ಆದ ಡೌನ್‌ಲೋಡರ್‌ನೊಂದಿಗೆ ಅವುಗಳನ್ನು ತಮ್ಮ ಅಧಿಕೃತ ಬಿಡುಗಡೆಗಳಿಂದ ಪಡೆಯುತ್ತದೆ ಮತ್ತು ಪ್ರತಿ ಫೈಲ್‌ನ ಸಹಿಯನ್ನು ರನ್ ಮಾಡುವ ಮೊದಲು ಪರಿಶೀಲಿಸುತ್ತದೆ. ಸುಮಾರು 100 MB, ಒಮ್ಮೆ.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} ಅನ್ನು ಅವುಗಳನ್ನು ಕಳುಹಿಸಿದಂತೆ ಮರಳಿ ತರಬೇಕೆ: ಅವುಗಳ ಹೆಸರುಗಳು, ಫೈಲ್ ಪ್ರಕಾರಗಳು ಮತ್ತು ಫೋಲ್ಡರ್‌ಗಳು? ನಿಮ್ಮ ಸ್ವಂತ ವರ್ಗಗಳು, ಸಾಮಾನ್ಯ ಮತ್ತು ಟೊರೆಂಟ್‌ಗಳು ಅವುಗಳಂತೆಯೇ ಇರುತ್ತವೆ. ಈಗಾಗಲೇ ಸಾಮಾನ್ಯಕ್ಕೆ ಸರಿಸಿದ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಅಲ್ಲಿಯೇ ಇರುತ್ತವೆ.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ಡೀಫಾಲ್ಟ್ ಗರಿಷ್ಠ ಸಂಪರ್ಕ ಸಂಖ್ಯೆ
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	ಅಳಿಸು
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	ವರ್ಗವನ್ನು ಅಳಿಸಿ
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	ಕ್ಯೂ ಅಳಿಸಿ
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" ವರ್ಗವನ್ನು ಅಳಿಸುವುದೇ? ಅದರ ಡೌನ್‌ಲೋಡ್‌ಗಳು ಸಾಮಾನ್ಯವಾಗುತ್ತವೆ; ಅವುಗಳ ಫೈಲ್‌ಗಳು ಅವುಗಳಿರುವ ಸ್ಥಳದಲ್ಲಿಯೇ ಉಳಿಯುತ್ತವೆ.
+	Delete the category "{category}"? Its files stay where they are.	"{category}" ವರ್ಗವನ್ನು ಅಳಿಸುವುದೇ? ಅದರ ಫೈಲ್‌ಗಳು ಅವು ಇರುವಲ್ಲಿಯೇ ಇರುತ್ತವೆ.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	ಕೆಳಗೆ ಸರಿಸಿ
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	ಅದರ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಸಾಮಾನ್ಯಕ್ಕೆ ಸರಿಸಿ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	ಆಯ್ಕೆಮಾಡಿದ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಸರಿಸಿ ಅಥವಾ ಮರುಹೆಸರಿಸಿ
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	ಸಾಲಿನಿಂದ ತೆಗೆದುಹಾಕಿ
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	ಅದರ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಿ (ಚಾಲನೆಯಲ್ಲಿರುವವು ಸಾಮಾನ್ಯಕ್ಕೆ ಚಲಿಸುತ್ತವೆ)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	ಅಂತರ್ನಿರ್ಮಿತ ವರ್ಗಗಳನ್ನು ಮರುಸ್ಥಾಪಿಸಿ
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

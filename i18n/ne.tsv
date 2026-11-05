@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	दुवै खुला स्रोत हुन्। MDM ले तिनीहरूलाई आफ्नै डाउनलोडरको साथ तिनीहरूको आधिकारिक विमोचनबाट प्राप्त गर्दछ र चलाउनु अघि प्रत्येक फाइलको हस्ताक्षर जाँच गर्दछ। लगभग 100 MB, एक पटक।
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	के {names} लाई तिनीहरू पठाइएका बेलाको जस्तै तिनीहरूको नाम, फाइल प्रकार र फोल्डरहरू सहित फिर्ता ल्याउने हो? तपाईंका आफ्नै वर्गहरू, सामान्य र टोरेन्टहरू जस्ताका त्यस्तै रहन्छन्। सामान्यमा सारिएका डाउनलोडहरू त्यहीँ रहन्छन्।
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	पूर्वनिर्धारित अधिकतम जडान संख्या
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	मेट्नुहोस्
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	श्रेणी मेट्नुहोस्
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	पङ्क्ति मेट्नुहोस्
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" श्रेणी मेट्ने हो? यसका डाउनलोडहरू सामान्य हुन्छन्; तिनीहरूका फाइलहरू जहाँ छन् त्यहीँ रहन्छन्।
+	Delete the category "{category}"? Its files stay where they are.	"{category}" वर्ग मेटाउने हो? यसका फाइलहरू जहाँ छन् त्यहीँ रहन्छन्।
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	तल सार्नुहोस्
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	यसका डाउनलोडहरूलाई सामान्यमा सार्नुहोस्
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	चयन गरिएको डाउनलोड सार्नुहोस् वा नाम परिवर्तन गर्नुहोस्
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	क्यूबाट हटाउनुहोस्
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	यसका डाउनलोडहरूलाई सूचीबाट हटाउनुहोस् (चल्नेहरू सामान्यमा सर्छन्)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM पुन: सुरु गर्नुहोस्
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	बिल्ट-इन वर्गहरू पुनर्स्थापना गर्नुहोस्
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

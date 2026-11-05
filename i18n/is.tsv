@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Bæði eru opinn hugbúnaður. MDM sækir þau úr opinberum útgáfum með eigin niðurhalara og athugar undirskrift hverrar skráar áður en hún er keyrð. Um 100 MB, einu sinni.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Endurheimta {names} eins og þau voru afhent: nöfn þeirra, skráargerðir og möppur? Þínir eigin flokkar, Almennt og Torrents haldast óbreyttir. Niðurhal sem þegar hefur verið fært í Almennt helst þar.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Sjálfgefið hámark fjölda tenginga
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Eyða
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Eyða flokki
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Eyða biðröð
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Eyða flokknum „{category}“? Niðurhalið í honum verður almennt; skrárnar haldast þar sem þær eru.
+	Delete the category "{category}"? Its files stay where they are.	Eyða flokknum „{category}“? Skrár hans haldast þar sem þær eru.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Færa niður
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Færa niðurhal þess í Almennt
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Færa eða endurnefna valið niðurhal
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Fjarlægja úr biðröðinni
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Fjarlægja niðurhal þess af listanum (þau sem eru í gangi færast í Almennt)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Endurræsa MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Endurheimta innbyggða flokka
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

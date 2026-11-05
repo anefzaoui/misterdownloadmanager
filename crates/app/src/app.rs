@@ -326,7 +326,7 @@ pub struct App {
     /// The category dialog was opened by Download File Info's "+" (its result is picked there).
     category_for_file_info: bool,
     /// Delete a category of the user's, asking first.
-    confirm_category_delete: Option<(u32, dialogs::Confirm)>,
+    confirm_category_delete: Option<dialogs::DeleteCategory>,
     /// File Properties windows, one per download.
     properties: Vec<crate::properties::Properties>,
     /// Verify checksum windows, one per download.
@@ -674,7 +674,7 @@ impl App {
             q.running = q.schedule.start_on_startup;
         }
         let (next_id, mut items) = (loaded.next_id, loaded.items);
-        crate::model::set_custom(&settings.custom_categories);
+        settings.publish_categories();
         // D-021: torrents are a category of their own (lists from before had them by file
         // type); their files stay where they are.
         for i in &mut items {
@@ -1449,6 +1449,27 @@ impl App {
             "tray" => self.hide_to_tray(ctx),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
+            // category:Music / category-delete:Music — the Categories right-click menu's
+            // Properties and Delete for a category by name (#93; the docs' shots and checks);
+            // category-remove:Music opens Delete with "Remove its downloads" chosen.
+            "category" | "category-delete" | "category-remove" => {
+                if let Some(c) = Category::all()
+                    .into_iter()
+                    // `/show` arrives in lower case (mdm_ipc::parse_args).
+                    .find(|c| c.key().eq_ignore_ascii_case(tab) || c.shown().to_lowercase() == tab)
+                {
+                    let cmd = if window == "category" {
+                        Cmd::CategoryProps(c)
+                    } else {
+                        Cmd::DeleteCategory(c)
+                    };
+                    self.run(cmd, None, ctx);
+                    if window == "category-remove" {
+                        self.confirm_category_delete =
+                            self.confirm_category_delete.take().map(|d| d.removing());
+                    }
+                }
+            }
             "video-page" => self.run(Cmd::VideoPage, None, ctx),
             // Download video from a page → Helpers... (#51).
             "video-helpers" => {
@@ -2738,7 +2759,7 @@ impl App {
 
     /// Options → OK: keep the new settings and act on what changed.
     fn apply_options(&mut self, new: Settings) {
-        crate::model::set_custom(&new.custom_categories);
+        new.publish_categories();
         // Portable mode writes nothing outside its folder (the option is off there).
         if new.launch_on_startup != self.settings.launch_on_startup
             && mdm_ipc::portable_dir().is_none()
@@ -3272,17 +3293,10 @@ impl App {
                 let folder = self.settings.category_dir(c, &self.downloads);
                 self.category_dlg = Some(crate::categories::CategoryDialog::edit(c, &folder));
             }
-            Cmd::DeleteCategory(Category::Custom(id)) => {
-                let text = crate::i18n::fmt(
-                    crate::i18n::t(
-                        "Delete the category \"{category}\"? Its downloads become General; their files stay where they are.",
-                    ),
-                    &[("category", &Category::Custom(id).label())],
-                );
-                self.confirm_category_delete = Some((
-                    id,
-                    dialogs::Confirm::new(crate::i18n::mark("Delete category"), text),
-                ));
+            // The user's categories and the built-in ones by file type (#93); not General nor
+            // Torrents.
+            Cmd::DeleteCategory(c) if c.editable() => {
+                self.confirm_category_delete = Some(dialogs::DeleteCategory::new(c));
             }
             Cmd::DeleteCategory(_) => {}
             Cmd::ToggleDropTarget => {
@@ -3894,9 +3908,7 @@ impl App {
                     I("Add category", Cmd::AddCategory, true, false),
                     match cat {
                         // i18n: verb: deletes the category
-                        Some(c) if c.is_custom() => {
-                            I("Delete", Cmd::DeleteCategory(c), true, false)
-                        }
+                        Some(c) if c.editable() => I("Delete", Cmd::DeleteCategory(c), true, false),
                         // i18n: verb: deletes the category
                         _ => off("Delete"),
                     },
@@ -5364,15 +5376,26 @@ impl App {
                 }
             }
         }
-        if let Some((id, d)) = &mut self.confirm_category_delete {
+        if let Some(d) = &mut self.confirm_category_delete {
             match d.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed => self.confirm_category_delete = None,
-                Outcome::Done(()) => {
-                    let id = *id;
+                Outcome::Done(remove) => {
+                    let cat = d.category;
                     self.confirm_category_delete = None;
-                    crate::categories::delete(&mut self.settings, id, &mut self.items);
-                    let gone = Some(Category::Custom(id));
+                    // Off the list first (not their files); the running ones can't go, so they
+                    // move to General with the rest.
+                    if remove {
+                        let ids: Vec<u64> = self
+                            .items
+                            .iter()
+                            .filter(|i| i.category == cat && i.live.is_none())
+                            .map(|i| i.id)
+                            .collect();
+                        self.remove_downloads(&ids, false);
+                    }
+                    crate::categories::delete(&mut self.settings, cat, &mut self.items);
+                    let gone = Some(cat);
                     if matches!(self.view, View::Cat(c) if Some(c) == gone)
                         || matches!(self.view, View::Unfinished(c) | View::Finished(c) if c == gone)
                     {
@@ -5629,8 +5652,8 @@ impl App {
             match d.show(ctx, &self.downloads) {
                 Outcome::Open => {}
                 Outcome::Closed => {
-                    // Cancel: categories the dialog added or changed are undone.
-                    crate::model::set_custom(&self.settings.custom_categories);
+                    // Cancel: categories the dialog added, changed or restored are undone.
+                    self.settings.publish_categories();
                     self.options = None;
                 }
                 Outcome::Done(new) => {

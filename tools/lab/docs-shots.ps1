@@ -20,8 +20,11 @@ param(
   [string]$Torrent = "",
   # Only these shots (names without .png); all when empty.
   [string[]]$Only = @(),
-  # Dark mode for every window (Windows' app mode must be dark too, as MDM follows it).
-  [switch]$Dark
+  # Dark mode for every window (View → Always dark: Windows' own mode doesn't matter).
+  [switch]$Dark,
+  # The run's temporary folder, whose path shows in some windows (Add torrent's); default
+  # target\docs-shots in this checkout. From a worktree, the main checkout's target keeps it short.
+  [string]$Work = ""
 )
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -30,7 +33,7 @@ $Server = (Resolve-Path $Server).Path
 $out = if ([IO.Path]::IsPathRooted($OutDir)) { $OutDir } else { Join-Path $root $OutDir }
 New-Item -ItemType Directory -Force $out | Out-Null
 # Under the repository (ignored target/): the temp folder's path names the user.
-$work = Join-Path $root "target\docs-shots"
+$work = if ($Work) { $Work } else { Join-Path $root "target\docs-shots" }
 Add-Type @"
 using System; using System.Text; using System.Collections.Generic; using System.Runtime.InteropServices;
 public static class DS {
@@ -104,8 +107,10 @@ $srv = $null; $app = $null
 try {
   if (Test-Path $work) { Remove-Item $work -Recurse -Force }
   New-Item -ItemType Directory -Force "$work\data", "$work\dl" | Out-Null
-  # The language is chosen (no first-start picker); light mode unless asked. Every category's
-  # folder is under $work, so no shot shows the user's own folders (or name).
+  # The language is chosen (no first-start picker); light mode unless asked, dark with View →
+  # Always dark, whatever Windows' own mode. Every category's folder is under $work, so no shot
+  # shows the user's own folders (or name). Nothing reaches out: no update check, and the torrent
+  # engine neither listens nor uses the DHT, UPnP or local discovery (no firewall prompt).
   $dark = $Dark -or ($Only -contains "main-dark")
   $q = { param($s) ($s | ConvertTo-Json) }
   $dirs = @("General", "Compressed", "Documents", "Music", "Programs", "Video", "Torrents") |
@@ -116,6 +121,8 @@ try {
   Set-Content -Encoding utf8 "$work\data\downloads.json" (
     '{"next_id":1,"items":[],"version":2,"settings":{"language":' + (& $q $Lang) +
     ',"language_asked":true,"helpers_asked":true,"extension_never_ask":true,"dark_mode_support":' + $dark.ToString().ToLower() +
+    ',"always_dark":' + $dark.ToString().ToLower() +
+    ',"update_check":false,"torrent_incoming":false,"torrent_upnp":false,"torrent_dht":false,"torrent_lsd":false,"torrent_stop_idle":true' +
     ',"category_dirs":[' + ($dirs -join ",") + ']}}')
 
   $srv = Start-Process -PassThru -WindowStyle Hidden $Server -ArgumentList "--bind 127.0.0.1:$Port"
@@ -128,12 +135,13 @@ try {
   Start-Sleep 3
   $main = @(Titles $app.Id | Where-Object { $_ -like "Mister Download Manager*" })[0]
 
-  # A list that looks used: finished files, one still coming in (rate-limited).
+  # A list that looks used: finished files, one still coming in (rate-limited: the rate is per
+  # connection, so 256K over its 8 connections is about 2 MB/sec).
   $files = @(
     @("big-buck-bunny-1080p.mp4", "180M", ""), @("project-report-2026.pdf", "4M", ""),
     @("holiday-photos.zip", "64M", ""), @("podcast-episode-42.mp3", "38M", ""),
     @("rust-1.99.1-x86_64-pc-windows-msvc.msi", "92M", ""), @("open-data-2026.csv", "12M", ""),
-    @("ubuntu-26.04-desktop-amd64.iso", "6G", "?rate=3M")
+    @("ubuntu-26.04-desktop-amd64.iso", "6G", "?rate=256K")
   )
   foreach ($f in $files) {
     & $Exe /d "http://127.0.0.1:$Port/gen/$($f[1])/$($f[0])$($f[2])" /p "$work\dl" /n

@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	둘 다 오픈 소스입니다. MDM은 자체 다운로더로 공식 릴리스에서 가져오며 실행하기 전에 각 파일의 서명을 확인합니다. 약 100MB, 한 번.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names}을(를) 원래대로 복원하시겠습니까? 이름, 파일 형식 및 폴더가 원래대로 돌아갑니다. 사용자 지정 범주, 일반 및 토렌트는 그대로 유지됩니다. 이미 일반으로 이동된 다운로드는 그대로 유지됩니다.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	기본 최대 연결 수
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	삭제
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	범주 삭제
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	큐 삭제
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	범주 "{category}"를 삭제하시겠습니까? 다운로드는 일반으로 변경되고 파일은 현재 위치에 유지됩니다.
+	Delete the category "{category}"? Its files stay where they are.	범주 "{category}"을(를) 삭제하시겠습니까? 해당 파일은 현재 위치에 유지됩니다.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	아래로 이동
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	다운로드를 일반으로 이동
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	선택한 다운로드 이동 또는 이름 바꾸기
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	대기열에서 제거
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	목록에서 다운로드 제거(실행 중인 항목은 일반으로 이동)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM 다시 시작
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	기본 제공 범주 복원
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

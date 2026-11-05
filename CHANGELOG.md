@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The built-in categories are yours to change** ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93)):
+  Compressed, Documents, Music, Programs and Video can be renamed, given other file types and
+  deleted, like your own categories (right-click → Properties or Delete). A renamed category keeps
+  its folder. Deleting one asks what happens to its downloads: move them to General, or take them
+  off the list; their files stay either way. **Options → Save to → Restore the built-in
+  categories** brings them back as they came. General and Torrents still change only their folder.
 - **Hide to the notification area** ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63)):
   a download's progress window has a button that hides it in the tray while the download goes
   on: on Windows in its title bar, left of Minimize (the progress window draws its own Windows 11
@@ -141,6 +147,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Torrents behind a proxy open no UDP socket toward the network**: UDP trackers were already
+  left out there; now their client stays on this computer too.
+- **Developers: tests no longer make Windows Firewall ask about them.** The torrent tests and
+  test tools listen on 127.0.0.1 only (a new setting of the torrent engine, its listen address),
+  so each new build of a test no longer opens sockets on every address.
 - **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
   closed to the tray, MDM gives the memory it isn't using back to Windows. Task Manager's
   **Memory** drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to

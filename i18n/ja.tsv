@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	どちらもオープンソースです。MDM は公式リリースから独自のダウンローダーで取得し、実行前に各ファイルの署名をチェックします。約 100 MB、1 回限りです。
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	出荷時の状態に{names}を戻しますか？名前、ファイルの種類、フォルダーは出荷時の状態に戻ります。独自のカテゴリ、[全般]、[トレント] はそのまま残ります。既に [全般] に移動されたダウンロードはそのまま残ります。
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	既定の最大接続数
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	削除
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	カテゴリを削除
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	キューを削除
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	カテゴリ「{category}」を削除しますか? ダウンロードは「一般」になり、ファイルは元の場所に残ります。
+	Delete the category "{category}"? Its files stay where they are.	カテゴリ「{category}」を削除しますか？ファイルは元の場所に残ります。
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	下に移動
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	ダウンロードを「一般」に移動する
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	選択したダウンロードを移動または名前変更
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	キューから削除
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	ダウンロードをリストから削除する (実行中のものは「一般」に移動)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM を再起動する
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	組み込みのカテゴリを復元
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

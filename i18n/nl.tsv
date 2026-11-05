@@ -284,6 +284,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Beide zijn open source. MDM haalt ze op van hun officiële releases met zijn eigen downloader en controleert de handtekening van elk bestand voordat het wordt uitgevoerd. Ongeveer 100 MB, eenmalig.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	De oorspronkelijke {names} herstellen: hun namen, bestandstypen en mappen? Uw eigen categorieën, Algemeen en Torrents blijven zoals ze zijn. Downloads die al naar Algemeen zijn verplaatst, blijven daar.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -523,20 +526,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Standaard max. aantal verb.
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Verwijderen
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Categorie verwijderen
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Wachtrij verwijderen
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	De categorie "{category}" verwijderen? De downloads worden Algemeen; de bestanden blijven waar ze zijn.
+	Delete the category "{category}"? Its files stay where they are.	De categorie "{category}" verwijderen? De bestanden blijven op hun huidige locatie.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1312,6 +1316,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Omlaag verplaatsen
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	De downloads verplaatsen naar Algemeen
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Geselecteerde download verplaatsen of hernoemen
@@ -1757,6 +1765,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Verwijderen uit de wachtrij
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	De downloads uit de lijst verwijderen (actieve downloads worden verplaatst naar Algemeen)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1765,6 +1777,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM opnieuw starten
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	De ingebouwde categorieën herstellen
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine

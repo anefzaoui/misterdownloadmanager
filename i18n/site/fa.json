@@ -2110,6 +2110,10 @@
    "source": "Delete the selected downloads (asks first)",
    "text": "بارگیری‌های انتخاب‌شده را حذف می‌کند (ابتدا می‌پرسد)"
   },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "تنظیمات پروکسی / SOCKS در MDM برای دانلودهای وب و FTP است. تورنت‌ها نیز می‌توانند از SOCKS5 استفاده کنند: یک پروکسی <x1/> را در <g2>گزینه‌ها ← پروکسی / SOCKS</g2> تنظیم کنید و <g3>استفاده از پروکسی</g3> را در تنظیمات تورنت روشن کنید. پروکسی فقط اتصالات به همتایان و ردیاب‌های وب را پوشش می‌دهد، بنابراین با آن MDM، DHT، کشف همتایان محلی، اتصالات ورودی و ردیاب‌های UDP را خاموش می‌کند؛ و هیچ سوکت UDP به سمت شبکه باز نمی‌کند. اگر پروکسی از پروکسی / SOCKS حذف شود در حالی که آن سوئیچ روشن است، تورنت‌ها شروع نمی‌شوند و از آن عبور نمی‌کنند."
+  },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
    "text": "<g1>دیالوگ‌های فایل سیستم دیگر پنجره‌های دیگر MDM را فریز نمی‌کنند</g1> در حالی که باز هستند."
@@ -2605,10 +2609,6 @@
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>شروع دانلود در</g1> — یک زمان، سپس یا:"
-  },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>ویژگی‌ها</g1> — پوشه آن را تغییر دهید (و برای دسته‌های خودتان، نام و انواع فایل آن را)."
   },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
@@ -3662,6 +3662,10 @@
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>فراخوانی‌های فقط Windows در <x2/> قرار دارند</g1>، معادل‌های Linux و macOS آن‌ها در <x3/>؛ بقیه فضای کاری Rust امن و قابل حمل است (<x4/>). در Windows، <x5/> بررسی می‌کند که همچنان برای Linux و macOS ساخته می‌شود."
   },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>ویژگی‌ها</g1> — نام، انواع فایل و پوشه آن را تغییر دهید. فقط عمومی و تورنت‌ها پوشه خود را تغییر می‌دهند. یک دسته‌بندی تغییرنام‌یافته پوشه خود را حفظ می‌کند؛ یک دسته‌بندی داخلی نام خود را به زبان شما حفظ می‌کند تا زمانی که آن را تغییر نام دهید."
+  },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
    "text": "Shift+F10"
@@ -4045,10 +4049,6 @@
   "70c4df1b8695ae14": {
    "source": "MDM can be driven without its window in three ways:",
    "text": "MDM را می‌توان بدون پنجره‌اش به سه روش کنترل کرد:"
-  },
-  "70ea8a9bf5e19416": {
-   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
-   "text": "تنظیمات پروکسی / SOCKS MDM برای بارگیری‌های وب و FTP است. تورنت‌ها نیز می‌توانند از یک SOCKS5 استفاده کنند: یک پروکسی <x1/> را در <g2>گزینه‌ها → پروکسی / SOCKS</g2> تنظیم کنید و <g3>استفاده از پروکسی</g3> را در تنظیمات تورنت روشن کنید. پروکسی فقط اتصالات به همتایان و ردیاب‌های وب را پوشش می‌دهد، بنابراین با آن MDM DHT، کشف همتایان محلی، اتصالات ورودی و ردیاب‌های UDP را خاموش می‌کند. اگر پروکسی از پروکسی / SOCKS در حالی که آن سوئیچ روشن است، حذف شود، تورنت‌ها به جای اینکه از آن عبور کنند، شروع نمی‌شوند."
   },
   "710f3b53af09b6d8": {
    "source": "A video's progress window",
@@ -4512,7 +4512,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>گزینه‌ها ← پروکسی / SOCKS ← آداپتور شبکه</g1> اتصالات MDM را به یک آداپتور، معمولا VPN، محدود می‌کند (<g2>گزینه‌ها</g2>). در Linux و macOS، موتور تورنت هر سوکت را به آن متصل می‌کند: همتایان، ردیاب‌ها، DHT و پورت گوش دادن آن. UPnP و کشف همتایان محلی در این حالت خاموش می‌شوند، زیرا آنها به جای عبور از آداپتور، با شبکه محلی ارتباط برقرار می‌کنند. اگر آداپتور از دسترس خارج شود، موتور متوقف می‌شود و زمانی که آداپتور بازگردد، دوباره از طریق آن شروع به کار می‌کند."
+   "text": "<g1>گزینه‌ها → پروکسی / SOCKS → آداپتور شبکه</g1> اتصالات MDM را به یک آداپتور، معمولا VPN، محدود می‌کند (<g2>گزینه‌ها</g2>). در Linux و macOS، موتور تورنت هر سوکت را به آن متصل می‌کند: همتایان، ردیاب‌ها، DHT و پورت گوش دادن آن. UPnP و کشف همتایان محلی در این حالت خاموش می‌شوند، زیرا آنها به جای عبور از آداپتور، با شبکه محلی صحبت می‌کنند. اگر آداپتور از بین برود، موتور متوقف می‌شود و زمانی که آداپتور بازگردد، دوباره از طریق آن شروع به کار می‌کند."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5284,7 +5284,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "یک فایل را با حداکثر 8 اتصال (<x1/>، 1 تا 128)، همراه با نمایش پیشرفت، بارگیری می‌کند. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> فایل تمام‌شده را بررسی می‌کند: هگز MD5، SHA-1، SHA-256، SHA-512 یا CRC32، که به صورت اختیاری نام‌گذاری شده است (<x5/>). <x6/> DNS را انتخاب می‌کند: <x7/> (پیش‌فرض)؛ یک سرویس و نحوه درخواست آن، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ آدرس‌های سرورهای DNS، <x13/>؛ یا یک آدرس DNS-over-HTTPS. هرگز به DNS سیستم بازنمی‌گردد. <x14/> هر اتصال را از طریق یک آداپتور شبکه، با نام آن (<x15/>، <x16/>) یا یکی از آدرس‌های آن ارسال می‌کند؛ وقتی متصل نباشد، چیزی ارسال نمی‌شود و بارگیری با شکست مواجه می‌شود."
+   "text": "فایلی را با حداکثر 8 اتصال (<x1/>، 1 تا 128)، با نمایش پیشرفت، بارگیری کنید. <x2/> آن را متوقف می‌کند؛ <x3/> ادامه می‌دهد. <x4/> فایل تمام‌شده را بررسی می‌کند: هگز MD5، SHA-1، SHA-256، SHA-512 یا CRC32، که به صورت اختیاری نام‌گذاری شده است (<x5/>). <x6/> DNS را انتخاب می‌کند: <x7/> (پیش‌فرض)؛ یک سرویس و نحوه درخواست آن، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ آدرس‌های سرورهای DNS، <x13/>؛ یا یک آدرس DNS-over-HTTPS. هرگز به DNS سیستم بازنمی‌گردد. <x14/> هر اتصال را از طریق یک آداپتور شبکه، با نام آن (<x15/>، <x16/>) یا یکی از آدرس‌های آن ارسال می‌کند؛ وقتی متصل نباشد، چیزی ارسال نمی‌شود و بارگیری با شکست مواجه می‌شود."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5357,10 +5357,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — از یک پوشه یا فلش USB اجرا می‌شود"
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>حذف</g1> — یکی از دسته‌های خودتان را حذف کنید. دانلودهای آن عمومی می‌شوند؛ فایل‌هایشان در جای خود باقی می‌مانند."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -6212,7 +6208,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>کارت شبکه</g1> — <g2>هر کدام (سیستم انتخاب می‌کند)</g2> پیش‌فرض است. یک کارت شبکه، معمولا کارت شبکه VPN شما، را انتخاب کنید تا هر اتصالی که MDM باز می‌کند از طریق آن برقرار شود، یا اصلا برقرار نشود. این شامل دانلودها، FTP، DNS انتخابی شما، دانلودهای خود MDM و بررسی به‌روزرسانی می‌شود. این ویژگی مانند یک سوئیچ قطع‌کننده عمل می‌کند: وقتی کارت شبکه قطع می‌شود، یا VPN خاموش می‌شود، هیچ چیزی از طریق اتصال عادی شما خارج نمی‌شود. دانلودهای در حال اجرا با پیام «… متصل نیست» متوقف می‌شوند و با بازگشت کارت شبکه دوباره شروع می‌شوند. خط زیر لیست، آدرس کارت شبکه یا وضعیت عدم اتصال آن را نشان می‌دهد."
+   "text": "<g1>کارت شبکه</g1> — <g2>هر کدام (سیستم انتخاب می‌کند)</g2> پیش‌فرض است. یک کارت شبکه، معمولا کارت شبکه VPN شما، را انتخاب کنید تا هر اتصالی که MDM باز می‌کند از طریق آن برقرار شود، یا اصلا برقرار نشود. این شامل دانلودها، FTP، DNS انتخابی شما، دانلودهای خود MDM و بررسی به‌روزرسانی می‌شود. این ویژگی مانند یک سوئیچ قطع‌کننده عمل می‌کند: وقتی کارت شبکه قطع می‌شود یا VPN خاموش می‌شود، هیچ چیزی از طریق اتصال عادی شما خارج نمی‌شود. دانلودهای در حال اجرا با پیام «… متصل نیست» متوقف می‌شوند و با بازگشت کارت شبکه دوباره شروع می‌شوند. خط زیر لیست، آدرس کارت شبکه را نشان می‌دهد، یا اینکه متصل نیست."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -7366,6 +7362,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>حذف</g1> — یک دسته‌بندی، چه دسته‌بندی خودتان باشد و چه یک دسته‌بندی داخلی (نه عمومی یا تورنت‌ها) را حذف کنید. MDM می‌پرسد چه اتفاقی برای دانلودهای آن بیفتد: <g2>انتقال دانلودهای آن به عمومی</g2>، یا <g3>حذف دانلودهای آن از لیست</g3> (یک دانلود در حال اجرا به جای آن به عمومی منتقل می‌شود). فایل‌های آن‌ها در هر صورت در جای خود باقی می‌مانند. از آن به بعد، فایل‌های از نوع آن به دسته‌بندی دیگری که آن‌ها را دارد، یا به عمومی می‌روند."
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "از قبل yt-dlp یا ffmpeg را برای برنامه دیگری دارید؟ به جای یک نسخه دوم، از آنها استفاده کنید: در <g1>بارگیری ویدئو از یک صفحه</g1>، روی <g2>کمک‌کننده‌ها...</g2> کلیک کنید، سپس <g3>استفاده از برنامه دیگر...</g3> را کنار yt-dlp یا ffmpeg انتخاب کرده و برنامه را برگزینید. MDM آن را یک بار اجرا می‌کند تا مطمئن شود که همان برنامه است و از آن به بعد از آن استفاده می‌کند، خط فرمان نیز همینطور. MDM برنامه‌ای را که شما انتخاب کرده‌اید به‌روزرسانی نمی‌کند: خودتان آن را به‌روز نگه دارید (yt-dlp: <x4/>، یا مدیر بسته شما). <g5>استفاده از نسخه خود MDM</g5> به نسخه‌ای برمی‌گردد که MDM دانلود و بررسی می‌کند."
@@ -7940,7 +7940,7 @@
   },
   "e0e426203d8a6245": {
    "source": "(implicit TLS; <x1/> with TLS is fine).",
-   "text": "(TLS ضمنی؛ <x1/> با TLS مشکلی ندارد)."
+   "text": "(TLS ضمنی؛ <x1/> با TLS خوب است)."
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
@@ -8153,6 +8153,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>منبع</g1> متن انگلیسی است؛ آن را همانطور که هست رها کنید. فقط <g2>ترجمه</g2> را تغییر دهید."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "برای بازگرداندن دسته‌بندی‌های داخلی به حالت اولیه، با نام‌ها، انواع فایل‌ها و پوشه‌هایشان، از <g1>گزینه‌ها → ذخیره در → بازیابی دسته‌بندی‌های داخلی</g1> استفاده کنید. دسته‌بندی‌های خودتان، عمومی و تورنت‌ها به همان شکل باقی می‌مانند."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -8520,7 +8524,7 @@
   },
   "f208414e0c06341b": {
    "source": "video pages (yt-dlp can't be held to an adapter);",
-   "text": "صفحات ویدئو (yt-dlp نمی‌تواند به یک کارت شبکه متصل شود)؛"
+   "text": "صفحات ویدئویی (yt-dlp نمی‌تواند به یک کارت شبکه متصل شود)؛"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
