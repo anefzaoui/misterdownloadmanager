@@ -93,6 +93,18 @@ jobs:
       - name: Tests
         run: cargo test --workspace
 
+  # A translator's reviewed rows (no "#, machine" line) must survive every pull request: no
+  # tool or merge may drop them or hand them back to machine translation.
+  translations:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reviewed translations kept
+        run: python3 tools/i18n/reviewed_guard.py --base "origin/${{ github.base_ref }}"
+
   extension:
     name: browser extension
     runs-on: ubuntu-latest

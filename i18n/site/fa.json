@@ -168,7 +168,7 @@
   },
   "0392cd7e700db53e": {
    "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "آخرین به‌روزرسانی: 2026-11-06 · شامل برنامه، افزونه مرورگر و misterdownloadmanager.com می‌شود"
+   "text": "آخرین به‌روزرسانی در 2026-11-06 · شامل برنامه، افزونه مرورگر و misterdownloadmanager.com می‌شود"
   },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
@@ -1033,6 +1033,10 @@
   "1a9157b9737ecefc": {
    "source": "Link grabber and archives",
    "text": "دریافت‌کننده پیوند و بایگانی‌ها"
+  },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>گزینه‌ها ← پروکسی / SOCKS ← آداپتور شبکه</g1> اتصالات MDM را به یک آداپتور، معمولا آداپتور VPN، محدود می‌کند (<g2>گزینه‌ها</g2>). موتور تورنت هر سوکت را به آن متصل می‌کند: همتایان (TCP، و از طریق پروکسی SOCKS)، ردیاب‌های HTTP و UDP، DHT و پورت گوش دادن. در Linux و macOS، خود آداپتور را متصل می‌کند. در Windows، آدرس آداپتور را (آدرس IPv4 آن را در صورت وجود) متصل می‌کند، و Windows یک بسته را فقط از طریق آداپتوری ارسال می‌کند که آدرس مبدأ آن را دارد. UPnP و کشف همتایان محلی در این صورت خاموش می‌شوند، زیرا آنها به جای از طریق آداپتور، با شبکه محلی ارتباط برقرار می‌کنند."
   },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
@@ -2505,6 +2509,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "نیازی نیست ابتدا MDM را اجرا کنید. هنگامی که مرورگر یک دانلود را تحویل می‌دهد و MDM در حال اجرا نیست، کمک‌کننده آن را شروع کرده و دانلود را منتقل می‌کند."
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "این به عنوان یک سوئیچ قطع عمل می‌کند. وقتی آداپتور قطع می‌شود، تورنت‌های در حال اجرا با پیام «… متصل نیست؛ وقتی دوباره متصل شود ادامه می‌یابد» متوقف می‌شوند، و وقتی آداپتور دوباره متصل شود، از طریق آن شروع به کار می‌کنند. تا زمانی که MDM متوجه شود (در عرض یک ثانیه)، سوکت‌های موتور همچنان به آدرسی متصل هستند که از بین رفته است، بنابراین هیچ چیز نمی‌تواند از راه دیگری خارج شود. تورنتی که در حالی که آداپتور متصل نیست اضافه شود، شروع نمی‌شود و دلیل آن را می‌گوید. نام ردیاب‌ها همچنان توسط DNS سیستم جستجو می‌شوند."
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -5594,6 +5602,10 @@
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 گیبی‌بایت در 1.0 ثانیه</g1> <g2>IDM: 5.5 ثانیه</g2>"
   },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>کارت شبکه</g1> — <g2>هر کدام (سیستم انتخاب می‌کند)</g2> پیش‌فرض است. یک کارت شبکه، معمولا کارت شبکه VPN خود را انتخاب کنید تا هر اتصالی که MDM باز می‌کند، از طریق آن برقرار شود، یا اصلا برقرار نشود. این شامل دانلودها، FTP، تورنت‌ها، DNS انتخابی شما، دانلودهای خود MDM و بررسی به‌روزرسانی می‌شود. این ویژگی مانند یک سوئیچ قطع‌کننده عمل می‌کند: وقتی کارت شبکه قطع می‌شود، یا VPN خاموش می‌شود، هیچ چیزی از طریق اتصال عادی شما خارج نمی‌شود. دانلودهای در حال اجرا با پیام «… متصل نیست» متوقف می‌شوند و با بازگشت کارت شبکه دوباره شروع به کار می‌کنند. خط زیر لیست، آدرس کارت شبکه را نشان می‌دهد، یا اینکه متصل نیست."
+  },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
    "text": "<g1>خواندن فایل دامپ.</g1> مانیتور فایل دامپ را با <x2/> موزیلا می‌خواند. اگر نمادهای Breakpad نسخه منتشرشده پیدا شوند، از آن‌ها استفاده می‌کند. یک بیلد از سورس نیز می‌تواند اطلاعات اشکال‌زدایی بومی (مانند <x3/> و DWARF) را در کنار آن بخواند، در صورتی که با <x4/> ساخته شده باشد؛ برنامه ارائه شده بدون آن خواننده، که چندین مگابایت حجم دارد، عرضه می‌شود. <g5>امضای</g5> گزارش (برای مثال <x6/>) در گزارش‌های مربوط به یک مشکل ثابت می‌ماند و پنجره، مسائل موجود را برای آن جستجو می‌کند."
@@ -7018,6 +7030,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>دانلودهای خود MDM از دانلودکننده خودش استفاده می‌کنند</g1>: yt-dlp، ffmpeg، به‌روزرسانی‌های MDM و نمادهای گزارش خرابی اکنون با چندین اتصال دانلود می‌شوند، پس از قطع اتصال ادامه می‌یابند و از طریق تنظیمات پروکسی شما عبور می‌کنند. هر فایل قبل از استفاده هنوز با چک‌سام‌های امضا شده ناشر خود بررسی می‌شود."
   },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "ردیفی که یک <x1/> خط بالای آن دارد، توسط ماشین ترجمه شده است. پس از بررسی آن (و در صورت نیاز، تصحیح آن)، آن <x2/> خط را حذف کنید. از آن به بعد، آن ردیف متعلق به شماست: ترجمه ماشینی هرگز آن را جایگزین نمی‌کند."
+  },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
    "text": "محدودیت را از پاسخ سرور یاد می‌گیرد، به آن پایبند می‌ماند و برای دفعه بعد به خاطر می‌سپارد. در 12.6 ثانیه به پایان رسید."
@@ -8225,6 +8241,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "کامل، میانه (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "ردیفی که خط <x1/> ندارد، از آن به بعد مال شماست: <x2/> هرگز آن را دوباره به ترجمه ماشینی نمی‌فرستد، و CI (<x3/>) هر درخواست pull را که آن را حذف کند یا دوباره <x4/> علامت بزند، رد می‌کند."
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",

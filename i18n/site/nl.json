@@ -1034,6 +1034,10 @@
    "source": "Link grabber and archives",
    "text": "Linkgrabber en archieven"
   },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>Opties → Proxy/Socks → Netwerkadapter</g1> houdt MDM's verbindingen op één adapter, meestal die van een VPN (<g2>Opties</g2>). De torrent-engine bindt elke socket eraan: peers (TCP, en via een SOCKS-proxy), HTTP- en UDP-trackers, de DHT en de luisterpoort. Op Linux en macOS bindt het de adapter zelf. Op Windows bindt het het adres van de adapter (het IPv4-adres als dat aanwezig is), en Windows stuurt een pakket alleen via de adapter die het bronadres heeft. UPnP en lokale peer-detectie zijn dan uitgeschakeld, omdat ze met het lokale netwerk communiceren in plaats van via de adapter."
+  },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>Het is gratis, voorgoed.</g1> Geen proefversie die verloopt, geen licentiesleutel, geen advertenties. De GNU GPL garandeert dat het gratis blijft."
@@ -2505,6 +2509,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "U hoeft MDM niet eerst te starten. Wanneer de browser een download overdraagt en MDM niet actief is, start de helper het en geeft de download door."
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "Het werkt als een kill switch. Wanneer de adapter de verbinding verbreekt, stoppen actieve torrents met \"… is niet verbonden; het gaat verder wanneer het terug is\", en ze starten opnieuw via de adapter wanneer deze weer verbonden is. Totdat MDM dit opmerkt (binnen een seconde), zijn de sockets van de engine nog steeds gebonden aan een adres dat verdwenen is, dus niets kan op een andere manier vertrekken. Een torrent die wordt toegevoegd terwijl de adapter niet is verbonden, start niet en vermeldt de reden. Tracker-namen worden nog steeds opgezocht door de DNS van het systeem."
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -5594,6 +5602,10 @@
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB in 1,0 s</g1> <g2>IDM: 5,5 s</g2>"
   },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Netwerkadapter</g1> — <g2>Elke (het systeem kiest)</g2> is de standaardinstelling. Kies een adapter, meestal die van uw VPN, en elke verbinding die MDM opent, gaat erdoorheen, of helemaal niet. Dit omvat downloads, FTP, torrents, de DNS die u hebt gekozen, MDM's eigen downloads en de updatecontrole. Het werkt als een kill switch: wanneer de adapter wordt losgekoppeld, of de VPN wordt uitgeschakeld, gaat er niets via uw normale verbinding. Lopende downloads stoppen met \"... is niet verbonden\" en starten opnieuw wanneer de adapter weer beschikbaar is. De regel onder de lijst toont het adres van de adapter, of dat deze niet is verbonden."
+  },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
    "text": "<g1>De dump lezen.</g1> De monitor leest de dump met Mozilla's <x2/>. Het gebruikt de Breakpad-symbolen van de release wanneer deze worden gevonden. Een build vanuit de bron kan ook de native debug-info ernaast lezen (zijn <x3/>, DWARF) wanneer gebouwd met <x4/>; de geleverde app wordt zonder die lezer, van enkele MB's, geleverd. De <g5>Handtekening</g5> van het rapport (bijvoorbeeld <x6/>) blijft hetzelfde voor rapporten van één probleem, en het venster zoekt er bestaande problemen mee."
@@ -7018,6 +7030,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM's eigen downloads gebruiken zijn eigen downloader</g1>: yt-dlp, ffmpeg, MDM's updates en de symbolen van een crashrapport worden nu gedownload met meerdere verbindingen, hervatten na een verbroken verbinding en gaan via uw proxy-instellingen. Elk bestand wordt nog steeds gecontroleerd aan de hand van de ondertekende checksums van de uitgever voordat het wordt gebruikt."
   },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "Een regel met een <x1/> lijn erboven is machinaal vertaald. Als u deze heeft gecontroleerd (en indien nodig gecorrigeerd), verwijder dan die <x2/> lijn. Vanaf dat moment is de regel van u: machinale vertaling vervangt deze nooit meer."
+  },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
    "text": "Leert de limiet van het antwoord van de server, houdt zich eraan en onthoudt deze voor de volgende keer. Voltooid in 12,6 s."
@@ -7996,7 +8012,7 @@
   },
   "d12f8750c4987536": {
    "source": "Last updated 2026-11-06",
-   "text": "Laatst bijgewerkt op 06-11-2026"
+   "text": "Laatst bijgewerkt op 2026-11-06"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8225,6 +8241,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "Van begin tot eind, mediaan (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "Een regel zonder zijn <x1/> lijn is vanaf dan van jou: <x2/> stuurt die nooit meer naar machinevertaling, en CI (<x3/>) weigert elke pull-aanvraag die die regel verwijdert of opnieuw als <x4/> markeert."
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",

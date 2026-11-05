@@ -862,10 +862,6 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Evet. MDM, IDM'nin bilinen komut satırı anahtarlarını kabul eder, terminalden indirmeler için misterdownloadmanager-cli ile birlikte gelir ve yerel, belirteç korumalı bir otomasyon API'sine sahiptir…"
   },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "Üzerinde <x1/> çizgisi olan bir satır makine tarafından çevrilmiştir. Kontrol ettikten (ve gerekirse düzelttikten) sonra, o <x2/> çizgisini silin."
-  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "bir <x1/> dosyası veya <x2/> bağlantısı"
@@ -1034,6 +1030,10 @@
    "source": "Link grabber and archives",
    "text": "Bağlantı yakalayıcı ve arşivler"
   },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>Seçenekler → Ara Sunucu / Socks → Ağ bağdaştırıcısı</g1>, MDM'nin bağlantılarını genellikle bir VPN'e ait olan tek bir bağdaştırıcıda tutar (<g2>Seçenekler</g2>). Torrent motoru her soketi buna bağlar: eşler (TCP ve bir SOCKS ara sunucusu aracılığıyla), HTTP ve UDP izleyiciler, DHT ve dinleme portu. Linux ve macOS'ta bağdaştırıcının kendisini bağlar. Windows'ta bağdaştırıcının adresini (varsa IPv4 adresini) bağlar ve Windows bir paketi yalnızca kaynak adresine sahip olan bağdaştırıcı aracılığıyla gönderir. UPnP ve yerel eş keşfi bu durumda kapatılır, çünkü bunlar bağdaştırıcı aracılığıyla değil, yerel ağ ile iletişim kurar."
+  },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>Sonsuza dek ücretsizdir.</g1> Süresi dolan deneme sürümü, lisans anahtarı, reklam yok. GNU GPL, ücretsiz kalmasını garanti eder."
@@ -1045,10 +1045,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 s</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windows'ta torrent motoru henüz bir bağdaştırıcıya bağlanamıyor. Bu nedenle, bir bağdaştırıcı seçildiğinde torrentler başlamaz (\"torrentler Windows'ta seçilen bir ağ bağdaştırıcısı üzerinden henüz gidemez\"), etrafından dolaşmak yerine. İzleyici adları hala sistemin DNS'i tarafından aranır."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2505,6 +2501,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "MDM'yi önce başlatmanıza gerek yoktur. Tarayıcı bir indirmeyi devrettiğinde ve MDM çalışmıyorsa, yardımcı program onu başlatır ve indirmeyi iletir."
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "Bir kill switch gibi çalışır. Bağdaştırıcı bağlantısı kesildiğinde, çalışan torrentler \"… bağlı değil; geri geldiğinde devam eder\" mesajıyla durur ve bağdaştırıcı geri geldiğinde onun aracılığıyla tekrar başlar. MDM fark edene kadar (bir saniye içinde), motorun soketleri hala kaybolan bir adrese bağlıdır, bu nedenle başka bir yolla hiçbir şey dışarı çıkamaz. Bağdaştırıcı bağlı değilken eklenen bir torrent başlamaz ve nedenini belirtir. İzleyici adları hala sistemin DNS'i tarafından aranır."
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -4906,10 +4906,6 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 veya sonraki bir sürümü gereklidir."
   },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Seçenekler → Ara Sunucu / Socks → Ağ bağdaştırıcısı</g1> MDM'nin bağlantılarını tek bir bağdaştırıcıya, genellikle bir VPN'inkine (<g2>Seçenekler</g2>) bağlar. Linux ve macOS'ta torrent motoru her soketi buna bağlar: eşler, izleyiciler, DHT ve dinleme portu. UPnP ve yerel eş keşfi kapatılır, çünkü bunlar bağdaştırıcı üzerinden değil, yerel ağla konuşur. Bağdaştırıcı giderse, motor durur ve geri geldiğinde bağdaştırıcı üzerinden tekrar başlar."
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Kalite</g1> her video için geçerlidir: <g2>En iyi kalite</g2>, belirli bir yüksekliğe <g3>Kadar</g3> (her video o yükseklikte veya en yakın altındaki), <g4>Yalnızca ses, orijinal</g4>, <g5>Yalnızca ses MP3</g5>, <g6>Yalnızca ses OPUS</g6> veya <g7>Yalnızca ses FLAC</g7>. ffmpeg olmadan, yalnızca sesiyle birlikte gelen kaliteler sunulur ve MP3, Opus veya FLAC sunulmaz."
@@ -5593,6 +5589,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB 1.0 saniyede</g1> <g2>IDM: 5.5 saniye</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Ağ bağdaştırıcısı</g1> — <g2>Herhangi biri (sistem seçer)</g2> varsayılandır. Bir bağdaştırıcı seçtiğinizde (genellikle VPN'inizinki), MDM'nin açtığı her bağlantı bu bağdaştırıcı üzerinden gerçekleşir veya hiç gerçekleşmez. Bu, indirmeleri, FTP'yi, torrentleri, seçtiğiniz DNS'i, MDM'nin kendi indirmelerini ve güncelleme kontrolünü kapsar. Bir kill switch gibi çalışır: bağdaştırıcı bağlantısı kesildiğinde veya VPN kapatıldığında, normal bağlantınız üzerinden hiçbir şey dışarı çıkmaz. Devam eden indirmeler \"… bağlı değil\" mesajıyla durur ve bağdaştırıcı geri geldiğinde tekrar başlar. Listenin altındaki satır, bağdaştırıcının adresini veya bağlı olmadığını gösterir."
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -6714,10 +6714,6 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Kategori</g1> — dosyanın türüne göre seçilir (Sıkıştırılmış, Belgeler, Müzik, Programlar, Video veya Genel). Her kategorinin kendi klasörü vardır. Yanındaki <g2>+</g2> yeni bir kategori oluşturur."
   },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Ağ bağdaştırıcısı</g1> — <g2>Herhangi biri (sistem seçer)</g2> varsayılandır. Bir bağdaştırıcı, genellikle VPN'inizinki, seçtiğinizde MDM'nin açtığı her bağlantı onun üzerinden gider veya hiç gitmez. Bu, indirmeleri, FTP'yi, seçtiğiniz DNS'i, MDM'nin kendi indirmelerini ve güncelleme kontrolünü kapsar. Bir kill switch gibi çalışır: bağdaştırıcı bağlantısı kesildiğinde veya VPN kapatıldığında, normal bağlantınız üzerinden hiçbir şey gitmez. Çalışan indirmeler \"… bağlı değil\" mesajıyla durur ve bağdaştırıcı geri geldiğinde tekrar başlar. Listenin altındaki satır bağdaştırıcının adresini veya bağlı olmadığını gösterir."
-  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "<g1>Bul</g1>'a tıklayın. İlk eşleşme seçilir."
@@ -7017,6 +7013,10 @@
   "b4ca8797bf90ea72": {
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM'nin kendi indirmeleri kendi indiricisini kullanır</g1>: yt-dlp, ffmpeg, MDM'nin güncellemeleri ve bir çökme raporunun sembolleri artık birden fazla bağlantıyla iner, kesilen bir bağlantıdan sonra devam eder ve proxy ayarlarınız üzerinden geçer. Her dosya, kullanılmadan önce yayıncısının imzalı sağlama toplamlarıyla kontrol edilir."
+  },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "Üstünde <x1/> çizgisi olan bir satır makine tarafından çevrilmiştir. Kontrol ettikten (ve gerekirse düzelttikten) sonra o <x2/> çizgiyi silin. O andan itibaren satır size aittir: makine çevirisi onu asla değiştirmez."
   },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
@@ -8225,6 +8225,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "Uçtan uca, medyan (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "Bir satırın <x1/> çizgisi yoksa, o satır sizindir: <x2/> onu bir daha asla makine çevirisine göndermez ve CI (<x3/>) onu düşüren veya tekrar <x4/> olarak işaretleyen herhangi bir çekme isteğini reddeder."
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",

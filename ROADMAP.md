@@ -13,6 +13,13 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
+  Italian is the first catalog reviewed by a native speaker
+  ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150))
+- ✅ Screen readers reach every row of a list, in view or not (300 around the view in long lists)
+  ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111))
+- ✅ Less memory in the notification area after Minimize too, and again 2 minutes after hiding
+  ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Windows: draw with Direct3D 12 instead of OpenGL (**View → Draw with**), an option for now;
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
@@ -48,6 +55,8 @@ Everything below ships together, in one release.
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
+- ✅ Torrents on Windows through the chosen network adapter, with the same kill switch
+  ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143))
 - ✅ Downloads from a browser behind a VPN or proxy extension go through the same proxy
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 - ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
@@ -128,6 +137,13 @@ Everything below ships together, in one release.
 
 ### Being built
 
+- 🔄 Themes: today's look stays the default, with a few more built in; colours, sizes, spacing and
+  icons all come from the chosen theme, and Base16 and pywal schemes can be imported
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- 🔄 A crash when a magnet link comes from Firefox ([#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145))
+- 🔄 A server that can't resume a download no longer gets the file downloaded twice
+  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
+
 ### Bugs being looked into
 
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
@@ -135,6 +151,8 @@ Everything below ships together, in one release.
 - 🔍 A crash on Linux as Download File Info opens
   ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22
 - 🔍 Linux display issues ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
+- 🔍 Firefox: an HLS stream handed to MDM fails with yt-dlp's "Unsupported URL"
+  ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
 
 ## Planned
 
@@ -151,21 +169,22 @@ Everything below ships together, in one release.
 
 ### Network
 
-- 📋 Torrents on Windows through a chosen network adapter
-  ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)), and video pages too
-  ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
+- 📋 Video pages through a chosen network adapter too ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - 📋 Control MDM from a phone or another computer on the local network, off by default
   ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
+- 📋 Run MDM headless on a server (Docker, Unraid) and send it downloads from the browser
+  ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
 
 ### Browser extension
 
-- 📋 Chrome Web Store and Firefox Add-ons listings (in review)
+- ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
+- 📋 Chrome Web Store listing (in review)
 
 ### Look and performance
 
 - 📋 Direct3D as the default on Windows, once the comparison with OpenGL is in
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
-- 📋 Themes: colours, accent, pywal and Base16, with the layout kept
-  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
+- 📋 A smaller download ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))

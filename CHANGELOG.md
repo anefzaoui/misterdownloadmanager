@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Torrents through the chosen network adapter on Windows**
+  ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
+  Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.
+  Every torrent connection goes out from the adapter's address, with the same kill switch as
+  downloads: peers, trackers, the DHT and the listening port. When the adapter disconnects,
+  torrents stop, nothing goes out another way, and they start again when it is back.
 - **Windows: draw with Direct3D** ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89)).
   **View → Draw with** chooses between OpenGL, as before and still the default, and Direct3D 12,
   from the next start. Direct3D may avoid the stalls some graphics drivers' OpenGL has
@@ -250,6 +256,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Translators: a reviewed translation is never replaced by machine translation.** A row whose
+  `#, machine` line a person deleted is kept by `tools/i18n/translate.py` in every case (`--redo`
+  included; a check it fails is printed for the person to decide), and CI fails a pull request
+  that drops such a row or marks it `#, machine` again (`tools/i18n/reviewed_guard.py`). The first
+  reviewed catalog is Italian ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150)).
 - **Developers: two engine tests no longer fail now and then**
   ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123)): the pause-and-resume
   and event-log tests no longer depend on how fast the machine is. The lab server can hold a
@@ -320,6 +331,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Screen readers reach every row of a list, not only those in view**
+  ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111)): a list's rows out of
+  view (the last qualities of Download video, a long playlist, the downloads) are there too,
+  named, with their place ("12 of 40"), and can be scrolled into view or selected. A list of
+  thousands offers 300 rows around the view, so it stays as fast.
+- **Less memory in the notification area, also after Minimize**
+  ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)): a window minimized to the
+  notification area (on by default) now gives its memory back too, as a closed one did; and both
+  give it back again 2 minutes after hiding, when the clock's ticks and a one-time allocation
+  have brought some back (then every 10 minutes, as before).
 - **Screen readers see a window's contents the first time they read it**
   ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131)): a window read for the
   first time (Link grabber, Options, About...) showed only its title bar until it was drawn
