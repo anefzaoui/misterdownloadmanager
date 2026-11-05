@@ -306,10 +306,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "Intel(R) Core(TM) i5-13400F thế hệ 13, RAM 63.8 GB, Windows-11-10.0.26200-SP0. labserver (kho lưu trữ này), 127.0.0.1:8097, nội dung được tạo. cả hai đều ở chế độ mặc định: 8 kết nối."
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "dòng, sau đó <x1/>."
-  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "Tôi có thể cài đặt IDM cùng lúc không?"
@@ -569,6 +565,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Mở <g1>Cài đặt → Ứng dụng</g1> của Windows, tìm Mister Download Manager và chọn Gỡ cài đặt. Trình gỡ cài đặt hỏi liệu có xóa danh sách tải xuống và cài đặt của bạn hay không. Các tệp bạn đã tải xuống không bao giờ bị chạm đến. Đối với bản sao di động, hãy xóa thư mục của nó."
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "Trình quản lý Tác vụ hiển thị nhiều số liệu, và chúng có ý nghĩa khác nhau:"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> trở lên trên Apple Silicon hoặc Intel (thử nghiệm)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Trong cùng cửa sổ, đánh dấu vào <g1>Giới hạn tất cả các lượt tải xuống cùng nhau thành</g1> và đặt tốc độ. Điều này giới hạn toàn bộ MDM, bất kể có bao nhiêu tệp đang tải xuống. Nó được áp dụng bất cứ khi nào được đánh dấu, dù bộ giới hạn từng tệp đang bật hay tắt."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Nhấp chuột phải vào khoảng trống của danh sách để chọn <g1>Thêm tải xuống mới</g1>, <g2>Chọn tất cả</g2>, <g3>Sắp xếp tệp</g3>, <g4>Xóa tất cả bộ lọc</g4> và <g5>Xóa tất cả đã hoàn tất</g5>."
@@ -2157,6 +2153,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "Nhấp chuột phải vào bất kỳ hộp văn bản nào để <g1>Cắt</g1>, <g2>Sao chép</g2>, <g3>Dán</g3>, <g4>Xóa</g4> và <g5>Chọn tất cả</g5>."
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>Bộ nhớ</g1> (trên tab Tiến trình) là phần MDM giữ riêng cho mình, <g2>tập hợp làm việc riêng</g2> của nó. Khi cửa sổ mở và không có gì đang tải xuống, con số này khoảng 50 MB."
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2845,6 +2845,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>Ngôn ngữ</g2></g1> — 86 ngôn ngữ giao diện, bố cục từ phải sang trái và cách giúp dịch."
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "Khi đóng vào vùng thông báo, MDM trả bộ nhớ của nó về cho Windows: <g1>Bộ nhớ</g1> giảm xuống dưới 10 MB trong vài giây và duy trì ở mức thấp trong khi chờ. Các lượt tải xuống, hàng đợi và bộ lập lịch vẫn tiếp tục như trước. Danh sách mọi ngôn ngữ (<g2>Xem → Ngôn ngữ</g2>) tải phông chữ cho mọi tập lệnh khi nó mở; MDM giải phóng chúng khi đóng."
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -4310,10 +4314,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Mỗi bản phát hành liệt kê tổng kiểm SHA-256 của mỗi tệp trong <g1>SHA256SUMS.txt</g1>. Trên Windows, hãy so sánh nó với <x2/>; trên macOS và Linux với <x3/>. Tất cả các tệp được xây dựng từ mã nguồn công khai bởi GitHub Actions; nhật ký xây dựng có trên <g4>GitHub</g4>."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; <x1/> của một lựa chọn là những gì <x2/> lấy."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "Đánh dấu vào <g1>Giới hạn tất cả các lượt tải xuống cùng nhau thành</g1> và nhập tốc độ tính bằng KB/giây. Mức khởi đầu tốt là khoảng hai phần ba tốc độ kết nối của bạn. (1 MB/giây tương đương khoảng 1000 KB/giây.)"
@@ -4433,6 +4433,10 @@
   "7d54df4ec1ae978b": {
    "source": "While it downloads.",
    "text": "Trong khi đang tải xuống."
+  },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>Kích thước cam kết</g1> là bộ nhớ MDM đã đặt trước, dù có đang sử dụng hay không."
   },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
@@ -7210,10 +7214,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "Trong <g1>Thông tin tệp tải xuống</g1>, nhấp vào <g2>Tải xuống sau</g2>."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "Tải xuống một video; <x1/> lấy bộ chọn chất lượng từ <x2/> (<x3/> = tệp đơn tốt nhất; <x4/>, <x5/>, <x6/> hoặc <x7/> = âm thanh dưới dạng MP3 ở tốc độ bit đó, <x8/> ở tốc độ bit biến đổi tốt nhất; MP3 cần ffmpeg)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "Bạn muốn có phụ đề? Chọn ngôn ngữ trong <g1>Phụ đề</g1>. Chúng được lưu cạnh video, hoặc bên trong video nếu bạn chọn <g2>Đặt chúng vào video</g2> (xem <g3>Phụ đề</g3>)."
@@ -7590,6 +7590,10 @@
    "source": "Benchmark scenario",
    "text": "Kịch bản đánh giá"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>Tập hợp làm việc</g1> (tab Chi tiết, thêm cột này) cộng thêm bộ nhớ được chia sẻ với các chương trình khác. MDM vẽ các cửa sổ của nó bằng card đồ họa, vì vậy bộ nhớ của trình điều khiển đồ họa cũng được tính ở đây, tổng cộng khoảng 85 MB."
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. Không bảo hành"
@@ -7757,6 +7761,10 @@
   "de05be78a1ac8ebe": {
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "Có thể tiếp tục tải xuống bị gián đoạn không? — Mister Download Manager"
+  },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM dùng nhiều bộ nhớ"
   },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",

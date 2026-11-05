@@ -306,10 +306,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13세대 Intel(R) Core(TM) i5-13400F, 63.8GB RAM, Windows-11-10.0.26200-SP0. labserver (이 저장소), 127.0.0.1:8097, 생성된 콘텐츠. 둘 다 기본값: 8개 연결."
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "줄, 그 다음 <x1/>."
-  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "IDM도 함께 설치할 수 있나요?"
@@ -569,6 +565,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windows <g1>설정 → 앱</g1>을 열고 Mister Download Manager를 찾아 제거를 선택하십시오. 제거 프로그램은 다운로드 목록과 설정도 삭제할지 묻습니다. 다운로드한 파일은 절대 건드리지 않습니다. 휴대용 복사본의 경우 해당 폴더를 삭제하십시오."
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "작업 관리자에는 여러 수치가 표시되며, 각각 다른 의미를 가집니다:"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon 또는 Intel 기반 <g1>macOS 11</g1> 이상 (실험적)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "동일한 창에서 <g1>모든 다운로드 제한</g1>을 선택하고 속도를 설정합니다. 이는 다운로드 중인 파일 수에 관계없이 MDM 전체의 속도를 제한합니다. 파일별 제한기가 켜져 있든 꺼져 있든 관계없이 선택될 때마다 적용됩니다."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "목록의 빈 공간을 마우스 오른쪽 버튼으로 클릭하면 <g1>새 다운로드 추가</g1>, <g2>모두 선택</g2>, <g3>파일 정렬</g3>, <g4>모든 필터 지우기</g4>, <g5>완료된 항목 모두 삭제</g5>를 사용할 수 있습니다."
@@ -2157,6 +2153,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "모든 텍스트 상자를 마우스 오른쪽 버튼으로 클릭하여 <g1>잘라내기</g1>, <g2>복사</g2>, <g3>붙여넣기</g3>, <g4>삭제</g4> 및 <g5>모두 선택</g5>을 사용할 수 있습니다."
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>메모리</g1>(프로세스 탭)는 MDM이 단독으로 사용하는 메모리, 즉 <g2>개인 작업 세트</g2>입니다. 창이 열려 있고 아무것도 다운로드하지 않을 때 약 50MB입니다."
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2845,6 +2845,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>언어</g2></g1> — 86개 인터페이스 언어, 오른쪽에서 왼쪽 레이아웃, 그리고 번역을 돕는 방법."
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "알림 영역으로 닫으면 MDM은 메모리를 Windows에 반환합니다. <g1>메모리</g1>는 몇 초 안에 10MB 미만으로 떨어지고 대기하는 동안 낮게 유지됩니다. 다운로드, 대기열 및 스케줄러는 이전과 같이 계속됩니다. 모든 언어 목록(<g2>보기 → 언어</g2>)은 열려 있는 동안 모든 스크립트의 글꼴을 로드합니다. MDM은 닫힐 때 글꼴을 해제합니다."
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -4310,10 +4314,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "모든 릴리스는 <g1>SHA256SUMS.txt</g1>에 각 파일의 SHA-256 체크섬을 나열합니다. Windows에서는 <x2/>와 비교하고, macOS 및 Linux에서는 <x3/>와 비교합니다. 모든 파일은 GitHub Actions에 의해 공개 소스에서 빌드됩니다. 빌드 로그는 <g4>GitHub</g4>에서 확인할 수 있습니다."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; 선택의 <x1/>는 <x2/>가 가져오는 것입니다."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "<g1>모든 다운로드 제한</g1>을 선택하고 KBytes/sec 단위로 속도를 입력합니다. 연결 속도의 약 3분의 2가 좋은 시작점입니다. (1 MByte/sec는 약 1000 KBytes/sec입니다.)"
@@ -4433,6 +4433,10 @@
   "7d54df4ec1ae978b": {
    "source": "While it downloads.",
    "text": "다운로드 중일 때 표시됩니다."
+  },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>커밋 크기</g1>는 MDM이 사용 여부와 관계없이 예약한 메모리입니다."
   },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
@@ -7210,10 +7214,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>파일 정보 다운로드</g1>에서 <g2>나중에 다운로드</g2>를 클릭합니다."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "동영상 다운로드; <x1/>는 <x2/>에서 화질 선택자를 가져옵니다 (<x3/> = 가장 좋은 단일 파일; <x4/>, <x5/>, <x6/> 또는 <x7/> = 해당 비트레이트의 MP3 사운드, <x8/>는 가장 좋은 가변 비트레이트; MP3는 ffmpeg 필요)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "자막을 원하시면 <g1>자막</g1>에서 언어를 선택하세요. 자막은 비디오 옆에 저장되거나, <g2>비디오에 포함</g2>을 선택하면 비디오 안에 저장됩니다 (<g3>자막</g3> 참조)."
@@ -7590,6 +7590,10 @@
    "source": "Benchmark scenario",
    "text": "벤치마크 시나리오"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>작업 세트</g1>(세부 정보 탭, 열 추가)는 다른 프로그램과 공유하는 메모리를 추가합니다. MDM은 그래픽 카드로 창을 그리므로 그래픽 드라이버의 메모리도 여기에 포함되며, 총 약 85MB입니다."
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. 보증 없음"
@@ -7757,6 +7761,10 @@
   "de05be78a1ac8ebe": {
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "중단된 다운로드를 다시 시작할 수 있나요? — Mister Download Manager"
+  },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM이 메모리를 많이 사용합니다"
   },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",

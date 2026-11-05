@@ -306,10 +306,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13वीं पीढ़ी का Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0। labserver (यह रेपो), 127.0.0.1:8097, जनरेट की गई सामग्री। दोनों डिफ़ॉल्ट पर: 8 कनेक्शन।"
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "लाइनें, फिर <x1/>।"
-  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "क्या मैं IDM भी इंस्टॉल रख सकता हूँ?"
@@ -569,6 +565,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windows <g1>सेटिंग्स → ऐप्स</g1> खोलें, Mister Download Manager ढूंढें और अनइंस्टॉल चुनें। अनइंस्टालर पूछता है कि क्या आपकी डाउनलोड सूची और सेटिंग्स को भी हटाना है। आपके द्वारा डाउनलोड की गई फ़ाइलों को कभी नहीं छुआ जाता है। पोर्टेबल कॉपी के लिए, उसका फ़ोल्डर हटा दें।"
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "टास्क मैनेजर कई आंकड़े दिखाता है, और उनका मतलब अलग-अलग होता है:"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon या Intel पर <g1>macOS 11</g1> या बाद का (प्रायोगिक)।"
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "उसी विंडो में, <g1>सभी डाउनलोड को एक साथ सीमित करें</g1> पर टिक करें और गति सेट करें। यह MDM को समग्र रूप से सीमित करता है, चाहे कितनी भी फ़ाइलें डाउनलोड हो रही हों। यह तब लागू होता है जब भी इसे टिक किया जाता है, चाहे प्रति-फ़ाइल लिमिटर चालू हो या बंद।"
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "<g1>नया डाउनलोड जोड़ें</g1>, <g2>सभी चुनें</g2>, <g3>फ़ाइलें व्यवस्थित करें</g3>, <g4>सभी फ़िल्टर साफ़ करें(f)</g4> और <g5>सभी पूर्ण हुए मिटाएँ</g5> के लिए सूची के खाली स्थान पर राइट-क्लिक करें।"
@@ -2157,6 +2153,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "<g1>काटें</g1>, <g2>कॉपी करें</g2>, <g3>चिपकाएँ</g3>, <g4>हटाएँ</g4> और <g5>सभी चुनें</g5> के लिए किसी भी टेक्स्ट बॉक्स पर राइट-क्लिक करें।"
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>मेमोरी</g1> (प्रोसेस टैब पर) वह है जो MDM केवल अपने लिए रखता है, उसका <g2>निजी वर्किंग सेट</g2>। जब विंडो खुली हो और कुछ भी डाउनलोड न हो रहा हो, तो यह लगभग 50 MB होता है।"
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2845,6 +2845,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>भाषाएँ</g2></g1> — 86 इंटरफ़ेस भाषाएँ, दाएँ से बाएँ लेआउट, और अनुवाद में मदद कैसे करें।"
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "नोटिफिकेशन एरिया में बंद होने पर, MDM अपनी मेमोरी Windows को वापस दे देता है: <g1>मेमोरी</g1> कुछ ही सेकंड में 10 MB से कम हो जाती है और प्रतीक्षा करते समय कम रहती है। डाउनलोड, कतारें और शेड्यूलर पहले की तरह चलते रहते हैं। हर भाषा की सूची (<g2>देखें → भाषा</g2>) खुली होने पर हर स्क्रिप्ट के लिए फ़ॉन्ट लोड करती है; MDM बंद होने पर उन्हें छोड़ देता है।"
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -4310,10 +4314,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "हर रिलीज़ <g1>SHA256SUMS.txt</g1> में प्रत्येक फ़ाइल का SHA-256 चेकसम सूचीबद्ध करती है। Windows पर, इसकी तुलना <x2/> से करें; macOS और Linux पर <x3/> से करें। सभी फ़ाइलें GitHub Actions द्वारा सार्वजनिक स्रोत से बनाई गई हैं; बिल्ड लॉग <g4>GitHub</g4> पर हैं।"
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; एक विकल्प का <x1/> वह है जो <x2/> लेता है।"
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "<g1>सभी डाउनलोड को एक साथ सीमित करें</g1> पर टिक करें और KBytes/sec में गति टाइप करें। एक अच्छी शुरुआत आपके कनेक्शन की गति का लगभग दो-तिहाई है। (1 MByte/sec लगभग 1000 KBytes/sec है।)"
@@ -4433,6 +4433,10 @@
   "7d54df4ec1ae978b": {
    "source": "While it downloads.",
    "text": "जब यह डाउनलोड हो रहा हो।"
+  },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>कमिट साइज़</g1> वह मेमोरी है जिसे MDM ने आरक्षित किया है, चाहे वह उपयोग में हो या नहीं।"
   },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
@@ -7210,10 +7214,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>फ़ाइल जानकारी डाउनलोड करें</g1> में, <g2>बाद में डाउनलोड करें</g2> पर क्लिक करें।"
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "एक वीडियो डाउनलोड करें; <x1/> <x2/> से गुणवत्ता चयनकर्ता लेता है (<x3/> = सबसे अच्छी एकल फ़ाइल; <x4/>, <x5/>, <x6/> या <x7/> = उस बिटरेट पर MP3 के रूप में ध्वनि, <x8/> अपनी सर्वोत्तम परिवर्तनीय पर; MP3 के लिए ffmpeg की आवश्यकता है)।"
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "उपशीर्षक चाहिए? <g1>उपशीर्षक</g1> में एक भाषा चुनें। वे वीडियो के बगल में सहेजे जाते हैं, या यदि आप <g2>उन्हें वीडियो में डालें</g2> पर टिक करते हैं तो वीडियो के अंदर (देखें <g3>उपशीर्षक</g3>)।"
@@ -7590,6 +7590,10 @@
    "source": "Benchmark scenario",
    "text": "बेंचमार्क परिदृश्य"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>वर्किंग सेट</g1> (डिटेल्स टैब, कॉलम जोड़ें) में अन्य प्रोग्रामों के साथ साझा की गई मेमोरी भी शामिल होती है। MDM अपनी विंडो को ग्राफ़िक्स कार्ड से बनाता है, इसलिए ग्राफ़िक्स ड्राइवर की मेमोरी भी इसमें गिनी जाती है, कुल मिलाकर लगभग 85 MB।"
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. कोई वारंटी नहीं"
@@ -7757,6 +7761,10 @@
   "de05be78a1ac8ebe": {
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "क्या यह बीच में रुके डाउनलोड को फिर से शुरू कर सकता है? — Mister Download Manager"
+  },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM बहुत ज़्यादा मेमोरी इस्तेमाल करता है"
   },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",

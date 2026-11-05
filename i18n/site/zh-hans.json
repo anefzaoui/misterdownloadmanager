@@ -306,10 +306,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "第 13 代英特尔(R) 酷睿(TM) i5-13400F，63.8 GB 内存，Windows-11-10.0.26200-SP0。labserver（此仓库），127.0.0.1:8097，生成内容。两者均使用默认设置：8 个连接。"
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "行，然后是 <x1/>。"
-  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "我可以同时安装 IDM 吗？"
@@ -569,6 +565,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "打开 Windows <g1>设置 → 应用</g1>，找到 Mister Download Manager 并选择“卸载”。卸载程序会询问是否同时删除您的下载列表和设置。您下载的文件永远不会被触及。对于便携版，请删除其文件夹。"
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "任务管理器显示多个数字，它们代表不同的含义："
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon 或 Intel 芯片上的<g1>macOS 11</g1>或更高版本（实验性）。"
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "在同一窗口中，勾选<g1>将所有下载总计限制为</g1>并设置速度。这会限制 MDM 的整体速度，无论正在下载多少文件。只要勾选此项，它就会生效，无论单个文件限制器是否开启。"
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "右键点击列表的空白处，可选择<g1>添加新下载</g1>、<g2>全选</g2>、<g3>整理文件</g3>、<g4>清除所有筛选器</g4>和<g5>删除所有已完成</g5>。"
@@ -2157,6 +2153,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "右键点击任何文本框，即可使用<g1>剪切</g1>、<g2>复制</g2>、<g3>粘贴</g3>、<g4>删除</g4>和<g5>全选</g5>功能。"
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>内存</g1>（在“进程”选项卡上）是 MDM 独占的内存，即其<g2>私有工作集</g2>。在窗口打开且没有下载时，大约为 50 MB。"
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2845,6 +2845,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>语言</g2></g1> — 86 种界面语言、从右到左的布局以及如何帮助翻译。"
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "关闭到通知区域后，MDM 会将其内存返还给 Windows：<g1>内存</g1>在几秒钟内降至 10 MB 以下，并在等待时保持低位。下载、队列和调度程序照常运行。每种语言的列表（<g2>视图 → 语言</g2>）在打开时会加载每种脚本的字体；MDM 在关闭时会释放它们。"
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -4310,10 +4314,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "每个发布版本都在<g1>SHA256SUMS.txt</g1>中列出了每个文件的 SHA-256 校验和。在 Windows 上，请与<x2/>进行比较；在 macOS 和 Linux 上，请与<x3/>进行比较。所有文件均由 GitHub Actions 从公共源代码构建；构建日志可在<g4>GitHub</g4>上查看。"
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "；选项的 <x1/> 是 <x2/> 所取的值。"
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "勾选<g1>将所有下载总计限制为</g1>，并输入速度（单位为千字节/秒）。一个好的开始是您连接速度的大约三分之二。（1 兆字节/秒大约是 1000 千字节/秒。）"
@@ -4433,6 +4433,10 @@
   "7d54df4ec1ae978b": {
    "source": "While it downloads.",
    "text": "下载过程中显示。"
+  },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>提交大小</g1>是 MDM 已保留的内存，无论是否在使用。"
   },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
@@ -7210,10 +7214,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "在<g1>下载文件信息</g1>中，点击<g2>稍后下载</g2>。"
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "下载视频；<x1/> 从 <x2/> 获取质量选择器（<x3/> = 最佳单文件；<x4/>、<x5/>、<x6/> 或 <x7/> = 该比特率的 MP3 音频，<x8/> 为最佳可变比特率；MP3 需要 ffmpeg）。"
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "想要字幕？在<g1>字幕</g1>中选择一种语言。它们会保存在视频旁边，如果您勾选<g2>将它们放入视频</g2>，则会保存在视频内部（参见<g3>字幕</g3>）。"
@@ -7590,6 +7590,10 @@
    "source": "Benchmark scenario",
    "text": "基准测试场景"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>工作集</g1>（“详细信息”选项卡，添加该列）增加了与其他程序共享的内存。MDM 使用显卡绘制其窗口，因此显卡驱动程序的内存也计算在内，总共约 85 MB。"
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. 无担保"
@@ -7757,6 +7761,10 @@
   "de05be78a1ac8ebe": {
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "Mister Download Manager：可以续传中断的下载吗？"
+  },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM 占用大量内存"
   },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",

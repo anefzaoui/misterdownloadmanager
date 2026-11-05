@@ -306,10 +306,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "Intel(R) Core(TM) i5-13400F de 13e génération, 63,8 Go de RAM, Windows-11-10.0.26200-SP0. labserver (ce dépôt), 127.0.0.1:8097, contenu généré. Les deux par défaut : 8 connexions."
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "lignes, puis <x1/>."
-  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "Puis-je garder IDM installé aussi ?"
@@ -569,6 +565,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Ouvrez les <g1>Paramètres → Applications</g1> de Windows, trouvez Mister Download Manager et choisissez Désinstaller. Le programme de désinstallation vous demande si vous souhaitez également supprimer votre liste de téléchargements et vos paramètres. Les fichiers que vous avez téléchargés ne sont jamais touchés. Pour la copie portable, supprimez son dossier."
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "Le Gestionnaire des tâches affiche plusieurs chiffres, qui signifient différentes choses :"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> ou version ultérieure sur Apple Silicon ou Intel (expérimental)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Dans la même fenêtre, cochez <g1>Limiter tous les téléchargements ensemble à</g1> et définissez la vitesse. Cela limite MDM dans son ensemble, quel que soit le nombre de fichiers en cours de téléchargement. Cela s’applique dès que c’est coché, que le limiteur par fichier soit activé ou désactivé."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Faites un clic droit sur l’espace vide de la liste pour <g1>Ajouter un nouveau téléchargement</g1>, <g2>Sélectionner tout</g2>, <g3>Organiser les fichiers</g3>, <g4>Effacer tous les filtres</g4> et <g5>Supprimer tous les téléchargements terminés</g5>."
@@ -2157,6 +2153,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "Faites un clic droit sur n'importe quelle zone de texte pour <g1>Couper</g1>, <g2>Copier</g2>, <g3>Coller</g3>, <g4>Supprimer</g4> et <g5>Sélectionner tout</g5>."
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "La <g1>Mémoire</g1> (dans l'onglet Processus) est ce que MDM garde pour lui seul, son <g2>ensemble de travail privé</g2>. Avec la fenêtre ouverte et aucun téléchargement en cours, c'est environ 50 Mo."
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2845,6 +2845,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>Langues</g2></g1> — les 86 langues d'interface, les mises en page de droite à gauche, et comment aider à traduire."
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "Fermé dans la zone de notification, MDM rend sa mémoire à Windows : la <g1>Mémoire</g1> tombe à moins de 10 Mo en quelques secondes et reste faible pendant qu'il attend. Les téléchargements, les files d'attente et le planificateur continuent comme avant. La liste de toutes les langues (<g2>Affichage → Langue</g2>) charge les polices pour chaque script tant qu'elle est ouverte ; MDM les libère lorsqu'elle se ferme."
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -4310,10 +4314,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Chaque version liste la somme de contrôle SHA-256 de chaque fichier dans <g1>SHA256SUMS.txt</g1>. Sous Windows, comparez-la avec <x2/> ; sous macOS et Linux avec <x3/>. Tous les fichiers sont construits à partir de la source publique par GitHub Actions ; les journaux de construction sont sur <g4>GitHub</g4>."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; le <x1/> d'un choix est ce que <x2/> prend."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "Cochez <g1>Limiter tous les téléchargements ensemble à</g1> et saisissez une vitesse en Ko/s. Un bon début est environ les deux tiers de la vitesse de votre connexion. (1 Mo/s équivaut à environ 1000 Ko/s.)"
@@ -4433,6 +4433,10 @@
   "7d54df4ec1ae978b": {
    "source": "While it downloads.",
    "text": "Pendant le téléchargement."
+  },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "La <g1>Taille de validation</g1> est la mémoire que MDM a réservée, qu'elle soit utilisée ou non."
   },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
@@ -7210,10 +7214,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "Dans <g1>Informations sur le fichier à télécharger</g1>, cliquez sur <g2>Télécharger plus tard</g2>."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "Télécharger une vidéo ; <x1/> prend un sélecteur de qualité de <x2/> (<x3/> = le meilleur fichier unique ; <x4/>, <x5/>, <x6/> ou <x7/> = le son en MP3 à ce débit, <x8/> à son meilleur débit variable ; le MP3 nécessite ffmpeg)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "Vous voulez des sous-titres ? Choisissez une langue dans <g1>Sous-titres</g1>. Ils sont enregistrés à côté de la vidéo, ou intégrés à celle-ci si vous cochez <g2>Les intégrer à la vidéo</g2> (voir <g3>Sous-titres</g3>)."
@@ -7590,6 +7590,10 @@
    "source": "Benchmark scenario",
    "text": "Scénario de référence"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "L'<g1>Ensemble de travail</g1> (onglet Détails, ajoutez la colonne) ajoute la mémoire partagée avec d'autres programmes. MDM dessine ses fenêtres avec la carte graphique, donc la mémoire du pilote graphique compte aussi ici, environ 85 Mo au total."
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. Aucune garantie"
@@ -7757,6 +7761,10 @@
   "de05be78a1ac8ebe": {
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "Peut-il reprendre les téléchargements interrompus ? — Mister Download Manager"
+  },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM utilise beaucoup de mémoire"
   },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",

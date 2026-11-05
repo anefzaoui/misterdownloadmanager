@@ -306,10 +306,6 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "第13世代 Intel(R) Core(TM) i5-13400F、63.8 GB RAM、Windows-11-10.0.26200-SP0。labserver (このリポジトリ)、127.0.0.1:8097、生成されたコンテンツ。両方ともデフォルト設定：8接続。"
   },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "行、その後<x1/>。"
-  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "IDMもインストールしたままにできますか？"
@@ -569,6 +565,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windows の<g1>設定 → アプリ</g1>を開き、Mister Download Manager を見つけて「アンインストール」を選択します。アンインストーラーは、ダウンロードリストと設定も削除するかどうかを尋ねます。ダウンロードしたファイルは決して削除されません。ポータブル版の場合は、そのフォルダーを削除してください。"
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "タスクマネージャーにはいくつかの数値が表示され、それぞれ異なる意味を持ちます。"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -2006,10 +2006,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple SiliconまたはIntel搭載の<g1>macOS 11</g1>以降（実験的）。"
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "同じウィンドウで、<g1>すべてのダウンロードを合計で制限する</g1>にチェックを入れ、速度を設定します。これにより、ダウンロード中のファイル数に関係なく、MDM全体の速度が制限されます。この設定は、ファイルごとの制限がオンかオフかに関わらず、チェックが入っている限り適用されます。"
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "リストの空白部分を右クリックすると、<g1>新しいダウンロードを追加</g1>、<g2>すべて選択</g2>、<g3>ファイルを整理</g3>、<g4>すべてのフィルターをクリア</g4>、<g5>完了したものをすべて削除</g5>が表示されます。"
@@ -2157,6 +2153,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "任意のテキストボックスを右クリックすると、<g1>切り取り</g1>、<g2>コピー</g2>、<g3>貼り付け</g3>、<g4>削除</g4>、<g5>すべて選択</g5>ができます。"
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>メモリ</g1>（「プロセス」タブ）は、MDMが単独で保持するメモリ、つまり<g2>プライベートワーキングセット</g2>です。ウィンドウが開いていて何もダウンロードしていない場合、これは約50MBです。"
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2845,6 +2845,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>言語</g2></g1> — 86のインターフェース言語、右から左へのレイアウト、翻訳への協力方法。"
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "通知領域に閉じると、MDMはそのメモリをWindowsに返します。<g1>メモリ</g1>は数秒以内に10MB未満に低下し、待機中は低いままです。ダウンロード、キュー、スケジューラーは以前と同じように続行されます。すべての言語のリスト（<g2>表示 → 言語</g2>）は、開いている間、すべてのスクリプトのフォントを読み込みます。MDMは閉じるとそれらを解放します。"
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -4310,10 +4314,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "すべてのリリースには、各ファイルのSHA-256チェックサムが<g1>SHA256SUMS.txt</g1>に記載されています。Windowsでは<x2/>と比較し、macOSおよびLinuxでは<x3/>と比較してください。すべてのファイルはGitHub Actionsによって公開ソースからビルドされており、ビルドログは<g4>GitHub</g4>にあります。"
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "。選択肢の<x1/>は<x2/>が取るものです。"
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "<g1>すべてのダウンロードを合計で制限する</g1>にチェックを入れ、KB/秒で速度を入力します。接続速度の約3分の2から始めるのが良いでしょう。（1 MB/秒は約1000 KB/秒です。）"
@@ -4433,6 +4433,10 @@
   "7d54df4ec1ae978b": {
    "source": "While it downloads.",
    "text": "ダウンロード中。"
+  },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>コミットサイズ</g1>は、MDMが使用中かどうかにかかわらず予約しているメモリです。"
   },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
@@ -7210,10 +7214,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>ダウンロード ファイル情報</g1>で、<g2>後でダウンロード</g2>をクリックします。"
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "動画をダウンロードします。<x1/>は<x2/>から品質セレクターを受け取ります（<x3/> = 最良の単一ファイル、<x4/>、<x5/>、<x6/>、または<x7/> = そのビットレートでのMP3形式の音声、<x8/> = 最良の可変ビットレートでの音声。MP3にはffmpegが必要です）。"
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "字幕が必要ですか？<g1>字幕</g1>で言語を選択してください。字幕は動画の横に保存されます。ただし、<g2>ビデオに埋め込む</g2>にチェックを入れると、動画内に保存されます（<g3>字幕</g3>を参照）。"
@@ -7590,6 +7590,10 @@
    "source": "Benchmark scenario",
    "text": "ベンチマーク シナリオ"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>ワーキングセット</g1>（「詳細」タブで列を追加）は、他のプログラムと共有されるメモリを追加します。MDMはグラフィックカードでウィンドウを描画するため、グラフィックドライバーのメモリもここにカウントされ、合計で約85MBになります。"
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. 無保証"
@@ -7757,6 +7761,10 @@
   "de05be78a1ac8ebe": {
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "中断したダウンロードを再開できますか？ — Mister Download Manager"
+  },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDMが多くのメモリを使用する"
   },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",
