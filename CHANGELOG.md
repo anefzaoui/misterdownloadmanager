@@ -22,6 +22,16 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Choose the DNS** ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36)):
+  Options → Connection → DNS picks who turns names into addresses for downloads, FTP, MDM's own
+  downloads and the update check. The system's (the default), Cloudflare, Google, Quad9, AdGuard,
+  NextDNS (with your configuration ID) or your own, asked over HTTPS (the default), TLS, or
+  plain over TCP. **Test** shows how long it takes to answer. When it can't be reached, the
+  download stops with a message naming it, unless you allow falling back to the system's DNS;
+  your hosts file and local names stay with the system's. The command line's `get` takes
+  `--dns`. Video pages and torrent trackers still use the system's DNS.
+- **Drop-down lists for screen readers**: a screen reader or UI Automation can now set a
+  drop-down list's choice by its text, and open or close the list.
 - **Torrents: upload limits, and a share ratio that lasts**
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): Torrent settings can
   limit what all torrents together send, and a torrent's progress window can limit its own, kept
@@ -199,6 +209,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   their selected row; Download video's list is called Quality, Add torrent's Files and the
   sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
   choice at once: it used to wait for the next mouse move.
+- **List rows sit inside their list for screen readers** ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102)):
+  they used to be listed beside it. A screen reader now says which row of how many ("4 of 12"),
+  choosing from the list itself works (UI Automation's Selection), and a tree's check box belongs
+  to its file's row. The language picker's list and the Options browser list and the Scheduler's
+  two lists have names now too.
 - **Torrents: speed limits now work as they do for other downloads**
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
   torrent's progress window changed every torrent's limit, a remembered limit was ignored, the

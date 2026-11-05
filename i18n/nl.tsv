@@ -43,6 +43,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} geselecteerd|{n} geselecteerd
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+#, machine
+	"{what}" isn't an IP address.	"{what}" is geen IP-adres.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -85,6 +89,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Details verbergen
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+#, machine
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Een NextDNS-configuratie-ID bestaat uit zes letters en cijfers (0-9, a-f).
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -152,7 +160,8 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Adres gewijzigd naar {host}
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Adres:
 #. window title in the Options window
@@ -213,6 +222,15 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	AM
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Another DNS...	Andere DNS...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+#, machine
+	Answered in {ms} ms: {ip}	Beantwoord in {ms} ms: {ip}
 #. text in the Scheduler window
 #, machine
 	April	April
@@ -223,9 +241,17 @@
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Zoals de systeemregio ze schrijft
+#. text in the Options window
+#, machine
+	Ask it with:	Vraag het met:
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Bestandslijst opvragen bij peers. Magnet-links kunnen een minuut of twee duren.
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking...	Bezig met vragen...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -316,6 +342,10 @@
 #, machine
 	Category properties	Categorie-eigenschappen
 #. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+#, machine
+	Certificate name:	Certificaatnaam:
+#. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	Map voor categorie "{category}" wijzigen op laatst geselecteerd
@@ -393,6 +423,10 @@
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
 	Compressed	Gecomprimeerd
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+#, machine
+	Configuration ID:	Configuratie-ID:
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	Bevestigen voor het verwijderen van downloads
@@ -521,6 +555,21 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	weergegeven in de lijst met wachtrijen
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+#, machine
+	DNS over HTTPS	DNS via HTTPS
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+#, machine
+	DNS over TLS	DNS via TLS
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+#, machine
+	DNS settings	DNS-instellingen
+#. text in the Options window
+#, machine
+	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
 	Do not start downloading, only add files to the queue	Niet beginnen met downloaden, alleen bestanden aan de wachtrij toevoegen
@@ -964,6 +1013,10 @@
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	Als het bestaande bestand compleet is, dialoogvenster "Download voltooid" weergeven; anders hervatten.
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+#, machine
+	If it can't be reached, use the system's DNS	Als het niet bereikbaar is, gebruik dan de DNS van het systeem
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Wijzigingen in de bestandswijzigingstijd negeren bij het hervatten van een download
@@ -1003,6 +1056,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	Ongeldig adres
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+#, machine
+	IP addresses (optional):	IP-adressen (optioneel):
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -1261,6 +1318,10 @@
 #. text in categories.rs
 #, machine
 	Name:	Naam:
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+#, machine
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Namen in uw hosts-bestand en lokale namen (enkele woorden, .local, .lan) blijven bij de DNS van het systeem. Videopagina's en torrenttrackers gebruiken voorlopig de DNS van het systeem.
 #. text in errors.rs
 #, machine
 	network error	netwerkfout
@@ -1530,6 +1591,10 @@
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	Delen
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+#, machine
+	plain DNS	gewone DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -1790,6 +1855,10 @@
 #. text in the Options window
 #, machine
 	Server:	Server:
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+#, machine
+	Servers:	Servers:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1802,6 +1871,11 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Instellen
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Settings...	Instellingen...
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -2034,6 +2108,10 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	Tijdelijke map
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+#, machine
+	Test	Testen
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -2245,6 +2323,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	De symbolen konden niet worden opgehaald: sommige regels van het rapport tonen adressen in plaats van namen (de ontwikkelaars kunnen ze nog steeds lezen).
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+#, machine
+	The system's DNS	De DNS van het systeem
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2428,6 +2510,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Typ een getal in Van en in Tot
+#. text in the settings
+#. Options → DNS: no server address was typed
+#, machine
+	Type at least one server address.	Typ ten minste één serveradres.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -2436,6 +2522,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Typ de bestandsnaam in Opslaan als
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+#, machine
+	Type the name the server's certificate shows.	Typ de naam die het servercertificaat toont.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -2644,6 +2734,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Uw browser
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+#, machine
+	your DNS ({how})	uw DNS ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -2756,6 +2850,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} kon niet worden gedownload: {error}
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} isn't offered as {how}.	{name} wordt niet aangeboden als {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

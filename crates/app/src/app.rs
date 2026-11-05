@@ -1612,6 +1612,7 @@ impl App {
         let opts = Options {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy(),
+            dns: self.settings.dns(),
             global: Some(self.global.clone()),
             host_limits: Some(self.host_limits.clone()),
             ignore_mtime: self.settings.ignore_mtime,
@@ -5676,6 +5677,7 @@ impl eframe::App for App {
             crate::win32::keep_from_foreground();
         }
         crate::settings::share_proxy(self.settings.proxy());
+        crate::settings::share_dns(self.settings.dns());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
         dialogs::publish_main_rect(&ctx);

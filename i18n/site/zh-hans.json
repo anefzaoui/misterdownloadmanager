@@ -2582,6 +2582,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>下载</g1>：Windows 安装程序、便携式 zip 和普通 zip、独立的浏览器扩展程序（Chromium 浏览器为 zip，Firefox 为 <x2/>，始终与应用版本一致），以及<g3>可试用的 macOS 和 Linux 版本</g3>：通用 <x4/> 和 AppImage、<x5/>、<x6/> 和 <x7/>，标记为 <x8/>，因为我们尚未对其进行测试。在这些版本中，MDM 会自动连接到 Chrome、Edge、Brave、Vivaldi 和 Firefox，拥有托盘图标，遵循系统的浅色或深色外观，并使用系统字体和 ffmpeg。请告诉我们它们对您来说如何。"
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>DNS over HTTPS</g1>（默认）或 <g2>DNS over TLS</g2>：加密，因此途中没有人能看到或更改您查询的名称。"
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>在以下时间开始下载</g1> — 一个时间，然后是："
@@ -2746,6 +2750,10 @@
    "source": "The programs, to unpack anywhere",
    "text": "程序文件，可解压到任意位置"
   },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — MDM 及其自身下载（辅助程序、更新）和 FTP 下载时，哪个 DNS 将服务器名称转换为地址。<g2>系统的 DNS</g2> 是默认设置（在 Windows 11 中，它可能已在 Windows 自己的网络设置中加密）。或者选择 <g3>Cloudflare</g3>、<g4>Google</g4>、<g5>Quad9</g5>、<g6>AdGuard</g6> 或 <g7>NextDNS</g7>，或 <g8>其他 DNS...</g8> 以输入您自己的；<g9>设置...</g9> 选择其查询方式："
+  },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
    "text": "双击列表中的种子以打开其进度窗口。除了常规状态外，种子的窗口有五个选项卡："
@@ -2789,6 +2797,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "免费开源。安装它，点击链接，查看每个连接的工作情况。"
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "您 hosts 文件中的名称和本地名称（单个单词，<x1/>、<x2/>、<x3/>、<x4/>、<x5/>）保留使用系统的 DNS。视频页面 (yt-dlp) 和 torrent 跟踪器仍使用系统的 DNS。使用代理时，代理会为您查找其访问站点的名称。"
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -3650,6 +3662,10 @@
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>不破解版权保护。</g1> MDM 不会移除或绕过 DRM，也无意如此。受保护的内容仍然受保护。"
   },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>测试</g1> 查询 github.com 并显示所需时间。"
+  },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
    "text": "右键点击：使用 Mister Download Manager 下载"
@@ -3749,6 +3765,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "其他系统和文件"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>普通 DNS</g1>：未加密。MDM 通过 TCP 查询，从不通过 UDP，因此它从不需要防火墙例外。"
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4293,6 +4313,10 @@
   "79e494c172e7a660": {
    "source": "Troubleshooting",
    "text": "故障排除"
+  },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "对于您自己的 DNS：服务器的 IP 地址，其证书显示的名称 (TLS)，或 <x1/> 地址 (HTTPS，如果您知道其 IP 地址)。NextDNS 需要您的配置 ID。"
   },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
@@ -5285,10 +5309,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — 可从文件夹或 U 盘运行"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。"
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -7034,6 +7054,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "所有版本都在<g1>发布</g1>页面上。Windows 有三个文件："
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>如果无法访问，请使用系统的 DNS</g1>：默认关闭，因此不响应的 DNS 会停止下载并显示一条命名它的消息，而不是悄悄地将您的查询显示给系统的 DNS。DNS 称不存在的名称永远不会回退（这会撤销过滤 DNS）。"
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "恢复中断的下载 — Mister Download Manager 帮助"
@@ -7193,6 +7217,10 @@
   "cbc1f1134f6a8b39": {
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "如果您想要 <g1>Internet Download Manager (IDM)</g1> 的界面但又不想付费，那么免费的替代品就是 <g2>Mister Download Manager (MDM)</g2>：这是一款适用于 Windows 10 和 11 的免费开源下载管理器，并提供 macOS 和 Linux 的实验版本。它外观和功能都与 IDM 相似，可以导入您的 IDM 下载列表，在<g3>我们发布的基准测试</g3>中，下载 1 GiB 文件比 IDM 6.42 快 5.4 倍，并且还支持下载种子、磁力链接和视频。"
+  },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "这是 MDM 唯一会等待外部连接的部分。下载、MDM 的 DNS 选择（选项 → 连接 → DNS）、其更新及其助手只向外连接，因此它们永远不需要防火墙例外；浏览器扩展和自动化 API 只在此计算机上（127.0.0.1）连接 MDM。"
   },
   "cc126dc832a278c1": {
    "source": "Yes",
@@ -7849,6 +7877,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "恢复中断的下载"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。<x6/> 选择 DNS：<x7/>（默认）；服务及其查询方式，<x8/>、<x9/>、<x10/>、<x11/>、<x12/>；DNS 服务器地址，<x13/>；或 DNS-over-HTTPS 地址。它从不回退到系统 DNS。"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",

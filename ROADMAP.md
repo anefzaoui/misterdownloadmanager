@@ -14,6 +14,9 @@ Everything below ships together, in one release.
 ### Done
 
 - ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
+- ✅ Choose the DNS: Cloudflare, Google, Quad9, AdGuard, NextDNS or your own, over HTTPS, TLS or
+  plain, with a Test button and no silent fallback
+  ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - ✅ Less memory in the notification area: under 10 MB there, and the language list's fonts let
   go when it closes ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Video downloads: subtitles, beside the video or inside it
@@ -62,7 +65,8 @@ Everything below ships together, in one release.
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
 - ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
   a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
-  list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95))
+  list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),
+  inside their list, with their place in it ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
@@ -105,8 +109,6 @@ Everything below ships together, in one release.
 
 - 📋 Bind downloads to a network adapter (VPN), with a kill switch
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
-- 📋 Custom DNS, and DNS over HTTPS or TLS
-  ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - 📋 Downloads follow a browser's VPN or proxy extension
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 

@@ -125,6 +125,20 @@ pub struct Settings {
     pub proxy_http: bool,
     pub proxy_https: bool,
     pub proxy_ftp: bool,
+    /// Connection → DNS (#36): 0 the system's, 1 plain DNS, 2 DNS over TLS, 3 DNS over HTTPS.
+    pub dns_mode: u8,
+    /// A service of `mdm_engine::dns::PRESETS` by id, or "custom".
+    pub dns_provider: String,
+    /// Custom: the servers (plain, TLS) or the DoH server's addresses (optional), as typed.
+    pub dns_servers: String,
+    /// Custom DNS over TLS: the name the servers' certificate shows.
+    pub dns_tls_name: String,
+    /// Custom DNS over HTTPS: the address (`https://.../dns-query`).
+    pub dns_doh_url: String,
+    /// NextDNS: the configuration ID (six hex digits), or none.
+    pub dns_nextdns_id: String,
+    /// When the chosen DNS can't be reached, ask the system's (off: strict).
+    pub dns_fallback: bool,
     /// "Use FTP in PASV mode": passive data connections (the client connects; works behind
     /// NAT), else active. Named anew when FTP arrived: `ftp_pasv` was saved as false while
     /// the box was greyed.
@@ -275,6 +289,13 @@ impl Default for Settings {
             proxy_http: false,
             proxy_https: false,
             proxy_ftp: false,
+            dns_mode: 0,
+            dns_provider: "cloudflare".into(),
+            dns_servers: String::new(),
+            dns_tls_name: String::new(),
+            dns_doh_url: String::new(),
+            dns_nextdns_id: String::new(),
+            dns_fallback: false,
             ftp_passive: true,
             site_logins: Vec::new(),
             sounds: Default::default(),
@@ -421,6 +442,21 @@ impl Settings {
         }
     }
 
+    /// Options → Connection → DNS for the engine. A setting that can't work (no server typed,
+    /// an address that isn't one) gives the system's DNS; Options won't take one with OK.
+    pub fn dns(&self) -> mdm_engine::DnsChoice {
+        dns_choice(
+            self.dns_mode,
+            &self.dns_provider,
+            &self.dns_servers,
+            &self.dns_tls_name,
+            &self.dns_doh_url,
+            &self.dns_nextdns_id,
+            self.dns_fallback,
+        )
+        .unwrap_or_default()
+    }
+
     /// The most connections Options → Connection lets a download use: 32, or 128 once more are
     /// allowed.
     pub fn connection_limit(&self) -> u32 {
@@ -498,10 +534,121 @@ impl Settings {
     }
 }
 
+/// DNS mode numbers (`Settings::dns_mode`) as the engine's.
+pub fn dns_mode(n: u8) -> Option<mdm_engine::dns::Mode> {
+    use mdm_engine::dns::Mode;
+    match n {
+        1 => Some(Mode::Plain),
+        2 => Some(Mode::Tls),
+        3 => Some(Mode::Https),
+        _ => None,
+    }
+}
+
+/// The engine's DNS choice from Options → DNS's fields; `Err` says what is wrong.
+pub fn dns_choice(
+    mode: u8,
+    provider: &str,
+    servers: &str,
+    tls_name: &str,
+    doh_url: &str,
+    nextdns_id: &str,
+    fallback: bool,
+) -> Result<mdm_engine::DnsChoice, String> {
+    use mdm_engine::dns::{Dns, Mode, Preset, parse_servers, valid_nextdns_profile};
+    let Some(m) = dns_mode(mode) else {
+        return Ok(mdm_engine::DnsChoice::default());
+    };
+    let how = match m {
+        // i18n: a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+        Mode::Plain => crate::i18n::t("plain DNS"),
+        // i18n: a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+        Mode::Tls => crate::i18n::t("DNS over TLS"),
+        // i18n: a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+        Mode::Https => crate::i18n::t("DNS over HTTPS"),
+    };
+    if let Some(p) = Preset::by_id(provider) {
+        if !p.offers(m) {
+            return Err(crate::i18n::fmt(
+                // i18n: Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+                crate::i18n::t("{name} isn't offered as {how}."),
+                &[("name", p.name), ("how", how)],
+            ));
+        }
+        if !valid_nextdns_profile(nextdns_id) {
+            return Err(
+                // i18n: Options → DNS: the NextDNS configuration ID typed isn't one
+                crate::i18n::t("A NextDNS configuration ID is six letters and digits (0-9, a-f).")
+                    .to_owned(),
+            );
+        }
+        return Ok(p.choice(m, nextdns_id, fallback, format!("{} ({how})", p.name)));
+    }
+    // i18n: Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+    let label = crate::i18n::fmt(crate::i18n::t("your DNS ({how})"), &[("how", how)]);
+    let bad = |what: String| {
+        crate::i18n::fmt(
+            // i18n: Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+            crate::i18n::t("\"{what}\" isn't an IP address."),
+            &[("what", &what)],
+        )
+    };
+    // i18n: Options → DNS: no server address was typed
+    let none = || crate::i18n::t("Type at least one server address.").to_owned();
+    let dns = match m {
+        Mode::Plain => {
+            let s = parse_servers(servers, 53).map_err(bad)?;
+            if s.is_empty() {
+                return Err(none());
+            }
+            Dns::Plain(s)
+        }
+        Mode::Tls => {
+            let s = parse_servers(servers, 853).map_err(bad)?;
+            if s.is_empty() {
+                return Err(none());
+            }
+            let name = tls_name.trim();
+            if name.is_empty() {
+                return Err(
+                    // i18n: Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+                    crate::i18n::t("Type the name the server's certificate shows.").to_owned(),
+                );
+            }
+            Dns::Tls {
+                name: name.to_owned(),
+                servers: s,
+            }
+        }
+        Mode::Https => {
+            let url = doh_url.trim();
+            if !url.starts_with("https://") || url::Url::parse(url).is_err() {
+                // i18n: Options → DNS over HTTPS: the address typed isn't a valid https:// address
+                return Err(crate::i18n::t("Type the server's https:// address.").to_owned());
+            }
+            Dns::Https {
+                url: url.to_owned(),
+                bootstrap: parse_servers(servers, 0)
+                    .map_err(bad)?
+                    .into_iter()
+                    .map(|a| a.ip())
+                    .collect(),
+            }
+        }
+    };
+    Ok(mdm_engine::DnsChoice {
+        dns,
+        fallback,
+        label,
+    })
+}
+
 /// The proxy MDM's own downloads go through (its helpers, its updates, a crash report's
 /// symbols): Options → Proxy / Socks, kept in step by the app ([`share_proxy`]); Windows' own
 /// settings in a process without them (the crash monitor).
 static OWN_PROXY: std::sync::RwLock<Option<mdm_engine::Proxy>> = std::sync::RwLock::new(None);
+/// The same for Options → Connection → DNS ([`share_dns`]).
+static OWN_DNS: std::sync::RwLock<Option<mdm_engine::DnsChoice>> = std::sync::RwLock::new(None);
 
 /// Keep [`own_net`] on the settings' proxy (cheap when it didn't change).
 pub fn share_proxy(proxy: mdm_engine::Proxy) {
@@ -510,14 +657,24 @@ pub fn share_proxy(proxy: mdm_engine::Proxy) {
     }
 }
 
-/// How MDM downloads its own files: its engine, as itself, through the user's proxy.
+/// Keep [`own_net`] on the settings' DNS (cheap when it didn't change).
+pub fn share_dns(dns: mdm_engine::DnsChoice) {
+    if OWN_DNS.read().unwrap().as_ref() != Some(&dns) {
+        *OWN_DNS.write().unwrap() = Some(dns);
+    }
+}
+
+/// How MDM downloads its own files: its engine, as itself, through the user's proxy and DNS.
 pub fn own_net() -> mdm_engine::Options {
     let proxy = OWN_PROXY
         .read()
         .unwrap()
         .clone()
         .unwrap_or(mdm_engine::Proxy::System);
-    mdm_tools::net(proxy)
+    mdm_engine::Options {
+        dns: OWN_DNS.read().unwrap().clone().unwrap_or_default(),
+        ..mdm_tools::net(proxy)
+    }
 }
 
 #[cfg(test)]

@@ -43,6 +43,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} انتخاب‌شده|{n} انتخاب‌شده
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+#, machine
+	"{what}" isn't an IP address.	"{what}" یک آدرس IP نیست.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -85,6 +89,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< مخفی کردن جزئیات
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+#, machine
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	شناسه پیکربندی NextDNS شش حرف و رقم (0-9، a-f) است.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -152,7 +160,8 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	آدرس به {host} تغییر یافت
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	آدرس:
 #. window title in the Options window
@@ -213,6 +222,15 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	ق.ظ
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Another DNS...	DNS دیگر...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+#, machine
+	Answered in {ms} ms: {ip}	در {ms} میلی‌ثانیه پاسخ داده شد: {ip}
 #. text in the Scheduler window
 #, machine
 	April	آوریل
@@ -223,9 +241,17 @@
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	همان‌طور که منطقه سیستم می‌نویسد
+#. text in the Options window
+#, machine
+	Ask it with:	با این بپرسید:
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	در حال درخواست لیست فایل از همتایان. لینک‌های مگنت ممکن است یک یا دو دقیقه طول بکشند.
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking...	در حال پرسیدن...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -316,6 +342,10 @@
 #, machine
 	Category properties	ویژگی‌های دسته
 #. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+#, machine
+	Certificate name:	نام گواهی:
+#. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	تغییر پوشه برای دسته «{category}» در آخرین انتخاب
@@ -393,6 +423,10 @@
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
 	Compressed	فشرده
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+#, machine
+	Configuration ID:	شناسه پیکربندی:
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	تأیید قبل از حذف دانلودها
@@ -521,6 +555,21 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	نمایش داده شده در لیست صف‌ها
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+#, machine
+	DNS over HTTPS	DNS از طریق HTTPS
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+#, machine
+	DNS over TLS	DNS از طریق TLS
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+#, machine
+	DNS settings	تنظیمات DNS
+#. text in the Options window
+#, machine
+	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
 	Do not start downloading, only add files to the queue	شروع به بارگیری نکند، فقط فایل‌ها را به صف اضافه کند
@@ -964,6 +1013,10 @@
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	اگر فایل موجود کامل است، کادر گفتگوی تکمیل دانلود را نمایش بده؛ در غیر این صورت آن را از سر بگیر.
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+#, machine
+	If it can't be reached, use the system's DNS	اگر قابل دسترسی نیست، از DNS سیستم استفاده کنید
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	نادیده گرفتن تغییرات زمان اصلاح فایل هنگام از سرگیری دانلود
@@ -1003,6 +1056,10 @@
 #. text in a dialog box
 #, machine
 	Invalid address	آدرس نامعتبر است
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+#, machine
+	IP addresses (optional):	آدرس‌های IP (اختیاری):
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -1261,6 +1318,10 @@
 #. text in categories.rs
 #, machine
 	Name:	نام:
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+#, machine
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	نام‌های موجود در فایل میزبان شما و نام‌های محلی (تک کلمه‌ای، .local، .lan) با DNS سیستم باقی می‌مانند. صفحات ویدئو و ردیاب‌های تورنت فعلا از DNS سیستم استفاده می‌کنند.
 #. text in errors.rs
 #, machine
 	network error	خطای شبکه
@@ -1530,6 +1591,10 @@
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	قطعات
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+#, machine
+	plain DNS	DNS ساده
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -1790,6 +1855,10 @@
 #. text in the Options window
 #, machine
 	Server:	سرور:
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+#, machine
+	Servers:	سرورها:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1802,6 +1871,11 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	تنظیم کن
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Settings...	تنظیمات...
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -2034,6 +2108,10 @@
 #. group box title in the Options window
 #, machine
 	Temporary directory	پوشه موقت
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+#, machine
+	Test	آزمایش
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -2245,6 +2323,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	نمادها قابل واکشی نبودند: برخی از خطوط گزارش به جای نام‌ها، آدرس‌ها را نشان می‌دهند (توسعه‌دهندگان همچنان می‌توانند آن‌ها را بخوانند).
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+#, machine
+	The system's DNS	DNS سیستم
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2428,6 +2510,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	یک عدد در از و در به تایپ کنید
+#. text in the settings
+#. Options → DNS: no server address was typed
+#, machine
+	Type at least one server address.	حداقل یک آدرس سرور را تایپ کنید.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -2436,6 +2522,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	نام فایل را در ذخیره با نام تایپ کنید
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+#, machine
+	Type the name the server's certificate shows.	نامی را که گواهی سرور نشان می‌دهد، تایپ کنید.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -2644,6 +2734,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	مرورگر شما
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+#, machine
+	your DNS ({how})	DNS شما ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -2756,6 +2850,11 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} قابل دانلود نبود: {error}
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} isn't offered as {how}.	{name} به عنوان {how} ارائه نمی‌شود.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
