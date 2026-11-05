@@ -176,6 +176,10 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	ಎಲ್ಲಾ ಸಿದ್ಧವಾಗಿದೆ: ವೀಡಿಯೊ ಇರುವ ಪುಟದಲ್ಲಿ, ಕಾರ್ಯಗಳು → ಪುಟದಿಂದ ವೀಡಿಯೊ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಬಳಸಿ.
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+#, machine
+	All the uploader's	ಅಪ್‌ಲೋಡ್ ಮಾಡಿದವರ ಎಲ್ಲಾ
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -1331,6 +1335,14 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	{file} ನಲ್ಲಿ ಯಾವುದೇ ವೆಬ್ ವಿಳಾಸಗಳು ಕಂಡುಬಂದಿಲ್ಲ.
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+#, machine
+	None	ಯಾವುದೂ ಇಲ್ಲ
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+#, machine
+	None on this page	ಈ ಪುಟದಲ್ಲಿ ಯಾವುದೂ ಇಲ್ಲ
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ಯಾವುದೂ ಇಲ್ಲ: ಪೀರ್‌ಗಳು DHT ಮತ್ತು ಇತರ ಪೀರ್‌ಗಳಿಂದ ಬರುತ್ತವೆ
@@ -1413,6 +1425,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ಮುಗಿದ ಡೌನ್‌ಲೋಡ್ ಅಥವಾ ಇನ್ನೂ ಪ್ರಾರಂಭಿಸದ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಮಾತ್ರ ಸರಿಸಬಹುದು. ಅದನ್ನು ನಿಲ್ಲಿಸಿ ಮತ್ತು ಮೊದಲು ಅದನ್ನು ಮುಗಿಸಿ.
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+#, machine
+	Only MP4 and MKV videos can hold subtitles	MP4 ಮತ್ತು MKV ವೀಡಿಯೊಗಳು ಮಾತ್ರ ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಹೊಂದಬಲ್ಲವು
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ನಾನು ಕಂಪ್ಯೂಟರ್ ಬಳಸುತ್ತಿರುವಾಗ ಮಾತ್ರ
@@ -1549,6 +1565,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	ಸಂಖ್ಯೆಗಳು ಅಥವಾ ಅಕ್ಷರಗಳು ಹೋಗುವ ವಿಳಾಸದಲ್ಲಿ * ಅನ್ನು ಹಾಕಿ
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+#, machine
+	Put them into the video	ಅವುಗಳನ್ನು ವೀಡಿಯೊಗೆ ಹಾಕಿ
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1965,6 +1985,23 @@
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
 	Su	ಭಾನು
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+#, machine
+	Subtitles	ಉಪಶೀರ್ಷಿಕೆಗಳು
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} ನಲ್ಲಿ ಉಪಶೀರ್ಷಿಕೆಗಳು ಎರಡನೇ ಪ್ರಯತ್ನದಲ್ಲಿ ಬಂದಿವೆ: ಅವು ವೀಡಿಯೊದಲ್ಲಿ ಇಲ್ಲ, ಅದರ ಪಕ್ಕದಲ್ಲಿವೆ.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} ನಲ್ಲಿ ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} ನಲ್ಲಿ ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {site} ನಿರಾಕರಿಸಿದೆ (ಹೆಚ್ಚು ವಿನಂತಿಗಳು).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	ಭಾನುವಾರ
@@ -2248,6 +2285,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ಇದು ಸ್ಥಾಪಿಸಲಾದ ನಕಲು, ಪೋರ್ಟಬಲ್ ಅಲ್ಲ
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+#, machine
+	This needs ffmpeg	ಇದಕ್ಕೆ ffmpeg ಬೇಕು
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -2669,6 +2710,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} ಗಂಟೆ(ಗಳು) {m} ನಿಮಿಷ
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+#, machine
+	{language}, automatic	{language}, ಸ್ವಯಂಚಾಲಿತ
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

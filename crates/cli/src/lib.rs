@@ -78,6 +78,16 @@ enum Cmd {
         /// Folder to save into.
         #[arg(short, long, default_value = ".")]
         output: PathBuf,
+        /// Subtitles to save beside the video: language codes from `video-info`, separated by
+        /// commas ("en,fr"), "all" for every one the uploader gave, or "none".
+        #[arg(long, default_value = "none")]
+        subs: String,
+        /// Take the subtitles from the site's automatic captions instead of the uploader's.
+        #[arg(long)]
+        auto_subs: bool,
+        /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
+        #[arg(long)]
+        embed_subs: bool,
     },
     /// Make a .torrent of a file or folder (no trackers; peers find it through the DHT).
     TorrentCreate {
@@ -326,12 +336,19 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             let v = mdm_tools::resolve::resolve(&tool.exe, &url, &Default::default())?;
             let merge = mdm_tools::ffmpeg::installed(&dir).is_some();
             let choices = mdm_tools::resolve::choices(&v, merge);
+            // The subtitles a person would be offered (the automatic ones: the spoken
+            // language's and English).
+            let subs = mdm_tools::resolve::sub_choices(&v, "en");
             if json {
                 let choices: Vec<_> = choices
                     .iter()
                     .map(|c| json!({ "label": c.label, "format": c.selector, "size": c.size }))
                     .collect();
-                emit(json!({ "title": v.title, "choices": choices }));
+                let subs: Vec<_> = subs
+                    .iter()
+                    .map(|s| json!({ "code": s.code, "name": s.name, "automatic": s.automatic }))
+                    .collect();
+                emit(json!({ "title": v.title, "choices": choices, "subtitles": subs }));
                 return Ok(());
             }
             println!("{}", v.title);
@@ -340,6 +357,13 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
                     .size
                     .map_or(String::new(), |s| format!("  ~{} MB", s / 1_000_000));
                 println!("  {}{size}    -f \"{}\"", c.label, c.selector);
+            }
+            if !subs.is_empty() {
+                println!("subtitles:");
+                for s in subs {
+                    let auto = if s.automatic { "  --auto-subs" } else { "" };
+                    println!("  {}    --subs {}{auto}", s.name, s.code);
+                }
             }
             Ok(())
         }
@@ -470,7 +494,11 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             url,
             format,
             output,
+            subs,
+            auto_subs,
+            embed_subs,
         } => {
+            let subs = subs_arg(&subs, auto_subs, embed_subs);
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::installed(&dir)
                 .ok_or_else(|| anyhow::anyhow!("yt-dlp is not installed (install-ytdlp)"))?;
@@ -500,6 +528,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
                 // No size shown here: the progress steadies itself (video::Meter).
                 None,
                 &Default::default(),
+                &subs,
             )?;
             loop {
                 tokio::time::sleep(std::time::Duration::from_millis(500)).await;
@@ -522,11 +551,50 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
                 match p.state {
                     mdm_tools::video::State::Running => {}
                     mdm_tools::video::State::Done(f) => {
+                        // Subtitles the site refused: the video is saved all the same (#68).
+                        let problems: Vec<(String, String, String, bool)> = p
+                            .sub_problems
+                            .iter()
+                            .map(|s| {
+                                let why = match &s.reason {
+                                    mdm_tools::video::SubReason::TooManyRequests => {
+                                        "the site refused (too many requests)".to_owned()
+                                    }
+                                    mdm_tools::video::SubReason::Other(w) => w.clone(),
+                                };
+                                (s.code.clone(), s.name.clone(), why, s.beside)
+                            })
+                            .collect();
                         if json {
-                            emit(json!({ "event": "done", "path": f }));
+                            let problems: Vec<_> = problems
+                                .iter()
+                                .map(|(code, name, why, beside)| {
+                                    json!({ "code": code, "name": name, "reason": why, "beside": beside })
+                                })
+                                .collect();
+                            emit(json!({
+                                "event": "done",
+                                "path": f,
+                                "subtitles": p.side_files,
+                                "subtitle_problems": problems,
+                            }));
                         } else {
                             eprintln!();
                             println!("saved {}", f.display());
+                            for s in &p.side_files {
+                                println!("saved {}", s.display());
+                            }
+                            for (code, name, why, beside) in problems {
+                                if beside {
+                                    println!(
+                                        "subtitles in {name} ({code}) came on a second try: beside the video, not in it"
+                                    );
+                                } else {
+                                    println!(
+                                        "subtitles in {name} ({code}) couldn't be downloaded: {why}"
+                                    );
+                                }
+                            }
                         }
                         return Ok(());
                     }
@@ -554,6 +622,27 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             let dl = Download::resume(state, parse_headers(&headers)?, opts(connections))?;
             watch(dl, json).await
         }
+    }
+}
+
+/// `video-get --subs` (#68): "none" (or nothing), "all", or language codes separated by commas.
+fn subs_arg(langs: &str, automatic: bool, embed: bool) -> mdm_tools::video::Subs {
+    let langs: Vec<String> = langs
+        .split(',')
+        .map(str::trim)
+        .filter(|l| !l.is_empty() && !l.eq_ignore_ascii_case("none"))
+        .map(|l| {
+            if l.eq_ignore_ascii_case(mdm_tools::video::ALL_UPLOADERS) {
+                mdm_tools::video::ALL_UPLOADERS.to_owned()
+            } else {
+                l.to_owned()
+            }
+        })
+        .collect();
+    mdm_tools::video::Subs {
+        langs,
+        automatic,
+        embed,
     }
 }
 

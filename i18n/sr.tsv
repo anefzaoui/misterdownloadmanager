@@ -176,6 +176,10 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	Све је спремно: на страници са видеом, користите Задаци → Преузми видео са странице.
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+#, machine
+	All the uploader's	Све отпремио корисник
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -1331,6 +1335,14 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Нису пронађене веб адресе у {file}.
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+#, machine
+	None	Ниједан
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+#, machine
+	None on this page	Нема на овој страници
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Ништа: учесници долазе из DHT-а и других учесника
@@ -1413,6 +1425,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Може се преместити само завршено преузимање или оно које још није започето. Прво га зауставите и завршите.
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+#, machine
+	Only MP4 and MKV videos can hold subtitles	Само MP4 и MKV видео снимци могу да садрже титлове
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Само док користим рачунар
@@ -1549,6 +1565,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	Ставите * у адресу где иду бројеви или слова
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+#, machine
+	Put them into the video	Стави их у видео
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1965,6 +1985,23 @@
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
 	Su	Не
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+#, machine
+	Subtitles	Титлови
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Преводи на језику {language} су преузети из другог покушаја: налазе се поред видеа, а не у њему.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	Преводи на језику {language} нису могли да се преузму: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Преводи на језику {language} нису могли да се преузму: {site} је одбио (превише захтева).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	Недеља
@@ -2248,6 +2285,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	Ово је инсталирана копија, а не преносива
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+#, machine
+	This needs ffmpeg	За ово је потребан ffmpeg
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -2669,6 +2710,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} час(ова) {m} мин
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+#, machine
+	{language}, automatic	{language}, аутоматски
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

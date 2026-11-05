@@ -31,11 +31,24 @@ Already have yt-dlp or ffmpeg for another program? Use those instead of a second
 1. Wait for the list. It shows each resolution with its size, best first, then **Audio only** in the site's own format (M4A or WebM, as the site serves it), then **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.
 2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).
 3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title.
-4. Click **Download Now**, or **Later** to add it to the list without starting.
+4. Choose **Subtitles** if you want them (see below).
+5. Click **Download Now**, or **Later** to add it to the list without starting.
 
 The video then downloads like any other file, with its own row in the list and its progress window. yt-dlp brings it in over one stream of its own, so the window's connections table stays empty.
 
 ![A video's progress window](images/progress-video.png)
+
+## Subtitles
+
+When the video has subtitles, the **Subtitles** list offers them: the uploader's own languages first (and **All the uploader's** when there are several), then the site's automatic captions, marked *automatic*. Of those, only the ones in the language spoken and their translations into English and your interface language are listed; sites like YouTube offer a machine translation into every language they know.
+
+- Saved beside the video, they get its name and the language: `My video.fr.srt`. Players such as VLC and MPV pick them up on their own. With ffmpeg they're always SRT; without it, the site's own format (often WebVTT, `.vtt`).
+- **Put them into the video** puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.
+- A sound-only choice (**Audio only**, MP3) has no subtitles.
+
+MDM offers the same choice again for the next video when it has that language.
+
+A site may refuse subtitles when it's asked too often: YouTube does, most of all for its translated captions. The video is saved all the same. MDM asks for the subtitles once more after 20 seconds, and if they still don't come, the **Download complete** window and the download's log say which ones are missing and why. Try them again later. When subtitles meant to go inside the video only come on that second try, they're saved beside it instead.
 
 ## Playlists and mixes
 

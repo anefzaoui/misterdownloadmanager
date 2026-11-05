@@ -176,6 +176,10 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	అన్నీ సిద్ధంగా ఉన్నాయి: వీడియో ఉన్న పేజీలో, టాస్క్‌లు → పేజీ నుండి వీడియోను డౌన్‌లోడ్ చేయిని ఉపయోగించండి.
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+#, machine
+	All the uploader's	అప్‌లోడ్ చేసిన వారివి అన్నీ
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -1331,6 +1335,14 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	{file}లో వెబ్ చిరునామాలు కనుగొనబడలేదు.
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+#, machine
+	None	ఏవీ లేవు
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+#, machine
+	None on this page	ఈ పేజీలో ఏవీ లేవు
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ఏదీ లేదు: పీర్‌లు DHT మరియు ఇతర పీర్‌ల నుండి వస్తాయి
@@ -1413,6 +1425,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	పూర్తయిన డౌన్‌లోడ్ లేదా ఇంకా ప్రారంభించని డౌన్‌లోడ్‌ను మాత్రమే తరలించవచ్చు. ముందు దాన్ని ఆపి, పూర్తి చేయండి.
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+#, machine
+	Only MP4 and MKV videos can hold subtitles	MP4 మరియు MKV వీడియోలు మాత్రమే ఉపశీర్షికలను కలిగి ఉంటాయి
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	నేను కంప్యూటర్‌ను ఉపయోగిస్తున్నప్పుడు మాత్రమే
@@ -1549,6 +1565,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	సంఖ్యలు లేదా అక్షరాలు వెళ్ళే అడ్రస్‌లో *ని ఉంచండి
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+#, machine
+	Put them into the video	వాటిని వీడియోలో ఉంచండి
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1965,6 +1985,23 @@
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
 	Su	ఆది
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+#, machine
+	Subtitles	ఉపశీర్షికలు
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language}లో ఉపశీర్షికలు రెండవ ప్రయత్నంలో వచ్చాయి: అవి వీడియోలో కాకుండా, దాని పక్కన ఉన్నాయి.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	{language}లో ఉపశీర్షికలను డౌన్‌లోడ్ చేయలేకపోయాము: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language}లో ఉపశీర్షికలను డౌన్‌లోడ్ చేయలేకపోయాము: {site} తిరస్కరించింది (ఎక్కువ అభ్యర్థనలు).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	ఆదివారం
@@ -2248,6 +2285,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ఇది ఇన్‌స్టాల్ చేయబడిన కాపీ, పోర్టబుల్ కాపీ కాదు
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+#, machine
+	This needs ffmpeg	దీనికి ffmpeg అవసరం
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -2669,6 +2710,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} గంట(లు) {m} నిమి
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+#, machine
+	{language}, automatic	{language}, ఆటోమేటిక్
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

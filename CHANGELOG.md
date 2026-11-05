@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
+  Download video from a page lists the video's subtitle languages, the uploader's first, then the
+  site's automatic captions (in the language spoken, English and yours). They're saved beside the
+  video as `<name>.<language>.srt`, or put into the video with ffmpeg (MP4, MKV), and the choice is
+  offered again for the next video. Subtitles a site refuses (YouTube limits how often they may
+  be fetched) never cost the video: MDM asks once more after a pause, then says which are missing.
+  On the command line: `video-get --subs`, `--auto-subs`, `--embed-subs`; `video-info` lists them. A finished video and its subtitles are now marked as
+  downloaded from the internet, as other downloads are.
 - **View → Always dark** ([#60](https://github.com/anefzaoui/misterdownloadmanager/issues/60)):
   MDM stays dark whatever the system says, for a desktop that reports no light or dark
   preference (MDM also reads it on Linux now, see Fixed).
@@ -160,6 +168,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   no longer there".
 - **Stopping a download under a low speed limit took seconds**: each connection first waited
   for its turn under the limit. Stop now ends those waits at once.
+- **The browser extension's Download video menu: an item's highlight ran past the menu's
+  edge** ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81)).
+- **A long file name ran out of the progress window** ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62)):
+  on the **Options on completion** tab, a longer translation of "Save To:" (Turkish, German…)
+  ran into the path, and the path ran past the window's edge. The label now takes the room its
+  language needs, and the path is shortened in the middle, keeping the file's name in sight,
+  and shown whole on hover; right-to-left languages included.
 - **Download complete's Open with... stayed in English** in every other language
   ([#80](https://github.com/anefzaoui/misterdownloadmanager/issues/80)). The tool that collects
   MDM's texts for translation now also finds labels given through a window's own helpers, and

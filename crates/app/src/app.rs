@@ -1145,6 +1145,7 @@ impl App {
                         path: i.dest.clone(),
                         size: i.size.unwrap_or(i.downloaded),
                         dont_show: false,
+                        notices: i.notices.clone(),
                         seen: false,
                     });
                 }
@@ -1318,6 +1319,13 @@ impl App {
                     v.open_helpers();
                 }
             }
+            // Download video from a page with a sample video's subtitles (#68).
+            "video-subs" => {
+                self.run(Cmd::VideoPage, None, ctx);
+                if let Some(v) = &mut self.video_dlg {
+                    v.show_sample();
+                }
+            }
             "existing-files" => {
                 let dir = self.downloads.join("Big Buck Bunny");
                 self.shown_existing = Some(crate::dialogs::ExistingFiles::new(&[
@@ -1395,7 +1403,10 @@ impl App {
             let dir = self.settings.category_dir(Category::Video, &self.downloads);
             crate::videodlg::refresh_ytdlp(&self.rt);
             let page = page.to_owned();
-            self.video_dlg = Some(crate::videodlg::VideoDialog::for_page(dir, &page, cmd));
+            self.video_dlg = Some(
+                crate::videodlg::VideoDialog::for_page(dir, &page, cmd)
+                    .with_subs(self.settings.video_subs.clone()),
+            );
             return;
         }
         // Its menu: never on this site.
@@ -2190,7 +2201,12 @@ impl App {
         if let Some(item) = self.item(id) {
             item.video = Some(model::VideoSpec {
                 selector: add.selector,
+                subs: add.subs,
             });
+        }
+        // The Subtitles choice is offered again for the next video (#68).
+        if let Some(subs) = add.remember {
+            self.settings.video_subs = subs;
         }
         self.selection.set(id);
         if add.start_now {
@@ -2239,6 +2255,7 @@ impl App {
             ffmpeg.as_ref().map(|f| f.exe.as_path()),
             item.size,
             &crate::videodlg::from_browser(&item.context),
+            &spec.subs,
         );
         match started {
             Ok(job) => {
@@ -2970,7 +2987,10 @@ impl App {
                 if self.video_dlg.is_none() {
                     let dir = self.settings.category_dir(Category::Video, &self.downloads);
                     crate::videodlg::refresh_ytdlp(&self.rt);
-                    self.video_dlg = Some(crate::videodlg::VideoDialog::new(dir));
+                    self.video_dlg = Some(
+                        crate::videodlg::VideoDialog::new(dir)
+                            .with_subs(self.settings.video_subs.clone()),
+                    );
                 }
             }
             Cmd::AddMagnet => self.open_torrent_dialog(None, ctx),
@@ -3189,6 +3209,7 @@ impl App {
                     path: i.dest.clone(),
                     size: i.size.unwrap_or(i.downloaded),
                     dont_show: false,
+                    notices: i.notices.clone(),
                     seen: false,
                 });
             }
@@ -4480,6 +4501,7 @@ impl App {
                 path: i.dest.clone(),
                 size: i.size.unwrap_or(i.downloaded),
                 dont_show: false,
+                notices: i.notices.clone(),
                 seen: false,
             });
         } else if i.live.is_none() {
@@ -5198,11 +5220,14 @@ impl App {
                     self.add_url = None;
                     let dir = self.settings.category_dir(Category::Video, &self.downloads);
                     crate::videodlg::refresh_ytdlp(&self.rt);
-                    self.video_dlg = Some(crate::videodlg::VideoDialog::for_page(
-                        dir,
-                        new.url.as_str(),
-                        Default::default(),
-                    ));
+                    self.video_dlg = Some(
+                        crate::videodlg::VideoDialog::for_page(
+                            dir,
+                            new.url.as_str(),
+                            Default::default(),
+                        )
+                        .with_subs(self.settings.video_subs.clone()),
+                    );
                 }
                 Outcome::Done(new) => {
                     self.add_url = None;

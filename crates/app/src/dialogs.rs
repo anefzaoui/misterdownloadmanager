@@ -1114,6 +1114,9 @@ pub struct Complete {
     pub path: PathBuf,
     pub size: u64,
     pub dont_show: bool,
+    /// What went wrong besides, in the interface language (a video's subtitles, #68): one line
+    /// under the size.
+    pub notices: Vec<String>,
     /// Clicked (or activated) once: from then on a window like any other, no longer above every
     /// program's (it shows above them until then, as IDM's does: #77).
     pub seen: bool,
@@ -1158,6 +1161,20 @@ impl Complete {
                     ],
                 );
                 winui::text(&p, o.x + 51.0, o.y + 34.0, &line, winui::TEXT());
+                // What didn't come with it (a video's subtitles the site refused), shortened to
+                // the window and whole on hover.
+                if !self.notices.is_empty() {
+                    winui::fit(
+                        ui,
+                        &p,
+                        o.x + 51.0,
+                        o.y + 52.0,
+                        &self.notices.join(" "),
+                        winui::ERROR(),
+                        o.x + 444.0,
+                        ("complete-notice", self.id),
+                    );
+                }
                 // i18n: noun: the web address (URL)
                 winui::text(
                     &p,

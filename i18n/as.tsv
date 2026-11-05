@@ -176,6 +176,10 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	সকলো ঠিক আছে: এটা ভিডিঅ' থকা পৃষ্ঠাত, কাৰ্য্যসমূহ → এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনল'ড কৰক ব্যৱহাৰ কৰক।
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+#, machine
+	All the uploader's	আপলোডাৰৰ সকলো
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -1331,6 +1335,14 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	{file} ত কোনো ৱেব ঠিকনা পোৱা নগ’ল।
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+#, machine
+	None	একো নাই
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+#, machine
+	None on this page	এই পৃষ্ঠাত একো নাই
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	একো নাই: পিয়াৰসমূহ DHT আৰু অন্যান্য পিয়াৰৰ পৰা আহে
@@ -1413,6 +1425,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	কেৱল এটা সম্পূৰ্ণ হোৱা ডাউনল’ড, বা এটা আৰম্ভ নোহোৱা ডাউনল’ড স্থানান্তৰ কৰিব পাৰি। ইয়াক বন্ধ কৰক আৰু প্ৰথমে সম্পূৰ্ণ কৰক।
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+#, machine
+	Only MP4 and MKV videos can hold subtitles	কেৱল MP4 আৰু MKV ভিডিঅ'সমূহে ছাবটাইটল ধৰি ৰাখিব পাৰে
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	মই কম্পিউটাৰ ব্যৱহাৰ কৰি থকা সময়তহে
@@ -1549,6 +1565,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	ঠিকনাত এটা * ৰাখক য'ত নম্বৰ বা আখৰসমূহ থাকিব
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+#, machine
+	Put them into the video	এইবোৰ ভিডিঅ'ত ৰাখক
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1965,6 +1985,23 @@
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
 	Su	ৰবি
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+#, machine
+	Subtitles	ছাবটাইটল
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} ভাষাত ছাবটাইটেল দ্বিতীয় প্ৰচেষ্টাত আহিছিল: সেইবোৰ ভিডিঅ’ৰ ভিতৰত নহয়, কাষত আছে।
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} ভাষাত ছাবটাইটেল ডাউনল’ড কৰিব পৰা নগ’ল: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} ভাষাত ছাবটাইটেল ডাউনল’ড কৰিব পৰা নগ’ল: {site} এ অস্বীকাৰ কৰিছিল (অতিৰিক্ত অনুৰোধ)।
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	দেওবাৰ
@@ -2248,6 +2285,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	এইটো ইনষ্টল কৰা কপি, প'ৰ্টেবল নহয়
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+#, machine
+	This needs ffmpeg	ইয়াৰ বাবে ffmpeg-ৰ প্ৰয়োজন
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -2669,6 +2710,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} ঘণ্টা {m} মিনিট
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+#, machine
+	{language}, automatic	{language}, স্বয়ংক্ৰিয়
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

@@ -131,6 +131,9 @@
 	All files	All files
 #. text in helpers.rs
 	All set: on a page with a video, use Tasks → Download video from a page.	All set: on a page with a video, use Tasks → Download video from a page.
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+	All the uploader's	All the uploader's
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -959,6 +962,12 @@
 	No video this can download on that page	No video this can download on that page
 #. message or event log entry in the main window
 	No web addresses were found in {file}.	No web addresses were found in {file}.
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+	None	None
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+	None on this page	None on this page
 #. text in a download's progress window
 	None: peers come from the DHT and other peers	None: peers come from the DHT and other peers
 #. text in the Checksum window
@@ -1015,6 +1024,9 @@
 	Only a finished download, or one not started yet, can be moved	Only a finished download, or one not started yet, can be moved
 #. message or event log entry in the main window
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+	Only MP4 and MKV videos can hold subtitles	Only MP4 and MKV videos can hold subtitles
 #. checkbox in a dialog box
 	Only while I'm using the computer	Only while I'm using the computer
 #. button in a dialog box; text in a dialog box; button in a download's Properties window
@@ -1113,6 +1125,9 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Put a * in the address where the numbers or letters go	Put a * in the address where the numbers or letters go
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+	Put them into the video	Put them into the video
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1413,6 +1428,19 @@
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 	Su	Su
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+	Subtitles	Subtitles
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Subtitles in {language} came on a second try: they're beside the video, not in it.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+	Subtitles in {language} couldn't be downloaded: {reason}	Subtitles in {language} couldn't be downloaded: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).
 #. text in the Options window; text in the Scheduler window
 	Sunday	Sunday
 #. message or event log entry in the main window
@@ -1616,6 +1644,9 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	This is the installed copy, not a portable one
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+	This needs ffmpeg	This needs ffmpeg
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -1922,6 +1953,9 @@
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 	{h} hour(s) {m} min	{h} hour(s) {m} min
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+	{language}, automatic	{language}, automatic
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 	{live} connected, {known} known	{live} connected, {known} known

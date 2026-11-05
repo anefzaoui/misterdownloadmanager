@@ -13,7 +13,8 @@ Save a video from YouTube, Vimeo, TikTok and many other sites, in the quality yo
 5. For the best qualities and MP3, MDM needs **ffmpeg**, which joins the picture and the sound, and makes the MP3. On Windows MDM offers to install it (about 80 MB): click **Install ffmpeg** if you want them. On Linux and macOS MDM uses the system's ffmpeg. Without it, you get the qualities that come with their sound.
 6. Pick a quality.
 7. Check **Save to** and **File name**. The name comes from the video's title; change it if you like.
-8. Click **Download Now**, or **Later** to add it to the list without starting.
+8. Want subtitles? Pick a language in **Subtitles**. They're saved beside the video, or inside it if you tick **Put them into the video** (see [Subtitles](video.md#subtitles)).
+9. Click **Download Now**, or **Later** to add it to the list without starting.
 
 The video appears in the list and downloads like any other file.
 

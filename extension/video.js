@@ -107,8 +107,10 @@
 .pill.ok { background: linear-gradient(#f2fff6, #d4f3df); border-color: #2f9a5b; color: #135c33; }
 .pill.err { background: linear-gradient(#fff4f4, #f6d6d6); border-color: #c24848; color: #7d1f1f; }
 button {
-  all: unset; display: flex; align-items: center; gap: 8px; color: inherit; cursor: pointer;
-  font: inherit;
+  /* all: unset resets box-sizing too, past the rule above: without it a menu item's 100 % width
+     plus its padding ran past the menu's edge (#81). */
+  all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 8px;
+  color: inherit; cursor: pointer; font: inherit;
 }
 .go { padding: 0 12px 0 8px; border-radius: 8px 0 0 8px; cursor: grab; }
 .more { padding: 0 9px; border-left: 1px solid rgba(23, 50, 77, .18); border-radius: 0 8px 8px 0; }

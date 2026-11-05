@@ -176,6 +176,10 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	அனைத்தும் தயாராக உள்ளது: வீடியோ உள்ள பக்கத்தில், பணிகள் → பக்கத்திலிருந்து வீடியோவைப் பதிவிறக்கு என்பதைப் பயன்படுத்தவும்.
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+#, machine
+	All the uploader's	பதிவேற்றியவர் அனைத்தையும்
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -1331,6 +1335,14 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	{file} இல் எந்த வலை முகவரிகளும் கண்டறியப்படவில்லை.
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+#, machine
+	None	ஏதுமில்லை
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+#, machine
+	None on this page	இந்தப் பக்கத்தில் ஏதுமில்லை
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ஏதுமில்லை: பியர்கள் DHT மற்றும் பிற பியர்களிடமிருந்து வருகின்றன
@@ -1413,6 +1425,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	முடிந்த பதிவிறக்கம் அல்லது இன்னும் தொடங்கப்படாத பதிவிறக்கம் மட்டுமே நகர்த்த முடியும். முதலில் அதை நிறுத்தி முடிக்கவும்.
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+#, machine
+	Only MP4 and MKV videos can hold subtitles	MP4 மற்றும் MKV வீடியோக்கள் மட்டுமே வசனங்களை வைத்திருக்க முடியும்
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	நான் கணினியைப் பயன்படுத்தும் போது மட்டும்
@@ -1549,6 +1565,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	எண்கள் அல்லது எழுத்துகள் செல்லும் முகவரியில் * ஐ வைக்கவும்
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+#, machine
+	Put them into the video	அவற்றை வீடியோவில் சேர்க்கவும்
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1965,6 +1985,23 @@
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
 	Su	ஞா
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+#, machine
+	Subtitles	வசனங்கள்
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} மொழியில் உள்ள வசனங்கள் இரண்டாவது முயற்சியில் வந்தன: அவை வீடியோவில் இல்லை, வீடியோவுக்கு அருகில் உள்ளன.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} மொழியில் உள்ள வசனங்களைப் பதிவிறக்க முடியவில்லை: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} மொழியில் உள்ள வசனங்களைப் பதிவிறக்க முடியவில்லை: {site} மறுத்துவிட்டது (அதிக கோரிக்கைகள்).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	ஞாயிறு
@@ -2248,6 +2285,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	இது நிறுவப்பட்ட நகல், போர்ட்டபிள் நகல் அல்ல
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+#, machine
+	This needs ffmpeg	இதற்கு ffmpeg தேவை
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -2669,6 +2710,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} மணிநேரம் {m} நிமிடம்
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+#, machine
+	{language}, automatic	{language}, தானியங்கு
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

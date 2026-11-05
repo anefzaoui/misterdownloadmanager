@@ -176,6 +176,10 @@
 #. text in helpers.rs
 #, machine
 	All set: on a page with a video, use Tasks → Download video from a page.	എല്ലാം സജ്ജമാണ്: ഒരു വീഡിയോ ഉള്ള പേജിൽ, ടാസ്‌ക്കുകൾ → പേജിൽ നിന്ന് വീഡിയോ ഡൗൺലോഡ് ചെയ്യുക എന്നത് ഉപയോഗിക്കുക.
+#. text in the Download video window
+#. in the Subtitles list of Download video: every language the video's uploader gave
+#, machine
+	All the uploader's	അപ്‌ലോഡ് ചെയ്തയാളുടെ എല്ലാ
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -1331,6 +1335,14 @@
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	{file} എന്നതിൽ വെബ് വിലാസങ്ങളൊന്നും കണ്ടെത്തിയില്ല.
+#. text in the Download video window
+#. in the Subtitles list of Download video: download no subtitles
+#, machine
+	None	ഒന്നുമില്ല
+#. text in the Download video window
+#. in the Subtitles list of Download video: the video has no subtitles
+#, machine
+	None on this page	ഈ പേജിൽ ഒന്നുമില്ല
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ഒന്നുമില്ല: പിയറുകൾ DHT-യിൽ നിന്നും മറ്റ് പിയറുകളിൽ നിന്നും വരുന്നു
@@ -1413,6 +1425,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	പൂർത്തിയാക്കിയ ഡൗൺലോഡ് അല്ലെങ്കിൽ ഇതുവരെ ആരംഭിക്കാത്ത ഡൗൺലോഡ് മാത്രമേ നീക്കാൻ കഴിയൂ. ആദ്യം അത് നിർത്തി പൂർത്തിയാക്കുക.
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
+#, machine
+	Only MP4 and MKV videos can hold subtitles	MP4, MKV വീഡിയോകൾക്ക് മാത്രമേ സബ്‌ടൈറ്റിലുകൾ ഉൾക്കൊള്ളാൻ കഴിയൂ
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	ഞാൻ കമ്പ്യൂട്ടർ ഉപയോഗിക്കുമ്പോൾ മാത്രം
@@ -1549,6 +1565,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Put a * in the address where the numbers or letters go	നമ്പറുകളോ അക്ഷരങ്ങളോ വരുന്ന വിലാസത്തിൽ ഒരു * ഇടുക
+#. checkbox in the Download video window
+#. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
+#, machine
+	Put them into the video	അവ വീഡിയോയിൽ ചേർക്കുക
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -1965,6 +1985,23 @@
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
 	Su	ഞാ
+#. text in the Download video window
+#. label before the list of a video's subtitle languages
+#, machine
+	Subtitles	സബ്‌ടൈറ്റിലുകൾ
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
+#, machine
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} ഭാഷയിലുള്ള സബ്‌ടൈറ്റിലുകൾ രണ്ടാമത്തെ ശ്രമത്തിൽ ലഭിച്ചു: അവ വീഡിയോയുടെ അടുത്താണ്, അതിനുള്ളിലല്ല.
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
+#, machine
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} ഭാഷയിലുള്ള സബ്‌ടൈറ്റിലുകൾ ഡൗൺലോഡ് ചെയ്യാനായില്ല: {reason}
+#. text in the download list (sizes, speeds, status)
+#. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
+#. {site} = a web site's name such as "example.com" (keep the braces as they are)
+#, machine
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} ഭാഷയിലുള്ള സബ്‌ടൈറ്റിലുകൾ ഡൗൺലോഡ് ചെയ്യാനായില്ല: {site} നിരസിച്ചു (അമിതമായ അഭ്യർത്ഥനകൾ).
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	ഞായർ
@@ -2248,6 +2285,10 @@
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
 	This is the installed copy, not a portable one	ഇത് ഇൻസ്റ്റാൾ ചെയ്ത കോപ്പിയാണ്, പോർട്ടബിൾ കോപ്പിയല്ല
+#. tooltip (why a control is greyed) in the Download video window
+#. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
+#, machine
+	This needs ffmpeg	ഇതിന് ffmpeg ആവശ്യമാണ്
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -2669,6 +2710,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} മണിക്കൂർ {m} മിനിറ്റ്
+#. text in the Download video window
+#. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
+#, machine
+	{language}, automatic	{language}, സ്വയമേവയുള്ളത്
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine

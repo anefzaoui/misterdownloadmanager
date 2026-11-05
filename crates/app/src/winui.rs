@@ -482,6 +482,33 @@ pub fn ellipsize(p: &Painter, font: &FontId, s: &str, max: f32) -> String {
     cut(lo)
 }
 
+/// `s` cut with "..." in the middle to fit `max` px (Windows' DT_PATH_ELLIPSIS): for a path or
+/// an address, whose start (the folder) and end (the file's name) both matter. The end keeps
+/// three parts in five of what fits.
+pub fn ellipsize_middle(p: &Painter, font: &FontId, s: &str, max: f32) -> String {
+    if text_width_font(p, font.clone(), s) <= max {
+        return s.to_owned();
+    }
+    let chars: Vec<char> = s.chars().collect();
+    let cut = |n: usize| {
+        let head = n * 2 / 5;
+        let tail = n - head;
+        chars[..head].iter().collect::<String>()
+            + "..."
+            + &chars[chars.len() - tail..].iter().collect::<String>()
+    };
+    let (mut lo, mut hi) = (0, chars.len());
+    while lo < hi {
+        let mid = (lo + hi).div_ceil(2);
+        if text_width_font(p, font.clone(), &cut(mid)) <= max {
+            lo = mid;
+        } else {
+            hi = mid - 1;
+        }
+    }
+    cut(lo)
+}
+
 /// [`text`] that never runs past `right`: cut with "..." when too long. Returns the drawn
 /// rect and whether the text was cut (then show it whole with [`full_on_hover`]).
 pub fn text_fit(
@@ -1285,6 +1312,27 @@ pub fn fit(
 ) -> Rect {
     let (rect, cut) = text_fit(p, x, baseline, s, color, right);
     if cut {
+        full_on_hover(ui, rect, salt, s);
+    }
+    rect
+}
+
+/// [`fit`] for a path or an address: shortened in the middle ([`ellipsize_middle`]) so the
+/// file's name stays in sight, shown whole on hover when cut.
+#[allow(clippy::too_many_arguments)]
+pub fn fit_middle(
+    ui: &Ui,
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    salt: impl std::hash::Hash + std::fmt::Debug,
+) -> Rect {
+    let shown = ellipsize_middle(p, &tahoma(), s, (right - x).max(0.0));
+    let rect = text(p, x, baseline, &shown, color);
+    if shown != s {
         full_on_hover(ui, rect, salt, s);
     }
     rect
@@ -4118,6 +4166,28 @@ pub fn icon_button_light(ui: &mut Ui, rc: Rect, id: &str, enabled: bool, tip: &s
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_path_is_shortened_in_the_middle_and_keeps_its_file_name() {
+        let ctx = egui::Context::default();
+        let font = FontId::proportional(11.0);
+        let path = r"C:\Users\Someone\Downloads\Video\Ştirile PRO TV - 4 Noiembrie 2026 _ Cutremur politic după alegerile din Statele Unite.mp4";
+        let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+            let p = ui.painter();
+            let width = |s: &str| text_width_font(p, font.clone(), s);
+            // Fits: as it is.
+            assert_eq!(ellipsize_middle(p, &font, "C:\\a.mp4", 400.0), "C:\\a.mp4");
+            for max in [120.0, 200.0, 300.0] {
+                let s = ellipsize_middle(p, &font, path, max);
+                assert!(width(&s) <= max, "{s} is wider than {max}");
+                assert!(s.starts_with("C:\\") && s.ends_with(".mp4"), "{s}");
+                assert!(s.contains("..."), "{s}");
+            }
+            // Nothing fits but the dots: no panic, the dots alone.
+            assert_eq!(ellipsize_middle(p, &font, path, 1.0), "...");
+        });
+        out.textures_delta.clear();
+    }
 
     #[test]
     fn a_control_greyed_with_the_keys_hands_them_on() {

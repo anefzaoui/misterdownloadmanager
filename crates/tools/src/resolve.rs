@@ -14,6 +14,21 @@ pub struct Video {
     /// Seconds.
     pub duration: Option<f64>,
     pub formats: Vec<Format>,
+    /// The uploader's subtitles, by name (#68).
+    pub subtitles: Vec<Track>,
+    /// The site's automatic captions (speech recognition, and their machine translations).
+    pub automatic: Vec<Track>,
+    /// The language the video is spoken in, when the site says (`en`, `pt-BR`).
+    pub language: Option<String>,
+}
+
+/// One language of subtitles a page has (#68).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Track {
+    /// yt-dlp's language code, what `--sub-langs` takes (`en`, `pt-BR`, `en-orig`).
+    pub code: String,
+    /// The site's name for it, else the code.
+    pub name: String,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -47,6 +62,41 @@ struct RawVideo {
     duration: Option<f64>,
     #[serde(default)]
     formats: Vec<RawFormat>,
+    #[serde(default)]
+    subtitles: Option<std::collections::BTreeMap<String, Vec<RawSub>>>,
+    #[serde(default)]
+    automatic_captions: Option<std::collections::BTreeMap<String, Vec<RawSub>>>,
+    language: Option<String>,
+}
+
+/// One file of a subtitle language (its formats: srt, vtt, json3…); only the name is read.
+#[derive(Deserialize)]
+struct RawSub {
+    name: Option<String>,
+}
+
+/// Not subtitles, though yt-dlp lists them with them: a live stream's chat replay, comments
+/// laid over the picture.
+const NOT_SUBTITLES: [&str; 2] = ["live_chat", "danmaku"];
+
+/// A page's subtitle languages, by name (the code when the site gives none).
+fn tracks(raw: Option<std::collections::BTreeMap<String, Vec<RawSub>>>) -> Vec<Track> {
+    let mut out: Vec<Track> = raw
+        .unwrap_or_default()
+        .into_iter()
+        .filter(|(code, files)| !files.is_empty() && !NOT_SUBTITLES.contains(&code.as_str()))
+        .map(|(code, files)| Track {
+            name: files
+                .iter()
+                .find_map(|f| f.name.clone())
+                .map(|n| n.trim().to_owned())
+                .filter(|n| !n.is_empty())
+                .unwrap_or_else(|| code.clone()),
+            code,
+        })
+        .collect();
+    out.sort_by_key(|t| t.name.to_lowercase());
+    out
 }
 
 #[derive(Deserialize)]
@@ -85,7 +135,57 @@ pub fn parse(json: &[u8]) -> Option<Video> {
                 tbr: f.tbr,
             })
             .collect(),
+        subtitles: tracks(raw.subtitles),
+        automatic: tracks(raw.automatic_captions),
+        language: raw.language,
     })
+}
+
+/// A subtitle language offered in the video window (#68).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SubChoice {
+    pub code: String,
+    pub name: String,
+    /// The site's automatic captions, not the uploader's.
+    pub automatic: bool,
+}
+
+/// The subtitle languages to offer, the uploader's first (all of them), then the automatic
+/// captions that are worth a place: the ones in the language spoken (YouTube marks them
+/// `-orig`), and their translations into `wanted` (the interface language) and English. A
+/// site's automatic list holds a translation into every language it knows, a hundred and more:
+/// offered whole, the list would be useless.
+pub fn sub_choices(v: &Video, wanted: &str) -> Vec<SubChoice> {
+    let mut out: Vec<SubChoice> = v
+        .subtitles
+        .iter()
+        .map(|t| SubChoice {
+            code: t.code.clone(),
+            name: t.name.clone(),
+            automatic: false,
+        })
+        .collect();
+    // `pt-BR` and `pt` are the same language here.
+    let base = |c: &str| c.split(['-', '_']).next().unwrap_or(c).to_ascii_lowercase();
+    let spoken = v.language.as_deref().map(base);
+    let worth = |t: &Track| {
+        t.code.ends_with("-orig")
+            || spoken.as_deref() == Some(base(&t.code).as_str())
+            || base(&t.code) == base(wanted)
+            || base(&t.code) == "en"
+    };
+    for t in v.automatic.iter().filter(|t| worth(t)) {
+        // The uploader's own in that language is the better one.
+        if v.subtitles.iter().any(|u| u.code == t.code) {
+            continue;
+        }
+        out.push(SubChoice {
+            code: t.code.clone(),
+            name: t.name.clone(),
+            automatic: true,
+        });
+    }
+    out
 }
 
 /// Look `url` up with yt-dlp (one video, not a playlist).
@@ -133,6 +233,19 @@ fn audio_container(ext: &str) -> bool {
     matches!(
         ext.to_ascii_lowercase().as_str(),
         "m4a" | "mp3" | "opus" | "aac" | "flac" | "wav" | "weba" | "oga" | "mka"
+    )
+}
+
+/// A choice that saves only the sound (no picture to show subtitles on, #68).
+pub fn is_audio(c: &Choice) -> bool {
+    c.selector == "ba" || mp3_quality(&c.selector).is_some() || audio_container(&c.ext)
+}
+
+/// A choice whose file can hold subtitles put into it (yt-dlp's `--embed-subs` with SRT).
+pub fn holds_subtitles(c: &Choice) -> bool {
+    matches!(
+        c.ext.to_ascii_lowercase().as_str(),
+        "mp4" | "mkv" | "mov" | "m4v"
     )
 }
 
@@ -272,6 +385,9 @@ mod tests {
                 fmt("hls-1280", 1280.0),
                 fmt("hls-1280b", 1280.0),
             ],
+            subtitles: Vec::new(),
+            automatic: Vec::new(),
+            language: None,
         };
         let labels: Vec<String> = choices(&v, true)
             .into_iter()
@@ -371,6 +487,50 @@ mod tests {
         let v = parse(json.as_bytes()).unwrap();
         let labels: Vec<String> = choices(&v, false).into_iter().map(|c| c.label).collect();
         assert_eq!(labels, ["360p MP4", "Audio only M4A"]);
+    }
+
+    /// A page's subtitles (#68), as yt-dlp -J lists them: the uploader's by name, the chat
+    /// replay left out; of the automatic ones only the spoken language's and the translations
+    /// into the interface language and English, and none the uploader already has.
+    #[test]
+    fn subtitle_languages_worth_offering() {
+        let json = r#"{"title": "T", "language": "en", "formats": [],
+            "subtitles": {
+                "live_chat": [{"ext": "json"}],
+                "fr": [{"ext": "vtt", "name": "French"}, {"ext": "srt", "name": "French"}],
+                "de": [{"ext": "vtt"}],
+                "empty": []
+            },
+            "automatic_captions": {
+                "en-orig": [{"ext": "vtt", "name": "English (Original)"}],
+                "en": [{"ext": "vtt", "name": "English"}],
+                "fr": [{"ext": "vtt", "name": "French"}],
+                "ar": [{"ext": "vtt", "name": "Arabic"}],
+                "ja": [{"ext": "vtt", "name": "Japanese"}],
+                "zu": [{"ext": "vtt", "name": "Zulu"}]
+            }}"#;
+        let v = parse(json.as_bytes()).unwrap();
+        let names: Vec<&str> = v.subtitles.iter().map(|t| t.name.as_str()).collect();
+        assert_eq!(names, ["de", "French"], "by name; no name: the code");
+        assert_eq!(v.language.as_deref(), Some("en"));
+        let offered: Vec<(String, bool)> = sub_choices(&v, "ar")
+            .into_iter()
+            .map(|c| (c.code, c.automatic))
+            .collect();
+        let want: Vec<(String, bool)> = [
+            ("de", false),
+            ("fr", false),
+            ("ar", true),
+            ("en", true),
+            ("en-orig", true),
+        ]
+        .iter()
+        .map(|(c, a)| (c.to_string(), *a))
+        .collect();
+        assert_eq!(offered, want);
+        // A page without any: nothing to offer.
+        let none = parse(br#"{"title": "T", "formats": []}"#).unwrap();
+        assert!(sub_choices(&none, "en").is_empty());
     }
 
     #[test]
