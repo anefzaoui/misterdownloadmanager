@@ -306,6 +306,10 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "第13世代 Intel(R) Core(TM) i5-13400F、63.8 GB RAM、Windows-11-10.0.26200-SP0。labserver (このリポジトリ)、127.0.0.1:8097、生成されたコンテンツ。両方ともデフォルト設定：8接続。"
   },
+  "0797f3ad6e9f2823": {
+   "source": "lines, then <x1/>.",
+   "text": "行、その後<x1/>。"
+  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "IDMもインストールしたままにできますか？"
@@ -465,6 +469,10 @@
   "0b60549b3aaf5aea": {
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "ポータブル版です。ダウンロードリストと設定はプログラムの隣の<x1/>フォルダに保存され、レジストリには何も書き込まれません。ブラウザ統合にはインストーラーが必要です。<g2>ポータブルモード</g2>をご覧ください。"
+  },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "同じウィンドウで、<g1>すべてのダウンロードを合計で制限する</g1>にチェックを入れ、速度を設定します。これにより、ダウンロード中のファイル数に関わらず、トレントを含めMDM全体の速度が制限されます。トレントと他のダウンロードが同時に実行される場合、それぞれが少なくとも半分の速度を得て、もう一方がより少ない速度を必要とする場合はそれ以上になります。例えば、トレントの進行が遅い場合、残りの速度は他のダウンロードに割り当てられ、その逆も同様です。この設定は、ファイルごとの制限がオンかオフかに関わらず、チェックが入っている間は常に適用されます。"
   },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
@@ -1093,6 +1101,10 @@
   "1cafb86bd2c2b2f4": {
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>ダウンロード ファイル情報</g1>には、ファイル名、サイズ、保存先が表示されます。フォルダーはファイルの種類によって異なり、ZIPは<x2/>、ビデオは<x3/>などに保存されます。必要に応じて、フォルダーやカテゴリを変更してください。"
+  },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "トレントの場合、制限はそのトレントのみに適用されます。他のダウンロードはそれぞれの制限を維持します。トレントは16 KB/秒未満に制限することはできません。それより低い制限を設定しても16 KB/秒が適用されます。"
   },
   "1cc76bd241b12c50": {
    "source": "Privacy",
@@ -4298,6 +4310,10 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "すべてのリリースには、各ファイルのSHA-256チェックサムが<g1>SHA256SUMS.txt</g1>に記載されています。Windowsでは<x2/>と比較し、macOSおよびLinuxでは<x3/>と比較してください。すべてのファイルはGitHub Actionsによって公開ソースからビルドされており、ビルドログは<g4>GitHub</g4>にあります。"
   },
+  "7abc575fd3c5fa12": {
+   "source": "; a choice's <x1/> is what <x2/> takes.",
+   "text": "。選択肢の<x1/>は<x2/>が取るものです。"
+  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "<g1>すべてのダウンロードを合計で制限する</g1>にチェックを入れ、KB/秒で速度を入力します。接続速度の約3分の2から始めるのが良いでしょう。（1 MB/秒は約1000 KB/秒です。）"
@@ -7194,6 +7210,10 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "<g1>ダウンロード ファイル情報</g1>で、<g2>後でダウンロード</g2>をクリックします。"
   },
+  "ccce361d6bc788ef": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
+   "text": "動画をダウンロードします。<x1/>は<x2/>から品質セレクターを受け取ります（<x3/> = 最良の単一ファイル、<x4/>、<x5/>、<x6/>、または<x7/> = そのビットレートでのMP3形式の音声、<x8/> = 最良の可変ビットレートでの音声。MP3にはffmpegが必要です）。"
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "字幕が必要ですか？<g1>字幕</g1>で言語を選択してください。字幕は動画の横に保存されます。ただし、<g2>ビデオに埋め込む</g2>にチェックを入れると、動画内に保存されます（<g3>字幕</g3>を参照）。"
@@ -8821,6 +8841,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "ここでは、トレントは1つのファイルとしてカウントされます。各トレントには独自の制限が適用されます。独自の制限があるダウンロード（「<g1>1つのダウンロードの場合</g1>」を参照）は、その制限を維持します。"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

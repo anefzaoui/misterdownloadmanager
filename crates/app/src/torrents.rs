@@ -131,6 +131,8 @@ pub struct Host {
     /// Settings::torrent_config) and those of the one running.
     wanted: Arc<Mutex<Option<Config>>>,
     running: Arc<Mutex<Option<Config>>>,
+    /// The global cap (D-012), bytes/s: every torrent together stays under it (`set_cap`).
+    cap: Arc<Mutex<Option<u64>>>,
 }
 
 impl Host {
@@ -139,6 +141,18 @@ impl Host {
             cell: Arc::new(tokio::sync::Mutex::new(None)),
             wanted: Arc::new(Mutex::new(state_dir().map(Config::new))),
             running: Arc::new(Mutex::new(None)),
+            cap: Arc::new(Mutex::new(None)),
+        }
+    }
+
+    /// The torrents' share of the global cap now (None: off), for the session's download limit:
+    /// torrents together stay under it (`App::apply_global_limit` splits the cap with file
+    /// downloads). Cheap: called each frame; the session's limit changes only when it
+    /// differs (`Torrents::set_download_limit`), and a session that starts takes it at once.
+    pub fn set_cap(&self, rate: Option<u64>) {
+        *self.cap.lock().unwrap() = rate;
+        if let Some(t) = self.get() {
+            t.set_download_limit(rate);
         }
     }
 
@@ -187,6 +201,7 @@ impl Host {
                 let _ = t.remove(&hash, false).await;
             }
         }
+        t.set_download_limit(*self.cap.lock().unwrap());
         let t = Arc::new(t);
         *cell = Some(t.clone());
         *self.running.lock().unwrap() = Some(cfg);
@@ -267,6 +282,9 @@ pub struct Run {
     folder: PathBuf,
     /// Its files' Mark-of-the-Web (#40): 0 not yet, 1 once librqbit created them, 2 finished.
     marked: Arc<std::sync::atomic::AtomicU8>,
+    /// Its own download limit, bytes/s (the Speed Limiter's "for one file", or the progress
+    /// window's): set on the torrent once it is in the session, and again on each change.
+    limit: Arc<Mutex<Option<u64>>>,
 }
 
 /// The origin a torrent's files are marked with: not one website, and never the magnet link
@@ -302,7 +320,7 @@ pub struct Details {
 }
 
 impl Run {
-    /// Start (or resume) `spec`'s torrent, at most `limit` bytes/s for the whole session.
+    /// Start (or resume) `spec`'s torrent, at most `limit` bytes/s for this torrent.
     pub fn start(
         host: &Host,
         rt: &tokio::runtime::Handle,
@@ -313,11 +331,11 @@ impl Run {
         keep_sharing: bool,
     ) -> Run {
         let state = Arc::new(Mutex::new(RunState::Starting));
-        let (out, host, spec2) = (state.clone(), host.clone(), spec.clone());
+        let own = Arc::new(Mutex::new(limit));
+        let (out, host, spec2, own2) = (state.clone(), host.clone(), spec.clone(), own.clone());
         rt.spawn(async move {
             let res = async {
                 let t = host.session(known).await?;
-                t.set_download_limit(limit);
                 if t.has(&spec2.hash) {
                     t.resume(&spec2.hash)
                         .await
@@ -341,10 +359,17 @@ impl Run {
                 Ok::<_, String>(t)
             }
             .await;
-            *out.lock().unwrap() = match res {
-                Ok(t) => RunState::Ready(t),
-                Err(e) => RunState::Failed(e),
-            };
+            match res {
+                Ok(t) => {
+                    // Under the limit's lock, so a change made meanwhile (set_speed_limit) is
+                    // either seen here or applied there once it is Ready. librqbit keeps a
+                    // torrent's limits only while the session runs: set them each start.
+                    let own = own2.lock().unwrap();
+                    *out.lock().unwrap() = RunState::Ready(t.clone());
+                    let _ = t.set_torrent_limits(&spec2.hash, *own, None);
+                }
+                Err(e) => *out.lock().unwrap() = RunState::Failed(e),
+            }
         });
         Run {
             state,
@@ -355,6 +380,7 @@ impl Run {
             keep_sharing,
             folder: spec.folder.clone(),
             marked: Arc::new(std::sync::atomic::AtomicU8::new(0)),
+            limit: own,
         }
     }
 
@@ -456,10 +482,25 @@ impl Run {
         }
     }
 
+    /// This torrent's own download limit (#39: not every torrent's): now if it is in the
+    /// session, else once it is.
     pub fn set_speed_limit(&self, rate: Option<u64>) {
+        let mut own = self.limit.lock().unwrap();
+        *own = rate;
         if let Some(t) = self.session() {
-            t.set_download_limit(rate);
+            let _ = t.set_torrent_limits(&self.hash, rate, None);
         }
+    }
+
+    pub fn speed_limit(&self) -> Option<u64> {
+        *self.limit.lock().unwrap()
+    }
+
+    /// Bytes received from peers since it last started (for the global cap, which HTTP
+    /// downloads share with torrents); None until it is in the session.
+    pub fn fetched(&self) -> Option<u64> {
+        let t = self.session()?;
+        t.stats(&self.hash).ok().map(|s| s.fetched)
     }
 
     pub fn details(&self) -> Details {

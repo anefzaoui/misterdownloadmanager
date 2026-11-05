@@ -324,6 +324,15 @@ pub struct App {
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Since when no torrent has needed the torrent engine (`torrent_tick`).
     torrent_idle_since: Option<Instant>,
+    /// Each running torrent's bytes from peers as last seen (by item id), and the torrents'
+    /// smoothed speed with when it was measured (`torrent_speed`, for the global cap).
+    torrent_fetched: HashMap<u64, u64>,
+    torrent_speed: (f64, Instant),
+    /// The torrents' share of the global cap as last set, and when (`apply_global_limit`).
+    torrent_cap: (Option<u64>, Instant),
+    /// File downloads' smoothed speed, when measured, and the global limiter's byte count
+    /// then (`file_speed`).
+    file_speed: (f64, Instant, u64),
     /// A blocklist is being fetched (torrents::refresh_blocklist).
     blocklist_busy: std::sync::Arc<std::sync::atomic::AtomicBool>,
     /// Startup work for torrents done (associations refreshed, sharing resumed).
@@ -727,6 +736,10 @@ impl App {
             torrent_dlg: None,
             torrent_settings: None,
             torrent_idle_since: None,
+            torrent_fetched: HashMap::new(),
+            torrent_speed: (0.0, Instant::now()),
+            torrent_cap: (None, Instant::now()),
+            file_speed: (0.0, Instant::now(), 0),
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
@@ -1647,12 +1660,13 @@ impl App {
         }
     }
 
-    /// Apply the global speed limiter setting to every running download.
+    /// Apply the Speed Limiter's "for one file" setting to every running download, file or
+    /// torrent; one with a remembered limit of its own keeps it, as when it starts.
     fn apply_speed_limit(&self) {
         let limit = self.settings.speed_limit();
         for i in &self.items {
             if let Some(l) = &i.live {
-                l.dl.set_speed_limit(limit);
+                l.dl.set_speed_limit(i.own_limit.or(limit));
             }
         }
     }
@@ -1766,7 +1780,12 @@ impl App {
 
     /// The global cap's rate now: on, and (if asked) only while the user is active (input in
     /// the last minute).
-    fn apply_global_limit(&self) {
+    ///
+    /// Torrents share it with file downloads (D-012, "one limit for all downloads together"),
+    /// evenly: each side may take half of it, and more when the other uses less (`share`).
+    /// Both sides' speeds are measured each frame: the torrents' as the torrent session's
+    /// download limit, file downloads' as the global limiter they wait on.
+    fn apply_global_limit(&mut self) {
         let s = &self.settings;
         #[cfg(windows)]
         let active = crate::win32::idle_seconds() < 60;
@@ -1774,9 +1793,88 @@ impl App {
         let active = true;
         let rate = (s.global_limit_on && (!s.global_only_active || active))
             .then(|| s.global_limit_kb.max(1) * 1024);
-        if self.global.get() != rate {
-            self.global.set(rate);
+        let torrents = self.torrent_speed();
+        let files = self.file_speed();
+        // The torrents' limit moves in eighths of the cap, at most every 3 s: librqbit starts
+        // each new limit with a second's burst, so following the other side's speed closely
+        // let torrents run far past their share (measured: 773 KB/s for a 400 KB/s half).
+        let want = rate.map(|cap| {
+            let step = (cap / 8).max(1);
+            (share(cap, files) / step * step).max(1024)
+        });
+        let (had, when) = self.torrent_cap;
+        // Down at once (the other side has started: give way now), up only 3 s after the last
+        // change.
+        let moved = match (had, want) {
+            (Some(a), Some(b)) => b < a || (b > a && when.elapsed() >= Duration::from_secs(3)),
+            (a, b) => a != b,
+        };
+        if moved {
+            self.torrent_cap = (want, Instant::now());
         }
+        self.torrent_host.set_cap(self.torrent_cap.0);
+        let for_files = rate.map(|cap| share(cap, torrents));
+        if self.global.get() != for_files {
+            self.global.set(for_files);
+        }
+    }
+
+    /// File downloads' speed together, bytes/s, smoothed over about two seconds: the bytes that
+    /// went through the global limiter, which every file download waits on. (Their progress
+    /// rates read high and low by a quarter, which tipped the split.)
+    fn file_speed(&mut self) -> f64 {
+        let now = Instant::now();
+        let taken = self.global.taken();
+        let (speed, at, before) = self.file_speed;
+        let dt = now.duration_since(at).as_secs_f64();
+        if dt <= 0.0 {
+            return speed;
+        }
+        let new = taken.saturating_sub(before) as f64;
+        let k = 1.0 - (-dt / 2.0).exp();
+        let mut speed = speed + (new / dt - speed) * k;
+        // None running: 0 at once, so the torrents take the whole cap back in one step.
+        if !self
+            .items
+            .iter()
+            .any(|i| matches!(i.live.as_ref().map(|l| &l.dl), Some(model::Job::File(_))))
+        {
+            speed = 0.0;
+        }
+        self.file_speed = (speed, now, taken);
+        speed
+    }
+
+    /// The torrents' download speed together, bytes/s, smoothed over about two seconds (from
+    /// the bytes librqbit says each fetched; it counts from 0 again each time a torrent
+    /// resumes, so a smaller count is all new).
+    fn torrent_speed(&mut self) -> f64 {
+        let now = Instant::now();
+        let mut seen = HashMap::new();
+        let mut new = 0u64;
+        for i in &self.items {
+            let Some(model::Job::Torrent(run)) = i.live.as_ref().map(|l| &l.dl) else {
+                continue;
+            };
+            let Some(fetched) = run.fetched() else {
+                continue;
+            };
+            if let Some(&before) = self.torrent_fetched.get(&i.id) {
+                new += fetched.checked_sub(before).unwrap_or(fetched);
+            }
+            seen.insert(i.id, fetched);
+        }
+        self.torrent_fetched = seen;
+        let dt = now.duration_since(self.torrent_speed.1).as_secs_f64();
+        self.torrent_speed.1 = now;
+        if dt > 0.0 {
+            let k = 1.0 - (-dt / 2.0).exp();
+            self.torrent_speed.0 += (new as f64 / dt - self.torrent_speed.0) * k;
+        }
+        if self.torrent_fetched.is_empty() {
+            self.torrent_speed.0 = 0.0;
+        }
+        self.torrent_speed.0
     }
 
     /// Progress of all running downloads together (bytes done / bytes in all), None when
@@ -2274,6 +2372,8 @@ impl App {
         let limit = self.settings.speed_limit();
         let (host, rt) = (self.torrent_host.clone(), self.rt.clone());
         let Some(item) = self.item(id) else { return };
+        // Its own remembered limit first, as a file download's (#39).
+        let limit = item.own_limit.or(limit);
         let Some(spec) = item.torrent.clone() else {
             return;
         };
@@ -5605,6 +5705,51 @@ impl Drop for App {
             &self.settings,
             &self.queues,
         );
+    }
+}
+
+/// What one side (torrents, or file downloads) may take of the global cap (bytes/s) while the
+/// other uses `other`: half of it at least, and what the other leaves when that is more; never
+/// under 1 KB/s (the limiter takes 0 as no limit).
+///
+/// An other side within 15% of its half counts as using its half: measured speeds wobble, and
+/// taking every dip as room to grow kept both sides over their halves (measured: 463 + 398
+/// KB/s under an 800 KB/s cap).
+fn share(cap: u64, other: f64) -> u64 {
+    let half = cap / 2;
+    let other = other.max(0.0);
+    let rest = if other >= half as f64 * 0.85 {
+        half
+    } else {
+        cap.saturating_sub(other as u64)
+    };
+    rest.max(half).max(1024)
+}
+
+#[cfg(test)]
+mod global_cap_tests {
+    use super::share;
+
+    #[test]
+    fn each_side_gets_half_and_what_the_other_leaves() {
+        let cap = 800 * 1024;
+        assert_eq!(share(cap, 0.0), cap, "the other idle: all of it");
+        assert_eq!(share(cap, 100.0 * 1024.0), 700 * 1024, "a slow other side");
+        assert_eq!(share(cap, 300.0 * 1024.0), 500 * 1024);
+        assert_eq!(share(cap, 400.0 * 1024.0), 400 * 1024);
+        assert_eq!(
+            share(cap, 350.0 * 1024.0),
+            400 * 1024,
+            "a wobble under its half"
+        );
+        assert_eq!(share(cap, 800.0 * 1024.0), 400 * 1024, "half at least");
+        assert_eq!(
+            share(cap, 5e9),
+            400 * 1024,
+            "the other measured over the cap"
+        );
+        assert_eq!(share(1024, 0.0), 1024);
+        assert_eq!(share(1500, 1500.0), 1024, "at least 1 KB/s");
     }
 }
 

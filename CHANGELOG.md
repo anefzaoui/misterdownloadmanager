@@ -168,6 +168,22 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   their selected row; Download video's list is called Quality, Add torrent's Files and the
   sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
   choice at once: it used to wait for the next mouse move.
+- **Torrents: speed limits now work as they do for other downloads**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
+  torrent's progress window changed every torrent's limit, a remembered limit was ignored, the
+  Speed Limiter's "for one file" was shared by all torrents together, and "Limit all downloads
+  together" left torrents out. Each torrent now has a limit of its own, a remembered one applies
+  again when it resumes, and torrents and other downloads share the global cap evenly: each
+  side gets at least half of it, and the rest when the other side needs less. A limit under
+  16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s. A
+  torrent started again while its files were still being checked no longer stays paused, and
+  of two torrents started at the same moment, the second no longer fails with "the torrent is
+  no longer there".
+- **Stopping a download under a low speed limit took seconds**: each connection first waited
+  for its turn under the limit. Stop now ends those waits at once.
+- **Screen readers: the progress window's Speed Limiter** took a speed set with a screen reader
+  or UI Automation only after the focus moved on, and its "Remember Speed Limiter settings for
+  this file" check box had no name. A speed set that way applies at once, and the box is named.
 - **The browser extension's Download video menu: an item's highlight ran past the menu's
   edge** ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81)).
 - **A long file name ran out of the progress window** ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62)):
