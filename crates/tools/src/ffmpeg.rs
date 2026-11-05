@@ -110,6 +110,7 @@ pub async fn install_latest(
     }
     let client = reqwest::Client::builder()
         .user_agent(crate::USER_AGENT)
+        .dns_resolver(mdm_engine::dns::client_resolver(&net.dns))
         .build()?;
     let body = client
         .get(RELEASES)

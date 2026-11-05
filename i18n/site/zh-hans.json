@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "关于 Mister Download Manager 的解答：它是否免费、是否安全、与 IDM 的比较、浏览器、视频、种子、速度、Mac 和 Linux 等。"
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>将所有 torrent 的上传限制为</g1> — 默认关闭。限制所有 torrent 在下载和分享时向其他对等点发送的总量。torrent 进度窗口中自己的上传限制会在此基础上生效。"
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "启动主下载队列；<x1/>。"
@@ -561,6 +565,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "打开 Windows <g1>设置 → 应用</g1>，找到 Mister Download Manager 并选择“卸载”。卸载程序会询问是否同时删除您的下载列表和设置。您下载的文件永远不会被触及。对于便携版，请删除其文件夹。"
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "任务管理器显示多个数字，它们代表不同的含义："
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -2146,6 +2154,10 @@
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "右键点击任何文本框，即可使用<g1>剪切</g1>、<g2>复制</g2>、<g3>粘贴</g3>、<g4>删除</g4>和<g5>全选</g5>功能。"
   },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>内存</g1>（在“进程”选项卡上）是 MDM 独占的内存，即其<g2>私有工作集</g2>。在窗口打开且没有下载时，大约为 50 MB。"
+  },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
    "text": "MDM 仅在发布版本的校验和列表由 MDM 的发布密钥签名且文件匹配时才安装更新；任何其他情况都会被拒绝，<g1>下载</g1>会改为打开<g2>发布</g2>页面。此更新方式从 0.2.1 版本开始：更早的版本会打开发布页面。"
@@ -2566,6 +2578,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>下载</g1>：Windows 安装程序、便携式 zip 和普通 zip、独立的浏览器扩展程序（Chromium 浏览器为 zip，Firefox 为 <x2/>，始终与应用版本一致），以及<g3>可试用的 macOS 和 Linux 版本</g3>：通用 <x4/> 和 AppImage、<x5/>、<x6/> 和 <x7/>，标记为 <x8/>，因为我们尚未对其进行测试。在这些版本中，MDM 会自动连接到 Chrome、Edge、Brave、Vivaldi 和 Firefox，拥有托盘图标，遵循系统的浅色或深色外观，并使用系统字体和 ffmpeg。请告诉我们它们对您来说如何。"
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>DNS over HTTPS</g1>（默认）或 <g2>DNS over TLS</g2>：加密，因此途中没有人能看到或更改您查询的名称。"
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>在以下时间开始下载</g1> — 一个时间，然后是："
@@ -2730,6 +2746,10 @@
    "source": "The programs, to unpack anywhere",
    "text": "程序文件，可解压到任意位置"
   },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — MDM 及其自身下载（辅助程序、更新）和 FTP 下载时，哪个 DNS 将服务器名称转换为地址。<g2>系统的 DNS</g2> 是默认设置（在 Windows 11 中，它可能已在 Windows 自己的网络设置中加密）。或者选择 <g3>Cloudflare</g3>、<g4>Google</g4>、<g5>Quad9</g5>、<g6>AdGuard</g6> 或 <g7>NextDNS</g7>，或 <g8>其他 DNS...</g8> 以输入您自己的；<g9>设置...</g9> 选择其查询方式："
+  },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
    "text": "双击列表中的种子以打开其进度窗口。除了常规状态外，种子的窗口有五个选项卡："
@@ -2741,6 +2761,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "打开所选下载（双击操作遵循右键单击 → <g1>双击时</g1> 的设置）"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "torrent 窗口的<g1>速度限制器</g1>选项卡除了下载限制外，还有<g2>限制上传</g2>到您选择的速度。该限制会随 torrent 保存：每当 torrent 运行或分享时，该限制都会再次生效。无论如何，torrent 的上传速度不能低于 16 千字节/秒。"
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -2769,6 +2793,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "免费开源。安装它，点击链接，查看每个连接的工作情况。"
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "您 hosts 文件中的名称和本地名称（单个单词，<x1/>、<x2/>、<x3/>、<x4/>、<x5/>）保留使用系统的 DNS。视频页面 (yt-dlp) 和 torrent 跟踪器仍使用系统的 DNS。使用代理时，代理会为您查找其访问站点的名称。"
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -2837,6 +2865,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>语言</g2></g1> — 86 种界面语言、从右到左的布局以及如何帮助翻译。"
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "关闭到通知区域后，MDM 会将其内存返还给 Windows：<g1>内存</g1>在几秒钟内降至 10 MB 以下，并在等待时保持低位。下载、队列和调度程序照常运行。每种语言的列表（<g2>视图 → 语言</g2>）在打开时会加载每种脚本的字体；MDM 在关闭时会释放它们。"
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -3630,6 +3662,10 @@
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>不破解版权保护。</g1> MDM 不会移除或绕过 DRM，也无意如此。受保护的内容仍然受保护。"
   },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>测试</g1> 查询 github.com 并显示所需时间。"
+  },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
    "text": "右键点击：使用 Mister Download Manager 下载"
@@ -3729,6 +3765,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "其他系统和文件"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>普通 DNS</g1>：未加密。MDM 通过 TCP 查询，从不通过 UDP，因此它从不需要防火墙例外。"
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4278,6 +4318,10 @@
    "source": "Troubleshooting",
    "text": "故障排除"
   },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "对于您自己的 DNS：服务器的 IP 地址，其证书显示的名称 (TLS)，或 <x1/> 地址 (HTTPS，如果您知道其 IP 地址)。NextDNS 需要您的配置 ID。"
+  },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "添加下载（<g1>添加 URL</g1>）"
@@ -4426,6 +4470,10 @@
    "source": "While it downloads.",
    "text": "下载过程中显示。"
   },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>提交大小</g1>是 MDM 已保留的内存，无论是否在使用。"
+  },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "需要 Firefox 140 或更高版本。"
@@ -4545,10 +4593,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "连接和速度 — Mister Download Manager 帮助"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>常规</g1> — 信息哈希、分块、对等方、已发送量、共享率和文件夹。"
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -5269,10 +5313,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — 可从文件夹或 U 盘运行"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。"
   },
   "960ec4a7b11a2eee": {
    "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
@@ -7010,6 +7050,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "所有版本都在<g1>发布</g1>页面上。Windows 有三个文件："
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>如果无法访问，请使用系统的 DNS</g1>：默认关闭，因此不响应的 DNS 会停止下载并显示一条命名它的消息，而不是悄悄地将您的查询显示给系统的 DNS。DNS 称不存在的名称永远不会回退（这会撤销过滤 DNS）。"
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "恢复中断的下载 — Mister Download Manager 帮助"
@@ -7169,6 +7213,10 @@
   "cbc1f1134f6a8b39": {
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "如果您想要 <g1>Internet Download Manager (IDM)</g1> 的界面但又不想付费，那么免费的替代品就是 <g2>Mister Download Manager (MDM)</g2>：这是一款适用于 Windows 10 和 11 的免费开源下载管理器，并提供 macOS 和 Linux 的实验版本。它外观和功能都与 IDM 相似，可以导入您的 IDM 下载列表，在<g3>我们发布的基准测试</g3>中，下载 1 GiB 文件比 IDM 6.42 快 5.4 倍，并且还支持下载种子、磁力链接和视频。"
+  },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "这是 MDM 唯一会等待外部连接的部分。下载、MDM 的 DNS 选择（选项 → 连接 → DNS）、其更新及其助手只向外连接，因此它们永远不需要防火墙例外；浏览器扩展和自动化 API 只在此计算机上（127.0.0.1）连接 MDM。"
   },
   "cc126dc832a278c1": {
    "source": "Yes",
@@ -7574,6 +7622,10 @@
    "source": "Benchmark scenario",
    "text": "基准测试场景"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>工作集</g1>（“详细信息”选项卡，添加该列）增加了与其他程序共享的内存。MDM 使用显卡绘制其窗口，因此显卡驱动程序的内存也计算在内，总共约 85 MB。"
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. 无担保"
@@ -7742,6 +7794,10 @@
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "Mister Download Manager：可以续传中断的下载吗？"
   },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM 占用大量内存"
+  },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",
    "text": "免费 IDM 替代品对比"
@@ -7821,6 +7877,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "恢复中断的下载"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "下载文件，最多可使用 8 个连接（<x1/>，1 到 128），并显示进度。<x2/> 暂停；<x3/> 继续。<x4/> 检查完成的文件：十六进制 MD5、SHA-1、SHA-256、SHA-512 或 CRC32，可选择命名（<x5/>）。<x6/> 选择 DNS：<x7/>（默认）；服务及其查询方式，<x8/>、<x9/>、<x10/>、<x11/>、<x12/>；DNS 服务器地址，<x13/>；或 DNS-over-HTTPS 地址。它从不回退到系统 DNS。"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8413,6 +8473,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "点击工具栏上的<g1>添加 URL</g1>，选择<g2>任务 → 添加新下载</g2>，或按<g3>Ctrl+N</g3>。"
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>常规</g1> — 信息哈希、分块、对等点、已发送量、分享率、已分享时长以及文件夹。已发送量和已分享时长是该 torrent 所有运行的总和：在暂停或重启 MDM 后，它们不会从 0 重新开始计算。"
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",

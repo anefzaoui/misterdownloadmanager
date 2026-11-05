@@ -22,6 +22,21 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Choose the DNS** ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36)):
+  Options → Connection → DNS picks who turns names into addresses for downloads, FTP, MDM's own
+  downloads and the update check. The system's (the default), Cloudflare, Google, Quad9, AdGuard,
+  NextDNS (with your configuration ID) or your own, asked over HTTPS (the default), TLS, or
+  plain over TCP. **Test** shows how long it takes to answer. When it can't be reached, the
+  download stops with a message naming it, unless you allow falling back to the system's DNS;
+  your hosts file and local names stay with the system's. The command line's `get` takes
+  `--dns`. Video pages and torrent trackers still use the system's DNS.
+- **Drop-down lists for screen readers**: a screen reader or UI Automation can now set a
+  drop-down list's choice by its text, and open or close the list.
+- **Torrents: upload limits, and a share ratio that lasts**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): Torrent settings can
+  limit what all torrents together send, and a torrent's progress window can limit its own, kept
+  with it. Its General tab now counts what it sent and how long it shared over all its runs, so
+  the share ratio no longer starts again at 0 after a pause or a restart.
 - **More audio choices for a video** ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70)):
   under the MP3 ones, **Audio only OPUS** (YouTube's Opus is only moved into an `.opus` file, not
   converted) and **Audio only FLAC** (lossless, with an honest note in the window: it can't add
@@ -115,6 +130,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
+  closed to the tray, MDM gives the memory it isn't using back to Windows. Task Manager's
+  **Memory** drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to
+  about 14 MB), and is given back again every 10 minutes while MDM stays there. After the
+  language list (which needs a font for every script) closes, those fonts are let go: about 70 MB
+  less than before. On Linux the heap's free memory goes back to the system the same way.
+  [MDM uses a lot of memory](docs/troubleshooting.md#mdm-uses-a-lot-of-memory) explains
+  Task Manager's figures.
 - **Freeze reports say what kind of freeze it was** ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   MDM measures how much processor time the window got while it didn't answer. The report then
   says whether it ran all along (a loop), waited (a deadlock, or the disk or the network), or
@@ -187,6 +210,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   their selected row; Download video's list is called Quality, Add torrent's Files and the
   sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
   choice at once: it used to wait for the next mouse move.
+- **List rows sit inside their list for screen readers** ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102)):
+  they used to be listed beside it. A screen reader now says which row of how many ("4 of 12"),
+  choosing from the list itself works (UI Automation's Selection), and a tree's check box belongs
+  to its file's row. The language picker's list and the Options browser list and the Scheduler's
+  two lists have names now too.
 - **Torrents: speed limits now work as they do for other downloads**
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
   torrent's progress window changed every torrent's limit, a remembered limit was ignored, the

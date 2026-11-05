@@ -255,9 +255,16 @@ pub fn language_fonts(ctx: &egui::Context) {
     load_fonts(ctx, all);
 }
 
-/// Load every script font, for a list of all languages by their own names; they stay loaded.
+/// Load every script font, for a list of all languages by their own names, until
+/// [`interface_fonts`] lets them go.
 pub fn all_scripts(ctx: &egui::Context) {
     load_fonts(ctx, true);
+}
+
+/// Back to the interface language's script fonts only, once no list of every language shows
+/// (#72: CJK fonts alone are 13–20 MB each; the language picker had kept them all loaded).
+pub fn interface_fonts(ctx: &egui::Context) {
+    load_fonts(ctx, false);
 }
 
 fn load_fonts(ctx: &egui::Context, all: bool) {

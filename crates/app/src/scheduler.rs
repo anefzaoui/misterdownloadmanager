@@ -503,6 +503,8 @@ impl Scheduler {
         let queues = &self.queues;
         let n = queues.len() + 1;
         self.tree_rows.selected = Some(self.selected);
+        // Named for screen readers (#102), as the tree's caption reads.
+        self.tree_rows.name = crate::i18n::t("Queues");
         let ev = winui::row_list(
             ui,
             "sched-tree",
@@ -880,6 +882,8 @@ impl Scheduler {
         let by_id: std::collections::HashMap<u64, &Item> =
             items.iter().map(|i| (i.id, i)).collect();
         let rows: Vec<&Item> = ids.iter().filter_map(|id| by_id.get(id).copied()).collect();
+        // Named for screen readers (#102), as its tab reads.
+        self.files_rows.name = crate::i18n::t("Files in the queue");
         let ev = winui::row_list(
             ui,
             "sched-files",
