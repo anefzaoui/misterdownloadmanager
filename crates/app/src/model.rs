@@ -758,8 +758,10 @@ impl Item {
     /// may start again: it fetches the files not there yet, #58).
     pub fn can_start(&self) -> bool {
         self.live.is_none()
-            && (matches!(self.status, Status::Queued | Status::Stopped | Status::Error)
-                || (self.status == Status::Complete && self.gallery.is_some()))
+            && (matches!(
+                self.status,
+                Status::Queued | Status::Stopped | Status::Error
+            ) || (self.status == Status::Complete && self.gallery.is_some()))
     }
 
     pub fn rate(&self) -> f64 {

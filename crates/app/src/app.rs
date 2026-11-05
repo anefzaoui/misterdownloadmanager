@@ -3150,9 +3150,7 @@ impl App {
             Cmd::RemoveWithFiles => self.ask_delete(many, true),
             Cmd::Resume => {
                 for id in many {
-                    if self.item(id).is_some_and(|i| {
-                        i.can_start()
-                    }) {
+                    if self.item(id).is_some_and(|i| i.can_start()) {
                         self.start(id, true);
                     }
                 }
@@ -3588,9 +3586,7 @@ impl App {
         let sel = self.selected_item();
         let picked = self.chosen(None);
         let running = picked.iter().any(|i| i.live.is_some());
-        let resumable = picked.iter().any(|i| {
-            i.can_start()
-        });
+        let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
         let any_running = self.items.iter().any(|i| i.live.is_some());
         let off = |label| I(label, Cmd::None, false, false);
@@ -3892,9 +3888,7 @@ impl App {
         let live = it.is_some_and(|i| i.live.is_some());
         let any = !chosen.is_empty();
         let any_live = chosen.iter().any(|i| i.live.is_some());
-        let any_resumable = chosen.iter().any(|i| {
-            i.can_start()
-        });
+        let any_resumable = chosen.iter().any(|i| i.can_start());
         let any_idle = chosen.iter().any(|i| i.live.is_none());
         let all_done = any && chosen.iter().all(|i| i.status == Status::Complete);
         let queue_of = |q: &Queue| chosen.iter().all(|i| q.items.contains(&i.id)) && any;
@@ -4309,9 +4303,7 @@ impl App {
         // Toolbar — full labels (IDM truncates "Delete Co...", "Start Qu...": user decision).
         let picked = self.chosen(None);
         let running = picked.iter().any(|i| i.live.is_some());
-        let resumable = picked.iter().any(|i| {
-            i.can_start()
-        });
+        let resumable = picked.iter().any(|i| i.can_start());
         let deletable = picked.iter().any(|i| i.live.is_none());
         let any_running = self.items.iter().any(|i| i.live.is_some());
         let any_complete = self.items.iter().any(|i| i.status == Status::Complete);
