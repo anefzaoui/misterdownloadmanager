@@ -626,6 +626,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>SHA-256 チェックサム</g1><g2>すべてのファイルに適用</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "macOSでは、再接続するVPNが新しいインターフェース（<x1/>の代わりに<x2/>）を取得する場合があります。その場合は再度選択してください。"
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "拡張機能がサイトを読み取ることを許可する必要があります。一部のサイトに限定している場合（または<g1>クリック時</g1>）、サインインを渡すことができないため、それらのサイトのダウンロードはブラウザーに残されます。"
@@ -977,6 +981,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 秒</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Windowsでは、トレントエンジンはまだアダプターにバインドできません。そのため、アダプターが選択されている間はトレントが開始されません（「Windowsでは、選択されたネットワークアダプター経由でトレントをまだ実行できません」）、迂回するのではなく。トラッカー名は引き続きシステムのDNSによって検索されます。"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1978,6 +1986,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Windows用の無料オープンソースダウンロードマネージャー。macOSとLinux版も試用できます。おなじみのIDMレイアウトで、当社のベンチマークでは5倍高速です。すべての接続を同時に処理し、クラッシュしても安全に再開でき、トレント、ウェブページからのビデオダウンロード、ブラウザ統合、86言語に対応しています。"
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "このコンピューター自体への接続（<x1/>）はバインドされません。このコンピューター上のプロキシがダウンロードを運び、どこに送信するかはプロキシ次第です。"
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "DRM で保護された動画 (ほとんどの有料ストリーミングサービス) はダウンロードできず、MDM は試みません。"
@@ -2389,6 +2401,10 @@
   "406376ea6db241ce": {
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "時間を設定した後、<g1>適用</g1>をクリックしましたか？"
+  },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "システムのDNSは独自の方法で名前を問い合わせ、Windowsはすべてのアダプターを介して問い合わせる場合があります。名前もアダプター内に保持するには、<g1>接続</g1> → <g2>DNS</g2>でDNSを選択してください。MDMはアダプターを介してそれを問い合わせます。"
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -4214,6 +4230,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>表示 → ダーク モードのサポート</g1>と<g2>表示 → 言語</g2>。"
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "ネットワークアダプター"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>トラブルシューティング</g2></g1> — ダウンロードが失敗した場合、ブラウザがダウンロードを渡さない場合、またはスケジュールが開始しない場合に確認すること。"
@@ -4486,6 +4506,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 以降が必要です。"
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>オプション → プロキシ / SOCKS → ネットワークアダプター</g1>は、MDMの接続を1つのアダプター（通常はVPNのアダプター）に保持します（<g2>オプション</g2>）。LinuxとmacOSでは、トレントエンジンはすべてのソケットをそれにバインドします。ピア、トラッカー、DHT、およびそのリッスンポートです。UPnPとローカルピア検出は、アダプター経由ではなくローカルネットワークと通信するため、その場合はオフになります。アダプターがなくなるとエンジンは停止し、アダプターが戻ると再びアダプター経由で起動します。"
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>タスク → トレント設定 → マグネットリンクと .torrent ファイルを Mister Download Manager で開く</g1> は、Windows アカウントのみのレジストリに書き込みます。ポータブル版をレジストリフリーに保つには、これをオフにしてください。"
@@ -4741,10 +4765,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "開始時刻になるとキューは自動的に開始されます。朝には、完了したファイルはカテゴリの<g1>完了</g1>の下にあります。"
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "<g1>すべて</g1>を別のネットワーク経由でルーティングするには、コンピューター全体でVPNを使用してください。MDMは、Windowsでトレントを1つのネットワークアダプターに結び付けることはできません。"
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5258,6 +5278,10 @@
    "source": "Keep some speed for everything else →",
    "text": "他のすべてのために速度を維持する →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "最大8接続（<x1/>、1～128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止し、<x3/>で再開します。<x4/>で完了したファイルをチェックします：16進数のMD5、SHA-1、SHA-256、SHA-512、またはCRC32で、オプションで名前を指定できます（<x5/>）。<x6/>でDNSを選択します：<x7/>（デフォルト）。サービスと問い合わせ方法、<x8/>、<x9/>、<x10/>、<x11/>、<x12/>。DNSサーバーのアドレス、<x13/>。またはDNS-over-HTTPSアドレス。システムのDNSには決してフォールバックしません。<x14/>は、名前（<x15/>、<x16/>）またはそのアドレスのいずれかによって、すべての接続を1つのネットワークアダプター経由で送信します。接続されていない場合、何も送信されず、ダウンロードは失敗します。"
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "Mister Download Manager（「MDM」、「本ソフトウェア」）およびウェブサイトmisterdownloadmanager.com（「本サイト」）は、Ahmed Nefzaouiおよび貢献者（「当社」）によって作成されています。本ソフトウェアまたは本サイトを使用することにより、お客様はこれらの規約に同意するものとします。同意しない場合は、使用しないでください。"
@@ -5277,6 +5301,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1>ですべてを選択します。"
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "まだアダプターに保持されていないため、選択されている間は開始されません。"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5930,6 +5958,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "保持方法：Windowsはアダプター自身のアドレスをバインドします。Windowsはこれらのパケットをそのアダプターのみを通して送信します（その強力なホストモデル）。Linuxはデバイス自体をバインドし（Linux 5.7以降）、macOSはインターフェースをバインドします。アダプターが持たない種類のアドレス（IPv4のみのVPN上のIPv6）は拒否され、迂回して送信されることはありません。"
+  },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
    "text": "<g1>F10</g1>、または<g2>Alt</g2>単独押し"
@@ -6173,6 +6205,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>カテゴリ</g1> — ファイルの種類（圧縮、ドキュメント、音楽、プログラム、ビデオ、または一般）から選択されます。各カテゴリには独自のフォルダがあります。その横の<g2>+</g2>で新しいカテゴリを作成します。"
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>ネットワークアダプター</g1> — デフォルトは<g2>任意 (システムが選択)</g2>です。アダプター（通常はVPNのもの）を選択すると、MDMが開くすべての接続がそれを通して行われるか、まったく行われません。これにはダウンロード、FTP、選択したDNS、MDM自身のダウンロード、更新チェックが含まれます。これはキルスイッチとして機能します。アダプターが切断されたり、VPNがオフになったりすると、通常の接続を通して何も送信されません。実行中のダウンロードは「…が接続されていません」と表示されて停止し、アダプターが戻ると再開します。リストの下の行には、アダプターのアドレス、または接続されていないことが表示されます。"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6913,6 +6949,10 @@
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
    "text": "クリップボードから"
+  },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "Windows上のトレント。"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -7894,6 +7934,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>古いMDMですか？</g1> MDMを更新してください。新しい拡張機能には、古いヘルパーが知らないIDがある場合があります。"
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "（暗黙のTLS。<x1/>とTLSは問題ありません）。"
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "実行中のキューは、リストの順序でダウンロードを一度にいくつかずつ（デフォルトでは4つ）開始します。失敗した場合、キューの最後に移動し、30秒後に再試行されます。ダウンロードするものがなくなると、キューは停止します。"
@@ -7901,10 +7945,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "中断したダウンロードを再開する"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "最大8接続（<x1/>、1～128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止、<x3/>で再開します。<x4/>は完了したファイルをチェックします。オプションで名前を指定して（<x5/>）Hex MD5、SHA-1、SHA-256、SHA-512、またはCRC32をチェックします。<x6/>はDNSを選択します。<x7/>（デフォルト）、サービスと問い合わせ方法（<x8/>、<x9/>、<x10/>、<x11/>、<x12/>）、DNSサーバーのアドレス（<x13/>）、またはDNS-over-HTTPSアドレスです。システムのDNSには決してフォールバックしません。"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8473,6 +8513,10 @@
   "f20112b73092bc18": {
    "source": "Installer",
    "text": "インストーラー"
+  },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "動画ページ（yt-dlpはアダプターに保持できません）。"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",

@@ -626,6 +626,10 @@
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>Somas de verificação SHA-256</g1><g2>para cada arquivo</g2>"
   },
+  "10e37230420403da": {
+   "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
+   "text": "No macOS, uma VPN que reconecta pode obter uma nova interface (<x1/> em vez de <x2/>): escolha-a novamente."
+  },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
    "text": "A extensão deve ter permissão para ler o site. Quando você a limita a alguns sites (ou <g1>Ao clicar</g1>), ela não consegue passar seu login, então deixa os downloads desses sites para o navegador."
@@ -977,6 +981,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 s</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "No Windows, o motor de torrents ainda não consegue se vincular a um adaptador. Assim, os torrents não iniciam enquanto um é escolhido (\"torrents não podem passar por um adaptador de rede escolhido no Windows ainda\"), em vez de contorná-lo. Os nomes dos rastreadores ainda são pesquisados pelo DNS do sistema."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1978,6 +1986,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Gerenciador de downloads gratuito e de código aberto para Windows, com versões experimentais para macOS e Linux. O layout do IDM que você já conhece, 5× mais rápido em nosso benchmark: todas as conexões de uma vez, retomada segura após falhas, torrents, vídeos de páginas da web, integração com navegadores, 86 idiomas."
   },
+  "3514fb404711d6ec": {
+   "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
+   "text": "Conexões para este próprio computador (<x1/>) não são vinculadas. Um proxy neste computador carrega os downloads, e para onde ele os envia depende dele."
+  },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
    "text": "Vídeos protegidos com DRM (a maioria dos serviços de streaming pagos) não podem ser baixados, e o MDM não tenta."
@@ -2389,6 +2401,10 @@
   "406376ea6db241ce": {
    "source": "Did you click <g1>Apply</g1> after setting the time?",
    "text": "Você clicou em <g1>Aplicar</g1> depois de definir a hora?"
+  },
+  "406a798e6be784f9": {
+   "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
+   "text": "O DNS do sistema consulta os nomes à sua própria maneira, e o Windows pode consultar por cada adaptador. Para manter os nomes dentro do adaptador também, escolha um DNS em <g1>Conexão</g1> → <g2>DNS</g2>: o MDM então o consulta através do adaptador."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -3662,6 +3678,10 @@
    "source": "Reinstall MDM to restore its files.",
    "text": "Reinstale o MDM para restaurar seus arquivos."
   },
+  "676c0b5817404515": {
+   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
+   "text": "Para rotear <g1>tudo</g1> por outra rede, use uma VPN para o computador inteiro."
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4214,6 +4234,10 @@
    "source": "<g1>View → Dark Mode support</g1> and <g2>View → Language</g2>.",
    "text": "<g1>Exibir → Suporte ao Modo Escuro</g1> e <g2>Exibir → Idioma</g2>."
   },
+  "75d11e79303ec689": {
+   "source": "A network adapter",
+   "text": "Um adaptador de rede"
+  },
   "76215a248670b754": {
    "source": "<g1><g2>Troubleshooting</g2></g1> — what to check when a download fails, the browser doesn't hand over a download, or a schedule doesn't start.",
    "text": "<g1><g2>Solução de problemas</g2></g1> — o que verificar quando um download falha, o navegador não entrega um download ou um agendamento não inicia."
@@ -4486,6 +4510,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "É necessário o Firefox 140 ou posterior."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>Opções → Proxy / Socks → Adaptador de rede</g1> mantém as conexões do MDM a um adaptador, geralmente de uma VPN (<g2>Opções</g2>). No Linux e macOS, o motor de torrents vincula todos os sockets a ele: pares, rastreadores, o DHT e sua porta de escuta. UPnP e descoberta de pares locais são desativados, pois eles se comunicam com a rede local em vez de pelo adaptador. Se o adaptador for desconectado, o motor para e reinicia pelo adaptador quando ele volta."
+  },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
    "text": "<g1>Tarefas → Configurações de torrent → Abrir links magnet e arquivos .torrent com o Mister Download Manager</g1> grava no registro, apenas para sua conta do Windows. Deixe-o desativado para manter a cópia portátil livre de registro."
@@ -4741,10 +4769,6 @@
   "842fc0e6d2b7d24d": {
    "source": "At the start time the queue starts on its own. In the morning, the finished files are under <g1>Finished</g1> in the categories.",
    "text": "Na hora de início, a fila começa sozinha. De manhã, os arquivos concluídos estão em <g1>Concluídos</g1> nas categorias."
-  },
-  "84334f5c25448dd7": {
-   "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.",
-   "text": "Para rotear <g1>tudo</g1> por outra rede, use uma VPN para todo o computador. O MDM não consegue vincular torrents a um adaptador de rede no Windows."
   },
   "847835563c342573": {
    "source": "Torrents and your security",
@@ -5258,6 +5282,10 @@
    "source": "Keep some speed for everything else →",
    "text": "Manter alguma velocidade para todo o resto →"
   },
+  "93f6a01041910b90": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
+   "text": "Baixa um arquivo com até 8 conexões (<x1/>, de 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o arquivo finalizado: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>). <x6/> escolhe o DNS: <x7/> (o padrão); um serviço e como consultá-lo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; endereços de servidores DNS, <x13/>; ou um endereço DNS-over-HTTPS. Nunca volta para o DNS do sistema. <x14/> envia cada conexão por um adaptador de rede, pelo nome (<x15/>, <x16/>) ou por um de seus endereços; quando não está conectado, nada é enviado e o download falha."
+  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "O Mister Download Manager (\"MDM\", \"o software\") e o site misterdownloadmanager.com (\"o site\") são feitos por Ahmed Nefzaoui e colaboradores (\"nós\"). Ao usar o software ou o site, você aceita estes termos. Se não aceitar, por favor, não os utilize."
@@ -5277,6 +5305,10 @@
   "948b3826142be87f": {
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> seleciona tudo."
+  },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "Ainda não vinculados ao adaptador, então não iniciam enquanto um está escolhido:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5930,6 +5962,10 @@
    "source": "Internet Download Manager 6.42",
    "text": "Internet Download Manager 6.42"
   },
+  "a7431b39fec4f131": {
+   "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
+   "text": "Como ele se mantém: o Windows vincula o próprio endereço do adaptador. O Windows então envia esses pacotes apenas por esse adaptador (seu modelo de host forte). O Linux vincula o próprio dispositivo (Linux 5.7 ou mais recente), e o macOS vincula a interface. Um endereço de um tipo que o adaptador não possui (IPv6 em uma VPN somente IPv4) é recusado, não enviado por ele."
+  },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
    "text": "<g1>F10</g1>, ou <g2>Alt</g2> pressionado sozinho"
@@ -6173,6 +6209,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Categoria</g1> — escolhida a partir do tipo de arquivo (Compactados, Documentos, Música, Programas, Vídeo ou Geral). Cada categoria tem sua própria pasta. O <g2>+</g2> ao lado cria uma nova categoria."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Adaptador de rede</g1> — <g2>Qualquer (o sistema escolhe)</g2> é o padrão. Escolha um adaptador, geralmente o da sua VPN, e toda conexão que o MDM abrir sairá por ele, ou não sairá. Isso abrange downloads, FTP, o DNS que você escolheu, os próprios downloads do MDM e a verificação de atualizações. Funciona como um kill switch: quando o adaptador se desconecta, ou a VPN é desligada, nada sai pela sua conexão normal. Os downloads em andamento param com \"… não está conectado\" e recomeçam quando o adaptador volta. A linha abaixo da lista mostra o endereço do adaptador, ou que ele não está conectado."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6913,6 +6953,10 @@
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
    "text": "Da área de transferência"
+  },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "torrents no Windows;"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -7894,6 +7938,10 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>Um MDM mais antigo?</g1> Atualize o MDM: uma extensão mais nova pode ter um ID que um auxiliar antigo não conhece."
   },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(TLS implícito; <x1/> com TLS está ok)."
+  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "Uma fila em execução inicia seus downloads na ordem da lista, alguns por vez (quatro por padrão). Quando um falha, ele se move para o final da fila e é tentado novamente 30 segundos depois. A fila para quando não há mais nada para baixar."
@@ -7901,10 +7949,6 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Retomar um download interrompido"
-  },
-  "e1131dd2d306f4bb": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
-   "text": "Baixa um arquivo com até 8 conexões (<x1/>, de 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o arquivo concluído: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>). <x6/> escolhe o DNS: <x7/> (o padrão); um serviço e como consultá-lo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; endereços de servidores DNS, <x13/>; ou um endereço DNS-over-HTTPS. Nunca retorna ao DNS do sistema."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8473,6 +8517,10 @@
   "f20112b73092bc18": {
    "source": "Installer",
    "text": "Instalador"
+  },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "páginas de vídeo (yt-dlp não pode ser vinculado a um adaptador);"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
