@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Дали сте сигурни дека сакате да го избришете {n} преземање од листата за преземања на Mister Download Manager?|Дали сте сигурни дека сакате да ги избришете овие {n} преземања од листата за преземања на Mister Download Manager?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Извадена е {n} датотека во {folder}|Извадени се {n} датотеки во {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,11 +39,22 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} се презема|{n} се преземаат
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	Изоставен е {n} запис (врска или име што води надвор од папката)|Изоставени се {n} записи (врски или имиња што водат надвор од папката)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} датотека|{n} датотеки
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} датотека веќе имаше име на датотека таму и беше нумерирана|{n} датотеки веќе имаа име на датотека таму и беа нумерирани
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -89,6 +105,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Извештајот е зачуван. Испраќањето до програмерите на GitHub им помага да го поправат ова; можете прво да прочитате сè што содржи подолу. Ништо не се испраќа само по себе: Испрати го отвора формуларот за извештај во вашиот прелистувач, пополнет, за да го проверите и поднесете.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	недостасува еден негов том
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	За Mister Download Manager
@@ -130,7 +150,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Додајте ја бесплатната екстензија: датотеките што ги преземате во вашиот прелистувач доаѓаат овде, а видеата добиваат копче за преземање.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	Додај во редица
 #. text in a dialog box
@@ -188,6 +209,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	веќе се презема: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	Веќе на списокот
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -206,6 +231,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	Секогаш темно
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	Секогаш во папка именувана по неа
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Секогаш вклучувај го Ограничувачот на брзина при стартување на Mister Download Manager
@@ -216,6 +245,16 @@
 #. text in the Scheduler window
 #, machine
 	April	Април
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	Лозинка за архива
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	Архиви
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -250,7 +289,7 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	И двете се со отворен код. MDM ги добива од нивните официјални изданија со сопствен преземач и го проверува потписот на секоја датотека пред да ја изврши. Околу 100 MB, еднаш.
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	Прелистај
@@ -264,13 +303,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Интеграција на прелистувач/систем
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	Зафатено, обидете се подоцна
 #. message or event log entry in the main window
 #, machine
 	by batch download	со сериско преземање
 #. message or event log entry in the main window
 #, machine
-	by import	со увоз
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	од Link grabber
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Откажи
@@ -319,6 +362,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	Промени ја папката за категоријата „{category}“ на последно избраната
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	Избери ги сите
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	Провери за ажурирања
@@ -349,7 +396,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	Проверка на {name} ({n} од {total})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	Проверувам...
@@ -430,6 +477,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	Копирај извештај
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	Не можеше да се извади {name}: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Креирај папка
@@ -484,6 +536,10 @@
 #. verb: delete the item
 #, machine
 	Delete	Избриши
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	Избриши ги архивите по извлекувањето
 #. message or event log entry in the main window
 #, machine
 	Delete category	Избриши категорија
@@ -665,6 +721,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Дупликат врска за преземање
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	Папка за категорија на секоја датотека
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -748,6 +808,22 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Екстензии одделени со празни места, на пример MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	Извади
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	Извади ги архивите кога ќе заврши нивното преземање
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	Извади кога ќе заврши
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	Се извлекува архивата...
 #. text in the Scheduler window
 #, machine
 	February	Февруари
@@ -939,6 +1015,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Скриј картичка
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	Сокриј веб-страници
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Држете Alt додека кликате на врска за да дозволите прелистувачот да ја преземе наместо Mister Download Manager.
@@ -970,16 +1050,9 @@
 #. message or event log entry in the main window
 #, machine
 	Import	Увези
-#. window title in transfer.rs
-#, machine
-	Import downloads	Увези преземања
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Во редица
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	во списокот
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1000,13 +1073,42 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Инсталирај yt-dlp
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	Во папка именувана по неа, кога содржи неколку работи
 #. text in a dialog box
 #, machine
 	Invalid address	Невалидна адреса
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	содржи премногу датотеки или папки
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	оштетена е или не е архива како што вели нејзиното име
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	не е архива што MDM ја извлекува
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	потребна е лозинка
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	Ги известува компјутерите на вашата мрежа кои торенти ги имате.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	беше запрена
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	би напишала {size}, повеќе отколку што има простор или причина за {limit}
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1076,8 +1178,17 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Ограничи ги сите преземања заедно на
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	Преземач на врски
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	Врски
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Врски од прелистувачот
 #. message or event log entry in the main window
@@ -1089,6 +1200,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	Најава
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	Побарај врски кога ќе пристигнат (име, големина, онлајн)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Пребарај
@@ -1242,13 +1357,18 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	Бр.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	Име
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	Име:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	Потребно е најавување
 #. text in errors.rs
 #, machine
 	network error	мрежна грешка
@@ -1400,7 +1520,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Понуди преземање врски копирани во таблата со исечоци
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	Офлајн ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ОК
 #. text in a download's progress window
@@ -1418,6 +1542,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Еднократно преземање
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	Онлајн
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1479,22 +1607,34 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Опции по завршувањето
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	Пакет
 #. text in the Download video window
 #, machine
 	Page address	Адреса на страницата
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Лозинка
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 #, machine
 	Password:	Лозинка:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Залепи магнетна врска или избери .torrent-датотека, па потоа Побарај.
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	Залепете врски овде (Ctrl+V) или испратете ги врските на страницата од прелистувачот.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Залепете ја контролната сума што ја дава страницата за преземање
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	Залепено
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1588,6 +1728,17 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Редови
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	RAR archives are extracted by 7-Zip ({path}).	RAR архивите се извлекуваат со 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	За RAR архиви е потребен 7-Zip (7-zip.org), кој не е инсталиран.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	RAR archives need 7-Zip, which isn't installed	За RAR архиви е потребен 7-Zip, кој не е инсталиран
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1699,6 +1850,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Зачувај во:
+#. text in the Link grabber window
+#, machine
+	Save to:	Зачувај во:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1722,7 +1876,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Изберете папка
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select all	Избери ги сите
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1731,7 +1885,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Избери ги сите преземања до ова
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select none	Не избирај ништо
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1867,7 +2021,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Страниците го испраќаат својот најдобар квалитет како посебно видео и аудио. ffmpeg ги спојува во една датотека што може да се репродуцира насекаде.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -1907,6 +2061,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	Изворен код
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	Извор: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -1914,6 +2073,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Поставки за ограничувач на брзина
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	Започни
 #. button in a dialog box
 #, machine
 	Start Download	Започни преземање
@@ -1951,7 +2114,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Започнување...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -1985,6 +2148,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Запира кога ќе заврши преземањето
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	Директно во папката на архивата
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2012,6 +2179,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	Синхронизациска редица
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Задачи → Зграпчувач на врски, или „Преземи ги сите врски“ на прелистувачот: томови на\nподелена архива се еден пакет, другите врски од страницата друг.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Кажете му на пријател
@@ -2041,6 +2212,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Адресата мора да биде http(s) или ftp(s) адреса
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	Архивата не можеше да се премести во Корпата за отпадоци: таа беше задржана
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	Архивата не можеше да се премести во Ѓубрето: таа беше задржана
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	Архивата беше преместена во Корпата за отпадоци
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	Архивата беше преместена во Ѓубрето
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	Најдобриот квалитет и MP3 бараат ffmpeg (околу 80 MB).
@@ -2171,6 +2356,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Списокот не можеше да се зачува: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	лозинката е погрешна
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	патеката е предолга за Windows: {path}
@@ -2247,6 +2436,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Веб-страницата од која е добиена оваа датотека:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	Потоа премести ги архивите во Корпата за отпадоци
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	Потоа премести ги архивите во Ѓубрето
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Веќе постои категорија со ова име
@@ -2431,6 +2628,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	Тип:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	Отштиклирај ги сите
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2520,6 +2721,10 @@
 #. text in a download's progress window
 #, machine
 	Value	Вредност
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	Разни датотеки
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2549,6 +2754,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Поставки за проверка на вируси
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	недостасува том {n} од неа
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2566,12 +2776,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Веб
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	Веб-адреси пронајдени во {file}:
 #. text in the Scheduler window
 #, machine
 	Wednesday	Среда
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	Содржината на архивата оди:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2602,6 +2813,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Пишување датуми и времиња
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	Погрешна лозинка за {name}. Внесете ја повторно:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2648,6 +2864,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: го наоѓа видеото
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ и XZ; поделена архива (.part1.rar, .7z.001) откако\nсекој том е внатре. Датотека која веќе постои се задржува: новата се нумерира.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2740,12 +2960,17 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} не можеше да се преземе: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} е заштитена со лозинка:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (автоматски)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} од {total} избрани
@@ -3075,6 +3300,12 @@ menu	&Keyboard shortcuts	&Кратенки на тастатура
 #, machine
 menu	&Language...	&Јазик...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	Зграпчувач на &врски...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&Опции
@@ -3244,6 +3475,10 @@ menu	E&xport	&Извези
 #. menu command in the main window
 #, machine
 menu	Edit queue	Уреди редица
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	Извлечи
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	Најди (Ctrl-F)

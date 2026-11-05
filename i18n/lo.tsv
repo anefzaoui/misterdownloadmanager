@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການລຶບການດາວໂຫຼດ {n} ເຫຼົ່ານີ້ອອກຈາກລາຍການດາວໂຫຼດຂອງ Mister Download Manager?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	ແຍກໄຟລ໌ {n} ໄປທີ່ {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,11 +39,22 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} ກຳລັງດາວໂຫຼດ
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	ບໍ່ໄດ້ລວມເອົາ {n} ລາຍການ (ລິ້ງ, ຫຼືຊື່ທີ່ນຳໄປສູ່ນອກໂຟນເດີ)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ໄຟລ໌
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	ໄຟລ໌ {n} ມີຊື່ໄຟລ໌ທີ່ມີຢູ່ແລ້ວ ແລະຖືກໃສ່ໝາຍເລກ
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -89,6 +105,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ໄດ້ບັນທຶກລາຍງານແລ້ວ. ການສົ່ງລາຍງານນີ້ໄປຫານັກພັດທະນາໃນ GitHub ຊ່ວຍໃຫ້ພວກເຂົາແກ້ໄຂບັນຫານີ້; ທ່ານສາມາດອ່ານທຸກຢ່າງທີ່ລາຍງານມີຢູ່ລຸ່ມນີ້ກ່ອນ. ບໍ່ມີຫຍັງຖືກສົ່ງໄປເອງ: ສົ່ງ ຈະເປີດແບບຟອມລາຍງານໃນບຣາວເຊີຂອງທ່ານ, ທີ່ໄດ້ຕື່ມຂໍ້ມູນແລ້ວ, ເພື່ອໃຫ້ທ່ານກວດສອບ ແລະ ສົ່ງ.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	ບໍ່ມີບາງສ່ວນຂອງມັນ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	ກ່ຽວກັບ Mister Download Manager
@@ -130,7 +150,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ເພີ່ມສ່ວນຂະຫຍາຍຟຣີ: ໄຟລ໌ທີ່ທ່ານດາວໂຫຼດໃນບຣາວເຊີຂອງທ່ານຈະມາທີ່ນີ້, ແລະວິດີໂອຈະໄດ້ຮັບປຸ່ມດາວໂຫຼດ.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	ເພີ່ມໃສ່ຄິວ
 #. text in a dialog box
@@ -188,6 +209,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ກຳລັງດາວໂຫຼດຢູ່ແລ້ວ: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	ມີຢູ່ໃນລາຍການແລ້ວ
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -206,6 +231,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	ມືດຕະຫຼອດ
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	ໃສ່ໃນໂຟນເດີທີ່ມີຊື່ຕາມມັນສະເໝີ
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	ເປີດໃຊ້ຕົວຈຳກັດຄວາມໄວສະເໝີເມື່ອ Mister Download Manager ເລີ່ມຕົ້ນ
@@ -216,6 +245,16 @@
 #. text in the Scheduler window
 #, machine
 	April	ເມສາ
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	ລະຫັດຜ່ານຂອງໄຟລ໌ເກັບ
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	ໄຟລ໌ເກັບ
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -250,7 +289,7 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ທັງສອງແມ່ນໂອເພນຊອດ. MDM ໄດ້ຮັບພວກມັນຈາກການປ່ອຍຢ່າງເປັນທາງການດ້ວຍຕົວດາວໂຫຼດຂອງມັນເອງ ແລະກວດສອບລາຍເຊັນຂອງແຕ່ລະໄຟລ໌ກ່ອນທີ່ຈະດໍາເນີນການ. ປະມານ 100 MB, ພຽງຄັ້ງດຽວ.
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ຊອກຫາ
@@ -264,13 +303,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ການເຊື່ອມໂຍງກັບບຣາວເຊີ/ລະບົບ
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	ບໍ່ຫວ່າງ, ລອງໃໝ່ພາຍຫຼັງ
 #. message or event log entry in the main window
 #, machine
 	by batch download	ໂດຍການດາວໂຫຼດເປັນຊຸດ
 #. message or event log entry in the main window
 #, machine
-	by import	ໂດຍການນໍາເຂົ້າ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	ໂດຍ Link grabber
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ຍົກເລີກ
@@ -319,6 +362,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	ປ່ຽນໂຟນເດີສໍາລັບໝວດໝູ່ “{category}” ທີ່ເລືອກຫຼ້າສຸດ
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	ເລືອກທັງໝົດ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	ກວດສອບການອັບເດດ
@@ -349,7 +396,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	ກຳລັງກວດສອບ {name} ({n} ຈາກ {total})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	ກຳລັງກວດສອບ...
@@ -430,6 +477,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	ສຳເນົາລາຍງານ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	ບໍ່ສາມາດແຍກ {name} ໄດ້: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	ສ້າງໂຟນເດີ
@@ -484,6 +536,10 @@
 #. verb: delete the item
 #, machine
 	Delete	ລຶບ
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	ລຶບໄຟລ໌ເກັບຫຼັງຈາກແຍກ
 #. message or event log entry in the main window
 #, machine
 	Delete category	ລຶບໝວດໝູ່
@@ -665,6 +721,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ລິ້ງດາວໂຫຼດຊໍ້າກັນ
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	ໂຟນເດີໝວດໝູ່ຂອງແຕ່ລະໄຟລ໌
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -748,6 +808,22 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	ສ່ວນຂະຫຍາຍທີ່ແຍກດ້ວຍຊ່ອງຫວ່າງ, ຕົວຢ່າງ MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	ແຍກ
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	ແຍກໄຟລ໌ເກັບເມື່ອດາວໂຫຼດສຳເລັດ
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	ແຍກເມື່ອສຳເລັດ
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	ກຳລັງແຍກໄຟລ໌ເກັບ...
 #. text in the Scheduler window
 #, machine
 	February	ເດືອນກຸມພາ
@@ -939,6 +1015,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ເຊື່ອງແຖບ
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	ເຊື່ອງໜ້າເວັບ
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	ກົດ Alt ຄ້າງໄວ້ໃນຂະນະທີ່ຄລິກລິ້ງເພື່ອໃຫ້ບຣາວເຊີດາວໂຫຼດມັນແທນ Mister Download Manager.
@@ -970,16 +1050,9 @@
 #. message or event log entry in the main window
 #, machine
 	Import	ນຳເຂົ້າ
-#. window title in transfer.rs
-#, machine
-	Import downloads	ນຳເຂົ້າການດາວໂຫຼດ
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ຢູ່ໃນຄິວ
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	ໃນລາຍການ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1000,13 +1073,42 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	ຕິດຕັ້ງ yt-dlp
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	ໃສ່ໃນໂຟນເດີທີ່ມີຊື່ຕາມມັນ, ເມື່ອມັນມີຫຼາຍຢ່າງ
 #. text in a dialog box
 #, machine
 	Invalid address	ທີ່ຢູ່ບໍ່ຖືກຕ້ອງ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	ມັນມີໄຟລ໌ ຫຼື ໂຟນເດີຫຼາຍເກີນໄປ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	ມັນເສຍຫາຍ, ຫຼືບໍ່ແມ່ນໄຟລ໌ເກັບຕາມຊື່ທີ່ບອກ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	ມັນບໍ່ແມ່ນໄຟລ໌ເກັບທີ່ MDM ແຍກໄດ້
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	ມັນຕ້ອງການລະຫັດຜ່ານ
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	ມັນບອກຄອມພິວເຕີໃນເຄືອຂ່າຍຂອງທ່ານວ່າທ່ານມີ torrent ໃດແດ່.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	ມັນຖືກຢຸດ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	ມັນຈະຂຽນ {size}, ຫຼາຍກວ່າ {limit} ທີ່ມີພື້ນທີ່ ຫຼື ເຫດຜົນ
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1076,8 +1178,17 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	ຈຳກັດການດາວໂຫຼດທັງໝົດຮ່ວມກັນເປັນ
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	ຕົວດຶງລິ້ງ
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	ລິ້ງ
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ລິ້ງຈາກບຣາວເຊີ
 #. message or event log entry in the main window
@@ -1089,6 +1200,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	ເຂົ້າສູ່ລະບົບ
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	ຊອກຫາລິ້ງເມື່ອພວກມັນມາຮອດ (ຊື່, ຂະໜາດ, ອອນລາຍ)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ຊອກຫາ
@@ -1242,13 +1357,18 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	ລ/ດ.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	ຊື່
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	ຊື່:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	ຕ້ອງການເຂົ້າສູ່ລະບົບ
 #. text in errors.rs
 #, machine
 	network error	ຂໍ້ຜິດພາດຂອງເຄືອຂ່າຍ
@@ -1400,7 +1520,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ສະເໜີໃຫ້ດາວໂຫຼດລິ້ງທີ່ສຳເນົາໄປຍັງຄລິບບອດ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	ອອບລາຍ ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ຕົກລົງ
 #. text in a download's progress window
@@ -1418,6 +1542,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ດາວໂຫຼດຄັ້ງດຽວ
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	ອອນລາຍ
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1479,22 +1607,34 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	ຕົວເລືອກເມື່ອສຳເລັດ
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	ແພັກເກັດ
 #. text in the Download video window
 #, machine
 	Page address	ທີ່ຢູ່ໜ້າ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	ລະຫັດຜ່ານ
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 #, machine
 	Password:	ລະຫັດຜ່ານ:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	ວາງລິ້ງແມັກເນັດ ຫຼື ເລືອກໄຟລ໌ .torrent, ຈາກນັ້ນຊອກຫາ.
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	ວາງລິ້ງທີ່ນີ້ (Ctrl+V), ຫຼືສົ່ງລິ້ງຂອງໜ້າຈາກບຣາວເຊີ.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ວາງ checksum ທີ່ໜ້າດາວໂຫຼດໃຫ້
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	ວາງແລ້ວ
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1588,6 +1728,17 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ຄິວ
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	RAR archives are extracted by 7-Zip ({path}).	ໄຟລ໌ເກັບ RAR ຖືກແຍກໂດຍ 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	ໄຟລ໌ເກັບ RAR ຕ້ອງການ 7-Zip (7-zip.org), ເຊິ່ງບໍ່ໄດ້ຕິດຕັ້ງ.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	RAR archives need 7-Zip, which isn't installed	ໄຟລ໌ເກັບ RAR ຕ້ອງການ 7-Zip, ເຊິ່ງບໍ່ໄດ້ຕິດຕັ້ງ
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1699,6 +1850,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ບັນທຶກໄປທີ່:
+#. text in the Link grabber window
+#, machine
+	Save to:	ບັນທຶກໄປທີ່:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1722,7 +1876,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ເລືອກໂຟນເດີ
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select all	ເລືອກທັງໝົດ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1731,7 +1885,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ເລືອກທຸກການດາວໂຫຼດຈົນເຖິງອັນນີ້
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select none	ບໍ່ເລືອກອັນໃດ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1867,7 +2021,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	ເວັບໄຊສົ່ງຄຸນນະພາບທີ່ດີທີ່ສຸດຂອງພວກເຂົາເປັນວິດີໂອ ແລະສຽງແຍກຕ່າງຫາກ. ffmpeg ຈະລວມພວກມັນເຂົ້າກັນເປັນໄຟລ໌ດຽວທີ່ສາມາດຫຼິ້ນໄດ້ທຸກບ່ອນ.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -1907,6 +2061,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	ລະຫັດແຫຼ່ງທີ່ມາ
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	ແຫຼ່ງທີ່ມາ: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -1914,6 +2073,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	ການຕັ້ງຄ່າຕົວຈຳກັດຄວາມໄວ
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	ເລີ່ມຕົ້ນ
 #. button in a dialog box
 #, machine
 	Start Download	ເລີ່ມດາວໂຫຼດ
@@ -1951,7 +2114,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ກຳລັງເລີ່ມຕົ້ນ...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -1985,6 +2148,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ຢຸດເມື່ອການດາວໂຫຼດສຳເລັດ
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	ໃສ່ໃນໂຟນເດີຂອງບ່ອນເກັບມ້ຽນໂດຍກົງ
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2012,6 +2179,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	ຄິວການຊິງຄ໌
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ໜ້າວຽກ → ຕົວດຶງລິ້ງ, ຫຼື “ດາວໂຫຼດລິ້ງທັງໝົດ” ຂອງບຣາວເຊີ: ປະລິມານຂອງບ່ອນເກັບມ້ຽນທີ່ແຍກກັນແມ່ນໜຶ່ງຊຸດ, ສ່ວນລິ້ງອື່ນໆຂອງໜ້າແມ່ນອີກຊຸດໜຶ່ງ.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ບອກໝູ່
@@ -2041,6 +2212,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	ທີ່ຢູ່ຕ້ອງເປັນທີ່ຢູ່ http(s) ຫຼື ftp(s)
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	ບໍ່ສາມາດຍ້າຍບ່ອນເກັບມ້ຽນໄປທີ່ຖັງຂີ້ເຫຍື້ອໄດ້: ມັນຖືກເກັບໄວ້
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	ບໍ່ສາມາດຍ້າຍບ່ອນເກັບມ້ຽນໄປທີ່ຖັງຂີ້ເຫຍື້ອໄດ້: ມັນຖືກເກັບໄວ້
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	ບ່ອນເກັບມ້ຽນຖືກຍ້າຍໄປທີ່ຖັງຂີ້ເຫຍື້ອ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	ບ່ອນເກັບມ້ຽນຖືກຍ້າຍໄປທີ່ຖັງຂີ້ເຫຍື້ອ
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	ຄຸນນະພາບດີທີ່ສຸດ ແລະ MP3 ຕ້ອງການ ffmpeg (ປະມານ 80 MB).
@@ -2171,6 +2356,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ບໍ່ສາມາດບັນທຶກລາຍການໄດ້: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	ລະຫັດຜ່ານຜິດ
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	ເສັ້ນທາງຍາວເກີນໄປສຳລັບ Windows: {path}
@@ -2247,6 +2436,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ໜ້າເວັບທີ່ໄດ້ຮັບໄຟລ໌ນີ້:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	ຈາກນັ້ນຍ້າຍບ່ອນເກັບມ້ຽນໄປທີ່ຖັງຂີ້ເຫຍື້ອ
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	ຈາກນັ້ນຍ້າຍບ່ອນເກັບມ້ຽນໄປທີ່ຖັງຂີ້ເຫຍື້ອ
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ມີໝວດໝູ່ນີ້ຢູ່ແລ້ວ
@@ -2431,6 +2628,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	ປະເພດ:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	ຍົກເລີກການເລືອກທັງໝົດ
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2520,6 +2721,10 @@
 #. text in a download's progress window
 #, machine
 	Value	ຄ່າ
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	ໄຟລ໌ຕ່າງໆ
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2549,6 +2754,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ການຕັ້ງຄ່າການກວດສອບໄວຣັສ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	ປະລິມານ {n} ຂອງມັນຫາຍໄປ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2566,12 +2776,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	ເວັບ
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	ທີ່ຢູ່ເວັບທີ່ພົບໃນ {file}:
 #. text in the Scheduler window
 #, machine
 	Wednesday	ວັນພຸດ
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	ສິ່ງທີ່ບ່ອນເກັບມ້ຽນມີຢູ່:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2602,6 +2813,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	ຂຽນວັນທີ ແລະ ເວລາ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	ລະຫັດຜ່ານຜິດສຳລັບ {name}. ພິມໃໝ່ອີກຄັ້ງ:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2648,6 +2864,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ຊອກຫາວິດີໂອ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ແລະ XZ; ບ່ອນເກັບມ້ຽນທີ່ແຍກກັນ (.part1.rar, .7z.001) ເມື່ອທຸກປະລິມານຢູ່. ໄຟລ໌ທີ່ມີຢູ່ແລ້ວຈະຖືກເກັບໄວ້: ໄຟລ໌ໃໝ່ຈະຖືກໝາຍເລກ.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2740,12 +2960,17 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} ບໍ່ສາມາດດາວໂຫຼດໄດ້: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} ຖືກປ້ອງກັນດ້ວຍລະຫັດຜ່ານ:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ອັດຕະໂນມັດ)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} ຈາກ {total} ທີ່ເລືອກ
@@ -3075,6 +3300,12 @@ menu	&Keyboard shortcuts	ປຸ່ມລັດແປ້ນ&ພິມ
 #, machine
 menu	&Language...	&ພາສາ...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	ຕົວດຶງ&ລິ້ງ...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	ຕົວເລືອ&ກ
@@ -3244,6 +3475,10 @@ menu	E&xport	ສົ່ງ&ອອກ
 #. menu command in the main window
 #, machine
 menu	Edit queue	ແກ້ໄຂຄິວ
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	ແຍກ
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	ຊອກຫາ (Ctrl-F)

@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Вы действительно хотите удалить {n} загрузку из списка загрузок Mister Download Manager?|Вы действительно хотите удалить эти {n} загрузки из списка загрузок Mister Download Manager?|Вы действительно хотите удалить эти {n} загрузок из списка загрузок Mister Download Manager?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Извлечен {n} файл в {folder}|Извлечено {n} файла в {folder}|Извлечено {n} файлов в {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,11 +39,22 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} загружается|{n} загружается|{n} загружается
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	Пропущена {n} запись (ссылка или имя, ведущее за пределы папки)|Пропущено {n} записи (ссылки или имена, ведущие за пределы папки)|Пропущено {n} записей (ссылки или имена, ведущие за пределы папки)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} файл|{n} файла|{n} файлов
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Имя {n} файла совпадало с именем уже существующего файла и было пронумеровано|Имена {n} файлов совпадали с именами уже существующих файлов и были пронумерованы|Имена {n} файлов совпадали с именами уже существующих файлов и были пронумерованы
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -89,6 +105,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Отчет сохранен. Отправка его разработчикам на GitHub поможет им исправить эту проблему; вы можете прочитать все, что он содержит, ниже. Ничего не отправляется само по себе: кнопка «Отправить» открывает форму отчета в вашем браузере, заполненную, для проверки и отправки.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	отсутствует один из томов
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	О Mister Download Manager
@@ -130,7 +150,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Добавьте бесплатное расширение: файлы, загруженные в браузере, будут перехвачены, а для видео появится кнопка «Скачать».
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	Добавить в очередь
 #. text in a dialog box
@@ -188,6 +209,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	уже загружается: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	Уже в списке
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -206,6 +231,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	Всегда темная
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	Всегда в папку с его именем
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Всегда включать ограничитель скорости при запуске Mister Download Manager
@@ -216,6 +245,16 @@
 #. text in the Scheduler window
 #, machine
 	April	Апрель
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	Пароль архива
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	Архивы
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -250,7 +289,7 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Оба являются открытым исходным кодом. MDM получает их из официальных выпусков с помощью собственного загрузчика и проверяет подпись каждого файла перед запуском. Около 100 МБ, однократно.
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	Обзор
@@ -264,13 +303,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Интеграция с браузером/системой
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	Занято, попробуйте позже
 #. message or event log entry in the main window
 #, machine
 	by batch download	пакетной загрузкой
 #. message or event log entry in the main window
 #, machine
-	by import	импортом
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	с помощью Link grabber
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Отмена
@@ -319,6 +362,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	Изменить папку для категории «{category}» по последнему выбранному
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	Выделить все
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	Проверить обновления
@@ -349,7 +396,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	Проверка {name} ({n} из {total})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	Проверка...
@@ -430,6 +477,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	Копировать отчет
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	Не удалось извлечь {name}: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Создать папку
@@ -484,6 +536,10 @@
 #. verb: delete the item
 #, machine
 	Delete	Удалить
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	Удалять архивы после извлечения
 #. message or event log entry in the main window
 #, machine
 	Delete category	Удалить категорию
@@ -665,6 +721,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Дублирующаяся ссылка для загрузки
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	Папка категории каждого файла
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -748,6 +808,22 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Расширения, разделенные пробелами, например MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	Извлечь
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	Извлекать архивы после завершения загрузки
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	Извлечь после завершения
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	Извлечение архива...
 #. text in the Scheduler window
 #, machine
 	February	Февраль
@@ -939,6 +1015,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Скрыть вкладку
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	Скрыть веб-страницы
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Удерживайте Alt при нажатии на ссылку, чтобы браузер загрузил ее вместо Mister Download Manager.
@@ -970,16 +1050,9 @@
 #. message or event log entry in the main window
 #, machine
 	Import	Импорт
-#. window title in transfer.rs
-#, machine
-	Import downloads	Импорт загрузок
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	В очереди
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	в списке
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1000,13 +1073,42 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Установить yt-dlp
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	В папку с его именем, если он содержит несколько элементов
 #. text in a dialog box
 #, machine
 	Invalid address	Неверный адрес
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	он содержит слишком много файлов или папок
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	он поврежден или не является архивом, указанным в его имени
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	это не архив, который MDM извлекает
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	требуется пароль
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	Сообщает компьютерам в вашей сети, какие торренты у вас есть.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	он был остановлен
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	он запишет {size}, что превышает доступное {limit} место или допустимый размер
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1076,8 +1178,17 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Ограничить все загрузки вместе до
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	Перехват ссылок
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	Ссылки
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Ссылки из браузера
 #. message or event log entry in the main window
@@ -1089,6 +1200,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	Логин
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	Искать ссылки по мере их поступления (имя, размер, онлайн)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Найти
@@ -1242,13 +1357,18 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	№
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	Имя
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	Имя:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	Требуется вход
 #. text in errors.rs
 #, machine
 	network error	сетевая ошибка
@@ -1400,7 +1520,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Предлагать загрузить ссылки, скопированные в буфер обмена
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	Не в сети ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ОК
 #. text in a download's progress window
@@ -1418,6 +1542,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Однократная загрузка
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	В сети
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1479,22 +1607,34 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Параметры по завершении
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	Пакет
 #. text in the Download video window
 #, machine
 	Page address	Адрес страницы
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Пароль
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 #, machine
 	Password:	Пароль:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Вставьте magnet-ссылку или выберите .torrent-файл, затем нажмите «Найти».
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	Вставьте ссылки сюда (Ctrl+V) или отправьте ссылки со страницы из браузера.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Вставьте контрольную сумму, указанную на странице загрузки
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	Вставлено
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1588,6 +1728,17 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Очереди
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	RAR archives are extracted by 7-Zip ({path}).	Архивы RAR извлекаются с помощью 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	Для архивов RAR требуется 7-Zip (7-zip.org), который не установлен.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	RAR archives need 7-Zip, which isn't installed	Для архивов RAR требуется 7-Zip, который не установлен
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1699,6 +1850,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Сохранить в:
+#. text in the Link grabber window
+#, machine
+	Save to:	Сохранить в:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1722,7 +1876,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Выбор папки
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select all	Выбрать все
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1731,7 +1885,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Выбрать все загрузки до этой
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select none	Снять выделение
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1867,7 +2021,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Сайты отправляют видео и аудио наилучшего качества по отдельности. ffmpeg объединяет их в один файл, который воспроизводится где угодно.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -1907,6 +2061,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	Исходный код
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	Источник: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -1914,6 +2073,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Настройки ограничителя скорости
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	Начать
 #. button in a dialog box
 #, machine
 	Start Download	Начать загрузку
@@ -1951,7 +2114,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Запуск...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -1985,6 +2148,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Останавливается по завершении загрузки
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	Прямо в папку архива
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2012,6 +2179,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	Очередь синхронизации
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Задачи → Захват ссылок или «Загрузить все ссылки» браузера: тома\nразделенного архива — это один пакет, остальные ссылки страницы — другой.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Рассказать другу
@@ -2041,6 +2212,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Адрес должен быть http(s) или ftp(s)
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	Не удалось переместить архив в корзину: он был сохранен
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	Не удалось переместить архив в корзину: он был сохранен
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	Архив перемещен в корзину
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	Архив перемещен в корзину
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	Для лучшего качества и MP3 требуется ffmpeg (около 80 МБ).
@@ -2171,6 +2356,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Не удалось сохранить список: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	неверный пароль
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	путь слишком длинный для Windows: {path}
@@ -2247,6 +2436,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Веб-страница, с которой был получен этот файл:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	Затем переместить архивы в корзину
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	Затем переместить архивы в корзину
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Категория с таким именем уже существует
@@ -2431,6 +2628,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	Тип:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	Снять все флажки
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2520,6 +2721,10 @@
 #. text in a download's progress window
 #, machine
 	Value	Значение
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	Различные файлы
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2549,6 +2754,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Настройки проверки на вирусы
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	отсутствует том {n}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2566,12 +2776,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Веб
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	Веб-адреса, найденные в {file}:
 #. text in the Scheduler window
 #, machine
 	Wednesday	Среда
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	Содержимое архива:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2602,6 +2813,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Запись дат и времени
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	Неверный пароль для {name}. Введите его еще раз:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2648,6 +2864,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: находит видео
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ и XZ; разделенный архив (.part1.rar, .7z.001) после\nтого, как все тома будут получены. Уже существующий файл сохраняется: новый\nнумеруется.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2740,12 +2960,17 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	Не удалось загрузить {name}: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} защищен паролем:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (авто)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} из {total} выбрано
@@ -3075,6 +3300,12 @@ menu	&Keyboard shortcuts	&Сочетания клавиш
 #, machine
 menu	&Language...	&Язык...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	Захват &ссылок...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&Параметры
@@ -3244,6 +3475,10 @@ menu	E&xport	&Экспорт
 #. menu command in the main window
 #, machine
 menu	Edit queue	Изменить очередь
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	Извлечь
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	Найти (Ctrl+F)

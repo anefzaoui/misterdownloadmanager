@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Ertu viss um að þú viljir eyða {n} niðurhali af niðurhalslista Mister Download Manager?|Ertu viss um að þú viljir eyða þessum {n} niðurhölum af niðurhalslista Mister Download Manager?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Tók {n} skrá út í {folder}|Tók {n} skrár út í {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,11 +39,22 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} að hlaða niður|{n} að hlaða niður
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} færslu var sleppt (tengill eða nafn sem vísar út fyrir möppuna)|{n} færslum var sleppt (tenglar eða nöfn sem vísa út fyrir möppuna)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} skrá|{n} skrár
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} skrá var þegar til með sama nafni og var númeruð|{n} skrár voru þegar til með sama nafni og voru númeraðar
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -89,6 +105,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Skýrsla var vistuð. Með því að senda hana til þróunaraðila á GitHub hjálparðu þeim að laga þetta; þú getur lesið allt sem hún inniheldur hér fyrir neðan. Ekkert er sent sjálfkrafa: „Senda“ opnar skýrsluformið í vafranum þínum, útfyllt, til að þú getir skoðað og sent.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	eitt bindi vantar
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Um Mister Download Manager
@@ -130,7 +150,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	Bættu við ókeypis viðbótinni: skrár sem þú hleður niður í vafranum þínum koma hingað og myndbönd fá niðurhalshnapp.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	Bæta við í biðröð
 #. text in a dialog box
@@ -188,6 +209,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	er þegar í niðurhali: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	Þegar á listanum
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -206,6 +231,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	Alltaf dökkur
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	Alltaf í möppu sem er nefnd eftir henni
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Kveikja alltaf á hraðatakmarkara við ræsingu Mister Download Manager
@@ -216,6 +245,16 @@
 #. text in the Scheduler window
 #, machine
 	April	Apríl
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	Lykilorð skjalasafns
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	Skjalasöfn
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -250,7 +289,7 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Bæði eru opinn hugbúnaður. MDM sækir þau úr opinberum útgáfum með eigin niðurhalara og athugar undirskrift hverrar skráar áður en hún er keyrð. Um 100 MB, einu sinni.
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	Fletta
@@ -264,13 +303,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Vafra-/kerfissamþætting
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	Upptekið, reyndu aftur síðar
 #. message or event log entry in the main window
 #, machine
 	by batch download	með hópniðurhali
 #. message or event log entry in the main window
 #, machine
-	by import	með innflutningi
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	með Link grabber
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Hætta við
@@ -319,6 +362,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	Breyta möppu fyrir flokkinn „{category}“ á síðast valda
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	Velja allt
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	Leita að uppfærslum
@@ -349,7 +396,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	Athuga {name} ({n} af {total})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	Athuga...
@@ -430,6 +477,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	Afrita skýrslu
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	Gat ekki dregið út {name}: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Búa til möppu
@@ -484,6 +536,10 @@
 #. verb: delete the item
 #, machine
 	Delete	Eyða
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	Eyða skjalasöfnum eftir útdrátt
 #. message or event log entry in the main window
 #, machine
 	Delete category	Eyða flokki
@@ -665,6 +721,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Tvítekinn niðurhalstengill
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	Mappa hvers flokks fyrir hverja skrá
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -748,6 +808,22 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Viðbætur aðskildar með bilum, til dæmis MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	Draga út
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	Draga út skjalasöfn þegar niðurhali þeirra er lokið
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	Draga út þegar lokið
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	Tek skjalasafnið út...
 #. text in the Scheduler window
 #, machine
 	February	Febrúar
@@ -939,6 +1015,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Fela flipa
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	Fela vefsíður
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Haltu Alt inni á meðan þú smellir á tengil til að láta vafrann hlaða honum niður í stað Mister Download Manager.
@@ -970,16 +1050,9 @@
 #. message or event log entry in the main window
 #, machine
 	Import	Flytja inn
-#. window title in transfer.rs
-#, machine
-	Import downloads	Flytja inn niðurhal
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Í biðröð
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	á listanum
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1000,13 +1073,42 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	Setja upp yt-dlp
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	Í möppu sem er nefnd eftir henni, þegar hún inniheldur nokkra hluti
 #. text in a dialog box
 #, machine
 	Invalid address	Ógilt heimilisfang
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	hún inniheldur of margar skrár eða möppur
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	hún er skemmd, eða ekki skjalasafnið sem nafnið segir
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	hún er ekki skjalasafn sem MDM dregur út
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	hún þarf lykilorð
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	Það segir tölvunum á netinu þínu hvaða torrent skrár þú hefur.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	hún var stöðvuð
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	hún myndi skrifa {size}, meira en {limit} sem er pláss eða ástæða fyrir
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1076,8 +1178,17 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Takmarka allt niðurhal saman við
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	Link grabber
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	Tenglar
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	Tenglar úr vafranum
 #. message or event log entry in the main window
@@ -1089,6 +1200,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	Innskráning
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	Fletta upp tenglum þegar þeir koma (nafn, stærð, á netinu)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Leita
@@ -1242,13 +1357,18 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	Nr.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	Nafn
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	Nafn:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	Þarf innskráningu
 #. text in errors.rs
 #, machine
 	network error	netvilla
@@ -1400,7 +1520,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Bjóða að sækja tengla sem afritaðir eru á klippiborðið
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	Ótengt ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	Í lagi
 #. text in a download's progress window
@@ -1418,6 +1542,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Einu sinni niðurhal
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	Á netinu
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1479,22 +1607,34 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	Valkostir við lok
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	Pakki
 #. text in the Download video window
 #, machine
 	Page address	Slóð síðu
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Lykilorð
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 #, machine
 	Password:	Lykilorð:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	Límdu inn segultengil eða veldu .torrent-skrá, smelltu svo á Leita.
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	Límdu tengla hér (Ctrl+V), eða sendu tengla síðu úr vafranum.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Líma gátupphæðina sem niðurhalssíðan gefur upp
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	Límt
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1588,6 +1728,17 @@
 #. plural noun: the download queues
 #, machine
 	Queues	Biðraðir
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	RAR archives are extracted by 7-Zip ({path}).	RAR skjalasöfn eru dregin út af 7-Zip ({path}).
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR skjalasöfn þurfa 7-Zip (7-zip.org), sem er ekki uppsett.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	RAR archives need 7-Zip, which isn't installed	RAR skjalasöfn þurfa 7-Zip, sem er ekki uppsett
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1699,6 +1850,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	Vista í:
+#. text in the Link grabber window
+#, machine
+	Save to:	Vista í:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1722,7 +1876,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	Velja möppu
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select all	Velja allt
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1731,7 +1885,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	Velja allar niðurhalanir upp að þessari
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select none	Afvelja allt
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1867,7 +2021,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Síður senda bestu gæði sín sem aðskilið myndband og hljóð. ffmpeg setur þau saman í eina skrá sem spilast hvar sem er.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -1907,6 +2061,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	Frumkóði
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	Heimild: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -1914,6 +2073,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Stillingar hraðatakmörkunar
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	Byrja
 #. button in a dialog box
 #, machine
 	Start Download	Hefja niðurhal
@@ -1951,7 +2114,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	Ræsi...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -1985,6 +2148,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Stöðvast þegar niðurhali lýkur
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	Beint í möppu skjalasafnsins
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2012,6 +2179,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	Samstillingarröð
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Verkefni → Tenglagreipari, eða „Sækja alla tengla“ í vafranum: bindi\nskipts skjalasafns eru einn pakki, aðrir tenglar á síðu annar.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Segðu vini frá
@@ -2041,6 +2212,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Slóðin verður að vera http(s) eða ftp(s) slóð
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	Ekki tókst að færa skjalasafnið í ruslafötuna: það var geymt
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	Ekki tókst að færa skjalasafnið í ruslið: það var geymt
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	Skjalasafnið var fært í ruslafötuna
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	Skjalasafnið var fært í ruslið
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	Bestu gæðin og MP3 þurfa ffmpeg (um 80 MB).
@@ -2171,6 +2356,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Ekki tókst að vista listann: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	rangt lykilorð
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	slóðin er of löng fyrir Windows: {path}
@@ -2247,6 +2436,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Vefsíðan sem þessi skrá var fengin af:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	Færa síðan skjalasöfnin í ruslafötuna
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	Færa síðan skjalasöfnin í ruslið
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Það er nú þegar flokkur með þessu nafni
@@ -2431,6 +2628,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	Tegund:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	Afvelja allt
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2520,6 +2721,10 @@
 #. text in a download's progress window
 #, machine
 	Value	Gildi
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	Ýmsar skrár
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2549,6 +2754,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	Stillingar vírusathugunar
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	bindi {n} vantar
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2566,12 +2776,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	Vefur
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	Vefslóðir fundnar í {file}:
 #. text in the Scheduler window
 #, machine
 	Wednesday	Miðvikudagur
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	Það sem skjalasafn geymir fer:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2602,6 +2813,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Skrifa dagsetningar og tíma
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	Rangt lykilorð fyrir {name}. Sláðu það inn aftur:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2648,6 +2864,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: finnur myndbandið
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ og XZ; skipt skjalasafn (.part1.rar, .7z.001) þegar\nhvert bindi er komið. Skrá sem er þegar til er geymd: sú nýja er númeruð.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2740,12 +2960,17 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	Ekki tókst að sækja {name}: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} er varið með lykilorði:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (sjálfvirkt)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} af {total} valið
@@ -3075,6 +3300,12 @@ menu	&Keyboard shortcuts	&Flýtilyklar
 #, machine
 menu	&Language...	&Tungumál...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	&Tenglagreipari...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&Valkostir
@@ -3244,6 +3475,10 @@ menu	E&xport	&Flytja út
 #. menu command in the main window
 #, machine
 menu	Edit queue	Breyta biðröð
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	Draga út
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	Finna (Ctrl-F)

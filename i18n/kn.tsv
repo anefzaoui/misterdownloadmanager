@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager ಡೌನ್‌ಲೋಡ್‌ಗಳ ಪಟ್ಟಿಯಿಂದ {n} ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿರುವಿರಾ?|Mister Download Manager ಡೌನ್‌ಲೋಡ್‌ಗಳ ಪಟ್ಟಿಯಿಂದ ಈ {n} ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿರುವಿರಾ?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} ಫೈಲ್ ಅನ್ನು {folder} ಗೆ ಹೊರತೆಗೆಯಲಾಗಿದೆ|{n} ಫೈಲ್‌ಗಳನ್ನು {folder} ಗೆ ಹೊರತೆಗೆಯಲಾಗಿದೆ
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,11 +39,22 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ|{n} ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ನಮೂದನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ (ಲಿಂಕ್, ಅಥವಾ ಫೋಲ್ಡರ್‌ನ ಹೊರಗೆ ಹೋಗುವ ಹೆಸರು)|{n} ನಮೂದುಗಳನ್ನು ಬಿಟ್ಟುಬಿಡಲಾಗಿದೆ (ಲಿಂಕ್‌ಗಳು, ಅಥವಾ ಫೋಲ್ಡರ್‌ನ ಹೊರಗೆ ಹೋಗುವ ಹೆಸರುಗಳು)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ಫೈಲ್|{n} ಫೈಲ್‌ಗಳು
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ಫೈಲ್ ಈಗಾಗಲೇ ಅಲ್ಲಿರುವ ಫೈಲ್‌ನ ಹೆಸರನ್ನು ಹೊಂದಿತ್ತು ಮತ್ತು ಅದನ್ನು ಸಂಖ್ಯೆ ಮಾಡಲಾಗಿದೆ|{n} ಫೈಲ್‌ಗಳು ಈಗಾಗಲೇ ಅಲ್ಲಿರುವ ಫೈಲ್‌ನ ಹೆಸರನ್ನು ಹೊಂದಿದ್ದವು ಮತ್ತು ಅವುಗಳನ್ನು ಸಂಖ್ಯೆ ಮಾಡಲಾಗಿದೆ
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -89,6 +105,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ವರದಿಯನ್ನು ಉಳಿಸಲಾಗಿದೆ. ಅದನ್ನು GitHub ನಲ್ಲಿರುವ ಡೆವಲಪರ್‌ಗಳಿಗೆ ಕಳುಹಿಸುವುದರಿಂದ ಅವರು ಇದನ್ನು ಸರಿಪಡಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ; ಅದರಲ್ಲಿರುವ ಎಲ್ಲವನ್ನೂ ನೀವು ಮೊದಲು ಕೆಳಗೆ ಓದಬಹುದು. ಯಾವುದನ್ನೂ ಸ್ವತಃ ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ: ಕಳುಹಿಸು ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ವರದಿ ಫಾರ್ಮ್ ಅನ್ನು ತೆರೆಯುತ್ತದೆ, ಅದನ್ನು ಭರ್ತಿ ಮಾಡಲಾಗುತ್ತದೆ, ನೀವು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಸಲ್ಲಿಸಲು.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	ಅದರ ಒಂದು ಸಂಪುಟ ಕಾಣೆಯಾಗಿದೆ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ಬಗ್ಗೆ
@@ -130,7 +150,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ಉಚಿತ ವಿಸ್ತರಣೆಯನ್ನು ಸೇರಿಸಿ: ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನೀವು ಡೌನ್‌ಲೋಡ್ ಮಾಡುವ ಫೈಲ್‌ಗಳು ಇಲ್ಲಿಗೆ ಬರುತ್ತವೆ, ಮತ್ತು ವೀಡಿಯೊಗಳಿಗೆ ಡೌನ್‌ಲೋಡ್ ಬಟನ್ ಸಿಗುತ್ತದೆ.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	ಕ್ಯೂಗೆ ಸೇರಿಸಿ
 #. text in a dialog box
@@ -188,6 +209,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ಈಗಾಗಲೇ ಡೌನ್‌ಲೋಡ್ ಆಗುತ್ತಿದೆ: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	ಈಗಾಗಲೇ ಪಟ್ಟಿಯಲ್ಲಿದೆ
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -206,6 +231,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	ಯಾವಾಗಲೂ ಡಾರ್ಕ್
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	ಯಾವಾಗಲೂ ಅದರ ಹೆಸರಿನ ಫೋಲ್ಡರ್‌ಗೆ
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager ಪ್ರಾರಂಭದಲ್ಲಿ ಯಾವಾಗಲೂ ಸ್ಪೀಡ್ ಲಿಮಿಟರ್ ಅನ್ನು ಆನ್ ಮಾಡಿ
@@ -216,6 +245,16 @@
 #. text in the Scheduler window
 #, machine
 	April	ಏಪ್ರಿಲ್
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	ಆರ್ಕೈವ್ ಪಾಸ್‌ವರ್ಡ್
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	ಆರ್ಕೈವ್‌ಗಳು
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -250,7 +289,7 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ಎರಡೂ ಓಪನ್ ಸೋರ್ಸ್ ಆಗಿವೆ. MDM ತನ್ನದೇ ಆದ ಡೌನ್‌ಲೋಡರ್‌ನೊಂದಿಗೆ ಅವುಗಳನ್ನು ತಮ್ಮ ಅಧಿಕೃತ ಬಿಡುಗಡೆಗಳಿಂದ ಪಡೆಯುತ್ತದೆ ಮತ್ತು ಪ್ರತಿ ಫೈಲ್‌ನ ಸಹಿಯನ್ನು ರನ್ ಮಾಡುವ ಮೊದಲು ಪರಿಶೀಲಿಸುತ್ತದೆ. ಸುಮಾರು 100 MB, ಒಮ್ಮೆ.
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ಬ್ರೌಸ್ ಮಾಡಿ
@@ -264,13 +303,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ಬ್ರೌಸರ್/ಸಿಸ್ಟಂ ಇಂಟಿಗ್ರೇಷನ್
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	ಬಿಡುವಿಲ್ಲ, ನಂತರ ಪ್ರಯತ್ನಿಸಿ
 #. message or event log entry in the main window
 #, machine
 	by batch download	ಬ್ಯಾಚ್ ಡೌನ್‌ಲೋಡ್ ಮೂಲಕ
 #. message or event log entry in the main window
 #, machine
-	by import	ಆಮದು ಮೂಲಕ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	ಲಿಂಕ್ ಗ್ರಾಬರ್ ಮೂಲಕ
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ರದ್ದುಮಾಡಿ
@@ -319,6 +362,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	ಕೊನೆಯದಾಗಿ ಆಯ್ಕೆಮಾಡಿದ "{category}" ವರ್ಗಕ್ಕಾಗಿ ಫೋಲ್ಡರ್ ಬದಲಾಯಿಸಿ
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	ಎಲ್ಲವನ್ನೂ ಪರಿಶೀಲಿಸಿ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	ಅಪ್‌ಡೇಟ್‌ಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಿ
@@ -349,7 +396,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	{name} ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ ({total} ರಲ್ಲಿ {n})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ...
@@ -430,6 +477,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	ವರದಿಯನ್ನು ನಕಲಿಸಿ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	{name} ಅನ್ನು ಹೊರತೆಗೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	ಫೋಲ್ಡರ್ ರಚಿಸಿ
@@ -484,6 +536,10 @@
 #. verb: delete the item
 #, machine
 	Delete	ಅಳಿಸು
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	ಹೊರತೆಗೆದ ನಂತರ ಆರ್ಕೈವ್‌ಗಳನ್ನು ಅಳಿಸಿ
 #. message or event log entry in the main window
 #, machine
 	Delete category	ವರ್ಗವನ್ನು ಅಳಿಸಿ
@@ -665,6 +721,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ನಕಲಿ ಡೌನ್‌ಲೋಡ್ ಲಿಂಕ್
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	ಪ್ರತಿ ಫೈಲ್‌ನ ವರ್ಗ ಫೋಲ್ಡರ್
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -748,6 +808,22 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	ಸ್ಪೇಸ್‌ಗಳಿಂದ ಪ್ರತ್ಯೇಕಿಸಲಾದ ವಿಸ್ತರಣೆಗಳು, ಉದಾಹರಣೆಗೆ MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	ಹೊರತೆಗೆಯಿರಿ
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	ಡೌನ್‌ಲೋಡ್ ಪೂರ್ಣಗೊಂಡಾಗ ಆರ್ಕೈವ್‌ಗಳನ್ನು ಹೊರತೆಗೆಯಿರಿ
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	ಪೂರ್ಣಗೊಂಡಾಗ ಹೊರತೆಗೆಯಿರಿ
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	ಆರ್ಕೈವ್ ಅನ್ನು ಹೊರತೆಗೆಯಲಾಗುತ್ತಿದೆ...
 #. text in the Scheduler window
 #, machine
 	February	ಫೆಬ್ರವರಿ
@@ -939,6 +1015,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ಟ್ಯಾಬ್ ಮರೆಮಾಡಿ
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	ವೆಬ್ ಪುಟಗಳನ್ನು ಮರೆಮಾಡಿ
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager ಬದಲಿಗೆ ಬ್ರೌಸರ್ ಅದನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಲಿಂಕ್ ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡುವಾಗ Alt ಅನ್ನು ಹಿಡಿದುಕೊಳ್ಳಿ.
@@ -970,16 +1050,9 @@
 #. message or event log entry in the main window
 #, machine
 	Import	ಆಮದು
-#. window title in transfer.rs
-#, machine
-	Import downloads	ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಆಮದು ಮಾಡಿ
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ಕ್ಯೂನಲ್ಲಿ
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	ಪಟ್ಟಿಯಲ್ಲಿ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1000,13 +1073,42 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ಅನ್ನು ಸ್ಥಾಪಿಸಿ
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	ಅದು ಹಲವಾರು ವಿಷಯಗಳನ್ನು ಹೊಂದಿರುವಾಗ, ಅದರ ಹೆಸರಿನ ಫೋಲ್ಡರ್‌ಗೆ
 #. text in a dialog box
 #, machine
 	Invalid address	ಅಮಾನ್ಯ ವಿಳಾಸ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	ಅದು ಹೆಚ್ಚು ಫೈಲ್‌ಗಳು ಅಥವಾ ಫೋಲ್ಡರ್‌ಗಳನ್ನು ಹೊಂದಿದೆ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	ಅದು ಹಾನಿಗೊಳಗಾಗಿದೆ, ಅಥವಾ ಅದರ ಹೆಸರು ಹೇಳುವ ಆರ್ಕೈವ್ ಅಲ್ಲ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	ಅದು MDM ಹೊರತೆಗೆಯುವ ಆರ್ಕೈವ್ ಅಲ್ಲ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	ಅದಕ್ಕೆ ಪಾಸ್‌ವರ್ಡ್ ಬೇಕು
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	ನಿಮ್ಮ ನೆಟ್‌ವರ್ಕ್‌ನಲ್ಲಿರುವ ಕಂಪ್ಯೂಟರ್‌ಗಳಿಗೆ ನೀವು ಯಾವ ಟೊರೆಂಟ್‌ಗಳನ್ನು ಹೊಂದಿದ್ದೀರಿ ಎಂದು ಇದು ಹೇಳುತ್ತದೆ.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	ಅದನ್ನು ನಿಲ್ಲಿಸಲಾಯಿತು
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	ಅದು {size} ಬರೆಯುತ್ತದೆ, ಅಲ್ಲಿರುವ {limit} ಸ್ಥಳ ಅಥವಾ ಕಾರಣಕ್ಕಿಂತ ಹೆಚ್ಚು
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1076,8 +1178,17 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	ಎಲ್ಲಾ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಒಟ್ಟಾಗಿ ಇದಕ್ಕೆ ಸೀಮಿತಗೊಳಿಸಿ
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	ಲಿಂಕ್ ಗ್ರಾಬರ್
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	ಲಿಂಕ್‌ಗಳು
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ಬ್ರೌಸರ್‌ನಿಂದ ಲಿಂಕ್‌ಗಳು
 #. message or event log entry in the main window
@@ -1089,6 +1200,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	ಲಾಗಿನ್
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	ಲಿಂಕ್‌ಗಳು ಬಂದಾಗ ಅವುಗಳನ್ನು ಹುಡುಕಿ (ಹೆಸರು, ಗಾತ್ರ, ಆನ್‌ಲೈನ್)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ಹುಡುಕಿ
@@ -1242,13 +1357,18 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	ಸಂ.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	ಹೆಸರು
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	ಹೆಸರು:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	ಲಾಗ್ ಇನ್ ಆಗಬೇಕು
 #. text in errors.rs
 #, machine
 	network error	ನೆಟ್‌ವರ್ಕ್ ದೋಷ
@@ -1400,7 +1520,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಿದ ಲಿಂಕ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಆಫರ್ ಮಾಡಿ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	ಆಫ್‌ಲೈನ್ ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ಸರಿ
 #. text in a download's progress window
@@ -1418,6 +1542,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ಒಂದು-ಬಾರಿ ಡೌನ್‌ಲೋಡ್
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	ಆನ್‌ಲೈನ್
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1479,22 +1607,34 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	ಪೂರ್ಣಗೊಂಡ ನಂತರದ ಆಯ್ಕೆಗಳು
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	ಪ್ಯಾಕೇಜ್
 #. text in the Download video window
 #, machine
 	Page address	ಪುಟ ವಿಳಾಸ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	ಪಾಸ್‌ವರ್ಡ್
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 #, machine
 	Password:	ಪಾಸ್‌ವರ್ಡ್:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್ ಅಂಟಿಸಿ ಅಥವಾ .torrent ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ, ನಂತರ ಹುಡುಕಿ.
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	ಲಿಂಕ್‌ಗಳನ್ನು ಇಲ್ಲಿ ಅಂಟಿಸಿ (Ctrl+V), ಅಥವಾ ಬ್ರೌಸರ್‌ನಿಂದ ಪುಟದ ಲಿಂಕ್‌ಗಳನ್ನು ಕಳುಹಿಸಿ.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ಡೌನ್‌ಲೋಡ್‌ನ ಪುಟವು ನೀಡುವ ಚೆಕ್‌ಸಮ್ ಅನ್ನು ಅಂಟಿಸಿ
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	ಅಂಟಿಸಲಾಗಿದೆ
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1588,6 +1728,17 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ಕ್ಯೂಗಳು
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	RAR archives are extracted by 7-Zip ({path}).	RAR ಆರ್ಕೈವ್‌ಗಳನ್ನು 7-Zip ({path}) ಮೂಲಕ ಹೊರತೆಗೆಯಲಾಗುತ್ತದೆ.
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR ಆರ್ಕೈವ್‌ಗಳಿಗೆ 7-Zip (7-zip.org) ಬೇಕು, ಅದು ಸ್ಥಾಪಿಸಿಲ್ಲ.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	RAR archives need 7-Zip, which isn't installed	RAR ಆರ್ಕೈವ್‌ಗಳಿಗೆ 7-Zip ಬೇಕು, ಅದು ಸ್ಥಾಪಿಸಿಲ್ಲ
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1699,6 +1850,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ಇಲ್ಲಿಗೆ ಉಳಿಸಿ:
+#. text in the Link grabber window
+#, machine
+	Save to:	ಇಲ್ಲಿಗೆ ಉಳಿಸಿ:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1722,7 +1876,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ಫೋಲ್ಡರ್ ಆಯ್ಕೆಮಾಡಿ
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select all	ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆಮಾಡಿ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1731,7 +1885,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ಇಲ್ಲಿಯವರೆಗಿನ ಪ್ರತಿಯೊಂದು ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಆಯ್ಕೆಮಾಡಿ
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select none	ಯಾವುದನ್ನೂ ಆಯ್ಕೆಮಾಡಬೇಡಿ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1867,7 +2021,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	ಸೈಟ್‌ಗಳು ತಮ್ಮ ಉತ್ತಮ ಗುಣಮಟ್ಟವನ್ನು ಪ್ರತ್ಯೇಕ ವೀಡಿಯೊ ಮತ್ತು ಆಡಿಯೊ ಆಗಿ ಕಳುಹಿಸುತ್ತವೆ. ffmpeg ಅವುಗಳನ್ನು ಎಲ್ಲಿಯಾದರೂ ಪ್ಲೇ ಆಗುವ ಒಂದು ಫೈಲ್‌ಗೆ ಒಟ್ಟಿಗೆ ಸೇರಿಸುತ್ತದೆ.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -1907,6 +2061,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	ಮೂಲ ಕೋಡ್
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	ಮೂಲ: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -1914,6 +2073,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	ವೇಗ ಮಿತಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	ಪ್ರಾರಂಭಿಸಿ
 #. button in a dialog box
 #, machine
 	Start Download	ಡೌನ್‌ಲೋಡ್ ಪ್ರಾರಂಭಿಸಿ
@@ -1951,7 +2114,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ಪ್ರಾರಂಭಿಸಲಾಗುತ್ತಿದೆ...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -1985,6 +2148,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ಡೌನ್‌ಲೋಡ್ ಮುಗಿದಾಗ ನಿಲ್ಲುತ್ತದೆ
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	ನೇರವಾಗಿ ಆರ್ಕೈವ್‌ನ ಫೋಲ್ಡರ್‌ಗೆ
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2012,6 +2179,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	ಸಿಂಕ್ರೊನೈಸೇಶನ್ ಕ್ಯೂ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ಕಾರ್ಯಗಳು → ಲಿಂಕ್ ಗ್ರಾಬರ್, ಅಥವಾ ಬ್ರೌಸರ್‌ನ "ಎಲ್ಲಾ ಲಿಂಕ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ": ಒಂದು ವಿಭಜಿತ\nಆರ್ಕೈವ್‌ನ ಸಂಪುಟಗಳು ಒಂದು ಪ್ಯಾಕೇಜ್, ಪುಟದ ಇತರ ಲಿಂಕ್‌ಗಳು ಇನ್ನೊಂದು.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ಸ್ನೇಹಿತರಿಗೆ ತಿಳಿಸಿ
@@ -2041,6 +2212,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	ವಿಳಾಸವು http(s) ಅಥವಾ ftp(s) ವಿಳಾಸವಾಗಿರಬೇಕು
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	ಆರ್ಕೈವ್ ಅನ್ನು ಮರುಬಳಕೆ ಬಿನ್‌ಗೆ ಸರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: ಅದನ್ನು ಇರಿಸಲಾಗಿದೆ
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	ಆರ್ಕೈವ್ ಅನ್ನು ಟ್ರ್ಯಾಶ್‌ಗೆ ಸರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: ಅದನ್ನು ಇರಿಸಲಾಗಿದೆ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	ಆರ್ಕೈವ್ ಅನ್ನು ಮರುಬಳಕೆ ಬಿನ್‌ಗೆ ಸರಿಸಲಾಗಿದೆ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	ಆರ್ಕೈವ್ ಅನ್ನು ಟ್ರ್ಯಾಶ್‌ಗೆ ಸರಿಸಲಾಗಿದೆ
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	ಉತ್ತಮ ಗುಣಮಟ್ಟಗಳು ಮತ್ತು MP3 ಗೆ ffmpeg (ಸುಮಾರು 80 MB) ಅಗತ್ಯವಿದೆ.
@@ -2171,6 +2356,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ಪಟ್ಟಿಯನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	ಪಾಸ್‌ವರ್ಡ್ ತಪ್ಪಾಗಿದೆ
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	Windows ಗೆ ಮಾರ್ಗವು ತುಂಬಾ ಉದ್ದವಾಗಿದೆ: {path}
@@ -2247,6 +2436,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ಈ ಫೈಲ್ ಅನ್ನು ಪಡೆದ ವೆಬ್ ಪುಟ:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	ನಂತರ ಆರ್ಕೈವ್‌ಗಳನ್ನು ಮರುಬಳಕೆ ಬಿನ್‌ಗೆ ಸರಿಸಿ
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	ನಂತರ ಆರ್ಕೈವ್‌ಗಳನ್ನು ಟ್ರ್ಯಾಶ್‌ಗೆ ಸರಿಸಿ
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ಈ ಹೆಸರಿನ ವರ್ಗ ಈಗಾಗಲೇ ಇದೆ
@@ -2431,6 +2628,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	ಪ್ರಕಾರ:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	ಎಲ್ಲವನ್ನೂ ಅನ್‌ಚೆಕ್ ಮಾಡಿ
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2520,6 +2721,10 @@
 #. text in a download's progress window
 #, machine
 	Value	ಮೌಲ್ಯ
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	ವಿವಿಧ ಫೈಲ್‌ಗಳು
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2549,6 +2754,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ವೈರಸ್ ಪರಿಶೀಲನೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	ಅದರ ಸಂಪುಟ {n} ಕಾಣೆಯಾಗಿದೆ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2566,12 +2776,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	ವೆಬ್
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	{file} ನಲ್ಲಿ ಕಂಡುಬಂದ ವೆಬ್ ವಿಳಾಸಗಳು:
 #. text in the Scheduler window
 #, machine
 	Wednesday	ಬುಧವಾರ
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	ಆರ್ಕೈವ್‌ನಲ್ಲಿರುವ ವಿಷಯಗಳು ಹೋಗುತ್ತವೆ:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2602,6 +2813,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	ದಿನಾಂಕಗಳು ಮತ್ತು ಸಮಯಗಳನ್ನು ಬರೆಯಿರಿ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	{name} ಗಾಗಿ ತಪ್ಪಾದ ಪಾಸ್‌ವರ್ಡ್. ಅದನ್ನು ಮತ್ತೆ ಟೈಪ್ ಮಾಡಿ:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2648,6 +2864,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ವೀಡಿಯೊವನ್ನು ಹುಡುಕುತ್ತದೆ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ಮತ್ತು XZ; ಪ್ರತಿ ಸಂಪುಟ ಬಂದ ನಂತರ ವಿಭಜಿತ ಆರ್ಕೈವ್ (.part1.rar, .7z.001).\nಈಗಾಗಲೇ ಇರುವ ಫೈಲ್ ಅನ್ನು ಇರಿಸಲಾಗುತ್ತದೆ: ಹೊಸದಕ್ಕೆ ಸಂಖ್ಯೆ ನೀಡಲಾಗುತ್ತದೆ.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2740,12 +2960,17 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} ಪಾಸ್‌ವರ್ಡ್‌ನಿಂದ ರಕ್ಷಿಸಲಾಗಿದೆ:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ಸ್ವಯಂ)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} ರಲ್ಲಿ {n} ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ
@@ -3075,6 +3300,12 @@ menu	&Keyboard shortcuts	ಕೀಬೋರ್ಡ್ ಶಾರ್ಟ್‌ಕಟ್
 #, machine
 menu	&Language...	ಭಾಷೆ(&L)...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	ಲಿಂಕ್ ಗ್ರಾಬರ್(&L)...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	ಆಯ್ಕೆಗಳು(&O)
@@ -3244,6 +3475,10 @@ menu	E&xport	ರಫ್ತು ಮಾಡಿ(&x)
 #. menu command in the main window
 #, machine
 menu	Edit queue	ಕ್ಯೂ ಸಂಪಾದಿಸಿ
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	ಹೊರತೆಗೆಯಿರಿ
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	ಹುಡುಕಿ (Ctrl-F)

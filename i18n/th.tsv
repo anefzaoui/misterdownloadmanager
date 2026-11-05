@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	คุณแน่ใจหรือไม่ว่าต้องการลบรายการดาวน์โหลด {n} รายการเหล่านี้ออกจากรายการดาวน์โหลดของ Mister Download Manager
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	แตกไฟล์ {n} ไฟล์ไปยัง {folder}
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,11 +39,22 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} กำลังดาวน์โหลด
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	มี {n} รายการถูกละไว้ (ลิงก์ หรือชื่อที่นำออกนอกโฟลเดอร์)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ไฟล์
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	มี {n} ไฟล์ที่มีชื่อไฟล์อยู่แล้วและถูกกำหนดหมายเลข
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -89,6 +105,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	มีการบันทึกรายงาน การส่งรายงานไปยังนักพัฒนาบน GitHub ช่วยให้พวกเขาสามารถแก้ไขปัญหานี้ได้ คุณสามารถอ่านทุกสิ่งที่รายงานมีอยู่ด้านล่างก่อนได้ ไม่มีสิ่งใดถูกส่งไปเอง: ส่ง จะเปิดแบบฟอร์มรายงานในเบราว์เซอร์ของคุณ ซึ่งกรอกข้อมูลไว้แล้ว เพื่อให้คุณตรวจสอบและส่ง
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	ไม่มีวอลุ่มของไฟล์นั้น
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	เกี่ยวกับ Mister Download Manager
@@ -130,7 +150,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	เพิ่มส่วนขยายฟรี: ไฟล์ที่คุณดาวน์โหลดในเบราว์เซอร์จะมาที่นี่ และวิดีโอจะมีปุ่มดาวน์โหลด
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	เพิ่มลงในคิว
 #. text in a dialog box
@@ -188,6 +209,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	กำลังดาวน์โหลดอยู่แล้ว: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	มีอยู่ในรายการแล้ว
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -206,6 +231,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	มืดตลอดเวลา
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	สร้างโฟลเดอร์ตามชื่อไฟล์เสมอ
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	เปิดตัวจำกัดความเร็วเสมอเมื่อ Mister Download Manager เริ่มทำงาน
@@ -216,6 +245,16 @@
 #. text in the Scheduler window
 #, machine
 	April	เมษายน
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	รหัสผ่านของไฟล์เก็บถาวร
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	ไฟล์เก็บถาวร
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -250,7 +289,7 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	ทั้งคู่เป็นโอเพนซอร์ส MDM ได้มาจากรุ่นทางการด้วยตัวดาวน์โหลดของตัวเอง และตรวจสอบลายเซ็นของแต่ละไฟล์ก่อนที่จะรัน ประมาณ 100 MB ครั้งเดียว
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	เรียกดู
@@ -264,13 +303,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	การรวมเบราว์เซอร์/ระบบ
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	ไม่ว่าง โปรดลองอีกครั้งในภายหลัง
 #. message or event log entry in the main window
 #, machine
 	by batch download	โดยการดาวน์โหลดเป็นชุด
 #. message or event log entry in the main window
 #, machine
-	by import	โดยการนำเข้า
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	โดย Link grabber
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ยกเลิก
@@ -319,6 +362,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	เปลี่ยนโฟลเดอร์สำหรับหมวดหมู่ "{category}" ที่เลือกครั้งล่าสุด
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	เลือกทั้งหมด
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	ตรวจหาการอัปเดต
@@ -349,7 +396,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	กำลังตรวจสอบ {name} ({n} จาก {total})...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	กำลังตรวจสอบ...
@@ -430,6 +477,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	คัดลอกรายงาน
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	ไม่สามารถแตกไฟล์ {name} ได้: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	สร้างโฟลเดอร์
@@ -484,6 +536,10 @@
 #. verb: delete the item
 #, machine
 	Delete	ลบ
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	ลบไฟล์เก็บถาวรหลังจากแตกไฟล์
 #. message or event log entry in the main window
 #, machine
 	Delete category	ลบหมวดหมู่
@@ -665,6 +721,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ลิงก์ดาวน์โหลดซ้ำ
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	โฟลเดอร์หมวดหมู่ของแต่ละไฟล์
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -748,6 +808,22 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	นามสกุลที่คั่นด้วยช่องว่าง เช่น MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	แตกไฟล์
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	แตกไฟล์เก็บถาวรเมื่อดาวน์โหลดเสร็จสมบูรณ์
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	แตกไฟล์เมื่อเสร็จสิ้น
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	กำลังแตกไฟล์เก็บถาวร...
 #. text in the Scheduler window
 #, machine
 	February	กุมภาพันธ์
@@ -939,6 +1015,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ซ่อนแท็บ
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	ซ่อนหน้าเว็บ
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	กด Alt ค้างไว้ขณะคลิกลิงก์เพื่อให้เบราว์เซอร์ดาวน์โหลดแทน Mister Download Manager
@@ -970,16 +1050,9 @@
 #. message or event log entry in the main window
 #, machine
 	Import	นำเข้า
-#. window title in transfer.rs
-#, machine
-	Import downloads	นำเข้าการดาวน์โหลด
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ในคิว
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	ในรายการ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1000,13 +1073,42 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	ติดตั้ง yt-dlp
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	สร้างโฟลเดอร์ตามชื่อไฟล์เมื่อมีหลายรายการ
 #. text in a dialog box
 #, machine
 	Invalid address	ที่อยู่ไม่ถูกต้อง
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	มีไฟล์หรือโฟลเดอร์มากเกินไป
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	ไฟล์เสียหายหรือไม่ใช่ไฟล์เก็บถาวรตามชื่อ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	ไม่ใช่ไฟล์เก็บถาวรที่ MDM แตกไฟล์ได้
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	ต้องใช้รหัสผ่าน
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	จะแจ้งให้คอมพิวเตอร์ในเครือข่ายของคุณทราบว่าคุณมีทอร์เรนต์ใดบ้าง
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	ถูกหยุด
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	จะเขียน {size} ซึ่งเกินกว่า {limit} ที่มีพื้นที่หรือเหตุผลสำหรับ
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1076,8 +1178,17 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	จำกัดการดาวน์โหลดทั้งหมดรวมกันที่
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	ตัวคว้าลิงก์
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	ลิงก์
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ลิงก์จากเบราว์เซอร์
 #. message or event log entry in the main window
@@ -1089,6 +1200,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	เข้าสู่ระบบ
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	ค้นหาลิงก์เมื่อมาถึง (ชื่อ, ขนาด, ออนไลน์)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ค้นหา
@@ -1242,13 +1357,18 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	ลบ.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	ชื่อ
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	ชื่อ:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	ต้องเข้าสู่ระบบ
 #. text in errors.rs
 #, machine
 	network error	ข้อผิดพลาดของเครือข่าย
@@ -1400,7 +1520,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	เสนอให้ดาวน์โหลดลิงก์ที่คัดลอกไปยังคลิปบอร์ด
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	ออฟไลน์ ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ตกลง
 #. text in a download's progress window
@@ -1418,6 +1542,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ดาวน์โหลดครั้งเดียว
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	ออนไลน์
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1479,22 +1607,34 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	ตัวเลือกเมื่อเสร็จสิ้น
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	แพ็กเกจ
 #. text in the Download video window
 #, machine
 	Page address	ที่อยู่หน้า
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	รหัสผ่าน
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 #, machine
 	Password:	รหัสผ่าน:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	วางลิงก์แม่เหล็กหรือเลือกไฟล์ .torrent จากนั้นค้นหา
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	วางลิงก์ที่นี่ (Ctrl+V) หรือส่งลิงก์ของหน้าจากเบราว์เซอร์
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	วางผลรวมตรวจสอบที่หน้าดาวน์โหลดให้มา
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	วางแล้ว
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1588,6 +1728,17 @@
 #. plural noun: the download queues
 #, machine
 	Queues	คิว
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	RAR archives are extracted by 7-Zip ({path}).	ไฟล์เก็บถาวร RAR ถูกแตกไฟล์โดย 7-Zip ({path})
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	ไฟล์เก็บถาวร RAR ต้องใช้ 7-Zip (7-zip.org) ซึ่งยังไม่ได้ติดตั้ง
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	RAR archives need 7-Zip, which isn't installed	ไฟล์เก็บถาวร RAR ต้องใช้ 7-Zip ซึ่งยังไม่ได้ติดตั้ง
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1699,6 +1850,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	บันทึกไปที่:
+#. text in the Link grabber window
+#, machine
+	Save to:	บันทึกไปที่:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1722,7 +1876,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	เลือกโฟลเดอร์
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select all	เลือกทั้งหมด
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1731,7 +1885,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	เลือกการดาวน์โหลดทุกรายการจนถึงรายการนี้
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select none	ไม่เลือกเลย
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1867,7 +2021,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	เว็บไซต์ส่งคุณภาพที่ดีที่สุดเป็นวิดีโอและเสียงแยกกัน ffmpeg จะรวมเข้าด้วยกันเป็นไฟล์เดียวที่เล่นได้ทุกที่
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -1907,6 +2061,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	ซอร์สโค้ด
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	แหล่งที่มา: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -1914,6 +2073,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	การตั้งค่าตัวจำกัดความเร็ว
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	เริ่ม
 #. button in a dialog box
 #, machine
 	Start Download	เริ่มการดาวน์โหลด
@@ -1951,7 +2114,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	กำลังเริ่มต้น...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -1985,6 +2148,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	หยุดเมื่อดาวน์โหลดเสร็จสิ้น
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	ตรงไปยังโฟลเดอร์ของไฟล์เก็บถาวร
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2012,6 +2179,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	กำลังซิงโครไนซ์คิว
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	งาน → ตัวดึงลิงก์ หรือ “ดาวน์โหลดลิงก์ทั้งหมด” ของเบราว์เซอร์: ไฟล์เก็บถาวร\nแบบแยกส่วนเป็นหนึ่งแพ็กเกจ ส่วนลิงก์อื่นๆ ของหน้าเป็นอีกแพ็กเกจ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	บอกเพื่อน
@@ -2041,6 +2212,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	ที่อยู่ต้องเป็นที่อยู่ http(s) หรือ ftp(s)
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	ไม่สามารถย้ายไฟล์เก็บถาวรไปยังถังรีไซเคิลได้: ไฟล์เก็บถาวรยังคงอยู่
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	ไม่สามารถย้ายไฟล์เก็บถาวรไปยังถังขยะได้: ไฟล์เก็บถาวรยังคงอยู่
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	ไฟล์เก็บถาวรถูกย้ายไปยังถังรีไซเคิลแล้ว
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	ไฟล์เก็บถาวรถูกย้ายไปยังถังขยะแล้ว
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	คุณภาพที่ดีที่สุดและ MP3 ต้องใช้ ffmpeg (ประมาณ 80 MB)
@@ -2171,6 +2356,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ไม่สามารถบันทึกรายการได้: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	รหัสผ่านไม่ถูกต้อง
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	พาธยาวเกินไปสำหรับ Windows: {path}
@@ -2247,6 +2436,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	หน้าเว็บที่ได้รับไฟล์นี้:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	จากนั้นย้ายไฟล์เก็บถาวรไปยังถังรีไซเคิล
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	จากนั้นย้ายไฟล์เก็บถาวรไปยังถังขยะ
 #. text in categories.rs
 #, machine
 	There is already a category with this name	มีหมวดหมู่นี้อยู่แล้ว
@@ -2431,6 +2628,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	ชนิด:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	ไม่เลือกทั้งหมด
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2520,6 +2721,10 @@
 #. text in a download's progress window
 #, machine
 	Value	ค่า
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	ไฟล์เบ็ดเตล็ด
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2549,6 +2754,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	การตั้งค่าการตรวจสอบไวรัส
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	ไม่มีวอลุ่ม {n}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2566,12 +2776,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	เว็บ
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	ที่อยู่เว็บที่พบใน {file}:
 #. text in the Scheduler window
 #, machine
 	Wednesday	วันพุธ
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	สิ่งที่ไฟล์เก็บถาวรเก็บไว้จะไปที่:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2602,6 +2813,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	เขียนวันที่และเวลา
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	รหัสผ่านสำหรับ {name} ไม่ถูกต้อง พิมพ์อีกครั้ง:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2648,6 +2864,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ค้นหาวิดีโอ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ และ XZ; ไฟล์เก็บถาวรแบบแยกส่วน (.part1.rar, .7z.001)\nเมื่อมีทุกวอลุ่ม ไฟล์ที่มีอยู่แล้วจะถูกเก็บไว้: ไฟล์ใหม่จะถูกกำหนดหมายเลข
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2740,12 +2960,17 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	ไม่สามารถดาวน์โหลด {name} ได้: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} ได้รับการป้องกันด้วยรหัสผ่าน:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (อัตโนมัติ)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} จาก {total} ที่เลือก
@@ -3075,6 +3300,12 @@ menu	&Keyboard shortcuts	&แป้นพิมพ์ลัด
 #, machine
 menu	&Language...	ภ&าษา...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	ตัวดึง&ลิงก์...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&ตัวเลือก
@@ -3244,6 +3475,10 @@ menu	E&xport	&ส่งออก
 #. menu command in the main window
 #, machine
 menu	Edit queue	แก้ไขคิว
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	แตกไฟล์
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	ค้นหา (Ctrl-F)

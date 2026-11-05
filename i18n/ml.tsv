@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് {n} ഡൗൺലോഡ് ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?|Mister Download Manager ഡൗൺലോഡുകളുടെ ലിസ്റ്റിൽ നിന്ന് ഈ {n} ഡൗൺലോഡുകൾ ഇല്ലാതാക്കാൻ നിങ്ങൾ ഉറപ്പാണോ?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{folder} എന്നതിലേക്ക് {n} ഫയൽ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌തു|{folder} എന്നതിലേക്ക് {n} ഫയലുകൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌തു
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,11 +39,22 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} ഡൗൺലോഡ് ചെയ്യുന്നു|{n} ഡൗൺലോഡ് ചെയ്യുന്നു
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} എൻട്രി ഒഴിവാക്കി (ഒരു ലിങ്ക് അല്ലെങ്കിൽ ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന ഒരു പേര്)|{n} എൻട്രികൾ ഒഴിവാക്കി (ലിങ്കുകൾ അല്ലെങ്കിൽ ഫോൾഡറിന് പുറത്തേക്ക് നയിക്കുന്ന പേരുകൾ)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ഫയൽ|{n} ഫയലുകൾ
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ഫയലിന് അവിടെയുള്ള ഒരു ഫയലിന്റെ പേരുണ്ടായിരുന്നു, അത് നമ്പർ ചെയ്തു|{n} ഫയലുകൾക്ക് അവിടെയുള്ള ഒരു ഫയലിന്റെ പേരുണ്ടായിരുന്നു, അവ നമ്പർ ചെയ്തു
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -89,6 +105,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ഒരു റിപ്പോർട്ട് സേവ് ചെയ്തിട്ടുണ്ട്. ഇത് GitHub-ലെ ഡെവലപ്പർമാർക്ക് അയക്കുന്നത് പ്രശ്നം പരിഹരിക്കാൻ അവരെ സഹായിക്കും; അതിലുള്ളതെല്ലാം നിങ്ങൾക്ക് താഴെ വായിക്കാം. ഒന്നും തനിയെ അയക്കില്ല: അയക്കുക എന്നത് നിങ്ങളുടെ ബ്രൗസറിൽ റിപ്പോർട്ട് ഫോം തുറക്കും, അത് പൂരിപ്പിച്ച് നിങ്ങൾക്ക് പരിശോധിച്ച് സമർപ്പിക്കാം.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	അതിന്റെ ഒരു വോളിയം കാണുന്നില്ല
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager-നെക്കുറിച്ച്
@@ -130,7 +150,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	സൗജന്യ എക്സ്റ്റൻഷൻ ചേർക്കുക: നിങ്ങളുടെ ബ്രൗസറിൽ ഡൗൺലോഡ് ചെയ്യുന്ന ഫയലുകൾ ഇവിടെയെത്തും, വീഡിയോകൾക്ക് ഒരു ഡൗൺലോഡ് ബട്ടൺ ലഭിക്കും.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	ക്യൂവിലേക്ക് ചേർക്കുക
 #. text in a dialog box
@@ -188,6 +209,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ഇതിനകം ഡൗൺലോഡ് ചെയ്യുന്നു: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	ലിസ്റ്റിൽ ഇതിനകം ഉണ്ട്
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -206,6 +231,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	എല്ലായ്‌പ്പോഴും ഇരുണ്ടത്
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	എല്ലായ്പ്പോഴും അതിന്റെ പേരുള്ള ഒരു ഫോൾഡറിലേക്ക്
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager ആരംഭിക്കുമ്പോൾ സ്പീഡ് ലിമിറ്റർ എപ്പോഴും ഓണാക്കുക
@@ -216,6 +245,16 @@
 #. text in the Scheduler window
 #, machine
 	April	ഏപ്രിൽ
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	ആർക്കൈവ് പാസ്‌വേഡ്
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	ആർക്കൈവുകൾ
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -250,7 +289,7 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	രണ്ടും ഓപ്പൺ സോഴ്‌സാണ്. MDM അവയെ അതിന്റെ സ്വന്തം ഡൗൺലോഡർ ഉപയോഗിച്ച് ഔദ്യോഗിക റിലീസുകളിൽ നിന്ന് നേടുകയും പ്രവർത്തിപ്പിക്കുന്നതിന് മുമ്പ് ഓരോ ഫയലിന്റെയും ഒപ്പ് പരിശോധിക്കുകയും ചെയ്യുന്നു. ഏകദേശം 100 MB, ഒരു തവണ.
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	ബ്രൗസ് ചെയ്യുക
@@ -264,13 +303,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ബ്രൗസർ/സിസ്റ്റം സംയോജനം
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	തിരക്കിലാണ്, പിന്നീട് ശ്രമിക്കുക
 #. message or event log entry in the main window
 #, machine
 	by batch download	ബാച്ച് ഡൗൺലോഡ് വഴി
 #. message or event log entry in the main window
 #, machine
-	by import	ഇറക്കുമതി വഴി
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	ലിങ്ക് ഗ്രാബർ വഴി
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	റദ്ദാക്കുക
@@ -319,6 +362,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	അവസാനം തിരഞ്ഞെടുത്തതിൽ "{category}" വിഭാഗത്തിനായുള്ള ഫോൾഡർ മാറ്റുക
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	എല്ലാം തിരഞ്ഞെടുക്കുക
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുക
@@ -349,7 +396,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	{name} ({n} of {total}) പരിശോധിക്കുന്നു...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	പരിശോധിക്കുന്നു...
@@ -430,6 +477,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	റിപ്പോർട്ട് പകർത്തുക
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	{name} എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	ഫോൾഡർ സൃഷ്ടിക്കുക
@@ -484,6 +536,10 @@
 #. verb: delete the item
 #, machine
 	Delete	ഇല്ലാതാക്കുക
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്‌ത ശേഷം ആർക്കൈവുകൾ ഇല്ലാതാക്കുക
 #. message or event log entry in the main window
 #, machine
 	Delete category	വിഭാഗം ഇല്ലാതാക്കുക
@@ -665,6 +721,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ഡ്യൂപ്ലിക്കേറ്റ് ഡൗൺലോഡ് ലിങ്ക്
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	ഓരോ ഫയലിന്റെയും വിഭാഗ ഫോൾഡർ
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -748,6 +808,22 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	സ്പേസുകൾ ഉപയോഗിച്ച് വേർതിരിച്ച എക്സ്റ്റൻഷനുകൾ, ഉദാഹരണത്തിന് MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ ആർക്കൈവുകൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	പൂർത്തിയാകുമ്പോൾ എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുക
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	ആർക്കൈവ് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു...
 #. text in the Scheduler window
 #, machine
 	February	ഫെബ്രുവരി
@@ -939,6 +1015,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ടാബ് മറയ്ക്കുക
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	വെബ് പേജുകൾ മറയ്ക്കുക
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager ഡൗൺലോഡ് ചെയ്യുന്നതിനു പകരം ബ്രൗസറിനെക്കൊണ്ട് ഡൗൺലോഡ് ചെയ്യാൻ, ഒരു ലിങ്കിൽ ക്ലിക്ക് ചെയ്യുമ്പോൾ Alt അമർത്തിപ്പിടിക്കുക.
@@ -970,16 +1050,9 @@
 #. message or event log entry in the main window
 #, machine
 	Import	ഇറക്കുമതി ചെയ്യുക
-#. window title in transfer.rs
-#, machine
-	Import downloads	ഡൗൺലോഡുകൾ ഇറക്കുമതി ചെയ്യുക
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ഒരു ക്യൂവിൽ
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	ലിസ്റ്റിൽ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1000,13 +1073,42 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlp ഇൻസ്റ്റാൾ ചെയ്യുക
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	അതിൽ നിരവധി കാര്യങ്ങൾ ഉള്ളപ്പോൾ, അതിന്റെ പേരുള്ള ഒരു ഫോൾഡറിലേക്ക്
 #. text in a dialog box
 #, machine
 	Invalid address	അസാധുവായ വിലാസം
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	അതിൽ വളരെയധികം ഫയലുകളോ ഫോൾഡറുകളോ ഉണ്ട്
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	അതിന് കേടുപാടുകൾ സംഭവിച്ചു, അല്ലെങ്കിൽ അതിന്റെ പേര് പറയുന്ന ആർക്കൈവ് അല്ല
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	ഇതൊരു MDM എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്ന ആർക്കൈവ് അല്ല
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	അതിന് ഒരു പാസ്‌വേഡ് ആവശ്യമാണ്
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	നിങ്ങളുടെ നെറ്റ്‌വർക്കിലെ കമ്പ്യൂട്ടറുകളോട് നിങ്ങൾക്ക് ഏതൊക്കെ ടോറന്റുകളുണ്ടെന്ന് ഇത് പറയുന്നു.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	അത് നിർത്തി
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	അത് {size} എഴുതും, അവിടെയുള്ള {limit} സ്ഥലത്തേക്കാളോ കാരണത്തേക്കാളോ കൂടുതൽ
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1076,8 +1178,17 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	എല്ലാ ഡൗൺലോഡുകളും ഒരുമിച്ച് പരിമിതപ്പെടുത്തുക
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	ലിങ്ക് ഗ്രാബർ
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	ലിങ്കുകൾ
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	ബ്രൗസറിൽ നിന്നുള്ള ലിങ്കുകൾ
 #. message or event log entry in the main window
@@ -1089,6 +1200,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	ലോഗിൻ
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	ലിങ്കുകൾ വരുമ്പോൾ അവയെ നോക്കുക (പേര്, വലുപ്പം, ഓൺലൈൻ)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	തിരയുക
@@ -1242,13 +1357,18 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	നമ്പർ
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	പേര്
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	പേര്:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	ഒരു ലോഗിൻ ആവശ്യമാണ്
 #. text in errors.rs
 #, machine
 	network error	നെറ്റ്‌വർക്ക് പിശക്
@@ -1400,7 +1520,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തിയ ലിങ്കുകൾ ഡൗൺലോഡ് ചെയ്യാൻ വാഗ്ദാനം ചെയ്യുക
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	ഓഫ്‌ലൈൻ ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ശരി
 #. text in a download's progress window
@@ -1418,6 +1542,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ഒറ്റത്തവണ ഡൗൺലോഡ്
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	ഓൺലൈൻ
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1479,22 +1607,34 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	പൂർത്തിയാകുമ്പോഴുള്ള ഓപ്ഷനുകൾ
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	പാക്കേജ്
 #. text in the Download video window
 #, machine
 	Page address	പേജ് വിലാസം
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	പാസ്‌വേഡ്
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 #, machine
 	Password:	പാസ്‌വേഡ്:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	ഒരു മാഗ്നറ്റ് ലിങ്ക് ഒട്ടിക്കുക അല്ലെങ്കിൽ ഒരു .torrent ഫയൽ തിരഞ്ഞെടുക്കുക, തുടർന്ന് തിരയുക.
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	ലിങ്കുകൾ ഇവിടെ ഒട്ടിക്കുക (Ctrl+V), അല്ലെങ്കിൽ ഒരു പേജിന്റെ ലിങ്കുകൾ ബ്രൗസറിൽ നിന്ന് അയയ്ക്കുക.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ഡൗൺലോഡിന്റെ പേജ് നൽകുന്ന ചെക്ക്സം ഒട്ടിക്കുക
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	ഒട്ടിച്ചത്
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1588,6 +1728,17 @@
 #. plural noun: the download queues
 #, machine
 	Queues	ക്യൂകൾ
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	RAR archives are extracted by 7-Zip ({path}).	RAR ആർക്കൈവുകൾ 7-Zip ({path}) ഉപയോഗിച്ച് എക്‌സ്‌ട്രാക്‌റ്റ് ചെയ്യുന്നു.
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR ആർക്കൈവുകൾക്ക് 7-Zip (7-zip.org) ആവശ്യമാണ്, അത് ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	RAR archives need 7-Zip, which isn't installed	RAR ആർക്കൈവുകൾക്ക് 7-Zip ആവശ്യമാണ്, അത് ഇൻസ്റ്റാൾ ചെയ്തിട്ടില്ല
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1699,6 +1850,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ഇതിലേക്ക് സംരക്ഷിക്കുക:
+#. text in the Link grabber window
+#, machine
+	Save to:	ഇതിലേക്ക് സംരക്ഷിക്കുക:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1722,7 +1876,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ഒരു ഫോൾഡർ തിരഞ്ഞെടുക്കുക
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select all	എല്ലാം തിരഞ്ഞെടുക്കുക
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1731,7 +1885,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ഇതുവരെയുള്ള എല്ലാ ഡൗൺലോഡുകളും തിരഞ്ഞെടുക്കുക
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select none	ഒന്നും തിരഞ്ഞെടുക്കരുത്
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1867,7 +2021,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	സൈറ്റുകൾ അവയുടെ മികച്ച ഗുണനിലവാരം പ്രത്യേക വീഡിയോയും ഓഡിയോയും ആയി അയയ്ക്കുന്നു. ffmpeg അവയെ എവിടെയും പ്ലേ ചെയ്യാൻ കഴിയുന്ന ഒരു ഫയലായി ഒരുമിപ്പിക്കുന്നു.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -1907,6 +2061,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	സോഴ്സ് കോഡ്
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	ഉറവിടം: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -1914,6 +2073,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	സ്പീഡ് ലിമിറ്റർ ക്രമീകരണങ്ങൾ
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	ആരംഭിക്കുക
 #. button in a dialog box
 #, machine
 	Start Download	ഡൗൺലോഡ് ആരംഭിക്കുക
@@ -1951,7 +2114,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ആരംഭിക്കുന്നു...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -1985,6 +2148,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ നിർത്തുന്നു
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	നേരിട്ട് ആർക്കൈവിന്റെ ഫോൾഡറിലേക്ക്
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2012,6 +2179,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	സമന്വയ ക്യൂ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ടാസ്ക്കുകൾ → ലിങ്ക് ഗ്രാബർ, അല്ലെങ്കിൽ ബ്രൗസറിന്റെ "എല്ലാ ലിങ്കുകളും ഡൗൺലോഡ് ചെയ്യുക": ഒരു സ്പ്ലിറ്റ്\nആർക്കൈവിന്റെ വോള്യങ്ങൾ ഒരു പാക്കേജാണ്, ഒരു പേജിലെ മറ്റ് ലിങ്കുകൾ മറ്റൊരു പാക്കേജാണ്.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ഒരു സുഹൃത്തിനോട് പറയുക
@@ -2041,6 +2212,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	വിലാസം ഒരു http(s) അല്ലെങ്കിൽ ftp(s) വിലാസമായിരിക്കണം
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	ആർക്കൈവ് റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റാൻ കഴിഞ്ഞില്ല: അത് സൂക്ഷിച്ചു
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	ആർക്കൈവ് ട്രാഷിലേക്ക് മാറ്റാൻ കഴിഞ്ഞില്ല: അത് സൂക്ഷിച്ചു
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	ആർക്കൈവ് റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റി
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	ആർക്കൈവ് ട്രാഷിലേക്ക് മാറ്റി
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	മികച്ച ഗുണനിലവാരങ്ങൾക്കും MP3-ക്കും ffmpeg (ഏകദേശം 80 MB) ആവശ്യമാണ്.
@@ -2171,6 +2356,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ലിസ്റ്റ് സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	പാസ്‌വേഡ് തെറ്റാണ്
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	പാത Windows-ന് വളരെ വലുതാണ്: {path}
@@ -2247,6 +2436,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ഈ ഫയൽ ലഭിച്ച വെബ് പേജ്:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	തുടർന്ന് ആർക്കൈവുകൾ റീസൈക്കിൾ ബിന്നിലേക്ക് മാറ്റുക
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	തുടർന്ന് ആർക്കൈവുകൾ ട്രാഷിലേക്ക് മാറ്റുക
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ഈ പേരിൽ ഒരു വിഭാഗം ഇതിനകം ഉണ്ട്
@@ -2431,6 +2628,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	തരം:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	എല്ലാം അൺചെക്ക് ചെയ്യുക
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2520,6 +2721,10 @@
 #. text in a download's progress window
 #, machine
 	Value	മൂല്യം
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	വിവിധ ഫയലുകൾ
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2549,6 +2754,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	വൈറസ് പരിശോധന ക്രമീകരണങ്ങൾ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	അതിന്റെ വോള്യം {n} കാണുന്നില്ല
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2566,12 +2776,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	വെബ്
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	{file} എന്നതിൽ കണ്ടെത്തിയ വെബ് വിലാസങ്ങൾ:
 #. text in the Scheduler window
 #, machine
 	Wednesday	ബുധനാഴ്ച
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	ഒരു ആർക്കൈവിൽ ഉള്ളത് പോകുന്നത്:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2602,6 +2813,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	തീയതികളും സമയങ്ങളും എഴുതുക
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	{name} എന്നതിനായുള്ള പാസ്‌വേഡ് തെറ്റാണ്. വീണ്ടും ടൈപ്പ് ചെയ്യുക:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2648,6 +2864,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: വീഡിയോ കണ്ടെത്തുന്നു
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ, XZ; ഒരു സ്പ്ലിറ്റ് ആർക്കൈവ് (.part1.rar, .7z.001) എല്ലാ\nവോള്യങ്ങളും ഉള്ളപ്പോൾ. അവിടെയുള്ള ഒരു ഫയൽ നിലനിർത്തുന്നു: പുതിയതിന് നമ്പർ നൽകുന്നു.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2740,12 +2960,17 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} ഡൗൺലോഡ് ചെയ്യാൻ കഴിഞ്ഞില്ല: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} ഒരു പാസ്‌വേഡ് ഉപയോഗിച്ച് പരിരക്ഷിച്ചിരിക്കുന്നു:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ഓട്ടോ)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} എണ്ണത്തിൽ {n} തിരഞ്ഞെടുത്തു
@@ -3075,6 +3300,12 @@ menu	&Keyboard shortcuts	കീബോർഡ് കുറുക്കുവഴി
 #, machine
 menu	&Language...	ഭാ&ഷ...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	ലിങ്ക് &ഗ്രാബർ...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	ഓപ്ഷനുകൾ(&O)
@@ -3244,6 +3475,10 @@ menu	E&xport	&എക്സ്പോർട്ട് ചെയ്യുക
 #. menu command in the main window
 #, machine
 menu	Edit queue	ക്യൂ എഡിറ്റ് ചെയ്യുക
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	എക്സ്ട്രാക്റ്റ് ചെയ്യുക
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	കണ്ടെത്തുക (Ctrl-F)

@@ -12,6 +12,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager డౌన్‌లోడ్‌ల జాబితా నుండి {n} డౌన్‌లోడ్‌ను తొలగించాలనుకుంటున్నారా?|Mister Download Manager డౌన్‌లోడ్‌ల జాబితా నుండి ఈ {n} డౌన్‌లోడ్‌లను తొలగించాలనుకుంటున్నారా?
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {n} is a number of files, {folder} where they went
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} ఫైల్‌ను {folder}కి సంగ్రహించారు|{n} ఫైల్‌లను {folder}కి సంగ్రహించారు
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -34,11 +39,22 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} downloading|{n} downloading	{n} డౌన్‌లోడ్ అవుతోంది|{n} డౌన్‌లోడ్ అవుతున్నాయి
-#. count in the Batch download window; count in the Add torrent window
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ఎంట్రీని వదిలివేయబడింది (ఒక లింక్, లేదా ఫోల్డర్ వెలుపల దారితీసే పేరు)|{n} ఎంట్రీలను వదిలివేయబడింది (లింక్‌లు, లేదా ఫోల్డర్ వెలుపల దారితీసే పేర్లు)
+#. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
+#. Link grabber: a package's row: {n} is its number of links
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file|{n} files	{n} ఫైల్|{n} ఫైల్‌లు
+#. count in extracting archives (a download's log, the Archive password window)
+#. in a download's log, after extracting
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ఫైల్‌కు ఇప్పటికే అక్కడ ఉన్న ఫైల్ పేరు ఉంది మరియు నంబర్ ఇవ్వబడింది|{n} ఫైల్‌లకు ఇప్పటికే అక్కడ ఉన్న ఫైల్ పేరు ఉంది మరియు నంబర్ ఇవ్వబడింది
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -89,6 +105,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ఒక నివేదిక సేవ్ చేయబడింది. దీన్ని GitHubలోని డెవలపర్‌లకు పంపడం వలన వారు దీన్ని పరిష్కరించడంలో సహాయపడుతుంది; మీరు ముందుగా అది కలిగి ఉన్న ప్రతిదాన్ని క్రింద చదవవచ్చు. ఏదీ స్వయంగా పంపబడదు: పంపు బటన్ మీ బ్రౌజర్‌లో నివేదిక ఫారమ్‌ను తెరుస్తుంది, పూరించబడి ఉంటుంది, మీరు తనిఖీ చేసి సమర్పించడానికి.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	a volume of it is missing	దాని వాల్యూమ్ లేదు
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager గురించి
@@ -130,7 +150,8 @@
 #. text in extension.rs
 #, machine
 	Add the free extension: files you download in your browser come here, and videos get a Download button.	ఉచిత ఎక్స్‌టెన్షన్‌ను జోడించండి: మీ బ్రౌజర్‌లో మీరు డౌన్‌లోడ్ చేసే ఫైల్‌లు ఇక్కడికి వస్తాయి, మరియు వీడియోలకు డౌన్‌లోడ్ బటన్ వస్తుంది.
-#. message or event log entry in the main window
+#. message or event log entry in the main window; button in the Link grabber window
+#. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
 	Add to queue	క్యూకి జోడించు
 #. text in a dialog box
@@ -188,6 +209,10 @@
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ఇప్పటికే డౌన్‌లోడ్ అవుతోంది: {path}
+#. text in the Link grabber window
+#. Link grabber: the package of links the download list has already
+#, machine
+	Already in the list	ఇప్పటికే జాబితాలో ఉంది
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -206,6 +231,10 @@
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
 	Always dark	ఎల్లప్పుడూ డార్క్
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Always into a folder named after it	ఎల్లప్పుడూ దాని పేరుతో ఉన్న ఫోల్డర్‌లోకి
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Mister Download Manager ప్రారంభంలో స్పీడ్ లిమిటర్‌ను ఎల్లప్పుడూ ఆన్ చేయండి
@@ -216,6 +245,16 @@
 #. text in the Scheduler window
 #, machine
 	April	ఏప్రిల్
+#. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
+#. what a screen reader calls the Archive password window's box
+#. what a screen reader calls Link grabber's password box
+#, machine
+	Archive password	ఆర్కైవ్ పాస్‌వర్డ్
+#. group box title in the Options window; text in the Options window
+#. Options → Archives: group box title
+#. tab title: extracting downloaded archives, and Link grabber
+#, machine
+	Archives	ఆర్కైవ్‌లు
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -250,7 +289,7 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	రెండూ ఓపెన్ సోర్స్. MDM వాటిని దాని స్వంత డౌన్‌లోడర్‌తో వాటి అధికారిక విడుదలల నుండి పొందుతుంది మరియు అది రన్ చేయడానికి ముందు ప్రతి ఫైల్ యొక్క సంతకాన్ని తనిఖీ చేస్తుంది. సుమారు 100 MB, ఒకసారి.
-#. button in the Options window
+#. button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
 	Browse	బ్రౌజ్ చేయండి
@@ -264,13 +303,17 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	బ్రౌజర్/సిస్టమ్ ఇంటిగ్రేషన్
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server asked to try later (429, 503)
+#, machine
+	Busy, try later	బిజీగా ఉంది, తర్వాత ప్రయత్నించండి
 #. message or event log entry in the main window
 #, machine
 	by batch download	బ్యాచ్ డౌన్‌లోడ్ ద్వారా
 #. message or event log entry in the main window
 #, machine
-	by import	దిగుమతి ద్వారా
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+	by Link grabber	లింక్ గ్రాబర్ ద్వారా
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	రద్దు చేయి
@@ -319,6 +362,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	చివరిగా ఎంచుకున్న దానిపై "{category}" వర్గం కోసం ఫోల్డర్‌ను మార్చండి
+#. button in the Link grabber window
+#. Link grabber button (IDM's): tick every link
+#, machine
+	Check all	అన్నింటినీ తనిఖీ చేయండి
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	అప్‌డేట్‌ల కోసం తనిఖీ చేయండి
@@ -349,7 +396,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking {name} ({n} of {total})...	{name} ({n}లో {total}) తనిఖీ చేస్తోంది...
-#. text in the Checksum window
+#. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	తనిఖీ చేస్తోంది...
@@ -430,6 +477,11 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	నివేదికను కాపీ చేయండి
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: {name} is the archive's file name, {why} the reason
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Couldn't extract {name}: {why}	{name}ని సంగ్రహించలేకపోయింది: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	ఫోల్డర్‌ను సృష్టించండి
@@ -484,6 +536,10 @@
 #. verb: delete the item
 #, machine
 	Delete	తొలగించు
+#. checkbox in the Link grabber window
+#. Link grabber check box: after extracting, the archives go to the Recycle Bin
+#, machine
+	Delete archives after extracting	సంగ్రహించిన తర్వాత ఆర్కైవ్‌లను తొలగించు
 #. message or event log entry in the main window
 #, machine
 	Delete category	వర్గాన్ని తొలగించు
@@ -665,6 +721,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	నకిలీ డౌన్‌లోడ్ లింక్
+#. text in the Link grabber window
+#. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
+#, machine
+	Each file's category folder	ప్రతి ఫైల్ యొక్క వర్గ ఫోల్డర్
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -748,6 +808,22 @@
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	ఖాళీలతో వేరు చేయబడిన పొడిగింపులు, ఉదాహరణకు MP4 MKV R0*
+#. button in extracting archives (a download's log, the Archive password window)
+#. button: extract the archive with the password typed
+#, machine
+	Extract	సంగ్రహించు
+#. checkbox in the Options window
+#. Options → Archives check box (a Link grabber package has its own "Extract when done")
+#, machine
+	Extract archives when their download completes	డౌన్‌లోడ్ పూర్తయినప్పుడు ఆర్కైవ్‌లను సంగ్రహించు
+#. checkbox in the Link grabber window
+#. Link grabber check box: extract the package's archives once they are downloaded
+#, machine
+	Extract when done	పూర్తయినప్పుడు సంగ్రహించు
+#. text in extracting archives (a download's log, the Archive password window)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Extracting the archive...	ఆర్కైవ్‌ను సంగ్రహిస్తోంది...
 #. text in the Scheduler window
 #, machine
 	February	ఫిబ్రవరి
@@ -939,6 +1015,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ట్యాబ్‌ను దాచండి
+#. checkbox in the Link grabber window; checkbox in the Options window
+#. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
+#, machine
+	Hide web pages	వెబ్ పేజీలను దాచు
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Mister Download Manager బదులుగా బ్రౌజర్ డౌన్‌లోడ్ చేయడానికి లింక్‌ను క్లిక్ చేస్తున్నప్పుడు Altని పట్టుకోండి.
@@ -970,16 +1050,9 @@
 #. message or event log entry in the main window
 #, machine
 	Import	దిగుమతి
-#. window title in transfer.rs
-#, machine
-	Import downloads	డౌన్‌లోడ్‌లను దిగుమతి చేయండి
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	క్యూలో ఉంది
-#. text in transfer.rs
-#. in Import, after an address the download list has already
-#, machine
-	in the list	జాబితాలో
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1000,13 +1073,42 @@
 #. button: download and install the yt-dlp program
 #, machine
 	Install yt-dlp	yt-dlpను ఇన్‌స్టాల్ చేయండి
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Into a folder named after it, when it holds several things	అది అనేక వస్తువులను కలిగి ఉన్నప్పుడు, దాని పేరుతో ఉన్న ఫోల్డర్‌లోకి
 #. text in a dialog box
 #, machine
 	Invalid address	చెల్లని చిరునామా
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it holds too many files or folders	అది చాలా ఫైల్‌లు లేదా ఫోల్డర్‌లను కలిగి ఉంది
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is damaged, or not the archive its name says	అది పాడైపోయింది, లేదా దాని పేరు చెప్పిన ఆర్కైవ్ కాదు
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it is not an archive MDM extracts	అది MDM సంగ్రహించే ఆర్కైవ్ కాదు
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it needs a password	దానికి పాస్‌వర్డ్ అవసరం
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
 	It tells the computers on your network which torrents you have.	మీ నెట్‌వర్క్‌లోని కంప్యూటర్‌లకు మీరు ఏ టొరెంట్‌లను కలిగి ఉన్నారో ఇది తెలియజేస్తుంది.
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	it was stopped	అది ఆపబడింది
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	it would write {size}, more than the {limit} there is room or reason for	అది {size}ని వ్రాస్తుంది, అక్కడ ఉన్న స్థలం లేదా కారణం కోసం {limit} కంటే ఎక్కువ
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1076,8 +1178,17 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	అన్ని డౌన్‌లోడ్‌లను కలిపి దీనికి పరిమితం చేయండి
-#. message or event log entry in the main window
+#. window title in the Link grabber window; group box title in the Options window
+#. Options → Archives: group box title
+#, machine
+	Link grabber	లింక్ గ్రాబర్
+#. text in the Link grabber window
+#. what a screen reader calls Link grabber's list
+#, machine
+	Links	లింక్‌లు
+#. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
+#. in Link grabber, where the addresses came from: a page in the browser
 #, machine
 	Links from the browser	బ్రౌజర్ నుండి లింక్‌లు
 #. message or event log entry in the main window
@@ -1089,6 +1200,10 @@
 #. noun: the user name and password section
 #, machine
 	Login	లాగిన్
+#. checkbox in the Options window
+#. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+#, machine
+	Look links up when they arrive (name, size, online)	లింక్‌లు వచ్చినప్పుడు వాటిని చూడు (పేరు, పరిమాణం, ఆన్‌లైన్)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	వెతకండి
@@ -1242,13 +1357,18 @@
 #. column title: connection number (abbreviation of Number)
 #, machine
 	N.	N.
-#. text in the Add torrent window
+#. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
 	Name	పేరు
-#. text in categories.rs
+#. text in categories.rs; text in the Link grabber window
+#. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	పేరు:
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server wants a login (401, 403)
+#, machine
+	Needs a login	లాగిన్ అవసరం
 #. text in errors.rs
 #, machine
 	network error	నెట్‌వర్క్ లోపం
@@ -1400,7 +1520,11 @@
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	క్లిప్‌బోర్డ్‌కు కాపీ చేసిన లింక్‌లను డౌన్‌లోడ్ చేయడానికి ఆఫర్ చేయండి
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
+#, machine
+	Offline ({status})	ఆఫ్‌లైన్ ({status})
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	సరే
 #. text in a download's progress window
@@ -1418,6 +1542,10 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	ఒకసారి డౌన్‌లోడ్ చేయడం
+#. text in the Link grabber window
+#. Link grabber, a link's status: the server has the file
+#, machine
+	Online	ఆన్‌లైన్
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1479,22 +1607,34 @@
 #. tab title: what happens when the download finishes
 #, machine
 	Options on completion	పూర్తయిన తర్వాత ఎంపికలు
+#. text in the Link grabber window
+#. Link grabber: the box that edits the selected package
+#, machine
+	Package	ప్యాకేజీ
 #. text in the Download video window
 #, machine
 	Page address	పేజీ చిరునామా
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	పాస్‌వర్డ్
-#. text in the Options window
+#. text in the Link grabber window; text in the Options window
 #, machine
 	Password:	పాస్‌వర్డ్:
 #. text in the Add torrent window
 #, machine
 	Paste a magnet link or choose a .torrent file, then Look up.	మాగ్నెట్ లింక్‌ను అతికించండి లేదా .torrent ఫైల్‌ను ఎంచుకోండి, ఆపై శోధించండి.
+#. text in the Link grabber window
+#. Link grabber, while it is empty
+#, machine
+	Paste links here (Ctrl+V), or send a page's links from the browser.	లింక్‌లను ఇక్కడ అతికించండి (Ctrl+V), లేదా బ్రౌజర్ నుండి పేజీ లింక్‌లను పంపండి.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	డౌన్‌లోడ్ పేజీ అందించే చెక్‌సమ్‌ను అతికించండి
+#. text in the Link grabber window
+#. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
+#, machine
+	Pasted	అతికించబడింది
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1588,6 +1728,17 @@
 #. plural noun: the download queues
 #, machine
 	Queues	క్యూలు
+#. text in the Options window
+#. Options → Archives: {path} is where 7-Zip's program is
+#, machine
+	RAR archives are extracted by 7-Zip ({path}).	RAR ఆర్కైవ్‌లు 7-జిప్ ({path}) ద్వారా సంగ్రహించబడతాయి.
+#. text in the Options window
+#. Options → Archives, when 7-Zip isn't installed
+#, machine
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR ఆర్కైవ్‌లకు 7-జిప్ (7-zip.org) అవసరం, అది ఇన్‌స్టాల్ చేయబడలేదు.
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	RAR archives need 7-Zip, which isn't installed	RAR ఆర్కైవ్‌లకు 7-జిప్ అవసరం, అది ఇన్‌స్టాల్ చేయబడలేదు
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1699,6 +1850,9 @@
 #. text in a download's progress window; text in a download's Properties window
 #, machine
 	Save To:	ఇందులోకి సేవ్ చేయి:
+#. text in the Link grabber window
+#, machine
+	Save to:	ఇక్కడ సేవ్ చేయి:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1722,7 +1876,7 @@
 #. title of the folder picker
 #, machine
 	Select a folder	ఒక ఫోల్డర్‌ను ఎంచుకోండి
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select all	అన్నింటినీ ఎంచుకోండి
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1731,7 +1885,7 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select every download up to this one	ఈ డౌన్‌లోడ్ వరకు ప్రతి డౌన్‌లోడ్‌ను ఎంచుకోండి
-#. button in the Add torrent window; button in transfer.rs
+#. button in the Add torrent window
 #, machine
 	Select none	ఏదీ ఎంచుకోవద్దు
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1867,7 +2021,7 @@
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	సైట్‌లు వాటి ఉత్తమ నాణ్యతను ప్రత్యేక వీడియో మరియు ఆడియోగా పంపుతాయి. ffmpeg వాటిని ఎక్కడైనా ప్లే అయ్యే ఒక ఫైల్‌గా కలుపుతుంది.
-#. text in a download's progress window; text in the Scheduler window; text in the Add torrent window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
 #, machine
@@ -1907,6 +2061,11 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Source code	మూల కోడ్
+#. text in the Link grabber window
+#. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
+#. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
+#, machine
+	Source: {source}	మూలం: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -1914,6 +2073,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	స్పీడ్ లిమిటర్ సెట్టింగ్‌లు
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	ప్రారంభించు
 #. button in a dialog box
 #, machine
 	Start Download	డౌన్‌లోడ్ ప్రారంభించు
@@ -1951,7 +2114,7 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Starting...	ప్రారంభమవుతోంది...
-#. text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -1985,6 +2148,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	డౌన్‌లోడ్ పూర్తయినప్పుడు ఆగిపోతుంది
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	ఆర్కైవ్ ఫోల్డర్‌లోకి నేరుగా
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2012,6 +2179,10 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	సమకాలీకరణ క్యూ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	పనులు → లింక్ గ్రాబర్, లేదా బ్రౌజర్ యొక్క "అన్ని లింక్‌లను డౌన్‌లోడ్ చేయి": ఒక విభజించబడిన\nఆర్కైవ్ యొక్క వాల్యూమ్‌లు ఒక ప్యాకేజీ, ఒక పేజీలోని ఇతర లింక్‌లు మరొకటి.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	స్నేహితుడికి చెప్పండి
@@ -2041,6 +2212,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	చిరునామా http(s) లేదా ftp(s) చిరునామా అయి ఉండాలి
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	ఆర్కైవ్‌ను రీసైకిల్ బిన్‌కు తరలించలేకపోయింది: అది అలాగే ఉంచబడింది
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	ఆర్కైవ్‌ను ట్రాష్‌కు తరలించలేకపోయింది: అది అలాగే ఉంచబడింది
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	ఆర్కైవ్ రీసైకిల్ బిన్‌కు తరలించబడింది
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	ఆర్కైవ్ ట్రాష్‌కు తరలించబడింది
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	ఉత్తమ నాణ్యతలు మరియు MP3కి ffmpeg (సుమారు 80 MB) అవసరం.
@@ -2171,6 +2356,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	జాబితాను సేవ్ చేయలేకపోయింది: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	పాస్‌వర్డ్ తప్పు
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	Windows కోసం మార్గం చాలా పొడవుగా ఉంది: {path}
@@ -2247,6 +2436,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ఈ ఫైల్ పొందిన వెబ్ పేజీ:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	అప్పుడు ఆర్కైవ్‌లను రీసైకిల్ బిన్‌కు తరలించు
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	అప్పుడు ఆర్కైవ్‌లను ట్రాష్‌కు తరలించు
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ఈ పేరుతో ఇప్పటికే ఒక వర్గం ఉంది
@@ -2431,6 +2628,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	రకం:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	అన్నింటినీ ఎంపిక తీసివేయి
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2520,6 +2721,10 @@
 #. text in a download's progress window
 #, machine
 	Value	విలువ
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	వివిధ ఫైల్‌లు
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2549,6 +2754,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	వైరస్ తనిఖీ సెట్టింగ్‌లు
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	దాని వాల్యూమ్ {n} లేదు
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2566,12 +2776,13 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #, machine
 	Web	వెబ్
-#. text in transfer.rs
-#, machine
-	Web addresses found in {file}:	{file}లో కనుగొనబడిన వెబ్ చిరునామాలు:
 #. text in the Scheduler window
 #, machine
 	Wednesday	బుధవారం
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	ఆర్కైవ్ కలిగి ఉన్నది వెళ్తుంది:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2602,6 +2813,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	తేదీలు మరియు సమయాలను వ్రాయండి
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	{name} కోసం తప్పు పాస్‌వర్డ్. దాన్ని మళ్లీ టైప్ చేయండి:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2648,6 +2864,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: వీడియోను కనుగొంటుంది
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ మరియు XZ; ప్రతి వాల్యూమ్ ఉన్న తర్వాత ఒక విభజించబడిన ఆర్కైవ్ (.part1.rar, .7z.001).\nఅప్పటికే ఉన్న ఫైల్ అలాగే ఉంచబడుతుంది: కొత్తదానికి నంబర్ ఇవ్వబడుతుంది.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2740,12 +2960,17 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} డౌన్‌లోడ్ చేయబడలేదు: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} పాస్‌వర్డ్ ద్వారా రక్షించబడింది:
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} (auto)	{n} (ఆటో)
-#. text in transfer.rs
+#. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total}లో {n} ఎంచుకోబడింది
@@ -3075,6 +3300,12 @@ menu	&Keyboard shortcuts	&కీబోర్డ్ షార్ట్‌కట�
 #, machine
 menu	&Language...	భా&ష...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	లింక్ &గ్రాబర్...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&ఎంపికలు
@@ -3244,6 +3475,10 @@ menu	E&xport	ఎ&గుమతి చేయండి
 #. menu command in the main window
 #, machine
 menu	Edit queue	క్యూను సవరించండి
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	ఎక్స్‌ట్రాక్ట్ చేయి
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	కనుగొనండి (Ctrl-F)
