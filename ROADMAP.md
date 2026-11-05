@@ -14,7 +14,8 @@ Everything below ships together, in one release.
 ### Done
 
 - ✅ Video downloads: subtitles, beside the video or inside it
-  ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
+  ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)); more audio choices:
+  the original track, Opus and FLAC ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70))
 - ✅ Torrent security: stricter file-name checks, no silent overwrite, files marked as downloaded
   from the internet, network switches (incoming, UPnP, port, DHT, local peers), SOCKS5 proxy and
   IP blocklist ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40))
@@ -81,8 +82,6 @@ Everything below ships together, in one release.
 
 ### Video and audio
 
-- 📋 More audio choices: FLAC, Opus, the original track
-  ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70))
 - 📋 Whole playlists and channels, also as MP3
   ([#69](https://github.com/anefzaoui/misterdownloadmanager/issues/69))
 - 📋 gallery-dl support ([#58](https://github.com/anefzaoui/misterdownloadmanager/issues/58))

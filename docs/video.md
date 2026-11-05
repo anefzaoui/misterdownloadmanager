@@ -18,7 +18,7 @@ downloads them from their official releases with its own downloader, so a cut co
 resumes, and uses your proxy settings:
 
 - **yt-dlp** (about 23 MB) looks the page up and downloads the video. The first time, click **Install yt-dlp**. MDM checks the download against the signature yt-dlp's developers publish before it uses it.
-- **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
+- **ffmpeg** (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click **Install ffmpeg** when MDM offers it. MDM checks it against the checksums its release publishes.
 
 Both are kept in a `tools` folder in MDM's data folder.
 
@@ -28,8 +28,12 @@ Already have yt-dlp or ffmpeg for another program? Use those instead of a second
 
 ## Choose the quality
 
-1. Wait for the list. It shows each resolution with its size, best first, then **Audio only** in the site's own format (M4A or WebM, as the site serves it), then **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.
-2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).
+1. Wait for the list. It shows each resolution with its size, best first, then the sound alone:
+   - **Audio only, original**: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file.
+   - **Audio only MP3** at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3.
+   - **Audio only OPUS**: an `.opus` file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost.
+   - **Audio only FLAC**: a lossless `.flac` file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.
+2. Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).
 3. Check **Save to** (the Video category's folder by default) and **File name**, which comes from the video's title.
 4. Choose **Subtitles** if you want them (see below).
 5. Click **Download Now**, or **Later** to add it to the list without starting.
@@ -44,7 +48,7 @@ When the video has subtitles, the **Subtitles** list offers them: the uploader's
 
 - Saved beside the video, they get its name and the language: `My video.fr.srt`. Players such as VLC and MPV pick them up on their own. With ffmpeg they're always SRT; without it, the site's own format (often WebVTT, `.vtt`).
 - **Put them into the video** puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.
-- A sound-only choice (**Audio only**, MP3) has no subtitles.
+- A sound-only choice (**Audio only**, MP3, Opus, FLAC) has no subtitles.
 
 MDM offers the same choice again for the next video when it has that language.
 

@@ -456,14 +456,14 @@ impl VideoDialog {
                 Tool::Ffmpeg,
                 // i18n: button: download and install the ffmpeg program
                 crate::i18n::mark("Install ffmpeg"),
-                crate::i18n::t("The best qualities and MP3 need ffmpeg (about 80 MB)."),
+                crate::i18n::t("The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB)."),
             )),
             (Some(_), None) => Some((
                 Tool::Ffmpeg,
                 "",
                 // i18n: in Download video, on macOS and Linux (no button: the system installs it)
                 crate::i18n::t(
-                    "The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).",
+                    "The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).",
                 ),
             )),
             _ => None,
@@ -525,6 +525,26 @@ impl VideoDialog {
             if cut {
                 winui::full_on_hover(ui, rect, "video-error", e);
             }
+        } else if self
+            .video
+            .as_ref()
+            .and_then(|(_, c)| c.get(self.chosen))
+            .is_some_and(|c| c.selector == mdm_tools::resolve::FLAC)
+        {
+            // The honest word on FLAC (#70): the site's sound is compressed with losses already.
+            winui::fit(
+                ui,
+                &p,
+                o.x + 11.0,
+                o.y + 86.0,
+                // i18n: a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+                crate::i18n::t(
+                    "FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.",
+                ),
+                winui::MUTED(),
+                o.x + 489.0,
+                "video-flac",
+            );
         }
 
         // The choices: the shared row list.
@@ -555,7 +575,8 @@ impl VideoDialog {
                     );
                 // Read as the format and its size (#95: the choices were blank to a screen reader
                 // and alike to UI Automation).
-                look.name = format!("{}, {size}", c.label);
+                // In the user's language, as drawn (the raw label is English).
+                look.name = format!("{label}, {size}");
                 winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
             },
         );
@@ -860,6 +881,13 @@ fn lookup_error(e: &str) -> String {
 /// A choice's label in the user's language: the audio choice's words translated, the rest (a
 /// resolution, a type) as they are, kept left to right.
 fn choice_label(label: &str) -> String {
+    if let Some(kind) = label.strip_prefix(mdm_tools::resolve::AUDIO_ORIGINAL) {
+        return crate::i18n::fmt(
+            // i18n: a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+            crate::i18n::t("Audio only, original {type}"),
+            &[("type", &crate::i18n::ltr(kind.trim()))],
+        );
+    }
     match label.strip_prefix(mdm_tools::resolve::AUDIO_ONLY) {
         Some(kind) => crate::i18n::fmt(
             // i18n: a choice in the Download video window: only the sound; {type} is MP3, M4A…

@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Бесплатно и с открытым исходным кодом. Знакомый интерфейс, более быстрый движок, встроенные торренты и видео."
   },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (около 80 МБ) объединяет видео и звук, когда сайт хранит их по отдельности (что большинство сайтов делает для более высокого качества), и преобразует звук в MP3. Нажмите <g2>Установить ffmpeg</g2>, когда MDM предложит это. MDM проверяет его по контрольным суммам, опубликованным в его релизе."
-  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -305,10 +301,6 @@
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (этот репозиторий), 127.0.0.1:8097, сгенерированный контент. Оба по умолчанию: 8 соединений."
-  },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "строки, затем <x1/>."
   },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
@@ -885,6 +877,10 @@
   "186ffd95fa88eae7": {
    "source": "A future website's pages (not published yet)",
    "text": "Страницы будущего веб-сайта (еще не опубликованы)"
+  },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "Выберите один. Без ffmpeg будут перечислены только те качества, которые поставляются со своим звуком, и не будет MP3, Opus или FLAC (их создает ffmpeg)."
   },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
@@ -1742,10 +1738,6 @@
    "source": "The server",
    "text": "Сервер"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "Выберите один вариант. Без ffmpeg будут перечислены только те качества, которые поставляются со звуком, и не будет MP3 (его создает ffmpeg)."
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "Отправлять загрузки из браузера в MDM →"
@@ -2005,10 +1997,6 @@
   "3640bc6fe07d3428": {
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> или новее на Apple Silicon или Intel (экспериментально)."
-  },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "В том же окне установите флажок <g1>Ограничить все загрузки вместе до</g1> и установите скорость. Это ограничивает MDM в целом, независимо от количества загружаемых файлов. Это применяется всякий раз, когда флажок установлен, независимо от того, включен или выключен ограничитель для каждого файла."
   },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
@@ -2437,6 +2425,10 @@
   "41cec323989a52f8": {
    "source": "Crash reports",
    "text": "Отчеты о сбоях"
+  },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (около 80 МБ) объединяет видео и звук, когда сайт хранит их по отдельности (так делают большинство сайтов для более высокого качества), и преобразует звук в файл MP3, Opus или FLAC. Нажмите <g2>Установить ffmpeg</g2>, когда MDM предложит это. MDM проверяет его по контрольным суммам, опубликованным в его релизе."
   },
   "42096c4007ec5640": {
    "source": "Then choose:",
@@ -3073,6 +3065,10 @@
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "Переключитесь за пять минут"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "Дождитесь списка. Он показывает каждое разрешение с его размером, сначала лучшее, затем только звук: – <g1>Только аудио, оригинал</g1>: собственный файл сайта, неконвертированный (M4A или WebM с Opus внутри, как его предоставляет сайт). Лучший звук в самом маленьком файле. – <g2>Только аудио MP3</g2> с лучшим переменным битрейтом (VBR) и 320, 256, 192 и 128 кбит/с, для плееров, которые поддерживают только MP3. – <g3>Только аудио OPUS</g3>: <x4/> файл. Если звук сайта уже в формате Opus (обычно это так на YouTube), он просто перемещается в этот файл без конвертации, поэтому ничего не теряется. – <g5>Только аудио FLAC</g5>: <x6/> файл без потерь, для библиотеки или программы, которой нужен FLAC. Он не может добавить качество: звук сайта уже сжат с потерями, и FLAC сохраняет его точно таким, каким он был, в файле, который в несколько раз больше. Окно сообщит об этом, когда вы его выберете."
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -4310,10 +4306,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "В каждом выпуске указана контрольная сумма SHA-256 каждого файла в <g1>SHA256SUMS.txt</g1>. В Windows сравните ее с <x2/>; в macOS и Linux с <x3/>. Все файлы собираются из открытого исходного кода с помощью GitHub Actions; журналы сборки находятся на <g4>GitHub</g4>."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; <x1/> выбора — это то, что принимает <x2/>."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "Установите флажок <g1>Ограничить все загрузки вместе до</g1> и введите скорость в КБ/сек. Хорошим началом будет примерно две трети скорости вашего соединения. (1 МБ/сек это примерно 1000 КБ/сек.)"
@@ -5374,10 +5366,6 @@
    "source": "What other people can see",
    "text": "Что могут видеть другие люди"
   },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "Дождитесь списка. Он показывает каждое разрешение с его размером, сначала лучшее, затем <g1>Только аудио</g1> в собственном формате сайта (M4A или WebM, как предоставляет сайт), затем <g2>Только аудио MP3</g2> с лучшим переменным битрейтом (VBR) и с битрейтом 320, 256, 192 и 128 кбит/с."
-  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "Сохранить под этим именем."
@@ -6153,10 +6141,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM загружает то, на что вы ему указываете, так же, как это делает веб-браузер, только быстрее и с большим контролем. Он создан для повседневных загрузок: программного обеспечения и обновлений, документов, ваших собственных файлов из облачного хранилища, видео и музыки, которые вам разрешено сохранять, образов Linux и других торрентов, распространяемых их создателями, а также всего остального, что вы имеете право загружать."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "Загрузить видео; <x1/> принимает селектор качества из <x2/> (<x3/> = лучший отдельный файл; <x4/>, <x5/>, <x6/> или <x7/> = звук в формате MP3 с указанным битрейтом, <x8/> с лучшим переменным битрейтом; для MP3 требуется ffmpeg). <x9/> сохраняет субтитры рядом: коды языков из <x10/> (<x11/>), или <x12/> для всех, предоставленных загрузчиком; <x13/> использует автоматические субтитры сайта вместо этого; <x14/> встраивает их в видео (требуется ffmpeg, MP4 или MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -7210,10 +7194,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "В окне <g1>Информация о загружаемом файле</g1> нажмите <g2>Загрузить позже</g2>."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "Загрузить видео; <x1/> принимает селектор качества из <x2/> (<x3/> = лучший отдельный файл; <x4/>, <x5/>, <x6/> или <x7/> = звук в формате MP3 с указанным битрейтом, <x8/> с лучшим переменным битрейтом; для MP3 требуется ffmpeg)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "Нужны субтитры? Выберите язык в разделе <g1>Субтитры</g1>. Они сохраняются рядом с видео или внутри него, если вы отметите <g2>Встроить в видео</g2> (см. <g3>Субтитры</g3>)."
@@ -7393,6 +7373,10 @@
   "d2c89ce7d7288628": {
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10 или 11</g1>, 64-бит; около 100 МБ дискового пространства."
+  },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "Выбор только звука (<g1>Только аудио</g1>, MP3, Opus, FLAC) не содержит субтитров."
   },
   "d2ef5107c69b686f": {
    "source": "Maturity",
@@ -8166,10 +8150,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Чтобы навсегда оставить загрузки с сайта в браузере, используйте <g1>Никогда не перехватывать загрузки с</g1> кнопки на панели инструментов или добавьте сайт в <g2>Не начинать загрузку автоматически со следующих сайтов</g2>. Чтобы оставить тип файла в браузере, удалите его из списка типов файлов."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "Выбор только звука (<g1>Только аудио</g1>, MP3) не имеет субтитров."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Откройте «Настройки» Windows → «Приложения», найдите Mister Download Manager и выберите «Удалить». Программа удаления спросит, нужно ли также удалить список загрузок и настройки. Загруженные вами файлы никогда не затрагиваются. Для портативной версии просто удалите её папку."
@@ -8409,6 +8389,10 @@
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Если видео не загружается, см. <g1>Загрузка видео</g1>."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Загрузить видео; <x1/> принимает селектор качества из <x2/> (<x3/> = лучший отдельный файл; <x4/> = только звук в том виде, в каком он есть на сайте, без конвертации; <x5/>, <x6/>, <x7/> или <x8/> = звук в формате MP3 с указанным битрейтом, <x9/> с лучшим переменным битрейтом; <x10/> = в формате Opus; <x11/> = в формате FLAC, без потерь, но не лучше, чем звук на сайте; для конвертации нужен ffmpeg). <x12/> сохраняет субтитры рядом: коды языков из <x13/> (<x14/>), или <x15/> для всех, которые предоставил загрузчик; <x16/> вместо этого использует автоматические субтитры сайта; <x17/> встраивает их в видео (нужен ffmpeg, MP4 или MKV)."
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",

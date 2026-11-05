@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **More audio choices for a video** ([#70](https://github.com/anefzaoui/misterdownloadmanager/issues/70)):
+  under the MP3 ones, **Audio only OPUS** (YouTube's Opus is only moved into an `.opus` file, not
+  converted) and **Audio only FLAC** (lossless, with an honest note in the window: it can't add
+  quality the site's lossy sound doesn't have, the file is only bigger). The site's own sound is
+  now named **Audio only, original**. The command line's `video-get` takes `-f opus:` and
+  `-f flac:`.
 - **A file-type icon before every file name**: the download list, Download File Info, Properties,
   Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
   audio, pictures, archives, documents, subtitles, code, and the programs and installers of every

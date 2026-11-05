@@ -230,6 +230,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	শুধুমাত্র অডিও {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	শুধুমাত্র অডিও, আসল {type}
 #. text in the Scheduler window
 #, machine
 	August	আগস্ট
@@ -833,6 +837,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	প্রথম ফাইল:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC শব্দকে হুবহু রাখে, কিন্তু সাইটের শব্দের যে গুণমান নেই তা যোগ করতে পারে না: ফাইলটি কেবল বড় হয়।
 #. text in categories.rs
 #, machine
 	Folder:	ফোল্ডার:
@@ -2043,11 +2051,11 @@
 	The address must be an http(s) or ftp(s) address	ঠিকানাটি একটি http(s) বা ftp(s) ঠিকানা হতে হবে
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	সেরা গুণমান এবং MP3-এর জন্য ffmpeg (প্রায় 80 MB) প্রয়োজন।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	সেরা গুণমান, MP3, Opus এবং FLAC-এর জন্য ffmpeg (প্রায় 80 MB) প্রয়োজন।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	সেরা গুণমান এবং MP3-এর জন্য ffmpeg প্রয়োজন: আপনার সিস্টেমের প্যাকেজ ম্যানেজার (বা Homebrew) দিয়ে এটি ইনস্টল করুন।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	সেরা গুণমান, MP3, Opus এবং FLAC-এর জন্য ffmpeg প্রয়োজন: আপনার সিস্টেমের প্যাকেজ ম্যানেজার (বা Homebrew) দিয়ে এটি ইনস্টল করুন।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine

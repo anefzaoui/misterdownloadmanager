@@ -230,6 +230,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	پەقەت ئاۋاز {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	پەقەت ئاۋاز، ئەسلى {type}
 #. text in the Scheduler window
 #, machine
 	August	ئاۋغۇست
@@ -833,6 +837,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	بىرىنچى ھۆججەت:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ئاۋازنى ئەينەن ساقلايدۇ، ئەمما ئۇ تور بېكەتنىڭ ئاۋازىدا بولمىغان سۈپەتنى قوشالمايدۇ: ھۆججەت پەقەت چوڭراق بولىدۇ.
 #. text in categories.rs
 #, machine
 	Folder:	قىسقۇچ:
@@ -2043,11 +2051,11 @@
 	The address must be an http(s) or ftp(s) address	ئادرېس چوقۇم http(s) ياكى ftp(s) ئادرېسى بولۇشى كېرەك
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	ئەڭ ياخشى سۈپەتلەر ۋە MP3 ئۈچۈن ffmpeg (تەخمىنەن 80 MB) كېرەك.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ئەڭ ياخشى سۈپەتلەر، MP3، Opus ۋە FLAC ئۈچۈن ffmpeg (تەخمىنەن 80 MB) كېرەك.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	ئەڭ ياخشى سۈپەتلەر ۋە MP3 ئۈچۈن ffmpeg كېرەك: ئۇنى سىستېمىڭىزنىڭ بوغچا باشقۇرغۇچىسى (ياكى Homebrew) ئارقىلىق قاچىلاڭ.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ئەڭ ياخشى سۈپەتلەر، MP3، Opus ۋە FLAC ئۈچۈن ffmpeg كېرەك: ئۇنى سىستېمىڭىزنىڭ بوغچا باشقۇرغۇچىسى (ياكى Homebrew) ئارقىلىق قاچىلاڭ.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine

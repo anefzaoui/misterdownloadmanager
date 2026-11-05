@@ -230,6 +230,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ഓഡിയോ മാത്രം {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ഓഡിയോ മാത്രം, യഥാർത്ഥ {type}
 #. text in the Scheduler window
 #, machine
 	August	ഓഗസ്റ്റ്
@@ -833,6 +837,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	ആദ്യ ഫയൽ:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ശബ്‌ദം അതേപടി നിലനിർത്തുന്നു, പക്ഷേ സൈറ്റിന്റെ ശബ്‌ദത്തിന് ഇല്ലാത്ത ഗുണമേന്മ ഇതിന് ചേർക്കാൻ കഴിയില്ല: ഫയൽ വലുതാകുന്നു എന്ന് മാത്രം.
 #. text in categories.rs
 #, machine
 	Folder:	ഫോൾഡർ:
@@ -2043,11 +2051,11 @@
 	The address must be an http(s) or ftp(s) address	വിലാസം ഒരു http(s) അല്ലെങ്കിൽ ftp(s) വിലാസമായിരിക്കണം
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	മികച്ച ഗുണനിലവാരങ്ങൾക്കും MP3-ക്കും ffmpeg (ഏകദേശം 80 MB) ആവശ്യമാണ്.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	മികച്ച ഗുണമേന്മകളായ MP3, Opus, FLAC എന്നിവയ്ക്ക് ffmpeg (ഏകദേശം 80 MB) ആവശ്യമാണ്.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	മികച്ച ഗുണനിലവാരങ്ങൾക്കും MP3-ക്കും ffmpeg ആവശ്യമാണ്: നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ പാക്കേജ് മാനേജർ (അല്ലെങ്കിൽ Homebrew) ഉപയോഗിച്ച് ഇത് ഇൻസ്റ്റാൾ ചെയ്യുക.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	മികച്ച ഗുണമേന്മകളായ MP3, Opus, FLAC എന്നിവയ്ക്ക് ffmpeg ആവശ്യമാണ്: നിങ്ങളുടെ സിസ്റ്റത്തിന്റെ പാക്കേജ് മാനേജർ (അല്ലെങ്കിൽ Homebrew) ഉപയോഗിച്ച് ഇത് ഇൻസ്റ്റാൾ ചെയ്യുക.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine

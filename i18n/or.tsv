@@ -230,6 +230,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	କେବଳ ଅଡିଓ {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	କେବଳ ଅଡିଓ, ମୂଳ {type}
 #. text in the Scheduler window
 #, machine
 	August	ଅଗଷ୍ଟ
@@ -833,6 +837,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	ପ୍ରଥମ ଫାଇଲ୍:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ଶବ୍ଦକୁ ସଠିକ୍ ଭାବରେ ରଖେ, କିନ୍ତୁ ଏହା ସାଇଟର ଶବ୍ଦରେ ନଥିବା ଗୁଣ ଯୋଗ କରିପାରିବ ନାହିଁ: ଫାଇଲ୍ କେବଳ ବଡ଼ ହୁଏ।
 #. text in categories.rs
 #, machine
 	Folder:	ଫୋଲ୍ଡର୍:
@@ -2043,11 +2051,11 @@
 	The address must be an http(s) or ftp(s) address	ଏହି ଠିକଣା http(s) କିମ୍ବା ftp(s) ଠିକଣା ହେବା ଆବଶ୍ୟକ
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	ସର୍ବୋତ୍ତମ ଗୁଣ ଏବଂ MP3 ପାଇଁ ffmpeg (ପ୍ରାୟ 80 MB) ଆବଶ୍ୟକ।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ସର୍ବୋତ୍ତମ ଗୁଣ, MP3, Opus ଏବଂ FLAC ପାଇଁ ffmpeg (ପ୍ରାୟ 80 MB) ଆବଶ୍ୟକ।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	ସର୍ବୋତ୍ତମ ଗୁଣ ଏବଂ MP3 ପାଇଁ ffmpeg ଆବଶ୍ୟକ: ଏହାକୁ ଆପଣଙ୍କ ସିଷ୍ଟମର ପ୍ୟାକେଜ୍ ମ୍ୟାନେଜର୍ (କିମ୍ବା Homebrew) ସହିତ ସ୍ଥାପନ କରନ୍ତୁ।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ସର୍ବୋତ୍ତମ ଗୁଣ, MP3, Opus ଏବଂ FLAC ପାଇଁ ffmpeg ଆବଶ୍ୟକ: ଏହାକୁ ଆପଣଙ୍କ ସିଷ୍ଟମର ପ୍ୟାକେଜ୍ ମ୍ୟାନେଜର୍ (କିମ୍ବା Homebrew) ସହିତ ସ୍ଥାପନ କରନ୍ତୁ।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine

@@ -174,10 +174,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Gratis dan sumber terbuka. Antarmuka yang sudah Anda kenal, mesin yang lebih cepat di baliknya, torrent dan video bawaan."
   },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (sekitar 80 MB) menggabungkan video dan suaranya saat situs memisahkannya, yang dilakukan sebagian besar situs untuk kualitas yang lebih tinggi, dan mengubah suara menjadi MP3. Klik <g2>Instal ffmpeg</g2> saat MDM menawarkannya. MDM memeriksanya dengan checksum yang diterbitkan rilisnya."
-  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -305,10 +301,6 @@
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "Intel(R) Core(TM) i5-13400F Generasi ke-13, RAM 63,8 GB, Windows-11-10.0.26200-SP0. labserver (repo ini), 127.0.0.1:8097, konten yang dihasilkan. keduanya pada pengaturan default: 8 koneksi."
-  },
-  "0797f3ad6e9f2823": {
-   "source": "lines, then <x1/>.",
-   "text": "baris, lalu <x1/>."
   },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
@@ -885,6 +877,10 @@
   "186ffd95fa88eae7": {
    "source": "A future website's pages (not published yet)",
    "text": "Halaman situs web masa depan (belum diterbitkan)"
+  },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "Pilih salah satu. Tanpa ffmpeg, hanya kualitas yang disertai suaranya yang terdaftar, dan tidak ada MP3, Opus, atau FLAC (ffmpeg yang membuatnya)."
   },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
@@ -1742,10 +1738,6 @@
    "source": "The server",
    "text": "Server"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "Pilih salah satu. Tanpa ffmpeg, hanya kualitas yang disertai suaranya yang terdaftar, dan tidak ada MP3 (ffmpeg yang membuatnya)."
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "Kirim unduhan browser ke MDM →"
@@ -2005,10 +1997,6 @@
   "3640bc6fe07d3428": {
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> atau yang lebih baru di Apple Silicon atau Intel (eksperimental)."
-  },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Di jendela yang sama, centang <g1>Batasi semua unduhan bersama-sama hingga</g1> dan atur kecepatannya. Ini membatasi MDM secara keseluruhan, berapa pun jumlah file yang sedang diunduh. Ini berlaku setiap kali dicentang, baik pembatas per-file aktif atau tidak."
   },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
@@ -2437,6 +2425,10 @@
   "41cec323989a52f8": {
    "source": "Crash reports",
    "text": "Laporan kerusakan"
+  },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (sekitar 80 MB) menggabungkan video dan suaranya saat situs memisahkannya, yang dilakukan sebagian besar situs untuk kualitas yang lebih tinggi, dan mengubah suara menjadi file MP3, Opus, atau FLAC. Klik <g2>Instal ffmpeg</g2> saat MDM menawarkannya. MDM memeriksanya terhadap checksum yang diterbitkan rilisnya."
   },
   "42096c4007ec5640": {
    "source": "Then choose:",
@@ -3073,6 +3065,10 @@
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "Beralih dalam lima menit"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "Tunggu daftar. Ini menunjukkan setiap resolusi dengan ukurannya, yang terbaik terlebih dahulu, lalu suara saja: - <g1>Audio saja, asli</g1>: file milik situs itu sendiri, tidak dikonversi (M4A, atau WebM dengan Opus di dalamnya, seperti yang disajikan situs). Suara terbaik yang ada, dalam file terkecil. - <g2>Audio saja MP3</g2> pada bitrate variabel (VBR) terbaiknya dan pada 320, 256, 192, dan 128 kbps, untuk pemutar yang hanya menerima MP3. - <g3>Audio saja OPUS</g3>: file <x4/>. Ketika suara situs sudah Opus (YouTube biasanya begitu), itu hanya dipindahkan ke file tersebut, tidak dikonversi, jadi tidak ada yang hilang. - <g5>Audio saja FLAC</g5>: file <x6/> tanpa kehilangan, untuk perpustakaan atau program yang menginginkan FLAC. Ini tidak dapat menambah kualitas: suara situs sudah dikompresi dengan kehilangan, dan FLAC menyimpannya persis seperti aslinya, dalam file yang beberapa kali lebih besar. Jendela akan mengatakannya saat Anda memilihnya."
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -4310,10 +4306,6 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Setiap rilis mencantumkan checksum SHA-256 dari setiap file di <g1>SHA256SUMS.txt</g1>. Di Windows, bandingkan dengan <x2/>; di macOS dan Linux dengan <x3/>. Semua file dibuat dari kode sumber publik oleh GitHub Actions; log pembangunan ada di <g4>GitHub</g4>."
   },
-  "7abc575fd3c5fa12": {
-   "source": "; a choice's <x1/> is what <x2/> takes.",
-   "text": "; <x1/> dari pilihan adalah apa yang diambil <x2/>."
-  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "Centang <g1>Batasi semua unduhan bersama-sama hingga</g1> dan ketik kecepatan dalam KB/dtk. Awal yang baik adalah sekitar dua pertiga dari kecepatan koneksi Anda. (1 MB/dtk sekitar 1000 KB/dtk.)"
@@ -5374,10 +5366,6 @@
    "source": "What other people can see",
    "text": "Apa yang dapat dilihat orang lain"
   },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "Tunggu daftar. Daftar ini menunjukkan setiap resolusi dengan ukurannya, yang terbaik terlebih dahulu, lalu <g1>Hanya audio</g1> dalam format situs itu sendiri (M4A atau WebM, sesuai yang disajikan situs), lalu <g2>Hanya audio MP3</g2> pada bitrate variabel (VBR) terbaiknya dan pada 320, 256, 192, dan 128 kbps."
-  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "Simpan dengan nama ini."
@@ -6153,10 +6141,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM mengunduh apa pun yang Anda tunjuk, seperti peramban web, hanya saja lebih cepat dan dengan kontrol lebih. Ini dibuat untuk unduhan sehari-hari: perangkat lunak dan pembaruan, dokumen, file Anda sendiri dari penyimpanan cloud, video dan musik yang boleh Anda simpan, citra Linux dan torrent lain yang dibagikan oleh pembuatnya, serta apa pun yang Anda berhak unduh."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "Unduh video; <x1/> mengambil pemilih kualitas dari <x2/> (<x3/> = file tunggal terbaik; <x4/>, <x5/>, <x6/> atau <x7/> = suara sebagai MP3 pada bitrate tersebut, <x8/> pada bitrate variabel terbaiknya; MP3 memerlukan ffmpeg). <x9/> menyimpan subtitle di sampingnya: kode bahasa dari <x10/> (<x11/>), atau <x12/> untuk setiap bahasa yang diberikan pengunggah; <x13/> mengambil teks otomatis situs sebagai gantinya; <x14/> menempatkannya ke dalam video (memerlukan ffmpeg, MP4 atau MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -7210,10 +7194,6 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "Di <g1>Info File Unduhan</g1>, klik <g2>Unduh Nanti</g2>."
   },
-  "ccce361d6bc788ef": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
-   "text": "Unduh video; <x1/> mengambil pemilih kualitas dari <x2/> (<x3/> = file tunggal terbaik; <x4/>, <x5/>, <x6/> atau <x7/> = suara sebagai MP3 pada bitrate tersebut, <x8/> pada bitrate variabel terbaiknya; MP3 memerlukan ffmpeg)."
-  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "Mau subtitel? Pilih bahasa di <g1>Subtitel</g1>. Subtitel akan disimpan di samping video, atau di dalam video jika Anda mencentang <g2>Masukkan ke dalam video</g2> (lihat <g3>Subtitel</g3>)."
@@ -7393,6 +7373,10 @@
   "d2c89ce7d7288628": {
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10 atau 11</g1>, 64-bit; sekitar 100 MB ruang disk."
+  },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "Pilihan hanya suara (<g1>Audio saja</g1>, MP3, Opus, FLAC) tidak memiliki subtitle."
   },
   "d2ef5107c69b686f": {
    "source": "Maturity",
@@ -8166,10 +8150,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Untuk menyimpan unduhan situs di browser secara permanen, gunakan <g1>Jangan pernah mengambil unduhan dari</g1> tombol bilah alat, atau tambahkan situs ke <g2>Jangan mulai mengunduh secara otomatis dari situs berikut</g2>. Untuk menyimpan jenis file di browser, hapus dari daftar jenis file."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "Pilihan hanya suara (<g1>Hanya audio</g1>, MP3) tidak memiliki subtitel."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Buka Pengaturan Windows → Aplikasi, cari Mister Download Manager dan pilih Hapus Instalasi. Penghapus instalasi akan menanyakan apakah Anda ingin menghapus daftar unduhan dan pengaturan Anda juga. File yang Anda unduh tidak akan pernah disentuh. Untuk salinan portabel, hapus foldernya."
@@ -8409,6 +8389,10 @@
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Jika video tidak dapat diunduh, lihat <g1>Unduhan video</g1>."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Unduh video; <x1/> mengambil pemilih kualitas dari <x2/> (<x3/> = file tunggal terbaik; <x4/> = suara saja seperti yang ada di situs, tidak dikonversi; <x5/>, <x6/>, <x7/> atau <x8/> = suara sebagai MP3 pada bitrate tersebut, <x9/> pada variabel terbaiknya; <x10/> = sebagai Opus; <x11/> = sebagai FLAC, lossless tetapi tidak lebih baik dari suara situs; konversi memerlukan ffmpeg). <x12/> menyimpan subtitle di sampingnya: kode bahasa dari <x13/> (<x14/>), atau <x15/> untuk setiap yang diberikan pengunggah; <x16/> mengambil teks otomatis situs sebagai gantinya; <x17/> menempatkannya ke dalam video (memerlukan ffmpeg, MP4 atau MKV)."
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",

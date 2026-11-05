@@ -230,6 +230,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Только аудио {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Только аудио, исходный {type}
 #. text in the Scheduler window
 #, machine
 	August	Август
@@ -833,6 +837,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Первый файл:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC сохраняет звук в точности, но не может улучшить качество, которого нет в исходном звуке сайта: файл будет только больше.
 #. text in categories.rs
 #, machine
 	Folder:	Папка:
@@ -2043,11 +2051,11 @@
 	The address must be an http(s) or ftp(s) address	Адрес должен быть http(s) или ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Для лучшего качества и MP3 требуется ffmpeg (около 80 МБ).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Для наилучшего качества, MP3, Opus и FLAC требуется ffmpeg (около 80 МБ).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Для лучшего качества и MP3 требуется ffmpeg: установите его с помощью системного менеджера пакетов (или Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Для наилучшего качества, MP3, Opus и FLAC требуется ffmpeg: установите его с помощью системного менеджера пакетов (или Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine

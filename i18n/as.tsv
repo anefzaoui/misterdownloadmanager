@@ -230,6 +230,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	কেৱল অডিঅ' {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	কেৱল অডিঅ’, মূল {type}
 #. text in the Scheduler window
 #, machine
 	August	আগষ্ট
@@ -833,6 +837,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	প্ৰথম ফাইল:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC-এ শব্দটো একেবাৰে ৰাখে, কিন্তু ই ছাইটৰ শব্দত নথকা মান যোগ কৰিব নোৱাৰে: ফাইলটো কেৱল ডাঙৰ হয়।
 #. text in categories.rs
 #, machine
 	Folder:	ফ’ল্ডাৰ:
@@ -2043,11 +2051,11 @@
 	The address must be an http(s) or ftp(s) address	ঠিকনাটো এটা http(s) বা ftp(s) ঠিকনা হ'ব লাগিব
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	শ্ৰেষ্ঠ গুণগত মান আৰু MP3-ৰ বাবে ffmpeg (প্ৰায় 80 MB) প্ৰয়োজন হয়।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	শ্ৰেষ্ঠ গুণগত মান, MP3, Opus আৰু FLAC-ৰ বাবে ffmpeg (প্ৰায় 80 MB) প্ৰয়োজন।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	শ্ৰেষ্ঠ গুণগত মান আৰু MP3-ৰ বাবে ffmpeg প্ৰয়োজন হয়: ইয়াক আপোনাৰ ছিষ্টেমৰ পেকেজ মেনেজাৰ (বা Homebrew) ব্যৱহাৰ কৰি ইনষ্টল কৰক।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	শ্ৰেষ্ঠ গুণগত মান, MP3, Opus আৰু FLAC-ৰ বাবে ffmpeg প্ৰয়োজন: ইয়াক আপোনাৰ চিষ্টেমৰ পেকেজ মেনেজাৰ (বা Homebrew) ব্যৱহাৰ কৰি ইনষ্টল কৰক।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine

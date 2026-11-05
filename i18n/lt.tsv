@@ -230,6 +230,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Tik garsas {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Tik garsas, originalus {type}
 #. text in the Scheduler window
 #, machine
 	August	Rugpjūtis
@@ -833,6 +837,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Pirmas failas:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC išlaiko tikslų garsą, bet negali pagerinti kokybės, kurios svetainės garsas neturi: failas bus tik didesnis.
 #. text in categories.rs
 #, machine
 	Folder:	Aplankas:
@@ -2043,11 +2051,11 @@
 	The address must be an http(s) or ftp(s) address	Adresas turi būti http(s) arba ftp(s) adresas
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Geriausioms kokybėms ir MP3 reikia „ffmpeg“ (apie 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Geriausioms kokybėms, MP3, Opus ir FLAC, reikalingas ffmpeg (apie 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Geriausioms kokybėms ir MP3 reikia „ffmpeg“: įdiekite jį naudodami sistemos paketų tvarkyklę (arba „Homebrew“).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Geriausioms kokybėms, MP3, Opus ir FLAC, reikalingas ffmpeg: įdiekite jį naudodami sistemos paketų tvarkyklę (arba Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
