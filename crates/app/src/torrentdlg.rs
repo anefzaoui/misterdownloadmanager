@@ -630,6 +630,8 @@ impl TorrentDialog {
             return;
         }
         let rows = visible_rows(&self.tree, &self.open);
+        // What a screen reader calls the tree (its rows carry each file's name).
+        self.rows.name = crate::i18n::t("Files");
         // The shared row list over the body (its frame on the list's): a click selects, the
         // box, Space or a double-click on a file ticks, a double-click or the arrow opens a
         // folder, Right / Left open and close the selected one.

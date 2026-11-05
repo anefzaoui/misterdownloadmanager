@@ -1442,6 +1442,7 @@ impl OptionsDialog {
         );
         let grid = winui::GRID();
         let sounds = &mut self.s.sounds;
+        self.sound_rows.name = crate::i18n::t("Sounds");
         let ev = winui::row_list(
             ui,
             "sounds",

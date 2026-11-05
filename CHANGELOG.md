@@ -165,7 +165,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   the rows of Download video's qualities, Add torrent's files, the language picker, Options
   (browsers, sounds, the file-type and site lists), the Scheduler and Import now have their names
   (a format and its size, a file's name and size), their check boxes theirs, ticked or not, and
-  their selected row; the lists take their caption as their name.
+  their selected row; Download video's list is called Quality, Add torrent's Files and the
+  sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
+  choice at once: it used to wait for the next mouse move.
 - **The browser extension's Download video menu: an item's highlight ran past the menu's
   edge** ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81)).
 - **A long file name ran out of the progress window** ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62)):

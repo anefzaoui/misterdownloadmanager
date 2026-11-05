@@ -1034,6 +1034,9 @@ pub fn full_on_hover(
 pub struct RowList {
     pub first: usize,
     pub selected: Option<usize>,
+    /// What a screen reader calls the list ("Quality", "Files"), translated: set by the window
+    /// that owns it. Empty: unnamed (a caption near the list is often a column title).
+    pub name: &'static str,
     /// The selection was set from outside (typing, the caller): scrolled into view next draw.
     pending: bool,
     /// Wheel travel not yet a whole row.
@@ -1128,9 +1131,9 @@ pub fn row_list(
     let right = inner.right() - if bar { crate::scrollbar::THICK } else { 0.0 };
     let area = Rect::from_min_max(inner.min, pos2(right, inner.bottom()));
     let resp = ui.interact(rect(inner), id, Sense::click());
-    // Unnamed: a caption found near the list is often a column title ("Size"), and a wrong name
-    // is worse than none; its rows carry the names (#95).
-    expose(&resp, egui::Role::ListBox, "", true, None);
+    // Named by its owner (#95), not by a caption found near it: that is often a column title
+    // ("Size"), and a wrong name is worse than none.
+    expose(&resp, egui::Role::ListBox, st.name, true, None);
     // Its arrows (a tree's Left / Right too) stay with it.
     keep_keys(ui, &resp, true, true, false);
     let focused = resp.has_focus();

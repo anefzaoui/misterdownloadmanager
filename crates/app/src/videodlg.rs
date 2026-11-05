@@ -532,6 +532,8 @@ impl VideoDialog {
         let mut picked = None;
         let choices = self.video.as_ref().map_or(&[][..], |(_, c)| c.as_slice());
         self.rows.selected = Some(self.chosen).filter(|c| *c < choices.len());
+        // i18n: what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+        self.rows.name = crate::i18n::t("Quality");
         let ev = winui::row_list(
             ui,
             "video-choices",
