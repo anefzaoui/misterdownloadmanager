@@ -178,10 +178,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "مجاني ومفتوح المصدر. الواجهة التي تعرفها بالفعل، محرك أسرع في الأسفل، تورنت وفيديو مدمجان."
   },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (حوالي 80 ميجابايت) يدمج الفيديو والصوت عندما يفصلهما الموقع، وهو ما تفعله معظم المواقع للجودات العالية، ويحول الصوت إلى MP3. انقر على <g2>تثبيت ffmpeg</g2> عندما يعرضه MDM. يتحقق MDM منه بمقارنته بمجموع الفحص التي ينشرها إصداره."
-  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome، Firefox، Edge<g1><g2>3</g2></g1>"
@@ -850,6 +846,10 @@
    "source": "Find a download in a long list",
    "text": "البحث عن تنزيل في قائمة طويلة"
   },
+  "16cc6550e7f6316d": {
+   "source": "In the <g1>Categories</g1> pane: the selected category's menu (<g2>Properties</g2>, <g3>Add category</g3>, <g4>Delete</g4>)",
+   "text": "في جزء <g1>الفئات</g1>: قائمة الفئة المحددة (<g2>خصائص</g2>، <g3>إضافة فئة</g3>، <g4>حذف</g4>)"
+  },
   "16d498a3a477d64c": {
    "source": "<g1>Dark mode has day mode's sizes and places</g1>: the menu bar, the toolbar, the panes, the list's lines and selection, buttons and the progress window's table measure the same in both modes. Only the colours change.",
    "text": "<g1>الوضع الداكن له نفس أحجام وأماكن الوضع النهاري</g1>: شريط القوائم، شريط الأدوات، الأجزاء، خطوط القائمة وتحديدها، الأزرار وجدول نافذة التقدم تقاس بنفس الطريقة في كلا الوضعين. تتغير الألوان فقط."
@@ -897,6 +897,10 @@
   "186ffd95fa88eae7": {
    "source": "A future website's pages (not published yet)",
    "text": "صفحات موقع إلكتروني مستقبلي (لم تنشر بعد)"
+  },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "اختر واحدا. بدون ffmpeg، يتم إدراج الجودات التي تأتي مع صوتها فقط، ولا يوجد MP3 أو Opus أو FLAC (ffmpeg يصنعها)."
   },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
@@ -1754,10 +1758,6 @@
    "source": "The server",
    "text": "الخادم"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "اختر واحدة. بدون ffmpeg، تظهر فقط الجودات التي تأتي مع صوتها، ولا يوجد MP3 (يصنعه ffmpeg)."
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "إرسال تنزيلات المتصفح إلى MDM ←"
@@ -2466,6 +2466,10 @@
    "source": "Crash reports",
    "text": "تقارير الأعطال"
   },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (حوالي 80 ميجابايت) يدمج الفيديو والصوت عندما يفصلهما الموقع، وهو ما تفعله معظم المواقع للجودات العالية، ويحول الصوت إلى ملف MP3 أو Opus أو FLAC. انقر على <g2>تثبيت ffmpeg</g2> عندما يعرضه MDM. يتحقق MDM منه بمقارنته بمجموع الفحص الذي ينشره إصداره."
+  },
   "42096c4007ec5640": {
    "source": "Then choose:",
    "text": "ثم اختر:"
@@ -2533,6 +2537,10 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "بحث عن التالي"
+  },
+  "447cc2a2f0918427": {
+   "source": "Tab",
+   "text": "Tab"
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -3129,6 +3137,10 @@
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "التبديل في خمس دقائق"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "انتظر القائمة. تعرض كل دقة مع حجمها، الأفضل أولا، ثم الصوت وحده: - <g1>صوت فقط، أصلي</g1>: ملف الموقع نفسه، غير محول (M4A، أو WebM مع Opus بالداخل، كما يقدمه الموقع). أفضل صوت موجود، في أصغر ملف. - <g2>صوت فقط MP3</g2> بأفضل معدل بت متغير (VBR) و 320، 256، 192 و 128 كيلوبت في الثانية، للمشغلات التي تقبل MP3 فقط. - <g3>صوت فقط OPUS</g3>: ملف <x4/>. عندما يكون صوت الموقع Opus بالفعل (عادة ما يكون كذلك في YouTube)، فإنه ينتقل فقط إلى هذا الملف، دون تحويل، لذلك لا يضيع شيء. - <g5>صوت فقط FLAC</g5>: ملف <x6/> بدون فقدان، لمكتبة أو برنامج يريد FLAC. لا يمكنه إضافة جودة: صوت الموقع مضغوط بالفعل مع فقدان، و FLAC يحافظ عليه تماما كما جاء، في ملف أكبر عدة مرات. تخبرك النافذة بذلك عند اختياره."
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -4138,6 +4150,10 @@
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1.0 ثانية</g1><g3></g3>"
   },
+  "72f3284ff6dd83fc": {
+   "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
+   "text": "<g1>أعلى</g1> / <g2>أسفل</g2>، <g3>يسار</g3> / <g4>يمين</g4>"
+  },
   "72f381013a320442": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
    "text": "<g1>استخدام وكيل/SOCKS من طلب المتصفح…</g1> — تشغيل افتراضيا. مع <g2>لا يوجد وكيل/SOCKS</g2>، يجعل MDM يستخدم إعدادات وكيل Windows، كما تفعل المتصفحات."
@@ -4285,6 +4301,10 @@
   "7795e2b94936333b": {
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "اسم المستخدم الخاص بك، والذي يظهر كـ <x1/> في مسارات المجلدات."
+  },
+  "77a30c9b7d2a6105": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
+   "text": "يمكن إنجاز كل شيء من لوحة المفاتيح، ويعمل MDM مع برامج قراءة الشاشة (مثل Narrator و NVDA على Windows): حيث تخبر نوافذه ومربعات الحوار والقوائم الخاصة به هذه البرامج عن كل عنصر تحكم وحالته، وتقرأ قائمة التنزيلات اسم كل تنزيل وحالته وحجمه. تتم قراءة جزء <g1>الفئات</g1> كشجرة (كل فئة مع عددها، مفتوحة أو مغلقة، محددة أم لا)، وشريط القوائم وكل قائمة نقر بزر الفأرة الأيمن كقوائم يمكن تشغيل عناصرها من هناك."
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -5458,10 +5478,6 @@
    "source": "What other people can see",
    "text": "ما يمكن للآخرين رؤيته"
   },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "انتظر القائمة. تعرض كل دقة مع حجمها، الأفضل أولا، ثم <g1>صوت فقط</g1> بتنسيق الموقع الخاص (M4A أو WebM، كما يقدمه الموقع)، ثم <g2>صوت فقط MP3</g2> بأفضل معدل بت متغير (VBR) وبمعدلات 320، 256، 192 و 128 كيلوبت في الثانية."
-  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "احفظه بهذا الاسم."
@@ -5665,6 +5681,10 @@
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "مقارنة سرعة التنزيل: IDM 6.42 ضد Mister Download Manager"
+  },
+  "9e30a9dbdaf7e2cf": {
+   "source": "<g1>Shift+F10</g1> or the <g2>Menu</g2> key",
+   "text": "<g1>Shift+F10</g1> أو مفتاح <g2>القائمة</g2>"
   },
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
@@ -6082,6 +6102,10 @@
    "source": "Catch downloads from your browser",
    "text": "التقاط التنزيلات من متصفحك"
   },
+  "a9efaabb8e76e3a1": {
+   "source": "Move between the <g1>Categories</g1> pane and the download list",
+   "text": "التنقل بين جزء <g1>الفئات</g1> وقائمة التنزيلات"
+  },
   "a9f05b8a13e881a4": {
    "source": "<g1>Mac and Linux too.</g1> As experimental builds, if you use more than Windows.",
    "text": "<g1>يعمل على Mac و Linux أيضا.</g1> كإصدارات تجريبية، إذا كنت تستخدم أنظمة تشغيل أخرى غير Windows."
@@ -6245,10 +6269,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "يقوم MDM بتنزيل ما تشير إليه، تماما كما يفعل متصفح الويب، ولكن بشكل أسرع وبتحكم أكبر. إنه مصمم للتنزيلات اليومية: البرامج والتحديثات، المستندات، ملفاتك الخاصة من التخزين السحابي، مقاطع الفيديو والموسيقى التي يسمح لك بحفظها، صور Linux وتورنت أخرى يشاركها صانعوها، وأي شيء آخر يحق لك تنزيله."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "تنزيل فيديو؛ <x1/> يأخذ محدد جودة من <x2/> (<x3/> = أفضل ملف واحد؛ <x4/>، <x5/>، <x6/> أو <x7/> = الصوت كملف MP3 بمعدل البت هذا، <x8/> بأفضل معدل متغير له؛ يتطلب MP3 برنامج ffmpeg). <x9/> يحفظ الترجمات بجانبه: رموز اللغة من <x10/> (<x11/>)، أو <x12/> لكل لغة قدمها الرافع؛ <x13/> يأخذ التسميات التوضيحية التلقائية للموقع بدلا من ذلك؛ <x14/> يضعها في الفيديو (يتطلب ffmpeg، MP4 أو MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -7110,6 +7130,10 @@
    "source": "Paid licence after a 30-day free trial<g1><g2>1</g2></g1>",
    "text": "ترخيص مدفوع بعد فترة تجريبية مجانية لمدة 30 يوما<g1><g2>1</g2></g1>"
   },
+  "c6e9110f9e7fa8a3": {
+   "source": "In the <g1>Categories</g1> pane: the next category; close or open a branch",
+   "text": "في جزء <g1>الفئات</g1>: الفئة التالية؛ إغلاق أو فتح فرع"
+  },
   "c6fd6136f623cd9a": {
    "source": "Yes, from web players<g1><g2>3</g2></g1>",
    "text": "نعم، من مشغلات الويب<g1><g2>3</g2></g1>"
@@ -7497,6 +7521,10 @@
   "d2c89ce7d7288628": {
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10 أو 11</g1>، 64 بت؛ حوالي 100 ميجابايت من مساحة القرص."
+  },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "خيار الصوت فقط (<g1>صوت فقط</g1>، MP3، Opus، FLAC) لا يحتوي على ترجمات."
   },
   "d2ef5107c69b686f": {
    "source": "Maturity",
@@ -8294,10 +8322,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "للاحتفاظ بتنزيلات موقع ما في المتصفح بشكل دائم، استخدم <g1>عدم أخذ التنزيلات أبدا من</g1> زر شريط الأدوات، أو أضف الموقع إلى <g2>عدم بدء التنزيل تلقائيا من المواقع التالية</g2>. للاحتفاظ بنوع ملف في المتصفح، قم بإزالته من قائمة أنواع الملفات."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "خيار الصوت فقط (<g1>صوت فقط</g1>، MP3) لا يحتوي على ترجمات."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "افتح إعدادات Windows ← التطبيقات، ثم ابحث عن Mister Download Manager واختر إلغاء التثبيت. سيسألك برنامج إلغاء التثبيت عما إذا كنت تريد حذف قائمة التنزيلات والإعدادات الخاصة بك أيضا. لا يتم المساس بالملفات التي قمت بتنزيلها أبدا. بالنسبة للنسخة المحمولة، احذف مجلدها."
@@ -8545,6 +8569,10 @@
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "إذا لم يتم تنزيل الفيديو، راجع <g1>تنزيلات الفيديو</g1>."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "تنزيل فيديو؛ <x1/> يأخذ محدد جودة من <x2/> (<x3/> = أفضل ملف واحد؛ <x4/> = الصوت وحده كما هو في الموقع، غير محول؛ <x5/>، <x6/>، <x7/> أو <x8/> = الصوت كملف MP3 بمعدل البت هذا، <x9/> بأفضل معدل متغير له؛ <x10/> = كملف Opus؛ <x11/> = كملف FLAC، بدون فقدان جودة ولكنه ليس أفضل من صوت الموقع؛ تتطلب التحويلات ffmpeg). <x12/> يحفظ الترجمات بجانبه: رموز اللغة من <x13/> (<x14/>)، أو <x15/> لكل ما قدمه الرافع؛ <x16/> يأخذ التسميات التوضيحية التلقائية للموقع بدلا من ذلك؛ <x17/> يضعها في الفيديو (يتطلب ffmpeg، MP4 أو MKV)."
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",

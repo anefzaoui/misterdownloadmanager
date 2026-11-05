@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Yalnızca ses {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Yalnızca ses, orijinal {type}
 #. text in the Scheduler window
 #, machine
 	August	Ağustos
@@ -907,6 +911,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	İlk dosya:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC sesi olduğu gibi korur ancak sitenin sesinde olmayan bir kaliteyi ekleyemez: dosya yalnızca daha büyük olur.
 #. text in categories.rs
 #, machine
 	Folder:	Klasör:
@@ -1058,6 +1066,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Bir kuyrukta
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Kategorilerde: seçili kategorinin menüsü
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1317,6 +1328,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Sayfayı yukarı/aşağı taşı
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Kategoriler ve indirme listesi arasında geçiş yap
 #. text in the Scheduler window
 #, machine
 	Move down	Aşağı taşı
@@ -2221,11 +2235,11 @@
 	The address must be an http(s) or ftp(s) address	Adres bir http(s) veya ftp(s) adresi olmalıdır
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	En iyi kaliteler ve MP3 için ffmpeg (yaklaşık 80 MB) gerekir.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	En iyi kaliteler olan MP3, Opus ve FLAC için ffmpeg (yaklaşık 80 MB) gerekir.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	En iyi kaliteler ve MP3 için ffmpeg gerekir: sisteminizin paket yöneticisiyle (veya Homebrew) yükleyin.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	En iyi kaliteler olan MP3, Opus ve FLAC için ffmpeg gerekir: sisteminizin paket yöneticisi (veya Homebrew) ile yükleyin.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3249,7 +3263,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menü
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Yukarı / Shift+Aşağı
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Sekme
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

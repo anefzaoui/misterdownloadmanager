@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Audioa soilik {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Audioa soilik, jatorrizko {type}
 #. text in the Scheduler window
 #, machine
 	August	Abuztua
@@ -907,6 +911,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Lehen fitxategia:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLACek soinua zehatz-mehatz mantentzen du, baina ezin du guneko soinuak ez duen kalitaterik gehitu: fitxategia handiagoa baino ez da.
 #. text in categories.rs
 #, machine
 	Folder:	Karpeta:
@@ -1058,6 +1066,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Ilara batean
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Kategorietan: hautatutako kategoriaren menua
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1317,6 +1328,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Orria gora/behera mugitu
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Mugitu kategorien eta deskarga-zerrendaren artean
 #. text in the Scheduler window
 #, machine
 	Move down	Mugitu behera
@@ -2221,11 +2235,11 @@
 	The address must be an http(s) or ftp(s) address	Helbideak http(s) edo ftp(s) helbide bat izan behar du
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Kalitate onenak eta MP3k ffmpeg behar dute (80 MB inguru).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Kalitate onenek, MP3, Opus eta FLACek, ffmpeg behar dute (80 MB inguru).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Kalitate onenak eta MP3k ffmpeg behar dute: instalatu sistemaren pakete-kudeatzailearekin (edo Homebrew-rekin).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Kalitate onenek, MP3, Opus eta FLACek, ffmpeg behar dute: instalatu zure sistemaren pakete-kudeatzailearekin (edo Homebrew-rekin).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3249,7 +3263,15 @@ key	Shift+F10	Maius+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menua
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Maius+Gora / Maius+Behera
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tabuladorea
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

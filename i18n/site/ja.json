@@ -178,10 +178,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "無料でオープンソース。おなじみのインターフェースと、より高速なエンジンを搭載し、トレントとビデオダウンロード機能を内蔵しています。"
   },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1>（約80 MB）は、多くのサイトが高品質のために動画と音声を別々に保存している場合、それらを結合し、音声をMP3に変換します。MDMが提供する際に<g2>ffmpeg をインストール</g2>をクリックしてください。MDMは、公開されているチェックサムと照合して確認します。"
-  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome、Firefox、Edge<g1><g2>3</g2></g1>"
@@ -850,6 +846,10 @@
    "source": "Find a download in a long list",
    "text": "長いリストからダウンロードを検索する"
   },
+  "16cc6550e7f6316d": {
+   "source": "In the <g1>Categories</g1> pane: the selected category's menu (<g2>Properties</g2>, <g3>Add category</g3>, <g4>Delete</g4>)",
+   "text": "<g1>カテゴリ</g1> ペイン内: 選択したカテゴリのメニュー（<g2>プロパティ</g2>、<g3>カテゴリの追加</g3>、<g4>削除</g4>）"
+  },
   "16d498a3a477d64c": {
    "source": "<g1>Dark mode has day mode's sizes and places</g1>: the menu bar, the toolbar, the panes, the list's lines and selection, buttons and the progress window's table measure the same in both modes. Only the colours change.",
    "text": "<g1>ダークモードがデイモードと同じサイズと配置になりました</g1>: メニューバー、ツールバー、ペイン、リストの行と選択、ボタン、進行状況ウィンドウのテーブルは、両方のモードで同じサイズです。色のみが変更されます。"
@@ -897,6 +897,10 @@
   "186ffd95fa88eae7": {
    "source": "A future website's pages (not published yet)",
    "text": "将来のウェブサイトのページ (未公開)"
+  },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "1つ選択してください。ffmpegがない場合、音声が付属している品質のみがリストに表示され、MP3、Opus、FLACは表示されません（ffmpegがこれらを作成します）。"
   },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
@@ -1754,10 +1758,6 @@
    "source": "The server",
    "text": "サーバー"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "いずれかを選択してください。ffmpegがない場合、音声が付属している品質のみがリストに表示され、MP3は表示されません（MP3はffmpegが作成します）。"
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "ブラウザのダウンロードをMDMに送信する →"
@@ -2466,6 +2466,10 @@
    "source": "Crash reports",
    "text": "クラッシュレポート"
   },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "サイトが動画と音声を別々に保存している場合（ほとんどのサイトが高品質のためにそうしています）、<g1>ffmpeg</g1>（約80MB）はそれらを結合し、音声をMP3、Opus、またはFLACファイルに変換します。MDMが提供する際に<g2>ffmpeg をインストール</g2>をクリックしてください。MDMは、公開されているチェックサムと照合して確認します。"
+  },
   "42096c4007ec5640": {
    "source": "Then choose:",
    "text": "次に選択します。"
@@ -2533,6 +2537,10 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447cc2a2f0918427": {
+   "source": "Tab",
+   "text": "Tab"
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -3129,6 +3137,10 @@
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "5分で切り替え"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "リストが表示されるまでお待ちください。各解像度がサイズとともに表示され、最適なものが最初に、次に音声のみが表示されます。 - <g1>音声のみ、オリジナル</g1>: サイト独自のファイルで、変換されていません（M4A、またはサイトが提供するOpusを含むWebM）。最小のファイルで最高の音質です。 - <g2>音声のみ MP3</g2>: 最高の可変ビットレート（VBR）および320、256、192、128 kbpsで、MP3のみを再生するプレーヤー向けです。 - <g3>音声のみ OPUS</g3>: <x4/>ファイル。サイトの音声がすでにOpusの場合（YouTubeは通常そうです）、変換されずにそのファイルに移動されるだけなので、何も失われません。 - <g5>音声のみ FLAC</g5>: ロスレスの<x6/>ファイルで、FLACを必要とするライブラリやプログラム向けです。品質を追加することはできません。サイトの音声はすでに非可逆圧縮されており、FLACはそれをそのまま、数倍大きいファイルに保持します。これを選択すると、ウィンドウにその旨が表示されます。"
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -4138,6 +4150,10 @@
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1.0 秒</g1><g3></g3>"
   },
+  "72f3284ff6dd83fc": {
+   "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
+   "text": "<g1>上</g1> / <g2>下</g2>、<g3>左</g3> / <g4>右</g4>"
+  },
   "72f381013a320442": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
    "text": "<g1>ブラウザのリクエストからプロキシ/SOCKS を使用する…</g1> — 既定でオンになっています。<g2>プロキシ/SOCKS なし</g2>の場合、ブラウザと同様に、MDM は Windows のプロキシ設定を使用します。"
@@ -4285,6 +4301,10 @@
   "7795e2b94936333b": {
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "フォルダパスでは <x1/> と表示されるユーザー名。"
+  },
+  "77a30c9b7d2a6105": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
+   "text": "すべての操作はキーボードから実行でき、MDMはスクリーンリーダー（WindowsのナレーターやNVDAなど）と連携します。MDMのウィンドウ、ダイアログ、メニューは、各コントロールの機能と状態をスクリーンリーダーに伝え、ダウンロードリストは各ダウンロードの名前、ステータス、サイズを読み上げます。<g1>カテゴリ</g1>ペインはツリーとして読み上げられ（各カテゴリはカウント、開閉状態、選択状態が読み上げられます）、メニューバーとすべての右クリックメニューは、そこから項目を実行できるメニューとして読み上げられます。"
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -5458,10 +5478,6 @@
    "source": "What other people can see",
    "text": "他の人が見ることができるもの"
   },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "リストが表示されるまでお待ちください。各解像度がサイズとともに表示され、最適なものが最初に表示されます。次に、サイト独自の形式（サイトが提供するM4AまたはWebM）の<g1>音声のみ</g1>、そして最適な可変ビットレート（VBR）および320、256、192、128 kbpsの<g2>音声のみ MP3</g2>が表示されます。"
-  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "この名前で保存します。"
@@ -5665,6 +5681,10 @@
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 対 Mister Download Manager ダウンロードベンチマーク"
+  },
+  "9e30a9dbdaf7e2cf": {
+   "source": "<g1>Shift+F10</g1> or the <g2>Menu</g2> key",
+   "text": "<g1>Shift+F10</g1> または <g2>メニュー</g2> キー"
   },
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
@@ -6082,6 +6102,10 @@
    "source": "Catch downloads from your browser",
    "text": "ブラウザからダウンロードをキャッチする"
   },
+  "a9efaabb8e76e3a1": {
+   "source": "Move between the <g1>Categories</g1> pane and the download list",
+   "text": "<g1>カテゴリ</g1> ペインとダウンロードリストの間を移動"
+  },
   "a9f05b8a13e881a4": {
    "source": "<g1>Mac and Linux too.</g1> As experimental builds, if you use more than Windows.",
    "text": "<g1>MacとLinuxにも対応。</g1>Windows以外も使う方向けに、試験的ビルドを提供。"
@@ -6245,10 +6269,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM は、ウェブブラウザと同じように、指定されたものをダウンロードします。ただし、より高速で、より詳細な制御が可能です。ソフトウェアやアップデート、ドキュメント、クラウドストレージからの自分のファイル、保存が許可されている動画や音楽、作成者が共有する Linux イメージやその他のトレントなど、ダウンロードする権利があるものすべてを日常的にダウンロードするために作られています。"
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "動画をダウンロードします。<x1/>は<x2/>から品質セレクターを受け取ります（<x3/> = 最良の単一ファイル、<x4/>、<x5/>、<x6/>、または<x7/> = そのビットレートのMP3形式の音声、<x8/> = 最良の可変ビットレートの音声。MP3にはffmpegが必要です）。<x9/>は字幕をその横に保存します。<x10/>からの言語コード（<x11/>）、またはアップローダーが提供したすべての字幕には<x12/>を使用します。<x13/>は代わりにサイトの自動キャプションを使用します。<x14/>はそれらを動画に埋め込みます（ffmpeg、MP4またはMKVが必要です）。"
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -7110,6 +7130,10 @@
    "source": "Paid licence after a 30-day free trial<g1><g2>1</g2></g1>",
    "text": "30日間の無料試用期間後の有料ライセンス<g1><g2>1</g2></g1>"
   },
+  "c6e9110f9e7fa8a3": {
+   "source": "In the <g1>Categories</g1> pane: the next category; close or open a branch",
+   "text": "<g1>カテゴリ</g1> ペイン内: 次のカテゴリへ移動。ブランチを閉じるまたは開く"
+  },
   "c6fd6136f623cd9a": {
    "source": "Yes, from web players<g1><g2>3</g2></g1>",
    "text": "はい、ウェブプレーヤーから<g1><g2>3</g2></g1>"
@@ -7497,6 +7521,10 @@
   "d2c89ce7d7288628": {
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10または11</g1>、64ビット。約100MBのディスク容量。"
+  },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "音声のみの選択（<g1>音声のみ</g1>、MP3、Opus、FLAC）には字幕がありません。"
   },
   "d2ef5107c69b686f": {
    "source": "Maturity",
@@ -8294,10 +8322,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "サイトのダウンロードを永続的にブラウザーに残すには、ツールバーボタンの<g1>決してダウンロードを取得しない</g1>を使用するか、サイトを<g2>以下のサイトからの自動ダウンロードを開始しない</g2>に追加します。ファイルの種類をブラウザーに残すには、ファイルの種類リストから削除します。"
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "音声のみの選択（<g1>音声のみ</g1>、MP3）には字幕はありません。"
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windowsの「設定」→「アプリ」を開き、「Mister Download Manager」を見つけて「アンインストール」を選択してください。アンインストーラーは、ダウンロードリストと設定も削除するかどうかを尋ねます。ダウンロードしたファイルは一切変更されません。ポータブル版の場合は、そのフォルダーを削除してください。"
@@ -8545,6 +8569,10 @@
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "ビデオがダウンロードできない場合は、<g1>ビデオのダウンロード</g1>をご覧ください。"
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "動画をダウンロードします。<x1/>は<x2/>から品質セレクターを受け取ります（<x3/> = 最良の単一ファイル、<x4/> = サイトにあるままの音声、変換なし、<x5/>、<x6/>、<x7/>、または<x8/> = そのビットレートのMP3音声、<x9/> = 最良の可変ビットレート、<x10/> = Opus形式、<x11/> = FLAC形式、ロスレスですがサイトの音声より良くはありません。変換にはffmpegが必要です）。<x12/>は字幕をその横に保存します。<x13/>からの言語コード（<x14/>）、またはアップローダーが提供したすべての字幕には<x15/>を使用します。<x16/>は代わりにサイトの自動キャプションを取得します。<x17/>はそれらを動画に埋め込みます（ffmpeg、MP4またはMKVが必要です）。"
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",

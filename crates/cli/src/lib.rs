@@ -82,8 +82,10 @@ enum Cmd {
         /// The page's address.
         url: String,
         /// Which quality: a choice's selector from `video-info` (e.g. "b[height=360]"); "b" is
-        /// the best single file; "mp3:320", "mp3:256", "mp3:192" or "mp3:128" the sound as an
-        /// MP3 at that bitrate, "mp3:0" at its best variable one (MP3 needs ffmpeg).
+        /// the best single file; "ba" the sound alone as the site has it (not converted);
+        /// "mp3:320", "mp3:256", "mp3:192" or "mp3:128" the sound as an MP3 at that bitrate,
+        /// "mp3:0" at its best variable one; "opus:" as Opus; "flac:" as FLAC (lossless, but it
+        /// can't add quality a lossy source doesn't have). Conversions need ffmpeg.
         #[arg(short, long, default_value = "b")]
         format: String,
         /// Folder to save into.
@@ -534,11 +536,7 @@ async fn run(cmd: Cmd, json: bool) -> anyhow::Result<()> {
             let v = mdm_tools::resolve::resolve(&tool.exe, &url, &Default::default())?;
             // A stem no file in the folder has, whatever the extension: yt-dlp takes any
             // `<stem>.*` there as its own (#32). The extension only sizes the name.
-            let ext = if mdm_tools::resolve::mp3_quality(&format).is_some() {
-                "mp3"
-            } else {
-                "mp4"
-            };
+            let ext = mdm_tools::resolve::audio_conversion(&format).map_or("mp4", |a| a.format);
             let name = format!("{}.{ext}", mdm_engine::naming::sanitize(&v.title));
             let free = mdm_engine::naming::stem_destination(&output, &name, |_| false);
             let stem = free

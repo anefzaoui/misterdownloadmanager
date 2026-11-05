@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Kun lyd {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Kun lyd, original {type}
 #. text in the Scheduler window
 #, machine
 	August	August
@@ -907,6 +911,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Første fil:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC bevarer lyden nøjagtigt, men kan ikke tilføje kvalitet, som webstedets lyd ikke har: filen bliver kun større.
 #. text in categories.rs
 #, machine
 	Folder:	Mappe:
@@ -1058,6 +1066,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	I en kø
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	I kategorierne: menuen for den valgte kategori
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1317,6 +1328,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Flyt en side op/ned
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Flyt mellem kategorierne og downloadlisten
 #. text in the Scheduler window
 #, machine
 	Move down	Flyt ned
@@ -2221,11 +2235,11 @@
 	The address must be an http(s) or ftp(s) address	Adressen skal være en http(s)- eller ftp(s)-adresse
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	De bedste kvaliteter og MP3 kræver ffmpeg (ca. 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	De bedste kvaliteter, MP3, Opus og FLAC, kræver ffmpeg (ca. 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	De bedste kvaliteter og MP3 kræver ffmpeg: installer det med systemets pakkehåndtering (eller Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	De bedste kvaliteter, MP3, Opus og FLAC, kræver ffmpeg: installer det med systemets pakkehåndtering (eller Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3249,7 +3263,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Skift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Pil op / Shift+Pil ned
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

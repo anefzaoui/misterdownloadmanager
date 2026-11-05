@@ -178,10 +178,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Kostenlos und Open Source. Die Oberfläche, die Sie bereits kennen, eine schnellere Engine darunter, Torrents und Video integriert."
   },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (ca. 80 MB) fügt Video und Ton zusammen, wenn eine Website sie getrennt hält, was die meisten Websites für höhere Qualitäten tun, und wandelt den Ton in eine MP3-Datei um. Klicken Sie auf <g2>ffmpeg installieren</g2>, wenn MDM es anbietet. MDM prüft es anhand der Prüfsummen, die in seiner Veröffentlichung angegeben sind."
-  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -850,6 +846,10 @@
    "source": "Find a download in a long list",
    "text": "Einen Download in einer langen Liste finden"
   },
+  "16cc6550e7f6316d": {
+   "source": "In the <g1>Categories</g1> pane: the selected category's menu (<g2>Properties</g2>, <g3>Add category</g3>, <g4>Delete</g4>)",
+   "text": "Im Bereich <g1>Kategorien</g1>: das Menü der ausgewählten Kategorie (<g2>Eigenschaften</g2>, <g3>Kategorie hinzufügen</g3>, <g4>Löschen</g4>)"
+  },
   "16d498a3a477d64c": {
    "source": "<g1>Dark mode has day mode's sizes and places</g1>: the menu bar, the toolbar, the panes, the list's lines and selection, buttons and the progress window's table measure the same in both modes. Only the colours change.",
    "text": "<g1>Der Dunkelmodus hat die Größen und Positionen des Tagesmodus</g1>: Die Menüleiste, die Symbolleiste, die Bereiche, die Zeilen und die Auswahl der Liste, die Schaltflächen und die Tabelle des Fortschrittsfensters messen in beiden Modi gleich. Nur die Farben ändern sich."
@@ -897,6 +897,10 @@
   "186ffd95fa88eae7": {
    "source": "A future website's pages (not published yet)",
    "text": "Die Seiten einer zukünftigen Website (noch nicht veröffentlicht)"
+  },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "Wählen Sie eine aus. Ohne ffmpeg werden nur die Qualitäten aufgelistet, die mit Ton geliefert werden, und keine MP3, Opus oder FLAC (ffmpeg erstellt diese)."
   },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
@@ -1754,10 +1758,6 @@
    "source": "The server",
    "text": "Der Server"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "Wählen Sie eine Option. Ohne ffmpeg werden nur die Qualitäten aufgelistet, die mit Ton geliefert werden, und keine MP3 (ffmpeg erstellt sie)."
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "Browser-Downloads an MDM senden →"
@@ -2466,6 +2466,10 @@
    "source": "Crash reports",
    "text": "Absturzberichte"
   },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "<g1>ffmpeg</g1> (ca. 80 MB) fügt Video und Ton zusammen, wenn eine Website sie getrennt hält, was die meisten Websites für höhere Qualitäten tun, und wandelt den Ton in eine MP3-, Opus- oder FLAC-Datei um. Klicken Sie auf <g2>ffmpeg installieren</g2>, wenn MDM es anbietet. MDM prüft es anhand der Prüfsummen, die in seiner Veröffentlichung angegeben sind."
+  },
   "42096c4007ec5640": {
    "source": "Then choose:",
    "text": "Dann wählen Sie:"
@@ -2533,6 +2537,10 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447cc2a2f0918427": {
+   "source": "Tab",
+   "text": "Tab"
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -3129,6 +3137,10 @@
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "In fünf Minuten wechseln"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "Warten Sie auf die Liste. Sie zeigt jede Auflösung mit ihrer Größe, die beste zuerst, dann nur den Ton: – <g1>Nur Audio, Original</g1>: die eigene Datei der Website, nicht konvertiert (M4A oder WebM mit Opus, wie die Website es bereitstellt). Der beste Ton, den es gibt, in der kleinsten Datei. – <g2>Nur Audio MP3</g2> mit der besten variablen Bitrate (VBR) und mit 320, 256, 192 und 128 kbit/s, für Player, die nur MP3 unterstützen. – <g3>Nur Audio OPUS</g3>: eine <x4/>-Datei. Wenn der Ton der Website bereits Opus ist (bei YouTube ist dies normalerweise der Fall), wird er nur in diese Datei verschoben, nicht konvertiert, sodass nichts verloren geht. – <g5>Nur Audio FLAC</g5>: eine verlustfreie <x6/>-Datei, für eine Bibliothek oder ein Programm, das FLAC benötigt. Es kann keine Qualität hinzufügen: Der Ton der Website ist bereits verlustbehaftet komprimiert, und FLAC behält ihn genau so bei, wie er kam, in einer um ein Vielfaches größeren Datei. Das Fenster weist darauf hin, wenn Sie es auswählen."
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -4138,6 +4150,10 @@
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1,0 s</g1><g3></g3>"
   },
+  "72f3284ff6dd83fc": {
+   "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
+   "text": "<g1>Auf</g1> / <g2>Ab</g2>, <g3>Links</g3> / <g4>Rechts</g4>"
+  },
   "72f381013a320442": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
    "text": "<g1>Proxy/SOCKS aus einer Browseranfrage verwenden…</g1> – standardmäßig aktiviert. Bei <g2>Kein Proxy/SOCKS</g2> bewirkt dies, dass MDM die Proxy-Einstellungen von Windows verwendet, wie es Browser tun."
@@ -4285,6 +4301,10 @@
   "7795e2b94936333b": {
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "Ihren Benutzernamen, der in Ordnerpfaden als <x1/> angezeigt wird."
+  },
+  "77a30c9b7d2a6105": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
+   "text": "Alles lässt sich über die Tastatur erledigen, und MDM funktioniert mit Screenreadern (wie Narrator und NVDA unter Windows): Seine Fenster, Dialoge und Menüs teilen ihnen mit, was jedes Steuerelement ist und welchen Zustand es hat, und die Download-Liste liest Name, Status und Größe jedes Downloads vor. Der Bereich <g1>Kategorien</g1> wird als Baum gelesen (jede Kategorie mit ihrer Anzahl, offen oder geschlossen, ausgewählt oder nicht), und die Menüleiste sowie jedes Rechtsklick-Menü als Menüs, deren Elemente von dort aus ausgeführt werden können."
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -5458,10 +5478,6 @@
    "source": "What other people can see",
    "text": "Was andere sehen können"
   },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "Warten Sie auf die Liste. Sie zeigt jede Auflösung mit ihrer Größe, die beste zuerst, dann <g1>Nur Audio</g1> im Format der Website (M4A oder WebM, wie die Website es bereitstellt), dann <g2>Nur Audio MP3</g2> mit der besten variablen Bitrate (VBR) und mit 320, 256, 192 und 128 kbit/s."
-  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "Speichern Sie es unter diesem Namen."
@@ -5665,6 +5681,10 @@
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 vs. Mister Download Manager: Download-Benchmark"
+  },
+  "9e30a9dbdaf7e2cf": {
+   "source": "<g1>Shift+F10</g1> or the <g2>Menu</g2> key",
+   "text": "<g1>Umschalt+F10</g1> oder die <g2>Menü</g2>-Taste"
   },
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
@@ -6082,6 +6102,10 @@
    "source": "Catch downloads from your browser",
    "text": "Downloads aus Ihrem Browser abfangen"
   },
+  "a9efaabb8e76e3a1": {
+   "source": "Move between the <g1>Categories</g1> pane and the download list",
+   "text": "Zwischen dem Bereich <g1>Kategorien</g1> und der Download-Liste wechseln"
+  },
   "a9f05b8a13e881a4": {
    "source": "<g1>Mac and Linux too.</g1> As experimental builds, if you use more than Windows.",
    "text": "<g1>Auch für Mac und Linux.</g1> Als experimentelle Builds, wenn Sie mehr als nur Windows nutzen."
@@ -6245,10 +6269,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM lädt herunter, worauf Sie es verweisen, so wie ein Webbrowser, nur schneller und mit mehr Kontrolle. Es ist für alltägliche Downloads gedacht: Software und Updates, Dokumente, Ihre eigenen Dateien aus dem Cloud-Speicher, Videos und Musik, die Sie speichern dürfen, Linux-Images und andere Torrents, die von ihren Herstellern geteilt werden, und alles andere, was Sie herunterladen dürfen."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "Ein Video herunterladen; <x1/> nimmt einen Qualitätsselektor von <x2/> (<x3/> = die beste einzelne Datei; <x4/>, <x5/>, <x6/> oder <x7/> = der Ton als MP3 mit dieser Bitrate, <x8/> mit der besten variablen; MP3 benötigt ffmpeg). <x9/> speichert Untertitel daneben: Sprachcodes von <x10/> (<x11/>), oder <x12/> für jeden, den der Uploader angegeben hat; <x13/> nimmt stattdessen die automatischen Untertitel der Website; <x14/> fügt sie in das Video ein (benötigt ffmpeg, MP4 oder MKV)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -7110,6 +7130,10 @@
    "source": "Paid licence after a 30-day free trial<g1><g2>1</g2></g1>",
    "text": "Kostenpflichtige Lizenz nach 30-tägiger kostenloser Testphase<g1><g2>1</g2></g1>"
   },
+  "c6e9110f9e7fa8a3": {
+   "source": "In the <g1>Categories</g1> pane: the next category; close or open a branch",
+   "text": "Im Bereich <g1>Kategorien</g1>: nächste Kategorie; einen Zweig schließen oder öffnen"
+  },
   "c6fd6136f623cd9a": {
    "source": "Yes, from web players<g1><g2>3</g2></g1>",
    "text": "Ja, von Web-Playern<g1><g2>3</g2></g1>"
@@ -7497,6 +7521,10 @@
   "d2c89ce7d7288628": {
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10 oder 11</g1>, 64-Bit; ca. 100 MB Festplattenspeicher."
+  },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "Eine reine Audio-Auswahl (<g1>Nur Audio</g1>, MP3, Opus, FLAC) hat keine Untertitel."
   },
   "d2ef5107c69b686f": {
    "source": "Maturity",
@@ -8294,10 +8322,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Um die Downloads einer Seite dauerhaft im Browser zu behalten, verwenden Sie die Schaltfläche <g1>Niemals Downloads von</g1> in der Symbolleiste oder fügen Sie die Seite zu <g2>Downloads von folgenden Seiten nicht automatisch starten</g2> hinzu. Um einen Dateityp im Browser zu behalten, entfernen Sie ihn aus der Dateitypenliste."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "Eine reine Audio-Auswahl (<g1>Nur Audio</g1>, MP3) hat keine Untertitel."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Öffnen Sie die Windows-Einstellungen → Apps, suchen Sie Mister Download Manager und wählen Sie Deinstallieren. Das Deinstallationsprogramm fragt, ob Ihre Download-Liste und Einstellungen ebenfalls gelöscht werden sollen. Heruntergeladene Dateien bleiben unberührt. Für die portable Version löschen Sie deren Ordner."
@@ -8545,6 +8569,10 @@
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Wenn das Video nicht heruntergeladen werden kann, siehe <g1>Video-Downloads</g1>."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Ein Video herunterladen; <x1/> wählt eine Qualität aus <x2/> (<x3/> = die beste einzelne Datei; <x4/> = nur der Ton, wie er auf der Website vorliegt, nicht konvertiert; <x5/>, <x6/>, <x7/> oder <x8/> = der Ton als MP3 mit dieser Bitrate, <x9/> mit der besten variablen Bitrate; <x10/> = als Opus; <x11/> = als FLAC, verlustfrei, aber nicht besser als der Ton der Website; Konvertierungen benötigen ffmpeg). <x12/> speichert Untertitel daneben: Sprachcodes aus <x13/> (<x14/>), oder <x15/> für alle vom Uploader bereitgestellten; <x16/> verwendet stattdessen die automatischen Untertitel der Website; <x17/> fügt sie in das Video ein (benötigt ffmpeg, MP4 oder MKV)."
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",

@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ફક્ત ઑડિયો {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ફક્ત ઑડિઓ, મૂળ {type}
 #. text in the Scheduler window
 #, machine
 	August	ઓગસ્ટ
@@ -907,6 +911,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	પ્રથમ ફાઇલ:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC અવાજને બરાબર રાખે છે, પરંતુ તે સાઇટના અવાજમાં ન હોય તેવી ગુણવત્તા ઉમેરી શકતું નથી: ફાઇલ ફક્ત મોટી હોય છે.
 #. text in categories.rs
 #, machine
 	Folder:	ફોલ્ડર:
@@ -1058,6 +1066,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	કતારમાં
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	શ્રેણીઓમાં: પસંદ કરેલી શ્રેણીનું મેનૂ
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1317,6 +1328,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	પૃષ્ઠ ઉપર/નીચે ખસેડો
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	શ્રેણીઓ અને ડાઉનલોડ સૂચિ વચ્ચે ખસેડો
 #. text in the Scheduler window
 #, machine
 	Move down	નીચે ખસેડો
@@ -2221,11 +2235,11 @@
 	The address must be an http(s) or ftp(s) address	સરનામું http(s) અથવા ftp(s) સરનામું હોવું આવશ્યક છે
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	શ્રેષ્ઠ ગુણવત્તા અને MP3 માટે ffmpeg (લગભગ 80 MB) જરૂરી છે.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	શ્રેષ્ઠ ગુણવત્તા, MP3, Opus અને FLAC ને ffmpeg (લગભગ 80 MB) ની જરૂર છે.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	શ્રેષ્ઠ ગુણવત્તા અને MP3 માટે ffmpeg જરૂરી છે: તેને તમારા સિસ્ટમના પેકેજ મેનેજર (અથવા Homebrew) વડે ઇન્સ્ટોલ કરો.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	શ્રેષ્ઠ ગુણવત્તા, MP3, Opus અને FLAC ને ffmpeg ની જરૂર છે: તેને તમારા સિસ્ટમના પેકેજ મેનેજર (અથવા Homebrew) વડે ઇન્સ્ટોલ કરો.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3249,7 +3263,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / મેનૂ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+ઉપર / Shift+નીચે
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

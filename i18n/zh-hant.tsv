@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	僅音訊 {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	僅音訊，原始 {type}
 #. text in the Scheduler window
 #, machine
 	August	八月
@@ -907,6 +911,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	第一個檔案:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC 會完全保留音訊，但無法提升網站音訊所沒有的品質：檔案只會變大。
 #. text in categories.rs
 #, machine
 	Folder:	資料夾:
@@ -1058,6 +1066,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	在佇列中
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	在類別中：所選類別的功能表
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1317,6 +1328,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	上/下移動頁面
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	在類別和下載清單之間移動
 #. text in the Scheduler window
 #, machine
 	Move down	下移
@@ -2221,11 +2235,11 @@
 	The address must be an http(s) or ftp(s) address	位址必須是 http(s) 或 ftp(s) 位址
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	最佳品質和 MP3 需要 ffmpeg (約 80 MB)。
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	最佳品質、MP3、Opus 和 FLAC 需要 ffmpeg (約 80 MB)。
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	最佳品質和 MP3 需要 ffmpeg：請使用您系統的套件管理員 (或 Homebrew) 安裝。
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	最佳品質、MP3、Opus 和 FLAC 需要 ffmpeg：請使用系統的套件管理員 (或 Homebrew) 安裝。
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3249,7 +3263,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / 功能表
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+向上鍵 / Shift+向下鍵
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

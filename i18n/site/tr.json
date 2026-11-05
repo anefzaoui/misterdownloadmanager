@@ -178,10 +178,6 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "Ücretsiz ve açık kaynak. Bildiğiniz arayüz, altında daha hızlı bir motor, yerleşik torrentler ve video indirme."
   },
-  "04917582aad4754c": {
-   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
-   "text": "<g1>ffmpeg</g1> (yaklaşık 80 MB), bir site videoyu ve sesi ayrı tuttuğunda (çoğu site daha yüksek kaliteler için bunu yapar) bunları birleştirir ve sesi MP3'e dönüştürür. MDM size <g2>ffmpeg'i yükle</g2> seçeneğini sunduğunda tıklayın. MDM, yayınlanan sağlama toplamlarıyla kontrol eder."
-  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
@@ -850,6 +846,10 @@
    "source": "Find a download in a long list",
    "text": "Uzun bir listede bir indirmeyi bulun"
   },
+  "16cc6550e7f6316d": {
+   "source": "In the <g1>Categories</g1> pane: the selected category's menu (<g2>Properties</g2>, <g3>Add category</g3>, <g4>Delete</g4>)",
+   "text": "<g1>Kategoriler</g1> bölmesinde: seçili kategorinin menüsü (<g2>Özellikler</g2>, <g3>Kategori ekle</g3>, <g4>Sil</g4>)"
+  },
   "16d498a3a477d64c": {
    "source": "<g1>Dark mode has day mode's sizes and places</g1>: the menu bar, the toolbar, the panes, the list's lines and selection, buttons and the progress window's table measure the same in both modes. Only the colours change.",
    "text": "<g1>Karanlık mod, gündüz modunun boyutlarına ve yerlerine sahip</g1>: menü çubuğu, araç çubuğu, bölmeler, listenin satırları ve seçimi, düğmeler ve ilerleme penceresinin tablosu her iki modda da aynı boyuttadır. Yalnızca renkler değişir."
@@ -897,6 +897,10 @@
   "186ffd95fa88eae7": {
    "source": "A future website's pages (not published yet)",
    "text": "Gelecekteki bir web sitesinin sayfaları (henüz yayınlanmadı)"
+  },
+  "188937d35875a6f2": {
+   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3, Opus or FLAC (ffmpeg makes them).",
+   "text": "Birini seçin. ffmpeg olmadan, sadece sesiyle birlikte gelen kaliteler listelenir ve MP3, Opus veya FLAC (ffmpeg bunları yapar) bulunmaz."
   },
   "189f2aa313a99843": {
    "source": "The Scheduler window",
@@ -1754,10 +1758,6 @@
    "source": "The server",
    "text": "Sunucu"
   },
-  "2d7508c5d79aed56": {
-   "source": "Pick one. Without ffmpeg, only the qualities that come with their sound are listed, and no MP3 (ffmpeg makes it).",
-   "text": "Birini seçin. ffmpeg olmadan, yalnızca sesiyle birlikte gelen kaliteler listelenir ve MP3 olmaz (ffmpeg onu yapar)."
-  },
   "2d8dc0fb4cd25e16": {
    "source": "Send browser downloads to MDM →",
    "text": "Tarayıcı indirmelerini MDM'ye gönder →"
@@ -2466,6 +2466,10 @@
    "source": "Crash reports",
    "text": "Çökme raporları"
   },
+  "4208f79380d548a0": {
+   "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
+   "text": "Bir site videoyu ve sesi ayrı tuttuğunda (çoğu site yüksek kaliteler için bunu yapar), <g1>ffmpeg</g1> (yaklaşık 80 MB) bunları birleştirir ve sesi bir MP3, Opus veya FLAC dosyasına dönüştürür. MDM size sunduğunda <g2>ffmpeg'i yükle</g2> düğmesine tıklayın. MDM, yayınlanan sağlama toplamlarıyla kontrol eder."
+  },
   "42096c4007ec5640": {
    "source": "Then choose:",
    "text": "Ardından seçin:"
@@ -2533,6 +2537,10 @@
   "44733691a19bafa4": {
    "source": "F3",
    "text": "F3"
+  },
+  "447cc2a2f0918427": {
+   "source": "Tab",
+   "text": "Sekme"
   },
   "44970b9b25afe28d": {
    "source": "These are the checks CI runs; each works on a clean clone:",
@@ -3129,6 +3137,10 @@
   "5716d85f422c30d9": {
    "source": "Switch in five minutes",
    "text": "Beş dakikada geçiş yapın"
+  },
+  "572eaa88b689dd90": {
+   "source": "Wait for the list. It shows each resolution with its size, best first, then the sound alone: - <g1>Audio only, original</g1>: the site's own file, not converted (M4A, or WebM with Opus inside, as the site serves it). The best sound there is, in the smallest file. - <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps, for players that only take MP3. - <g3>Audio only OPUS</g3>: an <x4/> file. When the site's sound is Opus already (YouTube's usually is), it's only moved into that file, not converted, so nothing is lost. - <g5>Audio only FLAC</g5>: a lossless <x6/> file, for a library or a program that wants FLAC. It can't add quality: the site's sound is already compressed with losses, and FLAC keeps it exactly as it came, in a file several times bigger. The window says so when you choose it.",
+   "text": "Listeyi bekleyin. Her çözünürlüğü boyutuyla birlikte, en iyiden başlayarak, ardından sadece sesi gösterir: - <g1>Sadece ses, orijinal</g1>: sitenin kendi dosyası, dönüştürülmemiş (sitenin sunduğu gibi M4A veya içinde Opus bulunan WebM). En iyi ses kalitesi, en küçük dosyada. - <g2>Sadece ses MP3</g2>: en iyi değişken bit hızında (VBR) ve sadece MP3 çalan oynatıcılar için 320, 256, 192 ve 128 kbps'de. - <g3>Sadece ses OPUS</g3>: bir <x4/> dosyası. Sitenin sesi zaten Opus ise (YouTube'unki genellikle öyledir), dönüştürülmez, sadece bu dosyaya taşınır, böylece hiçbir şey kaybolmaz. - <g5>Sadece ses FLAC</g5>: bir kütüphane veya FLAC isteyen bir program için kayıpsız bir <x6/> dosyası. Kalite ekleyemez: sitenin sesi zaten kayıplı sıkıştırılmıştır ve FLAC, geldiği gibi, birkaç kat daha büyük bir dosyada tam olarak korur. Seçtiğinizde pencere bunu belirtir."
   },
   "5730437f2b40d7c8": {
    "source": "You can also <g1>open the form yourself</g1>; it asks for the same details.",
@@ -4138,6 +4150,10 @@
    "source": "<g1><g2></g2>1.0 s</g1><g3></g3>",
    "text": "<g1><g2></g2>1.0 s</g1><g3></g3>"
   },
+  "72f3284ff6dd83fc": {
+   "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
+   "text": "<g1>Yukarı</g1> / <g2>Aşağı</g2>, <g3>Sol</g3> / <g4>Sağ</g4>"
+  },
   "72f381013a320442": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. With <g2>No proxy/socks</g2>, it makes MDM use Windows' proxy settings, as browsers do.",
    "text": "<g1>Bir tarayıcı isteğinden proxy/socks kullan…</g1> — varsayılan olarak açıktır. <g2>Proxy/SOCKS yok</g2> ile, MDM'in tarayıcıların yaptığı gibi Windows'un proxy ayarlarını kullanmasını sağlar."
@@ -4285,6 +4301,10 @@
   "7795e2b94936333b": {
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "klasör yollarında <x1/> olarak görünen kullanıcı adınız."
+  },
+  "77a30c9b7d2a6105": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
+   "text": "Her şey klavyeden yapılabilir ve MDM ekran okuyucularla (Windows'taki Narrator ve NVDA gibi) çalışır: pencereleri, iletişim kutuları ve menüleri, her bir kontrolün ne olduğunu ve durumunu onlara bildirir ve indirme listesi her indirmenin adını, durumunu ve boyutunu okur. <g1>Kategoriler</g1> bölmesi bir ağaç gibi okunur (her kategori sayısıyla birlikte, açık veya kapalı, seçili veya değil) ve menü çubuğu ile her sağ tıklama menüsü, öğeleri oradan çalıştırılabilen menüler gibi okunur."
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -5458,10 +5478,6 @@
    "source": "What other people can see",
    "text": "Başkalarının görebilecekleri"
   },
-  "9806786dcda7c9ff": {
-   "source": "Wait for the list. It shows each resolution with its size, best first, then <g1>Audio only</g1> in the site's own format (M4A or WebM, as the site serves it), then <g2>Audio only MP3</g2> at its best variable bitrate (VBR) and at 320, 256, 192 and 128 kbps.",
-   "text": "Listeyi bekleyin. Her çözünürlüğü boyutuyla birlikte gösterir, en iyisi başta olmak üzere, ardından sitenin kendi formatında (sitenin sunduğu gibi M4A veya WebM) <g1>Yalnızca ses</g1>, sonra en iyi değişken bit hızında (VBR) ve 320, 256, 192 ve 128 kbps'de <g2>Yalnızca ses MP3</g2>."
-  },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
    "text": "Bu adla kaydedin."
@@ -5665,6 +5681,10 @@
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 ile Mister Download Manager indirme karşılaştırması"
+  },
+  "9e30a9dbdaf7e2cf": {
+   "source": "<g1>Shift+F10</g1> or the <g2>Menu</g2> key",
+   "text": "<g1>Shift+F10</g1> veya <g2>Menü</g2> tuşu"
   },
   "9e343096f9189eb2": {
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
@@ -6082,6 +6102,10 @@
    "source": "Catch downloads from your browser",
    "text": "Tarayıcınızdan indirmeleri yakalayın"
   },
+  "a9efaabb8e76e3a1": {
+   "source": "Move between the <g1>Categories</g1> pane and the download list",
+   "text": "<g1>Kategoriler</g1> bölmesi ile indirme listesi arasında geçiş yap"
+  },
   "a9f05b8a13e881a4": {
    "source": "<g1>Mac and Linux too.</g1> As experimental builds, if you use more than Windows.",
    "text": "<g1>Mac ve Linux da.</g1> Windows dışında bir işletim sistemi kullanıyorsanız deneysel yapılar olarak."
@@ -6245,10 +6269,6 @@
   "ade160a1aa789777": {
    "source": "MDM downloads what you point it at, the way a web browser does, only faster and with more control. It's made for everyday downloads: software and updates, documents, your own files from cloud storage, videos and music you're allowed to save, Linux images and other torrents shared by their makers, and anything else you have the right to download.",
    "text": "MDM, bir web tarayıcısının yaptığı gibi, sadece daha hızlı ve daha fazla kontrolle, işaret ettiğiniz her şeyi indirir. Günlük indirmeler için yapılmıştır: yazılım ve güncellemeler, belgeler, bulut depolamanızdaki kendi dosyalarınız, kaydetmenize izin verilen videolar ve müzikler, yapımcıları tarafından paylaşılan Linux imajları ve diğer torrentler ve indirme hakkına sahip olduğunuz diğer her şey."
-  },
-  "adfb560dd47a90fc": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg). <x9/> saves subtitles beside it: language codes from <x10/> (<x11/>), or <x12/> for every one the uploader gave; <x13/> takes the site's automatic captions instead; <x14/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "Bir video indirin; <x1/>, <x2/> içinden bir kalite seçici alır (<x3/> = en iyi tek dosya; <x4/>, <x5/>, <x6/> veya <x7/> = o bit hızında MP3 olarak ses, <x8/> en iyi değişken bit hızında; MP3 için ffmpeg gerekir). <x9/>, altyazıları yanına kaydeder: <x10/> (<x11/>) dil kodları veya yükleyicinin verdiği her biri için <x12/>; <x13/> bunun yerine sitenin otomatik altyazılarını alır; <x14/> bunları videonun içine yerleştirir (ffmpeg, MP4 veya MKV gerekir)."
   },
   "ae02b0af41896027": {
    "source": "turns it off again. Without the API, the assistant can still add downloads, the same as MDM's <g1>command line</g1>.",
@@ -7110,6 +7130,10 @@
    "source": "Paid licence after a 30-day free trial<g1><g2>1</g2></g1>",
    "text": "30 günlük ücretsiz deneme sonrası ücretli lisans<g1><g2>1</g2></g1>"
   },
+  "c6e9110f9e7fa8a3": {
+   "source": "In the <g1>Categories</g1> pane: the next category; close or open a branch",
+   "text": "<g1>Kategoriler</g1> bölmesinde: sonraki kategori; bir dalı kapat veya aç"
+  },
   "c6fd6136f623cd9a": {
    "source": "Yes, from web players<g1><g2>3</g2></g1>",
    "text": "Evet, web oynatıcılardan<g1><g2>3</g2></g1>"
@@ -7497,6 +7521,10 @@
   "d2c89ce7d7288628": {
    "source": "<g1>Windows 10 or 11</g1>, 64-bit; about 100 MB of disk space.",
    "text": "<g1>Windows 10 veya 11</g1>, 64-bit; yaklaşık 100 MB disk alanı."
+  },
+  "d2cf6aef8c423667": {
+   "source": "A sound-only choice (<g1>Audio only</g1>, MP3, Opus, FLAC) has no subtitles.",
+   "text": "Sadece ses seçeneği (<g1>Sadece ses</g1>, MP3, Opus, FLAC) altyazı içermez."
   },
   "d2ef5107c69b686f": {
    "source": "Maturity",
@@ -8294,10 +8322,6 @@
    "source": "To keep a site's downloads in the browser for good, use the toolbar button's <g1>Never take downloads from</g1>, or add the site to <g2>Don't start downloading automatically from the following sites</g2>. To keep a file type in the browser, take it off the file types list.",
    "text": "Bir sitenin indirmelerini kalıcı olarak tarayıcıda tutmak için, araç çubuğu düğmesinin <g1>Asla indirme alma</g1> seçeneğini kullanın veya siteyi <g2>Aşağıdaki sitelerden otomatik indirmeye başlama</g2> listesine ekleyin. Bir dosya türünü tarayıcıda tutmak için, dosya türleri listesinden çıkarın."
   },
-  "ea5082456c0a9e2c": {
-   "source": "A sound-only choice (<g1>Audio only</g1>, MP3) has no subtitles.",
-   "text": "Yalnızca ses seçeneği (<g1>Yalnızca ses</g1>, MP3) altyazı içermez."
-  },
   "ea8bd4684ee842f8": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windows Ayarları → Uygulamalar'ı açın, Mister Download Manager'ı bulun ve Kaldır'ı seçin. Kaldırıcı, indirme listenizi ve ayarlarınızı da silip silmeyeceğinizi sorar. İndirdiğiniz dosyalara asla dokunulmaz. Taşınabilir sürüm için klasörünü silin."
@@ -8545,6 +8569,10 @@
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Video indirilemiyorsa, <g1>Video indirmeleri</g1> bölümüne bakın."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Bir video indirin; <x1/>, <x2/> içinden bir kalite seçici alır (<x3/> = en iyi tek dosya; <x4/> = sitenin sunduğu haliyle, dönüştürülmemiş ses; <x5/>, <x6/>, <x7/> veya <x8/> = o bit hızında MP3 olarak ses, <x9/> en iyi değişken bit hızında; <x10/> = Opus olarak; <x11/> = FLAC olarak, kayıpsız ancak sitenin sesinden daha iyi değil; dönüştürmeler için ffmpeg gerekir). <x12/>, yanına altyazıları kaydeder: <x13/> içindeki dil kodları (<x14/>) veya yükleyicinin verdiği her biri için <x15/>; <x16/> bunun yerine sitenin otomatik altyazılarını alır; <x17/> bunları videonun içine yerleştirir (ffmpeg, MP4 veya MKV gerekir)."
   },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",

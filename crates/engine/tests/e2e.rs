@@ -931,6 +931,31 @@ async fn cookies_are_sent_to_their_own_host() {
 }
 
 #[tokio::test]
+async fn a_download_completing_during_a_progress_save_finishes() {
+    // #116: progress saved every millisecond, so one is under way (flushing the part file) as
+    // the last bytes arrive. The download must wait for it, then finish: no "part file still
+    // in use", and no progress file written beside the finished file afterwards (#106).
+    let s = server("rate=4M").await;
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/8M/s.bin?seed=34").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let opts = Options {
+        save_interval: std::time::Duration::from_millis(1),
+        ..fast_opts()
+    };
+    let out = Download::start(req, opts).wait().await.expect("finished");
+    assert_eq!(std::fs::metadata(&out.path).unwrap().len(), 8 << 20);
+    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+    assert!(
+        !mdm_engine::state::state_path(&out.path).exists(),
+        "no progress file beside the finished file"
+    );
+}
+
+#[tokio::test]
 async fn crash_after_the_final_rename_completes_on_resume() {
     let s = server("rate=1M").await;
     let (_dir, state) = paused(&s, "/gen/8M/f.bin?seed=13").await;

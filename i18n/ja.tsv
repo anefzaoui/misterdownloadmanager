@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	オーディオのみ {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	音声のみ、オリジナル {type}
 #. text in the Scheduler window
 #, machine
 	August	8 月
@@ -907,6 +911,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	最初のファイル:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC は音声を正確に保持しますが、サイトの音声にない品質を追加することはできません。ファイルが大きくなるだけです。
 #. text in categories.rs
 #, machine
 	Folder:	フォルダー:
@@ -1058,6 +1066,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	キュー内
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	カテゴリ内: 選択したカテゴリのメニュー
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1317,6 +1328,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ページを上下に移動
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	カテゴリとダウンロード リスト間を移動する
 #. text in the Scheduler window
 #, machine
 	Move down	下に移動
@@ -2221,11 +2235,11 @@
 	The address must be an http(s) or ftp(s) address	アドレスは http(s) または ftp(s) である必要があります
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	最高品質と MP3 には ffmpeg (約 80 MB) が必要です。
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	最高の品質 (MP3、Opus、FLAC) には ffmpeg (約 80 MB) が必要です。
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	最高品質と MP3 には ffmpeg が必要です。システムのパッケージ マネージャー (または Homebrew) でインストールしてください。
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	最高の品質 (MP3、Opus、FLAC) には ffmpeg が必要です。システムのパッケージ マネージャー (または Homebrew) でインストールしてください。
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3249,7 +3263,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / メニュー
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+上 / Shift+下
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

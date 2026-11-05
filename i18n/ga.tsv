@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Fuaim amháin {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Fuaim amháin, {type} bunaidh
 #. text in the Scheduler window
 #, machine
 	August	Lúnasa
@@ -907,6 +911,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	An chéad chomhad:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	Coinníonn FLAC an fhuaim go díreach, ach ní féidir leis cáilíocht a chur leis nach bhfuil ag fuaim an tsuímh: níl an comhad ach níos mó.
 #. text in categories.rs
 #, machine
 	Folder:	Fillteán:
@@ -1058,6 +1066,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	I scuaine
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Sna catagóirí: roghchlár na catagóire roghnaithe
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1317,6 +1328,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Bog leathanach suas / síos
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Bog idir na catagóirí agus an liosta íoslódálacha
 #. text in the Scheduler window
 #, machine
 	Move down	Bog síos
@@ -2221,11 +2235,11 @@
 	The address must be an http(s) or ftp(s) address	Ní mór gur seoladh http(s) nó ftp(s) é an seoladh
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Teastaíonn ffmpeg (thart ar 80 MB) ó na cáilíochtaí is fearr agus ó MP3.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Teastaíonn ffmpeg (thart ar 80 MB) ó na cáilíochtaí is fearr, MP3, Opus agus FLAC.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Teastaíonn ffmpeg ó na cáilíochtaí is fearr agus ó MP3: suiteáil é le bainisteoir pacáistí do chórais (nó Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Teastaíonn ffmpeg ó na cáilíochtaí is fearr, MP3, Opus agus FLAC: suiteáil é le bainisteoir pacáiste do chórais (nó Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3249,7 +3263,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Roghchlár
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Suas / Shift+Síos
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

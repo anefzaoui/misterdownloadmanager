@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Chỉ âm thanh {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Chỉ âm thanh, {type} gốc
 #. text in the Scheduler window
 #, machine
 	August	Tháng 8
@@ -907,6 +911,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Tệp đầu tiên:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC giữ nguyên âm thanh, nhưng không thể thêm chất lượng mà âm thanh của trang web không có: tệp chỉ lớn hơn.
 #. text in categories.rs
 #, machine
 	Folder:	Thư mục:
@@ -1058,6 +1066,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Trong hàng đợi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Trong các danh mục: menu của danh mục đã chọn
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1317,6 +1328,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Di chuyển trang lên/xuống
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Di chuyển giữa các danh mục và danh sách tải xuống
 #. text in the Scheduler window
 #, machine
 	Move down	Di chuyển xuống
@@ -2221,11 +2235,11 @@
 	The address must be an http(s) or ftp(s) address	Địa chỉ phải là địa chỉ http(s) hoặc ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Chất lượng tốt nhất và MP3 cần ffmpeg (khoảng 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Các chất lượng tốt nhất, MP3, Opus và FLAC cần ffmpeg (khoảng 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Chất lượng tốt nhất và MP3 cần ffmpeg: cài đặt bằng trình quản lý gói của hệ thống (hoặc Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Các chất lượng tốt nhất, MP3, Opus và FLAC cần ffmpeg: cài đặt bằng trình quản lý gói của hệ thống (hoặc Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3249,7 +3263,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Mũi tên lên / Shift+Mũi tên xuống
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
