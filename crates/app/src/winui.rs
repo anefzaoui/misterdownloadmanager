@@ -4287,6 +4287,19 @@ pub mod caption {
         }
     }
 
+    /// Windows keeps the window's own title bar in UI Automation (its "TitleBar", built from the
+    /// window's styles, whatever is drawn): its Minimize, Maximize and Close are spoken, and work,
+    /// through the system. Ours would say them a second time, so they stay out of the
+    /// accessibility tree there; only our own button (Hide) is exposed. Brave and VS Code have no
+    /// such TitleBar only because Chromium's own provider replaces the window's; AccessKit's
+    /// doesn't, and the system menu, Alt+Space and taskbar minimize need the styles kept.
+    const SYSTEM_SPEAKS: bool = cfg!(windows);
+
+    /// Keep `resp`'s node out of the accessibility tree (screen readers hear the system's).
+    fn unspoken(ui: &Ui, resp: &Response) {
+        ui.ctx().accesskit_node_builder(resp.id, |n| n.set_hidden());
+    }
+
     /// One caption button: Windows 11's 46 × 32, a hover and a pressed tint (Close turns red, its
     /// glyph white), greyed when `enabled` is false, its glyph grey while the window is inactive.
     /// Exposed as a button with its name; a tooltip only for ours (the system's have none).
@@ -4304,7 +4317,11 @@ pub mod caption {
         };
         let resp = ui.interact(rc, widget_id(ui, ("caption-button", b.name())), sense);
         let name = crate::i18n::t(b.name());
-        expose(&resp, egui::Role::Button, name, enabled, None);
+        if b == CaptionButton::ToTray || !SYSTEM_SPEAKS {
+            expose(&resp, egui::Role::Button, name, enabled, None);
+        } else {
+            unspoken(ui, &resp);
+        }
         let p = ui.painter();
         let hover = enabled && resp.hovered();
         let pressed = enabled && resp.is_pointer_button_down_on();
@@ -4398,9 +4415,14 @@ pub mod caption {
             (egui::Align2::LEFT_CENTER, rect.left() + CAPTION_ICON_W)
         };
         let drawn = p.text(pos2(x, rect.center().y), anchor, &shown, font, ink);
-        // The title, for screen readers (the system's own caption isn't there to say it).
         let label = ui.interact(drawn, widget_id(ui, "caption-title"), Sense::hover());
-        expose(&label, egui::Role::Label, title, true, None);
+        // The window's own name says the title to screen readers (where the system speaks for
+        // the title bar); elsewhere the label does.
+        if SYSTEM_SPEAKS {
+            unspoken(ui, &label);
+        } else {
+            expose(&label, egui::Role::Label, title, true, None);
+        }
         if shown != title {
             label.on_hover_text(title);
         }
