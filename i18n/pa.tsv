@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ਇੱਕ ਡੀਬ੍ਰਿਡ ਸੇਵਾ (Real-Debrid) ਤੁਹਾਡੇ ਆਪਣੇ ਭੁਗਤਾਨ ਕੀਤੇ ਖਾਤੇ ਨਾਲ ਇੱਕ ਫਾਈਲ ਹੋਸਟ ਦੇ ਲਿੰਕ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਦੀ ਹੈ ਅਤੇ MDM ਨੂੰ ਇੱਕ ਸਿੱਧਾ ਲਿੰਕ ਦਿੰਦੀ ਹੈ। ਸਿਰਫ਼ ਆਪਣਾ ਖਾਤਾ ਵਰਤੋ: ਇੱਕ ਖਾਤਾ ਜਾਂ ਇਸਦੇ ਲਿੰਕ ਸਾਂਝੇ ਕਰਨ ਨਾਲ ਸੇਵਾਵਾਂ ਦੀਆਂ ਸ਼ਰਤਾਂ ਦੀ ਉਲੰਘਣਾ ਹੁੰਦੀ ਹੈ ਅਤੇ ਇਸਨੂੰ ਮੁਅੱਤਲ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ। ਬ੍ਰਾਊਜ਼ਰ ਦੁਆਰਾ ਪਹਿਲਾਂ ਹੀ ਸ਼ੁਰੂ ਕੀਤੇ ਗਏ ਡਾਊਨਲੋਡ ਜਿਵੇਂ ਹਨ, ਉਵੇਂ ਹੀ ਰਹਿਣਗੇ।
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ਇੱਕ ਡੀਬ੍ਰਿਡ ਸੇਵਾ (Real-Debrid) ਤੁਹਾਡੇ ਆਪਣੇ ਭੁਗਤਾਨ ਕੀਤੇ ਖਾਤੇ ਨਾਲ ਇੱਕ ਫਾਈਲ ਹੋਸਟ ਦਾ ਲਿੰਕ ਡਾਊਨਲੋਡ ਕਰਦੀ ਹੈ ਅਤੇ MDM ਨੂੰ ਇੱਕ ਸਿੱਧਾ ਲਿੰਕ ਦਿੰਦੀ ਹੈ। ਸਿਰਫ਼ ਆਪਣਾ ਖਾਤਾ ਵਰਤੋ: ਇੱਕ ਖਾਤਾ ਜਾਂ ਇਸਦੇ ਲਿੰਕ ਸਾਂਝੇ ਕਰਨ ਨਾਲ ਸੇਵਾਵਾਂ ਦੀਆਂ ਸ਼ਰਤਾਂ ਦੀ ਉਲੰਘਣਾ ਹੁੰਦੀ ਹੈ ਅਤੇ ਇਸਨੂੰ ਮੁਅੱਤਲ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ। ਬ੍ਰਾਊਜ਼ਰ ਦੁਆਰਾ ਪਹਿਲਾਂ ਹੀ ਸ਼ੁਰੂ ਕੀਤੇ ਡਾਊਨਲੋਡ ਜਿਵੇਂ ਹਨ, ਉਵੇਂ ਹੀ ਰਹਿਣਗੇ।
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -280,7 +280,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	ਸੇਵਾ ਤੋਂ ਪੁੱਛ ਰਿਹਾ ਹੈ...
+	Asking the service...	ਸੇਵਾ ਨੂੰ ਪੁੱਛ ਰਿਹਾ ਹੈ...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ਸਿਰਫ਼ ਆਡੀਓ {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ਸਿਰਫ਼ ਆਡੀਓ, ਅਸਲੀ {type}
 #. text in the Scheduler window
 #, machine
 	August	ਅਗਸਤ
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	ਆਯਾਤ ਦੁਆਰਾ
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ਰੱਦ ਕਰੋ
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	ਅੱਪਡੇਟਾਂ ਦੀ ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	gallery-dl ਨਾਲ ਪਤੇ ਦੀ ਜਾਂਚ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" ਨੂੰ ਦੁਬਾਰਾ ਸ਼ੁਰੂ ਤੋਂ ਡਾਊਨਲੋਡ ਕਰੋ? ਜਦੋਂ ਨਵਾਂ ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋ ਜਾਂਦਾ ਹੈ ਤਾਂ ਇੱਕ ਪੂਰੀ ਹੋਈ ਫਾਈਲ ਬਦਲ ਦਿੱਤੀ ਜਾਂਦੀ ਹੈ।
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	ਇੱਕ ਗੈਲਰੀ ਡਾਊਨਲੋਡ ਕਰੋ
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	ਡਾਊਨਲੋਡ ਪੂਰਾ ਹੋ ਗਿਆ
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB ਤੋਂ ਵੱਧ ਡਾਊਨਲੋਡ ਨਾ ਕਰੋ\nਹਰ {hours} ਘੰਟੇ
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	ਹੁਣੇ ਡਾਊਨਲੋਡ ਕਰੋ
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (ਲਗਭਗ 80 MB) ਡਾਊਨਲੋਡ ਅਤੇ ਤਸਦੀਕ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl ਡਾਊਨਲੋਡ ਅਤੇ ਤਸਦੀਕ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ਈਮੇਲ
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	ਖਾਲੀ: ਉਹ ਸਾਰੇ। ਜ਼ਿਆਦਾਤਰ ਸਾਈਟਾਂ 'ਤੇ ਨਵੇਂ ਪਹਿਲਾਂ ਆਉਂਦੇ ਹਨ।
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +878,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ਪ੍ਰਯੋਗਾਤਮਕ: Real-Debrid ਦੇ ਜਨਤਕ API ਦਸਤਾਵੇਜ਼ਾਂ ਤੋਂ ਬਣਾਇਆ ਗਿਆ, ਅਜੇ ਅਸਲ ਖਾਤੇ ਨਾਲ ਪੁਸ਼ਟੀ ਨਹੀਂ ਕੀਤੀ ਗਈ।
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ਪ੍ਰਯੋਗਾਤਮਕ: Real-Debrid ਦੇ ਜਨਤਕ API ਦਸਤਾਵੇਜ਼ਾਂ ਤੋਂ ਬਣਾਇਆ ਗਿਆ, ਅਜੇ ਤੱਕ ਇੱਕ ਅਸਲੀ ਖਾਤੇ ਨਾਲ ਪੁਸ਼ਟੀ ਨਹੀਂ ਕੀਤੀ ਗਈ।
 #. message or event log entry in the main window
 #, machine
 	Export	ਨਿਰਯਾਤ
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	ਫਾਈਲਾਂ ਪਹਿਲਾਂ ਹੀ ਉੱਥੇ ਹਨ
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	ਵੱਧ ਤੋਂ ਵੱਧ ਫਾਈਲਾਂ
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	ਪਹਿਲੀ ਫਾਈਲ:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ਆਵਾਜ਼ ਨੂੰ ਬਿਲਕੁਲ ਉਵੇਂ ਹੀ ਰੱਖਦਾ ਹੈ, ਪਰ ਇਹ ਉਹ ਗੁਣਵੱਤਾ ਨਹੀਂ ਜੋੜ ਸਕਦਾ ਜੋ ਸਾਈਟ ਦੀ ਆਵਾਜ਼ ਵਿੱਚ ਨਹੀਂ ਹੈ: ਫਾਈਲ ਸਿਰਫ਼ ਵੱਡੀ ਹੁੰਦੀ ਹੈ।
 #. text in categories.rs
 #, machine
 	Folder:	ਫੋਲਡਰ:
@@ -980,7 +1009,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	ਮੁਫ਼ਤ ਖਾਤਾ: ਲਿੰਕਾਂ ਲਈ ਪ੍ਰੀਮੀਅਮ ਦੀ ਲੋੜ ਹੈ
+	free account: links need premium	ਮੁਫਤ ਖਾਤਾ: ਲਿੰਕਾਂ ਲਈ ਪ੍ਰੀਮੀਅਮ ਦੀ ਲੋੜ ਹੈ
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -988,6 +1017,10 @@
 #. text in the Scheduler window
 #, machine
 	Friday	ਸ਼ੁੱਕਰਵਾਰ
+#. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	ਇੱਕ ਗੈਲਰੀ ਤੋਂ (gallery-dl)
 #. message or event log entry in the main window
 #, machine
 	from a magnet link	ਇੱਕ ਮੈਗਨੈੱਟ ਲਿੰਕ ਤੋਂ
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	ਗੈਲਰੀਆਂ gallery-dl ਦੀ ਵਰਤੋਂ ਕਰਦੀਆਂ ਹਨ (ਲਗਭਗ 23 MB, ਇਸਦੇ ਦਸਤਖਤ ਦੇ ਵਿਰੁੱਧ ਜਾਂਚ ਕੀਤੀ ਗਈ)।
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	ਗੈਲਰੀਆਂ gallery-dl ਦੀ ਵਰਤੋਂ ਕਰਦੀਆਂ ਹਨ: ਇਸਨੂੰ ਆਪਣੇ ਸਿਸਟਮ ਦੇ ਪੈਕੇਜਾਂ (Homebrew, pip) ਨਾਲ ਸਥਾਪਿਤ ਕਰੋ, ਫਿਰ ਇਸਨੂੰ ਹੈਲਪਰਾਂ ਵਿੱਚ ਚੁਣੋ।
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl ਇਸ ਗੈਲਰੀ ਦੀਆਂ ਫਾਈਲਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰ ਸਕਦਾ ਹੈ।
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ਇਸ ਪਤੇ ਨੂੰ ਨਹੀਂ ਪੜ੍ਹ ਸਕਦਾ। ਇਸ ਦੀ ਬਜਾਏ ਇਸਨੂੰ ਇੱਕ ਫਾਈਲ ਵਜੋਂ ਸ਼ਾਮਲ ਕਰੋ (URL ਸ਼ਾਮਲ ਕਰੋ)।
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ਸਥਾਪਿਤ ਨਹੀਂ ਹੈ (ਇੱਕ ਗੈਲਰੀ ਦੇ ਪਤੇ ਨਾਲ URL ਸ਼ਾਮਲ ਕਰੋ ਇਸਨੂੰ ਸਥਾਪਿਤ ਕਰਦਾ ਹੈ)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	ਮਦਦ
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	ਮਦਦਗਾਰ
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	ਸ਼੍ਰੇਣੀਆਂ ਲੁਕਾਓ(&c)
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	ਟੈਬ ਲੁਕਾਓ
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	ਇੱਕ ਕਤਾਰ ਵਿੱਚ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	ਸ਼੍ਰੇਣੀਆਂ ਵਿੱਚ: ਚੁਣੀ ਗਈ ਸ਼੍ਰੇਣੀ ਦਾ ਮੀਨੂ
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ਸਥਾਪਤ ਕਰੋ
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl ਸਥਾਪਿਤ ਕਰੋ
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	ਆਖਰੀ ਕੋਸ਼ਿਸ਼ {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	ਸੂਚਨਾ ਖੇਤਰ ਵਿੱਚ ਛੋਟਾ ਕਰੋ
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	ਮਿੰਟ
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ਇੱਕ ਪੰਨਾ ਉੱਪਰ/ਹੇਠਾਂ ਭੇਜੋ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	ਸ਼੍ਰੇਣੀਆਂ ਅਤੇ ਡਾਊਨਲੋਡ ਸੂਚੀ ਵਿਚਕਾਰ ਜਾਓ
 #. text in the Scheduler window
 #, machine
 	Move down	ਹੇਠਾਂ ਲੈ ਜਾਓ
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	ਜਾਂ ਆਪਣਾ API ਟੋਕਨ ਪੇਸਟ ਕਰੋ:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ਪੰਨੇ ਦਾ ਪਤਾ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	ਇਸ ਤਰ੍ਹਾਂ ਸੁਰੱਖਿਅਤ ਕਰੋ
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	ਇਸ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਕਰੋ
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	ਸਾਂਝਾ ਕਰਨਾ
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time} ਲਈ ਸਾਂਝਾ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸਾਂਝਾ ਕਰਨਾ ਬੰਦ ਕਰ ਦਿੱਤਾ ਗਿਆ
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	ਸਾਂਝਾ ਕਰਨਾ ਬੰਦ ਕਰ ਦਿੱਤਾ ਗਿਆ: ਸਾਂਝਾ ਅਨੁਪਾਤ {ratio} 'ਤੇ ਪਹੁੰਚ ਗਿਆ
 #. text in the download list
 #, machine
 	Show	ਦਿਖਾਓ
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	ਸ਼ੁਰੂ ਹੋਇਆ
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version} ਨਾਲ ਸ਼ੁਰੂ ਕੀਤਾ ਗਿਆ
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) ਨਾਲ ਸ਼ੁਰੂ ਕੀਤਾ ਗਿਆ
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ਮੁੱਖ ਡਾਊਨਲੋਡ ਕਤਾਰ ਬੰਦ ਕਰੋ
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	ਇਸ ਲਈ ਸਾਂਝਾ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸਾਂਝਾ ਕਰਨਾ ਬੰਦ ਕਰੋ
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	ਇਸ ਦੇ ਸਾਂਝੇ ਅਨੁਪਾਤ 'ਤੇ ਸਾਂਝਾ ਕਰਨਾ ਬੰਦ ਕਰੋ
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	ਪਤਾ ਇੱਕ http(s) ਜਾਂ ftp(s) ਪਤਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ ਅਤੇ MP3 ਲਈ ffmpeg (ਲਗਭਗ 80 MB) ਦੀ ਲੋੜ ਹੈ।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ, MP3, Opus ਅਤੇ FLAC ਲਈ ffmpeg (ਲਗਭਗ 80 MB) ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ ਅਤੇ MP3 ਲਈ ffmpeg ਦੀ ਲੋੜ ਹੈ: ਇਸਨੂੰ ਆਪਣੇ ਸਿਸਟਮ ਦੇ ਪੈਕੇਜ ਮੈਨੇਜਰ (ਜਾਂ Homebrew) ਨਾਲ ਸਥਾਪਤ ਕਰੋ।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ਸਭ ਤੋਂ ਵਧੀਆ ਗੁਣਵੱਤਾ, MP3, Opus ਅਤੇ FLAC ਲਈ ffmpeg ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ: ਇਸਨੂੰ ਆਪਣੇ ਸਿਸਟਮ ਦੇ ਪੈਕੇਜ ਮੈਨੇਜਰ (ਜਾਂ Homebrew) ਨਾਲ ਸਥਾਪਤ ਕਰੋ।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	ਵੀਡੀਓ
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	ਵੀਡੀਓ ਸਹਾਇਕ
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ਵੀਡੀਓ ਲੁੱਕਅੱਪ yt-dlp ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹਨ (ਲਗਭਗ 23 MB, ਇਸਦੇ ਦਸਤਖਤ ਦੇ ਵਿਰੁੱਧ ਜਾਂਚਿਆ ਗਿਆ)।
@@ -3073,14 +3160,14 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} ਹੌਲੀ ਕਰਨ ਲਈ ਕਹਿੰਦਾ ਹੈ; MDM ਇੱਕ ਮਿੰਟ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੇਗਾ
+	{service} asks to slow down; MDM will try again in a minute	{service} ਹੌਲੀ ਹੋਣ ਲਈ ਕਹਿੰਦਾ ਹੈ; MDM ਇੱਕ ਮਿੰਟ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੇਗਾ
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} ਤੁਹਾਨੂੰ ਪਹਿਲਾਂ ਇਸ ਕੰਪਿਊਟਰ ਨੂੰ ਇਜਾਜ਼ਤ ਦੇਣ ਲਈ ਕਹਿੰਦਾ ਹੈ: ਇਸਦੀ ਈਮੇਲ ਦੇਖੋ
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} ਇਸ ਫਾਈਲ ਹੋਸਟ ਤੱਕ ਹੁਣੇ ਨਹੀਂ ਪਹੁੰਚ ਸਕਦਾ; MDM ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੇਗਾ
+	{service} can't reach this file host right now; MDM will try again later	{service} ਇਸ ਫਾਈਲ ਹੋਸਟ ਤੱਕ ਹੁਣੇ ਪਹੁੰਚ ਨਹੀਂ ਸਕਦਾ; MDM ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੇਗਾ
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3104,7 +3191,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: ਫਾਈਲ ਹੋਸਟ 'ਤੇ ਫਾਈਲ ਗਾਇਬ ਹੈ ਜਾਂ ਉਪਲਬਧ ਨਹੀਂ ਹੈ
+	{service}: the file is gone or unavailable on the file host	{service}: ਫਾਈਲ ਫਾਈਲ ਹੋਸਟ ਤੋਂ ਗਾਇਬ ਹੈ ਜਾਂ ਅਣਉਪਲਬਧ ਹੈ
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -3119,7 +3206,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: ਇਸ ਫਾਈਲ ਹੋਸਟ ਲਈ ਤੁਹਾਡੀ ਸੀਮਾ ਹੁਣੇ ਲਈ ਵਰਤੀ ਗਈ ਹੈ
+	{service}: your limit for this file host is used up for now	{service}: ਇਸ ਫਾਈਲ ਹੋਸਟ ਲਈ ਤੁਹਾਡੀ ਸੀਮਾ ਹੁਣ ਲਈ ਵਰਤੀ ਗਈ ਹੈ
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ਅਜੇ ਚੁਣੇ ਹੋਏ ਨੈੱਟਵਰਕ ਅਡਾਪਟਰ ({adapter}) ਰਾਹੀਂ ਨਹੀਂ ਜਾ ਸਕਦਾ
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / ਮੀਨੂ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+ਉੱਪਰ / Shift+ਹੇਠਾਂ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	ਟੈਬ
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

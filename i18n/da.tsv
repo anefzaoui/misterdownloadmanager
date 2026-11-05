@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	En debrid-tjeneste (Real-Debrid) downloader et filhosts link med din egen betalte konto og giver MDM et direkte link. Brug kun din egen konto: deling af en konto eller dens links overtræder tjenesternes vilkår og kan medføre, at den suspenderes. Downloads, som browseren allerede har startet, forbliver, som de er.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	En debrid-tjeneste (Real-Debrid) downloader et filhosts link med din egen betalte konto og giver MDM et direkte link. Brug kun din egen konto: deling af en konto eller dens links bryder tjenesternes vilkår og kan medføre suspendering. Downloads, som browseren allerede har startet, forbliver, som de er.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Kun lyd {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Kun lyd, original {type}
 #. text in the Scheduler window
 #, machine
 	August	August
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	via import
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Annuller
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Søger efter opdateringer...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Kontrollerer adressen med gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -501,7 +510,7 @@
 #. button in the Options window
 #. button: copy the sign-in code
 #, machine
-	Copy code	Kopiér kode
+	Copy code	Kopier kode
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Download "{name}" igen fra starten? En færdig fil erstattes, når den nye download er fuldført.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Download et galleri
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Download fuldført
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Download ikke mere end {mb} MB\nhver {hours} time
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Download nu
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Downloader og verificerer ffmpeg (ca. 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	Downloader og verificerer gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Mail
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Tom: alle. På de fleste websteder kommer de nyeste først.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Filer findes allerede
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Filer højst
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Første fil:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC bevarer lyden nøjagtigt, men kan ikke tilføje kvalitet, som webstedets lyd ikke har: filen bliver kun større.
 #. text in categories.rs
 #, machine
 	Folder:	Mappe:
@@ -989,6 +1018,10 @@
 #, machine
 	Friday	Fredag
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	fra et galleri (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	fra et magnetlink
 #. message or event log entry in the main window
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Gallerier bruger gallery-dl (ca. 23 MB, kontrolleret mod dets signatur).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Gallerier bruger gallery-dl: installer det med systemets pakker (Homebrew, pip), og vælg det derefter i Hjælpeprogrammer.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl kan downloade dette galleris filer.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl kan ikke læse denne adresse. Tilføj den i stedet som en fil (Tilføj URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl er ikke installeret (Tilføj URL med et galleris adresse installerer det)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Hjælp
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Hjælpeprogrammer
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Skjul &kategorier
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Skjul fane
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	I en kø
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	I kategorierne: menuen for den valgte kategori
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Installer ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	Installer gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Sidste forsøg {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Minimer til meddelelsesområdet
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	minutter
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Flyt en side op/ned
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Flyt mellem kategorierne og downloadlisten
 #. text in the Scheduler window
 #, machine
 	Move down	Flyt ned
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	Eller indsæt dit API-token:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Sideadresse
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Gem som
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Gem i
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Deling
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Deling stoppet efter deling i {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Deling stoppet: deleforholdet nåede {ratio}
 #. text in the download list
 #, machine
 	Show	Vis
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	Startet
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	Startet med gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Startet med yt-dlp {version} ({format})
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stop hovedoverførselskø
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Stop deling efter deling i
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Stop deling ved et deleforhold på
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	Adressen skal være en http(s)- eller ftp(s)-adresse
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	De bedste kvaliteter og MP3 kræver ffmpeg (ca. 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	De bedste kvaliteter, MP3, Opus og FLAC, kræver ffmpeg (ca. 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	De bedste kvaliteter og MP3 kræver ffmpeg: installer det med systemets pakkehåndtering (eller Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	De bedste kvaliteter, MP3, Opus og FLAC, kræver ffmpeg: installer det med systemets pakkehåndtering (eller Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Indtast denne kode på {page}, og tillad MDM; venter på dig (koden udløber om {time}).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Skriv denne kode på {page}, og tillad MDM; venter på dig (koden udløber om {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2780,7 +2871,7 @@
 #. button in the Options window
 #. button: sign in with the token typed in
 #, machine
-	Use the token	Brug token
+	Use the token	Brug tokenet
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Skal de bruges til denne torrent? Det, der matcher, bevares, resten erstattes.
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Video-hjælpeprogrammer
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videosøgninger bruger yt-dlp (ca. 23 MB, kontrolleret mod dens signatur).
@@ -3077,7 +3164,7 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} beder dig om først at tillade denne computer: se dens e-mail
+	{service} asks you to allow this computer first: see its email	{service} beder dig om at tillade denne computer først: se dens e-mail
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} kan ikke nå denne filhost lige nu; MDM prøver igen senere
@@ -3119,7 +3206,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: din grænse for denne filhost er opbrugt for nu
+	{service}: your limit for this file host is used up for now	{service}: Din grænse for denne filhost er opbrugt indtil videre
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} kan endnu ikke holdes til et valgt netværkskort ({adapter})
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Skift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Pil op / Shift+Pil ned
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

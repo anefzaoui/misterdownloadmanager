@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Usluga debrida (Real-Debrid) preuzima vezu davatelja datoteka s vašim vlastitim plaćenim računom i daje MDM-u izravnu vezu. Koristite samo vlastiti račun: dijeljenje računa ili njegovih veza krši uvjete usluge i može dovesti do suspenzije. Preuzimanja koja je preglednik već započeo ostaju kakva jesu.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Usluga debrida (Real-Debrid) preuzima vezu davatelja datoteka s vašim plaćenim računom i daje MDM-u izravnu vezu. Koristite samo vlastiti račun: dijeljenje računa ili njegovih veza krši uvjete usluge i može dovesti do suspenzije. Preuzimanja koja je preglednik već započeo ostaju kakva jesu.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -126,7 +126,7 @@
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
-	Add an account	Dodavanje računa
+	Add an account	Dodaj račun
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Dodaj skupno preuzimanje
@@ -280,7 +280,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Traženje usluge...
+	Asking the service...	Tražim uslugu...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Samo zvuk {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Samo zvuk, izvorni {type}
 #. text in the Scheduler window
 #, machine
 	August	Kolovoz
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	uvozom
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Odustani
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Provjeravam ažuriranja...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Provjeravam adresu s gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -537,7 +546,7 @@
 	Day, month, year	Dan, mjesec, godina
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Računi usluge debrida
+	Debrid service accounts	Računi debrid usluge
 #. text in the Scheduler window
 #, machine
 	December	Prosinac
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Želite li ponovno preuzeti „{name}” od početka? Dovršena datoteka zamijenit će se kada se novo preuzimanje dovrši.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Preuzmi galeriju
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Preuzimanje dovršeno
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Preuzmi najviše {mb} MB\nsvakih {hours} sati
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Preuzmi odmah
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Preuzimanje i provjera ffmpeg-a (oko 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	Preuzimam i provjeravam gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	E-pošta
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Prazno: sve. Na većini stranica najnovije dolaze prve.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +878,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimentalno: izrađeno na temelju javne API dokumentacije Real-Debrida, još nije potvrđeno s pravim računom.
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimentalno: izgrađeno iz javne API dokumentacije Real-Debrida, još nije potvrđeno s pravim računom.
 #. message or event log entry in the main window
 #, machine
 	Export	Izvoz
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Datoteke već postoje
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Najviše datoteka
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Prva datoteka:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC zadržava zvuk točno onako kako jest, ali ne može dodati kvalitetu koju zvuk web-mjesta nema: datoteka je samo veća.
 #. text in categories.rs
 #, machine
 	Folder:	Mapa:
@@ -980,7 +1009,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	besplatan račun: veze trebaju premium
+	free account: links need premium	besplatni račun: veze trebaju premium
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -988,6 +1017,10 @@
 #. text in the Scheduler window
 #, machine
 	Friday	Petak
+#. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	iz galerije (gallery-dl)
 #. message or event log entry in the main window
 #, machine
 	from a magnet link	s magnetne veze
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Galerije koriste gallery-dl (oko 23 MB, provjereno prema potpisu).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galerije koriste gallery-dl: instalirajte ga s paketima vašeg sustava (Homebrew, pip), zatim ga odaberite u Pomoćnicima.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl može preuzeti datoteke ove galerije.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ne može pročitati ovu adresu. Dodajte je kao datoteku (Dodaj URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl nije instaliran (Dodaj URL s adresom galerije ga instalira)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Pomoć
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Pomoćnici
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Sakrij &kategorije
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Sakrij karticu
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	U redu čekanja
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	U kategorijama: izbornik odabrane kategorije
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Instaliraj ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	Instaliraj gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Zadnji pokušaj {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Minimiziraj u područje obavijesti
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	minuta
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Pomicanje stranice gore/dolje
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Kretanje između kategorija i popisa preuzimanja
 #. text in the Scheduler window
 #, machine
 	Move down	Pomakni dolje
@@ -1542,7 +1611,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	nije podržano ovom uslugom
+	not supported by this service	ova usluga ne podržava ovog davatelja datoteka
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Nije u upotrebi: dijelovi datoteke pišu se pokraj datoteke
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	Ili zalijepite svoj API token:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Adresa stranice
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Spremi kao
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Spremi u
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Dijeljenje
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Dijeljenje je zaustavljeno nakon dijeljenja tijekom {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Dijeljenje je zaustavljeno: omjer dijeljenja dosegao je {ratio}
 #. text in the download list
 #, machine
 	Show	Prikaži
@@ -2074,7 +2152,7 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
-	Sign in in the browser	Prijavite se u pregledniku
+	Sign in in the browser	Prijavi se u pregledniku
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	Pokrenuto
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	Pokrenuto s gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Pokrenuto s yt-dlp {version} ({format})
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Zaustavi glavni red čekanja za preuzimanje
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Zaustavi dijeljenje nakon dijeljenja tijekom
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Zaustavi dijeljenje pri omjeru dijeljenja od
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	Adresa mora biti http(s) ili ftp(s) adresa
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Najbolje kvalitete i MP3 trebaju ffmpeg (oko 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Za najbolje kvalitete, MP3, Opus i FLAC potreban je ffmpeg (oko 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Najbolje kvalitete i MP3 trebaju ffmpeg: instalirajte ga pomoću upravitelja paketa vašeg sustava (ili Homebrewa).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Za najbolje kvalitete, MP3, Opus i FLAC potreban je ffmpeg: instalirajte ga pomoću upravitelja paketa vašeg sustava (ili Homebrewa).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Upišite ovaj kod na {page} i dopustite MDM; čekamo vas (kod istječe za {time}).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Upišite ovaj kod na {page} i dopustite MDM; čekam vas (kod istječe za {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	Videozapis
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Video pomoćnici
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Pretraživanja videozapisa koriste yt-dlp (oko 23 MB, provjereno prema potpisu).
@@ -3073,11 +3160,11 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} traži usporavanje; MDM će pokušati ponovno za minutu
+	{service} asks to slow down; MDM will try again in a minute	{service} traži da usporite; MDM će pokušati ponovno za minutu
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} traži da prvo dopustite ovo računalo: pogledajte njegovu e-poštu
+	{service} asks you to allow this computer first: see its email	{service} traži da prvo dopustite ovo računalo: pogledajte e-poštu
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} trenutno ne može doći do ovog davatelja datoteka; MDM će pokušati ponovno kasnije
@@ -3104,7 +3191,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: datoteka je nestala ili je nedostupna na davatelju datoteka
+	{service}: the file is gone or unavailable on the file host	{service}: datoteka je nestala ili nedostupna na davatelju datoteka
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -3119,7 +3206,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: vaše ograničenje za ovog davatelja datoteka je trenutno iskorišteno
+	{service}: your limit for this file host is used up for now	{service}: vaše ograničenje za ovog poslužitelja datoteka je trenutačno iskorišteno
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} još ne može proći kroz odabrani mrežni prilagodnik ({adapter})
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Izbornik
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+gore / Shift+dolje
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

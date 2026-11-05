@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	డీబ్రిడ్ సేవ (రియల్-డీబ్రిడ్) మీ స్వంత చెల్లింపు ఖాతాతో ఫైల్ హోస్ట్ లింక్‌ను డౌన్‌లోడ్ చేస్తుంది మరియు MDMకి డైరెక్ట్ లింక్‌ను అందిస్తుంది. మీ స్వంత ఖాతాను మాత్రమే ఉపయోగించండి: ఖాతాను లేదా దాని లింక్‌లను షేర్ చేయడం వలన సేవల నిబంధనలు ఉల్లంఘించబడతాయి మరియు అది సస్పెండ్ చేయబడవచ్చు. బ్రౌజర్ ఇప్పటికే ప్రారంభించిన డౌన్‌లోడ్‌లు అలాగే ఉంటాయి.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	డీబ్రిడ్ సేవ (రియల్-డీబ్రిడ్) మీ స్వంత చెల్లింపు ఖాతాతో ఫైల్ హోస్ట్ లింక్‌ను డౌన్‌లోడ్ చేస్తుంది మరియు MDMకి ప్రత్యక్ష లింక్‌ను అందిస్తుంది. మీ స్వంత ఖాతాను మాత్రమే ఉపయోగించండి: ఖాతాను లేదా దాని లింక్‌లను భాగస్వామ్యం చేయడం సేవ నిబంధనలను ఉల్లంఘిస్తుంది మరియు దానిని నిలిపివేయవచ్చు. బ్రౌజర్ ఇప్పటికే ప్రారంభించిన డౌన్‌లోడ్‌లు యథాతథంగా ఉంటాయి.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ఆడియో మాత్రమే {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ఆడియో మాత్రమే, అసలైన {type}
 #. text in the Scheduler window
 #, machine
 	August	ఆగస్టు
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	దిగుమతి ద్వారా
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	రద్దు చేయి
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	అప్‌డేట్‌ల కోసం తనిఖీ చేస్తోంది...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	గ్యాలరీ-dlతో చిరునామాను తనిఖీ చేస్తోంది...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}"ని మళ్లీ మొదటి నుండి డౌన్‌లోడ్ చేయాలా? కొత్త డౌన్‌లోడ్ పూర్తయినప్పుడు పూర్తయిన ఫైల్ భర్తీ చేయబడుతుంది.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	గ్యాలరీని డౌన్‌లోడ్ చేయండి
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	డౌన్‌లోడ్ పూర్తయింది
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB కంటే ఎక్కువ డౌన్‌లోడ్ చేయవద్దు\nప్రతి {hours} గంటలకు
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	ఇప్పుడే డౌన్‌లోడ్ చేయండి
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (సుమారు 80 MB) డౌన్‌లోడ్ చేసి, ధృవీకరిస్తోంది...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	గ్యాలరీ-dlని డౌన్‌లోడ్ చేసి, ధృవీకరిస్తోంది...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ఇమెయిల్
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	ఖాళీ: అన్నీ. చాలా సైట్‌లలో కొత్తవి ముందుగా వస్తాయి.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +878,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ప్రయోగాత్మకం: Real-Debrid యొక్క పబ్లిక్ API డాక్యుమెంటేషన్ నుండి రూపొందించబడింది, ఇంకా నిజమైన ఖాతాతో ధృవీకరించబడలేదు.
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ప్రయోగాత్మకం: రియల్-డీబ్రిడ్ పబ్లిక్ API డాక్యుమెంటేషన్ నుండి నిర్మించబడింది, ఇంకా నిజమైన ఖాతాతో ధృవీకరించబడలేదు.
 #. message or event log entry in the main window
 #, machine
 	Export	ఎగుమతి
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	ఫైల్‌లు ఇప్పటికే ఉన్నాయి
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	ఎక్కువగా ఫైల్‌లు
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	మొదటి ఫైల్:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ధ్వనిని ఖచ్చితంగా ఉంచుతుంది, కానీ సైట్ ధ్వనిలో లేని నాణ్యతను జోడించదు: ఫైల్ మాత్రమే పెద్దదిగా ఉంటుంది.
 #. text in categories.rs
 #, machine
 	Folder:	ఫోల్డర్:
@@ -989,6 +1018,10 @@
 #, machine
 	Friday	శుక్రవారం
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	ఒక గ్యాలరీ నుండి (గ్యాలరీ-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	మాగ్నెట్ లింక్ నుండి
 #. message or event log entry in the main window
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	గ్యాలరీలు గ్యాలరీ-dlని ఉపయోగిస్తాయి (సుమారు 23 MB, దాని సంతకంతో తనిఖీ చేయబడింది).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	గ్యాలరీలు గ్యాలరీ-dlని ఉపయోగిస్తాయి: మీ సిస్టమ్ ప్యాకేజీలతో (Homebrew, pip) దీన్ని ఇన్‌స్టాల్ చేయండి, ఆపై సహాయకులలో దీన్ని ఎంచుకోండి.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	గ్యాలరీ-dl ఈ గ్యాలరీ ఫైల్‌లను డౌన్‌లోడ్ చేయగలదు.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	గ్యాలరీ-dl ఈ చిరునామాను చదవలేదు. బదులుగా దీన్ని ఫైల్‌గా జోడించండి (URLని జోడించండి).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	గ్యాలరీ-dl ఇన్‌స్టాల్ చేయబడలేదు (గ్యాలరీ చిరునామాతో URLని జోడించు దీన్ని ఇన్‌స్టాల్ చేస్తుంది)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	సహాయం
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	సహాయకులు
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	వర్గాలను దాచండి(&c)
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	ట్యాబ్‌ను దాచండి
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	క్యూలో ఉంది
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	వర్గాలలో: ఎంచుకున్న వర్గం యొక్క మెను
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpegను ఇన్‌స్టాల్ చేయండి
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	గ్యాలరీ-dlని ఇన్‌స్టాల్ చేయండి
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	చివరి ప్రయత్నం {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	నోటిఫికేషన్ ప్రాంతానికి కనిష్టీకరించు
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	నిమిషాలు
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	పేజీని పైకి/కిందకి తరలించు
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	వర్గాల మధ్య మరియు డౌన్‌లోడ్ జాబితా మధ్య తరలించు
 #. text in the Scheduler window
 #, machine
 	Move down	కిందికి తరలించు
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	లేదా మీ API టోకెన్‌ను అతికించండి:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	పేజీ చిరునామా
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	ఇలా సేవ్ చేయి
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	ఇందులోకి సేవ్ చేయి
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	షేరింగ్
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time} షేర్ చేసిన తర్వాత షేరింగ్ నిలిపివేయబడింది
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	షేరింగ్ నిలిపివేయబడింది: షేర్ నిష్పత్తి {ratio}కి చేరుకుంది
 #. text in the download list
 #, machine
 	Show	చూపించు
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	ప్రారంభించబడింది
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	గ్యాలరీ-dl {version}తో ప్రారంభించబడింది
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format})తో ప్రారంభించబడింది
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ప్రధాన డౌన్‌లోడ్ క్యూను ఆపు
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	దీని కోసం షేర్ చేసిన తర్వాత షేరింగ్‌ను ఆపివేయండి
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	షేర్ నిష్పత్తి వద్ద షేరింగ్‌ను ఆపివేయండి
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	చిరునామా http(s) లేదా ftp(s) చిరునామా అయి ఉండాలి
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	ఉత్తమ నాణ్యతలు మరియు MP3కి ffmpeg (సుమారు 80 MB) అవసరం.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ఉత్తమ నాణ్యతలు, MP3, Opus మరియు FLACకి ffmpeg (సుమారు 80 MB) అవసరం.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	ఉత్తమ నాణ్యతలు మరియు MP3కి ffmpeg అవసరం: మీ సిస్టమ్ ప్యాకేజీ మేనేజర్‌తో (లేదా Homebrew) దీన్ని ఇన్‌స్టాల్ చేయండి.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ఉత్తమ నాణ్యతలు, MP3, Opus మరియు FLACకి ffmpeg అవసరం: మీ సిస్టమ్ ప్యాకేజీ మేనేజర్ (లేదా Homebrew)తో దీన్ని ఇన్‌స్టాల్ చేయండి.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	ఈ కోడ్‌ను {page} వద్ద టైప్ చేసి MDMని అనుమతించండి; మీ కోసం వేచి ఉంది (కోడ్ {time}లో గడువు ముగుస్తుంది).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page} వద్ద ఈ కోడ్‌ను టైప్ చేయండి మరియు MDMని అనుమతించండి; మీ కోసం వేచి ఉంది (కోడ్ {time}లో గడువు ముగుస్తుంది).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	వీడియో
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	వీడియో సహాయకులు
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	వీడియో లుకప్‌లు yt-dlpని ఉపయోగిస్తాయి (సుమారు 23 MB, దాని సంతకంతో తనిఖీ చేయబడింది).
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ఎంచుకున్న నెట్‌వర్క్ అడాప్టర్ ({adapter}) ద్వారా ఇంకా వెళ్ళలేదు
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / మెను
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+పైకి / Shift+క్రిందికి
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

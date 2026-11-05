@@ -14,6 +14,7 @@ mod errors;
 mod extension;
 mod fileicons;
 mod find;
+mod gallerydlg;
 mod help;
 mod helpers;
 mod i18n;

@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Dịch vụ debrid (Real-Debrid) tải xuống liên kết của máy chủ tệp bằng tài khoản trả phí của riêng bạn và cung cấp cho MDM một liên kết trực tiếp. Chỉ sử dụng tài khoản của riêng bạn: việc chia sẻ tài khoản hoặc liên kết của tài khoản đó sẽ vi phạm các điều khoản dịch vụ và có thể khiến tài khoản bị tạm ngưng. Các bản tải xuống mà trình duyệt đã bắt đầu vẫn giữ nguyên.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Dịch vụ debrid (Real-Debrid) tải xuống liên kết của máy chủ tệp bằng tài khoản trả phí của riêng bạn và cung cấp cho MDM một liên kết trực tiếp. Chỉ sử dụng tài khoản của riêng bạn: chia sẻ tài khoản hoặc liên kết của tài khoản đó sẽ vi phạm các điều khoản dịch vụ và có thể bị đình chỉ. Các bản tải xuống mà trình duyệt đã bắt đầu vẫn giữ nguyên.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Chỉ âm thanh {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Chỉ âm thanh, {type} gốc
 #. text in the Scheduler window
 #, machine
 	August	Tháng 8
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	bằng cách nhập
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Hủy
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Đang kiểm tra bản cập nhật...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Đang kiểm tra địa chỉ bằng gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Tải xuống lại "{name}" từ đầu? Một tệp đã hoàn tất sẽ bị thay thế khi bản tải xuống mới hoàn tất.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Tải xuống thư viện ảnh
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Tải xuống hoàn tất
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Không tải xuống quá {mb} MB\nmỗi {hours} giờ
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Tải xuống ngay
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Đang tải xuống và xác minh ffmpeg (khoảng 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	Đang tải xuống và xác minh gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Email
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Để trống: tất cả. Trên hầu hết các trang web, những mục mới nhất sẽ xuất hiện trước.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Các tệp đã có
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Tối đa số tệp
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Tệp đầu tiên:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC giữ nguyên âm thanh, nhưng không thể thêm chất lượng mà âm thanh của trang web không có: tệp chỉ lớn hơn.
 #. text in categories.rs
 #, machine
 	Folder:	Thư mục:
@@ -980,7 +1009,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	tài khoản miễn phí: liên kết cần cao cấp
+	free account: links need premium	tài khoản miễn phí: liên kết cần trả phí
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -988,6 +1017,10 @@
 #. text in the Scheduler window
 #, machine
 	Friday	Thứ Sáu
+#. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	từ thư viện ảnh (gallery-dl)
 #. message or event log entry in the main window
 #, machine
 	from a magnet link	từ liên kết magnet
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Thư viện ảnh sử dụng gallery-dl (khoảng 23 MB, đã kiểm tra chữ ký).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Thư viện ảnh sử dụng gallery-dl: cài đặt bằng các gói của hệ thống (Homebrew, pip), sau đó chọn trong Trợ giúp.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl có thể tải xuống các tệp của thư viện ảnh này.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl không thể đọc địa chỉ này. Thay vào đó, hãy thêm dưới dạng tệp (Thêm URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl chưa được cài đặt (Thêm URL với địa chỉ thư viện ảnh sẽ cài đặt)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Trợ giúp
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Trợ giúp
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Ẩn &danh mục
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Ẩn tab
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Trong hàng đợi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Trong các danh mục: menu của danh mục đã chọn
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Cài đặt ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	Cài đặt gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Lần thử cuối cùng {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Thu nhỏ vào vùng thông báo
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	phút
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Di chuyển trang lên/xuống
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Di chuyển giữa các danh mục và danh sách tải xuống
 #. text in the Scheduler window
 #, machine
 	Move down	Di chuyển xuống
@@ -1542,7 +1611,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	dịch vụ này không hỗ trợ
+	not supported by this service	dịch vụ này không hỗ trợ máy chủ tệp này
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Không dùng: các phần tệp được ghi cạnh tệp
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	Hoặc dán mã thông báo API của bạn:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Địa chỉ trang
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1725,11 +1794,11 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
-	premium	cao cấp
+	premium	trả phí
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	cao cấp, còn {days} ngày
+	premium, {days} days left	trả phí, còn {days} ngày
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Lưu Thành
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Lưu vào
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Đang chia sẻ
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Đã dừng chia sẻ sau khi chia sẻ trong {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Đã dừng chia sẻ: tỷ lệ chia sẻ đạt {ratio}
 #. text in the download list
 #, machine
 	Show	Hiển thị
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	Đã bắt đầu
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	Đã bắt đầu bằng gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Đã bắt đầu với yt-dlp {version} ({format})
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Dừng hàng đợi tải xuống chính
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Dừng chia sẻ sau khi chia sẻ trong
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Dừng chia sẻ ở tỷ lệ chia sẻ
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	Địa chỉ phải là địa chỉ http(s) hoặc ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Chất lượng tốt nhất và MP3 cần ffmpeg (khoảng 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Các chất lượng tốt nhất, MP3, Opus và FLAC cần ffmpeg (khoảng 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Chất lượng tốt nhất và MP3 cần ffmpeg: cài đặt bằng trình quản lý gói của hệ thống (hoặc Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Các chất lượng tốt nhất, MP3, Opus và FLAC cần ffmpeg: cài đặt bằng trình quản lý gói của hệ thống (hoặc Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Trợ giúp video
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Tra cứu video sử dụng yt-dlp (khoảng 23 MB, đã kiểm tra chữ ký).
@@ -3077,10 +3164,10 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} yêu cầu bạn cho phép máy tính này trước: xem email của nó
+	{service} asks you to allow this computer first: see its email	{service} yêu cầu bạn cho phép máy tính này trước: xem email của họ
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} không thể truy cập máy chủ tệp này ngay bây giờ; MDM sẽ thử lại sau
+	{service} can't reach this file host right now; MDM will try again later	{service} không thể tiếp cận máy chủ tệp này ngay bây giờ; MDM sẽ thử lại sau
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3112,14 +3199,14 @@
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
-	{service}: this needs a premium account	{service}: điều này cần tài khoản cao cấp
+	{service}: this needs a premium account	{service}: điều này cần tài khoản trả phí
 #. text in errors.rs
 #, machine
 	{service}: too many downloads at once through your account; MDM will try again	{service}: quá nhiều lượt tải xuống cùng lúc thông qua tài khoản của bạn; MDM sẽ thử lại
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: giới hạn của bạn cho máy chủ tệp này đã hết tạm thời
+	{service}: your limit for this file host is used up for now	{service}: giới hạn của bạn cho máy chủ tệp này hiện đã hết
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} chưa thể đi qua bộ điều hợp mạng đã chọn ({adapter})
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Mũi tên lên / Shift+Mũi tên xuống
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

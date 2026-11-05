@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	የዲብሪድ አገልግሎት (Real-Debrid) የአንድ ፋይል አስተናጋጅ ማገናኛን በራስዎ የሚከፈልበት መለያ ያወርዳል እና ለMDM ቀጥተኛ ማገናኛ ይሰጣል። የራስዎን መለያ ብቻ ይጠቀሙ፡ መለያ ወይም ማገናኛዎቹን ማጋራት የአገልግሎቶቹን ውሎች ይጥሳል እና ሊታገድ ይችላል። አሳሹ አስቀድሞ የጀመራቸው ውርዶች እንዳሉ ይቀራሉ።
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	የዲብሪድ አገልግሎት (Real-Debrid) የፋይል አስተናጋጅ አገናኝን በራስዎ በሚከፈልበት መለያ ያወርዳል እና ለMDM ቀጥተኛ አገናኝ ይሰጣል። የራስዎን መለያ ብቻ ይጠቀሙ፡ መለያን ወይም አገናኞችን ማጋራት የአገልግሎቶቹን ውሎች ይጥሳል እና ሊታገድ ይችላል። አሳሹ አስቀድሞ የጀመራቸው ውርዶች እንዳሉ ይቆያሉ።
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -126,7 +126,7 @@
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
-	Add an account	መለያ ያክሉ
+	Add an account	መለያ አክል
 #. text in the tray icon's menu
 #, machine
 	Add batch download	የቡድን ማውረድ አክል
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ድምጽ ብቻ {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ድምፅ ብቻ፣ ዋናው {type}
 #. text in the Scheduler window
 #, machine
 	August	ነሐሴ
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	በማስመጣት
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ይቅር
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	ዝማኔዎችን በመፈተሽ ላይ...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	አድራሻውን በgallery-dl በመፈተሽ ላይ...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" እንደገና ከመጀመሪያው ይወርድ? አዲስ ማውረድ ሲጠናቀቅ የተጠናቀቀ ፋይል ይተካል።
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	ማዕከለ ስዕላትን ያውርዱ
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	ማውረድ ተጠናቋል
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	ከ {mb} ሜባ በላይ አታውርድ\nበየ {hours} ሰዓቱ
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	አሁን አውርድ
 #. window title in the Options window
@@ -694,7 +707,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	የሚደገፉ የፋይል አስተናጋጅ ማገናኛዎችን በእነዚህ መለያዎች ያውርዱ
+	Download supported file-host links through these accounts	የሚደገፉ የፋይል አስተናጋጅ አገናኞችን በእነዚህ መለያዎች ያውርዱ
 #. window title in the Download video window
 #, machine
 	Download video from a page	ቪዲዮን ከገጽ አውርድ
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (80 ሜባ ገደማ) በመውረድ ላይ እና በመረጋገጥ ላይ ነው...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dlን በማውረድ እና በማረጋገጥ ላይ...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ኢሜይል
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	ባዶ ከሆነ: ሁሉም። በአብዛኛዎቹ ጣቢያዎች ላይ አዲሶቹ መጀመሪያ ይመጣሉ።
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +878,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ሙከራ ላይ ያለ: ከReal-Debrid ይፋዊ የኤፒአይ ሰነድ የተገነባ፣ ገና በእውነተኛ መለያ ያልተረጋገጠ።
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	ሙከራ፡ ከReal-Debrid ይፋዊ የኤፒአይ ሰነድ የተገነባ፣ ገና በእውነተኛ መለያ ያልተረጋገጠ።
 #. message or event log entry in the main window
 #, machine
 	Export	ላክ
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	ቀደም ሲል ያሉ ፋይሎች
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	ቢበዛ ፋይሎች
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -931,7 +956,7 @@
 #. button in the Options window
 #. button: open the service's page that shows the user's API token
 #, machine
-	Find my token	ቶከኔን አግኝ
+	Find my token	ቶከኔን ፈልግ
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	የመጀመሪያ ፋይል:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ድምጹን በትክክል ይጠብቃል፣ ነገር ግን የጣቢያው ድምጽ የሌለውን ጥራት ማከል አይችልም፡ ፋይሉ ትልቅ ብቻ ነው።
 #. text in categories.rs
 #, machine
 	Folder:	አቃፊ:
@@ -980,7 +1009,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	ነጻ መለያ፡ ማገናኛዎች ፕሪሚየም ያስፈልጋቸዋል
+	free account: links need premium	ነጻ መለያ፡ አገናኞች ፕሪሚየም ያስፈልጋቸዋል
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -988,6 +1017,10 @@
 #. text in the Scheduler window
 #, machine
 	Friday	ዓርብ
+#. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	ከማዕከለ ስዕላት (gallery-dl)
 #. message or event log entry in the main window
 #, machine
 	from a magnet link	ከማግኔት አገናኝ
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	ማዕከለ ስዕላት gallery-dlን ይጠቀማሉ (ወደ 23 ሜባ፣ ከፊርማው ጋር ተፈትሾ)።
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	ማዕከለ ስዕላት gallery-dlን ይጠቀማሉ: በስርዓትዎ ፓኬጆች (Homebrew, pip) ይጫኑት፣ ከዚያ በረዳቶች ውስጥ ይምረጡት።
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl የዚህን ማዕከለ ስዕላት ፋይሎች ማውረድ ይችላል።
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ይህን አድራሻ ማንበብ አይችልም። በምትኩ እንደ ፋይል ያክሉት (URL አክል)።
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl አልተጫነም (URL አክል በማዕከለ ስዕላት አድራሻ ይጭነዋል)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	እገዛ
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	ረዳቶች
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	ምድቦችን &ደብቅ
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	ትር ደብቅ
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	በወረፋ ውስጥ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	በምድቦች ውስጥ፦ የተመረጠው ምድብ ምናሌ
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ጫን
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dlን ጫን
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	የመጨረሻ ሙከራ {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	ወደ ማሳወቂያ ቦታ አሳንስ
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	ደቂቃዎች
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	ገጽ ወደ ላይ/ወደ ታች ያንቀሳቅሱ
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	በምድቦች እና በማውረጃ ዝርዝር መካከል ይንቀሳቀሱ
 #. text in the Scheduler window
 #, machine
 	Move down	ወደ ታች ያንቀሳቅሱ
@@ -1663,8 +1732,8 @@
 	Options on completion	ሲጠናቀቅ አማራጮች
 #. text in the Options window
 #, machine
-	Or paste your API token:	ወይም የእርስዎን ኤፒአይ ቶከን ይለጥፉ:
-#. text in the Download video window
+	Or paste your API token:	ወይም የኤፒአይ ቶከንዎን ይለጥፉ:
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	የገጽ አድራሻ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	አስቀምጥ እንደ
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	ወደዚህ አስቀምጥ
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	ማጋራት
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	ለ{time} ካጋሩ በኋላ ማጋራት ቆሟል
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	ማጋራት ቆሟል፡ የማጋራት ምጥጥን {ratio} ደርሷል
 #. text in the download list
 #, machine
 	Show	አሳይ
@@ -2078,11 +2156,11 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	እንደ {user} ገብተዋል ({state})
+	Signed in as {user} ({state})	እንደ {user} ገብቷል ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	ወጥተዋል፡ እንደገና ይግቡ
+	signed out: sign in again	ወጥቷል፡ እንደገና ይግቡ
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	የጣቢያ ስም/የማውረጃ አገናኝ/የወላጅ ድረ-ገጽ/ሪፈረር
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	ተጀምሯል
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	በgallery-dl {version} ተጀምሯል
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	በyt-dlp {version} ({format}) ተጀምሯል
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	ዋናውን የማውረድ ሰልፍ አቁም
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	ለማጋራት ከቆየ በኋላ ማጋራት አቁም
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	በዚህ የማጋራት ምጥጥን ማጋራት አቁም
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	አድራሻው የhttp(s) ወይም ftp(s) አድራሻ መሆን አለበት
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	ምርጥ ጥራቶች እና MP3 የffmpeg (80 ሜባ ገደማ) ያስፈልጋቸዋል።
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	ምርጥ ጥራቶች፣ MP3፣ Opus እና FLAC ffmpeg (80 ሜባ ገደማ) ያስፈልጋቸዋል።
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	ምርጥ ጥራቶች እና MP3 የffmpeg ያስፈልጋቸዋል፡ በሲስተምዎ ጥቅል ማኔጀር (ወይም Homebrew) ይጫኑት።
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	ምርጥ ጥራቶች፣ MP3፣ Opus እና FLAC ffmpeg ያስፈልጋቸዋል፡ በስርዓትዎ ጥቅል አስተዳዳሪ (ወይም Homebrew) ይጫኑት።
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	ይህን ኮድ በ{page} ላይ ይተይቡ እና MDMን ይፍቀዱ፤ እርስዎን በመጠበቅ ላይ (ኮዱ በ{time} ጊዜው ያበቃል)።
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	ይህን ኮድ በ{page} ላይ ይተይቡ እና MDMን ይፍቀዱ፤ እርስዎን በመጠበቅ ላይ (ኮዱ በ{time} ጊዜው ያልፋል)።
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	ቪዲዮ
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	የቪዲዮ ረዳቶች
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	የቪዲዮ ፍለጋዎች yt-dlpን ይጠቀማሉ (ወደ 23 ሜባ፣ ከፊርማው ጋር ተረጋግጧል)።
@@ -3073,14 +3160,14 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} እንዲቀንስ ይጠይቃል፤ MDM ከአንድ ደቂቃ በኋላ እንደገና ይሞክራል
+	{service} asks to slow down; MDM will try again in a minute	{service} እንዲቀንስ ይጠይቃል፤ MDM በአንድ ደቂቃ ውስጥ እንደገና ይሞክራል
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} ይህን ኮምፒውተር መጀመሪያ እንዲፈቅዱ ይጠይቅዎታል፡ ኢሜይሉን ይመልከቱ
+	{service} asks you to allow this computer first: see its email	{service} ይህን ኮምፒውተር መጀመሪያ እንዲፈቅዱ ይጠይቃል፡ ኢሜይሉን ይመልከቱ
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} ይህን ፋይል አስተናጋጅ አሁን ማግኘት አልቻለም፤ MDM በኋላ እንደገና ይሞክራል
+	{service} can't reach this file host right now; MDM will try again later	{service} ይህን ፋይል አስተናጋጅ አሁን ማግኘት አይችልም፤ MDM በኋላ እንደገና ይሞክራል
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3115,15 +3202,15 @@
 	{service}: this needs a premium account	{service}፡ ይህ ፕሪሚየም መለያ ያስፈልገዋል
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}፡ በመለያዎ በኩል በአንድ ጊዜ በጣም ብዙ ውርዶች አሉ፤ MDM እንደገና ይሞክራል
+	{service}: too many downloads at once through your account; MDM will try again	{service}፡ በአንድ ጊዜ በጣም ብዙ ውርዶች በመለያዎ በኩል፤ MDM እንደገና ይሞክራል
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}፡ ለዚህ ፋይል አስተናጋጅ ያለዎት ገደብ ለአሁኑ አልቋል
+	{service}: your limit for this file host is used up for now	{service}: የዚህ ፋይል አስተናጋጅ ገደብዎ ለአሁኑ አልቋል
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
-	{service}: {message}	{service}፡ {message}
+	{service}: {message}	{service}: {message}
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} በተመረጠ የአውታረ መረብ አስማሚ ({adapter}) በኩል ገና ማለፍ አይችልም
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / ምናሌ
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+ወደ ላይ / Shift+ወደ ታች
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

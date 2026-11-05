@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid xizmati (Real-Debrid) fayl xostining havolasini oʻzingizning pullik hisobingiz bilan yuklab oladi va MDMga toʻgʻridan-toʻgʻri havola beradi. Faqat oʻzingizning hisobingizdan foydalaning: hisob yoki uning havolalarini boʻlishish xizmat shartlarini buzadi va uni toʻxtatib qoʻyishi mumkin. Brauzer allaqachon boshlagan yuklamalar oʻz holicha qoladi.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid xizmati (Real-Debrid) fayl xostining havolasini oʻzingizning pullik hisobingiz bilan yuklab oladi va MDMga toʻgʻridan-toʻgʻri havola beradi. Faqat oʻzingizning hisobingizdan foydalaning: hisob yoki uning havolalarini boʻlishish xizmat shartlarini buzadi va uning toʻxtatilishiga olib kelishi mumkin. Brauzer allaqachon boshlagan yuklamalar oʻz holicha qoladi.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Faqat audio {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Faqat audio, asl {type}
 #. text in the Scheduler window
 #, machine
 	August	Avgust
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	import orqali
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Bekor qilish
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Yangilanishlar tekshirilmoqda...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Manzil gallery-dl bilan tekshirilmoqda...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" faylini boshidan qayta yuklab olish kerakmi? Yangi yuklab olish tugallanganda, tugallangan fayl almashtiriladi.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Galereyani yuklab olish
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Yuklab olish yakunlandi
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB dan koʻp yuklab olmang\nhar {hours} soatda
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Hozir yuklab olish
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg yuklab olinmoqda va tekshirilmoqda (taxminan 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl yuklab olinmoqda va tekshirilmoqda...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Elektron pochta
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Boʻsh: ularning hammasi. Koʻpgina saytlarda eng yangilari birinchi keladi.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +878,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimental: Real-Debrid’ning ommaviy API hujjatlaridan yaratilgan, haqiqiy hisob bilan hali tasdiqlanmagan.
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimental: Real-Debridning ommaviy API hujjatlaridan tuzilgan, haqiqiy hisob bilan hali tasdiqlanmagan.
 #. message or event log entry in the main window
 #, machine
 	Export	Eksport
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Mavjud fayllar
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Fayllar koʻpi bilan
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -931,7 +956,7 @@
 #. button in the Options window
 #. button: open the service's page that shows the user's API token
 #, machine
-	Find my token	Tokenimni topish
+	Find my token	Mening tokenimni topish
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Birinchi fayl:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC tovushni aniq saqlaydi, lekin u sayt tovushida boʻlmagan sifatni qoʻsha olmaydi: fayl faqat kattaroq boʻladi.
 #. text in categories.rs
 #, machine
 	Folder:	Jild:
@@ -989,6 +1018,10 @@
 #, machine
 	Friday	Juma
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	galereyadan (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	magnit havoladan
 #. message or event log entry in the main window
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Galereyalar gallery-dl dan foydalanadi (taxminan 23 MB, imzosi bilan tekshirilgan).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galereyalar gallery-dl dan foydalanadi: uni tizimingiz paketlari (Homebrew, pip) bilan oʻrnating, soʻngra Yordamchilarda tanlang.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl ushbu galereya fayllarini yuklab olishi mumkin.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl bu manzilni oʻqiy olmaydi. Buning oʻrniga uni fayl sifatida qoʻshing (URL qoʻshish).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl oʻrnatilmagan (galereya manzili bilan URL qoʻshish uni oʻrnatadi)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Yordam
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Yordamchilar
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Toifalarni &yashirish
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Yorliqni yashirish
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Navbatda
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Turkumlarda: tanlangan turkum menyusi
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg’ni oʻrnatish
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl ni oʻrnatish
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Oxirgi urinish {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Bildirishnoma maydoniga yigʻish
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	daqiqalar
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Sahifani yuqoriga/pastga siljitish
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Turkumlar va yuklab olish roʻyxati oʻrtasida harakatlanish
 #. text in the Scheduler window
 #, machine
 	Move down	Pastga siljitish
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	Yoki API tokeningizni joylashtiring:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Sahifa manzili
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Sifatida saqlash
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Saqlash joyi
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Ulashish
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Ulashish {time} davom etgandan soʻng toʻxtatildi
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Ulashish toʻxtatildi: ulashish nisbati {ratio} ga yetdi
 #. text in the download list
 #, machine
 	Show	Koʻrsatish
@@ -2078,7 +2156,7 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	{user} ({state}) sifatida tizimga kirilgan
+	Signed in as {user} ({state})	{user} sifatida tizimga kirilgan ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	Boshlandi
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version} bilan boshlandi
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) bilan boshlandi
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Asosiy yuklab olish navbatini toʻxtatish
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Ulashishdan keyin ulashishni toʻxtatish
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Ulashish nisbati quyidagiga yetganda ulashishni toʻxtatish
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	Manzil http(s) yoki ftp(s) manzili boʻlishi kerak
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Eng yaxshi sifatlar va MP3 uchun ffmpeg (taxminan 80 MB) kerak.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Eng yaxshi sifatlar, MP3, Opus va FLAC uchun ffmpeg (taxminan 80 MB) kerak boʻladi.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Eng yaxshi sifatlar va MP3 uchun ffmpeg kerak: uni tizimingizning paket menejeri (yoki Homebrew) bilan oʻrnating.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Eng yaxshi sifatlar, MP3, Opus va FLAC uchun ffmpeg kerak boʻladi: uni tizimingizning paket menejeri (yoki Homebrew) orqali oʻrnating.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Video yordamchilari
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video qidiruvlari yt-dlp (taxminan 23 MB, imzosi boʻyicha tekshirilgan) dan foydalanadi.
@@ -3073,14 +3160,14 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} sekinlashishni soʻraydi; MDM bir daqiqadan soʻng qayta urinadi
+	{service} asks to slow down; MDM will try again in a minute	{service} sekinlashishni soʻrayapti; MDM bir daqiqadan keyin qayta urinadi
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} avval ushbu kompyuterga ruxsat berishingizni soʻraydi: uning elektron pochtasini tekshiring
+	{service} asks you to allow this computer first: see its email	{service} avval ushbu kompyuterga ruxsat berishingizni soʻrayapti: uning elektron pochtasini tekshiring
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} hozirda ushbu fayl xostiga ulanolmaydi; MDM keyinroq qayta urinadi
+	{service} can't reach this file host right now; MDM will try again later	{service} hozirda ushbu fayl xostiga ulanolmayapti; MDM keyinroq qayta urinadi
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3119,7 +3206,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: ushbu fayl xosti uchun limitlaringiz hozircha tugadi
+	{service}: your limit for this file host is used up for now	{service}: ushbu fayl xostingiz uchun limiti hozircha tugagan
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} tanlangan tarmoq adapteri ({adapter}) orqali hali oʻta olmaydi
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menyu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Yuqoriga / Shift+Pastga
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

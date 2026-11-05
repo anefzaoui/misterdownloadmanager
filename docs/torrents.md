@@ -31,6 +31,8 @@ Double-click the torrent in the list to open its progress window. Besides the us
 - **Pieces** — a map of the torrent's pieces: there, partly there, or missing.
 - **General** — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.
 
+The tabs stay once the torrent has finished, for as long as it is shared.
+
 The **Speed Limiter** tab of a torrent's window has, besides its download limit, **Limit uploading** to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.
 
 ![A torrent's progress window, on its Files tab](images/progress-torrent.png)
@@ -42,6 +44,10 @@ The **Speed Limiter** tab of a torrent's window has, besides its download limit,
 Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):
 
 - **Keep sharing torrents after they finish** — off by default: a finished torrent stops, like any download. Turn it on to keep uploading to other peers after your download is complete.
+  - **Stop sharing at a share ratio of** — a finished torrent stops being shared once it has sent that many times what it has (2.00: twice). Off by default.
+  - **Stop sharing after sharing for … minutes** — or once it has been shared that long, over all its runs. Off by default.
+
+  A torrent stopped by one of these says so in its event log, and isn't shared again when MDM starts. Raise or turn off the limit to share it again.
 - **Limit uploading for all torrents to** — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.
 - **Open magnet links and .torrent files with Mister Download Manager** — Windows then opens magnet links in your browser and `.torrent` files in Explorer with MDM. This is for your Windows account only; a program you chose in Windows' **Open with** stays first. The setup can turn it on for you.
 

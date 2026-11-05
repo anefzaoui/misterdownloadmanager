@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	En Debrid-Service (Real-Debrid) lued e Link vun engem Dateihost mat Ärem eegene bezuelte Kont erof a gëtt dem MDM en direkten Link. Benotzt nëmmen Ären eegene Kont: d'Deelen vun engem Kont oder senge Linke verstéisst géint d'Konditioune vun de Servicer a kann dozou féieren, datt en suspendéiert gëtt. Downloads, déi de Browser scho gestart huet, bleiwen, wéi se sinn.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	En Debrid-Service (Real-Debrid) lued e Fichier-Host-Link mat Ärem eegene bezuelte Kont erof a gëtt dem MDM en direkten Link. Benotzt nëmmen Ären eegene Kont: d'Deelen vun engem Kont oder senge Linke verstéisst géint d'Konditioune vun de Servicer a kann dozou féieren, datt en suspendéiert gëtt. Downloads, déi de Browser scho gestart huet, bleiwen, wéi se sinn.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Nëmmen Audio {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Nëmmen Audio, Original {type}
 #. text in the Scheduler window
 #, machine
 	August	August
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	duerch Import
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Ofbriechen
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Sichen no Updates...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Adress mat gallery-dl iwwerpréiwen...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -645,10 +654,6 @@
 #. text in a download's progress window
 #, machine
 	Done	Fäerdeg
-#. button in the Options window
-#. button (short): move the account down the list
-#, machine
-	Down	Erofg
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Download	Eroflueden
@@ -656,6 +661,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Download "{name}" nach eng Kéier vun Ufank un? Eng fäerdeg Datei gëtt ersat wann den neien Download fäerdeg ass.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Galerie eroflueden
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Download fäerdeg
@@ -680,7 +689,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Net méi wéi {mb} MBytes downloaden\nall {hours} Stonnen
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Elo downloaden
 #. window title in the Options window
@@ -694,7 +703,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Ënnerstëtzt Dateihost-Linke mat dëse Konten eroflueden
+	Download supported file-host links through these accounts	Ënnerstëtzt Fichier-Host-Linke mat dëse Konten eroflueden
 #. window title in the Download video window
 #, machine
 	Download video from a page	Video vun enger Säit downloaden
@@ -729,6 +738,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Lueden an iwwerpréiwen ffmpeg (ongeféier 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl eroflueden an iwwerpréiwen...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +811,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	E-Mail
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Eidel: all. Op de meeschte Säite kommen déi neist fir d'éischt.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +874,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Experimentell: baséiert op der ëffentlecher API-Dokumentatioun vu Real-Debrid, nach net mat engem richtege Kont confirméiert.
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Experimentell: baséiert op der ëffentlecher API-Dokumentatioun vu Real-Debrid, nach net mat engem richtege Kont bestätegt.
 #. message or event log entry in the main window
 #, machine
 	Export	Exportéieren
@@ -911,6 +928,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Dateien existéieren schonn
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Maximal Zuel vun de Fichieren
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +977,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Éischte Fichier:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC behält den Toun exakt, mee et kann keng Qualitéit dobäisetzen, déi den Toun vun der Säit net huet: d'Fichier ass just méi grouss.
 #. text in categories.rs
 #, machine
 	Folder:	Dossier:
@@ -980,7 +1005,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	gratis Kont: Linke brauchen Premium
+	free account: links need premium	Gratis Kont: Linke brauche Premium
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -988,6 +1013,10 @@
 #. text in the Scheduler window
 #, machine
 	Friday	Freideg
+#. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	aus enger Galerie (gallery-dl)
 #. message or event log entry in the main window
 #, machine
 	from a magnet link	vun engem Magnet-Link
@@ -1013,6 +1042,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	FTP
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Galerie benotze gallery-dl (ongeféier 23 MB, géint seng Ënnerschrëft gepréift).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galerie benotze gallery-dl: installéiert et mat de Packagen vun Ärem System (Homebrew, pip), da wielt et ënner Hëllefsprogrammer.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl kann d'Fichiere vun dëser Galerie eroflueden.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl kann dës Adress net liesen. Füügt se amplaz als Fichier derbäi (URL derbäisetzen).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ass net installéiert (URL derbäisetzen mat enger Galerieadress installéiert et)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1097,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Hëllef
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Hëllefsprogrammer
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1114,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&Kategorien ausblenden
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Tab ausblenden
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1162,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	An enger Schlaang
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	An de Kategorien: de Menü vun der gewielter Kategorie
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1185,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg installéieren
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl installéieren
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1255,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Leschte Versuch {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1365,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	An d'Notifikatiounsberäich minimiséieren
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	Minutten
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1428,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Säit erop / erof réckelen
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Tëscht de Kategorien an der Downloadlëscht réckelen
 #. text in the Scheduler window
 #, machine
 	Move down	No ënne réckelen
@@ -1542,7 +1607,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	net vun dësem Service ënnerstëtzt
+	not supported by this service	Net vun dësem Service ënnerstëtzt
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Net benotzt: Dateideeler ginn nieft der Datei geschriwwen
@@ -1663,8 +1728,8 @@
 	Options on completion	Optiounen no der Fäerdegstellung
 #. text in the Options window
 #, machine
-	Or paste your API token:	Oder pecht Ären API-Token an:
-#. text in the Download video window
+	Or paste your API token:	Oder Ären API-Token pechen:
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Säitenadress
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1957,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Späicheren als
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Späicheren an
@@ -2022,6 +2087,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Deelen
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Deelen no {time} gestoppt
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Deelen gestoppt: De Share-Verhältnis huet {ratio} erreecht
 #. text in the download list
 #, machine
 	Show	Weisen
@@ -2082,7 +2156,7 @@
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	ofgemellt: mellt Iech w.e.g. nach eng Kéier un
+	signed out: sign in again	Ofgemellt: nach eng Kéier umellen
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Säitennumm/Downloadlink/Elterendeel Websäit/Referer
@@ -2180,6 +2254,11 @@
 #, machine
 	Started	Gestart
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	Gestart mat gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Gestart mat yt-dlp {version} ({format})
@@ -2209,6 +2288,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Haapt-Download-Schlaang stoppen
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Deelen no dëser Zäit stoppen:
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Deelen bei engem Share-Verhältnis vun dësem Wäert stoppen:
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2382,11 @@
 	The address must be an http(s) or ftp(s) address	D'Adress muss eng http(s)- oder ftp(s)-Adress sinn
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Déi bescht Qualitéiten an MP3 brauche ffmpeg (ongeféier 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Déi bescht Qualitéiten, MP3, Opus a FLAC brauchen ffmpeg (ongeféier 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Déi bescht Qualitéiten an MP3 brauche ffmpeg: installéiert et mat Ärem System sengem Package Manager (oder Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Déi bescht Qualitéiten, MP3, Opus a FLAC brauchen ffmpeg: installéiert et mat Ärem System sengem Package Manager (oder Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2311,7 +2398,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	De Code ass ofgelaf: mellt Iech w.e.g. nach eng Kéier un
+	the code expired: sign in again	De Code ass ofgelaf: nach eng Kéier umellen
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2704,7 +2791,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Gitt dëse Code op {page} an erlaabt MDM; waart op Iech (de Code leeft an {time} of).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Dëse Code op {page} aginn an MDM erlaben; waart op Iech (de Code leeft an {time} of).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2723,10 +2810,6 @@
 #. the reason a download failed is not known
 #, machine
 	unknown	onbekannt
-#. button in the Options window
-#. button (short): move the account up the list (accounts are asked in the list's order)
-#, machine
-	Up	Erop
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2828,10 +2911,6 @@
 #. category name: video files
 #, machine
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Videohelfer
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video-Sich benotzen yt-dlp (ongeféier 23 MB, géint seng Ënnerschrëft gepréift).
@@ -3077,10 +3156,10 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} freet Iech, dëse Computer fir d'éischt z'erlaaben: kuckt seng E-Mail
+	{service} asks you to allow this computer first: see its email	{service} freet Iech, dëse Computer fir d'éischt z'erlaben: kuckt seng E-Mail
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} kann dësen Dateihost elo net erreechen; MDM probéiert et méi spéit nach eng Kéier
+	{service} can't reach this file host right now; MDM will try again later	{service} kann dëse Fichier-Host am Moment net erreechen; MDM probéiert et méi spéit nach eng Kéier
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3092,11 +3171,11 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} gëtt dës Datei net
+	{service} won't give this file	{service} wëll dëse Fichier net ginn
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}: mellt Iech w.e.g. nach eng Kéier un (Optiounen → Konten)
+	{service}: sign in again (Options → Accounts)	{service}: nach eng Kéier umellen (Optiounen → Konten)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
@@ -3104,11 +3183,11 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: d'Datei ass vum Dateihost verschwonnen oder net disponibel
+	{service}: the file is gone or unavailable on the file host	{service}: de Fichier ass um Fichier-Host verschwonnen oder net disponibel
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
-	{service}: this file is password-protected	{service}: dës Datei ass passwuertgeschützt
+	{service}: this file is password-protected	{service}: dëse Fichier ass passwuertgeschützt
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
@@ -3119,7 +3198,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: Äert Limit fir dësen Dateihost ass fir de Moment opgebraucht
+	{service}: your limit for this file host is used up for now	{service}: Äre Limit fir dësen Dateihost ass fir de Moment opgebraucht
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3219,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} kann nach net iwwer e gewielten Netzwierkadapter ({adapter}) lafen
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3473,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menü
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Një shërbim debrid (Real-Debrid) shkarkon një lidhje të hostit të skedarit me llogarinë tuaj të paguar dhe i jep MDM-së një lidhje të drejtpërdrejtë. Përdorni vetëm llogarinë tuaj: ndarja e një llogarie ose lidhjeve të saj shkel kushtet e shërbimeve dhe mund të çojë në pezullimin e saj. Shkarkimet që ka filluar tashmë shfletuesi mbeten siç janë.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Një shërbim debrid (Real-Debrid) shkarkon një lidhje të hostit të skedarëve me llogarinë tuaj të paguar dhe i jep MDM-së një lidhje të drejtpërdrejtë. Përdorni vetëm llogarinë tuaj: ndarja e një llogarie ose lidhjeve të saj shkel kushtet e shërbimeve dhe mund të çojë në pezullimin e saj. Shkarkimet që shfletuesi i ka nisur tashmë mbeten siç janë.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -280,7 +280,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Po i kërkohet shërbimit...
+	Asking the service...	Duke pyetur shërbimin...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Vetëm audio {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Vetëm audio, {type} origjinale
 #. text in the Scheduler window
 #, machine
 	August	Gusht
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	nga importimi
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Anulo
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Po kontrollohet për përditësime...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Po kontrollohet adresa me gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -537,7 +546,7 @@
 	Day, month, year	Dita, muaji, viti
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Llogaritë e shërbimit Debrid
+	Debrid service accounts	Llogaritë e shërbimit debrid
 #. text in the Scheduler window
 #, machine
 	December	Dhjetor
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Të shkarkohet "{name}" përsëri nga fillimi? Një skedar i përfunduar zëvendësohet kur shkarkimi i ri përfundon.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Shkarko një galeri
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Shkarkimi u krye
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Shkarko jo më shumë se {mb} MB\nçdo {hours} orë
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Shkarko tani
 #. window title in the Options window
@@ -694,7 +707,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Shkarko lidhjet e hosteve të skedarëve të mbështetur përmes këtyre llogarive
+	Download supported file-host links through these accounts	Shkarko lidhjet e hostit të skedarëve të mbështetur përmes këtyre llogarive
 #. window title in the Download video window
 #, machine
 	Download video from a page	Shkarko video nga një faqe
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	Po shkarkohet dhe verifikohet ffmpeg (rreth 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	Po shkarkohet dhe verifikohet gallery-dl...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Email
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Bosh: të gjitha. Në shumicën e faqeve më të rejat vijnë të parat.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +878,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimentale: e ndërtuar nga dokumentacioni publik i API-së së Real-Debrid, ende e pakonfirmuar me një llogari reale.
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Eksperimentale: e ndërtuar nga dokumentacioni publik i API-së së Real-Debrid, ende nuk është konfirmuar me një llogari reale.
 #. message or event log entry in the main window
 #, machine
 	Export	Eksport
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Skedarët tashmë aty
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Skedarë maksimumi
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Skedari i parë:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC e ruan tingullin saktësisht, por s’mund të shtojë cilësi që tingulli i faqes s’e ka: skedari vetëm sa bëhet më i madh.
 #. text in categories.rs
 #, machine
 	Folder:	Dosja:
@@ -989,6 +1018,10 @@
 #, machine
 	Friday	E premte
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	nga një galeri (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	nga një lidhje magnet
 #. message or event log entry in the main window
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Galeritë përdorin gallery-dl (rreth 23 MB, e kontrolluar kundrejt nënshkrimit të saj).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galeritë përdorin gallery-dl: instalojeni me paketat e sistemit tuaj (Homebrew, pip), pastaj zgjidheni te Ndihmësit.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl mund të shkarkojë skedarët e kësaj galerie.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl nuk mund ta lexojë këtë adresë. Shtojeni si skedar në vend të kësaj (Shto URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl nuk është instaluar (Shto URL me adresën e një galerie e instalon atë)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Ndihmë
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Ndihmësit
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Fshih &kategoritë
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Fshih skedën
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Në një radhë
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Në kategori: menuja e kategorisë së zgjedhur
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Instalo ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	Instalo gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Përpjekja e fundit {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Minimizo në zonën e njoftimeve
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	minuta
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Lëviz faqen lart/poshtë
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Lëvizni ndërmjet kategorive dhe listës së shkarkimeve
 #. text in the Scheduler window
 #, machine
 	Move down	Lëviz poshtë
@@ -1663,8 +1732,8 @@
 	Options on completion	Opsione pas përfundimit
 #. text in the Options window
 #, machine
-	Or paste your API token:	Ose ngjit tokenin tuaj API:
-#. text in the Download video window
+	Or paste your API token:	Ose ngjit tokenin tuaj të API-së:
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Adresa e faqes
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Ruaj si
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Ruaj te
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Ndarja
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Ndërprerë shpërndarjen pas shpërndarjes për {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Ndërprerë shpërndarjen: raporti i shpërndarjes arriti {ratio}
 #. text in the download list
 #, machine
 	Show	Shfaq
@@ -2074,15 +2152,15 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
-	Sign in in the browser	Hyni në shfletues
+	Sign in in the browser	Identifikohu në shfletues
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	Hyrë si {user} ({state})
+	Signed in as {user} ({state})	Identifikuar si {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	çkyçur: hyni sërish
+	signed out: sign in again	çkyçur: identifikohu sërish
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Emri i faqes/Lidhja e shkarkimit/Faqja e internetit prind/Referuesi
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	Filluar
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	Filloi me gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	Filluar me yt-dlp {version} ({format})
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Ndal radhën kryesore të shkarkimit
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Ndërpritet shpërndarja pas shpërndarjes për
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Ndërpritet shpërndarja me një raport shpërndarjeje prej
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	Adresa duhet të jetë një adresë http(s) ose ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Cilësitë më të mira dhe MP3-shi kërkojnë ffmpeg (rreth 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Cilësitë më të mira, MP3, Opus dhe FLAC, kërkojnë ffmpeg (rreth 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Cilësitë më të mira dhe MP3-shi kërkojnë ffmpeg: instalojeni me menaxherin e paketave të sistemit tuaj (ose Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Cilësitë më të mira, MP3, Opus dhe FLAC, kërkojnë ffmpeg: instalojeni me menaxherin e paketave të sistemit tuaj (ose Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2311,7 +2402,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	kodi skadoi: hyni sërish
+	the code expired: sign in again	kodi skadoi: identifikohu sërish
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Shtypni këtë kod te {page} dhe lejoni MDM; po ju presim (kodi skadon në {time}).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Shtypni këtë kod te {page} dhe lejoni MDM; duke pritur për ju (kodi skadon në {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Ndihmësit e videos
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Kërkimet e videos përdorin yt-dlp (rreth 23 MB, të kontrolluara kundrejt nënshkrimit të tij).
@@ -3080,7 +3167,7 @@
 	{service} asks you to allow this computer first: see its email	{service} ju kërkon të lejoni këtë kompjuter së pari: shihni emailin e tij
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} nuk mund të arrijë këtë host skedari tani; MDM do të provojë sërish më vonë
+	{service} can't reach this file host right now; MDM will try again later	{service} nuk mund të arrijë këtë host skedarësh tani; MDM do të provojë sërish më vonë
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3096,7 +3183,7 @@
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}: hyni sërish (Opsionet → Llogaritë)
+	{service}: sign in again (Options → Accounts)	{service}: identifikohu sërish (Opsionet → Llogaritë)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
@@ -3104,7 +3191,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: skedari ka humbur ose nuk është i disponueshëm në hostin e skedarit
+	{service}: the file is gone or unavailable on the file host	{service}: skedari ka humbur ose nuk është i disponueshëm në hostin e skedarëve
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -3119,7 +3206,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: limiti juaj për këtë host skedari është shpenzuar për momentin
+	{service}: your limit for this file host is used up for now	{service}: limiti juaj për këtë host skedarësh është shpenzuar për momentin
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} nuk mund të kalojë ende përmes një përshtatësi të zgjedhur rrjeti ({adapter})
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Lart / Shift+Poshtë
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

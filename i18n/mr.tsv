@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	डीब्रिड सेवा (Real-Debrid) तुमच्या स्वतःच्या सशुल्क खात्यासह फाइल होस्टची लिंक डाउनलोड करते आणि MDM ला थेट लिंक देते. फक्त तुमचे स्वतःचे खाते वापरा: खाते किंवा त्याच्या लिंक्स शेअर केल्याने सेवांच्या अटींचा भंग होतो आणि ते निलंबित केले जाऊ शकते. ब्राउझरने आधीच सुरू केलेले डाउनलोड जसे आहेत तसेच राहतील.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	एक डीब्रिड सेवा (Real-Debrid) तुमच्या स्वतःच्या सशुल्क खात्यासह फाइल होस्टची लिंक डाउनलोड करते आणि MDM ला थेट लिंक देते. फक्त तुमचे स्वतःचे खाते वापरा: खाते किंवा त्याच्या लिंक्स शेअर केल्याने सेवांच्या अटींचा भंग होतो आणि ते निलंबित केले जाऊ शकते. ब्राउझरने आधीच सुरू केलेले डाउनलोड जसे आहेत तसेच राहतील.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	फक्त ऑडिओ {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	केवळ ऑडिओ, मूळ {type}
 #. text in the Scheduler window
 #, machine
 	August	ऑगस्ट
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	आयात करून
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	रद्द करा
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	अद्यतनांसाठी तपासत आहे...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	gallery-dl सह पत्ता तपासत आहे...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" पुन्हा सुरुवातीपासून डाउनलोड करायचे आहे का? नवीन डाउनलोड पूर्ण झाल्यावर पूर्ण झालेली फाइल बदलली जाते.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	गॅलरी डाउनलोड करा
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	डाउनलोड पूर्ण झाले
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB पेक्षा जास्त डाउनलोड करू नका\nप्रत्येक {hours} तासांनी
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	आता डाउनलोड करा
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (सुमारे 80 MB) डाउनलोड करत आहे आणि त्याची पडताळणी करत आहे...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl डाउनलोड करत आहे आणि सत्यापित करत आहे...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ईमेल
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	रिकामे: सर्व. बहुतेक साइट्सवर नवीन प्रथम येतात.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	फाइल्स आधीच अस्तित्वात आहेत
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	जास्तीत जास्त फाइल्स
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	पहिली फाइल:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC आवाज तसाच ठेवतो, पण साइटच्या आवाजात नसलेली गुणवत्ता तो जोडू शकत नाही: फाइल फक्त मोठी होते.
 #. text in categories.rs
 #, machine
 	Folder:	फोल्डर:
@@ -989,6 +1018,10 @@
 #, machine
 	Friday	शुक्रवार
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	गॅलरीमधून (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	मॅग्नेट लिंकवरून
 #. message or event log entry in the main window
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	गॅलरी gallery-dl वापरतात (सुमारे 23 MB, त्याच्या स्वाक्षरीनुसार तपासले).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	गॅलरी gallery-dl वापरतात: ते तुमच्या सिस्टमच्या पॅकेजेससह (Homebrew, pip) स्थापित करा, नंतर मदतनीसांमध्ये ते निवडा.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl या गॅलरीच्या फाइल्स डाउनलोड करू शकते.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl हा पत्ता वाचू शकत नाही. त्याऐवजी फाइल म्हणून जोडा (URL जोडा).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl स्थापित नाही (गॅलरीच्या पत्त्यासह URL जोडल्यास ते स्थापित होते)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	मदत
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	मदतनीस
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	श्रेण्या लपवा(&c)
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	टॅब लपवा
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	रांगेत
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	श्रेण्यांमध्ये: निवडलेल्या श्रेणीचा मेनू
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg स्थापित करा
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl स्थापित करा
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	शेवटचा प्रयत्न {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	सूचना क्षेत्रात लहान करा
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	मिनिटे
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	पृष्ठ वर/खाली हलवा
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	श्रेण्या आणि डाउनलोड सूचीमध्ये फिरा
 #. text in the Scheduler window
 #, machine
 	Move down	खाली हलवा
@@ -1542,7 +1611,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	या सेवाद्वारे समर्थित नाही
+	not supported by this service	या सेवेद्वारे समर्थित नाही
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	वापरले नाही: फाइलचे भाग फाइलच्या शेजारी लिहिले जातात
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	किंवा तुमचे API टोकन पेस्ट करा:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	पृष्ठ पत्ता
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	याप्रमाणे जतन करा
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	येथे जतन करा
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	शेअर करत आहे
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time} साठी शेअर केल्यानंतर शेअर करणे थांबवले
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	शेअर करणे थांबवले: शेअर गुणोत्तर {ratio} वर पोहोचले
 #. text in the download list
 #, machine
 	Show	दाखवा
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	सुरू झाले
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version} सह सुरू झाले
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) सह सुरू झाले
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	मुख्य डाउनलोड रांग थांबवा
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	यासाठी शेअर केल्यानंतर शेअर करणे थांबवा
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	या शेअर गुणोत्तरावर शेअर करणे थांबवा
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	पत्ता http(s) किंवा ftp(s) पत्ता असणे आवश्यक आहे
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	उत्तम गुणवत्ता आणि MP3 साठी ffmpeg (सुमारे 80 MB) आवश्यक आहे.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	उत्तम गुणवत्तेसाठी, MP3, Opus आणि FLAC ला ffmpeg (सुमारे 80 MB) आवश्यक आहे.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	उत्तम गुणवत्ता आणि MP3 साठी ffmpeg आवश्यक आहे: ते तुमच्या सिस्टमच्या पॅकेज व्यवस्थापकासह (किंवा Homebrew) स्थापित करा.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	उत्तम गुणवत्तेसाठी, MP3, Opus आणि FLAC ला ffmpeg आवश्यक आहे: ते तुमच्या सिस्टमच्या पॅकेज व्यवस्थापकासह (किंवा Homebrew) स्थापित करा.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page} वर हा कोड टाइप करा आणि MDM ला परवानगी द्या; तुमची वाट पाहत आहे (कोडची मुदत {time} मध्ये संपेल).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page} वर हा कोड टाइप करा आणि MDM ला परवानगी द्या; तुमच्यासाठी प्रतीक्षा करत आहे (कोडची मुदत {time} मध्ये संपेल).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	व्हिडिओ
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	व्हिडिओ सहाय्यक
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	व्हिडिओ लुकअप yt-dlp वापरतात (सुमारे 23 MB, त्याच्या स्वाक्षरीविरुद्ध तपासले).
@@ -3080,7 +3167,7 @@
 	{service} asks you to allow this computer first: see its email	{service} तुम्हाला प्रथम या संगणकाला परवानगी देण्यास सांगत आहे: त्याचा ईमेल पहा
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} या क्षणी या फाइल होस्टपर्यंत पोहोचू शकत नाही; MDM नंतर पुन्हा प्रयत्न करेल
+	{service} can't reach this file host right now; MDM will try again later	{service} या फाइल होस्टपर्यंत सध्या पोहोचू शकत नाही; MDM नंतर पुन्हा प्रयत्न करेल
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3104,7 +3191,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: फाइल फाइल होस्टवर नाही किंवा अनुपलब्ध आहे
+	{service}: the file is gone or unavailable on the file host	{service}: फाइल होस्टवरून फाइल गेली आहे किंवा अनुपलब्ध आहे
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} निवडलेल्या नेटवर्क अडॅप्टर ({adapter}) द्वारे अजून जाऊ शकत नाही
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / मेनू
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+वर / Shift+खाली
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

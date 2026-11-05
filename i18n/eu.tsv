@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid zerbitzu batek (Real-Debrid) fitxategi-ostalari baten esteka deskargatzen du zure ordainpeko kontuarekin eta esteka zuzen bat ematen dio MDMri. Erabili zure kontua soilik: kontu bat edo haren estekak partekatzeak zerbitzuen baldintzak hausten ditu eta kontua eten dezake. Nabigatzaileak jada hasitako deskargak dauden bezala geratzen dira.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Desbridatze-zerbitzu batek (Real-Debrid) fitxategi-ostalari baten esteka deskargatzen du zure ordainpeko kontuarekin eta esteka zuzen bat ematen dio MDMri. Erabili zure kontua soilik: kontu bat edo haren estekak partekatzeak zerbitzuen baldintzak hausten ditu eta kontua eten dezake. Nabigatzaileak dagoeneko hasitako deskargak bere horretan geratzen dira.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -126,7 +126,7 @@
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
-	Add an account	Gehitu kontu bat
+	Add an account	Kontu bat gehitu
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Gehitu lote-deskarga
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Audioa soilik {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Audioa soilik, jatorrizko {type}
 #. text in the Scheduler window
 #, machine
 	August	Abuztua
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	inportazioaren bidez
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Utzi
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Eguneratzeak bilatzen...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	Helbidea gallery-dl-rekin egiaztatzen...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -537,7 +546,7 @@
 	Day, month, year	Eguna, hilabetea, urtea
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Debrid zerbitzuaren kontuak
+	Debrid service accounts	Desbridatze-zerbitzuaren kontuak
 #. text in the Scheduler window
 #, machine
 	December	Abendua
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Deskargatu "{name}" berriro hasieratik? Amaitutako fitxategi bat ordezkatzen da deskarga berria amaitzen denean.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Galeria bat deskargatu
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Deskarga osatuta
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Ez deskargatu {mb} MB baino gehiago\n{hours} orduro
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Deskargatu orain
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg deskargatzen eta egiaztatzen (80 MB inguru)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	Gallery-dl deskargatzen eta egiaztatzen...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Posta elektronikoa
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Hutsik: guztiak. Gune gehienetan berrienak agertzen dira lehenik.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Dagoeneko badauden fitxategiak
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Gehienezko fitxategi kopurua
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Lehen fitxategia:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLACek soinua zehatz-mehatz mantentzen du, baina ezin du guneko soinuak ez duen kalitaterik gehitu: fitxategia handiagoa baino ez da.
 #. text in categories.rs
 #, machine
 	Folder:	Karpeta:
@@ -989,6 +1018,10 @@
 #, machine
 	Friday	Ostirala
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	galeria batetik (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	magnet esteka batetik
 #. message or event log entry in the main window
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Galeriek gallery-dl erabiltzen dute (23 MB inguru, sinaduraren arabera egiaztatuta).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galeriek gallery-dl erabiltzen dute: instalatu zure sistemaren paketeekin (Homebrew, pip), eta gero aukeratu Laguntzaileetan.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	Gallery-dl-k galeria honetako fitxategiak deskarga ditzake.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	Gallery-dl-k ezin du helbide hau irakurri. Gehitu fitxategi gisa, horren ordez (URL gehitu).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ez dago instalatuta (galeria baten helbidea duen URL bat gehitzeak instalatzen du)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Laguntza
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Laguntzaileak
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&Kategoriak ezkutatu
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Ezkutatu fitxa
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Ilara batean
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Kategorietan: hautatutako kategoriaren menua
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	Instalatu ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	Instalatu gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Azken saiakera {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Minimizatu jakinarazpen-eremura
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	minutu
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Orria gora/behera mugitu
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Mugitu kategorien eta deskarga-zerrendaren artean
 #. text in the Scheduler window
 #, machine
 	Move down	Mugitu behera
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	Edo itsatsi zure API tokena:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Orriaren helbidea
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1729,7 +1798,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	premium, {days} egun falta dira
+	premium, {days} days left	premium, {days} egun geratzen dira
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Gorde honela
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Gorde hemen
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Partekatzen
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time} partekatu ondoren partekatzea gelditu da
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Partekatu erlazioa {ratio}ra iritsi da, partekatzea gelditu da
 #. text in the download list
 #, machine
 	Show	Erakutsi
@@ -2078,7 +2156,7 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	{user} gisa saioa hasita ({state})
+	Signed in as {user} ({state})	Saioa hasita {user} gisa ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	Hasi da
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version} bertsioarekin hasi da
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) bertsioarekin hasi da
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Gelditu deskarga-ilara nagusia
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Gelditu partekatzea, partekatu ondoren
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Gelditu partekatzea partekatze-erlazio honekin:
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	Helbideak http(s) edo ftp(s) helbide bat izan behar du
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Kalitate onenak eta MP3k ffmpeg behar dute (80 MB inguru).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Kalitate onenek, MP3, Opus eta FLACek, ffmpeg behar dute (80 MB inguru).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Kalitate onenak eta MP3k ffmpeg behar dute: instalatu sistemaren pakete-kudeatzailearekin (edo Homebrew-rekin).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Kalitate onenek, MP3, Opus eta FLACek, ffmpeg behar dute: instalatu zure sistemaren pakete-kudeatzailearekin (edo Homebrew-rekin).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	Bideoa
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Bideo-laguntzaileak
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Bideo-bilaketek yt-dlp erabiltzen dute (23 MB inguru, sinaduraren arabera egiaztatuta).
@@ -3080,7 +3167,7 @@
 	{service} asks you to allow this computer first: see its email	{service} ordenagailu hau lehenik baimendu dezazun eskatzen du: ikusi bere posta elektronikoa
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} ezin du fitxategi-ostalari honetara iritsi oraintxe; MDM geroago saiatuko da berriro
+	{service} can't reach this file host right now; MDM will try again later	{service} ezin du fitxategi-ostalari honetara iritsi oraintxe bertan; MDM geroago saiatuko da berriro
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3100,15 +3187,15 @@
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}: kontua blokeatuta edo aktibatu gabe dago
+	{service}: the account is locked or not activated	{service}: kontua blokeatuta dago edo ez dago aktibatuta
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: fitxategia desagertu egin da edo ez dago eskuragarri fitxategi-ostalarian
+	{service}: the file is gone or unavailable on the file host	{service}: fitxategia desagertu egin da edo ez dago erabilgarri fitxategi-ostalarian
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
-	{service}: this file is password-protected	{service}: fitxategi hau pasahitz bidez babestuta dago
+	{service}: this file is password-protected	{service}: fitxategi honek pasahitza du
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
@@ -3119,7 +3206,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: fitxategi-ostalari honetarako zure muga agortu da oraingoz
+	{service}: your limit for this file host is used up for now	{service}: fitxategi-ostalari honetarako duzun muga agortu da oraingoz
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ezin da oraindik hautatutako sare-egokitzaile ({adapter}) baten bidez joan
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Maius+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menua
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Maius+Gora / Maius+Behera
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tabuladorea
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

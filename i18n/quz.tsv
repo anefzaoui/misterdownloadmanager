@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Huk debrid qillqana (Real-Debrid) huk willañiqita qillqan qillqana tiyaqpa t'inkinta kikin qullqichasqa qillqayniykiwan, chaymanta MDMman huk chiqan t'inkita qun. Kikin qillqayniykita sapallayki llamk'achiy: huk qillqayta utaq chay t'inkikunata rakinakuyqa chay qillqanakunapa kamachikunanta p'akin, chaymanta hark'asqa kanman. Ñawpaqtaña qallarisqa qillqanakunaqa kikinllankupi qhipakunqaku.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Huk debrid qhatu (Real-Debrid) huk willañiqita qhatun qillqasqa kaqniykiwan, chaymanta MDM-man huk chiqan t'inkita qun. Sapallayki qillqasqa kaqniykita llamk'achiy: huk qillqasqa kaqta utaq t'inkisninkunata rakinakuyqa qhatup kamachisninkunata p'akiyta atin, chaymanta hark'asqa kanman. Ñawpaqtaña qallarisqa qhatuykunaqa kawsayninpi qhipakun.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -115,18 +115,18 @@
 #. text in the Options window
 #. column title: the account's name at the service
 #, machine
-	Account	Qillqana
+	Account	Qillqasqa
 #. text in the Options window
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
-	Accounts	Qillqanakuna
+	Accounts	Qillqasqakuna
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Uraykuchiyta yapay (URL yapay)
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
-	Add an account	Huk qillqanata yapay
+	Add an account	Huk qillqasqata yapay
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Batch uraykuchiyta yapay
@@ -280,7 +280,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Qillqanamanta tapukuchkan...
+	Asking the service...	Qhatuta tapukuchkan...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Uyarina sapallan {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Uyarina sapallan, sapan {type}
 #. text in the Scheduler window
 #, machine
 	August	Chakra yapuy killa
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	chayaykachiywan
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Tukuchiy
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	Musuqyachiykunata maskaspa...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	gallery-dlwan direccionta qhawaykuchkan...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -501,7 +510,7 @@
 #. button in the Options window
 #. button: copy the sign-in code
 #, machine
-	Copy code	Churatata qillqay
+	Copy code	Kudiguta kopyay
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 #, machine
@@ -537,7 +546,7 @@
 	Day, month, year	P'unchaw, killa, wata
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Debrid qillqana qillqanakuna
+	Debrid service accounts	Debrid qhatu qillqasqakuna
 #. text in the Scheduler window
 #, machine
 	December	Disimri
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	"{name}" nisqata huktawan qallariymanta uraykuchiyta munankichu? Huk tukusqa qillqa huk musuq uraykuchiy tukusqanpi huktawan churasqa kanqa.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	Huk galleryata uraykachiy
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Uraykuchiy tukusqa
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	Ama aswan {mb} MBytes uraykuchiychu\nsapa {hours} horapi
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Kunan Uraykuchiy
 #. window title in the Options window
@@ -694,7 +707,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Kay qillqanakunawan yanapasqa willañiqi-tiyaq t'inkikunata uraykachiy
+	Download supported file-host links through these accounts	Kay qillqasqakuna kaqwan yanapasqa willañiqi-qhatu t'inkikunata qhatuy
 #. window title in the Download video window
 #, machine
 	Download video from a page	Huk paginamanta videota uraykuchiy
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (80 MB hina) uraykachasqa chaymanta qhawasqa...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dlta uraykachispa qhawaykuchkan...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Chaski
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	Ch'usaq: llapan. Yaqa llapan sitioqkunapi musuqkuna ñawpaqta hamunku.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +878,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Qallariy: Real-Debridpa lliw runapaq API qillqasqanmanta ruwasqa, manaraqmi cheqaq cuentawan allichasqachu.
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Yachaychay: Real-Debridpa llapa runapaq API qillqasqanmanta ruwasqa, manaraq huk chiqan qillqasqa kaqwan allinchasqa.
 #. message or event log entry in the main window
 #, machine
 	Export	Hawaman apachiy
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	Ña kaq willañiqikuna
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	Achka willañiqikuna
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -931,7 +956,7 @@
 #. button in the Options window
 #. button: open the service's page that shows the user's API token
 #, machine
-	Find my token	Ñuqaq tokenniyta taripay
+	Find my token	Tokenniyta mask'ay
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Ñawpaq willakuy:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLACqa uyarinata chiqapta waqaychan, ichaqa mana astawan allinyayta atinchu mayt'u mana kaqtin: willañiqiqa aswan hatunlla.
 #. text in categories.rs
 #, machine
 	Folder:	Karpita:
@@ -980,7 +1009,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	mana qullqichasqa qillqana: t'inkikunaqa qullqichasqa kanan tiyan
+	free account: links need premium	mana qullqiyuq qillqasqa: t'inkikunaqa premiumta munanku
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -988,6 +1017,10 @@
 #. text in the Scheduler window
 #, machine
 	Friday	Ch'ulla punchaw
+#. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	huk galleryamanta (gallery-dl)
 #. message or event log entry in the main window
 #, machine
 	from a magnet link	magnet t'inkimanta
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Galleriakuna gallery-dlta llamk'achinku (yaqa 23 MB, firmanta qhawaspa).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galleriakuna gallery-dlta llamk'achinku: sistemaykiq paketikunawan churay (Homebrew, pip), chaymanta Yanapaqkunapi akllay.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl kay galleryaq willañiqinkunata uraykachiyta atin.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl kay direccionta manan leeyta atinchu. Aswanpas huk willañiqihina yapay (URL yapay).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl manan churasqachu kachkan (huk galleryaq direccionninwan URL yapay churan)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	Yanapay
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	Yanapaqkuna
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&Katiguriyakunata pakay
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	P'anqata pakay
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Huk siq'ipi
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Sapaqchasqakunapi: akllasqa sapaqchasqap menuynin
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg churay
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dlta churay
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	Qhipa kallpachakuy {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Willaykuna k'itiqman pisichay
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	minutukuna
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Huk p'anqata wichayman / urayman kuyuchiy
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Sapaqchasqakunapura chaymanta uraykachina listapura kuyuy
 #. text in the Scheduler window
 #, machine
 	Move down	Urayman kuyuchiy
@@ -1542,7 +1611,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	kay qillqana mana yanapasqachu kay qillqanamanta
+	not supported by this service	kay qhatu mana yanapasqachu
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Mana llamk'achisqa: willay rakinakuna willaypaq qhipanpi qillqasqa kanku
@@ -1663,8 +1732,8 @@
 	Options on completion	Tukusqa kaptin akllanakuna
 #. text in the Options window
 #, machine
-	Or paste your API token:	Utaq kikin API khipuyta k'askachiy:
-#. text in the Download video window
+	Or paste your API token:	Utaq API tokenniykita k'askachiy:
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	P'anqap direccionnin
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1725,11 +1794,11 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
-	premium	qullqichasqa
+	premium	premium
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	qullqichasqa, {days} p'unchaw qhipan
+	premium, {days} days left	premium, {days} p'unchaw qhipan
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	Huk sutiwan waqaychay
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	Waqaychay
@@ -1989,10 +2058,10 @@
 #. text in the Options window
 #. column title: the debrid service (Real-Debrid…)
 #, machine
-	Service	Qillqana
+	Service	Qhatu
 #. text in the Options window
 #, machine
-	Service:	Qillqana:
+	Service:	Qhatu:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Rakiy
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Rakiyqa sayaykurqan {time} pachata rakinapaq
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Rakiyqa sayaykurqan: rakiy tupuyqa {ratio} chayarqan
 #. text in the download list
 #, machine
 	Show	Rikuchiy
@@ -2074,15 +2152,15 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
-	Sign in in the browser	Wampunapi yaykuy
+	Sign in in the browser	Willañiqiqpi qillqakuy
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	{user} hina yaykusqa ({state})
+	Signed in as {user} ({state})	{user} hina qillqasqa ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	mana yaykusqa: huktawan yaykuy
+	signed out: sign in again	qillqasqa kachkan: huktawan qillqakuy
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Sitio suti/Kachay t'inkiy/Mama web p'anqa/Referer
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	Qallarisqa
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version}wan qallarichisqa
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format})wan qallarisqa
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Hatun kachay t'aqwiyta sayachiy
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Rakiyta sayachiy rakinapaq kaymanta
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Rakiyta sayachiy rakiy tupuy kaypi
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	Kay direccionqa huk http(s) icha ftp(s) direccion kanan tiyan
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Aswan allin kaykuna, MP3 ima, ffmpeg-ta munanku (80 MB hina).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Aswan allin k'apak kaykuna, MP3, Opus, FLACpas ffmpegta munanku (yaqa 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Aswan allin kaykuna, MP3 ima, ffmpeg-ta munanku: chayta churay sistimaykip pakiti kamachiqninwan (utaq Homebrewwan).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Aswan allin k'apak kaykuna, MP3, Opus, FLACpas ffmpegta munanku: chayta churay qillqana kamachiqniykiwan (utaq Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2311,7 +2402,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	khipuqa p'uchukasqaña: huktawan yaykuy
+	the code expired: sign in again	kudiguqa p'uchukapun: huktawan qillqakuy
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Kay khiputa {page} nisqapi qillqay chaymanta MDMta saqiy; qamta suyachkan (khipuqa {time} nisqapi p'uchukanqa).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	Kay kudiguta {page} nisqapi qillqay, chaymanta MDM-ta saqiy; qanta suyachkan (kudiguqa {time} nisqapi p'uchukanqa).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2726,7 +2817,7 @@
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
-	Up	Hawanman
+	Up	Hananman
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2780,7 +2871,7 @@
 #. button in the Options window
 #. button: sign in with the token typed in
 #, machine
-	Use the token	Tokenwan llamk'achiy
+	Use the token	Tokenta llamk'achiy
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Kay torrentpaq chaykunata llamk'achiy? Imachus tupaqqa waqaychasqa kachkan, wakintaq hukman t'ikrasqa.
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	Video
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	Widyu yanapaqkuna
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videokunata maskay yt-dlp (yaqa 23 MB, firmanta qhawasqa) llamk'achin.
@@ -3073,53 +3160,53 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} aswan pisita ruwanaykita mañakun; MDM huk minutupi huktawan yallinqa
+	{service} asks to slow down; MDM will try again in a minute	{service}qa pisiyachiyta mañakun; MDM huk minutupi huktawan yallinqa
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} kay computadorata ñawpaqta saqiyta mañakun: chay e-mailninta qhaway
+	{service} asks you to allow this computer first: see its email	{service}qa kay antañiqiqta ñawpaqta saqiyta mañakun: imayna emailninpi qhaway
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} kay willañiqi tiyaqman manaraq chayanmanchu; MDM qhipata huktawan yallinqa
+	{service} can't reach this file host right now; MDM will try again later	{service}qa kay willañiqi qhatuman manaraq chayanmanchu; MDM huktawan qhipaman yallinqa
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	{service} mana kutichikuchkanchu; qhipata huktawan yalliy
+	{service} is not responding; try again later	{service} mana kutichikuchkanchu; qhipaman huktawan yalliy
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} kay t'inkita mana chaskinchu (huk VPN utaq qillqana tiyaqpa t'inkinta?)
+	{service} refuses this connection (a VPN or server address?)	{service}qa kay t'inkiyta mana chaskinchu (huk VPN utaq sirwiqpa t'inkiychu?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} kay willañiqita mana qunqañachu
+	{service} won't give this file	{service}qa kay willañiqita mana qunqa
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}: huktawan yaykuy (Akllanakuna → Qillqanakuna)
+	{service}: sign in again (Options → Accounts)	{service}: huktawan qillqakuy (Kamachiykuna → Qillqasqakuna)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}: chay qillqana hark'asqa utaq mana llamk'achisqachu
+	{service}: the account is locked or not activated	{service}: qillqasqaqa hark'asqa utaq mana llamk'achisqachu
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: chay willañiqiqa chinkasqaña utaq mana tarikusqachu chay willañiqi tiyaqpi
+	{service}: the file is gone or unavailable on the file host	{service}: willañiqiqa chinkapun utaq mana kanchu willañiqi qhatupi
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
-	{service}: this file is password-protected	{service}: kay willañiqiqa khipuwan hark'asqa
+	{service}: this file is password-protected	{service}: kay willañiqiqa rimaywan hark'asqa kachkan
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
-	{service}: this needs a premium account	{service}: kayqa huk qullqichasqa qillqanata munakun
+	{service}: this needs a premium account	{service}: kayqa huk premium qillqasqata munakun
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: achka willañiqikuna hukllata uraykachisqa kachkan chay qillqanaykiwan; MDM huktawan yallinqa
+	{service}: too many downloads at once through your account; MDM will try again	{service}: achka willañiqikuna hukllata qhatuchkan qillqasqaykiwan; MDM huktawan yallinqa
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: kay willañiqi tiyaqpaq limitaykiqa p'uchukasqaña kunanpaq
+	{service}: your limit for this file host is used up for now	{service}: kay willakuqpaq sayayniykichis tukusqañam
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} mana akllasqa antañiqiq t'inkiywan ({adapter}) kunanraq puriyta atinchu
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Menu
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

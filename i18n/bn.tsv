@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	একটি ডিব্রিড পরিষেবা (Real-Debrid) আপনার নিজস্ব অর্থপ্রদত্ত অ্যাকাউন্ট দিয়ে একটি ফাইল হোস্টের লিঙ্ক ডাউনলোড করে এবং MDM-কে একটি সরাসরি লিঙ্ক দেয়। শুধুমাত্র আপনার নিজস্ব অ্যাকাউন্ট ব্যবহার করুন: একটি অ্যাকাউন্ট বা এর লিঙ্ক শেয়ার করলে পরিষেবার শর্তাবলী ভঙ্গ হয় এবং এটি স্থগিত হতে পারে। ব্রাউজার দ্বারা ইতিমধ্যে শুরু করা ডাউনলোডগুলি যেমন আছে তেমনই থাকবে।
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	একটি ডিবিড পরিষেবা (Real-Debrid) আপনার নিজস্ব অর্থপ্রদত্ত অ্যাকাউন্ট দিয়ে একটি ফাইল হোস্টের লিঙ্ক ডাউনলোড করে এবং MDM-কে একটি সরাসরি লিঙ্ক দেয়। শুধুমাত্র আপনার নিজস্ব অ্যাকাউন্ট ব্যবহার করুন: একটি অ্যাকাউন্ট বা এর লিঙ্ক শেয়ার করলে পরিষেবার শর্তাবলী ভঙ্গ হয় এবং এটি স্থগিত হতে পারে। ব্রাউজার ইতিমধ্যে শুরু করা ডাউনলোডগুলি যেমন আছে তেমনই থাকবে।
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	শুধুমাত্র অডিও {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	শুধুমাত্র অডিও, আসল {type}
 #. text in the Scheduler window
 #, machine
 	August	আগস্ট
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	আমদানি দ্বারা
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	বাতিল করুন
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	আপডেটের জন্য পরীক্ষা করা হচ্ছে...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	gallery-dl দিয়ে ঠিকানা পরীক্ষা করা হচ্ছে...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -537,7 +546,7 @@
 	Day, month, year	দিন, মাস, বছর
 #. page title in the Options window
 #, machine
-	Debrid service accounts	ডিব্রিড পরিষেবা অ্যাকাউন্ট
+	Debrid service accounts	ডিবিড পরিষেবা অ্যাকাউন্ট
 #. text in the Scheduler window
 #, machine
 	December	ডিসেম্বর
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	শুরু থেকে আবার "{name}" ডাউনলোড করবেন? নতুন ডাউনলোড সম্পূর্ণ হলে একটি সম্পূর্ণ ফাইল প্রতিস্থাপিত হবে।
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	একটি গ্যালারি ডাউনলোড করুন
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	ডাউনলোড সম্পূর্ণ
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	{mb} মেগাবাইটের বেশি ডাউনলোড করবেন না\nপ্রতি {hours} ঘন্টায়
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	এখনই ডাউনলোড করুন
 #. window title in the Options window
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg যাচাই করা হচ্ছে (প্রায় 80 MB)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	gallery-dl ডাউনলোড ও যাচাই করা হচ্ছে...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ইমেল
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	খালি: সবগুলি। বেশিরভাগ সাইটে নতুনগুলি প্রথমে আসে।
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -857,7 +878,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	পরীক্ষামূলক: Real-Debrid-এর পাবলিক API ডকুমেন্টেশন থেকে তৈরি করা হয়েছে, এখনও একটি আসল অ্যাকাউন্ট দিয়ে নিশ্চিত করা হয়নি।
+	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	পরীক্ষামূলক: Real-Debrid-এর পাবলিক API ডকুমেন্টেশন থেকে তৈরি করা হয়েছে, এখনও একটি বাস্তব অ্যাকাউন্ট দিয়ে নিশ্চিত করা হয়নি।
 #. message or event log entry in the main window
 #, machine
 	Export	রপ্তানি
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	ফাইলগুলি ইতিমধ্যেই সেখানে আছে
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	সর্বোচ্চ ফাইল সংখ্যা
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	প্রথম ফাইল:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC শব্দকে হুবহু রাখে, কিন্তু সাইটের শব্দের যে গুণমান নেই তা যোগ করতে পারে না: ফাইলটি কেবল বড় হয়।
 #. text in categories.rs
 #, machine
 	Folder:	ফোল্ডার:
@@ -989,6 +1018,10 @@
 #, machine
 	Friday	শুক্রবার
 #. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	একটি গ্যালারি থেকে (gallery-dl)
+#. message or event log entry in the main window
 #, machine
 	from a magnet link	একটি ম্যাগনেট লিঙ্ক থেকে
 #. message or event log entry in the main window
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	গ্যালারিগুলি gallery-dl ব্যবহার করে (প্রায় 23 MB, এর স্বাক্ষর দিয়ে যাচাই করা হয়েছে)।
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	গ্যালারিগুলি gallery-dl ব্যবহার করে: আপনার সিস্টেমের প্যাকেজ (Homebrew, pip) দিয়ে এটি ইনস্টল করুন, তারপর হেল্পারগুলিতে এটি নির্বাচন করুন।
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	gallery-dl এই গ্যালারির ফাইলগুলি ডাউনলোড করতে পারে।
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl এই ঠিকানাটি পড়তে পারে না। এর পরিবর্তে এটিকে একটি ফাইল হিসাবে যোগ করুন (URL যোগ করুন)।
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ইনস্টল করা নেই (একটি গ্যালারির ঠিকানা সহ URL যোগ করুন এটি ইনস্টল করে)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	সাহায্য
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	হেল্পার
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&ক্যাটাগরি লুকান
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	ট্যাব লুকান
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	একটি সারিতে
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	ক্যাটাগরিগুলিতে: নির্বাচিত ক্যাটাগরির মেনু
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	ffmpeg ইনস্টল করুন
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	gallery-dl ইনস্টল করুন
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	শেষ চেষ্টা {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	বিজ্ঞপ্তি এলাকায় ছোট করুন
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	মিনিট
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	পৃষ্ঠা উপরে/নিচে সরান
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	ক্যাটাগরি এবং ডাউনলোড তালিকার মধ্যে সরান
 #. text in the Scheduler window
 #, machine
 	Move down	নিচে সরান
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	অথবা আপনার API টোকেন পেস্ট করুন:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	পৃষ্ঠার ঠিকানা
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	হিসাবে সংরক্ষণ করুন
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	এতে সংরক্ষণ করুন
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	শেয়ারিং
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time} ধরে শেয়ার করার পর শেয়ার করা বন্ধ হয়েছে
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	শেয়ার করা বন্ধ হয়েছে: শেয়ারের অনুপাত {ratio}-তে পৌঁছেছে
 #. text in the download list
 #, machine
 	Show	দেখুন
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	শুরু হয়েছে
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	gallery-dl {version} দিয়ে শুরু হয়েছে
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) দিয়ে শুরু হয়েছে
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	প্রধান ডাউনলোড কিউ বন্ধ করুন
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	এতক্ষণ শেয়ার করার পর শেয়ার করা বন্ধ করুন
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	এই শেয়ার অনুপাতে শেয়ার করা বন্ধ করুন
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	ঠিকানাটি একটি http(s) বা ftp(s) ঠিকানা হতে হবে
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	সেরা গুণমান এবং MP3-এর জন্য ffmpeg (প্রায় 80 MB) প্রয়োজন।
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	সেরা গুণমান, MP3, Opus এবং FLAC-এর জন্য ffmpeg (প্রায় 80 MB) প্রয়োজন।
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	সেরা গুণমান এবং MP3-এর জন্য ffmpeg প্রয়োজন: আপনার সিস্টেমের প্যাকেজ ম্যানেজার (বা Homebrew) দিয়ে এটি ইনস্টল করুন।
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	সেরা গুণমান, MP3, Opus এবং FLAC-এর জন্য ffmpeg প্রয়োজন: আপনার সিস্টেমের প্যাকেজ ম্যানেজার (বা Homebrew) দিয়ে এটি ইনস্টল করুন।
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2311,7 +2402,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	কোডটির মেয়াদ শেষ হয়ে গেছে: আবার সাইন ইন করুন
+	the code expired: sign in again	কোড মেয়াদ উত্তীর্ণ হয়েছে: আবার সাইন ইন করুন
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page} এ এই কোডটি টাইপ করুন এবং MDM-কে অনুমতি দিন; আপনার জন্য অপেক্ষা করা হচ্ছে (কোডটির মেয়াদ {time} এ শেষ হবে)।
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	{page} এ এই কোডটি টাইপ করুন এবং MDM-কে অনুমতি দিন; আপনার জন্য অপেক্ষা করা হচ্ছে (কোড {time} এর মধ্যে মেয়াদ উত্তীর্ণ হবে)।
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	ভিডিও
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	ভিডিও সহায়ক
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ভিডিও লুকআপ yt-dlp ব্যবহার করে (প্রায় 23 MB, এর স্বাক্ষরের বিরুদ্ধে চেক করা হয়েছে)।
@@ -3080,7 +3167,7 @@
 	{service} asks you to allow this computer first: see its email	{service} আপনাকে প্রথমে এই কম্পিউটারটিকে অনুমতি দিতে বলছে: এর ইমেল দেখুন
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} এই মুহূর্তে এই ফাইল হোস্টের সাথে যোগাযোগ করতে পারছে না; MDM পরে আবার চেষ্টা করবে
+	{service} can't reach this file host right now; MDM will try again later	{service} এই ফাইল হোস্টের সাথে এই মুহূর্তে যোগাযোগ করতে পারছে না; MDM পরে আবার চেষ্টা করবে
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3115,11 +3202,11 @@
 	{service}: this needs a premium account	{service}: এর জন্য একটি প্রিমিয়াম অ্যাকাউন্ট প্রয়োজন
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: আপনার অ্যাকাউন্টের মাধ্যমে একসাথে অনেক ডাউনলোড হচ্ছে; MDM আবার চেষ্টা করবে
+	{service}: too many downloads at once through your account; MDM will try again	{service}: আপনার অ্যাকাউন্টের মাধ্যমে একসাথে অনেক ডাউনলোড; MDM আবার চেষ্টা করবে
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: এই ফাইল হোস্টের জন্য আপনার সীমা আপাতত শেষ হয়ে গেছে
+	{service}: your limit for this file host is used up for now	{service}: এই ফাইল হোস্টের জন্য আপনার সীমা আপাতত শেষ হয়ে গেছে
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	{what} এখনও একটি নির্বাচিত নেটওয়ার্ক অ্যাডাপ্টার ({adapter}) এর মাধ্যমে যেতে পারে না
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / মেনু
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

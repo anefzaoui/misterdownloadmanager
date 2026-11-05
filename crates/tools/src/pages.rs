@@ -53,12 +53,94 @@ pub fn is_video_page(url: &Url) -> bool {
     }
 }
 
+/// Whether `url` is an image gallery's page on a site gallery-dl reads (#58): a Wikimedia
+/// Commons category, a Flickr album or photographer, a DeviantArt or ArtStation gallery, an
+/// Imgur album, a Pixiv artist or work, a Pinterest board, a Danbooru or Gelbooru search, a
+/// Tumblr blog, a Bluesky profile. A picture's own address (a file) is not one. gallery-dl reads
+/// many more; this list is what Add URL sends to its window without asking it first.
+pub fn is_gallery_page(url: &Url) -> bool {
+    if !matches!(url.scheme(), "http" | "https") {
+        return false;
+    }
+    let Some(host) = url.host_str() else {
+        return false;
+    };
+    let host = host.to_ascii_lowercase();
+    let host = host.strip_prefix("www.").unwrap_or(&host);
+    let segs: Vec<&str> = url.path().split('/').filter(|s| !s.is_empty()).collect();
+    // A file's own address is downloaded as a file.
+    if segs.last().is_some_and(|s| {
+        let s = s.to_ascii_lowercase();
+        [
+            ".jpg", ".jpeg", ".png", ".gif", ".webp", ".avif", ".bmp", ".tif", ".tiff", ".svg",
+        ]
+        .iter()
+        .any(|e| s.ends_with(e))
+    }) {
+        return false;
+    }
+    let query = |k: &str| url.query_pairs().any(|(key, v)| key == k && !v.is_empty());
+    match host {
+        "commons.wikimedia.org" => {
+            matches!(segs.as_slice(), ["wiki", p] if p.starts_with("Category:"))
+        }
+        "flickr.com" => matches!(segs.as_slice(), ["photos", _, ..]),
+        "deviantart.com" => matches!(segs.as_slice(), [_, "gallery", ..]),
+        h if h.ends_with(".deviantart.com") => true,
+        "artstation.com" => matches!(segs.as_slice(), [_] | ["artwork", _]),
+        "imgur.com" => matches!(segs.as_slice(), ["a" | "gallery", _]),
+        "pixiv.net" => matches!(
+            segs.as_slice(),
+            ["users", _, ..] | ["artworks", _] | [_, "users" | "artworks", _, ..]
+        ),
+        // A board (`/user/board/`) or a pin (`/pin/id/`).
+        "pinterest.com" => segs.len() == 2,
+        "danbooru.donmai.us" | "safebooru.donmai.us" => {
+            matches!(segs.as_slice(), ["posts"]) && query("tags")
+        }
+        "gelbooru.com" => query("tags"),
+        h if h.ends_with(".tumblr.com") => true,
+        "bsky.app" => matches!(segs.as_slice(), ["profile", _, ..]),
+        _ => false,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     fn page(s: &str) -> bool {
         is_video_page(&s.parse().unwrap())
+    }
+
+    fn gallery(s: &str) -> bool {
+        is_gallery_page(&s.parse().unwrap())
+    }
+
+    #[test]
+    fn gallery_pages_are_recognised() {
+        assert!(gallery(
+            "https://commons.wikimedia.org/wiki/Category:Featured_pictures_of_birds"
+        ));
+        assert!(gallery(
+            "https://www.flickr.com/photos/nasawebbtelescope/albums/72177720313923911"
+        ));
+        assert!(gallery("https://www.flickr.com/photos/nasawebbtelescope/"));
+        assert!(gallery("https://www.deviantart.com/someone/gallery"));
+        assert!(gallery("https://imgur.com/a/abc123"));
+        assert!(gallery("https://www.pixiv.net/en/users/123456"));
+        assert!(gallery("https://danbooru.donmai.us/posts?tags=landscape"));
+        assert!(gallery("https://bsky.app/profile/nasa.gov"));
+        // A page that's no gallery, a picture's own address, a video page.
+        assert!(!gallery("https://commons.wikimedia.org/wiki/Main_Page"));
+        assert!(!gallery(
+            "https://upload.wikimedia.org/wikipedia/commons/9/9d/Rhea.jpg"
+        ));
+        assert!(!gallery(
+            "https://www.flickr.com/photos/x/123/in/album/a.JPG"
+        ));
+        assert!(!gallery("https://www.youtube.com/watch?v=Tg6byXUo8RU"));
+        assert!(!gallery("ftp://commons.wikimedia.org/wiki/Category:Birds"));
     }
 
     #[test]

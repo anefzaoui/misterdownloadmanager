@@ -92,7 +92,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	تقوم خدمة Debrid (Real-Debrid) بتنزيل رابط مضيف ملف باستخدام حسابك المدفوع الخاص وتمنح MDM رابطا مباشرا. استخدم حسابك الخاص فقط: فمشاركة حساب أو روابطه تخرق شروط الخدمة وقد تؤدي إلى تعليقه. تبقى التنزيلات التي بدأها المتصفح كما هي.
+	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	تقوم خدمة Debrid (Real-Debrid) بتنزيل رابط مضيف ملف باستخدام حسابك المدفوع الخاص وتمنح MDM رابطا مباشرا. استخدم حسابك الخاص فقط: مشاركة حساب أو روابطه يخرق شروط الخدمة وقد يؤدي إلى تعليقه. تبقى التنزيلات التي بدأها المتصفح كما هي.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -290,6 +290,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	صوت فقط {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	صوت فقط، {type} الأصلي
 #. text in the Scheduler window
 #, machine
 	August	أغسطس
@@ -333,7 +337,7 @@
 #. message or event log entry in the main window
 #, machine
 	by import	عن طريق الاستيراد
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in the Find window; button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in transfer.rs; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	إلغاء الأمر
@@ -400,6 +404,11 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking for updates...	التحقق من وجود تحديثات...
+#. text in gallerydlg.rs
+#. in Download a gallery, while gallery-dl checks the address (offline)
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Checking the address with gallery-dl...	جار التحقق من العنوان باستخدام gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -656,6 +665,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Download "{name}" again from the start? A finished file is replaced when the new download completes.	تنزيل "{name}" مرة أخرى من البداية؟ يتم استبدال الملف المكتمل عند اكتمال التنزيل الجديد.
+#. window title in gallerydlg.rs
+#. window title: download an image gallery's files (gallery-dl)
+#, machine
+	Download a gallery	تنزيل معرض
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	اكتمل التنزيل
@@ -680,7 +693,7 @@
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
 	Download no more than {mb} MBytes\nevery {hours} hours	تنزيل ما لا يزيد عن {mb} ميغابايت\nكل {hours} ساعات
-#. button in the Add torrent window; button in the Download video window
+#. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	تنزيل الآن
 #. window title in the Options window
@@ -694,7 +707,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	تنزيل روابط مضيف الملف المدعومة من خلال هذه الحسابات
+	Download supported file-host links through these accounts	تنزيل روابط مضيف الملفات المدعومة عبر هذه الحسابات
 #. window title in the Download video window
 #, machine
 	Download video from a page	تنزيل الفيديو من صفحة
@@ -729,6 +742,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Downloading and verifying ffmpeg (about 80 MB)...	جار تنزيل ffmpeg والتحقق منه (حوالي 80 ميغابايت)...
+#. text in gallerydlg.rs
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Downloading and verifying gallery-dl...	جار تنزيل gallery-dl والتحقق منه...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -798,6 +815,10 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	بريد إلكتروني
+#. text in gallerydlg.rs
+#. in Download a gallery, after the "Files at most" box
+#, machine
+	Empty: all of them. On most sites the newest come first.	فارغ: جميعها. في معظم المواقع، الأحدث يأتي أولا.
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
@@ -911,6 +932,10 @@
 #. window title in a dialog box
 #, machine
 	Files already there	الملفات موجودة بالفعل
+#. text in gallerydlg.rs
+#. label before the box for how many of a gallery's files to download at most
+#, machine
+	Files at most	الحد الأقصى للملفات
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -956,6 +981,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	الملف الأول:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	يحتفظ FLAC بالصوت تماما، ولكنه لا يمكنه إضافة جودة لا يمتلكها صوت الموقع: الملف أكبر فقط.
 #. text in categories.rs
 #, machine
 	Folder:	المجلد:
@@ -980,7 +1009,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	حساب مجاني: تتطلب الروابط حسابا مميزا
+	free account: links need premium	حساب مجاني: تتطلب الروابط اشتراكا مميزا
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -988,6 +1017,10 @@
 #. text in the Scheduler window
 #, machine
 	Friday	الجمعة
+#. message or event log entry in the main window
+#. where a download came from, in its log: an image gallery, by gallery-dl
+#, machine
+	from a gallery (gallery-dl)	من معرض (gallery-dl)
 #. message or event log entry in the main window
 #, machine
 	from a magnet link	من رابط مغناطيسي
@@ -1013,6 +1046,24 @@
 #. checkbox in the Options window
 #, machine
 	ftp	FTP
+#. text in gallerydlg.rs
+#. in Download a gallery, before gallery-dl is installed
+#, machine
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	تستخدم المعارض gallery-dl (حوالي 23 ميغابايت، تم التحقق منها مقابل توقيعها).
+#. text in gallerydlg.rs
+#. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
+#, machine
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	تستخدم المعارض gallery-dl: قم بتثبيته باستخدام حزم نظامك (Homebrew، pip)، ثم اختره في المساعدات.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can download this gallery's files.	يمكن لـ gallery-dl تنزيل ملفات هذا المعرض.
+#. text in gallerydlg.rs
+#, machine
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	لا يمكن لـ gallery-dl قراءة هذا العنوان. أضفه كملف بدلا من ذلك (إضافة عنوان URL).
+#. message or event log entry in the main window
+#. a gallery download's error: the helper program it needs is missing
+#, machine
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl غير مثبت (إضافة عنوان URL مع عنوان معرض يقوم بتثبيته)
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
@@ -1050,7 +1101,11 @@
 #. noun: button that opens the help
 #, machine
 	Help	مساعدة
-#. button in the Download video window
+#. window title in helpers.rs
+#. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+#, machine
+	Helpers	المساعدات
+#. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -1063,7 +1118,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	إخفاء الفئات(&C)
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	إخفاء علامة التبويب
 #. text in a download's progress window; text in standard windows
@@ -1111,6 +1166,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	في قائمة انتظار
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	في الفئات: قائمة الفئة المحددة
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1131,6 +1189,10 @@
 #. button: download and install the ffmpeg program
 #, machine
 	Install ffmpeg	تثبيت ffmpeg
+#. button in gallerydlg.rs
+#. button: download and install the gallery-dl program
+#, machine
+	Install gallery-dl	تثبيت gallery-dl
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1197,7 +1259,7 @@
 #. {last} = the date and time of the last attempt to download
 #, machine
 	Last try  {last}	المحاولة الأخيرة {last}
-#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
+#. button in gallerydlg.rs; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); text in the Add torrent window; text in the Download video window
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 #, machine
@@ -1307,6 +1369,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	تصغير إلى منطقة الإعلام
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	دقيقة
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1366,6 +1432,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	نقل صفحة لأعلى/لأسفل
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	التنقل بين الفئات وقائمة التنزيلات
 #. text in the Scheduler window
 #, machine
 	Move down	نقل لأسفل
@@ -1664,7 +1733,7 @@
 #. text in the Options window
 #, machine
 	Or paste your API token:	أو الصق الرمز المميز لواجهة برمجة التطبيقات الخاص بك:
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	عنوان الصفحة
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
@@ -1892,7 +1961,7 @@
 #. text in a dialog box
 #, machine
 	Save As	حفظ باسم
-#. text in the Options window; text in the Add torrent window; text in the Download video window
+#. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
 	Save to	حفظ في
@@ -2022,6 +2091,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	المشاركة
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	تم إيقاف المشاركة بعد المشاركة لمدة {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	تم إيقاف المشاركة: بلغت نسبة المشاركة {ratio}
 #. text in the download list
 #, machine
 	Show	إظهار
@@ -2180,6 +2258,11 @@
 #, machine
 	Started	بدأ
 #. message or event log entry in the main window
+#. a gallery download's log: {version} = gallery-dl's version
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Started with gallery-dl {version}	بدأ باستخدام gallery-dl {version}
+#. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
 	Started with yt-dlp {version} ({format})	بدأ باستخدام yt-dlp {version} ({format})
@@ -2209,6 +2292,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	إيقاف قائمة انتظار التنزيل الرئيسية
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	إيقاف المشاركة بعد المشاركة لمدة
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	إيقاف المشاركة عند نسبة مشاركة
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2295,11 +2386,11 @@
 	The address must be an http(s) or ftp(s) address	يجب أن يكون العنوان عنوان http(s) أو ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	أفضل الجودات وملفات MP3 تتطلب ffmpeg (حوالي 80 ميغابايت).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	أفضل جودات، MP3 وOpus وFLAC تحتاج إلى ffmpeg (حوالي 80 ميجابايت).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	أفضل الجودات وملفات MP3 تتطلب ffmpeg: ثبته باستخدام مدير حزم نظامك (أو Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	أفضل جودات، MP3 وOpus وFLAC تحتاج إلى ffmpeg: قم بتثبيته باستخدام مدير حزم نظامك (أو Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -2704,7 +2795,7 @@
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	اكتب هذا الرمز في {page} واسمح لـ MDM؛ في انتظارك (تنتهي صلاحية الرمز في {time}).
+	Type this code at {page} and allow MDM; waiting for you (the code expires in {time}).	اكتب هذا الرمز في {page} واسمح لـ MDM؛ في انتظارك (ينتهي صلاحية الرمز في {time}).
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
@@ -2828,10 +2919,6 @@
 #. category name: video files
 #, machine
 	Video	فيديو
-#. window title in helpers.rs
-#. window title: where MDM takes yt-dlp and ffmpeg from
-#, machine
-	Video helpers	مساعدو الفيديو
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	تستخدم عمليات البحث عن الفيديو yt-dlp (حوالي 23 ميجابايت، تم التحقق منها مقابل توقيعها).
@@ -3080,7 +3167,7 @@
 	{service} asks you to allow this computer first: see its email	تطلب {service} منك السماح لهذا الكمبيوتر أولا: راجع بريدها الإلكتروني
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	لا تستطيع {service} الوصول إلى مضيف هذا الملف الآن؛ سيعاود MDM المحاولة لاحقا
+	{service} can't reach this file host right now; MDM will try again later	لا يمكن لـ {service} الوصول إلى مضيف الملف هذا الآن؛ سيعاود MDM المحاولة لاحقا
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -3088,7 +3175,7 @@
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	ترفض {service} هذا الاتصال (عنوان VPN أو خادم؟)
+	{service} refuses this connection (a VPN or server address?)	ترفض {service} هذا الاتصال (شبكة VPN أو عنوان خادم؟)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
@@ -3104,7 +3191,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: الملف مفقود أو غير متاح على مضيف الملف
+	{service}: the file is gone or unavailable on the file host	{service}: الملف مفقود أو غير متوفر على مضيف الملف
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -3115,11 +3202,11 @@
 	{service}: this needs a premium account	{service}: يتطلب هذا حسابا مميزا
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: عدد كبير جدا من التنزيلات في وقت واحد من خلال حسابك؛ سيعاود MDM المحاولة
+	{service}: too many downloads at once through your account; MDM will try again	{service}: عدد كبير جدا من التنزيلات في وقت واحد عبر حسابك؛ سيعاود MDM المحاولة
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: تم استهلاك حدك لمضيف الملف هذا في الوقت الحالي
+	{service}: your limit for this file host is used up for now	{service}: لقد استنفد حدك لمضيف الملفات هذا في الوقت الحالي
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -3140,7 +3227,7 @@
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
 	{what} can't go through a chosen network adapter ({adapter}) yet	لا يمكن لـ {what} المرور عبر محول شبكة محدد ({adapter}) بعد
-#. text in the Download video window
+#. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3394,7 +3481,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / قائمة
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Up / Shift+Down
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

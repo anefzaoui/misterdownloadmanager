@@ -419,19 +419,19 @@ impl Helpers {
 
 use mdm_tools::chosen::Helper;
 
-/// Video helpers (Download video from a page → Helpers...): for yt-dlp and ffmpeg, where MDM
-/// takes it from (its own copy, or a program of the person's), and the way to choose another:
-/// one copy of each for every program that uses them (#51).
+/// Helpers (Download video from a page or a gallery → Helpers...): for yt-dlp, ffmpeg and
+/// gallery-dl (#58), where MDM takes it from (its own copy, or a program of the person's), and the
+/// way to choose another: one copy of each for every program that uses them (#51).
 pub struct Programs {
     dir: Option<std::path::PathBuf>,
     /// The helpers as found (read again after each change, not every frame: it reads files).
-    found: [Option<mdm_tools::Installed>; 2],
+    found: [Option<mdm_tools::Installed>; 3],
     /// A chosen program being checked (`--version`), and what it answered.
     checking: Option<(Helper, Answer)>,
     error: Option<String>,
 }
 
-const HELPERS: [Helper; 2] = [Helper::YtDlp, Helper::Ffmpeg];
+const HELPERS: [Helper; 3] = [Helper::YtDlp, Helper::Ffmpeg, Helper::GalleryDl];
 
 /// A check's answer, once it has one (Err: why the program wasn't taken, in words).
 type Answer = Arc<Mutex<Option<Result<(), String>>>>;
@@ -440,7 +440,7 @@ impl Programs {
     pub fn new() -> Self {
         let mut p = Programs {
             dir: mdm_tools::tools_dir(),
-            found: [None, None],
+            found: [None, None, None],
             checking: None,
             error: None,
         };
@@ -452,7 +452,11 @@ impl Programs {
         let Some(dir) = self.dir.as_deref() else {
             return;
         };
-        self.found = [mdm_tools::installed(dir), mdm_tools::ffmpeg::installed(dir)];
+        self.found = [
+            mdm_tools::installed(dir),
+            mdm_tools::ffmpeg::installed(dir),
+            mdm_tools::gallery::installed(dir),
+        ];
     }
 
     /// Open until Close.
@@ -486,9 +490,9 @@ impl Programs {
         window(
             ctx,
             "video-helpers",
-            // i18n: window title: where MDM takes yt-dlp and ffmpeg from
-            "Video helpers",
-            [500.0, 214.0],
+            // i18n: window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
+            "Helpers",
+            [500.0, 292.0],
             false,
             winui::BG(),
             |ui, o| self.body(ui, o),
@@ -593,8 +597,8 @@ impl Programs {
                     .map(|e| crate::errors::tools(&e));
                 self.look();
             }
-            if k == 0 {
-                winui::etched_h(&p, o.x + 14.0, o.y + 82.0, 472.0);
+            if k + 1 < HELPERS.len() {
+                winui::etched_h(&p, o.x + 14.0, o.y + 82.0 + k as f32 * 78.0, 472.0);
             }
         }
         if let Some(e) = &self.error {
@@ -602,7 +606,7 @@ impl Programs {
                 ui,
                 &p,
                 o.x + 14.0,
-                o.y + 176.0,
+                o.y + 254.0,
                 e,
                 winui::ERROR(),
                 o.x + 400.0,
@@ -611,7 +615,7 @@ impl Programs {
         }
         let close = winui::button(
             ui,
-            r(o, 413.0, 182.0, 77.0, 21.0),
+            r(o, 413.0, 260.0, 77.0, 21.0),
             "Close",
             ButtonKind::Default,
             false,
