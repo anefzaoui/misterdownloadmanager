@@ -3164,7 +3164,7 @@ impl App {
                     }
                 };
                 let t = host.session(known).await?;
-                t.metadata(&src, std::time::Duration::from_secs(180))
+                t.metadata(&src, std::time::Duration::from_secs(180), None)
                     .await
                     .map_err(|e| crate::errors::torrent(&e))
             }
