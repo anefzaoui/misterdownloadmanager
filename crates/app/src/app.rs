@@ -1479,10 +1479,14 @@ impl App {
                 }
             }
             // Download video from a page with a sample video's subtitles (#68).
+            // `video-subs:flac`: with that choice picked (screenshots of the lower choices).
             "video-subs" => {
                 self.run(Cmd::VideoPage, None, ctx);
                 if let Some(v) = &mut self.video_dlg {
                     v.show_sample();
+                    if !tab.is_empty() {
+                        v.pick(tab);
+                    }
                 }
             }
             "existing-files" => {

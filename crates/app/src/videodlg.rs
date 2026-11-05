@@ -236,6 +236,27 @@ impl VideoDialog {
         }
     }
 
+    /// The sample's choice whose label starts with `prefix` (any case), chosen and scrolled into
+    /// view (`/show video-subs:flac`: a screenshot of a choice below the list's first rows).
+    pub fn pick(&mut self, prefix: &str) {
+        let prefix = prefix.to_lowercase();
+        let found = self.video.as_ref().and_then(|(_, choices)| {
+            choices.iter().position(|c| {
+                let label = c.label.to_lowercase();
+                label.starts_with(&prefix)
+                    || label
+                        .strip_prefix("audio only ")
+                        .is_some_and(|l| l.starts_with(&prefix))
+            })
+        });
+        if let Some(i) = found {
+            self.chosen = i;
+            // The list shows 8 rows.
+            self.rows.show_row(i, 8);
+            self.name_from_choice();
+        }
+    }
+
     /// Helpers..., as its button does (`/show video-helpers`).
     pub fn open_helpers(&mut self) {
         if self.helpers.is_none() {
