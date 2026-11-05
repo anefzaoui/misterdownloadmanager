@@ -439,24 +439,31 @@ impl Progress {
         };
         text(&p, o.x + 136.0, o.y + 51.0, &rate, winui::TEXT());
         let was_on = self.limiter;
-        winui::checkbox(
+        // A torrent's upload limit takes the right half (x 290): the download side's captions
+        // stop before it.
+        let torrent = item.torrent.is_some();
+        winui::checkbox_until(
             ui,
             o + vec2(33.0, 64.0),
             &mut self.limiter,
             "Use Speed Limiter",
             true,
+            torrent.then_some(286.0),
         );
         let label = if self.limiter {
             winui::TEXT()
         } else {
             DISABLED
         };
-        text(
+        winui::fit(
+            ui,
             &p,
             o.x + 33.0,
             o.y + 92.0,
             crate::i18n::t("Maximum download speed:"),
             label,
+            o.x + if torrent { 284.0 } else { 525.0 },
+            ("limit-label", self.id),
         );
         let rate_box = winui::edit_right(
             ui,
@@ -536,22 +543,26 @@ impl Progress {
     /// so it applies again whenever it runs or shares.
     fn upload_limit(&mut self, ui: &mut Ui, p: &egui::Painter, o: Pos2) {
         let was_on = self.up_on;
-        winui::checkbox(
+        winui::checkbox_until(
             ui,
             o + vec2(290.0, 64.0),
             &mut self.up_on,
             // i18n: a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
             "Limit uploading",
             true,
+            Some(525.0),
         );
         let label = if self.up_on { winui::TEXT() } else { DISABLED };
-        text(
+        winui::fit(
+            ui,
             p,
             o.x + 290.0,
             o.y + 92.0,
             // i18n: a torrent's progress window, Speed Limiter tab: label above the upload speed box
             crate::i18n::t("Maximum upload speed:"),
             label,
+            o.x + 525.0,
+            ("upload-label", self.id),
         );
         let rate_box = winui::edit_right(
             ui,
