@@ -344,6 +344,11 @@ pub struct App {
     torrent_settings: Option<crate::torrentdlg::TorrentSettings>,
     /// Since when no torrent has needed the torrent engine (`torrent_tick`).
     torrent_idle_since: Option<Instant>,
+    /// What each torrent sent, run after run (`torrent_accounts`), when last counted (whole
+    /// seconds), and when its totals last made the list be saved.
+    accountant: crate::torrents::Accountant,
+    account_at: Instant,
+    account_saved: Instant,
     /// Each running torrent's bytes from peers as last seen (by item id), and the torrents'
     /// smoothed speed with when it was measured (`torrent_speed`, for the global cap).
     torrent_fetched: HashMap<u64, u64>,
@@ -759,6 +764,9 @@ impl App {
             torrent_dlg: None,
             torrent_settings: None,
             torrent_idle_since: None,
+            accountant: Default::default(),
+            account_at: Instant::now(),
+            account_saved: Instant::now(),
             torrent_fetched: HashMap::new(),
             torrent_speed: (0.0, Instant::now()),
             torrent_cap: (None, Instant::now()),
@@ -1286,9 +1294,55 @@ impl App {
     /// Every 2 s (#40): Torrent settings for the next torrent session, and the running one stopped
     /// once no torrent has needed it for a minute (none running or sharing, no Add torrent open),
     /// when Torrent settings say so or their network settings changed.
+    /// What each torrent sent and how long it shared, added to its `TorrentSpec` (librqbit
+    /// counts only the current run); and the own upload limit of those sharing without a `Run`
+    /// (a `Run` sets its own). Saved with the list at most every 10 s.
+    fn torrent_accounts(&mut self) {
+        let now = Instant::now();
+        let dt = now.duration_since(self.account_at).as_secs();
+        // Whole seconds only: the rest carries to the next tick.
+        if dt > 0 {
+            self.account_at += Duration::from_secs(dt);
+        }
+        let Some(t) = self.torrent_host.get() else {
+            return;
+        };
+        let mut changed = false;
+        let mut hashes = std::collections::HashSet::new();
+        for i in self.items.iter_mut() {
+            let Some(spec) = i.torrent.as_mut() else {
+                continue;
+            };
+            hashes.insert(spec.hash.clone());
+            let Ok(st) = t.stats(&spec.hash) else {
+                continue;
+            };
+            let sent = self.accountant.sent(&spec.hash, st.uploaded);
+            if sent > 0 {
+                spec.uploaded += sent;
+                changed = true;
+            }
+            if st.phase == mdm_torrent::Phase::Finished && dt > 0 {
+                spec.seeded_secs += dt;
+                changed = true;
+            }
+            if i.live.is_none() {
+                let _ = t.set_torrent_limits(&spec.hash, None, spec.upload_limit);
+            }
+        }
+        self.accountant.keep(&hashes);
+        if changed && self.account_saved.elapsed() >= Duration::from_secs(10) {
+            self.account_saved = now;
+            self.dirty = true;
+        }
+    }
+
     fn torrent_tick(&mut self) {
         let cfg = crate::torrents::state_dir().and_then(|d| self.settings.torrent_config(d));
         self.torrent_host.set_config(cfg);
+        self.torrent_host
+            .set_upload(self.settings.torrent_upload_limit());
+        self.torrent_accounts();
         if !self.settings.torrent_blocklist.trim().is_empty() {
             crate::torrents::refresh_blocklist(
                 &self.rt,
@@ -1574,6 +1628,7 @@ impl App {
         let opts = Options {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy(),
+            dns: self.settings.dns(),
             global: Some(self.global.clone()),
             host_limits: Some(self.host_limits.clone()),
             ignore_mtime: self.settings.ignore_mtime,
@@ -1958,10 +2013,7 @@ impl App {
     /// Whether the tray icon is shown somewhere (Linux: a tray host is there; asked when the
     /// window is closed, the host may come and go).
     fn tray_shown(&self) -> bool {
-        #[cfg(target_os = "linux")]
-        return crate::unix::tray_host();
-        #[cfg(not(target_os = "linux"))]
-        true
+        crate::tray::available()
     }
 
     /// The tray icon: created once, its commands run, and closing the window hides it there.
@@ -1991,10 +2043,19 @@ impl App {
                 None => crate::MAIN_TITLE.to_owned(),
             };
             t.set_tooltip(&tip);
+            // "Downloads in progress": each running download, to show its progress window (#63).
+            let running: Vec<(u64, String)> = self
+                .items
+                .iter()
+                .filter(|i| i.live.is_some())
+                .map(|i| (i.id, i.file_name.clone()))
+                .collect();
+            t.set_downloads(&running);
         }
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
+            tracing::info!("tray: {c:?}");
             let cmd = match c {
                 TrayCmd::Show => {
                     self.show_window(ctx);
@@ -2009,6 +2070,10 @@ impl App {
                 TrayCmd::StopQueue => Cmd::StopQueue(0),
                 TrayCmd::Options => Cmd::Options,
                 TrayCmd::Exit => Cmd::Exit,
+                TrayCmd::ShowDownload(id) => {
+                    self.open_item(id);
+                    continue;
+                }
             };
             self.run(cmd, None, ctx);
         }
@@ -2022,6 +2087,38 @@ impl App {
         {
             ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
             self.hide_to_tray(ctx);
+        }
+        // Options → General → "Minimize to the notification area" (#63): Minimize hides the
+        // window there too, where a tray shows the icon. Wayland can't hide a window: there it
+        // stays minimized, in the dock, as it was.
+        #[cfg(target_os = "linux")]
+        let can_hide = !crate::unix::on_wayland();
+        #[cfg(not(target_os = "linux"))]
+        let can_hide = true;
+        let wanted = self.tray.is_some()
+            && self.settings.minimize_to_tray
+            && can_hide
+            && !self.exiting
+            && self.tray_shown();
+        // Windows: the minimize command itself is caught (win32), so the window goes straight to
+        // the tray, never minimized (an idle app runs no frame while minimized: it wouldn't see).
+        #[cfg(windows)]
+        let minimize = crate::win32::main_minimize_to_tray(ctx, wanted);
+        // Elsewhere: on the change to minimized (brought back, the window may still read
+        // minimized for a frame or two). It is seen at the next frame the app runs; macOS doesn't
+        // report it at all while running (egui#3494), so there Minimize stays in the Dock.
+        #[cfg(not(windows))]
+        let minimize = {
+            let minimized = ctx.input(|i| i.viewport().minimized == Some(true));
+            let was = egui::Id::unique("main-was-minimized");
+            let was_minimized = ctx.data(|d| d.get_temp::<bool>(was)).unwrap_or(false);
+            ctx.data_mut(|d| d.insert_temp(was, minimized));
+            wanted && minimized && !was_minimized
+        };
+        if minimize && !self.hidden {
+            tracing::info!("minimized to the notification area");
+            ctx.send_viewport_cmd(egui::ViewportCommand::Visible(false));
+            self.hidden = true;
         }
         // Hidden, the window gets no paint messages: keep the clock (queues, scheduler,
         // download limits) running.
@@ -2402,6 +2499,9 @@ impl App {
                 hash: meta.info_hash.clone(),
                 files: add.files.clone(),
                 folder,
+                uploaded: 0,
+                seeded_secs: 0,
+                upload_limit: None,
             });
         }
         self.selection.set(id);
@@ -2840,6 +2940,9 @@ impl App {
         } else if !self.progress.iter().any(|p| p.id == id) {
             self.progress
                 .push(Progress::new(id, self.settings.show_complete));
+        } else if let Some(p) = self.progress.iter_mut().find(|p| p.id == id && p.hidden) {
+            // Hidden in the tray (#63): back, as it was.
+            p.hidden = false;
         } else {
             // Open already, behind: to the front.
             dialogs::raise(
@@ -5511,10 +5614,20 @@ impl App {
             match t.show(ctx) {
                 Outcome::Open => {}
                 Outcome::Closed => self.torrent_settings = None,
-                Outcome::Done(crate::torrentdlg::TorrentChoice { share, assoc, net }) => {
+                Outcome::Done(crate::torrentdlg::TorrentChoice {
+                    share,
+                    assoc,
+                    net,
+                    upload,
+                }) => {
                     self.torrent_settings = None;
                     // The network: the next torrent session takes it (torrent_tick).
                     net.apply(&mut self.settings);
+                    // The upload limit: at once (torrent_tick sets it on the session).
+                    (
+                        self.settings.torrent_upload_on,
+                        self.settings.torrent_upload_kb,
+                    ) = upload;
                     if share != self.settings.torrent_keep_sharing {
                         self.settings.torrent_keep_sharing = share;
                         self.torrent_host.set_sharing(
@@ -5660,8 +5773,19 @@ impl App {
         }
         self.finish_stopped();
         let mut actions = Vec::new();
+        // A progress window can be hidden in the tray only when there is one to bring it back.
+        // Off-screen test copies have no tray icon: their windows are drawn as if they had one
+        // (the captures and the accessibility checks see the hide button).
+        let tray = (self.tray.is_some() || crate::offscreen()) && crate::tray::available();
         for p in &mut self.progress {
             p.keep_sharing = self.settings.torrent_keep_sharing;
+            p.tray = tray;
+            p.minimize_to_tray = self.settings.minimize_to_tray;
+            // Hidden: not shown (its window is gone) until the tray or the list brings it back.
+            if p.hidden && tray {
+                continue;
+            }
+            p.hidden = false;
             if let Some(item) = self.items.iter().find(|i| i.id == p.id) {
                 actions.push((p.id, p.show(ctx, item, item.snap.as_ref())));
             }
@@ -5676,6 +5800,11 @@ impl App {
                     self.progress.retain(|p| p.id != id);
                 }
                 progress::Action::Close => self.progress.retain(|p| p.id != id),
+                progress::Action::Hide => {
+                    if let Some(p) = self.progress.iter_mut().find(|p| p.id == id) {
+                        p.hidden = true;
+                    }
+                }
                 progress::Action::Limit(limit, remember) => {
                     if let Some(item) = self.item(id) {
                         if let Some(l) = item.live.as_ref() {
@@ -5683,6 +5812,19 @@ impl App {
                         }
                         // Remembered, it applies again after a stop or a restart.
                         item.own_limit = if remember { limit } else { None };
+                        self.dirty = true;
+                    }
+                }
+                progress::Action::UploadLimit(limit) => {
+                    if let Some(item) = self.item(id)
+                        && let Some(spec) = item.torrent.as_mut()
+                    {
+                        // Kept with the torrent; a Run sets it now, a torrent sharing without
+                        // one gets it at the next torrent_tick (torrent_accounts).
+                        spec.upload_limit = limit;
+                        if let Some(model::Job::Torrent(run)) = item.live.as_ref().map(|l| &l.dl) {
+                            run.set_upload_limit(limit);
+                        }
                         self.dirty = true;
                     }
                 }
@@ -5716,6 +5858,7 @@ impl eframe::App for App {
             crate::win32::keep_from_foreground();
         }
         crate::settings::share_proxy(self.settings.proxy());
+        crate::settings::share_dns(self.settings.dns());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
         dialogs::publish_main_rect(&ctx);

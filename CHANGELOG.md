@@ -39,6 +39,30 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   names that would leave the folder, links, and archives that would fill the disk are refused;
   an existing file is never overwritten. The archive goes to the Recycle Bin (the Trash) only
   when you ask. Options has a new **Archives** page.
+- **Hide to the notification area** ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63)):
+  a download's progress window has a button that hides it in the tray while the download goes
+  on: on Windows in its title bar, left of Minimize (the progress window draws its own Windows 11
+  title bar now, keeping the system's snapping, shaking, menu and shadow), and in its Alt+Space
+  menu; on Linux and macOS at the end of its tab row. The tray menu's new **Downloads in
+  progress** lists the running downloads to bring one's window back (double-clicking it in the
+  list does too). With
+  **Options → General → Minimize to the notification area** (on by default), Minimize hides the
+  main window and progress windows there as well. Only where a tray shows MDM's icon.
+- **Choose the DNS** ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36)):
+  Options → Connection → DNS picks who turns names into addresses for downloads, FTP, MDM's own
+  downloads and the update check. The system's (the default), Cloudflare, Google, Quad9, AdGuard,
+  NextDNS (with your configuration ID) or your own, asked over HTTPS (the default), TLS, or
+  plain over TCP. **Test** shows how long it takes to answer. When it can't be reached, the
+  download stops with a message naming it, unless you allow falling back to the system's DNS;
+  your hosts file and local names stay with the system's. The command line's `get` takes
+  `--dns`. Video pages and torrent trackers still use the system's DNS.
+- **Drop-down lists for screen readers**: a screen reader or UI Automation can now set a
+  drop-down list's choice by its text, and open or close the list.
+- **Torrents: upload limits, and a share ratio that lasts**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): Torrent settings can
+  limit what all torrents together send, and a torrent's progress window can limit its own, kept
+  with it. Its General tab now counts what it sent and how long it shared over all its runs, so
+  the share ratio no longer starts again at 0 after a pause or a restart.
 - **A file-type icon before every file name**: the download list, Download File Info, Properties,
   Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
   audio, pictures, archives, documents, subtitles, code, and the programs and installers of every
@@ -206,6 +230,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   their selected row; Download video's list is called Quality, Add torrent's Files and the
   sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
   choice at once: it used to wait for the next mouse move.
+- **List rows sit inside their list for screen readers** ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102)):
+  they used to be listed beside it. A screen reader now says which row of how many ("4 of 12"),
+  choosing from the list itself works (UI Automation's Selection), and a tree's check box belongs
+  to its file's row. The language picker's list and the Options browser list and the Scheduler's
+  two lists have names now too.
 - **Torrents: speed limits now work as they do for other downloads**
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
   torrent's progress window changed every torrent's limit, a remembered limit was ignored, the

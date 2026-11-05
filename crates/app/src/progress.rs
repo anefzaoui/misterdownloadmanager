@@ -11,6 +11,81 @@ use crate::model::{self, Item, Status, size3};
 // from the right in a right-to-left interface), `text` starts at an English pen.
 use crate::winui::{self, ButtonKind, fill_l as fill, px_l as px, r, text};
 
+use crate::winui::caption::CaptionButton;
+
+/// The drawn title bar's height (#63): Windows only, where the frame is ours
+/// (win32::progress_frame); Linux and macOS keep the system's decorations, which take no buttons
+/// of ours (Wayland even places them itself), so the hide button sits in the tab row there.
+const TITLE_H: f32 = if cfg!(windows) {
+    crate::winui::caption::CAPTION_H
+} else {
+    0.0
+};
+
+/// The frame applied to a progress window (Windows): its client size, pixels per point × 1000
+/// and its system menu's "Hide to the notification area" (translated, when there is one).
+type Framed = ([f32; 2], u32, Option<String>);
+
+/// The title bar's buttons, from the window's end: Close, Maximize (greyed: a fixed size, as
+/// IDM's), Minimize, and with a tray our "hide to the notification area". None where the system
+/// draws the title bar.
+fn caption_buttons(tray: bool) -> Vec<(CaptionButton, bool)> {
+    if !cfg!(windows) {
+        return Vec::new();
+    }
+    let mut b = vec![
+        (CaptionButton::Close, true),
+        (CaptionButton::Maximize, false),
+        (CaptionButton::Minimize, true),
+    ];
+    if tray {
+        b.push((CaptionButton::ToTray, true));
+    }
+    b
+}
+
+/// The title bar where it's ours (Windows), `width` points wide at `o`; the button pressed. Where
+/// its buttons and icon are goes to the window's hit test (win32::set_caption_hits), in client
+/// pixels, each frame (`hwnd`: the window, once its frame is applied).
+fn draw_caption(
+    ui: &mut Ui,
+    o: Pos2,
+    width: f32,
+    title: &str,
+    buttons: &[(CaptionButton, bool)],
+    hwnd: Option<isize>,
+) -> Option<CaptionButton> {
+    if !cfg!(windows) {
+        return None;
+    }
+    let rect = egui::Rect::from_min_size(o, vec2(width, TITLE_H));
+    let bar = crate::winui::caption::title_bar(ui, rect, title, buttons);
+    #[cfg(windows)]
+    if let Some(hwnd) = hwnd {
+        let ppp = ui.ctx().pixels_per_point();
+        let px = |r: egui::Rect| {
+            let (a, b) = ((r.min - o) * ppp, (r.max - o) * ppp);
+            [
+                a.x.round() as i32,
+                a.y.round() as i32,
+                b.x.round() as i32,
+                b.y.round() as i32,
+            ]
+        };
+        crate::win32::set_caption_hits(
+            hwnd,
+            crate::win32::CaptionHits {
+                strip_h: (TITLE_H * ppp).round() as i32,
+                icon: px(bar.icon),
+                buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
+            },
+        );
+    }
+    #[cfg(not(windows))]
+    let _ = hwnd;
+    bar.pressed
+}
+
 const fn rgb(r: u8, g: u8, b: u8) -> Color32 {
     Color32::from_rgb(r, g, b)
 }
@@ -110,9 +185,21 @@ pub struct Progress {
     /// A limit change to report to the app (`Action::Limit`), and whether to remember it.
     pending_limit: Option<(Option<u64>, bool)>,
     remember: bool,
+    /// A torrent's own upload limit on the Speed Limiter tab: on, and its KBytes/sec box.
+    up_on: bool,
+    up_kb: String,
+    /// An upload limit change to report (`Action::UploadLimit`).
+    pending_upload: Option<Option<u64>>,
     show_complete: bool,
     /// Torrent settings' "Keep sharing torrents after they finish" (the General tab says so).
     pub keep_sharing: bool,
+    /// Hidden in the notification area (#63): not shown, its tab and choices kept for when it
+    /// comes back (the tray's "Downloads in progress", or the download double-clicked).
+    pub hidden: bool,
+    /// A tray shows MDM's icon, so the window can be hidden there (set by the app each frame).
+    pub tray: bool,
+    /// Options → General → "Minimize to the notification area": Minimize hides it there too.
+    pub minimize_to_tray: bool,
     /// Options on completion, used when "Show download complete dialog" is off.
     hang_up: bool,
     exit: bool,
@@ -130,8 +217,12 @@ pub enum Action {
     /// Set this download's speed limit (bytes/s, None = off).
     /// This download's limit (None: unlimited); `true`: remember it for the file.
     Limit(Option<u64>, bool),
+    /// A torrent's own upload limit (bytes/s, None: off), kept with it (`TorrentSpec`).
+    UploadLimit(Option<u64>),
     /// Close the dialog, keep downloading.
     Close,
+    /// Hide the dialog in the notification area, keep downloading (#63).
+    Hide,
 }
 
 impl Progress {
@@ -147,8 +238,14 @@ impl Progress {
             limit_init: false,
             pending_limit: None,
             remember: false,
+            up_on: false,
+            up_kb: "50".into(),
+            pending_upload: None,
             show_complete,
             keep_sharing: false,
+            hidden: false,
+            tray: false,
+            minimize_to_tray: false,
             hang_up: false,
             exit: false,
             turn_off_on: false,
@@ -170,11 +267,15 @@ impl Progress {
             (frac * 100.0).floor() as u32,
             crate::i18n::isolate(&item.file_name)
         );
-        let client = if self.details {
+        let body = if self.details {
             [548.0, 412.0 + torrent_drop(item)]
         } else {
             [548.0, 241.0]
         };
+        // Windows: the title bar is ours (#63), drawn in the client above IDM's layout, so the
+        // hide button sits in it, left of Minimize, as in IDM. Elsewhere the system draws it.
+        let client = [body[0], body[1] + TITLE_H];
+        let buttons = caption_buttons(self.tray);
         let key = egui::Id::unique(("progress-pos", self.id));
         let title_now = title.clone();
         // Hidden until dialogs::keep_theme has given it its theme.
@@ -182,16 +283,21 @@ impl Progress {
             .with_visible(false)
             .with_title(title)
             .with_inner_size(client)
-            // IDM's progress window has the sizing-frame caption (31 px) but 2 px borders and a
-            // fixed size. On Windows the sizing frame is asked for and win32::thin_frame trims
-            // its borders and disables resizing; elsewhere the window is simply not resizable
-            // (its contents are laid out for one size: Show/Hide details switches between two).
+            // IDM's progress window has 2 px borders and a fixed size. On Windows the sizing
+            // frame is asked for and win32::progress_frame trims its borders, disables resizing
+            // and gives the caption to the client, which draws it; elsewhere the window is simply
+            // not resizable (its contents are laid out for one size: Show/Hide details switches
+            // between two).
             .with_resizable(cfg!(windows))
             .with_icon(crate::app_icon())
             .with_maximize_button(false);
         if let Some(p) = crate::dialogs::place(ctx, key, [548.0, 412.0]) {
             builder = builder.with_position(p);
         }
+        // Minimize hides it in the notification area when asked (and a tray can bring it back).
+        let minimize_hides = self.tray && self.minimize_to_tray;
+        // The window, once its frame is applied (Windows: its caption parts go to its hit test).
+        let hwnd = ctx.data(|d| d.get_temp::<isize>(key.with("hwnd")));
         let action = ctx.show_viewport_immediate(
             ViewportId::from_hash_of(("progress", self.id)),
             builder,
@@ -199,13 +305,35 @@ impl Progress {
                 if ui.ctx().input(|i| i.viewport().close_requested()) {
                     return Action::Close;
                 }
+                if minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true)) {
+                    return Action::Hide;
+                }
                 let action = egui::CentralPanel::no_frame()
                     .frame(egui::Frame::new().fill(winui::BG()))
                     .show(ui, |ui| {
                         let o = ui.max_rect().min;
                         // The client area, laid out from the right in a right-to-left interface.
                         let _surface = winui::Surface::enter(o.x, o.x + client[0]);
-                        self.body(ui, o, item, snap, frac)
+                        let caption = draw_caption(ui, o, client[0], &title_now, &buttons, hwnd);
+                        let action = self.body(ui, o + vec2(0.0, TITLE_H), item, snap, frac);
+                        // The system menu's "Hide to the notification area" (Alt+Space).
+                        #[cfg(windows)]
+                        if let Some(h) = hwnd
+                            && crate::win32::take_hide_asked(h)
+                        {
+                            return Action::Hide;
+                        }
+                        match caption {
+                            Some(CaptionButton::Close) => Action::Close,
+                            Some(CaptionButton::ToTray) => Action::Hide,
+                            Some(CaptionButton::Minimize) if minimize_hides => Action::Hide,
+                            Some(CaptionButton::Minimize) => {
+                                ui.ctx()
+                                    .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                                action
+                            }
+                            _ => action,
+                        }
                     })
                     .inner;
                 // Escape hides the window (the download goes on), as the × does.
@@ -216,20 +344,32 @@ impl Progress {
                 }
             },
         );
-        // Apply IDM's thin frame once, and again whenever the client size changes (details).
+        // Apply the frame while the window is still hidden, and again whenever the client size
+        // (details), the scale (another display) or the system menu's item changes.
         #[cfg(windows)]
         {
-            let applied = key.with("framed");
             let scale = ctx.input_for(ViewportId::from_hash_of(("progress", self.id)), |i| {
                 i.pixels_per_point
             });
-            if ctx.data(|d| d.get_temp::<[f32; 2]>(applied)) != Some(client)
-                && crate::win32::thin_frame(&title_now, client, scale)
+            let hide = buttons
+                .iter()
+                .any(|(b, _)| *b == CaptionButton::ToTray)
+                .then(|| crate::i18n::t("Hide to the notification area").to_owned());
+            let want: Framed = (client, (scale * 1000.0).round() as u32, hide);
+            if ctx
+                .data(|d| d.get_temp::<Framed>(key.with("framed")))
+                .as_ref()
+                != Some(&want)
+                && let Some(h) =
+                    crate::win32::thin_frame(&title_now, client, scale, want.2.as_deref())
             {
-                ctx.data_mut(|d| d.insert_temp(applied, client));
+                ctx.data_mut(|d| {
+                    d.insert_temp(key.with("framed"), want);
+                    d.insert_temp(key.with("hwnd"), h);
+                });
             }
         }
-        let closing = matches!(action, Action::Close | Action::Cancel);
+        let closing = matches!(action, Action::Close | Action::Cancel | Action::Hide);
         crate::dialogs::keep_theme(
             ctx,
             ViewportId::from_hash_of(("progress", self.id)),
@@ -242,9 +382,27 @@ impl Progress {
             (Action::None, Some((limit, remember))) => Action::Limit(limit, remember),
             (a, _) => a,
         };
+        // An upload change waits a frame when a download one goes first (one action a frame).
+        let action = match action {
+            Action::None => self
+                .pending_upload
+                .take()
+                .map_or(Action::None, Action::UploadLimit),
+            a => a,
+        };
         if matches!(action, Action::Close | Action::Cancel) {
             crate::dialogs::forget_place(ctx, key);
-            ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
+        }
+        // Gone (hidden keeps its place): the next window gets its thin frame again.
+        if closing {
+            #[cfg(windows)]
+            if let Some(h) = hwnd {
+                crate::win32::forget_caption(h);
+            }
+            ctx.data_mut(|d| {
+                d.remove::<Framed>(key.with("framed"));
+                d.remove::<isize>(key.with("hwnd"));
+            });
         }
         action
     }
@@ -258,7 +416,7 @@ impl Progress {
         frac: f64,
     ) -> Action {
         let p = ui.painter().clone();
-        self.tabs(ui, o);
+        let hide = self.tabs(ui, o);
         match self.tab {
             Tab::Status => status_page(ui, o, item, snap, frac),
             Tab::Limiter => {
@@ -276,7 +434,7 @@ impl Progress {
         // The progress bar: IDM's green on the shared, themed track.
         winui::meter(&p, r(o, 17.0, 180.0, 513.0, 16.0), frac as f32);
 
-        let mut action = Action::None;
+        let mut action = if hide { Action::Hide } else { Action::None };
         let details_label = if self.details {
             crate::i18n::mark("<< Hide details")
         } else {
@@ -357,8 +515,9 @@ impl Progress {
         action
     }
 
-    /// Classic 3-D tabs over a raised page frame (spec "Tab strip").
-    fn tabs(&mut self, ui: &mut Ui, o: Pos2) {
+    /// Classic 3-D tabs over a raised page frame (spec "Tab strip"); with a tray, the "hide to
+    /// the notification area" button at the row's end. True when that button is pressed.
+    fn tabs(&mut self, ui: &mut Ui, o: Pos2) -> bool {
         // The shared tab strip (the torrent tabs' too): one look in both themes, one Tab stop with
         // the arrows, sized to the translated labels. It had two of its own (classic 3-D in dark).
         let tabs = [
@@ -371,7 +530,11 @@ impl Progress {
         ];
         let p = ui.painter().clone();
         let english: Vec<&str> = tabs.iter().map(|t| t.1).collect();
-        let light: Vec<winui::LightTab> = winui::tab_row(&p, &english, 20.0, 525.0, 2.0, 8.0)
+        // The hide button sits here where the system draws the title bar (Linux, macOS; on
+        // Windows it's in ours); the tabs end before it (long translations shorten first).
+        let tab_button = self.tray && !cfg!(windows);
+        let right = if tab_button { 500.0 } else { 525.0 };
+        let light: Vec<winui::LightTab> = winui::tab_row(&p, &english, 20.0, right, 2.0, 8.0)
             .into_iter()
             .zip(tabs.iter())
             .map(|((x0, x1, _), (_, label))| winui::LightTab {
@@ -385,12 +548,27 @@ impl Progress {
         if let Some(i) = winui::tabs_light(ui, o, r(o, 18.0, 8.0, 514.0, 165.0), &light, current) {
             self.tab = tabs[i].0;
         }
+        // MDM's (#63): IDM puts this in its title bar, which here is the system's own (it takes
+        // no buttons of ours), so it sits at the tab row's end, over the page's corner.
+        tab_button
+            && winui::to_tray_button(
+                ui,
+                r(o, 507.0, 6.0, 22.0, 20.0),
+                "progress-hide",
+                // i18n: tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+                crate::i18n::mark("Hide to the notification area"),
+            )
+            .clicked()
     }
 
     /// The Speed Limiter tab, live for this download. Returns true when "Hide tab" is pressed.
     fn limiter_page(&mut self, ui: &mut Ui, o: Pos2, item: &Item) -> bool {
         let p = ui.painter().clone();
         if !self.limit_init {
+            if let Some(rate) = item.torrent.as_ref().and_then(|t| t.upload_limit) {
+                self.up_on = true;
+                self.up_kb = (rate / 1024).max(1).to_string();
+            }
             if let Some(rate) = item.live.as_ref().and_then(|l| l.dl.speed_limit()) {
                 self.limiter = true;
                 self.limit_kb = (rate / 1024).max(1).to_string();
@@ -417,24 +595,31 @@ impl Progress {
         };
         text(&p, o.x + 136.0, o.y + 51.0, &rate, winui::TEXT());
         let was_on = self.limiter;
-        winui::checkbox(
+        // A torrent's upload limit takes the right half (x 290): the download side's captions
+        // stop before it.
+        let torrent = item.torrent.is_some();
+        winui::checkbox_until(
             ui,
             o + vec2(33.0, 64.0),
             &mut self.limiter,
             "Use Speed Limiter",
             true,
+            torrent.then_some(286.0),
         );
         let label = if self.limiter {
             winui::TEXT()
         } else {
             DISABLED
         };
-        text(
+        winui::fit(
+            ui,
             &p,
             o.x + 33.0,
             o.y + 92.0,
             crate::i18n::t("Maximum download speed:"),
             label,
+            o.x + if torrent { 284.0 } else { 525.0 },
+            ("limit-label", self.id),
         );
         let rate_box = winui::edit_right(
             ui,
@@ -504,7 +689,58 @@ impl Progress {
             crate::i18n::t("on download stop/resume"),
             winui::TEXT(),
         );
+        if item.torrent.is_some() {
+            self.upload_limit(ui, &p, o);
+        }
         hide_tab(ui, o)
+    }
+
+    /// A torrent's own upload limit, right of the download one (#39): kept with the torrent,
+    /// so it applies again whenever it runs or shares.
+    fn upload_limit(&mut self, ui: &mut Ui, p: &egui::Painter, o: Pos2) {
+        let was_on = self.up_on;
+        winui::checkbox_until(
+            ui,
+            o + vec2(290.0, 64.0),
+            &mut self.up_on,
+            // i18n: a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
+            "Limit uploading",
+            true,
+            Some(525.0),
+        );
+        let label = if self.up_on { winui::TEXT() } else { DISABLED };
+        winui::fit(
+            ui,
+            p,
+            o.x + 290.0,
+            o.y + 92.0,
+            // i18n: a torrent's progress window, Speed Limiter tab: label above the upload speed box
+            crate::i18n::t("Maximum upload speed:"),
+            label,
+            o.x + 525.0,
+            ("upload-label", self.id),
+        );
+        let rate_box = winui::edit_right(
+            ui,
+            r(o, 290.0, 100.0, 77.0, 23.0),
+            &mut self.up_kb,
+            self.up_on,
+        );
+        self.up_kb.retain(|c| c.is_ascii_digit());
+        let typed = rate_box.lost_focus()
+            || (rate_box.has_focus() && winui::enter_pressed(ui))
+            || winui::value_set_by_assistive(&rate_box);
+        text(
+            p,
+            o.x + 375.0,
+            o.y + 113.0,
+            crate::i18n::t("KBytes/sec"),
+            label,
+        );
+        let kb: u64 = self.up_kb.parse().unwrap_or(0);
+        if (was_on != self.up_on || (self.up_on && typed)) && !(self.up_on && kb == 0) {
+            self.pending_upload = Some(self.up_on.then_some(kb * 1024));
+        }
     }
 
     /// Options on completion → "Show download complete dialog" for this file.
@@ -918,9 +1154,17 @@ impl Progress {
             TTab::General => {
                 let st = d.stats.as_ref();
                 let have = pieces.iter().filter(|b| **b).count();
-                let ratio = st.filter(|s| s.done > 0).map_or("0.00".into(), |s| {
-                    format!("{:.2}", s.uploaded as f64 / s.done as f64)
-                });
+                // What it sent in all its runs (#39; librqbit counts only this one), against what
+                // it has: the same after a pause or a restart.
+                let spec = item.torrent.as_ref();
+                let sent = spec.map_or(0, |t| t.uploaded);
+                let done = st.map_or(item.downloaded, |s| s.done);
+                let ratio = if done > 0 {
+                    format!("{:.2}", sent as f64 / done as f64)
+                } else {
+                    "0.00".into()
+                };
+                let shared = spec.map_or(0, |t| t.seeded_secs);
                 let hash = item
                     .torrent
                     .as_ref()
@@ -961,10 +1205,15 @@ impl Progress {
                     vec![
                         // i18n: how much was sent to other peers
                         t("Sent"),
-                        st.map_or(String::new(), |s| model::size(s.uploaded)),
+                        model::size(sent),
                     ],
                     // i18n: sent divided by received
                     vec![t("Share ratio"), ratio],
+                    vec![
+                        // i18n: a torrent's General tab: how long it has been shared once finished, in all
+                        t("Shared for"),
+                        model::time(shared as f64),
+                    ],
                     // i18n: label before the folder the torrent is saved in
                     vec![t("Saved in"), folder],
                     vec![

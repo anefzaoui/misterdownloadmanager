@@ -16,7 +16,7 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{folder}에 파일 {n}개 추출됨
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n}개 파일을 {folder}에 추출했습니다.
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -43,7 +43,7 @@
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	항목 {n}개 제외됨(링크 또는 폴더 외부로 연결되는 이름)
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n}개 항목이 제외되었습니다(링크 또는 폴더 외부로 연결되는 이름).
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -54,11 +54,15 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	파일 {n}개의 이름이 이미 있는 파일과 같아서 번호가 매겨짐
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n}개 파일의 이름이 이미 있는 파일과 같아서 번호가 매겨졌습니다.
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n}개 선택됨
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+#, machine
+	"{what}" isn't an IP address.	"{what}"은(는) IP 주소가 아닙니다.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -101,6 +105,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< 세부 정보 숨기기
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+#, machine
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 구성 ID는 6개의 문자 및 숫자(0-9, a-f)로 구성됩니다.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -108,7 +116,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	볼륨 중 하나가 없습니다.
+	a volume of it is missing	볼륨이 없습니다.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager 정보
@@ -173,7 +181,8 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	주소가 {host}로 변경됨
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	주소:
 #. window title in the Options window
@@ -212,7 +221,7 @@
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
 #, machine
-	Already in the list	이미 목록에 있음
+	Already in the list	이미 목록에 있습니다.
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -242,6 +251,15 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	오전
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Another DNS...	다른 DNS...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+#, machine
+	Answered in {ms} ms: {ip}	{ms}ms 안에 응답: {ip}
 #. text in the Scheduler window
 #, machine
 	April	4월
@@ -262,9 +280,17 @@
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	시스템 지역 설정에 따름
+#. text in the Options window
+#, machine
+	Ask it with:	다음으로 요청:
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	피어에 파일 목록을 요청하는 중입니다. 마그넷 링크는 1~2분 정도 걸릴 수 있습니다.
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking...	요청 중...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -312,7 +338,7 @@
 	by batch download	일괄 다운로드
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	링크 그래버에서
+	by Link grabber	링크 그래버를 통해
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
@@ -334,7 +360,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	다시 시작할 수 없음: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	다음 브라우저에서 다운로드 캡처:
 #. text in extension.rs
@@ -358,6 +384,10 @@
 #. text in categories.rs
 #, machine
 	Category properties	범주 속성
+#. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+#, machine
+	Certificate name:	인증서 이름:
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -421,11 +451,12 @@
 #. text in the Options window
 #, machine
 	Clock:	시계:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 #, machine
 	Close	닫기
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -440,6 +471,10 @@
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
 	Compressed	압축됨
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+#, machine
+	Configuration ID:	구성 ID:
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	다운로드 삭제 전 확인
@@ -481,7 +516,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	{name}을(를) 추출할 수 없음: {why}
+	Couldn't extract {name}: {why}	{name}을(를) 추출할 수 없습니다. {why}
 #. window title in a dialog box
 #, machine
 	Create folder	폴더 만들기
@@ -577,6 +612,21 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	큐 목록에 표시됨
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+#, machine
+	DNS over HTTPS	HTTPS를 통한 DNS
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+#, machine
+	DNS over TLS	TLS를 통한 DNS
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+#, machine
+	DNS settings	DNS 설정
+#. text in the Options window
+#, machine
+	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
 	Do not start downloading, only add files to the queue	다운로드를 시작하지 않고 파일만 큐에 추가
@@ -699,6 +749,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	다운로드
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#, machine
+	Downloads in progress	진행 중인 다운로드
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -872,7 +926,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	파일 저장 위치: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	큐의 파일
 #. button in the Find window
@@ -1015,6 +1069,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	탭 숨기기
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+#, machine
+	Hide to the notification area	알림 영역으로 숨기기
 #. checkbox in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
@@ -1044,6 +1102,10 @@
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	기존 파일이 완료되면 다운로드 완료 대화 상자를 표시하고, 그렇지 않으면 다시 시작합니다.
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+#, machine
+	If it can't be reached, use the system's DNS	연결할 수 없는 경우 시스템 DNS 사용
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	다운로드 다시 시작 시 파일 수정 시간 변경 무시
@@ -1076,22 +1138,26 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	여러 항목이 있는 경우 이름과 같은 폴더에
+	Into a folder named after it, when it holds several things	여러 항목이 포함된 경우 이름과 같은 폴더에
 #. text in a dialog box
 #, machine
 	Invalid address	잘못된 주소
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+#, machine
+	IP addresses (optional):	IP 주소(선택 사항):
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it holds too many files or folders	너무 많은 파일 또는 폴더가 있습니다.
+	it holds too many files or folders	너무 많은 파일 또는 폴더가 포함되어 있습니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is damaged, or not the archive its name says	손상되었거나 이름과 같은 압축 파일이 아닙니다.
+	it is damaged, or not the archive its name says	손상되었거나 이름과 일치하는 압축 파일이 아닙니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	MDM이 추출하는 압축 파일이 아닙니다.
+	it is not an archive MDM extracts	MDM이 추출할 수 있는 압축 파일이 아닙니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1108,7 +1174,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	{size}를(을) 쓰려고 합니다. 사용 가능한 공간 또는 이유보다 {limit} 더 많습니다.
+	it would write {size}, more than the {limit} there is room or reason for	{size}를 쓰려고 했지만, {limit}보다 공간이 부족하거나 이유가 없습니다.
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1132,7 +1198,7 @@
 #. text in the Scheduler window
 #, machine
 	June	6월
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/초
 #. checkbox in the Add torrent window
@@ -1178,6 +1244,14 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	모든 다운로드 제한
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
+#, machine
+	Limit uploading	업로드 제한
+#. text in the Add torrent window
+#. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
+#, machine
+	Limit uploading for all torrents to	모든 토렌트의 업로드 제한
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -1248,6 +1322,10 @@
 #. group box title in the Options window
 #, machine
 	Max. connections number	최대 연결 수
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+#, machine
+	Maximize	최대화
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 #, machine
@@ -1255,10 +1333,22 @@
 #. text in a download's progress window
 #, machine
 	Maximum download speed:	최대 다운로드 속도:
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: label above the upload speed box
+#, machine
+	Maximum upload speed:	최대 업로드 속도:
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
 	May	5월
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+#, machine
+	Minimize	최소화
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+#, machine
+	Minimize to the notification area	알림 영역으로 최소화
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1365,6 +1455,10 @@
 #. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	이름:
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+#, machine
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	호스트 파일의 이름과 로컬 이름(단일 단어, .local, .lan)은 시스템 DNS를 계속 사용합니다. 비디오 페이지 및 토렌트 트래커는 현재 시스템 DNS를 사용합니다.
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
@@ -1658,6 +1752,10 @@
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	조각
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+#, machine
+	plain DNS	일반 DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -1735,10 +1833,10 @@
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR 압축 파일에는 7-Zip(7-zip.org)이 필요하지만 설치되어 있지 않습니다.
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR 압축 파일은 7-Zip(7-zip.org)이 필요하며, 설치되어 있지 않습니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	RAR archives need 7-Zip, which isn't installed	RAR 압축 파일에는 7-Zip이 필요하지만 설치되어 있지 않습니다.
+	RAR archives need 7-Zip, which isn't installed	RAR 압축 파일은 7-Zip이 필요하며, 설치되어 있지 않습니다.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1932,6 +2030,10 @@
 #. text in the Options window
 #, machine
 	Server:	서버:
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+#, machine
+	Servers:	서버:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1944,10 +2046,19 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	설정
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Settings...	설정...
 #. text in a download's progress window
 #. sent divided by received
 #, machine
 	Share ratio	공유 비율
+#. text in a download's progress window
+#. a torrent's General tab: how long it has been shared once finished, in all
+#, machine
+	Shared for	공유 시간
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -2151,7 +2262,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Straight into the archive's folder	아카이브 폴더로 바로 이동
+	Straight into the archive's folder	압축 파일 폴더로 바로 이동
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2182,13 +2293,17 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	작업 → 링크 그래버 또는 브라우저의 "모든 링크 다운로드": 분할\n아카이브 볼륨은 하나의 패키지이고, 페이지의 다른 링크는 다른 패키지입니다.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	작업 → 링크 그래버 또는 브라우저의 "모든 링크 다운로드": 분할\n압축 파일 볼륨은 하나의 패키지이며, 페이지의 다른 링크는 다른 패키지입니다.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	친구에게 알리기
 #. group box title in the Options window
 #, machine
 	Temporary directory	임시 디렉터리
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+#, machine
+	Test	테스트
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -2214,18 +2329,18 @@
 	The address must be an http(s) or ftp(s) address	주소는 http(s) 또는 ftp(s) 주소여야 합니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Recycle Bin: it was kept	아카이브를 휴지통으로 이동할 수 없습니다. 보관되었습니다.
+	The archive could not be moved to the Recycle Bin: it was kept	압축 파일을 휴지통으로 이동할 수 없습니다. 압축 파일이 보관되었습니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Trash: it was kept	아카이브를 휴지통으로 이동할 수 없습니다. 보관되었습니다.
+	The archive could not be moved to the Trash: it was kept	압축 파일을 휴지통으로 이동할 수 없습니다. 압축 파일이 보관되었습니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Recycle Bin	아카이브가 휴지통으로 이동되었습니다.
+	The archive was moved to the Recycle Bin	압축 파일이 휴지통으로 이동되었습니다.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Trash	아카이브가 휴지통으로 이동되었습니다.
+	The archive was moved to the Trash	압축 파일이 휴지통으로 이동되었습니다.
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	최고 품질 및 MP3에는 ffmpeg(약 80MB)가 필요합니다.
@@ -2359,7 +2474,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	the password is wrong	암호가 틀렸습니다.
+	the password is wrong	암호가 잘못되었습니다.
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	Windows에 경로가 너무 깁니다: {path}
@@ -2418,6 +2533,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	기호를 가져올 수 없습니다. 보고서의 일부 줄에 이름 대신 주소가 표시됩니다(개발자는 여전히 읽을 수 있습니다).
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+#, machine
+	The system's DNS	시스템 DNS
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2439,11 +2558,11 @@
 #. text in the Options window
 #. Options → Archives check box
 #, machine
-	Then move the archives to the Recycle Bin	그런 다음 아카이브를 휴지통으로 이동
+	Then move the archives to the Recycle Bin	그런 다음 압축 파일을 휴지통으로 이동
 #. text in the Options window
 #. Options → Archives check box (Linux and macOS)
 #, machine
-	Then move the archives to the Trash	그런 다음 아카이브를 휴지통으로 이동
+	Then move the archives to the Trash	그런 다음 압축 파일을 휴지통으로 이동
 #. text in categories.rs
 #, machine
 	There is already a category with this name	이 이름의 범주가 이미 있습니다.
@@ -2609,6 +2728,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	시작 및 끝에 숫자를 입력하세요.
+#. text in the settings
+#. Options → DNS: no server address was typed
+#, machine
+	Type at least one server address.	하나 이상의 서버 주소를 입력하세요.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -2617,6 +2740,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	다른 이름으로 저장에 파일 이름을 입력하세요.
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+#, machine
+	Type the name the server's certificate shows.	서버 인증서에 표시된 이름을 입력하세요.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -2782,7 +2909,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	보관 파일 내용 저장 위치:
+	What an archive holds goes:	압축 파일 내용:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2817,7 +2944,7 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Wrong password for {name}. Type it again:	{name}의 암호가 잘못되었습니다. 다시 입력하세요:
+	Wrong password for {name}. Type it again:	{name}의 암호가 틀렸습니다. 다시 입력하세요:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2844,6 +2971,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	사용 중인 브라우저
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+#, machine
+	your DNS ({how})	내 DNS({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -2867,7 +2998,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ 및 XZ; 모든 볼륨이 있는 분할 아카이브(.part1.rar, .7z.001).\n이미 있는 파일은 유지되고 새 파일에는 번호가 매겨집니다.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ 및 XZ; 모든 볼륨이 있는 분할 압축 파일(.part1.rar, .7z.001).\n이미 있는 파일은 유지됩니다. 새 파일에는 번호가 매겨집니다.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2964,7 +3095,12 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name}은(는) 암호로 보호됩니다:
+	{name} is protected by a password:	{name}은(는) 암호로 보호되어 있습니다:
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} isn't offered as {how}.	{name}은(는) {how}(으)로 제공되지 않습니다.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

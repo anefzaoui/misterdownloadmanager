@@ -47,6 +47,9 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 @plural	{n} selected|{n} selected	{n} selected|{n} selected
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+	"{what}" isn't an IP address.	"{what}" isn't an IP address.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -79,6 +82,9 @@
 	24-hour (21:41)	24-hour (21:41)
 #. text in a download's progress window
 	<< Hide details	<< Hide details
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	A NextDNS configuration ID is six letters and digits (0-9, a-f).
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.
@@ -131,7 +137,8 @@
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 	Address changed to {host}	Address changed to {host}
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 	Address:	Address:
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
@@ -181,6 +188,13 @@
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 	AM	AM
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+	Another DNS...	Another DNS...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+	Answered in {ms} ms: {ip}	Answered in {ms} ms: {ip}
 #. text in the Scheduler window
 	April	April
 #. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
@@ -196,8 +210,14 @@
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?
 #. option (radio button) in the Options window
 	As the system's region writes them	As the system's region writes them
+#. text in the Options window
+	Ask it with:	Ask it with:
 #. text in the Add torrent window
 	Asking peers for the file list. Magnet links can take a minute or two.	Asking peers for the file list. Magnet links can take a minute or two.
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+	Asking...	Asking...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 	Audio only {type}	Audio only {type}
@@ -247,7 +267,7 @@
 	Cannot read the file: {error}	Cannot read the file: {error}
 #. text in errors.rs
 	cannot resume: {detail}	cannot resume: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 	Capture downloads from the following browsers:	Capture downloads from the following browsers:
 #. text in extension.rs
 #. the headline of the window that offers the browser extension
@@ -264,6 +284,9 @@
 	Category folder	Category folder
 #. text in categories.rs
 	Category properties	Category properties
+#. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+	Certificate name:	Certificate name:
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Change folder for "{category}" category on last selected	Change folder for "{category}" category on last selected
@@ -311,11 +334,12 @@
 	Client	Client
 #. text in the Options window
 	Clock:	Clock:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 	Close	Close
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Close a menu or dialog	Close a menu or dialog
@@ -326,6 +350,9 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: compressed archives (zip, rar, 7z)
 	Compressed	Compressed
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+	Configuration ID:	Configuration ID:
 #. text in the Options window
 	Confirm before deleting downloads	Confirm before deleting downloads
 #. window title in a dialog box
@@ -423,6 +450,17 @@
 	disk error: {error}	disk error: {error}
 #. text in the Scheduler window
 	displayed in the list of queues	displayed in the list of queues
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+	DNS over HTTPS	DNS over HTTPS
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+	DNS over TLS	DNS over TLS
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+	DNS settings	DNS settings
+#. text in the Options window
+	DNS:	DNS:
 #. checkbox in the Options window
 	Do not start downloading, only add files to the queue	Do not start downloading, only add files to the queue
 #. text in a dialog box
@@ -511,6 +549,9 @@
 #. text in the download list; text in the Options window
 #. tab title: download settings
 	Downloads	Downloads
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+	Downloads in progress	Downloads in progress
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 	Downloads stopped and will resume automatically at {time}.	Downloads stopped and will resume automatically at {time}.
@@ -636,7 +677,7 @@
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 	Files go to: {folder}	Files go to: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 	Files in the queue	Files in the queue
 #. button in the Find window
 #. verb: button that starts the search
@@ -739,6 +780,9 @@
 	Hide &categories	Hide &categories
 #. button in a download's progress window
 	Hide tab	Hide tab
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+	Hide to the notification area	Hide to the notification area
 #. checkbox in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 	Hide web pages	Hide web pages
@@ -759,6 +803,9 @@
 	If a duplicate download link is added:	If a duplicate download link is added:
 #. text in the Options window
 	If existing file is complete, show download complete dialog; otherwise resume it.	If existing file is complete, show download complete dialog; otherwise resume it.
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+	If it can't be reached, use the system's DNS	If it can't be reached, use the system's DNS
 #. checkbox in the Options window
 	Ignore file modification time changes when resuming a download	Ignore file modification time changes when resuming a download
 #. message or event log entry in the main window
@@ -785,6 +832,9 @@
 	Into a folder named after it, when it holds several things	Into a folder named after it, when it holds several things
 #. text in a dialog box
 	Invalid address	Invalid address
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+	IP addresses (optional):	IP addresses (optional):
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	it holds too many files or folders	it holds too many files or folders
@@ -823,7 +873,7 @@
 	Jump to the download whose name starts with it	Jump to the download whose name starts with it
 #. text in the Scheduler window
 	June	June
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in the Add torrent window
 	KBytes/sec	KBytes/sec
 #. checkbox in the Add torrent window
 	Keep sharing torrents after they finish	Keep sharing torrents after they finish
@@ -856,6 +906,12 @@
 	Licenses and credits	Licenses and credits
 #. checkbox in a dialog box
 	Limit all downloads together to	Limit all downloads together to
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
+	Limit uploading	Limit uploading
+#. text in the Add torrent window
+#. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
+	Limit uploading for all torrents to	Limit uploading for all torrents to
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 	Link grabber	Link grabber
@@ -907,14 +963,26 @@
 	Match whole string only	Match whole string only
 #. group box title in the Options window
 	Max. connections number	Max. connections number
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+	Maximize	Maximize
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 	Maximum download speed for one file {kb} KBytes/sec	Maximum download speed for one file {kb} KBytes/sec
 #. text in a download's progress window
 	Maximum download speed:	Maximum download speed:
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: label above the upload speed box
+	Maximum upload speed:	Maximum upload speed:
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 	May	May
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+	Minimize	Minimize
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+	Minimize to the notification area	Minimize to the notification area
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 	Missing	Missing
@@ -991,6 +1059,9 @@
 #. text in categories.rs; text in the Link grabber window
 #. Link grabber: the package's name (a label before its box)
 	Name:	Name:
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 	Needs a login	Needs a login
@@ -1199,6 +1270,9 @@
 #. text in a download's progress window
 #. tab title: the parts the torrent is made of
 	Pieces	Pieces
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+	plain DNS	plain DNS
 #. button in the Options window
 #. verb: plays the sound
 	Play	Play
@@ -1398,6 +1472,9 @@
 	Server	Server
 #. text in the Options window
 	Server:	Server:
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+	Servers:	Servers:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 	Set a socks5:// proxy in Options → Proxy / Socks first	Set a socks5:// proxy in Options → Proxy / Socks first
@@ -1407,9 +1484,16 @@
 #. button in the browser extension's window: register MDM's helper with the browsers
 #. button in Test browser integration: register MDM's helper with the browsers
 	Set it up	Set it up
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+	Settings...	Settings...
 #. text in a download's progress window
 #. sent divided by received
 	Share ratio	Share ratio
+#. text in a download's progress window
+#. a torrent's General tab: how long it has been shared once finished, in all
+	Shared for	Shared for
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 	Sharing	Sharing
@@ -1583,6 +1667,9 @@
 	Tell a friend	Tell a friend
 #. group box title in the Options window
 	Temporary directory	Temporary directory
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+	Test	Test
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 	Test browser integration	Test browser integration
@@ -1748,6 +1835,9 @@
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+	The system's DNS	The system's DNS
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The torrent could not be saved: {error}	The torrent could not be saved: {error}
@@ -1886,12 +1976,18 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Type a number in From and in To	Type a number in From and in To
+#. text in the settings
+#. Options → DNS: no server address was typed
+	Type at least one server address.	Type at least one server address.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 	Type the category's name	Type the category's name
 #. text in a dialog box
 #. why Start Download is greyed in Download File Info
 	Type the file's name in Save As	Type the file's name in Save As
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+	Type the name the server's certificate shows.	Type the name the server's certificate shows.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 	Type the queue's name	Type the queue's name
@@ -2056,6 +2152,9 @@
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 	Your browser	Your browser
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+	your DNS ({how})	your DNS ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 	your Google account has no access to this file, or its owner turned off downloading	your Google account has no access to this file, or its owner turned off downloading
@@ -2148,6 +2247,10 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 	{name} is protected by a password:	{name} is protected by a password:
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+	{name} isn't offered as {how}.	{name} isn't offered as {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

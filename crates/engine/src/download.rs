@@ -83,8 +83,10 @@ pub struct Options {
     /// its last written bytes and compare them (IDM's resume overlap check; catches changed
     /// files on servers without validators). 0 turns it off.
     pub verify_overlap: u64,
-    /// Fixed addresses for host names, like hosts-file entries (tests; a DNS option later).
+    /// Fixed addresses for host names, like hosts-file entries (tests).
     pub hosts: Vec<(String, Vec<std::net::IpAddr>)>,
+    /// Options → Connection → DNS: who answers the names (#36).
+    pub dns: crate::dns::DnsChoice,
     /// Options → Proxy / Socks.
     pub proxy: Proxy,
     /// A limit shared by every download using the same limiter (a global speed cap), on top
@@ -185,6 +187,7 @@ impl Default for Options {
             speed_limit: None,
             verify_overlap: 64,
             hosts: Vec::new(),
+            dns: Default::default(),
             proxy: Proxy::None,
             global: None,
             checksum: None,
@@ -1205,7 +1208,12 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
         None => builder.redirect(get_policy()),
     };
     Ok(builder
-        .dns_resolver(Arc::new(dns::Resolver::new(&opts.hosts, port)))
+        .dns_resolver(Arc::new(dns::Resolver::new(
+            &opts.hosts,
+            port,
+            &opts.dns,
+            &opts.extra_roots,
+        )))
         .http1_only()
         .user_agent(&opts.user_agent)
         .connect_timeout(opts.connect_timeout)

@@ -118,6 +118,9 @@ pub fn check(rt: &tokio::runtime::Handle, ctx: &egui::Context) -> Slot {
 async fn latest() -> Result<Found, String> {
     let client = reqwest::Client::builder()
         .user_agent(concat!("MisterDownloadManager/", env!("CARGO_PKG_VERSION")))
+        .dns_resolver(mdm_engine::dns::client_resolver(
+            &crate::settings::own_net().dns,
+        ))
         .timeout(Duration::from_secs(20))
         .build()
         .map_err(|e| e.to_string())?;

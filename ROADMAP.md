@@ -17,6 +17,12 @@ Everything below ships together, in one release.
   through 7-Zip, tar) extracted when they are downloaded
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)); collecting copied links
   comes later
+- ✅ Hide to the notification area: a download's progress window (its own button, or Minimize)
+  and the main window's Minimize, with the tray's "Downloads in progress"
+  ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
+- ✅ Choose the DNS: Cloudflare, Google, Quad9, AdGuard, NextDNS or your own, over HTTPS, TLS or
+  plain, with a Test button and no silent fallback
+  ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - ✅ Less memory in the notification area: under 10 MB there, and the language list's fonts let
   go when it closes ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Video downloads: subtitles, beside the video or inside it
@@ -26,6 +32,8 @@ Everything below ships together, in one release.
   IP blocklist ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40))
 - ✅ Torrents: a speed limit per torrent, remembered limits, and the global cap covering torrents
   too ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
+- ✅ Torrents: upload limits (all torrents, and each one), and a share ratio that survives pauses
+  and restarts ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Google Drive: public files download by their share links
   ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)); folders come later
 - ✅ Video downloads: Stop ends yt-dlp and everything it started
@@ -63,7 +71,8 @@ Everything below ships together, in one release.
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
 - ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
   a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
-  list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95))
+  list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),
+  inside their list, with their place in it ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
@@ -71,8 +80,8 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Torrents, the rest: upload limits, a share ratio that survives restarts, seeding limits, more
-  torrent actions, and RSS feeds with auto-download rules
+- 🔄 Torrents, the rest: seeding limits, more torrent actions, and RSS feeds with auto-download
+  rules
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 
 ### Bugs being looked into
@@ -95,8 +104,6 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Hide a download's progress window to the tray
-  ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63))
 - 📋 Debrid services: Real-Debrid, AllDebrid, Premiumize
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
@@ -104,8 +111,6 @@ Everything below ships together, in one release.
 
 - 📋 Bind downloads to a network adapter (VPN), with a kill switch
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
-- 📋 Custom DNS, and DNS over HTTPS or TLS
-  ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36))
 - 📋 Downloads follow a browser's VPN or proxy extension
   ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 

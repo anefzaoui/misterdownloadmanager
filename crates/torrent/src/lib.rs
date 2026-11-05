@@ -666,9 +666,19 @@ impl Torrents {
         c.download_bps.map(|b| u64::from(b.get()))
     }
 
-    /// The whole session's upload limit, bytes/s (None: unlimited).
+    /// The whole session's upload limit, bytes/s (None: unlimited): every torrent together.
+    /// The same rate again changes nothing, as for [`Self::set_download_limit`].
     pub fn set_upload_limit(&self, bps: Option<u64>) {
-        self.session.ratelimits.set_upload_bps(rate(bps));
+        let want = rate(bps);
+        if self.session.ratelimits.get_config().upload_bps != want {
+            self.session.ratelimits.set_upload_bps(want);
+        }
+    }
+
+    /// The whole session's upload limit now, bytes/s (None: unlimited).
+    pub fn upload_limit(&self) -> Option<u64> {
+        let c = self.session.ratelimits.get_config();
+        c.upload_bps.map(|b| u64::from(b.get()))
     }
 
     /// One torrent's own limits, bytes/s (None: unlimited), on top of the session's. They apply
@@ -680,10 +690,15 @@ impl Torrents {
         up: Option<u64>,
     ) -> Result<(), TorrentError> {
         let h = self.session.get(id(hash)?).ok_or(TorrentError::Unknown)?;
-        h.set_ratelimits(librqbit::limits::LimitsConfig {
+        let want = librqbit::limits::LimitsConfig {
             download_bps: rate(down),
             upload_bps: rate(up),
-        });
+        };
+        // The same limits again change nothing (a new limiter would start a new burst), so
+        // they may be set often.
+        if h.ratelimits() != want {
+            h.set_ratelimits(want);
+        }
         Ok(())
     }
 
@@ -1049,6 +1064,78 @@ mod tests {
         want.sort();
         assert_eq!(all, want);
         t.stop().await;
+    }
+
+    /// #39: what a seeder sends is held back by the session's upload limit, then by its
+    /// torrent's own one; the seeder counts what it sent.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn upload_limits_hold_the_seeder_back() {
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("up");
+        std::fs::create_dir_all(&src).unwrap();
+        let data: Vec<u8> = (0..1_048_576u32).map(|i| (i % 239) as u8).collect();
+        std::fs::write(src.join("data.bin"), &data).unwrap();
+        let torrent = make_torrent(&src).await;
+        let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+            .await
+            .unwrap();
+        let meta = seeder
+            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10))
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while seeder.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(std::time::Instant::now() < deadline, "seeder never checked");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        let addr = seeder.listen_addr().expect("seeder listens");
+
+        // 1 MiB at 256 KiB/s: about 3 s after the first second's burst; unlimited, well under 1.
+        for (n, by_torrent) in [(1, false), (2, true)] {
+            if by_torrent {
+                seeder.set_upload_limit(None);
+                seeder
+                    .set_torrent_limits(&hash, None, Some(256 * 1024))
+                    .unwrap();
+            } else {
+                seeder.set_upload_limit(Some(256 * 1024));
+                assert_eq!(seeder.upload_limit(), Some(256 * 1024));
+            }
+            let leecher = Torrents::start(offline(&tmp.path().join(format!("l{n}"))))
+                .await
+                .unwrap();
+            let out = meta.folder_in(&tmp.path().join(format!("got{n}")));
+            let t = std::time::Instant::now();
+            let h2 = leecher
+                .add(&torrent, &out, None, vec![addr], false)
+                .await
+                .unwrap();
+            let deadline = t + Duration::from_secs(40);
+            while leecher.stats(&h2).unwrap().phase != Phase::Finished {
+                assert!(std::time::Instant::now() < deadline, "no transfer ({n})");
+                tokio::time::sleep(Duration::from_millis(100)).await;
+            }
+            let secs = t.elapsed().as_secs_f64();
+            assert!(
+                secs >= 2.0,
+                "1 MiB under a 256 KiB/s upload limit ({}) took {secs:.2}s",
+                if by_torrent {
+                    "the torrent's"
+                } else {
+                    "the session's"
+                }
+            );
+            leecher.stop().await;
+        }
+        assert!(
+            seeder.stats(&hash).unwrap().uploaded >= 2 * data.len() as u64,
+            "the seeder counts what it sent"
+        );
+        seeder.stop().await;
     }
 
     /// #39: a torrent's own limit holds it back, the session's stays as it was, and the bytes

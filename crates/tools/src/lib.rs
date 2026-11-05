@@ -244,7 +244,10 @@ pub async fn install_latest(
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::YtDlp) {
         return Ok(mine);
     }
-    let client = reqwest::Client::builder().user_agent(USER_AGENT).build()?;
+    let client = reqwest::Client::builder()
+        .user_agent(USER_AGENT)
+        .dns_resolver(mdm_engine::dns::client_resolver(&net.dns))
+        .build()?;
     let body = client
         .get(RELEASES)
         .send()

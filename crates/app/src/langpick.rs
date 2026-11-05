@@ -209,11 +209,40 @@ impl Picker {
                     pos2(inner_right, list.bottom() - 1.0),
                 )));
                 let first = self.top.floor() as usize;
+                // The list as one node, its rows inside it (#102): a screen reader says "4 of
+                // 87", and UI Automation's Selection finds them under it. Hover only, so the rows
+                // keep their clicks.
+                let list_resp = ui.interact(
+                    shown_list,
+                    egui::Id::unique("language-list"),
+                    egui::Sense::hover(),
+                );
+                // Reachable by a screen reader's focus and click, as the shared lists are (the
+                // keys already act on the list wherever the focus is); it senses only hover, so
+                // neither takes the focus from the filter box.
+                ui.ctx().accesskit_node_builder(list_resp.id, |n| {
+                    n.add_action(egui::accesskit::Action::Focus);
+                    n.add_action(egui::accesskit::Action::Click);
+                });
+                // i18n: window title (the interface language)
+                winui::expose(
+                    &list_resp,
+                    egui::Role::ListBox,
+                    crate::i18n::t("Language"),
+                    true,
+                    None,
+                );
+                let count = rows.len();
+                let rows_ui = ui.new_child(
+                    egui::UiBuilder::new()
+                        .max_rect(shown_list)
+                        .accessibility_parent(list_resp.id),
+                );
                 for (k, entry) in rows.iter().enumerate().skip(first).take(page as usize + 1) {
                     let y = list.top() + 1.0 + (k - first) as f32 * ROW;
                     let row =
                         Rect::from_min_max(pos2(list.left() + 1.0, y), pos2(inner_right, y + ROW));
-                    let resp = ui.interact(
+                    let resp = rows_ui.interact(
                         winui::rect(row),
                         egui::Id::unique(("language-row", k)),
                         winui::pointer_only(),
@@ -291,8 +320,11 @@ impl Picker {
                         format!("{name}, {english}")
                     };
                     winui::expose(&resp, egui::Role::ListBoxOption, &spoken, true, None);
-                    ui.ctx()
-                        .accesskit_node_builder(resp.id, |n| n.set_selected(on));
+                    rows_ui.ctx().accesskit_node_builder(resp.id, |n| {
+                        n.set_selected(on);
+                        n.set_position_in_set(k + 1);
+                        n.set_size_of_set(count);
+                    });
                     let shown = winui::ellipsize(&clip, &winui::tahoma(), &name, room);
                     winui::text(&clip, row.left() + 36.0, y + 17.0, &shown, fg);
                     if !english.is_empty() {

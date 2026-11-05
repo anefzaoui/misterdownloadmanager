@@ -762,6 +762,9 @@ pub struct TorrentSettings {
     port: String,
     /// Proxy / Socks has a SOCKS5 proxy torrents can use.
     socks: bool,
+    /// "Limit uploading to": on, and the KBytes/sec box's text.
+    upload_on: bool,
+    upload_kb: String,
 }
 
 /// Torrent settings → its network part: the settings' `torrent_*` fields.
@@ -803,11 +806,12 @@ impl Net {
     }
 }
 
-/// What OK gives: keep sharing, associations, the network.
+/// What OK gives: keep sharing, associations, the network, the upload limit (on, KBytes/sec).
 pub struct TorrentChoice {
     pub share: bool,
     pub assoc: bool,
     pub net: Net,
+    pub upload: (bool, u64),
 }
 
 impl TorrentSettings {
@@ -823,6 +827,8 @@ impl TorrentSettings {
             },
             net,
             socks: s.socks5_proxy().is_some(),
+            upload_on: s.torrent_upload_on,
+            upload_kb: s.torrent_upload_kb.max(1).to_string(),
         }
     }
 
@@ -831,7 +837,7 @@ impl TorrentSettings {
             ctx,
             "torrent-settings",
             "Torrent settings",
-            [470.0, 420.0],
+            [470.0, 444.0],
             false,
             winui::BG(),
             |ui, o| {
@@ -983,11 +989,42 @@ impl TorrentSettings {
                     "Stop the torrent engine when no torrent is running",
                     true,
                 );
+                winui::checkbox_until(
+                    ui,
+                    pos2(o.x + 14.0, o.y + 292.0),
+                    &mut self.upload_on,
+                    // i18n: Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
+                    "Limit uploading for all torrents to",
+                    true,
+                    Some(326.0),
+                );
+                winui::edit_right(
+                    ui,
+                    r(o, 330.0, 289.0, 60.0, 22.0),
+                    &mut self.upload_kb,
+                    self.upload_on,
+                );
+                self.upload_kb.retain(|c| c.is_ascii_digit());
+                self.upload_kb.truncate(7);
+                winui::fit(
+                    ui,
+                    &p,
+                    o.x + 396.0,
+                    o.y + 304.0,
+                    crate::i18n::t("KBytes/sec"),
+                    if self.upload_on {
+                        winui::TEXT()
+                    } else {
+                        winui::MUTED()
+                    },
+                    o.x + 462.0,
+                    ("torrent-settings", 7),
+                );
                 winui::fit(
                     ui,
                     &p,
                     o.x + 14.0,
-                    o.y + 306.0,
+                    o.y + 330.0,
                     // i18n: Torrent settings: the address of an IP blocklist (empty: none)
                     crate::i18n::t("Block the addresses in this list (P2P or eMule format):"),
                     winui::TEXT(),
@@ -996,7 +1033,7 @@ impl TorrentSettings {
                 );
                 winui::edit(
                     ui,
-                    r(o, 14.0, 312.0, 442.0, 22.0),
+                    r(o, 14.0, 336.0, 442.0, 22.0),
                     &mut n.blocklist,
                     true,
                     false,
@@ -1005,7 +1042,7 @@ impl TorrentSettings {
                     ui,
                     &p,
                     o.x + 14.0,
-                    o.y + 352.0,
+                    o.y + 376.0,
                     // i18n: Torrent settings, at the bottom
                     crate::i18n::t(
                         "Fetched again every 7 days. Changes apply when no torrent is running.",
@@ -1016,7 +1053,7 @@ impl TorrentSettings {
                 );
                 let ok = winui::button(
                     ui,
-                    r(o, 298.0, 388.0, 77.0, 21.0),
+                    r(o, 298.0, 412.0, 77.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,
@@ -1025,7 +1062,7 @@ impl TorrentSettings {
                 .clicked();
                 let cancel = winui::button(
                     ui,
-                    r(o, 381.0, 388.0, 77.0, 21.0),
+                    r(o, 381.0, 412.0, 77.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
@@ -1041,6 +1078,7 @@ impl TorrentSettings {
                         share: self.share,
                         assoc: self.assoc,
                         net,
+                        upload: (self.upload_on, self.upload_kb.parse().unwrap_or(0).max(1)),
                     })
                 } else {
                     Outcome::Open

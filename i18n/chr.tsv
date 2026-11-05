@@ -16,7 +16,7 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	ᎠᎴᏅᏔᏅ {n} ᎢᏗᏢ ᏗᎪᏪᎵ {folder} ᎢᏗᏢ|ᎠᎴᏅᏔᏅ {n} ᎢᏗᏢ ᏗᎪᏪᎵ {folder} ᎢᏗᏢ
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	ᎠᏍᏚᎢᏍᏔᏅ {n} ᎢᏗᎦᎴᏴᏔᏅᎯ {folder} ᏗᏟᎶᏍᏔᏅᎯ|ᎠᏍᏚᎢᏍᏔᏅ {n} ᎢᏗᎦᎴᏴᏔᏅᎯ {folder} ᏗᏟᎶᏍᏔᏅᎯ
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -43,7 +43,7 @@
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ᎢᏗᏢ ᎤᎾᎴᏅᏛ ᎢᏴᏛ ᎢᎬᏁᎸᎩ (ᎤᎾᏚᏓᎸ, ᎠᎴ ᏚᎾᏙᎥ ᎾᏍᎩ ᎢᏴᏛ ᎢᎬᏁᏗ ᏂᎨᏒᎾ ᎨᏒᎢ)|{n} ᎢᏗᏢ ᎤᎾᎴᏅᏛ ᎢᏴᏛ ᎢᎬᏁᎸᎩ (ᎤᎾᏚᏓᎸ, ᎠᎴ ᏚᎾᏙᎥ ᎾᏍᎩ ᎢᏴᏛ ᎢᎬᏁᏗ ᏂᎨᏒᎾ ᎨᏒᎢ)
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ᏗᎪᏪᎶotha ᎤᏓᏑᏴᎢ (ᎤᎾᏚᏓᎸᎢ, ᎠᎴ ᏚᏙᎥ ᎦᏄᎪᎢᏍᏗ ᎦᏁᏍᏓᏅᎢ)|{n} ᏗᎪᏪᎶotha ᎤᏓᏑᏴᎢ (ᎤᎾᏚᏓᎸᎢ, ᎠᎴ ᏚᏙᎥ ᎦᏄᎪᎢᏍᏗ ᎦᏁᏍᏓᏅᎢ)
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -54,11 +54,15 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ᎢᏗᏢ ᏗᎪᏪᎵ ᏚᏙᎥ ᎾᏍᎩᏯ ᏗᎪᏪᎵ ᎾᎿ ᏚᏙᎥᎩ ᎠᎴ ᏚᎾᏎᏍᏔᏅᎩ|{n} ᎢᏗᏢ ᏗᎪᏪᎵ ᏚᏙᎥ ᎾᏍᎩᏯ ᏗᎪᏪᎵ ᎾᎿ ᏚᏙᎥᎩ ᎠᎴ ᏚᎾᏎᏍᏔᏅᎩ
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ᎢᏗᎦᎴᏴᏔᏅᎯ ᏚᏙᎥ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎾᎿ ᎠᎴ ᏚᎾᏎᏍᏔᏅᎢ|{n} ᎢᏗᎦᎴᏴᏔᏅᎯ ᏚᏙᎥ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎾᎿ ᎠᎴ ᏚᎾᏎᏍᏔᏅᎢ
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ᎠᏑᏰᏛ|{n} ᎠᏑᏰᏛ
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+#, machine
+	"{what}" isn't an IP address.	"{what}" ᎥᏝ IP address ᎢᎩ.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -101,6 +105,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+#, machine
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS configuration ID ᏑᏓᎵ ᏗᎦᎶᏍᏙᏗ ᎠᎴ ᎾᏍᎩ ᎨᏒ (0-9, a-f).
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -108,7 +116,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	ᎤᏟᏍᏓᏅᎯ ᎤᏓᎦᎴᏴᏛ ᎤᏲᎱᏒᎢ
+	a volume of it is missing	ᎤᏓᎦᎵᏍᏔᏅᎯ ᎤᏓᎷᎸᎢ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ
@@ -173,7 +181,8 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ {host}
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ:
 #. window title in the Options window
@@ -212,7 +221,7 @@
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
 #, machine
-	Already in the list	Ꭰಾಗಲೇ ᎠᏰᎵ ᎤᎾᏓᏎᎪᎬᎢ
+	Already in the list	ᎢᏳᏰᎸᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
@@ -234,7 +243,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Always into a folder named after it	ᏂᎪᎯᎸ ᏗᎪᏪᎵ ᏚᏙᎥ ᎾᏍᎩᏯ ᏗᎪᏪᎵ ᎢᏗᏢ
+	Always into a folder named after it	ᏂᎪᎯᎸᎢ ᎢᏗᎦᎴᏴᏔᏅᎯ ᏚᏙᎥ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	ᏂᎪᎯᎸ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ Mister Download Manager ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ
@@ -242,6 +251,15 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	AM
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Another DNS...	ᏅᏩᏓᎴ DNS...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+#, machine
+	Answered in {ms} ms: {ip}	{ms} ms ᎢᏯᏂᎢ ᎤᏁᏨ: {ip}
 #. text in the Scheduler window
 #, machine
 	April	ᎠᎾᏱᎵᏒ
@@ -249,12 +267,12 @@
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
 #, machine
-	Archive password	ᎠᎴᏅᏔᏅᎯ ᏗᎪᏪᎵ ᎤᏤᎵᎦ ᏗᎧᏃᎩᏍᏗ
+	Archive password	ᎠᏍᏚᎢᏍᏔᏅᎯ ᎤᎾᏕᎳᎰᏒ
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
 #, machine
-	Archives	ᎠᎴᏅᏔᏅᎯ ᏗᎪᏪᎵ
+	Archives	ᎠᏍᏚᎢᏍᏔᏅᎯ
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -262,9 +280,17 @@
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	ᎠᏰᎵ ᎤᏤᎵ ᎢᎬᏁᎸᎯ ᎾᏍᎩᏯᎢ
+#. text in the Options window
+#, machine
+	Ask it with:	ᎯᎠ ᎢᎬᏁᏗ ᎤᏛᏛᏅ:
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ. ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ ᏗᏟᎶᏍᏔᏅᎯ ᎦᎸᎠᏗ.
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking...	ᎠᏛᏛᎲᏍᎦ...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -306,13 +332,13 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
-	Busy, try later	ᎤᏂᎸᏉᏗ, ᎣᏂᏱ ᎢᏳᏩᎪᏗ ᏓᏓᎴᏂ
+	Busy, try later	ᎤᎾᏕᎳᎰᏒ, ᎣᏂᏱ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. message or event log entry in the main window
 #, machine
 	by batch download	ᎤᎾᏓᏟᏌᏃᏅᎯ ᏗᎦᏃᏍᏓᏅᎢ
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	Link grabber ᎤᏅᏔᏅᎯ
+	by Link grabber	ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
@@ -334,7 +360,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	ᎥᏝ ᏰᎵ ᏔᎵᏁ ᎢᎬᎾᏕᏏᏗ: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	ᏗᎦᏃᏍᏓᏅᎢ ᎯᎠ ᏗᏃᏔᏍᎩ ᏗᏓᏂᎸᎩ:
 #. text in extension.rs
@@ -359,13 +385,17 @@
 #, machine
 	Category properties	ᏗᏓᏟᏌᏅᎢ ᏧᏓᎴᏅᏛ
 #. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+#, machine
+	Certificate name:	Certificate ᏚᏙᎥ:
+#. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Change folder for "{category}" category on last selected	ᏓᏓᏁᏟᏴᏏ ᏗᏓᏍᏆᏂᎪᏗᏍᏗ "{category}" ᏗᏓᏟᏌᏅᎢ ᎤᎵᏍᏆᎸᏗ ᎢᏯᏓᏑᏰᏛ ᏂᎦᎵᏍᏔᏅᎢ
 #. button in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
-	Check all	ᏂᎦᏗᏳ ᏚᏙᎥᎢ
+	Check all	ᏂᎦᏛ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	ᏗᎦᏃᏍᏓᏅᎢ ᏚᎾᏓᏁᏟᏴᏒᎢ
@@ -421,11 +451,12 @@
 #. text in the Options window
 #, machine
 	Clock:	ᎢᏳᏟᎶᏛ:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 #, machine
 	Close	ᎠᏍᏚᎢᏍᏗ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -440,6 +471,10 @@
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
 	Compressed	ᎤᎾᏓᏟᏌᏃᏅᎯ
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+#, machine
+	Configuration ID:	ᎤᏓᏅᏖᏗ ᎢᏗᏢᏅᏙᏗ:
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	ᎣᏏᏳᏍᏗᎭ ᎾᏍᎩᏯ ᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᏟᎶᏍᏗ ᎢᎬᏱ ᏂᎪᎯᎸ
@@ -481,7 +516,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	ᎠᎴᏅᏔᏅᎯ ᏂᎨᏒᎾ {name}: {why}
+	Couldn't extract {name}: {why}	ᎥᏝ ᎢᏗᎦᎴᏴᏔᏅᎯ {name}: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	ᏗᏓᏍᏆᏂᎪᏗᏍᏗ ᏗᎪᏢᏍᏗ
@@ -539,7 +574,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	ᎠᎴᏅᏔᏅᎯ ᏗᎪᏪᎵ ᎤᎵᏍᏆᏛᎯ ᎨᏒᎢ
+	Delete archives after extracting	ᎠᏍᏚᎢᏍᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎣᏂᏱ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. message or event log entry in the main window
 #, machine
 	Delete category	ᏗᏓᏟᎶᏍᏗ ᏓᏍᏓᏴᏓ
@@ -577,6 +612,21 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	ᏗᏓᏟᎶᏍᏔᏅᎢ ᏗᏓᏟᎶᏍᏔᏅᎢ ᏗᏓᏟᎶᏍᏔᏅᎢ
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+#, machine
+	DNS over HTTPS	DNS ᎾᎿ HTTPS
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+#, machine
+	DNS over TLS	DNS ᎾᎿ TLS
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+#, machine
+	DNS settings	DNS ᎢᏗᏢᏅᏙᏗ
+#. text in the Options window
+#, machine
+	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
 	Do not start downloading, only add files to the queue	ᎠᏗᏍᎪᏗᏱ ᏂᏓᎴᏅᎲᎾ, ᏗᏓᏟᎶᏍᏗ ᏗᏓᏟᎶᏍᏔᏅᎢ ᎤᏅᏒ ᏗᏓᏟᎶᏍᏔᏅᎢ
@@ -699,6 +749,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	ᎠᎾᏛᏗ
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#, machine
+	Downloads in progress	ᏂᎦᏛ downloads Ꭲ presently
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -724,7 +778,7 @@
 #. text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
-	Each file's category folder	ᏂᎦᏗᏳ ᏗᎪᏪᎵ ᎤᏤᎵᎦ ᏗᎪᏪᎵ ᎢᏗᏢ
+	Each file's category folder	ᏂᎦᏛ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎤᎾᏕᎳᎰᏒ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -811,19 +865,19 @@
 #. button in extracting archives (a download's log, the Archive password window)
 #. button: extract the archive with the password typed
 #, machine
-	Extract	ᎠᎴᏅᏔᏅᎯ
+	Extract	ᎠᏍᏚᎢᏍᏔᏅᎯ
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
-	Extract archives when their download completes	ᎠᎴᏅᏔᏅᎯ ᏗᎪᏪᎵ ᎤᎵᏍᏆᏛᎯ ᎨᏒᎢ
+	Extract archives when their download completes	ᎠᏍᏚᎢᏍᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎣᏂᏱ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. checkbox in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
-	Extract when done	ᎠᎴᏅᏔᏅᎯ ᎤᎵᏍᏆᏛᎯ ᎨᏒᎢ
+	Extract when done	ᎠᏍᏚᎢᏍᏔᏅᎯ ᎣᏂᏱ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in extracting archives (a download's log, the Archive password window)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Extracting the archive...	ᎠᎴᏅᏔᏅᎯ ᏗᎪᏪᎵ...
+	Extracting the archive...	ᎠᏍᏚᎢᏍᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ...
 #. text in the Scheduler window
 #, machine
 	February	ᎧᎦᎵ
@@ -872,7 +926,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	ᏗᎪᏪᎵ ᎯᎠ ᏗᎪᏪᎵ ᏗᏟᏍᏔᏅᎢ: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	ᏗᎪᏪᎵ ᎤᎾᏓᏟᏌᏅᎢ
 #. button in the Find window
@@ -1015,10 +1069,14 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+#, machine
+	Hide to the notification area	ᎭᏫᎾᏗᏢ ᏫᎦᏅᏁᎸ notification area
 #. checkbox in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
-	Hide web pages	ᎤᏕᎵᏛ ᏗᎦᏃᏣᎵ ᏗᎪᏪᎵ
+	Hide web pages	ᎠᏍᏚᎢᏍᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Alt ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ ᏗᏓᏂᏴᏗ ᏗᏕᎬᏔᏅᎢ Mister Download Manager.
@@ -1044,6 +1102,10 @@
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ.
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+#, machine
+	If it can't be reached, use the system's DNS	ᎢᏳᏃ ᎾᏍᎩ ᏂᎨᏒᎾ ᎨᏒ, system ᎤᏤᎵ DNS ᎯᏴᏓ.
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ ᏗᏓᎴᏂᏍᏗ
@@ -1076,26 +1138,30 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	ᏗᎪᏪᎵ ᏚᏙᎥ ᎾᏍᎩᏯ ᏗᎪᏪᎵ ᎢᏗᏢ, ᎢᏳᏃ ᎤᏟᏍᏓᏅᎯ ᎨᏒᎢ
+	Into a folder named after it, when it holds several things	ᎢᏗᎦᎴᏴᏔᏅᎯ ᏚᏙᎥ ᎢᏗᎦᎴᏴᏔᏅᎯ, ᎢᏳᏃ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in a dialog box
 #, machine
 	Invalid address	ᎤᏍᎦᏅᏨ ᏗᎦᏟᎶᏍᏗ
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+#, machine
+	IP addresses (optional):	IP ᏗᎦᏟᎶᏍᏗ (ᎤᏚᎸᏗ):
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it holds too many files or folders	ᎤᏟᏍᏓᏅᎯ ᏗᎪᏪᎵ ᎠᎴ ᏗᎪᏪᎵ ᎢᏗᏢ
+	it holds too many files or folders	ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎠᎴ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is damaged, or not the archive its name says	ᎤᏲᏨᎯ ᎨᏒᎢ, ᎠᎴ ᎾᏍᎩ ᏗᎪᏪᎵ ᏚᏙᎥ ᏂᎨᏒᎾ ᎨᏒᎢ
+	it is damaged, or not the archive its name says	ᎢᏗᎦᎴᏴᏔᏅᎯ, ᎠᎴ ᎥᏝ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	ᎾᏍᎩ ᏗᎪᏪᎵ MDM ᎤᏤᎵᎦ ᏂᎨᏒᎾ ᎨᏒᎢ
+	it is not an archive MDM extracts	ᎥᏝ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ MDM ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it needs a password	ᏗᎧᏃᎩᏍᏗ ᎤᏚᎵᎭ
+	it needs a password	ᎢᏗᎦᎴᏴᏔᏅᎯ ᎤᎾᏕᎳᎰᏒ
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
@@ -1103,12 +1169,12 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it was stopped	ᎤᎵᏍᏆᏛᎯ ᎨᏒᎢ
+	it was stopped	ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	ᎤᏟᏍᏓᏅᎯ {size}, ᎤᏟᏍᏓᏅᎯ {limit} ᎤᏟᏍᏓᏅᎯ ᎨᏒᎢ
+	it would write {size}, more than the {limit} there is room or reason for	ᎢᏗᎦᎴᏴᏔᏅᎯ {size}, ᎢᏗᎦᎴᏴᏔᏅᎯ {limit} ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1132,7 +1198,7 @@
 #. text in the Scheduler window
 #, machine
 	June	ᏕᎭᎷᏱ
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/ᎠᏏᎬᏅ
 #. checkbox in the Add torrent window
@@ -1178,14 +1244,22 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	ᎦᏴᏍᏗ ᏂᎦᏛ ᎢᏗᏴᏍᏗ
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
+#, machine
+	Limit uploading	ᎦᎸᎳᏗᏗᏢ ᎦᏁᏟᏴᏍᏗ
+#. text in the Add torrent window
+#. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
+#, machine
+	Limit uploading for all torrents to	ᎦᎸᎳᏗᏗᏢ ᎦᏁᏟᏴᏍᏗ ᏂᎦᏛ ᎤᏃᎴᎢ ᎯᎠ
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
-	Link grabber	ᏗᏕᏛᏗ
+	Link grabber	ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Link grabber window
 #. what a screen reader calls Link grabber's list
 #, machine
-	Links	ᏗᎦᏃᏣᎵ
+	Links	ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. message or event log entry in the main window; text in the Link grabber window
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
@@ -1203,7 +1277,7 @@
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
-	Look links up when they arrive (name, size, online)	ᏗᎦᏃᏣᎵ ᎤᎾᎴᏅᏛ ᎨᏒᎢ (ᏚᏙᎥ, ᎤᏟᏍᏓᏅᎯ, ᎾᎿ ᎨᏒᎢ)
+	Look links up when they arrive (name, size, online)	ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏳᏃ ᎢᏗᎦᎴᏴᏔᏅᎯ (ᏚᏙᎥ, ᎢᏗᎦᎴᏴᏔᏅᎯ, ᎢᏗᎦᎴᏴᏔᏅᎯ)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	ᎢᏗᏴᏍᏗ
@@ -1248,6 +1322,10 @@
 #. group box title in the Options window
 #, machine
 	Max. connections number	ᎦᏴᏍᏗ ᏗᏓᏟᎶᏍᏗ
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+#, machine
+	Maximize	ᎤᏟ ᎢᏴᏓ
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 #, machine
@@ -1255,10 +1333,22 @@
 #. text in a download's progress window
 #, machine
 	Maximum download speed:	ᎦᏴᏍᏗ ᏗᏓᏟᎶᏍᏗ:
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: label above the upload speed box
+#, machine
+	Maximum upload speed:	ᎤᏟᏊ ᎢᎦᎢ ᎦᎸᎳᏗᏗᏢ ᎦᏁᏟᏴᏍᏗ ᏄᎵᏍᏔᏅᎢ:
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
 	May	ᎠᏂᏍᎬᏘ
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+#, machine
+	Minimize	ᎤᏍᏗ
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+#, machine
+	Minimize to the notification area	Minimize ᏫᎦᏅᏁᎸ notification area
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1365,10 +1455,14 @@
 #. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	ᎠᏓᏁᎢᏍᏗ:
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+#, machine
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Hosts file ᏗᎦᏙᎥ ᎠᎴ ᏗᎦᏙᎥ ᏗᎦᏙᎥ (ᎤᏩᏒ ᎧᏁᏨ, .local, .lan) system ᎤᏤᎵ DNS ᏕᎨᎭ. Video pages ᎠᎴ torrent trackers system ᎤᏤᎵ DNS ᏕᎨᎭ ᎪᎯ ᎨᏒᎢ.
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
-	Needs a login	ᏗᎧᏃᎩᏍᏗ ᎤᏚᎵᎭ
+	Needs a login	ᎤᎾᏕᎳᎰᏒ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in errors.rs
 #, machine
 	network error	ᎢᎬᎾᏕᏏᏗ ᎤᎵᏓᏍᏔᏅ
@@ -1523,7 +1617,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
 #, machine
-	Offline ({status})	ᎾᎿ ᏂᎨᏒᎾ ({status})
+	Offline ({status})	ᎥᏝ ᎢᏗᎦᎴᏴᏔᏅᎯ ({status})
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ᎣᏏᏃ
@@ -1545,7 +1639,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 #, machine
-	Online	ᎾᎿ ᎨᏒᎢ
+	Online	ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -1610,7 +1704,7 @@
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
-	Package	ᎤᏟᏍᏓᏅᎯ
+	Package	ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Download video window
 #, machine
 	Page address	ᎦᏃᎴᏍᏗ ᎤᏤᎵᎦ ᏗᎦᏛᏗ
@@ -1626,7 +1720,7 @@
 #. text in the Link grabber window
 #. Link grabber, while it is empty
 #, machine
-	Paste links here (Ctrl+V), or send a page's links from the browser.	ᏗᎦᏃᏣᎵ ᎾᎿ ᏕᎦᏃᏣᎵ (Ctrl+V), ᎠᎴ ᏗᎦᏃᏣᎵ ᏗᎦᏃᏣᎵ ᎢᏗᏢ ᏗᎦᏃᏣᎵ.
+	Paste links here (Ctrl+V), or send a page's links from the browser.	ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ (Ctrl+V), ᎠᎴ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
@@ -1634,7 +1728,7 @@
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
-	Pasted	ᏗᎦᏃᏣᎵ
+	Pasted	ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
@@ -1658,6 +1752,10 @@
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	ᎾᎾᏓᏍᏓᏩᏗᏙᎯ
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+#, machine
+	plain DNS	ᎤᏁᎳᎩ DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -1731,14 +1829,14 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
-	RAR archives are extracted by 7-Zip ({path}).	RAR ᏗᎪᏪᎵ 7-Zip ({path}) ᎤᏅᏔᏅᎯ ᎨᏒᎢ.
+	RAR archives are extracted by 7-Zip ({path}).	RAR ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ 7-Zip ({path}).
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR ᏗᎪᏪᎵ 7-Zip (7-zip.org) ᎤᏚᎵᎭ, ᎾᏍᎩ ᏂᎨᏒᎾ ᎨᏒᎢ.
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR ᎢᏗᎦᎴᏴᏔᏅᎯ ᎤᎾᏕᎳᎰᏒ 7-Zip (7-zip.org), ᎾᏍᎩ ᎥᏝ ᎢᏗᎦᎴᏴᏔᏅᎯ.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	RAR archives need 7-Zip, which isn't installed	RAR ᏗᎪᏪᎵ 7-Zip ᎤᏚᎵᎭ, ᎾᏍᎩ ᏂᎨᏒᎾ ᎨᏒᎢ
+	RAR archives need 7-Zip, which isn't installed	RAR ᎢᏗᎦᎴᏴᏔᏅᎯ ᎤᎾᏕᎳᎰᏒ 7-Zip, ᎾᏍᎩ ᎥᏝ ᎢᏗᎦᎴᏴᏔᏅᎯ
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1852,7 +1950,7 @@
 	Save To:	ᏕᏣᏍᏆᏂᎪᏙᏗ:
 #. text in the Link grabber window
 #, machine
-	Save to:	ᏗᏍᏆᏂᎪᏙᏗ:
+	Save to:	ᎢᏗᎦᎴᏴᏔᏅᎯ:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1932,6 +2030,10 @@
 #. text in the Options window
 #, machine
 	Server:	ᏗᎦᏃᏍᏓᏁᎯ:
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+#, machine
+	Servers:	ᏗᎾᏕᎶᏆᏍᏗ:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1944,10 +2046,19 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	ᏚᎾᏙᏢᏒᎢ
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Settings...	ᎢᏗᏢᏅᏙᏗ...
 #. text in a download's progress window
 #. sent divided by received
 #, machine
 	Share ratio	ᎦᏃᏍᏓᏁᎸᎯ ᎢᎦᎢ
+#. text in a download's progress window
+#. a torrent's General tab: how long it has been shared once finished, in all
+#, machine
+	Shared for	ᎤᎾᏙᏢᏒᎢ
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -2065,7 +2176,7 @@
 #. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
-	Source: {source}	ᎤᎾᎴᏅᏛ: {source}
+	Source: {source}	ᎢᏗᎦᎴᏴᏔᏅᎯ: {source}
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2073,6 +2184,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	ᎠᎵᏍᎪᏗ ᎦᏟᏗ ᏗᏙᎳᏅᏍᎩ
+#. button in the Link grabber window
+#. Link grabber button: download the ticked links now
+#, machine
+	Start	ᎤᎴᏅᏗ
 #. button in a dialog box
 #, machine
 	Start Download	ᏗᏗᏍᎪᏗ ᎤᎾᎴᏅᏗ
@@ -2144,6 +2259,10 @@
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ᎤᎾᎴᏅᏗ ᎢᏳᏃ ᏗᏗᏍᎪᏗ ᏱᏚᎵᏍᏔᏁᎢ
+#. text in the Options window
+#. Options → Archives: where extracted files go
+#, machine
+	Straight into the archive's folder	ᎤᏓᎨᏛ ᏗᎪᏢᏒᎢ ᎤᏤᎵᎦ ᏗᏟᎶᏍᏔᏅᎢ
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2171,12 +2290,20 @@
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	ᏗᎦᏁᏟᏴᏍᏗ ᏓᎪᏔᏅᎢ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	ᏗᎦᎸᏫᏍᏓᏁᏗ → ᏗᏕᎬᏔᏅᎯ, ᎠᎴ ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᏕᎬᏔᏅᎯ "ᏂᎦᏗᏳ ᏗᏕᎬᏔᏅᎯ ᏗᎦᎸᏫᏍᏓᏁᏗ": ᎢᎸᏍᎩ ᎢᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ ᏌᏉ ᏗᎦᎴᏴᏔᏅᎯ, ᎠᎴ ᏅᏩᏓᎴ ᏗᏕᎬᏔᏅᎯ ᏌᏉ ᎤᎾᏕᎳᎰᎯᏍᏗ ᏗᎦᎴᏴᏔᏅᎯ.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	ᎠᎵᎢ ᎯᏃᎲᏏ
 #. group box title in the Options window
 #, machine
 	Temporary directory	ᎠᎪᏗᏱ ᏗᏟᎶᏍᏔᏅᎯ
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+#, machine
+	Test	ᎠᎪᎵᏰᏗ
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -2200,6 +2327,20 @@
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	ᎤᎾᏙᏢᏒ ᎢᏳᎵᏍᏙᏗᏱ http(s) ᎠᎴ ftp(s) ᎤᎾᏙᏢᏒ
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Recycle Bin: it was kept	ᎤᏓᎨᏛ ᏗᎪᏢᏒᎢ ᎥᏝ ᏰᎵ ᎤᎾᏗᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎪᏢᏒᎢ ᏗᎦᎶᏗᏱ: ᎤᏕᎳᎰᏒᎢ
+#. text in extracting archives (a download's log, the Archive password window)
+#, machine
+	The archive could not be moved to the Trash: it was kept	ᎤᏓᎨᏛ ᏗᎪᏢᏒᎢ ᎥᏝ ᏰᎵ ᎤᎾᏗᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎦᎶᏗᏱ: ᎤᏕᎳᎰᏒᎢ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log: the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Recycle Bin	ᎤᏓᎨᏛ ᏗᎪᏢᏒᎢ ᎤᎾᏗᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎪᏢᏒᎢ ᏗᎦᎶᏗᏱ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
+#, machine
+	The archive was moved to the Trash	ᎤᏓᎨᏛ ᏗᎪᏢᏒᎢ ᎤᎾᏗᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎦᎶᏗᏱ
 #. text in the Download video window
 #, machine
 	The best qualities and MP3 need ffmpeg (about 80 MB).	ᎣᏍᏓ ᎢᏳᏍᏗ quality-ᎢᏳᏍᏗ ᎠᎴ MP3 ᎤᏚᎵᎭ ffmpeg (80 MB ᎢᏴ).
@@ -2330,6 +2471,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ᎾᏍᎩ ᏗᎦᏁᏟᏴᏍᏗ ᎥᏝ ᏰᎵ ᏱᎦᎴᏅᏍᎦ: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: ")
+#, machine
+	the password is wrong	ᎤᎾᏙᏢᏒᎢ ᎤᎵᎪᏒᎢ
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	ᏅᏃ ᎤᏟ ᎦᏅᎯᏓ Windows ᎤᏍᏆᎸᎡ: {path}
@@ -2388,6 +2533,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	ᎾᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᎥᏝ ᏱᏗᎦᎴᏴᏍᏗ: ᎾᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᎾᎿᎢ ᏗᎦᎴᏴᏍᏗ ᎾᏍᎩ ᎤᎾᏕᏯᏔᏛᎢ (ᎾᏍᎩ ᏗᏂᏟᏍᏔᏅᎯ ᎾᏍᎩ ᏗᎦᎴᏴᏍᏗ).
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+#, machine
+	The system's DNS	System ᎤᏤᎵ DNS
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2406,6 +2555,14 @@
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ᎾᏍᎩ ᎤᎾᏙᏢᏒ ᏗᏟᎶᏍᏔᏅᎯ ᎾᏍᎩ ᎯᎠ ᏗᏟᎶᏍᏔᏅᎯ ᎤᎾᏕᎶᎥᏍᏗ:
+#. text in the Options window
+#. Options → Archives check box
+#, machine
+	Then move the archives to the Recycle Bin	ᎿᏉᏃ ᏗᎪᏢᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎪᏢᏒᎢ ᏗᎦᎶᏗᏱ
+#. text in the Options window
+#. Options → Archives check box (Linux and macOS)
+#, machine
+	Then move the archives to the Trash	ᎿᏉᏃ ᏗᎪᏢᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ ᏗᎦᎶᏗᏱ
 #. text in categories.rs
 #, machine
 	There is already a category with this name	ᎿᏉ ᏚᎾᏙᏢᏒ ᎤᎾᏙᏢᏒ ᎯᎠ ᏚᎾᏙᏢᏒ ᎢᏯᏓᏛᏁᏗ
@@ -2571,6 +2728,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	ᎠᎦᏎᏍᏗ ᎨᏒᎢ ᎢᎬᏱᏱ ᎠᎴ ᎣᏂᏱ
+#. text in the settings
+#. Options → DNS: no server address was typed
+#, machine
+	Type at least one server address.	ᎢᎸᎯᏢ ᎢᎬᏱᏱ server address ᎯᎪᏪᎸ.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -2579,6 +2740,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	ᎪᏪᎵ ᏚᏙᎥ ᎪᏪᎶᏗ ᎭᏓᏍᏆᏂᎪᏙᏗ ᎨᏒᎢ
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+#, machine
+	Type the name the server's certificate shows.	Server ᎤᏤᎵ certificate ᏚᏙᎥ ᎯᎪᏪᎸ.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -2590,6 +2755,10 @@
 #. text in a download's Properties window
 #, machine
 	Type:	ᎢᏯᏓᏛᏁᏗ:
+#. button in the Link grabber window
+#. Link grabber button (IDM's): untick every link
+#, machine
+	Uncheck all	ᏂᎦᏗᏳ ᏕᎭᎴᎯ
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2679,6 +2848,10 @@
 #. text in a download's progress window
 #, machine
 	Value	ᎢᎬᎾᎵᏍᏗ
+#. text in the Link grabber window
+#. Link grabber: the package of links that belong to no other
+#, machine
+	Various files	ᏧᏓᎴᏅᏛ ᏗᎦᎴᏴᏔᏅᎯ
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -2708,6 +2881,11 @@
 #. text in the Options window
 #, machine
 	Virus checking settings	ᎤᏕᏯᏙᏗ ᏗᎦᏁᎶᏗ ᏗᏙᎳᏤᏗ
+#. text in extracting archives (a download's log, the Archive password window)
+#. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
+#. {n} = a number (keep the braces as they are)
+#, machine
+	volume {n} of it is missing	ᎤᎾᏗᏒᎢ {n} ᎤᎵᎪᏒᎢ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2728,6 +2906,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	ᏦᎢᏁᎢᎦ
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	ᎤᏓᎨᏛ ᏗᎪᏢᏒᎢ ᎤᎾᏗᏒᎢ ᏗᎦᎴᏴᏔᏅᎢ:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2758,6 +2940,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	ᎢᎦ ᎠᎴ ᎢᏳᏟᎶᏛ ᏗᎪᏪᎶᏗ
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	ᎤᎾᏙᏢᏒᎢ ᎤᎵᎪᏒᎢ {name} ᎢᏳᏍᏗ. ᏔᎵᏁ ᎪᏪᎸᎢ:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2784,6 +2971,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	ᎢᏣᎳᎩᏍᎩ ᏗᏟᎶᏍᏔᏅᎯ ᏗᎪᏪᎵ
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+#, machine
+	your DNS ({how})	ᏣᏤᎵ DNS ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -2804,6 +2995,10 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ᏓᏓᏁᏟᏴᏍᎪᎢ ᏗᏟᎶᏍᏔᏅᎯ
+#. text in the Options window
+#. \\n starts a new line: break lines where they fit the translation
+#, machine
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ, XZ; ᎢᎸᏍᎩ ᎢᏗᎦᎴᏴᏔᏅᎯ ᏗᎦᎴᏴᏔᏅᎯ (.part1.rar, .7z.001) ᎢᎸᏍᎩ ᎢᏗᎦᎴᏴᏔᏅᎯ ᏂᎦᏗᏳ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ. ᏗᎦᎴᏴᏔᏅᎯ ᎾᎿᏂ ᎢᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ: ᎢᏤ ᏗᎦᎴᏴᏔᏅᎯ ᎢᏗᎦᎴᏴᏔᏅᎯ.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2896,6 +3091,16 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name} ᎥᏝ ᏰᎵ ᏯᏕᎳᎰᏍᏗ: {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name} ᎤᎾᏙᏢᏒᎢ ᎤᎵᎪᏒᎢ ᎤᏕᎳᎰᏒᎢ:
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} isn't offered as {how}.	{name} ᎥᏝ {how} ᎢᎬᏁᏗ ᎨᏒ.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -3231,6 +3436,12 @@ menu	&Keyboard shortcuts	&ᏗᎪᏪᎶᏗ ᏗᏟᎶᏍᏔᏅ
 #, machine
 menu	&Language...	&ᎦᏬᏂᎯᏍᏗ...
 #. menu command in the main window
+#. Tasks menu: open Link grabber (links in packages, to tick before adding)
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#. the trailing ... means it opens a window: keep it
+#, machine
+menu	&Link grabber...	ᏗᏕ&ᏛᏗ ᏗᎦᏁᏍᏓᏅᎢ...
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 menu	&Options	&ᎢᏯᏛᏁᏗ
@@ -3400,6 +3611,10 @@ menu	E&xport	Ꮧ&ᏓᏟᏍᏔᏅᎯ ᎢᏗᏁᏟᏴᏍᏗ
 #. menu command in the main window
 #, machine
 menu	Edit queue	ᏗᏓᏟᏍᏔᏅᎯ ᎢᏗᏁᏟᏴᏍᏗ
+#. menu command in the main window
+#. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
+#, machine
+menu	Extract	ᏗᎦᎴᏴᏔᏅᎯ
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	ᏗᏓᏟᏍᏔᏅᎯ ᎢᏗᏁᏟᏴᏍᏗ (Ctrl-F)

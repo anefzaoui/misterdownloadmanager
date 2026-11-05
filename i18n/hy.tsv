@@ -16,7 +16,7 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Արխիվից հանվել է {n} ֆայլ՝ {folder}|Արխիվից հանվել են {n} ֆայլեր՝ {folder}
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Արխիվից հանվել է {n} ֆայլ՝ {folder} թղթապանակում|Արխիվից հանվել է {n} ֆայլ՝ {folder} թղթապանակում
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -43,7 +43,7 @@
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} գրառում բաց է թողնվել (հղում կամ անուն, որը տանում է պանակից դուրս)|{n} գրառումներ բաց են թողնվել (հղումներ կամ անուններ, որոնք տանում են պանակից դուրս)
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	Բաց է թողնվել {n} տարր (հղում կամ թղթապանակից դուրս տանող անուն)|Բաց է թողնվել {n} տարր (հղումներ կամ թղթապանակից դուրս տանող անուններ)
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -54,11 +54,15 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ֆայլ արդեն գոյություն ուներ այդ անունով և համարակալվել է|{n} ֆայլեր արդեն գոյություն ունեին այդ անունով և համարակալվել են
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ֆայլ արդեն գոյություն ուներ այդ անունով և համարակալվել է|{n} ֆայլ արդեն գոյություն ուներ այդ անունով և համարակալվել է
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} ընտրված|{n} ընտրված
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+#, machine
+	"{what}" isn't an IP address.	"{what}"-ը IP հասցե չէ։
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -101,6 +105,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Թաքցնել մանրամասները
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+#, machine
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS-ի կոնֆիգուրացիայի ID-ն վեց տառ և թիվ է (0-9, a-f):
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -173,7 +181,8 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Հասցեն փոխվել է {host}
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Հասցե:
 #. window title in the Options window
@@ -234,7 +243,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Always into a folder named after it	Միշտ դրա անունով պանակում
+	Always into a folder named after it	Միշտ դրա անունով թղթապանակում
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Միշտ միացնել արագության սահմանափակիչը Mister Download Manager-ի գործարկման ժամանակ
@@ -242,6 +251,15 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	AM
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Another DNS...	Այլ DNS...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+#, machine
+	Answered in {ms} ms: {ip}	Պատասխանել է {ms} մվ-ում՝ {ip}
 #. text in the Scheduler window
 #, machine
 	April	Ապրիլ
@@ -262,9 +280,17 @@
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Ինչպես գրված է համակարգի տարածաշրջանում
+#. text in the Options window
+#, machine
+	Ask it with:	Հարցնել հետևյալով:
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Հարցում է ուղարկվում փիրերին՝ ֆայլերի ցանկի համար։ Մագնիսական հղումները կարող են տևել մեկ կամ երկու րոպե։
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking...	Հարցում է կատարվում...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -312,7 +338,7 @@
 	by batch download	ըստ խմբաքանակային ներբեռնման
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	Հղումների որսիչի միջոցով
+	by Link grabber	Link grabber-ի միջոցով
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
@@ -334,7 +360,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	չի հաջողվում վերսկսել՝ {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Ներբեռնումներ կատարել հետևյալ բրաուզերներից:
 #. text in extension.rs
@@ -358,6 +384,10 @@
 #. text in categories.rs
 #, machine
 	Category properties	Կատեգորիայի հատկություններ
+#. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+#, machine
+	Certificate name:	Վկայագրի անունը:
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -421,11 +451,12 @@
 #. text in the Options window
 #, machine
 	Clock:	Ժամացույց:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 #, machine
 	Close	Փակել
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -440,6 +471,10 @@
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
 	Compressed	Սեղմված
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+#, machine
+	Configuration ID:	Կազմաձևման ID:
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	Հաստատել ներբեռնումները ջնջելուց առաջ
@@ -481,7 +516,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	Չհաջողվեց արխիվից հանել {name}՝ {why}
+	Couldn't extract {name}: {why}	Հնարավոր չէր հանել {name} արխիվը. {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Ստեղծել թղթապանակ
@@ -539,7 +574,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Ջնջել արխիվները արխիվից հանելուց հետո
+	Delete archives after extracting	Ջնջել արխիվները հանելուց հետո
 #. message or event log entry in the main window
 #, machine
 	Delete category	Ջնջել կատեգորիան
@@ -577,6 +612,21 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	ցուցադրվում է հերթերի ցուցակում
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+#, machine
+	DNS over HTTPS	DNS HTTPS-ի միջոցով
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+#, machine
+	DNS over TLS	DNS TLS-ի միջոցով
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+#, machine
+	DNS settings	DNS-ի կարգավորումներ
+#. text in the Options window
+#, machine
+	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
 	Do not start downloading, only add files to the queue	Մի սկսել ներբեռնումը, միայն ֆայլեր ավելացնել հերթին
@@ -699,6 +749,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	Ներբեռնումներ
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#, machine
+	Downloads in progress	Ընթացքի մեջ գտնվող ներբեռնումներ
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -724,7 +778,7 @@
 #. text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
-	Each file's category folder	Յուրաքանչյուր ֆայլի կատեգորիայի պանակ
+	Each file's category folder	Յուրաքանչյուր ֆայլի կատեգորիայի թղթապանակ
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -811,19 +865,19 @@
 #. button in extracting archives (a download's log, the Archive password window)
 #. button: extract the archive with the password typed
 #, machine
-	Extract	Արխիվից հանել
+	Extract	Հանել
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
-	Extract archives when their download completes	Արխիվները արխիվից հանել դրանց ներբեռնումն ավարտելիս
+	Extract archives when their download completes	Հանել արխիվները, երբ դրանց ներբեռնումն ավարտվի
 #. checkbox in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
-	Extract when done	Արխիվից հանել ավարտելիս
+	Extract when done	Հանել ավարտելուց հետո
 #. text in extracting archives (a download's log, the Archive password window)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Extracting the archive...	Արխիվի արխիվից հանում...
+	Extracting the archive...	Արխիվը հանվում է...
 #. text in the Scheduler window
 #, machine
 	February	Փետրվար
@@ -872,7 +926,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Ֆայլերը գնում են՝ {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Ֆայլերը հերթում
 #. button in the Find window
@@ -1015,6 +1069,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Թաքցնել ներդիրը
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+#, machine
+	Hide to the notification area	Թաքցնել ծանուցումների վահանակում
 #. checkbox in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
@@ -1044,6 +1102,10 @@
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	Եթե առկա ֆայլը ամբողջական է, ցուցադրել ներբեռնումն ավարտված երկխոսության պատուհանը. հակառակ դեպքում՝ վերսկսել այն։
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+#, machine
+	If it can't be reached, use the system's DNS	Եթե այն անհասանելի է, օգտագործել համակարգի DNS-ը
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Անտեսել ֆայլի փոփոխման ժամանակի փոփոխությունները ներբեռնումը վերսկսելիս
@@ -1076,14 +1138,18 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	Դրա անունով պանակում, երբ այն պարունակում է մի քանի բան
+	Into a folder named after it, when it holds several things	Դրա անունով թղթապանակում, երբ այն պարունակում է մի քանի բան
 #. text in a dialog box
 #, machine
 	Invalid address	Անվավեր հասցե
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+#, machine
+	IP addresses (optional):	IP հասցեներ (ըստ ցանկության):
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it holds too many files or folders	այն պարունակում է չափազանց շատ ֆայլեր կամ պանակներ
+	it holds too many files or folders	այն պարունակում է չափազանց շատ ֆայլեր կամ թղթապանակներ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1091,7 +1157,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	այն MDM-ի կողմից չարխիվացվող արխիվ է
+	it is not an archive MDM extracts	այն արխիվ չէ, որը MDM-ը հանում է
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1103,12 +1169,12 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it was stopped	այն դադարեցվել է
+	it was stopped	այն կանգնեցվել է
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	այն կգրի {size}, ավելին, քան {limit} տարածք կամ պատճառ կա
+	it would write {size}, more than the {limit} there is room or reason for	այն կգրեր {size}, ավելին, քան {limit} տարածքը կամ պատճառը
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -1132,7 +1198,7 @@
 #. text in the Scheduler window
 #, machine
 	June	Հունիս
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	ԿԲ/վրկ
 #. checkbox in the Add torrent window
@@ -1178,6 +1244,14 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Սահմանափակել բոլոր ներբեռնումները միասին մինչև
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
+#, machine
+	Limit uploading	Սահմանափակել վերբեռնումը
+#. text in the Add torrent window
+#. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
+#, machine
+	Limit uploading for all torrents to	Սահմանափակել բոլոր թորենթների վերբեռնումը մինչև
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -1203,7 +1277,7 @@
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
-	Look links up when they arrive (name, size, online)	Հղումները փնտրել, երբ դրանք հայտնվում են (անուն, չափ, առցանց)
+	Look links up when they arrive (name, size, online)	Փնտրել հղումները, երբ դրանք հայտնվեն (անուն, չափ, առցանց)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Փնտրել
@@ -1248,6 +1322,10 @@
 #. group box title in the Options window
 #, machine
 	Max. connections number	Մաքս. միացումների քանակը
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+#, machine
+	Maximize	Ընդլայնել
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 #, machine
@@ -1255,10 +1333,22 @@
 #. text in a download's progress window
 #, machine
 	Maximum download speed:	Ներբեռնման առավելագույն արագություն:
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: label above the upload speed box
+#, machine
+	Maximum upload speed:	Վերբեռնման առավելագույն արագություն:
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
 	May	Մայիս
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+#, machine
+	Minimize	Փոքրացնել
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+#, machine
+	Minimize to the notification area	Նվազագույնի հասցնել ծանուցումների վահանակում
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1365,10 +1455,14 @@
 #. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	Անուն:
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+#, machine
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Ձեր հոսթ ֆայլի անունները և տեղական անունները (միակ բառեր, .local, .lan) մնում են համակարգի DNS-ի հետ։ Տեսանյութերի էջերը և տորենտ թրեքերները առայժմ օգտագործում են համակարգի DNS-ը։
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
-	Needs a login	Մուտք է պահանջում
+	Needs a login	Մուտք է պահանջվում
 #. text in errors.rs
 #, machine
 	network error	ցանցի սխալ
@@ -1658,6 +1752,10 @@
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	Կտորներ
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+#, machine
+	plain DNS	սովորական DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -1731,14 +1829,14 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
-	RAR archives are extracted by 7-Zip ({path}).	RAR արխիվները արխիվից հանվում են 7-Zip-ի միջոցով ({path})։
+	RAR archives are extracted by 7-Zip ({path}).	RAR արխիվները հանվում են 7-Zip-ի միջոցով ({path})։
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR արխիվներին անհրաժեշտ է 7-Zip (7-zip.org), որը տեղադրված չէ։
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR արխիվները պահանջում են 7-Zip (7-zip.org), որը տեղադրված չէ։
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	RAR archives need 7-Zip, which isn't installed	RAR արխիվներին անհրաժեշտ է 7-Zip, որը տեղադրված չէ
+	RAR archives need 7-Zip, which isn't installed	RAR արխիվները պահանջում են 7-Zip, որը տեղադրված չէ
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1852,7 +1950,7 @@
 	Save To:	Պահպանել այստեղ:
 #. text in the Link grabber window
 #, machine
-	Save to:	Պահպանել այստեղ:
+	Save to:	Պահել այստեղ:
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
@@ -1932,6 +2030,10 @@
 #. text in the Options window
 #, machine
 	Server:	Սերվեր:
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+#, machine
+	Servers:	Սերվերներ:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1944,10 +2046,19 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Կարգավորել
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Settings...	Կարգավորումներ...
 #. text in a download's progress window
 #. sent divided by received
 #, machine
 	Share ratio	Բաժնի հարաբերակցություն
+#. text in a download's progress window
+#. a torrent's General tab: how long it has been shared once finished, in all
+#, machine
+	Shared for	Համօգտագործվել է
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -2151,7 +2262,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Straight into the archive's folder	Ուղիղ արխիվի թղթապանակում
+	Straight into the archive's folder	Ուղիղ արխիվի թղթապանակ
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2182,13 +2293,17 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Առաջադրանքներ → Հղումների որսիչ, կամ դիտարկիչի «Ներբեռնել բոլոր հղումները»․ բաժանված\nարխիվի հատորները մեկ փաթեթ են, էջի մյուս հղումները՝ մեկ այլ։
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Առաջադրանքներ → Հղումների որսիչ, կամ դիտարկիչի «Ներբեռնել բոլոր հղումները»․ բաժանված արխիվի հատորները մեկ փաթեթ են, էջի մյուս հղումները՝ մեկ այլ։
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Պատմել ընկերոջը
 #. group box title in the Options window
 #, machine
 	Temporary directory	Ժամանակավոր գրացուցակ
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+#, machine
+	Test	Փորձարկել
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -2214,10 +2329,10 @@
 	The address must be an http(s) or ftp(s) address	Հասցեն պետք է լինի http(s) կամ ftp(s) հասցե
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Recycle Bin: it was kept	Արխիվը չհաջողվեց տեղափոխել Աղբարկղ․ այն պահպանվեց
+	The archive could not be moved to the Recycle Bin: it was kept	Արխիվը հնարավոր չէր տեղափոխել Աղբարկղ․ այն պահպանվեց
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Trash: it was kept	Արխիվը չհաջողվեց տեղափոխել Աղբարկղ․ այն պահպանվեց
+	The archive could not be moved to the Trash: it was kept	Արխիվը հնարավոր չէր տեղափոխել Աղբարկղ․ այն պահպանվեց
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -2418,6 +2533,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Սիմվոլները հնարավոր չեղավ ստանալ. հաշվետվության որոշ տողերում անունների փոխարեն հասցեներ են (մշակողները դեռ կարող են դրանք կարդալ)։
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+#, machine
+	The system's DNS	Համակարգի DNS
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2609,6 +2728,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Մուտքագրեք թիվ «Սկսած» և «Մինչև» դաշտերում
+#. text in the settings
+#. Options → DNS: no server address was typed
+#, machine
+	Type at least one server address.	Մուտքագրեք առնվազն մեկ սերվերի հասցե։
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -2617,6 +2740,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Մուտքագրեք ֆայլի անունը «Պահպանել որպես» դաշտում
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+#, machine
+	Type the name the server's certificate shows.	Մուտքագրեք այն անունը, որը ցույց է տալիս սերվերի վկայագիրը։
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -2779,6 +2906,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	Չորեքշաբթի
+#. text in the Options window
+#. Options → Archives: a label before the list of where extracted files go
+#, machine
+	What an archive holds goes:	Արխիվի պարունակությունը տեղադրվում է:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -2809,6 +2940,11 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Գրել ամսաթվերն ու ժամերը
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Wrong password for {name}. Type it again:	Սխալ գաղտնաբառ {name}-ի համար։ Մուտքագրեք այն նորից:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -2835,6 +2971,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Ձեր դիտարկիչը
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+#, machine
+	your DNS ({how})	ձեր DNS ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -2858,7 +2998,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ և XZ; բաժանված արխիվը (.part1.rar, .7z.001) այն բանից հետո,\nերբ բոլոր հատորները առկա են։ Այնտեղ արդեն առկա ֆայլը պահպանվում է․ նորը համարակալվում է։
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ և XZ; բաժանված արխիվը (.part1.rar, .7z.001) այն բանից հետո, երբ բոլոր հատորները առկա են։ Արդեն առկա ֆայլը պահպանվում է․ նորը համարակալվում է։
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2951,6 +3091,16 @@
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
 	{name} could not be downloaded: {error}	{name}-ը հնարավոր չէր ներբեռնել՝ {error}
+#. text in extracting archives (a download's log, the Archive password window)
+#. in Archive password: {name} is the archive's file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} is protected by a password:	{name}-ը պաշտպանված է գաղտնաբառով:
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} isn't offered as {how}.	{name}-ը չի առաջարկվում որպես {how}։
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

@@ -16,7 +16,7 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} dosya {folder} konumuna ayıklandı|{n} dosya {folder} konumuna ayıklandı
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} dosya {folder} konumuna çıkarıldı|{n} dosya {folder} konumuna çıkarıldı
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -54,11 +54,15 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} dosyanın zaten orada olan bir dosyanın adıyla aynı adı vardı ve numaralandırıldı|{n} dosyanın zaten orada olan bir dosyanın adıyla aynı adı vardı ve numaralandırıldı
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} dosya zaten orada olan bir dosyanın adını taşıyordu ve numaralandırıldı|{n} dosya zaten orada olan bir dosyanın adını taşıyordu ve numaralandırıldı
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} selected|{n} selected	{n} seçili|{n} seçili
+#. text in the settings
+#. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
+#, machine
+	"{what}" isn't an IP address.	"{what}" bir IP adresi değil.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -101,6 +105,10 @@
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Ayrıntıları gizle
+#. text in the settings
+#. Options → DNS: the NextDNS configuration ID typed isn't one
+#, machine
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS yapılandırma kimliği altı harf ve rakamdan (0-9, a-f) oluşur.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -173,7 +181,8 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Adres {host} olarak değiştirildi
-#. text in a download's Properties window
+#. text in the Options window; text in a download's Properties window
+#. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Adres:
 #. window title in the Options window
@@ -242,6 +251,15 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	ÖÖ
+#. text in the Options window
+#. Options → Connection → DNS: a DNS server the user types in
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Another DNS...	Başka bir DNS...
+#. text in the Options window
+#. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
+#, machine
+	Answered in {ms} ms: {ip}	{ms} ms içinde yanıtlandı: {ip}
 #. text in the Scheduler window
 #, machine
 	April	Nisan
@@ -262,9 +280,17 @@
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Sistemin bölgesi yazdığı gibi
+#. text in the Options window
+#, machine
+	Ask it with:	Şununla sorun:
 #. text in the Add torrent window
 #, machine
 	Asking peers for the file list. Magnet links can take a minute or two.	Eşlerden dosya listesi isteniyor. Magnet bağlantıları bir iki dakika sürebilir.
+#. text in the Options window
+#. Options → DNS settings: the test is running
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Asking...	Soruluyor...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -334,7 +360,7 @@
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	devam ettirilemiyor: {detail}
-#. group box title in the Options window
+#. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Aşağıdaki tarayıcılardan indirmeleri yakala:
 #. text in extension.rs
@@ -358,6 +384,10 @@
 #. text in categories.rs
 #, machine
 	Category properties	Kategori özellikleri
+#. text in the Options window
+#. Options → DNS over TLS: label before the name the server's certificate shows
+#, machine
+	Certificate name:	Sertifika adı:
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -421,11 +451,12 @@
 #. text in the Options window
 #, machine
 	Clock:	Saat:
-#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window
+#. text in the Checksum window; text in the main window (menus, toolbar, Categories pane); button in crashui.rs; button in a dialog box; button in extension.rs; button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in helpers.rs; button in the download list; button in the Options window; text in standard windows
 #. both verbs: Verify = check the file now; Close = close the window
 #. tooltip of the × that closes the Categories pane
 #. verb: closes this window
 #. verb: closes the filter box
+#. a window's title-bar button: closes the window
 #, machine
 	Close	Kapat
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -440,6 +471,10 @@
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
 	Compressed	Sıkıştırılmış
+#. text in the Options window
+#. Options → DNS settings: NextDNS's own configuration ID (optional)
+#, machine
+	Configuration ID:	Yapılandırma Kimliği:
 #. text in the Options window
 #, machine
 	Confirm before deleting downloads	İndirmeleri silmeden önce onayla
@@ -481,7 +516,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	{name} ayıklanamadı: {why}
+	Couldn't extract {name}: {why}	{name} çıkarılamadı: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Klasör oluştur
@@ -539,7 +574,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Ayıklandıktan sonra arşivleri sil
+	Delete archives after extracting	Çıkardıktan sonra arşivleri sil
 #. message or event log entry in the main window
 #, machine
 	Delete category	Kategori sil
@@ -577,6 +612,21 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	kuyruk listesinde görüntülenir
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
+#, machine
+	DNS over HTTPS	HTTPS üzerinden DNS
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
+#, machine
+	DNS over TLS	TLS üzerinden DNS
+#. window title in the Options window
+#. window title: the settings of the DNS chosen in Options → Connection
+#, machine
+	DNS settings	DNS ayarları
+#. text in the Options window
+#, machine
+	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
 	Do not start downloading, only add files to the queue	İndirmeye başlama, yalnızca dosyaları kuyruğa ekle
@@ -699,6 +749,10 @@
 #. tab title: download settings
 #, machine
 	Downloads	İndirilenler
+#. text in the tray icon's menu
+#. tray menu: a submenu of the downloads now running; choosing one shows its progress window
+#, machine
+	Downloads in progress	Devam eden indirmeler
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
@@ -811,19 +865,19 @@
 #. button in extracting archives (a download's log, the Archive password window)
 #. button: extract the archive with the password typed
 #, machine
-	Extract	Ayıkla
+	Extract	Çıkar
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
-	Extract archives when their download completes	İndirme tamamlandığında arşivleri ayıkla
+	Extract archives when their download completes	İndirme tamamlandığında arşivleri çıkar
 #. checkbox in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
-	Extract when done	Bittiğinde ayıkla
+	Extract when done	Bittiğinde çıkar
 #. text in extracting archives (a download's log, the Archive password window)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Extracting the archive...	Arşiv ayıklanıyor...
+	Extracting the archive...	Arşiv çıkarılıyor...
 #. text in the Scheduler window
 #, machine
 	February	Şubat
@@ -872,7 +926,7 @@
 #. {folder} = the folder the torrent's files are saved in
 #, machine
 	Files go to: {folder}	Dosyalar şuraya gider: {folder}
-#. tab in the Scheduler window
+#. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Kuyruktaki dosyalar
 #. button in the Find window
@@ -1015,6 +1069,10 @@
 #. button in a download's progress window
 #, machine
 	Hide tab	Sekmeyi gizle
+#. text in a download's progress window; text in standard windows
+#. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
+#, machine
+	Hide to the notification area	Bildirim alanına gizle
 #. checkbox in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
@@ -1044,6 +1102,10 @@
 #. text in the Options window
 #, machine
 	If existing file is complete, show download complete dialog; otherwise resume it.	Mevcut dosya tamamsa, indirme tamamlandı iletişim kutusunu göster; aksi takdirde devam ettir.
+#. text in the Options window
+#. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
+#, machine
+	If it can't be reached, use the system's DNS	Ulaşılamazsa sistemin DNS'ini kullan
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Bir indirmeye devam ederken dosya değiştirme zamanı değişikliklerini yoksay
@@ -1076,10 +1138,14 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	Birden çok öğe içeriyorsa, kendi adını taşıyan bir klasöre
+	Into a folder named after it, when it holds several things	Birden çok öğe içerdiğinde, kendi adını taşıyan bir klasöre
 #. text in a dialog box
 #, machine
 	Invalid address	Geçersiz adres
+#. text in the Options window
+#. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
+#, machine
+	IP addresses (optional):	IP adresleri (isteğe bağlı):
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1091,7 +1157,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	MDM'nin ayıklayacağı bir arşiv değil
+	it is not an archive MDM extracts	MDM'nin çıkardığı bir arşiv değil
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1132,7 +1198,7 @@
 #. text in the Scheduler window
 #, machine
 	June	Haziran
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/sn
 #. checkbox in the Add torrent window
@@ -1178,6 +1244,14 @@
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Tüm indirmeleri birlikte şuna sınırla
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
+#, machine
+	Limit uploading	Karşıya yüklemeyi sınırla
+#. text in the Add torrent window
+#. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
+#, machine
+	Limit uploading for all torrents to	Tüm torrentler için karşıya yüklemeyi şuna sınırla:
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -1248,6 +1322,10 @@
 #. group box title in the Options window
 #, machine
 	Max. connections number	Maks. bağlantı sayısı
+#. text in standard windows
+#. a window's title-bar button: makes the window fill the screen
+#, machine
+	Maximize	Ekranı Kapla
 #. text in a dialog box
 #. {kb} is an input box (kilobytes per second), drawn where it stands in the translation
 #, machine
@@ -1255,10 +1333,22 @@
 #. text in a download's progress window
 #, machine
 	Maximum download speed:	Maksimum indirme hızı:
+#. text in a download's progress window
+#. a torrent's progress window, Speed Limiter tab: label above the upload speed box
+#, machine
+	Maximum upload speed:	Maksimum karşıya yükleme hızı:
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
 	May	Mayıs
+#. text in standard windows
+#. a window's title-bar button: minimizes the window
+#, machine
+	Minimize	Simge Durumuna Küçült
+#. text in the Options window
+#. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
+#, machine
+	Minimize to the notification area	Bildirim alanına küçült
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1365,10 +1455,14 @@
 #. Link grabber: the package's name (a label before its box)
 #, machine
 	Name:	Ad:
+#. text in the Options window
+#. Options → DNS settings: what the DNS choice covers and what it doesn't
+#, machine
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Ana bilgisayar dosyanızdaki adlar ve yerel adlar (tek kelimeler, .local, .lan) sistemin DNS'inde kalır. Video sayfaları ve torrent izleyicileri şimdilik sistemin DNS'ini kullanır.
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
-	Needs a login	Oturum açma gerekiyor
+	Needs a login	Giriş gerekiyor
 #. text in errors.rs
 #, machine
 	network error	ağ hatası
@@ -1658,6 +1752,10 @@
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	Parçalar
+#. text in the settings
+#. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
+#, machine
+	plain DNS	Düz DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -1731,14 +1829,14 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
-	RAR archives are extracted by 7-Zip ({path}).	RAR arşivleri 7-Zip ({path}) tarafından ayıklanır.
+	RAR archives are extracted by 7-Zip ({path}).	RAR arşivleri 7-Zip ({path}) tarafından çıkarılır.
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR arşivleri 7-Zip'e (7-zip.org) ihtiyaç duyar, ancak yüklü değil.
+	RAR archives need 7-Zip (7-zip.org), which isn't installed.	RAR arşivleri 7-Zip'e (7-zip.org) ihtiyaç duyar, yüklü değil.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	RAR archives need 7-Zip, which isn't installed	RAR arşivleri 7-Zip'e ihtiyaç duyar, ancak yüklü değil
+	RAR archives need 7-Zip, which isn't installed	RAR arşivleri 7-Zip'e ihtiyaç duyar, yüklü değil
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -1932,6 +2030,10 @@
 #. text in the Options window
 #, machine
 	Server:	Sunucu:
+#. text in the Options window
+#. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
+#, machine
+	Servers:	Sunucular:
 #. text in the Add torrent window
 #. why "Use the proxy" is greyed in Torrent settings
 #, machine
@@ -1944,10 +2046,19 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Ayarlayın
+#. button in the Options window
+#. button: opens the DNS's details (how it's asked, its servers, a test)
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Settings...	Ayarlar...
 #. text in a download's progress window
 #. sent divided by received
 #, machine
 	Share ratio	Paylaşım oranı
+#. text in a download's progress window
+#. a torrent's General tab: how long it has been shared once finished, in all
+#, machine
+	Shared for	Şunun için paylaşıldı:
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -2182,13 +2293,17 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Görevler → Bağlantı yakalayıcı veya tarayıcının "Tüm bağlantıları indir":\nbölünmüş bir arşivin birimleri bir paket, sayfanın diğer bağlantıları başka bir pakettir.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Görevler → Bağlantı yakalayıcı veya tarayıcının "Tüm bağlantıları indir" özelliği:\nbölünmüş bir arşivin birimleri bir paket, bir sayfanın diğer bağlantıları başka bir pakettir.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Bir arkadaşına öner
 #. group box title in the Options window
 #, machine
 	Temporary directory	Geçici dizin
+#. button in the Options window
+#. button: asks the chosen DNS for an address, to see it works
+#, machine
+	Test	Test et
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -2418,6 +2533,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Semboller getirilemedi: raporun bazı satırları adlar yerine adresleri gösteriyor (geliştiriciler yine de okuyabilir).
+#. text in the Options window
+#. Options → Connection → DNS: the operating system's own DNS (the default)
+#, machine
+	The system's DNS	Sistemin DNS'i
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2609,6 +2728,10 @@
 #. why Batch download's OK is greyed
 #, machine
 	Type a number in From and in To	Başlangıç ve Bitiş alanlarına bir sayı yazın
+#. text in the settings
+#. Options → DNS: no server address was typed
+#, machine
+	Type at least one server address.	En az bir sunucu adresi yazın.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -2617,6 +2740,10 @@
 #. why Start Download is greyed in Download File Info
 #, machine
 	Type the file's name in Save As	Farklı Kaydet alanına dosyanın adını yazın
+#. text in the settings
+#. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
+#, machine
+	Type the name the server's certificate shows.	Sunucunun sertifikasının gösterdiği adı yazın.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -2631,7 +2758,7 @@
 #. button in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
-	Uncheck all	Tümünü işaretle
+	Uncheck all	Tümünün işaretini kaldır
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -2844,6 +2971,10 @@
 #. a row of the browser extension's window when no browser was found by name
 #, machine
 	Your browser	Tarayıcınız
+#. text in the settings
+#. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
+#, machine
+	your DNS ({how})	DNS'iniz ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -2867,7 +2998,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ve XZ; her birim geldikten sonra bölünmüş bir arşiv\n(.part1.rar, .7z.001). Zaten var olan bir dosya saklanır: yenisi numaralandırılır.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ve XZ; bölünmüş bir arşiv (.part1.rar, .7z.001) her\nbirim tamamlandığında. Zaten var olan bir dosya korunur: yenisi numaralandırılır.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2964,7 +3095,12 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name} parola korumalı:
+	{name} is protected by a password:	{name} bir parola ile korunuyor:
+#. text in the settings
+#. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	{name} isn't offered as {how}.	{name}, {how} olarak sunulmuyor.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -3304,7 +3440,7 @@ menu	&Language...	&Dil...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Link grabber...	&Bağlantı yakalayıcı...
+menu	&Link grabber...	Bağlantı &yakalayıcı...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

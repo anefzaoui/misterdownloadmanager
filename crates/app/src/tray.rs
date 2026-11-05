@@ -4,6 +4,7 @@
 //! (StatusNotifierItem over D-Bus: KDE, GNOME with its AppIndicator extension).
 
 use std::sync::mpsc::{Receiver, Sender, channel};
+use std::sync::{Arc, Mutex};
 
 use tray_icon::menu::{
     CheckMenuItem, Menu, MenuEvent, MenuId, MenuItem, PredefinedMenuItem, Submenu,
@@ -23,7 +24,22 @@ pub enum TrayCmd {
     StopQueue,
     Options,
     Exit,
+    /// "Downloads in progress" → a download: its progress window, shown again (#63).
+    ShowDownload(u64),
 }
+
+/// Whether a tray shows MDM's icon at all, so hiding a window there can be undone. Windows and
+/// macOS (the menu bar) always have one; on Linux only when a StatusNotifierItem host runs (#59),
+/// asked each time: it may come and go.
+pub fn available() -> bool {
+    #[cfg(target_os = "linux")]
+    return crate::unix::tray_host();
+    #[cfg(not(target_os = "linux"))]
+    true
+}
+
+/// The longest download name in the tray menu, in characters (the rest ends in "…").
+const MENU_NAME_MAX: usize = 48;
 
 pub struct Tray {
     limiter_on: CheckMenuItem,
@@ -36,6 +52,10 @@ pub struct Tray {
     /// The tip shown and when, so the shell is told at most once a second.
     tip: std::cell::RefCell<(String, Option<std::time::Instant>)>,
     rx: Receiver<TrayCmd>,
+    /// "Downloads in progress": one entry per running download, rebuilt when they change.
+    downloads: Submenu,
+    shown_downloads: std::cell::RefCell<Vec<(u64, String)>>,
+    download_ids: Arc<Mutex<Vec<(MenuId, u64)>>>,
     /// Every entry with its English text, to translate again when the language changes.
     labels: Vec<(Entry, &'static str)>,
 }
@@ -70,6 +90,10 @@ impl Tray {
         let mark = crate::i18n::mark;
         add(&menu, mark("Add new download"), TrayCmd::AddUrl);
         add(&menu, mark("Add batch download"), TrayCmd::Batch);
+        // i18n: tray menu: a submenu of the downloads now running; choosing one shows its progress window
+        let downloads_label = mark("Downloads in progress");
+        let downloads = Submenu::new(crate::i18n::t(downloads_label), false);
+        menu.append(&downloads).ok();
         menu.append(&PredefinedMenuItem::separator()).ok();
         let limiter_label = mark("Speed Limiter");
         let limiter_menu = Submenu::new(crate::i18n::t(limiter_label), true);
@@ -123,16 +147,27 @@ impl Tray {
             }
         }));
         let (menu_tx, menu_ctx) = wake(&tx, ctx);
+        let download_ids: Arc<Mutex<Vec<(MenuId, u64)>>> = Arc::default();
+        let ids = download_ids.clone();
         MenuEvent::set_event_handler(Some(move |e: MenuEvent| {
-            if let Some((_, cmd)) = items
+            let cmd = items
                 .iter()
                 .find(|(id, _): &&(MenuId, TrayCmd)| *id == e.id)
-            {
-                let _ = menu_tx.send(*cmd);
+                .map(|(_, c)| *c)
+                .or_else(|| {
+                    ids.lock()
+                        .ok()?
+                        .iter()
+                        .find(|(id, _)| *id == e.id)
+                        .map(|(_, d)| TrayCmd::ShowDownload(*d))
+                });
+            if let Some(cmd) = cmd {
+                let _ = menu_tx.send(cmd);
                 menu_ctx.request_repaint();
             }
         }));
         labels.push((Entry::Sub(limiter_menu), limiter_label));
+        labels.push((Entry::Sub(downloads.clone()), downloads_label));
         labels.push((Entry::Check(limiter_on.clone()), on_label));
         labels.push((Entry::Check(limiter_off.clone()), off_label));
         Some(Tray {
@@ -144,6 +179,9 @@ impl Tray {
             stop_queue,
             queue_running: std::cell::Cell::new(None),
             rx,
+            downloads,
+            shown_downloads: Default::default(),
+            download_ids,
             labels,
         })
     }
@@ -186,9 +224,54 @@ impl Tray {
         }
     }
 
+    /// "Downloads in progress": the running downloads (id, name), the menu rebuilt only when they
+    /// change; greyed when none runs.
+    pub fn set_downloads(&self, running: &[(u64, String)]) {
+        if *self.shown_downloads.borrow() == running {
+            return;
+        }
+        for _ in 0..self.downloads.items().len() {
+            let _ = self.downloads.remove_at(0);
+        }
+        let mut ids = Vec::with_capacity(running.len());
+        for (id, name) in running {
+            let item = MenuItem::new(short(name), true, None);
+            ids.push((item.id().clone(), *id));
+            self.downloads.append(&item).ok();
+        }
+        if let Ok(mut d) = self.download_ids.lock() {
+            *d = ids;
+        }
+        self.downloads.set_enabled(!running.is_empty());
+        *self.shown_downloads.borrow_mut() = running.to_vec();
+    }
+
     /// Keep the Speed Limiter checks in step with the app.
     pub fn set_limiter(&self, on: bool) {
         self.limiter_on.set_checked(on);
         self.limiter_off.set_checked(!on);
+    }
+}
+
+/// A download's name as the tray menu shows it: at most MENU_NAME_MAX characters, the rest "…";
+/// "&" doubled, which menus would read as a shortcut mark.
+fn short(name: &str) -> String {
+    let mut s: String = name.chars().take(MENU_NAME_MAX).collect();
+    if name.chars().count() > MENU_NAME_MAX {
+        s.push('…');
+    }
+    s.replace('&', "&&")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn menu_names_are_shortened_and_keep_their_ampersands() {
+        assert_eq!(short("a & b.zip"), "a && b.zip");
+        let s = short(&"x".repeat(60));
+        assert_eq!(s.chars().count(), MENU_NAME_MAX + 1);
+        assert!(s.ends_with('…'));
     }
 }

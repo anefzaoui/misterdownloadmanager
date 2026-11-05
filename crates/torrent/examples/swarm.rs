@@ -77,18 +77,27 @@ async fn main() {
         peers.push(t.listen_addr().expect("listening"));
         sessions.push(t);
     }
-    let meta = sessions[0]
-        .metadata(&Source::File(torrent.clone()), Duration::from_secs(10))
-        .await
-        .expect("readable");
     println!("{}", file.display());
-    println!(
-        "{} seeders of {} ({} files, {} MB), tracker {tracker}",
-        peers.len(),
-        meta.info_hash,
-        meta.files.len(),
-        meta.total() >> 20
-    );
+    // 0 seeders: only the .torrent and its files (for the app to seed them itself).
+    if let Some(first) = sessions.first() {
+        let meta = first
+            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10))
+            .await
+            .expect("readable");
+        println!(
+            "{} seeders of {} ({} files, {} MB), tracker {tracker}",
+            peers.len(),
+            meta.info_hash,
+            meta.files.len(),
+            meta.total() >> 20
+        );
+    } else {
+        let hash = librqbit::torrent_from_bytes(&torrent)
+            .expect("readable")
+            .info_hash
+            .as_string();
+        println!("0 seeders of {hash}, tracker {tracker}");
+    }
     std::io::stdout().flush().ok();
     tracker_loop(port, peers).await;
 }
