@@ -3385,6 +3385,14 @@ pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on:
     });
 }
 
+/// Whether a screen reader or UI Automation set this control's value this frame (AccessKit's
+/// Set value), focused or not: such a value is meant at once, where a typed one waits for Enter
+/// or the focus to leave.
+pub fn value_set_by_assistive(resp: &Response) -> bool {
+    resp.ctx
+        .input(|i| i.has_accesskit_action_request(resp.id, egui::accesskit::Action::SetValue))
+}
+
 /// [`expose`] for a control showing a value (a drop-down): named by its caption, the value read
 /// after it.
 pub fn expose_value(resp: &Response, role: egui::Role, value: &str, enabled: bool) {

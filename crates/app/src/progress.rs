@@ -444,8 +444,12 @@ impl Progress {
         );
         self.limit_kb.retain(|c| c.is_ascii_digit());
         // A typed rate applies once typed (focus leaves, Enter), not at each digit (typing 100
-        // would throttle to 1, then 10 KB/s on the way).
-        let typed = rate_box.lost_focus() || (rate_box.has_focus() && winui::enter_pressed(ui));
+        // would throttle to 1, then 10 KB/s on the way). A rate a screen reader or UI Automation
+        // sets (Set value) applies at once: there is no typing to wait for, and often no focus
+        // to leave, so it never applied.
+        let typed = rate_box.lost_focus()
+            || (rate_box.has_focus() && winui::enter_pressed(ui))
+            || winui::value_set_by_assistive(&rate_box);
         // i18n: unit after an input box: kilobytes per second
         text(
             &p,
@@ -455,7 +459,20 @@ impl Progress {
             label,
         );
         let remembered = self.remember;
-        winui::checkbox(ui, o + vec2(33.0, 134.0), &mut self.remember, "", true);
+        let remember_box = winui::checkbox(ui, o + vec2(33.0, 134.0), &mut self.remember, "", true);
+        // Its caption is drawn apart (two lines, below): screen readers get it as its name.
+        let name = format!(
+            "{} {}",
+            crate::i18n::t("Remember Speed Limiter settings for this file"),
+            crate::i18n::t("on download stop/resume")
+        );
+        winui::expose(
+            &remember_box,
+            egui::Role::CheckBox,
+            &name,
+            true,
+            Some(self.remember),
+        );
         // Its caption is two lines drawn below; a click on them ticks it too.
         winui::caption_click(
             ui,

@@ -168,6 +168,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   no longer there".
 - **Stopping a download under a low speed limit took seconds**: each connection first waited
   for its turn under the limit. Stop now ends those waits at once.
+- **Screen readers: the progress window's Speed Limiter** took a speed set with a screen reader
+  or UI Automation only after the focus moved on, and its "Remember Speed Limiter settings for
+  this file" check box had no name. A speed set that way applies at once, and the box is named.
 - **The browser extension's Download video menu: an item's highlight ran past the menu's
   edge** ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81)).
 - **A long file name ran out of the progress window** ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62)):
