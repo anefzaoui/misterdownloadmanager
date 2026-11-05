@@ -35,9 +35,12 @@ pub fn open_page(path: &str) {
 }
 
 /// Help → Support MDM and About's link: the Sponsors page in the browser. Asked for only: MDM
-/// never brings it up by itself.
+/// never brings it up by itself, and never in an off-screen test run (MDM_OFFSCREEN), whose
+/// clicks come from scripts, not from a person at the browser.
 pub fn support() {
-    let _ = open::that_detached(SPONSORS);
+    if !crate::offscreen() {
+        let _ = open::that_detached(SPONSORS);
+    }
 }
 
 /// A new GitHub issue on the Bug report form (.github/ISSUE_TEMPLATE/bug.yml), filled with
