@@ -521,6 +521,8 @@ async fn no_range_server_uses_one_connection() {
 /// probe, none is fetched again by a fresh start on one connection.
 #[tokio::test]
 async fn a_server_without_ranges_sends_the_file_once() {
+    // The probe takes about 375 ms; every range attempt is answered after 300 ms, so the first
+    // answers come while it runs and a retry's after it has ended.
     let s = server("no_range=true&rate=8M&range_latency_ms=300").await;
     let (log, size) = fetch(&s, "/gen/3M?seed=41", 41, fast_opts()).await;
     assert_eq!(size, 3 << 20);
@@ -529,10 +531,16 @@ async fn a_server_without_ranges_sends_the_file_once() {
         .iter()
         .map(|e| (e.range.clone(), e.outcome.clone(), e.bytes_sent))
         .collect();
-    // The overhead: what the server had already written into the range attempts' sockets
-    // when the engine dropped them. Fetching the file again would add a whole file.
+    // One plain GET, the probe: no start over on one connection. The bytes served beyond the
+    // file are what the server had written into the range attempts' sockets when the engine
+    // dropped them (a few hundred KiB on a busy machine); a second copy would double them.
+    assert_eq!(
+        log.iter().filter(|e| e.range.is_none()).count(),
+        1,
+        "{requests:#?}"
+    );
     assert!(
-        sent <= size + (1 << 20),
+        sent < 2 * size,
         "{sent} bytes served for a {size}-byte file: {requests:#?}"
     );
     assert_eq!(
