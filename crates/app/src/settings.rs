@@ -143,6 +143,10 @@ pub struct Settings {
     pub dns_nextdns_id: String,
     /// When the chosen DNS can't be reached, ask the system's (off: strict).
     pub dns_fallback: bool,
+    /// Options → Proxy / Socks → Network adapter (#35): every connection goes through this
+    /// adapter (its name as the system shows it, or one of its addresses), or none at all; ""
+    /// lets the system choose.
+    pub net_adapter: String,
     /// "Use FTP in PASV mode": passive data connections (the client connects; works behind
     /// NAT), else active. Named anew when FTP arrived: `ftp_pasv` was saved as false while
     /// the box was greyed.
@@ -301,6 +305,7 @@ impl Default for Settings {
             dns_doh_url: String::new(),
             dns_nextdns_id: String::new(),
             dns_fallback: false,
+            net_adapter: String::new(),
             ftp_passive: true,
             site_logins: Vec::new(),
             sounds: Default::default(),
@@ -411,6 +416,11 @@ impl Settings {
             lsd: self.torrent_lsd,
             proxy,
             blocklist,
+            // The chosen network adapter's device (#35; Linux and macOS, see torrents::route_refusal).
+            bind: match own_route() {
+                mdm_engine::Route::Bound(b) => Some((b.name.clone(), b.v6.is_none())),
+                _ => None,
+            },
             ..mdm_torrent::Config::new(state_dir)
         })
     }
@@ -669,7 +679,25 @@ pub fn share_dns(dns: mdm_engine::DnsChoice) {
     }
 }
 
-/// How MDM downloads its own files: its engine, as itself, through the user's proxy and DNS.
+static OWN_ROUTE: std::sync::RwLock<mdm_engine::Route> =
+    std::sync::RwLock::new(mdm_engine::Route::Any);
+
+/// Keep [`own_net`], yt-dlp and the media-server checks on the chosen network adapter as it is
+/// now (#35; the adapter watch in `netwatch`).
+pub fn share_route(route: mdm_engine::Route) {
+    if *OWN_ROUTE.read().unwrap() != route {
+        *OWN_ROUTE.write().unwrap() = route.clone();
+    }
+    mdm_tools::proc::set_route(route);
+}
+
+/// The network adapter MDM's connections go through now (#35).
+pub fn own_route() -> mdm_engine::Route {
+    OWN_ROUTE.read().unwrap().clone()
+}
+
+/// How MDM downloads its own files: its engine, as itself, through the user's proxy, DNS and
+/// network adapter.
 pub fn own_net() -> mdm_engine::Options {
     let proxy = OWN_PROXY
         .read()
@@ -678,6 +706,7 @@ pub fn own_net() -> mdm_engine::Options {
         .unwrap_or(mdm_engine::Proxy::System);
     mdm_engine::Options {
         dns: OWN_DNS.read().unwrap().clone().unwrap_or_default(),
+        route: own_route(),
         ..mdm_tools::net(proxy)
     }
 }

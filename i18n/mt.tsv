@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Ġie ssejvjat rapport. Li tibagħtu lill-iżviluppaturi fuq GitHub jgħinhom jirranġaw dan; tista' taqra dak kollu li fih hawn taħt l-ewwel. Xejn ma jintbagħat waħdu: Ibgħat jiftaħ il-formola tar-rapport fil-browser tiegħek, mimlija, biex tiċċekkja u tissottometti.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	server fuq dan il-kompjuter bagħat it-tniżżil band’oħra, li ma jgħaddix minn {adapter}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Dwar Mister Download Manager
@@ -231,6 +235,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	Wieġeb f'{ms} ms: {ip}'
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	Kwalunkwe (is-sistema tagħżel)
 #. text in the Scheduler window
 #, machine
 	April	April
@@ -719,6 +727,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Link tat-tniżżil duplikata
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Kull konnessjoni tieħu r-rotta tas-sistema.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -771,6 +783,10 @@
 #. text in the Options window
 #, machine
 	Event	Avveniment
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Kull konnessjoni tgħaddi minnha, minn {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1343,6 +1359,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	L-ismijiet fil-fajl tal-hosts tiegħek u l-ismijiet lokali (kliem wieħed, .local, .lan) jibqgħu bid-DNS tas-sistema. Il-paġni tal-vidjows u t-trackers tat-torrent jużaw id-DNS tas-sistema għalissa.
+#. text in the Options window
+#, machine
+	Network adapter:	Adapter tan-netwerk:
 #. text in errors.rs
 #, machine
 	network error	żball fin-netwerk
@@ -2093,6 +2112,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Imwaqqaf
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Waqaf: l-adapter tan-netwerk inbidel; qed jerġa' jibda
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Waqaf: {adapter} mhux konness; ikompli meta jerġa' jkun konness
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Jieqaf meta t-tniżżil jintemm
@@ -2286,6 +2313,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Il-lista ma setgħetx tiġi ssejvjata: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	l-adapter tan-netwerk {adapter} mhux konness
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	il-path huwa twil wisq għall-Windows: {path}
@@ -2476,6 +2507,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	Torrents
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	it-torrents ma jistgħux jgħaddu minn adapter tan-netwerk magħżul fuq il-Windows għadhom
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2674,6 +2709,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	It-tfittxijiet tal-vidjo jużaw yt-dlp (madwar 23 MB, iċċekkjati kontra l-firma tiegħu).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Il-paġni tal-vidjow u t-torrents ma jistgħux jużawh s'issa.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Il-paġni tal-vidjow ma jistgħux jużawh s'issa.
+#. text in the Options window
 #, machine
 	Virus checking settings	Settings tal-kontroll tal-virus
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2779,6 +2822,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: isib il-vidjo
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (mhux konness)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} mhux konness: xejn ma jitniżżel sakemm jerġa' jkun konness.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2845,6 +2896,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} siegħa(t) {m} min
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} ma jistax jintlaħaq permezz ta' {adapter}: m'għandux indirizz ta' dak it-tip (IPv4 jew IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2900,6 +2955,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} sek
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ma jistax jgħaddi minn adapter tan-netwerk magħżul ({adapter}) għadu
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

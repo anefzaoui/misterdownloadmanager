@@ -49,6 +49,7 @@ pub fn describe(e: &Error) -> String {
             ],
         ),
         Error::Cancelled => t("cancelled").to_owned(),
+        Error::Adapter(e) => adapter(e),
         Error::InUse(path) => fmt(
             t("already being downloaded: {path}"),
             &[("path", &ltr(&path.display().to_string()))],
@@ -148,6 +149,37 @@ pub fn torrent(e: &mdm_torrent::TorrentError) -> String {
     }
 }
 
+/// Why the chosen network adapter (#35) didn't let a connection open, in the interface language.
+pub fn adapter(e: &mdm_engine::NetError) -> String {
+    use mdm_engine::NetError as N;
+    match e {
+        N::Down { label } => fmt(
+            // i18n: an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+            t("the network adapter {adapter} is not connected"),
+            &[("adapter", label)],
+        ),
+        N::Family { label, ip } => fmt(
+            // i18n: an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+            t(
+                "{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)",
+            ),
+            &[("ip", &ltr(&ip.to_string())), ("adapter", label)],
+        ),
+        N::Unbound { label } => fmt(
+            // i18n: an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+            t(
+                "a server on this computer sent the download elsewhere, which would not go through {adapter}",
+            ),
+            &[("adapter", label)],
+        ),
+        N::NotSupported { label, what } => fmt(
+            // i18n: an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+            t("{what} can't go through a chosen network adapter ({adapter}) yet"),
+            &[("what", &ltr(what)), ("adapter", label)],
+        ),
+    }
+}
+
 /// Why yt-dlp or ffmpeg couldn't be installed, in the interface language (mdm-tools words its
 /// errors in English, for the command line). File and build names stay as they are.
 pub fn tools(e: &mdm_tools::Error) -> String {
@@ -171,6 +203,7 @@ pub fn tools(e: &mdm_tools::Error) -> String {
             &[("detail", detail)],
         ),
         E::Download(text) => text.clone(),
+        E::Adapter(e) => adapter(e),
         // i18n: error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
         E::NotTheProgram(name) => fmt(t("this program isn't {name}"), &[("name", name)]),
     }

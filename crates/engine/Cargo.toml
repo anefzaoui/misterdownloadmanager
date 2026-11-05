@@ -33,6 +33,11 @@ hex.workspace = true
 rquickjs = { version = "0.14.0", default-features = false, features = ["std"] }
 suppaftp.workspace = true
 hickory-resolver.workspace = true
+socket2.workspace = true
+network-interface.workspace = true
+hyper-util.workspace = true
+# hyper-util's proxy matcher takes an http::Uri (already in the tree through reqwest).
+http = "1.5.0"
 rustls.workspace = true
 rustls-platform-verifier.workspace = true
 tokio-rustls.workspace = true

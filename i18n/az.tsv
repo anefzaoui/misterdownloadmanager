@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Hesabat yaddaşa yazıldı. Onu GitHub-dakı tərtibatçılara göndərmək problemi həll etməyə kömək edir; əvvəlcə aşağıda olan hər şeyi oxuya bilərsiniz. Heç nə öz-özünə göndərilmir: Göndər düyməsi hesabat formasını brauzerinizdə doldurulmuş şəkildə açır ki, siz onu yoxlayıb təqdim edəsiniz.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	bu kompüterdəki server yükləməni başqa yerə göndərdi, bu da {adapter} vasitəsilə getməzdi
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager haqqında
@@ -231,6 +235,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	{ms} ms-də cavab verildi: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	İstənilən (sistem seçir)
 #. text in the Scheduler window
 #, machine
 	April	Aprel
@@ -719,6 +727,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Dublikat endirmə keçidi
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Hər bir əlaqə sistemin marşrutunu götürür.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -771,6 +783,10 @@
 #. text in the Options window
 #, machine
 	Event	Hadisə
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Hər bir qoşulma {ip} ünvanından onun vasitəsilə keçir.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1343,6 +1359,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Host faylınızdakı adlar və yerli adlar (tək sözlər, .local, .lan) sistemin DNS-ində qalır. Video səhifələri və torrent izləyiciləri hələlik sistemin DNS-indən istifadə edir.
+#. text in the Options window
+#, machine
+	Network adapter:	Şəbəkə adapteri:
 #. text in errors.rs
 #, machine
 	network error	şəbəkə xətası
@@ -2093,6 +2112,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Dayandırıldı
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Dayandırıldı: şəbəkə adapteri dəyişdi; yenidən başlayır
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Dayandırıldı: {adapter} qoşulu deyil; geri qayıtdıqda davam edəcək
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Yükləmə bitdikdə dayanır
@@ -2286,6 +2313,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Siyahı saxlanıla bilmədi: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	{adapter} şəbəkə adapteri qoşulu deyil
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	yol Windows üçün çox uzundur: {path}
@@ -2476,6 +2507,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	Torrentlər
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	torrentlər hələ Windows-da seçilmiş şəbəkə adapteri vasitəsilə keçə bilməz
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2674,6 +2709,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video axtarışları yt-dlp istifadə edir (təxminən 23 MB, imzası ilə yoxlanılıb).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Video səhifələri və torrentlər hələ ondan istifadə edə bilməz.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Video səhifələri hələ ondan istifadə edə bilməz.
+#. text in the Options window
 #, machine
 	Virus checking settings	Virus yoxlama parametrləri
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2779,6 +2822,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: videonu tapır
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (qoşulu deyil)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} qoşulu deyil: geri qayıdana qədər heç nə yüklənməyəcək.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2845,6 +2896,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} saat {m} dəq
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} ünvanına {adapter} vasitəsilə çatmaq mümkün deyil: onun bu növ (IPv4 və ya IPv6) ünvanı yoxdur
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2900,6 +2955,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} san
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} hələ seçilmiş şəbəkə adapteri ({adapter}) vasitəsilə keçə bilməz
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Er is een rapport opgeslagen. Door het naar de ontwikkelaars op GitHub te sturen, helpt u hen dit probleem op te lossen; u kunt hieronder eerst alles lezen wat het bevat. Er wordt niets vanzelf verzonden: Verzenden opent het rapportformulier in uw browser, ingevuld, zodat u het kunt controleren en indienen.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	een server op deze computer heeft de download elders naartoe gestuurd, wat niet via {adapter} zou gaan
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Over Mister Download Manager
@@ -231,6 +235,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	Beantwoord in {ms} ms: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	Elke (het systeem kiest)
 #. text in the Scheduler window
 #, machine
 	April	April
@@ -719,6 +727,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Dubbele downloadkoppeling
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Elke verbinding volgt de route van het systeem.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -771,6 +783,10 @@
 #. text in the Options window
 #, machine
 	Event	Gebeurtenis
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Elke verbinding gaat erdoorheen, vanaf {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1343,6 +1359,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Namen in uw hosts-bestand en lokale namen (enkele woorden, .local, .lan) blijven bij de DNS van het systeem. Videopagina's en torrenttrackers gebruiken voorlopig de DNS van het systeem.
+#. text in the Options window
+#, machine
+	Network adapter:	Netwerkadapter:
 #. text in errors.rs
 #, machine
 	network error	netwerkfout
@@ -2093,6 +2112,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Gestopt
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Gestopt: de netwerkadapter is gewijzigd; opnieuw starten
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Gestopt: {adapter} is niet verbonden; het gaat verder wanneer de verbinding is hersteld
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Stopt wanneer de download is voltooid
@@ -2286,6 +2313,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	De lijst kon niet worden opgeslagen: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	de netwerkadapter {adapter} is niet verbonden
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	het pad is te lang voor Windows: {path}
@@ -2476,6 +2507,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	Torrents
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	torrents kunnen nog niet via een gekozen netwerkadapter op Windows gaan
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2674,6 +2709,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video-opzoekingen gebruiken yt-dlp (ongeveer 23 MB, gecontroleerd aan de hand van de handtekening).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Videopagina's en torrents kunnen het nog niet gebruiken.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Videopagina's kunnen het nog niet gebruiken.
+#. text in the Options window
 #, machine
 	Virus checking settings	Instellingen viruscontrole
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2779,6 +2822,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: vindt de video
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (niet verbonden)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} is niet verbonden: er wordt niets gedownload totdat de verbinding is hersteld.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2845,6 +2896,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} uur {m} min
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} kan niet worden bereikt via {adapter}: het heeft geen adres van dat type (IPv4 of IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2900,6 +2955,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} sec
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} kan nog niet via een gekozen netwerkadapter ({adapter}) gaan
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

@@ -20,6 +20,7 @@ mod icons;
 mod langpick;
 mod list;
 mod model;
+mod netwatch;
 mod options;
 mod pacfetch;
 mod progress;
@@ -86,6 +87,9 @@ pub fn quiet(builder: egui::ViewportBuilder) -> egui::ViewportBuilder {
 }
 
 fn main() -> std::process::ExitCode {
+    // PAC's myIpAddress from the routing table, not a UDP socket (a firewall prompt, #35).
+    #[cfg(windows)]
+    mdm_engine::net::set_source_lookup(win32::source_address);
     // misterdownloadmanager-cli's commands (crates/cli): its launcher starts this program for
     // them. Nothing of the app's runs: no window, instance, crash monitor or crash log.
     if let Some(cli) = mdm_cli::launched(std::env::args_os().collect()) {

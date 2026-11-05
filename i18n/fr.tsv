@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Un rapport a été enregistré. L’envoyer aux développeurs sur GitHub les aide à résoudre ce problème ; vous pouvez lire tout ce qu’il contient ci-dessous. Rien n’est envoyé automatiquement : Envoyer ouvre le formulaire de rapport dans votre navigateur, prérempli, pour que vous puissiez le vérifier et le soumettre.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	un serveur sur cet ordinateur a redirigé le téléchargement ailleurs, ce qui ne passerait pas par {adapter}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	À propos de Mister Download Manager
@@ -231,6 +235,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	Répondu en {ms} ms : {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	N’importe laquelle (le système choisit)
 #. text in the Scheduler window
 #, machine
 	April	Avril
@@ -719,6 +727,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Lien de téléchargement en double
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Chaque connexion prend l’itinéraire du système.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -771,6 +783,10 @@
 #. text in the Options window
 #, machine
 	Event	Événement
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Chaque connexion passe par là, depuis {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1343,6 +1359,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Les noms dans votre fichier hosts et les noms locaux (mots uniques, .local, .lan) restent avec le DNS du système. Les pages vidéo et les traqueurs de torrent utilisent le DNS du système pour l'instant.
+#. text in the Options window
+#, machine
+	Network adapter:	Carte réseau :
 #. text in errors.rs
 #, machine
 	network error	erreur réseau
@@ -2093,6 +2112,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Arrêté
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Arrêté : la carte réseau a changé ; redémarrage
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Arrêté : {adapter} n’est pas connectée ; reprendra quand elle le sera
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	S’arrête lorsque le téléchargement est terminé
@@ -2286,6 +2313,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	La liste n’a pas pu être enregistrée : {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	la carte réseau {adapter} n’est pas connectée
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	le chemin est trop long pour Windows : {path}
@@ -2476,6 +2507,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	Torrents
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	les torrents ne peuvent pas encore passer par une carte réseau choisie sous Windows
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2674,6 +2709,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Les recherches de vidéos utilisent yt-dlp (environ 23 Mo, vérifié par sa signature).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Les pages vidéo et les torrents ne peuvent pas encore l’utiliser.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Les pages vidéo ne peuvent pas encore l’utiliser.
+#. text in the Options window
 #, machine
 	Virus checking settings	Paramètres de vérification antivirus
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2779,6 +2822,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp : trouve la vidéo
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (non connectée)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} n’est pas connectée : rien n’est téléchargé tant qu’elle n’est pas de retour.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2845,6 +2896,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} h {m} min
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} n’est pas accessible via {adapter} : elle n’a pas d’adresse de ce type (IPv4 ou IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2900,6 +2955,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} s
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ne peut pas encore passer par une carte réseau choisie ({adapter})
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

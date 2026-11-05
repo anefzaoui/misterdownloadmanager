@@ -357,6 +357,11 @@ pub struct App {
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
     torrent_host: crate::torrents::Host,
+    /// Options → Proxy / Socks → Network adapter (#35): the watch, the route seen last frame, and
+    /// the downloads stopped because it changed, to start again when it allows.
+    netwatch: crate::netwatch::NetWatch,
+    route: mdm_engine::Route,
+    adapter_paused: Vec<u64>,
     find: Option<crate::find::Find>,
     /// The last search, for Find Next.
     last_find: Option<crate::find::Query>,
@@ -766,6 +771,9 @@ impl App {
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
+            netwatch: Default::default(),
+            route: mdm_engine::Route::Any,
+            adapter_paused: Vec::new(),
             find: None,
             last_find: None,
             notice: None,
@@ -1283,6 +1291,64 @@ impl App {
         }
     }
 
+    /// Each frame (#35): the route connections take, from the adapter watch. When it changes,
+    /// everything running stops (its connections were held to the route before, or to none;
+    /// sockets that are bound can't leak, this is so they don't wait for a timeout) and the
+    /// torrent session with it; what was stopped so starts again once the route lets it.
+    fn network_adapter_tick(&mut self, ctx: &egui::Context) {
+        let route = self.netwatch.route(&self.settings.net_adapter, ctx);
+        crate::settings::share_route(route.clone());
+        if route != self.route {
+            let before = std::mem::replace(&mut self.route, route.clone());
+            self.route_changed(&before);
+        }
+        if matches!(self.route, mdm_engine::Route::Down { .. }) || self.adapter_paused.is_empty() {
+            return;
+        }
+        // Started again once their jobs have ended.
+        let ready: Vec<u64> = self
+            .adapter_paused
+            .iter()
+            .copied()
+            .filter(|id| self.items.iter().any(|i| i.id == *id && i.live.is_none()))
+            .collect();
+        self.adapter_paused
+            .retain(|id| self.items.iter().any(|i| i.id == *id) && !ready.contains(id));
+        for id in ready {
+            self.start(id, false);
+        }
+    }
+
+    fn route_changed(&mut self, before: &mdm_engine::Route) {
+        let note = match &self.route {
+            mdm_engine::Route::Down { label } => crate::i18n::fmt(
+                // i18n: event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+                crate::i18n::t("Stopped: {adapter} is not connected; it goes on when it is back"),
+                &[("adapter", label)],
+            ),
+            // i18n: event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+            _ => crate::i18n::t("Stopped: the network adapter changed; starting again").to_owned(),
+        };
+        let mut stopped = Vec::new();
+        for i in &mut self.items {
+            if let Some(l) = &i.live {
+                l.dl.cancel();
+                i.note(note.clone());
+                stopped.push(i.id);
+            }
+        }
+        for id in stopped {
+            if !self.adapter_paused.contains(&id) {
+                self.adapter_paused.push(id);
+            }
+        }
+        // The torrent session's sockets were bound as things were.
+        if !before.is_any() || !self.route.is_any() {
+            self.torrent_host.stop_now(&self.rt);
+        }
+        self.dirty = true;
+    }
+
     /// Every 2 s (#40): Torrent settings for the next torrent session, and the running one stopped
     /// once no torrent has needed it for a minute (none running or sharing, no Add torrent open),
     /// when Torrent settings say so or their network settings changed.
@@ -1613,6 +1679,7 @@ impl App {
             max_connections: self.settings.connections_for(url),
             proxy: self.settings.proxy(),
             dns: self.settings.dns(),
+            route: self.route.clone(),
             global: Some(self.global.clone()),
             host_limits: Some(self.host_limits.clone()),
             ignore_mtime: self.settings.ignore_mtime,
@@ -5741,6 +5808,7 @@ impl eframe::App for App {
         crate::settings::share_dns(self.settings.dns());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
+        self.network_adapter_tick(&ctx);
         dialogs::publish_main_rect(&ctx);
         while let Ok(inc) = self.commands.try_recv() {
             match inc.reply {

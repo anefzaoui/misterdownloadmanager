@@ -48,6 +48,9 @@ pub enum Error {
     /// MDM's engine could not download it (its own words).
     #[error("{0}")]
     Download(String),
+    /// The chosen network adapter is down or can't reach the server (#35).
+    #[error(transparent)]
+    Adapter(#[from] mdm_engine::NetError),
 }
 
 /// An installed tool.
@@ -244,9 +247,8 @@ pub async fn install_latest(
     if let Some(mine) = chosen::chosen(dir, chosen::Helper::YtDlp) {
         return Ok(mine);
     }
-    let client = reqwest::Client::builder()
+    let client = mdm_engine::net::client_builder(&net.dns, &net.route, RELEASES)?
         .user_agent(USER_AGENT)
-        .dns_resolver(mdm_engine::dns::client_resolver(&net.dns))
         .build()?;
     let body = client
         .get(RELEASES)

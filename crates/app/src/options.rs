@@ -171,6 +171,8 @@ pub struct OptionsDialog {
     cat_edit: Option<crate::categories::CategoryDialog>,
     /// Connection caps the engine learned, shown as "(auto)" rows under Exceptions.
     learned: Vec<(String, u32)>,
+    /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
+    adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
 }
 
 impl OptionsDialog {
@@ -213,6 +215,7 @@ impl OptionsDialog {
             sub: None,
             cat_edit: None,
             learned,
+            adapters: None,
         }
     }
 
@@ -1322,14 +1325,142 @@ impl OptionsDialog {
             ButtonKind::Disabled,
             false,
         );
-        winui::etched_h(&p, o.x + 21.0, o.y + 439.0, 381.0);
+        winui::etched_h(&p, o.x + 21.0, o.y + 447.0, 381.0);
         winui::checkbox_light(
             ui,
-            o + vec2(27.0, 445.0),
+            o + vec2(27.0, 453.0),
             &mut s.ftp_passive,
             "Use FTP in PASV mode",
             true,
         );
+        self.adapter_row(ui, o);
+    }
+
+    /// Proxy / Socks → Network adapter (#35): the adapter every connection goes through (a VPN's),
+    /// and what it is doing now. The list is the computer's adapters, read every 2 s; the one
+    /// chosen stays in it while it's gone, "(not connected)".
+    fn adapter_row(&mut self, ui: &mut Ui, o: Pos2) {
+        use mdm_engine::Route;
+        let stale = self
+            .adapters
+            .as_ref()
+            .is_none_or(|(at, _)| at.elapsed() >= std::time::Duration::from_secs(2));
+        if stale {
+            self.adapters = Some((std::time::Instant::now(), mdm_engine::net::adapters()));
+        }
+        let adapters = self
+            .adapters
+            .as_ref()
+            .map(|(_, a)| a.clone())
+            .unwrap_or_default();
+        let p = ui.painter().clone();
+        winui::etched_h(&p, o.x + 21.0, o.y + 372.0, 381.0);
+        // i18n: label before the choice of network adapter (Ethernet, Wi-Fi, a VPN's) every connection must go through
+        text(
+            &p,
+            o.x + 27.0,
+            o.y + 395.0,
+            crate::i18n::t("Network adapter:"),
+            LIGHT_TEXT(),
+        );
+        // The choices: any, then each adapter with its address (the ones with none too: a VPN
+        // switched off), the chosen one kept when it's gone.
+        let chosen = self.s.net_adapter.trim().to_owned();
+        let mut values: Vec<String> = vec![String::new()];
+        let mut labels: Vec<String> =
+            // i18n: Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+            vec![crate::i18n::t("Any (the system chooses)").to_owned()];
+        for a in &adapters {
+            let ip =
+                a.v4.first()
+                    .map(|v| v.to_string())
+                    .or(a.v6.first().map(|v| v.to_string()));
+            values.push(a.name.clone());
+            labels.push(match ip {
+                Some(ip) => format!("{} \u{2014} {ip}", a.name),
+                None => crate::i18n::fmt(
+                    // i18n: Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+                    crate::i18n::t("{adapter} (not connected)"),
+                    &[("adapter", &a.name)],
+                ),
+            });
+        }
+        if !chosen.is_empty() && !values.iter().any(|v| v.eq_ignore_ascii_case(&chosen)) {
+            values.push(chosen.clone());
+            labels.push(crate::i18n::fmt(
+                crate::i18n::t("{adapter} (not connected)"),
+                &[("adapter", &chosen)],
+            ));
+        }
+        let at = values
+            .iter()
+            .position(|v| v.eq_ignore_ascii_case(&chosen))
+            .unwrap_or(0);
+        let shown: Vec<&str> = labels.iter().map(String::as_str).collect();
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 130.0, 380.0, 265.0, 21.0),
+            &shown,
+            at,
+            true,
+            "opt-adapter",
+        ) {
+            self.s.net_adapter = values[i].clone();
+        }
+        // What it does now.
+        let (line, ok) = match mdm_engine::net::route_for(&self.s.net_adapter, &adapters) {
+            Route::Any => (
+                // i18n: Options → Network adapter: what "Any" means
+                crate::i18n::t("Each connection takes the system's route.").to_owned(),
+                true,
+            ),
+            Route::Down { label } => (
+                crate::i18n::fmt(
+                    // i18n: Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+                    crate::i18n::t(
+                        "{adapter} is not connected: nothing is downloaded until it is back.",
+                    ),
+                    &[("adapter", &label)],
+                ),
+                false,
+            ),
+            Route::Bound(b) => {
+                let ip = b.v4.map(|v| v.to_string()).or(b.v6.map(|v| v.to_string()));
+                let line = crate::i18n::fmt(
+                    // i18n: Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+                    crate::i18n::t("Every connection goes through it, from {ip}."),
+                    &[("ip", &crate::i18n::ltr(&ip.unwrap_or_default()))],
+                );
+                // What can't be held to it on this system (refused, not sent around it).
+                #[cfg(windows)]
+                // i18n: Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+                let not_yet = crate::i18n::t("Video pages and torrents can't use it yet.");
+                #[cfg(not(windows))]
+                // i18n: Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+                let not_yet = crate::i18n::t("Video pages can't use it yet.");
+                (format!("{line}\n{not_yet}"), true)
+            }
+        };
+        let color = if ok {
+            LIGHT_TEXT()
+        } else {
+            egui::Color32::from_rgb(0xC4, 0x2B, 0x1C)
+        };
+        // Up to two lines, each cut with "..." (whole on hover) when a translation is longer.
+        for (row, part) in line.lines().take(2).enumerate() {
+            let (rect, cut) = winui::label_into(
+                &p,
+                o.x + 27.0,
+                o.y + 422.0 + 15.0 * row as f32,
+                part,
+                color,
+                o.x + 400.0,
+                o.x + 27.0,
+            );
+            if cut {
+                winui::full_on_hover(ui, rect, ("opt-adapter-state", row), part);
+            }
+        }
     }
 
     fn logins(&mut self, ui: &mut Ui, o: Pos2) {
@@ -2253,13 +2384,15 @@ fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
         let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
         e.test = Some(slot.clone());
         let (c, ctx) = (c.clone(), ui.ctx().clone());
+        // Through the network adapter downloads use (#35).
+        let route = crate::settings::own_route();
         std::thread::spawn(move || {
             let result = tokio::runtime::Builder::new_current_thread()
                 .enable_all()
                 .build()
                 .map_err(|e| e.to_string())
                 .and_then(|rt| {
-                    rt.block_on(mdm_engine::dns::test(&c, "github.com", &[]))
+                    rt.block_on(mdm_engine::dns::test(&c, "github.com", &[], &route))
                         .map_err(|e| e.to_string())
                 });
             let line = match result {

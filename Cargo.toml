@@ -40,6 +40,9 @@ windows-sys = { version = "0.61.2", features = [
     "Win32_Globalization",
     "Win32_Graphics_Dwm",
     "Win32_Media_Audio",
+    "Win32_NetworkManagement_IpHelper",
+    "Win32_NetworkManagement_Ndis",
+    "Win32_Networking_WinSock",
     "Win32_Security_Cryptography",
     "Win32_Graphics_Gdi",
     "Win32_Storage_FileSystem",
@@ -88,6 +91,12 @@ rustls-platform-verifier = "0.7.1"
 # platform's certificate checks, the same as downloads. Not its system config: "the system's DNS"
 # stays tokio's own lookup.
 hickory-resolver = { version = "0.26.3", default-features = false, features = ["tokio", "tls-aws-lc-rs", "https-aws-lc-rs", "rustls-platform-verifier"] }
+# Network adapter binding (#35, crates/engine/src/net.rs): sockets held to a device (Linux) or
+# an interface index (macOS) need socket2's "all"; the adapter list; the system proxy resolved
+# before a bound client is built. All three are already in the tree (tokio, hyper, librqbit).
+socket2 = { version = "0.6.5", features = ["all"] }
+network-interface = "2.0.5"
+hyper-util = { version = "0.1.21", default-features = false, features = ["client-proxy-system"] }
 # The release signatures' RSA and Ed25519 checks (crates/tools/src/openpgp.rs): the crypto
 # library rustls brings anyway, with the same features.
 aws-lc-rs = { version = "1.19.0", default-features = false, features = ["aws-lc-sys", "prebuilt-nasm"] }

@@ -39,6 +39,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   download stops with a message naming it, unless you allow falling back to the system's DNS;
   your hosts file and local names stay with the system's. The command line's `get` takes
   `--dns`. Video pages and torrent trackers still use the system's DNS.
+- **Downloads through one network adapter, with a kill switch**
+  ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35)): Options → Proxy / Socks
+  → Network adapter. Pick one, usually your VPN's, and every connection MDM opens goes out
+  through it or not at all: downloads, FTP, the DNS you chose, MDM's own downloads and the update
+  check. When the adapter disconnects, nothing goes out through your normal connection. Running
+  downloads stop and start again when it's back. Video pages, torrents on Windows and `ftps://`
+  can't be held to an adapter yet, so they don't start while one is chosen. The command line's `get` takes
+  `--adapter`. PAC scripts' `myIpAddress` no longer opens a network socket on Windows.
 - **Drop-down lists for screen readers**: a screen reader or UI Automation can now set a
   drop-down list's choice by its text, and open or close the list.
 - **Torrents: upload limits, and a share ratio that lasts**

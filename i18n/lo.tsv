@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	ໄດ້ບັນທຶກລາຍງານແລ້ວ. ການສົ່ງລາຍງານນີ້ໄປຫານັກພັດທະນາໃນ GitHub ຊ່ວຍໃຫ້ພວກເຂົາແກ້ໄຂບັນຫານີ້; ທ່ານສາມາດອ່ານທຸກຢ່າງທີ່ລາຍງານມີຢູ່ລຸ່ມນີ້ກ່ອນ. ບໍ່ມີຫຍັງຖືກສົ່ງໄປເອງ: ສົ່ງ ຈະເປີດແບບຟອມລາຍງານໃນບຣາວເຊີຂອງທ່ານ, ທີ່ໄດ້ຕື່ມຂໍ້ມູນແລ້ວ, ເພື່ອໃຫ້ທ່ານກວດສອບ ແລະ ສົ່ງ.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	ເຊີບເວີໃນຄອມພິວເຕີເຄື່ອງນີ້ໄດ້ສົ່ງການດາວໂຫຼດໄປບ່ອນອື່ນ, ເຊິ່ງຈະບໍ່ຜ່ານ {adapter}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	ກ່ຽວກັບ Mister Download Manager
@@ -231,6 +235,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	ຕອບໃນ {ms} ມິນລິວິນາທີ: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	ອັນໃດກໍໄດ້ (ລະບົບເລືອກເອງ)
 #. text in the Scheduler window
 #, machine
 	April	ເມສາ
@@ -719,6 +727,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ລິ້ງດາວໂຫຼດຊໍ້າກັນ
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	ແຕ່ລະການເຊື່ອມຕໍ່ຈະໃຊ້ເສັ້ນທາງຂອງລະບົບ.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -771,6 +783,10 @@
 #. text in the Options window
 #, machine
 	Event	ເຫດການ
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	ທຸກການເຊື່ອມຕໍ່ຈະຜ່ານມັນ, ຈາກ {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1343,6 +1359,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	ຊື່ໃນໄຟລ໌ໂຮສຂອງທ່ານ ແລະ ຊື່ທ້ອງຖິ່ນ (ຄຳດຽວ, .local, .lan) ຍັງຄົງໃຊ້ DNS ຂອງລະບົບ. ໜ້າວິດີໂອ ແລະ ຕົວຕິດຕາມ torrent ໃຊ້ DNS ຂອງລະບົບໃນຕອນນີ້.
+#. text in the Options window
+#, machine
+	Network adapter:	ອະແດັບເຕີເຄືອຂ່າຍ:
 #. text in errors.rs
 #, machine
 	network error	ຂໍ້ຜິດພາດຂອງເຄືອຂ່າຍ
@@ -2093,6 +2112,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	ຢຸດແລ້ວ
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	ຢຸດແລ້ວ: ອະແດັບເຕີເຄືອຂ່າຍປ່ຽນແປງ; ກໍາລັງເລີ່ມຕົ້ນໃໝ່
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	ຢຸດແລ້ວ: {adapter} ບໍ່ໄດ້ເຊື່ອມຕໍ່; ມັນຈະສືບຕໍ່ເມື່ອມັນກັບມາ
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ຢຸດເມື່ອການດາວໂຫຼດສຳເລັດ
@@ -2286,6 +2313,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	ບໍ່ສາມາດບັນທຶກລາຍການໄດ້: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	ອະແດັບເຕີເຄືອຂ່າຍ {adapter} ບໍ່ໄດ້ເຊື່ອມຕໍ່
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	ເສັ້ນທາງຍາວເກີນໄປສຳລັບ Windows: {path}
@@ -2476,6 +2507,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	ທໍເຣັນ
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	ທໍເຣັນບໍ່ສາມາດຜ່ານອະແດັບເຕີເຄືອຂ່າຍທີ່ເລືອກໄວ້ໃນ Windows ໄດ້ເທື່ອ
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2674,6 +2709,14 @@
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ການຊອກຫາວິດີໂອໃຊ້ yt-dlp (ປະມານ 23 MB, ກວດສອບກັບລາຍເຊັນຂອງມັນ).
 #. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	ໜ້າວິດີໂອ ແລະ torrent ຍັງໃຊ້ງານບໍ່ໄດ້.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	ໜ້າວິດີໂອຍັງໃຊ້ງານບໍ່ໄດ້.
+#. text in the Options window
 #, machine
 	Virus checking settings	ການຕັ້ງຄ່າການກວດສອບໄວຣັສ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
@@ -2779,6 +2822,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ຊອກຫາວິດີໂອ
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (ບໍ່ໄດ້ເຊື່ອມຕໍ່)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} ບໍ່ໄດ້ເຊື່ອມຕໍ່: ບໍ່ມີຫຍັງຖືກດາວໂຫຼດຈົນກວ່າມັນຈະກັບມາ.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2845,6 +2896,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} ຊົ່ວໂມງ {m} ນາທີ
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} ບໍ່ສາມາດເຂົ້າເຖິງໄດ້ຜ່ານ {adapter}: ມັນບໍ່ມີທີ່ຢູ່ປະເພດນັ້ນ (IPv4 ຫຼື IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2900,6 +2955,10 @@
 #. {s} = seconds (keep the braces as they are)
 #, machine
 	{s} sec	{s} ວິນາທີ
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ບໍ່ສາມາດຜ່ານອະແດັບເຕີເຄືອຂ່າຍທີ່ເລືອກ ({adapter}) ໄດ້ເທື່ອ
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
