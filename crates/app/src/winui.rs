@@ -1201,10 +1201,18 @@ pub fn row_list(
     st.first = st.first.min(max_first);
     ev.focused = focused;
     let clip = p.with_clip_rect(rect(area));
+    // The rows (and what their painters put in them: a tree's check boxes) are the list's
+    // children in the accessibility tree, not its siblings (#102): a screen reader then says
+    // "4 of 12", and UI Automation's Selection finds them under the list.
+    let mut rows_ui = ui.new_child(
+        egui::UiBuilder::new()
+            .max_rect(rect(inner))
+            .accessibility_parent(resp.id),
+    );
     for i in st.first..n.min(st.first + page) {
         let top = inner.top() + 1.0 + row_h * (i - st.first) as f32;
         let row = Rect::from_min_max(pos2(inner.left(), top), pos2(right, top + row_h));
-        let r = ui.interact(rect(row), id.with(i), pointer_only());
+        let r = rows_ui.interact(rect(row), id.with(i), pointer_only());
         let selected = st.selected == Some(i);
         let fill = if selected && focused {
             Some(ROW_SELECTED())
@@ -1248,14 +1256,27 @@ pub fn row_list(
             },
             name: String::new(),
         };
-        paint(ui, &clip, i, row, &mut look);
+        // What the painter puts in the row (a tree's check box) belongs to the row: the row's
+        // node made first (named below, once its painter has said what it shows), so those
+        // controls find it as their parent.
+        ui.ctx().accesskit_node_builder(r.id, |_| {});
+        let mut row_ui = rows_ui.new_child(
+            egui::UiBuilder::new()
+                .max_rect(rect(row))
+                .accessibility_parent(r.id),
+        );
+        paint(&mut row_ui, &clip, i, row, &mut look);
         // Named by what its painter drew (#95: rows were read as blank items, and alike rows
         // couldn't be told apart by UI Automation).
         expose(&r, egui::Role::ListBoxOption, &look.name, true, None);
         // Selected as a list's item (UI Automation's SelectionItem), as the download list does;
         // expose's `on` would make it "toggled".
-        ui.ctx()
-            .accesskit_node_builder(r.id, |n| n.set_selected(selected));
+        // Its place among all the rows, not only those drawn (only the rows in view exist).
+        ui.ctx().accesskit_node_builder(r.id, |node| {
+            node.set_selected(selected);
+            node.set_position_in_set(i + 1);
+            node.set_size_of_set(n);
+        });
         if selected && focused {
             focus_ring(&clip, rect(row));
         }

@@ -281,6 +281,8 @@ impl OptionsDialog {
         // Check list: one row per browser in the shared row list (Space ticks the selected
         // one; the box and its name tick it too).
         let browsers = &mut s.browsers;
+        // Named by its group's caption, which says what the list is (#102).
+        self.browser_rows.name = crate::i18n::t("Capture downloads from the following browsers:");
         let ev = winui::row_list(
             ui,
             "browsers",

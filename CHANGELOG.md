@@ -189,6 +189,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   their selected row; Download video's list is called Quality, Add torrent's Files and the
   sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
   choice at once: it used to wait for the next mouse move.
+- **List rows sit inside their list for screen readers** ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102)):
+  they used to be listed beside it. A screen reader now says which row of how many ("4 of 12"),
+  choosing from the list itself works (UI Automation's Selection), and a tree's check box belongs
+  to its file's row. The language picker's list and the Options browser list and the Scheduler's
+  two lists have names now too.
 - **Torrents: speed limits now work as they do for other downloads**
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
   torrent's progress window changed every torrent's limit, a remembered limit was ignored, the
