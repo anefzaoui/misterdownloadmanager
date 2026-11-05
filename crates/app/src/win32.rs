@@ -1229,7 +1229,16 @@ pub fn work_area(x: i32, y: i32) -> Option<[i32; 4]> {
 /// system image list that fits `px` pixels: small, large, extra large (16, 32, 48 at 100 %, more
 /// with the system's scale), then jumbo (256) for anything bigger. The file need not exist. Run
 /// on fileicons.rs's lookup thread: the first lookup of a type loads its shell handler.
+///
+/// One lookup at a time in the process (the drag picture asks from the UI thread): two threads
+/// in the shell at once could miss an icon. A miss is tried once more (a handler's first load).
 pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
+    static ONE_AT_A_TIME: std::sync::Mutex<()> = std::sync::Mutex::new(());
+    let _held = ONE_AT_A_TIME.lock().unwrap_or_else(|e| e.into_inner());
+    file_icon_once(what, px).or_else(|| file_icon_once(what, px))
+}
+
+fn file_icon_once(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
     use crate::fileicons::What;
     use windows_sys::Win32::Storage::FileSystem::FILE_ATTRIBUTE_DIRECTORY;
     use windows_sys::Win32::UI::Shell::SHGFI_SYSICONINDEX;

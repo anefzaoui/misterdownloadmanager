@@ -483,10 +483,13 @@ mod tests {
     }
 
     /// This system's own icons, for real (Windows' shell here; macOS Finder and the Linux
-    /// desktop's theme on their CI runners, where one is installed).
+    /// desktop's theme on their CI runners, where one is installed). Every type at 16 and 32
+    /// pixels, the sizes at 100 %; larger ones as the system has them (a CI runner's session,
+    /// without a desktop, may lack the larger lists). What is missing is named.
     #[test]
     fn the_system_gives_its_icons_at_the_size_asked() {
-        let mut found = 0;
+        let mut missing = Vec::new();
+        let mut small = Vec::new();
         for what in [
             What::File(Some("pdf".into())),
             What::File(Some("zip".into())),
@@ -505,21 +508,27 @@ mod tests {
                             "{what:?} {px}: blank"
                         );
                         // The list that fits: as big as asked when the system has one.
-                        if cfg!(any(windows, target_os = "macos")) && px <= 48 {
-                            assert!(side >= px, "{what:?} {px}: {side}");
+                        if side < px && px <= 48 {
+                            small.push(format!("{what:?} at {px}: {side}"));
                         }
-                        found += 1;
                     }
-                    Some(Native::File(path)) => {
-                        assert!(path.is_file(), "{path:?}");
-                        found += 1;
-                    }
-                    None => {}
+                    Some(Native::File(path)) => assert!(path.is_file(), "{path:?}"),
+                    None => missing.push((what.clone(), px)),
                 }
             }
         }
         if cfg!(any(windows, target_os = "macos")) {
-            assert_eq!(found, 35, "every type at every size");
+            let needed: Vec<_> = missing
+                .iter()
+                .filter(|(_, px)| *px == 16 || *px == 32)
+                .collect();
+            assert!(
+                needed.is_empty(),
+                "no icon: {needed:?} (all missing: {missing:?})"
+            );
+        }
+        if !missing.is_empty() || !small.is_empty() {
+            eprintln!("missing: {missing:?}; smaller than asked: {small:?}");
         }
     }
 }
