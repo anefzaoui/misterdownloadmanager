@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Respostas sobre o Mister Download Manager: se é gratuito, se é seguro, como se compara com o IDM, navegadores, vídeos, torrents, velocidade, Mac e Linux, e muito mais."
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>Limitar envio para todos os torrents para</g1> — desativado por padrão. Limita o que todos os seus torrents juntos enviam para outros peers, enquanto eles baixam e enquanto eles compartilham. O próprio limite de envio de um torrent, em sua janela de progresso, se aplica além disso."
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "Inicia a fila principal de downloads; <x1/>."
@@ -466,6 +470,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "Uma cópia portátil. A lista de downloads e as configurações permanecem em uma pasta <x1/> ao lado do programa, e nada é gravado no registro. A integração com o navegador requer o instalador. Consulte <g2>Modo portátil</g2>."
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "Na mesma janela, marque <g1>Limitar todos os downloads juntos a</g1> e defina a velocidade. Isso limita o MDM como um todo, independentemente de quantos arquivos estão sendo baixados, incluindo torrents. Quando torrents e outros downloads são executados ao mesmo tempo, cada lado recebe pelo menos metade da velocidade, e mais quando o outro lado precisa de menos: um torrent lento deixa o restante para os outros downloads, e vice-versa. Isso se aplica sempre que estiver marcado, esteja o limitador por arquivo ativado ou desativado."
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "Experimental"
@@ -561,6 +569,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Abra as <g1>Configurações → Aplicativos</g1> do Windows, encontre o Mister Download Manager e escolha Desinstalar. O desinstalador pergunta se você também deseja excluir sua lista de downloads e configurações. Os arquivos que você baixou nunca são tocados. Para a cópia portátil, exclua sua pasta."
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "O Gerenciador de Tarefas mostra vários números, e eles significam coisas diferentes:"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -1093,6 +1105,10 @@
   "1cafb86bd2c2b2f4": {
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>Informações do Arquivo de Download</g1> mostra o nome do arquivo, seu tamanho e onde será salvo. A pasta depende do tipo de arquivo: um ZIP vai para <x2/>, um vídeo para <x3/>, e assim por diante. Mude a pasta ou a categoria se quiser."
+  },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "Para um torrent, o limite é apenas para aquele torrent; os outros mantêm os seus. Um torrent não pode ser mantido abaixo de 16 KB/s: um limite menor lhe dará 16."
   },
   "1cc76bd241b12c50": {
    "source": "Privacy",
@@ -1994,10 +2010,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> ou posterior em Apple Silicon ou Intel (experimental)."
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "Na mesma janela, marque <g1>Limitar todos os downloads juntos a</g1> e defina a velocidade. Isso limita o MDM como um todo, independentemente de quantos arquivos estejam sendo baixados. Isso se aplica sempre que estiver marcado, esteja o limitador por arquivo ligado ou desligado."
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Clique com o botão direito no espaço em branco da lista para <g1>Adicionar novo download</g1>, <g2>Selecionar tudo</g2>, <g3>Organizar arquivos</g3>, <g4>Limpar todos os filtros</g4> e <g5>Excluir Todos Concluídos</g5>."
@@ -2145,6 +2157,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "Clique com o botão direito em qualquer caixa de texto para <g1>Recortar</g1>, <g2>Copiar</g2>, <g3>Colar</g3>, <g4>Excluir</g4> e <g5>Selecionar tudo</g5>."
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>Memória</g1> (na aba Processos) é o que o MDM guarda só para si, seu <g2>conjunto de trabalho privado</g2>. Com a janela aberta e nada baixando, isso é cerca de 50 MB."
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2562,6 +2578,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>Downloads</g1>: o instalador do Windows, um zip portátil e um zip simples, a extensão do navegador por conta própria (um zip para navegadores Chromium, um <x2/> para Firefox, sempre a versão do aplicativo), e <g3>macOS e Linux para experimentar</g3>: um <x4/> universal e um AppImage, <x5/>, <x6/> e <x7/>, marcados <x8/> porque não foram testados por nós. Lá, o MDM se conecta ao Chrome, Edge, Brave, Vivaldi e Firefox, tem seu ícone na bandeja, segue a aparência clara ou escura do sistema e usa as fontes e o ffmpeg do sistema. Diga-nos como eles funcionam para você."
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>DNS sobre HTTPS</g1> (o padrão) ou <g2>DNS sobre TLS</g2>: criptografado, para que ninguém no caminho veja ou altere os nomes que você pesquisa."
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>Iniciar download em</g1> — um horário, então:"
@@ -2722,6 +2742,10 @@
    "source": "The programs, to unpack anywhere",
    "text": "Os programas, para descompactar em qualquer lugar"
   },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — qual DNS transforma os nomes dos servidores em endereços para os downloads do MDM, seus próprios downloads (ajudantes, atualizações) e FTP. <g2>O DNS do sistema</g2> é o padrão (no Windows 11 já pode ser criptografado, nas próprias configurações de rede do Windows). Ou escolha <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> ou <g7>NextDNS</g7>, ou <g8>Outro DNS...</g8> para digitar o seu; <g9>Configurações...</g9> escolhe como é solicitado:"
+  },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
    "text": "Dê um clique duplo no torrent na lista para abrir sua janela de progresso. Além do status usual, a janela de um torrent tem cinco abas:"
@@ -2733,6 +2757,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "Abrir o download selecionado (um clique duplo segue o clique com o botão direito → <g1>Ao clicar duas vezes</g1>)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "A aba <g1>Limitador de Velocidade</g1> da janela de um torrent tem, além do seu limite de download, <g2>Limitar envio</g2> a uma velocidade de sua escolha. Esse limite é mantido com o torrent: ele se aplica novamente sempre que o torrent é executado ou compartilhado. Um torrent não pode ser mantido abaixo de 16 KB/s de qualquer forma."
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -2761,6 +2789,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "Gratuito e de código aberto. Instale, clique em um link e veja cada conexão em ação."
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "Os nomes no seu arquivo hosts e nomes locais (palavras únicas, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>) permanecem com o DNS do sistema. Páginas de vídeo (yt-dlp) e rastreadores de torrent ainda usam o DNS do sistema. Com um proxy, o proxy pesquisa os nomes dos sites que ele acessa para você."
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -2829,6 +2861,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>Idiomas</g2></g1> — os 86 idiomas da interface, layouts da direita para a esquerda e como ajudar a traduzir."
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "Fechado para a área de notificação, o MDM devolve sua memória ao Windows: <g1>Memória</g1> cai para menos de 10 MB em segundos e permanece baixa enquanto espera. Downloads, filas e o agendador continuam como antes. A lista de todos os idiomas (<g2>Exibir → Idioma</g2>) carrega fontes para cada script enquanto está aberta; o MDM as libera quando fecha."
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -3596,7 +3632,7 @@
   },
   "66b76acd18192191": {
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
-   "text": "<g1>Propriedades</g1> — altere o nome, os tipos de arquivo e a pasta. As categorias Geral e Torrents só permitem alterar a pasta. Uma categoria renomeada mantém sua pasta; uma categoria interna mantém seu nome no seu idioma até que você a renomeie."
+   "text": "<g1>Propriedades</g1> — altere o nome, os tipos de arquivo e a pasta. Geral e Torrents alteram apenas a pasta. Uma categoria renomeada mantém sua pasta; uma categoria interna mantém seu nome no seu idioma até que você a renomeie."
   },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
@@ -3621,6 +3657,10 @@
   "67f71066401d978a": {
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>Sem quebra de proteção contra cópia.</g1> O MDM não remove ou contorna DRM, e não foi feito para isso. Conteúdo protegido permanece protegido."
+  },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>Testar</g1> o solicita para github.com e mostra quanto tempo levou."
   },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
@@ -3721,6 +3761,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "Outros sistemas e arquivos"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>DNS simples</g1>: não criptografado. O MDM o solicita via TCP, nunca UDP, então nunca precisa de uma exceção de firewall."
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4270,6 +4314,10 @@
    "source": "Troubleshooting",
    "text": "Solução de problemas"
   },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "Para o seu próprio DNS: os endereços IP dos servidores, o nome que o certificado deles mostra (TLS), ou o endereço <x1/> (HTTPS, com seus endereços IP se você os souber). O NextDNS usa seu ID de configuração."
+  },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "Adicionar um download (<g1>Adicionar URL</g1>)"
@@ -4418,6 +4466,10 @@
    "source": "While it downloads.",
    "text": "Enquanto está baixando."
   },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>Tamanho de confirmação</g1> é a memória que o MDM reservou, esteja em uso ou não."
+  },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "É necessário o Firefox 140 ou posterior."
@@ -4537,10 +4589,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "Conexões e velocidade — Ajuda do Mister Download Manager"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>Geral</g1> — o hash de informações, partes, pares, quanto foi enviado, a taxa de compartilhamento e a pasta."
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -5261,10 +5309,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — executa de uma pasta ou pendrive"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "Baixa um arquivo com até 8 conexões (<x1/>, de 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o arquivo finalizado: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>)."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7006,6 +7050,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "Todas as versões estão na página <g1>Releases</g1>. Para Windows, há três arquivos:"
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>Se não puder ser alcançado, use o DNS do sistema</g1>: desativado por padrão, então um DNS que não responde interrompe o download com uma mensagem nomeando-o, em vez de mostrar silenciosamente suas pesquisas ao DNS do sistema. Um nome que o DNS diz não existir nunca retorna (isso desfaria um DNS de filtragem)."
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "Retomar um download interrompido — Ajuda do Mister Download Manager"
@@ -7166,6 +7214,10 @@
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "Se você quer o layout do <g1>Internet Download Manager (IDM)</g1> sem o preço, a alternativa gratuita é o <g2>Mister Download Manager (MDM)</g2>: um gerenciador de download gratuito e de código aberto para Windows 10 e 11, com versões experimentais para macOS e Linux. Ele se parece e funciona como o IDM, importa sua lista de downloads do IDM, baixou um arquivo de 1 GiB 5,4 vezes mais rápido que o IDM 6.42 em <g3>nosso benchmark publicado</g3>, e também baixa torrents, links magnéticos e vídeos."
   },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "Esta é a única parte do MDM que aguarda conexões externas. Downloads, a escolha de DNS do MDM (Opções → Conexão → DNS), suas atualizações e seus auxiliares apenas se conectam para fora, então nunca precisam de uma exceção de firewall; a extensão do navegador e a API de automação alcançam o MDM apenas neste computador (127.0.0.1)."
+  },
   "cc126dc832a278c1": {
    "source": "Yes",
    "text": "Sim"
@@ -7252,7 +7304,7 @@
   },
   "cf3a9ec3dbd55233": {
    "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
-   "text": "<g1>Excluir</g1> — remove uma categoria, seja uma criada por você ou uma interna (exceto Geral ou Torrents). O MDM pergunta o que fazer com os downloads dela: <g2>Mover seus downloads para Geral</g2>, ou <g3>Remover seus downloads da lista</g3> (um download em andamento é movido para Geral). Os arquivos permanecem onde estão em ambos os casos. A partir de então, os arquivos dos tipos dela vão para outra categoria que os tenha, ou para Geral."
+   "text": "<g1>Excluir</g1> — remove uma categoria, sua ou uma interna (não Geral ou Torrents). O MDM pergunta o que acontece com seus downloads: <g2>Mover seus downloads para Geral</g2>, ou <g3>Remover seus downloads da lista</g3> (um download em execução é movido para Geral). Os arquivos permanecem onde estão de qualquer forma. A partir de então, os arquivos de seus tipos vão para outra categoria que os tenha, ou para Geral."
   },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
@@ -7570,6 +7622,10 @@
    "source": "Benchmark scenario",
    "text": "Cenário de benchmark"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>Conjunto de trabalho</g1> (aba Detalhes, adicione a coluna) soma a memória compartilhada com outros programas. O MDM desenha suas janelas com a placa gráfica, então a memória do driver gráfico também conta aqui, cerca de 85 MB no total."
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. Sem garantia"
@@ -7738,6 +7794,10 @@
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "É possível retomar downloads interrompidos? — Mister Download Manager"
   },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDM usa muita memória"
+  },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",
    "text": "Alternativas gratuitas ao IDM, comparadas"
@@ -7817,6 +7877,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "Retomar um download interrompido"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "Baixa um arquivo com até 8 conexões (<x1/>, de 1 a 128), mostrando o progresso. <x2/> pausa; <x3/> continua. <x4/> verifica o arquivo concluído: MD5 hexadecimal, SHA-1, SHA-256, SHA-512 ou CRC32, opcionalmente nomeado (<x5/>). <x6/> escolhe o DNS: <x7/> (o padrão); um serviço e como consultá-lo, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; endereços de servidores DNS, <x13/>; ou um endereço DNS-over-HTTPS. Nunca retorna ao DNS do sistema."
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8024,7 +8088,7 @@
   },
   "e680897e60d1dca2": {
    "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
-   "text": "Para restaurar as categorias internas como vieram, com seus nomes, tipos de arquivo e pastas, use <g1>Opções → Salvar em → Restaurar as categorias internas</g1>. Suas próprias categorias, Geral e Torrents permanecem como estão."
+   "text": "Para trazer as categorias internas de volta como vieram, com seus nomes, tipos de arquivo e pastas, use <g1>Opções → Salvar em → Restaurar as categorias internas</g1>. Suas próprias categorias, Geral e Torrents, permanecem como estão."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -8413,6 +8477,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "Clique em <g1>Adicionar URL</g1> na barra de ferramentas, escolha <g2>Tarefas → Adicionar novo download</g2> ou pressione <g3>Ctrl+N</g3>."
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>Geral</g1> — o info hash, as partes, os peers, o quanto foi enviado, a taxa de compartilhamento, por quanto tempo foi compartilhado e a pasta. O que foi enviado e o tempo compartilhado são somados em todas as execuções do torrent: eles não voltam a 0 após uma pausa ou um reinício do MDM."
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",
@@ -8825,6 +8893,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "Um torrent conta como um arquivo aqui: cada torrent recebe o seu próprio limite. Um download com um limite próprio (veja <g1>Para um download</g1>) mantém esse limite."
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

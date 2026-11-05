@@ -83,8 +83,10 @@ pub struct Options {
     /// its last written bytes and compare them (IDM's resume overlap check; catches changed
     /// files on servers without validators). 0 turns it off.
     pub verify_overlap: u64,
-    /// Fixed addresses for host names, like hosts-file entries (tests; a DNS option later).
+    /// Fixed addresses for host names, like hosts-file entries (tests).
     pub hosts: Vec<(String, Vec<std::net::IpAddr>)>,
+    /// Options → Connection → DNS: who answers the names (#36).
+    pub dns: crate::dns::DnsChoice,
     /// Options → Proxy / Socks.
     pub proxy: Proxy,
     /// A limit shared by every download using the same limiter (a global speed cap), on top
@@ -185,6 +187,7 @@ impl Default for Options {
             speed_limit: None,
             verify_overlap: 64,
             hosts: Vec::new(),
+            dns: Default::default(),
             proxy: Proxy::None,
             global: None,
             checksum: None,
@@ -1205,7 +1208,12 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
         None => builder.redirect(get_policy()),
     };
     Ok(builder
-        .dns_resolver(Arc::new(dns::Resolver::new(&opts.hosts, port)))
+        .dns_resolver(Arc::new(dns::Resolver::new(
+            &opts.hosts,
+            port,
+            &opts.dns,
+            &opts.extra_roots,
+        )))
         .http1_only()
         .user_agent(&opts.user_agent)
         .connect_timeout(opts.connect_timeout)
@@ -2687,10 +2695,21 @@ async fn receive(
                 }
                 let want = chunk.len() as u64;
                 // Pay first: the wait is when other connections may split this segment, and
-                // the claim below then grants only what still belongs to it.
-                ctx.shared.limiter.acquire(want).await;
-                if let Some(g) = &ctx.opts.global {
-                    g.acquire(want).await;
+                // the claim below then grants only what still belongs to it. Stop ends the
+                // wait (under a low limit it is seconds long; Stop used to wait it out).
+                let paid = async {
+                    ctx.shared.limiter.acquire(want).await;
+                    if let Some(g) = &ctx.opts.global {
+                        g.acquire(want).await;
+                    }
+                };
+                tokio::select! {
+                    _ = ctx.cancel.cancelled() => {
+                        // Not claimed yet: this chunk isn't ours to keep; what is, is written.
+                        flush(ctx, id, &mut pos, &mut buf).await?;
+                        return Err(Error::Cancelled);
+                    }
+                    _ = paid => {}
                 }
                 let at = pos + buf.len() as u64;
                 // An answer that runs to the end of the file (`whole`: the probe's plain GET),
@@ -2839,9 +2858,16 @@ async fn single_stream(
             n = body.chunk() => n,
         };
         let Some(chunk) = next? else { break };
-        shared.limiter.acquire(chunk.len() as u64).await;
-        if let Some(g) = global {
-            g.acquire(chunk.len() as u64).await;
+        // Stop ends a limiter's wait too (under a low limit it is seconds long).
+        let paid = async {
+            shared.limiter.acquire(chunk.len() as u64).await;
+            if let Some(g) = global {
+                g.acquire(chunk.len() as u64).await;
+            }
+        };
+        tokio::select! {
+            _ = cancel.cancelled() => return Err(Error::Cancelled),
+            _ = paid => {}
         }
         let (f, at, n) = (file.clone(), pos, chunk.len() as u64);
         tokio::task::spawn_blocking(move || write_all_at(&f, at, &chunk))

@@ -24,6 +24,41 @@ pub struct TorrentSpec {
     pub files: Option<Vec<usize>>,
     /// Where its files go (a multi-file torrent's own folder included).
     pub folder: PathBuf,
+    /// Bytes sent to peers, in all its runs (librqbit counts only the current one: from 0
+    /// again at each resume and each start of the app). Kept by [`Accountant`].
+    #[serde(default)]
+    pub uploaded: u64,
+    /// Seconds it has spent sharing once finished, in all its runs.
+    #[serde(default)]
+    pub seeded_secs: u64,
+    /// Its own upload limit, bytes/s (None: only Torrent settings' limit for all torrents).
+    #[serde(default)]
+    pub upload_limit: Option<u64>,
+}
+
+/// Adds up what each torrent sent, run after run: librqbit's count starts at 0 again each time
+/// a torrent resumes (and is 0 while it is paused), so a smaller count than the last one seen
+/// is all new.
+#[derive(Default)]
+pub struct Accountant {
+    seen: std::collections::HashMap<String, u64>,
+}
+
+impl Accountant {
+    /// The bytes `hash` sent since it was last seen; `live` is librqbit's count now.
+    pub fn sent(&mut self, hash: &str, live: u64) -> u64 {
+        let last = self.seen.insert(hash.to_owned(), live);
+        match last {
+            Some(last) if live >= last => live - last,
+            // First seen in this run of the app, or a new count since: all of it is new.
+            _ => live,
+        }
+    }
+
+    /// Forget torrents no longer in the list.
+    pub fn keep(&mut self, hashes: &HashSet<String>) {
+        self.seen.retain(|h, _| hashes.contains(h));
+    }
 }
 
 /// Our torrent data: librqbit's resume data and DHT nodes, and a copy of each .torrent.
@@ -131,6 +166,10 @@ pub struct Host {
     /// Settings::torrent_config) and those of the one running.
     wanted: Arc<Mutex<Option<Config>>>,
     running: Arc<Mutex<Option<Config>>>,
+    /// The global cap (D-012), bytes/s: every torrent together stays under it (`set_cap`).
+    cap: Arc<Mutex<Option<u64>>>,
+    /// Torrent settings' upload limit for all torrents together, bytes/s (`set_upload`).
+    upload: Arc<Mutex<Option<u64>>>,
 }
 
 impl Host {
@@ -139,6 +178,28 @@ impl Host {
             cell: Arc::new(tokio::sync::Mutex::new(None)),
             wanted: Arc::new(Mutex::new(state_dir().map(Config::new))),
             running: Arc::new(Mutex::new(None)),
+            cap: Arc::new(Mutex::new(None)),
+            upload: Arc::new(Mutex::new(None)),
+        }
+    }
+
+    /// Torrent settings' upload limit for all torrents (None: unlimited), for the session.
+    /// Cheap: called each frame, as `set_cap`; a session that starts takes it at once.
+    pub fn set_upload(&self, rate: Option<u64>) {
+        *self.upload.lock().unwrap() = rate;
+        if let Some(t) = self.get() {
+            t.set_upload_limit(rate);
+        }
+    }
+
+    /// The torrents' share of the global cap now (None: off), for the session's download limit:
+    /// torrents together stay under it (`App::apply_global_limit` splits the cap with file
+    /// downloads). Cheap: called each frame; the session's limit changes only when it
+    /// differs (`Torrents::set_download_limit`), and a session that starts takes it at once.
+    pub fn set_cap(&self, rate: Option<u64>) {
+        *self.cap.lock().unwrap() = rate;
+        if let Some(t) = self.get() {
+            t.set_download_limit(rate);
         }
     }
 
@@ -187,6 +248,8 @@ impl Host {
                 let _ = t.remove(&hash, false).await;
             }
         }
+        t.set_download_limit(*self.cap.lock().unwrap());
+        t.set_upload_limit(*self.upload.lock().unwrap());
         let t = Arc::new(t);
         *cell = Some(t.clone());
         *self.running.lock().unwrap() = Some(cfg);
@@ -267,6 +330,11 @@ pub struct Run {
     folder: PathBuf,
     /// Its files' Mark-of-the-Web (#40): 0 not yet, 1 once librqbit created them, 2 finished.
     marked: Arc<std::sync::atomic::AtomicU8>,
+    /// Its own limits, bytes/s, (download, upload): the download one from the Speed Limiter's
+    /// "for one file" or the progress window, the upload one from the progress window
+    /// (`TorrentSpec::upload_limit`). Set on the torrent once it is in the session, and again
+    /// on each change.
+    limit: Arc<Mutex<(Option<u64>, Option<u64>)>>,
 }
 
 /// The origin a torrent's files are marked with: not one website, and never the magnet link
@@ -302,7 +370,8 @@ pub struct Details {
 }
 
 impl Run {
-    /// Start (or resume) `spec`'s torrent, at most `limit` bytes/s for the whole session.
+    /// Start (or resume) `spec`'s torrent, at most `limit` bytes/s down for this torrent (and
+    /// its own upload limit, `spec.upload_limit`).
     pub fn start(
         host: &Host,
         rt: &tokio::runtime::Handle,
@@ -313,11 +382,11 @@ impl Run {
         keep_sharing: bool,
     ) -> Run {
         let state = Arc::new(Mutex::new(RunState::Starting));
-        let (out, host, spec2) = (state.clone(), host.clone(), spec.clone());
+        let own = Arc::new(Mutex::new((limit, spec.upload_limit)));
+        let (out, host, spec2, own2) = (state.clone(), host.clone(), spec.clone(), own.clone());
         rt.spawn(async move {
             let res = async {
                 let t = host.session(known).await?;
-                t.set_download_limit(limit);
                 if t.has(&spec2.hash) {
                     t.resume(&spec2.hash)
                         .await
@@ -341,10 +410,17 @@ impl Run {
                 Ok::<_, String>(t)
             }
             .await;
-            *out.lock().unwrap() = match res {
-                Ok(t) => RunState::Ready(t),
-                Err(e) => RunState::Failed(e),
-            };
+            match res {
+                Ok(t) => {
+                    // Under the limit's lock, so a change made meanwhile (set_speed_limit) is
+                    // either seen here or applied there once it is Ready. librqbit keeps a
+                    // torrent's limits only while the session runs: set them each start.
+                    let own = own2.lock().unwrap();
+                    *out.lock().unwrap() = RunState::Ready(t.clone());
+                    let _ = t.set_torrent_limits(&spec2.hash, own.0, own.1);
+                }
+                Err(e) => *out.lock().unwrap() = RunState::Failed(e),
+            }
         });
         Run {
             state,
@@ -355,6 +431,7 @@ impl Run {
             keep_sharing,
             folder: spec.folder.clone(),
             marked: Arc::new(std::sync::atomic::AtomicU8::new(0)),
+            limit: own,
         }
     }
 
@@ -456,10 +533,34 @@ impl Run {
         }
     }
 
+    /// This torrent's own download limit (#39: not every torrent's): now if it is in the
+    /// session, else once it is.
     pub fn set_speed_limit(&self, rate: Option<u64>) {
+        let mut own = self.limit.lock().unwrap();
+        own.0 = rate;
         if let Some(t) = self.session() {
-            t.set_download_limit(rate);
+            let _ = t.set_torrent_limits(&self.hash, own.0, own.1);
         }
+    }
+
+    pub fn speed_limit(&self) -> Option<u64> {
+        self.limit.lock().unwrap().0
+    }
+
+    /// This torrent's own upload limit: now if it is in the session, else once it is.
+    pub fn set_upload_limit(&self, rate: Option<u64>) {
+        let mut own = self.limit.lock().unwrap();
+        own.1 = rate;
+        if let Some(t) = self.session() {
+            let _ = t.set_torrent_limits(&self.hash, own.0, own.1);
+        }
+    }
+
+    /// Bytes received from peers since it last started (for the global cap, which HTTP
+    /// downloads share with torrents); None until it is in the session.
+    pub fn fetched(&self) -> Option<u64> {
+        let t = self.session()?;
+        t.stats(&self.hash).ok().map(|s| s.fetched)
     }
 
     pub fn details(&self) -> Details {
@@ -524,6 +625,22 @@ pub fn dest_for(meta: &mdm_torrent::Meta, dir: &Path, files: Option<&[usize]>) -
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// #39: what a torrent sent adds up across its runs: librqbit's count is 0 while paused
+    /// and starts again at 0 on each resume.
+    #[test]
+    fn sent_bytes_add_up_across_resumes() {
+        let mut a = Accountant::default();
+        let mut total = 0;
+        for live in [100, 250, 250, 0, 0, 40, 90] {
+            total += a.sent("h", live);
+        }
+        assert_eq!(total, 250 + 90, "first run 250, then 90 after the pause");
+        // Another torrent counts on its own; a forgotten one starts afresh.
+        assert_eq!(a.sent("other", 30), 30);
+        a.keep(&HashSet::from(["other".to_owned()]));
+        assert_eq!(a.sent("h", 90), 90);
+    }
 
     #[test]
     fn magnet_links_carry_the_name() {

@@ -88,6 +88,9 @@ pub(crate) struct Site {
     read_timeout: Duration,
     /// `Options::hosts`: fixed addresses for names.
     hosts: Vec<(String, Vec<IpAddr>)>,
+    /// `Options::dns` and the certificates it may trust besides the system's.
+    dns: crate::dns::DnsChoice,
+    extra_roots: Vec<Vec<u8>>,
     tls: Option<tokio_rustls::TlsConnector>,
     /// The server offers `EPSV` (learned from `FEAT`): no address in the answer to get wrong
     /// behind NAT.
@@ -142,6 +145,8 @@ impl Site {
             connect_timeout: opts.connect_timeout,
             read_timeout: opts.read_timeout,
             hosts: opts.hosts.clone(),
+            dns: opts.dns.clone(),
+            extra_roots: opts.extra_roots.clone(),
             tls,
             epsv: AtomicBool::new(false),
             pool: Mutex::new(Vec::new()),
@@ -180,12 +185,15 @@ impl Site {
         }
         let found = tokio::time::timeout(
             self.connect_timeout,
-            tokio::net::lookup_host((self.host.as_str(), self.port)),
+            crate::dns::lookup(&self.dns, &self.host, self.port, &self.extra_roots),
         )
         .await
         .map_err(|_| net(NetKind::Timeout, ""))?
         .map_err(|e| net(NetKind::Connect, &e.to_string()))?;
-        Ok(found.collect())
+        Ok(found
+            .into_iter()
+            .map(|ip| SocketAddr::new(ip, self.port))
+            .collect())
     }
 
     async fn open(&self, addr: SocketAddr) -> Result<Session, Error> {
@@ -402,8 +410,14 @@ impl Transfer {
 /// The client configuration for FTPS: the system's verifier (as reqwest uses for HTTPS), with
 /// `extra` certificates also trusted.
 fn connector(extra: &[Vec<u8>]) -> Result<tokio_rustls::TlsConnector, Error> {
+    let config = client_config(extra).map_err(|e| net(NetKind::Tls, &e.to_string()))?;
+    Ok(tokio_rustls::TlsConnector::from(Arc::new(config)))
+}
+
+/// MDM's own TLS client configuration (FTPS, DNS over TLS and HTTPS): the system's verifier, as
+/// reqwest uses for HTTPS, with `extra` certificates also trusted (the tests' own CA).
+pub(crate) fn client_config(extra: &[Vec<u8>]) -> Result<rustls::ClientConfig, rustls::Error> {
     use rustls_platform_verifier::Verifier;
-    let tls = |e: rustls::Error| net(NetKind::Tls, &e.to_string());
     let provider = Arc::new(rustls::crypto::aws_lc_rs::default_provider());
     let verifier = if extra.is_empty() {
         Verifier::new(provider.clone())
@@ -412,15 +426,12 @@ fn connector(extra: &[Vec<u8>]) -> Result<tokio_rustls::TlsConnector, Error> {
             extra.iter().map(|c| CertificateDer::from(c.clone())),
             provider.clone(),
         )
-    }
-    .map_err(tls)?;
-    let config = rustls::ClientConfig::builder_with_provider(provider)
-        .with_safe_default_protocol_versions()
-        .map_err(tls)?
+    }?;
+    Ok(rustls::ClientConfig::builder_with_provider(provider)
+        .with_safe_default_protocol_versions()?
         .dangerous()
         .with_custom_certificate_verifier(Arc::new(verifier))
-        .with_no_client_auth();
-    Ok(tokio_rustls::TlsConnector::from(Arc::new(config)))
+        .with_no_client_auth())
 }
 
 /// The login an `Authorization: Basic` header carries.

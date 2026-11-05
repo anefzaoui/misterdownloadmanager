@@ -1,7 +1,7 @@
 //! Mister Download Manager download engine. See notes/ENGINE.md.
 
 pub mod disk;
-mod dns;
+pub mod dns;
 pub mod download;
 pub mod ftp;
 pub mod hosts;
@@ -15,6 +15,7 @@ mod sparse;
 pub mod state;
 pub mod verify;
 
+pub use dns::{Dns, DnsChoice, DnsError};
 pub use download::{
     Destination, Download, Error, Event, FileHook, KeptAnswer, NetKind, Options, Outcome,
     ProbeInfo, Proxy, Request, Snapshot, fetch, probe, probe_kept, supported,

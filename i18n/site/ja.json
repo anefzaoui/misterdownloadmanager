@@ -158,6 +158,10 @@
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager に関する回答：無料か、安全か、IDMとの比較、ブラウザー、ビデオ、トレント、速度、MacとLinuxなど。"
   },
+  "03f25752c573e3ff": {
+   "source": "<g1>Limit uploading for all torrents to</g1> — off by default. Caps what all your torrents together send to other peers, while they download and while they share. A torrent's own upload limit, in its progress window, applies on top of it.",
+   "text": "<g1>すべてのトレントのアップロードを次の値に制限する:</g1> — デフォルトではオフです。ダウンロード中および共有中に、すべてのトレントが他のピアに送信する合計量を制限します。トレント自身のアップロード制限は、その進行状況ウィンドウで、この制限に加えて適用されます。"
+  },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
    "text": "メインのダウンロードキューを開始します。<x1/>。"
@@ -466,6 +470,10 @@
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "ポータブル版です。ダウンロードリストと設定はプログラムの隣の<x1/>フォルダに保存され、レジストリには何も書き込まれません。ブラウザ統合にはインストーラーが必要です。<g2>ポータブルモード</g2>をご覧ください。"
   },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "同じウィンドウで、<g1>すべてのダウンロードを合計で制限する</g1>にチェックを入れ、速度を設定します。これにより、ダウンロード中のファイル数に関わらず、トレントを含めMDM全体の速度が制限されます。トレントと他のダウンロードが同時に実行される場合、それぞれが少なくとも半分の速度を得て、もう一方がより少ない速度を必要とする場合はそれ以上になります。例えば、トレントの進行が遅い場合、残りの速度は他のダウンロードに割り当てられ、その逆も同様です。この設定は、ファイルごとの制限がオンかオフかに関わらず、チェックが入っている間は常に適用されます。"
+  },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
    "text": "実験版"
@@ -561,6 +569,10 @@
   "0f3179714a2486d1": {
    "source": "Open Windows <g1>Settings → Apps</g1>, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as well. Files you downloaded are never touched. For the portable copy, delete its folder.",
    "text": "Windows の<g1>設定 → アプリ</g1>を開き、Mister Download Manager を見つけて「アンインストール」を選択します。アンインストーラーは、ダウンロードリストと設定も削除するかどうかを尋ねます。ダウンロードしたファイルは決して削除されません。ポータブル版の場合は、そのフォルダーを削除してください。"
+  },
+  "0f46ad668def3740": {
+   "source": "Task Manager shows several figures, and they mean different things:",
+   "text": "タスクマネージャーにはいくつかの数値が表示され、それぞれ異なる意味を持ちます。"
   },
   "0f500782a4b34150": {
    "source": "scenario",
@@ -1093,6 +1105,10 @@
   "1cafb86bd2c2b2f4": {
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>ダウンロード ファイル情報</g1>には、ファイル名、サイズ、保存先が表示されます。フォルダーはファイルの種類によって異なり、ZIPは<x2/>、ビデオは<x3/>などに保存されます。必要に応じて、フォルダーやカテゴリを変更してください。"
+  },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "トレントの場合、制限はそのトレントのみに適用されます。他のダウンロードはそれぞれの制限を維持します。トレントは16 KB/秒未満に制限することはできません。それより低い制限を設定しても16 KB/秒が適用されます。"
   },
   "1cc76bd241b12c50": {
    "source": "Privacy",
@@ -1994,10 +2010,6 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple SiliconまたはIntel搭載の<g1>macOS 11</g1>以降（実験的）。"
   },
-  "365cb42bdffad447": {
-   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading. It applies whenever it is ticked, whether the per-file limiter is on or off.",
-   "text": "同じウィンドウで、<g1>すべてのダウンロードを合計で制限する</g1>にチェックを入れ、速度を設定します。これにより、ダウンロード中のファイル数に関係なく、MDM全体の速度が制限されます。この設定は、ファイルごとの制限がオンかオフかに関わらず、チェックが入っている限り適用されます。"
-  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "リストの空白部分を右クリックすると、<g1>新しいダウンロードを追加</g1>、<g2>すべて選択</g2>、<g3>ファイルを整理</g3>、<g4>すべてのフィルターをクリア</g4>、<g5>完了したものをすべて削除</g5>が表示されます。"
@@ -2145,6 +2157,10 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "任意のテキストボックスを右クリックすると、<g1>切り取り</g1>、<g2>コピー</g2>、<g3>貼り付け</g3>、<g4>削除</g4>、<g5>すべて選択</g5>ができます。"
+  },
+  "3a3fcee9f3378a95": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
+   "text": "<g1>メモリ</g1>（「プロセス」タブ）は、MDMが単独で保持するメモリ、つまり<g2>プライベートワーキングセット</g2>です。ウィンドウが開いていて何もダウンロードしていない場合、これは約50MBです。"
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2562,6 +2578,10 @@
    "source": "<g1>Downloads</g1>: the Windows installer, a portable zip and a plain zip, the browser extension on its own (a zip for Chromium browsers, an <x2/> for Firefox, always the app's version), and <g3>macOS and Linux to try</g3>: a universal <x4/> and an AppImage, <x5/>, <x6/> and <x7/>, marked <x8/> because they are untested by us. There, MDM connects itself to Chrome, Edge, Brave, Vivaldi and Firefox, has its tray icon, follows the system's light or dark look and uses the system's fonts and ffmpeg. Tell us how they work for you.",
    "text": "<g1>ダウンロード</g1>: Windowsインストーラー、ポータブルzip、プレーンzip、ブラウザ拡張機能単体（Chromiumブラウザ用zip、Firefox用<x2/>、常にアプリのバージョン）、および<g3>試用版macOSとLinux</g3>: ユニバーサル<x4/>とAppImage、<x5/>、<x6/>、<x7/>。これらは当社でテストされていないため<x8/>とマークされています。これらでは、MDMはChrome、Edge、Brave、Vivaldi、Firefoxに接続し、トレイアイコンを持ち、システムのライトまたはダークの外観に従い、システムのフォントとffmpegを使用します。これらの動作についてご意見をお聞かせください。"
   },
+  "4693601d27da4c66": {
+   "source": "<g1>DNS over HTTPS</g1> (the default) or <g2>DNS over TLS</g2>: encrypted, so nobody on the way sees or changes the names you look up.",
+   "text": "<g1>DNS over HTTPS</g1>（デフォルト）または <g2>DNS over TLS</g2>：暗号化されているため、途中で誰も検索した名前を見たり変更したりできません。"
+  },
   "46ef61df795090ff": {
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>ダウンロード開始時刻</g1> — 時刻を設定し、次のいずれかを選択します。"
@@ -2722,6 +2742,10 @@
    "source": "The programs, to unpack anywhere",
    "text": "どこにでも展開できるプログラム"
   },
+  "4cdb6479157a7ff8": {
+   "source": "<g1>DNS</g1> — which DNS turns the servers' names into addresses for MDM's downloads, its own downloads (helpers, updates) and FTP. <g2>The system's DNS</g2> is the default (on Windows 11 it can already be encrypted, in Windows' own network settings). Or pick <g3>Cloudflare</g3>, <g4>Google</g4>, <g5>Quad9</g5>, <g6>AdGuard</g6> or <g7>NextDNS</g7>, or <g8>Another DNS...</g8> to type your own; <g9>Settings...</g9> chooses how it's asked:",
+   "text": "<g1>DNS</g1> — MDM のダウンロード、MDM 自身のダウンロード（ヘルパー、アップデート）、および FTP のために、サーバー名をアドレスに変換する DNS を指定します。<g2>システムの DNS</g2> がデフォルトです（Windows 11 では、Windows 自身のネットワーク設定で既に暗号化されている場合があります）。または、<g3>Cloudflare</g3>、<g4>Google</g4>、<g5>Quad9</g5>、<g6>AdGuard</g6>、<g7>NextDNS</g7> のいずれかを選択するか、<g8>別の DNS...</g8> を選択して独自の DNS を入力します。<g9>設定...</g9> で問い合わせ方法を選択します。"
+  },
   "4ceca71bcfd7f0a8": {
    "source": "Double-click the torrent in the list to open its progress window. Besides the usual status, a torrent's window has five tabs:",
    "text": "リスト内のトレントをダブルクリックして、その進行状況ウィンドウを開きます。通常のステータスに加えて、トレントのウィンドウには5つのタブがあります。"
@@ -2733,6 +2757,10 @@
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
    "text": "選択したダウンロードを開く (ダブルクリックは右クリック → <g1>ダブルクリック時</g1>に従います)"
+  },
+  "4d398edd535e24d9": {
+   "source": "The <g1>Speed Limiter</g1> tab of a torrent's window has, besides its download limit, <g2>Limit uploading</g2> to a speed of your choice. That limit is kept with the torrent: it applies again whenever the torrent runs or shares. A torrent can't be held under 16 KBytes/sec either way.",
+   "text": "トレントのウィンドウの<g1>速度制限</g1>タブには、ダウンロード制限の他に、選択した速度に<g2>アップロードを制限する</g2>設定があります。この制限はトレントと共に保持され、トレントが実行または共有されるたびに再び適用されます。いずれの場合も、トレントを16 KB/秒未満に制限することはできません。"
   },
   "4d5e2be36abbc65b": {
    "source": "<g1><g2></g2></g1> <g3>86 languages, right to left too</g3> <g4>It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.</g4>",
@@ -2761,6 +2789,10 @@
   "4dbf5f3368111d27": {
    "source": "Free and open source. Install it, click a link, and watch every connection at work.",
    "text": "無料でオープンソース。インストールしてリンクをクリックするだけで、すべての接続の動作を確認できます。"
+  },
+  "4dc9e20144c85b9b": {
+   "source": "The names in your hosts file, and local names (single words, <x1/>, <x2/>, <x3/>, <x4/>, <x5/>), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.",
+   "text": "ホストファイル内の名前、およびローカル名（単一の単語、<x1/>、<x2/>、<x3/>、<x4/>、<x5/>）は、システムの DNS を使用します。ビデオページ（yt-dlp）とトレントトラッカーは引き続きシステムの DNS を使用します。プロキシを使用する場合、プロキシがあなたのためにアクセスするサイトの名前を検索します。"
   },
   "4dd744e98a23c84f": {
    "source": "MDM can download and run third-party tools at your request: <g1>yt-dlp</g1> for video pages and <g2>ffmpeg</g2> for merging video and sound. They come from their developers' official releases, are checked before they run, and are governed by their own licences (yt-dlp: Unlicense; ffmpeg: LGPL or GPL, depending on the build). The libraries built into MDM and their licences are listed on the <g3>License</g3> page. Websites and services you download from are governed by their own terms.",
@@ -2829,6 +2861,10 @@
   "506e593b6d4c3b88": {
    "source": "<g1><g2>Languages</g2></g1> — the 86 interface languages, right-to-left layouts, and how to help translate.",
    "text": "<g1><g2>言語</g2></g1> — 86のインターフェース言語、右から左へのレイアウト、翻訳への協力方法。"
+  },
+  "5095a187528ef523": {
+   "source": "Closed to the notification area, MDM gives its memory back to Windows: <g1>Memory</g1> drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (<g2>View → Language</g2>) loads fonts for every script while it's open; MDM lets them go when it closes.",
+   "text": "通知領域に閉じると、MDMはそのメモリをWindowsに返します。<g1>メモリ</g1>は数秒以内に10MB未満に低下し、待機中は低いままです。ダウンロード、キュー、スケジューラーは以前と同じように続行されます。すべての言語のリスト（<g2>表示 → 言語</g2>）は、開いている間、すべてのスクリプトのフォントを読み込みます。MDMは閉じるとそれらを解放します。"
   },
   "50b3194608330c02": {
    "source": "It does <g1>not</g1> contain:",
@@ -3596,7 +3632,7 @@
   },
   "66b76acd18192191": {
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
-   "text": "<g1>プロパティ</g1> — 名前、ファイルの種類、フォルダーを変更します。「一般」と「トレント」はフォルダーのみ変更できます。名前を変更したカテゴリはフォルダーを保持します。組み込みのカテゴリは、名前を変更するまでお使いの言語で名前を保持します。"
+   "text": "<g1>プロパティ</g1> — 名前、ファイルの種類、フォルダーを変更します。「一般」と「トレント」はフォルダーのみを変更します。名前を変更したカテゴリはフォルダーを保持します。組み込みのカテゴリは、名前を変更するまでお使いの言語で名前を保持します。"
   },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
@@ -3621,6 +3657,10 @@
   "67f71066401d978a": {
    "source": "<g1>No breaking of copy protection.</g1> MDM doesn't remove or get around DRM, and isn't meant to. Protected content stays protected.",
    "text": "<g1>コピーガードの解除はありません。</g1> MDM は DRM を削除したり回避したりするものではなく、その目的もありません。保護されたコンテンツは保護されたままです。"
+  },
+  "680e0718914ac5b0": {
+   "source": "<g1>Test</g1> asks it for github.com and shows how long it took.",
+   "text": "<g1>テスト</g1> は github.com に問い合わせを行い、かかった時間を示します。"
   },
   "681f0aa1f312eba6": {
    "source": "Right-click: Download with Mister Download Manager",
@@ -3721,6 +3761,10 @@
   "6a658020a3c19e30": {
    "source": "Other systems and files",
    "text": "その他のシステムとファイル"
+  },
+  "6a664e307dbf6d65": {
+   "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
+   "text": "<g1>プレーン DNS</g1>：暗号化されていません。MDM は TCP 経由で問い合わせを行い、UDP は使用しないため、ファイアウォールの例外は不要です。"
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4270,6 +4314,10 @@
    "source": "Troubleshooting",
    "text": "トラブルシューティング"
   },
+  "7a10ae909a8694f8": {
+   "source": "For your own DNS: the servers' IP addresses, the name their certificate shows (TLS), or the <x1/> address (HTTPS, with its IP addresses if you know them). NextDNS takes your configuration ID.",
+   "text": "独自の DNS の場合：サーバーの IP アドレス、証明書に表示される名前（TLS）、または <x1/> アドレス（HTTPS、IP アドレスが分かっている場合はそれも）を入力します。NextDNS は設定 ID を使用します。"
+  },
   "7a30e7bb1c99df22": {
    "source": "Add a download (<g1>Add URL</g1>)",
    "text": "ダウンロードを追加 (<g1>URL を追加</g1>)"
@@ -4418,6 +4466,10 @@
    "source": "While it downloads.",
    "text": "ダウンロード中。"
   },
+  "7d71c5be1f245ab6": {
+   "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
+   "text": "<g1>コミットサイズ</g1>は、MDMが使用中かどうかにかかわらず予約しているメモリです。"
+  },
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 以降が必要です。"
@@ -4537,10 +4589,6 @@
   "804d86a6a9ef1d57": {
    "source": "Connections and speed — Mister Download Manager help",
    "text": "接続と速度 — Mister Download Manager ヘルプ"
-  },
-  "8053cb9a90a95b4a": {
-   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio and the folder.",
-   "text": "<g1>一般</g1> — 情報ハッシュ、ピース、ピア、送信量、共有比率、フォルダー。"
   },
   "8067a735f3677f67": {
    "source": "Your download list, settings, logins you save in <g1>Sites Logins</g1>, the history of each download and the files you download are stored only on your computer: in <x2/> on Windows (or the <x3/> folder of the portable copy), and in the usual application-data folder on macOS and Linux. Nothing is uploaded anywhere. Uninstalling offers to delete them.",
@@ -5261,10 +5309,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — フォルダーまたはUSBスティックから実行します"
-  },
-  "96076440a6a16300": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>).",
-   "text": "最大8接続（<x1/>、1〜128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止し、<x3/>で再開します。<x4/>で完了したファイルをチェックします。オプションで名前を指定して（<x5/>）、MD5、SHA-1、SHA-256、SHA-512、またはCRC32の16進値をチェックします。"
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7006,6 +7050,10 @@
    "source": "Every version is on the <g1>Releases</g1> page. For Windows there are three files:",
    "text": "すべてのバージョンは<g1>リリース</g1>ページにあります。Windows用には3つのファイルがあります。"
   },
+  "c746660e91994045": {
+   "source": "<g1>If it can't be reached, use the system's DNS</g1>: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).",
+   "text": "<g1>到達できない場合はシステムの DNS を使用する</g1>：デフォルトではオフになっています。そのため、応答しない DNS は、システム DNS に検索を静かに表示するのではなく、その名前をメッセージで示してダウンロードを停止します。DNS が存在しないと判断した名前は、フォールバックしません（これはフィルタリング DNS を無効にしてしまいます）。"
+  },
   "c74884d2d5209e5a": {
    "source": "Resume a broken download — Mister Download Manager help",
    "text": "中断したダウンロードを再開する — Mister Download Manager ヘルプ"
@@ -7166,6 +7214,10 @@
    "source": "If you want <g1>Internet Download Manager (IDM)</g1>'s layout without its price, the free alternative is <g2>Mister Download Manager (MDM)</g2>: a free, open-source download manager for Windows 10 and 11, with macOS and Linux builds to try. It looks and works like IDM, imports your IDM download list, downloaded a 1 GiB file 5.4 times faster than IDM 6.42 in <g3>our published benchmark</g3>, and downloads torrents, magnet links and videos too.",
    "text": "<g1>Internet Download Manager (IDM)</g1>のレイアウトをその価格なしで手に入れたいなら、無料の代替品は<g2>Mister Download Manager (MDM)</g2>です。Windows 10および11用の無料オープンソースダウンロードマネージャーで、macOSおよびLinuxビルドも試用できます。IDMのように見え、動作し、IDMのダウンロードリストをインポートし、<g3>当社の公開ベンチマーク</g3>では1 GiBのファイルをIDM 6.42より5.4倍速くダウンロードしました。また、トレント、マグネットリンク、ビデオもダウンロードできます。"
   },
+  "cbcab1b56789a1b0": {
+   "source": "This is the only part of MDM that waits for connections from outside. Downloads, MDM's DNS choice (Options → Connection → DNS), its updates and its helpers only connect out, so they never need a firewall exception; the browser extension and the automation API reach MDM on this computer only (127.0.0.1).",
+   "text": "MDMで外部からの接続を待つのは、この部分だけです。ダウンロード、MDMのDNS選択（オプション → 接続 → DNS）、更新、ヘルパーはすべて外部に接続するだけなので、ファイアウォールの例外は必要ありません。ブラウザ拡張機能と自動化APIは、このコンピューター上でのみMDMにアクセスします（127.0.0.1）。"
+  },
   "cc126dc832a278c1": {
    "source": "Yes",
    "text": "はい"
@@ -7252,7 +7304,7 @@
   },
   "cf3a9ec3dbd55233": {
    "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
-   "text": "<g1>削除</g1> — 独自のカテゴリ、または組み込みのカテゴリ（「一般」と「トレント」を除く）を削除します。MDMは、そのダウンロードをどうするかを尋ねます。<g2>ダウンロードを「一般」に移動する</g2>、または<g3>ダウンロードをリストから削除する</g3>（実行中のダウンロードは代わりに「一般」に移動します）。どちらの場合も、ファイルは元の場所に残ります。それ以降、その種類のファイルは、それらを持つ別のカテゴリ、または「一般」に移動します。"
+   "text": "<g1>削除</g1> — 自分で作成したカテゴリ、または組み込みのカテゴリ（「一般」と「トレント」を除く）を削除します。MDMは、そのカテゴリのダウンロードをどうするか尋ねます。<g2>ダウンロードを「一般」に移動する</g2>、または<g3>ダウンロードをリストから削除</g3>（実行中のダウンロードは代わりに「一般」に移動します）。どちらの場合も、ファイルは元の場所に残ります。それ以降、そのカテゴリのファイルの種類は、それらを持つ別のカテゴリ、または「一般」に移動します。"
   },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
@@ -7570,6 +7622,10 @@
    "source": "Benchmark scenario",
    "text": "ベンチマーク シナリオ"
   },
+  "d83a2cb66a2a3629": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
+   "text": "<g1>ワーキングセット</g1>（「詳細」タブで列を追加）は、他のプログラムと共有されるメモリを追加します。MDMはグラフィックカードでウィンドウを描画するため、グラフィックドライバーのメモリもここにカウントされ、合計で約85MBになります。"
+  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. 無保証"
@@ -7738,6 +7794,10 @@
    "source": "Can it resume broken downloads? — Mister Download Manager",
    "text": "中断したダウンロードを再開できますか？ — Mister Download Manager"
   },
+  "de115a96257ea215": {
+   "source": "MDM uses a lot of memory",
+   "text": "MDMが多くのメモリを使用する"
+  },
   "de5eff3673bc7d55": {
    "source": "Free IDM alternatives, compared",
    "text": "無料のIDM代替品、比較"
@@ -7817,6 +7877,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "中断したダウンロードを再開する"
+  },
+  "e1131dd2d306f4bb": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS.",
+   "text": "最大8接続（<x1/>、1～128）でファイルをダウンロードし、進捗を表示します。<x2/>で一時停止、<x3/>で再開します。<x4/>は完了したファイルをチェックします。オプションで名前を指定して（<x5/>）Hex MD5、SHA-1、SHA-256、SHA-512、またはCRC32をチェックします。<x6/>はDNSを選択します。<x7/>（デフォルト）、サービスと問い合わせ方法（<x8/>、<x9/>、<x10/>、<x11/>、<x12/>）、DNSサーバーのアドレス（<x13/>）、またはDNS-over-HTTPSアドレスです。システムのDNSには決してフォールバックしません。"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8024,7 +8088,7 @@
   },
   "e680897e60d1dca2": {
    "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
-   "text": "組み込みのカテゴリを、名前、ファイルの種類、フォルダーを含めて元の状態に戻すには、<g1>オプション → 保存先 → 組み込みのカテゴリを復元</g1>を使用します。独自のカテゴリ、「一般」、「トレント」はそのまま残ります。"
+   "text": "組み込みのカテゴリを、名前、ファイルの種類、フォルダーを含めて元の状態に戻すには、<g1>オプション → 保存先 → 組み込みのカテゴリを復元</g1>を使用します。自分で作成したカテゴリ、「一般」、および「トレント」はそのまま残ります。"
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",
@@ -8413,6 +8477,10 @@
   "f2fd829426a9d905": {
    "source": "Click <g1>Add URL</g1> on the toolbar, choose <g2>Tasks → Add new download</g2>, or press <g3>Ctrl+N</g3>.",
    "text": "ツールバーの<g1>URL を追加</g1>をクリックするか、<g2>タスク → 新しいダウンロードを追加</g2>を選択するか、<g3>Ctrl+N</g3>を押します。"
+  },
+  "f30a1100eede128a": {
+   "source": "<g1>General</g1> — the info hash, pieces, peers, how much was sent, the share ratio, how long it has been shared and the folder. What was sent and the time shared add up over all of the torrent's runs: they don't start again at 0 after a pause or a restart of MDM.",
+   "text": "<g1>一般</g1> — インフォハッシュ、ピース、ピア、送信量、共有比率、共有期間、フォルダー。送信量と共有期間は、トレントのすべての実行で合計されます。一時停止したり、MDMを再起動したりしても、0から再開されることはありません。"
   },
   "f30bf87e61f773d3": {
    "source": "<g1>Download counts</g1> in the Categories tree, <g2>an empty list that says why</g2> (with Clear filters or Add new download), <g3>a right-click menu on the list's blank space</g3>, a double-click on a column border to fit it, and <g4>Reset columns</g4>.",
@@ -8825,6 +8893,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "ここでは、トレントは1つのファイルとしてカウントされます。各トレントには独自の制限が適用されます。独自の制限があるダウンロード（「<g1>1つのダウンロードの場合</g1>」を参照）は、その制限を維持します。"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

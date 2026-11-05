@@ -28,6 +28,27 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   its folder. Deleting one asks what happens to its downloads: move them to General, or take them
   off the list; their files stay either way. **Options → Save to → Restore the built-in
   categories** brings them back as they came. General and Torrents still change only their folder.
+- **Choose the DNS** ([#36](https://github.com/anefzaoui/misterdownloadmanager/issues/36)):
+  Options → Connection → DNS picks who turns names into addresses for downloads, FTP, MDM's own
+  downloads and the update check. The system's (the default), Cloudflare, Google, Quad9, AdGuard,
+  NextDNS (with your configuration ID) or your own, asked over HTTPS (the default), TLS, or
+  plain over TCP. **Test** shows how long it takes to answer. When it can't be reached, the
+  download stops with a message naming it, unless you allow falling back to the system's DNS;
+  your hosts file and local names stay with the system's. The command line's `get` takes
+  `--dns`. Video pages and torrent trackers still use the system's DNS.
+- **Drop-down lists for screen readers**: a screen reader or UI Automation can now set a
+  drop-down list's choice by its text, and open or close the list.
+- **Torrents: upload limits, and a share ratio that lasts**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): Torrent settings can
+  limit what all torrents together send, and a torrent's progress window can limit its own, kept
+  with it. Its General tab now counts what it sent and how long it shared over all its runs, so
+  the share ratio no longer starts again at 0 after a pause or a restart.
+- **A file-type icon before every file name**: the download list, Download File Info, Properties,
+  Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
+  audio, pictures, archives, documents, subtitles, code, and the programs and installers of every
+  system (exe, msi, dmg, pkg, deb, rpm, AppImage, apk, iso…) each have their own, from Material
+  Icon Theme (MIT), the same on Windows, macOS and Linux; a .torrent shows MDM's magnet. Windows'
+  own icons were used before, on Windows only.
 - **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the
@@ -109,6 +130,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
+  closed to the tray, MDM gives the memory it isn't using back to Windows. Task Manager's
+  **Memory** drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to
+  about 14 MB), and is given back again every 10 minutes while MDM stays there. After the
+  language list (which needs a font for every script) closes, those fonts are let go: about 70 MB
+  less than before. On Linux the heap's free memory goes back to the system the same way.
+  [MDM uses a lot of memory](docs/troubleshooting.md#mdm-uses-a-lot-of-memory) explains
+  Task Manager's figures.
 - **Freeze reports say what kind of freeze it was** ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   MDM measures how much processor time the window got while it didn't answer. The report then
   says whether it ran all along (a loop), waited (a deadlock, or the disk or the network), or
@@ -161,6 +190,49 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A video download could fail in MDM while yt-dlp went on and finished it**
+  ([#79](https://github.com/anefzaoui/misterdownloadmanager/issues/79)). A line yt-dlp printed in
+  the system's code page rather than UTF-8 (a title in Turkish or Russian on some Windows) ended
+  MDM's reading there, and the finished file was then "not said". yt-dlp now always writes
+  UTF-8, every line is read to the end, and the saved file is also found by its name. Whenever
+  MDM gives a video download up, it ends yt-dlp and everything yt-dlp started, so nothing goes
+  on downloading unseen.
+- **YouTube: "Requested format is not available" after MDM moved a video to another server**
+  ([#94](https://github.com/anefzaoui/misterdownloadmanager/issues/94)). When the servers this
+  computer can reach don't serve the chosen quality, MDM downloads the nearest quality below it
+  (always a video, never the sound alone) and says so in the download's log. With no video left
+  at all, it tries the page's own servers. A server yt-dlp couldn't resolve or reach is avoided on
+  the next look-up. The log also names the qualities a move left out.
+- **Lists read as blank items to screen readers** ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)):
+  the rows of Download video's qualities, Add torrent's files, the language picker, Options
+  (browsers, sounds, the file-type and site lists), the Scheduler and Import now have their names
+  (a format and its size, a file's name and size), their check boxes theirs, ticked or not, and
+  their selected row; Download video's list is called Quality, Add torrent's Files and the
+  sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
+  choice at once: it used to wait for the next mouse move.
+- **List rows sit inside their list for screen readers** ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102)):
+  they used to be listed beside it. A screen reader now says which row of how many ("4 of 12"),
+  choosing from the list itself works (UI Automation's Selection), and a tree's check box belongs
+  to its file's row. The language picker's list and the Options browser list and the Scheduler's
+  two lists have names now too.
+- **Torrents: speed limits now work as they do for other downloads**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
+  torrent's progress window changed every torrent's limit, a remembered limit was ignored, the
+  Speed Limiter's "for one file" was shared by all torrents together, and "Limit all downloads
+  together" left torrents out. Each torrent now has a limit of its own, a remembered one applies
+  again when it resumes, and torrents and other downloads share the global cap evenly: each
+  side gets at least half of it, and the rest when the other side needs less. A limit under
+  16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s. A
+  torrent started again while its files were still being checked no longer stays paused, and
+  of two torrents started at the same moment, the second no longer fails with "the torrent is
+  no longer there".
+- **Stopping a download under a low speed limit took seconds**: each connection first waited
+  for its turn under the limit. Stop now ends those waits at once.
+- **Screen readers: the progress window's Speed Limiter** took a speed set with a screen reader
+  or UI Automation only after the focus moved on, and its "Remember Speed Limiter settings for
+  this file" check box had no name. A speed set that way applies at once, and the box is named.
+- **The browser extension's Download video menu: an item's highlight ran past the menu's
+  edge** ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81)).
 - **A long file name ran out of the progress window** ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62)):
   on the **Options on completion** tab, a longer translation of "Save To:" (Turkish, German…)
   ran into the path, and the path ran past the window's edge. The label now takes the room its
