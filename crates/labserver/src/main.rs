@@ -35,6 +35,9 @@ struct Args {
     /// Bytes per second per FTP transfer, e.g. 2M.
     #[arg(long, requires = "ftp")]
     ftp_rate: Option<String>,
+    /// A folder of .torrent files for /rss/dir.xml (the RSS tests' downloads).
+    #[arg(long)]
+    rss_dir: Option<std::path::PathBuf>,
 }
 
 #[tokio::main]
@@ -62,6 +65,7 @@ async fn main() -> anyhow::Result<()> {
         faults,
         on_log: Some(on_log),
         files: args.files.clone(),
+        rss_dir: args.rss_dir,
     })
     .await?;
     eprintln!(

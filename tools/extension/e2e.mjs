@@ -12,12 +12,18 @@
 // The cases (per browser): link (a .zip link, throttled and not), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, form (POST, 303), alt (Alt+click leaves it
 // to the browser), opened (a PDF or MP3 the browser would show or play), csp (the video button
-// under a strict CSP), hls (the stream a player loaded), video (shown, clicked, dragged, kept;
-// "never on the site" in the last browser), start (MDM not running: the host starts it).
+// under a strict CSP), hls (the stream a player loaded), media (the toolbar button's list of the
+// media a tab loaded: streams, files, a protected stream; #38), video (shown, clicked, dragged,
+// kept; "never on the site" in the last browser), start (MDM not running: the host starts it).
 //
 // Windows: the host is registered for the current user while it runs (nmhost --register, as the
-// installer does) and unregistered at the end. Your own browser profiles are never used, nor the
-// clipboard. Every process started here is stopped at the end.
+// installer does) and unregistered at the end. Every registry key that touches (the browsers'
+// host entries and Chrome's external extension, per user and for everyone) is exported first
+// and checked byte for byte at the end; one that differs is put back from its copy. An installed
+// copy's registration for everyone (HKLM) is only read. Your own browser profiles are never used,
+// nor the clipboard. Every process started here is stopped at the end.
+//
+// The programs: target/release, or CARGO_TARGET_DIR's release folder when it is set.
 import { spawn, spawnSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
@@ -26,7 +32,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-export const release = path.join(root, "target", "release");
+export const release = path.join(process.env.CARGO_TARGET_DIR ? path.resolve(process.env.CARGO_TARGET_DIR) : path.join(root, "target"), "release");
 export const exe = (name) => path.join(release, process.platform === "win32" ? `${name}.exe` : name);
 const work = path.join(root, "target", "e2e");
 const PORT = 8101;
@@ -36,6 +42,10 @@ const LAB = `http://127.0.0.1:${PORT}`;
 const PROXY_PORT = 8102;
 const PROXY_HOST = "lab.mdm.test";
 const proxyLog = [];
+// The extension's own address in Firefox (moz-extension://UUID/), fixed in the test profile so
+// its pages (the popup) can be opened in a tab.
+const FIREFOX_ID = "integration@misterdownloadmanager.com";
+const FIREFOX_UUID = "5d0c3b8e-7a51-4c1e-9f0a-38e2c4a1d7b6";
 
 const pf = process.env.ProgramFiles || "C:\\Program Files";
 const pf86 = process.env["ProgramFiles(x86)"] || "C:\\Program Files (x86)";
@@ -257,14 +267,27 @@ async function chromium(bin, profile, dl, page, ready) {
       const r = await cdp.send("Runtime.callFunctionOn", { objectId: object.objectId, functionDeclaration: PILL_STYLE, returnByValue: true }, sessionId);
       return r.result.value ? JSON.parse(r.result.value) : null;
     };
+    // Another tab at `url` (the extension's own pages too): its `evaluate` and `close`.
+    const tab = async (url) => {
+      const { targetId: tid } = await cdp.send("Target.createTarget", { url });
+      const { sessionId: s } = await cdp.send("Target.attachToTarget", { targetId: tid, flatten: true });
+      const ev = async (expression) => {
+        const r = await cdp.send("Runtime.evaluate", { expression, userGesture: true, awaitPromise: true, returnByValue: true }, s);
+        if (r.exceptionDetails) throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
+        return r.result.value;
+      };
+      return { evaluate: ev, close: () => cdp.send("Target.closeTarget", { targetId: tid }).catch(() => {}) };
+    };
     return {
       extension: id,
+      base: `chrome-extension://${id}/`,
       major,
       evaluate,
       mouse,
       navigate,
       key,
       pill,
+      tab,
       trace,
       // Run `expression` in the extension's service worker (the proxy case sets the browser's proxy
       // there, as a VPN extension does).
@@ -304,11 +327,14 @@ async function firefox(bin, profile, dl, page, ready) {
       // Alt+click saves the link, as in Chromium (Firefox's default ignores an Alt+click on a
       // link: then nothing is downloaded at all, by the browser or MDM).
       pref("browser.altClickSave", true),
+      // The extension's address, known in advance (its popup opened in a tab).
+      pref("extensions.webextensions.uuids", JSON.stringify({ [FIREFOX_ID]: FIREFOX_UUID })),
     ].join("\n"),
   );
   const proc = spawn(bin, ["-headless", "-no-remote", "-profile", profile, "--remote-debugging-port", String(port), "--width=1280", "--height=900"], {
-    // Headless even where its launcher restarts it without the flag.
-    env: { ...process.env, MOZ_HEADLESS: "1" },
+    // Headless even where its launcher restarts it without the flag. System access (this test
+    // profile only, its protocol on 127.0.0.1): to open the extension's own pages in a tab.
+    env: { ...process.env, MOZ_HEADLESS: "1", MOZ_REMOTE_ALLOW_SYSTEM_ACCESS: "1" },
     stdio: "ignore",
     windowsHide: true,
   });
@@ -386,14 +412,41 @@ async function firefox(bin, profile, dl, page, ready) {
       });
       return c.result && c.result.value ? JSON.parse(c.result.value) : null;
     };
+    // Another tab at `url` (the extension's own pages too): its `evaluate` and `close`.
+    // A web page can't be sent to an extension's page: the browser's own window (its chrome
+    // scope, MOZ_REMOTE_ALLOW_SYSTEM_ACCESS) opens that tab instead.
+    const tab = async (url) => {
+      let c;
+      if (url.startsWith("moz-extension:")) {
+        const { contexts: windows } = await bidi.send("browsingContext.getTree", { "moz:scope": "chrome" });
+        const open = `gBrowser.addTab(${JSON.stringify(url)}, { triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal() }) && "opened"`;
+        await bidi.send("script.evaluate", { expression: open, target: { context: windows[0].context }, awaitPromise: false, "moz:scope": "chrome" });
+        c = await until("the extension's page in a tab", 10000, async () => {
+          const { contexts: tabs } = await bidi.send("browsingContext.getTree", {});
+          return (tabs.find((x) => x.url === url) || {}).context;
+        });
+      } else {
+        c = (await bidi.send("browsingContext.create", { type: "tab", background: true })).context;
+        await bidi.send("browsingContext.navigate", { context: c, url, wait: "complete" });
+      }
+      const ev = async (expression) => {
+        const json = `(async () => JSON.stringify(await (${expression})))()`;
+        const r = await bidi.send("script.evaluate", { expression: json, target: { context: c }, awaitPromise: true, userActivation: true });
+        if (r.type === "exception") throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
+        return r.result.value === undefined ? undefined : JSON.parse(r.result.value);
+      };
+      return { evaluate: ev, close: () => bidi.send("browsingContext.close", { context: c }).catch(() => {}) };
+    };
     return {
       extension,
+      base: `moz-extension://${FIREFOX_UUID}/`,
       major,
       evaluate,
       mouse,
       navigate,
       key,
       pill,
+      tab,
       close: () => {
         ws.close();
         killTree(proc);
@@ -932,6 +985,81 @@ const CASES = {
     return `sent ${address.replace(LAB, "")}`;
   },
 
+  // #38: the toolbar button's list of what the tab loaded. A page plays a video file (behind a
+  // cookie and hotlink protection), a sound, an HLS stream, a DASH stream and a DRM-protected
+  // one; the popup (its page, in a tab of its own) lists the five, each stream once with its
+  // qualities, the protected one without a Download button. The file downloads in MDM with the
+  // page's cookies and referrer; each stream opens the Download video window for its manifest.
+  async media(t) {
+    await t.session.navigate(`${LAB}/cookie?set=msid=7`);
+    const file = `e2e-media-${t.name}.mp4`;
+    const guarded = `/gen/1M/${file}?inline=1&require_cookie=msid%3D7&require_referer=${encodeURIComponent(`${LAB}/page`)}`;
+    await t.session.navigate(`${LAB}/page?video=${encodeURIComponent(guarded)}&audio=1&hls=1&dash=1&drm=1`);
+    const state = await until("the stream players", 20000, () => t.session.evaluate("document.body.dataset.stream || ''"));
+    if (state !== "done") throw new Error(`the page's players: ${state}`);
+    const page = await t.session.evaluate("location.href");
+    const popup = await t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(page)}`);
+    try {
+      const rows = () =>
+        popup.evaluate(`[...document.querySelectorAll("#media-list li")].map((li) => ({
+          tag: li.querySelector(".tag").textContent, name: li.querySelector(".name").textContent,
+          meta: li.querySelector(".meta").textContent, get: Boolean(li.querySelector("button")),
+          drm: Boolean(li.querySelector(".drm")) }))`);
+      const list = await until("the popup's media list", 15000, async () => {
+        const r = await rows().catch(() => []);
+        return r.length >= 5 && r;
+      });
+      await sleep(500);
+      const all = await rows();
+      const want = [
+        ["HLS", "master.m3u8", "720p · 360p", true],
+        ["DASH", "manifest.mpd", "720p · 360p · 0:12", true],
+        ["DASH", "protected.mpd", "", false],
+        ["MP4", file, "", true],
+        ["MP3", "sound.mp3", "", true],
+      ];
+      const found = (tag, name) => all.find((r) => r.tag === tag && r.name === name);
+      for (const [tag, name, meta, get] of want) {
+        const r = found(tag, name);
+        if (!r) throw new Error(`not listed: ${tag} ${name} (the list: ${JSON.stringify(all)})`);
+        if (meta && !r.meta.startsWith(meta)) throw new Error(`${name}: "${r.meta}", not "${meta}"`);
+        if (r.get !== get || r.drm === get) throw new Error(`${name}: ${get ? "no Download button" : "not shown as protected"} (${JSON.stringify(r)})`);
+      }
+      if (all.length !== want.length) throw new Error(`${all.length} rows, not ${want.length}: ${JSON.stringify(all)}`);
+      void list;
+      const click = (name) =>
+        popup.evaluate(`(() => { const li = [...document.querySelectorAll("#media-list li")].find((x) => x.querySelector(".name").textContent === ${JSON.stringify(name)});
+          li.querySelector("button").click(); return true; })()`);
+      // The file: MDM downloads it with the page's cookie and referrer and the browser's UA.
+      await click(file);
+      await arrived(file, 1 << 20, "Video");
+      const mdm = (await requests(`/gen/1M/${file}`)).filter((e) => e.user_agent === t.ua && e.status < 400);
+      const theirs = (await requests(`/gen/1M/${file}`)).filter((e) => e.status >= 400);
+      if (theirs.length) throw new Error(`refused: ${theirs.map(brief).join("; ")}`);
+      if (!mdm.length) throw new Error("no request for the file");
+      const said = await until("the popup's word", 5000, () => popup.evaluate(`document.getElementById("media-said").textContent`));
+      if (!/Sent to Mister Download Manager/.test(said)) throw new Error(`the popup said "${said}"`);
+      // Each stream: the Download video window, for its manifest.
+      const pid = appPid();
+      const opened = [];
+      for (const name of ["master.m3u8", "manifest.mpd"]) {
+        appWindows(pid, VIDEO_WINDOW);
+        await until("the Download video window closed", 5000, () => !appWindows(pid).includes(VIDEO_WINDOW));
+        await click(name);
+        await until("the Download video window", 15000, () => appWindows(pid).includes(VIDEO_WINDOW));
+        const address = await until("the Download video window's address", 10000, () => videoAddress(pid));
+        appWindows(pid, VIDEO_WINDOW);
+        const wantAddress = `${LAB}/${name === "master.m3u8" ? "hls" : "dash"}/${name}`;
+        if (address !== wantAddress) throw new Error(`the video window got ${address}, not ${wantAddress}`);
+        opened.push(address.replace(LAB, ""));
+      }
+      await keptNothing(t.dl);
+      return `listed ${all.map((r) => `${r.tag} ${r.name}${r.drm ? " (protected)" : ""}`).join(", ")}; ${file} downloaded with the cookie and referrer; video window: ${opened.join(", ")}`;
+    } finally {
+      await popup.close();
+    }
+  },
+
   async video(t) {
     return videoButton(t.session, t.last);
   },
@@ -958,6 +1086,52 @@ const CASES = {
 // A product failure known and not fixed yet, by case ("browser:case" or "case"): listed as BUG
 // (still failing the run) rather than FAILED.
 const KNOWN_BUGS = {};
+
+// The registry keys `nmhost --register` and `--unregister` touch (crates/nmhost REGISTRY_KEYS,
+// FIREFOX_KEY, CHROME_EXTERNAL_KEY): each browser's host entry and Chrome's external extension,
+// per user and for everyone (the latter only read: an installed copy's). [key, 32-bit view].
+const HOST = "com.misterdownloadmanager.host";
+const REG_KEYS = ["HKCU", "HKLM"].flatMap((root) => [
+  ...[
+    "Software\\Google\\Chrome\\NativeMessagingHosts",
+    "Software\\Chromium\\NativeMessagingHosts",
+    "Software\\Microsoft\\Edge\\NativeMessagingHosts",
+    "Software\\BraveSoftware\\Brave-Browser\\NativeMessagingHosts",
+    "Software\\Mozilla\\NativeMessagingHosts",
+  ].map((k) => [`${root}\\${k}\\${HOST}`, false]),
+  [`${root}\\Software\\Google\\Chrome\\Extensions`, true],
+]);
+
+// Each key's export (reg export: its values, byte for byte), or null when it isn't there.
+export function regSnapshot(dir) {
+  fs.mkdirSync(dir, { recursive: true });
+  return REG_KEYS.map(([key, wow32], i) => {
+    const file = path.join(dir, `key${i}.reg`);
+    fs.rmSync(file, { force: true });
+    const view = wow32 ? ["/reg:32"] : [];
+    const r = spawnSync("reg", ["export", key, file, "/y", ...view], { stdio: "ignore" });
+    return { key, view, file, bytes: r.status === 0 ? fs.readFileSync(file) : null };
+  });
+}
+
+// The keys as they were before the run: compared byte for byte; one that differs (per user only,
+// never HKLM) is removed and imported again from its copy. What was found, for the summary.
+export function regRestore(before, dir) {
+  const after = regSnapshot(dir);
+  const changed = [];
+  for (const [i, b] of before.entries()) {
+    const a = after[i];
+    const same = (a.bytes === null && b.bytes === null) || (a.bytes && b.bytes && a.bytes.equals(b.bytes));
+    if (same) continue;
+    changed.push(b.key);
+    if (!b.key.startsWith("HKCU")) continue;
+    spawnSync("reg", ["delete", b.key, "/f", ...b.view], { stdio: "ignore" });
+    if (b.bytes) spawnSync("reg", ["import", b.file, ...b.view], { stdio: "ignore" });
+  }
+  const again = changed.length ? regSnapshot(path.join(dir, "again")) : after;
+  const differ = before.filter((b, i) => !((again[i].bytes === null && b.bytes === null) || (again[i].bytes && b.bytes && again[i].bytes.equals(b.bytes))));
+  return { changed, differ: differ.map((b) => b.key) };
+}
 
 // Is Internet Download Manager running (E2E_IDM_OK=1)? Even with its 127.0.0.1 exception it takes
 // a PDF sent "inline; filename=..." at the network level (the browser gets "204 No Content",
@@ -1022,6 +1196,8 @@ async function run() {
   const proxy = startProxy();
   const nmhost = exe("misterdownloadmanager-nmhost");
   const results = [];
+  let regBefore = null;
+  let regCheck = null;
   try {
     await until("the lab server", 10000, () => fetch(`${LAB}/`).then((r) => r.ok, () => false));
     // An installed Mister Download Manager's registration is never replaced or removed.
@@ -1029,6 +1205,7 @@ async function run() {
     if (spawnSync("reg", ["query", key], { stdio: "ignore" }).status === 0) {
       throw new Error("Mister Download Manager's host is already registered (an installed copy): not touching it");
     }
+    regBefore = regSnapshot(path.join(work, "registry", "before"));
     const reg = spawnSync(nmhost, ["--register"], { encoding: "utf8" });
     if (reg.status !== 0) throw new Error(`nmhost --register: ${reg.stderr || reg.stdout}`);
     for (const name of names) {
@@ -1087,6 +1264,7 @@ async function run() {
     }
   } finally {
     spawnSync(nmhost, ["--unregister"]);
+    if (regBefore) regCheck = regRestore(regBefore, path.join(work, "registry", "after"));
     await stopApp().catch(() => {});
     for (const pid of ourPids()) spawnSync("taskkill", ["/T", "/F", "/PID", String(pid)]);
     killTree(server);
@@ -1095,8 +1273,16 @@ async function run() {
   for (const [name, label, status, detail, ms] of results) {
     console.log(`${name.padEnd(8)} ${label.padEnd(9)} ${status.padEnd(8)} ${(ms / 1000).toFixed(1).padStart(5)}s  ${detail}`);
   }
+  if (regCheck) {
+    const kept = regBefore.filter((b) => b.bytes).map((b) => b.key);
+    console.log(
+      regCheck.differ.length
+        ? `registry: DIFFERS after the run: ${regCheck.differ.join(", ")}`
+        : `registry: ${regBefore.length} keys byte-identical to before the run${regCheck.changed.length ? ` (put back: ${regCheck.changed.join(", ")})` : ""}; present before: ${kept.join(", ") || "none"}`,
+    );
+  }
   console.log(`total ${((Date.now() - t0) / 1000).toFixed(0)}s`);
-  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG")) process.exit(1);
+  if (results.some((r) => r[2] === "FAILED" || r[2] === "BUG") || (regCheck && regCheck.differ.length)) process.exit(1);
 }
 
 // Run when started, not when another script imports its helpers (tools/readme/browser-shots.mjs).

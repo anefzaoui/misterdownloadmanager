@@ -93,6 +93,9 @@ async fn main() {
             meta.files.len(),
             meta.total() >> 20
         );
+        // For an off-screen test copy of the app (MDM_LAB_PEERS, torrents.rs).
+        let list: Vec<String> = peers.iter().map(|a| a.to_string()).collect();
+        println!("peers {}", list.join(","));
     } else {
         let hash = librqbit::torrent_from_bytes(&torrent)
             .expect("readable")

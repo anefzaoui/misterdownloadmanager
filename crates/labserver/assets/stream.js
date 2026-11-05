@@ -1,13 +1,15 @@
-// labserver's adaptive-stream "player" (/page?hls=1 or ?dash=1): fetches the manifest given in
-// its data-manifest, the first video variant's and the audio's playlists and every segment, as a
-// real player would, so a browser extension watching the network sees them. It decodes nothing;
-// the <video id=player> gets a MediaSource (a blob: address) like a real player's. When done,
+// labserver's adaptive-stream "player" (/page?hls=1, ?dash=1, ?drm=1; one script per stream):
+// fetches the manifest given in its data-manifest, the first video variant's and the audio's
+// playlists and every segment, as a real player would, so a browser extension watching the
+// network sees them. It decodes nothing; its <video> (data-player, else #player) gets a
+// MediaSource (a blob: address) like a real player's. When every player on the page is done,
 // <body data-stream> is "done" (or "error", with the reason in data-stream-error).
 "use strict";
 (() => {
   const script = document.currentScript;
   const manifest = new URL(script.dataset.manifest, location.href);
-  const video = document.getElementById("player");
+  const video = document.getElementById(script.dataset.player || "player");
+  const players = document.querySelectorAll("script[data-manifest]").length;
 
   const fetchOk = async (url) => {
     const r = await fetch(url);
@@ -60,7 +62,11 @@
   }
   const run = manifest.pathname.endsWith(".mpd") ? dash : hls;
   run(manifest).then(
-    () => (document.body.dataset.stream = "done"),
+    () => {
+      const done = Number(document.body.dataset.streamsDone || 0) + 1;
+      document.body.dataset.streamsDone = String(done);
+      if (done >= players && document.body.dataset.stream !== "error") document.body.dataset.stream = "done";
+    },
     (e) => {
       document.body.dataset.stream = "error";
       document.body.dataset.streamError = String(e && e.message);
