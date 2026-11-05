@@ -292,6 +292,10 @@ pub struct Config {
     pub upnp: bool,
     /// The port to listen on; None: one picked at each start.
     pub port: Option<u16>,
+    /// The address to listen on; None: every address of the computer (IPv4 and IPv6), as
+    /// BitTorrent clients do. Tests and test tools set 127.0.0.1: a listener on every address
+    /// makes Windows Firewall ask about each new program (each new test build is one).
+    pub listen_ip: Option<std::net::IpAddr>,
     /// The DHT: finding peers without trackers.
     pub dht: bool,
     /// Local peer discovery (LSD): it tells the local network which torrents this computer has.
@@ -320,6 +324,7 @@ impl Config {
             listen: true,
             upnp: true,
             port: None,
+            listen_ip: None,
             dht: true,
             lsd: true,
             proxy: None,
@@ -369,16 +374,26 @@ impl Torrents {
             }),
             ..Default::default()
         });
+        // Offline (tests): loopback only. A set address: that one (with the port asked for).
+        let ip = cfg.listen_ip.or(cfg
+            .offline
+            .then_some(std::net::IpAddr::V4(Ipv4Addr::LOCALHOST)));
         let listen = (cfg.listen && !proxied).then(|| ListenerOptions {
-            listen_addr: if cfg.offline {
-                (Ipv4Addr::LOCALHOST, 0).into()
-            } else {
-                let mut any = ListenerOptions::default().listen_addr;
-                any.set_port(cfg.port.unwrap_or(0));
-                any
+            listen_addr: match ip {
+                Some(ip) => (ip, cfg.port.unwrap_or(0)).into(),
+                None => {
+                    let mut any = ListenerOptions::default().listen_addr;
+                    any.set_port(cfg.port.unwrap_or(0));
+                    any
+                }
             },
-            enable_upnp_port_forwarding: cfg.upnp && !cfg.offline && cfg.bind.is_none(),
-            ipv4_only: cfg.offline || v4_only,
+            // UPnP forwards a port on the router: not through a chosen adapter (#35), and
+            // pointless (and noisy) on loopback.
+            enable_upnp_port_forwarding: cfg.upnp
+                && !cfg.offline
+                && cfg.bind.is_none()
+                && ip.is_none_or(|i| !i.is_loopback()),
+            ipv4_only: cfg.offline || v4_only || ip.is_some_and(|i| i.is_ipv4()),
             ..Default::default()
         });
         // A list librqbit can't read would stop the session from starting: only a file there.
@@ -397,6 +412,14 @@ impl Torrents {
             }),
             blocklist_url,
             disable_trackers: cfg.offline,
+            // Behind a proxy, UDP trackers are dropped (they would go around it): their client
+            // sends from loopback, so no UDP can leave. A set listen address: that one (tests,
+            // on loopback). Else librqbit's choice (every address, or loopback offline).
+            udp_tracker_bind_ip: if proxied {
+                Some(std::net::IpAddr::V4(Ipv4Addr::LOCALHOST))
+            } else {
+                cfg.listen_ip
+            },
             disable_local_service_discovery: cfg.offline
                 || !cfg.lsd
                 || proxied
@@ -890,10 +913,14 @@ mod tests {
             .local_addr()
             .unwrap()
             .port();
+        // Not offline (its trackers' and listener's own settings are what is tested), but on
+        // loopback: a listener on every address makes Windows Firewall ask about each new
+        // test build.
         let quiet = |dir: &str| Config {
             upnp: false,
             dht: false,
             lsd: false,
+            listen_ip: Some(std::net::IpAddr::V4(Ipv4Addr::LOCALHOST)),
             ..Config::new(tmp.path().join(dir))
         };
         let t = Torrents::start(Config {
@@ -903,6 +930,11 @@ mod tests {
         .await
         .unwrap();
         assert_eq!(t.listen_addr().map(|a| a.port()), Some(free));
+        assert!(
+            t.listen_addr().is_some_and(|a| a.ip().is_loopback()),
+            "on loopback: {:?}",
+            t.listen_addr()
+        );
         t.stop().await;
         let t = Torrents::start(Config {
             proxy: Some("socks5://127.0.0.1:9".into()),

@@ -628,7 +628,7 @@
   },
   "10e37230420403da": {
    "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
-   "text": "macOS에서 다시 연결되는 VPN은 새 인터페이스를 얻을 수 있습니다(<x1/> 대신 <x2/>): 다시 선택하십시오."
+   "text": "macOS에서 다시 연결되는 VPN은 새 인터페이스를 얻을 수 있습니다(<x1/> 대신 <x2/>). 다시 선택하십시오."
   },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
@@ -988,7 +988,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windows에서는 토렌트 엔진이 아직 어댑터에 바인딩할 수 없습니다. 따라서 어댑터를 선택하면 토렌트가 시작되지 않고(\"Windows에서는 토렌트가 선택된 네트워크 어댑터를 통해 아직 작동할 수 없습니다\") 어댑터를 우회하지도 않습니다. 트래커 이름은 여전히 시스템의 DNS에 의해 조회됩니다."
+   "text": "Windows에서는 토렌트 엔진이 아직 어댑터에 바인딩할 수 없습니다. 따라서 어댑터를 우회하는 대신, 어댑터가 선택되어 있는 동안에는 토렌트가 시작되지 않습니다(\"Windows에서는 토렌트가 선택된 네트워크 어댑터를 통해 아직 작동할 수 없습니다\"). 트래커 이름은 여전히 시스템의 DNS에 의해 조회됩니다."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1992,7 +1992,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "이 컴퓨터 자체(<x1/>)로의 연결은 바인딩되지 않습니다. 이 컴퓨터의 프록시는 다운로드를 처리하며, 어디로 보낼지는 프록시에 달려 있습니다."
+   "text": "이 컴퓨터 자체(<x1/>)로의 연결은 바인딩되지 않습니다. 이 컴퓨터의 프록시는 다운로드를 전달하며, 어디로 보낼지는 프록시에 달려 있습니다."
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2113,6 +2113,10 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "선택한 다운로드 삭제(먼저 확인)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM의 프록시/Socks 설정은 웹 및 FTP 다운로드용입니다. 토렌트도 SOCKS5를 사용할 수 있습니다. <g2>옵션 → 프록시/Socks</g2>에서 <x1/> 프록시를 설정하고 토렌트 설정에서 <g3>프록시 사용</g3>을 켜세요. 프록시는 피어 및 웹 트래커에 대한 연결만 처리하므로, 이를 사용하면 MDM은 DHT, 로컬 피어 검색, 수신 연결 및 UDP 트래커를 끕니다. 네트워크를 향한 UDP 소켓은 전혀 열지 않습니다. 해당 스위치가 켜져 있는 동안 프록시/Socks에서 프록시가 사라지면, 토렌트는 프록시를 우회하지 않고 시작되지 않습니다."
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2408,7 +2412,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "시스템 DNS는 자체 방식으로 이름을 요청하며, Windows는 모든 어댑터를 통해 요청할 수 있습니다. 이름도 어댑터 내에 유지하려면 <g1>연결</g1> → <g2>DNS</g2>에서 DNS를 선택하십시오. 그러면 MDM이 어댑터를 통해 요청합니다."
+   "text": "시스템 DNS는 자체 방식으로 이름을 묻고, Windows는 모든 어댑터를 통해 물을 수 있습니다. 이름을 어댑터 내부에 유지하려면 <g1>연결</g1> → <g2>DNS</g2>에서 DNS를 선택하십시오. 그러면 MDM이 어댑터를 통해 DNS에 묻습니다."
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -2857,6 +2861,10 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Windows 11에서 제공하는 모든 표시 언어를 첫 시작 시 국기로 선택하거나 언제든지 보기 → 언어에서 선택할 수 있습니다. 아랍어, 히브리어, 페르시아어, 우르두어, 위구르어는 오른쪽에서 왼쪽으로 표시됩니다."
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "모든 작업은 키보드로 수행할 수 있으며, MDM은 화면 판독기(Windows의 Narrator 및 NVDA 등)와 함께 작동합니다. MDM의 창, 대화 상자 및 메뉴는 각 컨트롤의 기능과 상태를 알려주며, 다운로드 목록은 각 다운로드의 이름, 상태 및 크기를 읽어줍니다."
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3666,6 +3674,10 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>속성</g1> — 이름, 파일 형식 및 폴더를 변경합니다. 일반 및 토렌트는 폴더만 변경합니다. 이름이 변경된 범주는 폴더를 유지하며, 기본 제공 범주는 이름을 변경하기 전까지 해당 언어로 된 이름을 유지합니다."
   },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "Shift+F10"
+  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager 대 IDM 6.42</g1><g2>2026년 10월 확인 · 출처는 아래</g2>"
@@ -3680,7 +3692,7 @@
   },
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
-   "text": "다른 네트워크를 통해 <g1>모든 것</g1>을 라우팅하려면 컴퓨터 전체에 VPN을 사용하세요."
+   "text": "다른 네트워크를 통해 <g1>모든</g1> 트래픽을 라우팅하려면 컴퓨터 전체에 VPN을 사용하세요."
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -4520,7 +4532,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>옵션 → 프록시/Socks → 네트워크 어댑터</g1>는 MDM의 연결을 하나의 어댑터(일반적으로 VPN의 어댑터)에 고정합니다(<g2>옵션</g2>). Linux 및 macOS에서는 토렌트 엔진이 모든 소켓을 해당 어댑터에 바인딩합니다. 피어, 트래커, DHT 및 수신 대기 포트가 모두 포함됩니다. UPnP 및 로컬 피어 검색은 어댑터를 통하는 대신 로컬 네트워크와 통신하므로 꺼집니다. 어댑터가 사라지면 엔진이 중지되고, 어댑터가 다시 연결되면 어댑터를 통해 다시 시작됩니다."
+   "text": "<g1>옵션 → 프록시/Socks → 네트워크 어댑터</g1>는 MDM의 연결을 하나의 어댑터, 일반적으로 VPN의 어댑터에 고정합니다(<g2>옵션</g2>). Linux 및 macOS에서는 토렌트 엔진이 모든 소켓을 해당 어댑터에 바인딩합니다: 피어, 트래커, DHT 및 수신 포트. UPnP 및 로컬 피어 검색은 어댑터를 통하는 대신 로컬 네트워크와 통신하므로 꺼집니다. 어댑터가 사라지면 엔진이 중지되고, 어댑터가 다시 연결되면 어댑터를 통해 다시 시작됩니다."
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5292,7 +5304,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "최대 8개 연결(<x1/>, 1~128개)로 파일을 다운로드하고 진행 상황을 표시합니다. <x2/>는 일시 중지하고, <x3/>는 계속합니다. <x4/>는 완료된 파일의 헥스 MD5, SHA-1, SHA-256, SHA-512 또는 CRC32를 확인하며, 선택적으로 이름을 지정할 수 있습니다(<x5/>). <x6/>는 DNS를 선택합니다: <x7/>(기본값); 서비스 및 요청 방법, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS 서버 주소, <x13/>; 또는 DNS-over-HTTPS 주소. 시스템 DNS로 절대 되돌아가지 않습니다. <x14/>는 모든 연결을 이름(<x15/>, <x16/>) 또는 주소 중 하나로 네트워크 어댑터를 통해 보냅니다. 연결되지 않은 경우 아무것도 전송되지 않으며 다운로드가 실패합니다."
+   "text": "최대 8개 연결(<x1/>, 1~128개)로 파일을 다운로드하고 진행 상황을 표시합니다. <x2/>는 일시 중지하고, <x3/>는 계속합니다. <x4/>는 완료된 파일의 헥스 MD5, SHA-1, SHA-256, SHA-512 또는 CRC32를 확인하며, 선택적으로 이름을 지정할 수 있습니다(<x5/>). <x6/>는 DNS를 선택합니다: <x7/>(기본값); 서비스 및 요청 방법, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS 서버 주소, <x13/>; 또는 DNS-over-HTTPS 주소. 시스템 DNS로 절대 되돌아가지 않습니다. <x14/>는 모든 연결을 이름(<x15/>, <x16/>) 또는 주소 중 하나로 하나의 네트워크 어댑터를 통해 보냅니다. 연결되지 않은 경우 아무것도 전송되지 않으며 다운로드가 실패합니다."
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5316,7 +5328,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "아직 어댑터에 고정되지 않아, 어댑터가 선택되어 있는 동안 시작되지 않습니다:"
+   "text": "아직 어댑터에 고정되지 않아 어댑터가 선택되어 있는 동안 시작되지 않는 항목:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5972,7 +5984,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "작동 방식: Windows는 어댑터 자체 주소를 바인딩합니다. 그러면 Windows는 해당 패킷을 해당 어댑터를 통해서만 보냅니다(강력한 호스트 모델). Linux는 장치 자체를 바인딩하고(Linux 5.7 이상), macOS는 인터페이스를 바인딩합니다. 어댑터가 지원하지 않는 종류의 주소(IPv4 전용 VPN의 IPv6)는 거부되며, 우회하여 보내지지 않습니다."
+   "text": "작동 방식: Windows는 어댑터 자체 주소를 바인딩합니다. 그러면 Windows는 해당 패킷을 해당 어댑터를 통해서만 보냅니다(강력한 호스트 모델). Linux는 장치 자체를 바인딩하고(Linux 5.7 이상), macOS는 인터페이스를 바인딩합니다. 어댑터가 가지고 있지 않은 종류의 주소(IPv4 전용 VPN의 IPv6)는 거부되며, 우회하여 보내지지 않습니다."
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6224,7 +6236,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>네트워크 어댑터</g1> — <g2>모두 (시스템이 선택)</g2>가 기본값입니다. 어댑터를 선택하면 (주로 VPN 어댑터), MDM이 여는 모든 연결은 해당 어댑터를 통해서만 이루어지거나, 전혀 이루어지지 않습니다. 이는 다운로드, FTP, 선택한 DNS, MDM 자체 다운로드 및 업데이트 확인에 적용됩니다. 이는 킬 스위치 역할을 합니다. 어댑터 연결이 끊기거나 VPN이 꺼지면 일반 연결을 통해 아무것도 나가지 않습니다. 실행 중인 다운로드는 \"… 연결되지 않음\"으로 중지되고 어댑터가 다시 연결되면 다시 시작됩니다. 목록 아래 줄은 어댑터 주소 또는 연결되지 않았음을 보여줍니다."
+   "text": "<g1>네트워크 어댑터</g1> — <g2>모두 (시스템이 선택)</g2>가 기본값입니다. 어댑터(일반적으로 VPN 어댑터)를 선택하면 MDM이 여는 모든 연결이 해당 어댑터를 통해 나가거나, 아니면 전혀 나가지 않습니다. 여기에는 다운로드, FTP, 선택한 DNS, MDM 자체 다운로드 및 업데이트 확인이 포함됩니다. 이는 킬 스위치 역할을 합니다. 어댑터 연결이 끊어지거나 VPN이 꺼지면 일반 연결을 통해 아무것도 나가지 않습니다. 실행 중인 다운로드는 \"… 연결되지 않음\"으로 중지되고 어댑터가 다시 연결되면 다시 시작됩니다. 목록 아래 줄에는 어댑터 주소가 표시되거나 연결되지 않았음이 표시됩니다."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -8544,7 +8556,7 @@
   },
   "f208414e0c06341b": {
    "source": "video pages (yt-dlp can't be held to an adapter);",
-   "text": "동영상 페이지(yt-dlp는 어댑터에 고정될 수 없음);"
+   "text": "동영상 페이지(yt-dlp는 어댑터에 고정할 수 없음);"
   },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",

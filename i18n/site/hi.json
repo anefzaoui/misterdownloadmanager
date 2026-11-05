@@ -628,7 +628,7 @@
   },
   "10e37230420403da": {
    "source": "On macOS a VPN that reconnects may get a new interface (<x1/> instead of <x2/>): pick it again.",
-   "text": "macOS पर एक VPN जो फिर से कनेक्ट होता है उसे एक नया इंटरफ़ेस मिल सकता है (<x1/> <x2/> के बजाय): इसे फिर से चुनें।"
+   "text": "macOS पर एक VPN जो फिर से कनेक्ट होता है उसे एक नया इंटरफ़ेस मिल सकता है (<x1/> की जगह <x2/>): इसे फिर से चुनें।"
   },
   "11037e9a1d07f9af": {
    "source": "The extension must be allowed to read the site. When you limit it to some sites (or <g1>On click</g1>), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.",
@@ -988,7 +988,7 @@
   },
   "1ad91cd214e9ba4e": {
    "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windows पर टॉरेंट इंजन अभी तक किसी एडाप्टर से जुड़ नहीं सकता है। इसलिए जब कोई एडाप्टर चुना जाता है तो टॉरेंट शुरू नहीं होते हैं (\"Windows पर टॉरेंट चुने हुए नेटवर्क एडाप्टर के ज़रिए नहीं जा सकते हैं\"), बजाय इसके कि वे उसके आसपास से जाएं। ट्रैकर के नाम अभी भी सिस्टम के DNS द्वारा देखे जाते हैं।"
+   "text": "Windows पर टॉरेंट इंजन अभी तक किसी एडाप्टर से जुड़ नहीं सकता है। इसलिए जब कोई एडाप्टर चुना जाता है तो टॉरेंट शुरू नहीं होते हैं (\"Windows पर टॉरेंट अभी तक चुने हुए नेटवर्क एडाप्टर के ज़रिए नहीं जा सकते हैं\"), बजाय इसके कि वे उसके चारों ओर जाएँ। ट्रैकर के नाम अभी भी सिस्टम के DNS द्वारा देखे जाते हैं।"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1992,7 +1992,7 @@
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
-   "text": "इस कंप्यूटर से ही कनेक्शन (<x1/>) बंधे नहीं हैं। इस कंप्यूटर पर एक प्रॉक्सी डाउनलोड को ले जाता है, और यह उन्हें कहाँ भेजता है यह उस पर निर्भर करता है।"
+   "text": "इस कंप्यूटर से ही कनेक्शन (<x1/>) बंधे नहीं होते हैं। इस कंप्यूटर पर एक प्रॉक्सी डाउनलोड को ले जाता है, और यह उन्हें कहाँ भेजता है यह उस पर निर्भर करता है।"
   },
   "3549f28b5c3a4fb8": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
@@ -2113,6 +2113,10 @@
   "38ab0ea175d42a8f": {
    "source": "Delete the selected downloads (asks first)",
    "text": "चयनित डाउनलोड हटाएँ (पहले पूछता है)"
+  },
+  "38d4b8570c497ca6": {
+   "source": "MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a <x1/> proxy in <g2>Options → Proxy / Socks</g2> and turn on <g3>Use the proxy</g3> in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers; it opens no UDP socket toward the network at all. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.",
+   "text": "MDM की प्रॉक्सी / SOCKS सेटिंग्स वेब और FTP डाउनलोड के लिए हैं। टॉरेंट भी SOCKS5 का उपयोग कर सकते हैं: <g2>विकल्प → प्रॉक्सी / SOCKS</g2> में एक <x1/> प्रॉक्सी सेट करें और टॉरेंट सेटिंग्स में <g3>प्रॉक्सी का उपयोग करें</g3> चालू करें। प्रॉक्सी केवल पीयर और वेब ट्रैकर्स से कनेक्शन को कवर करती है, इसलिए इसके साथ MDM DHT, लोकल पीयर डिस्कवरी, इनकमिंग कनेक्शन और UDP ट्रैकर्स को बंद कर देता है; यह नेटवर्क की ओर कोई UDP सॉकेट नहीं खोलता है। यदि प्रॉक्सी / SOCKS से प्रॉक्सी चला जाता है जबकि वह स्विच चालू है, तो टॉरेंट इसके चारों ओर जाने के बजाय शुरू नहीं होते हैं।"
   },
   "3938d71e01f3e035": {
    "source": "<g1>System file dialogs no longer freeze MDM's other windows</g1> while they are open.",
@@ -2408,7 +2412,7 @@
   },
   "406a798e6be784f9": {
    "source": "The system's DNS asks the names in its own way, and Windows may ask over every adapter. To keep the names inside the adapter too, choose a DNS under <g1>Connection</g1> → <g2>DNS</g2>: MDM then asks it through the adapter.",
-   "text": "सिस्टम का DNS नामों को अपने तरीके से पूछता है, और Windows हर एडाप्टर पर पूछ सकता है। नामों को एडाप्टर के अंदर भी रखने के लिए, <g1>कनेक्शन</g1> → <g2>DNS</g2> के तहत एक DNS चुनें: MDM फिर उसे एडाप्टर के माध्यम से पूछता है।"
+   "text": "सिस्टम का DNS अपने तरीके से नाम पूछता है, और Windows हर एडाप्टर पर पूछ सकता है। नामों को एडाप्टर के अंदर भी रखने के लिए, <g1>कनेक्शन</g1> → <g2>DNS</g2> के तहत एक DNS चुनें: MDM फिर इसे एडाप्टर के माध्यम से पूछता है।"
   },
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
@@ -2857,6 +2861,10 @@
   "4f342424b8dab68f": {
    "source": "Every display language Windows 11 offers, chosen by flag on the first start or any time in View → Language. Arabic, Hebrew, Persian, Urdu and Uyghur are laid out right to left.",
    "text": "Windows 11 द्वारा दी जाने वाली हर डिस्प्ले भाषा, जिसे पहली बार शुरू करने पर झंडे से या किसी भी समय देखें → भाषा में चुना जा सकता है। अरबी, हिब्रू, फ़ारसी, उर्दू और उइघुर दाएँ से बाएँ लिखे जाते हैं।"
+  },
+  "4f4c098768b05078": {
+   "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size.",
+   "text": "सब कुछ कीबोर्ड से किया जा सकता है, और MDM स्क्रीन रीडर (जैसे Windows पर Narrator और NVDA) के साथ काम करता है: इसकी विंडो, डायलॉग और मेनू उन्हें बताते हैं कि प्रत्येक कंट्रोल क्या है और उसकी स्थिति क्या है, और डाउनलोड सूची प्रत्येक डाउनलोड का नाम, स्थिति और आकार पढ़ती है।"
   },
   "4f5ab4808403e058": {
    "source": "Turn the running app's automation API on or off.",
@@ -3666,6 +3674,10 @@
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>गुण</g1> — इसका नाम, फ़ाइल प्रकार और फ़ोल्डर बदलें। सामान्य और टॉरेंट केवल अपना फ़ोल्डर बदलते हैं। एक पुनर्नामित श्रेणी अपना फ़ोल्डर रखती है; एक बिल्ट-इन श्रेणी को जब तक आप उसका नाम नहीं बदलते, वह आपकी भाषा में अपना नाम रखती है।"
   },
+  "66e4fe28b447c606": {
+   "source": "Shift+F10",
+   "text": "Shift+F10"
+  },
   "67102ad4c4b47883": {
    "source": "<g1>Mister Download Manager vs IDM 6.42</g1><g2>Checked October 2026 · sources below</g2>",
    "text": "<g1>Mister Download Manager बनाम IDM 6.42</g1><g2>अक्टूबर 2026 को जाँच की गई · स्रोत नीचे दिए गए हैं</g2>"
@@ -3680,7 +3692,7 @@
   },
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
-   "text": "पूरे कंप्यूटर के लिए किसी दूसरे नेटवर्क के ज़रिए <g1>सब कुछ</g1> भेजने के लिए, VPN का इस्तेमाल करें।"
+   "text": "किसी दूसरे नेटवर्क के ज़रिए <g1>सब कुछ</g1> भेजने के लिए, पूरे कंप्यूटर के लिए VPN का इस्तेमाल करें।"
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -4520,7 +4532,7 @@
   },
   "7d9cbd5bf6ab33e4": {
    "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>विकल्प → प्रॉक्सी / SOCKS → नेटवर्क एडाप्टर</g1> MDM के कनेक्शन को एक एडाप्टर से जोड़ता है, आमतौर पर VPN के (<g2>विकल्प</g2>)। Linux और macOS पर टॉरेंट इंजन हर सॉकेट को इससे जोड़ता है: पीयर, ट्रैकर, DHT और उसका लिसनिंग पोर्ट। UPnP और लोकल पीयर डिस्कवरी तब बंद हो जाते हैं, क्योंकि वे एडाप्टर के ज़रिए नहीं बल्कि लोकल नेटवर्क से बात करते हैं। अगर एडाप्टर चला जाता है, तो इंजन रुक जाता है, और जब वह वापस आता है तो एडाप्टर के ज़रिए फिर से शुरू होता है।"
+   "text": "<g1>विकल्प → प्रॉक्सी / SOCKS → नेटवर्क एडाप्टर</g1> MDM के कनेक्शन को एक एडाप्टर से जोड़ता है, आमतौर पर VPN के (<g2>विकल्प</g2>)। Linux और macOS पर टॉरेंट इंजन हर सॉकेट को इससे जोड़ता है: पीयर, ट्रैकर, DHT और उसका लिसनिंग पोर्ट। UPnP और लोकल पीयर डिस्कवरी तब बंद हो जाते हैं, क्योंकि वे एडाप्टर के बजाय लोकल नेटवर्क से बात करते हैं। अगर एडाप्टर चला जाता है, तो इंजन रुक जाता है, और जब वह वापस आता है तो एडाप्टर के ज़रिए फिर से शुरू होता है।"
   },
   "7de0ee28024da88e": {
    "source": "<g1>Tasks → Torrent settings → Open magnet links and .torrent files with Mister Download Manager</g1> does write to the registry, for your Windows account only. Leave it off to keep the portable copy registry-free.",
@@ -5292,7 +5304,7 @@
   },
   "93f6a01041910b90": {
    "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "प्रगति दिखाते हुए, 8 कनेक्शनों (<x1/>, 1 से 128) तक के साथ एक फ़ाइल डाउनलोड करें। <x2/> इसे रोकता है; <x3/> जारी रखता है। <x4/> समाप्त फ़ाइल की जाँच करता है: हेक्स MD5, SHA-1, SHA-256, SHA-512 या CRC32, वैकल्पिक रूप से नामित (<x5/>)। <x6/> DNS चुनता है: <x7/> (डिफ़ॉल्ट); एक सेवा और उसे कैसे पूछें, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS सर्वर के पते, <x13/>; या एक DNS-ओवर-HTTPS पता। यह कभी भी सिस्टम के DNS पर वापस नहीं आता है। <x14/> हर कनेक्शन को एक नेटवर्क एडाप्टर के माध्यम से भेजता है, उसके नाम (<x15/>, <x16/>) या उसके पतों में से एक से; जब यह कनेक्ट नहीं होता है, तो कुछ भी नहीं भेजा जाता है और डाउनलोड विफल हो जाता है।"
+   "text": "प्रगति दिखाते हुए, 8 कनेक्शनों (<x1/>, 1 से 128) तक के साथ एक फ़ाइल डाउनलोड करें। <x2/> इसे रोकता है; <x3/> जारी रखता है। <x4/> समाप्त फ़ाइल की जाँच करता है: हेक्स MD5, SHA-1, SHA-256, SHA-512 या CRC32, वैकल्पिक रूप से नामित (<x5/>)। <x6/> DNS चुनता है: <x7/> (डिफ़ॉल्ट); एक सेवा और उससे पूछने का तरीका, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS सर्वर के पते, <x13/>; या एक DNS-ओवर-HTTPS पता। यह कभी भी सिस्टम के DNS पर वापस नहीं आता है। <x14/> प्रत्येक कनेक्शन को एक नेटवर्क एडाप्टर के माध्यम से भेजता है, उसके नाम (<x15/>, <x16/>) या उसके पतों में से एक से; जब यह कनेक्ट नहीं होता है, तो कुछ भी नहीं भेजा जाता है और डाउनलोड विफल हो जाता है।"
   },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
@@ -5316,7 +5328,7 @@
   },
   "94c4559a957526ad": {
    "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "अभी तक एडाप्टर से बंधे नहीं हैं, इसलिए जब एक चुना जाता है तो वे शुरू नहीं होते हैं:"
+   "text": "अभी तक एडाप्टर से बंधे नहीं हैं, इसलिए जब कोई चुना जाता है तो वे शुरू नहीं होते हैं:"
   },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
@@ -5972,7 +5984,7 @@
   },
   "a7431b39fec4f131": {
    "source": "How it holds: Windows binds the adapter's own address. Windows then sends those packets only through that adapter (its strong host model). Linux binds the device itself (Linux 5.7 or newer), and macOS binds the interface. An address of a kind the adapter doesn't have (IPv6 on an IPv4-only VPN) is refused, not sent around it.",
-   "text": "यह कैसे काम करता है: Windows एडाप्टर के अपने पते को बांधता है। Windows फिर उन पैकेटों को केवल उस एडाप्टर (इसका मजबूत होस्ट मॉडल) के माध्यम से भेजता है। Linux डिवाइस को ही बांधता है (Linux 5.7 या नया), और macOS इंटरफ़ेस को बांधता है। एक ऐसा पता जो एडाप्टर के पास नहीं है (IPv4-केवल VPN पर IPv6) अस्वीकार कर दिया जाता है, उसके चारों ओर नहीं भेजा जाता है।"
+   "text": "यह कैसे काम करता है: Windows एडाप्टर के अपने पते को बांधता है। Windows फिर उन पैकेटों को केवल उस एडाप्टर (इसका मजबूत होस्ट मॉडल) के माध्यम से भेजता है। Linux डिवाइस को ही बांधता है (Linux 5.7 या नया), और macOS इंटरफ़ेस को बांधता है। एक ऐसा पता जो एडाप्टर के पास नहीं है (केवल IPv4 VPN पर IPv6) अस्वीकार कर दिया जाता है, उसके चारों ओर नहीं भेजा जाता।"
   },
   "a7459895fd5b43e6": {
    "source": "<g1>F10</g1>, or <g2>Alt</g2> pressed alone",
@@ -6224,7 +6236,7 @@
   },
   "ad45e0dd35085a55": {
    "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>नेटवर्क एडाप्टर</g1> — <g2>कोई भी (सिस्टम चुनता है)</g2> डिफ़ॉल्ट है। एक एडाप्टर चुनें, आमतौर पर आपके VPN का, और MDM का हर कनेक्शन उसी के माध्यम से जाएगा, या बिल्कुल नहीं जाएगा। इसमें डाउनलोड, FTP, आपके द्वारा चुना गया DNS, MDM के अपने डाउनलोड और अपडेट जांच शामिल हैं। यह एक किल स्विच के रूप में काम करता है: जब एडाप्टर डिस्कनेक्ट हो जाता है, या VPN बंद हो जाता है, तो आपके सामान्य कनेक्शन के माध्यम से कुछ भी बाहर नहीं जाता है। चल रहे डाउनलोड \"… कनेक्टेड नहीं है\" के साथ रुक जाते हैं और एडाप्टर के वापस आने पर फिर से शुरू हो जाते हैं। सूची के नीचे की पंक्ति एडाप्टर का पता दिखाती है, या यह कि वह कनेक्टेड नहीं है।"
+   "text": "<g1>नेटवर्क एडाप्टर</g1> — <g2>कोई भी (सिस्टम चुनता है)</g2> डिफ़ॉल्ट है। एक एडाप्टर चुनें, आमतौर पर आपके VPN का, और MDM द्वारा खोला गया हर कनेक्शन उसी के माध्यम से जाएगा, या बिल्कुल नहीं जाएगा। इसमें डाउनलोड, FTP, आपके द्वारा चुना गया DNS, MDM के अपने डाउनलोड और अपडेट जांच शामिल हैं। यह एक किल स्विच के रूप में काम करता है: जब एडाप्टर डिस्कनेक्ट हो जाता है, या VPN बंद हो जाता है, तो आपके सामान्य कनेक्शन के माध्यम से कुछ भी बाहर नहीं जाता है। चल रहे डाउनलोड \"...कनेक्टेड नहीं है\" के साथ रुक जाते हैं और एडाप्टर के वापस आने पर फिर से शुरू हो जाते हैं। सूची के नीचे की पंक्ति एडाप्टर का पता दिखाती है, या यह कि यह कनेक्टेड नहीं है।"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -7960,7 +7972,7 @@
   },
   "e0e426203d8a6245": {
    "source": "(implicit TLS; <x1/> with TLS is fine).",
-   "text": "(अंतर्निहित TLS; <x1/> TLS के साथ ठीक है)।"
+   "text": "(निहित TLS; <x1/> TLS के साथ ठीक है)।"
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",

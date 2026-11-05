@@ -147,6 +147,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Torrents behind a proxy open no UDP socket toward the network**: UDP trackers were already
+  left out there; now their client stays on this computer too.
+- **Developers: tests no longer make Windows Firewall ask about them.** The torrent tests and
+  test tools listen on 127.0.0.1 only (a new setting of the torrent engine, its listen address),
+  so each new build of a test no longer opens sockets on every address.
 - **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
   closed to the tray, MDM gives the memory it isn't using back to Windows. Task Manager's
   **Memory** drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to
@@ -212,6 +217,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   bar and every right-click menu as menus whose items can be run, and **Shift+F10** or the
   **Menu** key opens the selected category's menu. A menu opened from the keyboard no longer stays
   invisible until the mouse moves.
+- **A download's progress file could be written again just after it stopped**
+  ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)). MDM saves a
+  download's progress every few seconds, in a file beside it. A download paused or finished
+  during one of those saves could stop before the save was done. That save then wrote an old
+  progress file a moment later. A download now stops only once its save is done.
 - **A video download could fail in MDM while yt-dlp went on and finished it**
   ([#79](https://github.com/anefzaoui/misterdownloadmanager/issues/79)). A line yt-dlp printed in
   the system's code page rather than UTF-8 (a title in Turkish or Russian on some Windows) ended
