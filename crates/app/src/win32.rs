@@ -13,8 +13,8 @@ use windows_sys::Win32::Graphics::Gdi::{
 use windows_sys::Win32::Storage::FileSystem::FILE_ATTRIBUTE_NORMAL;
 use windows_sys::Win32::System::Threading::GetCurrentProcessId;
 use windows_sys::Win32::UI::Shell::{
-    DefSubclassProc, SHFILEINFOW, SHGFI_ICON, SHGFI_SMALLICON, SHGFI_USEFILEATTRIBUTES,
-    SHGetFileInfoW, SetWindowSubclass,
+    DefSubclassProc, SHFILEINFOW, SHGFI_ICON, SHGFI_USEFILEATTRIBUTES, SHGetFileInfoW,
+    SetWindowSubclass,
 };
 use windows_sys::Win32::UI::WindowsAndMessaging::{
     DestroyIcon, EnumWindows, GWL_EXSTYLE, GWL_STYLE, GetIconInfo, GetWindowLongPtrW,
@@ -63,6 +63,36 @@ pub(crate) fn find_own_window(title: &str) -> Option<HWND> {
     };
     unsafe { EnumWindows(Some(enum_cb), &mut f as *mut Find as LPARAM) };
     (!f.found.is_null()).then_some(f.found)
+}
+
+/// Off-screen test runs (MDM_OFFSCREEN=1): every top-level window of ours gets WS_EX_NOACTIVATE,
+/// so Windows never makes it the foreground window, whatever asks (a click, a dialog coming to
+/// the front, an accessibility client): the user's keystrokes stay in their own window while
+/// tests run. UI Automation still works on them (Select, Invoke, Toggle need no activation).
+/// Cheap: only our own windows are touched, once each.
+pub fn keep_from_foreground() {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetWindowThreadProcessId, IsWindowVisible, WS_EX_NOACTIVATE,
+    };
+    unsafe extern "system" fn cb(hwnd: HWND, lparam: LPARAM) -> windows_sys::core::BOOL {
+        let pid = lparam as u32;
+        let mut owner = 0u32;
+        // SAFETY: plain queries and a style change on a window of this process.
+        unsafe {
+            GetWindowThreadProcessId(hwnd, &mut owner);
+            if owner == pid && IsWindowVisible(hwnd) != 0 {
+                let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
+                if ex & WS_EX_NOACTIVATE == 0 {
+                    SetWindowLongPtrW(hwnd, GWL_EXSTYLE, (ex | WS_EX_NOACTIVATE) as isize);
+                }
+            }
+        }
+        1
+    }
+    // SAFETY: the callback only reads its pid from lparam.
+    unsafe {
+        EnumWindows(Some(cb), GetCurrentProcessId() as LPARAM);
+    }
 }
 
 /// Give our window titled `title` IDM's modal-dialog frame (WS_EX_DLGMODALFRAME, no sizing
@@ -912,17 +942,8 @@ pub fn work_area(x: i32, y: i32) -> Option<[i32; 4]> {
     }
 }
 
-/// The shell's 16 × 16 icon for files with extension `ext` (e.g. "zip"), as RGBA.
-pub fn shell_icon(ext: &str) -> Option<Vec<u8>> {
-    icon_for(
-        &format!("file.{ext}"),
-        FILE_ATTRIBUTE_NORMAL,
-        SHGFI_SMALLICON,
-        16,
-    )
-}
-
-/// The shell's 32 × 32 icon for files with extension `ext`, as RGBA.
+/// The shell's 32 × 32 icon for files with extension `ext`, as RGBA: the picture under the
+/// pointer while a file is dragged out (lists draw fileicons.rs's icons instead).
 pub fn shell_icon_large(ext: &str) -> Option<Vec<u8>> {
     icon_for(&format!("file.{ext}"), FILE_ATTRIBUTE_NORMAL, 0, 32)
 }

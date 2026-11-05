@@ -306,6 +306,10 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "第 13 代英特尔(R) 酷睿(TM) i5-13400F，63.8 GB 内存，Windows-11-10.0.26200-SP0。labserver（此仓库），127.0.0.1:8097，生成内容。两者均使用默认设置：8 个连接。"
   },
+  "0797f3ad6e9f2823": {
+   "source": "lines, then <x1/>.",
+   "text": "行，然后是 <x1/>。"
+  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "我可以同时安装 IDM 吗？"
@@ -465,6 +469,10 @@
   "0b60549b3aaf5aea": {
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "便携版。下载列表和设置保留在程序旁边的 <x1/> 文件夹中，并且不会写入注册表。浏览器集成需要安装程序。请参阅<g2>便携模式</g2>。"
+  },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "在同一窗口中，勾选<g1>将所有下载总计限制为</g1>并设置速度。这会限制MDM的整体速度，无论有多少文件正在下载，包括种子文件。当种子和其他下载同时运行时，每方至少获得一半的速度，当另一方需求较少时则获得更多：一个缓慢的种子会将剩余速度留给其他下载，反之亦然。只要勾选此选项，无论是否开启单文件限速器，它都将生效。"
   },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
@@ -1093,6 +1101,10 @@
   "1cafb86bd2c2b2f4": {
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>下载文件信息</g1>显示文件名、大小以及保存位置。文件夹取决于文件类型：ZIP 文件到<x2/>，视频文件到<x3/>，依此类推。您可以更改文件夹或类别。"
+  },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "对于一个种子，限制仅适用于该种子；其他下载保持其各自的限制。一个种子不能低于 16 千字节/秒：如果设置了更低的限制，它将变为 16。"
   },
   "1cc76bd241b12c50": {
    "source": "Privacy",
@@ -4298,6 +4310,10 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "每个发布版本都在<g1>SHA256SUMS.txt</g1>中列出了每个文件的 SHA-256 校验和。在 Windows 上，请与<x2/>进行比较；在 macOS 和 Linux 上，请与<x3/>进行比较。所有文件均由 GitHub Actions 从公共源代码构建；构建日志可在<g4>GitHub</g4>上查看。"
   },
+  "7abc575fd3c5fa12": {
+   "source": "; a choice's <x1/> is what <x2/> takes.",
+   "text": "；选项的 <x1/> 是 <x2/> 所取的值。"
+  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "勾选<g1>将所有下载总计限制为</g1>，并输入速度（单位为千字节/秒）。一个好的开始是您连接速度的大约三分之二。（1 兆字节/秒大约是 1000 千字节/秒。）"
@@ -7194,6 +7210,10 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "在<g1>下载文件信息</g1>中，点击<g2>稍后下载</g2>。"
   },
+  "ccce361d6bc788ef": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
+   "text": "下载视频；<x1/> 从 <x2/> 获取质量选择器（<x3/> = 最佳单文件；<x4/>、<x5/>、<x6/> 或 <x7/> = 该比特率的 MP3 音频，<x8/> 为最佳可变比特率；MP3 需要 ffmpeg）。"
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "想要字幕？在<g1>字幕</g1>中选择一种语言。它们会保存在视频旁边，如果您勾选<g2>将它们放入视频</g2>，则会保存在视频内部（参见<g3>字幕</g3>）。"
@@ -8821,6 +8841,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "一个种子在这里算作一个文件：每个种子都有自己的限制。有自己限制的下载（参见<g1>针对单个下载</g1>）会保持该限制。"
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

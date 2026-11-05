@@ -18,6 +18,8 @@ Everything below ships together, in one release.
 - ✅ Torrent security: stricter file-name checks, no silent overwrite, files marked as downloaded
   from the internet, network switches (incoming, UPnP, port, DHT, local peers), SOCKS5 proxy and
   IP blocklist ([#40](https://github.com/anefzaoui/misterdownloadmanager/issues/40))
+- ✅ Torrents: a speed limit per torrent, remembered limits, and the global cap covering torrents
+  too ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Google Drive: public files download by their share links
   ([#34](https://github.com/anefzaoui/misterdownloadmanager/issues/34)); folders come later
 - ✅ Video downloads: Stop ends yt-dlp and everything it started
@@ -53,6 +55,9 @@ Everything below ships together, in one release.
   ([#77](https://github.com/anefzaoui/misterdownloadmanager/issues/77)), and dragging the file out
   of Download complete works in every language
   ([#78](https://github.com/anefzaoui/misterdownloadmanager/issues/78))
+- ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
+  a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
+  list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
@@ -60,9 +65,9 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Torrents: speed limits per torrent and under the global cap, then upload limits, a share
-  ratio that survives restarts, seeding limits, more torrent actions, and RSS feeds with
-  auto-download rules ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
+- 🔄 Torrents, the rest: upload limits, a share ratio that survives restarts, seeding limits, more
+  torrent actions, and RSS feeds with auto-download rules
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 
 ### Bugs being looked into
 

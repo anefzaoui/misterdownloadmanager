@@ -306,6 +306,10 @@
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
    "text": "13.ª Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (este repositorio), 127.0.0.1:8097, contenido generado. Ambos con la configuración predeterminada: 8 conexiones."
   },
+  "0797f3ad6e9f2823": {
+   "source": "lines, then <x1/>.",
+   "text": "líneas, luego <x1/>."
+  },
   "0799a3169d80c8d3": {
    "source": "Can I keep IDM installed too?",
    "text": "¿Puedo mantener IDM instalado también?"
@@ -465,6 +469,10 @@
   "0b60549b3aaf5aea": {
    "source": "A portable copy. The download list and settings stay in a <x1/> folder next to the program, and nothing is written to the registry. Browser integration needs the installer. See <g2>Portable mode</g2>.",
    "text": "Una copia portátil. La lista de descargas y la configuración permanecen en una carpeta <x1/> junto al programa, y no se escribe nada en el registro. La integración con el navegador necesita el instalador. Consulta <g2>Modo portátil</g2>."
+  },
+  "0b6fab6c1ab7b8c8": {
+   "source": "In the same window, tick <g1>Limit all downloads together to</g1> and set the speed. This caps MDM as a whole, however many files are downloading, torrents included. When torrents and other downloads run at the same time, each side gets at least half of the speed, and more when the other side needs less: a torrent going slowly leaves the rest to the other downloads, and the other way round. It applies whenever it is ticked, whether the per-file limiter is on or off.",
+   "text": "En la misma ventana, marque <g1>Limitar todas las descargas juntas a</g1> y establezca la velocidad. Esto limita MDM en su conjunto, sin importar cuántos archivos se estén descargando, incluidos los torrents. Cuando los torrents y otras descargas se ejecutan al mismo tiempo, cada lado obtiene al menos la mitad de la velocidad, y más cuando el otro lado necesita menos: un torrent que va lento deja el resto a las otras descargas, y viceversa. Se aplica siempre que esté marcado, ya sea que el limitador por archivo esté activado o desactivado."
   },
   "0b7409c1da9a64c7": {
    "source": "Experimental",
@@ -1093,6 +1101,10 @@
   "1cafb86bd2c2b2f4": {
    "source": "<g1>Download File Info</g1> shows the file's name, its size and where it will be saved. The folder depends on the file's type: a ZIP goes to <x2/>, a video to <x3/>, and so on. Change the folder or the category if you like.",
    "text": "<g1>Información del archivo de descarga</g1> muestra el nombre del archivo, su tamaño y dónde se guardará. La carpeta depende del tipo de archivo: un ZIP va a <x2/>, un vídeo a <x3/>, y así sucesivamente. Cambie la carpeta o la categoría si lo desea."
+  },
+  "1cba5b2b6c9f3a6f": {
+   "source": "For a torrent, the limit is that torrent's alone; the others keep theirs. A torrent can't be held under 16 KBytes/sec: a lower limit gives it 16.",
+   "text": "Para un torrent, el límite es solo para ese torrent; los demás mantienen el suyo. Un torrent no puede mantenerse por debajo de 16 KB/s: un límite inferior le asigna 16."
   },
   "1cc76bd241b12c50": {
    "source": "Privacy",
@@ -4298,6 +4310,10 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Cada versión lista la suma de comprobación SHA-256 de cada archivo en <g1>SHA256SUMS.txt</g1>. En Windows, compárala con <x2/>; en macOS y Linux con <x3/>. Todos los archivos se construyen desde el código fuente público mediante GitHub Actions; los registros de compilación están en <g4>GitHub</g4>."
   },
+  "7abc575fd3c5fa12": {
+   "source": "; a choice's <x1/> is what <x2/> takes.",
+   "text": "; el <x1/> de una opción es lo que <x2/> toma."
+  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "Marque <g1>Limitar todas las descargas juntas a</g1> y escriba una velocidad en KB/s. Un buen punto de partida es aproximadamente dos tercios de la velocidad de su conexión. (1 MB/s equivale a unos 1000 KB/s)."
@@ -7194,6 +7210,10 @@
    "source": "In <g1>Download File Info</g1>, click <g2>Download Later</g2>.",
    "text": "En <g1>Información del archivo de descarga</g1>, haz clic en <g2>Descargar más tarde</g2>."
   },
+  "ccce361d6bc788ef": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/>, <x5/>, <x6/> or <x7/> = the sound as an MP3 at that bitrate, <x8/> at its best variable one; MP3 needs ffmpeg).",
+   "text": "Descargar un vídeo; <x1/> toma un selector de calidad de <x2/> (<x3/> = el mejor archivo único; <x4/>, <x5/>, <x6/> o <x7/> = el sonido como MP3 a esa tasa de bits, <x8/> a su mejor tasa variable; MP3 necesita ffmpeg)."
+  },
   "ccf432f5c2c618e6": {
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "¿Quieres subtítulos? Elige un idioma en <g1>Subtítulos</g1>. Se guardan junto al vídeo, o dentro de él si marcas <g2>Ponerlos en el vídeo</g2> (ver <g3>Subtítulos</g3>)."
@@ -8821,6 +8841,10 @@
   "ff3845d4f10ef6cd": {
    "source": "IDM 6.42",
    "text": "IDM 6.42"
+  },
+  "ff3bfdeedafee43f": {
+   "source": "A torrent counts as one file here: each torrent gets the limit of its own. A download with a limit of its own (see <g1>For one download</g1>) keeps that one.",
+   "text": "Aquí, un torrent cuenta como un archivo: cada torrent tiene su propio límite. Una descarga con un límite propio (véase <g1>Para una descarga</g1>) lo mantiene."
   },
   "ff71942d9ac7e304": {
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",

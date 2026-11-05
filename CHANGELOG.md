@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **A file-type icon before every file name**: the download list, Download File Info, Properties,
+  Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
+  audio, pictures, archives, documents, subtitles, code, and the programs and installers of every
+  system (exe, msi, dmg, pkg, deb, rpm, AppImage, apk, iso…) each have their own, from Material
+  Icon Theme (MIT), the same on Windows, macOS and Linux; a .torrent shows MDM's magnet. Windows'
+  own icons were used before, on Windows only.
 - **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the
@@ -168,6 +174,29 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   (always a video, never the sound alone) and says so in the download's log. With no video left
   at all, it tries the page's own servers. A server yt-dlp couldn't resolve or reach is avoided on
   the next look-up. The log also names the qualities a move left out.
+- **Lists read as blank items to screen readers** ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)):
+  the rows of Download video's qualities, Add torrent's files, the language picker, Options
+  (browsers, sounds, the file-type and site lists), the Scheduler and Import now have their names
+  (a format and its size, a file's name and size), their check boxes theirs, ticked or not, and
+  their selected row; Download video's list is called Quality, Add torrent's Files and the
+  sounds' Sounds. Choosing a row from a screen reader (UI Automation's Select) now shows the new
+  choice at once: it used to wait for the next mouse move.
+- **Torrents: speed limits now work as they do for other downloads**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a limit set in a
+  torrent's progress window changed every torrent's limit, a remembered limit was ignored, the
+  Speed Limiter's "for one file" was shared by all torrents together, and "Limit all downloads
+  together" left torrents out. Each torrent now has a limit of its own, a remembered one applies
+  again when it resumes, and torrents and other downloads share the global cap evenly: each
+  side gets at least half of it, and the rest when the other side needs less. A limit under
+  16 KB/s, which made a torrent drop its peers and stall, gives it 16 KB/s. A
+  torrent started again while its files were still being checked no longer stays paused, and
+  of two torrents started at the same moment, the second no longer fails with "the torrent is
+  no longer there".
+- **Stopping a download under a low speed limit took seconds**: each connection first waited
+  for its turn under the limit. Stop now ends those waits at once.
+- **Screen readers: the progress window's Speed Limiter** took a speed set with a screen reader
+  or UI Automation only after the focus moved on, and its "Remember Speed Limiter settings for
+  this file" check box had no name. A speed set that way applies at once, and the box is named.
 - **The browser extension's Download video menu: an item's highlight ran past the menu's
   edge** ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81)).
 - **A long file name ran out of the progress window** ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62)):
