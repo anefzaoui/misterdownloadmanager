@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Вы действительно хотите удалить {n} загрузку из списка загрузок Mister Download Manager?|Вы действительно хотите удалить эти {n} загрузки из списка загрузок Mister Download Manager?|Вы действительно хотите удалить эти {n} загрузок из списка загрузок Mister Download Manager?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Подключено к {n} пиру, получение списка файлов...|Подключено к {n} пирам, получение списка файлов...|Подключено к {n} пирам, получение списка файлов...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} узел: {peers}|DHT, {n} узла: {peers}|DHT, {n} узлов: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Извлечен {n} файл в {folder}|Извлечено {n} файла в {folder}|Извлечено {n} файлов в {folder}
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Найден {n} пир, подключение...|Найдено {n} пира, подключение...|Найдено {n} пиров, подключение...
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -60,6 +77,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Имя {n} файла уже существовало и было пронумеровано|Имена {n} файлов уже существовали и были пронумерованы|Имена {n} файлов уже существовали и были пронумерованы
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} пир|{n} пира|{n} пиров
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -69,6 +91,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	Добавлен {n} трекер|Добавлено {n} трекера|Добавлено {n} трекеров
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} трекер: {peers}|{n} трекера: {peers}|{n} трекеров: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -370,9 +397,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	Запрошены пиры у трекеров повторно
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	Запрос списка файлов у пиров. Magnet-ссылки могут занять минуту или две.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -733,6 +757,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Описание:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	DHT выключен
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1526,6 +1554,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	Загрузить ещё
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	Локальная сеть: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1542,6 +1574,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Сначала найдите новый адрес
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	Поиск пиров...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1807,6 +1844,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	ни один пир не отправил список файлов торрента вовремя
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Пиров пока нет. Возможно, этот торрент раздают немногие, или брандмауэр, VPN или сеть блокируют BitTorrent.
 #. text in the Options window
 #, machine
 	No proxy/socks	Без прокси/SOCKS
@@ -1814,6 +1855,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	Трекер не добавлен: он уже имеется
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	Нет трекеров
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2041,6 +2086,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	Пиры
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Пиры найдены, но пока никто не ответил. Возможно, брандмауэр или VPN блокируют соединения.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	Периодическая синхронизация
@@ -2761,6 +2810,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	соединение было потеряно при получении данных
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT ни до кого не достучался. Возможно, брандмауэр, VPN или сеть блокируют UDP, который используют DHT и большинство трекеров.
 #. text in errors.rs
 #, machine
 	the disk is full	диск заполнен
@@ -3000,6 +3053,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	В этом списке нет видео
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Эта magnet-ссылка не содержит трекеров, а DHT отключен, поэтому не удается найти ни одного пира.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Želite li zaista da izbrišete {n} preuzimanje sa liste preuzimanja programa Mister Download Manager?|Želite li zaista da izbrišete ova {n} preuzimanja sa liste preuzimanja programa Mister Download Manager?|Želite li zaista da izbrišete ovih {n} preuzimanja sa liste preuzimanja programa Mister Download Manager?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Povezan sa {n} ravnopravnim čvorom, preuzimam listu datoteka...|Povezan sa {n} ravnopravna čvora, preuzimam listu datoteka...|Povezan sa {n} ravnopravnih čvorova, preuzimam listu datoteka...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} čvor: {peers}|DHT, {n} čvora: {peers}|DHT, {n} čvorova: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Izdvojena je {n} datoteka u {folder}|Izdvojene su {n} datoteke u {folder}|Izdvojeno je {n} datoteka u {folder}
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Pronađen {n} ravnopravni čvor, povezujem se...|Pronađena {n} ravnopravna čvora, povezujem se...|Pronađeno {n} ravnopravnih čvorova, povezujem se...
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -60,6 +77,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} datoteka je već imala to ime i numerisana je|{n} datoteke su već imale to ime i numerisane su|{n} datoteka je već imalo to ime i numerisano je
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} ravnopravni čvor|{n} ravnopravna čvora|{n} ravnopravnih čvorova
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -69,6 +91,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} treker dodat|{n} trekera dodata|{n} trekera dodato
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} treker: {peers}|{n} trekera: {peers}|{n} trekera: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -370,9 +397,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	Ponovo zatraženi peer-ovi od trekera
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	Traženje liste datoteka od vršnjaka. Magnetne veze mogu potrajati minut ili dva.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -733,6 +757,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Opis:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	DHT isključen
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1526,6 +1554,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	Učitaj još
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	Lokalna mreža: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1542,6 +1574,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Prvo potražite novu adresu
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	Tražim ravnopravne čvorove...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1807,6 +1844,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	nijedan peer nije poslao listu datoteka torrenta na vreme
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Još nema ravnopravnih čvorova. Možda malo ljudi deli ovaj torent, ili zaštitni zid, VPN ili mreža blokiraju BitTorrent.
 #. text in the Options window
 #, machine
 	No proxy/socks	Bez proxy/socks servera
@@ -1814,6 +1855,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	Nijedan treker nije dodat: već ih ima
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	Nema trekera
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2041,6 +2086,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	Korisnici
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Pronađeni su ravnopravni čvorovi, ali nijedan još nije odgovorio. Zaštitni zid ili VPN možda blokiraju veze.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	Periodična sinhronizacija
@@ -2761,6 +2810,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	veza je izgubljena tokom prijema podataka
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT nikoga nije dohvatio. Zaštitni zid, VPN ili mreža možda blokiraju UDP, koji DHT i većina trekera koriste.
 #. text in errors.rs
 #, machine
 	the disk is full	disk je pun
@@ -3000,6 +3053,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	Ova lista nema video zapisa
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Ova magnetna veza ne imenuje nijedan treker, a DHT je isključen, tako da nijedan peer ne može biti pronađen.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

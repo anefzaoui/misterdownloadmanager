@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Magnet links get their file list in seconds again: the DHT keeps going after a computer it
+  asked is gone, and Add torrent shows the wait (peers found, from where, what may be in the
+  way) ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92))
 - ✅ Torrents: Recheck, Reannounce, Add trackers and Copy magnet link; files chosen while a
   torrent runs; a `.torrent` file's web address opens Add torrent ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Link grabber: links in packages, looked up for name and size; archives (zip and tar

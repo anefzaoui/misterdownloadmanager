@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Anda yakin ingin menghapus {n} unduhan ini dari daftar unduhan Mister Download Manager?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Tersambung ke {n} rekan, mendapatkan daftar file...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} node: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Mengekstrak {n} file ke {folder}
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Menemukan {n} rekan, menyambungkan...
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -60,6 +77,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} file memiliki nama file yang sudah ada di sana dan diberi nomor
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} rekan
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -69,6 +91,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} pelacak ditambahkan
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} pelacak: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -370,9 +397,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	Meminta pelacak untuk rekan lagi
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	Meminta daftar file dari rekan. Tautan magnet mungkin memerlukan satu atau dua menit.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -733,6 +757,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Deskripsi:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	DHT nonaktif
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1526,6 +1554,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	Muat lebih banyak
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	Jaringan lokal: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1542,6 +1574,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Cari alamat baru terlebih dahulu
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	Mencari rekan...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1807,6 +1844,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	tidak ada peer yang mengirim daftar file torrent tepat waktu
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Belum ada rekan. Mungkin hanya sedikit orang yang membagikan torrent ini, atau firewall, VPN, atau jaringan mungkin memblokir BitTorrent.
 #. text in the Options window
 #, machine
 	No proxy/socks	Tanpa proksi/socks
@@ -1814,6 +1855,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	Tidak ada pelacak yang ditambahkan: sudah ada
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	Tidak ada pelacak
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2041,6 +2086,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	Rekan
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Rekan ditemukan, tetapi belum ada yang menjawab. Firewall atau VPN mungkin memblokir koneksi.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	Sinkronisasi berkala
@@ -2761,6 +2810,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	koneksi terputus saat menerima data
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT tidak menjangkau siapa pun. Firewall, VPN, atau jaringan mungkin memblokir UDP, yang digunakan oleh DHT dan sebagian besar pelacak.
 #. text in errors.rs
 #, machine
 	the disk is full	disk penuh
@@ -3000,6 +3053,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	Daftar ini tidak memiliki video
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Tautan magnet ini tidak menyebutkan pelacak dan DHT mati, jadi tidak ada rekan yang dapat ditemukan.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Mister Download Manager பதிவிறக்கப் பட்டியலில் இருந்து {n} பதிவிறக்கத்தை நீக்க விரும்புகிறீர்களா?|Mister Download Manager பதிவிறக்கப் பட்டியலில் இருந்து இந்த {n} பதிவிறக்கங்களை நீக்க விரும்புகிறீர்களா?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	{n} பியருடன் இணைக்கப்பட்டுள்ளது, கோப்புப் பட்டியல் பெறப்படுகிறது...|{n} பியர்களுடன் இணைக்கப்பட்டுள்ளது, கோப்புப் பட்டியல் பெறப்படுகிறது...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} முனை: {peers}|DHT, {n} முனைகள்: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{n} கோப்பு {folder} இல் பிரித்தெடுக்கப்பட்டது|{n} கோப்புகள் {folder} இல் பிரித்தெடுக்கப்பட்டன
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	{n} பியர் கண்டறியப்பட்டது, இணைக்கிறது...|{n} பியர்கள் கண்டறியப்பட்டன, இணைக்கிறது...
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -60,6 +77,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} கோப்பு ஏற்கனவே இருந்த கோப்பின் பெயரை கொண்டிருந்தது மற்றும் எண்ணிடப்பட்டது|{n} கோப்புகள் ஏற்கனவே இருந்த கோப்புகளின் பெயர்களை கொண்டிருந்தன மற்றும் எண்ணிடப்பட்டன
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} பியர்|{n} பியர்கள்
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -69,6 +91,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} டிராக்கர் சேர்க்கப்பட்டது|{n} டிராக்கர்கள் சேர்க்கப்பட்டன
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} டிராக்கர்: {peers}|{n} டிராக்கர்கள்: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -370,9 +397,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	டிராக்கர்களிடம் மீண்டும் பியர்களைக் கேட்டது
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	கோப்புப் பட்டியலுக்காக பியர்களைக் கேட்கிறது. மேக்னட் இணைப்புகள் ஒன்று அல்லது இரண்டு நிமிடங்கள் ஆகலாம்.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -733,6 +757,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	விளக்கம்:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	DHT முடக்கப்பட்டது
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1526,6 +1554,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	மேலும் ஏற்றவும்
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	உள்ளூர் நெட்வொர்க்: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1542,6 +1574,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	முதலில் புதிய முகவரியைத் தேடுங்கள்
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	பியர்களைத் தேடுகிறது...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1807,6 +1844,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	சரியான நேரத்தில் எந்தப் பியரும் டொரண்டின் கோப்புப் பட்டியலை அனுப்பவில்லை
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	பியர்கள் இன்னும் இல்லை. ஒரு சிலரே இந்த டொரண்ட்டைப் பகிரலாம், அல்லது ஃபயர்வால், VPN அல்லது நெட்வொர்க் BitTorrent ஐத் தடுக்கலாம்.
 #. text in the Options window
 #, machine
 	No proxy/socks	ப்ராக்ஸி/SOCKS இல்லை
@@ -1814,6 +1855,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	டிராக்கர் சேர்க்கப்படவில்லை: அது ஏற்கனவே உள்ளது
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	டிராக்கர்கள் இல்லை
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2041,6 +2086,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	பியர்கள்
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	பியர்கள் கண்டறியப்பட்டன, ஆனால் இன்னும் யாரும் பதிலளிக்கவில்லை. ஃபயர்வால் அல்லது VPN இணைப்புகளைத் தடுக்கலாம்.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	காலமுறை ஒத்திசைவு
@@ -2761,6 +2810,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	தரவைப் பெறும்போது இணைப்பு துண்டிக்கப்பட்டது
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT யாரையும் அடையவில்லை. ஃபயர்வால், VPN அல்லது நெட்வொர்க் UDP ஐத் தடுக்கலாம், அதை DHT மற்றும் பெரும்பாலான டிராக்கர்கள் பயன்படுத்துகின்றன.
 #. text in errors.rs
 #, machine
 	the disk is full	வட்டு நிரம்பியுள்ளது
@@ -3000,6 +3053,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	இந்த பட்டியலில் வீடியோக்கள் இல்லை
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	இந்த மேக்னட் இணைப்பு எந்த டிராக்கர்களையும் பெயரிடவில்லை மற்றும் DHT முடக்கப்பட்டுள்ளது, எனவே எந்த பியரையும் கண்டுபிடிக்க முடியவில்லை.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

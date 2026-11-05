@@ -287,6 +287,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A magnet link could wait minutes for its file list** ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92)):
+  in 0.2.4 on Windows, the DHT (how MDM finds peers without trackers) could stop for the rest
+  of the session once a computer it asked was gone, so a magnet its trackers didn't serve never
+  got its file list. The updated torrent library keeps going, and a test keeps it that way.
+  **Add torrent** now shows the wait: the peers found, from the trackers, the DHT or the local
+  network, and how many answered. After 30 seconds without an answer, it says what may be in
+  the way.
 - **A finished torrent's progress window lost its tabs while it was still shared**: Files, Peers,
   Trackers, Pieces and General (with the share ratio) said "Shown while the torrent is
   downloading." They now stay for as long as the torrent is shared.

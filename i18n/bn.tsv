@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	আপনি কি নিশ্চিত যে আপনি Mister Download Manager ডাউনলোড তালিকা থেকে {n} ডাউনলোড মুছে ফেলতে চান?|আপনি কি নিশ্চিত যে আপনি Mister Download Manager ডাউনলোড তালিকা থেকে এই {n} ডাউনলোডগুলি মুছে ফেলতে চান?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	{n} পিয়ারের সাথে সংযুক্ত, ফাইল তালিকা আনা হচ্ছে...|{n} পিয়ারের সাথে সংযুক্ত, ফাইল তালিকা আনা হচ্ছে...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} নোড: {peers}|DHT, {n} নোড: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{folder}-এ {n}টি ফাইল এক্সট্র্যাক্ট করা হয়েছে|{folder}-এ {n}টি ফাইল এক্সট্র্যাক্ট করা হয়েছে
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	{n} পিয়ার পাওয়া গেছে, সংযোগ করা হচ্ছে...|{n} পিয়ার পাওয়া গেছে, সংযোগ করা হচ্ছে...
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -60,6 +77,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n}টি ফাইলের একই নামের একটি ফাইল আগে থেকেই ছিল এবং সেগুলোকে সংখ্যায়িত করা হয়েছে|{n}টি ফাইলের একই নামের ফাইল আগে থেকেই ছিল এবং সেগুলোকে সংখ্যায়িত করা হয়েছে
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} পিয়ার|{n} পিয়ার
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -69,6 +91,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n}টি ট্র্যাকার যোগ করা হয়েছে|{n}টি ট্র্যাকার যোগ করা হয়েছে
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ট্র্যাকার: {peers}|{n} ট্র্যাকার: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -370,9 +397,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	ট্র্যাকারদের কাছে আবার পিয়ারদের জন্য অনুরোধ করা হয়েছে
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	ফাইল তালিকার জন্য পিয়ারদের জিজ্ঞাসা করা হচ্ছে। ম্যাগনেট লিঙ্কগুলি এক বা দুই মিনিট সময় নিতে পারে।
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -733,6 +757,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	বর্ণনা:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	DHT বন্ধ
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1526,6 +1554,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	আরও লোড করুন
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	স্থানীয় নেটওয়ার্ক: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1542,6 +1574,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	প্রথমে নতুন ঠিকানাটি দেখুন
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	পিয়ারদের খোঁজা হচ্ছে...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1807,6 +1844,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	কোনো পিয়ার সময়মতো টরেন্টের ফাইল তালিকা পাঠায়নি
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	এখনও কোনো পিয়ার নেই। খুব কম লোক এই টরেন্ট শেয়ার করতে পারে, অথবা একটি ফায়ারওয়াল, একটি VPN বা নেটওয়ার্ক BitTorrent ব্লক করতে পারে।
 #. text in the Options window
 #, machine
 	No proxy/socks	কোনো প্রক্সি/SOCKS নেই
@@ -1814,6 +1855,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	কোনো ট্র্যাকার যোগ করা হয়নি: এটিতে ইতিমধ্যেই আছে
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	কোনো ট্র্যাকার নেই
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2041,6 +2086,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	পিয়ার্স
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	পিয়ার পাওয়া গেছে, কিন্তু এখনও কেউ উত্তর দেয়নি। একটি ফায়ারওয়াল বা একটি VPN সংযোগগুলি ব্লক করতে পারে।
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	পর্যায়ক্রমিক সিঙ্ক্রোনাইজেশন
@@ -2761,6 +2810,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	ডেটা গ্রহণ করার সময় সংযোগ বিচ্ছিন্ন হয়ে গেছে
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT কারো কাছে পৌঁছায়নি। একটি ফায়ারওয়াল, একটি VPN বা নেটওয়ার্ক UDP ব্লক করতে পারে, যা DHT এবং বেশিরভাগ ট্র্যাকার ব্যবহার করে।
 #. text in errors.rs
 #, machine
 	the disk is full	ডিস্ক পূর্ণ
@@ -3000,6 +3053,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	এই তালিকায় কোনো ভিডিও নেই
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	এই ম্যাগনেট লিঙ্কে কোনো ট্র্যাকার নেই এবং DHT বন্ধ আছে, তাই কোনো পিয়ার খুঁজে পাওয়া যাচ্ছে না।
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

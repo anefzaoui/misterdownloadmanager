@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	के तपाईं Mister Download Manager को डाउनलोड सूचीबाट {n} डाउनलोड मेटाउन निश्चित हुनुहुन्छ?|के तपाईं Mister Download Manager को डाउनलोड सूचीबाट यी {n} डाउनलोडहरू मेटाउन निश्चित हुनुहुन्छ?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	{n} पियरमा जडान भयो, फाइल सूची प्राप्त गर्दै...|{n} पियरमा जडान भयो, फाइल सूची प्राप्त गर्दै...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} नोड: {peers}|DHT, {n} नोडहरू: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{folder} मा {n} फाइल निकालियो|{folder} मा {n} फाइलहरू निकालियो
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	{n} पियर फेला पर्यो, जडान हुँदै...|{n} पियरहरू फेला पर्यो, जडान हुँदै...
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -60,6 +77,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} फाइलको त्यहाँ पहिले नै भएको फाइलको नाम थियो र त्यसलाई नम्बर दिइयो|{n} फाइलहरूको त्यहाँ पहिले नै भएको फाइलको नाम थियो र त्यसलाई नम्बर दिइयो
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} पियर|{n} पियरहरू
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -69,6 +91,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ट्र्याकर थपियो|{n} ट्र्याकरहरू थपिए
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ट्र्याकर: {peers}|{n} ट्र्याकरहरू: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -370,9 +397,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	ट्र्याकरहरूलाई पियरहरूको लागि फेरि सोधियो
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	फाइल सूचीको लागि साथीहरूलाई सोध्दै। चुम्बक लिङ्कहरूले एक वा दुई मिनेट लिन सक्छ।
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -733,6 +757,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	विवरण:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	DHT बन्द
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1526,6 +1554,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	थप लोड गर्नुहोस्
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	स्थानीय नेटवर्क: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1542,6 +1574,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	पहिले नयाँ ठेगाना हेर्नुहोस्
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	पियरहरू खोज्दै...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1807,6 +1844,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	कुनै पनि पियरले समयमै टोरेन्टको फाइल सूची पठाएन
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	अहिलेसम्म कुनै पियर छैन। थोरै मानिसहरूले यो टोरेन्ट साझा गर्न सक्छन्, वा फायरवाल, VPN वा नेटवर्कले BitTorrent लाई रोक्न सक्छ।
 #. text in the Options window
 #, machine
 	No proxy/socks	कुनै प्रोक्सी/SOCKS छैन
@@ -1814,6 +1855,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	कुनै ट्र्याकर थपिएको छैन: यसमा पहिले नै छ
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	कुनै ट्र्याकर छैन
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2041,6 +2086,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	पियरहरू
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	पियरहरू फेला परे, तर अहिलेसम्म कसैले जवाफ दिएन। फायरवाल वा VPN ले जडानहरू रोक्न सक्छ।
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	आवधिक समक्रमण
@@ -2761,6 +2810,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	डाटा प्राप्त गर्दा जडान हरायो
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT कसैमा पुगेन। फायरवाल, VPN वा नेटवर्कले UDP लाई रोक्न सक्छ, जुन DHT र धेरैजसो ट्र्याकरहरूले प्रयोग गर्छन्।
 #. text in errors.rs
 #, machine
 	the disk is full	डिस्क भरिएको छ
@@ -3000,6 +3053,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	यो सूचीमा कुनै भिडियोहरू छैनन्
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	यो म्याग्नेट लिङ्कले कुनै ट्र्याकरहरू नाम गर्दैन र DHT बन्द छ, त्यसैले कुनै पियर फेला पार्न सकिँदैन।
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

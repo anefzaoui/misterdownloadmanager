@@ -514,10 +514,6 @@
    "source": "Change which file types MDM takes →",
    "text": "MDM이 가져가는 파일 형식 변경 →"
   },
-  "0b8bc8a6db629a4c": {
-   "source": "Select part of a page and right-click it for <g1>Download selected links with Mister Download Manager</g1>, or right-click the page for <g2>Download all links with Mister Download Manager</g2>: the links open in <g3>Import</g3>, where you tick the ones you want.",
-   "text": "페이지의 일부를 선택하고 마우스 오른쪽 버튼을 클릭하여 <g1>Mister Download Manager으로 선택한 링크 다운로드</g1>를 선택하거나, 페이지를 마우스 오른쪽 버튼으로 클릭하여 <g2>Mister Download Manager으로 모든 링크 다운로드</g2>를 선택하십시오. 링크는 <g3>가져오기</g3>에서 열리며, 원하는 링크를 선택할 수 있습니다."
-  },
   "0ba1ab7afd650160": {
    "source": "Getting started — Mister Download Manager help",
    "text": "시작하기 — Mister Download Manager 도움말"
@@ -1126,10 +1122,6 @@
    "source": "Select or unselect the download with the dotted outline",
    "text": "점선 윤곽선이 있는 다운로드 선택 또는 선택 취소"
   },
-  "1bdc6a06e3384bd1": {
-   "source": "<g1>Tasks</g1> — add downloads, torrents, batch downloads and videos; show the drop target; import and export the list; exit.",
-   "text": "<g1>작업</g1> — 다운로드, 토렌트, 일괄 다운로드 및 비디오 추가; 드롭 대상 표시; 목록 가져오기 및 내보내기; 종료."
-  },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>키보드 포커스가 손실되었습니다</g1>: 버튼이 회색으로 변하거나 Escape 키로 드롭다운이 닫힐 때 Tab 키는 창 상단에서 다시 시작했습니다. 이제 Windows처럼 이동하거나 돌아옵니다."
@@ -1573,10 +1565,6 @@
   "26ae5fbaf85f0fa2": {
    "source": "The portable copy of MDM runs from any folder, including a USB stick, without installing anything.",
    "text": "MDM 휴대용 버전은 USB 스틱을 포함한 모든 폴더에서 설치 없이 실행됩니다."
-  },
-  "26b803c1a0aa9d3e": {
-   "source": "Untick the addresses you don't want (<g1>Select all</g1> and <g2>Select none</g2> help), then click <g3>OK</g3>.",
-   "text": "원하지 않는 주소의 선택을 취소한 다음(<g1>모두 선택</g1> 및 <g2>선택 안 함</g2>이 도움이 됨) <g3>확인</g3>을 클릭합니다."
   },
   "26ee23631d3f7d09": {
    "source": "If an error message quotes something you typed, that text is in the report, so read it before sending.",
@@ -2625,10 +2613,6 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "다운로드 목록 →"
-  },
-  "427727d08d8b3a51": {
-   "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in.",
-   "text": "토렌트는 MDM이 피어를 요청하는 트래커의 이름을 지정합니다. MDM은 자체 컴퓨터나 로컬 네트워크(<x1/>, <x2/>, <x3/> 등)의 트래커에 연결하지 않으므로 토렌트가 MDM이 있는 네트워크로 요청을 보내도록 만들 수 없습니다."
   },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
@@ -6270,6 +6254,10 @@
    "source": "Run <x1/> with MDM running.",
    "text": "MDM이 실행 중인 상태에서 <x1/>을 실행하세요."
   },
+  "a43367ad93483b7d": {
+   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, <g2>Add torrent</g2> shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.",
+   "text": "MDM은 토렌트를 읽고 해당 파일을 폴더 트리로 표시합니다. <x1/> 파일은 즉시 읽힙니다. 마그넷 링크는 먼저 다른 피어로부터 파일 목록을 가져와야 하며, 일반적으로 몇 초 내에 완료됩니다. 기다리는 동안 <g2>토렌트 추가</g2>는 트래커, DHT 또는 로컬 네트워크에서 찾은 피어 수와 응답한 피어 수를 보여줍니다. 30초 동안 응답이 없으면 방해가 될 수 있는 요인(예: DHT가 꺼져 있는 동안 트래커가 없는 링크, 방화벽, VPN 또는 BitTorrent를 차단하는 네트워크)을 알려줍니다."
+  },
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "토렌트는 MDM이 피어를 요청하는 트래커의 이름을 지정합니다. MDM은 사용자 컴퓨터나 로컬 네트워크(<x1/>, <x2/>, <x3/> 등)의 트래커에 연결하지 않으므로, 토렌트가 MDM으로 하여금 MDM이 위치한 네트워크로 요청을 보내도록 할 수 없습니다. <g4>트래커 추가...</g4>도 동일한 규칙을 따릅니다. 요청되지 않을 주소를 유지하는 대신, 그러한 주소를 거부하고 그 이유를 알려줍니다."
@@ -6441,10 +6429,6 @@
   "a839d0f1595e9f40": {
    "source": "<g1>Resume</g1>, <g2>Stop</g2>, <g3>Remove</g3> and the queue commands then act on all the selected downloads. The other commands need one download. The full list of keys is in <g4>Keyboard shortcuts</g4>.",
    "text": "<g1>다시 시작</g1>, <g2>중지</g2>, <g3>제거</g3> 및 대기열 명령은 선택된 모든 다운로드에 적용됩니다. 다른 명령은 하나의 다운로드에 필요합니다. 전체 키 목록은 <g4>바로 가기 키</g4>에 있습니다."
-  },
-  "a857d379729447f1": {
-   "source": "Open Downloads → Options, or click Options on the toolbar. The window has eight pages on two rows of tabs. OK saves your changes; closing the window or…",
-   "text": "다운로드 → 옵션을 열거나 도구 모음에서 옵션을 클릭합니다. 창에는 두 줄의 탭에 8개의 페이지가 있습니다. 확인을 누르면 변경 사항이 저장되고, 창을 닫거나…"
   },
   "a86bb434620d319d": {
    "source": "Yes, built in: open a .torrent file or paste a magnet link, tick the files you want in the folder tree, and the torrent downloads in the same list as…",
@@ -7262,10 +7246,6 @@
    "source": "<g1>Number of retries for each file if downloading failed</g1> — how often a failed download is tried again before the queue gives up on it. Without it, MDM keeps trying.",
    "text": "<g1>다운로드 실패 시 각 파일의 재시도 횟수</g1> — 대기열이 포기하기 전에 실패한 다운로드를 다시 시도하는 횟수입니다. 이 설정이 없으면 MDM은 계속 시도합니다."
   },
-  "bde4e642fb008c91": {
-   "source": "Drag a link from a browser (or a page's text with links in it) onto the list to add it: one link opens <g1>Download File Info</g1>, several open <g2>Import</g2> to choose which to add. Drop a <x3/> file to add the torrent, or a list of addresses (<x4/>, <x5/>) to import it. The list is outlined while something you can drop is over it. On macOS and Linux, files can be dropped (links from a browser only on Windows).",
-   "text": "브라우저에서 링크(또는 링크가 포함된 페이지 텍스트)를 목록으로 끌어다 놓으면 추가됩니다. 링크 하나는 <g1>파일 정보 다운로드</g1>를 열고, 여러 개는 <g2>가져오기</g2>를 열어 추가할 항목을 선택할 수 있습니다. <x3/> 파일을 드롭하면 토렌트가 추가되고, 주소 목록(<x4/>, <x5/>)을 드롭하면 가져오기가 됩니다. 드롭할 수 있는 항목이 목록 위에 있으면 목록이 윤곽선으로 표시됩니다. macOS 및 Linux에서는 파일을 드롭할 수 있습니다 (브라우저의 링크는 Windows에서만 가능)."
-  },
   "bdee109ce7ca5da7": {
    "source": "There are several ways to give MDM something to download. Most of them end in the same window, <g1>Download File Info</g1>, where you choose where the file goes.",
    "text": "MDM에 다운로드할 항목을 제공하는 방법은 여러 가지가 있습니다. 대부분은 파일이 저장될 위치를 선택하는 <g1>파일 정보 다운로드</g1> 창으로 연결됩니다."
@@ -7670,10 +7650,6 @@
    "source": "The plain programs, for any distribution.",
    "text": "모든 배포판용 일반 프로그램입니다."
   },
-  "c981c23fd3b23966": {
-   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
-   "text": "MDM은 토렌트를 읽고 해당 파일을 폴더 트리로 표시합니다. <x1/> 파일은 즉시 읽힙니다. 마그넷 링크는 먼저 다른 피어로부터 파일 목록을 가져와야 하므로 1~2분 정도 걸릴 수 있습니다."
-  },
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
    "text": "<g1>다시 알림</g1> — 다음 라운드를 기다리지 않고 지금 토렌트의 트래커에 피어를 다시 요청합니다. 토렌트가 실행 중이거나 공유 중일 때 작동합니다."
@@ -7729,10 +7705,6 @@
   "cb14776e505e0089": {
    "source": "Can I download without the browser extension?",
    "text": "브라우저 확장 프로그램 없이 다운로드할 수 있나요?"
-  },
-  "cb390e5dc0af4469": {
-   "source": "<g1>Files</g1> — each file, its size and how much of it is done. Files you unticked show <g2>Skipped</g2>.",
-   "text": "<g1>파일</g1> — 각 파일, 크기 및 완료된 양. 선택을 취소한 파일은 <g2>건너뜀</g2>으로 표시됩니다."
   },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
@@ -7873,10 +7845,6 @@
   "cf5e8ed8c0381b7f": {
    "source": "Browsers built on them work too: Chromium and Helium take the extension as Chrome does, Zen and LibreWolf as Firefox does. On Windows, Zen has a bug of its own (see <g1>The browser and MDM aren't connected</g1>).",
    "text": "이들을 기반으로 구축된 브라우저도 작동합니다. Chromium 및 Helium은 Chrome과 동일하게 확장 프로그램을 사용하며, Zen 및 LibreWolf는 Firefox와 동일하게 사용합니다. Windows에서 Zen은 자체 버그가 있습니다 (<g1>브라우저와 MDM이 연결되지 않음</g1> 참조)."
-  },
-  "cf86019a0378cdea": {
-   "source": "The downloads join the <g1>Main download queue</g1>, ready to start. <g2>Tasks → Import → From IDM export file</g2> reads an <x3/> file, with each download's referrer and cookies.",
-   "text": "다운로드는 <g1>기본 다운로드 대기열</g1>에 추가되어 시작할 준비가 됩니다. <g2>작업 → 가져오기 → IDM 내보내기 파일에서</g2>는 각 다운로드의 리퍼러 및 쿠키가 포함된 <x3/> 파일을 읽습니다."
   },
   "cf98a5beeacc1f82": {
    "source": "Report what's broken, ask for what's missing, fix a translation or send a pull request. The maintainer reads every issue.",
@@ -9162,10 +9130,6 @@
    "source": "<g1>Peers</g1> — the computers you are downloading from, with how much you received from and sent to each.",
    "text": "<g1>피어</g1> — 다운로드하는 컴퓨터와 각 컴퓨터로부터 받은 양 및 보낸 양."
   },
-  "f326e0e0a7971afa": {
-   "source": "Open <g1>Downloads → Options</g1>, or click <g2>Options</g2> on the toolbar. The window has eight pages on two rows of tabs. <g3>OK</g3> saves your changes; closing the window or pressing <g4>Esc</g4> throws them away.",
-   "text": "<g1>다운로드 → 옵션</g1>을 열거나 도구 모음에서 <g2>옵션</g2>을 클릭합니다. 창에는 두 줄의 탭에 8개의 페이지가 있습니다. <g3>확인</g3>을 클릭하면 변경 사항이 저장되고, 창을 닫거나 <g4>Esc</g4>를 누르면 변경 사항이 취소됩니다."
-  },
   "f344e5dfcec067d9": {
    "source": "The downloads go to a queue. As with Download Later, MDM asks which queue unless you turn off <g1>Options → Downloads → Show queue selection panel on closing batch download dialogs</g1>.",
    "text": "다운로드는 대기열에 추가됩니다. 나중에 다운로드와 마찬가지로 <g1>옵션 → 다운로드 → 일괄 다운로드 대화 상자를 닫을 때 큐 선택 패널 표시</g1>를 끄지 않는 한 MDM은 어떤 대기열에 추가할지 묻습니다."
@@ -9241,10 +9205,6 @@
   "f575c52354f70221": {
    "source": "Free forever, no ads, no trial",
    "text": "영원히 무료, 광고 없음, 평가판 없음"
-  },
-  "f59f701cec440f8e": {
-   "source": "Pick the file. <g1>Import downloads</g1> lists every web address MDM found in it.",
-   "text": "파일을 선택합니다. <g1>다운로드 가져오기</g1>는 MDM이 파일에서 찾은 모든 웹 주소를 나열합니다."
   },
   "f5d0db4c9a23ece3": {
    "source": "<g1><g2>Adding downloads</g2></g1> — Add URL, the clipboard, the drop target, batch downloads and lists of links, and Start Download versus Download Later.",

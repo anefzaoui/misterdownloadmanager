@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Είστε βέβαιοι ότι θέλετε να διαγράψετε τη {n} λήψη από τη λίστα λήψεων του Mister Download Manager;|Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτές τις {n} λήψεις από τη λίστα λήψεων του Mister Download Manager;
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Συνδέθηκε σε {n} ομότιμο, λήψη της λίστας αρχείων...|Συνδέθηκε σε {n} ομότιμους, λήψη της λίστας αρχείων...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} κόμβος: {peers}|DHT, {n} κόμβοι: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Εξήχθη {n} αρχείο στον φάκελο {folder}|Εξήχθησαν {n} αρχεία στον φάκελο {folder}
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Βρέθηκε {n} ομότιμος, σύνδεση...|Βρέθηκαν {n} ομότιμοι, σύνδεση...
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -60,6 +77,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} αρχείο είχε ήδη το ίδιο όνομα και αριθμήθηκε|{n} αρχεία είχαν ήδη το ίδιο όνομα και αριθμήθηκαν
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} ομότιμος|{n} ομότιμοι
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -69,6 +91,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ιχνηλάτης προστέθηκε|{n} ιχνηλάτες προστέθηκαν
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ιχνηλάτης: {peers}|{n} ιχνηλάτες: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -370,9 +397,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	Ζητήθηκαν ξανά ομότιμοι από τους ιχνηλάτες
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	Ζητούνται από ομότιμους χρήστες η λίστα αρχείων. Οι σύνδεσμοι Magnet ενδέχεται να χρειαστούν ένα ή δύο λεπτά.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -733,6 +757,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Περιγραφή:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	Το DHT είναι απενεργοποιημένο
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1526,6 +1554,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	Φόρτωση περισσότερων
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	Τοπικό δίκτυο: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1542,6 +1574,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Αναζητήστε πρώτα τη νέα διεύθυνση
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	Αναζήτηση ομότιμων...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1807,6 +1844,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	κανένας ομότιμος δεν έστειλε τη λίστα αρχείων του torrent εγκαίρως
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Δεν υπάρχουν ακόμη ομότιμοι. Λίγα άτομα ενδέχεται να μοιράζονται αυτό το torrent ή ένα τείχος προστασίας, ένα VPN ή το δίκτυο ενδέχεται να μπλοκάρει το BitTorrent.
 #. text in the Options window
 #, machine
 	No proxy/socks	Χωρίς διακομιστή μεσολάβησης/socks
@@ -1814,6 +1855,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	Δεν προστέθηκε ιχνηλάτης: τους έχει ήδη
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	Δεν υπάρχουν ιχνηλάτες
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2041,6 +2086,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	Ομότιμοι
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Βρέθηκαν ομότιμοι, αλλά κανένας δεν απάντησε ακόμη. Ένα τείχος προστασίας ή ένα VPN ενδέχεται να μπλοκάρει τις συνδέσεις.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	Περιοδικός συγχρονισμός
@@ -2761,6 +2810,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	η σύνδεση χάθηκε κατά τη λήψη δεδομένων
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	Το DHT δεν έφτασε σε κανέναν. Ένα τείχος προστασίας, ένα VPN ή το δίκτυο ενδέχεται να μπλοκάρει το UDP, το οποίο χρησιμοποιούν το DHT και οι περισσότεροι ιχνηλάτες.
 #. text in errors.rs
 #, machine
 	the disk is full	ο δίσκος είναι πλήρης
@@ -3000,6 +3053,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	Αυτή η λίστα δεν έχει βίντεο
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Αυτή η σύνδεση magnet δεν ονομάζει ιχνηλάτες και το DHT είναι απενεργοποιημένο, επομένως δεν είναι δυνατή η εύρεση ομότιμων.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
