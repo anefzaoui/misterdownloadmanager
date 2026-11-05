@@ -57,9 +57,6 @@ headers, and sessions are pooled per download and reused between segments.
 ## App
 
 One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog.
-The windows are drawn with OpenGL (eframe's glow); on Windows, View → Draw with chooses Direct3D
-12 (eframe's wgpu, its Direct3D 12 backend only) instead, from the next start. `renderer.rs`
-falls back to the other one when the chosen one can't start, so the windows always open.
 `app.rs` holds the state (downloads, queues, settings, the list's selection) and turns menu,
 toolbar, key and IPC commands into actions. Each dialog is its own module and returns an
 `Outcome` (open, closed, done with a value). Windows-only calls are confined to `win32.rs` and
@@ -70,6 +67,11 @@ before file names (`fileicons.rs`): the Windows shell's system image lists, macO
 (NSWorkspace), the Linux desktop's icon theme (`xdgicons.rs`, shared-mime-info and the Icon
 Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's
 icons (bundled) stand in until the system's icon is ready, and wherever the system has none.
+
+The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses
+Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start.
+`renderer.rs` falls back to the other one when the chosen one can't start, so the windows
+always open.
 
 The download list and settings are saved atomically to `%APPDATA%\misterdownloadmanager\`
 (`downloads.json`). The browser host reads the same file for the capture rules, so a change in

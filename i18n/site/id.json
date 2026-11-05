@@ -198,10 +198,6 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
-  "04ec5358d75ceff7": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "Arahkan ke video di halaman web dan tombol kecil <g1>Unduh video</g1> akan muncul di tepinya. Klik tombol tersebut dan jendela <g2>Unduh video dari halaman</g2> MDM akan terbuka dan mencari kualitas yang dapat diunduh. Ini mengambil video yang Anda klik: file-nya sendiri saat memutar satu, atau stream yang dimuat pemutar (HLS atau DASH), jika tidak, halaman. Pemutar tersemat juga berfungsi, dan informasi masuk Anda untuk situs, halaman yang menyematkan pemutar, dan User-Agent browser Anda ikut disertakan, sehingga video untuk anggota, atau yang hanya diputar di situs yang menyematkannya, dapat diunduh. Pemutar suara juga mendapatkan tombol tersebut."
-  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "Pada baris perintah"
@@ -2106,10 +2102,6 @@
    "source": "Yes: export your list from IDM, then choose Tasks → Import → From IDM export file in MDM. <g1>More</g1>",
    "text": "Ya: ekspor daftar Anda dari IDM, lalu pilih Tugas → Impor → Dari file ekspor IDM di MDM. <g1>Selengkapnya</g1>"
   },
-  "340f53f11eccffc8": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4> and <g5>Language</g5>.",
-   "text": "<g1>Tampilan</g1> — menampilkan atau menyembunyikan kategori, mengurutkan daftar (<g2>Atur file</g2>), <g3>Dukungan Mode Gelap</g3>, <g4>Selalu gelap</g4>, dan <g5>Bahasa</g5>."
-  },
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM dibuat oleh Ahmed Nefzaoui, seorang pengembang independen, dan terbuka untuk kontribusi dari siapa pun di <g1>GitHub</g1>. Laporan bug, terjemahan, dan kode semuanya diterima."
@@ -2142,9 +2134,9 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "Koneksi ke komputer ini sendiri (<x1/>) tidak terikat. Proksi di komputer ini membawa unduhan, dan ke mana ia mengirimnya terserah padanya."
   },
-  "3549f28b5c3a4fb8": {
-   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
-   "text": "Video yang dilindungi DRM (sebagian besar layanan streaming berbayar) tidak dapat diunduh, dan MDM tidak mencoba."
+  "354fca97a75c4b55": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "Jika Direct3D tidak dapat dimulai di komputer Anda (tidak ada driver Direct3D 12, beberapa mesin virtual), MDM menggambar dengan OpenGL, dan <g1>Tampilan → Gambar dengan</g1> menyatakan demikian. Memilih <g2>Direct3D</g2> lagi akan mencobanya lagi pada saat startup berikutnya."
   },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
@@ -2589,6 +2581,10 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "Lebih lanjut di <g1>Koneksi dan kecepatan</g1>."
+  },
+  "40a17209f38d66d2": {
+   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
+   "text": "MDM menggambar jendelanya dengan OpenGL. Di Windows, OpenGL pada beberapa driver grafis dapat menahan jendela selama beberapa detik, atau salah menggambarnya. Pilih <g1>Tampilan → Gambar dengan → Direct3D</g1> untuk menggambar dengan Direct3D 12 sebagai gantinya, mulai dari berikutnya; <g2>Tampilan → Gambar dengan → OpenGL</g2> kembali seperti semula."
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -3578,6 +3574,10 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "mengunduh galeri ke dalam folder yang dinamai sesuai galeri tersebut. Lihat <g1>Baris perintah dan otomatisasi</g1>."
   },
+  "5d132ac4f8b0c1aa": {
+   "source": "A freeze or crash report says which one was drawing.",
+   "text": "Laporan pembekuan atau kerusakan menyatakan mana yang sedang menggambar."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "Pilih <g1>Bantuan → Laporkan masalah</g1>. Ini membuka formulir laporan bug di GitHub dengan versi MDM Anda, sistem Anda dan versinya, bagaimana MDM diinstal dan bahasa antarmukanya sudah terisi. Jelaskan apa yang terjadi, apa yang Anda harapkan, dan langkah-langkah yang menyebabkannya terjadi. Untuk unduhan, sertakan alamatnya jika Anda bisa membagikannya, dan alasan yang ditampilkan di bawah <g2>Status</g2>."
@@ -4394,6 +4394,10 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM membuka <g1>Info File Unduhan</g1> alih-alih browser mengunduh file. Klik <g2>Mulai Unduhan</g2>."
   },
+  "70949fe6f15631f5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
+   "text": "<g1>Tampilan</g1> — menampilkan atau menyembunyikan kategori, mengurutkan daftar (<g2>Atur file</g2>), <g3>Dukungan Mode Gelap</g3>, <g4>Selalu gelap</g4>, <g5>Gambar dengan</g5> (Windows: OpenGL atau Direct3D) dan <g6>Bahasa</g6>."
+  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "Apa yang tetap di komputer Anda"
@@ -4621,6 +4625,10 @@
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
    "text": "MDM tidak dimulai tepat waktu"
+  },
+  "76ce76c1e1586496": {
+   "source": "The window freezes or draws wrongly",
+   "text": "Jendela membeku atau salah menggambar"
   },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
@@ -7246,6 +7254,10 @@
    "source": "App",
    "text": "Aplikasi"
   },
+  "bbb4a37acc8f6a42": {
+   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
+   "text": "Jendela digambar dengan OpenGL (glow eframe). Di Windows, Tampilan → Gambar dengan memilih Direct3D 12 sebagai gantinya (wgpu eframe, hanya dengan backend Direct3D 12-nya), mulai dari awal berikutnya. <x1/> kembali ke yang lain ketika yang dipilih tidak dapat dimulai, sehingga jendela selalu terbuka."
+  },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
    "text": "Tangkap unduhan dari browser Anda — Bantuan Mister Download Manager"
@@ -7725,10 +7737,6 @@
   "c942b256735064e3": {
    "source": "The plain programs, for any distribution.",
    "text": "Program biasa, untuk distribusi apa pun."
-  },
-  "c981c23fd3b23966": {
-   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
-   "text": "MDM membaca torrent dan menampilkan file-nya sebagai pohon folder. File <x1/> langsung dibaca. Tautan magnet harus terlebih dahulu mendapatkan daftar file dari rekan lain, yang bisa memakan waktu satu atau dua menit."
   },
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
@@ -8260,7 +8268,7 @@
   },
   "d830def677dfb3f0": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "Satu jendela egui digambar ke koordinat piksel tetap, ditambah satu viewport langsung per dialog. <x1/> menyimpan status (unduhan, antrean, pengaturan, pilihan daftar) dan mengubah perintah menu, bilah alat, tombol, dan IPC menjadi tindakan. Setiap dialog adalah modulnya sendiri dan mengembalikan <x2/> (terbuka, tertutup, selesai dengan nilai). Panggilan khusus Windows terbatas pada <x3/> dan padanan Linux serta macOS-nya pada <x4/> (dimulai dengan sesi, host browser, suara, tampilkan di folder, penangan crash); setiap file lainnya adalah Rust yang aman dan portabel. Font berasal dari sistem: folder Fonts Windows, font sistem macOS, fontconfig di Linux (<x5/>). Begitu juga ikon di depan nama file (<x6/>): daftar gambar sistem shell Windows, Finder macOS (NSWorkspace), tema ikon desktop Linux (<x7/>, shared-mime-info dan Spesifikasi Tema Ikon). Setiap jenis dicari sekali per ukuran piksel, pada utas latar belakang. Ikon Tango (dibundel) menggantikan sampai ikon sistem siap, dan di mana pun sistem tidak memilikinya."
+   "text": "Satu jendela egui digambar ke koordinat piksel tetap, ditambah satu viewport langsung per dialog. <x1/> menyimpan status (unduhan, antrean, pengaturan, pilihan daftar) dan mengubah perintah menu, bilah alat, tombol, dan IPC menjadi tindakan. Setiap dialog adalah modulnya sendiri dan mengembalikan <x2/> (terbuka, tertutup, selesai dengan nilai). Panggilan khusus Windows terbatas pada <x3/> dan padanan Linux serta macOS-nya pada <x4/> (dimulai dengan sesi, host browser, suara, tampilkan di folder, penangan crash); setiap file lain aman, Rust portabel. Font berasal dari sistem: folder Font Windows, font sistem macOS, fontconfig di Linux (<x5/>). Begitu juga ikon sebelum nama file (<x6/>): daftar gambar sistem shell Windows, Finder macOS (NSWorkspace), tema ikon desktop Linux (<x7/>, shared-mime-info dan Spesifikasi Tema Ikon). Setiap jenis dicari sekali per ukuran piksel, pada utas latar belakang. Ikon Tango (dibundel) menjadi pengganti sampai ikon sistem siap, dan di mana pun sistem tidak memilikinya."
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
@@ -8977,6 +8985,10 @@
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "Bisakah saya memindahkan unduhan saya dari IDM ke Mister Download Manager?"
+  },
+  "eccd08c375bd5161": {
+   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
+   "text": "Di Windows, jika OpenGL tidak dapat dimulai, MDM mencoba Direct3D, lalu perender perangkat lunak Microsoft, sehingga jendela tetap terbuka (Remote Desktop, mesin virtual tanpa driver grafis)."
   },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",

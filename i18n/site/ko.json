@@ -198,10 +198,6 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
-  "04ec5358d75ceff7": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "웹 페이지의 비디오에 마우스를 가져가면 작은 <g1>비디오 다운로드</g1> 버튼이 가장자리에 나타납니다. 이 버튼을 클릭하면 MDM의 <g2>페이지에서 비디오 다운로드</g2> 창이 열리고 다운로드할 수 있는 품질을 검색합니다. 클릭한 비디오를 가져옵니다. 자체 파일을 재생할 때, 또는 플레이어가 로드한 스트림(HLS 또는 DASH), 그렇지 않으면 페이지를 가져옵니다. 임베디드 플레이어도 작동하며, 사이트 로그인 정보, 플레이어를 임베드하는 페이지 및 브라우저의 User-Agent가 함께 전달되므로, 회원 전용 비디오 또는 임베드된 사이트에서만 재생되는 비디오도 다운로드할 수 있습니다. 사운드 플레이어에도 버튼이 나타납니다."
-  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "명령줄에서"
@@ -2106,10 +2102,6 @@
    "source": "Yes: export your list from IDM, then choose Tasks → Import → From IDM export file in MDM. <g1>More</g1>",
    "text": "예: IDM에서 목록을 내보낸 다음 MDM에서 작업 → 가져오기 → IDM 내보내기 파일에서를 선택하세요. <g1>더 보기</g1>"
   },
-  "340f53f11eccffc8": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4> and <g5>Language</g5>.",
-   "text": "<g1>보기</g1> — 카테고리 표시/숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4> 및 <g5>언어</g5>."
-  },
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM은 독립 개발자인 Ahmed Nefzaoui가 만들었으며, <g1>GitHub</g1>의 모든 사람의 기여를 환영합니다. 버그 보고서, 번역 및 코드는 모두 환영합니다."
@@ -2142,9 +2134,9 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "이 컴퓨터 자체(<x1/>)로의 연결은 바인딩되지 않습니다. 이 컴퓨터의 프록시는 다운로드를 전달하며, 어디로 보낼지는 프록시에 달려 있습니다."
   },
-  "3549f28b5c3a4fb8": {
-   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
-   "text": "DRM으로 보호된 비디오(대부분의 유료 스트리밍 서비스)는 다운로드할 수 없으며, MDM은 시도하지 않습니다."
+  "354fca97a75c4b55": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "컴퓨터에서 Direct3D를 시작할 수 없는 경우(Direct3D 12 드라이버 없음, 일부 가상 머신), MDM은 OpenGL로 그리고 <g1>보기 → 다음으로 그리기</g1>에 그렇게 표시됩니다. <g2>Direct3D</g2>를 다시 선택하면 다음 시작 시 다시 시도합니다."
   },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
@@ -2589,6 +2581,10 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "<g1>연결 및 속도</g1>에서 더 자세히 알아보십시오."
+  },
+  "40a17209f38d66d2": {
+   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
+   "text": "MDM은 OpenGL로 창을 그립니다. Windows에서 일부 그래픽 드라이버의 OpenGL은 창을 몇 초 동안 멈추게 하거나 잘못 그릴 수 있습니다. 다음 시작부터 대신 Direct3D 12로 그리려면 <g1>보기 → 다음으로 그리기 → Direct3D</g1>를 선택하세요. <g2>보기 → 다음으로 그리기 → OpenGL</g2>은 되돌아갑니다."
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -3578,6 +3574,10 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "갤러리 이름으로 된 폴더에 갤러리를 다운로드합니다. <g1>명령줄 및 자동화</g1>를 참조하세요."
   },
+  "5d132ac4f8b0c1aa": {
+   "source": "A freeze or crash report says which one was drawing.",
+   "text": "멈춤 또는 충돌 보고서에는 어떤 것이 그려지고 있었는지 표시됩니다."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "<g1>도움말 → 문제 보고</g1>를 선택하세요. GitHub에 버그 보고서 양식이 열리며, MDM 버전, 시스템 및 해당 버전, MDM 설치 방법 및 인터페이스 언어가 이미 채워져 있습니다. 발생한 일, 예상했던 일, 그리고 발생하게 된 단계를 설명하세요. 다운로드의 경우, 공유할 수 있다면 주소를 포함하고, <g2>상태</g2> 아래에 표시된 이유를 포함하세요."
@@ -4394,6 +4394,10 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM은 브라우저가 파일을 다운로드하는 대신 <g1>파일 정보 다운로드</g1>를 엽니다. <g2>다운로드 시작</g2>을 클릭합니다."
   },
+  "70949fe6f15631f5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
+   "text": "<g1>보기</g1> — 카테고리 표시 또는 숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4>, <g5>다음으로 그리기</g5>(Windows: OpenGL 또는 Direct3D) 및 <g6>언어</g6>."
+  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "사용자 컴퓨터에 저장되는 정보"
@@ -4621,6 +4625,10 @@
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
    "text": "MDM이 제때 시작되지 않았습니다"
+  },
+  "76ce76c1e1586496": {
+   "source": "The window freezes or draws wrongly",
+   "text": "창이 멈추거나 잘못 그려집니다"
   },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
@@ -7246,6 +7254,10 @@
    "source": "App",
    "text": "앱"
   },
+  "bbb4a37acc8f6a42": {
+   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
+   "text": "창은 OpenGL(eframe의 glow)로 그려집니다. Windows에서는 보기 → 다음으로 그리기에서 다음 시작부터 Direct3D 12(eframe의 wgpu, Direct3D 12 백엔드만 사용)를 대신 선택합니다. <x1/>은 선택한 것이 시작할 수 없을 때 다른 것으로 대체되므로 창은 항상 열립니다."
+  },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
    "text": "브라우저에서 다운로드 가로채기 — Mister Download Manager 도움말"
@@ -7725,10 +7737,6 @@
   "c942b256735064e3": {
    "source": "The plain programs, for any distribution.",
    "text": "모든 배포판용 일반 프로그램입니다."
-  },
-  "c981c23fd3b23966": {
-   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
-   "text": "MDM은 토렌트를 읽고 해당 파일을 폴더 트리로 표시합니다. <x1/> 파일은 즉시 읽힙니다. 마그넷 링크는 먼저 다른 피어로부터 파일 목록을 가져와야 하므로 1~2분 정도 걸릴 수 있습니다."
   },
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
@@ -8260,7 +8268,7 @@
   },
   "d830def677dfb3f0": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료)를 반환합니다. Windows 전용 호출은 <x3/>에, Linux 및 macOS 해당 호출은 <x4/>에 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다: Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>). 파일 이름 앞의 아이콘도 마찬가지입니다(<x6/>): Windows 셸의 시스템 이미지 목록, macOS Finder(NSWorkspace), Linux 데스크톱의 아이콘 테마(<x7/>, shared-mime-info 및 아이콘 테마 사양). 각 유형은 백그라운드 스레드에서 픽셀 크기당 한 번 조회됩니다. Tango의 아이콘(번들)은 시스템 아이콘이 준비될 때까지, 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
+   "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉각적인 뷰포트가 있습니다. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료됨)를 반환합니다. Windows 전용 호출은 <x3/>로 제한되고 Linux 및 macOS의 해당 호출은 <x4/>로 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다. Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)입니다. 파일 이름 앞의 아이콘도 마찬가지입니다(<x6/>). Windows 셸의 시스템 이미지 목록, macOS Finder(NSWorkspace), Linux 데스크톱의 아이콘 테마(<x7/>, shared-mime-info 및 아이콘 테마 사양)입니다. 각 유형은 백그라운드 스레드에서 픽셀 크기당 한 번 조회됩니다. Tango의 아이콘(번들로 제공됨)은 시스템 아이콘이 준비될 때까지 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
@@ -8977,6 +8985,10 @@
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "IDM에서 Mister Download Manager로 다운로드 목록을 옮길 수 있습니까?"
+  },
+  "eccd08c375bd5161": {
+   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
+   "text": "Windows에서 OpenGL을 시작할 수 없는 경우, MDM은 Direct3D를 시도한 다음 Microsoft의 소프트웨어 렌더러를 시도하여 창이 여전히 열립니다(원격 데스크톱, 그래픽 드라이버가 없는 가상 머신)."
   },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",

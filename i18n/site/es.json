@@ -198,10 +198,6 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
-  "04ec5358d75ceff7": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "Apunte a un vídeo en una página web y aparecerá un pequeño botón <g1>Descargar vídeo</g1> en su borde. Haga clic en él y la ventana <g2>Descargar vídeo de una página</g2> de MDM se abrirá y buscará las calidades que puede descargar. Toma el vídeo en el que hizo clic: su propio archivo cuando reproduce uno, o el stream que cargó el reproductor (HLS o DASH), si no la página. Los reproductores incrustados también funcionan, y su inicio de sesión para el sitio, la página que incrusta el reproductor y el User-Agent de su navegador van con él, por lo que se pueden descargar vídeos para miembros, o que se reproducen solo en el sitio que los incrusta. Los reproductores de sonido también obtienen el botón."
-  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "En la línea de comandos"
@@ -2106,10 +2102,6 @@
    "source": "Yes: export your list from IDM, then choose Tasks → Import → From IDM export file in MDM. <g1>More</g1>",
    "text": "Sí: exporta tu lista desde IDM y luego elige Tareas → Importar → Desde archivo de exportación de IDM en MDM. <g1>Más</g1>"
   },
-  "340f53f11eccffc8": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4> and <g5>Language</g5>.",
-   "text": "<g1>Ver</g1>: muestra u oculta las categorías, ordena la lista (<g2>Organizar archivos</g2>), <g3>Compatibilidad con el modo oscuro</g3>, <g4>Siempre oscuro</g4> e <g5>Idioma</g5>."
-  },
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM es desarrollado por Ahmed Nefzaoui, un desarrollador independiente, y está abierto a contribuciones de cualquiera en <g1>GitHub</g1>. Los informes de errores, las traducciones y el código son bienvenidos."
@@ -2142,9 +2134,9 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "Las conexiones a este propio equipo (<x1/>) no están vinculadas. Un proxy en este equipo gestiona las descargas, y adónde las envía depende de él."
   },
-  "3549f28b5c3a4fb8": {
-   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
-   "text": "Los vídeos protegidos con DRM (la mayoría de los servicios de streaming de pago) no se pueden descargar, y MDM no lo intenta."
+  "354fca97a75c4b55": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "Si Direct3D no puede iniciarse en su ordenador (no hay controlador Direct3D 12, algunas máquinas virtuales), MDM dibuja con OpenGL, y <g1>Ver → Dibujar con</g1> lo indica. Elegir <g2>Direct3D</g2> de nuevo lo intenta otra vez en el siguiente inicio."
   },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
@@ -2589,6 +2581,10 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "Más en <g1>Conexiones y velocidad</g1>."
+  },
+  "40a17209f38d66d2": {
+   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
+   "text": "MDM dibuja sus ventanas con OpenGL. En Windows, el OpenGL de algunos controladores gráficos puede mantener una ventana inmóvil durante segundos o dibujarla incorrectamente. Elija <g1>Ver → Dibujar con → Direct3D</g1> para dibujar con Direct3D 12 en su lugar, a partir del siguiente inicio; <g2>Ver → Dibujar con → OpenGL</g2> vuelve a la opción anterior."
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -3578,6 +3574,10 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "descarga una galería en una carpeta con su nombre. Consulta <g1>Línea de comandos y automatización</g1>."
   },
+  "5d132ac4f8b0c1aa": {
+   "source": "A freeze or crash report says which one was drawing.",
+   "text": "Un informe de congelación o fallo indica cuál estaba dibujando."
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "Elige <g1>Ayuda → Informar de un problema</g1>. Abre el formulario de informe de errores en GitHub con tu versión de MDM, tu sistema y su versión, cómo se instaló MDM y su idioma de interfaz ya rellenados. Describe lo que sucedió, lo que esperabas y los pasos que lo provocan. Para una descarga, incluye la dirección si puedes compartirla y la razón que se muestra en <g2>Estado</g2>."
@@ -4394,6 +4394,10 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM abre <g1>Información del archivo de descarga</g1> en lugar de que el navegador descargue el archivo. Haz clic en <g2>Iniciar descarga</g2>."
   },
+  "70949fe6f15631f5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
+   "text": "<g1>Ver</g1>: muestra u oculta las categorías, ordena la lista (<g2>Organizar archivos</g2>), <g3>Compatibilidad con el modo oscuro</g3>, <g4>Siempre oscuro</g4>, <g5>Dibujar con</g5> (Windows: OpenGL o Direct3D) e <g6>Idioma</g6>."
+  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "Qué permanece en su ordenador"
@@ -4621,6 +4625,10 @@
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
    "text": "MDM no se inició a tiempo"
+  },
+  "76ce76c1e1586496": {
+   "source": "The window freezes or draws wrongly",
+   "text": "La ventana se congela o se dibuja mal"
   },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
@@ -7246,6 +7254,10 @@
    "source": "App",
    "text": "Aplicación"
   },
+  "bbb4a37acc8f6a42": {
+   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
+   "text": "Las ventanas se dibujan con OpenGL (glow de eframe). En Windows, Ver → Dibujar con elige Direct3D 12 en su lugar (wgpu de eframe, solo con su backend Direct3D 12), a partir del siguiente inicio. <x1/> recurre al otro cuando el elegido no puede iniciarse, por lo que las ventanas siempre se abren."
+  },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
    "text": "Capturar descargas del navegador — Ayuda de Mister Download Manager"
@@ -7725,10 +7737,6 @@
   "c942b256735064e3": {
    "source": "The plain programs, for any distribution.",
    "text": "Los programas simples, para cualquier distribución."
-  },
-  "c981c23fd3b23966": {
-   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
-   "text": "MDM lee el torrent y muestra sus archivos como un árbol de carpetas. Un archivo <x1/> se lee al instante. Un enlace magnet primero tiene que obtener la lista de archivos de otros pares, lo que puede tardar uno o dos minutos."
   },
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
@@ -8260,7 +8268,7 @@
   },
   "d830def677dfb3f0": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "Una ventana de egui pintada a coordenadas de píxeles fijas, más una ventana gráfica inmediata por cada diálogo. <x1/> guarda el estado (descargas, colas, ajustes, la selección de la lista) y convierte los comandos de menú, barra de herramientas, teclado e IPC en acciones. Cada diálogo es su propio módulo y devuelve un <x2/> (abierto, cerrado, terminado con un valor). Las llamadas exclusivas de Windows se limitan a <x3/> y sus equivalentes de Linux y macOS a <x4/> (empezando por la sesión, el host de los navegadores, sonidos, mostrar en carpeta, el controlador de fallos); cualquier otro archivo es Rust seguro y portable. Las fuentes provienen del sistema: la carpeta Fonts de Windows, las fuentes del sistema de macOS, fontconfig en Linux (<x5/>). Lo mismo ocurre con los iconos delante de los nombres de archivo (<x6/>): las listas de imágenes del sistema del shell de Windows, las del Finder de macOS (NSWorkspace), el tema de iconos del escritorio de Linux (<x7/>, shared-mime-info y la Icon Theme Specification). Cada tipo se busca una vez por tamaño de píxel, en un hilo en segundo plano. Los iconos de Tango (incluidos) se usan hasta que el icono del sistema esté listo, y donde el sistema no tenga ninguno."
+   "text": "Una ventana de egui pintada con coordenadas de píxeles fijas, más una ventana gráfica inmediata por cada diálogo. <x1/> guarda el estado (descargas, colas, configuración, la selección de la lista) y convierte los comandos de menú, barra de herramientas, teclado e IPC en acciones. Cada diálogo es su propio módulo y devuelve un <x2/> (abierto, cerrado, terminado con un valor). Las llamadas exclusivas de Windows se limitan a <x3/> y sus equivalentes de Linux y macOS a <x4/> (empezando por la sesión, el host de los navegadores, los sonidos, mostrar en carpeta, el controlador de fallos); cualquier otro archivo es Rust seguro y portable. Las fuentes provienen del sistema: la carpeta Fonts de Windows, las fuentes del sistema de macOS, fontconfig en Linux (<x5/>). Lo mismo ocurre con los iconos que preceden a los nombres de archivo (<x6/>): las listas de imágenes del sistema del shell de Windows, las del Finder de macOS (NSWorkspace), el tema de iconos del escritorio de Linux (<x7/>, shared-mime-info y la Icon Theme Specification). Cada tipo se busca una vez por tamaño de píxel, en un hilo en segundo plano. Los iconos de Tango (incluidos) se utilizan hasta que el icono del sistema esté listo, y donde el sistema no tenga ninguno."
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
@@ -8977,6 +8985,10 @@
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "¿Puedo mover mis descargas de IDM a Mister Download Manager?"
+  },
+  "eccd08c375bd5161": {
+   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
+   "text": "En Windows, si OpenGL no puede iniciarse, MDM intenta con Direct3D y luego con el renderizador de software de Microsoft, para que la ventana se abra (Escritorio remoto, una máquina virtual sin controlador gráfico)."
   },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",
