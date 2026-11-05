@@ -16,6 +16,8 @@ Everything below ships together, in one release.
 - ✅ Magnet links get their file list in seconds again: the DHT keeps going after a computer it
   asked is gone, and Add torrent shows the wait (peers found, from where, what may be in the
   way) ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92))
+- ✅ Numbers are grouped and pointed the interface language's way (German `10.200`, `1,50 MB`)
+  ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128))
 - ✅ The extension's button lists the media the tab has loaded (HLS and DASH streams, video and
   sound files), to download a stream the page won't give up; copy-protected ones are shown as
   protected, never downloaded ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38))

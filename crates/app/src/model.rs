@@ -876,18 +876,9 @@ fn english() -> bool {
     crate::i18n::code() == "en"
 }
 
-/// A number with `decimals` digits, as the interface language's region writes it.
-fn number(v: f64, decimals: usize) -> String {
-    crate::i18n::i18n().format().number(v, decimals)
-}
-
-/// `13.38%` (IDM), or the region's percentage.
+/// `13.38%` (IDM), or the interface language's percentage (`13,38 %`).
 pub fn percent(ratio: f64) -> String {
-    if english() {
-        format!("{:.2}%", 100.0 * ratio)
-    } else {
-        crate::i18n::i18n().format().percent(ratio, 2)
-    }
+    crate::i18n::percent(ratio, 2)
 }
 
 /// `{n} MB`-style unit text in the interface language (catalog context `unit`).
@@ -973,7 +964,7 @@ pub fn size_list(b: u64) -> String {
 pub fn time(secs: f64) -> String {
     let s = secs.round() as u64;
     if !english() {
-        let n = |v: u64| number(v as f64, 0);
+        let n = crate::i18n::integer;
         let (h, m, sec) = (n(s / 3600), n((s % 3600) / 60), n(s % 60));
         let t = crate::i18n::t;
         return match s {

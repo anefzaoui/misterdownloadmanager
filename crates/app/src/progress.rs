@@ -954,7 +954,15 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
             crate::i18n::mark("Downloaded"),
             102.0,
             135.0,
-            format!("{} ( {:.2} % )", size3(item.downloaded), frac * 100.0),
+            if crate::i18n::code() == "en" {
+                format!("{} ( {:.2} % )", size3(item.downloaded), frac * 100.0) // not translated: English path (IDM's spacing)
+            } else {
+                format!(
+                    "{} ( {} )",
+                    size3(item.downloaded),
+                    crate::i18n::percent(frac, 2)
+                )
+            },
         ),
         (
             crate::i18n::mark("Transfer rate"),
@@ -1093,9 +1101,9 @@ impl Progress {
                             // i18n: a torrent file the user chose not to download
                             crate::i18n::t("Skipped").to_owned()
                         } else if f.size == 0 {
-                            "100 %".to_owned()
+                            crate::i18n::percent(1.0, 0)
                         } else {
-                            format!("{:.1} %", 100.0 * *done as f64 / f.size as f64)
+                            crate::i18n::percent(*done as f64 / f.size as f64, 1)
                         };
                         vec![f.path.display().to_string(), model::size(f.size), pct]
                     })
@@ -1212,9 +1220,9 @@ impl Progress {
                 let sent = spec.map_or(0, |t| t.uploaded);
                 let done = st.map_or(item.downloaded, |s| s.done);
                 let ratio = if done > 0 {
-                    format!("{:.2}", sent as f64 / done as f64)
+                    crate::i18n::decimal(sent as f64 / done as f64, 2)
                 } else {
-                    "0.00".into()
+                    crate::i18n::decimal(0.0, 2)
                 };
                 let shared = spec.map_or(0, |t| t.seeded_secs);
                 let hash = item

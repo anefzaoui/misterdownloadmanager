@@ -1013,7 +1013,7 @@ impl OptionsDialog {
         let line = crate::i18n::fmt(
             // i18n: checkbox under the number of connections per download; {n} is 32
             crate::i18n::t("Allow more than {n} connections"),
-            &[("n", &locked.to_string())],
+            &[("n", &crate::i18n::integer(locked as u64))],
         );
         let was = self.s.many_connections;
         winui::checkbox_light(
@@ -1060,7 +1060,10 @@ impl OptionsDialog {
                     .map(|(h, n)| {
                         // i18n: a number of connections the app learned by itself for a server
                         let auto = crate::i18n::t("{n} (auto)");
-                        vec![h.clone(), crate::i18n::fmt(auto, &[("n", &n.to_string())])]
+                        vec![
+                            h.clone(),
+                            crate::i18n::fmt(auto, &[("n", &crate::i18n::integer(u64::from(*n)))]),
+                        ]
                     }),
             )
             .collect();
@@ -2764,7 +2767,7 @@ fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
                         // i18n: Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
                         crate::i18n::t("Answered in {ms} ms: {ip}"),
                         &[
-                            ("ms", &took.as_millis().to_string()),
+                            ("ms", &crate::i18n::integer(took.as_millis() as u64)),
                             (
                                 "ip",
                                 &ips.first().map(|i| i.to_string()).unwrap_or_default(),

@@ -360,7 +360,7 @@ fn failed(name: &str, e: &Error) -> String {
         Error::MissingVolume(n) => crate::i18n::fmt(
             // i18n: why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
             crate::i18n::t("volume {n} of it is missing"),
-            &[("n", &n.to_string())],
+            &[("n", &crate::i18n::integer(u64::from(*n)))],
         ),
         Error::Damaged(why) => {
             tracing::info!("extract: {name}: {why}");
