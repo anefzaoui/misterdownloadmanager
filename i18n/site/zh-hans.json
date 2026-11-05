@@ -190,9 +190,17 @@
    "source": "Free and open source. The interface you already know, a faster engine underneath, torrents and video built in.",
    "text": "免费开源。您已熟悉的界面，更快的底层引擎，内置种子下载和视频下载功能。"
   },
+  "0491cdf50cd840a6": {
+   "source": "RSS feeds",
+   "text": "RSS 源"
+  },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome、Firefox、Edge<g1><g2>3</g2></g1>"
+  },
+  "04ec5358d75ceff7": {
+   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
+   "text": "将鼠标指向网页上的视频，其边缘会出现一个小的 <g1>下载视频</g1> 按钮。点击它，MDM 的 <g2>从页面下载视频</g2> 窗口会打开并查找可下载的质量。它会下载您点击的视频：如果播放的是自己的文件，则下载该文件；如果是播放器加载的流（HLS 或 DASH），则下载该流；否则下载页面。嵌入式播放器也适用，您的网站登录信息、嵌入播放器的页面以及您的浏览器用户代理都会随之发送，因此会员视频或仅在嵌入它们的网站上播放的视频也可以下载。音频播放器也会显示该按钮。"
   },
   "050edc04316dd70a": {
    "source": "On the command line",
@@ -369,6 +377,10 @@
   "08be6cb715b22099": {
    "source": "Yes: ftp://, and FTP over TLS both ways (ftpes:// and ftps://), with several connections at once, resume, and logins from the address or from Sites Logins. See Adding downloads.",
    "text": "是：ftp://，以及双向的 FTP over TLS（ftpes:// 和 ftps://），支持同时进行多个连接、续传，并可从地址或“站点登录”中获取登录信息。请参阅添加下载。"
+  },
+  "08c883b69355c60d": {
+   "source": "<g1>Feeds</g1> tab:",
+   "text": "<g1>源</g1>选项卡："
   },
   "08d3b61db4ae6f60": {
    "source": "To try changes without touching your own downloads, give the app a separate data folder:",
@@ -1118,9 +1130,17 @@
    "source": "Select or unselect the download with the dotted outline",
    "text": "选择或取消选择带虚线轮廓的下载"
   },
+  "1bc816518d6f87cb": {
+   "source": "<g1>Save to</g1>: the folder its torrents go to; empty, the Torrents category's folder. <g2>Add them without starting them</g2> adds them as <g3>Download Later</g3> would.",
+   "text": "<g1>保存到</g1>：其种子保存到的文件夹；如果为空，则为种子类别的文件夹。<g2>添加但不启动</g2>会像<g3>稍后下载</g3>一样添加它们。"
+  },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>键盘焦点丢失</g1>：当按钮变灰或 Escape 键关闭下拉菜单时，Tab 键会从窗口顶部重新开始。现在它会像 Windows 中一样继续移动或返回。"
+  },
+  "1c0101659f1e2203": {
+   "source": "<g1>Feeds</g1>: the feeds it watches; none ticked, all of them.",
+   "text": "<g1>源</g1>：它监视的源；如果没有勾选，则为所有源。"
   },
   "1c1eece21a75161b": {
    "source": "Choosing the language",
@@ -1133,6 +1153,10 @@
   "1c41a815ee54b7d7": {
    "source": "MDM has <g1>no analytics, no automatic crash reporting, no telemetry and no advertising</g1> (a crash report goes only where you send it yourself). It never sends us your download list, the addresses you download, or anything else.",
    "text": "MDM <g1>没有分析、没有自动崩溃报告、没有遥测、没有广告</g1>（崩溃报告只发送到您自己发送的地方）。它绝不会向我们发送您的下载列表、您下载的地址或任何其他信息。"
+  },
+  "1c4670fc540cb86b": {
+   "source": "<g1>Refresh</g1> fetches the selected feed now. <g2>Remove</g2> stops watching it. A feed that can't be read is shown in red, and its line at the bottom says why.",
+   "text": "<g1>刷新</g1>会立即获取选定的源。<g2>删除</g2>会停止监视它。无法读取的源会显示为红色，底部的行会说明原因。"
   },
   "1c4a1576b5d90b00": {
    "source": "Logos and names belong to their owners and are shown only to identify each product; Mister Download Manager has no connection to them.",
@@ -1541,6 +1565,10 @@
   "26233472fae39b0b": {
    "source": "Choose what MDM takes",
    "text": "选择 MDM 捕获的内容"
+  },
+  "26389260c1c38a82": {
+   "source": "Feeds and rules are kept in <x1/> in MDM's data folder. MDM reads at most 5 MB of a feed.",
+   "text": "源和规则保存在 MDM 数据文件夹中的<x1/>中。MDM 最多读取 5 MB 的源。"
   },
   "266f7f0ad3be1761": {
    "source": "Languages →",
@@ -1962,6 +1990,10 @@
    "source": "Every download keeps a log of its recent events: retries, redirects, the server's answers and errors.",
    "text": "每次下载都会保留其最近事件的日志：重试、重定向、服务器的响应和错误。"
   },
+  "2f590d577e732f6a": {
+   "source": "Many sites publish their new torrents as an RSS or Atom feed. MDM can watch feeds, list what they hold, and add the new torrents you want by itself. Choose <g1>Tasks → RSS feeds...</g1>, or click the arrow next to <g2>Add Torrent</g2>.",
+   "text": "许多网站以 RSS 或 Atom 源的形式发布新的种子。MDM 可以监视这些源，列出它们包含的内容，并自动添加您想要的新种子。选择<g1>任务 → RSS 源...</g1>，或点击<g2>添加 Torrent</g2>旁边的箭头。"
+  },
   "2f5eb68f16f89115": {
    "source": "<g1><g2>Queues and the Scheduler</g2></g1> — run downloads a few at a time, start and stop them by the clock, and turn the computer off when they are done.",
    "text": "<g1><g2>队列和计划程序</g2></g1> — 每次运行少量下载，按时启动和停止它们，并在完成后关闭计算机。"
@@ -2033,6 +2065,10 @@
   "31e30194f3771bac": {
    "source": "Built on",
    "text": "基于"
+  },
+  "321b96d0efb29bed": {
+   "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
+   "text": "规则只查看自上次获取源以来新增的文章，并且源的首次获取只列出当前存在的内容。因此，添加源或规则永远不会下载整个积压内容。<g1>现在匹配...篇文章</g1>显示了源中当前哪些文章与规则匹配，以供检查；请手动下载这些文章。列表中已有的种子不会再次添加，其文件已在文件夹中的种子也不会再次添加：MDM 绝不会在未经询问的情况下写入它未创建的文件。选项卡的底行显示规则上次执行的操作，规则添加的种子会在其事件日志中说明。"
   },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
@@ -2113,6 +2149,10 @@
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "到此计算机本身的连接（<x1/>）未绑定。此计算机上的代理负责下载，它将下载发送到何处取决于它。"
+  },
+  "3549f28b5c3a4fb8": {
+   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
+   "text": "受 DRM 保护的视频（大多数付费流媒体服务）无法下载，MDM 不会尝试下载。"
   },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
@@ -2361,6 +2401,10 @@
   "3b9bf652b4e897ff": {
    "source": "Tick <g1>Turn off computer when done</g1> and choose <g2>Shut down</g2>, <g3>Sleep</g3> or <g4>Hibernate</g4>. MDM shows a 30-second countdown first, so you can still cancel if you're at the computer.",
    "text": "勾选<g1>完成后关闭计算机</g1>并选择<g2>关机</g2>、<g3>睡眠</g3>或<g4>休眠</g4>。MDM 会先显示 30 秒倒计时，因此如果您在计算机旁，仍然可以取消。"
+  },
+  "3ba0650b86188c4d": {
+   "source": "<g1>Episodes</g1>: which episodes to take, read from <x2/> or <x3/> in the title. <x4/> is season 1 episode 2, <x5/> episodes 5 to 8, <x6/> everything from season 2 episode 1 on, and <x7/> all of season 3, separated by <x8/>. Empty: any article. A rule takes each episode once: a second release of an episode it already added is skipped.",
+   "text": "<g1>剧集</g1>：要获取的剧集，从标题中的<x2/>或<x3/>读取。<x4/>是第 1 季第 2 集，<x5/>是第 5 到 8 集，<x6/>是从第 2 季第 1 集开始的所有内容，<x7/>是第 3 季的所有内容，用<x8/>分隔。留空：任何文章。一个规则只获取每个剧集一次：如果它已经添加了一个剧集，则会跳过该剧集的第二次发布。"
   },
   "3bb7e0584ef41f9a": {
    "source": "Keyboard shortcuts — Mister Download Manager help",
@@ -2885,6 +2929,10 @@
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
    "text": "下载列表详情 →"
+  },
+  "4a48bb42225187d0": {
+   "source": "<g1>Must not contain</g1>: words that make the rule skip an article, written the same way.",
+   "text": "<g1>不得包含</g1>：使规则跳过文章的词语，写法相同。"
   },
   "4a575d95633d11ec": {
    "source": "Free Download Manager",
@@ -5694,6 +5742,10 @@
    "source": "Queues and the Scheduler →",
    "text": "队列和计划程序 →"
   },
+  "9439b503963faae1": {
+   "source": "<g1>Regular expressions</g1>: the two boxes hold regular expressions instead.",
+   "text": "<g1>正则表达式</g1>：这两个框改为包含正则表达式。"
+  },
   "945dd1a4f985ec9a": {
    "source": "<g1>Description</g1> — a note of your own. It shows in the list's <g2>Description</g2> column and Find can search it.",
    "text": "<g1>描述</g1> — 您自己的备注。它会显示在列表的<g2>描述</g2>列中，并且“查找”可以搜索它。"
@@ -8182,6 +8234,10 @@
    "source": "Copy the file's address (in a browser: right-click the link → <g1>Copy link</g1>).",
    "text": "复制文件地址（在浏览器中：右键点击链接 → <g1>复制链接</g1>）。"
   },
+  "d7b53117265cba23": {
+   "source": "Type a feed's address into <g1>Feed address</g1> and click <g2>Add feed</g2>. MDM fetches it at once, then every 30 minutes; change that under <g3>Check feeds every ... minutes</g3>, 5 at the least.",
+   "text": "在<g1>源地址</g1>中输入源地址，然后点击<g2>添加源</g2>。MDM 会立即获取它，然后每 30 分钟获取一次；您可以在<g3>每隔...分钟检查源</g3>下更改此设置，最少 5 分钟。"
+  },
   "d7cea04e06c4311d": {
    "source": "To bring the window back, choose it in <g1>Downloads in progress</g1>, or double-click the download in the list.",
    "text": "要恢复窗口，请在<g1>正在进行的下载</g1>中选择它，或双击列表中的下载项。"
@@ -8754,6 +8810,10 @@
    "source": "IDM's layout, your IDM list imported, free and open source. Compared with nine other free download managers.",
    "text": "IDM 布局，可导入您的 IDM 列表，免费且开源。与九款其他免费下载管理器进行比较。"
   },
+  "e7c1fe00134f85f4": {
+   "source": "<g1>Download rules</g1> tab: a rule adds the torrents of new articles whose titles it matches, without asking.",
+   "text": "<g1>下载规则</g1>选项卡：规则会自动添加标题匹配的新文章中的种子，无需询问。"
+  },
   "e7d58a9cc03da7fd": {
    "source": "Point at the video in your browser and click the Download video button that appears over it, or paste the page's address into Tasks → Download video from a…",
    "text": "将鼠标指向浏览器中的视频，然后点击视频上方出现的下载视频按钮，或者将页面地址粘贴到任务 → 从页面下载视频…"
@@ -8926,6 +8986,10 @@
    "source": "portable.zip",
    "text": "portable.zip"
   },
+  "ed0419b45b0e746b": {
+   "source": "Pick a feed on the left to see its articles. An article with a torrent shows a torrent icon and its size when the feed gives it. Double-click one, or select it and click <g1>Download...</g1>, to open <g2>Add torrent</g2> with it, as for any magnet link or <x3/> address.",
+   "text": "选择左侧的源以查看其文章。带有种子的文章会显示一个种子图标及其大小（如果源提供）。双击其中一个，或选择它并点击<g1>下载...</g1>，以打开<g2>添加种子</g2>，就像处理任何磁力链接或<x3/>地址一样。"
+  },
   "ed0ae087ccf6fe9e": {
    "source": "<g1>3.1 s</g1><g2></g2>",
    "text": "<g1>3.1 秒</g1><g2></g2>"
@@ -8941,6 +9005,10 @@
   "ed421ed944fa90a0": {
    "source": "<g1>With the setup:</g1> the setup asks for its language first, with Windows' display language selected. MDM starts in the language you choose there.",
    "text": "<g1>通过安装程序：</g1>安装程序会首先询问其语言，并默认选择 Windows 的显示语言。MDM 将以您选择的语言启动。"
+  },
+  "ed7e98ef180222ef": {
+   "source": "<g1>Must contain</g1>: words the title must contain, all of them, in any order. <x2/> separates alternatives (<x3/>), and <x4/> and <x5/> are wildcards. Case doesn't matter.",
+   "text": "<g1>必须包含</g1>：标题必须包含的词语，所有词语，顺序不限。<x2/>分隔备选项（<x3/>），<x4/>和<x5/>是通配符。不区分大小写。"
   },
   "eda0bda9e04488cf": {
    "source": "x86_64.dmg",
