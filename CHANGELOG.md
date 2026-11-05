@@ -250,6 +250,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Translators: a reviewed translation is never replaced by machine translation.** A row whose
+  `#, machine` line a person deleted is kept by `tools/i18n/translate.py` in every case (`--redo`
+  included; a check it fails is printed for the person to decide), and CI fails a pull request
+  that drops such a row or marks it `#, machine` again (`tools/i18n/reviewed_guard.py`). The first
+  reviewed catalog is Italian ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150)).
 - **Developers: two engine tests no longer fail now and then**
   ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123)): the pause-and-resume
   and event-log tests no longer depend on how fast the machine is. The lab server can hold a

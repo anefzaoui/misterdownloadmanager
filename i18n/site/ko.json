@@ -862,10 +862,6 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "예. MDM은 IDM의 익숙한 명령줄 스위치를 지원하며, 터미널에서 다운로드할 수 있는 misterdownloadmanager-cli를 제공하고, 로컬 토큰 보호 자동화 API를 갖추고 있습니다."
   },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "위에 <x1/> 줄이 있는 행은 기계로 번역되었습니다. 검토(필요한 경우 수정)한 후 해당 <x2/> 줄을 삭제하세요."
-  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "a <x1/> 파일 또는 <x2/> 링크"
@@ -7022,6 +7018,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM 자체 다운로드는 자체 다운로더를 사용합니다</g1>: yt-dlp, ffmpeg, MDM 업데이트 및 충돌 보고서의 심볼은 이제 여러 연결을 통해 다운로드되고, 연결이 끊긴 후 재개되며, 프록시 설정을 통과합니다. 각 파일은 사용하기 전에 게시자의 서명된 체크섬과 대조하여 확인됩니다."
   },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "<x1/> 선이 있는 행은 기계 번역되었습니다. 확인(필요한 경우 수정)한 후 <x2/> 선을 삭제하세요. 그 이후부터 해당 행은 귀하의 것이며, 기계 번역이 다시 대체하지 않습니다."
+  },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
    "text": "서버의 응답에서 제한을 학습하고, 이를 준수하며, 다음 번을 위해 기억합니다. 12.6초 만에 완료되었습니다."
@@ -8225,6 +8225,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "종단 간, 중앙값 (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "<x1/> 줄이 없는 행은 그때부터 귀하의 것입니다. <x2/>는 다시는 기계 번역으로 보내지 않으며, CI(<x3/>)는 해당 행을 삭제하거나 다시 <x4/>로 표시하는 모든 풀 리퀘스트를 실패 처리합니다."
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",

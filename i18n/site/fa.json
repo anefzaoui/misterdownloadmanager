@@ -862,10 +862,6 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "بله. MDM سوئیچ‌های خط فرمان آشنای IDM را می‌پذیرد، برای بارگیری از ترمینال همراه با misterdownloadmanager-cli ارائه می‌شود و یک API اتوماسیون محلی و محافظت‌شده با توکن دارد که می‌تواند بارگیری‌ها را فهرست، متوقف، شروع و حذف کند. این API تا زمانی که آن را روشن نکنید، خاموش است. به خط فرمان و اتوماسیون مراجعه کنید."
   },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "سطری که بالای آن یک خط <x1/> وجود دارد، توسط ماشین ترجمه شده است. هنگامی که آن را بررسی کردید (و در صورت نیاز تصحیح کردید)، آن خط <x2/> را حذف کنید."
-  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "یک فایل <x1/> یا لینک <x2/>"
@@ -7022,6 +7018,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>دانلودهای خود MDM از دانلودکننده خودش استفاده می‌کنند</g1>: yt-dlp، ffmpeg، به‌روزرسانی‌های MDM و نمادهای گزارش خرابی اکنون با چندین اتصال دانلود می‌شوند، پس از قطع اتصال ادامه می‌یابند و از طریق تنظیمات پروکسی شما عبور می‌کنند. هر فایل قبل از استفاده هنوز با چک‌سام‌های امضا شده ناشر خود بررسی می‌شود."
   },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "ردیفی که یک <x1/> خط بالای آن دارد، توسط ماشین ترجمه شده است. پس از بررسی آن (و در صورت نیاز، تصحیح آن)، آن <x2/> خط را حذف کنید. از آن به بعد، آن ردیف متعلق به شماست: ترجمه ماشینی هرگز آن را جایگزین نمی‌کند."
+  },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
    "text": "محدودیت را از پاسخ سرور یاد می‌گیرد، به آن پایبند می‌ماند و برای دفعه بعد به خاطر می‌سپارد. در 12.6 ثانیه به پایان رسید."
@@ -8225,6 +8225,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "کامل، میانه (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "ردیفی که خط <x1/> ندارد، از آن به بعد مال شماست: <x2/> هرگز آن را دوباره به ترجمه ماشینی نمی‌فرستد، و CI (<x3/>) هر درخواست pull را که آن را حذف کند یا دوباره <x4/> علامت بزند، رد می‌کند."
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",

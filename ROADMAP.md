@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
+  Italian is the first catalog reviewed by a native speaker
+  ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150))
 - ✅ Windows: draw with Direct3D 12 instead of OpenGL (**View → Draw with**), an option for now;
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
