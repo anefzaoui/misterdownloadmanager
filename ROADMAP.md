@@ -133,17 +133,21 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Debrid services: Real-Debrid, AllDebrid, Premiumize
-- 📋 A link grabber with packages, and auto-extract of archives
-  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
+- 📋 Where a download's server is: its country, flag and ping, from an offline database
+  ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
+- 📋 The Scheduler wakes the computer from sleep to run a queue
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - 📋 Debrid services, the rest: AllDebrid and Premiumize, torrents through the service, the system
   keychains for the sign-ins
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
 ### Network
 
-- 📋 Video pages, and torrents on Windows, through a chosen network adapter
+- 📋 Torrents on Windows through a chosen network adapter
+  ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)), and video pages too
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
+- 📋 Control MDM from a phone or another computer on the local network, off by default
+  ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
 
 ### Browser extension
 
