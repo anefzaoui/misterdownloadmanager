@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	ஆடியோ மட்டும் {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	ஆடியோ மட்டும், அசல் {type}
 #. text in the Scheduler window
 #, machine
 	August	ஆகஸ்ட்
@@ -928,6 +932,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	முதல் கோப்பு:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC ஒலியை அப்படியே வைத்திருக்கும், ஆனால் தளத்தின் ஒலியில் இல்லாத தரத்தை சேர்க்க முடியாது: கோப்பு பெரியதாக மட்டுமே இருக்கும்.
 #. text in categories.rs
 #, machine
 	Folder:	கோப்புறை:
@@ -1057,7 +1065,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	வகைப்பாடுகளை &மறை
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	தாவலை மறை
 #. text in a download's progress window; text in standard windows
@@ -1105,6 +1113,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	வரிசையில்
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	வகைகளில்: தேர்ந்தெடுக்கப்பட்ட வகையின் மெனு
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1305,6 +1316,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	அறிவிப்புப் பகுதிக்குச் சுருக்கு
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	நிமிடங்கள்
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1364,6 +1379,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	பக்கத்தை மேலே/கீழே நகர்த்து
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	வகைகளுக்கும் பதிவிறக்கப் பட்டியலுக்கும் இடையில் நகர்த்தவும்
 #. text in the Scheduler window
 #, machine
 	Move down	கீழே நகர்த்து
@@ -1994,6 +2012,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	பகிர்வு
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time} பகிர்ந்த பிறகு பகிர்வு நிறுத்தப்பட்டது
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	பகிர்வு நிறுத்தப்பட்டது: பகிர்வு விகிதம் {ratio} ஐ எட்டியது
 #. text in the download list
 #, machine
 	Show	காட்டு
@@ -2170,6 +2197,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	முக்கிய பதிவிறக்க வரிசையை நிறுத்து
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	பகிர்ந்த பிறகு பகிர்வை நிறுத்து
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	பகிர்வு விகிதம் அடையும் போது பகிர்வை நிறுத்து
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2256,11 +2291,11 @@
 	The address must be an http(s) or ftp(s) address	முகவரி http(s) அல்லது ftp(s) முகவரியாக இருக்க வேண்டும்
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	சிறந்த தரங்கள் மற்றும் MP3-க்கு ffmpeg (சுமார் 80 MB) தேவை.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	சிறந்த தரங்கள், MP3, Opus மற்றும் FLAC ஆகியவற்றிற்கு ffmpeg (சுமார் 80 MB) தேவை.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	சிறந்த தரங்கள் மற்றும் MP3-க்கு ffmpeg தேவை: உங்கள் சிஸ்டத்தின் தொகுப்பு மேலாளர் (அல்லது Homebrew) மூலம் அதை நிறுவவும்.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	சிறந்த தரங்கள், MP3, Opus மற்றும் FLAC ஆகியவற்றிற்கு ffmpeg தேவை: உங்கள் கணினியின் தொகுப்பு மேலாளர் (அல்லது Homebrew) மூலம் அதை நிறுவவும்.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3280,7 +3315,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / மெனு
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+மேல் / Shift+கீழ்
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

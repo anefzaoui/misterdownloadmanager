@@ -292,10 +292,24 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
         MENUBAR_LINE(),
     );
     let mut hit = None;
+    // For screen readers and UI Automation (#113): a menu bar whose titles are menu items that
+    // open their menus (Click, as with the mouse).
+    let bar = ui.interact(
+        winui::rect(Rect::from_min_size(o, vec2(width, MENU_H))),
+        egui::Id::unique("menubar-node"),
+        egui::Sense::hover(),
+    );
+    winui::expose(&bar, egui::Role::MenuBar, "", true, None);
+    let titles_ui = ui.new_child(egui::UiBuilder::new().accessibility_parent(bar.id));
     for (i, (label, x, w, tx)) in menus(&p).iter().enumerate() {
         // From the leading edge: the first menu at the right in RTL.
         let rc = winui::rect(Rect::from_min_size(o + vec2(*x, 0.0), vec2(*w, MENU_H)));
-        let resp = ui.interact(rc, egui::Id::unique(("menubar", i)), winui::pointer_only());
+        let resp = titles_ui.interact(rc, egui::Id::unique(("menubar", i)), winui::pointer_only());
+        winui::expose(&resp, egui::Role::MenuItem, &plain(label).0, true, None);
+        ui.ctx().accesskit_node_builder(resp.id, |n| {
+            n.set_has_popup(egui::accesskit::HasPopup::Menu);
+            n.set_expanded(open == Some(i));
+        });
         if open == Some(i) {
             p.rect_filled(rc, 0.0, MENUBAR_OPEN());
         } else if open.is_none() && resp.hovered() {
@@ -313,11 +327,38 @@ pub fn menu_bar(ui: &mut Ui, o: Pos2, width: f32, open: Option<usize>) -> Option
                 winui::char_span(&p, &winui::segoe(), &shown, letter.unwrap_or(0), drawn);
             fill(&p, x0, o.y + 15.0, x1, o.y + 15.0, TEXT());
         }
-        if resp.clicked() || (open.is_some() && open != Some(i) && resp.hovered()) {
+        // A screen reader or UI Automation opens a title's menu with Expand (or Click) and
+        // shuts it with Collapse.
+        let (expand, collapse) = ui.input(|x| {
+            (
+                x.has_accesskit_action_request(resp.id, egui::accesskit::Action::Expand),
+                x.has_accesskit_action_request(resp.id, egui::accesskit::Action::Collapse),
+            )
+        });
+        if collapse && open == Some(i) {
+            ui.ctx()
+                .data_mut(|d| d.insert_temp(egui::Id::unique("menubar-collapse"), true));
             hit = Some(i);
+        }
+        if resp.clicked()
+            || (expand && open != Some(i))
+            || (open.is_some() && open != Some(i) && resp.hovered())
+        {
+            hit = Some(i);
+        }
+        if resp.clicked() || expand || collapse {
+            // No pointer moves to bring the next frame: the menu is drawn (or shut) on it.
+            ui.ctx().request_repaint();
         }
     }
     hit
+}
+
+/// A screen reader or UI Automation asked to shut the open menu-bar menu (Collapse on its
+/// title) this frame; taken once.
+pub fn menubar_collapse(ctx: &egui::Context) -> bool {
+    ctx.data_mut(|d| d.remove_temp::<bool>(egui::Id::unique("menubar-collapse")))
+        .unwrap_or(false)
 }
 
 // ---- popup menus ---------------------------------------------------------------------------
@@ -919,6 +960,16 @@ fn popup_level<C: Clone>(
         let clicked = ui.input(|i| i.pointer.primary_released());
         // The pointer moving over an item takes the highlight from the keyboard.
         let moving = ui.input(|i| i.pointer.is_moving());
+        // For screen readers and UI Automation (#113): the window is a menu, its entries its
+        // items (made in a child whose accessibility parent is the menu); invoking one chooses
+        // it, as a click does.
+        let menu_node = ui.interact(
+            Rect::from_min_size(o, size),
+            egui::Id::unique(("menu-node", id, depth)),
+            egui::Sense::hover(),
+        );
+        winui::expose(&menu_node, egui::Role::Menu, "", true, None);
+        let items_ui = ui.new_child(egui::UiBuilder::new().accessibility_parent(menu_node.id));
         let mut y = o.y + 3.0;
         for (i, e) in entries.iter().enumerate() {
             if matches!(e, MenuEntry::Sep) {
@@ -993,6 +1044,48 @@ fn popup_level<C: Clone>(
             } else {
                 t
             };
+            // The entry's node: a menu item (a check or radio item when it is one), its name,
+            // whether it can be used, and for a submenu that it opens one.
+            let item = items_ui.interact(
+                slot,
+                egui::Id::unique(("menu-item", id, depth, i)),
+                winui::pointer_only(),
+            );
+            let (role, on) = match e {
+                MenuEntry::Radio(..) => (egui::Role::MenuItemRadio, Some(checked)),
+                MenuEntry::Item(..) if checked => (egui::Role::MenuItemCheckBox, Some(true)),
+                _ => (egui::Role::MenuItem, None),
+            };
+            winui::expose(&item, role, &t, enabled, on);
+            if let MenuEntry::Sub(..) = e {
+                let open = open_sub == Some(i);
+                ui.ctx().accesskit_node_builder(item.id, |n| {
+                    n.set_has_popup(egui::accesskit::HasPopup::Menu);
+                    n.set_expanded(open);
+                });
+            }
+            // Invoked by a screen reader or UI Automation (a real click is the pointer's,
+            // below): an item is chosen, a submenu opens.
+            // (A submenu's entry is opened with Expand too, its pattern being Expand / Collapse.)
+            let expand_sub = matches!(e, MenuEntry::Sub(..))
+                && ui.input(|x| {
+                    x.has_accesskit_action_request(item.id, egui::accesskit::Action::Expand)
+                });
+            let invoked = (item.clicked() && !item.clicked_by(egui::PointerButton::Primary)
+                || expand_sub)
+                && enabled;
+            match e {
+                MenuEntry::Item(_, c, ..) | MenuEntry::Radio(_, c, ..) if invoked => {
+                    *result = Some(c.clone());
+                    ui.ctx().request_repaint_of(parent_vid);
+                }
+                MenuEntry::Sub(..) if invoked && depth == 0 => {
+                    ui.ctx().data_mut(|d| d.insert_temp(sub_key, i));
+                    sub_at = Some((i, y - o.y));
+                    ui.ctx().request_repaint_of(parent_vid);
+                }
+                _ => {}
+            }
             let drawn = text_font(&painter, winui::segoe(), o.x + 38.0, y + 14.0, &t, color);
             // The shortcut at the trailing edge, in the menu's quieter ink.
             if let Some(k) = keys {
@@ -1100,6 +1193,11 @@ fn popup_level<C: Clone>(
         ]),
     ) {
         ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
+        // The command is carried out on the menu's next frame: a menu opened from the keyboard
+        // (Shift+F10, the Menu key) or a screen reader moves no pointer to bring one, and stayed
+        // hidden (#113).
+        ctx.request_repaint_of(vid);
+        ctx.request_repaint();
     }
     if let Some((i, slot_y)) = sub_at
         && let MenuEntry::Sub(_, _, children) = &entries[i]
@@ -1529,6 +1627,18 @@ pub fn categories(
     {
         event = Some(TreeEvent::Context(k, at));
     }
+    // For screen readers and UI Automation (#113): the pane is a tree named as its caption, its
+    // rows the tree's items (made in a child whose accessibility parent is the tree).
+    winui::expose(
+        &blank,
+        egui::Role::Tree,
+        crate::i18n::t("Categories"),
+        true,
+        None,
+    );
+    let rows_ui = ui.new_child(egui::UiBuilder::new().accessibility_parent(blank.id));
+    // Where the selected row is, for its menu from the keyboard (Shift+F10, the Menu key).
+    let mut selected_at: Option<(usize, Pos2)> = None;
 
     // Connector dots (#6d6d6d, every other pixel), painted first; expander boxes cover them.
     let roots: Vec<usize> = (0..rows.len()).filter(|&k| rows[k].level == 0).collect();
@@ -1643,11 +1753,57 @@ pub fn categories(
         let row = winui::rect(
             Rect::from_min_size(pos2(area.left(), top), vec2(area.width(), 16.0)).intersect(area),
         );
-        let resp = ui.interact(
+        let resp = rows_ui.interact(
             row,
             egui::Id::unique(("tree-row", k)),
             winui::pointer_only(),
         );
+        // A tree item: its name (with its count), selected, open or shut, its level; Click
+        // selects it (egui's own), Expand / Collapse open and shut it, Show context menu opens
+        // its menu.
+        {
+            use egui::accesskit::Action;
+            let name = match r.count {
+                Some(n) => format!("{} {}", crate::i18n::t(&r.label), count_text(n)),
+                None => crate::i18n::t(&r.label).to_owned(),
+            };
+            winui::expose(&resp, egui::Role::TreeItem, &name, true, None);
+            let (expand, collapse, menu) = ui.input(|i| {
+                (
+                    i.has_accesskit_action_request(resp.id, Action::Expand),
+                    i.has_accesskit_action_request(resp.id, Action::Collapse),
+                    i.has_accesskit_action_request(resp.id, Action::ShowContextMenu),
+                )
+            });
+            let (level, selected, open) = (r.level, r.selected, r.expander);
+            ui.ctx().accesskit_node_builder(resp.id, |n| {
+                n.set_selected(selected);
+                n.set_level(level + 1);
+                n.add_action(Action::ShowContextMenu);
+                if let Some(open) = open {
+                    n.set_expanded(open);
+                    n.add_action(if open {
+                        Action::Collapse
+                    } else {
+                        Action::Expand
+                    });
+                }
+            });
+            let under = resp.rect.left_bottom() + vec2(24.0, 0.0);
+            if r.selected {
+                selected_at = Some((k, under));
+            }
+            if (expand && r.expander == Some(false)) || (collapse && r.expander == Some(true)) {
+                event = Some(TreeEvent::Toggle(k));
+            }
+            if menu {
+                event = Some(TreeEvent::Context(k, under));
+            }
+            // An assistive action moves no pointer: the frame showing its result is asked for.
+            if expand || collapse || menu {
+                ui.ctx().request_repaint();
+            }
+        }
         if resp.clicked() {
             let on_expander = resp.interact_pointer_pos().is_some_and(|q| {
                 let x = winui::mx(q.x);
@@ -1667,6 +1823,16 @@ pub fn categories(
         {
             event = Some(TreeEvent::Context(k, at));
         }
+    }
+    // The selected node's menu from the keyboard, under the node: Shift+F10 or the Menu key.
+    if keys
+        && let Some((k, at)) = selected_at
+        && ui.input_mut(|i| {
+            i.consume_key(egui::Modifiers::SHIFT, egui::Key::F10)
+                || i.consume_key(egui::Modifiers::NONE, egui::Key::Menu)
+        })
+    {
+        event = Some(TreeEvent::Context(k, at));
     }
 
     if need_v {

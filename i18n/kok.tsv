@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	फक्त ऑडिओ {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	फकत ऑडिओ, मूळ {type}
 #. text in the Scheduler window
 #, machine
 	August	ऑगस्ट
@@ -928,6 +932,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	पयली फायल:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC आवाजाक तसोच दवरता, पूण तो सायटीच्या आवाजांत नाशिल्ली गुणवत्ता जोडपाक शकना: फायल फकत व्हडली आसता.
 #. text in categories.rs
 #, machine
 	Folder:	फोल्डर:
@@ -1057,7 +1065,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	&वर्ग लिपय
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	टॅब लिपय
 #. text in a download's progress window; text in standard windows
@@ -1105,6 +1113,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	एका रांकेत
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	श्रेणींनीत: निवडिल्ले श्रेणीचें मेनू
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1305,6 +1316,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	अधिसूचोवणी क्षेत्रांत ल्हान कर
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	मिनटां
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1364,6 +1379,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	एक पान वयर/सकयल व्हर
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	श्रेणीं आनी डाउनलोड वळेरी भितर सरकचें
 #. text in the Scheduler window
 #, machine
 	Move down	सकयल व्हर
@@ -1994,6 +2012,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	शेअर करप
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	{time} खातीर वांटणी केल्ल्या उपरांत वांटणी थांबयली
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	वांटणी थांबयली: वांटणीचें प्रमाण {ratio} पावलां
 #. text in the download list
 #, machine
 	Show	दाखय
@@ -2170,6 +2197,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	मुखेल डाउनलोड रांग थांबोव
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	इतले वेळ वांटणी केल्ल्या उपरांत वांटणी थांबोवची
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	वांटणीचें प्रमाण इतलें आसल्यार वांटणी थांबोवची
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2256,11 +2291,11 @@
 	The address must be an http(s) or ftp(s) address	पतो http(s) वा ftp(s) पतो आसूंक जाय
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	उत्तम गुणवत्ता आनी MP3 खातीर ffmpeg (सुमार 80 MB) जाय पडटा.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	उत्तम गुणवत्ता, MP3, Opus आनी FLAC हांकां ffmpeg (सुमार 80 MB) जाय पडटा.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	उत्तम गुणवत्ता आनी MP3 खातीर ffmpeg जाय पडटा: तें तुमच्या सिस्टमाच्या पॅकेज मॅनेजरा वरवीं (वा Homebrew) स्थापीत करात.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	उत्तम गुणवत्ता, MP3, Opus आनी FLAC हांकां ffmpeg जाय पडटा: तुमच्या सिस्टिमच्या पॅकेज मॅनेजरा वरवीं (वा Homebrew) तें स्थापीत करात.
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3280,7 +3315,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / मेनू
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+वयर / Shift+सकयल
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	टॅब
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

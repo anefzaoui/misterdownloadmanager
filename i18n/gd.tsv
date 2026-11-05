@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Fuaim a-mhàin {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Fuaim a-mhàin, {type} tùsail
 #. text in the Scheduler window
 #, machine
 	August	Lùnastal
@@ -928,6 +932,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	A’ chiad fhaidhle:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	Glèidhidh FLAC an fhuaim dìreach mar a tha i, ach chan urrainn dha càileachd a chur ris nach eil aig fuaim na làraich: bidh am faidhle nas motha a-mhàin.
 #. text in categories.rs
 #, machine
 	Folder:	Pasgan:
@@ -1057,7 +1065,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Falaich &roinnean
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Falaich taba
 #. text in a download's progress window; text in standard windows
@@ -1105,6 +1113,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Ann an ciudha
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	Anns na roinnean: clàr-taice na roinne taghte
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1305,6 +1316,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Dèan beag dhan raon-fiosrachaidh
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	mionaidean
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1364,6 +1379,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Gluais duilleag suas / sìos
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Gluais eadar na roinnean is liosta nan luchdachadh a-nuas
 #. text in the Scheduler window
 #, machine
 	Move down	Gluais sìos
@@ -1994,6 +2012,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	A’ roinneadh
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Stad roinneadh an dèidh roinneadh fad {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Stad roinneadh: ràinig an co-mheas roinne {ratio}
 #. text in the download list
 #, machine
 	Show	Seall
@@ -2170,6 +2197,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stad prìomh chiudha luchdachadh sìos
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Stad roinneadh an dèidh roinneadh fad
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Stad roinneadh aig co-mheas roinne de
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2256,11 +2291,11 @@
 	The address must be an http(s) or ftp(s) address	Feumaidh an seòladh a bhith na sheòladh http(s) no ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Feumaidh na càileachdan as fheàrr agus MP3 ffmpeg (mu 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Feumaidh na càileachdan as fheàrr, MP3, Opus is FLAC, ffmpeg (mu 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Feumaidh na càileachdan as fheàrr agus MP3 ffmpeg: stàlaich e le manaidsear pacaid an t-siostaim agad (no Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Feumaidh na càileachdan as fheàrr, MP3, Opus is FLAC, ffmpeg: stàlaich e le manaidsear pacaid an t-siostaim agad (no Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3280,7 +3315,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Clàr-taice
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+Suas / Shift+Sìos
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

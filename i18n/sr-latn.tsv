@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Samo zvuk {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Samo zvuk, originalni {type}
 #. text in the Scheduler window
 #, machine
 	August	Avgust
@@ -928,6 +932,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Prva datoteka:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC zadržava zvuk tačno onako kako jeste, ali ne može da doda kvalitet koji zvuk sa sajta nema: datoteka je samo veća.
 #. text in categories.rs
 #, machine
 	Folder:	Fascikla:
@@ -1057,7 +1065,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Sakrij &kategorije
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Sakrij karticu
 #. text in a download's progress window; text in standard windows
@@ -1105,6 +1113,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	U redu čekanja
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	U kategorijama: meni izabrane kategorije
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1305,6 +1316,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Minimizuj u oblast za obaveštenja
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	minuta
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1364,6 +1379,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Pomeranje stranice nagore/nadole
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Premeštanje između kategorija i liste preuzimanja
 #. text in the Scheduler window
 #, machine
 	Move down	Pomeri nadole
@@ -1994,6 +2012,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Deljenje
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	Deljenje je zaustavljeno nakon deljenja tokom {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	Deljenje je zaustavljeno: odnos deljenja je dostigao {ratio}
 #. text in the download list
 #, machine
 	Show	Prikaži
@@ -2170,6 +2197,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Zaustavi glavni red za preuzimanje
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Zaustavi deljenje nakon deljenja tokom
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Zaustavi deljenje kada odnos deljenja dostigne
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2256,11 +2291,11 @@
 	The address must be an http(s) or ftp(s) address	Adresa mora biti http(s) ili ftp(s) adresa
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Najbolji kvalitet i MP3 zahtevaju ffmpeg (oko 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Za najbolji kvalitet, MP3, Opus i FLAC je potreban ffmpeg (oko 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Najbolji kvalitet i MP3 zahtevaju ffmpeg: instalirajte ga pomoću menadžera paketa vašeg sistema (ili Homebrew-a).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Za najbolji kvalitet, MP3, Opus i FLAC je potreban ffmpeg: instalirajte ga pomoću menadžera paketa vašeg sistema (ili Homebrew-a).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3280,7 +3315,15 @@ key	Shift+F10	Shift+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Shift+F10 / Meni
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Shift+gore / Shift+dole
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tab
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

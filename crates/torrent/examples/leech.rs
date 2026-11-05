@@ -2,9 +2,11 @@
 //! ratio) without the internet: it downloads a .torrent from peers on the local network only
 //! (Local Service Discovery; no DHT, no UPnP, no trackers), printing what arrived each second.
 //!
-//!   cargo run -p mdm-torrent --example leech -- <file.torrent> <out folder> [seconds]
+//!   cargo run -p mdm-torrent --example leech -- <file.torrent> <out folder> [seconds] [peer]
 //!
 //! Stops when done or after `seconds` (default 60); its own state stays in `<out>/.leech`.
+//! `peer` (e.g. 127.0.0.1:51413): dial that peer too. On loopback the firewall stays out of the
+//! way (LSD names the computer's network address, which a firewall may filter).
 
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
@@ -19,6 +21,11 @@ async fn main() {
         std::process::exit(2);
     };
     let secs: u64 = args.get(2).and_then(|a| a.parse().ok()).unwrap_or(60);
+    let peers: Vec<std::net::SocketAddr> = args
+        .get(3)
+        .and_then(|a| a.parse().ok())
+        .into_iter()
+        .collect();
     let out = PathBuf::from(out);
     let torrent = std::fs::read(file).expect("the .torrent file");
     // It only dials out (to the peers LSD names), so it doesn't listen: no incoming
@@ -35,7 +42,7 @@ async fn main() {
     .await
     .expect("session started");
     let hash = t
-        .add(&torrent, &out, None, Vec::new(), false)
+        .add(&torrent, &out, None, peers, false)
         .await
         .expect("added");
     let start = Instant::now();

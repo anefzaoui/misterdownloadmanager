@@ -1368,6 +1368,7 @@ impl App {
         let Some(t) = self.torrent_host.get() else {
             return;
         };
+        let limits = self.settings.sharing_limits();
         let mut changed = false;
         let mut hashes = std::collections::HashSet::new();
         for i in self.items.iter_mut() {
@@ -1387,8 +1388,25 @@ impl App {
                 spec.seeded_secs += dt;
                 changed = true;
             }
+            // Torrent settings' seeding limits: a finished torrent over one stops being shared
+            // (paused; it stays so after a restart, `complete_torrents`), with or without a Run.
+            let mut stopped = None;
+            if st.phase == mdm_torrent::Phase::Finished
+                && let Some(why) = crate::torrents::sharing_limit_reached(spec, st.done, limits)
+            {
+                let (t2, hash) = (t.clone(), spec.hash.clone());
+                self.rt.spawn(async move {
+                    let _ = t2.pause(&hash).await;
+                });
+                stopped = Some(why);
+                changed = true;
+            }
+            let (hash, up) = (spec.hash.clone(), spec.upload_limit);
             if i.live.is_none() {
-                let _ = t.set_torrent_limits(&spec.hash, None, spec.upload_limit);
+                let _ = t.set_torrent_limits(&hash, None, up);
+            }
+            if let Some(why) = stopped {
+                i.note(sharing_stopped_note(why));
             }
         }
         self.accountant.keep(&hashes);
@@ -1482,10 +1500,14 @@ impl App {
                 }
             }
             // Download video from a page with a sample video's subtitles (#68).
+            // `video-subs:flac`: with that choice picked (screenshots of the lower choices).
             "video-subs" => {
                 self.run(Cmd::VideoPage, None, ctx);
                 if let Some(v) = &mut self.video_dlg {
                     v.show_sample();
+                    if !tab.is_empty() {
+                        v.pick(tab);
+                    }
                 }
             }
             "existing-files" => {
@@ -2607,11 +2629,16 @@ impl App {
     }
 
     /// The list's finished torrents (what "keep sharing" shares).
+    /// The finished torrents to share (Torrent settings' "Keep sharing"): those that haven't
+    /// reached a seeding limit.
     fn complete_torrents(&self) -> Vec<String> {
+        let limits = self.settings.sharing_limits();
         self.items
             .iter()
             .filter(|i| i.status == Status::Complete)
-            .filter_map(|i| i.torrent.as_ref().map(|t| t.hash.clone()))
+            .filter_map(|i| i.torrent.as_ref().map(|t| (t, i.downloaded)))
+            .filter(|(t, done)| crate::torrents::sharing_limit_reached(t, *done, limits).is_none())
+            .map(|(t, _)| t.hash.clone())
             .collect()
     }
 
@@ -4262,7 +4289,7 @@ impl App {
 
         // Menu bar and its popups.
         if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
-            let clicked = ui.input(|x| x.pointer.any_released());
+            let clicked = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
             self.open_menu = if self.open_menu == Some(i) && clicked {
                 None
             } else {
@@ -5688,6 +5715,7 @@ impl App {
                     assoc,
                     net,
                     upload,
+                    seeding,
                 }) => {
                     self.torrent_settings = None;
                     // The network: the next torrent session takes it (torrent_tick).
@@ -5697,6 +5725,25 @@ impl App {
                         self.settings.torrent_upload_on,
                         self.settings.torrent_upload_kb,
                     ) = upload;
+                    // Seeding limits: the tick stops those over them; raised, the finished
+                    // torrents now under them are shared again (when sharing stays on).
+                    let s = &mut self.settings;
+                    let before = s.sharing_limits();
+                    s.torrent_stop_ratio_on = seeding.ratio_on;
+                    s.torrent_stop_ratio = seeding.ratio;
+                    s.torrent_stop_minutes_on = seeding.minutes_on;
+                    s.torrent_stop_minutes = seeding.minutes;
+                    if share
+                        && share == self.settings.torrent_keep_sharing
+                        && before != self.settings.sharing_limits()
+                    {
+                        self.torrent_host.set_sharing(
+                            &self.rt,
+                            self.torrent_hashes(),
+                            self.complete_torrents(),
+                            true,
+                        );
+                    }
                     if share != self.settings.torrent_keep_sharing {
                         self.settings.torrent_keep_sharing = share;
                         self.torrent_host.set_sharing(
@@ -5858,6 +5905,9 @@ impl App {
         let tray = (self.tray.is_some() || crate::offscreen()) && crate::tray::available();
         for p in &mut self.progress {
             p.keep_sharing = self.settings.torrent_keep_sharing;
+            if p.host.is_none() {
+                p.host = Some(self.torrent_host.clone());
+            }
             p.tray = tray;
             p.minimize_to_tray = self.settings.minimize_to_tray;
             // Hidden: not shown (its window is gone) until the tray or the list brings it back.
@@ -6088,6 +6138,22 @@ impl Drop for App {
             &self.settings,
             &self.queues,
         );
+    }
+}
+
+/// The event log's line when a seeding limit stops a torrent's sharing.
+fn sharing_stopped_note(why: crate::torrents::Reached) -> String {
+    match why {
+        crate::torrents::Reached::Ratio(r) => crate::i18n::fmt(
+            // i18n: event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+            crate::i18n::t("Sharing stopped: the share ratio reached {ratio}"),
+            &[("ratio", &format!("{r:.2}"))],
+        ),
+        crate::torrents::Reached::Time(s) => crate::i18n::fmt(
+            // i18n: event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+            crate::i18n::t("Sharing stopped after sharing for {time}"),
+            &[("time", &model::time(s as f64))],
+        ),
     }
 }
 

@@ -2313,6 +2313,19 @@ pub fn button(
     button_face(ui, rc, &label, kind, focus_rect)
 }
 
+/// A button's rect `rc` widened to the left (its right edge stays: a button against the right
+/// side, with room before it) to fit its translated `label` whole, with the room [`button`]
+/// keeps inside the border, at most to `max_width`. English labels fit IDM's buttons, so
+/// English never changes; a label that would still not fit ends in "..." and shows whole on
+/// hover, as on every button. (A button with room after it would widen to the right: add that
+/// when one needs it.)
+pub fn button_rect_for(p: &Painter, rc: Rect, label: &str, max_width: f32) -> Rect {
+    let shown = crate::i18n::t(label).replace('&', "");
+    let want = (text_width(p, &shown) + 4.0 + 12.0).ceil();
+    let w = want.clamp(rc.width(), max_width.max(rc.width()));
+    Rect::from_min_max(pos2(rc.right() - w, rc.top()), rc.max)
+}
+
 /// `label` as it fits on a button `rc`: whole, or cut with "..." (true) when it would reach the
 /// border (English labels fit IDM's buttons, so English never changes).
 fn fit_label(p: &Painter, label: &str, rc: Rect) -> (String, bool) {

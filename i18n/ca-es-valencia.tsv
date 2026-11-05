@@ -264,6 +264,10 @@
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
 	Audio only {type}	Només àudio {type}
+#. text in the Download video window
+#. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
+#, machine
+	Audio only, original {type}	Només àudio, {type} original
 #. text in the Scheduler window
 #, machine
 	August	Agost
@@ -928,6 +932,10 @@
 #. text in the Batch download window
 #, machine
 	First file:	Primer fitxer:
+#. text in the Download video window
+#. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
+#, machine
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC manté el so exactament, però no pot afegir qualitat que el so del lloc no tinga: el fitxer només és més gran.
 #. text in categories.rs
 #, machine
 	Folder:	Carpeta:
@@ -1057,7 +1065,7 @@
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
 	Hide &categories	Amaga les &categories
-#. button in a download's progress window
+#. text in a download's progress window; button in a download's progress window
 #, machine
 	Hide tab	Amaga la pestanya
 #. text in a download's progress window; text in standard windows
@@ -1105,6 +1113,9 @@
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	En una cua
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	In the categories: the selected category's menu	En les categories: el menú de la categoria seleccionada
 #. text in transfer.rs
 #. in Import, after an address the download list has already
 #, machine
@@ -1305,6 +1316,10 @@
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
 	Minimize to the notification area	Minimitza a l'àrea de notificació
+#. text in the Add torrent window
+#. Torrent settings: the unit after the minutes box
+#, machine
+	minutes	minuts
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
@@ -1364,6 +1379,9 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Moure una pàgina amunt/avall
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Move between the categories and the download list	Moure's entre les categories i la llista de descàrregues
 #. text in the Scheduler window
 #, machine
 	Move down	Moure avall
@@ -1994,6 +2012,15 @@
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
 	Sharing	Compartint
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Sharing stopped after sharing for {time}	S'ha aturat l'ús compartit després de compartir durant {time}
+#. message or event log entry in the main window
+#. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
+#, machine
+	Sharing stopped: the share ratio reached {ratio}	S'ha aturat l'ús compartit: la relació de compartició ha arribat a {ratio}
 #. text in the download list
 #, machine
 	Show	Mostra
@@ -2170,6 +2197,14 @@
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Atura la cua de descàrrega principal
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
+#, machine
+	Stop sharing after sharing for	Deixa de compartir després de compartir durant
+#. text in the Add torrent window
+#. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
+#, machine
+	Stop sharing at a share ratio of	Deixa de compartir amb una relació de compartició de
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -2256,11 +2291,11 @@
 	The address must be an http(s) or ftp(s) address	L'adreça ha de ser una adreça http(s) o ftp(s)
 #. text in the Download video window
 #, machine
-	The best qualities and MP3 need ffmpeg (about 80 MB).	Les millors qualitats i MP3 necessiten ffmpeg (uns 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Les millors qualitats, MP3, Opus i FLAC necessiten ffmpeg (uns 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities and MP3 need ffmpeg: install it with your system's package manager (or Homebrew).	Les millors qualitats i MP3 necessiten ffmpeg: instal·leu-lo amb el gestor de paquets del vostre sistema (o Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Les millors qualitats, MP3, Opus i FLAC necessiten ffmpeg: instal·leu-lo amb el gestor de paquets del vostre sistema (o Homebrew).
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3280,7 +3315,15 @@ key	Shift+F10	Majús+F10
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
+key	Shift+F10 / Menu	Majús+F10 / Menú
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
 key	Shift+Up / Shift+Down	Majús+Amunt / Majús+Avall
+#. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
+#, machine
+key	Tab	Tabulació
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

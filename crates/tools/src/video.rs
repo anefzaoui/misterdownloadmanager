@@ -799,7 +799,8 @@ impl VideoJob {
     /// `ffmpeg` (its exe) merges separate video and audio into an MP4. `expected`: the size the
     /// choice was shown with (every stream), so the progress starts from the whole. `browser`:
     /// what the browser's request for the page carried (proc::FromBrowser). `subs`: the
-    /// subtitles to save with it (#68; none for an MP3, which has no picture to put them on).
+    /// subtitles to save with it (#68; none for a sound alone, which has no picture to put them
+    /// on).
     #[allow(clippy::too_many_arguments)]
     pub fn start(
         exe: &Path,
@@ -815,14 +816,14 @@ impl VideoJob {
     ) -> Result<VideoJob, ProcError> {
         proc::safe(url)?;
         let output = dir.join(format!("{}.%(ext)s", template_text(stem)));
-        // An MP3 choice (`resolve::MP3`): the best sound, converted by ffmpeg (#32).
-        let mp3 = crate::resolve::mp3_quality(selector);
-        let format = if mp3.is_some() { "ba/b" } else { selector };
-        // What comes down is the sound as the site has it, not the MP3 the choice's size
+        // An MP3, Opus or FLAC choice (#32, #70): the best sound, converted by ffmpeg.
+        let convert = crate::resolve::audio_conversion(selector);
+        let format = if convert.is_some() { "ba/b" } else { selector };
+        // What comes down is the sound as the site has it, not the file the choice's size
         // estimated: the progress follows yt-dlp's own total.
-        let expected = if mp3.is_some() { None } else { expected };
-        // Subtitles go with a picture only (none for an MP3).
-        let with_subs = mp3.is_none() && !subs.langs.is_empty();
+        let expected = if convert.is_some() { None } else { expected };
+        // Subtitles go with a picture only (none for a sound).
+        let with_subs = convert.is_none() && !subs.langs.is_empty();
         let mut ours: Vec<String> = vec![
             "-f".into(),
             format.into(),
@@ -850,14 +851,13 @@ impl VideoJob {
             output.to_string_lossy().into_owned(),
             "--no-playlist".into(),
         ];
-        match mp3 {
-            Some(q) => ours.extend([
-                "-x".into(),
-                "--audio-format".into(),
-                "mp3".into(),
-                "--audio-quality".into(),
-                q,
-            ]),
+        match convert {
+            Some(a) => {
+                ours.extend(["-x".into(), "--audio-format".into(), a.format.into()]);
+                if let Some(q) = a.quality {
+                    ours.extend(["--audio-quality".into(), q]);
+                }
+            }
             None => ours.extend(subtitle_args(subs, ffmpeg.is_some())),
         }
         let (theirs, cookies) = browser.args(url)?;

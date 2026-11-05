@@ -183,6 +183,13 @@ pub struct Settings {
     /// off by default: a torrent's own limit, in its progress window, still applies).
     pub torrent_upload_on: bool,
     pub torrent_upload_kb: u64,
+    /// Torrent settings → seeding limits (#39), both off by default (D-018: sharing is the
+    /// user's choice): stop sharing a finished torrent at a share ratio (in hundredths: 200 is
+    /// 2.00), or after so many minutes of sharing.
+    pub torrent_stop_ratio_on: bool,
+    pub torrent_stop_ratio: u32,
+    pub torrent_stop_minutes_on: bool,
+    pub torrent_stop_minutes: u32,
     /// Help: look for a newer release once a week (D-020; its switch is in Check for updates:
     /// Options → General has no free row in IDM's layout).
     pub update_check: bool,
@@ -325,6 +332,10 @@ impl Default for Settings {
             torrent_stop_idle: true,
             torrent_upload_on: false,
             torrent_upload_kb: 100,
+            torrent_stop_ratio_on: false,
+            torrent_stop_ratio: 200,
+            torrent_stop_minutes_on: false,
+            torrent_stop_minutes: 1440,
             update_check: true,
             update_checked: 0,
             custom_categories: Vec::new(),
@@ -552,6 +563,19 @@ impl Settings {
     pub fn speed_limit(&self) -> Option<u64> {
         self.speed_limit_on
             .then_some(self.speed_limit_kb.max(1) * 1024)
+    }
+
+    /// Torrent settings' seeding limits: the share ratio and the seconds of sharing at which a
+    /// finished torrent stops being shared (None: that limit is off).
+    pub fn sharing_limits(&self) -> crate::torrents::SharingLimits {
+        crate::torrents::SharingLimits {
+            ratio: self
+                .torrent_stop_ratio_on
+                .then(|| f64::from(self.torrent_stop_ratio.max(1)) / 100.0),
+            secs: self
+                .torrent_stop_minutes_on
+                .then(|| u64::from(self.torrent_stop_minutes.max(1)) * 60),
+        }
     }
 
     /// Torrent settings' upload limit for all torrents together, bytes/s (None: off).
