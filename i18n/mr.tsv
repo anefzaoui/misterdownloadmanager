@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	एक अहवाल सेव्ह केला गेला. तो GitHub वरील डेव्हलपर्सना पाठवल्याने त्यांना हे निश्चित करण्यात मदत होते; तुम्ही त्यात काय आहे ते खाली वाचू शकता. काहीही आपोआप पाठवले जात नाही: पाठवा (Send) तुमच्या ब्राउझरमध्ये अहवाल फॉर्म उघडतो, तो भरलेला असतो, तुम्हाला तो तपासण्यासाठी आणि सबमिट करण्यासाठी.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	या संगणकावरील सर्व्हरने डाउनलोड इतरत्र पाठवले, जे {adapter} द्वारे जाणार नाही
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager बद्दल
@@ -240,6 +244,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	{ms} ms मध्ये उत्तर दिले: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	कोणतेही (सिस्टम निवडते)
 #. text in the Scheduler window
 #, machine
 	April	एप्रिल
@@ -285,7 +293,7 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
 #, machine
-	Best quality	उत्कृष्ट गुणवत्ता
+	Best quality	उत्तम गुणवत्ता
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
@@ -293,6 +301,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	दोन्ही मुक्त स्रोत आहेत. MDM त्यांना त्याच्या स्वतःच्या डाउनलोडरसह त्यांच्या अधिकृत प्रकाशनांमधून मिळवते आणि चालवण्यापूर्वी प्रत्येक फाइलची स्वाक्षरी तपासते. एकदा सुमारे 100 MB.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} ला जसे पाठवले होते तसेच परत आणायचे आहे: त्यांची नावे, फाइल प्रकार आणि फोल्डर्स? तुमच्या स्वतःच्या कॅटेगरी, जनरल आणि टॉरंट्स जसे आहेत तसेच राहतील. जनरलमध्ये आधीच हलवलेले डाउनलोड्स तिथेच राहतील.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -532,20 +543,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	डीफॉल्ट कमाल. कनेक्शन संख्या
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	हटवा
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	श्रेणी हटवा
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	रांग हटवा
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" श्रेणी हटवायची आहे का? त्याचे डाउनलोड सामान्य होतील; त्यांच्या फाइल्स जिथे आहेत तिथेच राहतील.
+	Delete the category "{category}"? Its files stay where they are.	"{category}" ही कॅटेगरी हटवायची आहे का? तिच्या फाइल्स जिथे आहेत तिथेच राहतील.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -736,6 +748,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	डाउनलोड लिंकची नक्कल करा
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	प्रत्येक कनेक्शन सिस्टमचा मार्ग घेते.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -788,6 +804,10 @@
 #. text in the Options window
 #, machine
 	Event	इव्हेंट
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	प्रत्येक कनेक्शन त्यातून, {ip} वरून जाते.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1178,22 +1198,22 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	उर्वरित सूची करा
+	List the rest	बाकीची सूची करा
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	व्हिडिओंची सूची {n} नंतर थांबली: {error}
+	Listing stopped after {n} videos: {error}	{n} व्हिडिओनंतर सूची थांबली: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	व्हिडिओ सूचीबद्ध करत आहे: {n}
+	Listing the videos: {n}	व्हिडिओंची सूची करत आहे: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	व्हिडिओ सूचीबद्ध करत आहे: {total} पैकी {n}
+	Listing the videos: {n} of {total}	व्हिडिओंची सूची करत आहे: {total} पैकी {n}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1340,6 +1360,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	खाली हलवा
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	त्याचे डाउनलोड सामान्यमध्ये हलवा
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	निवडलेला डाउनलोड हलवा किंवा त्याचे नाव बदला
@@ -1387,6 +1411,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	तुमच्या होस्ट फाइलमधील नावे आणि स्थानिक नावे (एकल शब्द, .local, .lan) सिस्टमच्या DNS सोबत राहतात. व्हिडिओ पृष्ठे आणि टॉरेंट ट्रॅकर्स सध्या सिस्टमचा DNS वापरतात.
+#. text in the Options window
+#, machine
+	Network adapter:	नेटवर्क अडॅप्टर:
 #. text in errors.rs
 #, machine
 	network error	नेटवर्क त्रुटी
@@ -1788,6 +1815,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	रांगेतून काढा
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	त्याचे डाउनलोड सूचीमधून काढा (सुरू असलेले सामान्यमध्ये हलवा)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1796,6 +1827,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM रीस्टार्ट करा
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	बिल्ट-इन कॅटेगरी पुनर्संचयित करा
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -2132,7 +2166,7 @@
 #. button in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	सूचीबद्ध करणे थांबवा
+	Stop listing	सूची करणे थांबवा
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	मुख्य डाउनलोड रांग थांबवा
@@ -2149,6 +2183,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	थांबवले
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	थांबले: नेटवर्क अडॅप्टर बदलले; पुन्हा सुरू करत आहे
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	थांबले: {adapter} कनेक्ट केलेले नाही; ते परत आल्यावर सुरू होईल
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	डाउनलोड पूर्ण झाल्यावर थांबते
@@ -2342,6 +2384,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	यादी सेव्ह करता आली नाही: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	नेटवर्क अडॅप्टर {adapter} कनेक्ट केलेले नाही
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	Windows साठी पथ खूप लांब आहे: {path}
@@ -2536,6 +2582,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	टॉरेंट्स
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	Windows वर निवडलेल्या नेटवर्क अडॅप्टरद्वारे टॉरंट्स अजून जाऊ शकत नाहीत
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2737,6 +2787,14 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	व्हिडिओ लुकअप yt-dlp वापरतात (सुमारे 23 MB, त्याच्या स्वाक्षरीविरुद्ध तपासले).
+#. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	व्हिडिओ पृष्ठे आणि टोरंट्स अजूनही ते वापरू शकत नाहीत.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	व्हिडिओ पृष्ठे अजूनही ते वापरू शकत नाहीत.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -2747,7 +2805,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	सूचीची प्रतीक्षा करा किंवा सूचीबद्ध करणे थांबवा
+	Wait for the list, or stop listing	सूचीसाठी प्रतीक्षा करा किंवा सूची करणे थांबवा
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2851,6 +2909,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: व्हिडिओ शोधतो
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (कनेक्ट केलेले नाही)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} कनेक्ट केलेले नाही: ते परत येईपर्यंत काहीही डाउनलोड केले जाणार नाही.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2917,6 +2983,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} तास {m} मिनिट
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} {adapter} द्वारे पोहोचता येत नाही: त्यात त्या प्रकारचा (IPv4 किंवा IPv6) पत्ता नाही
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2986,6 +3056,10 @@
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
 	{title}: {listed} of {total} video listed	{title}: {total} पैकी {listed} व्हिडिओ सूचीबद्ध केले
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} निवडलेल्या नेटवर्क अडॅप्टर ({adapter}) द्वारे अजून जाऊ शकत नाही
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

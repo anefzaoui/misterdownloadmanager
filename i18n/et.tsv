@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Aruanne salvestati. Selle saatmine GitHubi arendajatele aitab neil seda parandada; saate kõigepealt lugeda kõike, mida see allpool sisaldab. Midagi ei saadeta iseenesest: nupp Saada avab teie brauseris aruandevormi, mis on täidetud, et saaksite seda kontrollida ja esitada.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	selle arvuti server saatis allalaadimise mujale, mis ei läheks läbi {adapter}
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Teave Mister Download Manageri kohta
@@ -240,6 +244,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	Vastatud {ms} ms: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	Suvaline (süsteem valib)
 #. text in the Scheduler window
 #, machine
 	April	Aprill
@@ -293,6 +301,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Mõlemad on avatud lähtekoodiga. MDM hangib need ametlikest väljalasetest oma allalaadijaga ja kontrollib iga faili signatuuri enne käivitamist. Umbes 100 MB, üks kord.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Kas taastada {names} algne olek: nende nimed, failitüübid ja kaustad? Teie enda kategooriad, Üldine ja Torrents jäävad muutmata. Juba kausta Üldine teisaldatud allalaadimised jäävad sinna.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -532,20 +543,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Ühenduste vaike maksimumarv
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Kustuta
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Kustuta kategooria
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Kustuta järjekord
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Kas kustutada kategooria „{category}”? Selle allalaadimised muutuvad üldiseks; nende failid jäävad oma kohale.
+	Delete the category "{category}"? Its files stay where they are.	Kas kustutada kategooria „{category}”? Selle failid jäävad oma kohale.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -736,6 +748,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Korduv allalaadimislink
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Iga ühendus kasutab süsteemi marsruuti.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -788,6 +804,10 @@
 #. text in the Options window
 #, machine
 	Event	Sündmus
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Iga ühendus läbib selle, alates {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1193,7 +1213,7 @@
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Videote loetlemine: {n} kokku {total}st
+	Listing the videos: {n} of {total}	Videote loetlemine: {n} kokku {total}-st
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1340,6 +1360,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Liiguta alla
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Teisalda selle allalaadimised kausta Üldine
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Teisalda või nimeta valitud allalaadimine ümber
@@ -1387,6 +1411,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Hostifailis olevad nimed ja kohalikud nimed (üksikud sõnad, .local, .lan) jäävad süsteemi DNS-i. Videolehed ja torrenti jälgijad kasutavad praegu süsteemi DNS-i.
+#. text in the Options window
+#, machine
+	Network adapter:	Võrguadapter:
 #. text in errors.rs
 #, machine
 	network error	võrguviga
@@ -1788,6 +1815,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Eemalda järjekorrast
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Eemalda selle allalaadimised loendist (töötavad teisaldatakse kausta Üldine)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1796,6 +1827,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Taaskäivita MDM
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Taasta sisseehitatud kategooriad
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -2132,7 +2166,7 @@
 #. button in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	Lõpeta loetlemine
+	Stop listing	Peata loetlemine
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Peata peamine allalaadimisjärjekord
@@ -2149,6 +2183,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Peatatud
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Peatatud: võrguadapter muutus; alustatakse uuesti
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Peatatud: {adapter} pole ühendatud; see jätkub, kui ühendus taastub
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Peatub allalaadimise lõppemisel
@@ -2342,6 +2384,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Loendit ei saanud salvestada: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	võrguadapter {adapter} pole ühendatud
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	tee on Windowsi jaoks liiga pikk: {path}
@@ -2536,6 +2582,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	Torrendid
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	torrenteid ei saa Windowsis veel valitud võrguadapteri kaudu edastada
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2737,6 +2787,14 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videootsingud kasutavad yt-dlp-d (umbes 23 MB, kontrollitud signatuuri alusel).
+#. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Videolehed ja torrendid ei saa seda veel kasutada.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Videolehed ei saa seda veel kasutada.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -2747,7 +2805,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Oota loendit või lõpeta loetlemine
+	Wait for the list, or stop listing	Oota loendit või peata loetlemine
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2851,6 +2909,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: leiab video
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (pole ühendatud)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} pole ühendatud: midagi ei laadita alla enne, kui see tagasi on.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2917,6 +2983,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} tund(i) {m} min
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} pole {adapter} kaudu kättesaadav: sellel pole seda tüüpi (IPv4 või IPv6) aadressi
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2957,7 +3027,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} valitud {total}st
+	{n} of {total} chosen	{n} valitud {total}-st
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -2985,7 +3055,11 @@
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {listed} {total} videost loetletud
+	{title}: {listed} of {total} video listed	{title}: {listed} {total}-st videost loetletud
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ei saa veel valitud võrguadapteri ({adapter}) kaudu edastada
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

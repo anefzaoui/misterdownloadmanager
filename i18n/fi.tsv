@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Raportti tallennettiin. Sen lähettäminen kehittäjille GitHubissa auttaa heitä korjaamaan tämän; voit lukea kaiken sen sisällön alta. Mitään ei lähetetä itsestään: Lähetä-painike avaa raporttilomakkeen selaimeesi täytettynä, jotta voit tarkistaa ja lähettää sen.
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	tämän tietokoneen palvelin lähetti latauksen muualle, mikä ei onnistuisi sovittimen {adapter} kautta
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Tietoja Mister Download Managerista
@@ -120,7 +124,7 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	Lisää monta latausta
+	Add many downloads	Lisää useita latauksia
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -240,6 +244,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	Vastattu {ms} ms:ssa: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	Mikä tahansa (järjestelmä valitsee)
 #. text in the Scheduler window
 #, machine
 	April	Huhtikuu
@@ -293,6 +301,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Molemmat ovat avointa lähdekoodia. MDM hakee ne virallisista julkaisuista omalla latausohjelmallaan ja tarkistaa kunkin tiedoston allekirjoituksen ennen suorittamista. Noin 100 Mt, kerran.
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Palautetaanko {names} alkuperäiseen tilaan: niiden nimet, tiedostotyypit ja kansiot? Omat luokat, Yleiset ja Torrentit pysyvät ennallaan. Yleisiin jo siirretyt lataukset pysyvät siellä.
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -532,20 +543,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	Oletusarvoinen yhteyksien enimmäismäärä
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	Poista
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	Poista kategoria
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	Poista jono
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	Poistetaanko kategoria "{category}"? Sen lataukset siirtyvät Yleiset-kategoriaan; tiedostot pysyvät nykyisessä sijainnissaan.
+	Delete the category "{category}"? Its files stay where they are.	Poistetaanko luokka ”{category}”? Sen tiedostot pysyvät nykyisessä sijainnissaan.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -736,6 +748,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Kaksoiskappaleen latauslinkki
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	Jokainen yhteys käyttää järjestelmän reittiä.
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -788,6 +804,10 @@
 #. text in the Options window
 #, machine
 	Event	Tapahtuma
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	Jokainen yhteys kulkee sen kautta, osoitteesta {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1183,17 +1203,17 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Listaus pysähtyi {n} videon jälkeen: {error}
+	Listing stopped after {n} videos: {error}	Listaaminen pysähtyi {n} videon jälkeen: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Listataan videoita: {n}
+	Listing the videos: {n}	Videoita listataan: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Listataan videoita: {n}/{total}
+	Listing the videos: {n} of {total}	Videoita listataan: {n}/{total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1340,6 +1360,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	Siirrä alas
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	Siirrä sen lataukset Yleiset-luokkaan
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Siirrä tai nimeä valittu lataus uudelleen
@@ -1387,6 +1411,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Isäntätiedostosi nimet ja paikalliset nimet (yksittäiset sanat, .local, .lan) pysyvät järjestelmän DNS:ssä. Videosivut ja torrent-seurantapalvelimet käyttävät toistaiseksi järjestelmän DNS:ää.
+#. text in the Options window
+#, machine
+	Network adapter:	Verkkosovitin:
 #. text in errors.rs
 #, machine
 	network error	verkkovirhe
@@ -1571,7 +1598,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	Vain {n} ensimmäistä videota on luettelossa.
+	Only the first {n} videos are listed.	Vain ensimmäiset {n} videota on listattu.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Vain kun käytän tietokonetta
@@ -1788,6 +1815,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Poista jonosta
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	Poista sen lataukset luettelosta (käynnissä olevat siirtyvät Yleiset-luokkaan)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1796,6 +1827,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	Käynnistä MDM uudelleen
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	Palauta sisäänrakennetut luokat
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -2149,6 +2183,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	Pysäytetty
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	Pysäytetty: verkkosovitin vaihtui; käynnistetään uudelleen
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	Pysäytetty: {adapter} ei ole yhdistetty; jatkuu, kun yhteys palautuu
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Pysähtyy latauksen valmistuttua
@@ -2342,6 +2384,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	Luetteloa ei voitu tallentaa: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	verkkosovitin {adapter} ei ole yhdistetty
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	polku on liian pitkä Windowsille: {path}
@@ -2536,6 +2582,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	Torrentit
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	torrentit eivät voi kulkea valitun verkkosovittimen kautta Windowsissa vielä
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2737,6 +2787,14 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videon haut käyttävät yt-dlp:tä (noin 23 Mt, tarkistettu allekirjoitusta vastaan).
+#. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	Videosivut ja torrentit eivät voi vielä käyttää sitä.
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	Videosivut eivät voi vielä käyttää sitä.
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -2851,6 +2909,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: etsii videon
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (ei yhdistetty)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} ei ole yhdistetty: mitään ei ladata, ennen kuin yhteys palautuu.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2917,6 +2983,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} tunti(a) {m} min
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	Osoitetta {ip} ei voi tavoittaa sovittimen {adapter} kautta: sillä ei ole sen tyyppistä osoitetta (IPv4 tai IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2981,11 +3051,15 @@
 #. in Download video, a playlist's title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-	{title}: {count} video	{title}: {count} videoa
+	{title}: {count} video	{title}: {count} video
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
 	{title}: {listed} of {total} video listed	{title}: {listed}/{total} videota listattu
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} ei voi kulkea valitun verkkosovittimen ({adapter}) kautta vielä
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

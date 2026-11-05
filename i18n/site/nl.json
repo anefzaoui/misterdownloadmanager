@@ -2602,10 +2602,6 @@
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>Download starten om</g1> — een tijd, en dan ofwel:"
   },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>Eigenschappen</g1> — wijzig de map (en, voor uw eigen categorieën, de naam en bestandstypen)."
-  },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
    "text": "Start Mister Download Manager vanuit het Startmenu en <g1>download vervolgens uw eerste bestand</g1>."
@@ -3665,6 +3661,10 @@
   "66a39a85a0d50d8a": {
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>Windows-specifieke aanroepen staan in <x2/></g1>, hun Linux- en macOS-tegenhangers in <x3/>; de rest van de werkruimte is veilige, draagbare Rust (<x4/>). Op Windows controleert <x5/> of het nog steeds bouwt voor Linux en macOS."
+  },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>Eigenschappen</g1> — wijzig de naam, de bestandstypen en de map. Algemeen en Torrents wijzigen alleen hun map. Een hernoemde categorie behoudt zijn map; een ingebouwde categorie behoudt zijn naam in uw taal totdat u deze hernoemt."
   },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
@@ -5353,10 +5353,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — draait vanuit een map of USB-stick"
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>Verwijderen</g1> — verwijder een van uw eigen categorieën. De downloads ervan worden Algemeen; de bestanden blijven waar ze zijn."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7354,6 +7350,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>Verwijderen</g1> — verwijder een categorie, uw eigen of een ingebouwde (niet Algemeen of Torrents). MDM vraagt wat er met de downloads moet gebeuren: <g2>De downloads verplaatsen naar Algemeen</g2>, of <g3>De downloads uit de lijst verwijderen</g3> (een actieve download wordt in plaats daarvan naar Algemeen verplaatst). De bestanden blijven hoe dan ook op hun plaats. Vanaf dat moment gaan bestanden van de betreffende typen naar een andere categorie die ze bevat, of naar Algemeen."
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "Heb je yt-dlp of ffmpeg al voor een ander programma? Gebruik die dan in plaats van een tweede kopie: klik in <g1>Video downloaden van een pagina</g1> op <g2>Hulpprogramma's...</g2>, dan op <g3>Ander programma gebruiken...</g3> naast yt-dlp of ffmpeg, en kies het programma. MDM voert het één keer uit om te controleren of het dat programma is, en gebruikt het vanaf dan, ook de opdrachtregel. MDM werkt een programma dat je hebt gekozen niet bij: houd het zelf up-to-date (yt-dlp: <x4/>, of je pakketbeheerder). <g5>Eigen kopie van MDM gebruiken</g5> gaat terug naar de kopie die MDM downloadt en controleert."
@@ -8145,6 +8145,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> is de Engelse tekst; laat deze zoals hij is. Wijzig alleen <g2>translation</g2>."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "Om de ingebouwde categorieën terug te zetten naar de oorspronkelijke staat, met hun namen, bestandstypen en mappen, gebruikt u <g1>Opties → Opslaan in → De ingebouwde categorieën herstellen</g1>. Uw eigen categorieën, Algemeen en Torrents blijven zoals ze zijn."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

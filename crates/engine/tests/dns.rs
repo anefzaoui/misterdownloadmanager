@@ -1,8 +1,11 @@
 //! End to end: a download whose name is answered by the DNS chosen in Options (#36), not the
 //! system's. A small DNS server here (plain, over TCP, on 127.0.0.1) answers `*.mdm.test` with
 //! 127.0.0.1 and logs every name it is asked; the system's DNS knows no such names.
+//!
+//! And downloads held to a network adapter (#35): the DNS and the file both reached through it,
+//! nothing sent when it's down, an address of a family it lacks refused (even after a redirect).
 
-use std::net::SocketAddr;
+use std::net::{IpAddr, SocketAddr};
 use std::sync::{Arc, Mutex};
 
 use mdm_engine::{Destination, Dns, DnsChoice, Download, Options, Request};
@@ -46,15 +49,18 @@ fn answer(q: &[u8]) -> Option<(Vec<u8>, String)> {
 }
 
 /// A DNS server over TCP on 127.0.0.1 (MDM asks plain DNS over TCP only), answering as
-/// [`answer`] and recording each name asked.
-async fn fake_dns() -> (SocketAddr, Arc<Mutex<Vec<String>>>) {
+/// [`answer`] and recording each name asked and the address each connection came from.
+async fn fake_dns() -> (SocketAddr, Arc<Mutex<Vec<String>>>, Arc<Mutex<Vec<IpAddr>>>) {
     use tokio::io::{AsyncReadExt, AsyncWriteExt};
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let addr = listener.local_addr().unwrap();
     let asked = Arc::new(Mutex::new(Vec::new()));
     let log = asked.clone();
+    let peers = Arc::new(Mutex::new(Vec::new()));
+    let peers2 = peers.clone();
     tokio::spawn(async move {
-        while let Ok((mut conn, _)) = listener.accept().await {
+        while let Ok((mut conn, peer)) = listener.accept().await {
+            peers2.lock().unwrap().push(peer.ip());
             let log = log.clone();
             tokio::spawn(async move {
                 // Each message has a 2-byte length in front (RFC 1035 4.2.2).
@@ -78,7 +84,7 @@ async fn fake_dns() -> (SocketAddr, Arc<Mutex<Vec<String>>>) {
             });
         }
     });
-    (addr, asked)
+    (addr, asked, peers)
 }
 
 fn options(dns: Dns) -> Options {
@@ -98,7 +104,7 @@ fn options(dns: Dns) -> Options {
 async fn a_download_goes_by_the_chosen_dns() {
     let lab = LabServer::start(Config::default()).await.unwrap();
     let port = lab.url("/").parse::<url::Url>().unwrap().port().unwrap();
-    let (dns, asked) = fake_dns().await;
+    let (dns, asked, _) = fake_dns().await;
     let dir = tempfile::tempdir().unwrap();
     let req = Request {
         url: format!("http://files.mdm.test:{port}/gen/1M/dns.bin?seed=36")
@@ -145,4 +151,125 @@ async fn a_dead_dns_fails_the_download_and_names_itself() {
     .unwrap_err();
     let text = format!("{err} {err:?}");
     assert!(text.contains("the test DNS"), "{text}");
+}
+
+/// Options → Proxy / Socks → Network adapter (#35), on this computer's loopback: 127.0.0.2
+/// stands for the adapter's address (Windows and Linux answer on all of 127/8; macOS doesn't,
+/// so the bound download runs elsewhere). `loopback_too` binds what is otherwise left unbound.
+fn bound(v4: [u8; 4]) -> mdm_engine::Route {
+    mdm_engine::Route::Bound(Arc::new(mdm_engine::net::Binding {
+        label: "the test adapter".into(),
+        name: "lo".into(),
+        index: 1,
+        v4: Some(v4.into()),
+        v6: None,
+        loopback_too: true,
+    }))
+}
+
+fn get(url: String, dir: &std::path::Path) -> Request {
+    Request {
+        url: url.parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.to_owned()),
+    }
+}
+
+#[tokio::test]
+async fn a_bound_download_asks_and_fetches_through_the_adapter() {
+    if cfg!(target_os = "macos") {
+        return;
+    }
+    let lab = LabServer::start(Config::default()).await.unwrap();
+    let port = lab.url("/").parse::<url::Url>().unwrap().port().unwrap();
+    let (dns, asked, dns_peers) = fake_dns().await;
+    let dir = tempfile::tempdir().unwrap();
+    let opts = Options {
+        route: bound([127, 0, 0, 2]),
+        ..options(Dns::Plain(vec![dns]))
+    };
+    let url = format!("http://files.mdm.test:{port}/gen/1M/bound.bin?seed=35");
+    let out = Download::start(get(url, dir.path()), opts)
+        .wait()
+        .await
+        .expect("bound download");
+    let data = std::fs::read(&out.path).unwrap();
+    let mut want = vec![0; data.len()];
+    content::fill(35, 0, &mut want);
+    assert!(data.len() == 1 << 20 && data == want, "content mismatch");
+    assert!(asked.lock().unwrap().iter().any(|n| n == "files.mdm.test"));
+    // Windows binds the address: every connection, the DNS's and the file's, came from it.
+    // (Linux binds the device, `lo`, and the system picks 127.0.0.1 as the source.)
+    if cfg!(windows) {
+        let two = IpAddr::from([127, 0, 0, 2]);
+        let from: Vec<IpAddr> = lab.log().iter().map(|e| e.peer.ip()).collect();
+        assert!(
+            !from.is_empty() && from.iter().all(|ip| *ip == two),
+            "{from:?}"
+        );
+        let dns_from = dns_peers.lock().unwrap().clone();
+        assert!(
+            !dns_from.is_empty() && dns_from.iter().all(|ip| *ip == two),
+            "{dns_from:?}"
+        );
+    }
+}
+
+#[tokio::test]
+async fn a_down_adapter_sends_nothing() {
+    let lab = LabServer::start(Config::default()).await.unwrap();
+    let port = lab.url("/").parse::<url::Url>().unwrap().port().unwrap();
+    let (dns, asked, _) = fake_dns().await;
+    let dir = tempfile::tempdir().unwrap();
+    for url in [
+        lab.url("/gen/64K/down.bin"),
+        format!("http://files.mdm.test:{port}/gen/64K/down.bin"),
+    ] {
+        let opts = Options {
+            route: mdm_engine::Route::Down {
+                label: "WireGuard".into(),
+            },
+            ..options(Dns::Plain(vec![dns]))
+        };
+        let err = Download::start(get(url, dir.path()), opts)
+            .wait()
+            .await
+            .unwrap_err();
+        assert!(
+            err.to_string().contains("WireGuard is not connected"),
+            "{err}"
+        );
+    }
+    assert!(lab.log().is_empty(), "{:?}", lab.log());
+    assert!(asked.lock().unwrap().is_empty());
+}
+
+#[tokio::test]
+async fn an_address_of_the_family_the_adapter_lacks_is_refused() {
+    let lab = LabServer::start(Config::default()).await.unwrap();
+    let port = lab.url("/").parse::<url::Url>().unwrap().port().unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    let opts = || Options {
+        route: bound([127, 0, 0, 2]),
+        ..options(Dns::System)
+    };
+    // An IPv6 address, the adapter IPv4 only: refused before any connection.
+    let v6 = format!("http://[::1]:{port}/gen/64K/v6.bin");
+    let err = Download::start(get(v6.clone(), dir.path()), opts())
+        .wait()
+        .await
+        .unwrap_err();
+    let refused = "can't be reached through the test adapter";
+    assert!(err.to_string().contains(refused), "{err}");
+    // A redirect to one: refused too (hyper would bind [::] for it and take the normal route).
+    let hop = lab.url(&format!(
+        "/redirect?to={}",
+        percent_encoding::utf8_percent_encode(&v6, percent_encoding::NON_ALPHANUMERIC)
+    ));
+    let err = Download::start(get(hop, dir.path()), opts())
+        .wait()
+        .await
+        .unwrap_err();
+    assert!(format!("{err} {err:?}").contains(refused), "{err:?}");
+    assert!(lab.log().is_empty(), "{:?}", lab.log());
 }

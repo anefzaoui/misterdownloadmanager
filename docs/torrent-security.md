@@ -41,7 +41,13 @@ A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker o
 
 MDM's Proxy / Socks settings are for web and FTP downloads. Torrents can use a SOCKS5 one too: set a `socks5://` proxy in **Options → Proxy / Socks** and turn on **Use the proxy** in Torrent settings. The proxy covers connections to peers and web trackers only, so with it MDM turns off the DHT, local peer discovery, incoming connections and UDP trackers. If the proxy is gone from Proxy / Socks while that switch is on, torrents don't start rather than go around it.
 
-To route *everything* through another network, use a VPN for the whole computer. MDM can't tie torrents to one network adapter on Windows.
+To route *everything* through another network, use a VPN for the whole computer.
+
+## A network adapter
+
+**Options → Proxy / Socks → Network adapter** holds MDM's connections to one adapter, usually a VPN's ([Options](options.md#proxy--socks)). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.
+
+On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen ("torrents can't go through a chosen network adapter on Windows yet"), rather than going around it. Tracker names are still looked up by the system's DNS.
 
 ## Reporting a problem
 

@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The built-in categories are yours to change** ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93)):
+  Compressed, Documents, Music, Programs and Video can be renamed, given other file types and
+  deleted, like your own categories (right-click → Properties or Delete). A renamed category keeps
+  its folder. Deleting one asks what happens to its downloads: move them to General, or take them
+  off the list; their files stay either way. **Options → Save to → Restore the built-in
+  categories** brings them back as they came. General and Torrents still change only their folder.
 - **Hide to the notification area** ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63)):
   a download's progress window has a button that hides it in the tray while the download goes
   on: on Windows in its title bar, left of Minimize (the progress window draws its own Windows 11
@@ -48,6 +54,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   download stops with a message naming it, unless you allow falling back to the system's DNS;
   your hosts file and local names stay with the system's. The command line's `get` takes
   `--dns`. Video pages and torrent trackers still use the system's DNS.
+- **Downloads through one network adapter, with a kill switch**
+  ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35)): Options → Proxy / Socks
+  → Network adapter. Pick one, usually your VPN's, and every connection MDM opens goes out
+  through it or not at all: downloads, FTP, the DNS you chose, MDM's own downloads and the update
+  check. When the adapter disconnects, nothing goes out through your normal connection. Running
+  downloads stop and start again when it's back. Video pages, torrents on Windows and `ftps://`
+  can't be held to an adapter yet, so they don't start while one is chosen. The command line's `get` takes
+  `--adapter`. PAC scripts' `myIpAddress` no longer opens a network socket on Windows.
 - **Drop-down lists for screen readers**: a screen reader or UI Automation can now set a
   drop-down list's choice by its text, and open or close the list.
 - **Torrents: upload limits, and a share ratio that lasts**

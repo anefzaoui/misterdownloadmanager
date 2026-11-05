@@ -2602,10 +2602,6 @@
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>بدء التنزيل في</g1> — وقت، ثم إما:"
   },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>خصائص</g1> — تغيير مجلدها (وبالنسبة لفئاتك الخاصة، اسمها وأنواع ملفاتها)."
-  },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
    "text": "ابدأ Mister Download Manager من قائمة ابدأ، ثم <g1>قم بتنزيل ملفك الأول</g1>."
@@ -3665,6 +3661,10 @@
   "66a39a85a0d50d8a": {
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>توجد استدعاءات Windows فقط في <x2/></g1>، ونظيراتها في Linux و macOS في <x3/>؛ بقية مساحة العمل آمنة، Rust محمولة (<x4/>). على Windows، يتحقق <x5/> من أنه لا يزال يبني لـ Linux و macOS."
+  },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>خصائص</g1> — لتغيير اسمها وأنواع ملفاتها ومجلدها. الفئتان عام والتورنت تغيران مجلديهما فقط. الفئة التي أعيد تسميتها تحتفظ بمجلدها؛ والفئة المضمنة تحتفظ باسمها بلغتك حتى تعيد تسميتها."
   },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
@@ -5353,10 +5353,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — يعمل من مجلد أو ذاكرة USB"
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>حذف</g1> — إزالة إحدى فئاتك الخاصة. تصبح تنزيلاتها عامة؛ وتبقى ملفاتها حيث هي."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7354,6 +7350,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>حذف</g1> — لإزالة فئة، سواء كانت من صنعك أو مضمنة (وليس عام أو التورنت). يسألك MDM عما سيحدث لتنزيلاتها: <g2>نقل تنزيلاته إلى عام</g2>، أو <g3>إزالة تنزيلاته من القائمة</g3> (التنزيل الذي يعمل ينتقل إلى عام بدلا من ذلك). تبقى ملفاتها في مكانها في كلتا الحالتين. ومن ثم، تنتقل ملفات أنواعها إلى فئة أخرى تحتوي عليها، أو إلى عام."
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "هل لديك بالفعل yt-dlp أو ffmpeg لبرنامج آخر؟ استخدمها بدلا من نسخة ثانية: في <g1>تنزيل الفيديو من صفحة</g1>، انقر على <g2>المساعدون...</g2>، ثم <g3>استخدام برنامج آخر...</g3> بجانب yt-dlp أو ffmpeg، واختر البرنامج. يقوم MDM بتشغيله مرة واحدة للتحقق من أنه هذا البرنامج، ويستخدمه من ذلك الحين فصاعدا، بما في ذلك سطر الأوامر. لا يقوم MDM بتحديث برنامج اخترته: حافظ على تحديثه بنفسك (yt-dlp: <x4/>، أو مدير الحزم الخاص بك). <g5>استخدام نسخة MDM الخاصة</g5> يعود إلى النسخة التي يقوم MDM بتنزيلها والتحقق منها."
@@ -8145,6 +8145,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1> هو النص الإنجليزي؛ اتركه كما هو. غير <g2>translation</g2> فقط."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "لإعادة الفئات المضمنة كما كانت، بأسمائها وأنواع ملفاتها ومجلداتها، استخدم <g1>الخيارات ← حفظ في ← استعادة الفئات المضمنة</g1>. تبقى فئاتك الخاصة، وعام، والتورنت كما هي."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

@@ -48,7 +48,8 @@ REASONING = {"enabled": False}
 KEEP = ["Mister Download Manager", "MDM", "IDM", "Internet Download Manager", "Windows",
         "Chrome", "Edge", "Firefox", "Brave", "Opera", "yt-dlp", "ffmpeg", "BitTorrent",
         "GitHub", "librqbit", "URL", "HTTP", "HTTPS", "FTP", "SOCKS", "MD5", "SHA-1", "SHA-256",
-        "DNS", "TLS", "TCP", "UDP", "IP", "Cloudflare", "Google", "Quad9", "AdGuard", "NextDNS"]
+        "DNS", "TLS", "TCP", "UDP", "IP", "Cloudflare", "Google", "Quad9", "AdGuard", "NextDNS",
+        "IPv4", "IPv6", "ftps://"]
 
 # The script a language's text must contain (a letter of it), from Unicode character names.
 SCRIPT = {

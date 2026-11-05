@@ -2602,10 +2602,6 @@
    "source": "<g1>Start download at</g1> — a time, then either:",
    "text": "<g1>다운로드 시작 시각</g1> — 시간, 그 다음 다음 중 하나:"
   },
-  "4754ba409d5a5ca8": {
-   "source": "<g1>Properties</g1> — change its folder (and, for your own categories, its name and file types).",
-   "text": "<g1>속성</g1> — 폴더를 변경합니다 (사용자 지정 범주의 경우 이름과 파일 형식도 변경할 수 있습니다)."
-  },
   "4755b8b48f69ec2a": {
    "source": "Start Mister Download Manager from the Start menu, then <g1>download your first file</g1>.",
    "text": "시작 메뉴에서 Mister Download Manager를 시작한 다음 <g1>첫 번째 파일 다운로드</g1>를 시작합니다."
@@ -3665,6 +3661,10 @@
   "66a39a85a0d50d8a": {
    "source": "<g1>Windows-only calls live in <x2/></g1>, their Linux and macOS counterparts in <x3/>; the rest of the workspace is safe, portable Rust (<x4/>). On Windows, <x5/> checks that it still builds for Linux and macOS.",
    "text": "<g1>Windows 전용 호출은 <x2/>에 있습니다</g1>. 해당 Linux 및 macOS 호출은 <x3/>에 있습니다. 나머지 작업 공간은 안전하고 이식 가능한 Rust(<x4/>)입니다. Windows에서 <x5/>는 Linux 및 macOS용으로 여전히 빌드되는지 확인합니다."
+  },
+  "66b76acd18192191": {
+   "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
+   "text": "<g1>속성</g1> — 이름, 파일 형식 및 폴더를 변경합니다. 일반 및 토렌트는 폴더만 변경합니다. 이름이 변경된 범주는 폴더를 유지하며, 기본 제공 범주는 이름을 변경하기 전까지 해당 언어로 된 이름을 유지합니다."
   },
   "66e4fe28b447c606": {
    "source": "Shift+F10",
@@ -5353,10 +5353,6 @@
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — 폴더 또는 USB 드라이브에서 실행"
-  },
-  "960ec4a7b11a2eee": {
-   "source": "<g1>Delete</g1> — remove one of your own categories. Its downloads become General; their files stay where they are.",
-   "text": "<g1>삭제</g1> — 자신만의 범주를 제거합니다. 해당 다운로드는 일반 범주로 이동하며, 파일은 원래 위치에 남아 있습니다."
   },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
@@ -7354,6 +7350,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf3a9ec3dbd55233": {
+   "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
+   "text": "<g1>삭제</g1> — 직접 만든 범주 또는 기본 제공 범주(일반 또는 토렌트 제외)를 제거합니다. MDM은 해당 다운로드에 대한 처리 방법을 묻습니다. <g2>다운로드를 일반으로 이동</g2>하거나 <g3>목록에서 다운로드 제거</g3> (실행 중인 다운로드는 대신 일반으로 이동)를 선택할 수 있습니다. 어떤 경우든 파일은 원래 위치에 유지됩니다. 이후 해당 형식의 파일은 해당 형식을 가진 다른 범주로 이동하거나 일반으로 이동합니다."
+  },
   "cf4154e673636944": {
    "source": "Already have yt-dlp or ffmpeg for another program? Use those instead of a second copy: in <g1>Download video from a page</g1>, click <g2>Helpers...</g2>, then <g3>Use another program...</g3> beside yt-dlp or ffmpeg, and choose the program. MDM runs it once to check that it is that program, and uses it from then on, the command line too. MDM doesn't update a program you chose: keep it up to date yourself (yt-dlp: <x4/>, or your package manager). <g5>Use MDM's own copy</g5> goes back to the one MDM downloads and checks.",
    "text": "다른 프로그램용 yt-dlp 또는 ffmpeg가 이미 있으신가요? 두 번째 복사본 대신 기존 것을 사용하세요. <g1>페이지에서 비디오 다운로드</g1>에서 <g2>도우미...</g2>를 클릭한 다음 yt-dlp 또는 ffmpeg 옆에 있는 <g3>다른 프로그램 사용...</g3>을 클릭하고 프로그램을 선택하세요. MDM은 해당 프로그램인지 확인하기 위해 한 번 실행하며, 그 이후부터는 명령줄을 포함하여 해당 프로그램을 사용합니다. MDM은 사용자가 선택한 프로그램을 업데이트하지 않습니다. 직접 최신 상태로 유지하세요(yt-dlp: <x4/> 또는 패키지 관리자). <g5>MDM 자체 복사본 사용</g5>을 클릭하면 MDM이 다운로드하고 확인하는 복사본으로 돌아갑니다."
@@ -8145,6 +8145,10 @@
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
    "text": "<g1>source</g1>는 영어 텍스트입니다. 그대로 두세요. <g2>translation</g2>만 변경하세요."
+  },
+  "e680897e60d1dca2": {
+   "source": "To bring the built-in categories back as they came, with their names, file types and folders, use <g1>Options → Save to → Restore the built-in categories</g1>. Your own categories, General and Torrents stay as they are.",
+   "text": "기본 제공 범주를 원래 이름, 파일 형식 및 폴더로 되돌리려면 <g1>옵션 → 저장 위치 → 기본 제공 범주 복원</g1>을 사용하세요. 직접 만든 범주, 일반 및 토렌트는 그대로 유지됩니다."
   },
   "e700b8b592a5b4c0": {
    "source": "Free forever: no trial, no ads, no key",

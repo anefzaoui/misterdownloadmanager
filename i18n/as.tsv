@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	এটা প্ৰতিবেদন সংৰক্ষণ কৰা হৈছিল। ইয়াক GitHub ত বিকাশকসকললৈ প্ৰেৰণ কৰিলে তেওঁলোকক এইটো ঠিক কৰাত সহায় কৰিব; আপুনি ইয়াত থকা সকলোবোৰ তলত পঢ়িব পাৰে। একো নিজে প্ৰেৰণ কৰা নহয়: প্ৰেৰণে আপোনাৰ ব্ৰাউজাৰত প্ৰতিবেদন ফৰ্মটো খোলে, পূৰণ কৰা হয়, আপুনি পৰীক্ষা কৰি দাখিল কৰিবলৈ।
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	এই কম্পিউটাৰৰ এটা চাৰ্ভাৰে ডাউনলোডটো অন্য ঠাইলৈ পঠিয়াইছে, যিটো {adapter} ৰ মাজেৰে নাযাব
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ৰ বিষয়ে
@@ -240,6 +244,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	উত্তৰ দিলে {ms} ms ত: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	যিকোনো (ছিষ্টেমে বাছনি কৰে)
 #. text in the Scheduler window
 #, machine
 	April	এপ্ৰিল
@@ -293,6 +301,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	দুয়োটাই মুক্ত উৎস। MDM-এ নিজৰ ডাউনল'ডাৰৰ সৈতে সিহঁতৰ অফিচিয়েল ৰিলিজৰ পৰা সিহঁতক পায় আৰু চলাবলৈ দিয়াৰ আগতে প্ৰতিটো ফাইলৰ স্বাক্ষৰ পৰীক্ষা কৰে। প্ৰায় 100 MB, এবাৰত।
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} শিপিং কৰাৰ দৰে ঘূৰাই আনিবনে: সিহঁতৰ নাম, ফাইলৰ প্ৰকাৰ আৰু ফোল্ডাৰ? আপোনাৰ নিজা শ্ৰেণী, সাধাৰণ আৰু টৰেণ্ট যেনেকৈ আছে তেনেকৈয়ে থাকিব। সাধাৰণলৈ স্থানান্তৰ কৰা ডাউনল’ডসমূহ তাতে থাকিব।
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -532,20 +543,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	ডিফল্ট সৰ্বোচ্চ সংযোগ সংখ্যা
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	বিলোপ কৰক
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	শ্ৰেণী বিলোপ কৰক
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	শাৰী বিলোপ কৰক
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	"{category}" শ্ৰেণীটো বিলোপ কৰিবনে? ইয়াৰ ডাউনল'ডবোৰ সাধাৰণ হৈ পৰে; ফাইলবোৰ য'ত আছে তাতে থাকে।
+	Delete the category "{category}"? Its files stay where they are.	"{category}" শ্ৰেণীটো মচি দিবনে? ইয়াৰ ফাইলসমূহ য'ত আছে তাতে থাকিব।
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -736,6 +748,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ডুপ্লিকেট ডাউনল’ড লিংক
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	প্ৰতিটো সংযোগে ছিষ্টেমৰ পথ লয়।
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -788,6 +804,10 @@
 #. text in the Options window
 #, machine
 	Event	ইভেণ্ট
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	প্ৰতিটো সংযোগ ইয়াৰ মাজেৰে যায়, {ip} ৰ পৰা।
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1178,12 +1198,12 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	বাকী থকাখিনি তালিকাভুক্ত কৰক
+	List the rest	বাকীখিনি তালিকাভুক্ত কৰক
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	ভিডিঅ'ৰ তালিকা {n} পিছত বন্ধ কৰা হৈছে: {error}
+	Listing stopped after {n} videos: {error}	{n}টা ভিডিঅ’ৰ পিছত তালিকাভুক্ত কৰা বন্ধ কৰা হ’ল: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -1201,7 +1221,7 @@
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
-	Load more	অধিক ল’ড কৰক
+	Load more	আৰু অধিক ল’ড কৰক
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1340,6 +1360,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	তললৈ স্থানান্তৰ কৰক
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	ইয়াৰ ডাউনল’ডসমূহ সাধাৰণলৈ স্থানান্তৰ কৰক
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	নিৰ্বাচিত ডাউনল’ডটো স্থানান্তৰ বা পুনৰ নামাকৰণ কৰক
@@ -1387,6 +1411,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	আপোনাৰ হোষ্ট ফাইলত থকা নাম আৰু স্থানীয় নাম (এটা শব্দ, .local, .lan) ছিষ্টেমৰ DNS ৰ সৈতে থাকে। ভিডিঅ' পৃষ্ঠা আৰু টৰেণ্ট ট্ৰেকাৰসমূহে বৰ্তমানৰ বাবে ছিষ্টেমৰ DNS ব্যৱহাৰ কৰে।
+#. text in the Options window
+#, machine
+	Network adapter:	নেটৱৰ্ক এডাপ্টাৰ:
 #. text in errors.rs
 #, machine
 	network error	নেটৱৰ্ক ত্ৰুটি
@@ -1788,6 +1815,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	শাৰীৰ পৰা আঁতৰাওক
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	তালিকাৰ পৰা ইয়াৰ ডাউনল’ডসমূহ আঁতৰাওক (চলন্তসমূহ সাধাৰণলৈ স্থানান্তৰিত হ’ব)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1796,6 +1827,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM পুনৰ আৰম্ভ কৰক
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	বিল্ট-ইন শ্ৰেণীবোৰ পুনৰুদ্ধাৰ কৰক
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -2149,6 +2183,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	বন্ধ কৰা হ'ল
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	বন্ধ কৰা হৈছে: নেটৱৰ্ক এডাপ্টাৰ সলনি হৈছে; পুনৰ আৰম্ভ হৈছে
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	বন্ধ কৰা হৈছে: {adapter} সংযোগ কৰা নাই; ই ঘূৰি আহিলে পুনৰ আৰম্ভ হ'ব
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ডাউনলোড শেষ হ'লে বন্ধ হয়
@@ -2342,6 +2384,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	তালিকাখন সংৰক্ষণ কৰিব পৰা নগ'ল: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	নেটৱৰ্ক এডাপ্টাৰ {adapter} সংযোগ কৰা নাই
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	Windows-ৰ বাবে পথটো বৰ দীঘল: {path}
@@ -2536,6 +2582,10 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	টৰেণ্টসমূহ
+#. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	Windows ত বাছনি কৰা নেটৱৰ্ক এডাপ্টাৰৰ জৰিয়তে টৰেণ্ট এতিয়াও যাব নোৱাৰে
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2737,6 +2787,14 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ভিডিঅ’ সন্ধানসমূহে yt-dlp ব্যৱহাৰ কৰে (প্ৰায় 23 MB, ইয়াৰ স্বাক্ষৰৰ বিৰুদ্ধে পৰীক্ষা কৰা হৈছে)।
+#. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	ভিডিঅ' পৃষ্ঠা আৰু টৰেণ্টে ইয়াক এতিয়াও ব্যৱহাৰ কৰিব নোৱাৰে।
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	ভিডিঅ' পৃষ্ঠাবোৰে ইয়াক এতিয়াও ব্যৱহাৰ কৰিব নোৱাৰে।
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -2851,6 +2909,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ভিডিঅ' বিচাৰে
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (সংযোগ কৰা নাই)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} সংযোগ কৰা নাই: ই ঘূৰি নহালৈকে একো ডাউনলোড নহ'ব।
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2917,6 +2983,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} ঘণ্টা {m} মিনিট
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} ক {adapter} ৰ মাজেৰে পাব নোৱাৰি: ইয়াৰ সেই ধৰণৰ (IPv4 বা IPv6) কোনো ঠিকনা নাই
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2981,11 +3051,15 @@
 #. in Download video, a playlist's title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-	{title}: {count} video	{title}: {count} ভিডিঅ'
+	{title}: {count} video	{title}: {count}টা ভিডিঅ’
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {total} ভিডিঅ'ৰ ভিতৰত {listed} তালিকাভুক্ত কৰা হৈছে
+	{title}: {listed} of {total} video listed	{title}: {total}টা ভিডিঅ’ৰ ভিতৰত {listed}টা তালিকাভুক্ত কৰা হৈছে
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} এতিয়াও নিৰ্বাচিত নেটৱৰ্ক এডাপ্টাৰ ({adapter}) ৰ মাজেৰে যাব নোৱাৰে
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)

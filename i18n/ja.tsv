@@ -97,6 +97,10 @@
 #. crash report window: what the report is and what Send does
 #, machine
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	レポートが保存されました。GitHub の開発者に送信すると、この問題の修正に役立ちます。まず、レポートの内容を以下で確認できます。何も自動的に送信されることはありません。[送信] をクリックすると、レポートフォームがブラウザーで開かれ、入力済みの内容を確認して送信できます。
+#. text in errors.rs
+#. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
+#, machine
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	このコンピューター上のサーバーがダウンロードを別の場所に送信しました。これは {adapter} を通過しません。
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager について
@@ -120,7 +124,7 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	複数のダウンロードを追加
+	Add many downloads	多数のダウンロードを追加
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -155,7 +159,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	{n} 個のダウンロードをリストに追加しますか? 各動画は独自の行になります。
+	Add {n} downloads to the list? Each video gets its own row.	{n}個のダウンロードをリストに追加しますか? 各動画は独自の行になります。
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -240,6 +244,10 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	{ms} ミリ秒で応答: {ip}
+#. text in the Options window
+#. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
+#, machine
+	Any (the system chooses)	任意 (システムが選択)
 #. text in the Scheduler window
 #, machine
 	April	4 月
@@ -293,6 +301,9 @@
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	どちらもオープンソースです。MDM は公式リリースから独自のダウンローダーで取得し、実行前に各ファイルの署名をチェックします。約 100 MB、1 回限りです。
+#. text in the Options window
+#, machine
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	出荷時の状態に{names}を戻しますか？名前、ファイルの種類、フォルダーは出荷時の状態に戻ります。独自のカテゴリ、[全般]、[トレント] はそのまま残ります。既に [全般] に移動されたダウンロードはそのまま残ります。
 #. button in the Options window
 #. verb: choose a folder
 #, machine
@@ -532,20 +543,21 @@
 #. text in the Options window
 #, machine
 	Default max. conn. number	既定の最大接続数
-#. message or event log entry in the main window; button in the Options window
+#. message or event log entry in the main window; button in a dialog box; button in the Options window
+#. button: deletes the category
 #. verb: delete the item
 #, machine
 	Delete	削除
-#. message or event log entry in the main window
+#. window title in a dialog box
 #, machine
 	Delete category	カテゴリを削除
 #. message or event log entry in the main window; text in the Scheduler window
 #, machine
 	Delete queue	キューを削除
-#. message or event log entry in the main window
+#. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its downloads become General; their files stay where they are.	カテゴリ「{category}」を削除しますか? ダウンロードは「一般」になり、ファイルは元の場所に残ります。
+	Delete the category "{category}"? Its files stay where they are.	カテゴリ「{category}」を削除しますか？ファイルは元の場所に残ります。
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -736,6 +748,10 @@
 #. window title in a dialog box
 #, machine
 	Duplicate download link	重複するダウンロードリンク
+#. text in the Options window
+#. Options → Network adapter: what "Any" means
+#, machine
+	Each connection takes the system's route.	各接続はシステムのルートを使用します。
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -788,6 +804,10 @@
 #. text in the Options window
 #, machine
 	Event	イベント
+#. text in the Options window
+#. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
+#, machine
+	Every connection goes through it, from {ip}.	すべての接続は、{ip} からこれを通じて行われます。
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1178,22 +1198,22 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	残りを一覧表示
+	List the rest	残りをリスト
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	{n} 個の動画を一覧表示後に停止しました: {error}
+	Listing stopped after {n} videos: {error}	{n}個の動画をリストした後にリストが停止しました: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	動画を一覧表示中: {n}
+	Listing the videos: {n}	動画をリスト中: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	動画を一覧表示中: {total} 件中 {n} 件
+	Listing the videos: {n} of {total}	動画をリスト中: {total}個中{n}個
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -1340,6 +1360,10 @@
 #. text in the Scheduler window
 #, machine
 	Move down	下に移動
+#. text in a dialog box
+#. choice in Delete category: what happens to the category's downloads
+#, machine
+	Move its downloads to General	ダウンロードを「一般」に移動する
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	選択したダウンロードを移動または名前変更
@@ -1387,6 +1411,9 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	ホスト ファイル内の名前とローカル名 (単一の単語、.local、.lan) はシステムの DNS に残ります。ビデオ ページとトレント トラッカーは、現時点ではシステムの DNS を使用します。
+#. text in the Options window
+#, machine
+	Network adapter:	ネットワーク アダプター:
 #. text in errors.rs
 #, machine
 	network error	ネットワーク エラー
@@ -1571,7 +1598,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	最初の {n} 個の動画のみが一覧表示されます。
+	Only the first {n} videos are listed.	最初の{n}個の動画のみがリストされています。
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	コンピューターを使用している間のみ
@@ -1788,6 +1815,10 @@
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	キューから削除
+#. text in a dialog box
+#. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
+#, machine
+	Remove its downloads from the list (running ones move to General)	ダウンロードをリストから削除する (実行中のものは「一般」に移動)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -1796,6 +1827,9 @@
 #. crash report window button: start MDM again
 #, machine
 	Restart MDM	MDM を再起動する
+#. button in the Options window; text in the Options window
+#, machine
+	Restore the built-in categories	組み込みのカテゴリを復元
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -2132,7 +2166,7 @@
 #. button in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	一覧表示を停止
+	Stop listing	リストを停止
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	メインダウンロードキューを停止
@@ -2149,6 +2183,14 @@
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
 	Stopped	停止済み
+#. message or event log entry in the main window
+#. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
+#, machine
+	Stopped: the network adapter changed; starting again	停止: ネットワーク アダプターが変更されました。再開しています
+#. message or event log entry in the main window
+#. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
+#, machine
+	Stopped: {adapter} is not connected; it goes on when it is back	停止: {adapter} は接続されていません。接続が戻ると再開します
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	ダウンロード完了時に停止
@@ -2342,6 +2384,10 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The list could not be saved: {error}	リストを保存できませんでした: {error}
+#. text in errors.rs; text in torrent downloads
+#. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
+#, machine
+	the network adapter {adapter} is not connected	ネットワーク アダプター {adapter} は接続されていません
 #. text in errors.rs
 #, machine
 	the path is too long for Windows: {path}	Windows のパスが長すぎます: {path}
@@ -2537,6 +2583,10 @@
 #, machine
 	Torrents	トレント
 #. text in torrent downloads
+#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
+#, machine
+	torrents can't go through a chosen network adapter on Windows yet	Windows では、選択したネットワーク アダプターを介してトレントをまだ実行できません
+#. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -2632,7 +2682,7 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
-	Up to {height}p	{height}p まで
+	Up to {height}p	{height}pまで
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
@@ -2737,6 +2787,14 @@
 #. text in the Download video window
 #, machine
 	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ビデオの検索には yt-dlp (約 23 MB、署名で確認済み) を使用します。
+#. text in the Options window
+#. Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
+#, machine
+	Video pages and torrents can't use it yet.	動画ページとトレントではまだ使用できません。
+#. text in the Options window
+#. Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
+#, machine
+	Video pages can't use it yet.	動画ページではまだ使用できません。
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -2747,7 +2805,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	リストを待つか、一覧表示を停止します
+	Wait for the list, or stop listing	リストを待つか、リストを停止してください
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -2851,6 +2909,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: 動画を検索します
+#. text in the Options window
+#. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
+#, machine
+	{adapter} (not connected)	{adapter} (未接続)
+#. text in the Options window
+#. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
+#, machine
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} は接続されていません。接続が戻るまで何もダウンロードされません。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -2917,6 +2983,10 @@
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
 	{h} hour(s) {m} min	{h} 時間 {m} 分
+#. text in errors.rs
+#. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
+#, machine
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} は {adapter} を介して到達できません: その種類 (IPv4 または IPv6) のアドレスがありません
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -2957,7 +3027,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{total} 件中 {n} 件を選択済み
+	{n} of {total} chosen	{total}個中{n}個を選択済み
 #. text in transfer.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -2981,11 +3051,15 @@
 #. in Download video, a playlist's title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-	{title}: {count} video	{title}: {count} 個の動画
+	{title}: {count} video	{title}: {count}個の動画
 #. text in playlistdlg.rs
 #. in Download video, a playlist's title, then how many of its videos are listed so far ({listed}), of how many ({total})
 #, machine
-	{title}: {listed} of {total} video listed	{title}: {total} 個の動画のうち {listed} 個を一覧表示済み
+	{title}: {listed} of {total} video listed	{title}: {total}個中{listed}個の動画をリスト済み
+#. text in errors.rs
+#. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
+#, machine
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} は、選択したネットワーク アダプター ({adapter}) をまだ通過できません
 #. text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
