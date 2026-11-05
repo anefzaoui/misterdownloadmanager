@@ -461,7 +461,7 @@ impl OptionsDialog {
             winui::full_on_hover(ui, rect, ("general-right", 419), label);
         }
         // i18n: verb: edit the item
-        off(ui, r(o, 319.0, 406.0, 73.0, 21.0), "Edit...");
+        off(ui, r(o, 289.0, 406.0, 103.0, 21.0), "Edit...");
         // The download button over videos in the browsers (our own panel, Sub::Panels).
         let label = crate::i18n::t("Customize MDM Download panels in browsers");
         let (rect, cut) = winui::text_right(&p, o.x + 313.0, o.y + 452.0, label, LIGHT_TEXT());
@@ -1106,7 +1106,7 @@ impl OptionsDialog {
         let labels: Vec<&str> = names.iter().map(String::as_str).collect();
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 70.0, 406.0, 241.0, 21.0),
+            r(o, 70.0, 406.0, 211.0, 21.0),
             &labels,
             dns_index(&self.s),
             true,
@@ -1125,7 +1125,7 @@ impl OptionsDialog {
         // i18n: button: opens the DNS's details (how it's asked, its servers, a test)
         if winui::button_light(
             ui,
-            r(o, 319.0, 406.0, 73.0, 21.0),
+            r(o, 289.0, 406.0, 103.0, 21.0),
             "Settings...",
             kind,
             false,
@@ -1892,7 +1892,7 @@ impl OptionsDialog {
                     "opt-dns",
                     // i18n: window title: the settings of the DNS chosen in Options → Connection
                     "DNS settings",
-                    [400.0, 292.0],
+                    [400.0, 312.0],
                     false,
                     LIGHT_BG(),
                     |ui, o| dns_dialog(ui, o, &mut e),
@@ -2234,7 +2234,7 @@ fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
         ButtonKind::Disabled
     };
     // i18n: button: asks the chosen DNS for an address, to see it works
-    if winui::button_light(ui, r(o, 14.0, 258.0, 73.0, 21.0), "Test", kind, false).clicked()
+    if winui::button_light(ui, r(o, 14.0, 232.0, 73.0, 21.0), "Test", kind, false).clicked()
         && let Ok(c) = &choice
     {
         let slot = std::sync::Arc::new(std::sync::Mutex::new(None));
@@ -2287,17 +2287,17 @@ fn dns_dialog(ui: &mut Ui, o: Pos2, e: &mut DnsEdit) -> Outcome<()> {
         let (rect, cut) = winui::label_into(
             &p,
             o.x + 95.0,
-            o.y + 273.0,
+            o.y + 247.0,
             &line,
             color,
-            o.x + 230.0,
+            o.x + 386.0,
             o.x + 95.0,
         );
         if cut {
             winui::full_on_hover(ui, rect, "dns-test", &line);
         }
     }
-    ok_cancel(ui, o, 238.0, 258.0, choice.is_ok())
+    ok_cancel(ui, o, 238.0, 278.0, choice.is_ok())
 }
 
 fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {

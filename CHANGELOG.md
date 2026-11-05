@@ -30,6 +30,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   download stops with a message naming it, unless you allow falling back to the system's DNS;
   your hosts file and local names stay with the system's. The command line's `get` takes
   `--dns`. Video pages and torrent trackers still use the system's DNS.
+- **Drop-down lists for screen readers**: a screen reader or UI Automation can now set a
+  drop-down list's choice by its text, and open or close the list.
 - **A file-type icon before every file name**: the download list, Download File Info, Properties,
   Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
   audio, pictures, archives, documents, subtitles, code, and the programs and installers of every

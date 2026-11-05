@@ -3406,6 +3406,47 @@ pub fn expose(resp: &Response, role: egui::Role, label: &str, enabled: bool, on:
     });
 }
 
+/// A drop-down list for screen readers and UI Automation, whose list (the shared popup) they
+/// can't reach: Set value picks the item of that text (as shown, or as written), Expand and
+/// Collapse open and close the list. Returns the item picked this frame.
+pub fn assistive_choice(resp: &Response, items: &[&str], open: &mut bool) -> Option<usize> {
+    use egui::accesskit::{Action, ActionData};
+    let (value, expand, collapse) = resp.ctx.input(|i| {
+        let value = i
+            .accesskit_action_requests(resp.id, Action::SetValue)
+            .find_map(|r| match &r.data {
+                Some(ActionData::Value(v)) => Some(v.to_string()),
+                _ => None,
+            });
+        (
+            value,
+            i.has_accesskit_action_request(resp.id, Action::Expand),
+            i.has_accesskit_action_request(resp.id, Action::Collapse),
+        )
+    });
+    if expand {
+        *open = true;
+    }
+    if collapse {
+        *open = false;
+    }
+    let expanded = *open;
+    resp.ctx.accesskit_node_builder(resp.id, |n| {
+        n.add_action(Action::SetValue);
+        n.add_action(if expanded {
+            Action::Collapse
+        } else {
+            Action::Expand
+        });
+        n.set_expanded(expanded);
+    });
+    let value = value?;
+    let value = value.trim();
+    items
+        .iter()
+        .position(|s| crate::i18n::t(s) == value || *s == value)
+}
+
 /// Whether a screen reader or UI Automation set this control's value this frame (AccessKit's
 /// Set value), focused or not: such a value is meant at once, where a typed one waits for Enter
 /// or the focus to leave.
@@ -4049,6 +4090,9 @@ pub fn combo_light(
     // Items are shown in the interface language (data such as numbers passes through as is).
     let full = crate::i18n::t(items.get(selected).copied().unwrap_or(""));
     expose_value(&resp, egui::Role::ComboBox, full, enabled);
+    if enabled && let Some(i) = assistive_choice(&resp, items, &mut open) {
+        chosen = Some(i).filter(|i| *i != selected);
+    }
     // Cut with "..." before the chevron when too long (a translation), whole on hover.
     let label = ellipsize(&p, &tahoma(), full, rc.width() - 5.0 - 19.0);
     let drawn = text_start(
