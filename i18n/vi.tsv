@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Bạn có chắc chắn muốn xóa {n} bản tải xuống này khỏi danh sách tải xuống của Mister Download Manager không?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Đã kết nối với {n} ngang hàng, đang lấy danh sách tệp...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} nút: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Đã giải nén {n} tệp vào {folder}
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Đã tìm thấy {n} ngang hàng, đang kết nối...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
@@ -69,6 +86,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} tệp đã có tên của một tệp đã có ở đó và đã được đánh số
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} ngang hàng
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -78,6 +100,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} trình theo dõi đã thêm
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} trình theo dõi: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -155,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Dịch vụ debrid (Real-Debrid) tải xuống liên kết của máy chủ tệp bằng tài khoản trả phí của bạn và cung cấp cho MDM một liên kết trực tiếp. Chỉ sử dụng tài khoản của riêng bạn: chia sẻ tài khoản hoặc liên kết của tài khoản đó sẽ vi phạm các điều khoản dịch vụ và có thể bị tạm ngưng. Các bản tải xuống mà trình duyệt đã bắt đầu vẫn giữ nguyên.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Dịch vụ debrid tải xuống liên kết của máy chủ tệp bằng tài khoản trả phí của riêng bạn và cung cấp cho MDM một liên kết trực tiếp. Chỉ sử dụng tài khoản của riêng bạn: việc chia sẻ tài khoản hoặc liên kết của tài khoản sẽ vi phạm các điều khoản dịch vụ và có thể khiến tài khoản bị tạm ngưng. Các bản tải xuống mà trình duyệt đã bắt đầu vẫn giữ nguyên.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -402,9 +429,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	Đã yêu cầu trình theo dõi cho các đồng đẳng một lần nữa
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	Đang yêu cầu các peer lấy danh sách tệp. Liên kết magnet có thể mất một hoặc hai phút.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -774,6 +798,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Mô tả:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	DHT tắt
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1072,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	Đã đặt tổng kiểm tra dự kiến ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	Thử nghiệm: được xây dựng từ tài liệu API công khai của Real-Debrid, chưa được xác nhận bằng tài khoản thực.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Thử nghiệm: được xây dựng từ tài liệu API công khai của các dịch vụ, chưa được xác nhận bằng tài khoản thực.
 #. message or event log entry in the main window
 #, machine
 	Export	Xuất
@@ -1600,6 +1628,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	Tải thêm
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	Mạng cục bộ: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1616,6 +1648,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	Tra cứu địa chỉ mới trước
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	Đang tìm kiếm máy ngang...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1896,6 +1933,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	không có đồng đẳng nào gửi danh sách tệp của torrent kịp thời
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Chưa có ngang hàng nào. Có thể có ít người chia sẻ torrent này hoặc tường lửa, VPN hoặc mạng có thể đang chặn BitTorrent.
 #. text in the Options window
 #, machine
 	No proxy/socks	Không có proxy/socks
@@ -1903,6 +1944,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	Không có trình theo dõi nào được thêm: nó đã có chúng
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	Không có trình theo dõi nào
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2096,6 +2141,7 @@
 #, machine
 	Options on completion	Tùy chọn khi hoàn tất
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	Hoặc dán mã thông báo API của bạn:
 #. text in the Link grabber window
@@ -2123,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	Dán tổng kiểm mà trang tải xuống cung cấp
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	Dán khóa API của bạn (từ trang Tài khoản của dịch vụ):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
@@ -2143,6 +2193,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	Người ngang hàng
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Đã tìm thấy ngang hàng, nhưng chưa có ngang hàng nào trả lời. Tường lửa hoặc VPN có thể đang chặn các kết nối.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	Đồng bộ hóa định kỳ
@@ -2876,6 +2930,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	kết nối bị mất khi đang nhận dữ liệu
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT không liên hệ được với ai. Tường lửa, VPN hoặc mạng có thể đang chặn UDP, mà DHT và hầu hết các trình theo dõi đều sử dụng.
 #. text in errors.rs
 #, machine
 	the disk is full	ổ đĩa đầy
@@ -3115,6 +3173,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	Danh sách này không có video
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Liên kết magnet này không có trình theo dõi và DHT đang tắt, nên không tìm thấy đồng đẳng nào.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

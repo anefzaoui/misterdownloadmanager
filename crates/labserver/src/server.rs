@@ -25,7 +25,7 @@ use std::collections::{HashMap, HashSet};
 use std::io;
 use std::net::{IpAddr, SocketAddr};
 use std::sync::atomic::{AtomicU64, Ordering};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, RwLock};
 use std::time::{Duration, Instant, UNIX_EPOCH};
 
 use axum::body::{Body, HttpBody};
@@ -40,6 +40,7 @@ use percent_encoding::{AsciiSet, NON_ALPHANUMERIC, utf8_percent_encode};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use tokio::net::TcpListener;
+use tokio::sync::Notify;
 use tokio::task::JoinHandle;
 
 use crate::content;
@@ -96,6 +97,47 @@ pub struct LogEntry {
     pub outcome: String,
     pub rate: Option<u64>,
     pub drop_at: Option<u64>,
+    /// Counts the request as in flight until its entry is logged ([`LabServer::settled`]).
+    #[serde(skip)]
+    #[doc(hidden)]
+    pub in_flight: InFlight,
+}
+
+/// A request begun and not logged yet: one of the server's in-flight count while it lives (a
+/// request dropped before it is logged counts out too). A copy doesn't count.
+#[derive(Default)]
+pub struct InFlight(Option<Arc<Pending>>);
+
+impl Clone for InFlight {
+    fn clone(&self) -> Self {
+        InFlight(None)
+    }
+}
+
+impl std::fmt::Debug for InFlight {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(if self.0.is_some() {
+            "InFlight"
+        } else {
+            "Logged"
+        })
+    }
+}
+
+impl Drop for InFlight {
+    fn drop(&mut self) {
+        if let Some(p) = self.0.take() {
+            p.count.fetch_sub(1, Ordering::SeqCst);
+            p.changed.notify_waiters();
+        }
+    }
+}
+
+/// How many requests are in flight, and a wake-up when that changes.
+#[derive(Default)]
+pub struct Pending {
+    count: AtomicU64,
+    changed: Notify,
 }
 
 pub type LogSink = Arc<dyn Fn(&LogEntry) + Send + Sync>;
@@ -125,7 +167,12 @@ impl Default for Config {
 }
 
 pub(crate) struct Shared {
-    faults: Faults,
+    /// The server's faults ([`LabServer::set_faults`] changes them; a URL's own override them).
+    faults: RwLock<Faults>,
+    /// Woken when `faults` change (a stalled response checks whether it may go on).
+    faults_changed: Notify,
+    /// Requests begun and not logged yet.
+    pending: Arc<Pending>,
     /// `Config::rss_dir`.
     pub(crate) rss_dir: Option<std::path::PathBuf>,
     started: Instant,
@@ -149,6 +196,23 @@ impl Shared {
         self.started.elapsed().as_millis() as u64
     }
 
+    fn faults(&self) -> Faults {
+        self.faults.read().unwrap().clone()
+    }
+
+    /// Resolves once the server's faults leave the byte at `at` to be sent.
+    async fn unstalled(&self, at: u64) {
+        loop {
+            let changed = self.faults_changed.notified();
+            tokio::pin!(changed);
+            changed.as_mut().enable();
+            if self.faults.read().unwrap().stall_at != Some(at) {
+                return;
+            }
+            changed.await;
+        }
+    }
+
     /// The log entry of a request that starts now; `body` is the request's body.
     pub(crate) fn begin(
         &self,
@@ -166,6 +230,7 @@ impl Shared {
             *c
         };
         let has_body = !body.is_empty() || !matches!(*method, Method::GET | Method::HEAD);
+        self.pending.count.fetch_add(1, Ordering::SeqCst);
         LogEntry {
             req: self.seq.fetch_add(1, Ordering::SeqCst) + 1,
             peer,
@@ -194,6 +259,7 @@ impl Shared {
             outcome: String::new(),
             rate: None,
             drop_at: None,
+            in_flight: InFlight(Some(self.pending.clone())),
         }
     }
 
@@ -201,10 +267,13 @@ impl Shared {
         entry.status = status;
         entry.outcome = outcome.to_owned();
         entry.t_end_ms = self.ms();
+        // In flight until it is in the log, so `settled` finds it there.
+        let in_flight = std::mem::take(&mut entry.in_flight);
         if let Some(sink) = &self.on_log {
             sink(&entry);
         }
         self.log.lock().unwrap().push(entry);
+        drop(in_flight);
     }
 }
 
@@ -220,7 +289,9 @@ impl LabServer {
         let listener = TcpListener::bind(cfg.bind).await?;
         let addr = listener.local_addr()?;
         let shared = Arc::new(Shared {
-            faults: cfg.faults,
+            faults: RwLock::new(cfg.faults),
+            faults_changed: Notify::new(),
+            pending: Arc::default(),
             rss_dir: cfg.rss_dir,
             started: Instant::now(),
             requests: AtomicU64::new(0),
@@ -269,6 +340,16 @@ impl LabServer {
                 get(debrid::device_credentials),
             )
             .route("/rd/oauth/v2/token", post(debrid::token))
+            // A fake AllDebrid and a fake Premiumize (#44 phase 2).
+            .route("/ad/v4/user", get(debrid::ad_user))
+            .route("/ad/v4/hosts/domains", get(debrid::ad_domains))
+            .route("/ad/v4/link/unlock", post(debrid::ad_unlock))
+            .route("/ad/v4/link/delayed", post(debrid::ad_delayed))
+            .route("/ad/v4.1/pin/get", get(debrid::ad_pin))
+            .route("/ad/v4/pin/check", post(debrid::ad_pin_check))
+            .route("/pm/api/account/info", get(debrid::pm_account))
+            .route("/pm/api/services/list", get(debrid::pm_services))
+            .route("/pm/api/transfer/directdl", post(debrid::pm_directdl))
             // RSS feeds for the app's RSS tests (#39, `feeds`).
             .route("/rss/shows.xml", get(crate::feeds::shows))
             .route("/rss/dir.xml", get(crate::feeds::dir))
@@ -303,6 +384,34 @@ impl LabServer {
         self.shared.log.lock().unwrap().clear();
     }
 
+    /// Resolves once every request begun so far is in the log. A response is logged when its
+    /// body is dropped, which can trail the client: after a download is stopped, the server
+    /// sees its connections close only as it next writes to them.
+    pub async fn settled(&self) {
+        let pending = &self.shared.pending;
+        loop {
+            let changed = pending.changed.notified();
+            tokio::pin!(changed);
+            changed.as_mut().enable();
+            if pending.count.load(Ordering::SeqCst) == 0 {
+                return;
+            }
+            changed.await;
+        }
+    }
+
+    /// The server-wide faults (`--faults`, [`Config::faults`]).
+    pub fn faults(&self) -> Faults {
+        self.shared.faults()
+    }
+
+    /// Change the server-wide faults for the requests from now on, and lift a `stall_at` that
+    /// responses are waiting at.
+    pub fn set_faults(&self, faults: Faults) {
+        *self.shared.faults.write().unwrap() = faults;
+        self.shared.faults_changed.notify_waiters();
+    }
+
     /// Resolves when the server task ends (only on error; runs until dropped otherwise).
     pub async fn wait(&mut self) {
         let _ = (&mut self.task).await;
@@ -333,6 +442,8 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
     etag=weak|per-request|none latency_ms=N
+    stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
+                   (until the server's faults change, from a test; a URL's own value stays)
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
     require_referer=PREFIX           403 unless the Referer starts with PREFIX (%-encode ? & =)
     once=1         a one-time link: the first request for this path and query is served, every
@@ -346,6 +457,8 @@ GET /files/{name}   a real file from --files DIR (Range too; 404 without --files
 GET /redirect?to=URL[&ttl_ms=N][&code=3xx]   302 (or code) to URL (not logged); ttl_ms: a signed link expiring after N ms
 /rd/rest/1.0/{user,hosts/domains,unrestrict/link,disable_access_token}, /rd/oauth/v2/{device/code,device/credentials,token}
                                               a fake Real-Debrid (#44): tokens good (premium), free; links http://hoster.test/file/SIZE/NAME[?gone=1&down=1&chunks=N&ttl_ms=N&rate=SIZE]
+/ad/v4/{user,hosts/domains,link/unlock,link/delayed,pin/check}, /ad/v4.1/pin/get      a fake AllDebrid: the same tokens and links, plus delayed=N
+/pm/api/{account/info,services/list,transfer/directdl}      a fake Premiumize: the same tokens and links
 GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]   a page that sends the browser on to URL (meta refresh or Refresh header)
 
 RSS    made-up feeds for the RSS feeds window (#39); never real ones
@@ -775,7 +888,7 @@ pub(crate) async fn serve(
         shared.record(entry, 403, "expired");
         return (StatusCode::FORBIDDEN, "link expired\n").into_response();
     }
-    let f = shared.faults.overridden_by(&q.faults);
+    let f = shared.faults().overridden_by(&q.faults);
 
     if let Some(want) = &f.require_cookie
         && !has_cookie(entry.cookie.as_deref(), want)
@@ -929,6 +1042,9 @@ pub(crate) async fn serve(
         end,
         rate,
         drop_at,
+        // A URL's own stall stays; the server's is lifted with `set_faults`.
+        stall_at: f.stall_at.filter(|at| (start..end).contains(at)),
+        stall_lifts: q.faults.stall_at.is_none(),
         started: Instant::now(),
         sent: 0,
         dropped: false,
@@ -1059,6 +1175,9 @@ struct Transfer {
     end: u64,
     rate: Option<u64>,
     drop_at: Option<u64>,
+    /// The file offset this response stops at (`stall_at`), and whether `set_faults` can lift it.
+    stall_at: Option<u64>,
+    stall_lifts: bool,
     started: Instant,
     sent: u64,
     dropped: bool,
@@ -1078,7 +1197,18 @@ impl Transfer {
                 t.dropped = true;
                 return Some((Err(io::Error::other("fault: drop_after")), t));
             }
+            if let Some(at) = t.stall_at.filter(|at| t.pos >= *at) {
+                if t.stall_lifts {
+                    t.shared.unstalled(at).await;
+                } else {
+                    std::future::pending::<()>().await;
+                }
+                t.stall_at = None;
+            }
             let mut n = CHUNK.min(t.end - t.pos);
+            if let Some(at) = t.stall_at {
+                n = n.min(at - t.pos);
+            }
             if let Some(r) = t.rate.filter(|r| *r > 0) {
                 n = n.min((r / 20).max(1024));
                 let due = Duration::from_secs_f64((t.sent + n) as f64 / r as f64);

@@ -83,7 +83,11 @@ async fn main() {
     // 0 seeders: only the .torrent and its files (for the app to seed them itself).
     if let Some(first) = sessions.first() {
         let meta = first
-            .metadata(&Source::File(torrent.clone()), Duration::from_secs(10))
+            .metadata(
+                &Source::File(torrent.clone()),
+                Duration::from_secs(10),
+                None,
+            )
             .await
             .expect("readable");
         println!(

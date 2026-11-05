@@ -12,11 +12,28 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	શું તમે Mister Download Manager ની ડાઉનલોડ્સની સૂચિમાંથી {n} ડાઉનલોડ કાઢી નાખવા માંગો છો?|શું તમે Mister Download Manager ની ડાઉનલોડ્સની સૂચિમાંથી આ {n} ડાઉનલોડ્સ કાઢી નાખવા માંગો છો?
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers that answered
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	{n} પીયર સાથે કનેક્ટ કર્યું, ફાઇલ સૂચિ મેળવી રહ્યું છે...|{n} પીયર્સ સાથે કનેક્ટ કર્યું, ફાઇલ સૂચિ મેળવી રહ્યું છે...
+#. count in the Add torrent window
+#. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} નોડ: {peers}|DHT, {n} નોડ્સ: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	{folder} માં {n} ફાઇલ એક્સટ્રેક્ટ કરી|{folder} માં {n} ફાઇલો એક્સટ્રેક્ટ કરી
+#. count in the Add torrent window
+#. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
+#. {n} = a number (keep the braces as they are)
+#. the trailing ... means it is still going on: keep it
+#, machine
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	{n} પીયર મળ્યો, કનેક્ટ કરી રહ્યું છે...|{n} પીયર્સ મળ્યા, કનેક્ટ કરી રહ્યું છે...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
@@ -69,6 +86,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ફાઇલનું નામ ત્યાં પહેલેથી જ એક ફાઇલના નામ જેવું હતું અને તેને નંબર આપવામાં આવ્યો હતો|{n} ફાઇલોના નામ ત્યાં પહેલેથી જ ફાઇલોના નામ જેવા હતા અને તેમને નંબર આપવામાં આવ્યા હતા
+#. count in the Add torrent window
+#. a number of peers (computers sharing a torrent), after where they came from
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} peer|{n} peers	{n} પીયર|{n} પીયર્સ
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -78,6 +100,11 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 @plural	{n} tracker added|{n} trackers added	{n} ટ્રેકર ઉમેર્યું|{n} ટ્રેકર્સ ઉમેર્યા
+#. count in the Add torrent window
+#. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
+#. {n} = a number (keep the braces as they are)
+#, machine
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} ટ્રેકર: {peers}|{n} ટ્રેકર્સ: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -155,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service (Real-Debrid) downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ડીબ્રીડ સેવા (રિયલ-ડીબ્રીડ) તમારા પોતાના પેઇડ એકાઉન્ટ સાથે ફાઇલ હોસ્ટની લિંક ડાઉનલોડ કરે છે અને MDM ને સીધી લિંક આપે છે. ફક્ત તમારા પોતાના એકાઉન્ટનો ઉપયોગ કરો: એકાઉન્ટ અથવા તેની લિંક્સ શેર કરવાથી સેવાની શરતોનો ભંગ થાય છે અને તેને સસ્પેન્ડ કરી શકાય છે. બ્રાઉઝર દ્વારા પહેલેથી શરૂ થયેલા ડાઉનલોડ્સ જેમ છે તેમ જ રહેશે.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ડીબ્રીડ સેવા તમારા પોતાના પેઇડ એકાઉન્ટ સાથે ફાઇલ હોસ્ટની લિંક ડાઉનલોડ કરે છે અને MDM ને સીધી લિંક આપે છે. ફક્ત તમારા પોતાના એકાઉન્ટનો ઉપયોગ કરો: એકાઉન્ટ અથવા તેની લિંક્સ શેર કરવાથી સેવાઓની શરતોનો ભંગ થાય છે અને તે સસ્પેન્ડ થઈ શકે છે. બ્રાઉઝરે પહેલેથી શરૂ કરેલા ડાઉનલોડ્સ જેમ છે તેમ જ રહેશે.
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -402,9 +429,6 @@
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
 	Asked the trackers for peers again	ટ્રેકર્સને ફરીથી પીઅર્સ માટે પૂછ્યું
-#. text in the Add torrent window
-#, machine
-	Asking peers for the file list. Magnet links can take a minute or two.	ફાઇલ સૂચિ માટે પીઅર્સને પૂછવું. મેગ્નેટ લિંક્સને એક કે બે મિનિટ લાગી શકે છે.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -774,6 +798,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	વર્ણન:
+#. text in the Add torrent window
+#. the DHT (finding peers without trackers) is turned off in Torrent settings
+#, machine
+	DHT off	DHT બંધ
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1072,9 +1100,9 @@
 #, machine
 	Expected checksum set ({algorithm})	અપેક્ષિત ચેકસમ સેટ ({algorithm})
 #. text in the Options window
-#. Options → Accounts: a note that the Real-Debrid support is new and not yet tried with a real account
+#. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from Real-Debrid's public API documentation, not yet confirmed with a real account.	પ્રાયોગિક: રિયલ-ડીબ્રીડના સાર્વજનિક API દસ્તાવેજીકરણમાંથી બનાવેલ, હજુ સુધી વાસ્તવિક એકાઉન્ટ સાથે પુષ્ટિ થયેલ નથી.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	પ્રાયોગિક: સેવાઓના સાર્વજનિક API દસ્તાવેજીકરણમાંથી બનાવેલ, હજુ સુધી વાસ્તવિક એકાઉન્ટ્સ સાથે પુષ્ટિ થયેલ નથી.
 #. message or event log entry in the main window
 #, machine
 	Export	નિકાસ કરો
@@ -1600,6 +1628,10 @@
 #. button in Download video for a channel: list its next videos
 #, machine
 	Load more	વધુ લોડ કરો
+#. text in the Add torrent window
+#. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
+#, machine
+	Local network: {peers}	સ્થાનિક નેટવર્ક: {peers}
 #. text in the Batch download window; text in a dialog box; text in a download's Properties window
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
@@ -1616,6 +1648,11 @@
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
 	Look up the new address first	પહેલા નવા સરનામાંની શોધ કરો
+#. text in the Add torrent window
+#. while a magnet link's file list is fetched, before any peer is found
+#. the trailing ... means it is still going on: keep it
+#, machine
+	Looking for peers...	પીઅર્સ શોધી રહ્યાં છીએ...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
@@ -1896,6 +1933,10 @@
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	કોઈ પીઅરે સમયસર ટોરેન્ટની ફાઇલ સૂચિ મોકલી નથી
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds without a peer
+#, machine
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	હજુ સુધી કોઈ પીયર્સ નથી. કદાચ બહુ ઓછા લોકો આ ટોરેન્ટ શેર કરતા હશે, અથવા ફાયરવોલ, VPN કે નેટવર્ક BitTorrent ને બ્લોક કરી રહ્યું હશે.
 #. text in the Options window
 #, machine
 	No proxy/socks	કોઈ પ્રોક્સી/SOCKS નહીં
@@ -1903,6 +1944,10 @@
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
 	No tracker added: it has them already	કોઈ ટ્રેકર ઉમેર્યું નથી: તેની પાસે તે પહેલેથી જ છે
+#. text in the Add torrent window
+#. the magnet link names no tracker (a server that lists a torrent's peers)
+#, machine
+	No trackers	કોઈ ટ્રેકર્સ નથી
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2096,6 +2141,7 @@
 #, machine
 	Options on completion	પૂર્ણતા પર વિકલ્પો
 #. text in the Options window
+#. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
 	Or paste your API token:	અથવા તમારો API ટોકન પેસ્ટ કરો:
 #. text in the Link grabber window
@@ -2123,6 +2169,10 @@
 #. why Verify / OK is greyed in Verify checksum
 #, machine
 	Paste the checksum the download's page gives	ડાઉનલોડના પૃષ્ઠ દ્વારા આપવામાં આવેલ ચેકસમ પેસ્ટ કરો
+#. text in the Options window
+#. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
+#, machine
+	Paste your API key (from the service's Account page):	તમારી API કી પેસ્ટ કરો (સેવાના એકાઉન્ટ પૃષ્ઠમાંથી):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
@@ -2143,6 +2193,10 @@
 #. tab title: the other computers sharing the torrent
 #, machine
 	Peers	પીયર્સ
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: peers are known but none answered
+#, machine
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	પીયર્સ મળ્યા, પરંતુ હજુ સુધી કોઈએ જવાબ આપ્યો નથી. ફાયરવોલ અથવા VPN કનેક્શન્સને બ્લોક કરી રહ્યું હશે.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	સમયાંતરે સિંક્રનાઇઝેશન
@@ -2876,6 +2930,10 @@
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	ડેટા પ્રાપ્ત કરતી વખતે કનેક્શન ખોવાઈ ગયું
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
+#, machine
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT કોઈ સુધી પહોંચી શક્યું નથી. ફાયરવોલ, VPN અથવા નેટવર્ક UDP ને બ્લોક કરી રહ્યું હશે, જેનો ઉપયોગ DHT અને મોટાભાગના ટ્રેકર્સ કરે છે.
 #. text in errors.rs
 #, machine
 	the disk is full	ડિસ્ક ભરાઈ ગઈ છે
@@ -3115,6 +3173,10 @@
 #. in Download video, a playlist or channel that lists no video
 #, machine
 	This list has no videos	આ સૂચિમાં કોઈ વીડિયો નથી
+#. text in the Add torrent window
+#. a magnet link's lookup, after 30 seconds: it can't find any peer at all
+#, machine
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	આ મેગ્નેટ લિંક કોઈ ટ્રેકર્સનું નામ આપતી નથી અને DHT બંધ છે, તેથી કોઈ પીઅર શોધી શકાતો નથી.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine

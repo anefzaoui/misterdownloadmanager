@@ -15,6 +15,13 @@ Everything below ships together, in one release.
 
 - ✅ Screen readers see a window's contents the first time they read it, not only its title bar
   ([#131](https://github.com/anefzaoui/misterdownloadmanager/issues/131))
+- ✅ Magnet links get their file list in seconds again: the DHT keeps going after a computer it
+  asked is gone, and Add torrent shows the wait (peers found, from where, what may be in the
+  way) ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92))
+- ✅ Two engine tests that failed now and then on busy machines are reliable
+  ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123))
+- ✅ Numbers are grouped and pointed the interface language's way (German `10.200`, `1,50 MB`)
+  ([#128](https://github.com/anefzaoui/misterdownloadmanager/issues/128))
 - ✅ The extension's button lists the media the tab has loaded (HLS and DASH streams, video and
   sound files), to download a stream the page won't give up; copy-protected ones are shown as
   protected, never downloaded ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38))
@@ -34,7 +41,7 @@ Everything below ships together, in one release.
   later ([#106](https://github.com/anefzaoui/misterdownloadmanager/issues/106)), and a download
   finishing during a save no longer fails ([#116](https://github.com/anefzaoui/misterdownloadmanager/issues/116))
 - ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
-- ✅ Real-Debrid (experimental): file-host links downloaded through your own account (Options → Accounts)
+- ✅ Debrid accounts (experimental): Real-Debrid, AllDebrid and Premiumize; file-host links downloaded through your own account (Options → Accounts)
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
@@ -128,17 +135,22 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Debrid services: Real-Debrid, AllDebrid, Premiumize
-- 📋 A link grabber with packages, and auto-extract of archives
-  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37))
-- 📋 Debrid services, the rest: AllDebrid and Premiumize, torrents through the service, the system
+- 📋 Where a download's server is: its country, flag and ping, from an offline database
+  ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
+- 📋 The Scheduler wakes the computer from sleep to run a queue
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
+- 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
+  File Info, the command line using the accounts, torrents through the service, the system
   keychains for the sign-ins
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
 ### Network
 
-- 📋 Video pages, and torrents on Windows, through a chosen network adapter
+- 📋 Torrents on Windows through a chosen network adapter
+  ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)), and video pages too
   ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
+- 📋 Control MDM from a phone or another computer on the local network, off by default
+  ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
 
 ### Browser extension
 
