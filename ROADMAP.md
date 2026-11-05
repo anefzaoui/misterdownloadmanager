@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Less memory in the notification area: under 10 MB there, and the language list's fonts let
+  go when it closes ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - ✅ Video downloads: subtitles, beside the video or inside it
   ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68))
 - ✅ Torrent security: stricter file-name checks, no silent overwrite, files marked as downloaded
@@ -107,6 +109,5 @@ Everything below ships together, in one release.
 
 - 📋 Themes: colours, accent, pywal and Base16, with the layout kept
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
-- 📋 Less memory while idle ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))

@@ -103,6 +103,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Less memory in the notification area** ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)):
+  closed to the tray, MDM gives the memory it isn't using back to Windows. Task Manager's
+  **Memory** drops from about 50 MB to under 10 MB (with 500 downloads in the list, from 58 to
+  about 14 MB), and is given back again every 10 minutes while MDM stays there. After the
+  language list (which needs a font for every script) closes, those fonts are let go: about 70 MB
+  less than before. On Linux the heap's free memory goes back to the system the same way.
+  [MDM uses a lot of memory](docs/troubleshooting.md#mdm-uses-a-lot-of-memory) explains
+  Task Manager's figures.
 - **Freeze reports say what kind of freeze it was** ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   MDM measures how much processor time the window got while it didn't answer. The report then
   says whether it ran all along (a loop), waited (a deadlock, or the disk or the network), or
