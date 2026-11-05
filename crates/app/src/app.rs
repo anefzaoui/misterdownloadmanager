@@ -5446,7 +5446,9 @@ impl App {
         self.finish_stopped();
         let mut actions = Vec::new();
         // A progress window can be hidden in the tray only when there is one to bring it back.
-        let tray = self.tray.is_some() && crate::tray::available();
+        // Off-screen test copies have no tray icon: their windows are drawn as if they had one
+        // (the captures and the accessibility checks see the hide button).
+        let tray = (self.tray.is_some() || crate::offscreen()) && crate::tray::available();
         for p in &mut self.progress {
             p.keep_sharing = self.settings.torrent_keep_sharing;
             p.tray = tray;

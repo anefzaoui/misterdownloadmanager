@@ -113,7 +113,11 @@ On Linux this needs a tray, which most desktops have (KDE, GNOME with its AppInd
 
 Minimize hides the main window there too, while **Minimize to the notification area** is on in **Options → General**. It is on by default.
 
-A download's progress window can go there as well, with its Minimize or with the button at the end of its tab row (an arrow into a tray). To bring it back, choose it in **Downloads in progress**, or double-click the download in the list.
+A download's progress window can go there as well, with its Minimize or with its **Hide to the notification area** button: a short dash with an arrow down to the corner.
+
+On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.
+
+To bring the window back, choose it in **Downloads in progress**, or double-click the download in the list.
 
 To quit, choose **Tasks → Exit** or **Exit** in the tray menu.
 
