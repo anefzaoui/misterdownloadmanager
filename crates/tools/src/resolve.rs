@@ -188,20 +188,81 @@ pub fn sub_choices(v: &Video, wanted: &str) -> Vec<SubChoice> {
     out
 }
 
-/// Look `url` up with yt-dlp (one video, not a playlist).
-pub fn resolve(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Video, ProcError> {
-    let mut args: Vec<String> = ["-J", "--no-playlist", "--no-warnings"]
-        .map(String::from)
-        .to_vec();
+/// A page that lists videos (#69): a playlist, a channel, an album; what one look-up says of
+/// it. Its videos are listed afterwards, streamed (`crate::playlist`).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ListPage {
+    pub title: String,
+    /// How many videos, when the site says (a playlist does, a channel doesn't).
+    pub total: Option<u64>,
+}
+
+/// What a page is: one video, or a list of them.
+#[derive(Clone, Debug, PartialEq)]
+pub enum Looked {
+    Video(Video),
+    List(ListPage),
+}
+
+#[derive(Deserialize)]
+struct RawKind {
+    #[serde(rename = "_type")]
+    kind: Option<String>,
+    title: Option<String>,
+    playlist_count: Option<u64>,
+}
+
+/// Parse `yt-dlp -J` output: a video, or a list's first page (`_type: playlist`).
+pub fn parse_looked(json: &[u8]) -> Option<Looked> {
+    let kind: RawKind = serde_json::from_slice(json).ok()?;
+    if kind.kind.as_deref() == Some("playlist") {
+        return Some(Looked::List(ListPage {
+            title: kind
+                .title
+                .map(|t| t.trim().to_owned())
+                .filter(|t| !t.is_empty())
+                .unwrap_or_else(|| "playlist".into()),
+            total: kind.playlist_count,
+        }));
+    }
+    parse(json).map(Looked::Video)
+}
+
+/// Look `url` up with yt-dlp: one video (`--no-playlist`: a video in a playlist is that video),
+/// or, for a page that is a list, only what it is and its first entry, flat (#69: never every
+/// video of a 6,000-long playlist at once; `--flat-playlist -I 1:1` doesn't change a video's
+/// look-up).
+pub fn look_up(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Looked, ProcError> {
+    let mut args: Vec<String> = [
+        "-J",
+        "--no-playlist",
+        "--flat-playlist",
+        "--playlist-items",
+        "1:1",
+        "--no-warnings",
+    ]
+    .map(String::from)
+    .to_vec();
     // Kept until yt-dlp has answered.
     let (theirs, _cookies) = browser.args(url)?;
     args.extend(theirs);
     let cmd = proc::ytdlp(exe, &[], &args, url)?;
     let out = proc::output(cmd, "yt-dlp", Duration::from_secs(90))?;
-    parse(&out).ok_or_else(|| ProcError::Failed {
+    parse_looked(&out).ok_or_else(|| ProcError::Failed {
         tool: "yt-dlp".into(),
         message: "it gave no video information".into(),
     })
+}
+
+/// Look `url` up as one video (a list is an error here).
+pub fn resolve(exe: &Path, url: &str, browser: &proc::FromBrowser) -> Result<Video, ProcError> {
+    match look_up(exe, url, browser)? {
+        Looked::Video(v) => Ok(v),
+        Looked::List(l) => Err(ProcError::Failed {
+            tool: "yt-dlp".into(),
+            message: format!("the address is a list of videos ({})", l.title),
+        }),
+    }
 }
 
 /// The audio choice's label starts with this (the app translates it).
@@ -248,7 +309,7 @@ pub fn audio_conversion(selector: &str) -> Option<AudioOut> {
 pub const MP3: &str = "mp3:";
 
 /// The MP3 bitrates offered, best first.
-const MP3_RATES: [u32; 4] = [320, 256, 192, 128];
+pub const MP3_RATES: [u32; 4] = [320, 256, 192, 128];
 
 /// yt-dlp's `--audio-quality` for an MP3 choice's `<kbps>` (`MP3`): `0` (the best variable
 /// bitrate) or a bitrate MDM offers, written exactly (`192`, not `+192` or `0192`); none for

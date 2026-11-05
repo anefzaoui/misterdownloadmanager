@@ -7,13 +7,19 @@ use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
 use egui::{Pos2, Ui, pos2};
-use mdm_tools::resolve::{Choice, SubChoice, Video};
+use mdm_tools::resolve::{Choice, Looked, SubChoice, Video};
 use mdm_tools::video::{ALL_UPLOADERS, Subs};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r, text};
 
 type Slot<T> = Arc<Mutex<Option<Result<T, String>>>>;
+
+/// What Download Now or Later adds: a video, or a playlist's (#69).
+pub enum VideoOut {
+    One(VideoAdd),
+    Many(crate::playlistdlg::PlaylistAdd),
+}
 
 /// What OK adds.
 pub struct VideoAdd {
@@ -46,7 +52,13 @@ pub struct VideoDialog {
     from_browser: String,
     folder: String,
     name: String,
-    lookup: Option<Slot<Video>>,
+    lookup: Option<Slot<Looked>>,
+    /// The yt-dlp and the browser's context the look-up ran with (a list is listed with them).
+    looking: Option<(PathBuf, mdm_tools::proc::FromBrowser)>,
+    /// The page is a playlist or a channel: its videos (#69).
+    list: Option<crate::playlistdlg::PlaylistView>,
+    /// Adding that many was answered Yes: Download Now (true) or Later goes ahead.
+    confirmed: Option<bool>,
     install: Option<(Tool, Slot<mdm_tools::Installed>)>,
     /// The helpers found (read again when an install ends, not every frame: it reads files).
     tools: Option<Tools>,
@@ -127,6 +139,9 @@ impl VideoDialog {
             folder: folder.display().to_string(),
             name: String::new(),
             lookup: None,
+            looking: None,
+            list: None,
+            confirmed: None,
             install: None,
             tools: None,
             looked_up: String::new(),
@@ -264,13 +279,23 @@ impl VideoDialog {
         }
     }
 
-    pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<VideoAdd> {
+    pub fn show(&mut self, ctx: &egui::Context, rt: &tokio::runtime::Handle) -> Outcome<VideoOut> {
         // Results from the background work.
         let looked = self.lookup.as_ref().and_then(|s| s.lock().unwrap().take());
         if let Some(res) = looked {
             self.lookup = None;
             match res {
-                Ok(v) => self.set_video(v),
+                Ok(Looked::Video(v)) => self.set_video(v),
+                Ok(Looked::List(l)) => {
+                    if let Some((exe, browser)) = self.looking.take() {
+                        self.list = Some(crate::playlistdlg::PlaylistView::start(
+                            &exe,
+                            &self.looked_up,
+                            browser,
+                            l,
+                        ));
+                    }
+                }
                 Err(e) => self.error = Some(lookup_error(&e)),
             }
         }
@@ -303,6 +328,13 @@ impl VideoDialog {
                 Ok(_) => {}
             }
         }
+        // A playlist's question before adding many (#69): Yes goes ahead in the window's frame.
+        if let Some(list) = &mut self.list
+            && let Some(now) = list.answer(ctx)
+        {
+            self.confirmed = Some(now);
+            ctx.request_repaint();
+        }
         let out = window(
             ctx,
             "video-page",
@@ -324,6 +356,17 @@ impl VideoDialog {
         }
         let folder = PathBuf::from(self.folder.trim());
         let out = crate::dialogs::ensure_folder(ctx, &mut self.asking, out, &folder);
+        // A playlist's videos, each its own download.
+        if let (Some(list), Outcome::Done(())) = (&self.list, &out) {
+            let merge = self.tools.as_ref().is_some_and(|t| t.2.is_some());
+            let start_now = self.start_now.unwrap_or(true);
+            return Outcome::Done(VideoOut::Many(list.add(
+                &folder,
+                merge,
+                start_now,
+                &self.context(),
+            )));
+        }
         match out {
             Outcome::Open => Outcome::Open,
             Outcome::Closed => Outcome::Closed,
@@ -336,7 +379,7 @@ impl VideoDialog {
                 let c = &choices[self.chosen.min(choices.len() - 1)];
                 let name = mdm_engine::naming::sanitize(self.name.trim());
                 let chosen = self.chosen_subs();
-                Outcome::Done(VideoAdd {
+                Outcome::Done(VideoOut::One(VideoAdd {
                     page,
                     selector: c.selector.clone(),
                     dest: PathBuf::from(self.folder.trim()).join(name),
@@ -354,7 +397,7 @@ impl VideoDialog {
                         }
                     },
                     remember: (!self.subs.is_empty()).then_some(chosen),
-                })
+                }))
             }
         }
     }
@@ -439,7 +482,7 @@ impl VideoDialog {
             && can_look
             && let Some(tool) = &ytdlp
         {
-            let slot: Slot<Video> = Arc::new(Mutex::new(None));
+            let slot: Slot<Looked> = Arc::new(Mutex::new(None));
             let (out, exe, page, ctx) = (
                 slot.clone(),
                 tool.exe.clone(),
@@ -447,15 +490,18 @@ impl VideoDialog {
                 ui.ctx().clone(),
             );
             let browser = from_browser(&self.context());
+            self.looking = Some((exe.clone(), browser.clone()));
             std::thread::spawn(move || {
                 let res =
-                    mdm_tools::resolve::resolve(&exe, &page, &browser).map_err(|e| e.to_string());
+                    mdm_tools::resolve::look_up(&exe, &page, &browser).map_err(|e| e.to_string());
                 *out.lock().unwrap() = Some(res);
                 ctx.request_repaint();
             });
             self.lookup = Some(slot);
             self.looked_up = self.page.trim().to_owned();
             self.video = None;
+            // A list being listed stops (dropped).
+            self.list = None;
             self.error = None;
         }
 
@@ -506,6 +552,8 @@ impl VideoDialog {
                 crate::i18n::t("Looking the page up..."),
                 winui::TEXT(),
             );
+        } else if self.list.is_some() {
+            // The list draws its own (PlaylistView::middle).
         } else if let Some((v, _)) = &self.video {
             let (rect, cut) =
                 winui::text_fit(&p, o.x + 11.0, line_y, &v.title, winui::TEXT(), o.x + 489.0);
@@ -568,52 +616,59 @@ impl VideoDialog {
             );
         }
 
-        // The choices: the shared row list.
-        let list = r(o, 11.0, 94.0, 478.0, 150.0);
-        let mut picked = None;
-        let choices = self.video.as_ref().map_or(&[][..], |(_, c)| c.as_slice());
-        self.rows.selected = Some(self.chosen).filter(|c| *c < choices.len());
-        // i18n: what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
-        self.rows.name = crate::i18n::t("Quality");
-        let ev = winui::row_list(
-            ui,
-            "video-choices",
-            list,
-            choices.len(),
-            17.0,
-            &mut self.rows,
-            |_, clip, i, row, look| {
-                let c = &choices[i];
-                // A format ("1080p mp4, 60 fps") reads left to right; its size at the trailing edge.
-                let label = choice_label(&c.label);
-                text(clip, row.left() + 6.0, row.top() + 12.0, &label, look.ink);
-                let size = c
-                    .size
-                    // i18n: the video's file size is not known
-                    .map_or(
-                        crate::i18n::t("size unknown").into(),
-                        crate::dialogs::dialog_size,
-                    );
-                // Read as the format and its size (#95: the choices were blank to a screen reader
-                // and alike to UI Automation).
-                // In the user's language, as drawn (the raw label is English).
-                look.name = format!("{label}, {size}");
-                winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
-            },
-        );
-        if ev.focused
-            && self.rows.type_to(ui, "video-choices", choices.len(), |i| {
-                choices[i].label.clone()
-            })
-        {
-            picked = self.rows.selected;
-        }
-        if let Some(i) = ev.picked {
-            picked = Some(i);
-        }
-        if let Some(i) = picked {
-            self.chosen = i;
-            self.name_from_choice();
+        // A playlist's or a channel's videos (#69), or the video's choices.
+        if let Some(list) = &mut self.list {
+            // The status line stops short of an Install button beside it.
+            let button = offer.as_ref().is_some_and(|(_, l, _)| !l.is_empty());
+            let right = if button { 390.0 } else { 489.0 };
+            list.middle(ui, o, installing.is_none().then_some(right));
+        } else {
+            // The choices: the shared row list.
+            let list = r(o, 11.0, 94.0, 478.0, 150.0);
+            let mut picked = None;
+            let choices = self.video.as_ref().map_or(&[][..], |(_, c)| c.as_slice());
+            self.rows.selected = Some(self.chosen).filter(|c| *c < choices.len());
+            // i18n: what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
+            self.rows.name = crate::i18n::t("Quality");
+            let ev = winui::row_list(
+                ui,
+                "video-choices",
+                list,
+                choices.len(),
+                17.0,
+                &mut self.rows,
+                |_, clip, i, row, look| {
+                    let c = &choices[i];
+                    // A format ("1080p mp4, 60 fps") reads left to right; its size at the trailing edge.
+                    let label = choice_label(&c.label);
+                    text(clip, row.left() + 6.0, row.top() + 12.0, &label, look.ink);
+                    let size = c
+                        .size
+                        // i18n: the video's file size is not known
+                        .map_or(
+                            crate::i18n::t("size unknown").into(),
+                            crate::dialogs::dialog_size,
+                        );
+                    // Read as the format and its size (#95: the choices were blank to a screen reader
+                    // and alike to UI Automation), in the user's language, as drawn.
+                    look.name = format!("{label}, {size}");
+                    winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, &size, look.ink);
+                },
+            );
+            if ev.focused
+                && self.rows.type_to(ui, "video-choices", choices.len(), |i| {
+                    choices[i].label.clone()
+                })
+            {
+                picked = self.rows.selected;
+            }
+            if let Some(i) = ev.picked {
+                picked = Some(i);
+            }
+            if let Some(i) = picked {
+                self.chosen = i;
+                self.name_from_choice();
+            }
         }
 
         // The labels before the boxes: a column as wide as the longest of them in this
@@ -621,7 +676,12 @@ impl VideoDialog {
         // boxes after it; longer still, a label is cut and shown whole on hover.
         let labels = [
             crate::i18n::t("Save to"),
-            crate::i18n::t("File name"),
+            if self.list.is_some() {
+                // i18n: label before the quality chosen for all of a playlist's videos
+                crate::i18n::t("Quality")
+            } else {
+                crate::i18n::t("File name")
+            },
             // i18n: label before the list of a video's subtitle languages
             crate::i18n::t("Subtitles"),
         ];
@@ -669,28 +729,39 @@ impl VideoDialog {
             self.folder = d.display().to_string();
         }
         label(ui, 297.0, labels[1], winui::TEXT());
-        winui::edit(
-            ui,
-            r(o, bx, 284.0, 489.0 - bx, 21.0),
-            &mut self.name,
-            true,
-            false,
-        );
-        let on = self.subtitles_row(ui, o, bx, ffmpeg.is_some());
-        let shade = if on {
-            winui::TEXT()
+        if let Some(list) = &mut self.list {
+            // One quality for every video; their names are their titles (no subtitles).
+            list.quality_row(ui, r(o, bx, 284.0, 489.0 - bx, 21.0), ffmpeg.is_some());
         } else {
-            winui::TEXT_DISABLED()
-        };
-        label(ui, 328.0, labels[2], shade);
+            winui::edit(
+                ui,
+                r(o, bx, 284.0, 489.0 - bx, 21.0),
+                &mut self.name,
+                true,
+                false,
+            );
+            let on = self.subtitles_row(ui, o, bx, ffmpeg.is_some());
+            let shade = if on {
+                winui::TEXT()
+            } else {
+                winui::TEXT_DISABLED()
+            };
+            label(ui, 328.0, labels[2], shade);
+        }
 
         // The choices belong to the address looked up: an edited address is looked up first
         // (it downloaded the new page with the old one's format and name).
-        let stale = self.video.is_some() && self.page.trim() != self.looked_up;
-        let ready = self.video.as_ref().is_some_and(|(_, c)| !c.is_empty())
-            && !self.name.trim().is_empty()
-            && !busy
-            && !stale;
+        let stale =
+            (self.video.is_some() || self.list.is_some()) && self.page.trim() != self.looked_up;
+        let listing = self.list.as_ref().is_some_and(|l| l.listing());
+        let chosen = match &self.list {
+            Some(l) => l.chosen() > 0 && !listing,
+            None => {
+                self.video.as_ref().is_some_and(|(_, c)| !c.is_empty())
+                    && !self.name.trim().is_empty()
+            }
+        };
+        let ready = chosen && !busy && !stale;
         let kind = |default: bool| match (ready, default) {
             (false, _) => ButtonKind::Disabled,
             (true, true) => ButtonKind::Default,
@@ -719,7 +790,9 @@ impl VideoDialog {
             None,
         );
         // i18n: why Download Now is greyed: the page address was changed after the look-up
-        let now = winui::why_disabled(now, stale, "Look up the new address first").clicked()
+        let now = winui::why_disabled(now, stale, "Look up the new address first");
+        // i18n: why Download Now is greyed: a playlist's videos are still being listed
+        let now = winui::why_disabled(now, listing, "Wait for the list, or stop listing").clicked()
             || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
@@ -740,10 +813,24 @@ impl VideoDialog {
             None,
         )
         .clicked();
-        if cancel || winui::escape_pressed(ui) {
+        // Escape answers the playlist's question first, when it's asked.
+        let asking = self.list.as_ref().is_some_and(|l| l.asking());
+        if cancel || (winui::escape_pressed(ui) && !asking) {
             return Outcome::Closed;
         }
         if ready && (now || later) {
+            // A playlist of many asks first; Yes comes back as `confirmed`.
+            if let Some(list) = &mut self.list
+                && list.ask(now)
+            {
+                return Outcome::Open;
+            }
+            self.start_now = Some(now);
+            return Outcome::Done(());
+        }
+        if let Some(now) = self.confirmed.take()
+            && ready
+        {
             self.start_now = Some(now);
             return Outcome::Done(());
         }
@@ -901,7 +988,7 @@ fn lookup_error(e: &str) -> String {
 
 /// A choice's label in the user's language: the audio choice's words translated, the rest (a
 /// resolution, a type) as they are, kept left to right.
-fn choice_label(label: &str) -> String {
+pub(crate) fn choice_label(label: &str) -> String {
     if let Some(kind) = label.strip_prefix(mdm_tools::resolve::AUDIO_ORIGINAL) {
         return crate::i18n::fmt(
             // i18n: a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…

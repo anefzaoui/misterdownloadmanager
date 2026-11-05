@@ -272,6 +272,56 @@ pub fn stem_destination(dir: &Path, name: &str, in_use: impl Fn(&str) -> bool) -
         .expect("unbounded search finds a free name")
 }
 
+/// [`stem_destination`] for many downloads into one folder (a playlist's videos, #69): the
+/// folder is read once, not once a name, and each stem handed out counts as taken for the next.
+/// The same rule: no file there starts with the stem and a dot (or is it), letter case aside,
+/// and no other download there has it.
+pub struct Stems {
+    dir: PathBuf,
+    /// Lowercase: every file name there, each of its prefixes before a dot, and the other
+    /// downloads' stems.
+    taken: HashSet<String>,
+}
+
+impl Stems {
+    /// `in_use`: the stems of the other downloads into `dir`.
+    pub fn new(dir: &Path, in_use: impl IntoIterator<Item = String>) -> Stems {
+        let mut taken = HashSet::new();
+        if let Ok(rd) = std::fs::read_dir(dir) {
+            for e in rd.filter_map(Result::ok) {
+                let name = e.file_name().to_string_lossy().to_lowercase();
+                for (i, _) in name.match_indices('.') {
+                    taken.insert(name[..i].to_owned());
+                }
+                taken.insert(name);
+            }
+        }
+        taken.extend(in_use.into_iter().map(|s| s.to_lowercase()));
+        Stems {
+            dir: dir.to_owned(),
+            taken,
+        }
+    }
+
+    /// Where `name` goes: its stem, else numbered on (` (1)`, ` (2)`…).
+    pub fn pick(&mut self, name: &str) -> PathBuf {
+        let name = fit_name(&self.dir, name).unwrap_or_else(|| name.to_owned());
+        let (stem, ext) = match name.rfind('.') {
+            Some(i) if i > 0 => (&name[..i], &name[i..]),
+            _ => (name.as_str(), ""),
+        };
+        let s = std::iter::once(stem.to_owned())
+            .chain((1u32..).map(|n| format!("{stem} ({n})")))
+            .find(|s| {
+                !self.taken.contains(&s.to_lowercase())
+                    && !is_reserved(&self.dir.join(format!("{s}{ext}")))
+            })
+            .expect("unbounded search finds a free name");
+        self.taken.insert(s.to_lowercase());
+        self.dir.join(format!("{s}{ext}"))
+    }
+}
+
 fn clamp(name: &str) -> String {
     clamp_to(name, MAX_NAME)
 }
@@ -383,6 +433,32 @@ mod tests {
         assert_eq!(
             stem_destination(other.path(), "Song.mp3", none),
             other.path().join("Song.mp3")
+        );
+    }
+
+    /// #69: a playlist's names, the folder read once: the same rule as `stem_destination`, each
+    /// name handed out taken for the next, and thousands quickly.
+    #[test]
+    fn many_stems_into_one_folder() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path();
+        std::fs::write(d.join("song.M4A"), b"the user's").unwrap();
+        std::fs::write(d.join("Song (1).webm.part"), b"").unwrap();
+        std::fs::write(d.join("Songs.m4a"), b"").unwrap();
+        let mut stems = Stems::new(d, ["Song (2)".to_owned()]);
+        assert_eq!(stems.pick("Song.mp4"), d.join("Song (3).mp4"));
+        assert_eq!(stems.pick("Song.mp4"), d.join("Song (4).mp4"));
+        assert_eq!(stems.pick("Songs.mp3"), d.join("Songs (1).mp3"));
+        assert_eq!(stems.pick("Song extra.mp4"), d.join("Song extra.mp4"));
+        let t = std::time::Instant::now();
+        for i in 0..5000 {
+            stems.pick(&format!("Video {}.mp4", i % 2500));
+        }
+        assert_eq!(stems.pick("Video 7.mp4"), d.join("Video 7 (2).mp4"));
+        assert!(
+            t.elapsed() < std::time::Duration::from_secs(2),
+            "{:?}",
+            t.elapsed()
         );
     }
 

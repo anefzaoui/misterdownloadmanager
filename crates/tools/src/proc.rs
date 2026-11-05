@@ -255,6 +255,8 @@ pub struct Spawned {
     /// Every `WARNING:` line (a few dozen at most): a subtitle yt-dlp couldn't get is said early,
     /// and the tail has moved past it by the end (#68).
     warnings: Arc<Mutex<Vec<String>>>,
+    /// The stderr reader has read to the end (the helper and all it started closed it).
+    stderr_done: Arc<std::sync::atomic::AtomicBool>,
     name: String,
     #[cfg(windows)]
     job: Option<win32job::Job>,
@@ -285,8 +287,15 @@ impl Spawned {
         self.warnings.lock().unwrap().clone()
     }
 
-    /// A failure with what the tool said (its last `ERROR:` line, else its last line).
+    /// A failure with what the tool said (its last `ERROR:` line, else its last line). Called
+    /// once it has ended: its last lines are waited for (the stderr reader is another thread, and
+    /// on a busy machine it came after the exit was seen: "stopped without saying why"), up to
+    /// two seconds, as something it started may keep stderr open.
     pub fn failure(&self) -> ProcError {
+        let end = Instant::now() + Duration::from_secs(2);
+        while !self.stderr_done.load(std::sync::atomic::Ordering::Acquire) && Instant::now() < end {
+            std::thread::sleep(Duration::from_millis(10));
+        }
         let tail = self.tail.lock().unwrap();
         let message = tail
             .iter()
@@ -324,8 +333,9 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
     });
     let tail = Arc::new(Mutex::new(VecDeque::new()));
     let warnings = Arc::new(Mutex::new(Vec::new()));
+    let stderr_done = Arc::new(std::sync::atomic::AtomicBool::new(false));
     if let Some(err) = child.stderr.take() {
-        let (tail, warnings) = (tail.clone(), warnings.clone());
+        let (tail, warnings, done) = (tail.clone(), warnings.clone(), stderr_done.clone());
         std::thread::spawn(move || {
             for line in BufReader::new(err).lines().map_while(Result::ok) {
                 if let Some(w) = line.strip_prefix("WARNING:") {
@@ -340,12 +350,16 @@ pub fn spawn(mut cmd: Command, name: &str) -> Result<Spawned, ProcError> {
                 }
                 t.push_back(line);
             }
+            done.store(true, std::sync::atomic::Ordering::Release);
         });
+    } else {
+        stderr_done.store(true, std::sync::atomic::Ordering::Release);
     }
     Ok(Spawned {
         child,
         tail,
         warnings,
+        stderr_done,
         name: name.to_owned(),
         #[cfg(windows)]
         job,
@@ -369,8 +383,7 @@ pub fn output(cmd: Command, name: &str, timeout: Duration) -> Result<Vec<u8>, Pr
                 return if status.success() {
                     Ok(stdout)
                 } else {
-                    // Let the stderr reader catch up with the last lines.
-                    std::thread::sleep(Duration::from_millis(50));
+                    // `failure` waits for the stderr reader's last lines.
                     Err(s.failure())
                 };
             }
