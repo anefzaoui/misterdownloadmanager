@@ -60,12 +60,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   limit what all torrents together send, and a torrent's progress window can limit its own, kept
   with it. Its General tab now counts what it sent and how long it shared over all its runs, so
   the share ratio no longer starts again at 0 after a pause or a restart.
-- **A file-type icon before every file name**: the download list, Download File Info, Properties,
-  Add torrent's tree and a torrent's Files tab (folders too), and the Scheduler's files. Video,
-  audio, pictures, archives, documents, subtitles, code, and the programs and installers of every
-  system (exe, msi, dmg, pkg, deb, rpm, AppImage, apk, iso…) each have their own, from Material
-  Icon Theme (MIT), the same on Windows, macOS and Linux; a .torrent shows MDM's magnet. Windows'
-  own icons were used before, on Windows only.
+- **A file-type icon before every file name** ([#122](https://github.com/anefzaoui/misterdownloadmanager/issues/122)):
+  the download list, Download File Info, Properties, Add torrent's tree and a torrent's Files tab
+  (folders too), and the Scheduler's files. Each is your system's own icon for that type, the one
+  its file manager shows: Windows Explorer's, macOS Finder's, or your Linux desktop's icon theme
+  (KDE's, GNOME's or GTK's choice, then the themes it builds on). It is sharp at every display
+  scale (125, 150, 200 %), taken at the size the screen needs. Each type is looked up once, in the
+  background, so a long list never waits for it. Where the system has no icon for a type (a Linux
+  desktop without an icon theme), MDM draws one of its own, from the Tango icons (public domain).
 - **Video subtitles** ([#68](https://github.com/anefzaoui/misterdownloadmanager/issues/68)):
   Download video from a page lists the video's subtitle languages, the uploader's first, then the
   site's automatic captions (in the language spoken, English and yours). They're saved beside the

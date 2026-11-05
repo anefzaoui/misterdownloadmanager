@@ -62,7 +62,11 @@ toolbar, key and IPC commands into actions. Each dialog is its own module and re
 `Outcome` (open, closed, done with a value). Windows-only calls are confined to `win32.rs` and
 their Linux and macOS counterparts to `unix.rs` (starting with the session, the browsers' host,
 sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system:
-Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`).
+Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (`theme.rs`). So do the icons
+before file names (`fileicons.rs`): the Windows shell's system image lists, macOS Finder's
+(NSWorkspace), the Linux desktop's icon theme (`xdgicons.rs`, shared-mime-info and the Icon
+Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's
+icons (bundled) stand in until the system's icon is ready, and wherever the system has none.
 
 The download list and settings are saved atomically to `%APPDATA%\misterdownloadmanager\`
 (`downloads.json`). The browser host reads the same file for the capture rules, so a change in

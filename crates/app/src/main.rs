@@ -45,6 +45,8 @@ mod videodlg;
 #[cfg(windows)]
 mod win32;
 mod winui;
+#[cfg(any(target_os = "linux", test))]
+mod xdgicons;
 
 /// The main window's title (dialogs find their owner by it).
 pub const MAIN_TITLE: &str = concat!("Mister Download Manager ", env!("CARGO_PKG_VERSION"));

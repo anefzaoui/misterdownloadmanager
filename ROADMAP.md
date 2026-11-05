@@ -71,7 +71,9 @@ Everything below ships together, in one release.
 - ✅ The built-in categories can be renamed, given other file types and deleted, and restored
   ([#93](https://github.com/anefzaoui/misterdownloadmanager/issues/93))
 - ✅ A file-type icon before every file name: the download list, Download File Info, Properties,
-  a torrent's files and the Scheduler's (Material Icon Theme, the same on every system), and every
+  a torrent's files and the Scheduler's, each the system's own icon for its type (Windows
+  Explorer's, macOS Finder's, the Linux desktop's icon theme), sharp at every display scale
+  ([#122](https://github.com/anefzaoui/misterdownloadmanager/issues/122)), and every
   list's rows named for screen readers ([#95](https://github.com/anefzaoui/misterdownloadmanager/issues/95)),
   inside their list, with their place in it ([#102](https://github.com/anefzaoui/misterdownloadmanager/issues/102))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page

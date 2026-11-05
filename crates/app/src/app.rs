@@ -548,11 +548,11 @@ fn seconds_now() -> u32 {
     chrono::Local::now().num_seconds_from_midnight()
 }
 
-/// The shell icon for a file name's extension.
+/// The icon for a file name's extension (empty: none).
 fn file_icon(name: &str) -> IconKey {
     match name.rsplit_once('.') {
         Some((_, ext)) if !ext.is_empty() => IconKey::Ext(ext.to_ascii_lowercase()),
-        _ => IconKey::Ext("unknown".into()),
+        _ => IconKey::Ext(String::new()),
     }
 }
 

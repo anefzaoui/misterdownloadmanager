@@ -32,7 +32,7 @@ Copyright © 2026 Ahmed Nefzaoui and contributors.
 |---|---|---|
 | The MDM logo and app icon | Ahmed Nefzaoui, made with ChatGPT image generation | Part of MDM |
 | Lucide icons 1.63 (toolbar, dialogs) | Lucide Icons and contributors | ISC |
-| Material Icon Theme 5.40 (file icons) | Material Extensions (Philipp Kief and contributors) | MIT |
+| Tango Icon Theme 0.8.90 (file icons where the system has none) | The Tango Desktop Project | Public domain |
 | flag-icons 7.6 (language flags) | Panayiotis Lipiridis and contributors | MIT |
 | Silk icons 1.3 (categories tree) | Mark James | CC BY 2.5 |
 | System fonts (Segoe UI and others) | The operating system | Used at run time, not included |

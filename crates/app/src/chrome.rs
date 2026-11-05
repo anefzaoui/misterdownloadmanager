@@ -110,20 +110,16 @@ impl ShellIcons {
             .or_insert_with(|| {
                 #[cfg(windows)]
                 {
-                    // File types are drawn from the app's own icons (fileicons.rs), the same on
-                    // every system; Windows' shell gives only Download complete's open folder.
-                    let rgba = match &key {
+                    // File types go through fileicons.rs (the system's icons, looked up in the
+                    // background); here only Download complete's open folder.
+                    let (side, rgba) = match &key {
                         IconKey::FolderOpenLarge => crate::win32::folder_open_icon_large(),
                         IconKey::Ext(_) | IconKey::ExtLarge(_) | IconKey::Silk(_) => None,
                     }?;
-                    let side = if matches!(key, IconKey::ExtLarge(_) | IconKey::FolderOpenLarge) {
-                        32
-                    } else {
-                        16
-                    };
+                    let side = side as usize;
                     let img = egui::ColorImage::from_rgba_unmultiplied([side, side], &rgba);
                     let name = format!("shell-icon-{:?}", std::ptr::addr_of!(rgba));
-                    Some(ctx.load_texture(name, img, egui::TextureOptions::NEAREST))
+                    Some(ctx.load_texture(name, img, egui::TextureOptions::LINEAR))
                 }
                 #[cfg(not(windows))]
                 {
@@ -159,8 +155,12 @@ impl ShellIcons {
                 return;
             }
             IconKey::Ext(e) | IconKey::ExtLarge(e) => {
-                // The key holds the extension alone ("unknown" when there is none).
-                let name = format!("x.{e}");
+                // The key holds the extension alone (empty when there is none).
+                let name = if e.is_empty() {
+                    "file".to_string()
+                } else {
+                    format!("x.{e}")
+                };
                 crate::fileicons::paint(ui, painter, crate::fileicons::Kind::File(&name), rc);
                 return;
             }
