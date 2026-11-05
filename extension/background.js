@@ -316,50 +316,141 @@ function firstUrl(item) {
 // Links clicked with Alt held (page.js): the browser keeps their download.
 const bypass = new Map();
 
-// Streams the page's players loaded (HLS, DASH), per tab, in the order seen (a master playlist
-// comes before its variants): a player that plays from a blob: has no address of its own, so
-// the download button sends its manifest, which yt-dlp reads (qualities, separate audio).
-// Segments are never listed. Forgotten when the tab goes to another page or closes.
-const streams = new Map();
+// ---- the media a tab loaded (#38) ------------------------------------------------------------
+
+// What the tab's pages loaded that can be downloaded, per tab, in the order seen: streams'
+// manifests (HLS .m3u8, DASH .mpd; a master playlist comes before its variants) and plain video
+// and sound files (a <video>'s or <audio>'s own file, or a large whole file a player fetched). The
+// popup lists them (`mediaList`); the download button over a video sends the stream its frame
+// loaded first (`streamOf`): a player that plays from a blob: has no address of its own, and
+// yt-dlp reads the manifest (qualities, separate audio). Segments and byte ranges are pieces of a
+// stream, never listed. Bounded: MEDIA_MAX per tab, MEDIA_TABS tabs; forgotten when the tab goes
+// to another page or closes.
+const media = new Map(); // tab id -> {page, items: [{url, kind, frameId, mime, size, info}], frames}
+const MEDIA_MAX = 60;
+const MEDIA_TABS = 50;
+const URL_MAX = 8192;
+// A player's own fetch of a whole file is listed from this size (smaller ones are pieces).
+const FETCHED_MIN = 1 << 20;
 const MANIFEST = /\.(m3u8|mpd)(?:[?#]|$)/i;
-const MANIFEST_TYPE = /mpegurl|dash\+xml/i;
+const SEGMENT_TYPE = /^(video\/mp2t|video\/iso\.segment|audio\/iso\.segment)$/;
+const SEGMENT_EXT = /\.(ts|m4s|m4f|cmfv|cmfa|cmft)$/;
+const MEDIA_EXT = /\.(mp4|m4v|webm|mkv|mov|avi|wmv|flv|3gp|ogv|mp3|m4a|aac|ogg|oga|opus|flac|wav|wma)$/;
+const AUDIO_EXT = /^(mp3|m4a|aac|oga|ogg|opus|flac|wav|wma)$/;
+
+const pathOf = (url) => url.split(/[?#]/)[0];
+const headerOf = (d, name) => ((d.responseHeaders || []).find((h) => h.name.toLowerCase() === name) || {}).value || "";
+
+// What a response the tab got is, for the list: {kind: "hls" | "dash" | "video" | "audio", mime,
+// size}, or null (not media, a segment, a piece of a file, too small to be a file of its own).
+function mediaKind(d) {
+  if (d.tabId < 0 || !/^https?:/i.test(d.url) || d.url.length > URL_MAX) return null;
+  if (d.statusCode && (d.statusCode < 200 || d.statusCode > 299)) return null;
+  const mime = headerOf(d, "content-type").split(";")[0].trim().toLowerCase();
+  const path = pathOf(d.url).toLowerCase();
+  if (/\.m3u8$/.test(path) || /mpegurl/.test(mime)) return { kind: "hls", mime, size: 0 };
+  if (/\.mpd$/.test(path) || /dash\+xml/.test(mime)) return { kind: "dash", mime, size: 0 };
+  if (SEGMENT_TYPE.test(mime) || SEGMENT_EXT.test(path)) return null;
+  const ext = (MEDIA_EXT.exec(path) || [])[1] || "";
+  const typed = /^(video|audio)\//.test(mime) || mime === "application/ogg";
+  const untyped = !mime || /^(application|binary)\/octet-stream$/.test(mime);
+  if (!typed && !(ext && untyped)) return null;
+  // The whole file's size: a range's total, else the length of a whole answer.
+  const range = headerOf(d, "content-range");
+  const total = /\/\s*(\d+)\s*$/.exec(range);
+  const size = total ? Number(total[1]) : d.statusCode === 206 ? 0 : Number(headerOf(d, "content-length")) || 0;
+  // A <video>'s or <audio>'s own file comes in ranges; a player's fetch of a range, or of a
+  // small file, is a piece of a stream.
+  if (d.type !== "media" && (d.statusCode === 206 || range || /[?&](range|bytestart|byterange)=/i.test(d.url) || size < FETCHED_MIN)) {
+    return null;
+  }
+  const audio = mime.startsWith("audio/") || (!mime.startsWith("video/") && AUDIO_EXT.test(ext));
+  return { kind: audio ? "audio" : "video", mime, size };
+}
+
+const isStream = (it) => it.kind === "hls" || it.kind === "dash";
+// The folder a manifest's pieces are in ("https://cdn/v/"), or null for a site's root (every
+// file of the site would be its piece).
+function folderOf(url) {
+  const p = pathOf(url);
+  const dir = p.slice(0, p.lastIndexOf("/") + 1);
+  return /^https?:\/\/[^/]+\/.+/i.test(dir) ? dir : null;
+}
+
+function noteMedia(d, found) {
+  const tab = media.get(d.tabId) || { page: null, items: [] };
+  const old = tab.items.find((it) => it.url === d.url);
+  if (old) {
+    if (found.size && !old.size) old.size = found.size;
+    return;
+  }
+  // A file in a stream's own folder is one of its pieces (a DASH init segment, a fragment).
+  const inStream = (it) => isStream(it) && folderOf(it.url) && d.url.startsWith(folderOf(it.url));
+  if (!isStream(found) && tab.items.some(inStream)) return;
+  tab.items.push({ url: d.url, kind: found.kind, frameId: d.frameId || 0, mime: found.mime, size: found.size });
+  // Over the cap: the oldest go, but each frame's first stream stays (the button sends it).
+  while (tab.items.length > MEDIA_MAX) {
+    const firsts = new Set();
+    const i = tab.items.findIndex((it) => {
+      if (!isStream(it) || firsts.has(it.frameId)) return true;
+      firsts.add(it.frameId);
+      return false;
+    });
+    tab.items.splice(Math.max(i, 0), 1);
+  }
+  // The tab seen last goes last; the least recent ones go past MEDIA_TABS.
+  media.delete(d.tabId);
+  media.set(d.tabId, tab);
+  for (const id of media.keys()) {
+    if (media.size <= MEDIA_TABS) break;
+    media.delete(id);
+  }
+  keepMedia();
+}
 
 if (ext.webRequest && ext.webRequest.onResponseStarted) {
   ext.webRequest.onResponseStarted.addListener(
     (d) => {
-      if (d.tabId < 0) return;
-      const ct = (d.responseHeaders || []).find((h) => h.name.toLowerCase() === "content-type");
-      if (!MANIFEST.test(d.url) && !(ct && MANIFEST_TYPE.test(ct.value || ""))) return;
-      streamsBack.then(() => {
-        const list = streams.get(d.tabId) || [];
-        if (!list.some((s) => s.url === d.url)) list.push({ url: d.url, frameId: d.frameId });
-        streams.set(d.tabId, list.slice(-20));
-        keepStreams();
-      });
+      const found = mediaKind(d);
+      if (found) mediaBack.then(() => noteMedia(d, found));
     },
     { urls: ["<all_urls>"], types: ["xmlhttprequest", "media", "other"] },
     ["responseHeaders"],
   );
 }
-ext.tabs.onRemoved.addListener((id) => streamsBack.then(() => streams.delete(id) && keepStreams()));
+ext.tabs.onRemoved.addListener((id) => mediaBack.then(() => media.delete(id) && keepMedia()));
+// Another page in the tab: what the last one loaded goes (not for a move within the page, #part).
 ext.tabs.onUpdated.addListener((id, change) => {
-  if (change.url) streamsBack.then(() => streams.delete(id) && keepStreams());
+  if (!change.url) return;
+  mediaBack.then(() => {
+    const page = change.url.split("#")[0];
+    const tab = media.get(id);
+    if (tab && tab.page === page) return;
+    media.set(id, { page, items: [] });
+    keepMedia();
+  });
 });
 
 // Kept in the session's storage (memory only, gone with the browser): the browser stops this
-// script when idle, and a tab's player loaded its stream long before the button is clicked.
-// Read back once at start, merged with what was seen meanwhile; everything else waits for it.
+// script when idle, and a tab's player loaded its stream long before it is asked for. Read back
+// once at start, merged with what was seen meanwhile; everything else waits for it.
 const session = ext.storage.session;
-function keepStreams() {
-  if (session) session.set({ streams: [...streams] }).catch(() => {});
+let keeping = null;
+function keepMedia() {
+  if (!session || keeping) return;
+  keeping = setTimeout(() => {
+    keeping = null;
+    session.set({ media: [...media] }).catch(() => {});
+  }, 200);
 }
-const streamsBack = session
+const mediaBack = session
   ? session
-      .get({ streams: [] })
+      .get({ media: [] })
       .then((v) => {
-        for (const [tab, list] of v.streams || []) {
-          const now = streams.get(tab) || [];
-          streams.set(tab, [...list, ...now.filter((s) => !list.some((o) => o.url === s.url))].slice(-20));
+        for (const [id, kept] of v.media || []) {
+          const now = media.get(id);
+          const fresh = ((now && now.items) || []).filter((s) => !kept.items.some((o) => o.url === s.url));
+          media.set(id, { ...kept, page: (now && now.page) || kept.page, items: [...kept.items, ...fresh].slice(-MEDIA_MAX) });
         }
       })
       .catch(() => {})
@@ -367,9 +458,199 @@ const streamsBack = session
 
 // The stream a frame's player loaded first (its master playlist), else the tab's.
 function streamOf(sender) {
-  const list = (sender.tab && streams.get(sender.tab.id)) || [];
+  const list = ((sender.tab && media.get(sender.tab.id)) || { items: [] }).items.filter(isStream);
   const mine = list.find((s) => s.frameId === sender.frameId);
   return (mine || list[0] || {}).url || "";
+}
+
+// ---- a stream's manifest: its qualities, length, and whether it is protected -------------------
+
+// An HLS tag's attributes (KEY=value,KEY="value").
+function hlsAttrs(s) {
+  const out = {};
+  for (const [, k, v] of s.matchAll(/([A-Z0-9-]+)=("[^"]*"|[^,]*)/g)) out[k] = v.replace(/^"|"$/g, "");
+  return out;
+}
+
+// A copy-protected (DRM) key: a key system's (Apple's FairPlay, Google's Widevine, Microsoft's
+// PlayReady), or SAMPLE-AES, which no download tool decrypts. AES-128 with a plain key
+// ("identity") is not DRM: yt-dlp fetches its key as the player does.
+function drmKey(a) {
+  const method = (a.METHOD || "").toUpperCase();
+  if (!method || method === "NONE") return false;
+  return method.startsWith("SAMPLE-AES") || (a.KEYFORMAT !== undefined && a.KEYFORMAT !== "identity");
+}
+
+// {heights, duration, drm, live, children}: `children`, the addresses (without their query) a
+// master playlist names: its variants and renditions, the same stream.
+function parseHls(text, base) {
+  const lines = text.replace(/^﻿/, "").split(/\r?\n/).map((l) => l.trim());
+  if (!lines[0].startsWith("#EXTM3U")) return null;
+  const info = { heights: [], duration: 0, drm: false, live: true, children: [] };
+  const child = (uri) => {
+    try {
+      info.children.push(pathOf(new URL(uri, base).href));
+    } catch {
+      // Not an address.
+    }
+  };
+  for (let i = 0; i < lines.length; i++) {
+    const l = lines[i];
+    const value = l.slice(l.indexOf(":") + 1);
+    if (l.startsWith("#EXT-X-STREAM-INF:")) {
+      const h = Number((/x(\d+)$/.exec(hlsAttrs(value).RESOLUTION || "") || [])[1]);
+      if (h) info.heights.push(h);
+      const uri = lines.slice(i + 1).find((x) => x && !x.startsWith("#"));
+      if (uri) child(uri);
+    } else if (l.startsWith("#EXT-X-MEDIA:") || l.startsWith("#EXT-X-I-FRAME-STREAM-INF:")) {
+      const a = hlsAttrs(value);
+      if (a.URI) child(a.URI);
+    } else if (l.startsWith("#EXT-X-KEY:") || l.startsWith("#EXT-X-SESSION-KEY:")) {
+      if (drmKey(hlsAttrs(value))) info.drm = true;
+    } else if (l.startsWith("#EXTINF:")) {
+      info.duration += parseFloat(value) || 0;
+    } else if (l.startsWith("#EXT-X-ENDLIST") || /^#EXT-X-PLAYLIST-TYPE:\s*VOD/.test(l)) {
+      info.live = false;
+    }
+  }
+  // A master playlist says nothing of an end: its variants do.
+  if (info.children.length) info.live = false;
+  return info;
+}
+
+// Seconds of an ISO 8601 duration (PT1H2M3.5S).
+function isoSeconds(d) {
+  const m = /P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:([\d.]+)S)?/.exec(d || "") || [];
+  return (+m[1] || 0) * 86400 + (+m[2] || 0) * 3600 + (+m[3] || 0) * 60 + (+m[4] || 0);
+}
+
+// A DASH manifest, read as text (a service worker has no XML parser). Any ContentProtection is
+// encryption: Widevine, PlayReady, or CENC with a key the site gives its own player only.
+function parseDash(text) {
+  if (!/<(?:\w+:)?MPD[\s>]/.test(text)) return null;
+  const attr = (tag, name) => (new RegExp(`\\s${name}\\s*=\\s*["']([^"']*)["']`).exec(tag) || [])[1];
+  const mpd = (/<(?:\w+:)?MPD\b[^>]*>/.exec(text) || [""])[0];
+  const heights = [];
+  for (const [tag] of text.matchAll(/<(?:\w+:)?(?:Representation|AdaptationSet)\b[^>]*>/g)) {
+    const h = Number(attr(tag, "height"));
+    if (h) heights.push(h);
+  }
+  return {
+    heights,
+    duration: isoSeconds(attr(mpd, "mediaPresentationDuration")),
+    drm: /<(?:\w+:)?ContentProtection\b/.test(text),
+    live: attr(mpd, "type") === "dynamic",
+    children: [],
+  };
+}
+
+// A manifest, fetched again by the extension (the player's copy can't be read): its details, or
+// {failed: true}: a site that refuses the extension's request (it checks the page that asks) is
+// listed without them.
+const MANIFEST_MAX = 2 << 20;
+async function probe(item) {
+  try {
+    const r = await withTimeout(fetch(item.url, { credentials: "include" }), 5000);
+    if (!r.ok || Number(r.headers.get("content-length")) > MANIFEST_MAX) return { failed: true };
+    const text = await withTimeout(r.text(), 5000);
+    if (text.length > MANIFEST_MAX) return { failed: true };
+    return (item.kind === "hls" ? parseHls(text, item.url) : parseDash(text)) || { failed: true };
+  } catch {
+    return { failed: true };
+  }
+}
+
+// Run in each frame of the tab: its address and its players (their file, picture size, length,
+// and whether the page gave them a DRM key system).
+function mediaElements() {
+  const players = [...document.querySelectorAll("video, audio")].map((v) => ({
+    src: v.currentSrc || v.src || "",
+    w: v.videoWidth || 0,
+    h: v.videoHeight || 0,
+    duration: Number.isFinite(v.duration) ? v.duration : 0,
+    drm: Boolean(v.mediaKeys),
+  }));
+  return { href: location.href, players };
+}
+
+// The tab's media as the popup lists them: a stream's variants inside it, each with what is known
+// (qualities, length, size, protected). Manifests are read once.
+async function mediaList(tabId) {
+  await mediaBack;
+  const tab = media.get(tabId);
+  if (!tab) return [];
+  await Promise.all(tab.items.filter((it) => isStream(it) && !it.info).map(async (it) => (it.info = await probe(it))));
+  const frames = {};
+  try {
+    const found = await withTimeout(ext.scripting.executeScript({ target: { tabId, allFrames: true }, func: mediaElements }), 3000);
+    for (const f of found || []) if (f && f.result) frames[f.frameId || 0] = f.result;
+  } catch {
+    // A page extensions may not read: listed without its players' details.
+  }
+  tab.frames = Object.fromEntries(Object.entries(frames).map(([id, f]) => [id, f.href]));
+  keepMedia();
+  const out = [];
+  const shown = [];
+  for (const it of tab.items) {
+    // A variant of a master playlist listed already: it names it, or (unread) the variant is in
+    // its folder or below.
+    const p = pathOf(it.url);
+    const variantOf = (s) =>
+      s.info && !s.info.failed ? s.info.children.includes(p) : s.frameId === it.frameId && folderOf(s.url) && p.startsWith(folderOf(s.url));
+    if (it.kind === "hls" && shown.some((s) => s.kind === "hls" && variantOf(s))) continue;
+    shown.push(it);
+    const frame = frames[it.frameId] || { players: [] };
+    const player = frame.players.find((v) => v.src === it.url);
+    const info = it.info && !it.info.failed ? it.info : null;
+    out.push({
+      url: it.url,
+      kind: it.kind,
+      mime: it.mime,
+      size: it.size || 0,
+      heights: info ? [...new Set(info.heights)].sort((a, b) => b - a) : player && player.h ? [player.h] : [],
+      width: (!info && player && player.w) || 0,
+      duration: (info ? info.duration : player && player.duration) || 0,
+      live: Boolean(info && info.live),
+      // Protected: its manifest says so, or (unread) its frame's player has a DRM key system.
+      drm: info ? info.drm : isStream(it) && frame.players.some((v) => v.drm),
+    });
+  }
+  return out;
+}
+
+// One of the tab's media, handed to the app as the popup asked: a stream to the Download video
+// window (yt-dlp), a file as a download; with the page that played it (the referrer), the cookies
+// its own server gets, and the browser's User-Agent (`native`). A protected one is never sent.
+async function mediaDownload(tabId, url) {
+  const listed = await mediaList(tabId);
+  const shown = listed.find((x) => x.url === url);
+  if (!shown) return { ok: false, why: "gone" };
+  if (shown.drm) return { ok: false, why: "drm" };
+  const kept = media.get(tabId);
+  const it = kept.items.find((x) => x.url === url);
+  let tab;
+  try {
+    tab = await ext.tabs.get(tabId);
+  } catch {
+    return { ok: false, why: "gone" };
+  }
+  const frame = (kept.frames || {})[it.frameId];
+  const page = frame && /^https?:/i.test(frame) ? frame : tab.url || "";
+  const ctx = { incognito: Boolean(tab.incognito), storeId: tab.cookieStoreId };
+  if (isStream(it)) {
+    return native({
+      video: true,
+      // Asked for: whether the button over videos shows on this site doesn't matter.
+      explicit: true,
+      url: page,
+      src: it.url,
+      title: String(tab.title || "").slice(0, 300),
+      referrer: tab.url && tab.url !== page ? tab.url : "",
+      cookies: await cookieHeader(it.url, ctx),
+      ...(ctx.incognito ? { private: true } : {}),
+    });
+  }
+  return handOff({ url: it.url, referrer: page, size: it.size, mime: it.mime, explicit: true, ...ctx });
 }
 
 // ---- the hand-off ------------------------------------------------------------------------
@@ -959,7 +1240,7 @@ async function pageMessage(m, sender) {
     return { ok: true };
   }
   if (m.type === "video" && page) {
-    await streamsBack;
+    await mediaBack;
     const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : streamOf(sender);
     const reply = await native({
       video: true,
@@ -1002,13 +1283,22 @@ async function popupMessage(m) {
   }
   if (m.type === "open-app") return { ok: Boolean((await native({ open: true })).ok) };
   if (m.type === "open-options") return { ok: Boolean((await native({ openOptions: true, page: "general" })).ok) };
+  // The media the popup's tab loaded (#38), and one of them handed to the app.
+  if (m.type === "media" && Number.isInteger(m.tab)) return { media: await mediaList(m.tab) };
+  if (m.type === "media-download" && Number.isInteger(m.tab) && typeof m.url === "string") {
+    const reply = await mediaDownload(m.tab, m.url);
+    return { ok: Boolean(reply.ok), why: reply.why };
+  }
   return { ok: false };
 }
 
 ext.runtime.onMessage.addListener((m, sender, sendResponse) => {
   // Only our own scripts (pages can't message an extension without being allowed to).
   if (!m || typeof m.type !== "string" || sender.id !== ext.runtime.id) return false;
-  const fromPage = Boolean(sender.tab);
+  // The popup, or its page opened in a tab (popup.html?page=), is one of the extension's own
+  // pages; content scripts send from the web page they are in.
+  const own = String(sender.url || "").startsWith(ext.runtime.getURL(""));
+  const fromPage = Boolean(sender.tab) && !own;
   (fromPage ? pageMessage(m, sender) : popupMessage(m)).then(sendResponse, () => sendResponse({ ok: false }));
   return true; // answered later
 });

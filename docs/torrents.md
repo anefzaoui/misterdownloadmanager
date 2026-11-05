@@ -52,6 +52,29 @@ Right-click a torrent in the list and open **Torrent**:
 
 Each command's outcome goes into the torrent's event log; hover its **Status** cell in the list to read it.
 
+## RSS feeds
+
+Many sites publish their new torrents as an RSS or Atom feed. MDM can watch feeds, list what they hold, and add the new torrents you want by itself. Choose **Tasks → RSS feeds...**, or click the arrow next to **Add Torrent**.
+
+**Feeds** tab:
+
+- Type a feed's address into **Feed address** and click **Add feed**. MDM fetches it at once, then every 30 minutes; change that under **Check feeds every ... minutes**, 5 at the least.
+- Pick a feed on the left to see its articles. An article with a torrent shows a torrent icon and its size when the feed gives it. Double-click one, or select it and click **Download...**, to open **Add torrent** with it, as for any magnet link or `.torrent` address.
+- **Refresh** fetches the selected feed now. **Remove** stops watching it. A feed that can't be read is shown in red, and its line at the bottom says why.
+
+**Download rules** tab: a rule adds the torrents of new articles whose titles it matches, without asking.
+
+- **Must contain**: words the title must contain, all of them, in any order. `|` separates alternatives (`1080p|2160p`), and `*` and `?` are wildcards. Case doesn't matter.
+- **Must not contain**: words that make the rule skip an article, written the same way.
+- **Regular expressions**: the two boxes hold regular expressions instead.
+- **Episodes**: which episodes to take, read from `S01E05` or `1x05` in the title. `1x2` is season 1 episode 2, `1x5-8` episodes 5 to 8, `2x1-` everything from season 2 episode 1 on, and `3` all of season 3, separated by `;`. Empty: any article. A rule takes each episode once: a second release of an episode it already added is skipped.
+- **Save to**: the folder its torrents go to; empty, the Torrents category's folder. **Add them without starting them** adds them as **Download Later** would.
+- **Feeds**: the feeds it watches; none ticked, all of them.
+
+Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. **Matches ... articles now** shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.
+
+Feeds and rules are kept in `rss.json` in MDM's data folder. MDM reads at most 5 MB of a feed.
+
 ## Torrent settings
 
 Choose **Tasks → Torrent settings...** (or the arrow next to **Add Torrent**):

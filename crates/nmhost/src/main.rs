@@ -8,7 +8,9 @@
 //!   the file types to offer: `{"ok": true, "types": "EXE ZIP …"}`.
 //! - The download button over videos: `{"panel": true, "url": page}` asks whether it may show on
 //!   that page (`{"ok": …}`, Options' rules); `{"video": true, "url": page}` opens the Download
-//!   video window for it; `{"hideSite": host}` keeps it off that site from now on;
+//!   video window for it (`src`: the video's own file, or its stream's manifest; with
+//!   `explicit`, the toolbar button's list of the tab's media asked, wherever the button shows);
+//!   `{"hideSite": host}` keeps it off that site from now on;
 //!   `{"openOptions": true}` opens Options where it is set up.
 //! - `misterdownloadmanager-nmhost --register` / `--unregister`: writes / removes the host
 //!   manifests (Chromium's names the extension's origin, Firefox's its add-on ID). Windows: beside
@@ -86,7 +88,9 @@ struct Message {
     /// May the download button show over videos on page `url`?
     panel: bool,
     /// The download button was clicked: `url` is the video's page, `src` the video's own
-    /// address when the page plays a plain file (not a stream assembled in the page).
+    /// address when the page plays a plain file (not a stream assembled in the page), or the
+    /// manifest of the stream its player loaded. With `explicit`, the toolbar button's list of
+    /// the tab's media asked for it (#38).
     video: bool,
     src: Option<String>,
     /// The button's menu: keep it off this site (a host name).
@@ -254,30 +258,10 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
             ..Default::default()
         })
     } else if m.video {
-        if !(m.url.starts_with("http://") || m.url.starts_with("https://")) {
-            return Reply::failed("refused", "not an http(s) page");
+        match video_command(&m, rules, browser) {
+            Ok(cmd) => Some(cmd),
+            Err((why, error)) => return Reply::failed(why, error),
         }
-        if !rules.panel_on(&m.url, browser) {
-            return Reply::failed("options", "the video button is off here");
-        }
-        // The video clicked, not the page's first one (a feed plays many): its own file when
-        // there is one, fetched as from its page.
-        let src = m
-            .src
-            .clone()
-            .filter(|s| s.starts_with("http://") || s.starts_with("https://"));
-        let referer = match &src {
-            Some(_) => Some(m.url.clone()),
-            None => m.referrer.clone().filter(|r| !r.is_empty()),
-        };
-        Some(mdm_ipc::Command {
-            video_page: Some(src.unwrap_or_else(|| m.url.clone())),
-            referer,
-            cookies: m.cookies.clone().filter(|c| !c.is_empty()),
-            user_agent: m.user_agent.clone(),
-            private: m.private,
-            ..Default::default()
-        })
     } else {
         None
     };
@@ -294,6 +278,42 @@ fn answer(m: Message, rules: &mdm_ipc::capture::CaptureRules) -> Reply {
         );
     }
     delivered(&to_command(m))
+}
+
+/// The Download video window's command for a video message: the page, or the video's own file
+/// or its stream's manifest (`src`) fetched as from its page; or why it is refused (the reply's
+/// `why` and `error`).
+fn video_command(
+    m: &Message,
+    rules: &mdm_ipc::capture::CaptureRules,
+    browser: &str,
+) -> Result<mdm_ipc::Command, (&'static str, &'static str)> {
+    if !(m.url.starts_with("http://") || m.url.starts_with("https://")) {
+        return Err(("refused", "not an http(s) page"));
+    }
+    // The toolbar button's list of the tab's media (#38) asks for one explicitly: whether the
+    // button over videos shows on this site doesn't matter then.
+    if !m.explicit && !rules.panel_on(&m.url, browser) {
+        return Err(("options", "the video button is off here"));
+    }
+    // The video clicked, not the page's first one (a feed plays many): its own file when there
+    // is one, fetched as from its page.
+    let src = m
+        .src
+        .clone()
+        .filter(|s| s.starts_with("http://") || s.starts_with("https://"));
+    let referer = match &src {
+        Some(_) => Some(m.url.clone()),
+        None => m.referrer.clone().filter(|r| !r.is_empty()),
+    };
+    Ok(mdm_ipc::Command {
+        video_page: Some(src.unwrap_or_else(|| m.url.clone())),
+        referer,
+        cookies: m.cookies.clone().filter(|c| !c.is_empty()),
+        user_agent: m.user_agent.clone(),
+        private: m.private,
+        ..Default::default()
+    })
 }
 
 /// `cmd` handed to the app: the reply saying so, or why not.
@@ -904,6 +924,31 @@ mod tests {
         };
         let r = answer(click, &rules);
         assert!(!r.ok && r.error.unwrap().contains("off"));
+        // The toolbar button's media list asks for a stream explicitly (#38): taken wherever the
+        // button is off, the manifest fetched as from its page with the cookies its server gets.
+        let listed = Message {
+            video: true,
+            explicit: true,
+            url: "https://www.quiet.test/watch".into(),
+            src: Some("https://cdn.test/v/master.m3u8?t=1".into()),
+            cookies: Some("cdn=1".into()),
+            user_agent: Some(ua.into()),
+            ..Default::default()
+        };
+        let cmd = video_command(&listed, &rules, browser(&listed)).unwrap();
+        assert_eq!(
+            cmd.video_page.as_deref(),
+            Some("https://cdn.test/v/master.m3u8?t=1")
+        );
+        assert_eq!(cmd.referer.as_deref(), Some("https://www.quiet.test/watch"));
+        assert_eq!(cmd.cookies.as_deref(), Some("cdn=1"));
+        assert_eq!(cmd.user_agent.as_deref(), Some(ua));
+        // Never a page that isn't on the web.
+        let local = Message {
+            url: "file:///C:/x.html".into(),
+            ..listed
+        };
+        assert!(video_command(&local, &rules, browser(&local)).is_err());
         // From the wire: the extension's camelCase names.
         let m: Message =
             serde_json::from_str(r#"{"hideSite":"tube.test","openOptions":false}"#).unwrap();

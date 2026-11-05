@@ -1,5 +1,6 @@
 //! Adaptive streams for the browser tests: an HLS master playlist with two video variants and an
-//! audio rendition, and a DASH manifest with the same tracks. Each track has `SEGMENTS` segments
+//! audio rendition, and a DASH manifest with the same tracks (and a copy marked as encrypted with
+//! Widevine, for the extension's media list to show as protected, #38). Each track has `SEGMENTS` segments
 //! of `SEGMENT_SECS` seconds; their bytes are deterministic fakes (TS segments start each
 //! 188-byte packet with the 0x47 sync byte, DASH init segments with an `ftyp` box), enough for a
 //! client that lists, fetches or joins segments, not for one that decodes them.
@@ -121,6 +122,28 @@ fn numbered(file: &str, prefix: &str, suffix: &str) -> Option<u32> {
 
 /// `/dash/manifest.mpd`.
 pub(crate) async fn dash_manifest() -> Response {
+    text("application/dash+xml", mpd(false))
+}
+
+/// `/dash/protected.mpd`: the same tracks, each marked as encrypted (CENC, with Widevine's key
+/// system), as a DRM-protected stream's manifest is. Its segments aren't encrypted: no client
+/// should get that far.
+pub(crate) async fn dash_protected() -> Response {
+    text("application/dash+xml", mpd(true))
+}
+
+/// Widevine's DASH key system.
+const WIDEVINE: &str = "urn:uuid:edef8ba9-79d6-4ace-a3c8-27dcd51d21ed";
+
+fn mpd(protected: bool) -> String {
+    let protection = if protected {
+        format!(
+            "<ContentProtection schemeIdUri=\"urn:mpeg:dash:mp4protection:2011\" value=\"cenc\"/>\
+             <ContentProtection schemeIdUri=\"{WIDEVINE}\"/>"
+        )
+    } else {
+        String::new()
+    };
     let total = SEGMENTS * SEGMENT_SECS;
     let template = format!(
         "<SegmentTemplate initialization=\"$RepresentationID$/init.mp4\" \
@@ -154,12 +177,12 @@ pub(crate) async fn dash_manifest() -> Response {
          mediaPresentationDuration=\"PT{total}S\">\n\
          <Period id=\"0\" start=\"PT0S\">\n\
          <AdaptationSet id=\"0\" contentType=\"video\" mimeType=\"video/mp4\" \
-         segmentAlignment=\"true\">{template}{video}</AdaptationSet>\n\
+         segmentAlignment=\"true\">{protection}{template}{video}</AdaptationSet>\n\
          <AdaptationSet id=\"1\" contentType=\"audio\" mimeType=\"audio/mp4\" lang=\"en\" \
-         segmentAlignment=\"true\">{template}{audio}</AdaptationSet>\n\
+         segmentAlignment=\"true\">{protection}{template}{audio}</AdaptationSet>\n\
          </Period>\n</MPD>\n"
     );
-    text("application/dash+xml", s)
+    s
 }
 
 /// `/dash/{rep}/init.mp4` and `/dash/{rep}/seg{n}.m4s` (n from 1).

@@ -16,6 +16,11 @@ Everything below ships together, in one release.
 - ✅ Magnet links get their file list in seconds again: the DHT keeps going after a computer it
   asked is gone, and Add torrent shows the wait (peers found, from where, what may be in the
   way) ([#92](https://github.com/anefzaoui/misterdownloadmanager/issues/92))
+- ✅ The extension's button lists the media the tab has loaded (HLS and DASH streams, video and
+  sound files), to download a stream the page won't give up; copy-protected ones are shown as
+  protected, never downloaded ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38))
+- ✅ Torrents: RSS feeds with download rules (words, episodes, each episode once, a folder per rule)
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Torrents: Recheck, Reannounce, Add trackers and Copy magnet link; files chosen while a
   torrent runs; a `.torrent` file's web address opens Add torrent ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - ✅ Link grabber: links in packages, looked up for name and size; archives (zip and tar
@@ -112,9 +117,6 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Torrents, the rest: RSS feeds with auto-download rules
-  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
-
 ### Bugs being looked into
 
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
@@ -141,8 +143,6 @@ Everything below ships together, in one release.
 
 ### Browser extension
 
-- 📋 List the media a tab has loaded, to download stubborn streams
-  ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38))
 - 📋 Chrome Web Store and Firefox Add-ons listings (in review)
 
 ### Look and performance

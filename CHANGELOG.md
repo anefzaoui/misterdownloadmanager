@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The extension lists the media a page has loaded**
+  ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
+  window has **Media on this page**: the HLS and DASH streams the page's players loaded (each
+  once, with its qualities and length) and the video and sound files it played, with their size.
+  **Download** sends a stream to the Download video window and a file to the list, with the
+  page's cookies, the page as the referrer and the browser's User-Agent, so a stream a page won't
+  give up can still be saved. Copy-protected (DRM) streams are listed as **Protected** and never
+  sent. Nothing new to allow: the extension already watched the tab's responses.
 - **Link grabber, and archives extracted when they are downloaded**
   ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)). The window that took
   the browser's "Download all links", Tasks → Import and dropped lists grew into Link grabber
@@ -58,6 +66,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   fetches only its new pictures. gallery-dl is an optional helper like yt-dlp: installed from its
   releases only when signed by its author's key, or your own copy (Helpers). On the command line:
   `install-gallery-dl` and `gallery-get`.
+- **RSS feeds** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): Tasks → RSS
+  feeds... watches RSS and Atom feeds of torrents, lists their articles (download one by hand), and
+  its download rules add the new ones whose titles they match: words or regular expressions, words
+  to skip, an episode filter (`1x2;1x5-8;2x1-`) that takes each episode once, a folder per rule.
+  A feed's backlog is never downloaded by itself.
 - **Torrent commands** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): a
   torrent's right-click menu has **Torrent → Recheck files**, **Reannounce**, **Add trackers...**
   and **Copy magnet link**. Its Files tab can tick and untick files while it runs. A `.torrent`
