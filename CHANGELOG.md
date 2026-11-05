@@ -22,6 +22,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Windows: draw with Direct3D** ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89)).
+  **View → Draw with** chooses between OpenGL, as before and still the default, and Direct3D 12,
+  from the next start. Direct3D may avoid the stalls some graphics drivers' OpenGL has
+  ([#82](https://github.com/anefzaoui/misterdownloadmanager/issues/82)). When the chosen one
+  can't start, MDM draws with the other, so its window always opens: Direct3D falls back to
+  OpenGL (and the menu says so), and OpenGL to Direct3D or Microsoft's software renderer (Remote
+  Desktop, virtual machines without a graphics driver). A start with Direct3D that ends before
+  its first window is drawn is remembered the same way. Freeze and crash reports say what was
+  drawing. Linux and macOS keep OpenGL.
 - **The extension lists the media a page has loaded**
   ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
   window has **Media on this page**: the HLS and DASH streams the page's players loaded (each

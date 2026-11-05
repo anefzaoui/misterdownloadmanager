@@ -198,10 +198,6 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome、Firefox、Edge<g1><g2>3</g2></g1>"
   },
-  "04ec5358d75ceff7": {
-   "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
-   "text": "将鼠标指向网页上的视频，其边缘会出现一个小的 <g1>下载视频</g1> 按钮。点击它，MDM 的 <g2>从页面下载视频</g2> 窗口会打开并查找可下载的质量。它会下载您点击的视频：如果播放的是自己的文件，则下载该文件；如果是播放器加载的流（HLS 或 DASH），则下载该流；否则下载页面。嵌入式播放器也适用，您的网站登录信息、嵌入播放器的页面以及您的浏览器用户代理都会随之发送，因此会员视频或仅在嵌入它们的网站上播放的视频也可以下载。音频播放器也会显示该按钮。"
-  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "在命令行中"
@@ -2106,10 +2102,6 @@
    "source": "Yes: export your list from IDM, then choose Tasks → Import → From IDM export file in MDM. <g1>More</g1>",
    "text": "可以：从 IDM 导出列表，然后在 MDM 中选择“任务”→“导入”→“从 IDM 导出文件”。<g1>更多</g1>"
   },
-  "340f53f11eccffc8": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4> and <g5>Language</g5>.",
-   "text": "<g1>视图</g1> — 显示或隐藏类别，对列表进行排序（<g2>整理文件</g2>），<g3>深色模式支持</g3>，<g4>始终为深色</g4>和<g5>语言</g5>。"
-  },
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM 由独立开发者 Ahmed Nefzaoui 制作，并欢迎<g1>GitHub</g1>上的任何人贡献。欢迎提交错误报告、翻译和代码。"
@@ -2142,9 +2134,9 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "到此计算机本身的连接（<x1/>）未绑定。此计算机上的代理负责下载，它将下载发送到何处取决于它。"
   },
-  "3549f28b5c3a4fb8": {
-   "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try.",
-   "text": "受 DRM 保护的视频（大多数付费流媒体服务）无法下载，MDM 不会尝试下载。"
+  "354fca97a75c4b55": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "如果您的电脑无法启动 Direct3D（没有 Direct3D 12 驱动，或某些虚拟机），MDM 会使用 OpenGL 绘制，并且<g1>视图 → 绘制方式</g1>会显示此信息。再次选择<g2>Direct3D</g2>会在下次启动时再次尝试。"
   },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
@@ -2589,6 +2581,10 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "更多内容请参阅<g1>连接和速度</g1>。"
+  },
+  "40a17209f38d66d2": {
+   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
+   "text": "MDM 使用 OpenGL 绘制窗口。在 Windows 上，某些显卡驱动的 OpenGL 可能会导致窗口卡顿数秒，或显示异常。选择<g1>视图 → 绘制方式 → Direct3D</g1>，下次启动时将改用 Direct3D 12 绘制；<g2>视图 → 绘制方式 → OpenGL</g2>可切换回来。"
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -3578,6 +3574,10 @@
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "将图库下载到以其命名的文件夹中。请参阅<g1>命令行和自动化</g1>。"
   },
+  "5d132ac4f8b0c1aa": {
+   "source": "A freeze or crash report says which one was drawing.",
+   "text": "冻结或崩溃报告会说明是哪种绘制方式。"
+  },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
    "text": "选择<g1>帮助 → 报告问题</g1>。它会在 GitHub 上打开错误报告表单，其中已预填您的 MDM 版本、系统及其版本、MDM 的安装方式以及界面语言。请描述发生了什么、您期望的结果以及重现问题的步骤。如果是下载问题，如果可以分享，请包含地址，以及<g2>状态</g2>下显示的原因。"
@@ -4394,6 +4394,10 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM 会打开<g1>下载文件信息</g1>，而不是浏览器下载文件。点击<g2>开始下载</g2>。"
   },
+  "70949fe6f15631f5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
+   "text": "<g1>视图</g1> — 显示或隐藏类别，对列表进行排序（<g2>整理文件</g2>），<g3>深色模式支持</g3>，<g4>始终为深色</g4>，<g5>绘制方式</g5>（Windows：OpenGL 或 Direct3D）和<g6>语言</g6>。"
+  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "保留在您电脑上的内容"
@@ -4621,6 +4625,10 @@
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
    "text": "MDM 未及时启动"
+  },
+  "76ce76c1e1586496": {
+   "source": "The window freezes or draws wrongly",
+   "text": "窗口冻结或显示异常"
   },
   "76e020dc2c735bdd": {
    "source": "From top to bottom:",
@@ -7246,6 +7254,10 @@
    "source": "App",
    "text": "应用"
   },
+  "bbb4a37acc8f6a42": {
+   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
+   "text": "窗口使用OpenGL（eframe的glow）绘制。在Windows上，从下次启动开始，视图 → 绘制方式会选择Direct3D 12（eframe的wgpu，仅使用其Direct3D 12后端）。当选择的绘图方式无法启动时，<x1/>会回退到另一种，因此窗口总能打开。"
+  },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
    "text": "从浏览器捕获下载 — Mister Download Manager 帮助"
@@ -7725,10 +7737,6 @@
   "c942b256735064e3": {
    "source": "The plain programs, for any distribution.",
    "text": "适用于任何发行版的纯程序。"
-  },
-  "c981c23fd3b23966": {
-   "source": "MDM reads the torrent and shows its files as a folder tree. A <x1/> file is read at once. A magnet link first has to get the file list from other peers, which can take a minute or two.",
-   "text": "MDM 读取种子并将其文件显示为文件夹树。<x1/> 文件会立即读取。磁力链接首先需要从其他对等方获取文件列表，这可能需要一两分钟。"
   },
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
@@ -8260,7 +8268,7 @@
   },
   "d830def677dfb3f0": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "一个 egui 窗口绘制到固定的像素坐标，每个对话框一个即时视口。<x1/> 保存状态（下载、队列、设置、列表选择），并将菜单、工具栏、按键和 IPC 命令转换为操作。每个对话框都是自己的模块，并返回一个 <x2/>（打开、关闭、完成并带有一个值）。仅限 Windows 的调用仅限于 <x3/>，其 Linux 和 macOS 对应项仅限于 <x4/>（从会话开始、浏览器主机、声音、在文件夹中显示、崩溃处理程序）；所有其他文件都是安全、可移植的 Rust。字体来自系统：Windows 的 Fonts 文件夹、macOS 的系统字体、Linux 上的 fontconfig (<x5/>)。文件名前的图标也是如此 (<x6/>)：Windows shell 的系统图像列表、macOS Finder 的 (NSWorkspace)、Linux 桌面的图标主题 (<x7/>，shared-mime-info 和图标主题规范)。每种类型按像素大小在后台线程上查找一次。Tango 的图标（捆绑）在系统图标准备好之前以及系统没有图标的地方作为替代。"
+   "text": "一个egui窗口绘制到固定的像素坐标，每个对话框一个即时视口。<x1/>保存状态（下载、队列、设置、列表选择），并将菜单、工具栏、按键和IPC命令转换为操作。每个对话框都是自己的模块，并返回一个<x2/>（打开、关闭、完成并带有一个值）。仅限Windows的调用被限制在<x3/>中，其Linux和macOS对应部分在<x4/>中（从会话开始、浏览器的主机、声音、在文件夹中显示、崩溃处理程序）；其他所有文件都是安全的、可移植的Rust代码。字体来自系统：Windows的字体文件夹、macOS的系统字体、Linux上的fontconfig（<x5/>）。文件名前的图标也是如此（<x6/>）：Windows shell的系统图像列表、macOS Finder的（NSWorkspace）、Linux桌面的图标主题（<x7/>、shared-mime-info和Icon Theme Specification）。每种类型在后台线程上按像素大小查找一次。Tango的图标（捆绑）在系统图标准备好之前以及系统没有图标的地方作为替代。"
   },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
@@ -8977,6 +8985,10 @@
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "我可以将我的下载从 IDM 转移到 Mister Download Manager 吗？"
+  },
+  "eccd08c375bd5161": {
+   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
+   "text": "在 Windows 上，如果 OpenGL 无法启动，MDM 会尝试 Direct3D，然后是微软的软件渲染器，这样窗口仍然可以打开（远程桌面，没有显卡驱动的虚拟机）。"
   },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",

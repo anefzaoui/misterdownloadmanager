@@ -3410,3 +3410,23 @@ unit	{n} MB	{n} MB
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 unit	{n} MB/sec	{n} MB/sec
+#. menu command in the main window
+#. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+#, machine
+menu	Applies the next time MDM starts	Applicato al prossimo avvio di MDM
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+#, machine
+menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Direct3D didn't start here: OpenGL draws	Direct3D non è stato avviato: disegna OpenGL
+#. menu command in the main window
+#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#, machine
+menu	Draw with	Disegna con
+#. menu command in the main window
+#. View → Draw with: a graphics system's name, usually kept as is
+#, machine
+menu	OpenGL	OpenGL

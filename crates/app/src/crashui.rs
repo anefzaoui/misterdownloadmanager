@@ -88,36 +88,41 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     } else {
         builder
     };
-    let opts = eframe::NativeOptions {
-        viewport: builder,
+    let options = || eframe::NativeOptions {
+        viewport: builder.clone(),
         ..Default::default()
     };
+    // What the app draws with (renderer.rs, MDM_RENDERER too), the other way when it can't
+    // start. OpenGL when the app's Direct3D failed or is still starting (this report may be about
+    // it); only the app's own start is watched.
+    let mut plan = crate::renderer::plan(
+        settings.renderer,
+        crate::renderer::overridden(&[]).as_deref(),
+        crate::renderer::suspect(),
+    );
+    plan.watched = false;
     let data = m.data.clone();
-    eframe::run_native(
-        "misterdownloadmanager-crash",
-        opts,
-        Box::new(move |cc| {
-            crate::theme::apply(&cc.egui_ctx);
-            crate::i18n::set_lang(settings.language.as_deref());
-            crate::theme::language_fonts(&cc.egui_ctx);
-            crate::theme::update(
-                settings.dark_mode_support,
-                settings.always_dark,
-                &cc.egui_ctx,
-            );
-            Ok(Box::new(ReportWindow::new(
-                cc.egui_ctx.clone(),
-                Job {
-                    dump,
-                    kind,
-                    notes,
-                    data,
-                    parent: m.parent,
-                },
-                rx,
-            )))
-        }),
-    )
+    crate::renderer::run("misterdownloadmanager-crash", &plan, options, move |cc| {
+        crate::theme::apply(&cc.egui_ctx);
+        crate::i18n::set_lang(settings.language.as_deref());
+        crate::theme::language_fonts(&cc.egui_ctx);
+        crate::theme::update(
+            settings.dark_mode_support,
+            settings.always_dark,
+            &cc.egui_ctx,
+        );
+        ReportWindow::new(
+            cc.egui_ctx.clone(),
+            Job {
+                dump,
+                kind,
+                notes,
+                data,
+                parent: m.parent,
+            },
+            rx,
+        )
+    })
 }
 
 fn alive(pid: u32) -> bool {

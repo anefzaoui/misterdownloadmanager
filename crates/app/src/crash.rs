@@ -22,6 +22,8 @@ use mdm_crash::protocol::{AppState, Busy, Freeze, Panic, Session};
 pub const FREEZE_AFTER: Duration = Duration::from_secs(8);
 
 static REPORTER: OnceLock<Arc<Reporter>> = OnceLock::new();
+/// The session as sent, to send again when it learns more (what draws).
+static SESSION: std::sync::Mutex<Option<Session>> = std::sync::Mutex::new(None);
 static EPOCH: OnceLock<Instant> = OnceLock::new();
 /// When the current frame started (ms since EPOCH, + 1); 0 between frames.
 static FRAME_START: AtomicU64 = AtomicU64::new(0);
@@ -57,6 +59,9 @@ pub fn start(data: &Path, session: Session) {
         return;
     };
     reporter.session(&session);
+    if let Ok(mut s) = SESSION.lock() {
+        *s = Some(session);
+    }
     let reporter = Arc::new(reporter);
     #[cfg(windows)]
     let attached = crate::win32::attach_crash_handler(reporter.clone());
@@ -71,6 +76,17 @@ pub fn start(data: &Path, session: Session) {
         .name("freeze watchdog".into())
         .spawn(watchdog);
     tracing::info!("crash reports on");
+}
+
+/// What draws the windows, for the report (renderer.rs, once the window started).
+pub fn renderer(detail: &str) {
+    let (Some(r), Ok(mut s)) = (REPORTER.get(), SESSION.lock()) else {
+        return;
+    };
+    if let Some(s) = s.as_mut() {
+        s.renderer = detail.to_owned();
+        r.session(s);
+    }
 }
 
 /// Ask the monitor for a dump of every thread now.
@@ -283,6 +299,8 @@ pub fn session(language: &str, dark: bool) -> Session {
             .map(|p| p.display().to_string())
             .unwrap_or_default(),
         started: chrono::Utc::now().timestamp(),
+        // Known once the window started (renderer.rs).
+        renderer: String::new(),
     }
 }
 

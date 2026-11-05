@@ -4269,6 +4269,10 @@ menu	Add category	범주 추가
 #, machine
 menu	Add trackers...	트래커 추가...
 #. menu command in the main window
+#. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+#, machine
+menu	Applies the next time MDM starts	MDM을 다음에 시작할 때 적용됩니다.
+#. menu command in the main window
 #, machine
 menu	Arrange files	파일 정렬
 #. menu command in the main window
@@ -4359,10 +4363,22 @@ menu	Delete	삭제
 #, machine
 menu	Delete from queue	큐에서 삭제
 #. menu command in the main window
+#. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+#, machine
+menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Direct3D didn't start here: OpenGL draws	Direct3D가 시작되지 않았습니다. OpenGL이 그립니다.
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Download &video from a page...	페이지에서 &비디오 다운로드...
+#. menu command in the main window
+#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#, machine
+menu	Draw with	다음으로 그리기
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -4429,6 +4445,10 @@ menu	Open folder	폴더 열기
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Open with...	다음으로 열기...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name, usually kept as is
+#, machine
+menu	OpenGL	OpenGL
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window

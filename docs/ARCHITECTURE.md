@@ -68,6 +68,11 @@ before file names (`fileicons.rs`): the Windows shell's system image lists, macO
 Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's
 icons (bundled) stand in until the system's icon is ready, and wherever the system has none.
 
+The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses
+Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start.
+`renderer.rs` falls back to the other one when the chosen one can't start, so the windows
+always open.
+
 The download list and settings are saved atomically to `%APPDATA%\misterdownloadmanager\`
 (`downloads.json`). The browser host reads the same file for the capture rules, so a change in
 Options applies to the next captured download.
