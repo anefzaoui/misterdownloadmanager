@@ -617,6 +617,46 @@ pub fn trim_heap() {
     }
 }
 
+/// Move `files` to the Trash (an archive and its volumes after extracting, #37), with the
+/// system's own tool: `gio trash` (GLib's, on most Linux desktops) or `trash-put`; on macOS
+/// `trash` (macOS 14 and later), else the Finder. False when none could: the files are kept.
+pub fn to_trash(files: &[PathBuf]) -> bool {
+    if files.is_empty() {
+        return true;
+    }
+    let run = |cmd: &mut Command| {
+        cmd.stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status()
+            .is_ok_and(|s| s.success())
+    };
+    if cfg!(target_os = "macos") {
+        if run(Command::new("trash").args(files)) {
+            return true;
+        }
+        // The Finder moves them as a person would (it may ask once to let MDM drive it).
+        let list: Vec<String> = files
+            .iter()
+            .map(|f| {
+                let p = f
+                    .display()
+                    .to_string()
+                    .replace('\\', "\\\\")
+                    .replace('"', "\\\"");
+                format!("POSIX file \"{p}\"")
+            })
+            .collect();
+        let script = format!(
+            "tell application \"Finder\" to delete {{{}}}",
+            list.join(", ")
+        );
+        return run(Command::new("osascript").arg("-e").arg(script));
+    }
+    run(Command::new("gio").arg("trash").arg("--").args(files))
+        || run(Command::new("trash-put").arg("--").args(files))
+}
+
 /// Is process `pid` still running?
 #[allow(unsafe_code)]
 pub fn process_alive(pid: u32) -> bool {

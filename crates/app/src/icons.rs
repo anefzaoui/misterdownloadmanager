@@ -32,6 +32,7 @@ pub enum Icon {
     PageLogins,
     PageSounds,
     PageRegional,
+    PageArchives,
     /// The first-start helpers window (ours): yt-dlp finds a page's video,
     HelperVideo,
     /// ffmpeg joins its picture and sound,
@@ -134,6 +135,11 @@ impl Icon {
                 r#"<path d="M21 7.338V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2.338"/>"#,
                 r#"<path d="M3 9h5.859"/><circle cx="16" cy="16" r="6"/>"#,
             ),
+            // Lucide "package".
+            Icon::PageArchives => concat!(
+                r#"<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>"#,
+                r#"<path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/>"#,
+            ),
             // A screen with a play mark.
             Icon::HelperVideo => {
                 r#"<rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 8.5v7l6-3.5z"/>"#
@@ -176,6 +182,7 @@ impl Icon {
             Icon::PageLogins => ("#d9a514", "#9a7b2e"),
             Icon::PageSounds => ("#8a5fd0", "#d05f9a"),
             Icon::PageRegional => ("#2f7fcf", "#3fa864"),
+            Icon::PageArchives => ("#c77a12", "#8a5fd0"),
             Icon::HelperVideo => ("#df6a9c", "#b07ad9"),
             Icon::HelperMerge => ("#3d8ee6", "#2bb3a3"),
             Icon::HelperChecked => ("#3fa864", "#2f7fcf"),
@@ -205,6 +212,7 @@ impl Icon {
             Icon::PageLogins => "page-logins",
             Icon::PageSounds => "page-sounds",
             Icon::PageRegional => "page-regional",
+            Icon::PageArchives => "page-archives",
             Icon::HelperVideo => "helper-video",
             Icon::HelperMerge => "helper-merge",
             Icon::HelperChecked => "helper-checked",

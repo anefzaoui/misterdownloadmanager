@@ -2,7 +2,7 @@
 
 [← Back to docs index](README.md)
 
-Open **Downloads → Options**, or click **Options** on the toolbar. The window has eight pages on two rows of tabs. **OK** saves your changes; closing the window or pressing **Esc** throws them away.
+Open **Downloads → Options**, or click **Options** on the toolbar. The window has nine pages on two rows of tabs. **OK** saves your changes; closing the window or pressing **Esc** throws them away.
 
 Some buttons are greyed. They belong to features that aren't built yet.
 
@@ -108,6 +108,19 @@ How dates and times are written in the list of downloads and the Scheduler.
 
 - **As the system's region writes them** (the default) — Windows' region settings (Settings → Time & language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.
 - **My own way** — choose the **date order** (day, month, year; month, day, year; or year, month, day), a **12- or 24-hour clock**, and the **first day of the week** in the Scheduler's calendar. **Example** shows the result.
+
+## Archives
+
+![Options: Archives](images/options-archives.png)
+
+Archives (zip, 7z, rar, tar, gz, xz), and [Link grabber](link-grabber.md).
+
+- **Extract archives when their download completes** (off by default) — every archive downloaded, as soon as it (or a split archive's last volume) is in. A Link grabber package has its own **Extract when done**.
+- **Then move the archives to the Recycle Bin** (off by default; the Trash on macOS and Linux) — after a successful extraction only. This is also the default of a new package's **Delete archives after extracting**.
+- **What an archive holds goes** — into a folder named after it when it holds several things (the default), always into such a folder, or straight into the archive's folder.
+- Whether **7-Zip** was found: 7z and RAR archives need it.
+- **Look links up when they arrive (name, size, online)** — Link grabber asks each server about its file (on by default).
+- **Hide web pages** — Link grabber's default for the same box (on).
 
 ## Elsewhere
 

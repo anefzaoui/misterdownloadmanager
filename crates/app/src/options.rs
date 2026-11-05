@@ -177,13 +177,15 @@ pub struct OptionsDialog {
     restore_ask: Option<crate::dialogs::Confirm>,
     /// Connection caps the engine learned, shown as "(auto)" rows under Exceptions.
     learned: Vec<(String, u32)>,
+    /// 7-Zip's program (Archives: RAR goes through it), looked for when the window opens.
+    seven_zip: Option<std::path::PathBuf>,
     /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
     adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
 }
 
 impl OptionsDialog {
     /// Open on tab `page` (the numbers in `tabs`: 0 General … 4 Connection, 5 Proxy / Socks,
-    /// 6 Sites Logins, 8 Sounds); for `/show options:<tab>`.
+    /// 6 Sites Logins, 7 Accounts, 8 Sounds, 9 Regional, 10 Archives); for `/show options:<tab>`.
     pub fn on_page(mut self, page: usize) -> Self {
         self.page = page;
         self
@@ -223,6 +225,7 @@ impl OptionsDialog {
             cat_edit: None,
             restore_ask: None,
             learned,
+            seven_zip: crate::extractq::seven_zip(),
             adapters: None,
         }
     }
@@ -238,8 +241,8 @@ impl OptionsDialog {
             false,
             LIGHT_BG(),
             |ui, o| {
-                // Ctrl+Tab through the pages in the tabs' order.
-                const ORDER: [usize; 10] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                // Ctrl+Tab through the pages in the tabs' order (Archives, 10, came last).
+                const ORDER: [usize; 11] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
                 let at = ORDER.iter().position(|p| *p == self.page).unwrap_or(0);
                 let by_key = winui::tab_keys(ui, ORDER.len(), at).map(|i| ORDER[i]);
                 if let Some(p) = tabs(ui, o, self.page).or(by_key) {
@@ -254,6 +257,8 @@ impl OptionsDialog {
                     5 => self.proxy(ui, o),
                     6 => self.logins(ui, o),
                     7 => self.accounts(ui, o),
+                    9 => self.regional(ui, o),
+                    10 => self.archives(ui, o),
                     8 => self.sounds(ui, o),
                     _ => self.regional(ui, o),
                 }
@@ -1730,6 +1735,142 @@ impl OptionsDialog {
         }
     }
 
+    /// Archives (ours, #37): extracting archives when their download completes, what becomes
+    /// of them, and Link grabber's ways.
+    fn archives(&mut self, ui: &mut Ui, o: Pos2) {
+        let p = ui.painter().clone();
+        // i18n: Options page title: extracting downloaded archives, and Link grabber
+        let title = crate::i18n::mark("Archives and Link grabber");
+        let w = winui::text_width_font(&p, winui::tahoma_bold(), title);
+        header(
+            ui,
+            o,
+            Icon::PageArchives,
+            title,
+            true,
+            406.0 - w,
+            61.0,
+            406.0,
+        );
+        let s = &mut self.s;
+        // i18n: Options → Archives: group box title
+        group(ui, o, 16.0, 92.0, 392.0, 196.0, "Archives");
+        winui::checkbox_light(
+            ui,
+            o + vec2(30.0, 110.0),
+            &mut s.extract_auto,
+            // i18n: Options → Archives check box (a Link grabber package has its own "Extract when done")
+            "Extract archives when their download completes",
+            true,
+        );
+        winui::checkbox_light(
+            ui,
+            o + vec2(30.0, 134.0),
+            &mut s.extract_delete,
+            if cfg!(windows) {
+                // i18n: Options → Archives check box
+                "Then move the archives to the Recycle Bin"
+            } else {
+                // i18n: Options → Archives check box (Linux and macOS)
+                "Then move the archives to the Trash"
+            },
+            true,
+        );
+        text(
+            &p,
+            o.x + 30.0,
+            o.y + 174.0,
+            // i18n: Options → Archives: a label before the list of where extracted files go
+            crate::i18n::t("What an archive holds goes:"),
+            LIGHT_TEXT(),
+        );
+        const INTO: [&str; 3] = [
+            // i18n: Options → Archives: where extracted files go
+            crate::i18n::mark("Into a folder named after it, when it holds several things"),
+            // i18n: Options → Archives: where extracted files go
+            crate::i18n::mark("Always into a folder named after it"),
+            // i18n: Options → Archives: where extracted files go
+            crate::i18n::mark("Straight into the archive's folder"),
+        ];
+        if let Some(i) = winui::combo_light(
+            ui,
+            r(o, 30.0, 181.0, 364.0, 21.0),
+            &INTO,
+            s.extract_subfolder.min(2) as usize,
+            true,
+            "opt-extract-into",
+        ) {
+            s.extract_subfolder = i as u8;
+        }
+        winui::paragraph(
+            &p,
+            o.x + 30.0,
+            o.y + 226.0,
+            crate::i18n::t(
+                "ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.",
+            ),
+            LIGHT_TEXT(),
+            o.x + 400.0,
+            13.0,
+        );
+        let (rar, ink) = match &self.seven_zip {
+            Some(path) => (
+                crate::i18n::fmt(
+                    // i18n: Options → Archives: {path} is where 7-Zip's program is
+                    crate::i18n::t("7z and RAR archives are extracted by 7-Zip ({path})."),
+                    &[("path", &crate::i18n::ltr(&path.display().to_string()))],
+                ),
+                LIGHT_TEXT(),
+            ),
+            None => (
+                // i18n: Options → Archives, when 7-Zip isn't installed
+                crate::i18n::t(
+                    "7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.",
+                )
+                .to_owned(),
+                winui::ERROR(),
+            ),
+        };
+        winui::fit(
+            ui,
+            &p,
+            o.x + 30.0,
+            o.y + 272.0,
+            &rar,
+            ink,
+            o.x + 400.0,
+            "opt-rar-tool",
+        );
+        // i18n: Options → Archives: group box title
+        group(ui, o, 16.0, 300.0, 392.0, 100.0, "Link grabber");
+        winui::checkbox_light(
+            ui,
+            o + vec2(30.0, 318.0),
+            &mut s.grabber_check,
+            // i18n: Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
+            "Look links up when they arrive (name, size, online)",
+            true,
+        );
+        winui::checkbox_light(
+            ui,
+            o + vec2(30.0, 342.0),
+            &mut s.grabber_hide_pages,
+            "Hide web pages",
+            true,
+        );
+        winui::paragraph(
+            &p,
+            o.x + 30.0,
+            o.y + 380.0,
+            crate::i18n::t(
+                "Tasks → Link grabber, or the browser's \"Download all links\": a split\narchive's volumes are one package, the other links of a page another.",
+            ),
+            LIGHT_DISABLED(),
+            o.x + 400.0,
+            13.0,
+        );
+    }
+
     /// Regional (ours): how dates and times are written in the list and the Scheduler, as the
     /// system's region writes them or the user's own way.
     fn regional(&mut self, ui: &mut Ui, o: Pos2) {
@@ -2903,8 +3044,10 @@ fn ok_cancel(ui: &mut Ui, o: Pos2, x: f32, y: f32, valid: bool) -> Outcome<()> {
 fn tab_row(
     p: &egui::Painter,
     row: &[(usize, &'static str, f32, f32, f32)],
+    measured: bool,
 ) -> Vec<(usize, &'static str, f32, f32, f32)> {
-    if row.iter().all(|t| crate::i18n::t(t.1) == t.1) {
+    // `measured`: the row's English positions are IDM's (a row of ours is sized as a translation).
+    if measured && row.iter().all(|t| crate::i18n::t(t.1) == t.1) {
         return row.to_vec();
     }
     let (left, right) = (row[0].2, row[row.len() - 1].3);
@@ -2953,9 +3096,9 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         (4, crate::i18n::mark("Connection"), 330.0, 419.0, 349.0),
     ];
     // IDM's Dial Up / VPN tab is gone (D-021: no modem support; it did nothing); ours, Regional
-    // (how dates and times are written), shares the row.
-    // Accounts (#44, debrid services) takes the place Dial Up / VPN left in this row.
-    const P: [(usize, &str, f32, f32, f32); 5] = [
+    // (how dates and times are written), Accounts (#44, debrid services) and Archives (#37) share
+    // the row, sized by their labels.
+    const P: [(usize, &str, f32, f32, f32); 6] = [
         // i18n: tab title
         (5, crate::i18n::mark("Proxy / Socks"), 8.0, 104.0, 20.0),
         // i18n: tab title: user names and passwords for sites
@@ -2965,11 +3108,13 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         // i18n: tab title: sound settings
         (8, crate::i18n::mark("Sounds"), 265.0, 336.0, 279.0),
         // i18n: tab title: how dates and times are written (date order, 12- or 24-hour clock)
-        (9, crate::i18n::mark("Regional"), 336.0, 419.0, 350.0),
+        (9, crate::i18n::mark("Regional"), 336.0, 380.0, 350.0),
+        // i18n: tab title: extracting downloaded archives, and Link grabber
+        (10, crate::i18n::mark("Archives"), 380.0, 419.0, 390.0),
     ];
     let p = ui.painter().clone();
     let border = winui::HEADER_LINE();
-    let (g, pr) = (tab_row(&p, &G), tab_row(&p, &P));
+    let (g, pr) = (tab_row(&p, &G, true), tab_row(&p, &P, false));
     let (front, back): (&[_], &[_]) = if page < 5 { (&g, &pr) } else { (&pr, &g) };
     let mut clicked = None;
     let mut tab = |ui: &mut Ui,
@@ -3010,7 +3155,7 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
             winui::keep_keys(ui, &resp, true, false, false);
             if resp.has_focus() {
                 // Left / Right (mirrored in RTL), Home / End through the pages in order.
-                const ORDER: [usize; 10] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                const ORDER: [usize; 11] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
                 let at = ORDER.iter().position(|p| *p == i).unwrap_or(0) as isize;
                 let fwd = if winui::rtl() { -1 } else { 1 };
                 let to = if winui::take_key(ui, egui::Key::ArrowRight) {

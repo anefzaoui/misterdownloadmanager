@@ -216,7 +216,9 @@ def why_not(code: str, row: dict, text) -> str | None:
         # without spaces sets a name straight after its own letters ("オープンソースのIDM代替"),
         # so only a Latin letter or digit before it makes it part of another word.
         kept = len(re.findall(r"(?<![0-9A-Za-zÀ-ɏ])" + r"\w*\s+".join(map(re.escape, written.split())), text))
-        if name in src and src.count(name) > kept and not any(
+        # Counted in the English the same way: "IP" inside "ZIP" isn't the name.
+        in_src = len(re.findall(r"(?<![0-9A-Za-zÀ-ɏ])" + re.escape(name), src))
+        if in_src and in_src > kept and not any(
                 name in k and k != name and k in src for k in KEEP):
             return f'write the name "{name}" exactly as "{written}"'
     words = PH.sub(" ", src)

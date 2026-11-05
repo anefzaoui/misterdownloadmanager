@@ -7,8 +7,9 @@
 
 use serde::Deserialize;
 
-/// Options → File types defaults (IDM 6.42).
-pub const DEFAULT_AUTO_TYPES: &str = "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF WAV WMA WMV Z ZIP";
+/// Options → File types defaults (IDM 6.42's, and TORRENT: a .torrent the browser hands over opens
+/// Add torrent, #39). They are a new list's only: a saved list stays as it was.
+pub const DEFAULT_AUTO_TYPES: &str = "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV Z ZIP";
 pub const DEFAULT_EXCLUDED_SITES: &str = "*.update.microsoft.com download.windowsupdate.com *.download.windowsupdate.com siteseal.thawte.com ecom.cimetz.com *.voice2page.com";
 
 /// The capture settings, named as the app saves them (`Settings` in downloads.json).
@@ -395,6 +396,17 @@ mod tests {
         );
         assert_eq!(
             r.accepts("https://example.com/page.html", "page.html", CHROME),
+            Err(Declined::FileType)
+        );
+        // #39: a .torrent, by default (Add torrent shows what it holds); a list saved before keeps
+        // what it had.
+        assert_eq!(
+            r.accepts("https://example.com/dl/set.torrent", "set.torrent", CHROME),
+            Ok(())
+        );
+        let saved: CaptureRules = serde_json::from_str(r#"{"auto_types":"ZIP EXE"}"#).unwrap();
+        assert_eq!(
+            saved.accepts("https://example.com/dl/set.torrent", "set.torrent", CHROME),
             Err(Declined::FileType)
         );
     }

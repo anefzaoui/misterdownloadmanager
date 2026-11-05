@@ -266,6 +266,19 @@ pub struct Settings {
     /// Download video from a page: the subtitles last chosen (#68), offered again for the
     /// next video when it has that language (none at first).
     pub video_subs: mdm_tools::video::Subs,
+    /// Options → Archives (#37): extract an archive when its download completes (a Link grabber
+    /// package says so itself). Off, as a browser leaves archives alone.
+    pub extract_auto: bool,
+    /// Then move the archive (every volume of it) to the Recycle Bin (the Trash). Off.
+    pub extract_delete: bool,
+    /// Into a folder named after the archive: 0 when it holds several things at its top (smart),
+    /// 1 always, 2 never.
+    pub extract_subfolder: u8,
+    /// Link grabber: look each link up (name, size, online) when it arrives, as IDM's "Download
+    /// all links" does. On.
+    pub grabber_check: bool,
+    /// Link grabber: web pages hidden (IDM's "Hide HTML files"). On.
+    pub grabber_hide_pages: bool,
 }
 
 /// Options → File types defaults (IDM 6.42), shared with the browser host (mdm_ipc::capture).
@@ -405,6 +418,22 @@ impl Default for Settings {
             drop_target: false,
             drop_target_pos: None,
             video_subs: Default::default(),
+            extract_auto: false,
+            extract_delete: false,
+            extract_subfolder: 0,
+            grabber_check: true,
+            grabber_hide_pages: true,
+        }
+    }
+}
+
+impl Settings {
+    /// Options → Archives' folder choice, for mdm-extract.
+    pub fn extract_into(&self) -> mdm_extract::Subfolder {
+        match self.extract_subfolder {
+            1 => mdm_extract::Subfolder::Always,
+            2 => mdm_extract::Subfolder::Never,
+            _ => mdm_extract::Subfolder::Smart,
         }
     }
 }

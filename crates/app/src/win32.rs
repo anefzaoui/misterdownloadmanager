@@ -1900,6 +1900,37 @@ pub fn trim_working_set() {
     }
 }
 
+/// Move `files` to the Recycle Bin, silently (no confirmation, no progress, no error box): an
+/// archive and its volumes after extracting (#37), restorable from there. False when the shell
+/// refused or stopped part way; the files left are kept.
+pub fn to_recycle_bin(files: &[std::path::PathBuf]) -> bool {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::UI::Shell::{
+        FO_DELETE, FOF_ALLOWUNDO, FOF_NOCONFIRMATION, FOF_NOERRORUI, FOF_SILENT, SHFILEOPSTRUCTW,
+        SHFileOperationW,
+    };
+    if files.is_empty() {
+        return true;
+    }
+    // Whole paths, each ended by a NUL, the list by another (the shell's own format).
+    let mut from: Vec<u16> = Vec::new();
+    for f in files {
+        let whole = std::path::absolute(f).unwrap_or_else(|_| f.clone());
+        from.extend(whole.as_os_str().encode_wide());
+        from.push(0);
+    }
+    from.push(0);
+    let mut op = SHFILEOPSTRUCTW {
+        wFunc: FO_DELETE,
+        pFrom: from.as_ptr(),
+        fFlags: (FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_SILENT) as u16,
+        ..Default::default()
+    };
+    // SAFETY: `op` points at `from`, a double-NUL-ended list alive for the call; no window.
+    let r = unsafe { SHFileOperationW(&mut op) };
+    r == 0 && op.fAnyOperationsAborted == 0
+}
+
 /// Thread `tid`'s processor time so far, and this process's page faults so far (soft ones
 /// included: Windows counts no hard faults per process here): crash.rs's freeze notes.
 pub fn thread_usage(tid: u32) -> Option<crate::crash::Usage> {

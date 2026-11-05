@@ -22,6 +22,24 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Link grabber, and archives extracted when they are downloaded**
+  ([#37](https://github.com/anefzaoui/misterdownloadmanager/issues/37)). The window that took
+  the browser's "Download all links", Tasks → Import and dropped lists grew into Link grabber
+  (also Tasks → Link grabber..., where pasted links go). Links come in packages: a split
+  archive's volumes together, the other links of a page together, the rest in "Various files".
+  Each link is looked up for its name, size and whether the server has it (Offline links come
+  unticked), and each package has its folder, an archive password, "Extract when done" and
+  "Delete archives after extracting". **Start** or **Add to queue** (IDM's import, unchanged:
+  an `.ef2` file still brings each download's referrer and cookies).
+  MDM extracts ZIP (AES and Deflate64 too), TAR, TAR.GZ, TAR.XZ, GZ and XZ itself; 7z and RAR
+  need 7-Zip (split `.7z.001` and `.partN.rar` too), and a window says so when it isn't
+  installed. It extracts when a package says so,
+  for any download with **Options → Archives → Extract archives when their download completes**
+  (off by default), or with right-click → **Extract**. A split archive is extracted once its last
+  volume is in. Extracted files are marked as downloaded from the internet, as the archive is;
+  names that would leave the folder, links, and archives that would fill the disk are refused;
+  an existing file is never overwritten. The archive goes to the Recycle Bin (the Trash) only
+  when you ask. Options has a new **Archives** page.
 - **Real-Debrid accounts, experimental** ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)):
   Options → Accounts keeps your debrid service account. Sign in by code in the browser, or with
   your API token. A link from a file host your service supports is unlocked through your account,
@@ -49,6 +67,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   torrent's right-click menu has **Torrent → Recheck files**, **Reannounce**, **Add trackers...**
   and **Copy magnet link**. Its Files tab can tick and untick files while it runs. A `.torrent`
   file's web address, in Add URL or from the browser, opens Add torrent with what the file holds.
+  TORRENT is in Options → File types' defaults, so the browser hands `.torrent` files over; a
+  list saved before keeps what it had.
 - **Torrents: seeding limits** ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)):
   under "Keep sharing torrents after they finish", Torrent settings can stop sharing a finished
   torrent at a share ratio, or after it has been shared for some minutes; both off by default. A
