@@ -54,7 +54,9 @@ fn is_torrent_link(s: &str) -> bool {
     let l = s.trim().to_ascii_lowercase();
     l.starts_with("magnet:?")
         || ((l.starts_with("http://") || l.starts_with("https://"))
-            && l.split(['?', '#']).next().is_some_and(|p| p.ends_with(".torrent")))
+            && l.split(['?', '#'])
+                .next()
+                .is_some_and(|p| p.ends_with(".torrent")))
 }
 
 /// Read an RSS 2.0 or Atom feed. roxmltree refuses DTDs (no entity expansion), and its node
@@ -115,7 +117,9 @@ pub fn parse(xml: &str) -> Result<Parsed, String> {
                         && torrent.is_empty()
                     {
                         torrent = c.attribute("value").unwrap_or("").trim().to_owned();
-                    } else if name == "attr" && c.attribute("name") == Some("size") && size.is_none()
+                    } else if name == "attr"
+                        && c.attribute("name") == Some("size")
+                        && size.is_none()
                     {
                         size = c.attribute("value").and_then(|v| v.trim().parse().ok());
                     }
@@ -407,9 +411,7 @@ pub fn episode(title: &str) -> Option<(u32, u32)> {
     });
     let c = re.captures(title)?;
     let num = |i: usize| c.get(i).and_then(|m| m.as_str().parse().ok());
-    num(1)
-        .zip(num(2))
-        .or_else(|| num(3).zip(num(4)))
+    num(1).zip(num(2)).or_else(|| num(3).zip(num(4)))
 }
 
 fn episode_key(s: u32, e: u32) -> String {
@@ -448,15 +450,27 @@ fn parse_episodes(spec: &str) -> Result<Vec<Range>, String> {
         let range = match eps.split_once('-') {
             None => {
                 let e = num(eps)?;
-                Range { season, from: e, to: Some(e) }
+                Range {
+                    season,
+                    from: e,
+                    to: Some(e),
+                }
             }
-            Some((a, b)) if b.trim().is_empty() => Range { season, from: num(a)?, to: None },
+            Some((a, b)) if b.trim().is_empty() => Range {
+                season,
+                from: num(a)?,
+                to: None,
+            },
             Some((a, b)) => {
                 let (from, to) = (num(a)?, num(b)?);
                 if to < from {
                     return Err(bad(part));
                 }
-                Range { season, from, to: Some(to) }
+                Range {
+                    season,
+                    from,
+                    to: Some(to),
+                }
             }
         };
         out.push(range);
@@ -481,6 +495,9 @@ pub struct Store {
     pub minutes: u32,
     #[serde(default)]
     next_id: u64,
+    /// What the rules did lately (Unix seconds, text), newest last: shown under the rules.
+    #[serde(default)]
+    pub log: Vec<(i64, String)>,
 }
 
 fn default_minutes() -> u32 {
@@ -494,6 +511,7 @@ impl Default for Store {
             rules: Vec::new(),
             minutes: DEFAULT_MINUTES,
             next_id: 1,
+            log: Vec::new(),
         }
     }
 }
@@ -535,7 +553,10 @@ impl Store {
             std::fs::create_dir_all(dir)?;
         }
         let tmp = path.with_extension("json.tmp");
-        std::fs::write(&tmp, serde_json::to_vec_pretty(self).map_err(std::io::Error::other)?)?;
+        std::fs::write(
+            &tmp,
+            serde_json::to_vec_pretty(self).map_err(std::io::Error::other)?,
+        )?;
         std::fs::rename(&tmp, path)
     }
 
@@ -605,6 +626,13 @@ impl Store {
         out
     }
 
+    /// Note what a rule did (the last 50 are kept).
+    pub fn note(&mut self, now: i64, text: String) {
+        self.log.push((now, text));
+        let over = self.log.len().saturating_sub(50);
+        self.log.drain(..over);
+    }
+
     /// A fetch of feed `id` failed.
     pub fn failed(&mut self, id: u64, why: String, now: i64) {
         if let Some(f) = self.feeds.iter_mut().find(|f| f.id == id) {
@@ -662,11 +690,17 @@ mod tests {
         assert_eq!(a.page, "http://127.0.0.1:8899/page/1");
         assert_eq!(p.articles[1].title, "Open Show 1x02 720p", "spaces folded");
         assert!(p.articles[1].torrent.starts_with("magnet:?"));
-        assert_eq!(p.articles[1].id, p.articles[1].torrent, "no guid: its torrent");
+        assert_eq!(
+            p.articles[1].id, p.articles[1].torrent,
+            "no guid: its torrent"
+        );
         assert!(p.articles[2].torrent.is_empty());
         let p = parse(ATOM).unwrap();
         assert_eq!(p.title, "Atom shows");
-        assert_eq!(p.articles[0].torrent, "http://127.0.0.1:8899/rss/files/o.torrent");
+        assert_eq!(
+            p.articles[0].torrent,
+            "http://127.0.0.1:8899/rss/files/o.torrent"
+        );
         assert_eq!(p.articles[0].page, "http://127.0.0.1:8899/page/9");
         assert_eq!(p.articles[0].size, Some(99));
         assert!(parse("<html><body/></html>").is_err());
@@ -704,7 +738,11 @@ mod tests {
         assert_eq!(episode("show.s3.e14"), Some((3, 14)));
         assert_eq!(episode("show s3e14"), Some((3, 14)));
         assert_eq!(episode("Show 2x05 HDTV"), Some((2, 5)));
-        assert_eq!(episode("Film 1920x1080"), None, "a picture size is no episode");
+        assert_eq!(
+            episode("Film 1920x1080"),
+            None,
+            "a picture size is no episode"
+        );
         assert_eq!(episode("Show 2026"), None);
         let mut r = Rule::new(1, "x");
         r.episodes = "1x2; 1x5-8; 3x4-".into();
@@ -725,7 +763,10 @@ mod tests {
     fn only_new_articles_go_through_the_rules() {
         let mut s = Store::default();
         let f = s.add_feed("http://127.0.0.1:8899/rss/shows.xml").unwrap();
-        assert_eq!(s.add_feed("http://127.0.0.1:8899/rss/shows.xml").unwrap(), f);
+        assert_eq!(
+            s.add_feed("http://127.0.0.1:8899/rss/shows.xml").unwrap(),
+            f
+        );
         assert!(s.add_feed("ftp://x/y").is_err() && s.add_feed("nope").is_err());
         let mut r = Rule::new(s.new_id(), "Open Show");
         r.must = "open show".into();
@@ -741,7 +782,10 @@ mod tests {
             articles: v,
         };
         // The first fetch is the backlog: nothing taken.
-        assert!(s.fetched(f, feed(vec![art("1", "Open Show S01E01")]), 100).is_empty());
+        assert!(
+            s.fetched(f, feed(vec![art("1", "Open Show S01E01")]), 100)
+                .is_empty()
+        );
         assert_eq!(s.due(100 + 60), Vec::<u64>::new());
         assert_eq!(s.due(100 + 30 * 60), vec![f]);
         // Then only what is new, each episode once.
@@ -759,13 +803,22 @@ mod tests {
         assert_eq!(ids, ["3"]);
         assert_eq!(s.feeds[0].articles.len(), 4);
         assert_eq!(s.feeds[0].title, "Shows");
-        assert!(s.fetched(f, feed(vec![art("3", "Open Show S01E02 720p")]), 300).is_empty());
+        assert!(
+            s.fetched(f, feed(vec![art("3", "Open Show S01E02 720p")]), 300)
+                .is_empty()
+        );
         // A rule watching another feed, or disabled, takes nothing.
         s.rules[0].feeds = vec![f + 100];
-        assert!(s.fetched(f, feed(vec![art("5", "Open Show S01E03")]), 400).is_empty());
+        assert!(
+            s.fetched(f, feed(vec![art("5", "Open Show S01E03")]), 400)
+                .is_empty()
+        );
         s.rules[0].feeds.clear();
         s.rules[0].enabled = false;
-        assert!(s.fetched(f, feed(vec![art("6", "Open Show S01E04")]), 500).is_empty());
+        assert!(
+            s.fetched(f, feed(vec![art("6", "Open Show S01E04")]), 500)
+                .is_empty()
+        );
         // The preview lists what it would take among the articles kept.
         s.rules[0].enabled = true;
         let pv = s.preview(&s.rules[0].clone());

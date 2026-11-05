@@ -131,7 +131,13 @@ impl RssWindow {
             crate::i18n::t("Feed address:"),
             winui::TEXT(),
         );
-        winui::edit(ui, r(o, 140.0, 42.0, 470.0, 22.0), &mut self.address, true, false);
+        winui::edit(
+            ui,
+            r(o, 140.0, 42.0, 470.0, 22.0),
+            &mut self.address,
+            true,
+            false,
+        );
         let add = winui::button(
             ui,
             r(o, 620.0, 42.0, 120.0, 22.0),
@@ -194,7 +200,14 @@ impl RssWindow {
                 } else {
                     look.ink
                 };
-                winui::text_fit(clip, row.left() + 26.0, row.top() + 14.0, &names[i], ink, row.right() - 4.0);
+                winui::text_fit(
+                    clip,
+                    row.left() + 26.0,
+                    row.top() + 14.0,
+                    &names[i],
+                    ink,
+                    row.right() - 4.0,
+                );
             },
         );
         if ev.picked.is_some() {
@@ -206,7 +219,11 @@ impl RssWindow {
             r(o, 22.0, 414.0, 112.0, 21.0),
             // i18n: RSS feeds window: fetch the selected feed again now
             "Refresh",
-            if sel.is_some() { ButtonKind::Normal } else { ButtonKind::Disabled },
+            if sel.is_some() {
+                ButtonKind::Normal
+            } else {
+                ButtonKind::Disabled
+            },
             false,
             None,
         )
@@ -219,7 +236,11 @@ impl RssWindow {
             r(o, 140.0, 414.0, 112.0, 21.0),
             // i18n: RSS feeds window: unsubscribe from the selected feed
             "Remove",
-            if sel.is_some() { ButtonKind::Normal } else { ButtonKind::Disabled },
+            if sel.is_some() {
+                ButtonKind::Normal
+            } else {
+                ButtonKind::Disabled
+            },
             false,
             None,
         )
@@ -249,7 +270,11 @@ impl RssWindow {
                 let a = &articles[i];
                 look.name = a.title.clone();
                 // A torrent's icon when it has one, a page's when not.
-                let kind = if a.torrent.is_empty() { "page.html" } else { "article.torrent" };
+                let kind = if a.torrent.is_empty() {
+                    "page.html"
+                } else {
+                    "article.torrent"
+                };
                 crate::fileicons::paint_at(
                     ui,
                     clip,
@@ -258,8 +283,16 @@ impl RssWindow {
                     16.0,
                 );
                 let size = a.size.map(crate::model::size).unwrap_or_default();
-                let (sr, _) = winui::text_right(clip, row.right() - 6.0, row.top() + 14.0, &size, look.ink);
-                winui::text_fit(clip, row.left() + 26.0, row.top() + 14.0, &a.title, look.ink, sr.left() - 10.0);
+                let (sr, _) =
+                    winui::text_right(clip, row.right() - 6.0, row.top() + 14.0, &size, look.ink);
+                winui::text_fit(
+                    clip,
+                    row.left() + 26.0,
+                    row.top() + 14.0,
+                    &a.title,
+                    look.ink,
+                    sr.left() - 10.0,
+                );
             },
         );
         let picked = self.articles.selected.and_then(|i| articles.get(i));
@@ -269,13 +302,24 @@ impl RssWindow {
             r(o, 628.0, 414.0, 112.0, 21.0),
             // i18n: RSS feeds window: add the selected article's torrent (opens Add torrent)
             "Download...",
-            if can { ButtonKind::Normal } else { ButtonKind::Disabled },
+            if can {
+                ButtonKind::Normal
+            } else {
+                ButtonKind::Disabled
+            },
             false,
             None,
         )
         .clicked();
-        let chosen = if download { self.articles.selected } else { ev.double_clicked.or(ev.entered) };
-        if let Some(a) = chosen.and_then(|i| articles.get(i)).filter(|a| !a.torrent.is_empty()) {
+        let chosen = if download {
+            self.articles.selected
+        } else {
+            ev.double_clicked.or(ev.entered)
+        };
+        if let Some(a) = chosen
+            .and_then(|i| articles.get(i))
+            .filter(|a| !a.torrent.is_empty())
+        {
             act = Some(Act::Download(a.torrent.clone()));
         }
         // What is selected, or why the feed failed.
@@ -283,7 +327,11 @@ impl RssWindow {
             (e.clone(), winui::ERROR())
         } else if let Some(a) = picked {
             (
-                if a.date.is_empty() { a.title.clone() } else { format!("{}  ·  {}", a.date, a.title) },
+                if a.date.is_empty() {
+                    a.title.clone()
+                } else {
+                    format!("{}  ·  {}", a.date, a.title)
+                },
                 winui::MUTED(),
             )
         } else if let Some(f) = sel.map(|i| &store.feeds[i]) {
@@ -302,11 +350,7 @@ impl RssWindow {
                     winui::MUTED(),
                 ),
                 None => (
-                    crate::i18n::tn(
-                        f.articles.len() as u64,
-                        "{n} article",
-                        "{n} articles",
-                    ),
+                    crate::i18n::tn(f.articles.len() as u64, "{n} article", "{n} articles"),
                     winui::MUTED(),
                 ),
             }
@@ -317,7 +361,16 @@ impl RssWindow {
                 winui::MUTED(),
             )
         };
-        winui::fit(ui, &p, o.x + 264.0, o.y + 429.0, &line, color, o.x + 620.0, ("rss", 1));
+        winui::fit(
+            ui,
+            &p,
+            o.x + 264.0,
+            o.y + 429.0,
+            &line,
+            color,
+            o.x + 620.0,
+            ("rss", 1),
+        );
         // How often feeds are fetched.
         let fit = winui::text(
             &p,
@@ -367,8 +420,19 @@ impl RssWindow {
             &mut self.rules,
             |_ui, clip, i, row, look| {
                 look.name = names[i].0.clone();
-                let ink = if names[i].1 || look.selected { look.ink } else { winui::MUTED() };
-                winui::text_fit(clip, row.left() + 6.0, row.top() + 14.0, &names[i].0, ink, row.right() - 4.0);
+                let ink = if names[i].1 || look.selected {
+                    look.ink
+                } else {
+                    winui::MUTED()
+                };
+                winui::text_fit(
+                    clip,
+                    row.left() + 6.0,
+                    row.top() + 14.0,
+                    &names[i].0,
+                    ink,
+                    row.right() - 4.0,
+                );
             },
         );
         let new = winui::button(
@@ -394,7 +458,11 @@ impl RssWindow {
             ui,
             r(o, 126.0, 414.0, 96.0, 21.0),
             "Delete",
-            if sel.is_some() { ButtonKind::Normal } else { ButtonKind::Disabled },
+            if sel.is_some() {
+                ButtonKind::Normal
+            } else {
+                ButtonKind::Disabled
+            },
             false,
             None,
         )
@@ -412,7 +480,9 @@ impl RssWindow {
                 o.x + 240.0,
                 o.y + 58.0,
                 // i18n: RSS feeds window, Download rules: shown when there are no rules yet
-                crate::i18n::t("A rule adds the new articles whose titles it matches, as they come."),
+                crate::i18n::t(
+                    "A rule adds the new articles whose titles it matches, as they come.",
+                ),
                 winui::MUTED(),
             );
             return act;
@@ -433,17 +503,44 @@ impl RssWindow {
             true,
         );
         let label = |ui: &Ui, y: f32, s: &str| {
-            winui::fit(ui, &p, o.x + 240.0, o.y + y, s, winui::TEXT(), o.x + 372.0, ("rss-label", y as i32));
+            winui::fit(
+                ui,
+                &p,
+                o.x + 240.0,
+                o.y + y,
+                s,
+                winui::TEXT(),
+                o.x + 372.0,
+                ("rss-label", y as i32),
+            );
         };
         // i18n: RSS feeds window, Download rules: the rule's name
         label(ui, 88.0, crate::i18n::t("Name:"));
-        winui::edit(ui, r(o, 380.0, 74.0, 360.0, 22.0), &mut rule.name, true, false);
+        winui::edit(
+            ui,
+            r(o, 380.0, 74.0, 360.0, 22.0),
+            &mut rule.name,
+            true,
+            false,
+        );
         // i18n: RSS feeds window, Download rules: words the article's title must contain
         label(ui, 116.0, crate::i18n::t("Must contain:"));
-        winui::edit(ui, r(o, 380.0, 102.0, 360.0, 22.0), &mut rule.must, true, false);
+        winui::edit(
+            ui,
+            r(o, 380.0, 102.0, 360.0, 22.0),
+            &mut rule.must,
+            true,
+            false,
+        );
         // i18n: RSS feeds window, Download rules: words that make the rule skip an article
         label(ui, 144.0, crate::i18n::t("Must not contain:"));
-        winui::edit(ui, r(o, 380.0, 130.0, 360.0, 22.0), &mut rule.must_not, true, false);
+        winui::edit(
+            ui,
+            r(o, 380.0, 130.0, 360.0, 22.0),
+            &mut rule.must_not,
+            true,
+            false,
+        );
         winui::checkbox(
             ui,
             pos2(o.x + 380.0, o.y + 158.0),
@@ -454,7 +551,13 @@ impl RssWindow {
         );
         // i18n: RSS feeds window, Download rules: which episodes to take (season x episode)
         label(ui, 198.0, crate::i18n::t("Episodes:"));
-        winui::edit(ui, r(o, 380.0, 184.0, 360.0, 22.0), &mut rule.episodes, true, false);
+        winui::edit(
+            ui,
+            r(o, 380.0, 184.0, 360.0, 22.0),
+            &mut rule.episodes,
+            true,
+            false,
+        );
         // The rule's own words, or why they can't be read.
         let problem = match rule.takes("") {
             Err(e) => Some(crate::i18n::fmt(
@@ -476,12 +579,33 @@ impl RssWindow {
                 winui::MUTED(),
             ),
         };
-        winui::paragraph(&p, o.x + 380.0, o.y + 222.0, &hint, color, o.x + 740.0, 14.0);
+        winui::paragraph(
+            &p,
+            o.x + 380.0,
+            o.y + 222.0,
+            &hint,
+            color,
+            o.x + 740.0,
+            14.0,
+        );
         // i18n: RSS feeds window, Download rules: the folder the rule's torrents go to
         label(ui, 262.0, crate::i18n::t("Save to:"));
-        winui::edit(ui, r(o, 380.0, 248.0, 330.0, 22.0), &mut rule.folder, true, false);
-        if winui::button(ui, r(o, 716.0, 248.0, 24.0, 22.0), "...", ButtonKind::Normal, false, None)
-            .clicked()
+        winui::edit(
+            ui,
+            r(o, 380.0, 248.0, 330.0, 22.0),
+            &mut rule.folder,
+            true,
+            false,
+        );
+        if winui::button(
+            ui,
+            r(o, 716.0, 248.0, 24.0, 22.0),
+            "...",
+            ButtonKind::Normal,
+            false,
+            None,
+        )
+        .clicked()
         {
             let from = rule.folder.clone();
             winui::start_pick(ui.ctx(), "rss-folder", move || {
@@ -512,7 +636,10 @@ impl RssWindow {
         // i18n: RSS feeds window, Download rules: the feeds the rule watches
         label(ui, 318.0, crate::i18n::t("Feeds:"));
         self.rule_feeds.name = crate::i18n::t("Feeds:");
-        let ticked: Vec<bool> = feeds.iter().map(|(id, _)| rule.feeds.contains(id)).collect();
+        let ticked: Vec<bool> = feeds
+            .iter()
+            .map(|(id, _)| rule.feeds.contains(id))
+            .collect();
         let mut flip = None;
         winui::row_list(
             ui,
@@ -524,10 +651,24 @@ impl RssWindow {
             |ui, clip, k, row, look| {
                 let mut on = ticked[k];
                 look.name = feeds[k].1.clone();
-                if winui::row_check(ui, clip, pos2(row.left() + 5.0, row.top() + 2.0), &mut on, &feeds[k].1, ("rss-feed", k)) {
+                if winui::row_check(
+                    ui,
+                    clip,
+                    pos2(row.left() + 5.0, row.top() + 2.0),
+                    &mut on,
+                    &feeds[k].1,
+                    ("rss-feed", k),
+                ) {
                     flip = Some(k);
                 }
-                winui::text_fit(clip, row.left() + 23.0, row.top() + 12.0, &feeds[k].1, look.ink, row.right() - 4.0);
+                winui::text_fit(
+                    clip,
+                    row.left() + 23.0,
+                    row.top() + 12.0,
+                    &feeds[k].1,
+                    look.ink,
+                    row.right() - 4.0,
+                );
             },
         );
         if let Some(k) = flip {
@@ -551,7 +692,11 @@ impl RssWindow {
         let changed = *rule != before;
         // What it would take now, among the articles the feeds hold.
         let rule = rule.clone();
-        let preview = if problem.is_none() { store.preview(&rule) } else { Vec::new() };
+        let preview = if problem.is_none() {
+            store.preview(&rule)
+        } else {
+            Vec::new()
+        };
         winui::fit(
             ui,
             &p,
@@ -585,10 +730,39 @@ impl RssWindow {
                     pos2(row.left() + 4.0, row.top()),
                     16.0,
                 );
-                let (fr, _) = winui::text_right(clip, row.right() - 6.0, row.top() + 12.0, feed, winui::MUTED());
-                winui::text_fit(clip, row.left() + 24.0, row.top() + 12.0, &a.title, look.ink, fr.left() - 10.0);
+                let (fr, _) = winui::text_right(
+                    clip,
+                    row.right() - 6.0,
+                    row.top() + 12.0,
+                    feed,
+                    winui::MUTED(),
+                );
+                winui::text_fit(
+                    clip,
+                    row.left() + 24.0,
+                    row.top() + 12.0,
+                    &a.title,
+                    look.ink,
+                    fr.left() - 10.0,
+                );
             },
         );
+        // What the rules did last, at the bottom.
+        if let Some((t, what)) = store.log.last() {
+            let at = chrono::DateTime::from_timestamp(*t, 0)
+                .map(|d| d.with_timezone(&chrono::Local).format("%H:%M").to_string())
+                .unwrap_or_default();
+            winui::fit(
+                ui,
+                &p,
+                o.x + 22.0,
+                o.y + 482.0,
+                &format!("{}  {what}", crate::i18n::ltr(&at)),
+                winui::MUTED(),
+                o.x + 650.0,
+                ("rss", 3),
+            );
+        }
         if changed { Some(Act::Saved) } else { act }
     }
 }

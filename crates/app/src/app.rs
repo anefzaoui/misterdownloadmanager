@@ -3035,7 +3035,12 @@ impl App {
                         }
                     }
                 }
-                RssEvent::Looked { rule, feed, title, res } => self.rss_add(rule, feed, &title, res),
+                RssEvent::Looked {
+                    rule,
+                    feed,
+                    title,
+                    res,
+                } => self.rss_add(rule, feed, &title, res),
             }
         }
         for id in self.rss.due(now) {
@@ -3100,7 +3105,8 @@ impl App {
                 let src = match mdm_torrent::Source::magnet(&article.torrent) {
                     Some(m) => m,
                     None => {
-                        let url = url::Url::parse(article.torrent.trim()).map_err(|e| e.to_string())?;
+                        let url =
+                            url::Url::parse(article.torrent.trim()).map_err(|e| e.to_string())?;
                         let remote = crate::torrents::Remote {
                             url,
                             parts: crate::app::RequestParts {
@@ -3139,23 +3145,64 @@ impl App {
         let Some(r) = self.rss.rules.iter().find(|r| r.id == rule).cloned() else {
             return;
         };
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_secs() as i64);
+        let title_i = crate::i18n::isolate(title);
         let meta = match res {
             Ok(m) => m,
             Err(e) => {
                 tracing::warn!("rss: rule {:?}: {title}: {e}", r.name);
+                self.rss.note(
+                    now,
+                    crate::i18n::fmt(
+                        // i18n: RSS feeds window, under the rules: a rule's article could not be added, with why
+                        crate::i18n::t("{title}: not added: {error}"),
+                        &[("title", &title_i), ("error", &e)],
+                    ),
+                );
+                self.save_rss();
                 return;
             }
         };
         if self.torrent_hashes().contains(&meta.info_hash) {
+            self.rss.note(
+                now,
+                crate::i18n::fmt(
+                    // i18n: RSS feeds window, under the rules: a rule's article is a torrent the list already has
+                    crate::i18n::t("{title}: already in the list"),
+                    &[("title", &title_i)],
+                ),
+            );
+            self.save_rss();
             return;
         }
         let dir = if r.folder.trim().is_empty() {
-            self.settings.category_dir(Category::Torrents, &self.downloads)
+            self.settings
+                .category_dir(Category::Torrents, &self.downloads)
         } else {
             PathBuf::from(r.folder.trim())
         };
         if !meta.existing_in(&dir).is_empty() {
-            tracing::warn!("rss: rule {:?}: {title}: its files are already in {}", r.name, dir.display());
+            tracing::warn!(
+                "rss: rule {:?}: {title}: its files are already in {}",
+                r.name,
+                dir.display()
+            );
+            self.rss.note(
+                now,
+                crate::i18n::fmt(
+                    // i18n: RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
+                    crate::i18n::t(
+                        "{title}: not added: files of its names are already in {folder}",
+                    ),
+                    &[
+                        ("title", &title_i),
+                        ("folder", &crate::i18n::ltr(&dir.display().to_string())),
+                    ],
+                ),
+            );
+            self.save_rss();
             return;
         }
         let hash = meta.info_hash.clone();
@@ -3175,6 +3222,18 @@ impl App {
             .find(|f| f.id == feed)
             .map(|f| f.name().to_owned())
             .unwrap_or_default();
+        self.rss.note(
+            now,
+            crate::i18n::fmt(
+                // i18n: RSS feeds window, under the rules: {title} was added by the rule {rule}
+                crate::i18n::t("{title}: added by {rule}"),
+                &[
+                    ("title", &title_i),
+                    ("rule", &crate::i18n::isolate(&r.name)),
+                ],
+            ),
+        );
+        self.save_rss();
         if let Some(item) = self
             .items
             .iter_mut()

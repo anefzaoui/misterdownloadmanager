@@ -136,7 +136,10 @@ fn xml(body: String, atom: bool) -> Response {
 pub(crate) async fn shows(RawQuery(q): RawQuery) -> Response {
     let q = pairs(q);
     let get = |k: &str| q.iter().find(|(n, _)| n == k).map(|(_, v)| v.as_str());
-    let upto: u64 = get("upto").and_then(|v| v.parse().ok()).unwrap_or(3).min(99);
+    let upto: u64 = get("upto")
+        .and_then(|v| v.parse().ok())
+        .unwrap_or(3)
+        .min(99);
     let torrent = get("torrent");
     let mut items = Vec::new();
     for e in (1..=upto).rev() {
@@ -148,10 +151,7 @@ pub(crate) async fn shows(RawQuery(q): RawQuery) -> Response {
             let hash = fake_hash(&title);
             let link = match torrent {
                 Some(t) => t.to_owned(),
-                None => format!(
-                    "magnet:?xt=urn:btih:{hash}&dn={}",
-                    title.replace(' ', "+")
-                ),
+                None => format!("magnet:?xt=urn:btih:{hash}&dn={}", title.replace(' ', "+")),
             };
             items.push(Item {
                 guid: format!("{show}-{hash}"),
@@ -169,9 +169,12 @@ pub(crate) async fn shows(RawQuery(q): RawQuery) -> Response {
     }
 }
 
-fn files(shared: &Shared) -> Option<(PathBuf, Vec<(String, u64, u64)>)> {
+/// A file of the folder: its name, length and modification time (Unix seconds).
+type Listed = (String, u64, u64);
+
+fn files(shared: &Shared) -> Option<(PathBuf, Vec<Listed>)> {
     let dir = shared.rss_dir.clone()?;
-    let mut out: Vec<(String, u64, u64)> = std::fs::read_dir(&dir)
+    let mut out: Vec<Listed> = std::fs::read_dir(&dir)
         .ok()?
         .flatten()
         .filter_map(|e| {
@@ -192,6 +195,17 @@ fn files(shared: &Shared) -> Option<(PathBuf, Vec<(String, u64, u64)>)> {
     Some((dir, out))
 }
 
+/// `http://HOST/rss/files/NAME`, the name a path segment: a space is `%20` (`+` is a plus in a
+/// path; form encoding's `+` for a space made every name with one a 404).
+fn file_link(host: &str, name: &str) -> String {
+    let mut u = url::Url::parse(&format!("http://{host}/rss/files/"))
+        .unwrap_or_else(|_| url::Url::parse("http://127.0.0.1/rss/files/").expect("valid"));
+    if let Ok(mut path) = u.path_segments_mut() {
+        path.pop_if_empty().push(name);
+    }
+    u.to_string()
+}
+
 /// GET /rss/dir.xml — the .torrent files in `--rss-dir`, newest first, each linked to
 /// /rss/files/NAME (its title: the name without .torrent).
 pub(crate) async fn dir(State(shared): State<Arc<Shared>>, headers: HeaderMap) -> Response {
@@ -207,10 +221,7 @@ pub(crate) async fn dir(State(shared): State<Arc<Shared>>, headers: HeaderMap) -
         .enumerate()
         .map(|(i, (name, len, modified))| Item {
             title: name[..name.len() - ".torrent".len()].to_owned(),
-            link: format!(
-                "http://{host}/rss/files/{}",
-                url::form_urlencoded::byte_serialize(name.as_bytes()).collect::<String>()
-            ),
+            link: file_link(host, name),
             guid: format!("{name}-{modified}"),
             size: *len,
             age: i as u64 * 60,
@@ -241,5 +252,14 @@ mod tests {
         assert!(super::date_rfc822(0).ends_with("GMT"));
         assert_eq!(super::fake_hash("a").len(), 40);
         assert_ne!(super::fake_hash("a"), super::fake_hash("b"));
+    }
+
+    /// A file's link is a path: a space is %20, a plus stays a plus, `#` and `?` are escaped.
+    #[test]
+    fn file_links_are_paths() {
+        assert_eq!(
+            super::file_link("127.0.0.1:8899", "Open Show S01E04 1080p+x #1?.torrent"),
+            "http://127.0.0.1:8899/rss/files/Open%20Show%20S01E04%201080p+x%20%231%3F.torrent"
+        );
     }
 }
