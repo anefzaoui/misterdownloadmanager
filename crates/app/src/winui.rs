@@ -238,14 +238,14 @@ pub fn banner(
     fill_l(p, o.x, o.y + h, o.x + w - 1.0, o.y + h, FIELD_EDGE());
     egui::Image::new(egui::include_image!("../assets/icons/app/mdm-48.png"))
         .paint_at(ui, r(o, 18.0, 18.0, 48.0, 48.0));
-    text_font(
-        p,
-        FontId::new(16.0, FontFamily::Name("tahoma-bold".into())),
-        o.x + 80.0,
-        o.y + 36.0,
-        headline,
-        TEXT(),
-    );
+    // The headline on one line: cut with "..." at the far edge (a long translation), whole on
+    // hover.
+    let bold = FontId::new(16.0, FontFamily::Name("tahoma-bold".into()));
+    let shown = ellipsize(p, &bold, headline, w - 18.0 - 80.0);
+    let drawn = text_font(p, bold, o.x + 80.0, o.y + 36.0, &shown, TEXT());
+    if shown != headline {
+        full_on_hover(ui, drawn, (key, "headline"), headline);
+    }
     let lines = paragraph(
         p,
         o.x + 80.0,
@@ -255,8 +255,8 @@ pub fn banner(
         o.x + w - 18.0,
         14.0,
     );
-    // The last line's baseline, its descent and the margin two lines leave (13 px).
-    let need = 57.0 + 14.0 * (lines.max(1) as f32 - 1.0) + 27.0;
+    // As planned, two lines: the second one's baseline at 71, then 13 px of descent and margin.
+    let need = 57.0 + 14.0 * (lines.max(2) as f32 - 1.0) + 13.0;
     crate::dialogs::grow_px(ui.ctx(), key, need - PLANNED);
     extra
 }

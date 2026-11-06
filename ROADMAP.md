@@ -13,6 +13,11 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Every mark in the windows is drawn in every language (the browser window's ✔ Connected
+  was an empty box, → on Linux), and the browser and video-helper windows put their logo at the
+  start side in Arabic and Persian and fit a long German headline and subline
+  ([#185](https://github.com/anefzaoui/misterdownloadmanager/issues/185),
+  [#170](https://github.com/anefzaoui/misterdownloadmanager/issues/170))
 - ✅ Linux: Ubuntu's Firefox (the Snap) reaches MDM: browser integration is set up for it, and the
   help says what the desktop asks the first time; Chromium as a Snap, which can't reach MDM, is no
   longer offered (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
