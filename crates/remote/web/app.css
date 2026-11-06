@@ -115,7 +115,8 @@ button:focus-visible, .button:focus-visible, .chip button:focus-visible { outlin
 button:disabled { opacity: 0.5; cursor: default; }
 .primary { background: var(--accent); color: var(--on-accent); border-color: var(--accent); width: 100%; font-weight: 600; }
 .primary:hover { background: var(--accent-hover); }
-.danger { background: var(--bad); border-color: var(--bad); color: #fff; }
+.danger { background: #c42b1c; border-color: #c42b1c; color: #fff; }
+.danger:hover { background: #a52313; border-color: #a52313; }
 .icon { min-width: 40px; padding: 0; font-size: 20px; background: transparent; border-color: transparent; }
 
 .row { display: flex; gap: 8px; align-items: flex-start; }
@@ -172,7 +173,7 @@ button:disabled { opacity: 0.5; cursor: default; }
   max-width: 560px; margin: 0 auto; padding: 12px 16px; border-radius: 8px;
   background: var(--text); color: var(--bg); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
-.toast.bad { background: var(--bad); color: #fff; }
+.toast.bad { background: #c42b1c; color: #fff; }
 
 dialog {
   border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--text);
