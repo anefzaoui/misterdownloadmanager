@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The Scheduler wakes the computer to run a queue**
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142)): tick **Wake the
+  computer to run this queue** under the start time, and a sleeping computer is woken a minute
+  before the queue starts and kept awake while it runs; the line under it says when. On Windows
+  it needs **Allow wake timers** in the power plan: when that is off the Scheduler says so, with a
+  link to the setting. On Linux an administrator has to allow it once (the guide shows how); on
+  macOS only an administrator can schedule a wake, so the option says why it's greyed. MDM never
+  asks for an administrator's password. The Scheduler is 40 pixels taller for it.
 - **Where a download's server is** ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140)):
   **Download File Info**, the progress window and **Properties** show the server's country, with
   its flag, and its round trip, such as **about 24 ms (near)**, in green, amber or red. The country

@@ -53,6 +53,7 @@ mod tray;
 mod unix;
 mod update;
 mod videodlg;
+mod wake;
 mod whereis;
 #[cfg(windows)]
 mod win32;

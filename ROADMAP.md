@@ -13,6 +13,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ The Scheduler wakes the computer from sleep to run a queue, and keeps it awake while the
+  queue runs: on Windows when the power plan allows wake timers (the Scheduler says when it
+  doesn't), on Linux once an administrator allows it, and on macOS it says why it can't
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - ✅ A window closed with its title bar's × keeps its contents until it goes, instead of turning
   black for a moment (seconds on Linux) ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207))
 - ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
@@ -227,8 +231,6 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Downloads and windows
 
-- 📋 The Scheduler wakes the computer from sleep to run a queue
-  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
   File Info, the command line using the accounts, torrents through the service, the system
   keychains for the sign-ins
