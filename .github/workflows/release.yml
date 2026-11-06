@@ -123,29 +123,27 @@ jobs:
           New-Item -ItemType Directory -Force target/store | Out-Null
           Copy-Item target/extension/mdm-chrome-store.zip "target/store/MisterDownloadManager-$v-chrome-web-store.zip"
 
-      # Firefox keeps only add-ons Mozilla signed. With the AMO API key in the repository's
-      # secrets (AMO_JWT_ISSUER, AMO_JWT_SECRET), the .xpi is signed for self-distribution (the
-      # unlisted channel) and replaces the unsigned one; without them it stays unsigned.
-      - name: Sign the Firefox add-on
+      # The Firefox add-on is listed on addons.mozilla.org: with the AMO API key in the
+      # repository's secrets (AMO_JWT_ISSUER, AMO_JWT_SECRET), each release's version is sent there
+      # for review (not waited for); Firefox installs and updates it from its listing. The .xpi
+      # in the release stays the unsigned one (for about:debugging).
+      - name: Send the Firefox add-on to addons.mozilla.org
         if: ${{ env.AMO_JWT_ISSUER != '' }}
         env:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         shell: pwsh
         run: |
           $log = npx --yes web-ext@8 sign --source-dir target/extension/firefox --artifacts-dir target/signed `
-            --channel unlisted --api-key $env:AMO_JWT_ISSUER --api-secret $env:AMO_JWT_SECRET 2>&1
+            --channel listed --approval-timeout 0 --api-key $env:AMO_JWT_ISSUER --api-secret $env:AMO_JWT_SECRET 2>&1
           $log | Write-Output
           if ($LASTEXITCODE -ne 0) {
-            # A re-run: Mozilla refuses a version it signed already. Anything else fails here.
+            # A re-run: Mozilla refuses a version it has already. Anything else fails here.
             if (($log -join "`n") -match "already exists") {
-              Write-Output "::warning::This version is signed already at addons.mozilla.org; the release keeps the unsigned .xpi (download the signed one from the AMO dashboard)."
+              Write-Output "::warning::This version is on addons.mozilla.org already."
               exit 0
             }
             exit 1
           }
-          $v = [regex]::Match((Get-Content Cargo.toml -Raw), '(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
-          $signed = Get-ChildItem target/signed/*.xpi | Select-Object -First 1
-          Copy-Item $signed.FullName "target/dist/MisterDownloadManager-$v-extension-firefox.xpi" -Force
 
       - uses: actions/upload-artifact@v4
         with:

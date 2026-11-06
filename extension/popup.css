@@ -64,6 +64,8 @@ button.row { width: 100%; text-align: start; margin-top: 6px; overflow: hidden; 
 .actions button { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .note { color: var(--muted); margin: 10px 0 0; font-size: 12px; }
 footer { display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; border-top: 1px solid var(--edge); padding-top: 6px; color: var(--muted); font-size: 12px; }
+/* Help and Support MDM side by side on the footer's one line: the popup keeps its height. */
+.footer-links { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
 /* The media the tab loaded (#38): one row each, its type, name, what is known, and Download. */
 .media { margin-top: 12px; border-top: 1px solid var(--edge); padding-top: 8px; }
 .media h2 { margin: 0 0 6px; font-size: 12px; font-weight: 600; color: var(--muted); }
