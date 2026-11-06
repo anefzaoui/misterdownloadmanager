@@ -60,8 +60,12 @@
       video.src = URL.createObjectURL(new MediaSource());
     } catch {}
   }
-  const run = manifest.pathname.endsWith(".mpd") ? dash : hls;
-  run(manifest).then(
+  // HLS or DASH: data-kind, else the address's ending (#171's have none).
+  const kind = script.dataset.kind || (manifest.pathname.endsWith(".mpd") ? "dash" : "hls");
+  const run = kind === "dash" ? dash : hls;
+  // A player's other text first (data-decoy): no manifest, never to be listed.
+  const decoy = script.dataset.decoy ? fetch(new URL(script.dataset.decoy, location.href)).then((r) => r.text()) : Promise.resolve();
+  decoy.then(() => run(manifest)).then(
     () => {
       const done = Number(document.body.dataset.streamsDone || 0) + 1;
       document.body.dataset.streamsDone = String(done);
