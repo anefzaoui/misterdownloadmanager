@@ -4,6 +4,8 @@
 // to download. background.js does the work.
 const ext = globalThis.browser ?? globalThis.chrome;
 const HELP = "https://misterdownloadmanager.com/help/browser-help.html";
+// The creator's GitHub Sponsors page (the app's Help → Support MDM): a plain link, in a new tab.
+const SPONSORS = "https://github.com/sponsors/anefzaoui";
 const t = (key, ...subs) => ext.i18n.getMessage(key, subs) || key;
 const $ = (id) => document.getElementById(id);
 const ask = (m) => ext.runtime.sendMessage(m).catch(() => ({ ok: false }));
@@ -13,6 +15,7 @@ document.documentElement.lang = lang;
 document.documentElement.dir = t("@@bidi_dir") === "rtl" ? "rtl" : "ltr";
 for (const el of document.querySelectorAll("[data-i18n]")) el.textContent = t(el.dataset.i18n);
 $("help").href = HELP;
+$("support").href = SPONSORS;
 
 // The tab it is about: the window's active tab; with `?page=ADDRESS` (this page opened in a tab of
 // its own, for the tests and the pictures), the tab showing that address.

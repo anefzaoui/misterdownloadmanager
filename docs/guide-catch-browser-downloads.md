@@ -2,13 +2,21 @@
 
 [← Back to docs index](README.md)
 
-Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)
+Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.
 
 ## Before you start
 
 MDM must be installed with the setup, with **Set up browser integration (Chrome, Edge, Brave, Firefox)** ticked. It is ticked by default. If you're not sure, run the setup again. A portable copy can't do this.
 
-## Steps
+## In Firefox
+
+1. Open the add-on's page on addons.mozilla.org, [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/), and click **Add to Firefox**. Zen and LibreWolf use the same page.
+2. Firefox asks to confirm: click **Add**. Firefox keeps the add-on up to date.
+3. Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens **Download File Info**. Click **Start Download**.
+
+## In Chrome, Edge or Brave
+
+By hand for now, while the Chrome Web Store reviews the extension:
 
 1. Open your browser's extensions page: type `chrome://extensions`, `edge://extensions` or `brave://extensions` in the address bar.
 2. Turn on **Developer mode**.

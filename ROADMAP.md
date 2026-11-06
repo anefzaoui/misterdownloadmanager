@@ -15,6 +15,13 @@ Everything below ships together, in one release.
 
 - ✅ A download or magnet link sent while the window is minimized opens its window at once
   ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162))
+- ✅ Firefox's add-on offered from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
+  first: **Add to Firefox** on the website, in the help, the FAQ and the README, and in MDM's
+  **Add Mister Download Manager to your browser** window (for Zen and LibreWolf too); Chrome,
+  Edge, Brave, Opera and Vivaldi by hand until the Chrome Web Store listing is approved
+- ✅ Support MDM: a way to support its creator on [GitHub Sponsors](https://github.com/sponsors/anefzaoui),
+  asked for only (**Help → Support MDM**, a line in About, the website, the README, the
+  extension's popup and GitHub's Sponsor button); MDM stays free, nothing changes or unlocks
 - ✅ A server that can't resume a download no longer gets the file downloaded twice on a busy
   computer (part of [#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
