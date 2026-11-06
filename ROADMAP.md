@@ -19,6 +19,9 @@ Everything below ships together, in one release.
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
   video, the right-click menu (it did nothing in Firefox) and the media list
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
+- ✅ Linux: Ubuntu's Firefox (the Snap) reaches MDM: browser integration is set up for it, and the
+  help says what the desktop asks the first time; Chromium as a Snap, which can't reach MDM, is no
+  longer offered (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ A smaller download: the installer 15 % and the zips 19 % smaller, nothing removed
   ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - ✅ Linux: MDM's first window opens seconds sooner; the system's fonts are looked up all at once

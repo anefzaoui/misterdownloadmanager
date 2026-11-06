@@ -158,7 +158,9 @@ pub const BROWSERS: &[Browser] = &[
         &["firefox"],
         &["Mozilla", "Firefox"],
         &["mozilla"],
-        &[".mozilla"],
+        // The Snap (Ubuntu's own Firefox) keeps its profile in its snap folder and never makes
+        // ~/.mozilla; it reaches the host through the desktop portal, which reads ~/.mozilla's.
+        &[".mozilla", "snap/firefox/common/.mozilla"],
     ),
     gecko(
         "Zen Browser",
@@ -255,7 +257,8 @@ pub fn windows_can_run_extension(program: &str) -> bool {
 /// Firefox and its forks (Zen, LibreWolf, Floorp, Waterfox) all read Mozilla's own user folder,
 /// `~/.mozilla/native-messaging-hosts` or `~/Library/Application Support/Mozilla/
 /// NativeMessagingHosts`, even when they keep their data elsewhere (Firefox's newer
-/// `~/.config/mozilla`, Zen's `~/.zen`): it is given, to be created, when any of them is there.
+/// `~/.config/mozilla`, Zen's `~/.zen`, the Snap's `~/snap/firefox`): it is given, to be created,
+/// when any of them is there.
 pub fn host_dirs(home: &Path, config: &Path, mac: bool, all_users: bool) -> Vec<(PathBuf, Family)> {
     let mut dirs: Vec<(PathBuf, Family)> = Vec::new();
     if all_users {
@@ -388,6 +391,20 @@ mod tests {
     fn firefox_xdg_alone_gets_mozillas_folder() {
         let h = tempfile::tempdir().unwrap();
         std::fs::create_dir_all(h.path().join(".config/mozilla/firefox")).unwrap();
+        assert_eq!(
+            user(h.path(), false),
+            vec![(
+                h.path().join(".mozilla/native-messaging-hosts"),
+                Family::Gecko
+            )]
+        );
+    }
+
+    /// Ubuntu's Snap Firefox has no ~/.mozilla; the portal it goes through reads it.
+    #[test]
+    fn snap_firefox_alone_gets_mozillas_folder() {
+        let h = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(h.path().join("snap/firefox/common/.mozilla/firefox")).unwrap();
         assert_eq!(
             user(h.path(), false),
             vec![(

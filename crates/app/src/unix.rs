@@ -706,14 +706,31 @@ pub fn browsers() -> Vec<(String, PathBuf)> {
             .unwrap_or_default()
     };
     // A Flatpak browser (`app.zen_browser.zen` …) isn't listed: its sandbox can't start the
-    // native host, so the extension couldn't reach MDM (docs/browser-help.md).
+    // native host, so the extension couldn't reach MDM (docs/browser-help.md). Nor is a Chromium
+    // browser that runs as a Snap (Ubuntu's Chromium): it starts the host inside its sandbox,
+    // which can't read MDM's data folder (~/.local/share is hidden from Snaps) and so started a
+    // second, sandboxed MDM. The Snap Firefox is listed: it starts the host through the desktop
+    // portal, outside its sandbox.
     mdm_ipc::browsers::BROWSERS
         .iter()
         .filter_map(|b| {
             let names = if mac { b.mac_apps } else { b.linux_cmds };
-            found(names, &dirs).map(|p| (b.name.to_owned(), p))
+            found(names, &dirs).map(|p| (b, p))
         })
+        .filter(|(b, p)| mac || b.family == mdm_ipc::browsers::Family::Gecko || !is_snap(p))
+        .map(|(b, p)| (b.name.to_owned(), p))
         .collect()
+}
+
+/// Linux: whether the command `p` starts a Snap: /snap/bin's links to `snap`, or the short
+/// scripts some distributions put in /usr/bin to start the Snap in a package's place.
+fn is_snap(p: &Path) -> bool {
+    if std::fs::canonicalize(p).is_ok_and(|real| real.ends_with("usr/bin/snap")) {
+        return true;
+    }
+    std::fs::metadata(p).is_ok_and(|m| m.len() < 16 * 1024)
+        && std::fs::read(p)
+            .is_ok_and(|b| b.starts_with(b"#!") && b.windows(10).any(|w| w == b"/snap/bin/"))
 }
 
 /// Open `url` in the browser whose program is `program` (from `browsers`).
