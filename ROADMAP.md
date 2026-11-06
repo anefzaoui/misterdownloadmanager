@@ -174,8 +174,6 @@ Everything below ships together, in one release.
   MDM; no address is sent anywhere ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
 - 🔄 Torrents: download in order, to watch a video while it downloads; the other torrents rarest
   first ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
-- 🔄 A stream whose address doesn't end in `.m3u8` or `.mpd` is still recognised by its contents
-  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
 - 🔄 Chrome Web Store: **Add to Chrome** beside **Add to Firefox** in MDM, on the website and in the
   help, and MDM's browser window opens each browser's store
 - 🔄 Firefox: reading the browser's proxy or VPN extension becomes a switch in the add-on, so the
