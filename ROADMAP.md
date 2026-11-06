@@ -159,10 +159,32 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Themes: today's look stays the default, with a few more built in; colours, sizes, spacing and
-  icons all come from the chosen theme, and Base16 and pywal schemes can be imported
-  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
-- 🔄 A crash when a magnet link comes from Firefox ([#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145))
+- 🔄 Themes ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): today's look stays the default. Every colour, size and spacing now
+  comes from the chosen theme (the classic look pixel for pixel the same); **View → Theme** with
+  Classic, Native (follows the system's accent and contrast on Windows, Linux and macOS) and High
+  contrast; then style themes with their own control shapes, a drawn title bar on Windows and their
+  own icons: Metro first, then Adwaita and Breeze, then Luna, Aero and Aqua with icons drawn for
+  MDM. Theme files can be added by anyone, and Base16 and pywal schemes imported
+- 🔄 A minimized MDM keeps working: queues, the Scheduler, speed limits, the kill switch and saving
+  no longer wait for the window to be restored (after [#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162))
+- 🔄 Where a download's server is: its country, flag and round trip, from a table that comes with
+  MDM; no address is sent anywhere ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
+- 🔄 Torrents: download in order, to watch a video while it downloads; the other torrents rarest
+  first ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
+- 🔄 A stream whose address doesn't end in `.m3u8` or `.mpd` is still recognised by its contents
+  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
+- 🔄 Chrome Web Store: **Add to Chrome** beside **Add to Firefox** in MDM, on the website and in the
+  help, and MDM's browser window opens each browser's store
+- 🔄 Firefox: reading the browser's proxy or VPN extension becomes a switch in the add-on, so the
+  update asks for no new permission ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
+- 🔄 MDM's browser window: the check mark before **Connected** shows in every language (an empty
+  box in Arabic and on Linux), the German subtitle fits, the Arabic layout is mirrored
+  ([#185](https://github.com/anefzaoui/misterdownloadmanager/issues/185), [#170](https://github.com/anefzaoui/misterdownloadmanager/issues/170))
+- 🔄 Linux supported like Windows, no longer experimental: every change is now checked on Ubuntu
+  (GNOME) as well as Windows, then on KDE, Cinnamon and Xfce ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- 🔄 Before the release: every screenshot taken again on Windows and Linux (smaller files, WebP),
+  and every page of the docs, the README and the website brought up to date
+  ([#186](https://github.com/anefzaoui/misterdownloadmanager/issues/186))
 
 ### Bugs being looked into
 
@@ -176,8 +198,8 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Where a download's server is: its country, flag and ping, from an offline database
-  ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
+- 📋 Download video: the **Install ffmpeg** button fits its text in every language
+  ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172))
 - 📋 The Scheduler wakes the computer from sleep to run a queue
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
@@ -196,11 +218,14 @@ Everything below ships together, in one release.
 ### Browser extension
 
 - ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
-- 📋 Chrome Web Store listing (in review)
+- ✅ On the Chrome Web Store: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp)
+- 📋 Chrome: use the browser's proxy or VPN extension for downloads too (it needs a permission
+  Chrome can't ask for later, so it waits for a release that can ask everyone once)
 
 ### Look and performance
 
+- 📋 Website: the header's buttons fit in long languages ([#168](https://github.com/anefzaoui/misterdownloadmanager/issues/168)), and Arabic pages
+  don't scroll sideways on phones ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
-- 📋 A smaller download ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))
