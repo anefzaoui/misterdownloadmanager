@@ -70,8 +70,7 @@ icons (bundled) stand in until the system's icon is ready, and wherever the syst
 
 On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend
 only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL.
-`renderer.rs` falls back to the other one when the chosen one can't start, so the windows
-always open.
+When the chosen one can't start, the other one is tried, so the windows always open.
 
 The download list and settings are saved atomically to `%APPDATA%\misterdownloadmanager\`
 (`downloads.json`). The browser host reads the same file for the capture rules, so a change in

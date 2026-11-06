@@ -842,6 +842,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>브라우저.</g1> 페이지를 마우스 오른쪽 버튼으로 클릭하여 <g2>Mister Download Manager으로 모든 링크 다운로드</g2>를 선택하거나, 페이지의 일부를 선택하여 <g3>Mister Download Manager으로 선택한 링크 다운로드</g3>를 선택합니다. 페이지의 리퍼러와 쿠키는 각 링크와 함께 전송됩니다."
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "Windows에서는 Direct3D 12(eframe의 wgpu, Direct3D 12 백엔드만 사용) 또는 보기 → 다음으로 그리기에서 선택한 경우 OpenGL(eframe의 glow)로 창이 그려집니다. Linux 및 macOS는 OpenGL을 사용합니다. 선택한 방식이 시작되지 않으면 다른 방식이 시도되므로 창은 항상 열립니다."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>GitHub에 보내기</g1>는 보고서가 있는 폴더와 함께 GitHub의 <g2>충돌 보고서</g2> 양식을 브라우저에서 미리 채워진 상태로 엽니다. 보고서 파일을 양식으로 드래그하고 확인한 다음 제출합니다. GitHub 계정이 필요합니다. <g3>아무것도 자동으로 전송되지 않습니다.</g3>"
@@ -1046,17 +1050,9 @@
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>영원히 무료입니다.</g1> 만료되는 평가판, 라이선스 키, 광고가 없습니다. GNU GPL은 무료를 보장합니다."
   },
-  "1accfe27df04b7d9": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support…",
-   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 Helium과 같은 해당 브라우저 기반의 브라우저에서 작동합니다. Firefox 지원…"
-  },
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5초</g1><g2></g2>"
-  },
-  "1ae1f6b28d64deef": {
-   "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
-   "text": "브라우저 확장 프로그램은 앱과 함께 제공되며 <g1>Chrome, Edge, Brave, Opera, Vivaldi</g1> 및 <g2>Firefox</g2>용으로 별도 다운로드도 가능합니다. 스토어 등록은 진행 중입니다. 모든 파일은 GitHub Actions를 통해 공개 소스에서 빌드되며 SHA-256 체크섬과 함께 나열됩니다."
   },
   "1afe0a44e06cfa4b": {
    "source": "To check MDM's side, open <g1>Options → General</g1> in MDM and click <g2>Test browser integration...</g2>. It checks that browser integration is on, that this is the installed copy, that the browsers can find MDM, and which browsers' extension has connected; <g3>How to fix it</g3> opens the section for the first that fails.",
@@ -1362,10 +1358,6 @@
    "source": "The download list",
    "text": "다운로드 목록"
   },
-  "20e4fa05d9c374d9": {
-   "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
-   "text": "<g1>임시 부가 기능 로드</g1>를 클릭하고 <x2/>를 선택합니다."
-  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "Mister Download Manager의 메인 창: 도구 모음, 카테고리 및 다운로드 목록이 있는 클래식 레이아웃."
@@ -1385,6 +1377,10 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "<x1/> 폴더를 삭제하거나 읽기 전용으로 만들면 동일한 복사본이 일반 zip처럼 작동하여 데이터를 <x2/>에 보관합니다."
+  },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>보기</g1> — 카테고리 표시 또는 숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4>, <g5>다음으로 그리기</g5>(Windows: Direct3D 또는 OpenGL) 및 <g6>언어</g6>."
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -1734,10 +1730,6 @@
    "source": "MDM comes with an MCP server, misterdownloadmanager-mcp, so an AI assistant that supports MCP (Claude Desktop, Claude Code, Cursor, VS Code and others) can…",
    "text": "MDM에는 MCP 서버인 misterdownloadmanager-mcp가 함께 제공되므로 MCP를 지원하는 AI 어시스턴트(Claude Desktop, Claude Code, Cursor, VS Code 등)는 다음을 수행할 수 있습니다."
   },
-  "2a73a935ac5fc81d": {
-   "source": "Open <x1/> and click <g2>This Firefox</g2>.",
-   "text": "<x1/>을 열고 <g2>이 Firefox</g2>를 클릭합니다."
-  },
   "2a86bffcb4952c03": {
    "source": "<g1>Logging in.</g1> Write the login in the address (<x2/>), tick <g3>Use authorization</g3>, or save it in <g4>Options → Sites Logins</g4>. Without one, MDM logs in as <x5/>. The path is relative to the folder the login starts in; to start from the server's root, write <x6/> after the server (<x7/>).",
    "text": "<g1>로그인.</g1> 주소에 로그인 정보를 입력하거나(<x2/>), <g3>인증 사용</g3>을 선택하거나, <g4>옵션 → 사이트 로그인</g4>에 저장하세요. 로그인 정보가 없으면 MDM은 <x5/>로 로그인합니다. 경로는 로그인이 시작되는 폴더를 기준으로 합니다. 서버의 루트에서 시작하려면 서버 뒤에 <x6/>를 입력하세요(<x7/>)."
@@ -2058,6 +2050,10 @@
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDM은 토렌트가 필요할 때 처음으로 토렌트 엔진을 시작합니다. <g1>토렌트 엔진이 필요 없을 때 토렌트 엔진 중지</g1>가 켜져 있으면(기본값) 토렌트가 실행되거나 공유되지 않은 후 1분 후에 다시 중지됩니다. 실행되는 동안 다른 피어가 MDM에 연결할 수 있으며, MDM은 라우터에 포트(UPnP)를 전달하도록 요청합니다. Windows는 MDM을 방화벽을 통해 허용할지 물을 수 있습니다. 개인 네트워크에서만 허용하십시오."
   },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "카드 제조업체 사이트(Intel, AMD 또는 NVIDIA)에서 그래픽 드라이버를 업데이트하면 이러한 문제 중 상당수가 해결됩니다."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>모든 연결, 실시간</g1> 각 연결은 채워지는 대로 속도와 남은 시간과 함께 그려집니다. 충돌 방지 재개는 중단된 지점부터 다시 시작합니다."
@@ -2097,10 +2093,6 @@
   "335ddbe14ee4164c": {
    "source": "Closing the window with its close box keeps the download running.",
    "text": "닫기 상자로 창을 닫으면 다운로드가 계속 실행됩니다."
-  },
-  "335df06d95749e68": {
-   "source": "Chrome, Edge, Brave, Opera, Vivaldi; Firefox in testing",
-   "text": "Chrome, Edge, Brave, Opera, Vivaldi; Firefox 테스트 중"
   },
   "336d90cdead9909e": {
    "source": "Delete the selected downloads and their files (asks first)",
@@ -2153,10 +2145,6 @@
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "이 컴퓨터 자체(<x1/>)로의 연결은 바인딩되지 않습니다. 이 컴퓨터의 프록시는 다운로드를 전달하며, 어디로 보낼지는 프록시에 달려 있습니다."
-  },
-  "354fca97a75c4b55": {
-   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
-   "text": "컴퓨터에서 Direct3D를 시작할 수 없는 경우(Direct3D 12 드라이버 없음, 일부 가상 머신), MDM은 OpenGL로 그리고 <g1>보기 → 다음으로 그리기</g1>에 그렇게 표시됩니다. <g2>Direct3D</g2>를 다시 선택하면 다음 시작 시 다시 시도합니다."
   },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
@@ -2350,10 +2338,6 @@
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "모든 텍스트 상자를 마우스 오른쪽 버튼으로 클릭하여 <g1>잘라내기</g1>, <g2>복사</g2>, <g3>붙여넣기</g3>, <g4>삭제</g4> 및 <g5>모두 선택</g5>을 사용할 수 있습니다."
   },
-  "3a3fcee9f3378a95": {
-   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
-   "text": "<g1>메모리</g1>(프로세스 탭)는 MDM이 단독으로 사용하는 메모리, 즉 <g2>개인 작업 세트</g2>입니다. 창이 열려 있고 아무것도 다운로드하지 않을 때 약 50MB입니다."
-  },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
    "text": "MDM은 릴리스의 체크섬 목록이 MDM의 릴리스 키로 서명되고 파일이 일치하는 경우에만 업데이트를 설치합니다. 다른 모든 것은 거부되며, <g1>다운로드</g1>는 대신 <g2>릴리스</g2> 페이지를 엽니다. 이 방식으로 업데이트하는 것은 버전 0.2.1부터 시작됩니다. 이전 버전은 릴리스 페이지를 엽니다."
@@ -2429,6 +2413,10 @@
   "3c333ba83ce0943b": {
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>토렌트와 보안</g2></g1> — 다른 사람이 볼 수 있는 것, 네트워크 스위치, 차단 목록, 프록시."
+  },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "멈춤 또는 충돌 보고서에는 어떤 것이 그려지고 있었는지 명시되어 있습니다. 문제를 보고할 때 이를 포함하세요."
   },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
@@ -2522,10 +2510,6 @@
    "source": "For all downloads together",
    "text": "모든 다운로드에 대해"
   },
-  "3e7256dcef6e5886": {
-   "source": "Browser extension: submitted to the stores, awaiting approval. <g1><g2><x3/>Firefox</g2> <g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g1>",
-   "text": "브라우저 확장 프로그램: 스토어에 제출되었으며 승인 대기 중입니다. <g1><g2><x3/>Firefox</g2> <g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g1>"
-  },
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "MDM을 먼저 시작할 필요가 없습니다. 브라우저가 다운로드를 넘겨주고 MDM이 실행 중이 아니면, 도우미가 MDM을 시작하고 다운로드를 전달합니다."
@@ -2553,10 +2537,6 @@
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
    "text": "설치 프로그램입니다. 특별한 이유가 없다면 이 파일을 선택하세요. 브라우저 통합을 설정하고 <x1/> 파일 및 마그넷 링크를 MDM으로 열 수 있습니다."
-  },
-  "3f1a155dbf3600d3": {
-   "source": "<g1>Firefox</g1> (<x2/>, in testing)",
-   "text": "<g1>Firefox</g1> (<x2/>, 테스트 중)"
   },
   "3f2e32c284681794": {
    "source": "If Windows says <g1>Windows protected your PC</g1>, click <g2>More info</g2>, check that the file is <x3/> from the <g4>Releases</g4> page, then click <g5>Run anyway</g5>.",
@@ -2609,10 +2589,6 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "<g1>연결 및 속도</g1>에서 더 자세히 알아보십시오."
-  },
-  "40a17209f38d66d2": {
-   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
-   "text": "MDM은 OpenGL로 창을 그립니다. Windows에서 일부 그래픽 드라이버의 OpenGL은 창을 몇 초 동안 멈추게 하거나 잘못 그릴 수 있습니다. 다음 시작부터 대신 Direct3D 12로 그리려면 <g1>보기 → 다음으로 그리기 → Direct3D</g1>를 선택하세요. <g2>보기 → 다음으로 그리기 → OpenGL</g2>은 되돌아갑니다."
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -2714,10 +2690,6 @@
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
    "text": "첫 번째 릴리스: Internet Download Manager 사용자가 기대하는 방식으로 구성된 Windows용 무료 다운로드 관리자로, macOS 및 Linux용 실험 빌드가 포함되어 있습니다."
   },
-  "43bc6e18a0433b8b": {
-   "source": "Firefox removes a temporary add-on when it closes, so you have to load it again after each restart.",
-   "text": "Firefox는 닫힐 때 임시 부가 기능을 제거하므로 다시 시작할 때마다 다시 로드해야 합니다."
-  },
   "43cb42591f1e4934": {
    "source": "<g1>No proxy/socks</g1> — connect directly. This is the default.",
    "text": "<g1>프록시/SOCKS 없음</g1> — 직접 연결합니다. 이것이 기본값입니다."
@@ -2809,10 +2781,6 @@
   "45bc5ceaa76685a9": {
    "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
    "text": "브라우저가 이미 시작한 다운로드(MDM이 브라우저에서 인계받은 다운로드)는 호스트가 이미 파일을 보내고 있으므로 그대로 다운로드됩니다."
-  },
-  "45cafb7bca129310": {
-   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
-   "text": "<g1><g2>브라우저 통합</g2></g1> — Chrome, Edge, Brave 및 Firefox용 확장 프로그램, MDM이 가져가는 다운로드, 그리고 MDM이 실행되지 않을 때 발생하는 일."
   },
   "45ce55f4ec4843d8": {
    "source": "<g1>Start now</g1> and <g2>Stop</g2> run or halt the selected queue straight away.",
@@ -3458,6 +3426,10 @@
    "source": "Command",
    "text": "명령"
   },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "MDM이 실행되는 동안 그래픽 카드가 재설정되면(드라이버 업데이트) MDM은 자동으로 다시 시작됩니다."
+  },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
    "text": "(및 Sheets, Slides, Drawings)."
@@ -3590,10 +3562,6 @@
    "source": "Unzip anywhere, a USB stick too; everything stays in its folder",
    "text": "어디든 압축을 풀 수 있으며, USB 스틱에도 가능합니다. 모든 파일은 해당 폴더에 유지됩니다."
   },
-  "5b4c0d90aeddada8": {
-   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
-   "text": "확장 프로그램이 로드되어 켜져 있나요? 브라우저의 확장 프로그램 페이지에서 <g1>Mister Download Manager</g1>를 찾아보세요. Firefox에서는 임시 애드온이 재시작 후 사라집니다. <g2>브라우저 통합</g2>을 참조하세요."
-  },
   "5bc4b6e9ef830d3c": {
    "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
    "text": "<g1>Linux 및 macOS</g1>: MDM 설정의 데이터 폴더에 저장되며, 사용자만 읽을 수 있습니다(0700). 아직 시스템 키체인에는 저장되지 않습니다. 키체인에 저장하는 것이 계획되어 있습니다."
@@ -3629,10 +3597,6 @@
   "5cf4f742d0a41f0e": {
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "갤러리 이름으로 된 폴더에 갤러리를 다운로드합니다. <g1>명령줄 및 자동화</g1>를 참조하세요."
-  },
-  "5d132ac4f8b0c1aa": {
-   "source": "A freeze or crash report says which one was drawing.",
-   "text": "멈춤 또는 충돌 보고서에는 어떤 것이 그려지고 있었는지 표시됩니다."
   },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
@@ -3941,10 +3905,6 @@
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "예약 관리자"
-  },
-  "63b637699436b285": {
-   "source": "Store listings for Chrome, Edge and Firefox are on the way and will make this one click. The <g1>step-by-step guide</g1> shows each browser.",
-   "text": "Chrome, Edge 및 Firefox용 스토어 등록은 진행 중이며, 한 번의 클릭으로 설치할 수 있게 될 것입니다. <g1>단계별 가이드</g1>는 각 브라우저를 보여줍니다."
   },
   "63d0ba3e76606052": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains none of IDM's code or artwork. Its windows are laid out the way IDM users expect, so you can switch without learning anything new — and because MDM is free, there is nothing to crack. Please don't download \"cracked\" download managers: they are a common way to spread malware.",
@@ -4462,10 +4422,6 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM은 브라우저가 파일을 다운로드하는 대신 <g1>파일 정보 다운로드</g1>를 엽니다. <g2>다운로드 시작</g2>을 클릭합니다."
   },
-  "70949fe6f15631f5": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
-   "text": "<g1>보기</g1> — 카테고리 표시 또는 숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4>, <g5>다음으로 그리기</g5>(Windows: OpenGL 또는 Direct3D) 및 <g6>언어</g6>."
-  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "사용자 컴퓨터에 저장되는 정보"
@@ -4982,10 +4938,6 @@
    "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
    "text": "<g1>커밋 크기</g1>는 MDM이 사용 여부와 관계없이 예약한 메모리입니다."
   },
-  "7d9082fb6f1abec9": {
-   "source": "Firefox 140 or later is needed.",
-   "text": "Firefox 140 이상이 필요합니다."
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>품질</g1>은 모든 비디오에 적용됩니다: <g2>최고 품질</g2>, <g3>최대</g3> 높이 (해당 높이의 각 비디오 또는 그 아래에서 가장 가까운 비디오), <g4>오디오만, 원본</g4>, <g5>오디오만 MP3</g5>, <g6>오디오만 OPUS</g6> 또는 <g7>오디오만 FLAC</g7>. ffmpeg가 없으면 사운드가 포함된 품질만 제공되며 MP3, Opus 또는 FLAC는 제공되지 않습니다."
@@ -5478,10 +5430,6 @@
    "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
    "text": "<g1>지금 다운로드</g1>를 클릭하면 각 동영상이 개별 다운로드로 추가되고 기본 대기열이 시작됩니다. 이 대기열은 <g2>예약 관리자</g2>(<g3>동시에 N개 파일 다운로드</g3>)에서 설정한 만큼 동시에 실행됩니다. <g4>나중에</g4>를 클릭하면 시작하지 않고 추가됩니다. 한 번에 500개 이상을 추가하면 먼저 확인 메시지가 표시됩니다."
   },
-  "89fc33b1b049584c": {
-   "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
-   "text": "이 확장 프로그램은 브라우저의 다운로드를 쿠키와 함께 MDM으로 전달하고, 마우스 오른쪽 버튼 메뉴에 <g1>Mister Download Manager으로 다운로드</g1>를 추가하며, 비디오 위에 <g2>비디오 다운로드</g2> 버튼을 표시합니다. 앱과 함께 <x3/> 폴더에 있으며, 단독으로도 제공됩니다:"
-  },
   "89fd713eb7dedf38": {
    "source": "Starts the main download queue.",
    "text": "주요 다운로드 대기열을 시작합니다."
@@ -5581,10 +5529,6 @@
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "파일당 연결 수"
-  },
-  "8cb163cde329bcf4": {
-   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.",
-   "text": "<g1>Mister Download Manager</g1>가 목록에 나타납니다. 켜진 상태로 두십시오. 브라우저가 MDM에 연결되는지 한눈에 확인하려면 버튼을 도구 모음에 고정하십시오."
   },
   "8cfa4742e8d4318b": {
    "source": "The harness",
@@ -5750,9 +5694,9 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid, AllDebrid, Premiumize와 같은 디브리드 서비스는 파일 호스트에서 자체 서버로 파일을 다운로드하는 유료 계정입니다. 호스트의 대기 시간, 속도 제한 및 캡차 없이 일반적인 직접 링크를 제공합니다. MDM에 계정을 등록하면 서비스가 지원하는 호스트의 링크가 서비스를 통해 잠금 해제된 다음, MDM이 다른 파일처럼 모든 연결, 일시 중지 및 재개를 사용하여 다운로드합니다."
   },
-  "920f5f8c86e123ee": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 Helium과 같은 해당 브라우저 기반의 브라우저에서 작동합니다. Zen 및 LibreWolf를 포함한 Firefox 지원은 개발 및 테스트 중입니다. 확장 프로그램은 다운로드를 쿠키 및 리퍼러와 함께 MDM으로 전달하므로 로그인 뒤에 있는 파일도 여전히 작동하며, 마우스 오른쪽 버튼 메뉴에 Mister Download Manager으로 다운로드를 추가하고 비디오 위에 비디오 다운로드 버튼을 추가합니다. 브라우저 통합을 참조하십시오."
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "컴퓨터에서 Direct3D를 시작할 수 없거나(Direct3D 12 드라이버 없음, 일부 가상 머신) 첫 번째 창이 10초 이내에 표시되지 않으면 MDM은 OpenGL로 그리며, <g1>보기 → 다음으로 그리기</g1>에 그렇게 표시됩니다. <g2>Direct3D</g2>를 다시 선택하면 다음 시작 시 다시 시도합니다."
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -6194,10 +6138,6 @@
    "source": "Latest",
    "text": "최신"
   },
-  "9d6226802f0baf4b": {
-   "source": "<g1>Firefox</g1><g2>Mozilla · in testing</g2>",
-   "text": "<g1>Firefox</g1><g2>Mozilla · 테스트 중</g2>"
-  },
   "9d9eb270f47daa62": {
    "source": "Check <g1>Download limits</g1> in the Scheduler. When the limit is reached, downloads wait with <g2>Waiting: the download limit is reached (Scheduler)</g2>.",
    "text": "예약 관리자에서 <g1>다운로드 제한</g1>을 확인하세요. 제한에 도달하면 다운로드는 <g2>대기 중: 다운로드 제한에 도달했습니다(스케줄러)</g2>로 대기합니다."
@@ -6322,10 +6262,6 @@
    "source": "What each one says it offers, on its own website or in its code's README. A dash means it isn't among the features it lists, not that it can't be done.",
    "text": "각 프로그램이 자체 웹사이트나 코드의 README에서 제공한다고 명시한 내용입니다. 대시는 해당 기능이 나열된 기능에 포함되지 않음을 의미하며, 불가능하다는 뜻은 아닙니다."
   },
-  "a0d1f871bdc969b4": {
-   "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
-   "text": "확장 프로그램을 통해 Chrome, Edge, Brave, Opera, Vivaldi에서 작동합니다. Firefox는 테스트 중입니다. 확장 프로그램 없이 링크를 복사하면 MDM이 다운로드 창을 엽니다. <g1>더 보기</g1>"
-  },
   "a0f44b2041902a09": {
    "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
    "text": "gallery-dl은 온라인에 접속하지 않고 컴퓨터에서 주소를 확인합니다. 줄에 <g1>gallery-dl이 이 갤러리의 파일을 다운로드할 수 있습니다</g1>라고 표시되면 준비가 된 것입니다."
@@ -6406,10 +6342,6 @@
    "source": "Learn the download list →",
    "text": "다운로드 목록 알아보기 →"
   },
-  "a30f62455a77a82a": {
-   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> is removed when Firefox closes, so for now it has to be loaded again after each restart (see <g2>Browser integration</g2>). A signed add-on that Firefox keeps is on the way.",
-   "text": "<g1>임시 부가 기능 로드</g1>로 로드된 부가 기능은 Firefox가 닫히면 제거되므로, 현재로서는 다시 시작할 때마다 다시 로드해야 합니다(<g2>브라우저 통합</g2> 참조). Firefox가 유지하는 서명된 부가 기능은 개발 중입니다."
-  },
   "a332d36c2ada2664": {
    "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
    "text": "사용자 이름과 암호를 요구하는 사이트에 대한 정보입니다. <g1>새로 만들기</g1>는 행을 추가합니다. 사이트(로그인이 일부에만 해당되는 경우 경로 포함), 사용자 이름 및 암호입니다. <g2>편집</g2> 및 <g3>제거</g3>는 선택한 행을 변경하거나 삭제합니다. MDM은 해당 사이트의 모든 다운로드에 로그인을 사용합니다. <g4>URL 추가</g4>(<g5>인증 사용</g5>)에 입력된 로그인은 해당 다운로드에 대해 우선 순위를 가집니다."
@@ -6485,10 +6417,6 @@
   "a50025a18eca7051": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM 인터페이스는 86개 언어로 제공됩니다. 아프리칸스어부터 베트남어까지 Windows 11이 제공하는 모든 표시 언어를 포함하며, 중국어 간체 및 번체, 스페인(스페인) 및 스페인(멕시코), 프랑스어(프랑스) 및 프랑스어(캐나다), 포르투갈어(포르투갈) 및 포르투갈어(브라질), 세르비아어(키릴 문자 및 라틴 문자)가 포함됩니다."
-  },
-  "a52b4fbee3f29f57": {
-   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> (<x2/>: unzip, then <g3>Load unpacked</g3> on the browser's extensions page with Developer mode on)",
-   "text": "<g1>Chrome, Edge, Brave, Opera 및 Vivaldi</g1> (<x2/>: 압축을 풀고 개발자 모드를 켠 상태에서 브라우저 확장 프로그램 페이지에서 <g3>압축 해제된 확장 프로그램 로드</g3>)"
   },
   "a52f4d11aad99887": {
    "source": "Select all downloads",
@@ -6602,10 +6530,6 @@
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
    "text": "<g1>다운로드 목록의 파일 아이콘</g1>은 목록을 옆으로 스크롤할 때 범주 창 위에 그려졌습니다(범주 트리와 예약 관리자도 같은 문제가 있었습니다)."
   },
-  "a7d84ef6d2022e62": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); load the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "Linux 및 macOS에서는 MDM이 시작할 때마다 브라우저 통합을 자체적으로 설정합니다(설치된 브라우저를 찾음). <g1>브라우저 통합</g1>에 따라 확장 프로그램을 로드하세요. Flatpak 또는 Snap으로 설치된 브라우저는 MDM에 연결하지 못할 수 있습니다."
-  },
   "a801181e521c3efe": {
    "source": "Start and stop a queue",
    "text": "대기열 시작 및 중지"
@@ -6673,6 +6597,10 @@
   "a9d705964d2ca3bb": {
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>86개 언어 내장.</g1> 첫 시작 시 선택 가능하며, 오른쪽에서 왼쪽으로 쓰는 언어도 포함됩니다."
+  },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>메모리</g1>(프로세스 탭)는 MDM이 자체적으로 보유하는 <g2>개인 작업 세트</g2>입니다. 창이 열려 있고 아무것도 다운로드하지 않을 때 약 70MB입니다."
   },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
@@ -6785,10 +6713,6 @@
   "ac85d17c17b64879": {
    "source": "The download manager you already know. Rebuilt to be faster.",
    "text": "이미 알고 있는 다운로드 매니저. 더 빠르게 재탄생했습니다."
-  },
-  "aca7e2c7c8203a37": {
-   "source": "Browser integration needs one more step in each browser: loading the extension. <g1>Browser integration</g1> shows how.",
-   "text": "브라우저 통합은 각 브라우저에서 확장 프로그램을 로드하는 한 단계가 더 필요합니다. <g1>브라우저 통합</g1>에서 방법을 보여줍니다."
   },
   "acb8437ecc383f9f": {
    "source": "Opens the checked package in your system's package installer, which asks for your password.",
@@ -7378,10 +7302,6 @@
    "source": "App",
    "text": "앱"
   },
-  "bbb4a37acc8f6a42": {
-   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
-   "text": "창은 OpenGL(eframe의 glow)로 그려집니다. Windows에서는 보기 → 다음으로 그리기에서 다음 시작부터 Direct3D 12(eframe의 wgpu, Direct3D 12 백엔드만 사용)를 대신 선택합니다. <x1/>은 선택한 것이 시작할 수 없을 때 다른 것으로 대체되므로 창은 항상 열립니다."
-  },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
    "text": "브라우저에서 다운로드 가로채기 — Mister Download Manager 도움말"
@@ -7449,10 +7369,6 @@
   "bd38ebc1b5f00936": {
    "source": "Scenario",
    "text": "시나리오"
-  },
-  "bd77253f80822cfe": {
-   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. Then load the extension in your browser from MDM's <x2/> folder: open the browser's extensions page, turn on Developer mode and choose <g3>Load unpacked</g3>. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The <g4>tutorial</g4> walks through it.",
-   "text": "설치 프로그램으로 MDM을 설치하고 <g1>브라우저 통합 설정</g1>이 선택되어 있는지 확인하십시오. 그런 다음 MDM의 <x2/> 폴더에서 브라우저에 확장 프로그램을 로드하십시오. 브라우저의 확장 프로그램 페이지를 열고 개발자 모드를 켠 다음 <g3>압축 해제된 확장 프로그램 로드</g3>를 선택하십시오. Chrome, Edge 및 Firefox용 스토어 목록이 곧 제공될 예정이며, 이렇게 하면 한 번의 클릭으로 설치할 수 있습니다. <g4>튜토리얼</g4>에서 자세히 설명합니다."
   },
   "bda4c8ea3c9ccb34": {
    "source": "Download the AppImage",
@@ -7565,10 +7481,6 @@
   "c15931e3d969d63f": {
    "source": "Download overnight",
    "text": "밤새 다운로드"
-  },
-  "c15bd3350cc4e4a5": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. Then load the extension in your browser from MDM's extension folder: open the browser's extensions page, turn on Developer mode and choose Load unpacked. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The tutorial walks through it.",
-   "text": "설치 프로그램을 사용하여 MDM을 설치하고 브라우저 통합 설정을 선택된 상태로 유지하세요. 그런 다음 MDM의 확장 프로그램 폴더에서 브라우저에 확장 프로그램을 로드하세요. 브라우저의 확장 프로그램 페이지를 열고 개발자 모드를 켠 다음 압축 해제된 확장 프로그램 로드를 선택하세요. Chrome, Edge, Firefox용 스토어 등록이 진행 중이며, 완료되면 한 번의 클릭으로 설치할 수 있습니다. 튜토리얼에서 자세히 설명합니다."
   },
   "c16bf35f546c4e5c": {
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
@@ -7798,10 +7710,6 @@
    "source": "Your account, your rules",
    "text": "내 계정, 내 규칙"
   },
-  "c7be639a8acd89dc": {
-   "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
-   "text": "확장 프로그램을 한 번 설정하면 Chrome, Edge 또는 Brave에서 클릭하는 모든 다운로드 링크가 MDM으로 이동합니다. (Firefox도 작동하지만 지원은 아직 테스트 중입니다.)"
-  },
   "c7c2a61fcf5da6b1": {
    "source": "Use your own copies",
    "text": "자체 복사본 사용"
@@ -7869,10 +7777,6 @@
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
    "text": "<g1>다시 알림</g1> — 다음 라운드를 기다리지 않고 지금 토렌트의 트래커에 피어를 다시 요청합니다. 토렌트가 실행 중이거나 공유 중일 때 작동합니다."
-  },
-  "c9d39512b1b393af": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
-   "text": "MDM 브라우저 확장 프로그램을 통해 Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 Helium과 같은 해당 브라우저 기반의 브라우저에서 작동합니다. Zen 및 LibreWolf를 포함한 Firefox 지원은 개발 및 테스트 중입니다. 확장 프로그램은 다운로드를 쿠키 및 리퍼러와 함께 MDM으로 전달하므로 로그인 뒤에 있는 파일도 여전히 작동하며, 마우스 오른쪽 버튼 메뉴에 <g1>Mister Download Manager으로 다운로드</g1>를 추가하고 비디오 위에 <g2>비디오 다운로드</g2> 버튼을 추가합니다. <g3>브라우저 통합</g3>을 참조하십시오."
   },
   "c9da130585eae7fa": {
    "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
@@ -8406,10 +8310,6 @@
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
    "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉각적인 뷰포트가 있습니다. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료됨)를 반환합니다. Windows 전용 호출은 <x3/>로 제한되고 Linux 및 macOS의 해당 호출은 <x4/>로 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다. Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)입니다. 파일 이름 앞의 아이콘도 마찬가지입니다(<x6/>). Windows 셸의 시스템 이미지 목록, macOS Finder(NSWorkspace), Linux 데스크톱의 아이콘 테마(<x7/>, shared-mime-info 및 아이콘 테마 사양)입니다. 각 유형은 백그라운드 스레드에서 픽셀 크기당 한 번 조회됩니다. Tango의 아이콘(번들로 제공됨)은 시스템 아이콘이 준비될 때까지 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
   },
-  "d83a2cb66a2a3629": {
-   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
-   "text": "<g1>작업 세트</g1>(세부 정보 탭, 열 추가)는 다른 프로그램과 공유하는 메모리를 추가합니다. MDM은 그래픽 카드로 창을 그리므로 그래픽 드라이버의 메모리도 여기에 포함되며, 총 약 85MB입니다."
-  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. 보증 없음"
@@ -8478,10 +8378,6 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "사이트가 파일을 새 버전으로 교체한 경우, MDM이 가지고 있는 부분은 더 이상 맞지 않습니다. 다운로드를 마우스 오른쪽 버튼으로 클릭하고 <g1>다시 다운로드</g1>를 선택하여 처음부터 다시 시작하십시오. 완료된 파일은 새 다운로드가 완료될 때만 교체됩니다."
   },
-  "da79240d48094d5f": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. Then load the extension in your browser from MDM's extension folder: open the…",
-   "text": "설치 프로그램을 사용하여 MDM을 설치하고 브라우저 통합 설정을 선택된 상태로 유지하세요. 그런 다음 MDM의 확장 프로그램 폴더에서 브라우저에 확장 프로그램을 로드하세요. 브라우저의…"
-  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "이용 약관 — Mister Download Manager"
@@ -8521,6 +8417,10 @@
   "db2c1528b5634e7b": {
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "목록의 숫자 및 날짜(<g1>마지막 시도 날짜</g1>, <g2>추가됨</g2>)는 Windows에 설정된 지역(<g3>설정 → 시간 및 언어 → 언어 및 지역 → 지역 형식</g3>)을 따르므로, 숫자, 구분 기호 및 날짜 순서가 익숙한 방식으로 표시됩니다. 영어에서는 MDM이 IDM과 같이 작성합니다(<x4/>)."
+  },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>작업 세트</g1>(세부 정보 탭, 열 추가)는 다른 프로그램과 공유되는 메모리를 추가합니다. MDM은 그래픽 카드로 창을 그리므로 그래픽 드라이버의 메모리도 여기에 포함되며, 총 약 120MB입니다."
   },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
@@ -9134,10 +9034,6 @@
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "IDM에서 Mister Download Manager로 다운로드 목록을 옮길 수 있습니까?"
   },
-  "eccd08c375bd5161": {
-   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
-   "text": "Windows에서 OpenGL을 시작할 수 없는 경우, MDM은 Direct3D를 시도한 다음 Microsoft의 소프트웨어 렌더러를 시도하여 창이 여전히 열립니다(원격 데스크톱, 그래픽 드라이버가 없는 가상 머신)."
-  },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",
    "text": "기본적으로 다운로드 파일은 현재 사용 중인 컴퓨터의 다운로드 폴더에 저장됩니다. 다운로드 파일을 스틱에 보관하려면 다음을 따르세요."
@@ -9502,10 +9398,6 @@
    "source": "The zips hold the same programs as the setup: the app, <x1/> (downloads from the command line; see <g2>Command line and automation</g2>) and the <x3/> folder.",
    "text": "zip 파일에는 설치 프로그램과 동일한 프로그램이 들어 있습니다: 앱, <x1/>(명령줄에서 다운로드; <g2>명령줄 및 자동화</g2> 참조) 및 <x3/> 폴더."
   },
-  "f6809253500ba067": {
-   "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
-   "text": "아래와 같이 사용하는 각 브라우저에 확장 프로그램을 로드합니다. 확장 프로그램 파일은 MDM이 설치된 <x1/> 폴더에 있습니다. 자신을 위해 설치한 경우 <x2/>, 모든 사용자를 위해 설치한 경우 <x3/>입니다. 모든 릴리스에는 자체 다운로드로도 제공됩니다: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; 먼저 압축을 풀어야 함) 및 <x5/>."
-  },
   "f6ab5be4ad52a472": {
    "source": "Trackers",
    "text": "트래커"
@@ -9590,6 +9482,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "왼쪽에서 <g1>기본 다운로드 대기열</g1>을 선택합니다. <g2>예약</g2> 탭이 열립니다."
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "Windows에서 MDM은 Direct3D 12로 창을 그리고, Linux 및 macOS에서는 OpenGL로 그립니다. 그래픽 드라이버가 여전히 오작동할 수 있습니다. 창이 몇 초 동안 멈추거나, 깜박이거나, 잘못된 색상이나 블록을 표시할 수 있습니다. Windows에서는 다른 것을 시도해 보세요. <g1>보기 → 다음으로 그리기 → OpenGL</g1>을 선택한 다음 MDM을 종료(<g2>작업 → 끝내기</g2>)하고 다시 시작하세요. <g3>보기 → 다음으로 그리기 → Direct3D</g3>는 같은 방식으로 돌아갑니다."
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "<g1>\"일반\" 범주의 기본 다운로드 디렉터리</g1>에서 <g2>찾아보기</g2>를 클릭하고 스틱의 폴더(예: <x3/>)를 선택하세요."
@@ -9633,6 +9529,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "기본적으로 다운로드당 8개의 연결을 사용하며, 옵션 → 연결에서 선택하면 최대 32개, 32개 이상의 연결 허용을 선택하면 128개까지 사용할 수 있습니다. MDM은 더 적게 사용합니다…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "둘 다 시작할 수 없으면 MDM은 Microsoft의 소프트웨어 렌더러로 그리므로 창이 여전히 열립니다(원격 데스크톱, 그래픽 드라이버가 없는 가상 머신). 작동은 하지만 프로세서가 더 바빠집니다."
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
