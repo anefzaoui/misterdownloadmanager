@@ -22,6 +22,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Support MDM**: **Help → Support MDM** and a line in **About** open the creator's
+  [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
+  README and the browser extension's popup link to it too. Only when asked: MDM stays free, with
+  no reminders, and nothing changes or unlocks.
 - **Torrents through the chosen network adapter on Windows**
   ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
   Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.

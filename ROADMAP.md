@@ -16,6 +16,9 @@ Everything below ships together, in one release.
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
   video, the right-click menu (it did nothing in Firefox) and the media list
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
+- ✅ Support MDM: a way to support its creator on [GitHub Sponsors](https://github.com/sponsors/anefzaoui),
+  asked for only (**Help → Support MDM**, a line in About, the website, the README, the
+  extension's popup and GitHub's Sponsor button); MDM stays free, nothing changes or unlocks
 - ✅ A server that can't resume a download no longer gets the file downloaded twice on a busy
   computer (part of [#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
