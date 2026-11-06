@@ -33,9 +33,15 @@ Copyright © 2026 Ahmed Nefzaoui and contributors.
 | The MDM logo and app icon | Ahmed Nefzaoui, made with ChatGPT image generation | Part of MDM |
 | Lucide icons 1.63 (toolbar, dialogs) | Lucide Icons and contributors | ISC |
 | Tango Icon Theme 0.8.90 (file icons where the system has none) | The Tango Desktop Project | Public domain |
-| flag-icons 7.6 (language flags) | Panayiotis Lipiridis and contributors | MIT |
+| flag-icons 7.6 (language flags, and the country flags where a download's server is) | Panayiotis Lipiridis and contributors | MIT |
 | Silk icons 1.3 (categories tree) | Mark James | CC BY 2.5 |
 | System fonts (Segoe UI and others) | The operating system | Used at run time, not included |
+
+## Data
+
+| Data | By | Licence |
+|---|---|---|
+| IP to Country Lite (which country a download's server is in, looked up on your computer, never sent anywhere) | [IP Geolocation by DB-IP](https://db-ip.com) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 
 The full list, with the files each covers, is in [ATTRIBUTION.md]({{REPO}}/blob/main/ATTRIBUTION.md).
 

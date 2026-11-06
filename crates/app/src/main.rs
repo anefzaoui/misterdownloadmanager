@@ -5,6 +5,7 @@ mod batch;
 mod categories;
 mod checksum;
 mod chrome;
+mod countries;
 mod crash;
 mod crashui;
 mod debrid;
@@ -54,6 +55,7 @@ mod tray;
 mod unix;
 mod update;
 mod videodlg;
+mod whereis;
 #[cfg(windows)]
 mod win32;
 mod winui;

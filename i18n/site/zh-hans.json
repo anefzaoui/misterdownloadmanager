@@ -686,6 +686,10 @@
    "source": "From IDM",
    "text": "来自 IDM"
   },
+  "1105c4be357dbf30": {
+   "source": "<g1>Properties</g1> keeps what the last run saw, so a finished download still shows where it came from.",
+   "text": "<g1>属性</g1>保留了上次运行所看到的信息，因此已完成的下载仍会显示其来源。"
+  },
   "110d6b2bd87a92ac": {
    "source": "Works with what you already use",
    "text": "与您已有的工具配合使用"
@@ -737,6 +741,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "无法加载基准数据。"
+  },
+  "129f913e421a0374": {
+   "source": "Torrents, videos and galleries have no single server of MDM's own (peers, or yt-dlp's and gallery-dl's), so their windows don't show one.",
+   "text": "种子、视频和图库没有 MDM 自己的单一服务器（对等点，或 yt-dlp 和 gallery-dl 的），因此它们的窗口不显示服务器。"
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -798,6 +806,10 @@
    "source": "Download Later",
    "text": "稍后下载"
   },
+  "13fab708d8179610": {
+   "source": "<g1>A content delivery network</g1> (Cloudflare, Amazon CloudFront, Fastly, Akamai and others) serves a file from a server near you, not from the site owner's. The tooltip says so: the place is the network's server, not where the site is.",
+   "text": "<g1>内容分发网络</g1>（Cloudflare、Amazon CloudFront、Fastly、Akamai 等）从离您较近的服务器提供文件，而不是从网站所有者的服务器提供。工具提示会说明这一点：位置是网络服务器的位置，而不是网站的位置。"
+  },
   "141ec6fe9135de0f": {
    "source": "Use Help → Report a problem in MDM: it opens the bug report form on GitHub with your version, system and language filled in. Or open the form yourself.…",
    "text": "在 MDM 中使用帮助→报告问题：它会在 GitHub 上打开错误报告表单，并已填入您的版本、系统和语言。您也可以自行打开表单……"
@@ -854,6 +866,10 @@
    "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
    "text": "在 Windows 上，窗口通过 Direct3D 12（eframe 的 wgpu，仅使用其 Direct3D 12 后端）绘制，或者当“视图”→“绘制方式”选择 OpenGL 时，通过 OpenGL（eframe 的 glow）绘制；Linux 和 macOS 使用 OpenGL。当所选方式无法启动时，会尝试另一种方式，因此窗口总能打开。"
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "默认情况下，MDM 会像其他 BitTorrent 程序一样，优先下载拥有最少对等点的分块。这样，当某个分块只有一个对等点拥有时，它会在该对等点离开前被获取，MDM 也能更快地将其传递给其他对等点。在 MDM 的测试群中，它的完成速度与按顺序下载一样快，并且是唯一一种在稀有分块的唯一持有者离开时仍能完成下载的顺序。"
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>在 GitHub 上发送</g1>会在您的浏览器中打开 GitHub 的<g2>崩溃报告</g2>表单，其中已填写好内容，并附带报告所在的文件夹。将报告文件拖到表单中，检查并提交。您需要一个 GitHub 帐户。<g3>不会自动发送任何内容。</g3>"
@@ -881,6 +897,10 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "是。MDM 接受 IDM 熟悉的命令行开关，附带 misterdownloadmanager-cli 用于从终端下载，并具有一个本地的、受令牌保护的…"
+  },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "上方有<x1/>行的行是机器翻译的。当您检查完（并根据需要更正）后，请删除该<x2/>行。"
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -994,6 +1014,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+空格"
   },
+  "19156d7406477513": {
+   "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
+   "text": "<g1>服务器</g1> — 服务器的位置：其国家/地区旗帜和名称，以及往返所需时间。请参阅<g2>服务器位置</g2>。当浏览器将下载文件及其名称和大小移交给MDM时，此项会留空，因为MDM无需询问服务器。"
+  },
   "1970ad20e03db6c3": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>捕获问题。</g1>当 MDM 崩溃（Windows 异常、Linux 信号、macOS Mach 异常）、恐慌或冻结时，它会向监视器请求转储。冻结是指窗口运行超过 8 秒的帧，由一个忽略休眠时间的看门狗线程检测。看门狗还会测量窗口线程在此期间获得了多少处理器时间，报告会说明这意味着什么：它一直在运行（一个循环），它在锁或 I/O 上等待（一个死锁），或者它在普通代码中几乎没有运行，这很可能是计算机太忙而无法运行 MDM 或从磁盘加载它太慢，而不是 MDM 的错误（这些共享一个签名，<x2/>）。macOS 尚未测量此项。然后，监视器通过 <x4/> 和 <x5/> 从外部写入每个线程的<g3>minidump</g3>。崩溃的进程从不写入自己的转储，Firefox、Crashpad 和 Sentry 也是这样做的。"
@@ -1065,6 +1089,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 秒</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "在Windows上，洪流引擎尚无法绑定到适配器。因此，在选择适配器时，洪流不会启动（“洪流尚无法通过Windows上选定的网络适配器”），而不是绕过它。跟踪器名称仍然由系统的DNS查找。"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1410,6 +1438,10 @@
    "source": "<g1>Default download directory for \"…\" category</g1> — the category's folder. Type a path or click <g2>Browse</g2>.",
    "text": "<g1>“…”类别的默认下载目录</g1> — 该类别的文件夹。输入路径或点击<g2>浏览</g2>。"
   },
+  "21e0a24c92fe95eb": {
+   "source": "Hover over the line for the server's address and how the time was measured.",
+   "text": "将鼠标悬停在该行上，可查看服务器地址以及时间测量方式。"
+  },
   "22135141999ab3ab": {
    "source": "Find a download",
    "text": "查找下载"
@@ -1573,6 +1605,10 @@
   "25b4db9aa4024862": {
    "source": "The current speed.",
    "text": "当前速度。"
+  },
+  "25e1ffe092788c2a": {
+   "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
+   "text": "<g1>下载文件信息</g1>、进度窗口和<g2>属性</g2>会显示下载文件的服务器位置：服务器所在国家的旗帜和名称，然后是往返所需的时间，例如<g3>约 24 毫秒（近）</g3>。"
   },
   "2606a30b44fb755e": {
    "source": "Select one or more downloads and press <g1>Delete</g1>, click <g2>Delete</g2> on the toolbar, or choose <g3>File → Remove</g3>. MDM asks first:",
@@ -1774,6 +1810,10 @@
    "source": "Feature by feature",
    "text": "功能对比"
   },
+  "2ab8acec08b25c9a": {
+   "source": "<g1>A server on your computer or your local network</g1> shows as such, with no flag.",
+   "text": "<g1>您计算机或本地网络上的服务器</g1>会显示为本地服务器，不带旗帜。"
+  },
   "2ac9c8a3b555e84c": {
    "source": "p (Mann-Whitney)",
    "text": "p (Mann-Whitney)"
@@ -1893,6 +1933,10 @@
   "2cc56bc5771aeae6": {
    "source": "<g1>The other links of one page</g1> form a package named after the page.",
    "text": "<g1>一个页面的其他链接</g1>形成一个以页面命名的包。"
+  },
+  "2cc84db987b16ce7": {
+   "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
+   "text": "<g1>国家</g1>来自 MDM 附带的地址范围表（<g2>DB-IP 的 IP to Country Lite</g2>，CC BY 4.0），在您的计算机上查询。MDM 绝不会将地址发送到任何地方进行查询。该表随每个版本更新；自上次更新后地址已更改的，可能会显示旧的国家。"
   },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
@@ -2162,6 +2206,10 @@
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM 由独立开发者 Ahmed Nefzaoui 制作，并欢迎<g1>GitHub</g1>上的任何人贡献。欢迎提交错误报告、翻译和代码。"
   },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "启用<g1>先下载首尾分块</g1>（默认开启）后，每个文件的最后分块也会提前下载。大多数视频文件将其索引保存在末尾，播放器在播放任何内容之前会读取它。"
+  },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
    "text": "不是。MDM 是一个完全独立的程序，使用 Rust 从头编写，与 Internet Download Manager (IDM) 的制造商 Tonec Inc. 没有任何关系。它包含…"
@@ -2185,6 +2233,10 @@
   "3508dab985cc0335": {
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "适用于 Windows 的免费开源下载管理器，macOS 和 Linux 版本可供试用。您熟悉的 IDM 布局，在我们的基准测试中速度快 5 倍：所有连接同时进行，防崩溃恢复，支持种子下载，可从网页下载视频，浏览器集成，支持 86 种语言。"
+  },
+  "3513f93cb0fa7d72": {
+   "source": "<g1>Far</g1> (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.",
+   "text": "<g1>远</g1>（红色）：超过 150 毫秒，通常是另一个大陆。远距离服务器通常较慢，增加连接数帮助最大。"
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
@@ -3541,6 +3593,10 @@
   "5887d550311226da": {
    "source": "Open that menu (Windows and Linux)",
    "text": "打开该菜单（Windows和Linux）"
+  },
+  "588db309f4fc3eb6": {
+   "source": "<g1>Medium</g1> (amber): 60 to 150 ms, usually the same continent.",
+   "text": "<g1>中</g1>（琥珀色）：60 到 150 毫秒，通常是同一大陆。"
   },
   "58bec232807ab18d": {
    "source": "The progress window in detail →",
@@ -5066,6 +5122,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "需要 Firefox 140 或更高版本。"
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>选项 → 代理/Socks → 网络适配器</g1>将MDM的连接绑定到一个适配器，通常是VPN的（<g2>选项</g2>）。在Linux和macOS上，洪流引擎会将每个套接字绑定到它：对等点、跟踪器、DHT及其监听端口。UPnP和本地对等点发现功能将关闭，因为它们与本地网络通信，而不是通过适配器。如果适配器消失，引擎将停止，并在适配器恢复时再次通过它启动。"
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>质量</g1>适用于所有视频：<g2>最佳质量</g2>、<g3>最高</g3>高度（每个视频都以此高度或最接近的较低高度下载）、<g4>仅音频，原始</g4>、<g5>仅音频 MP3</g5>、<g6>仅音频 OPUS</g6> 或 <g7>仅音频 FLAC</g7>。如果没有 ffmpeg，则只提供自带声音的质量选项，不提供 MP3、Opus 或 FLAC。"
@@ -5798,6 +5858,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "右键点击链接、视频、声音或图片，然后选择 <g1>使用 Mister Download Manager 下载</g1>。MDM 会下载它，无论其类型如何：您要求下载，因此文件类型列表和排除的网站不适用于此处（它们只决定 MDM 自行接管哪些下载）。作为流播放的视频会进入 <g2>下载视频</g2> 窗口。"
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "要边下载边观看视频，请勾选<g1>按顺序下载</g1>（参见<g2>按顺序下载</g2>）。"
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5.5 秒<g1><g2>2</g2></g1>"
@@ -6222,6 +6286,10 @@
    "source": "<g1>Torrents</g1> are peer to peer: other people in a torrent's swarm see your IP address, as with every torrent client.",
    "text": "<g1>种子</g1>是点对点的：洪流群中的其他人会看到您的 IP 地址，所有洪流客户端都是如此。"
   },
+  "9b191ff0c3c9dbb1": {
+   "source": "How MDM knows:",
+   "text": "MDM 如何得知："
+  },
   "9b3dde1851a80204": {
    "source": "<g1>Match case</g1> tells capitals apart. <g2>Match whole string only</g2> finds only an exact, complete match.",
    "text": "<g1>区分大小写</g1> 会区分大小写字母。<g2>只匹配整个字符串</g2> 只查找精确、完整的匹配项。"
@@ -6322,6 +6390,10 @@
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "无界面下载，带进度（<x1/>、<x2/>）、视频、种子和自动化API命令：应用程序运行的库（<x3/>），以及<x4/>，一个小型启动器，以相同的参数、终端和退出代码启动它"
   },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "按顺序下载"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 对比 Mister Download Manager 下载基准测试"
@@ -6405,6 +6477,10 @@
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "如果翻译比英文长，不适合显示的部分会以<g1>...</g1>结尾；指向它即可阅读完整内容。"
+  },
+  "a05a0538e9ea2498": {
+   "source": "<g1>File Properties</g1> shows a download's type, status, size and folder, its address, your description, the page it came from (<g2>Referer</g2>), where its server is (<g3>country and round trip</g3>, as its last run saw them) and a login for the site. <g4>Last try</g4> and <g5>Result</g5> tell you how its last attempt went.",
+   "text": "<g1>文件属性</g1>显示下载的类型、状态、大小和文件夹，其地址、您的描述、来源页面（<g2>引用页</g2>）、服务器位置（<g3>国家和往返时间</g3>，以上次运行所见）以及网站登录信息。<g4>上次尝试</g4>和<g5>结果</g5>告诉您上次尝试的情况。"
   },
   "a06fa72ad54fa126": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
@@ -6938,6 +7014,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>类别</g1> — 根据文件类型（压缩文件、文档、音乐、程序、视频或常规）选择。每个类别都有自己的文件夹。<g2>+</g2> 旁边可创建新类别。"
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>网络适配器</g1> — <g2>任何（系统选择）</g2>是默认设置。选择一个适配器，通常是您的 VPN 适配器，MDM 打开的每个连接都将通过它发出，否则就无法发出。这包括下载、FTP、您选择的 DNS、MDM 自己的下载和更新检查。它起到一个终止开关的作用：当适配器断开连接，或 VPN 关闭时，任何数据都不会通过您的正常连接发出。正在进行的下载会显示“……未连接”并停止，当适配器恢复时会重新开始。列表下方的行显示适配器的地址，或显示其未连接。"
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "点击 <g1>查找</g1>。第一个匹配项将被选中。"
@@ -6981,6 +7061,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>交付选项</g1><g2>版本 0.2.4 · 所有人免费</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>按顺序下载</g1>会优先获取文件的开头部分，这样你就可以边下载边观看视频：一旦第一部分下载完成，就可以在播放器中打开它。你可以在<g2>添加种子</g2>中勾选此选项，或者随时（即使在下载过程中）在列表的右键菜单中选择<g3>种子 → 按顺序下载</g3>。后续请求的分块将遵循新的顺序。"
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7378,6 +7462,10 @@
    "source": "<g1>A tour of the features</g1> on the website instead of a wall of screenshots.",
    "text": "网站上<g1>功能导览</g1>，取代了大量的屏幕截图。"
   },
+  "b826ee150172085c": {
+   "source": "Where the server is",
+   "text": "服务器位置"
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "通过安装程序安装"
@@ -7489,6 +7577,10 @@
   "bb2a946ec0764dee": {
    "source": "Hover over the download's <g1>Status</g1>, or open its progress window, to read yt-dlp's message.",
    "text": "将鼠标悬停在下载的<g1>状态</g1>上，或打开其进度窗口，以阅读 yt-dlp 的消息。"
+  },
+  "bb66b5a231ef607c": {
+   "source": "<g1>The time</g1> is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says <g2>about</g2>. The quickest connection counts.",
+   "text": "<g1>时间</g1>是从下载自身的连接中测量的，每个连接打开时都会测量：MDM 不会向服务器发送任何额外数据。这是一个估算值（打开连接所需的时间，除以其往返次数：HTTP 为一次，HTTPS 为两次），因此显示<g2>约</g2>。最快的连接会被计算在内。"
   },
   "bb8defdec6234c3c": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers.",
@@ -7613,6 +7705,10 @@
   "be977a71e686a263": {
    "source": "Questions and answers",
    "text": "常见问题"
+  },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "按顺序下载的种子并不会更快完成，而且对群的帮助也较小：仅在你想要立即观看时使用此功能。"
   },
   "bed20915ba662ba4": {
    "source": "Benchmark",
@@ -7974,6 +8070,10 @@
    "source": "<g1>9</g1> of 10",
    "text": "10个中的<g1>9</g1>个"
   },
+  "c8faf12a4c3d4e99": {
+   "source": "<g1>Server</g1> — where the server is, and how near. See <g2>Where the server is</g2>.",
+   "text": "<g1>服务器</g1> — 服务器的位置和距离。请参阅<g2>服务器位置</g2>。"
+  },
   "c9044c08663d0af5": {
    "source": "A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in <g1>Options → File types</g1> (not on the excluded sites). To turn this off, untick <g2>Also take files the browser would open</g2> in <g3>Options → General → Keys...</g3>. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox.",
    "text": "当 PDF、歌曲或视频的类型在 <g1>选项 → 文件类型</g1> 中（不在排除的网站上）时，浏览器会自行显示或播放的文件也会交给 MDM。要关闭此功能，请在 <g2>选项 → 常规 → 按键...</g2> 中取消勾选 <g3>也接管浏览器会打开的文件</g3>。这需要 Chromium 浏览器（Chrome、Edge、Brave、Opera、Vivaldi）128 或更高版本，或 Firefox。"
@@ -8182,6 +8282,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf28e1b873f9178c": {
+   "source": "<g1>Near</g1> (green): under 60 ms, usually the same country or the next one.",
+   "text": "<g1>近</g1>（绿色）：低于 60 毫秒，通常是同一国家或邻国。"
+  },
   "cf3a9ec3dbd55233": {
    "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
    "text": "<g1>删除</g1> — 删除一个类别，无论是您自己的还是内置的（“常规”或“种子”除外）。MDM 会询问如何处理其下载：<g2>将其下载移动到“常规”</g2>，或<g3>从列表中删除其下载</g3>（正在运行的下载会改为移动到“常规”）。无论哪种方式，它们的文件都会保留在原处。从那时起，其类型的文件会转到包含它们的另一个类别，或转到“常规”。"
@@ -8217,6 +8321,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com 是一个静态网站。有三家公司参与向您展示本网站："
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>按顺序下载</g1> — 从种子文件的开头开始下载（见下文）。再次点击可回到优先下载最稀有分块的模式。"
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -8538,6 +8646,10 @@
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
    "text": "一个egui窗口绘制到固定的像素坐标，每个对话框一个即时视口。<x1/>保存状态（下载、队列、设置、列表选择），并将菜单、工具栏、按键和IPC命令转换为操作。每个对话框都是自己的模块，并返回一个<x2/>（打开、关闭、完成并带有一个值）。仅限Windows的调用被限制在<x3/>中，其Linux和macOS对应部分在<x4/>中（从会话开始、浏览器的主机、声音、在文件夹中显示、崩溃处理程序）；其他所有文件都是安全的、可移植的Rust代码。字体来自系统：Windows的字体文件夹、macOS的系统字体、Linux上的fontconfig（<x5/>）。文件名前的图标也是如此（<x6/>）：Windows shell的系统图像列表、macOS Finder的（NSWorkspace）、Linux桌面的图标主题（<x7/>、shared-mime-info和Icon Theme Specification）。每种类型在后台线程上按像素大小查找一次。Tango的图标（捆绑）在系统图标准备好之前以及系统没有图标的地方作为替代。"
   },
+  "d835a1659f05d750": {
+   "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them. A stream whose address doesn't end in <x5/> or <x6/>, served as plain text, is found too: when you open the list (or press the download button over its player) and the player plays a stream, the extension reads the first few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.",
+   "text": "<g1>流媒体</g1>：HLS (<x2/>) 和 DASH (<x3/>)，大多数网站播放长视频的方式。每个流媒体只列出一次，无论其播放器切换了多少种画质，都会显示其画质 (<x4/>) 和扩展程序可读取的时长。如果流媒体地址不以 <x5/> 或 <x6/> 结尾，并以纯文本形式提供，也会被找到：当您打开列表（或在其播放器上方按下下载按钮）且播放器正在播放流媒体时，扩展程序会读取播放器获取的前几千字节来识别它。在您请求之前，不会读取任何内容。"
+  },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
    "text": "<g1>工作集</g1>（“详细信息”选项卡，添加该列）增加了与其他程序共享的内存。MDM 使用显卡绘制其窗口，因此显卡驱动程序的内存也计算在内，总共约 85 MB。"
@@ -8597,6 +8709,10 @@
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
    "text": "<g1><g2>从页面下载视频</g2></g1> — 选择质量并保存视频。"
+  },
+  "d9dcf7778d51f367": {
+   "source": "<g1>Through a proxy</g1>, MDM only sees the proxy, so it says <g2>through a proxy</g2> (with the proxy's country when it knows it) instead of guessing the server's. A VPN that works at the system level can't be seen: the country is then the server's, but the time includes the VPN's detour.",
+   "text": "<g1>通过代理</g1>，MDM 只能看到代理，因此会显示<g2>通过代理</g2>（如果知道代理的国家，则会显示代理的国家），而不是猜测服务器的位置。系统级别的 VPN 无法被看到：此时国家是服务器的国家，但时间包括了 VPN 的绕行。"
   },
   "da12a252ee14babe": {
    "source": "To stop in the morning whatever is left, tick <g1>Stop download at</g1> and set a time, for example 7:00:00 AM.",
@@ -9174,6 +9290,10 @@
    "source": "Add to Firefox",
    "text": "添加到 Firefox"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "多个文件会按名称排序，一个接一个地下载。"
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "浏览器集成详情（Firefox、隐私窗口、发送内容）→"
@@ -9714,6 +9834,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "MDM 的“帮助”→“键盘快捷方式”下也有相同的列表，菜单中每个命令旁边都显示其快捷键。在 Mac 上，⌘ (Command) 键取代 Ctrl 键：⌘N..."
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "速度较慢的对等点会下载稍远的分块，因此开头部分不会等待它们。"
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "按下聚焦的按钮，勾选复选框，勾选列表中选定的行"
@@ -9913,6 +10037,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "示例使用 Windows 路径；在 macOS 和 Linux 上，程序名称相同，不带 <x1/>。"
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>先下载首尾分块</g1> — 启用<g2>按顺序下载</g2>时，每个文件的首尾分块会优先于其他分块下载。此功能默认开启。"
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",
