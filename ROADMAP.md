@@ -26,6 +26,9 @@ Everything below ships together, in one release.
 - ✅ Themes: Metro, Windows 8's flat look (its controls, a drawn title bar on Windows, Fluent
   icons); themes choose each control's style and bring their own icons
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Adwaita, GNOME's look (its controls, a header bar on Windows, GNOME's Adwaita icons
+  in colour and one colour)
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the

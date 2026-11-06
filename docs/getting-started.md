@@ -114,10 +114,17 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
 - **Metro**: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar
   with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's
   Fluent UI System Icons).
+- **Adwaita**: GNOME's look: round corners, flat grey buttons, a rounded focus ring, GNOME's
+  check boxes, a header bar with the title in bold and round buttons (on Windows, where MDM
+  draws it), and GNOME's Adwaita icons, in colour for files and categories, one colour in the
+  toolbar.
 
 Each has a light and a dark side: **Dark Mode support** and **Always dark** choose between
 them as before. Theme files you put in the themes folder (**View → Theme → Open themes folder**)
-are listed there too.
+are listed there too. A theme in a folder of its own (`<name>/theme.toml`) can bring its icons in
+`icons/16` and `icons/24`, each named for what it shows (`tb-add-url.svg`, `cat-music.png`…):
+SVG or PNG files keep their colours, and `-symbolic.svg` ones, as GNOME and KDE name them, take
+the theme's text colour.
 
 ## The tray icon
 

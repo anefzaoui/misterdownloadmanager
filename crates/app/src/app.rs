@@ -4710,6 +4710,8 @@ impl App {
         items.push(Sep);
         // i18n: View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
         items.push(Radio("Metro", Cmd::Theme("metro"), true, on("metro")));
+        // i18n: View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
+        items.push(Radio("Adwaita", Cmd::Theme("adwaita"), true, on("adwaita")));
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
                 items.push(Sep);

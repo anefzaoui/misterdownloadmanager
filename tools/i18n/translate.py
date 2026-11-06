@@ -52,7 +52,7 @@ KEEP = ["Mister Download Manager", "MDM", "IDM", "Internet Download Manager", "W
         "Chrome", "Edge", "Firefox", "Brave", "Opera", "yt-dlp", "ffmpeg", "BitTorrent",
         "GitHub", "librqbit", "URL", "HTTP", "HTTPS", "FTP", "SOCKS", "MD5", "SHA-1", "SHA-256",
         "DNS", "TLS", "TCP", "UDP", "IP", "Cloudflare", "Google", "Quad9", "AdGuard", "NextDNS",
-        "IPv4", "IPv6", "ftps://", "OpenGL", "Direct3D"]
+        "IPv4", "IPv6", "ftps://", "OpenGL", "Direct3D", "Adwaita"]
 
 # The script a language's text must contain (a letter of it), from Unicode character names.
 SCRIPT = {
@@ -325,6 +325,14 @@ def latin_words(source):
     return LATIN.sub("", text)
 
 
+def only_names(source):
+    """Whether `source` is only names kept in every language (and placeholders, punctuation)."""
+    text = PLACEHOLDER.sub("", source)
+    for name in sorted(KEEP, key=len, reverse=True):
+        text = text.replace(name, "")
+    return not re.search(r"\w", text)
+
+
 def clean(code, translation):
     """Fix what is mechanical instead of asking the model again: Arabic-script tashkeel."""
     if SCRIPT.get(code) == "ARABIC" and isinstance(translation, str):
@@ -555,6 +563,9 @@ def main():
                 old = None
             if old and not check_row(code, row, old[0].split("|") if row["plural"] else old[0], forms):
                 done[i], machine[i] = old
+            elif not row["plural"] and only_names(row["source"]):
+                # A name alone ("Adwaita") is written as it is in every language: nothing to ask.
+                done[i], machine[i] = row["source"], True
             else:
                 todo.append(i)
         state[code] = {"lang": lang, "forms": forms, "done": done, "machine": machine, "failed": {}}
@@ -565,7 +576,8 @@ def main():
     for flag in reviewed_flags:
         print(f"kept as reviewed (a person checked it), though a check flags it: {flag}")
     print(f"{len(langs)} language(s), {len(jobs)} request(s), ~{chars // 4 + len(jobs) * 1500:,} input tokens")
-    if args.dry_run or not jobs:
+    # With nothing to send, the catalogs are still written: rows filled here (names) go in.
+    if args.dry_run:
         return
 
     key = api_key()

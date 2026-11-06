@@ -295,6 +295,7 @@ palette! {
     caption_text_inactive: "caption.text.inactive", "Its title and glyphs while the window isn't the active one, and a greyed button's" = grey(0x8a), grey(0x8a);
     caption_hot: "caption.hot", "A caption button under the pointer (a tint over the bar)" = rgba(0xff, 0xff, 0xff, 0x0f), rgba(0x00, 0x00, 0x00, 0x09);
     caption_pressed: "caption.pressed", "A caption button pressed (a tint over the bar)" = rgba(0xff, 0xff, 0xff, 0x0a), rgba(0x00, 0x00, 0x00, 0x06);
+    caption_button: "caption.button", "A caption button at rest, where the style shows one (a tint over the bar; transparent: none)" = Color32::TRANSPARENT, Color32::TRANSPARENT;
     caption_close: "caption.close", "Close under the pointer" = rgb(0xc4, 0x2b, 0x1c), rgb(0xc4, 0x2b, 0x1c);
     caption_close_text: "caption.close.text", "Close's glyph under the pointer" = grey(0xff), grey(0xff);
     // ---- other ----
@@ -416,18 +417,24 @@ pub struct Controls {
     pub scroll: ScrollLook,
     /// The title bar: the system's, or drawn by MDM in the theme's style (Windows only).
     pub caption: CaptionLook,
+    /// The keyboard focus around a control: Windows' dotted rectangle, or GNOME's rounded ring.
+    pub focus: FocusLook,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum FieldFocus {
     Line,
     Border,
+    /// GNOME: a 2-point ring inside the box, in the accent half seen through.
+    Ring,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CheckLook {
     Fluent,
     Square,
+    /// GNOME: a 2-point border at rest, the accent filled with a light tick when checked.
+    Adwaita,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -449,6 +456,17 @@ pub enum CaptionLook {
     System,
     /// Windows 8: a flat bar in the theme's caption colour, the title centred, flat buttons.
     Metro,
+    /// GNOME's header bar: the title centred in bold, no icon, round buttons tinted at rest.
+    Adwaita,
+}
+
+/// How the keyboard focus is drawn around a control.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum FocusLook {
+    /// Windows: a dotted rectangle, every other pixel, in the focus ink.
+    Dotted,
+    /// GNOME: a 2-point ring in the focus ink, its corners the controls' radius.
+    Ring,
 }
 
 impl Controls {
@@ -458,6 +476,7 @@ impl Controls {
         progress: ProgressLook::Line,
         scroll: ScrollLook::Overlay,
         caption: CaptionLook::System,
+        focus: FocusLook::Dotted,
     };
 
     /// Sets the control with this key to the style named `value`; false when either is unknown.
@@ -465,14 +484,19 @@ impl Controls {
         match (key, value) {
             ("field-focus", "line") => self.field_focus = FieldFocus::Line,
             ("field-focus", "border") => self.field_focus = FieldFocus::Border,
+            ("field-focus", "ring") => self.field_focus = FieldFocus::Ring,
             ("check", "fluent") => self.check = CheckLook::Fluent,
             ("check", "square") => self.check = CheckLook::Square,
+            ("check", "adwaita") => self.check = CheckLook::Adwaita,
             ("progress", "line") => self.progress = ProgressLook::Line,
             ("progress", "bar") => self.progress = ProgressLook::Bar,
             ("scroll", "overlay") => self.scroll = ScrollLook::Overlay,
             ("scroll", "classic") => self.scroll = ScrollLook::Classic,
             ("caption", "system") => self.caption = CaptionLook::System,
             ("caption", "metro") => self.caption = CaptionLook::Metro,
+            ("caption", "adwaita") => self.caption = CaptionLook::Adwaita,
+            ("focus", "dotted") => self.focus = FocusLook::Dotted,
+            ("focus", "ring") => self.focus = FocusLook::Ring,
             _ => return false,
         }
         true
@@ -519,7 +543,7 @@ pub static CLASSIC: Theme = Theme {
 /// (written out above), then the ones shipped as theme files (`assets/themes/`, in the format
 /// users write, so they double as examples). Native follows the system and is made when chosen
 /// (`crate::native`).
-pub fn builtins() -> [&'static Theme; 3] {
+pub fn builtins() -> [&'static Theme; 4] {
     static HIGH_CONTRAST: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
         crate::themefile::builtin(
             "high-contrast",
@@ -530,7 +554,10 @@ pub fn builtins() -> [&'static Theme; 3] {
     static METRO: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
         crate::themefile::builtin("metro", include_str!("../assets/themes/metro.toml"))
     });
-    [&CLASSIC, &HIGH_CONTRAST, &METRO]
+    static ADWAITA: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin("adwaita", include_str!("../assets/themes/adwaita.toml"))
+    });
+    [&CLASSIC, &HIGH_CONTRAST, &METRO, &ADWAITA]
 }
 
 /// `#rrggbb` or `#rrggbbaa` (the `#` optional, as Base16 writes them) as a colour.
@@ -690,6 +717,11 @@ mod tests {
                 "Metro",
                 include_str!("../assets/themes/metro.toml"),
             ),
+            (
+                "adwaita",
+                "Adwaita",
+                include_str!("../assets/themes/adwaita.toml"),
+            ),
         ] {
             let v: serde_json::Value = toml::from_str(text).unwrap();
             let l = crate::themefile::parse(id, &v, |_| {
@@ -707,5 +739,11 @@ mod tests {
         assert_eq!(metro.icon_set.as_deref(), Some("metro"));
         assert_eq!(metro.controls.caption, CaptionLook::Metro);
         assert_eq!(metro.metrics.control_radius, 0.0);
+        let adwaita = builtins()[3];
+        assert_eq!(adwaita.icon_set.as_deref(), Some("adwaita"));
+        assert_eq!(adwaita.controls.caption, CaptionLook::Adwaita);
+        assert_eq!(adwaita.controls.focus, FocusLook::Ring);
+        assert_eq!(adwaita.controls.check, CheckLook::Adwaita);
+        assert_eq!(adwaita.controls.field_focus, FieldFocus::Ring);
     }
 }
