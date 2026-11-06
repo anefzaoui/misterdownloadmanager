@@ -862,6 +862,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "हाँ। MDM, IDM के परिचित कमांड-लाइन स्विच स्वीकार करता है, टर्मिनल से डाउनलोड के लिए misterdownloadmanager-cli के साथ आता है, और इसमें एक स्थानीय, टोकन-सुरक्षित…"
   },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "जिस पंक्ति के ऊपर <x1/> लाइन है, उसका अनुवाद मशीन द्वारा किया गया था। जब आप इसकी जाँच कर लें (और यदि आवश्यक हो तो इसे ठीक कर लें), तो उस <x2/> लाइन को हटा दें।"
+  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "एक <x1/> फ़ाइल या <x2/> लिंक"
@@ -1045,6 +1049,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 से</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Windows पर टॉरेंट इंजन अभी तक किसी एडाप्टर से जुड़ नहीं सकता है। इसलिए जब कोई एडाप्टर चुना जाता है तो टॉरेंट शुरू नहीं होते हैं (\"Windows पर टॉरेंट अभी तक चुने हुए नेटवर्क एडाप्टर के ज़रिए नहीं जा सकते हैं\"), बजाय इसके कि वे उसके चारों ओर जाएँ। ट्रैकर के नाम अभी भी सिस्टम के DNS द्वारा देखे जाते हैं।"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -4906,6 +4914,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 या उसके बाद का संस्करण आवश्यक है।"
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>विकल्प → प्रॉक्सी / SOCKS → नेटवर्क एडाप्टर</g1> MDM के कनेक्शन को एक एडाप्टर से जोड़ता है, आमतौर पर VPN के (<g2>विकल्प</g2>)। Linux और macOS पर टॉरेंट इंजन हर सॉकेट को इससे जोड़ता है: पीयर, ट्रैकर, DHT और उसका लिसनिंग पोर्ट। UPnP और लोकल पीयर डिस्कवरी तब बंद हो जाते हैं, क्योंकि वे एडाप्टर के बजाय लोकल नेटवर्क से बात करते हैं। अगर एडाप्टर चला जाता है, तो इंजन रुक जाता है, और जब वह वापस आता है तो एडाप्टर के ज़रिए फिर से शुरू होता है।"
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>गुणवत्ता</g1> हर वीडियो पर लागू होती है: <g2>सर्वोत्तम गुणवत्ता</g2>, एक ऊँचाई <g3>तक</g3> (प्रत्येक वीडियो उस ऊँचाई पर, या उसके ठीक नीचे), <g4>केवल ऑडियो, मूल</g4>, <g5>केवल ऑडियो MP3</g5>, <g6>केवल ऑडियो OPUS</g6> या <g7>केवल ऑडियो FLAC</g7>। ffmpeg के बिना, केवल वही गुणवत्ताएँ पेश की जाती हैं जो अपनी ध्वनि के साथ आती हैं, और कोई MP3, Opus या FLAC नहीं।"
@@ -6713,6 +6725,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>श्रेणी</g1> — फ़ाइल के प्रकार (संपीड़ित, दस्तावेज़, संगीत, प्रोग्राम, वीडियो या सामान्य) से चुनी गई। प्रत्येक श्रेणी का अपना फ़ोल्डर होता है। इसके बगल में <g2>+</g2> एक नई श्रेणी बनाता है।"
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>नेटवर्क एडाप्टर</g1> — <g2>कोई भी (सिस्टम चुनता है)</g2> डिफ़ॉल्ट है। एक एडाप्टर चुनें, आमतौर पर आपके VPN का, और MDM द्वारा खोला गया हर कनेक्शन उसी के माध्यम से जाएगा, या बिल्कुल नहीं जाएगा। इसमें डाउनलोड, FTP, आपके द्वारा चुना गया DNS, MDM के अपने डाउनलोड और अपडेट जांच शामिल हैं। यह एक किल स्विच के रूप में काम करता है: जब एडाप्टर डिस्कनेक्ट हो जाता है, या VPN बंद हो जाता है, तो आपके सामान्य कनेक्शन के माध्यम से कुछ भी बाहर नहीं जाता है। चल रहे डाउनलोड \"...कनेक्टेड नहीं है\" के साथ रुक जाते हैं और एडाप्टर के वापस आने पर फिर से शुरू हो जाते हैं। सूची के नीचे की पंक्ति एडाप्टर का पता दिखाती है, या यह कि यह कनेक्टेड नहीं है।"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",

@@ -16,6 +16,8 @@ Everything below ships together, in one release.
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
   video, the right-click menu (it did nothing in Firefox) and the media list
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
+- ✅ A server that can't resume a download no longer gets the file downloaded twice on a busy
+  computer (part of [#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
   Italian is the first catalog reviewed by a native speaker
   ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150))
@@ -104,8 +106,10 @@ Everything below ships together, in one release.
   ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28))
 - ✅ The extension's Download video menu keeps its highlight inside its edge
   ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81))
-- ✅ No crash when a window opens while MDM is minimized
-  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22))
+- ✅ No crash when a window opens while MDM is minimized or in the notification area, such as a
+  download or a magnet link from the browser
+  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22),
+  [#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145))
 - ✅ Long file names stay inside the progress window: the Save to path is shortened in the
   middle, in every language ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62))
 - ✅ Every button translated: Download complete's Open with... no longer stays in English
@@ -142,8 +146,6 @@ Everything below ships together, in one release.
   icons all come from the chosen theme, and Base16 and pywal schemes can be imported
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - 🔄 A crash when a magnet link comes from Firefox ([#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145))
-- 🔄 A server that can't resume a download no longer gets the file downloaded twice
-  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 
 ### Bugs being looked into
 

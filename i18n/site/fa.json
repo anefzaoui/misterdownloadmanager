@@ -862,6 +862,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "بله. MDM سوئیچ‌های خط فرمان آشنای IDM را می‌پذیرد، برای بارگیری از ترمینال همراه با misterdownloadmanager-cli ارائه می‌شود و یک API اتوماسیون محلی و محافظت‌شده با توکن دارد که می‌تواند بارگیری‌ها را فهرست، متوقف، شروع و حذف کند. این API تا زمانی که آن را روشن نکنید، خاموش است. به خط فرمان و اتوماسیون مراجعه کنید."
   },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "سطری که بالای آن یک خط <x1/> وجود دارد، توسط ماشین ترجمه شده است. هنگامی که آن را بررسی کردید (و در صورت نیاز تصحیح کردید)، آن خط <x2/> را حذف کنید."
+  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "یک فایل <x1/> یا لینک <x2/>"
@@ -1045,6 +1049,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 ثانیه</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "در Windows، موتور تورنت هنوز نمی‌تواند به یک آداپتور متصل شود. بنابراین، تورنت‌ها در حالی که یک آداپتور انتخاب شده است، شروع نمی‌شوند (\"تورنت‌ها هنوز نمی‌توانند از طریق یک آداپتور شبکه انتخاب شده در Windows عبور کنند\")، به جای اینکه از آن عبور کنند. نام ردیاب‌ها همچنان توسط DNS سیستم جستجو می‌شوند."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -4906,6 +4914,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 یا جدیدتر لازم است."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>گزینه‌ها → پروکسی / SOCKS → آداپتور شبکه</g1> اتصالات MDM را به یک آداپتور، معمولا VPN، محدود می‌کند (<g2>گزینه‌ها</g2>). در Linux و macOS، موتور تورنت هر سوکت را به آن متصل می‌کند: همتایان، ردیاب‌ها، DHT و پورت گوش دادن آن. UPnP و کشف همتایان محلی در این حالت خاموش می‌شوند، زیرا آنها به جای عبور از آداپتور، با شبکه محلی صحبت می‌کنند. اگر آداپتور از بین برود، موتور متوقف می‌شود و زمانی که آداپتور بازگردد، دوباره از طریق آن شروع به کار می‌کند."
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>کیفیت</g1> برای هر ویدئو اعمال می‌شود: <g2>بهترین کیفیت</g2>، <g3>تا</g3> یک ارتفاع (هر ویدئو با آن ارتفاع یا نزدیک‌ترین ارتفاع پایین‌تر)، <g4>فقط صدا، اصلی</g4>، <g5>فقط صدا MP3</g5>، <g6>فقط صدا OPUS</g6> یا <g7>فقط صدا FLAC</g7>. بدون ffmpeg، فقط کیفیت‌هایی ارائه می‌شوند که همراه با صدای خود هستند و MP3، Opus یا FLAC ارائه نمی‌شوند."
@@ -6713,6 +6725,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>دسته</g1> — از نوع فایل (فشرده، اسناد، موسیقی، برنامه‌ها، ویدئو یا عمومی) انتخاب می‌شود. هر دسته پوشه مخصوص به خود را دارد. <g2>+</g2> کنار آن یک دسته جدید ایجاد می‌کند."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>کارت شبکه</g1> — <g2>هر کدام (سیستم انتخاب می‌کند)</g2> پیش‌فرض است. یک کارت شبکه، معمولا کارت شبکه VPN شما، را انتخاب کنید تا هر اتصالی که MDM باز می‌کند از طریق آن برقرار شود، یا اصلا برقرار نشود. این شامل دانلودها، FTP، DNS انتخابی شما، دانلودهای خود MDM و بررسی به‌روزرسانی می‌شود. این ویژگی مانند یک سوئیچ قطع‌کننده عمل می‌کند: وقتی کارت شبکه قطع می‌شود یا VPN خاموش می‌شود، هیچ چیزی از طریق اتصال عادی شما خارج نمی‌شود. دانلودهای در حال اجرا با پیام «… متصل نیست» متوقف می‌شوند و با بازگشت کارت شبکه دوباره شروع می‌شوند. خط زیر لیست، آدرس کارت شبکه را نشان می‌دهد، یا اینکه متصل نیست."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",

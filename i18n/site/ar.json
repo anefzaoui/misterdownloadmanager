@@ -862,6 +862,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "نعم. يقبل MDM مفاتيح سطر الأوامر المألوفة لـ IDM، ويأتي مع misterdownloadmanager-cli للتنزيلات من الطرفية، ولديه واجهة برمجة تطبيقات (API) أتمتة محلية محمية برمز مميز…"
   },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "الصف الذي يحتوي على سطر <x1/> فوقه تمت ترجمته بواسطة الآلة. عندما تراجعه (وتصححه إذا لزم الأمر)، احذف سطر <x2/> هذا."
+  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "ملف <x1/> أو رابط <x2/>"
@@ -1045,6 +1049,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 ثانية</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "على نظام Windows، لا يمكن لمحرك التورنت الربط بمحول بعد. لذلك لا تبدأ التورنتات بينما يتم اختيار واحد (\"لا يمكن للتورنتات المرور عبر محول شبكة مختار على Windows بعد\")، بدلا من تجاوزها. لا تزال أسماء المتتبعات تبحث بواسطة DNS الخاص بالنظام."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -4906,6 +4914,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "يلزم Firefox 140 أو أحدث."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "تبقي <g1>الخيارات ← الوكيل / SOCKS ← محول الشبكة</g1> اتصالات MDM على محول واحد، عادة ما يكون محول VPN (<g2>الخيارات</g2>). على نظامي Linux و macOS، يربط محرك التورنت كل مقبس به: الأقران، المتتبعات، DHT ومنفذ الاستماع الخاص به. يتم إيقاف تشغيل UPnP واكتشاف الأقران المحليين حينها، لأنهما يتحدثان إلى الشبكة المحلية بدلا من المرور عبر المحول. إذا اختفى المحول، يتوقف المحرك، ويبدأ مرة أخرى عبر المحول عند عودته."
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>الجودة</g1> تنطبق على كل فيديو: <g2>أفضل جودة</g2>، <g3>حتى</g3> ارتفاع معين (كل فيديو بهذا الارتفاع، أو الأقرب تحته)، <g4>صوت فقط، أصلي</g4>، <g5>صوت فقط MP3</g5>، <g6>صوت فقط OPUS</g6> أو <g7>صوت فقط FLAC</g7>. بدون ffmpeg، لا تعرض إلا الجودات التي تأتي مع صوتها، ولا يتوفر MP3 أو Opus أو FLAC."
@@ -6713,6 +6725,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>الفئة</g1> — يتم اختيارها من نوع الملف (مضغوط، مستندات، موسيقى، برامج، فيديو أو عام). كل فئة لها مجلد خاص بها. <g2>+</g2> بجانبها ينشئ فئة جديدة."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>محول الشبكة</g1> — <g2>أي (يختاره النظام)</g2> هو الافتراضي. اختر محولا، وعادة ما يكون محول VPN الخاص بك، وستمر كل الاتصالات التي يفتحها MDM من خلاله، أو لن تمر على الإطلاق. وهذا يشمل التنزيلات، وFTP، وDNS الذي اخترته، وتنزيلات MDM الخاصة، وفحص التحديثات. يعمل هذا كمفتاح إيقاف: عندما ينقطع المحول، أو يتم إيقاف تشغيل VPN، لا يخرج أي شيء عبر اتصالك العادي. تتوقف التنزيلات الجارية مع رسالة \"… غير متصل\" وتبدأ مرة أخرى عندما يعود المحول. يعرض السطر الموجود أسفل القائمة عنوان المحول، أو أنه غير متصل."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",

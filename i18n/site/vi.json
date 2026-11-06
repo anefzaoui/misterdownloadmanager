@@ -862,6 +862,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Có. MDM chấp nhận các tùy chọn dòng lệnh quen thuộc của IDM, đi kèm với misterdownloadmanager-cli để tải xuống từ terminal, và có một API tự động hóa cục bộ, được bảo vệ bằng token…"
   },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "Một hàng có dòng <x1/> phía trên nó đã được dịch bằng máy. Khi bạn đã kiểm tra nó (và sửa nếu cần), hãy xóa dòng <x2/> đó."
+  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "một tệp <x1/> hoặc liên kết <x2/>"
@@ -1045,6 +1049,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 giây</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Trên Windows, công cụ torrent chưa thể liên kết với bộ điều hợp. Vì vậy, torrent không khởi động khi một bộ điều hợp được chọn (\"torrent chưa thể đi qua bộ điều hợp mạng đã chọn trên Windows\"), thay vì đi vòng qua nó. Tên trình theo dõi vẫn được tra cứu bởi DNS của hệ thống."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -4906,6 +4914,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Cần có Firefox 140 trở lên."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>Tùy chọn → Proxy / Socks → Bộ điều hợp mạng</g1> giữ các kết nối của MDM với một bộ điều hợp, thường là của VPN (<g2>Tùy chọn</g2>). Trên Linux và macOS, công cụ torrent liên kết mọi socket với nó: các peer, trình theo dõi, DHT và cổng nghe của nó. UPnP và khám phá peer cục bộ sau đó bị tắt, vì chúng nói chuyện với mạng cục bộ thay vì qua bộ điều hợp. Nếu bộ điều hợp biến mất, công cụ sẽ dừng và nó sẽ khởi động lại qua bộ điều hợp khi nó trở lại."
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Chất lượng</g1> áp dụng cho mọi video: <g2>Chất lượng tốt nhất</g2>, <g3>Tối đa</g3> chiều cao (mỗi video ở chiều cao đó, hoặc gần nhất bên dưới), <g4>Chỉ âm thanh, gốc</g4>, <g5>Chỉ âm thanh MP3</g5>, <g6>Chỉ âm thanh OPUS</g6> hoặc <g7>Chỉ âm thanh FLAC</g7>. Nếu không có ffmpeg, chỉ những chất lượng có sẵn âm thanh mới được cung cấp, và không có MP3, Opus hoặc FLAC."
@@ -6713,6 +6725,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Danh mục</g1> — được chọn từ loại tệp (Đã nén, Tài liệu, Nhạc, Chương trình, Video hoặc Chung). Mỗi danh mục có thư mục riêng. <g2>+</g2> bên cạnh nó tạo một danh mục mới."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Bộ điều hợp mạng</g1> — <g2>Bất kỳ (hệ thống tự chọn)</g2> là mặc định. Chọn một bộ điều hợp, thường là của VPN của bạn, và mọi kết nối MDM mở ra sẽ đi qua đó, hoặc không đi đâu cả. Điều đó bao gồm các lượt tải xuống, FTP, DNS bạn đã chọn, các lượt tải xuống của MDM và kiểm tra cập nhật. Nó hoạt động như một công tắc ngắt mạch: khi bộ điều hợp bị ngắt kết nối, hoặc VPN bị tắt, không có gì đi ra qua kết nối thông thường của bạn. Các lượt tải xuống đang chạy sẽ dừng với “… không được kết nối” và bắt đầu lại khi bộ điều hợp hoạt động trở lại. Dòng bên dưới danh sách hiển thị địa chỉ của bộ điều hợp, hoặc cho biết nó không được kết nối."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",

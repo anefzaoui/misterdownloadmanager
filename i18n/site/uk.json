@@ -862,6 +862,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Так. MDM підтримує звичні параметри командного рядка IDM, постачається з misterdownloadmanager-cli для завантажень з терміналу та має локальний, захищений токеном…"
   },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "Рядок з рядком <x1/> над ним був перекладений машиною. Коли ви його перевірили (і виправили, якщо потрібно), видаліть цей рядок <x2/>."
+  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "файл <x1/> або посилання <x2/>"
@@ -1045,6 +1049,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 с</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "У Windows торрент-рушій ще не може прив’язуватися до адаптера. Тому торренти не запускаються, поки вибрано адаптер (\"торренти ще не можуть проходити через вибраний мережевий адаптер у Windows\"), замість того, щоб обходити його. Імена трекерів все ще шукаються за допомогою системного DNS."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -4906,6 +4914,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Потрібен Firefox 140 або новішої версії."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "У <g1>Параметри → Проксі / Socks → Мережевий адаптер</g1> MDM прив’язує свої з’єднання до одного адаптера, зазвичай VPN (<g2>Параметри</g2>). У Linux та macOS торрент-рушій прив’язує до нього кожен сокет: піри, трекери, DHT та його порт для прослуховування. UPnP та виявлення локальних пірів вимикаються, оскільки вони спілкуються з локальною мережею, а не через адаптер. Якщо адаптер зникає, рушій зупиняється і знову запускається через адаптер, коли той повертається."
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Якість</g1> застосовується до кожного відео: <g2>Найкраща якість</g2>, <g3>До</g3> певної висоти (кожне відео цієї висоти або найближчої нижчої), <g4>Лише аудіо, оригінал</g4>, <g5>Лише аудіо MP3</g5>, <g6>Лише аудіо OPUS</g6> або <g7>Лише аудіо FLAC</g7>. Без ffmpeg пропонуються лише якості, які мають власний звук, і немає MP3, Opus або FLAC."
@@ -6713,6 +6725,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Категорія</g1> — обирається за типом файлу (Стиснуті, Документи, Музика, Програми, Відео або Загальні). Кожна категорія має власну папку. <g2>+</g2> поруч створює нову категорію."
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Мережевий адаптер</g1> — <g2>Будь-який (система вибирає)</g2> є типовим. Виберіть адаптер, зазвичай ваш VPN, і кожне з'єднання, яке відкриває MDM, проходить через нього або не проходить взагалі. Це стосується завантажень, FTP, обраного вами DNS, власних завантажень MDM та перевірки оновлень. Це працює як аварійний вимикач: коли адаптер відключається або VPN вимикається, нічого не проходить через ваше звичайне з'єднання. Завантаження, що виконуються, зупиняються з повідомленням «… не підключено» і відновлюються, коли адаптер знову підключається. Рядок під списком показує адресу адаптера або те, що він не підключений."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",

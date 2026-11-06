@@ -40,6 +40,9 @@ pub struct Faults {
     pub etag: Option<String>,
     /// Delay before sending response headers, ms.
     pub latency_ms: Option<u64>,
+    /// Delay before answering a request that asks for a range, ms (on top of `latency_ms`): the
+    /// probe's plain GET runs ahead of the range attempts, as on a busy machine.
+    pub range_latency_ms: Option<u64>,
     /// 403 unless the request's `Cookie` holds this pair (`sid=1`), or a cookie of this name
     /// (`sid`): a file behind a session.
     pub require_cookie: Option<String>,
@@ -78,6 +81,7 @@ impl Faults {
             etag_change_every: over.etag_change_every.or(self.etag_change_every),
             etag: over.etag.clone().or(self.etag.clone()),
             latency_ms: over.latency_ms.or(self.latency_ms),
+            range_latency_ms: over.range_latency_ms.or(self.range_latency_ms),
             require_cookie: over.require_cookie.clone().or(self.require_cookie.clone()),
             require_referer: over
                 .require_referer

@@ -862,6 +862,10 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "是。MDM 接受 IDM 熟悉的命令行开关，附带 misterdownloadmanager-cli 用于从终端下载，并具有一个本地的、受令牌保护的…"
   },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "上方有<x1/>行的行是机器翻译的。当您检查完（并根据需要更正）后，请删除该<x2/>行。"
+  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "一个 <x1/> 文件或 <x2/> 链接"
@@ -1045,6 +1049,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 秒</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "在Windows上，洪流引擎尚无法绑定到适配器。因此，在选择适配器时，洪流不会启动（“洪流尚无法通过Windows上选定的网络适配器”），而不是绕过它。跟踪器名称仍然由系统的DNS查找。"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -4906,6 +4914,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "需要 Firefox 140 或更高版本。"
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>选项 → 代理/Socks → 网络适配器</g1>将MDM的连接绑定到一个适配器，通常是VPN的（<g2>选项</g2>）。在Linux和macOS上，洪流引擎会将每个套接字绑定到它：对等点、跟踪器、DHT及其监听端口。UPnP和本地对等点发现功能将关闭，因为它们与本地网络通信，而不是通过适配器。如果适配器消失，引擎将停止，并在适配器恢复时再次通过它启动。"
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>质量</g1>适用于所有视频：<g2>最佳质量</g2>、<g3>最高</g3>高度（每个视频都以此高度或最接近的较低高度下载）、<g4>仅音频，原始</g4>、<g5>仅音频 MP3</g5>、<g6>仅音频 OPUS</g6> 或 <g7>仅音频 FLAC</g7>。如果没有 ffmpeg，则只提供自带声音的质量选项，不提供 MP3、Opus 或 FLAC。"
@@ -6713,6 +6725,10 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>类别</g1> — 根据文件类型（压缩文件、文档、音乐、程序、视频或常规）选择。每个类别都有自己的文件夹。<g2>+</g2> 旁边可创建新类别。"
+  },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>网络适配器</g1> — <g2>任何（系统选择）</g2>是默认设置。选择一个适配器，通常是您的 VPN 适配器，MDM 打开的每个连接都将通过它发出，否则就无法发出。这包括下载、FTP、您选择的 DNS、MDM 自己的下载和更新检查。它起到一个终止开关的作用：当适配器断开连接，或 VPN 关闭时，任何数据都不会通过您的正常连接发出。正在进行的下载会显示“……未连接”并停止，当适配器恢复时会重新开始。列表下方的行显示适配器的地址，或显示其未连接。"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
