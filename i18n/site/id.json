@@ -322,6 +322,10 @@
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
    "text": "Unduh <g1>setup.exe</g1> di atas dan jalankan. Windows mungkin bertanya apakah akan mengizinkannya: penginstal belum ditandatangani kode, jadi pilih <g2>Info selengkapnya → Tetap jalankan</g2>."
   },
+  "0717a2923d7e72cc": {
+   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: one click from the Chrome Web Store, and the browser keeps it up to date. Edge first asks to allow extensions from other stores.",
+   "text": "<g1>Chrome, Edge, Brave, Opera, dan Vivaldi</g1>: satu klik dari Chrome Web Store, dan peramban akan selalu memperbaruinya. Edge akan meminta izin untuk ekstensi dari toko lain terlebih dahulu."
+  },
   "072428c8bd6ba91a": {
    "source": "When the limit is reached, MDM stops downloading. New downloads show <g1>Waiting: the download limit is reached (Scheduler)</g1>. Everything resumes on its own when the period is over. <g2>Show warning before stopping downloads</g2> tells you when this happens and when downloads will go on.",
    "text": "Ketika batas tercapai, MDM berhenti mengunduh. Unduhan baru menunjukkan <g1>Menunggu: batas unduhan tercapai (Penjadwal)</g1>. Semuanya dilanjutkan sendiri ketika periode berakhir. <g2>Tampilkan peringatan sebelum menghentikan unduhan</g2> memberi tahu Anda kapan ini terjadi dan kapan unduhan akan dilanjutkan."
@@ -433,10 +437,6 @@
   "09c82864f82bd0f8": {
    "source": "Menu bar.",
    "text": "Bilah menu."
-  },
-  "09d11cac644c01da": {
-   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "Firefox (dari addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi, melalui ekstensi peramban MDM, serta peramban yang dibangun di atasnya: Zen dan LibreWolf, Helium. Ekstensi ini menyerahkan unduhan ke MDM beserta cookie dan referer-nya, sehingga berkas di balik login tetap berfungsi, dan menambahkan Unduh dengan Mister Download Manager ke menu klik kanan serta tombol Unduh video di atas video. Lihat Integrasi peramban."
   },
   "09e228aaadb34e64": {
    "source": "Each download is then held to that speed. <g1>Downloads → Speed Limiter → Turn off</g1> gives full speed again. Tick <g2>Always turn on Speed Limiter on Mister Download Manager startup</g2> to have it on every time.",
@@ -697,6 +697,10 @@
   "115de9018b2cce4b": {
    "source": "Star it on GitHub",
    "text": "Beri bintang di GitHub"
+  },
+  "11670b26bfb183a4": {
+   "source": "<g1>Chrome</g1><g2>Google · <g3>Add to Chrome</g3></g2>",
+   "text": "<g1>Chrome</g1><g2>Google · <g3>Tambah ke Chrome</g3></g2>"
   },
   "1171655e77148bd2": {
    "source": "Every release, with its notes and files, is on <g1>GitHub Releases</g1>. The source code is at <g2>github.com/anefzaoui/misterdownloadmanager</g2> under the GNU GPL, version 3.",
@@ -1274,10 +1278,6 @@
    "source": "Windows, macOS, Linux (Java)",
    "text": "Windows, macOS, Linux (Java)"
   },
-  "1ec161dd36dfe603": {
-   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM. Opera and Vivaldi take it the same way.",
-   "text": "<g1>Mister Download Manager</g1> muncul di daftar. Biarkan tetap aktif. Sematkan tombolnya ke bilah alat untuk melihat sekilas apakah browser terhubung ke MDM. Opera dan Vivaldi menginstalnya dengan cara yang sama."
-  },
   "1ed401e594a9c102": {
    "source": "0.03 s",
    "text": "0,03 dtk"
@@ -1670,6 +1670,10 @@
    "source": "The race",
    "text": "Perlombaan"
   },
+  "28363ce0cfaf4e8e": {
+   "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
+   "text": "Ekstensi peramban, dari toko peramban itu sendiri: yang ada di Chrome Web Store juga untuk Edge, Brave, Opera, dan Vivaldi. Ekstensi ini juga disertakan dengan aplikasi dan sebagai <g1>unduhan terpisah</g1>, untuk ditambahkan secara manual. Setiap berkas dibuat dari sumber publik oleh GitHub Actions dan dicantumkan dengan checksum SHA-256-nya."
+  },
   "286a2be607456e48": {
    "source": "Set <g1>Maximum download speed</g1> in KBytes/sec. The new limit applies at once.",
    "text": "Atur <g1>Kecepatan unduh maksimum</g1> dalam KB/dtk. Batas baru akan berlaku segera."
@@ -1681,6 +1685,10 @@
   "28b1c28428b1047e": {
    "source": "Close",
    "text": "Tutup"
+  },
+  "28b58f9af9a6fed9": {
+   "source": "In Chrome, Edge, Brave, Opera or Vivaldi",
+   "text": "Di Chrome, Edge, Brave, Opera, atau Vivaldi"
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -1701,10 +1709,6 @@
   "298c9f2b74a2990f": {
    "source": "How it works",
    "text": "Cara kerjanya"
-  },
-  "2991dd6051b6e56c": {
-   "source": "By hand for now, while the Chrome Web Store reviews the extension. Its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
-   "text": "Secara manual untuk saat ini, selagi Chrome Web Store meninjau ekstensi. File-nya ada di folder <x1/> tempat MDM diinstal: <x2/> jika Anda menginstalnya untuk diri sendiri, atau <x3/> jika Anda menginstalnya untuk semua orang. Setiap rilis juga menyediakannya sebagai unduhan tersendiri, <x4/> (ekstrak dulu)."
   },
   "29b29fea4e1dcc73": {
    "source": "Download limits",
@@ -1938,6 +1942,10 @@
    "source": "Yes: <x1/>, and FTP over TLS both ways (<x2/> and <x3/>), with several connections at once, resume, and logins from the address or from Sites Logins. See <g4>Adding downloads</g4>.",
    "text": "Ya: <x1/>, dan FTP melalui TLS dua arah (<x2/> dan <x3/>), dengan beberapa koneksi sekaligus, melanjutkan unduhan, dan login dari alamat atau dari Login Situs. Lihat <g4>Menambahkan unduhan</g4>."
   },
+  "2e1e011c1da4eb87": {
+   "source": "Open the extension's page in the Chrome Web Store, <g1>Mister Download Manager</g1>, and click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>, and Edge first asks to <g4>Allow extensions from other stores</g4>: click <g5>Allow</g5>.",
+   "text": "Buka halaman ekstensi di Chrome Web Store, <g1>Mister Download Manager</g1>, lalu klik <g2>Tambahkan ke Chrome</g2>. Di Edge, tombolnya adalah <g3>Dapatkan</g3>, dan Edge akan meminta Anda untuk <g4>Izinkan ekstensi dari toko lain</g4> terlebih dahulu: klik <g5>Izinkan</g5>."
+  },
   "2e238218e51993b0": {
    "source": "Mac",
    "text": "Mac"
@@ -2001,6 +2009,10 @@
   "2f6173f7ee8ac832": {
    "source": "<g1>Exit Mister Download Manager when done</g1>.",
    "text": "<g1>Keluar dari Mister Download Manager setelah selesai</g1>."
+  },
+  "2f68e4b0dfb1bc04": {
+   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from <g2>the Chrome Web Store</g2>), through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g3>Download with Mister Download Manager</g3> to the right-click menu and a <g4>Download video</g4> button over videos. See <g5>Browser integration</g5>.",
+   "text": "Firefox (dari <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi (dari <g2>Chrome Web Store</g2>), melalui ekstensi peramban MDM, serta peramban yang dibangun di atasnya: Zen dan LibreWolf, Helium. Ekstensi ini menyerahkan unduhan ke MDM beserta kuki dan perujuknya, sehingga berkas di balik login tetap berfungsi, dan menambahkan <g3>Unduh dengan Mister Download Manager</g3> ke menu klik kanan serta tombol <g4>Unduh video</g4> di atas video. Lihat <g5>Integrasi peramban</g5>."
   },
   "2f8778f636a6a38d": {
    "source": "Connections and speed →",
@@ -2190,6 +2202,10 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "Pembatas Kecepatan mencegah MDM menggunakan seluruh koneksi Anda."
   },
+  "36ef08c42af60d54": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
+   "text": "Firefox, Chrome, Edge, Brave, Opera, dan Vivaldi melalui ekstensi, dari <g1>toko pengaya Firefox</g1> dan <g2>Chrome Web Store</g2>. Tanpa ekstensi, salin tautan dan MDM akan membuka jendela unduhan. <g3>Selengkapnya</g3>"
+  },
   "37018c365c78d873": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all…",
    "text": "MDM dibuat oleh Ahmed Nefzaoui, seorang pengembang independen, dan terbuka untuk kontribusi dari siapa saja di GitHub. Laporan bug, terjemahan, dan kode semuanya…"
@@ -2321,6 +2337,10 @@
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
    "text": "Untuk halaman video, MDM mengunduh yt-dlp (dan ffmpeg jika Anda ingin kualitas gabungan) pada penggunaan pertama."
+  },
+  "39b196f386c16245": {
+   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), which downloads it takes, and what happens when MDM isn't running.",
+   "text": "<g1><g2>Integrasi peramban</g2></g1> — ekstensi untuk Firefox (dari addons.mozilla.org), Chrome, Edge, Brave, Opera, dan Vivaldi (dari Chrome Web Store), unduhan apa yang diambil, dan apa yang terjadi jika MDM tidak berjalan."
   },
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
@@ -2638,10 +2658,6 @@
    "source": "Crash reports",
    "text": "Laporan kerusakan"
   },
-  "41d7fb067ecb2748": {
-   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g2>Download with Mister Download Manager</g2> to the right-click menu and a <g3>Download video</g3> button over videos. See <g4>Browser integration</g4>.",
-   "text": "Firefox (dari <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi, melalui ekstensi peramban MDM, serta peramban yang dibangun di atasnya: Zen dan LibreWolf, Helium. Ekstensi ini menyerahkan unduhan ke MDM beserta cookie dan referer-nya, sehingga berkas di balik login tetap berfungsi, dan menambahkan <g2>Unduh dengan Mister Download Manager</g2> ke menu klik kanan serta tombol <g3>Unduh video</g3> di atas video. Lihat <g4>Integrasi peramban</g4>."
-  },
   "4208f79380d548a0": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (sekitar 80 MB) menggabungkan video dan suaranya saat situs memisahkannya, yang dilakukan sebagian besar situs untuk kualitas yang lebih tinggi, dan mengubah suara menjadi file MP3, Opus, atau FLAC. Klik <g2>Instal ffmpeg</g2> saat MDM menawarkannya. MDM memeriksanya terhadap checksum yang diterbitkan rilisnya."
@@ -2705,10 +2721,6 @@
   "4409b6268f79d30a": {
    "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
    "text": "<g1>Menempel.</g1> Pilih <g2>Tugas → Link grabber...</g2> dan tekan <g3>Ctrl+V</g3>: setiap alamat web dalam teks yang disalin akan ditambahkan."
-  },
-  "440d7c9f4a9ff3a8": {
-   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose <g4>Load unpacked</g4> and pick the <x5/> folder in MDM's folder. The <g6>tutorial</g6> walks through it.",
-   "text": "Instal MDM dengan program pemasang dan biarkan <g1>Siapkan integrasi peramban</g1> tetap dicentang. Di Firefox, lalu buka <g2>halaman pengaya di addons.mozilla.org</g2> dan klik <g3>Tambahkan ke Firefox</g3>. Di Chrome, Edge, Brave, Opera, dan Vivaldi, muat secara manual untuk saat ini, selagi Chrome Web Store meninjaunya: buka halaman ekstensi peramban, aktifkan Mode pengembang, pilih <g4>Muat yang belum dikemas</g4> dan pilih folder <x5/> di folder MDM. <g6>Tutorial</g6> akan memandu Anda."
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -2877,6 +2889,10 @@
   "48ca7e0fd6df660f": {
    "source": "<g1>Downloaded file names are cleaned</g1> before they become paths, so a server can't write outside the folder you chose.",
    "text": "<g1>Nama file yang diunduh dibersihkan</g1> sebelum menjadi jalur, sehingga server tidak dapat menulis di luar folder yang Anda pilih."
+  },
+  "48f2a56d5061d294": {
+   "source": "Browser extension: <g1><x2/>Add to Firefox</g1> <g3><x4/>Add to Chrome</g3>, for Edge, Brave and Opera too. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>",
+   "text": "Ekstensi peramban: <g1><x2/>Tambah ke Firefox</g1> <g3><x4/>Tambah ke Chrome</g3>, juga untuk Edge, Brave, dan Opera. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>"
   },
   "492c16c1bfe5a3c4": {
    "source": "<g1>File size</g1>, <g2>Downloaded</g2> and <g3>Transfer rate</g3>.",
@@ -3314,10 +3330,6 @@
    "source": "What it takes",
    "text": "Apa yang diperlukan"
   },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "MDM sendiri menyiapkan integrasi browser setiap kali dimulai di Linux dan macOS (browser yang terinstal saat itu akan ditemukan); tambahkan ekstensi seperti di <g1>Integrasi browser</g1>. Browser yang diinstal sebagai Flatpak atau Snap mungkin tidak dapat menjangkau MDM."
-  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "Klik <g1>Penjadwal</g1> di bilah alat (atau <g2>Unduhan → Penjadwal</g2>)."
@@ -3509,10 +3521,6 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "Mulai menyiapkan"
-  },
-  "59e78792626130dd": {
-   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension: Firefox's from <g1>its add-ons store</g1>, the others by hand for now. Without the extension, copy a link and MDM opens the download window. <g2>More</g2>",
-   "text": "Firefox, Chrome, Edge, Brave, Opera, dan Vivaldi melalui ekstensi: untuk Firefox dari <g1>toko pengaya-nya</g1>, yang lain secara manual untuk saat ini. Tanpa ekstensi, salin tautan dan MDM akan membuka jendela unduhan. <g2>Selengkapnya</g2>"
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -3909,6 +3917,10 @@
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "Penjadwal"
+  },
+  "63ce30d5a4972748": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.",
+   "text": "Tambahkan ekstensi ke setiap browser yang Anda gunakan, seperti di bawah ini: Firefox dari toko add-on-nya, yang lain dari Chrome Web Store."
   },
   "63d0ba3e76606052": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains none of IDM's code or artwork. Its windows are laid out the way IDM users expect, so you can switch without learning anything new — and because MDM is free, there is nothing to crack. Please don't download \"cracked\" download managers: they are a common way to spread malware.",
@@ -4382,6 +4394,10 @@
    "source": "Numbers and dates",
    "text": "Angka dan tanggal"
   },
+  "6f86a54724149403": {
+   "source": "<g1>Firefox as a Snap</g1> (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks <g2>Allow Firefox to start WebExtension backend?</g2> for Mister Download Manager: choose <g3>Allow</g3>. After <g4>Don't allow</g4>, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:",
+   "text": "<g1>Firefox sebagai Snap</g1> (Firefox bawaan Ubuntu) menjangkau MDM melalui desktop. Pertama kali ekstensi memanggil MDM, desktop akan bertanya <g2>Izinkan Firefox untuk memulai backend WebExtension?</g2> untuk Mister Download Manager: pilih <g3>Izinkan</g3>. Setelah <g4>Jangan izinkan</g4>, ekstensi akan mengatakan koneksi gagal dan desktop tidak akan bertanya lagi; untuk ditanya lagi, jalankan ini di terminal, lalu gunakan ekstensi lagi:"
+  },
   "6f93f457f41d4fa3": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
    "text": "<g1>User-Agent untuk unduhan yang ditambahkan secara manual</g1> — bagaimana MDM memperkenalkan dirinya ke server untuk unduhan yang Anda tambahkan sendiri. Unduhan dari browser menggunakan User-Agent browser itu sendiri."
@@ -4481,10 +4497,6 @@
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
    "text": "Unduh gambar-gambar galeri (kategori Wikimedia Commons, album Flickr, ...) ke dalam folder yang dinamai sesuai galeri tersebut di dalam <x1/>; <x2/> mengambil paling banyak sejumlah itu, yang pertama dicantumkan situs. Jika dimulai lagi, hanya mengambil yang baru."
-  },
-  "720d6bdebec42762": {
-   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: by hand for now, while the Chrome Web Store reviews it. It comes with the app, in its <x2/> folder, and <g3>as its own download</g3> (<x4/>: unzip, then <g5>Load unpacked</g5> on the browser's extensions page with Developer mode on). The <g6>step-by-step guide</g6> shows each browser.",
-   "text": "<g1>Chrome, Edge, Brave, Opera, dan Vivaldi</g1>: untuk saat ini, secara manual, selagi Chrome Web Store meninjaunya. Ekstensi ini disertakan dengan aplikasi, di folder <x2/>, dan <g3>sebagai unduhan terpisah</g3> (<x4/>: ekstrak, lalu <g5>Muat ekstensi yang belum dikemas</g5> di halaman ekstensi browser dengan mode Pengembang diaktifkan). <g6>Panduan langkah demi langkah</g6> menunjukkan setiap browser."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4690,6 +4702,10 @@
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "nama pengguna Anda, yang ditampilkan sebagai <x1/> di jalur folder."
   },
+  "779d3d89172c13c6": {
+   "source": "The browser asks to confirm: click <g1>Add extension</g1>. It keeps the extension up to date.",
+   "text": "Browser akan meminta konfirmasi: klik <g1>Tambahkan ekstensi</g1>. Ini akan menjaga ekstensi tetap mutakhir."
+  },
   "77a30c9b7d2a6105": {
    "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
    "text": "Semuanya bisa dilakukan dari keyboard, dan MDM berfungsi dengan pembaca layar (seperti Narrator dan NVDA di Windows): jendela, dialog, dan menunya memberi tahu mereka apa setiap kontrol dan statusnya, serta daftar unduhan membaca nama, status, dan ukuran setiap unduhan. Panel <g1>Kategori</g1> terbaca sebagai pohon (setiap kategori dengan jumlahnya, terbuka atau tertutup, terpilih atau tidak), dan bilah menu serta setiap menu klik kanan sebagai menu yang itemnya dapat dijalankan dari sana."
@@ -4806,6 +4822,10 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "Setiap rilis mencantumkan checksum SHA-256 dari setiap file di <g1>SHA256SUMS.txt</g1>. Di Windows, bandingkan dengan <x2/>; di macOS dan Linux dengan <x3/>. Semua file dibuat dari kode sumber publik oleh GitHub Actions; log pembangunan ada di <g4>GitHub</g4>."
   },
+  "7abae1f3c6a9aed0": {
+   "source": "Chrome, Edge, Brave, Opera and Vivaldi",
+   "text": "Chrome, Edge, Brave, Opera, dan Vivaldi"
+  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "Centang <g1>Batasi semua unduhan bersama-sama hingga</g1> dan ketik kecepatan dalam KB/dtk. Awal yang baik adalah sekitar dua pertiga dari kecepatan koneksi Anda. (1 MB/dtk sekitar 1000 KB/dtk.)"
@@ -4838,6 +4858,10 @@
    "source": "<g1>Alt+Down</g1> or <g2>F4</g2>",
    "text": "<g1>Alt+Down</g1> atau <g2>F4</g2>"
   },
+  "7b96ddc4c567caf5": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.",
+   "text": "Browser yang diinstal sebagai Flatpak atau Snap berjalan di dalam kotak pasir (sandbox), yang menentukan apakah mereka dapat menjangkau MDM."
+  },
   "7bc3766c50fc6fcd": {
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
    "text": "<g1>0.2.4</g1> <g2>24,1 MB</g2>"
@@ -4869,10 +4893,6 @@
   "7c20476510c27bb9": {
    "source": "<g1></g1>Open (GPL-3.0)",
    "text": "<g1></g1>Terbuka (GPL-3.0)"
-  },
-  "7c2056684aa2bec5": {
-   "source": "Chrome, Edge and Brave",
-   "text": "Chrome, Edge, dan Brave"
   },
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
@@ -5013,6 +5033,10 @@
   "7f06477bf6037af8": {
    "source": "A window in MDM may be waiting for you (a question, <g1>Add torrent</g1>); answer it and ask again.",
    "text": "Jendela di MDM mungkin menunggu Anda (pertanyaan, <g1>Tambahkan torrent</g1>); jawab dan tanyakan lagi."
+  },
+  "7f0667de08ce7313": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "Firefox (dari addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi (dari Chrome Web Store), melalui ekstensi peramban MDM, serta peramban yang dibangun di atasnya: Zen dan LibreWolf, Helium. Ekstensi ini menyerahkan unduhan ke MDM beserta kuki dan perujuknya, sehingga berkas di balik login tetap berfungsi, dan menambahkan Unduh dengan Mister Download Manager ke menu klik kanan serta tombol Unduh video di atas video. Lihat Integrasi peramban."
   },
   "7f12a262bf26f1cd": {
    "source": "Description",
@@ -5254,6 +5278,14 @@
    "source": "<g1>Sort:</g1> click a column title. Click again to reverse the order, and a third time to go back to the order of addition. <g2>View → Arrange files</g2> does the same from the menu.",
    "text": "<g1>Urutkan:</g1> klik judul kolom. Klik lagi untuk membalik urutan, dan ketiga kalinya untuk kembali ke urutan penambahan. <g2>Tampilan → Atur file</g2> melakukan hal yang sama dari menu."
   },
+  "84de272d8a1575cb": {
+   "source": "Add to Chrome",
+   "text": "Tambah ke Chrome"
+  },
+  "84e7d646757f7bb2": {
+   "source": "Without the store",
+   "text": "Tanpa toko"
+  },
   "84f216589454c750": {
    "source": "You can set a number for a server yourself: <g1>Options → Connection → New</g1>, then type the server's name and the number of connections.",
    "text": "Anda dapat mengatur jumlah koneksi untuk server sendiri: <g1>Opsi → Koneksi → Baru</g1>, lalu ketik nama server dan jumlah koneksi."
@@ -5269,14 +5301,6 @@
   "853ac467ba7801e6": {
    "source": "Put downloads in a queue →",
    "text": "Masukkan unduhan ke dalam antrean →"
-  },
-  "855283d97ca22cdb": {
-   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others by hand for now, while the Chrome Web Store reviews it.",
-   "text": "Tambahkan ekstensi ke setiap browser yang Anda gunakan, seperti di bawah ini: Firefox dari toko add-on-nya, yang lain secara manual untuk saat ini, selagi Chrome Web Store meninjaunya."
-  },
-  "859b311c937bc36f": {
-   "source": "In Chrome, Edge or Brave",
-   "text": "Di Chrome, Edge, atau Brave"
   },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
@@ -5446,6 +5470,10 @@
    "source": "Still stuck? Use <g1>Help → Report a problem</g1> and include the page address.",
    "text": "Masih macet? Gunakan <g1>Bantuan → Laporkan masalah</g1> dan sertakan alamat halaman."
   },
+  "8a28300cfedb3a20": {
+   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, open <g4>its page in the Chrome Web Store</g4> and click <g5>Add to Chrome</g5> (Edge shows <g6>Get</g6>, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose <g7>Load unpacked</g7> and pick the <x8/> folder in MDM's folder. The <g9>tutorial</g9> walks through it.",
+   "text": "Instal MDM dengan program pemasang dan biarkan <g1>Atur integrasi peramban</g1> tetap dicentang. Di Firefox, lalu buka <g2>halaman pengaya di addons.mozilla.org</g2> dan klik <g3>Tambahkan ke Firefox</g3>. Di Chrome, Edge, Brave, Opera, dan Vivaldi, buka <g4>halamannya di Chrome Web Store</g4> dan klik <g5>Tambahkan ke Chrome</g5> (Edge menampilkan <g6>Dapatkan</g6>, dan pertama meminta izin ekstensi dari toko lain). Tidak bisa menggunakan toko? Buka halaman ekstensi peramban, aktifkan Mode pengembang, pilih <g7>Muat yang belum dikemas</g7> dan pilih folder <x8/> di folder MDM. <g9>Tutorial</g9> akan memandu Anda."
+  },
   "8a40a7060dae6e26": {
    "source": "<g1><g2>Connections and speed</g2></g1> — the progress window, how MDM splits a file over several connections, resuming, and the Speed Limiter.",
    "text": "<g1><g2>Koneksi dan kecepatan</g2></g1> — jendela progres, cara MDM membagi file menjadi beberapa koneksi, melanjutkan, dan Pembatas Kecepatan."
@@ -5534,6 +5562,10 @@
    "source": "Connections per file",
    "text": "Koneksi per file"
   },
+  "8cb163cde329bcf4": {
+   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.",
+   "text": "<g1>Mister Download Manager</g1> muncul di daftar. Biarkan tetap aktif. Sematkan tombolnya ke bilah alat untuk melihat sekilas apakah browser mencapai MDM."
+  },
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "Harness"
@@ -5565,6 +5597,10 @@
   "8dbeeeabcf1f6918": {
    "source": "<g1>86 interface languages</g1>, every language Windows 11 offers, chosen by flag on the first start or in <g2>View → Language...</g2>; right to left for Arabic, Hebrew, Persian, Urdu and Uyghur; fonts for every script from the system itself. The installer speaks the same languages, and the browser extension speaks your browser's (50 languages).",
    "text": "<g1>86 bahasa antarmuka</g1>, setiap bahasa yang ditawarkan Windows 11, dipilih berdasarkan bendera pada awal pertama atau di <g2>Tampilan → Bahasa...</g2>; dari kanan ke kiri untuk bahasa Arab, Ibrani, Persia, Urdu, dan Uyghur; font untuk setiap skrip dari sistem itu sendiri. Pemasang berbicara bahasa yang sama, dan ekstensi browser berbicara bahasa browser Anda (50 bahasa)."
+  },
+  "8dbf6ff24d2ed734": {
+   "source": "Can't use a store? It comes with the app, in its <x1/> folder, and <g2>as its own download</g2> for Chromium browsers (<x3/>: unzip, then <g4>Load unpacked</g4> on the browser's extensions page with Developer mode on). The <g5>step-by-step guide</g5> shows each browser.",
+   "text": "Tidak bisa menggunakan toko? Ekstensi ini disertakan dengan aplikasi, di folder <x1/>, dan <g2>sebagai unduhan tersendiri</g2> untuk peramban berbasis Chromium (<x3/>: ekstrak, lalu <g4>Muat ekstensi yang belum dikemas</g4> di halaman ekstensi peramban dengan mode Pengembang aktif). <g5>Panduan langkah demi langkah</g5> menunjukkan setiap peramban."
   },
   "8de593350090e7e8": {
    "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
@@ -5765,10 +5801,6 @@
   "9353e613d2835a1f": {
    "source": "Find by name",
    "text": "Cari berdasarkan nama"
-  },
-  "938b387bfbc70706": {
-   "source": "Browser extension: <g1><x2/>Add to Firefox</g1>. For Chrome, Edge, Brave and Opera, by hand for now, while the Chrome Web Store reviews it. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>",
-   "text": "Ekstensi peramban: <g1><x2/>Tambah ke Firefox</g1>. Untuk Chrome, Edge, Brave, dan Opera, saat ini secara manual, selagi Chrome Web Store meninjaunya. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>"
   },
   "93a9d8c882d29583": {
    "source": "Tick <g1>Use Speed Limiter</g1>.",
@@ -6242,10 +6274,6 @@
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "Terjemahan yang lebih panjang dari bahasa Inggris akan berakhir dengan <g1>...</g1> jika tidak muat; arahkan kursor ke sana untuk membacanya secara keseluruhan."
   },
-  "a06fa72ad54fa126": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
-   "text": "Instal MDM dengan program pemasang dan biarkan Set up browser integration tetap dicentang. Di Firefox, lalu buka halaman pengaya di addons.mozilla.org dan klik Add to Firefox. Di Chrome, Edge, Brave, Opera, dan Vivaldi, muat secara manual untuk saat ini, selagi Chrome Web Store meninjaunya: buka halaman ekstensi peramban, aktifkan Developer mode, pilih Load unpacked dan pilih folder extension\\chromium di folder MDM. Tutorial akan memandu Anda."
-  },
   "a09cf46e49e64bbb": {
    "source": "A sweep through every window for the small things that make a program feel finished: how each control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers, and a long list of fixes found by reviewing all of it (issue #7 and more).",
    "text": "Penyisiran setiap jendela untuk hal-hal kecil yang membuat program terasa selesai: bagaimana setiap kontrol terlihat dan merespons mouse dan keyboard, mode gelap di mana-mana, pembaca layar, dan daftar panjang perbaikan yang ditemukan dengan meninjau semuanya (masalah #7 dan lainnya)."
@@ -6369,10 +6397,6 @@
   "a3fad5053e035413": {
    "source": "Torrents and your security — Mister Download Manager help",
    "text": "Torrent dan keamanan Anda — Bantuan Mister Download Manager"
-  },
-  "a411ca96569c91a2": {
-   "source": "<g1>Chrome</g1><g2>Google</g2>",
-   "text": "<g1>Chrome</g1><g2>Google</g2>"
   },
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
@@ -6638,6 +6662,10 @@
    "source": "<g1>Page Up</g1> / <g2>Page Down</g2>",
    "text": "<g1>Page Up</g1> / <g2>Page Down</g2>"
   },
+  "aab5074afda2571f": {
+   "source": "On Linux, with Firefox or Chromium installed as a Snap, see <g1>Flatpak and Snap browsers</g1>.",
+   "text": "Di Linux, dengan Firefox atau Chromium yang diinstal sebagai Snap, lihat <g1>Browser Flatpak dan Snap</g1>."
+  },
   "aac0379eae040d8f": {
    "source": "The browser doesn't send downloads to MDM",
    "text": "Browser tidak mengirim unduhan ke MDM"
@@ -6826,6 +6854,10 @@
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "Mulai pertama, disk yang lambat, atau antivirus yang memindai MDM bisa memakan waktu selama itu. Lain kali biasanya cepat."
   },
+  "af2b3b86f75da30b": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see <g2>Flatpak and Snap browsers</g2>).",
+   "text": "Integrasi peramban diatur oleh MDM sendiri setiap kali dimulai di Linux dan macOS (peramban yang terinstal saat itu akan ditemukan); tambahkan ekstensi seperti di <g1>Integrasi peramban</g1>. Firefox yang diinstal sebagai Snap (milik Ubuntu) dapat terhubung ke MDM setelah Anda mengizinkannya; peramban Snap dan Flatpak lainnya tidak bisa (lihat <g2>Peramban Flatpak dan Snap</g2>)."
+  },
   "af2d311733924046": {
    "source": "IDM",
    "text": "IDM"
@@ -6857,10 +6889,6 @@
   "afae30c6c42a7afb": {
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "Jika Mister Download Manager ditutup secara tidak terduga atau berhenti merespons, jendela <g1>laporan kerusakan</g1> akan terbuka. Jendela ini menunjukkan apa yang terjadi, memungkinkan Anda membaca seluruh laporan, dan dapat mengirimkannya ke pengembang di GitHub. Setiap laporan membantu memperbaiki masalah untuk semua orang."
-  },
-  "afb13e3cfd9283df": {
-   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.",
-   "text": "Cukup atur ekstensi sekali, dan setiap tautan unduhan yang Anda klik di Firefox, Chrome, Edge, atau Brave akan masuk ke MDM."
   },
   "afc32cfba2a08d06": {
    "source": "Choose a download",
@@ -6945,6 +6973,10 @@
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
    "text": "Menjeda unduhan yang sedang berjalan."
+  },
+  "b23e9f6d4d6a6718": {
+   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
+   "text": "Integrasi browser memerlukan satu langkah lagi di setiap browser: menambahkan ekstensi. Di Firefox, klik <g1>Tambahkan ke Firefox</g1> di <g2>halamannya di addons.mozilla.org</g2>; di Chrome, Edge, Brave, Opera, dan Vivaldi, <g3>Tambahkan ke Chrome</g3> di <g4>halamannya di Chrome Web Store</g4>. <g5>Integrasi browser</g5> menunjukkan caranya."
   },
   "b2679b7b14f46791": {
    "source": "The video then downloads like any other file, with its own row in the list and its progress window. yt-dlp brings it in over one stream of its own, so the window's connections table stays empty.",
@@ -7166,10 +7198,6 @@
    "source": "On <g1>Q</g1>, tick <g2>In a queue</g2> or <g3>Not in a queue</g3>.",
    "text": "Pada <g1>Antrean</g1>, centang <g2>Dalam antrean</g2> atau <g3>Tidak dalam antrean</g3>."
   },
-  "b7da4b8cc0d5495e": {
-   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge and Brave, which downloads it takes, and what happens when MDM isn't running.",
-   "text": "<g1><g2>Integrasi peramban</g2></g1> — ekstensi untuk Firefox (dari addons.mozilla.org), Chrome, Edge, dan Brave, unduhan apa yang diambilnya, dan apa yang terjadi jika MDM tidak berjalan."
-  },
   "b7e47ad1f6a91134": {
    "source": "The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.",
    "text": "Aplikasi ini tersedia dalam 86 bahasa, semua yang ditawarkan Windows 11. Aplikasi ini mengikuti bahasa komputer Anda, dan Anda dapat mengubahnya kapan saja di Tampilan → Bahasa."
@@ -7217,10 +7245,6 @@
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 bahasa, juga kanan ke kiri"
-  },
-  "b95c95d9143dace0": {
-   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them…",
-   "text": "Firefox (dari addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi, melalui ekstensi peramban MDM, serta peramban yang dibangun di atasnya…"
   },
   "b95ce4f23354e44d": {
    "source": "AI assistants (MCP) — Mister Download Manager help",
@@ -7282,6 +7306,10 @@
    "source": "6. Limitation of liability",
    "text": "6. Batasan tanggung jawab"
   },
+  "bb1244178952e02b": {
+   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera or Vivaldi goes to MDM.",
+   "text": "Cukup atur ekstensinya sekali, dan setiap tautan unduhan yang Anda klik di Firefox, Chrome, Edge, Brave, Opera, atau Vivaldi akan diteruskan ke MDM."
+  },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
    "text": "<g1>Web</g1> (server web) atau <g2>Torrent</g2>."
@@ -7313,10 +7341,6 @@
   "bc1065924c4077d9": {
    "source": "The Pieces tab: a square for each piece, filled once it's here",
    "text": "Tab Potongan: kotak untuk setiap potongan, terisi setelah ada"
-  },
-  "bc21a99be8efd606": {
-   "source": "By hand for now, while the Chrome Web Store reviews the extension:",
-   "text": "Untuk saat ini, secara manual, selagi Chrome Web Store meninjau ekstensi:"
   },
   "bc21bd767c7774ea": {
    "source": "The terms for using Mister Download Manager and misterdownloadmanager.com: free software under the GNU GPL 3.0, used at your own risk, for downloads you have the right to make.",
@@ -7826,6 +7850,10 @@
    "source": "Can I download without the browser extension?",
    "text": "Bisakah saya mengunduh tanpa ekstensi peramban?"
   },
+  "cb565e5b28b1036b": {
+   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
+   "text": "<g1><x2/> Tambah ke Firefox</g1><g3><x4/> Tambah ke Chrome</g3>"
+  },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
    "text": "Periksa tab <g1>Pembatas Kecepatan</g1> unduhan itu sendiri di jendela progresnya."
@@ -7941,6 +7969,10 @@
   "ce7c22009e3efda1": {
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "Ini hanya untuk akun Windows Anda. <x1/> membatalkannya. Kemudian muat ekstensi seperti di atas, dari folder <x2/> di zip."
+  },
+  "ce8618d4437420dc": {
+   "source": "To load it by hand instead (a browser that can't use the store, or a build of your own): its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
+   "text": "Untuk memuatnya secara manual (browser yang tidak dapat menggunakan toko, atau build Anda sendiri): file-nya ada di folder <x1/> tempat MDM diinstal: <x2/> jika Anda menginstalnya untuk diri sendiri, atau <x3/> jika Anda menginstalnya untuk semua orang. Setiap rilis juga memiliki file-file tersebut sebagai unduhan tersendiri, <x4/> (ekstrak terlebih dahulu)."
   },
   "ceafeaa62d5e59ca": {
    "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
@@ -8354,6 +8386,10 @@
    "source": "<g1>Credentials stay with their site.</g1> Logins and cookies are sent only to the host they belong to, even across redirects.",
    "text": "<g1>Kredensial tetap di situsnya.</g1> Login dan cookie hanya dikirim ke host tempat mereka berada, bahkan saat pengalihan."
   },
+  "d9686c3ea1ff4f0a": {
+   "source": "Install the extension from its page in the Chrome Web Store, <g1>Mister Download Manager</g1>: click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>: Edge first asks to <g4>Allow extensions from other stores</g4> (click <g5>Allow</g5>), then <g6>Add extension</g6>. The browser keeps it updated. MDM's <g7>Add Mister Download Manager to your browser</g7> window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.",
+   "text": "Instal ekstensi dari halamannya di Chrome Web Store, <g1>Mister Download Manager</g1>: klik <g2>Tambahkan ke Chrome</g2>. Di Edge, tombolnya adalah <g3>Dapatkan</g3>: Edge pertama-tama meminta untuk <g4>Izinkan ekstensi dari toko lain</g4> (klik <g5>Izinkan</g5>), lalu <g6>Tambahkan ekstensi</g6>. Browser akan terus memperbaruinya. Jendela <g7>Tambahkan Mister Download Manager ke browser Anda</g7> MDM akan membuka halaman itu di setiap browser untuk Anda, dan Chrome mungkin menawarkannya sendiri pada saat startup berikutnya setelah MDM terinstal."
+  },
   "d9702d61beba459f": {
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "Mencantumkan dan bertindak atas unduhan memerlukan API otomatisasi MDM, yang mati sampai Anda menyalakannya. Dengan MDM berjalan, jalankan ini sekali (ini akan tetap menyala):"
@@ -8477,10 +8513,6 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "Berjalan hampir di mana saja, dengan HTTP, BitTorrent, magnet, dan ed2k, serta REST API"
-  },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "Browser yang diinstal sebagai Flatpak atau Snap berjalan dalam kotak pasir yang mungkin mencegahnya memulai program di luarnya, sehingga mungkin tidak dapat menjangkau MDM. Browser Flatpak (seperti <x1/> Zen) tidak dapat memulai pembantu MDM, jadi MDM tidak mencantumkannya di <g2>Tambahkan Mister Download Manager ke browser Anda</g2>. Instal browser dari paket distribusi Anda (atau <x3/>, <x4/>, tarball, atau AppImage dari pembuat browser itu sendiri) untuk menggunakan integrasi browser."
   },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
@@ -8693,10 +8725,6 @@
   "e393d2a019bf4cc9": {
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
    "text": "<g1>Unduh tautan terpilih</g1> dan <g2>Unduh semua tautan</g2> membaca tautan halaman (atau pilihan Anda) saat Anda memilihnya, dan meneruskannya ke MDM bersama alamat halaman dan cookie situsnya."
-  },
-  "e39c7ec3d5c0fd70": {
-   "source": "The browser extension: for Firefox, from its add-ons store. For Chrome, Edge, Brave, Opera and Vivaldi it comes with the app and as <g1>its own download</g1>, added by hand for now, while the Chrome Web Store reviews it. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
-   "text": "Ekstensi peramban: untuk Firefox, dari toko pengaya-nya. Untuk Chrome, Edge, Brave, Opera, dan Vivaldi, ekstensi ini disertakan dengan aplikasi dan sebagai <g1>unduhan tersendiri</g1>, ditambahkan secara manual untuk saat ini, selagi Chrome Web Store meninjaunya. Setiap berkas dibuat dari sumber publik oleh GitHub Actions dan dicantumkan dengan checksum SHA-256-nya."
   },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
@@ -9126,6 +9154,10 @@
    "source": "Open source",
    "text": "Sumber terbuka"
   },
+  "eee3dbbafbb8e53c": {
+   "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
+   "text": "- <g1>Chromium sebagai Snap</g1> (Chromium Ubuntu) memulai pembantu MDM di dalam kotak pasirnya, di mana ia tidak dapat menjangkau MDM, sehingga MDM tidak mencantumkannya di <g2>Tambahkan Mister Download Manager ke browser Anda</g2>. Gunakan Firefox, atau Google Chrome dari <x3/>-nya sendiri. - <g4>Browser Flatpak</g4> (seperti <x5/> Zen) tidak dapat memulai pembantu MDM, sehingga MDM juga tidak mencantumkannya. Instal browser dari paket distribusi Anda (atau <x6/>, <x7/>, tarball, atau AppImage dari pembuat browser itu sendiri) untuk menggunakan integrasi browser."
+  },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",
    "text": "<g1>Ikon aplikasi di macOS</g1>: Dock menampilkan ikon kecil dan buram saat MDM berjalan; sekarang ikon aplikasi sendiri yang ditampilkan. Di tempat lain, jendela mengambil ikonnya dari ukuran besar (tajam pada skala apa pun)."
@@ -9262,6 +9294,10 @@
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's <g1>Media on this page</g1> shows such a stream as <g2>Protected</g2> and doesn't send it.",
    "text": "Video yang dilindungi DRM (kebanyakan layanan streaming berbayar) tidak dapat diunduh, dan MDM tidak mencobanya. <g1>Media di halaman ini</g1> pada ekstensi browser menampilkan stream tersebut sebagai <g2>Terlindungi</g2> dan tidak mengirimkannya."
   },
+  "f262d1421b480e2f": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), through the MDM browser extension…",
+   "text": "Firefox (dari addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi (dari Chrome Web Store), melalui ekstensi peramban MDM…"
+  },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",
    "text": "Di <g1>Alamat</g1>, tulis alamat dengan satu tanda bintang di mana angka atau huruf berubah: <x2/>."
@@ -9317,10 +9353,6 @@
   "f3a16665a583e72f": {
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "Daftar menunjukkan urutan unduhan akan berjalan. Gunakan tombol panah di bawahnya untuk memindahkan unduhan ke atas atau ke bawah."
-  },
-  "f3b0722f5a504a62": {
-   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge and Brave, load it by hand for now, while the Chrome Web Store reviews it. <g3>Browser integration</g3> shows how.",
-   "text": "Integrasi browser memerlukan satu langkah lagi di setiap browser: menambahkan ekstensi. Di Firefox, klik <g1>Tambahkan ke Firefox</g1> di <g2>halamannya di addons.mozilla.org</g2>; di Chrome, Edge, dan Brave, muat secara manual untuk saat ini, sementara Chrome Web Store meninjaunya. <g3>Integrasi browser</g3> menunjukkan caranya."
   },
   "f3d28d86765197f1": {
    "source": "Intel",
@@ -9586,6 +9618,10 @@
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",
    "text": "MDM mengunduh file BitTorrent dari tautan magnet dan file <x1/>. Torrent muncul dalam daftar yang sama dengan unduhan lain, ditandai <g2>Torrent</g2> di kolom <g3>Sumber</g3>, dan dapat diantrekan serta dijadwalkan seperti unduhan lainnya."
   },
+  "fb3cc6240014e2b2": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
+   "text": "Instal MDM dengan program pemasang dan biarkan Set up browser integration tetap dicentang. Di Firefox, buka halaman pengaya di addons.mozilla.org dan klik Add to Firefox. Di Chrome, Edge, Brave, Opera, dan Vivaldi, buka halamannya di Chrome Web Store dan klik Add to Chrome (Edge menampilkan Get, dan pertama-tama meminta izin ekstensi dari toko lain). Tidak bisa menggunakan toko? Buka halaman ekstensi peramban, aktifkan Developer mode, pilih Load unpacked dan pilih folder extension\\chromium di folder MDM. Tutorial akan memandu Anda."
+  },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",
    "text": "Apakah MDM tersedia dalam bahasa saya?"
@@ -9681,6 +9717,10 @@
   "fdcffa742865c035": {
    "source": "<g1>Everything else</g1> goes into <g2>Various files</g2>.",
    "text": "<g1>Segala sesuatu yang lain</g1> masuk ke <g2>Berbagai file</g2>."
+  },
+  "fde4e6f4f17a1676": {
+   "source": "When a browser can't use its store (a computer managed by an organization, or a build of your own), add the extension by hand:",
+   "text": "Jika browser tidak dapat menggunakan tokonya (komputer yang dikelola oleh organisasi, atau build Anda sendiri), tambahkan ekstensi secara manual:"
   },
   "fdf01d37915b1a04": {
    "source": "Browser extension",
