@@ -1070,16 +1070,16 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
 /// Keep the computer from sleeping while `reason` is given; None lets it sleep again as the
 /// system's settings say. Linux: logind's sleep and idle inhibitor, held by its file
 /// descriptor (`systemd-inhibit --list` shows it with its reason); a user in the active
-/// session may take it without a password.
+/// session may take it without a password. False when logind refused.
 #[cfg(target_os = "linux")]
-pub fn keep_awake(reason: Option<&str>) {
+pub fn keep_awake(reason: Option<&str>) -> bool {
     use std::sync::Mutex;
     static LOCK: Mutex<Option<zbus::zvariant::OwnedFd>> = Mutex::new(None);
     let mut held = LOCK.lock().unwrap_or_else(|e| e.into_inner());
     // Closing the descriptor ends the inhibitor.
     *held = None;
     let Some(reason) = reason else {
-        return;
+        return true;
     };
     let take = || -> zbus::Result<zbus::zvariant::OwnedFd> {
         let conn = zbus::blocking::Connection::system()?;
@@ -1095,14 +1095,20 @@ pub fn keep_awake(reason: Option<&str>) {
         )
     };
     match take() {
-        Ok(fd) => *held = Some(fd),
-        Err(e) => tracing::warn!("wake: logind's inhibitor refused ({e})"),
+        Ok(fd) => {
+            *held = Some(fd);
+            true
+        }
+        Err(e) => {
+            tracing::warn!("wake: logind's inhibitor refused ({e})");
+            false
+        }
     }
 }
 
 /// macOS: `caffeinate -i` (no idle sleep) for as long as MDM runs, ended when not needed.
 #[cfg(target_os = "macos")]
-pub fn keep_awake(reason: Option<&str>) {
+pub fn keep_awake(reason: Option<&str>) -> bool {
     use std::sync::Mutex;
     static CHILD: Mutex<Option<std::process::Child>> = Mutex::new(None);
     let mut held = CHILD.lock().unwrap_or_else(|e| e.into_inner());
@@ -1118,5 +1124,7 @@ pub fn keep_awake(reason: Option<&str>) {
             .stderr(Stdio::null())
             .spawn()
             .ok();
+        return held.is_some();
     }
+    true
 }

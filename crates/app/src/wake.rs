@@ -166,6 +166,9 @@ pub struct Waker {
     /// Linux alarm used up by another wake, an alarm another program set has gone off).
     checked: Option<std::time::Instant>,
     awake: bool,
+    /// When keeping the computer awake was last refused, and how often in a row (asked again
+    /// 5 s later, after a minute of refusals once a minute).
+    refused: Option<(std::time::Instant, u32)>,
 }
 
 impl Waker {
@@ -221,20 +224,33 @@ impl Waker {
 
     /// Keep the computer awake while `on` (a queue with the option is running).
     pub fn keep_awake(&mut self, on: bool, queue: &str) {
-        if on == self.awake {
+        if !on {
+            self.refused = None;
+            if std::mem::take(&mut self.awake) {
+                tracing::info!("wake: no longer keeping the computer awake");
+                hold_awake(None);
+            }
             return;
         }
-        self.awake = on;
+        // A refusal is asked again a little later: logind refuses while the sleep the computer
+        // just woke from is still ending, which is when a woken queue starts.
+        let wait = |n: u32| std::time::Duration::from_secs(if n < 12 { 5 } else { 60 });
+        if self.awake || self.refused.is_some_and(|(t, n)| t.elapsed() < wait(n)) {
+            return;
+        }
         let reason = crate::i18n::fmt(
             // i18n: why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
             crate::i18n::t("Mister Download Manager is running the queue \"{queue}\""),
             &[("queue", crate::i18n::t(queue))],
         );
-        tracing::info!(
-            "wake: {} the computer awake",
-            if on { "keeping" } else { "no longer keeping" }
-        );
-        hold_awake(on.then_some(reason.as_str()));
+        if hold_awake(Some(&reason)) {
+            tracing::info!("wake: keeping the computer awake");
+            self.awake = true;
+            self.refused = None;
+        } else {
+            let n = self.refused.map_or(0, |(_, n)| n);
+            self.refused = Some((std::time::Instant::now(), n + 1));
+        }
     }
 
     /// Cancel the wake (MDM is quitting: Linux's alarm would outlive it).
@@ -262,11 +278,16 @@ fn arm(at: Option<(DateTime<Utc>, &str)>) -> Result<(), String> {
     }
 }
 
-fn hold_awake(reason: Option<&str>) {
+/// Keep the computer awake (`reason`) or let it sleep (None); false when the system refused.
+fn hold_awake(reason: Option<&str>) -> bool {
     #[cfg(windows)]
-    crate::win32::keep_awake(reason);
+    {
+        crate::win32::keep_awake(reason)
+    }
     #[cfg(unix)]
-    crate::unix::keep_awake(reason);
+    {
+        crate::unix::keep_awake(reason)
+    }
 }
 
 #[cfg(test)]

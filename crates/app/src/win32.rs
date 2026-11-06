@@ -2521,8 +2521,9 @@ fn wake_thread(rx: std::sync::mpsc::Receiver<WakeCmd>) {
 }
 
 /// Keep the computer from sleeping while `reason` is given (a power request, listed with its
-/// reason in `powercfg /requests`); None lets it sleep again as its power plan says.
-pub fn keep_awake(reason: Option<&str>) {
+/// reason in `powercfg /requests`); None lets it sleep again as its power plan says. False when
+/// Windows refused.
+pub fn keep_awake(reason: Option<&str>) -> bool {
     use std::sync::Mutex;
     use windows_sys::Win32::Foundation::CloseHandle;
     use windows_sys::Win32::System::Power::{
@@ -2541,7 +2542,7 @@ pub fn keep_awake(reason: Option<&str>) {
         }
     }
     let Some(reason) = reason else {
-        return;
+        return true;
     };
     let mut text: Vec<u16> = reason.encode_utf16().chain(Some(0)).collect();
     // SAFETY: plain data, zero is valid.
@@ -2554,13 +2555,14 @@ pub fn keep_awake(reason: Option<&str>) {
     let h = unsafe { PowerCreateRequest(&ctx) };
     if h.is_null() || h as isize == -1 {
         tracing::warn!("wake: PowerCreateRequest failed");
-        return;
+        return false;
     }
     // SAFETY: the request just made; closed if it can't be set.
     if unsafe { PowerSetRequest(h, PowerRequestSystemRequired) } == 0 {
         tracing::warn!("wake: PowerSetRequest failed");
         unsafe { CloseHandle(h) };
-        return;
+        return false;
     }
     *held = Some(h as isize);
+    true
 }
