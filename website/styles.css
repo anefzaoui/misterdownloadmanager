@@ -120,7 +120,9 @@ img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 3px solid var(--link); outline-offset: 2px; border-radius: 4px; }
-h1, h2, h3, h4 { margin: 0; font-weight: 800; font-stretch: 78%; line-height: 1.05; letter-spacing: -.01em; text-wrap: balance; }
+/* A word wider than the line (Russian's "конфиденциальности" at a phone's page title) breaks rather
+   than push the page wide. */
+h1, h2, h3, h4 { margin: 0; font-weight: 800; font-stretch: 78%; line-height: 1.05; letter-spacing: -.01em; text-wrap: balance; overflow-wrap: break-word; }
 p { margin: 0; }
 p, li, dd, figcaption { text-wrap: pretty; }
 code, kbd, samp, pre { font-family: var(--mono); font-size: .88em; }
@@ -1007,8 +1009,10 @@ html.lb-on { overflow: hidden; }
   /* The split label: the field over its two values. */
   .vs, .vs tbody { display: block; table-layout: auto; }
   .vs thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .vs tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+  /* Two equal halves whatever the words; a word longer than its half is hyphenated, or broken. */
+  .vs tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
   .vs :is(th, td), .vs tbody th { display: block; width: auto; padding: 0; border: 0; text-align: start; background: none; }
+  .vs td { hyphens: auto; overflow-wrap: anywhere; }
   .vs tbody th { order: -1; grid-column: 1 / -1; padding-bottom: 6px; color: var(--ink); }
   .vs td::before { content: attr(data-label); display: block; margin-bottom: 2px; font-size: 11px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; color: var(--ink-3); }
   .vs td:first-child .vs-line, .vs td:last-child .vs-line { flex-direction: row; justify-content: flex-start; }
