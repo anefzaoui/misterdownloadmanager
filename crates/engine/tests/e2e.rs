@@ -427,16 +427,20 @@ async fn a_refusal_below_the_learned_cap_is_retried() {
 #[tokio::test]
 async fn slow_connections_reconnect_instead_of_holding_the_end() {
     // Every third request crawls at 1 KB/s. The other connections split such a request's part
-    // and take its halves over, down to pieces too small to split again (16 KiB): without
-    // shedding, a slow request holds the end on such a piece for 16 s.
+    // and take its halves over, down to pieces too small to split again (64 KiB here): without
+    // shedding, a slow request holds the end on such a piece for over a minute.
     let s = server("rate=8M&slow_every=3&slow_rate=1K").await;
-    let (log, size) = fetch(&s, "/gen/8M/slow.bin?seed=32", 32, fast_opts()).await;
+    let opts = Options {
+        min_split: 64 << 10,
+        ..fast_opts()
+    };
+    let (log, size) = fetch(&s, "/gen/8M/slow.bin?seed=32", 32, opts).await;
     assert_eq!(size, 8 << 20);
     // Timed from each slow request's own start, not the download's (#201: on a starved CPU the
     // whole download took 8-25 s against an 8 s budget, and at 20 KB/s it took under 8 s without
     // shedding too). Shedding drops a slow request once 2 s have shown it slow (or lets it end
-    // with under 2 s of its own pace left): about 2 s, at most 5. Without shedding the last ones
-    // run 16 s.
+    // with under 2 s of its own pace left): about 2 s on an idle machine, up to 8 s on a starved
+    // one. Without shedding the last ones run 64 s or more.
     let slow: Vec<_> = log
         .iter()
         .filter(|e| e.rate == Some(1024))
@@ -444,7 +448,7 @@ async fn slow_connections_reconnect_instead_of_holding_the_end() {
         .collect();
     assert!(!slow.is_empty(), "the fault was there");
     assert!(
-        slow.iter().all(|(ms, ..)| *ms < 10_000),
+        slow.iter().all(|(ms, ..)| *ms < 20_000),
         "a slow request held its piece (ms, sent, asked): {slow:?}"
     );
 }
@@ -1341,11 +1345,11 @@ async fn speed_limit_caps_the_whole_download() {
     // Every byte kept was paid for once: no byte waits for the limit twice (or for bytes thrown
     // away), whatever the machine's speed.
     assert_eq!(paid.taken(), 2 << 20, "bytes paid for");
-    // The upper bound only catches a limit far too strict: 4 times the yardstick, about 8 s on an
-    // idle machine (#201: a fixed 6 s failed on a starved CPU or a busy CI runner, which took
-    // 6-17 s; there the limited download took up to 3.4 times as long as the yardstick).
+    // The upper bound only catches a limit far too strict: 5 times the yardstick, about 10 s on
+    // an idle machine (#201: a fixed 6 s failed on a starved CPU or a busy CI runner, which took
+    // 6-17 s; there the limited download took up to 3.9 times as long as the yardstick).
     assert!(
-        secs < 4.0 * paced,
+        secs < 5.0 * paced,
         "2 MB at 1 MB/s took {secs:.2}s (paced by the server: {paced:.2}s)"
     );
 }
