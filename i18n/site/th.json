@@ -166,6 +166,10 @@
    "source": "Contribute",
    "text": "ร่วมสนับสนุน"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "อัปเดตล่าสุด 2026-11-06 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "คำตอบเกี่ยวกับ Mister Download Manager: ฟรีหรือไม่ ปลอดภัยหรือไม่ เปรียบเทียบกับ IDM อย่างไร, เบราว์เซอร์, วิดีโอ, ทอร์เรนต์, ความเร็ว, Mac และ Linux และอื่นๆ"
@@ -698,10 +702,6 @@
    "source": "Torrents and magnet links",
    "text": "ทอร์เรนต์และลิงก์แม่เหล็ก"
   },
-  "1192c6aacd81c9e9": {
-   "source": "Last updated 2026-11-05",
-   "text": "อัปเดตล่าสุด 2026-11-05"
-  },
   "11c2e6a758e059a3": {
    "source": "Space",
    "text": "Space"
@@ -1033,6 +1033,10 @@
   "1a9157b9737ecefc": {
    "source": "Link grabber and archives",
    "text": "ตัวคว้าลิงก์และไฟล์เก็บถาวร"
+  },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>ตัวเลือก → พร็อกซี / SOCKS → อะแดปเตอร์เครือข่าย</g1> จะเก็บการเชื่อมต่อของ MDM ไปยังอะแดปเตอร์เดียว ซึ่งมักจะเป็นของ VPN (<g2>ตัวเลือก</g2>) เอ็นจิ้นทอร์เรนต์จะผูกซ็อกเก็ตทุกตัวเข้ากับอะแดปเตอร์นั้น: เพียร์ (TCP และผ่านพร็อกซี SOCKS), ตัวติดตาม HTTP และ UDP, DHT และพอร์ตการฟัง บน Linux และ macOS จะผูกอะแดปเตอร์เอง บน Windows จะผูกที่อยู่ของอะแดปเตอร์ (ที่อยู่ IPv4 เมื่อมี) และ Windows จะส่งแพ็กเก็ตผ่านอะแดปเตอร์ที่มีที่อยู่ต้นทางเท่านั้น UPnP และการค้นหาเพียร์ในเครื่องจะถูกปิดใช้งานในกรณีนี้ เนื่องจากจะสื่อสารกับเครือข่ายภายในเครื่องแทนที่จะผ่านอะแดปเตอร์"
   },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
@@ -2505,6 +2509,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "คุณไม่จำเป็นต้องเริ่ม MDM ก่อน เมื่อเบราว์เซอร์ส่งการดาวน์โหลดและ MDM ไม่ได้ทำงาน ตัวช่วยจะเริ่ม MDM และส่งการดาวน์โหลดต่อไป"
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "มันทำงานเหมือนสวิตช์ตัดการทำงาน เมื่ออะแดปเตอร์ตัดการเชื่อมต่อ ทอร์เรนต์ที่กำลังทำงานจะหยุดพร้อมข้อความ \"…ไม่ได้เชื่อมต่อ; จะทำงานต่อเมื่อกลับมาเชื่อมต่อ\" และจะเริ่มทำงานอีกครั้งผ่านอะแดปเตอร์เมื่อกลับมาเชื่อมต่อ จนกว่า MDM จะสังเกตเห็น (ภายในหนึ่งวินาที) ซ็อกเก็ตของเอ็นจิ้นยังคงผูกอยู่กับที่อยู่ที่หายไป ดังนั้นจึงไม่มีอะไรสามารถออกไปทางอื่นได้ ทอร์เรนต์ที่เพิ่มเข้ามาในขณะที่อะแดปเตอร์ไม่ได้เชื่อมต่อจะไม่เริ่มทำงาน และจะแจ้งเหตุผล ชื่อตัวติดตามยังคงถูกค้นหาโดย DNS ของระบบ"
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -4466,10 +4474,6 @@
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "ซอร์สโค้ดทั้งหมดเป็นสาธารณะ และทุกรุ่นถูกสร้างขึ้นจากซอร์สโค้ดนั้นบนเซิร์ฟเวอร์ของ GitHub ไม่มีแอดแวร์, สปายแวร์, หรือข้อเสนอที่มาพร้อมกับโปรแกรม ตัวช่วยที่ดาวน์โหลดมาสำหรับวิดีโอจะได้รับการตรวจสอบก่อนที่จะทำงาน <g1>เพิ่มเติม</g1>"
   },
-  "725638a5e448140e": {
-   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "อัปเดตล่าสุด 2026-11-05 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
-  },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "วางลิงก์ Google Drive ตามที่ได้จาก <g1>แชร์ → คัดลอกลิงก์</g1>:"
@@ -5597,6 +5601,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB ใน 1.0 วินาที</g1> <g2>IDM: 5.5 วินาที</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>อะแดปเตอร์เครือข่าย</g1> — <g2>ใดก็ได้ (ระบบเลือกเอง)</g2> คือค่าเริ่มต้น เลือกอะแดปเตอร์ โดยปกติคือ VPN ของคุณ และการเชื่อมต่อทุกครั้งที่ MDM เปิดจะออกผ่านอะแดปเตอร์นั้น หรือไม่ก็ไม่ออกเลย ซึ่งครอบคลุมการดาวน์โหลด, FTP, ทอร์เรนต์, DNS ที่คุณเลือก, การดาวน์โหลดของ MDM เอง และการตรวจสอบการอัปเดต ทำงานเหมือนสวิตช์ปิด: เมื่ออะแดปเตอร์ตัดการเชื่อมต่อ หรือ VPN ถูกปิด จะไม่มีอะไรออกผ่านการเชื่อมต่อปกติของคุณ การดาวน์โหลดที่กำลังทำงานจะหยุดด้วยข้อความ \"… ไม่ได้เชื่อมต่อ\" และจะเริ่มอีกครั้งเมื่ออะแดปเตอร์กลับมาใช้งานได้ บรรทัดใต้รายการจะแสดงที่อยู่ของอะแดปเตอร์ หรือสถานะว่าไม่ได้เชื่อมต่อ"
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -7022,6 +7030,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>การดาวน์โหลดของ MDM ใช้ตัวดาวน์โหลดของตัวเอง</g1>: yt-dlp, ffmpeg, การอัปเดตของ MDM และสัญลักษณ์รายงานข้อผิดพลาดตอนนี้ดาวน์โหลดด้วยการเชื่อมต่อหลายรายการ สามารถดำเนินการต่อได้หลังจากการเชื่อมต่อขาดหาย และผ่านการตั้งค่าพร็อกซีของคุณ ไฟล์แต่ละไฟล์ยังคงได้รับการตรวจสอบกับเช็คซัมที่ลงนามโดยผู้เผยแพร่ก่อนใช้งาน"
   },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "แถวที่มีเส้น <x1/> ด้านบนถูกแปลโดยเครื่อง เมื่อคุณตรวจสอบแล้ว (และแก้ไขหากจำเป็น) ให้ลบเส้น <x2/> นั้นออก หลังจากนั้นแถวนั้นจะเป็นของคุณ: การแปลด้วยเครื่องจะไม่แทนที่อีก"
+  },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
    "text": "เรียนรู้ข้อจำกัดจากการตอบกลับของเซิร์ฟเวอร์ ปฏิบัติตาม และจดจำไว้สำหรับครั้งต่อไป เสร็จสิ้นใน 12.6 วินาที"
@@ -7998,6 +8010,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "การดาวน์โหลดแต่ละรายการที่กำลังทำงานอยู่จะมีหน้าต่างความคืบหน้าของตัวเอง หน้าต่างนี้จะเปิดขึ้นเมื่อการดาวน์โหลดเริ่มต้นขึ้น หากต้องการเปิดอีกครั้ง ให้ดับเบิลคลิกที่การดาวน์โหลดในรายการ"
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "อัปเดตล่าสุด 2026-11-06"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "ไฟล์จากทอร์เรนต์จะถูกทำเครื่องหมายว่า <g1>ดาวน์โหลดจากอินเทอร์เน็ต</g1> เช่นเดียวกับการดาวน์โหลดของเบราว์เซอร์ Windows SmartScreen จะตรวจสอบโปรแกรมก่อนที่จะรันครั้งแรก และ Office จะเปิดเอกสารใน Protected View บน Mac, Gatekeeper จะตรวจสอบแอป"
@@ -8225,6 +8241,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "ตั้งแต่ต้นจนจบ, ค่ามัธยฐาน (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "แถวที่ไม่มีเส้น <x1/> จะเป็นของคุณนับจากนั้น: <x2/> จะไม่ส่งไปแปลด้วยเครื่องอีก และ CI (<x3/>) จะปฏิเสธคำขอพูลใดๆ ที่ลบออกหรือทำเครื่องหมาย <x4/> อีกครั้ง"
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",

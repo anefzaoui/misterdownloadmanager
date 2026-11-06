@@ -166,6 +166,10 @@
    "source": "Contribute",
    "text": "অবদান রাখুন"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "সর্বশেষ আপডেট করা হয়েছে 2026-11-06 · অ্যাপ, ব্রাউজার এক্সটেনশন এবং misterdownloadmanager.com-এর জন্য প্রযোজ্য"
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager সম্পর্কে উত্তর: এটি কি বিনামূল্যে, এটি কি নিরাপদ, IDM, ব্রাউজার, ভিডিও, টরেন্ট, গতি, Mac এবং Linux এর সাথে এর তুলনা এবং আরও অনেক কিছু।"
@@ -698,10 +702,6 @@
    "source": "Torrents and magnet links",
    "text": "টরেন্ট এবং ম্যাগনেট লিঙ্ক"
   },
-  "1192c6aacd81c9e9": {
-   "source": "Last updated 2026-11-05",
-   "text": "সর্বশেষ হালনাগাদ করা হয়েছে 5 নভেম্বর 2026"
-  },
   "11c2e6a758e059a3": {
    "source": "Space",
    "text": "Space"
@@ -1033,6 +1033,10 @@
   "1a9157b9737ecefc": {
    "source": "Link grabber and archives",
    "text": "লিঙ্ক গ্র্যাবার এবং আর্কাইভ"
+  },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>বিকল্প → প্রক্সি / SOCKS → নেটওয়ার্ক অ্যাডাপ্টার</g1> MDM-এর সংযোগগুলি একটি অ্যাডাপ্টারের সাথে ধরে রাখে, সাধারণত একটি VPN-এর (<g2>বিকল্প</g2>)। টরেন্ট ইঞ্জিন প্রতিটি সকেটকে এর সাথে আবদ্ধ করে: পিয়ার (TCP, এবং একটি SOCKS প্রক্সির মাধ্যমে), HTTP এবং UDP ট্র্যাকার, DHT এবং লিসেনিং পোর্ট। Linux এবং macOS-এ এটি অ্যাডাপ্টার নিজেই আবদ্ধ করে। Windows-এ এটি অ্যাডাপ্টারের ঠিকানা (এর IPv4 ঠিকানা যখন এটি থাকে) আবদ্ধ করে, এবং Windows শুধুমাত্র সেই অ্যাডাপ্টারের মাধ্যমে একটি প্যাকেট পাঠায় যার উৎস ঠিকানা রয়েছে। UPnP এবং স্থানীয় পিয়ার ডিসকভারি তখন বন্ধ থাকে, কারণ তারা অ্যাডাপ্টারের মাধ্যমে না হয়ে স্থানীয় নেটওয়ার্কের সাথে কথা বলে।"
   },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
@@ -2505,6 +2509,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "আপনাকে প্রথমে MDM শুরু করতে হবে না। যখন ব্রাউজার একটি ডাউনলোড হস্তান্তর করে এবং MDM চলছে না, তখন হেল্পার এটি শুরু করে এবং ডাউনলোডটি পাস করে।"
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "এটি একটি কিল সুইচ হিসাবে কাজ করে। যখন অ্যাডাপ্টার সংযোগ বিচ্ছিন্ন হয়, তখন চলমান টরেন্টগুলি \"… সংযুক্ত নয়; এটি ফিরে এলে আবার শুরু হবে\" বার্তা দিয়ে বন্ধ হয়ে যায় এবং এটি ফিরে এলে অ্যাডাপ্টারের মাধ্যমে আবার শুরু হয়। MDM লক্ষ্য করার আগে (এক সেকেন্ডের মধ্যে), ইঞ্জিনের সকেটগুলি এখনও একটি চলে যাওয়া ঠিকানার সাথে আবদ্ধ থাকে, তাই অন্য কোনো উপায়ে কিছু বের হতে পারে না। অ্যাডাপ্টার সংযুক্ত না থাকা অবস্থায় যোগ করা একটি টরেন্ট শুরু হয় না এবং কারণটি বলে। ট্র্যাকার নামগুলি এখনও সিস্টেমের DNS দ্বারা অনুসন্ধান করা হয়।"
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -4466,10 +4474,6 @@
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "সম্পূর্ণ সোর্স পাবলিক, এবং প্রতিটি রিলিজ GitHub এর সার্ভারে তৈরি করা হয়। কোনো অ্যাডওয়্যার নেই, কোনো স্পাইওয়্যার নেই, কোনো বান্ডেল অফার নেই। ভিডিওর জন্য এটি যে সাহায্যকারী ফাইলগুলি ডাউনলোড করে, সেগুলি চালানোর আগে যাচাই করা হয়। <g1>আরও</g1>"
   },
-  "725638a5e448140e": {
-   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "সর্বশেষ আপডেট করা হয়েছে 2026-11-05 · অ্যাপ, ব্রাউজার এক্সটেনশন এবং misterdownloadmanager.com-এর জন্য প্রযোজ্য"
-  },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "একটি গুগল ড্রাইভ লিঙ্ক যেমন আছে তেমনই পেস্ট করুন, যা <g1>শেয়ার → লিঙ্ক কপি করুন</g1> থেকে পাওয়া যায়:"
@@ -5597,6 +5601,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB 1.0 সেকেন্ডে</g1> <g2>IDM: 5.5 সেকেন্ড</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>নেটওয়ার্ক অ্যাডাপ্টার</g1> — <g2>যেকোনো (সিস্টেম বেছে নেয়)</g2> হলো ডিফল্ট। একটি অ্যাডাপ্টার বেছে নিন, সাধারণত আপনার VPN-এর, এবং MDM যে সংযোগই খুলবে তা এর মাধ্যমেই যাবে, অথবা একেবারেই যাবে না। এটি ডাউনলোড, FTP, টরেন্ট, আপনার বেছে নেওয়া DNS, MDM-এর নিজস্ব ডাউনলোড এবং আপডেট চেক সবকিছু কভার করে। এটি একটি কিল সুইচ হিসেবে কাজ করে: যখন অ্যাডাপ্টার সংযোগ বিচ্ছিন্ন হয়, অথবা VPN বন্ধ করা হয়, তখন আপনার স্বাভাবিক সংযোগের মাধ্যমে কিছুই বাইরে যায় না। চলমান ডাউনলোডগুলি \"… সংযুক্ত নয়\" বার্তা দিয়ে বন্ধ হয়ে যায় এবং অ্যাডাপ্টার ফিরে এলে আবার শুরু হয়। তালিকার নিচের লাইনটি অ্যাডাপ্টারের ঠিকানা দেখায়, অথবা এটি সংযুক্ত নয় তা দেখায়।"
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -7022,6 +7030,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM-এর নিজস্ব ডাউনলোডগুলি তার নিজস্ব ডাউনলোডার ব্যবহার করে</g1>: yt-dlp, ffmpeg, MDM-এর আপডেট এবং একটি ক্র্যাশ রিপোর্টের প্রতীকগুলি এখন একাধিক সংযোগের মাধ্যমে ডাউনলোড হয়, সংযোগ বিচ্ছিন্ন হওয়ার পর আবার শুরু হয় এবং আপনার প্রক্সি সেটিংসের মাধ্যমে যায়। প্রতিটি ফাইল ব্যবহারের আগে তার প্রকাশকের স্বাক্ষরিত চেকসামের সাথে এখনও যাচাই করা হয়।"
   },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "যে সারির উপরে <x1/> লাইন আছে, সেটি যন্ত্রের মাধ্যমে অনুবাদ করা হয়েছে। আপনি সেটি পরীক্ষা করার পর (এবং প্রয়োজন হলে সংশোধন করার পর), ওই <x2/> লাইনটি মুছে দিন। এরপর থেকে ওই সারিটি আপনার: যন্ত্রের অনুবাদ আর এটিকে প্রতিস্থাপন করবে না।"
+  },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
    "text": "সার্ভারের উত্তর থেকে সীমা শিখে, তা মেনে চলে এবং পরের বারের জন্য মনে রাখে। 12.6 সেকেন্ডে শেষ হয়েছে।"
@@ -7998,6 +8010,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "প্রতিটি চলমান ডাউনলোডের নিজস্ব অগ্রগতি উইন্ডো আছে। ডাউনলোড শুরু হলে এটি খোলে; এটি আবার খুলতে, তালিকার ডাউনলোডে ডাবল-ক্লিক করুন।"
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "সর্বশেষ আপডেট করা হয়েছে 6 নভেম্বর 2026"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "টরেন্ট থেকে ফাইলগুলিকে একটি ব্রাউজারের ডাউনলোডের মতো <g1>ইন্টারনেট থেকে ডাউনলোড করা হয়েছে</g1> হিসাবে চিহ্নিত করা হয়। Windows SmartScreen একটি প্রোগ্রাম প্রথমবার চলার আগে পরীক্ষা করে, এবং Office Protected View-এ ডকুমেন্ট খোলে। একটি Mac-এ, Gatekeeper অ্যাপগুলি পরীক্ষা করে।"
@@ -8225,6 +8241,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "শুরু থেকে শেষ, মধ্যমা (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "যে সারিতে <x1/> লাইন নেই, সেটি তখন থেকে আপনার: <x2/> সেটি আর কখনও মেশিন অনুবাদে পাঠাবে না, এবং CI (<x3/>) এমন কোনো পুল রিকোয়েস্ট ব্যর্থ করবে যা এটিকে বাদ দেয় বা আবার <x4/> হিসেবে চিহ্নিত করে।"
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",

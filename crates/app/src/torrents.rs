@@ -287,25 +287,33 @@ pub fn refresh_blocklist(
     });
 }
 
-/// Why torrents can't start with the network adapter as it is (#35), if they can't.
-pub fn route_refusal(route: &mdm_engine::Route) -> Option<String> {
-    match route {
-        mdm_engine::Route::Any => None,
-        mdm_engine::Route::Down { label } => Some(crate::i18n::fmt(
+/// How the torrent session is held to the network adapter as it is (#35, #143): None without
+/// one chosen; else why torrents can't start (it isn't connected).
+pub fn route_bind(route: &mdm_engine::Route) -> Result<Option<mdm_torrent::Bind>, String> {
+    let down = |label: &str| {
+        crate::i18n::fmt(
             // i18n: an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
             crate::i18n::t("the network adapter {adapter} is not connected"),
             &[("adapter", label)],
-        )),
-        // librqbit can't hold its sockets to an adapter on Windows (BindDevice isn't supported
-        // there): refused rather than sent around it.
+        )
+    };
+    match route {
+        mdm_engine::Route::Any => Ok(None),
+        mdm_engine::Route::Down { label } => Err(down(label)),
+        // Windows: its address (strong host model, see mdm_engine::net); IPv4 when it has one.
         #[cfg(windows)]
-        mdm_engine::Route::Bound(_) => Some(
-            // i18n: an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
-            crate::i18n::t("torrents can't go through a chosen network adapter on Windows yet")
-                .to_owned(),
-        ),
+        mdm_engine::Route::Bound(b) => {
+            b.v4.map(std::net::IpAddr::V4)
+                .or(b.v6.map(std::net::IpAddr::V6))
+                .map(|ip| Some(mdm_torrent::Bind::Address(ip)))
+                .ok_or_else(|| down(&b.label))
+        }
+        // Linux and macOS: its device.
         #[cfg(not(windows))]
-        mdm_engine::Route::Bound(_) => None,
+        mdm_engine::Route::Bound(b) => Ok(Some(mdm_torrent::Bind::Device {
+            name: b.name.clone(),
+            v4_only: b.v6.is_none(),
+        })),
     }
 }
 
@@ -513,16 +521,16 @@ impl Host {
         }
         // i18n: an error: the app has no folder for its torrent data
         state_dir().ok_or(crate::i18n::t("no data folder for torrents"))?;
-        if let Some(why) = route_refusal(&crate::settings::own_route()) {
-            return Err(why);
-        }
-        let cfg = self.wanted.lock().unwrap().clone().ok_or_else(|| {
+        // Held to the adapter as it is now, not as it was when the settings were last read.
+        let bind = route_bind(&crate::settings::own_route())?;
+        let mut cfg = self.wanted.lock().unwrap().clone().ok_or_else(|| {
             // i18n: an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
             crate::i18n::t(
                 "Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy",
             )
             .to_owned()
         })?;
+        cfg.bind = bind;
         let t = Torrents::start(cfg.clone()).await.map_err(|e| {
             crate::i18n::fmt(
                 // i18n: an error, with the reason
