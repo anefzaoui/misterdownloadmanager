@@ -40,13 +40,14 @@ pub fn chromium_ids() -> Vec<&'static str> {
 }
 
 /// The extension's page in the Chrome Web Store (Chrome, Edge, Brave, Opera and Vivaldi all
-/// install from it), once it is listed.
+/// install from it), once it is listed: the listing's own address, its name then its ID.
 pub fn store_page() -> Option<String> {
-    store_id().map(|id| format!("https://chromewebstore.google.com/detail/{id}"))
+    store_id()
+        .map(|id| format!("https://chromewebstore.google.com/detail/mister-download-manager/{id}"))
 }
 
-/// The tutorial that adds the extension by hand (Firefox, and every browser until the store
-/// has it).
+/// The tutorial that adds the extension: from the stores, and by hand (a build of its own, or
+/// a browser that can't use its store).
 pub const GUIDE_PAGE: &str =
     "https://misterdownloadmanager.com/help/guide-catch-browser-downloads.html";
 
@@ -117,6 +118,25 @@ mod tests {
         assert_eq!(store_id().is_some(), valid_id(STORE_ID));
         assert!(chromium_ids().iter().all(|id| valid_id(id)));
         assert_eq!(store_page().is_some(), store_id().is_some());
+    }
+
+    /// The store's copy and the app folder's (unpacked) both reach the host: the manifests'
+    /// allowed_origins and the host's own caller check are this list.
+    #[test]
+    fn store_and_unpacked_both_served() {
+        assert_eq!(STORE_ID, "ejoleppdfgjdndddcjoehopknmlglojp");
+        assert_eq!(UNPACKED_ID, "oogbclbbninliongijffeeggalppliok");
+        let ids = chromium_ids();
+        assert!(
+            ids.contains(&UNPACKED_ID) && ids.contains(&STORE_ID),
+            "{ids:?}"
+        );
+        assert_eq!(
+            store_page().as_deref(),
+            Some(
+                "https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp"
+            )
+        );
     }
 
     #[test]

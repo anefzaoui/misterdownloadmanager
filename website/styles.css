@@ -435,6 +435,8 @@ main > .sec:last-child { padding-bottom: var(--gap-section); }
 .services-ext .services-note { flex: 1 1 40ch; margin-top: 0; }
 /* Add to Firefox (build.amo_button): a line button with Firefox's logo, on the board or a sheet. */
 .store-btn img { width: 22px; height: 22px; flex: none; }
+/* Add to Firefox and Add to Chrome side by side, wrapping under each other when narrow. */
+.store-btns { display: inline-flex; flex-wrap: wrap; gap: 10px 12px; }
 .prose .store-act { margin-block: 4px 18px; }
 .wb-amo { display: inline-flex; align-items: center; gap: 5px; font-weight: 650; color: var(--link); }
 
