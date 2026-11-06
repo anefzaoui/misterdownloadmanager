@@ -45,6 +45,7 @@ pub struct System {
 
 /// Windows' `AccentPalette` bytes: 8 colours of R G B and an unused byte, lightest first
 /// (Light3, Light2, Light1, the accent, Dark1, Dark2, Dark3, one more).
+#[cfg_attr(not(windows), allow(dead_code))]
 pub fn accent_palette_bytes(b: &[u8; 32]) -> [[u8; 3]; 7] {
     let mut out = [[0u8; 3]; 7];
     for (i, c) in out.iter_mut().enumerate() {
