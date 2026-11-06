@@ -71,7 +71,7 @@ In Chrome, Edge and Brave you can limit an extension to some sites (right-click 
 
 ## Firefox forgets the extension after a restart {#firefox-temporary}
 
-An add-on loaded with **Load Temporary Add-on** is removed when Firefox closes, so for now it has to be loaded again after each restart (see [Browser integration](browser-integration.md)). A signed add-on that Firefox keeps is on the way.
+An add-on loaded with **Load Temporary Add-on** (from `about:debugging`) is removed when Firefox closes. Remove it and install the add-on from [its page on addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/) instead: Firefox keeps that one, and updates it.
 
 ## Linux: Flatpak and Snap browsers {#linux-sandbox}
 

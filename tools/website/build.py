@@ -42,6 +42,9 @@ CONTENT = WEB / "content"
 OUT = ROOT / "target" / "site"
 SITE = "https://misterdownloadmanager.com"
 REPO = "https://github.com/anefzaoui/misterdownloadmanager"
+# The Firefox add-on's listing (crates/ipc/src/extension.rs FIREFOX_PAGE): {{AMO}} in pages, and
+# <!--@amo--> for its Add to Firefox button.
+AMO = "https://addons.mozilla.org/firefox/addon/mister-download-manager/"
 # The creator's GitHub Sponsors page: the header, the footer and the home page's Support MDM
 # (the app's Help menu and About, the extension's popup and .github/FUNDING.yml point there too).
 SPONSORS = "https://github.com/sponsors/anefzaoui"
@@ -267,6 +270,14 @@ def split_button(extra_class: str = "") -> str:
             {os_menu()}
           </details>
         </div>"""
+
+
+def amo_button(extra_class: str = "") -> str:
+    """Add to Firefox: the add-on's listing on addons.mozilla.org, drawn in line (never green:
+    green is Download's), with Firefox's own logo; in words, so it's translated (Mozilla's badge
+    is an English picture)."""
+    return (f'<a class="btn btn-line store-btn{extra_class}" href="{AMO}">'
+            '<img src="/assets/browsers/firefox.svg" width="22" height="22" alt=""> Add to Firefox</a>')
 
 
 def header(section: str = "") -> str:
@@ -897,6 +908,7 @@ def fill(text: str) -> str:
     for k in ("stars", "forks", "issues", "watchers"):
         text = text.replace("{{" + k.upper() + "}}", STATS.get(k, "–"))
     text = text.replace("<!--@split-->", split_button()).replace("<!--@gh-->", gh_pill("btn btn-ghost btn-big gh-big"))
+    text = text.replace("<!--@amo-->", amo_button()).replace("{{AMO}}", AMO)
     text = text.replace("<!--@fields-->", waybill_fields()).replace("<!--@barcode-->", barcode.svg(f"MDM {VERSION}"))
     return (text.replace("{{VERSION}}", VERSION).replace("{{REPO}}", REPO).replace("{{SITE}}", SITE)
             .replace("{{SPONSORS}}", SPONSORS).replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))

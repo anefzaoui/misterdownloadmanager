@@ -235,15 +235,57 @@ fn script_fonts(code: &str, all: bool) -> Vec<(String, Vec<u8>)> {
     }
 }
 
-/// The font file fontconfig picks for `pattern`.
+/// The font file fontconfig picks for `pattern` (one of [`fc_files`]'s).
 #[cfg(not(any(windows, target_os = "macos")))]
 fn fc_match(pattern: &str) -> Option<std::path::PathBuf> {
-    let out = std::process::Command::new("fc-match")
-        .args(["-f", "%{file}", pattern])
-        .output()
-        .ok()?;
-    let file = String::from_utf8(out.stdout).ok()?;
-    (out.status.success() && !file.trim().is_empty()).then(|| file.trim().into())
+    fc_files().get(pattern).cloned()
+}
+
+/// Every font file the windows may need, as fontconfig picks it: the interface font
+/// (`sans-serif`) and each script's (`:lang=…`). Each answer is an `fc-match` program; asked one
+/// after the other on the window's thread, the thirty of them held up MDM's first frame for 2 s
+/// on an idle computer and past the freeze report's 8 s on a busy one (#164). So they are asked
+/// once, all together (a third of the time), and [`prepare_fonts`] starts that while the window
+/// opens; the fonts only wait for what is still running. A font installed while MDM runs is
+/// used from its next start.
+#[cfg(not(any(windows, target_os = "macos")))]
+fn fc_files() -> &'static std::collections::HashMap<String, std::path::PathBuf> {
+    use std::process::{Command, Stdio};
+    static FILES: std::sync::OnceLock<std::collections::HashMap<String, std::path::PathBuf>> =
+        std::sync::OnceLock::new();
+    FILES.get_or_init(|| {
+        let running: Vec<_> = std::iter::once("sans-serif".to_owned())
+            .chain(SCRIPT_LANGS.iter().map(|(_, fc)| format!(":lang={fc}")))
+            .filter_map(|pattern| {
+                let child = Command::new("fc-match")
+                    .args(["-f", "%{file}", &pattern])
+                    .stdin(Stdio::null())
+                    .stdout(Stdio::piped())
+                    .stderr(Stdio::null())
+                    .spawn()
+                    .ok()?;
+                Some((pattern, child))
+            })
+            .collect();
+        running
+            .into_iter()
+            .filter_map(|(pattern, child)| {
+                let out = child.wait_with_output().ok()?;
+                let file = String::from_utf8(out.stdout).ok()?;
+                let file = file.trim();
+                (out.status.success() && !file.is_empty()).then(|| (pattern, file.into()))
+            })
+            .collect()
+    })
+}
+
+/// Start looking up the system's fonts while the window opens (Linux: [`fc_files`]); Windows and
+/// macOS read theirs from known files, quickly, when the fonts load.
+pub fn prepare_fonts() {
+    #[cfg(not(any(windows, target_os = "macos")))]
+    let _ = std::thread::Builder::new().name("fonts".into()).spawn(|| {
+        fc_files();
+    });
 }
 
 /// The script fonts loaded now: the interface language's, or all of them.

@@ -33,6 +33,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   only holder left. Torrents already in the list carry on, with nothing checked again.
 - MDM now honours a peer's request to cancel a piece it no longer needs, so its upload isn't
   spent on data nobody wants.
+- **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
+  installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
+  **Add Mister Download Manager to your browser** window opens it for them; the website, the
+  help and the README offer it first.
 - **Support MDM**: **Help → Support MDM** and a line in **About** open the creator's
   [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
   README and the browser extension's popup link to it too. Only when asked: MDM stays free, with
@@ -346,6 +350,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: the first window opens seconds sooner, and no longer freezes on a busy computer**
+  (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): MDM asked
+  fontconfig for its fonts one at a time (one program for each of some thirty scripts, more each
+  time the language list opened) while the window waited, 2 s on an idle computer and long
+  enough on a busy one for a freeze report on the very first start. It now asks once, all
+  together, while the rest of MDM starts.
 - **A server without ranges no longer sends the file twice**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)): when the extra
   connections' answers came late (a busy computer), the download could finish and then start over
