@@ -3326,10 +3326,6 @@
    "source": "What it takes",
    "text": "Cách hoạt động"
   },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "MDM tự thiết lập tích hợp trình duyệt mỗi khi khởi động trên Linux và macOS (các trình duyệt đã cài đặt sẽ được tìm thấy); hãy thêm tiện ích mở rộng như trong <g1>Tích hợp trình duyệt</g1>. Các trình duyệt được cài đặt dưới dạng Flatpak hoặc Snap có thể không truy cập được MDM."
-  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "Nhấp vào <g1>Bộ lập lịch</g1> trên thanh công cụ (hoặc <g2>Tải xuống → Bộ lập lịch</g2>)."
@@ -4394,6 +4390,10 @@
    "source": "Numbers and dates",
    "text": "Số và ngày"
   },
+  "6f86a54724149403": {
+   "source": "<g1>Firefox as a Snap</g1> (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks <g2>Allow Firefox to start WebExtension backend?</g2> for Mister Download Manager: choose <g3>Allow</g3>. After <g4>Don't allow</g4>, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:",
+   "text": "<g1>Firefox dưới dạng Snap</g1> (Firefox của Ubuntu) kết nối với MDM thông qua màn hình nền. Lần đầu tiên tiện ích mở rộng gọi MDM, màn hình nền sẽ hỏi <g2>Cho phép Firefox khởi động WebExtension backend?</g2> cho Mister Download Manager: hãy chọn <g3>Cho phép</g3>. Sau khi chọn <g4>Không cho phép</g4>, tiện ích mở rộng sẽ báo lỗi kết nối và màn hình nền sẽ không hỏi lại; để được hỏi lại, hãy chạy lệnh này trong terminal, sau đó sử dụng lại tiện ích mở rộng:"
+  },
   "6f93f457f41d4fa3": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
    "text": "<g1>User-Agent cho các lượt tải xuống được thêm thủ công</g1> — cách MDM tự nhận dạng với máy chủ cho các lượt tải xuống bạn tự thêm. Các lượt tải xuống từ trình duyệt sử dụng User-Agent của chính trình duyệt."
@@ -4853,6 +4853,10 @@
   "7b92c2e716b39fbf": {
    "source": "<g1>Alt+Down</g1> or <g2>F4</g2>",
    "text": "<g1>Alt+Mũi tên xuống</g1> hoặc <g2>F4</g2>"
+  },
+  "7b96ddc4c567caf5": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.",
+   "text": "Các trình duyệt được cài đặt dưới dạng Flatpak hoặc Snap chạy trong một sandbox, sandbox này sẽ quyết định liệu chúng có thể kết nối với MDM hay không."
   },
   "7bc3766c50fc6fcd": {
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
@@ -6658,6 +6662,10 @@
    "source": "<g1>Page Up</g1> / <g2>Page Down</g2>",
    "text": "<g1>Page Up</g1> / <g2>Page Down</g2>"
   },
+  "aab5074afda2571f": {
+   "source": "On Linux, with Firefox or Chromium installed as a Snap, see <g1>Flatpak and Snap browsers</g1>.",
+   "text": "Trên Linux, nếu Firefox hoặc Chromium được cài đặt dưới dạng Snap, hãy xem <g1>Trình duyệt Flatpak và Snap</g1>."
+  },
   "aac0379eae040d8f": {
    "source": "The browser doesn't send downloads to MDM",
    "text": "Trình duyệt không gửi các lượt tải xuống đến MDM"
@@ -6845,6 +6853,10 @@
   "aef4941497a48310": {
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "Lần khởi động đầu tiên, ổ đĩa chậm, hoặc phần mềm diệt virus đang quét MDM có thể mất nhiều thời gian như vậy. Lần sau thường sẽ nhanh chóng."
+  },
+  "af2b3b86f75da30b": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see <g2>Flatpak and Snap browsers</g2>).",
+   "text": "MDM tự thiết lập tích hợp trình duyệt mỗi khi khởi động trên Linux và macOS (các trình duyệt đã cài đặt sẽ được tìm thấy); thêm tiện ích mở rộng như trong <g1>Tích hợp trình duyệt</g1>. Firefox được cài đặt dưới dạng Snap (của Ubuntu) sẽ kết nối với MDM sau khi bạn cho phép; các trình duyệt Snap và Flatpak khác không thể (xem <g2>Trình duyệt Flatpak và Snap</g2>)."
   },
   "af2d311733924046": {
    "source": "IDM",
@@ -8502,10 +8514,6 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "Chạy gần như mọi nơi, với HTTP, BitTorrent, magnet và ed2k, cùng với API REST"
   },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "Các trình duyệt được cài đặt dưới dạng Flatpak hoặc Snap chạy trong một hộp cát có thể ngăn chúng khởi động các chương trình bên ngoài, vì vậy chúng có thể không tiếp cận được MDM. Các trình duyệt Flatpak (chẳng hạn như <x1/> của Zen) không thể khởi động trình hỗ trợ của MDM, vì vậy MDM không liệt kê chúng trong <g2>Thêm Mister Download Manager vào trình duyệt của bạn</g2>. Hãy cài đặt trình duyệt từ các gói của bản phân phối của bạn (hoặc <x3/>, <x4/>, tarball hoặc AppImage của nhà sản xuất trình duyệt) để sử dụng tính năng tích hợp trình duyệt."
-  },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
    "text": "<g1>Di chuyển/Đổi tên</g1> (<g2>Ctrl+M</g2>) di chuyển hoặc đổi tên tệp của bản tải xuống đã hoàn tất, hoặc của bản chưa bắt đầu."
@@ -9145,6 +9153,10 @@
   "eedd6ce63805f3bc": {
    "source": "Open source",
    "text": "Mã nguồn mở"
+  },
+  "eee3dbbafbb8e53c": {
+   "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
+   "text": "- <g1>Chromium dưới dạng Snap</g1> (Chromium của Ubuntu) khởi động trình hỗ trợ của MDM bên trong sandbox của nó, nơi nó không thể kết nối với MDM, vì vậy MDM không liệt kê nó trong <g2>Thêm Mister Download Manager vào trình duyệt của bạn</g2>. Hãy sử dụng Firefox, hoặc Google Chrome từ <x3/> của chính nó. - <g4>Các trình duyệt Flatpak</g4> (chẳng hạn như <x5/> của Zen) không thể khởi động trình hỗ trợ của MDM, vì vậy MDM cũng không liệt kê chúng. Hãy cài đặt trình duyệt từ các gói của bản phân phối của bạn (hoặc <x6/>, <x7/>, tarball hoặc AppImage của nhà sản xuất trình duyệt) để sử dụng tính năng tích hợp trình duyệt."
   },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",

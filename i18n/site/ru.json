@@ -3326,10 +3326,6 @@
    "source": "What it takes",
    "text": "Что для этого нужно"
   },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "MDM сам настраивает интеграцию с браузером при каждом запуске в Linux и macOS (находит установленные браузеры); добавьте расширение, как описано в разделе <g1>Интеграция с браузером</g1>. Браузеры, установленные как Flatpak или Snap, могут не иметь доступа к MDM."
-  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "Нажмите <g1>Планировщик</g1> на панели инструментов (или <g2>Загрузки → Планировщик</g2>)."
@@ -4394,6 +4390,10 @@
    "source": "Numbers and dates",
    "text": "Числа и даты"
   },
+  "6f86a54724149403": {
+   "source": "<g1>Firefox as a Snap</g1> (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks <g2>Allow Firefox to start WebExtension backend?</g2> for Mister Download Manager: choose <g3>Allow</g3>. After <g4>Don't allow</g4>, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:",
+   "text": "<g1>Firefox как Snap</g1> (собственный Firefox от Ubuntu) обращается к MDM через рабочий стол. При первом вызове MDM расширением рабочий стол спрашивает <g2>Разрешить Firefox запустить бэкенд WebExtension?</g2> для Mister Download Manager: выберите <g3>Разрешить</g3>. После <g4>Не разрешать</g4> расширение сообщает, что соединение не удалось, и рабочий стол больше не спрашивает; чтобы снова получить запрос, выполните это в терминале, затем снова используйте расширение:"
+  },
   "6f93f457f41d4fa3": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
    "text": "<g1>User-Agent для загрузок, добавленных вручную</g1> — так MDM представляется серверам при загрузке, которую вы добавляете сами. Загрузки из браузера используют User-Agent самого браузера."
@@ -4853,6 +4853,10 @@
   "7b92c2e716b39fbf": {
    "source": "<g1>Alt+Down</g1> or <g2>F4</g2>",
    "text": "<g1>Alt+Down</g1> или <g2>F4</g2>"
+  },
+  "7b96ddc4c567caf5": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.",
+   "text": "Браузеры, установленные как Flatpak или Snap, работают в «песочнице», которая определяет, могут ли они получить доступ к MDM."
   },
   "7bc3766c50fc6fcd": {
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
@@ -6658,6 +6662,10 @@
    "source": "<g1>Page Up</g1> / <g2>Page Down</g2>",
    "text": "<g1>Page Up</g1> / <g2>Page Down</g2>"
   },
+  "aab5074afda2571f": {
+   "source": "On Linux, with Firefox or Chromium installed as a Snap, see <g1>Flatpak and Snap browsers</g1>.",
+   "text": "В Linux, если Firefox или Chromium установлены как Snap, см. <g1>Браузеры Flatpak и Snap</g1>."
+  },
   "aac0379eae040d8f": {
    "source": "The browser doesn't send downloads to MDM",
    "text": "Браузер не отправляет загрузки в MDM"
@@ -6845,6 +6853,10 @@
   "aef4941497a48310": {
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "Первый запуск, медленный диск или антивирус, сканирующий MDM, могут занять столько времени. В следующий раз это обычно происходит быстро."
+  },
+  "af2b3b86f75da30b": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see <g2>Flatpak and Snap browsers</g2>).",
+   "text": "MDM сам настраивает интеграцию с браузером при каждом запуске в Linux и macOS (находит установленные на тот момент браузеры); добавьте расширение, как описано в разделе <g1>Интеграция с браузером</g1>. Firefox, установленный как Snap (в Ubuntu), связывается с MDM после вашего разрешения; другие браузеры Snap и Flatpak не могут (см. <g2>Браузеры Flatpak и Snap</g2>)."
   },
   "af2d311733924046": {
    "source": "IDM",
@@ -8502,10 +8514,6 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "Работает почти везде, с HTTP, BitTorrent, magnet и ed2k, а также REST API"
   },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "Браузеры, установленные как Flatpak или Snap, работают в песочнице, которая может препятствовать запуску программ вне ее, поэтому они могут быть недоступны для MDM. Браузеры Flatpak (например, <x1/> Zen) не могут запустить вспомогательную программу MDM, поэтому MDM не перечисляет их в <g2>Добавить Mister Download Manager в браузер</g2>. Установите браузер из пакетов вашего дистрибутива (или из <x3/>, <x4/>, tarball или AppImage самого производителя браузера), чтобы использовать интеграцию с браузером."
-  },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
    "text": "<g1>Переместить/переименовать</g1> (<g2>Ctrl+M</g2>) перемещает или переименовывает файл завершенной или еще не начатой загрузки."
@@ -9145,6 +9153,10 @@
   "eedd6ce63805f3bc": {
    "source": "Open source",
    "text": "Открытый исходный код"
+  },
+  "eee3dbbafbb8e53c": {
+   "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
+   "text": "- <g1>Chromium как Snap</g1> (Chromium от Ubuntu) запускает вспомогательную программу MDM внутри своей «песочницы», где она не может получить доступ к MDM, поэтому MDM не перечисляет его в <g2>Добавить Mister Download Manager в браузер</g2>. Используйте Firefox или Google Chrome из его собственного <x3/>. - <g4>Браузеры Flatpak</g4> (например, <x5/> от Zen) не могут запустить вспомогательную программу MDM, поэтому MDM также не перечисляет их. Установите браузер из пакетов вашего дистрибутива (или из собственного <x6/>, <x7/>, tarball или AppImage от производителя браузера), чтобы использовать интеграцию с браузером."
   },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",

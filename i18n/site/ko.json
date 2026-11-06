@@ -3326,10 +3326,6 @@
    "source": "What it takes",
    "text": "작동 방식"
   },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "Linux 및 macOS에서는 MDM이 시작할 때마다 브라우저 통합을 설정합니다(설치된 브라우저를 찾음). <g1>브라우저 통합</g1>에 따라 확장 프로그램을 추가하세요. Flatpak 또는 Snap으로 설치된 브라우저는 MDM에 연결하지 못할 수 있습니다."
-  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "도구 모음에서 <g1>예약 관리자</g1>를 클릭합니다(또는 <g2>다운로드 → 예약 관리자</g2>)."
@@ -4394,6 +4390,10 @@
    "source": "Numbers and dates",
    "text": "숫자 및 날짜"
   },
+  "6f86a54724149403": {
+   "source": "<g1>Firefox as a Snap</g1> (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks <g2>Allow Firefox to start WebExtension backend?</g2> for Mister Download Manager: choose <g3>Allow</g3>. After <g4>Don't allow</g4>, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:",
+   "text": "<g1>Snap으로 설치된 Firefox</g1>(Ubuntu 자체 Firefox)는 데스크톱을 통해 MDM에 도달합니다. 확장 프로그램이 MDM을 처음 호출할 때 데스크톱은 Mister Download Manager에 대해 <g2>Firefox가 WebExtension 백엔드를 시작하도록 허용하시겠습니까?</g2>라고 묻습니다. <g3>허용</g3>을 선택하세요. <g4>허용 안 함</g4>을 선택하면 확장 프로그램은 연결 실패를 알리고 데스크톱은 다시 묻지 않습니다. 다시 질문을 받으려면 터미널에서 다음을 실행한 다음 확장 프로그램을 다시 사용하세요."
+  },
   "6f93f457f41d4fa3": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
    "text": "<g1>수동으로 추가된 다운로드의 User-Agent</g1> — 직접 추가하는 다운로드에 대해 MDM이 서버에 자신을 알리는 방식입니다. 브라우저에서 시작된 다운로드는 브라우저 자체의 User-Agent를 사용합니다."
@@ -4853,6 +4853,10 @@
   "7b92c2e716b39fbf": {
    "source": "<g1>Alt+Down</g1> or <g2>F4</g2>",
    "text": "<g1>Alt+Down</g1> 또는 <g2>F4</g2>"
+  },
+  "7b96ddc4c567caf5": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.",
+   "text": "Flatpak 또는 Snap으로 설치된 브라우저는 샌드박스에서 실행되며, 샌드박스는 MDM에 도달할 수 있는지 여부를 결정합니다."
   },
   "7bc3766c50fc6fcd": {
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
@@ -6658,6 +6662,10 @@
    "source": "<g1>Page Up</g1> / <g2>Page Down</g2>",
    "text": "<g1>Page Up</g1> / <g2>Page Down</g2>"
   },
+  "aab5074afda2571f": {
+   "source": "On Linux, with Firefox or Chromium installed as a Snap, see <g1>Flatpak and Snap browsers</g1>.",
+   "text": "Linux에서 Firefox 또는 Chromium이 Snap으로 설치된 경우, <g1>Flatpak 및 Snap 브라우저</g1>를 참조하세요."
+  },
   "aac0379eae040d8f": {
    "source": "The browser doesn't send downloads to MDM",
    "text": "브라우저가 MDM으로 다운로드를 보내지 않습니다"
@@ -6845,6 +6853,10 @@
   "aef4941497a48310": {
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "첫 시작, 느린 디스크 또는 MDM을 스캔하는 백신 프로그램으로 인해 시간이 오래 걸릴 수 있습니다. 다음번에는 일반적으로 빠릅니다."
+  },
+  "af2b3b86f75da30b": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see <g2>Flatpak and Snap browsers</g2>).",
+   "text": "Linux 및 macOS에서는 MDM이 시작할 때마다 브라우저 통합을 설정합니다(설치된 브라우저를 찾음). <g1>브라우저 통합</g1>에 따라 확장 프로그램을 추가하세요. Snap(Ubuntu)으로 설치된 Firefox는 허용하면 MDM에 연결됩니다. 다른 Snap 및 Flatpak 브라우저는 연결할 수 없습니다(<g2>Flatpak 및 Snap 브라우저</g2> 참조)."
   },
   "af2d311733924046": {
    "source": "IDM",
@@ -8502,10 +8514,6 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "HTTP, BitTorrent, 마그넷 및 ed2k를 지원하며 REST API를 통해 거의 모든 곳에서 실행 가능"
   },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "Flatpak 또는 Snap으로 설치된 브라우저는 샌드박스에서 실행되므로 외부 프로그램을 시작하지 못할 수 있으며, MDM에 연결하지 못할 수도 있습니다. Flatpak 브라우저(예: Zen의 <x1/>)는 MDM의 도우미를 시작할 수 없으므로 MDM은 <g2>브라우저에 Mister Download Manager 추가</g2>에 해당 브라우저를 표시하지 않습니다. 브라우저 통합을 사용하려면 배포판 패키지(또는 브라우저 제작사의 자체 <x3/>, <x4/>, tarball 또는 AppImage)에서 브라우저를 설치하세요."
-  },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
    "text": "<g1>이동/이름 바꾸기</g1> (<g2>Ctrl+M</g2>)는 완료된 다운로드 또는 아직 시작되지 않은 다운로드의 파일 이름을 바꾸거나 이동합니다."
@@ -9145,6 +9153,10 @@
   "eedd6ce63805f3bc": {
    "source": "Open source",
    "text": "오픈 소스"
+  },
+  "eee3dbbafbb8e53c": {
+   "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
+   "text": "- <g1>Snap으로 설치된 Chromium</g1>(Ubuntu의 Chromium)은 샌드박스 내에서 MDM의 도우미를 시작하며, 이 도우미는 MDM에 도달할 수 없으므로 MDM은 <g2>브라우저에 Mister Download Manager 추가</g2>에 이를 나열하지 않습니다. Firefox 또는 Google Chrome을 자체 <x3/>에서 사용하세요. - <g4>Flatpak 브라우저</g4>(예: Zen의 <x5/>)는 MDM의 도우미를 시작할 수 없으므로 MDM은 이들도 나열하지 않습니다. 브라우저 통합을 사용하려면 배포판 패키지(또는 브라우저 제작사의 자체 <x6/>, <x7/>, tarball 또는 AppImage)에서 브라우저를 설치하세요."
   },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",

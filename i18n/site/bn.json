@@ -3326,10 +3326,6 @@
    "source": "What it takes",
    "text": "যা লাগে"
   },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "Linux ও macOS-এ MDM নিজেই প্রতিবার চালু হওয়ার সময় ব্রাউজার ইন্টিগ্রেশন সেট আপ করে (তখন ইনস্টল করা ব্রাউজারগুলো খুঁজে বের করা হয়); <g1>ব্রাউজার ইন্টিগ্রেশন</g1>-এর মতো করে এক্সটেনশন যোগ করুন। Flatpak বা Snap হিসেবে ইনস্টল করা ব্রাউজারগুলো MDM-এর সাথে সংযোগ করতে নাও পারতে পারে।"
-  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "টুলবারে <g1>সময়সূচী</g1>-তে ক্লিক করুন (অথবা <g2>ডাউনলোডগুলি → সময়সূচী</g2>)।"
@@ -4394,6 +4390,10 @@
    "source": "Numbers and dates",
    "text": "সংখ্যা এবং তারিখ"
   },
+  "6f86a54724149403": {
+   "source": "<g1>Firefox as a Snap</g1> (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks <g2>Allow Firefox to start WebExtension backend?</g2> for Mister Download Manager: choose <g3>Allow</g3>. After <g4>Don't allow</g4>, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:",
+   "text": "<g1>Snap হিসেবে Firefox</g1> (উবুন্টুর নিজস্ব Firefox) ডেস্কটপের মাধ্যমে MDM-এর সাথে সংযোগ করে। এক্সটেনশনটি প্রথমবার MDM-কে কল করলে, ডেস্কটপ Mister Download Manager-এর জন্য <g2>WebExtension ব্যাকএন্ড শুরু করার জন্য Firefox-কে অনুমতি দেবেন?</g2> জিজ্ঞাসা করে: <g3>অনুমতি দিন</g3> নির্বাচন করুন। <g4>অনুমতি দেবেন না</g4> করার পর, এক্সটেনশনটি সংযোগ ব্যর্থ হয়েছে বলে এবং ডেস্কটপ আর জিজ্ঞাসা করে না; আবার জিজ্ঞাসা করার জন্য, একটি টার্মিনালে এটি চালান, তারপর আবার এক্সটেনশনটি ব্যবহার করুন:"
+  },
   "6f93f457f41d4fa3": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
    "text": "<g1>ম্যানুয়ালি যোগ করা ডাউনলোডের জন্য ইউজার-এজেন্ট</g1> — আপনি নিজে যে ডাউনলোডগুলি যোগ করেন, সেগুলির জন্য MDM সার্ভারগুলিকে নিজের নাম কীভাবে জানায়। ব্রাউজার থেকে করা ডাউনলোডগুলি ব্রাউজারের নিজস্ব ইউজার-এজেন্ট ব্যবহার করে।"
@@ -4853,6 +4853,10 @@
   "7b92c2e716b39fbf": {
    "source": "<g1>Alt+Down</g1> or <g2>F4</g2>",
    "text": "<g1>Alt+Down</g1> অথবা <g2>F4</g2>"
+  },
+  "7b96ddc4c567caf5": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.",
+   "text": "Flatpak বা Snap হিসেবে ইনস্টল করা ব্রাউজারগুলি স্যান্ডবক্সে চলে, যা MDM-এর সাথে তাদের সংযোগ করতে পারবে কিনা তা নির্ধারণ করে।"
   },
   "7bc3766c50fc6fcd": {
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
@@ -6658,6 +6662,10 @@
    "source": "<g1>Page Up</g1> / <g2>Page Down</g2>",
    "text": "<g1>Page Up</g1> / <g2>Page Down</g2>"
   },
+  "aab5074afda2571f": {
+   "source": "On Linux, with Firefox or Chromium installed as a Snap, see <g1>Flatpak and Snap browsers</g1>.",
+   "text": "Linux-এ, Firefox বা Chromium Snap হিসেবে ইনস্টল করা থাকলে, <g1>Flatpak এবং Snap ব্রাউজার</g1> দেখুন।"
+  },
   "aac0379eae040d8f": {
    "source": "The browser doesn't send downloads to MDM",
    "text": "ব্রাউজার MDM-এ ডাউনলোড পাঠায় না"
@@ -6845,6 +6853,10 @@
   "aef4941497a48310": {
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "প্রথমবার শুরু হতে, একটি ধীর ডিস্ক, অথবা একটি অ্যান্টিভাইরাস MDM স্ক্যান করতে এত সময় লাগতে পারে। পরের বার সাধারণত দ্রুত হয়।"
+  },
+  "af2b3b86f75da30b": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see <g2>Flatpak and Snap browsers</g2>).",
+   "text": "Linux ও macOS-এ MDM নিজে থেকেই প্রতিটি স্টার্টআপে ব্রাউজার ইন্টিগ্রেশন সেট আপ করে (তখন ইনস্টল করা ব্রাউজারগুলি খুঁজে বের করা হয়); <g1>ব্রাউজার ইন্টিগ্রেশন</g1>-এর মতো এক্সটেনশন যোগ করুন। Snap (উবুন্টুর) হিসেবে ইনস্টল করা Firefox একবার অনুমতি দিলে MDM-এর সাথে যুক্ত হয়; অন্যান্য Snap এবং Flatpak ব্রাউজারগুলি পারে না (দেখুন <g2>Flatpak এবং Snap ব্রাউজার</g2>)।"
   },
   "af2d311733924046": {
    "source": "IDM",
@@ -8502,10 +8514,6 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "প্রায় সব জায়গায় চলে, HTTP, BitTorrent, ম্যাগনেট এবং ed2k সহ, এবং একটি REST API"
   },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "Flatpak বা Snap হিসেবে ইনস্টল করা ব্রাউজারগুলো একটি স্যান্ডবক্সে চলে যা তাদের বাইরের প্রোগ্রাম চালু করা থেকে আটকাতে পারে, তাই তারা MDM-এ পৌঁছাতে নাও পারতে পারে। Flatpak ব্রাউজারগুলো (যেমন Zen-এর <x1/>) MDM-এর হেল্পার চালু করতে পারে না, তাই MDM সেগুলোকে <g2>আপনার ব্রাউজারে Mister Download Manager যোগ করুন</g2>-এ তালিকাভুক্ত করে না। ব্রাউজার ইন্টিগ্রেশন ব্যবহার করার জন্য আপনার ডিস্ট্রিবিউশনের প্যাকেজ (অথবা ব্রাউজার নির্মাতার নিজস্ব <x3/>, <x4/>, tarball বা AppImage) থেকে ব্রাউজারটি ইনস্টল করুন।"
-  },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
    "text": "<g1>সরান/নাম পরিবর্তন করুন</g1> (<g2>Ctrl+M</g2>) একটি শেষ হওয়া ডাউনলোডের ফাইল অথবা যেটি এখনো শুরু হয়নি সেটির ফাইল সরিয়ে দেয় বা নাম পরিবর্তন করে।"
@@ -9145,6 +9153,10 @@
   "eedd6ce63805f3bc": {
    "source": "Open source",
    "text": "ওপেন সোর্স"
+  },
+  "eee3dbbafbb8e53c": {
+   "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
+   "text": "- <g1>Snap হিসেবে Chromium</g1> (উবুন্টুর Chromium) MDM-এর সহায়কটিকে তার স্যান্ডবক্সের ভিতরে শুরু করে, যেখানে এটি MDM-এর সাথে সংযোগ করতে পারে না, তাই MDM এটিকে <g2>আপনার ব্রাউজারে Mister Download Manager যোগ করুন</g2>-এ তালিকাভুক্ত করে না। Firefox, অথবা Google Chrome তার নিজস্ব <x3/> থেকে ব্যবহার করুন। - <g4>Flatpak ব্রাউজার</g4> (যেমন Zen-এর <x5/>) MDM-এর সহায়কটিকে শুরু করতে পারে না, তাই MDM সেগুলিকে তালিকাভুক্ত করে না। ব্রাউজার ইন্টিগ্রেশন ব্যবহার করার জন্য আপনার ডিস্ট্রিবিউশনের প্যাকেজ (বা ব্রাউজার নির্মাতার নিজস্ব <x6/>, <x7/>, টারবল বা AppImage) থেকে ব্রাউজারটি ইনস্টল করুন।"
   },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",

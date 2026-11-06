@@ -3326,10 +3326,6 @@
    "source": "What it takes",
    "text": "所需条件"
   },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "在 Linux 和 macOS 上，MDM 每次启动时都会自行设置浏览器集成（会找到当时已安装的浏览器）；按照<g1>浏览器集成</g1>中的说明添加扩展。以 Flatpak 或 Snap 方式安装的浏览器可能无法访问 MDM。"
-  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "点击工具栏上的<g1>计划程序</g1>（或<g2>下载 → 计划程序</g2>）。"
@@ -4394,6 +4390,10 @@
    "source": "Numbers and dates",
    "text": "数字和日期"
   },
+  "6f86a54724149403": {
+   "source": "<g1>Firefox as a Snap</g1> (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks <g2>Allow Firefox to start WebExtension backend?</g2> for Mister Download Manager: choose <g3>Allow</g3>. After <g4>Don't allow</g4>, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:",
+   "text": "<g1>Snap 版 Firefox</g1>（Ubuntu 自带的 Firefox）通过桌面访问 MDM。扩展程序首次调用 MDM 时，桌面会询问 Mister Download Manager 的<g2>允许 Firefox 启动 WebExtension 后端吗？</g2>：选择<g3>允许</g3>。如果选择<g4>不允许</g4>，扩展程序会提示连接失败，桌面不会再次询问；要再次询问，请在终端中运行以下命令，然后再次使用扩展程序："
+  },
   "6f93f457f41d4fa3": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
    "text": "<g1>手动添加下载的 User-Agent</g1> — MDM 在您手动添加下载时向服务器表明自己的身份。来自浏览器的下载使用浏览器自己的 User-Agent。"
@@ -4853,6 +4853,10 @@
   "7b92c2e716b39fbf": {
    "source": "<g1>Alt+Down</g1> or <g2>F4</g2>",
    "text": "<g1>Alt+Down</g1> 或 <g2>F4</g2>"
+  },
+  "7b96ddc4c567caf5": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.",
+   "text": "以 Flatpak 或 Snap 形式安装的浏览器在沙盒中运行，沙盒决定它们是否可以访问 MDM。"
   },
   "7bc3766c50fc6fcd": {
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
@@ -6658,6 +6662,10 @@
    "source": "<g1>Page Up</g1> / <g2>Page Down</g2>",
    "text": "<g1>Page Up</g1> / <g2>Page Down</g2>"
   },
+  "aab5074afda2571f": {
+   "source": "On Linux, with Firefox or Chromium installed as a Snap, see <g1>Flatpak and Snap browsers</g1>.",
+   "text": "在 Linux 上，如果 Firefox 或 Chromium 是以 Snap 形式安装的，请参阅<g1>Flatpak 和 Snap 浏览器</g1>。"
+  },
   "aac0379eae040d8f": {
    "source": "The browser doesn't send downloads to MDM",
    "text": "浏览器不将下载发送到 MDM"
@@ -6845,6 +6853,10 @@
   "aef4941497a48310": {
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "首次启动、磁盘速度慢或杀毒软件扫描 MDM 都可能需要这么长时间。下次通常会很快。"
+  },
+  "af2b3b86f75da30b": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see <g2>Flatpak and Snap browsers</g2>).",
+   "text": "在 Linux 和 macOS 上，MDM 每次启动时都会自行设置浏览器集成（会找到当时已安装的浏览器）；按照<g1>浏览器集成</g1>中的说明添加扩展。作为 Snap（Ubuntu 的）安装的 Firefox 在您允许后即可连接到 MDM；其他 Snap 和 Flatpak 浏览器无法连接（请参阅<g2>Flatpak 和 Snap 浏览器</g2>）。"
   },
   "af2d311733924046": {
    "source": "IDM",
@@ -8502,10 +8514,6 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "几乎可在所有地方运行，支持 HTTP、BitTorrent、磁力链接和 ed2k，并提供 REST API"
   },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "以 Flatpak 或 Snap 形式安装的浏览器在沙盒中运行，这可能会阻止它们启动沙盒之外的程序，因此它们可能无法访问 MDM。Flatpak 浏览器（例如 Zen 的 <x1/>）无法启动 MDM 的辅助程序，因此 MDM 不会在<g2>将 Mister Download Manager 添加到您的浏览器</g2>中列出它们。请从您的发行版软件包（或浏览器制造商自己的 <x3/>、<x4/>、tarball 或 AppImage）安装浏览器以使用浏览器集成。"
-  },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
    "text": "<g1>移动/重命名</g1> (<g2>Ctrl+M</g2>) 移动或重命名已完成下载的文件，或尚未开始的下载的文件。"
@@ -9145,6 +9153,10 @@
   "eedd6ce63805f3bc": {
    "source": "Open source",
    "text": "开源"
+  },
+  "eee3dbbafbb8e53c": {
+   "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
+   "text": "- <g1>Snap 版 Chromium</g1>（Ubuntu 的 Chromium）在其沙盒内启动 MDM 的助手，该助手无法访问 MDM，因此 MDM 不会在<g2>将 Mister Download Manager 添加到您的浏览器</g2>中列出它。请使用 Firefox，或从 Google Chrome 自己的<x3/>安装。 - <g4>Flatpak 浏览器</g4>（例如 Zen 的<x5/>）无法启动 MDM 的助手，因此 MDM 也不会列出它们。请从您的发行版软件包（或浏览器制造商自己的<x6/>、<x7/>、tarball 或 AppImage）安装浏览器以使用浏览器集成。"
   },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",
