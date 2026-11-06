@@ -21,7 +21,6 @@ pub struct Accent {
 impl Accent {
     /// An accent the system gives as one colour: its shades mixed in (Linux, macOS; Windows
     /// gives its shades).
-    #[cfg_attr(windows, allow(dead_code))]
     pub fn from_color(base: Color32) -> Self {
         use crate::derive::shade;
         Accent {
@@ -55,7 +54,23 @@ pub fn accent_palette_bytes(b: &[u8; 32]) -> [[u8; 3]; 7] {
 }
 
 /// What the system says now (a few registry reads, or what the portal's thread last heard).
+/// For tests and screenshots, `MDM_NATIVE_ACCENT=#rrggbb` stands for the system's accent and
+/// `MDM_NATIVE_CONTRAST=1` for its high contrast, so no system setting is touched.
 pub fn system(ctx: &egui::Context) -> System {
+    let mut sys = system_says(ctx);
+    if let Some(c) = std::env::var("MDM_NATIVE_ACCENT")
+        .ok()
+        .and_then(|v| crate::palette::parse_hex(&v))
+    {
+        sys.accent = Some(Accent::from_color(c));
+    }
+    if std::env::var_os("MDM_NATIVE_CONTRAST").is_some_and(|v| v == "1") {
+        sys.more_contrast = true;
+    }
+    sys
+}
+
+fn system_says(ctx: &egui::Context) -> System {
     #[cfg(windows)]
     {
         let _ = ctx;
