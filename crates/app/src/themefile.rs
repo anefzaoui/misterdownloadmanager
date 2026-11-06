@@ -98,7 +98,6 @@ pub fn list() -> Vec<Entry> {
 }
 
 /// A theme file's id: its name without `.toml` or `.json`; None for any other file.
-#[allow(dead_code)]
 fn theme_id(path: &Path) -> Option<String> {
     let ext = path.extension()?.to_str()?.to_ascii_lowercase();
     if ext != "toml" && ext != "json" {
@@ -111,6 +110,13 @@ fn theme_id(path: &Path) -> Option<String> {
 pub fn load(id: &str) -> Result<Loaded, String> {
     let folder = dir().unwrap_or_default();
     load_in(&folder, id, 0)
+}
+
+/// The theme in this file (the themes it inherits from beside it).
+pub fn load_file(path: &Path) -> Result<Loaded, String> {
+    let id =
+        theme_id(path).ok_or_else(|| format!("{}: not a .toml or .json file", path.display()))?;
+    load_in(path.parent().unwrap_or(Path::new(".")), &id, 0)
 }
 
 /// [`load`] from `folder`, `depth` themes down an `inherits` chain.
@@ -386,6 +392,8 @@ mod tests {
         let t = load_in(&dir, "child", 0).unwrap().theme;
         assert_eq!(t.light.accent, Color32::from_rgb(0x11, 0x22, 0x33));
         assert_eq!(t.dark.text, Color32::from_gray(0xee));
+        assert_eq!(load_file(&dir.join("child.json")).unwrap().theme, t);
+        assert!(load_file(&dir.join("child.txt")).is_err());
         assert!(load_in(&dir, "a", 0).is_err());
         assert_eq!(load_in(&dir, "classic", 0).unwrap().theme, CLASSIC);
         let _ = std::fs::remove_dir_all(&dir);

@@ -76,8 +76,9 @@ pub fn set(theme: Theme) {
 }
 
 /// Makes the theme with this id the active one: a built-in, or a file in the themes folder
-/// (`themefile`). `MDM_THEME`, for tests and screenshots, names one instead. A theme that can't
-/// be read leaves the classic look, logged. Returns what was skipped or went wrong.
+/// (`themefile`). `MDM_THEME`, for tests and screenshots, names one instead (an id, or a theme
+/// file's path). A theme that can't be read leaves the classic look, logged. Returns what was
+/// skipped or went wrong.
 pub fn select(id: &str) -> Vec<String> {
     let id = std::env::var("MDM_THEME")
         .ok()
@@ -87,7 +88,13 @@ pub fn select(id: &str) -> Vec<String> {
         set(CLASSIC.clone());
         return Vec::new();
     }
-    match crate::themefile::load(&id) {
+    let path = std::path::Path::new(&id);
+    let loaded = if path.is_file() {
+        crate::themefile::load_file(path)
+    } else {
+        crate::themefile::load(&id)
+    };
+    match loaded {
         Ok(loaded) => {
             for w in &loaded.warnings {
                 tracing::warn!("theme {id}: {w}");
