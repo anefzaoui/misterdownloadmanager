@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
+  video, the right-click menu (it did nothing in Firefox) and the media list
+  ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
   Italian is the first catalog reviewed by a native speaker
   ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150))
@@ -149,8 +152,6 @@ Everything below ships together, in one release.
 - 🔍 A crash on Linux as Download File Info opens
   ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22
 - 🔍 Linux display issues ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
-- 🔍 Firefox: an HLS stream handed to MDM fails with yt-dlp's "Unsupported URL"
-  ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
 
 ## Planned
 

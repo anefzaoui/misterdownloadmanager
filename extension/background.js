@@ -1125,14 +1125,30 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
     const url = info.linkUrl || info.srcUrl;
     // A player's own stream (blob:, a MediaSource) or a stream's manifest: the Download video
     // window, which reads streams (a manifest downloaded as a file is only a short list).
+    // The manifest's own cookies (its server may not be the page's), as the media list sends.
     if (url && MANIFEST.test(url)) {
-      const reply = await native({ video: true, url: info.pageUrl, src: url, cookies: await cookieHeader(info.pageUrl, { incognito, storeId }), private: incognito });
+      const reply = await native({ video: true, explicit: true, url: info.pageUrl, src: url, cookies: await cookieHeader(url, { incognito, storeId }), private: incognito });
       if (!reply.ok && reply.why !== "options") explain(reply.why);
       return;
     }
-    if (url && /^(blob|mediastream):/i.test(url)) {
+    // A player playing from a blob: has no address yt-dlp can read: the stream its frame loaded,
+    // as the button over videos sends (#155: the page alone was sent, and yt-dlp, not knowing
+    // the site, answered "Unsupported URL"). Firefox names no address at all for a player fed
+    // by a MediaSource (nothing was sent then).
+    const player = info.mediaType === "video" || info.mediaType === "audio";
+    if ((url && /^(blob|mediastream):/i.test(url)) || (player && !url)) {
       const page = info.frameUrl || info.pageUrl;
-      const reply = await native({ video: true, url: page, referrer: info.pageUrl, cookies: await cookieHeader(page, { incognito, storeId }), private: incognito });
+      await mediaBack;
+      const src = streamOf({ tab, frameId: info.frameId || 0 });
+      const reply = await native({
+        video: true,
+        explicit: true,
+        url: page,
+        ...(src ? { src } : {}),
+        referrer: info.pageUrl && info.pageUrl !== page ? info.pageUrl : "",
+        cookies: await cookieHeader(src || page, { incognito, storeId }),
+        private: incognito,
+      });
       if (!reply.ok && reply.why !== "options") explain(reply.why);
       return;
     }
@@ -1248,7 +1264,9 @@ async function pageMessage(m, sender) {
       ...(src ? { src } : {}),
       title: typeof m.title === "string" ? m.title.slice(0, 300) : "",
       referrer: tab.url && tab.url !== page ? tab.url : "",
-      cookies: await cookieHeader(page, { incognito: tab.incognito, storeId: tab.cookieStoreId }),
+      // The cookies of what yt-dlp is given (the app files them under its host): the stream's
+      // own server may not be the page's, and the page's cookies are not for it.
+      cookies: await cookieHeader(src || page, { incognito: tab.incognito, storeId: tab.cookieStoreId }),
       ...(tab.incognito ? { private: true } : {}),
     });
     return { ok: Boolean(reply.ok), why: reply.why };

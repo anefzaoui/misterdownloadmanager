@@ -331,6 +331,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **HLS and DASH videos from the browser, as their stream**
+  ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155)): a video played as a
+  stream (most sites' long videos) failed with yt-dlp's "Unsupported URL" when the extension sent
+  the page instead of the stream. **Download with Mister Download Manager** in the right-click
+  menu on such a video now sends the stream its player loaded, as the button over videos and
+  **Media on this page** do. In Firefox it did nothing at all. The cookies sent are those of the
+  stream's own server, not the page's.
+- **Add torrent: the labels fit in every language**: in German, **Speichern unter** ran under
+  its field.
 - **Screen readers reach every row of a list, not only those in view**
   ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111)): a list's rows out of
   view (the last qualities of Download video, a long playlist, the downloads) are there too,

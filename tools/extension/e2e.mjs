@@ -12,8 +12,9 @@
 // The cases (per browser): link (a .zip link, throttled and not), cookie (cookies and referrer
 // forwarded), names (Content-Disposition), redirect, form (POST, 303), alt (Alt+click leaves it
 // to the browser), opened (a PDF or MP3 the browser would show or play), csp (the video button
-// under a strict CSP), hls (the stream a player loaded), media (the toolbar button's list of the
-// media a tab loaded: streams, files, a protected stream; #38), video (shown, clicked, dragged,
+// under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
+// by the button, the right-click menu and the media list, and read by yt-dlp; #155), media (the
+// toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38), video (shown, clicked, dragged,
 // kept; "never on the site" in the last browser), start (MDM not running: the host starts it).
 //
 // Windows: the host is registered for the current user while it runs (nmhost --register, as the
@@ -437,12 +438,36 @@ async function firefox(bin, profile, dl, page, ready) {
       };
       return { evaluate: ev, close: () => bidi.send("browsingContext.close", { context: c }).catch(() => {}) };
     };
+    // The page's right-click menu at (x, y), and its item `label` chosen (#155): a right-click,
+    // then the item activated in the browser's own window (its chrome scope). "chosen", or the
+    // items there were.
+    const menu = async (x, y, label) => {
+      await bidi.send("input.performActions", {
+        context,
+        actions: [{ type: "pointer", id: "mouse", actions: [{ type: "pointerMove", x: Math.round(x), y: Math.round(y) }, { type: "pointerDown", button: 2 }, { type: "pointerUp", button: 2 }] }],
+      });
+      const { contexts: windows } = await bidi.send("browsingContext.getTree", { "moz:scope": "chrome" });
+      const pick = `(async () => {
+        const menu = document.getElementById("contentAreaContextMenu");
+        const shown = () => [...menu.querySelectorAll("menuitem")].filter((m) => !m.hidden);
+        for (let i = 0; i < 50 && !shown().some((m) => m.label === ${JSON.stringify(label)}); i++) await new Promise((r) => setTimeout(r, 100));
+        const item = shown().find((m) => m.label === ${JSON.stringify(label)});
+        if (!item) { const all = shown().map((m) => m.label).join(" | "); menu.hidePopup(); return "not there: " + all; }
+        const at = gContextMenu ? { onVideo: gContextMenu.onVideo, mediaURL: gContextMenu.mediaURL, linkURL: gContextMenu.linkURL } : null;
+        menu.activateItem(item);
+        return "chosen " + JSON.stringify(at);
+      })()`;
+      const r = await bidi.send("script.evaluate", { expression: pick, target: { context: windows[0].context }, awaitPromise: true, "moz:scope": "chrome" });
+      if (r.type === "exception") throw new Error(`the menu: ${r.exceptionDetails.text}`);
+      return r.result.value;
+    };
     return {
       extension,
       base: `moz-extension://${FIREFOX_UUID}/`,
       major,
       evaluate,
       mouse,
+      menu,
       navigate,
       key,
       pill,
@@ -464,6 +489,8 @@ async function firefox(bin, profile, dl, page, ready) {
 
 let data = "";
 let downloads = "";
+// The yt-dlp the test instance uses (the streams case), or "" (none found).
+let ytdlp = "";
 const appExe = exe("misterdownloadmanager");
 
 // One command to the instance over its channel (ipc.json), its one-line answer.
@@ -630,6 +657,72 @@ foreach ($w in $A::RootElement.FindAll([System.Windows.Automation.TreeScope]::Ch
 }
 
 const VIDEO_WINDOW = "Download video from a page";
+
+// Whether the Download video window's "Download Now" is enabled: yt-dlp looked the address up
+// and offered something to download (#155). null while the window isn't open.
+function videoReady(pid) {
+  const script = `
+Add-Type -AssemblyName UIAutomationClient; Add-Type -AssemblyName UIAutomationTypes
+$A = [System.Windows.Automation.AutomationElement]
+$pid_ = New-Object System.Windows.Automation.PropertyCondition($A::ProcessIdProperty, ${pid})
+$now = New-Object System.Windows.Automation.AndCondition(
+  (New-Object System.Windows.Automation.PropertyCondition($A::ControlTypeProperty, [System.Windows.Automation.ControlType]::Button)),
+  (New-Object System.Windows.Automation.PropertyCondition($A::NameProperty, 'Download Now')))
+$edit = New-Object System.Windows.Automation.AndCondition(
+  (New-Object System.Windows.Automation.PropertyCondition($A::ControlTypeProperty, [System.Windows.Automation.ControlType]::Edit)),
+  (New-Object System.Windows.Automation.PropertyCondition($A::NameProperty, 'Page address')))
+# The window's accessible root is named after the app, not its title: the one with "Page address".
+foreach ($w in $A::RootElement.FindAll([System.Windows.Automation.TreeScope]::Children, $pid_)) {
+  if (-not $w.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $edit)) { continue }
+  $b = $w.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $now)
+  if ($b) { 'READY ' + $b.Current.IsEnabled; break }
+}`;
+  const out = spawnSync("powershell", ["-NoProfile", "-Command", script], { encoding: "utf8" }).stdout;
+  const m = /^READY (\w+)$/m.exec(out);
+  return m ? m[1] === "True" : null;
+}
+
+// #155: a stream handed over by `trigger` (the button over the player, the right-click menu, the
+// media list) reaches yt-dlp as its manifest, with the page's cookie and the page as referrer,
+// and yt-dlp reads it (Download Now enabled). Before, a player playing from a blob: sent the page
+// itself, and yt-dlp, not knowing the site, answered "Unsupported URL". The window's address,
+// and what yt-dlp asked the lab for.
+async function streamLookedUp(trigger, manifest, page, cookie) {
+  const pid = appPid();
+  appWindows(pid, VIDEO_WINDOW);
+  await until("the Download video window closed", 5000, () => !appWindows(pid).includes(VIDEO_WINDOW));
+  await clearLog();
+  await trigger();
+  await until("the Download video window", 15000, () => appWindows(pid).includes(VIDEO_WINDOW)).catch(async (e) => {
+    const asked = (await (await fetch(`${LAB}/_log`)).json()).map((x) => `${x.path} ${x.status}`);
+    throw new Error(`${e.message} (the lab saw: ${asked.join(", ") || "nothing"})`);
+  });
+  const address = await until("the Download video window's address", 20000, () => videoAddress(pid)).catch((e) => {
+    // What the window showed, for the report (PrintWindow: off the screens too).
+    const shot = path.join(work, `video-window-${Date.now()}.png`);
+    spawnSync("powershell", ["-NoProfile", "-File", path.join(root, "tools", "lab", "cap-own.ps1"), "-ProcessId", String(pid), "-Title", VIDEO_WINDOW, "-Out", shot]);
+    e.message += fs.existsSync(shot) ? ` (the window: ${shot})` : " (no capture)";
+    throw e;
+  });
+  // yt-dlp's requests carry the page as referrer (the extension's own fetch of a manifest, for
+  // the media list's qualities, doesn't).
+  const asked = async () => (await (await fetch(`${LAB}/_log`)).json()).filter((e) => e.referer === page);
+  let ready = false;
+  try {
+    ready = await until("yt-dlp's lookup (Download Now enabled)", 45000, () => videoReady(pid));
+  } catch (e) {
+    const got = await asked();
+    throw new Error(`${e.message}; the window got ${address}; yt-dlp asked for ${got.map((x) => `${x.path} ${x.status}`).join(", ") || "nothing"}`);
+  } finally {
+    appWindows(pid, VIDEO_WINDOW);
+  }
+  const got = await asked();
+  const first = got.find((x) => x.path === manifest);
+  if (!first) throw new Error(`yt-dlp didn't ask for ${manifest}: ${got.map((x) => x.path).join(", ")}`);
+  if (got.some((x) => x.path === "/page")) throw new Error("yt-dlp was given the page too");
+  if (!(first.cookie || "").includes(cookie)) throw new Error(`${manifest} without the cookie ${cookie}: ${first.cookie}`);
+  return `${address.replace(LAB, "")} read by yt-dlp${ready ? "" : "?"} (cookie, referrer)`;
+}
 const appPid = () => {
   const [pid] = ourApps();
   if (!pid) throw new Error("the test instance isn't running");
@@ -985,6 +1078,65 @@ const CASES = {
     return `sent ${address.replace(LAB, "")}`;
   },
 
+  // #155: an HLS or DASH player (playing from a blob:) handed to MDM, by the button over it, the
+  // right-click menu and the toolbar button's media list: yt-dlp gets the stream's manifest, with
+  // the cookie and the page as referrer, and reads it. Needs a yt-dlp (E2E_YTDLP, else one on
+  // PATH): the test instance uses it as the person's own copy (Helpers).
+  async streams(t) {
+    if (!ytdlp) throw new Skip("no yt-dlp (E2E_YTDLP or PATH)");
+    const cookie = `sid155=${t.name}`;
+    await t.session.navigate(`${LAB}/cookie?set=${encodeURIComponent(cookie)}`);
+    const done = [];
+    // Each path's failure names it.
+    const named = async (what, f) => {
+      try {
+        return `${what}: ${await f()}`;
+      } catch (e) {
+        e.message = `${what}: ${e.message}${done.length ? ` (passed: ${done.join("; ")})` : ""}`;
+        throw e;
+      }
+    };
+    for (const [kind, manifest] of [["hls", "/hls/master.m3u8"], ["dash", "/dash/manifest.mpd"]]) {
+      await t.session.navigate(`${LAB}/page?${kind}=1`);
+      const state = await until("the stream player", 15000, () => t.session.evaluate("document.body.dataset.stream || ''"));
+      if (state !== "done") throw new Error(`the page's ${kind} player: ${state}`);
+      const page = await t.session.evaluate("location.href");
+      const v = await rect(t.session, "#player");
+      // The button over the player.
+      done.push(await named(`${kind} button`, () => streamLookedUp(async () => {
+        const b = await hover(t.session, v);
+        if (!b) throw new Error("no button over the stream's player");
+        await t.session.mouse(b.l + 14, (b.t + b.b) / 2, "click");
+      }, manifest, page, cookie)));
+      // The right-click menu on the player (Firefox: its menu can be driven headless).
+      if (t.session.menu) {
+        done.push(await named(`${kind} menu`, () => streamLookedUp(async () => {
+          const r = await t.session.menu((v.l + v.r) / 2, (v.t + v.b) / 2, "Download with Mister Download Manager");
+          if (!String(r).startsWith("chosen")) throw new Error(`the right-click menu: ${r}`);
+          if (process.env.E2E_DEBUG) console.error("menu:", r);
+        }, manifest, page, cookie)));
+      }
+      // The toolbar button's media list.
+      const popup = await t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(page)}`);
+      try {
+        const name = manifest.split("/").pop();
+        await until("the popup's media list", 15000, () =>
+          popup.evaluate(`[...document.querySelectorAll("#media-list li")].some((li) => li.querySelector(".name").textContent === ${JSON.stringify(name)} && li.querySelector("button"))`),
+        );
+        done.push(await named(`${kind} list`, () => streamLookedUp(
+          () => popup.evaluate(`(() => { const li = [...document.querySelectorAll("#media-list li")].find((x) => x.querySelector(".name").textContent === ${JSON.stringify(name)}); li.querySelector("button").click(); return true; })()`),
+          manifest,
+          page,
+          cookie,
+        )));
+      } finally {
+        await popup.close();
+      }
+    }
+    if (!t.session.menu) done.push("right-click menu: not drivable in Chromium (tools/extension/test.mjs)");
+    return done.join("; ");
+  },
+
   // #38: the toolbar button's list of what the tab loaded. A page plays a video file (behind a
   // cookie and hotlink protection), a sound, an HLS stream, a DASH stream and a DRM-protected
   // one; the popup (its page, in a tab of its own) lists the five, each stream once with its
@@ -1187,6 +1339,15 @@ async function run() {
       },
     }),
   );
+  // A yt-dlp for the streams case (#155): E2E_YTDLP, else one on PATH, chosen as the person's
+  // own copy (Helpers: <data>/tools/programs.json), so nothing is downloaded.
+  const found = process.env.E2E_YTDLP || spawnSync(process.platform === "win32" ? "where" : "which", ["yt-dlp"], { encoding: "utf8" }).stdout.split(/\r?\n/)[0];
+  const version = found && fs.existsSync(found) ? spawnSync(found, ["--version"], { encoding: "utf8" }).stdout.trim() : "";
+  if (version) {
+    ytdlp = found;
+    fs.mkdirSync(path.join(data, "tools"), { recursive: true });
+    fs.writeFileSync(path.join(data, "tools", "programs.json"), JSON.stringify({ "yt-dlp": { version, exe: found } }));
+  }
   // The browsers pass these on to the host, and the host to an app it starts.
   process.env.MDM_DATA_DIR = data;
   process.env.MDM_OFFSCREEN = "1";

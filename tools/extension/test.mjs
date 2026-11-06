@@ -496,6 +496,46 @@ const ok = (what) => {
   assert.equal(natives(calls).filter((m) => m.video)[1].src, undefined, "forgotten on another page");
   ok("streams: the frame's manifest goes with the button");
 }
+// #155: the right-click menu on a player playing from a blob: sends the manifest its frame loaded
+// (it sent the page alone, which yt-dlp answered "Unsupported URL"), with the manifest's cookies;
+// a manifest's own link goes with its cookies too; the button asks for the stream's cookies.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  listeners.responseStarted({ tabId: 7, frameId: 2, url: "https://cdn.test/s/master.m3u8", responseHeaders: [] });
+  listeners.responseStarted({ tabId: 7, frameId: 0, url: "https://other.test/x/main.mpd", responseHeaders: [] });
+  await listeners.menu(
+    { menuItemId: "mdm-link", srcUrl: "blob:https://player.test/1", frameId: 2, frameUrl: "https://player.test/embed", pageUrl: "https://blog.test/post" },
+    { id: 7, incognito: false },
+  );
+  await settle();
+  const m = natives(calls).find((x) => x.video);
+  assert.deepEqual(
+    [m.url, m.src, m.referrer, m.explicit],
+    ["https://player.test/embed", "https://cdn.test/s/master.m3u8", "https://blog.test/post", true],
+    "the frame's stream, not the page alone",
+  );
+  assert.ok(calls.some((c) => c[0] === "cookies" && c[1].url === "https://cdn.test/s/master.m3u8"), "the stream's cookies");
+  await listeners.menu({ menuItemId: "mdm-link", linkUrl: "https://cdn.test/s/other.m3u8", pageUrl: "https://blog.test/post" }, { id: 7, incognito: false });
+  await settle();
+  assert.equal(natives(calls).filter((x) => x.video)[1].src, "https://cdn.test/s/other.m3u8");
+  assert.ok(calls.some((c) => c[0] === "cookies" && c[1].url === "https://cdn.test/s/other.m3u8"), "the manifest's cookies");
+  // Firefox names no address for a player fed by a MediaSource: the same stream goes.
+  await listeners.menu({ menuItemId: "mdm-link", mediaType: "video", frameId: 2, frameUrl: "https://player.test/embed", pageUrl: "https://blog.test/post" }, { id: 7, incognito: false });
+  await settle();
+  assert.equal(natives(calls).filter((x) => x.video).pop().src, "https://cdn.test/s/master.m3u8", "Firefox: no srcUrl");
+  // Nothing loaded in that tab: the page, as before (a page yt-dlp may know).
+  await listeners.menu({ menuItemId: "mdm-link", srcUrl: "blob:https://tube.test/2", frameId: 0, pageUrl: "https://tube.test/watch" }, { id: 9, incognito: false });
+  await settle();
+  const page = natives(calls).filter((x) => x.video).pop();
+  assert.deepEqual([page.url, page.src], ["https://tube.test/watch", undefined]);
+  // The button: the stream's cookies, not the page's.
+  const sender = { id: "ours", url: "https://blog.test/post", frameId: 0, tab: { id: 7, url: "https://blog.test/post" } };
+  calls.length = 0;
+  await new Promise((r) => listeners.message({ type: "video", src: "" }, sender, r));
+  assert.ok(calls.some((c) => c[0] === "cookies" && c[1].url === "https://other.test/x/main.mpd"), "the button: the stream's cookies");
+  ok("#155: the right-click menu on a stream's player sends its manifest; cookies of the stream");
+}
 {
   const { api, listeners } = fakeApi({ firefox: true, panelOn: false });
   load(api, true);
