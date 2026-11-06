@@ -5263,13 +5263,14 @@ impl App {
     fn paint(&mut self, ui: &mut Ui) {
         let ctx = ui.ctx().clone();
         let full = ui.max_rect();
-        // A style theme's title bar, drawn above the layout (Windows; #45).
+        // The client area, laid out from the right in a right-to-left interface (winui).
+        let _surface = winui::Surface::enter(full.min.x, full.max.x);
+        // A style theme's title bar, drawn above the layout (Windows; #45), mirrored right to
+        // left as the progress window's.
         let full = self.drawn_caption(ui, full);
         let o = full.min;
         let (w, h) = (full.width(), full.height());
         let mut chosen: Option<(Cmd, Option<u64>)> = None;
-        // The client area, laid out from the right in a right-to-left interface (winui).
-        let _surface = winui::Surface::enter(o.x, o.x + w);
 
         // The menu bar from the keyboard: F10 or Alt pressed alone opens its first menu, Alt and a
         // menu's underlined letter that menu (Windows and Linux); on macOS, whose apps have no
