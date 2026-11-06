@@ -1,4 +1,4 @@
-﻿//! One download: probe, parallel connections driven by the planner, positional writes, progress.
+//! One download: probe, parallel connections driven by the planner, positional writes, progress.
 //!
 //! The first connection is also the probe: a plain `GET` (no Range, as IDM does — D-007) that
 //! keeps streaming from byte 0 while further connections split the file (notes/ENGINE.md §1).
@@ -1119,6 +1119,10 @@ struct Ctx {
     cancel: CancellationToken,
     /// `RANGES_*`: learned from the first range answer.
     ranges: AtomicU8,
+    /// The first answer advertised ranges (`Accept-Ranges: bytes`, or a 206): a full answer to
+    /// a range request with the same ETag is then an edge that missed the range this time, not
+    /// a server without ranges (#136).
+    advertised: bool,
     /// Further connections wait for a range answer (`range_answered`): a POST whose server
     /// hasn't shown yet that it takes ranges (`Options::post`).
     wait_for_ranges: bool,
@@ -1455,6 +1459,10 @@ async fn run_fresh(
     } else {
         RANGES_UNKNOWN
     };
+    // The first answer says the server takes ranges (`Accept-Ranges: bytes`).
+    let advertised = ranges == RANGES_YES
+        || header_str(resp.headers(), header::ACCEPT_RANGES)
+            .is_some_and(|v| v.split(',').any(|t| t.trim().eq_ignore_ascii_case("bytes")));
     let final_url = resp.url().clone();
     shared.event(format!(
         "Connected to {}{}: {}, size {}",
@@ -1542,6 +1550,7 @@ async fn run_fresh(
             // download (which may still fall back to one connection).
             cancel: cancel.child_token(),
             ranges: AtomicU8::new(ranges),
+            advertised,
             wait_for_ranges,
             range_answered: Default::default(),
             as_get,
@@ -1734,6 +1743,8 @@ async fn run_fresh_ftp(
             shared: shared.clone(),
             cancel: cancel.child_token(),
             ranges: AtomicU8::new(ranges),
+            // FTP's REST is asked for, not advertised.
+            advertised: true,
             wait_for_ranges: false,
             range_answered: Default::default(),
             as_get: AsGet::default(),
@@ -1892,6 +1903,7 @@ async fn run_resume(
         cancel: cancel.child_token(),
         // Ranges worked before: a 200 now is a changed file or a range-less edge.
         ranges: AtomicU8::new(RANGES_YES),
+        advertised: true,
         range_answered: Default::default(),
         as_get,
         web_page_ok,
@@ -2534,7 +2546,14 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
             Ok(()) => {}
         }
         let complete = ctx.shared.with_planner(|p| p.is_complete());
-        if set.is_empty() && !complete {
+        // Every byte is in: the connections still asking (a retry under way, an answer late on
+        // a busy machine) have nothing left to fetch. Stopped now, a late answer can't start
+        // the download over (#136: a server without ranges sent the whole file twice).
+        if complete {
+            set.shutdown().await;
+            break;
+        }
+        if set.is_empty() {
             if let Some(e) = last_err.take() {
                 return Err(e); // the last connection exhausted its retries
             }
@@ -2802,7 +2821,14 @@ fn per_node_etag(ctx: &Ctx, sent: Option<&HeaderValue>, resp: &Response) -> bool
     // Sent with an ETag (dates never start with a quote) — possibly one another connection has
     // just dropped, so don't compare it with the current one.
     let sent_etag = sent.is_some_and(|s| s.as_bytes().starts_with(b"\""));
+    // Another node's ETag differs from the one sent. The same ETag is that too only from a
+    // server that advertised ranges: one that didn't, answering in full, has no ranges (#136),
+    // and is told so at once rather than after a round of retries.
+    let theirs = header_str(resp.headers(), header::ETAG);
+    let other_node = ctx.advertised
+        || (theirs.is_some() && theirs.map(str::as_bytes) != sent.map(HeaderValue::as_bytes));
     let same = sent_etag
+        && other_node
         && resp.content_length() == Some(ctx.size)
         && v.last_modified.is_some()
         && header_str(resp.headers(), header::LAST_MODIFIED) == v.last_modified.as_deref();

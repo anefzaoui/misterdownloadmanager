@@ -17,6 +17,8 @@ Everything below ships together, in one release.
   first: **Add to Firefox** on the website, in the help, the FAQ and the README, and in MDM's
   **Add Mister Download Manager to your browser** window (for Zen and LibreWolf too); Chrome,
   Edge, Brave, Opera and Vivaldi by hand until the Chrome Web Store listing is approved
+- ✅ A server that can't resume a download no longer gets the file downloaded twice on a busy
+  computer (part of [#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
   Italian is the first catalog reviewed by a native speaker
   ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150))
@@ -145,8 +147,6 @@ Everything below ships together, in one release.
   icons all come from the chosen theme, and Base16 and pywal schemes can be imported
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - 🔄 A crash when a magnet link comes from Firefox ([#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145))
-- 🔄 A server that can't resume a download no longer gets the file downloaded twice
-  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 
 ### Bugs being looked into
 
