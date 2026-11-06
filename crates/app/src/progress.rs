@@ -1022,6 +1022,25 @@ fn status_page(ui: &Ui, o: Pos2, item: &Item, snap: Option<&Snapshot>, frac: f64
         };
         fit(label, vx, base, &value, vc);
     }
+    // Where its server is (#140): a file download's (a torrent, a video or a gallery has no
+    // single server of MDM's own). As the running download sees it, else as its last run did.
+    if item.torrent.is_none() && item.video.is_none() && item.gallery.is_none() {
+        // i18n: label before where a download's server is (its country and round trip)
+        let label = crate::i18n::t("Server");
+        text(p, o.x + 33.0, o.y + 167.0, label, winui::TEXT());
+        let seen = snap
+            .and_then(|s| s.server.as_ref())
+            .map(crate::whereis::Seen::from)
+            .or_else(|| item.server.clone());
+        crate::whereis::line(
+            ui,
+            o.x + column.max(33.0 + winui::text_width(p, label).ceil() + 6.0),
+            o.y + 167.0,
+            o.x + PAGE_TEXT_RIGHT,
+            seen.as_ref(),
+            &format!("progress-{}", item.id),
+        );
+    }
 }
 
 /// How much lower a torrent's details sit than a download's (and how much taller its window

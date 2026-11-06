@@ -22,6 +22,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Where a download's server is** ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140)):
+  **Download File Info**, the progress window and **Properties** show the server's country, with
+  its flag, and its round trip, such as **about 24 ms (near)**, in green, amber or red. The country
+  comes from a table that ships with MDM ([IP to Country Lite by DB-IP](https://db-ip.com),
+  CC BY 4.0, refreshed with each release), looked up on the computer: no address is sent
+  anywhere. The time is measured from the download's own connections, with nothing extra sent.
+  Through a proxy MDM says so instead of guessing, and a CDN's server (Cloudflare, CloudFront,
+  Fastly, Akamai and others) is said to be the CDN's, not the site owner's. Properties keeps what
+  the last run saw. MDM is about 770 KB larger (the table 674 KB, the flags 95 KB).
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the

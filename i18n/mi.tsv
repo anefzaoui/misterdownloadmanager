@@ -187,6 +187,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	E ono ngā pūāhua me ngā mati (0-9, a-f) o te ID whirihoranga NextDNS.
+#. text in whereis.rs
+#. the tooltip of where a download's server is, when a proxy carries the download
+#, machine
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	He takawaenga tēnei tikiake: nō te takawaenga te wāhi me te wā, ehara i te tūmau.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -210,6 +214,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mō Mister Download Manager
+#. text in whereis.rs
+#. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
+#, machine
+	about {ms} ms ({reach})	tata ki te {ms} ms ({reach})
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -316,6 +324,10 @@
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	Wāhitau:
+#. text in whereis.rs
+#. the tooltip of where a download's server is: its IP address
+#, machine
+	Address: {address}	Wāhitau: {address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
@@ -328,6 +340,22 @@
 #. a check of Test browser integration (Options → General)
 #, machine
 	Advanced browser integration is on	Kei te kā te whakauru pūtirotiro matatau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Afghanistan	Afakanitāne
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aland Islands	Ngā Moutere o Ārana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Albania	Arāpania
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Algeria	Aratiria
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Ngā Tikiake Katoa
@@ -382,6 +410,22 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	AM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	American Samoa	Hāmoa Amerika
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Andorra	Andorra
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Angola	Angola
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Anguilla	Anguilla
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
@@ -391,6 +435,14 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	I whakautua i roto i te {ms} ms: {ip}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antarctica	Antarctica
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antigua and Barbuda	Antigua me Barbuda
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
 #, machine
@@ -416,9 +468,21 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	E hiahia ana koe ki te muku i te "{name}" mai i te rārangi tikiake a Mister Download Manager?
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Argentina	Aretina
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Armenia	Armenia
 #. text in rssdlg.rs
 #, machine
 	Articles	Ngā Tuhinga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aruba	Aruba
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	Ka tuhia e te rohe o te pūnaha
@@ -454,6 +518,14 @@
 #. text in the Scheduler window
 #, machine
 	August	Ākuhata
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Australia	Ahitereiria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Austria	Ateria
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -461,23 +533,95 @@
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	Tīmata aunoa te tikiake i ngā momo kōnae e whai ake nei:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Azerbaijan	Azerbaijan
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahamas	Bahamas
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahrain	Bahrain
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bangladesh	Bangladesh
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Barbados	Barbados
 #. window title in the Batch download window
 #, machine
 	Batch download	Tikiake puranga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belarus	Belarus
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belgium	Pēriamu
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belize	Belize
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Benin	Benin
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bermuda	Bermuda
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
 #, machine
 	Best quality	Kounga pai rawa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bhutan	Bhutan
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
 	Block the addresses in this list (P2P or eMule format):	Āraia ngā wāhitau kei tēnei rārangi (hōputu P2P, eMule rānei):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bolivia	Bolivia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bonaire, Sint Eustatius and Saba	Bonaire, Sint Eustatius me Saba
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bosnia and Herzegovina	Bosnia me Herzegovina
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	E rua ngā mea e wātea ana. Ka tikiakehia e MDM mai i ō rātou tukunga mana mā tana ake kaiwhakatikiake, ā, ka tirohia te waitohu o ia kōnae i mua i te whakahaere. Tata ki te 100 MB, kotahi anake.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Botswana	Botswana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bouvet Island	Motu Bouvet
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brazil	Parīhi
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Whakahokia mai ngā {names} kia rite ki te wā i tukuna ai: ō rātou ingoa, momo kōnae me ngā kōpaki? Ko ō kāwai ake, ko te Whānui me ngā Torrents ka noho tonu. Ko ngā tikiake kua nekehia ki te Whānui ka noho tonu ki reira.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	British Indian Ocean Territory	Rohe Moana Iniana o Peretānia
 #. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
@@ -492,6 +636,22 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Whakauru Pūtirotiro/Pūnaha
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brunei	Brunei
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bulgaria	Bulgaria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burkina Faso	Burkina Faso
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burundi	Burundi
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
@@ -502,6 +662,22 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	mā te kaihopu hononga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cabo Verde	Kāpo Wētere
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cambodia	Kamapōtia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cameroon	Kamarūna
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Canada	Kānata
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
@@ -547,10 +723,22 @@
 #. text in categories.rs
 #, machine
 	Category properties	Ngā āhuatanga kāwai
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cayman Islands	Ngā Moutere Keimana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Central African Republic	Te Whenua o Āwherika Waenganui
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	Ingoa tiwhikete:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chad	Kārata
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -610,6 +798,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	E tirohia ana...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chile	Hiri
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	China	Haina
 #. text in langpick.rs
 #, machine
 	Choose a language	Kōwhiria he reo
@@ -620,6 +816,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	Kōwhiria {name}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Christmas Island	Moutere Kirihimete
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -642,6 +842,18 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Close a menu or dialog	Katia he tahua, he pouaka kōrero rānei
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cocos (Keeling) Islands	Ngā Moutere Kokoko (Kīringi)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Colombia	Koromōpia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Comoros	Komoro
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -661,6 +873,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	Whakaū i te mukunga o ngā tikiake
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Congo	Kongo
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -682,6 +898,10 @@
 #. text in the Options window
 #, machine
 	Connections:	Ngā hononga:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cook Islands	Ngā Moutere Kuki
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Kua tāruatia ki te papatopenga.
@@ -696,6 +916,10 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	Tārua pūrongo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Costa Rica	Kōta Rika
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
@@ -709,6 +933,18 @@
 #. window title in a dialog box
 #, machine
 	Create folder	Waihanga kōpaki
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Croatia	Koroātia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cuba	Kūpa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Curaçao	Kuraao
 #. text in the Options window
 #, machine
 	Customize "Download progress" dialog	Whakaritea te pouaka kōrero "Tikiake e haere ana"
@@ -721,6 +957,18 @@
 #. text in the Options window
 #, machine
 	Customize MDM menu items in context menu of browsers	Whakaritea ngā tūemi tahua MDM i te tahua horopaki o ngā pūtirotiro
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cyprus	Haipara
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Czech Republic	Te Whenua Tūwehe o Tīeke
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Côte d'Ivoire	Kōte Tīwai
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
@@ -789,6 +1037,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads and their files (asks first)	Mukua ngā tikiake kua tīpakohia me ōna kōnae (ka pātai tuatahi)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Denmark	Tenemāka
 #. text in a dialog box
 #, machine
 	Description	Whakaahuatanga
@@ -809,6 +1061,10 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	e whakaatuhia ana i te rārangi o ngā rārangi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Djibouti	Tipūti
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
@@ -834,6 +1090,14 @@
 #. category name: documents (pdf, doc…)
 #, machine
 	Documents	Tuhinga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominica	Tominika
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominican Republic	Te Whenua Tūwehe o Tominika
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 #, machine
@@ -979,6 +1243,10 @@
 #. {time} = a time of day (keep the braces as they are)
 #, machine
 	Downloads stopped and will resume automatically at {time}.	Kua tū ngā tikiake, ā, ka tīmata anō aunoa hei te {time}.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	DR Congo	DR Kongo
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1005,6 +1273,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	Te kōpaki kāwai o ia kōnae
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ecuador	Ekuatoa
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -1024,6 +1296,14 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Edit...	Whakatika...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Egypt	Īhipa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	El Salvador	Ere Hāwara
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Īmēra
@@ -1059,6 +1339,14 @@
 #. RSS feeds window, Download rules: the episode filter can't be read
 #, machine
 	Episodes: like 1x2;1x5-8;2x1- (season x episode)	Ngā wāhanga: pērā i te 1x2;1x5-8;2x1- (wāhanga x wāhanga)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Equatorial Guinea	Ekuatoria Kīni
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eritrea	Eritēria
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1070,6 +1358,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Error: {error}	Hapa: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Estonia	Etonia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eswatini	Ewātini
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ethiopia	Etiopia
 #. text in the Options window
 #, machine
 	Event	Takahanga
@@ -1133,6 +1433,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	Te tango...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Falkland Islands	Ngā Moutere Whākarana
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (over 150 ms)
+#, machine
+	far	tawhiti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Faroe Islands	Ngā Moutere Fēroa
 #. text in the Scheduler window
 #, machine
 	February	Pēpuere
@@ -1156,6 +1468,10 @@
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
 	ffmpeg: joins picture and sound	ffmpeg: ka hono i te pikitia me te oro
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Fiji	Whītī
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -1232,6 +1548,10 @@
 #. adjective: the downloads that are complete
 #, machine
 	Finished	Kua oti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Finland	Whinirana
 #. text in the Options window
 #, machine
 	First day of the week:	Rā tuatahi o te wiki:
@@ -1263,6 +1583,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	Rā
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	France	Wīwī
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
@@ -1271,6 +1595,18 @@
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
 	Free, official and checked	Kore utu, mana, ā, kua tirohia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Guiana	Guyana Wīwī
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Polynesia	Poronīhia Wīwī
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Southern Territories	Ngā Rohe ki te Tonga o Wīwī
 #. text in the Scheduler window
 #, machine
 	Friday	Rāmere
@@ -1307,6 +1643,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gabon	Kāpona
 #. text in gallerydlg.rs
 #. in Download a gallery, before gallery-dl is installed
 #, machine
@@ -1325,12 +1665,24 @@
 #. a gallery download's error: the helper program it needs is missing
 #, machine
 	gallery-dl is not installed (Add URL with a gallery's address installs it)	Kāore i tāutatia te gallery-dl (Ka tāuta te Tāpiri URL me te wāhitau o tētahi taiwhanga)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gambia	Kamopia
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
 #, machine
 	General	Whānui
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Georgia	Hōria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Germany	Tiamana
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
@@ -1347,6 +1699,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	E tiki ana i te rārangi kōnae mai i ngā hoa... {n} h
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ghana	Kāna
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gibraltar	Kiparatara
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -1355,6 +1715,50 @@
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
 	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Kāore a Google Drive e tuku i tēnei kōnae ināianei: {message} (he maha tonu te āwhina o te takiuru ki Google i tō pūtirotiro; ki te kore, ngana anō ā muri ake nei)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greece	Kirihi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greenland	Whenua Kākāriki
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Grenada	Kerenāta
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guadeloupe	Kuatarūpe
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guam	Kuama
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guatemala	Kuatemara
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guernsey	Kuenerehi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea	Kini
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea-Bissau	Kini-Pihau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guyana	Kuiana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Haiti	Haiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	Whakairi i te pouwhanga ka oti
@@ -1362,6 +1766,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	Kei a au
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Heard Island and McDonald Islands	Heard Island me McDonald Islands
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1400,6 +1808,14 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Whārangi kāinga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Honduras	Honurata
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hong Kong	Hong Kong
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1410,9 +1826,17 @@
 #. checkbox in the Options window
 #, machine
 	https	https
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hungary	Hanekari
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Ka tikiake au ki a Mister Download Manager: tere, kore utu, ā, he rite tonu ki te kaiwhakahaere tikiake kua mōhio kē koe. {link}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iceland	Tiorangi
 #. text in the Options window
 #, machine
 	If a duplicate download link is added:	Mēnā ka tāpirihia he hononga tikiake tārite:
@@ -1439,6 +1863,14 @@
 #. a spin box's arrow, for screen readers: one more
 #, machine
 	Increase	Whakanui
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	India	Inia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Indonesia	Initonīhia
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -1474,6 +1906,26 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	Ngā wāhitau IP (kōwhiringa):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iran	Irāna
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iraq	Irāka
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ireland	Airani
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Isle of Man	Isle of Man
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Israel	Iharaira
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1507,6 +1959,10 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Ka taea te tāpiri i tētahi rōpū ingoa kōnae raupapa pēnei i te img001.jpg, img002.jpg, me ētahi atu,\nimg100.jpg ki te rārangi tikiake MDM. Whakamahia te tohu whetū hei tauira ingoa kōnae.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Italy	Itāria
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1514,9 +1970,25 @@
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	kāore i rite ōna mōhiohio tukunga ki te mea i tūmanakohia: {detail}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jamaica	Hamaika
 #. text in the Scheduler window
 #, machine
 	January	Hānuere
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Japan	Hapani
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jersey	Tiērehi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jordan	Hōrano
 #. text in the Scheduler window
 #, machine
 	July	Hūrae
@@ -1526,12 +1998,20 @@
 #. text in the Scheduler window
 #, machine
 	June	Hune
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kazakhstan	Kāhakitāne
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KBytes/hek
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	Kia tūhura tonu i ngā awa i muri i te otinga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kenya	Kēnia
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
@@ -1547,10 +2027,34 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	Kī...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kiribati	Kiribati
+#. text in a download's Properties window
+#. Properties, where a download's server is: not seen yet (it hasn't run)
+#, machine
+	known once it has run	ka mōhiotia ina oti te rere
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kosovo	Kosovo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kuwait	Kuwait
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kyrgyzstan	Kyrgyzstan
 #. text in langpick.rs
 #. window title (the interface language)
 #, machine
 	Language	Reo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Laos	Laos
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
@@ -1567,16 +2071,40 @@
 #. button: add it now, start downloading later
 #, machine
 	Later	Ā muri ake
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Latvia	Latvia
 #. text in the Options window
 #, machine
 	Launch Mister Download Manager on startup	Whakarewa i a Mister Download Manager i te tīmatanga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lebanon	Repanona
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lesotho	Lesotho
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
 	Letters	Pūāhua
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liberia	Liberia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Libya	Ripia
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Licenses and credits	Raihana me ngā nama
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liechtenstein	Liechtenstein
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	Whakawhāiti i ngā tikiake katoa ki
@@ -1624,6 +2152,10 @@
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	Ngā rārangi wāhitau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lithuania	Lithuania
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
@@ -1661,6 +2193,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	E rapu ana i te whārangi...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Luxembourg	Luxembourg
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Macau	Macau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Madagascar	Madagascar
 #. message or event log entry in the main window
 #, machine
 	Main download queue	Rārangi tikiake matua
@@ -1671,6 +2215,26 @@
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	Kia māmā te pānui i te pūrongo: e tiki ana i ngā tohu ({done} o {total} MB)…
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malawi	Malawi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malaysia	Malaysia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Maldives	Maldives
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mali	Mali
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malta	Malta
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	Whirihoranga takawaenga/socks ā-ringa
@@ -1681,12 +2245,28 @@
 #. text in the Scheduler window
 #, machine
 	March	Poutū-te-rangi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Marshall Islands	Motu Māhara
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Martinique	Martinique
 #. checkbox in the Find window
 #, machine
 	Match case	Whakarite take
 #. checkbox in the Find window
 #, machine
 	Match whole string only	Whakarite aho katoa anake
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritania	Mauritania
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritius	Mauritius
 #. group box title in the Options window
 #, machine
 	Max. connections number	Tau hononga mōrahi
@@ -1709,6 +2289,22 @@
 #. the month (the fifth of the year)
 #, machine
 	May	Haratua
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mayotte	Mayotte
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (60 to 150 ms)
+#, machine
+	medium	waenga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mexico	Mexico
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Micronesia	Micronesia
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
 #, machine
@@ -1767,13 +2363,37 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	Mane
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Moldova	Moldova
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Monaco	Monaco
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Monday	Mane
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mongolia	Mongolia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montenegro	Montenegro
 #. text in the Options window
 #. a date's order: month first (10/30/2026)
 #, machine
 	Month, day, year	Marama, rā, tau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montserrat	Montserrat
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Morocco	Morocco
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
@@ -1813,6 +2433,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	E nuku ana i te kōnae...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mozambique	Mozambique
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	he puhoi rawa atu i ērā atu hononga; kei te hono anō
@@ -1831,6 +2455,10 @@
 #. option (radio button) in the Options window
 #, machine
 	My own way:	Tōku ake ara:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Myanmar	Myanmar
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
@@ -1848,10 +2476,30 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Ko ngā ingoa kei roto i tō kōnae hōtaka me ngā ingoa ā-rohe (ngā kupu kotahi, .local, .lan) ka noho tonu ki te DNS a te pūnaha. Ka whakamahi ngā whārangi ataata me ngā kaiwhaiwhai torrent i te DNS a te pūnaha mō nāianei.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Namibia	Namibia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nauru	Nauru
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (under 60 ms)
+#, machine
+	near	tata
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	Me whai takiuru
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nepal	Nepāl
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Netherlands	Hōrana
 #. text in the Options window
 #, machine
 	Network adapter:	Pūurutau whatunga:
@@ -1865,6 +2513,10 @@
 #. button: create a new item
 #, machine
 	New	Hou
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Caledonia	New Caledonia
 #. text in the Options window
 #, machine
 	New exception	Whakakorenga hou
@@ -1876,6 +2528,26 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	Ture hōu
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Zealand	Aotearoa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nicaragua	Nicaragua
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niger	Niger
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nigeria	Nigeria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niue	Niue
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	Kao
@@ -1973,6 +2645,26 @@
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Kāore: ka ahu mai ngā hoa i te DHT me ētahi atu hoa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norfolk Island	Norfolk Island
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Korea	Kōrea ki te Raki
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Macedonia	North Macedonia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Northern Mariana Islands	Northern Mariana Islands
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norway	Nōwei
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	Ehara i te takitaki ka taea te pānui e tēnei
@@ -2005,6 +2697,9 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	Kāore ināianei? Tikina ā muri ake mai i Ngā Mahi → Tikiake ataata mai i tētahi whārangi.
+#. text in a download's Properties window
+#, machine
+	not one server (peers, or a helper's)	ehara i te tūmau kotahi (ngā hoa, te kaiāwhina rānei)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2051,6 +2746,10 @@
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ĀE
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Oman	Ōmana
 #. text in a download's progress window
 #, machine
 	on download stop/resume	i te mutu/whakahou tikiake
@@ -2151,6 +2850,30 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Wāhitau whārangi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pakistan	Pakitāne
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palau	Palau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palestine	Palestine
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Panama	Panama
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Papua New Guinea	Papua New Guinea
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Paraguay	Paraguay
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	Kupuhipa
@@ -2200,10 +2923,22 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	Tukutahitanga wā-poto
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Peru	Peru
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Philippines	Piripīni
 #. text in a download's progress window
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	Ngā Wāhanga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pitcairn	Pitcairn
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
@@ -2216,6 +2951,10 @@
 #. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	PM	PM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Poland	Pōrana
 #. label in the Options window
 #, machine
 	Port	Tauranga
@@ -2223,6 +2962,10 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Tauranga:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Portugal	Potukīhi
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
@@ -2259,6 +3002,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Wāhitau tūmau takawaenga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Puerto Rico	Puerto Rico
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2267,6 +3014,10 @@
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
 	Put them into the video	Whakaurua ki te ataata
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Qatar	Qatar
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
 #. label before the quality chosen for all of a playlist's videos
@@ -2398,9 +3149,25 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	E ngana anō ana: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Romania	Romania
 #. window title in rssdlg.rs
 #, machine
 	RSS feeds	Ngā whāngai RSS
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Russia	Rūhia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Rwanda	Rwanda
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Réunion	Réunion
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2410,9 +3177,53 @@
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
 	Sa	Rāh
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Barthélemy	Saint Barthélemy
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Helena, Ascension and Tristan da Cunha	Saint Helena, Ascension and Tristan da Cunha
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Kitts and Nevis	Saint Kitts and Nevis
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Lucia	Saint Lucia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Martin	Saint Martin
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Pierre and Miquelon	Saint Pierre and Miquelon
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Vincent and the Grenadines	Saint Vincent and the Grenadines
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Samoa	Hāmoa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	San Marino	Hato Marino
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sao Tome and Principe	Hao Tome me Pirinipe
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Saturday	Rāhoroi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saudi Arabia	Hauri Arapia
 #. text in a dialog box
 #, machine
 	Save As	Tiaki Hei
@@ -2499,6 +3310,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Tukuna tēnei ki tētahi hoa:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Senegal	Henekara
 #. text in a download's progress window
 #. column title: how much went to the peer
 #. how much was sent to other peers
@@ -2507,10 +3322,15 @@
 #. text in the Scheduler window
 #, machine
 	September	Hepetema
-#. text in the Options window
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Serbia	Herupia
+#. text in a dialog box; text in the Options window; text in a download's progress window
+#. label before where a download's server is (its country and round trip)
 #, machine
 	Server	Tūmau
-#. text in the Options window
+#. text in the Options window; text in a download's Properties window
 #, machine
 	Server:	Tūmau:
 #. text in the Options window
@@ -2541,6 +3361,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Settings...	Ngā tautuhinga...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Seychelles	Heihere
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -2611,6 +3435,10 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	Whakaweto
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sierra Leone	Hiera Reone
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
@@ -2623,6 +3451,14 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	kua waitohu atu: waitohu anō
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Singapore	Hingapoa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sint Maarten	Hini Maatene
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	Ingoa pae/Hononga tikiake/Whārangi tukutuku matua/Kaituku
@@ -2662,6 +3498,22 @@
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
 	Sleep	Moe
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovakia	Horowākia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovenia	Horowinia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Solomon Islands	Moutere Horomona
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Somalia	Homāria
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
@@ -2688,6 +3540,26 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Source: {source}	Pūtake: {source}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Africa	Āwherika ki te Tonga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Georgia and the South Sandwich Islands	Hōria ki te Tonga me ngā Moutere Hanawiti ki te Tonga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Korea	Kōrea ki te Tonga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Sudan	Hūrana ki te Tonga
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Spain	Pāniora
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2695,6 +3567,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	Ngā tautuhinga Kaiwhakawhāiti Tere
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sri Lanka	Hiri Rānaka
 #. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 #, machine
@@ -2824,15 +3700,51 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Kāore i taea te tikiake i ngā hauraro i te reo {language}: i whakakāhore a {site} (he nui rawa ngā tono).
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sudan	Hūrana
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	Rātapu
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Support MDM on GitHub Sponsors	Tautoko i a MDM i ngā Kaitautoko GitHub
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Suriname	Huriname
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Svalbard and Jan Mayen	Hawapara me Iana Maiene
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sweden	Wīwī
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Switzerland	Huiterangi
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	Rārangi tukutahi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Syria	Hiria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Taiwan	Taiwana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tajikistan	Tātikihitāne
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tanzania	Tānahia
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2859,6 +3771,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	Rā
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Thailand	Tairanga
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3100,6 +4016,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	Te DNS o te pūnaha
+#. text in whereis.rs
+#. the tooltip of where a download's server is: how the time shown is measured
+#, machine
+	The time is a round trip, measured as this download's own connections opened.	Ko te wā he haerenga huri noa, ka inehia i te wā i whakatuwherahia ai ngā hononga o tēnei tikiake.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3150,6 +4070,10 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Kāore anō he tikiake i tēnei kāwai, rārangi rānei.
+#. text in whereis.rs
+#. where a download's server is: on this computer or the local network (no country)
+#, machine
+	this computer or the local network	tēnei rorohiko, te whatunga ā-rohe rānei
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
@@ -3210,12 +4134,24 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Me takiuru koe ki tēnei ataata. Whakamahia te pātene Tikiake ataata i runga ake i tō pūtirotiro, ka tuku i tō takiuru.
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it (the proxy's place not known)
+#, machine
+	through a proxy	mā tētahi takawaenga
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it: {country} is the proxy's country
+#, machine
+	through a proxy in {country}	mā tētahi takawaenga i {country}
 #. text in the Scheduler window
 #, machine
 	Thursday	Rāpare
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Wā e toe ana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Timor-Leste	Tīmo Hete
 #. text in the Batch download window
 #, machine
 	To:	Ki:
@@ -3223,6 +4159,18 @@
 #. link under the calendar: {date} = today's date
 #, machine
 	Today: {date}	I tēnei rā: {date}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Togo	Toko
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tokelau	Tokerau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tonga	Tonga
 #. text in errors.rs
 #, machine
 	too many redirects	he maha rawa ngā aronga anō
@@ -3269,6 +4217,10 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	Auau whakawhiti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Trinidad and Tobago	Tirinirā me Topāko
 #. button in helpers.rs
 #, machine
 	Try again	Whakamātau anō
@@ -3279,6 +4231,18 @@
 #. text in the Scheduler window
 #, machine
 	Tuesday	Rātapu
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tunisia	Tūnihia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turkmenistan	Tūreke-menetāne
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turks and Caicos Islands	Ngā Moutere o Turks me Caicos
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 #, machine
@@ -3297,6 +4261,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Whakakā
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tuvalu	Tuvalu
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	E rua ngā kaiāwhina kore utu e mahi ai. Tikina ināianei, ā, kotahi noa te pāwhiri ki te tiaki ataata ina kitea e koe tētahi.
@@ -3344,6 +4312,18 @@
 #. text in a download's Properties window
 #, machine
 	Type:	Momo:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Türkiye	Türkiye
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uganda	Uganda
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ukraine	Ukraine
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
@@ -3352,11 +4332,29 @@
 #. adjective: the downloads that are not complete yet
 #, machine
 	Unfinished	Kāore anō kia oti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Arab Emirates	United Arab Emirates
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Kingdom	United Kingdom
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States	United States
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States Minor Outlying Islands	United States Minor Outlying Islands
 #. text in a download's Properties window
 #, machine
 	Unknown	Kāore i te mōhiotia
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known
+#. where a download's server is: not known (no address seen)
+#. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	kāore i te mōhiotia
 #. button in the Options window
@@ -3378,6 +4376,10 @@
 #. text in a dialog box
 #, machine
 	URL	URL
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uruguay	Uruguay
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Whakamahi whakauru pūtirotiro matatau
@@ -3450,13 +4452,29 @@
 #. label in the Options window
 #, machine
 	UserName	Ingoa Kaiwhakamahi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uzbekistan	Uzbekistan
 #. text in a download's progress window
 #, machine
 	Value	Uara
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vanuatu	Vanuatu
 #. text in the Link grabber window
 #. Link grabber: the package of links that belong to no other
 #, machine
 	Various files	Ngā kōnae rerekē
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vatican City	Vatican City
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Venezuela	Venezuela
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3491,6 +4509,18 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	Ngā ataata
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vietnam	Vietnam
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (British)	Virgin Islands (British)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (U.S.)	Virgin Islands (U.S.)
 #. text in the Options window
 #, machine
 	Virus checking settings	Ngā tautuhinga tirotiro huaketo
@@ -3512,6 +4542,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	E tatari ana: kua tae ki te tepe tango (Kairātaka)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Wallis and Futuna	Wallis and Futuna
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3523,6 +4557,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	Rāapa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Western Sahara	Western Sahara
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
@@ -3573,6 +4611,10 @@
 #. a date's order: year first (2026-10-30)
 #, machine
 	Year, month, day	Tau, marama, rā
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Yemen	Yemen
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	Āe
@@ -3616,6 +4658,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ka kitea te ataata
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zambia	Zambia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zimbabwe	Zimbabwe
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -3645,6 +4695,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	{browser}: the extension {version} connected	{browser}: kua hono te toronga {version}
+#. text in whereis.rs
+#. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
+#, machine
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	Ka tukuna e {cdn} tēnei kōnae: kei te tūnga o tana tūmau te wāhi, he maha ngā wā e tata ana ki a koe, ehara i te mea nā te rangatira o te pae.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine

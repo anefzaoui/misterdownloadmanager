@@ -59,7 +59,7 @@ impl Properties {
             ctx,
             &format!("properties-{}", self.id),
             "File Properties",
-            [477.0, 400.0],
+            [477.0, 420.0],
             false,
             LIGHT_BG(),
             |ui, o| self.body(ui, o, icons, item),
@@ -122,6 +122,7 @@ impl Properties {
             "Address:",
             "Description:",
             "Referer:",
+            "Server:",
         ]
         .iter()
         .map(|l| 11.0 + winui::text_width(&p, crate::i18n::t(l)).ceil() + 6.0)
@@ -146,11 +147,47 @@ impl Properties {
             );
             fit(ui, col, base, &value);
         }
+        // Where its server was (#140): as the last run saw it, or the running one sees it.
+        // i18n: label before where a download's server is (its country and round trip)
+        text(
+            &p,
+            o.x + 11.0,
+            o.y + 128.0,
+            crate::i18n::t("Server:"),
+            LIGHT_TEXT(),
+        );
+        let seen = item
+            .snap
+            .as_ref()
+            .and_then(|s| s.server.as_ref())
+            .map(crate::whereis::Seen::from)
+            .or_else(|| item.server.clone());
+        if item.torrent.is_some() || item.video.is_some() || item.gallery.is_some() {
+            // i18n: Properties, where a download's server is: a torrent, a video or a gallery has no single server of MDM's own
+            fit(
+                ui,
+                col,
+                128.0,
+                crate::i18n::t("not one server (peers, or a helper's)"),
+            );
+        } else if seen.is_some() {
+            crate::whereis::line(
+                ui,
+                o.x + col,
+                o.y + 128.0,
+                o.x + 466.0,
+                seen.as_ref(),
+                &format!("props-{}", self.id),
+            );
+        } else {
+            // i18n: Properties, where a download's server is: not seen yet (it hasn't run)
+            fit(ui, col, 128.0, crate::i18n::t("known once it has run"));
+        }
 
         text(
             &p,
             o.x + 11.0,
-            o.y + 135.0,
+            o.y + 155.0,
             crate::i18n::t("Save To:"),
             LIGHT_TEXT(),
         );
@@ -160,14 +197,14 @@ impl Properties {
         };
         readonly(
             ui,
-            r(o, col, 120.0, 383.0 - col, 23.0),
+            r(o, col, 140.0, 383.0 - col, 23.0),
             &dest.display().to_string(),
         );
         // Moving: a finished file is moved; one that hasn't started gets a new destination.
         let movable = !running && (complete || item.downloaded == 0);
         let pick = winui::button_light(
             ui,
-            r(o, 393.0, 121.0, 73.0, 21.0),
+            r(o, 393.0, 141.0, 73.0, 21.0),
             // i18n: verb: move the file to another folder
             "Move",
             if movable {
@@ -206,14 +243,14 @@ impl Properties {
         text(
             &p,
             o.x + 11.0,
-            o.y + 166.0,
+            o.y + 186.0,
             crate::i18n::t("Address:"),
             LIGHT_TEXT(),
         );
         if editable {
             let edit = winui::edit_light(
                 ui,
-                r(o, col, 151.0, 467.0 - col, 23.0),
+                r(o, col, 171.0, 467.0 - col, 23.0),
                 &mut self.address,
                 true,
                 false,
@@ -222,27 +259,27 @@ impl Properties {
                 self.error = None;
             }
         } else {
-            readonly(ui, r(o, col, 151.0, 467.0 - col, 23.0), &self.address);
+            readonly(ui, r(o, col, 171.0, 467.0 - col, 23.0), &self.address);
         }
         text(
             &p,
             o.x + 11.0,
-            o.y + 197.0,
+            o.y + 217.0,
             crate::i18n::t("Description:"),
             LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
-            r(o, col, 182.0, 467.0 - col, 23.0),
+            r(o, col, 202.0, 467.0 - col, 23.0),
             &mut self.description,
             true,
             false,
         );
-        winui::etched_h(&p, o.x + 11.0, o.y + 213.0, 456.0);
+        winui::etched_h(&p, o.x + 11.0, o.y + 233.0, 456.0);
         text(
             &p,
             o.x + 11.0,
-            o.y + 231.0,
+            o.y + 251.0,
             crate::i18n::t("The web page from which this file was obtained:"),
             LIGHT_TEXT(),
         );
@@ -252,19 +289,19 @@ impl Properties {
             .referer
             .as_deref()
             .unwrap_or(crate::i18n::t("Unknown"));
-        fit(ui, 11.0, 252.0, page);
-        winui::etched_h(&p, o.x + 11.0, o.y + 262.0, 456.0);
+        fit(ui, 11.0, 272.0, page);
+        winui::etched_h(&p, o.x + 11.0, o.y + 282.0, 456.0);
         // i18n: HTTP term (sic): the page the download was started from
         text(
             &p,
             o.x + 11.0,
-            o.y + 288.0,
+            o.y + 308.0,
             crate::i18n::t("Referer:"),
             LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
-            r(o, col, 271.0, 467.0 - col, 23.0),
+            r(o, col, 291.0, 467.0 - col, 23.0),
             &mut self.referer,
             editable,
             false,
@@ -273,13 +310,13 @@ impl Properties {
         winui::text_right(
             &p,
             o.x + 110.0,
-            o.y + 316.0,
+            o.y + 336.0,
             crate::i18n::t("Login"),
             LIGHT_TEXT(),
         );
         winui::edit_light(
             ui,
-            r(o, 120.0, 301.0, 189.0, 21.0),
+            r(o, 120.0, 321.0, 189.0, 21.0),
             &mut self.login,
             editable,
             false,
@@ -287,17 +324,17 @@ impl Properties {
         winui::text_right(
             &p,
             o.x + 110.0,
-            o.y + 343.0,
+            o.y + 363.0,
             crate::i18n::t("Password"),
             LIGHT_TEXT(),
         );
         password(
             ui,
-            r(o, 120.0, 330.0, 189.0, 21.0),
+            r(o, 120.0, 350.0, 189.0, 21.0),
             &mut self.password,
             editable,
         );
-        winui::etched_h(&p, o.x + 11.0, o.y + 358.0, 456.0);
+        winui::etched_h(&p, o.x + 11.0, o.y + 378.0, 456.0);
         if !complete {
             let last = item.last_try.clone().unwrap_or_default();
             let last_try = crate::i18n::fmt(
@@ -305,7 +342,7 @@ impl Properties {
                 crate::i18n::t("Last try  {last}"),
                 &[("last", &last)],
             );
-            fit(ui, 11.0, 376.0, &last_try);
+            fit(ui, 11.0, 396.0, &last_try);
         }
         // The dialog's own error (a bad address) takes the Result line's place while it lasts.
         if let Some(e) = &self.error {
@@ -313,7 +350,7 @@ impl Properties {
                 ui,
                 &p,
                 o.x + 11.0,
-                o.y + 395.0,
+                o.y + 415.0,
                 e,
                 winui::ERROR(),
                 o.x + 250.0,
@@ -325,7 +362,7 @@ impl Properties {
             let (rect, cut) = winui::text_fit(
                 &p,
                 o.x + 11.0,
-                o.y + 395.0,
+                o.y + 415.0,
                 &crate::i18n::fmt(
                     // i18n: {result} = how the last attempt ended (a status or an error message)
                     crate::i18n::t("Result: {result}"),
@@ -340,7 +377,7 @@ impl Properties {
         }
         let open = winui::button_light(
             ui,
-            r(o, 259.0, 370.0, 73.0, 21.0),
+            r(o, 259.0, 390.0, 73.0, 21.0),
             // i18n: verb: opens the file
             "Open",
             if complete {
@@ -362,7 +399,7 @@ impl Properties {
         }
         let ok = winui::button_light(
             ui,
-            r(o, 393.0, 370.0, 73.0, 21.0),
+            r(o, 393.0, 390.0, 73.0, 21.0),
             "OK",
             ButtonKind::Default,
             false,

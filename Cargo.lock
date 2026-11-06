@@ -4439,6 +4439,7 @@ dependencies = [
  "mdm-debrid",
  "mdm-engine",
  "mdm-extract",
+ "mdm-geo",
  "mdm-ipc",
  "mdm-labserver",
  "mdm-tools",
@@ -4562,6 +4563,8 @@ dependencies = [
  "tokio",
  "tokio-rustls",
  "tokio-util",
+ "tower-layer",
+ "tower-service",
  "url",
  "windows-sys 0.61.2",
 ]
@@ -4577,6 +4580,15 @@ dependencies = [
  "tempfile",
  "tracing",
  "zip",
+]
+
+[[package]]
+name = "mdm-geo"
+version = "0.2.4"
+dependencies = [
+ "lzma-rust2",
+ "png 0.18.1",
+ "resvg",
 ]
 
 [[package]]

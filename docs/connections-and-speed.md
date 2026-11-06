@@ -14,6 +14,7 @@ The **Download status** tab shows:
 - **File size**, **Downloaded** and **Transfer rate**.
 - **Time left**.
 - **Resume capability** — **Yes** if the server lets MDM continue the download later, **No** if it doesn't.
+- **Server** — where the server is, and how near. See [Where the server is](#where-the-server-is).
 
 **Show details >>** (open by default) adds the connection view:
 
@@ -25,6 +26,27 @@ The buttons:
 - **Pause** stops the download and keeps what it has; **Resume** continues it.
 - **Cancel** stops the download and closes the window. The download stays in the list and can be resumed.
 - Closing the window with its close box keeps the download running.
+
+## Where the server is
+
+**Download File Info**, the progress window and **Properties** show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as **about 24 ms (near)**.
+
+- **Near** (green): under 60 ms, usually the same country or the next one.
+- **Medium** (amber): 60 to 150 ms, usually the same continent.
+- **Far** (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.
+
+Hover over the line for the server's address and how the time was measured.
+
+How MDM knows:
+
+- **The country** comes from a table of address ranges that comes with MDM ([IP to Country Lite by DB-IP](https://db-ip.com), CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.
+- **The time** is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says **about**. The quickest connection counts.
+- **A server on your computer or your local network** shows as such, with no flag.
+- **Through a proxy**, MDM only sees the proxy, so it says **through a proxy** (with the proxy's country when it knows it) instead of guessing the server's. A VPN that works at the system level can't be seen: the country is then the server's, but the time includes the VPN's detour.
+- **A content delivery network** (Cloudflare, Amazon CloudFront, Fastly, Akamai and others) serves a file from a server near you, not from the site owner's. The tooltip says so: the place is the network's server, not where the site is.
+- Torrents, videos and galleries have no single server of MDM's own (peers, or yt-dlp's and gallery-dl's), so their windows don't show one.
+
+**Properties** keeps what the last run saw, so a finished download still shows where it came from.
 
 Two more tabs:
 

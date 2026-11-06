@@ -13,6 +13,10 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Where a download's server is: its country's flag and name and its round trip (near, medium or
+  far) in Download File Info, the progress window and Properties, from a table that comes with MDM
+  (no address is sent anywhere); a proxy or a CDN said as such
+  ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
 - ✅ Linux: MDM's first window opens seconds sooner; the system's fonts are looked up all at once
   while it starts, not one by one in the window (on a busy computer that froze it, part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
@@ -168,8 +172,6 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Where a download's server is: its country, flag and ping, from an offline database
-  ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
 - 📋 The Scheduler wakes the computer from sleep to run a queue
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in

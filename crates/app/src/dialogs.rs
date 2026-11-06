@@ -607,6 +607,8 @@ impl FileInfo {
                         .unwrap_or_else(|| new.url.clone()),
                     size: context.size,
                     file_name,
+                    // The browser had the answer: nothing was asked of the server here.
+                    server: None,
                 })),
             ),
             None => (start_probe(rt, ctx, &new.url, &request), None),
@@ -781,7 +783,7 @@ impl FileInfo {
             ctx,
             "file-info",
             "Download File Info",
-            [570.0, 208.0],
+            [570.0, 234.0],
             true,
             winui::BG(),
             |ui, o| {
@@ -947,6 +949,41 @@ impl FileInfo {
                     false,
                 );
 
+                // Where the server is (#140), as the look saw it: "..." while it looks; blank when
+                // nothing was asked (the browser had the answer) or the look failed.
+                // i18n: label before where a download's server is (its country and round trip)
+                winui::text_right(
+                    &p,
+                    o.x + 88.0,
+                    o.y + 193.0,
+                    crate::i18n::t("Server"),
+                    winui::TEXT(),
+                );
+                match &self.info {
+                    None => crate::whereis::line(
+                        ui,
+                        o.x + 96.0,
+                        o.y + 193.0,
+                        o.x + 462.0,
+                        None,
+                        "file-info",
+                    ),
+                    Some(Ok(pi)) => {
+                        if let Some(server) = &pi.server {
+                            let seen = crate::whereis::Seen::from(server);
+                            crate::whereis::line(
+                                ui,
+                                o.x + 96.0,
+                                o.y + 193.0,
+                                o.x + 462.0,
+                                Some(&seen),
+                                "file-info",
+                            );
+                        }
+                    }
+                    Some(Err(_)) => {}
+                }
+
                 // Held back while the address or the file's name can't be downloaded to (an
                 // empty Save As, or a folder, made it the profile folder).
                 let name_bad = {
@@ -972,7 +1009,7 @@ impl FileInfo {
                 };
                 let later = winui::button(
                     ui,
-                    r(o, 97.0, 180.0, 109.0, 21.0),
+                    r(o, 97.0, 206.0, 109.0, 21.0),
                     "Download Later",
                     later_kind,
                     false,
@@ -981,7 +1018,7 @@ impl FileInfo {
                 let later = winui::why_disabled(later, blocked.is_some(), blocked.unwrap_or(""));
                 let start = winui::button(
                     ui,
-                    r(o, 225.0, 180.0, 109.0, 21.0),
+                    r(o, 225.0, 206.0, 109.0, 21.0),
                     "Start Download",
                     start_kind,
                     true,
@@ -990,7 +1027,7 @@ impl FileInfo {
                 let start = winui::why_disabled(start, blocked.is_some(), blocked.unwrap_or(""));
                 let cancel = winui::button(
                     ui,
-                    r(o, 352.0, 180.0, 109.0, 21.0),
+                    r(o, 352.0, 206.0, 109.0, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
