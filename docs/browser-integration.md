@@ -13,21 +13,23 @@ Browsers built on them work too: Chromium and Helium take the extension as Chrom
 Browser integration has two parts: a small helper program that the browser talks to, and the extension itself.
 
 1. Install MDM with the setup and keep **Set up browser integration (Chrome, Edge, Brave, Firefox)** ticked. This registers the helper. (The portable copy can't do this; see [Portable mode](portable.md).)
-2. Add the extension to each browser you use, as below: Firefox from its add-ons store, the others by hand for now, while the Chrome Web Store reviews it.
+2. Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.
 
 ### Firefox
 
 Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/): click **Add to Firefox**. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's **Add Mister Download Manager to your browser** window opens that page for you.)
 
-### Chrome, Edge and Brave
+### Chrome, Edge, Brave, Opera and Vivaldi
 
-By hand for now, while the Chrome Web Store reviews the extension. Its files are in the `extension` folder where MDM is installed: `%LOCALAPPDATA%\Programs\Mister Download Manager\extension` if you installed it for yourself, or `Program Files\Mister Download Manager\extension` if you installed it for everyone. Every release also has them as their own download, `...-extension-chromium.zip` (unzip it first).
+Install the extension from its page in the Chrome Web Store, [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp): click **Add to Chrome**. In Edge the button is **Get**: Edge first asks to **Allow extensions from other stores** (click **Allow**), then **Add extension**. The browser keeps it updated. MDM's **Add Mister Download Manager to your browser** window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.
+
+To load it by hand instead (a browser that can't use the store, or a build of your own): its files are in the `extension` folder where MDM is installed: `%LOCALAPPDATA%\Programs\Mister Download Manager\extension` if you installed it for yourself, or `Program Files\Mister Download Manager\extension` if you installed it for everyone. Every release also has them as their own download, `...-extension-chromium.zip` (unzip it first).
 
 1. Open the extensions page: `chrome://extensions`, `edge://extensions` or `brave://extensions`.
 2. Turn on **Developer mode**.
 3. Click **Load unpacked** and choose the `extension\chromium` folder.
 
-**Mister Download Manager** appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM. Opera and Vivaldi take it the same way.
+**Mister Download Manager** appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.
 
 ### From the plain zip
 
@@ -73,6 +75,16 @@ The extension's button shows whether the browser reaches MDM. A red **!** means 
 - **Open Mister Download Manager** and **Options...**.
 - **Media on this page**: what the page has loaded that MDM can download (see below).
 
+## A VPN or proxy extension
+
+A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on **Send downloads
+through this browser's proxy or VPN extension** in the extension's toolbar popup: Firefox asks you
+once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from
+the browser through the same proxy (with **Options → Proxy / Socks → Use proxy/socks from a
+browser's request**, on by default; see [Options](options.md#proxy--socks)). Switch it off to take
+that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the
+same proxy in MDM's **Options → Proxy / Socks**.
+
 ## Media on this page
 
 Some pages play a video without a link to it, and some players hide it from the download button
@@ -80,7 +92,10 @@ too. The toolbar button lists what the page has loaded, so you can still save it
 
 - **Streams**: HLS (`.m3u8`) and DASH (`.mpd`), the way most sites play long videos. Each stream
   is listed once, however many qualities its player switched between, with its qualities (`1080p ·
-  720p`) and its length when the extension can read them.
+  720p`) and its length when the extension can read them. A stream whose address doesn't end in
+  `.m3u8` or `.mpd`, served as plain text, is found too: when you open the list (or press the
+  download button over its player) and the player plays a stream, the extension reads the first
+  few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.
 - **Video and sound files** the page played (MP4, WebM, MP3 and the like), with their size and,
   for a video, its picture size.
 

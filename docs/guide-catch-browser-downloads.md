@@ -2,7 +2,7 @@
 
 [← Back to docs index](README.md)
 
-Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.
+Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera or Vivaldi goes to MDM.
 
 ## Before you start
 
@@ -14,9 +14,15 @@ MDM must be installed with the setup, with **Set up browser integration (Chrome,
 2. Firefox asks to confirm: click **Add**. Firefox keeps the add-on up to date.
 3. Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens **Download File Info**. Click **Start Download**.
 
-## In Chrome, Edge or Brave
+## In Chrome, Edge, Brave, Opera or Vivaldi
 
-By hand for now, while the Chrome Web Store reviews the extension:
+1. Open the extension's page in the Chrome Web Store, [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp), and click **Add to Chrome**. In Edge the button is **Get**, and Edge first asks to **Allow extensions from other stores**: click **Allow**.
+2. The browser asks to confirm: click **Add extension**. It keeps the extension up to date.
+3. Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens **Download File Info**. Click **Start Download**.
+
+## Without the store
+
+When a browser can't use its store (a computer managed by an organization, or a build of your own), add the extension by hand:
 
 1. Open your browser's extensions page: type `chrome://extensions`, `edge://extensions` or `brave://extensions` in the address bar.
 2. Turn on **Developer mode**.
