@@ -175,7 +175,21 @@ fn same_origin(headers: &HeaderMap, host: &str) -> bool {
         .get("sec-fetch-site")
         .and_then(|v| v.to_str().ok())
         .is_some_and(|v| v.eq_ignore_ascii_case("cross-site"));
-    let origin_ok = match headers.get(header::ORIGIN).and_then(|o| o.to_str().ok()) {
+    let origin = headers.get(header::ORIGIN).and_then(|o| o.to_str().ok());
+    // MDM's browser extension (#157): its requests carry its own origin, which no web page can
+    // send, and a token like any other.
+    if origin.is_some_and(|o| {
+        [
+            "chrome-extension://",
+            "moz-extension://",
+            "safari-web-extension://",
+        ]
+        .iter()
+        .any(|p| o.starts_with(p))
+    }) {
+        return true;
+    }
+    let origin_ok = match origin {
         None => true,
         Some(o) => o.eq_ignore_ascii_case(&format!("https://{host}")),
     };

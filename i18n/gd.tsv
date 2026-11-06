@@ -888,7 +888,6 @@
 #, machine
 	Code	Còd
 #. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
 	Code:	Còd:
 #. text in countries.rs
@@ -2226,7 +2225,6 @@
 #, machine
 	List the rest	Dèan liostadh air a’ chòrr
 #. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
 	Listen on:	Èist ri:
 #. text in playlistdlg.rs
@@ -3033,7 +3031,6 @@
 #, machine
 	Paired	Air a phèaradh
 #. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
 #, machine
 	Paired devices:	Innealan pèaraichte:
 #. text in countries.rs
@@ -3298,7 +3295,6 @@
 #, machine
 	Remember this path for "{category}" category	Cuimhnich an t-slighe seo airson roinn "{category}"
 #. text in the Options window
-#. tab title: control MDM from a phone or another computer on the local network
 #, machine
 	Remote	Iomallach
 #. text in the Options window
@@ -5230,6 +5226,14 @@ column	Time left	Ùine air fhàgail
 #, machine
 column	Transfer rate	Ìre gluasaid
 #. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Mister Download Manager eile (frithealaiche)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Leudachan brabhsair
+#. text in the browser extension
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -5269,9 +5273,17 @@ extension	Download with Mister Download Manager	Luchdaich sìos le Mister Downlo
 #, machine
 extension	Downloads from {site} stay with the browser	Fanaidh luchdachaidhean a-nuas bho {site} leis a’ bhrabhsair
 #. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Thèid luchdaidhean sìos gu {address}
+#. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
 extension	Drag to move it along the video's edge	Slaod gus a ghluasad air iomall a' bhidio
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Cuir a-steach an seòladh https:// aige.
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5292,6 +5304,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Cùm Al
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Mar a chàraicheas tu e
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Cha do dh’obraich e. Feuch ris a-rithist.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Chan eil còd aige an-dràsta: cliog air Pair a device an sin an toiseach.
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -5343,6 +5363,18 @@ extension	Never take downloads from {site}	Na gabh luchdachaidhean a-nuas bho {s
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Cha deach bhidio no fuaim a lorg air an duilleag seo fhathast. Cluich e, an uairsin fosgail seo a-rithist.
 #. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Cha deach a ruighinn. Fosgail an seòladh aige aon turas sa bhrabhsair seo agus gabh ris an teisteanas aige, an uair sin feuch ris a-rithist.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Fosgail e
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Fosgail an seòladh aige aon turas agus gabh ris an teisteanas aige, an uair sin cuir a-steach còd bho na Options, Remote, Pair a device aige (no misterdownloadmanager-cli pair).
+#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Fosgail Mister Download Manager
@@ -5351,6 +5383,14 @@ extension	Open Mister Download Manager	Fosgail Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	Roghainnean...
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Paidhir
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Còd paidhir
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
@@ -5367,6 +5407,10 @@ extension	Protected video: it can't be saved	Bhidio dhìonta: chan urrainnear a 
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
 extension	Send downloads through this browser's proxy or VPN extension	Cuir luchdaidhean sìos tro proxy no leudachan VPN a’ bhrabhsair seo
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Cuir luchdaidhean sìos gu
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5388,6 +5432,10 @@ extension	The connection to Mister Download Manager failed	Dh'fhàillig an ceang
 #, machine
 extension	The download button is off on this site	Tha am putan luchdaich sìos dheth air an làrach seo
 #. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	An coimpiutair seo
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Bha mion-fhiosrachadh an luchdaich sìos seo ro mhòr airson a thoirt seachad
@@ -5395,6 +5443,14 @@ extension	This download's details were too large to hand over	Bha mion-fhiosrach
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Ùraich Mister Download Manager gus a h-uile rud a tha an leudachan seo a' tabhann a chleachdadh
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Fuirich mionaid, an uair sin feuch ris a-rithist.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Còd ceàrr.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

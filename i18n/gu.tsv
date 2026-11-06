@@ -888,7 +888,6 @@
 #, machine
 	Code	કોડ
 #. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
 	Code:	કોડ:
 #. text in countries.rs
@@ -2226,7 +2225,6 @@
 #, machine
 	List the rest	બાકીની સૂચિ બનાવો
 #. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
 	Listen on:	આના પર સાંભળો:
 #. text in playlistdlg.rs
@@ -3033,7 +3031,6 @@
 #, machine
 	Paired	જોડાયેલ
 #. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
 #, machine
 	Paired devices:	જોડાયેલા ઉપકરણો:
 #. text in countries.rs
@@ -3298,7 +3295,6 @@
 #, machine
 	Remember this path for "{category}" category	"{category}" શ્રેણી માટે આ પાથ યાદ રાખો
 #. text in the Options window
-#. tab title: control MDM from a phone or another computer on the local network
 #, machine
 	Remote	રિમોટ
 #. text in the Options window
@@ -5230,6 +5226,14 @@ column	Time left	બાકીનો સમય
 #, machine
 column	Transfer rate	ટ્રાન્સફર રેટ
 #. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	બીજું Mister Download Manager (એક સર્વર)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	બ્રાઉઝર એક્સ્ટેંશન
+#. text in the browser extension
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -5269,9 +5273,17 @@ extension	Download with Mister Download Manager	Mister Download Manager વડ�
 #, machine
 extension	Downloads from {site} stay with the browser	{site} માંથી ડાઉનલોડ્સ બ્રાઉઝર સાથે રહે છે
 #. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	ડાઉનલોડ્સ {address} પર જાય છે
+#. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
 extension	Drag to move it along the video's edge	વીડિયોની કિનારી પર ખસેડવા માટે ખેંચો
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	તેનું https:// સરનામું દાખલ કરો.
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5292,6 +5304,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	બ્�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	તેને કેવી રીતે ઠીક કરવું
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	તે કામ ન કર્યું. ફરી પ્રયાસ કરો.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	તે હવે કોઈ કોડ બતાવતું નથી: પહેલા ત્યાં Pair a device પર ક્લિક કરો.
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -5343,6 +5363,18 @@ extension	Never take downloads from {site}	{site} માંથી ક્યા�
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	આ પૃષ્ઠ પર હજુ સુધી કોઈ વિડિઓ અથવા ધ્વનિ મળ્યા નથી. તેને ચલાવો, પછી આ ફરીથી ખોલો.
 #. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	પહોંચી શકાયું નથી. આ બ્રાઉઝરમાં તેનું સરનામું એકવાર ખોલો અને તેનું પ્રમાણપત્ર સ્વીકારો, પછી ફરી પ્રયાસ કરો.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	તે ખોલો
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	તેનું સરનામું એકવાર ખોલો અને તેનું પ્રમાણપત્ર સ્વીકારો, પછી તેના Options, Remote, Pair a device (અથવા misterdownloadmanager-cli pair) માંથી કોડ દાખલ કરો.
+#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager ખોલો
@@ -5351,6 +5383,14 @@ extension	Open Mister Download Manager	Mister Download Manager ખોલો
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	વિકલ્પો...
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	જોડી બનાવો
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	જોડી બનાવવાનો કોડ
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
@@ -5367,6 +5407,10 @@ extension	Protected video: it can't be saved	સુરક્ષિત વિડ�
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
 extension	Send downloads through this browser's proxy or VPN extension	આ બ્રાઉઝરના પ્રોક્સી અથવા VPN એક્સ્ટેંશન દ્વારા ડાઉનલોડ્સ મોકલો
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	ડાઉનલોડ્સ અહીં મોકલો
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5388,6 +5432,10 @@ extension	The connection to Mister Download Manager failed	Mister Download Manag
 #, machine
 extension	The download button is off on this site	આ સાઇટ પર ડાઉનલોડ બટન બંધ છે
 #. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	આ કમ્પ્યુટર
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	આ ડાઉનલોડની વિગતો આપવા માટે ખૂબ મોટી હતી
@@ -5395,6 +5443,14 @@ extension	This download's details were too large to hand over	આ ડાઉન�
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	આ એક્સ્ટેંશન જે બધું પ્રદાન કરે છે તેનો ઉપયોગ કરવા માટે Mister Download Manager અપડેટ કરો
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	થોડીવાર રાહ જુઓ, પછી ફરી પ્રયાસ કરો.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	ખોટો કોડ.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

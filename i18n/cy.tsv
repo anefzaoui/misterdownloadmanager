@@ -888,7 +888,6 @@
 #, machine
 	Code	Cod
 #. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
 #, machine
 	Code:	Cod:
 #. text in countries.rs
@@ -2226,7 +2225,6 @@
 #, machine
 	List the rest	Rhestru'r gweddill
 #. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
 #, machine
 	Listen on:	Gwrando ar:
 #. text in playlistdlg.rs
@@ -3033,7 +3031,6 @@
 #, machine
 	Paired	Wedi'i baru
 #. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
 #, machine
 	Paired devices:	Dyfeisiau wedi'u paru:
 #. text in countries.rs
@@ -5226,6 +5223,14 @@ column	Time left	Amser ar ôl
 #, machine
 column	Transfer rate	Cyfradd trosglwyddo
 #. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Mister Download Manager arall (gweinydd)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Estyniad porwr
+#. text in the browser extension
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -5265,9 +5270,17 @@ extension	Download with Mister Download Manager	Lawrlwytho gyda Mister Download 
 #, machine
 extension	Downloads from {site} stay with the browser	Mae lawrlwythiadau o {site} yn aros gyda'r porwr
 #. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Mae lawrlwythiadau'n mynd i {address}
+#. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
 extension	Drag to move it along the video's edge	Llusgwch i'w symud ar hyd ymyl y fideo
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Rhowch ei gyfeiriad https://.
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5288,6 +5301,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Daliwch
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Sut i'w drwsio
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Ni weithiodd. Rhowch gynnig arall arni.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Nid yw'n dangos cod nawr: cliciwch ar Paru dyfais yno yn gyntaf.
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -5339,6 +5360,18 @@ extension	Never take downloads from {site}	Peidiwch byth â chymryd lawrlwythiad
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Heb ddod o hyd i fideo na sain ar y dudalen hon eto. Chwaraewch ef, yna agorwch hwn eto.
 #. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Heb ei gyrraedd. Agorwch ei gyfeiriad unwaith yn y porwr hwn a derbyniwch ei dystysgrif, yna rhowch gynnig arall arni.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Agorwch ef
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Agorwch ei gyfeiriad unwaith a derbyniwch ei dystysgrif, yna rhowch god o'i Opsiynau, O bell, Paru dyfais (neu misterdownloadmanager-cli pair).
+#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Agor Mister Download Manager
@@ -5347,6 +5380,14 @@ extension	Open Mister Download Manager	Agor Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	Dewisiadau...
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Paru
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Cod paru
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
@@ -5363,6 +5404,10 @@ extension	Protected video: it can't be saved	Fideo wedi'i ddiogelu: ni ellir ei 
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
 extension	Send downloads through this browser's proxy or VPN extension	Anfon lawrlwythiadau drwy ddirprwy neu estyniad VPN y porwr hwn
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Anfon lawrlwythiadau i
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5384,6 +5429,10 @@ extension	The connection to Mister Download Manager failed	Methodd y cysylltiad 
 #, machine
 extension	The download button is off on this site	Mae'r botwm lawrlwytho i ffwrdd ar y wefan hon
 #. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Y cyfrifiadur hwn
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Roedd manylion y lawrlwythiad hwn yn rhy fawr i'w trosglwyddo
@@ -5391,6 +5440,14 @@ extension	This download's details were too large to hand over	Roedd manylion y l
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Diweddarwch Mister Download Manager i ddefnyddio popeth y mae'r estyniad hwn yn ei gynnig
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Arhoswch funud, yna rhowch gynnig arall arni.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Cod anghywir.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

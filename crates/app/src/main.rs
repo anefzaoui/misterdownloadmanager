@@ -18,6 +18,7 @@ mod fileicons;
 mod find;
 mod gallerydlg;
 mod grabber;
+mod headless;
 mod help;
 mod helpers;
 mod i18n;
@@ -170,6 +171,11 @@ fn main() -> std::process::ExitCode {
         win32::cli_console(cli.launcher);
         return mdm_cli::main(cli.args);
     }
+    // A server (#157): the app without a window.
+    let all: Vec<String> = std::env::args().skip(1).collect();
+    if headless::asked(&all) {
+        return headless::main(all);
+    }
     match app() {
         Ok(()) => std::process::ExitCode::SUCCESS,
         // As `main` returning the error would.
@@ -317,7 +323,7 @@ fn app() -> eframe::Result {
             cc.egui_ctx.set_zoom_factor(z);
         }
         let _ = window.set(cc.egui_ctx.clone());
-        app::App::new(cc, handle, commands, sink, loaded)
+        app::App::new(&cc.egui_ctx, handle, commands, sink, loaded)
     });
     crash::clean_exit();
     result
