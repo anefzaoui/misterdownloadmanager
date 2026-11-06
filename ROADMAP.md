@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Support MDM: a way to support its creator on [GitHub Sponsors](https://github.com/sponsors/anefzaoui),
+  asked for only (**Help → Support MDM**, a line in About, the website, the README, the
+  extension's popup and GitHub's Sponsor button); MDM stays free, nothing changes or unlocks
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
   Italian is the first catalog reviewed by a native speaker
   ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150))
@@ -135,9 +138,6 @@ Everything below ships together, in one release.
 
 ### Being built
 
-- 🔄 Support MDM: a way to support its creator on [GitHub Sponsors](https://github.com/sponsors/anefzaoui),
-  asked for only (**Help → Support MDM**, a line in About, the website, the README, the
-  extension's popup and GitHub's Sponsor button); MDM stays free, nothing changes or unlocks
 - 🔄 Themes: today's look stays the default, with a few more built in; colours, sizes, spacing and
   icons all come from the chosen theme, and Base16 and pywal schemes can be imported
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
