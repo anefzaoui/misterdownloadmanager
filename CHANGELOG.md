@@ -353,6 +353,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   stream's own server, not the page's.
 - **Add torrent: the labels fit in every language**: in German, **Speichern unter** ran under
   its field.
+- **Download video: the buttons fit their text in every language**
+  ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172)): in German **ffmpeg
+  installieren** showed as "ffmpeg installie...", and in Russian **Helpers...** and **Install
+  ffmpeg** were cut too. Each button is now as wide as its translated text (English is unchanged),
+  and the page's title stops before the Install button instead of running under it. In Arabic
+  and the other right-to-left languages, a widened **Hide tab** in a download's window now grows
+  into the room beside it instead of towards the window's edge.
 - **A download or magnet link sent while the window is minimized opens at once**
   ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162)): with the main window
   minimized (not to the notification area), a download from the browser or a magnet link was

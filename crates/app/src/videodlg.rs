@@ -451,9 +451,12 @@ impl VideoDialog {
             crate::i18n::t("Page address"),
             winui::TEXT(),
         );
+        // Look up is as wide as its label in this language (#172); the address ends 8 px before.
+        let (look_x, look_w) =
+            winui::buttons_to_right(&p, 489.0, 8.0, &[("Look up", 90.0)], 160.0)[0];
         let edit = winui::edit(
             ui,
-            r(o, 11.0, 28.0, 380.0, 21.0),
+            r(o, 11.0, 28.0, look_x - 8.0 - 11.0, 21.0),
             &mut self.page,
             true,
             false,
@@ -468,7 +471,7 @@ impl VideoDialog {
         let can_look = page_ok && !busy && ytdlp.is_some();
         let look = winui::button(
             ui,
-            r(o, 399.0, 28.0, 90.0, 21.0),
+            r(o, look_x, 28.0, look_w, 21.0),
             "Look up",
             if can_look {
                 ButtonKind::Default
@@ -542,6 +545,15 @@ impl VideoDialog {
             )),
             _ => None,
         };
+        // The Install button, as wide as its label in this language, and the status line up to
+        // 9 px before it (to the window's edge without one).
+        let install_at = offer
+            .as_ref()
+            .filter(|(_, label, _)| !label.is_empty() && installing.is_none())
+            .map(|(_, label, _)| {
+                winui::buttons_to_right(&p, 489.0, 8.0, &[(label, 90.0)], 200.0)[0]
+            });
+        let status_right = install_at.map_or(489.0, |(x, _)| x - 9.0);
         if let Some(t) = installing {
             crate::torrentdlg::spinner(ui, pos2(o.x + 18.0, line_y - 4.0), 6.0);
             let msg = if t == Tool::YtDlp {
@@ -562,8 +574,14 @@ impl VideoDialog {
         } else if self.list.is_some() {
             // The list draws its own (PlaylistView::middle).
         } else if let Some((v, _)) = &self.video {
-            let (rect, cut) =
-                winui::text_fit(&p, o.x + 11.0, line_y, &v.title, winui::TEXT(), o.x + 489.0);
+            let (rect, cut) = winui::text_fit(
+                &p,
+                o.x + 11.0,
+                line_y,
+                &v.title,
+                winui::TEXT(),
+                o.x + status_right,
+            );
             if cut {
                 winui::full_on_hover(ui, rect, "video-title", &v.title);
             }
@@ -575,16 +593,15 @@ impl VideoDialog {
                 line_y,
                 msg,
                 winui::MUTED(),
-                o.x + 390.0,
+                o.x + status_right,
                 "video-offer",
             );
         }
         if let Some((tool, label, _)) = offer
-            && !label.is_empty()
-            && installing.is_none()
+            && let Some((x, w)) = install_at
             && winui::button(
                 ui,
-                r(o, 399.0, 57.0, 90.0, 21.0),
+                r(o, x, 57.0, w, 21.0),
                 label,
                 ButtonKind::Normal,
                 false,
@@ -626,9 +643,7 @@ impl VideoDialog {
         // A playlist's or a channel's videos (#69), or the video's choices.
         if let Some(list) = &mut self.list {
             // The status line stops short of an Install button beside it.
-            let button = offer.as_ref().is_some_and(|(_, l, _)| !l.is_empty());
-            let right = if button { 390.0 } else { 489.0 };
-            list.middle(ui, o, installing.is_none().then_some(right));
+            list.middle(ui, o, installing.is_none().then_some(status_right));
         } else {
             // The choices: the shared row list.
             let list = r(o, 11.0, 94.0, 478.0, 150.0);
@@ -785,10 +800,28 @@ impl VideoDialog {
             (true, true) => ButtonKind::Default,
             (true, false) => ButtonKind::Normal,
         };
+        // The bottom row, each button as wide as its label in this language (#172): Helpers at the
+        // left, as wide as the room before Download Now allows.
+        let [now_at, later_at, cancel_at] = winui::buttons_to_right(
+            &p,
+            489.0,
+            8.0,
+            &[("Download Now", 105.0), ("Later", 73.0), ("Cancel", 73.0)],
+            160.0,
+        )[..] else {
+            unreachable!("three buttons")
+        };
+        let helpers_at = winui::buttons_from_left(
+            &p,
+            11.0,
+            8.0,
+            &[("Helpers...", 90.0)],
+            now_at.0 - 8.0 - 11.0,
+        )[0];
         // Where yt-dlp and ffmpeg come from: MDM's own copies or the person's (#51).
         if winui::button(
             ui,
-            r(o, 11.0, 358.0, 90.0, 21.0),
+            r(o, helpers_at.0, 358.0, helpers_at.1, 21.0),
             // i18n: button in Download video: where MDM takes yt-dlp and ffmpeg from
             "Helpers...",
             ButtonKind::Normal,
@@ -801,7 +834,7 @@ impl VideoDialog {
         }
         let now = winui::button(
             ui,
-            r(o, 222.0, 358.0, 105.0, 21.0),
+            r(o, now_at.0, 358.0, now_at.1, 21.0),
             "Download Now",
             kind(true),
             false,
@@ -814,7 +847,7 @@ impl VideoDialog {
             || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
-            r(o, 335.0, 358.0, 73.0, 21.0),
+            r(o, later_at.0, 358.0, later_at.1, 21.0),
             // i18n: button: add it now, start downloading later
             "Later",
             kind(false),
@@ -824,7 +857,7 @@ impl VideoDialog {
         .clicked();
         let cancel = winui::button(
             ui,
-            r(o, 416.0, 358.0, 73.0, 21.0),
+            r(o, cancel_at.0, 358.0, cancel_at.1, 21.0),
             "Cancel",
             ButtonKind::Normal,
             false,

@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Download video: every button fits its text in every language (German **ffmpeg installieren**
+  was cut), right to left too ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172))
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
   video, the right-click menu (it did nothing in Firefox) and the media list
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
@@ -198,8 +200,6 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Download video: the **Install ffmpeg** button fits its text in every language
-  ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172))
 - 📋 The Scheduler wakes the computer from sleep to run a queue
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
