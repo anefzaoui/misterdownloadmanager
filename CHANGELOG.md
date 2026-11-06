@@ -394,6 +394,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A window closed with its title bar's × no longer turns black first**
+  ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
+  progress window turned black for a moment when closed with the × or Alt+F4, rather than with
+  Esc or one of its buttons: one to several seconds on Linux, a few hundredths of a second on
+  Windows. The window now keeps its contents until it goes.
 - **A freeze while MDM handles a command is reported again**
   ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202)): since the clock and
   what comes in from outside (a second launch, the browser, the automation API) run in every
