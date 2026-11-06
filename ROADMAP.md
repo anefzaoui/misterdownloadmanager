@@ -13,6 +13,8 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
+  its freeze report again ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202))
 - ✅ Where a download's server is: its country's flag and name and its round trip (near, medium or
   far) in Download File Info, the progress window and Properties, from a table that comes with MDM
   (no address is sent anywhere); a proxy or a CDN said as such
