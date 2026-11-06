@@ -197,10 +197,6 @@ Everything below ships together, in one release.
 
 - 📋 Direct3D as the default on Windows, once the comparison with OpenGL is in
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
-- 🔄 Themes: colours, sizes and icons, pywal and Base16, with the layout kept
-  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): every colour and size
-  now comes from the theme (the classic look unchanged); next, a picker with more built-in
-  themes, then pywal and Base16, then a help page for making your own
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 A smaller download ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - 📋 Benchmarks against other download managers
