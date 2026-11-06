@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	ഒരു ഡീബ്രിഡ് സേവനം നിങ്ങളുടെ സ്വന്തം പണമടച്ച അക്കൗണ്ട് ഉപയോഗിച്ച് ഒരു ഫയൽ ഹോസ്റ്റിന്റെ ലിങ്ക് ഡൗൺലോഡ് ചെയ്യുകയും MDM-ന് ഒരു നേരിട്ടുള്ള ലിങ്ക് നൽകുകയും ചെയ്യുന്നു. നിങ്ങളുടെ സ്വന്തം അക്കൗണ്ട് മാത്രം ഉപയോഗിക്കുക: ഒരു അക്കൗണ്ടോ അതിന്റെ ലിങ്കുകളോ പങ്കിടുന്നത് സേവനങ്ങളുടെ നിബന്ധനകൾ ലംഘിക്കുകയും അത് താൽക്കാലികമായി നിർത്തലാക്കാൻ ഇടയാക്കുകയും ചെയ്യും. ബ്രൗസർ ഇതിനകം ആരംഭിച്ച ഡൗൺലോഡുകൾ അതുപോലെ നിലനിൽക്കും.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	ഈ ടോറൻ്റിൻ്റെ ഒരു ഫയൽ സുരക്ഷിതമായി സേവ് ചെയ്യാൻ കഴിയില്ല: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -3322,6 +3327,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	ഇതൊരു സുഹൃത്തിന് അയയ്ക്കുക:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	ടോറന്റുകളും മാഗ്നറ്റ് ലിങ്കുകളും പിയറുകളിലേക്ക് അയയ്‌ക്കുന്നതിന് പകരം ആദ്യ അക്കൗണ്ടിന്റെ സേവനത്തിലേക്ക് അയയ്‌ക്കുക
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4166,6 +4175,10 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	{service} വഴി
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	{service} വഴി: സേവനം ടോറന്റ് ഡൗൺലോഡ് ചെയ്യുന്നു, തുടർന്ന് MDM അതിന്റെ ഫയലുകൾ ഡൗൺലോഡ് ചെയ്യുന്നു
 #. text in the Scheduler window
 #, machine
 	Thursday	വ്യാഴം
@@ -4832,6 +4845,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total} എണ്ണത്തിൽ {n} തിരഞ്ഞെടുത്തു
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{service} എന്നതിൽ {percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4860,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} ആദ്യം ഈ കമ്പ്യൂട്ടറിന് അനുമതി നൽകാൻ ആവശ്യപ്പെടുന്നു: അതിന്റെ ഇമെയിൽ കാണുക
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ഈ ടോറൻ്റ് നേടാൻ കഴിയുന്നില്ല: ആരും ഇത് പങ്കിടുന്നില്ല, അല്ലെങ്കിൽ ഇതിൻ്റെ ലിങ്ക് വായിക്കാൻ കഴിയുന്നില്ല
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} ഇപ്പോൾ ഈ ഫയൽ ഹോസ്റ്റിൽ എത്താൻ കഴിയില്ല; MDM പിന്നീട് വീണ്ടും ശ്രമിക്കും

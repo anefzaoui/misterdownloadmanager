@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	디브리드 서비스는 사용자의 유료 계정으로 파일 호스트 링크를 다운로드하고 MDM에 직접 링크를 제공합니다. 사용자 본인의 계정만 사용하세요. 계정 또는 링크를 공유하면 서비스 약관을 위반하게 되며 계정이 정지될 수 있습니다. 브라우저에서 이미 시작된 다운로드는 그대로 유지됩니다.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	이 토렌트의 파일을 안전하게 저장할 수 없습니다: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -3322,6 +3327,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	친구에게 보내기:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	토렌트 및 마그넷 링크를 피어 대신 첫 번째 계정으로 보내기
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4166,6 +4175,10 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	{service}을(를) 통해
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	{service}를 통해: 서비스가 토렌트를 다운로드한 다음 MDM이 해당 파일을 다운로드합니다.
 #. text in the Scheduler window
 #, machine
 	Thursday	목요일
@@ -4832,6 +4845,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total}개 중 {n}개 선택됨
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{service}에서 {percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4860,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service}에서 먼저 이 컴퓨터를 허용해 달라고 요청합니다. 이메일을 확인하세요.
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service}에서 이 토렌트를 가져올 수 없습니다. 아무도 공유하지 않거나 링크를 읽을 수 없습니다.
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service}에서 현재 이 파일 호스트에 연결할 수 없습니다. MDM이 나중에 다시 시도합니다.

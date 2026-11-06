@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Torrents through your debrid account**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): with **Send torrents and
+  magnet links to the first account instead of to peers** ticked (**Options → Accounts**), a
+  magnet link or a `.torrent` file goes to the account. Real-Debrid, AllDebrid and Premiumize
+  download the torrent on their servers, and the list shows how far they are (**45% at
+  Real-Debrid**). MDM then downloads its files over HTTP, with all its connections and resume, and removes
+  the torrent from the account's list. Your computer never connects to the torrent's peers.
+  Experimental, as the accounts are.
 - **Debrid accounts: one link directly, and the command line**
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): **Download File Info**
   says which account a link goes through (**Download through Real-Debrid (your account)**);

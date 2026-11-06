@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un servei de desbridament baixa un enllaç d'un host de fitxers amb el vostre compte de pagament i dona a MDM un enllaç directe. Utilitzeu només el vostre compte: compartir un compte o els seus enllaços infringeix els termes del servei i pot provocar la seva suspensió. Les baixades que el navegador ja ha iniciat es mantenen tal com estan.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	No es pot desar un fitxer d'aquest torrent de manera segura: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -3322,6 +3327,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Envia això a un amic:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Envia els torrents i els enllaços magnet al primer compte en lloc d'als parells
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4166,6 +4175,10 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	A través de {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	A través de {service}: el servei baixa el torrent, i després MDM els seus fitxers
 #. text in the Scheduler window
 #, machine
 	Thursday	Dijous
@@ -4832,6 +4845,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} de {total} seleccionats
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} a {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4860,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} us demana que permeteu primer aquest ordinador: consulteu el seu correu electrònic
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} no pot obtenir aquest torrent: ningú el comparteix o l'enllaç no es pot llegir
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} no pot arribar a aquest allotjament de fitxers ara mateix; MDM ho tornarà a intentar més tard

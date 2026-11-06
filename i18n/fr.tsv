@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un service de débridage télécharge un lien d’hébergeur de fichiers avec votre propre compte payant et fournit à MDM un lien direct. N’utilisez que votre propre compte : le partage d’un compte ou de ses liens enfreint les conditions d’utilisation des services et peut entraîner sa suspension. Les téléchargements déjà démarrés par le navigateur restent inchangés.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Un fichier de ce torrent ne peut pas être enregistré en toute sécurité : {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -3322,6 +3327,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Envoyer ceci à un ami :
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Envoyer les torrents et les liens magnet au premier compte au lieu des pairs
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4166,6 +4175,10 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	Via {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Via {service} : le service télécharge le torrent, puis MDM ses fichiers
 #. text in the Scheduler window
 #, machine
 	Thursday	Jeudi
@@ -4832,6 +4845,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} sur {total} sélectionnés
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} sur {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4860,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} vous demande d’autoriser d’abord cet ordinateur : consultez son e-mail
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ne peut pas obtenir ce torrent : personne ne le partage ou son lien ne peut pas être lu
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} ne peut pas atteindre cet hébergeur de fichiers pour le moment ; MDM réessayera plus tard

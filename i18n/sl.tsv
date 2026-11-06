@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Storitev debrid prenese povezavo gostitelja datotek z vašim plačljivim računom in MDM-ju posreduje neposredno povezavo. Uporabljajte samo svoj račun: skupna raba računa ali njegovih povezav krši pogoje storitev in lahko povzroči njegovo začasno ukinitev. Prenosi, ki jih je brskalnik že začel, ostanejo nespremenjeni.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Datoteke tega torrenta ni mogoče varno shraniti: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -3322,6 +3327,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Pošlji to prijatelju:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Pošlji torrente in magnetne povezave na prvi račun namesto na sovrstnike
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4166,6 +4175,10 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	Prek storitve {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Prek {service}: storitev prenese torrent, nato MDM njegove datoteke
 #. text in the Scheduler window
 #, machine
 	Thursday	Četrtek
@@ -4832,6 +4845,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} od {total} izbranih
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} pri {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4860,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} vas prosi, da najprej dovolite ta računalnik: preverite e-pošto
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ne more dobiti tega torrenta: nihče ga ne deli ali pa njegove povezave ni mogoče prebrati
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} trenutno ne more doseči tega gostitelja datotek; MDM bo poskusil znova pozneje

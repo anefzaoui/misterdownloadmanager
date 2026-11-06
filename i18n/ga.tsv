@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Íoslódálann seirbhís díbhríde nasc óstach comhaid le do chuntas íoctha féin agus tugann sí nasc díreach do MDM. Ná húsáid ach do chuntas féin: má roinneann tú cuntas nó a naisc, sáraíonn tú téarmaí na seirbhísí agus féadfar é a chur ar fionraí. Fanann íoslódálacha a thosaigh an brabhsálaí cheana féin mar atá siad.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Ní féidir comhad den toirint seo a shábháil go sábháilte: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -3322,6 +3327,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Seol é seo chuig cara:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Seol tuairteanna agus naisc mhaighnéadacha chuig an gcéad chuntas in ionad chuig piaraí
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4166,6 +4175,10 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	Trí {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Trí {service}: íoslódálann an tseirbhís an tuairt, ansin íoslódálann MDM a chuid comhad
 #. text in the Scheduler window
 #, machine
 	Thursday	Déardaoin
@@ -4832,6 +4845,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} de {total} roghnaithe
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} ag {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4860,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	iarrann {service} ort an ríomhaire seo a cheadú ar dtús: féach ar a ríomhphost
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	Ní féidir le {service} an toirint seo a fháil: níl aon duine á roinnt, nó ní féidir a nasc a léamh
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	ní féidir le {service} an t-óstach comhaid seo a bhaint amach faoi láthair; déanfaidh MDM iarracht arís níos déanaí

@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	డీబ్రిడ్ సేవ మీ స్వంత చెల్లింపు ఖాతాతో ఫైల్ హోస్ట్ లింక్‌ను డౌన్‌లోడ్ చేస్తుంది మరియు MDMకి డైరెక్ట్ లింక్‌ను అందిస్తుంది. మీ స్వంత ఖాతాను మాత్రమే ఉపయోగించండి: ఖాతాను లేదా దాని లింక్‌లను షేర్ చేయడం వలన సేవల నిబంధనలు ఉల్లంఘించబడతాయి మరియు అది సస్పెండ్ చేయబడవచ్చు. బ్రౌజర్ ఇప్పటికే ప్రారంభించిన డౌన్‌లోడ్‌లు యథాతథంగా ఉంటాయి.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	ఈ టోరెంట్ ఫైల్‌ను సురక్షితంగా సేవ్ చేయలేము: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -3322,6 +3327,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	దీన్ని స్నేహితుడికి పంపండి:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	టొరెంట్‌లు మరియు మాగ్నెట్ లింక్‌లను పీర్‌లకు బదులుగా మొదటి ఖాతాకు పంపండి
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4166,6 +4175,10 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	{service} ద్వారా
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	{service} ద్వారా: సేవ టొరెంట్‌ను డౌన్‌లోడ్ చేస్తుంది, ఆపై MDM దాని ఫైల్‌లను డౌన్‌లోడ్ చేస్తుంది
 #. text in the Scheduler window
 #, machine
 	Thursday	గురువారం
@@ -4832,6 +4845,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{total}లో {n} ఎంచుకోబడింది
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{service}లో {percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4860,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} ముందుగా ఈ కంప్యూటర్‌ను అనుమతించమని అడుగుతోంది: దాని ఇమెయిల్‌ను చూడండి
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ఈ టోరెంట్‌ను పొందలేదు: ఎవరూ షేర్ చేయడం లేదు, లేదా దాని లింక్‌ను చదవలేము
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} ప్రస్తుతం ఈ ఫైల్ హోస్ట్‌ను చేరుకోలేకపోతోంది; MDM తర్వాత మళ్ళీ ప్రయత్నిస్తుంది

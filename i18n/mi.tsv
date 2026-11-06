@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Ka tikiake tētahi ratonga debrid i te hononga a te kaihautū kōnae mā tō ake pūkete utu, ā, ka hoatu he hononga tōtika ki a MDM. Whakamahia tō ake pūkete anake: ko te tiri i tētahi pūkete, i ōna hononga rānei ka takahi i ngā tikanga o ngā ratonga, ā, ka taea te whakatarewa. Ko ngā tikiake kua tīmata kē i te pūtirotiro ka noho tonu.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Kāore e taea te tiaki haumaru tētahi kōnae o tēnei awa: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -3322,6 +3327,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Tukuna tēnei ki tētahi hoa:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Tukuna ngā awa me ngā hononga autō ki te pūkete tuatahi, kaua ki ngā hoa
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4166,6 +4175,10 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	Mā {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Mā {service}: ka tikiake te ratonga i te awa, kātahi ka tikiake a MDM i ōna kōnae
 #. text in the Scheduler window
 #, machine
 	Thursday	Rāpare
@@ -4832,6 +4845,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} o {total} i tīpakohia
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} i {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4843,6 +4860,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	Ka tono a {service} kia whakaae koe ki tēnei rorohiko i te tuatahi: tirohia tana īmēra
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	Kāore e taea e {service} te tiki i tēnei awa: kāore he tangata e tiri ana, kāore rānei e taea te pānui i tōna hononga
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	Kāore e taea e {service} te toro atu ki tēnei kaihautū kōnae i tēnei wā; ka ngana anō a MDM ā muri ake

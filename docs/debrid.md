@@ -32,6 +32,29 @@ whose service supports its host. **Up** and **Down** change it.
 
 **Download supported file-host links through these accounts** turns it all off and on.
 
+## Torrents through the service
+
+Tick **Send torrents and magnet links to the first account instead of to peers** in
+**Options → Accounts**. A magnet link (Add URL, the browser, the clipboard, a drop) or a
+`.torrent` file (Add torrent's **Download Now** or **Later**) then goes to the first account in
+the list:
+
+1. The service downloads the torrent on its own servers. The list shows how far it is, such as
+   **45% at Real-Debrid**. A torrent the service already has is ready at once.
+2. MDM then downloads its files from the service over HTTP, as any download, into the
+   **Torrents** folder. A torrent of several files gets a folder of its own there.
+3. Once every file is here, MDM removes the torrent from the account's list. On Premiumize,
+   only the transfer's record goes: its files stay in your cloud.
+
+- Your computer never connects to the torrent's peers.
+- A `.torrent` file is sent as its magnet link (its hash, its name and its trackers). Every file
+  of the torrent is downloaded; the service fetches the whole torrent.
+- Stopped, or after a restart, the download continues where it was: the service isn't sent the
+  torrent again, and files already downloaded aren't downloaded again.
+- A file name that would land outside the torrent's folder (`../`) stops the download, and
+  nothing is written.
+- If the service can't get the torrent (no peers, too big, refused), the list says why.
+
 ## What happens to a link
 
 - Add URL, the clipboard, the browser's **Download with Mister Download Manager** link menu,

@@ -143,6 +143,10 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+	A file of this torrent can't be saved safely: {name}	A file of this torrent can't be saved safely: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	A NextDNS configuration ID is six letters and digits (0-9, a-f).
@@ -2448,6 +2452,9 @@
 	Send on GitHub	Send on GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Send this to a friend:	Send this to a friend:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+	Send torrents and magnet links to the first account instead of to peers	Send torrents and magnet links to the first account instead of to peers
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Senegal	Senegal
@@ -3064,6 +3071,9 @@
 #. text in a download's Properties window
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 	Through {service}	Through {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+	Through {service}: the service downloads the torrent, then MDM its files	Through {service}: the service downloads the torrent, then MDM its files
 #. text in the Scheduler window
 	Thursday	Thursday
 #. text in a download's progress window; text in the Scheduler window
@@ -3558,6 +3568,9 @@
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 	{n} of {total} selected	{n} of {total} selected
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+	{percent} at {service}	{percent} at {service}
 #. text in errors.rs
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
@@ -3566,6 +3579,8 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 	{service} asks you to allow this computer first: see its email	{service} asks you to allow this computer first: see its email
+#. text in errors.rs
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} can't get this torrent: nobody shares it, or its link can't be read
 #. text in errors.rs
 	{service} can't reach this file host right now; MDM will try again later	{service} can't reach this file host right now; MDM will try again later
 #. text in errors.rs

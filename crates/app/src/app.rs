@@ -1119,7 +1119,8 @@ impl App {
                     .map_or(String::new(), model::date_text),
                 it.error.clone().unwrap_or_else(|| it.description.clone()),
                 it.added.as_deref().map_or(String::new(), model::date_text),
-                if it.torrent.is_some() {
+                // A torrent through a debrid account is a torrent too (#44).
+                if it.torrent.is_some() || it.remote.is_some() {
                     // i18n: where a download comes from: BitTorrent (shown on a small colored label)
                     "Torrent".into()
                 } else {
@@ -2092,6 +2093,11 @@ impl App {
         }
         if self.item(id).is_some_and(|i| i.torrent.is_some()) {
             self.start_torrent(id, show);
+            return;
+        }
+        // A torrent through a debrid account (#44).
+        if self.item(id).is_some_and(|i| i.remote.is_some()) {
+            self.start_remote(id, show);
             return;
         }
         let Some((url, login, context, own_limit, checksum, direct)) = self.item(id).map(|i| {
@@ -3076,13 +3082,32 @@ impl App {
         self.open_torrent_dialog_with(source, None, ctx);
     }
 
-    /// Add torrent for a .torrent on the web (#39): fetched with `remote`'s request.
+    /// Add torrent for a .torrent on the web (#39): fetched with `remote`'s request. A magnet
+    /// link goes straight to the debrid account when torrents go through it (#44): Add torrent
+    /// would ask peers for what it holds.
     fn open_torrent_dialog_with(
         &mut self,
         source: Option<String>,
         remote: Option<crate::torrents::Remote>,
         ctx: &egui::Context,
     ) {
+        if remote.is_none()
+            && self.torrent_account().is_some()
+            && let Some(magnet) = source
+                .as_deref()
+                .and_then(mdm_torrent::Source::magnet)
+                .and_then(|s| match s {
+                    mdm_torrent::Source::Magnet(m) => url::Url::parse(&m).ok(),
+                    mdm_torrent::Source::File(_) => None,
+                })
+        {
+            let dir = self
+                .settings
+                .category_dir(Category::Torrents, &self.downloads);
+            self.add_remote_torrent(magnet, dir, Category::Torrents, true);
+            self.show_window(ctx);
+            return;
+        }
         if self.torrent_dlg.is_some() {
             return;
         }
@@ -3098,8 +3123,120 @@ impl App {
         ));
     }
 
-    /// Add torrent → Download Now / Later.
+    /// The debrid account torrents go to (#44): Options → Accounts' "Torrents and magnet links
+    /// through the first account", with an account there.
+    fn torrent_account(&self) -> Option<(u64, mdm_debrid::ServiceKind)> {
+        (self.settings.debrid_on && self.settings.debrid_torrents)
+            .then(|| self.debrid.torrent_account())
+            .flatten()
+    }
+
+    /// A torrent through the debrid account (#44): a row whose files come over HTTP once the
+    /// service has them, into `dir` (a torrent of several files in a folder of its own there).
+    fn add_remote_torrent(
+        &mut self,
+        magnet: url::Url,
+        dir: PathBuf,
+        category: Category,
+        start_now: bool,
+    ) {
+        let Some((account, service)) = self.torrent_account() else {
+            return;
+        };
+        let name = magnet
+            .query_pairs()
+            .find(|(k, _)| k == "dn")
+            .map(|(_, v)| mdm_engine::naming::sanitize(&v))
+            .filter(|n| !n.is_empty())
+            .unwrap_or_else(|| "torrent".to_owned());
+        let id = self.push_item(
+            magnet,
+            dir.join(&name),
+            category,
+            String::new(),
+            None,
+            None,
+            Default::default(),
+            crate::i18n::mark("from a magnet link"),
+        );
+        if let Some(item) = self.item(id) {
+            item.note(crate::i18n::fmt(
+                // i18n: event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+                crate::i18n::t(
+                    "Through {service}: the service downloads the torrent, then MDM its files",
+                ),
+                &[("service", service.name())],
+            ));
+            item.remote = Some(model::RemoteSpec {
+                account,
+                transfer: None,
+                folder: dir,
+            });
+        }
+        self.selection.set(id);
+        if start_now {
+            self.start(id, true);
+        } else {
+            self.queue_later(vec![id], self.settings.queue_panel_later);
+        }
+        self.dirty = true;
+    }
+
+    /// Start (or continue) a torrent through its debrid account (#44).
+    fn start_remote(&mut self, id: u64, show: bool) {
+        let limit = self.settings.speed_limit();
+        let Some((url, spec, own)) = self
+            .item(id)
+            .and_then(|i| Some((i.url.clone(), i.remote.clone()?, i.own_limit)))
+        else {
+            return;
+        };
+        // The files' requests: Options' connections, proxy, DNS and adapter; the service's own
+        // unlocking is the torrent job's (not a host's link).
+        let mut net = self
+            .request_parts(&url, None, &Default::default(), true)
+            .opts;
+        net.speed_limit = own.or(limit);
+        let rt = self.rt.clone();
+        let _guard = rt.enter();
+        let job = mdm_debrid::torrents::RemoteTorrent::start(
+            &self.debrid,
+            mdm_debrid::torrents::Order {
+                account: spec.account,
+                magnet: url,
+                transfer: spec.transfer.clone(),
+                folder: spec.folder.clone(),
+                net,
+                poll: std::time::Duration::from_secs(5),
+            },
+        );
+        let Some(item) = self.item(id) else { return };
+        item.note(if spec.transfer.is_some() {
+            crate::i18n::t("Resumed")
+        } else {
+            crate::i18n::t("Started")
+        });
+        item.live = Some(Live::new(model::Job::Remote(job), item.downloaded));
+        item.status = Status::Downloading;
+        item.error = None;
+        item.last_try = Some(model::now_stamp());
+        self.dirty = true;
+        if show && !self.progress.iter().any(|p| p.id == id) {
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
+        }
+    }
+
+    /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
+    /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files.
     fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) {
+        if self.torrent_account().is_some()
+            && let Some(magnet) =
+                mdm_torrent::magnet_link(&add.meta.torrent).and_then(|m| url::Url::parse(&m).ok())
+        {
+            self.add_remote_torrent(magnet, add.dir.clone(), add.category, add.start_now);
+            return;
+        }
         let meta = &add.meta;
         if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
             self.notice = Some((
