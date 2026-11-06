@@ -16,6 +16,8 @@ Everything below ships together, in one release.
 - ✅ Support MDM: a way to support its creator on [GitHub Sponsors](https://github.com/sponsors/anefzaoui),
   asked for only (**Help → Support MDM**, a line in About, the website, the README, the
   extension's popup and GitHub's Sponsor button); MDM stays free, nothing changes or unlocks
+- ✅ A server that can't resume a download no longer gets the file downloaded twice on a busy
+  computer (part of [#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
   Italian is the first catalog reviewed by a native speaker
   ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150))
@@ -144,8 +146,6 @@ Everything below ships together, in one release.
   icons all come from the chosen theme, and Base16 and pywal schemes can be imported
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - 🔄 A crash when a magnet link comes from Firefox ([#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145))
-- 🔄 A server that can't resume a download no longer gets the file downloaded twice
-  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 
 ### Bugs being looked into
 

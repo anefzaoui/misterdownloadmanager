@@ -231,8 +231,10 @@ try {
     $mon = 0
     for ($i = 0; $i -lt 60 -and -not $mon; $i++) {
       Start-Sleep -Milliseconds 500
-      $mon = (Get-Process misterdownloadmanager -ErrorAction SilentlyContinue |
-        Where-Object { $_.Id -ne $app.Id -and (Titles $_.Id) -contains $title } | Select-Object -First 1).Id
+      # Our app's own monitor (its child): never another copy's report window, which this run
+      # would shoot and then close.
+      $mon = (Get-CimInstance Win32_Process -Filter "ParentProcessId=$($app.Id)" -ErrorAction SilentlyContinue |
+        Where-Object { (Titles $_.ProcessId) -contains $title } | Select-Object -First 1).ProcessId
     }
     if (-not $mon) { throw "no crash report window" }
     # The dump read and GitHub searched.

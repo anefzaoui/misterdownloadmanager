@@ -441,7 +441,7 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
   faults (also server-wide with --faults; per-URL values override):
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
-    etag=weak|per-request|none latency_ms=N
+    etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
@@ -906,6 +906,9 @@ pub(crate) async fn serve(
         return (StatusCode::FORBIDDEN, format!("referer {want}… required\n")).into_response();
     }
     if let Some(ms) = f.latency_ms {
+        tokio::time::sleep(Duration::from_millis(ms)).await;
+    }
+    if let Some(ms) = f.range_latency_ms.filter(|_| entry.range.is_some()) {
         tokio::time::sleep(Duration::from_millis(ms)).await;
     }
     if every(n, f.fail_every) {
