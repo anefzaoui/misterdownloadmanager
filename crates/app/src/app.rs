@@ -7242,6 +7242,9 @@ impl eframe::App for App {
     /// (#162). A command that opens a window gets the UI pass that creates it, minimized or not
     /// (no window is raised or focused for it beyond what the command itself does).
     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // The freeze watchdog times this as it times `ui` (crash.rs): a command or the clock
+        // that hangs is reported too, minimized or not (#202).
+        crate::crash::logic_begin();
         let mut handled = false;
         while let Ok(inc) = self.commands.try_recv() {
             handled = true;
@@ -7297,10 +7300,11 @@ impl eframe::App for App {
             }
         }
         ctx.request_repaint_after(Duration::from_secs(2));
+        crate::crash::logic_end();
     }
 
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
-        // The freeze watchdog times every frame (crash.rs).
+        // The freeze watchdog times every frame's drawing, as it times its logic (crash.rs).
         crate::crash::frame_begin();
         // A lost graphics device is noticed before this frame paints (renderer.rs).
         crate::renderer::frame_begin();

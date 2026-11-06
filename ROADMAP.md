@@ -13,6 +13,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ A window closed with its title bar's × keeps its contents until it goes, instead of turning
+  black for a moment (seconds on Linux) ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207))
+- ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
+  its freeze report again ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202))
 - ✅ Where a download's server is: its country's flag and name and its round trip (near, medium or
   far) in Download File Info, the progress window and Properties, from a table that comes with MDM
   (no address is sent anywhere); a proxy or a CDN said as such
@@ -49,6 +53,8 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Themes: Adwaita, GNOME's look (its controls, a header bar on Windows, GNOME's Adwaita icons
   in colour and one colour)
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
+  red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
 - ✅ Download video: every button fits its text in every language (German **ffmpeg installieren**

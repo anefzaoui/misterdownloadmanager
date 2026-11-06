@@ -148,10 +148,13 @@ palette! {
     window: "window", "Windows' and dialogs' background" = grey(0x39), grey(0xf0);
     text: "text", "Text and glyphs" = grey(0xff), grey(0x00);
     text_disabled: "text.disabled", "Disabled text, the one grey of every greyed control and label" = grey(0x8a), grey(0x8a);
-    muted: "text.muted", "Secondary text: notes, sizes, versions" = grey(0xa0), grey(0x6d);
+    // Dark: #ababab, 4.5:1 on the dark tab page (#a0a0a0 was 4.0:1 there, 4.4:1 on the window).
+    muted: "text.muted", "Secondary text: notes, sizes, versions" = grey(0xab), grey(0x6d);
     link: "link", "Text that opens something" = rgb(0x99, 0xc8, 0xff), rgb(0x00, 0x66, 0xcc);
-    error: "error", "Error text" = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
-    error_strong: "error.strong", "A failed check's message in Options (connection, browser and helper tests)" = rgb(0xc4, 0x2b, 0x1c), rgb(0xc4, 0x2b, 0x1c);
+    // Dark: #ff9999, 5:1 on the dark tab page (#ff8080 was 4.3:1 there).
+    error: "error", "Error text" = rgb(0xff, 0x99, 0x99), rgb(0xc4, 0x2b, 0x1c);
+    // Dark: the error colour (light mode's #c42b1c was 2:1 on the dark dialog).
+    error_strong: "error.strong", "A failed check's message in Options (connection, browser and helper tests)" = rgb(0xff, 0x99, 0x99), rgb(0xc4, 0x2b, 0x1c);
     warning: "warning", "Warning text" = rgb(0x9d, 0x5d, 0x00), rgb(0x9d, 0x5d, 0x00);
     success: "success", "Success text (a matching checksum)" = rgb(0x6c, 0xcb, 0x5f), rgb(0x0f, 0x7b, 0x0f);
     reach_near: "reach.near", "A download's server near by its round trip (under 60 ms), in Properties" = rgb(0x6c, 0xcb, 0x5f), rgb(0x10, 0x7c, 0x10);
@@ -189,8 +192,9 @@ palette! {
     field_readonly: "field.readonly", "A read-only text box's inside" = grey(0x30), grey(0xf3);
     field_readonly_border: "field.readonly.border", "A read-only text box's border" = grey(0x4b), grey(0xe2);
     combo_chevron: "combo.chevron", "A drop-down's chevron" = grey(0x6f), grey(0x6f);
-    combo_arrow_hot: "combo.arrow.hot", "An editable drop-down's arrow zone under the pointer" = grey(0xf3), grey(0xf3);
-    combo_arrow_pressed: "combo.arrow.pressed", "An editable drop-down's arrow zone pressed or open" = grey(0xe8), grey(0xe8);
+    // Dark: the dark parts' tints (light mode's greys showed over the dark box).
+    combo_arrow_hot: "combo.arrow.hot", "An editable drop-down's arrow zone under the pointer" = grey(0x45), grey(0xf3);
+    combo_arrow_pressed: "combo.arrow.pressed", "An editable drop-down's arrow zone pressed or open" = grey(0x26), grey(0xe8);
     // ---- buttons ----
     button: "button", "A button's face" = grey(0x44), grey(0xfd);
     button_hot: "button.hot", "A button's face under the pointer" = grey(0x4b), grey(0xf6);
@@ -749,5 +753,32 @@ mod tests {
         assert_eq!(adwaita.controls.focus, FocusLook::Ring);
         assert_eq!(adwaita.controls.check, CheckLook::Adwaita);
         assert_eq!(adwaita.controls.field_focus, FieldFocus::Ring);
+    }
+
+    /// The classic look's dark secondary and error texts read on every dark surface they sit on
+    /// (WCAG 2.1 AA, 4.5:1): the window, a tab page, a text box.
+    #[test]
+    fn classic_dark_texts_read() {
+        let ratio = |a: Color32, b: Color32| {
+            let lum = |c: Color32| {
+                let f = |v: u8| {
+                    let v = v as f32 / 255.0;
+                    if v <= 0.04045 {
+                        v / 12.92
+                    } else {
+                        ((v + 0.055) / 1.055).powf(2.4)
+                    }
+                };
+                0.2126 * f(c.r()) + 0.7152 * f(c.g()) + 0.0722 * f(c.b())
+            };
+            let (x, y) = (lum(a), lum(b));
+            (x.max(y) + 0.05) / (x.min(y) + 0.05)
+        };
+        let d = &CLASSIC.dark;
+        for fg in [d.muted, d.error, d.error_strong] {
+            for bg in [d.window, d.tab_page, d.field] {
+                assert!(ratio(fg, bg) >= 4.5, "{fg:?} on {bg:?}: {}", ratio(fg, bg));
+            }
+        }
     }
 }
