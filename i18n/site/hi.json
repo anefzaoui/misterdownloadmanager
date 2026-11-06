@@ -842,6 +842,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>ब्राउज़र से।</g1> <g2>Mister Download Manager के साथ सभी लिंक डाउनलोड करें</g2> के लिए किसी पृष्ठ पर राइट-क्लिक करें, या <g3>Mister Download Manager के साथ चयनित लिंक डाउनलोड करें</g3> के लिए उसका कुछ हिस्सा चुनें। पृष्ठ का रेफ़रर और कुकीज़ प्रत्येक लिंक के साथ जाते हैं।"
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "Windows पर, विंडोज़ Direct3D 12 (eframe का wgpu, केवल इसके Direct3D 12 बैकएंड के साथ) या OpenGL (eframe का glow) के साथ ड्रा की जाती हैं, जब देखें → इसके साथ ड्रा करें इसे चुनता है; Linux और macOS OpenGL का उपयोग करते हैं। जब चुना गया एक शुरू नहीं हो पाता, तो दूसरा आज़माया जाता है, ताकि विंडोज़ हमेशा खुलें।"
+  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "डिफ़ॉल्ट रूप से MDM उन भागों को पहले डाउनलोड करता है जो सबसे कम साथियों के पास होते हैं, जैसा कि BitTorrent प्रोग्राम आमतौर पर करते हैं। इस तरह, केवल एक साथी के पास मौजूद भाग को उस साथी के जाने से पहले प्राप्त कर लिया जाता है, और MDM इसे दूसरों को जल्दी दे सकता है। MDM के परीक्षण झुंडों पर यह क्रम में डाउनलोड करने जितना ही तेज़ी से समाप्त हुआ, और यह एकमात्र क्रम था जो तब समाप्त हुआ जब एक दुर्लभ भाग का एकमात्र धारक चला गया।"
@@ -1397,6 +1401,10 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "<x1/> फ़ोल्डर को हटा दें (या उसे केवल पढ़ने योग्य बना दें) और वही कॉपी सादे ज़िप की तरह व्यवहार करती है: यह अपना डेटा <x2/> में रखती है।"
+  },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>देखें</g1> — श्रेणियाँ दिखाएँ या छिपाएँ, सूची को सॉर्ट करें (<g2>फ़ाइलें व्यवस्थित करें</g2>), <g3>डार्क मोड समर्थन</g3>, <g4>हमेशा गहरा</g4>, <g5>इसके साथ ड्रा करें</g5> (Windows: Direct3D, या OpenGL) और <g6>भाषा</g6>।"
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -2070,6 +2078,10 @@
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDM अपने टॉरेंट इंजन को पहली बार तब शुरू करता है जब किसी टॉरेंट को इसकी आवश्यकता होती है। <g1>जब कोई टॉरेंट नहीं चल रहा हो तो टॉरेंट इंजन बंद करें</g1> चालू होने पर (डिफ़ॉल्ट), यह एक मिनट बाद फिर से बंद हो जाता है जब कोई टॉरेंट नहीं चल रहा होता या साझा नहीं हो रहा होता। जब यह चलता है, तो अन्य पीयर MDM से कनेक्ट हो सकते हैं, और MDM आपके राउटर से अपने पोर्ट (UPnP) को फ़ॉरवर्ड करने के लिए कहता है। Windows पूछ सकता है कि क्या MDM को फ़ायरवॉल के माध्यम से अनुमति दी जाए: इसे केवल निजी नेटवर्क पर अनुमति दें।"
   },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "कार्ड निर्माता की साइट (Intel, AMD या NVIDIA) से ग्राफ़िक्स ड्राइवर को अपडेट करने से इनमें से कई समस्याएँ ठीक हो जाती हैं।"
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>हर कनेक्शन, लाइव</g1> प्रत्येक कनेक्शन को भरते हुए, गति और शेष समय के साथ दिखाया गया है। क्रैश-सेफ रिज्यूम वहीं से शुरू होता है जहाँ यह रुका था।"
@@ -2445,6 +2457,10 @@
   "3c333ba83ce0943b": {
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>टॉरेंट और आपकी सुरक्षा</g2></g1> — दूसरे क्या देख सकते हैं, नेटवर्क स्विच, ब्लॉकलिस्ट, प्रॉक्सी।"
+  },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "एक फ़्रीज़ या क्रैश रिपोर्ट बताती है कि कौन सा ड्राइंग कर रहा था: समस्या की रिपोर्ट करते समय इसे शामिल करें।"
   },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
@@ -3473,6 +3489,10 @@
   "57e101e4403fd046": {
    "source": "Command",
    "text": "कमांड"
+  },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "यदि MDM चलते समय ग्राफ़िक्स कार्ड रीसेट हो जाता है (एक ड्राइवर अपडेट), तो MDM अपने आप फिर से शुरू हो जाता है।"
   },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
@@ -5774,6 +5794,10 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid, AllDebrid या Premiumize जैसी डीब्रिड सेवा एक सशुल्क खाता है जो फ़ाइल होस्ट से फ़ाइलों को अपने सर्वर पर डाउनलोड करती है। यह वापस देती है..."
   },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "यदि आपके कंप्यूटर पर Direct3D शुरू नहीं हो सकता है (कोई Direct3D 12 ड्राइवर नहीं, कुछ वर्चुअल मशीनें), या इसकी पहली विंडो 10 सेकंड के भीतर नहीं दिखती है, तो MDM OpenGL से बनाता है, और <g1>देखें → इसके साथ ड्रा करें</g1> ऐसा कहता है। <g2>Direct3D</g2> को फिर से चुनने पर अगली शुरुआत में इसे फिर से आज़माया जाता है।"
+  },
   "920f5f8c86e123ee": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
    "text": "MDM ब्राउज़र एक्सटेंशन के ज़रिए Google Chrome, Microsoft Edge, Brave, Opera और Vivaldi के साथ-साथ Helium जैसे उन पर बने ब्राउज़र भी काम करते हैं। Firefox के लिए सपोर्ट, जिसमें Zen और LibreWolf भी शामिल हैं, लिखा जा चुका है और उसकी टेस्टिंग चल रही है। एक्सटेंशन डाउनलोड को उनकी कुकीज़ और रेफ़रर के साथ MDM को सौंप देता है, ताकि साइन-इन के पीछे की फ़ाइलें भी काम करें, और यह राइट-क्लिक मेनू में Mister Download Manager से डाउनलोड करें और वीडियो पर वीडियो डाउनलोड करें बटन जोड़ता है। ब्राउज़र इंटीग्रेशन देखें।"
@@ -6701,6 +6725,10 @@
   "a9d705964d2ca3bb": {
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>86 भाषाएँ अंतर्निहित।</g1> पहली बार शुरू करने पर दाएँ से बाएँ शामिल, चुनी गई।"
+  },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>मेमोरी</g1> (प्रोसेस टैब पर) वह है जो MDM अपने लिए रखता है, उसका <g2>निजी वर्किंग सेट</g2>। जब विंडो खुली हो और कुछ भी डाउनलोड न हो रहा हो, तो यह लगभग 70 MB होता है।"
   },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
@@ -8566,6 +8594,10 @@
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "सूची में संख्याएँ और तिथियाँ (<g1>अंतिम प्रयास की तिथि</g1>, <g2>जोड़ा गया</g2>) Windows में सेट क्षेत्र (<g3>सेटिंग्स → समय और भाषा → भाषा और क्षेत्र → क्षेत्रीय प्रारूप</g3>) का पालन करती हैं, इसलिए अंक, विभाजक और तिथि का क्रम वैसे ही दिखते हैं जैसे आप आदी हैं। अंग्रेजी में, MDM उन्हें वैसे ही लिखता है जैसे IDM करता है (<x4/>)।"
   },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>वर्किंग सेट</g1> (डिटेल्स टैब, कॉलम जोड़ें) में अन्य प्रोग्रामों के साथ साझा की गई मेमोरी भी शामिल होती है। MDM अपनी विंडो को ग्राफ़िक्स कार्ड से बनाता है, इसलिए ग्राफ़िक्स ड्राइवर की मेमोरी भी इसमें गिनी जाती है, कुल मिलाकर लगभग 120 MB।"
+  },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "हाँ। MDM, IDM के परिचित कमांड-लाइन स्विच स्वीकार करता है, टर्मिनल से डाउनलोड के लिए misterdownloadmanager-cli के साथ आता है, और इसमें एक स्थानीय, टोकन-सुरक्षित ऑटोमेशन API है जो डाउनलोड को सूचीबद्ध कर सकता है, रोक सकता है, शुरू कर सकता है और हटा सकता है। API तब तक बंद रहता है जब तक आप इसे चालू नहीं करते। कमांड लाइन और ऑटोमेशन देखें।"
@@ -9642,6 +9674,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "बाईं ओर <g1>मुख्य डाउनलोड कतार</g1> चुनें। <g2>शेड्यूल</g2> टैब खुलता है।"
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "Windows पर, MDM अपनी विंडो को Direct3D 12 से बनाता है; Linux और macOS पर, OpenGL से। एक ग्राफ़िक्स ड्राइवर अभी भी गलत व्यवहार कर सकता है: एक विंडो जो सेकंडों तक स्थिर रहती है, झिलमिलाती है, या गलत रंग या ब्लॉक दिखाती है। Windows पर, दूसरा विकल्प आज़माएँ: <g1>देखें → इसके साथ ड्रा करें → OpenGL</g1> चुनें, फिर MDM से बाहर निकलें (<g2>कार्य → बाहर निकलें</g2>) और इसे फिर से शुरू करें। <g3>देखें → इसके साथ ड्रा करें → Direct3D</g3> उसी तरह वापस चला जाता है।"
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "<g1>\"सामान्य\" श्रेणी के लिए डिफ़ॉल्ट डाउनलोड निर्देशिका</g1> में, <g2>ब्राउज़ करें</g2> पर क्लिक करें और स्टिक पर एक फ़ोल्डर चुनें, उदाहरण के लिए <x3/>।"
@@ -9685,6 +9721,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "डिफ़ॉल्ट रूप से प्रति डाउनलोड आठ कनेक्शन, और यदि आप विकल्प → कनेक्शन में चुनते हैं तो 32 तक, या वहाँ 32 से अधिक कनेक्शन की अनुमति दें पर टिक करने के बाद 128 तक। MDM कम…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "यदि दोनों में से कोई भी शुरू नहीं हो सकता है, तो MDM Microsoft के सॉफ़्टवेयर रेंडरर से बनाता है, इसलिए विंडो अभी भी खुलती है (रिमोट डेस्कटॉप, ग्राफ़िक्स ड्राइवर के बिना एक वर्चुअल मशीन)। यह काम करता है, लेकिन प्रोसेसर को अधिक व्यस्त रखता है।"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",

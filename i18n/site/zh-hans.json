@@ -842,6 +842,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>浏览器。</g1>右键单击页面，选择<g2>使用 Mister Download Manager 下载所有链接</g2>，或选择页面的一部分，选择<g3>使用 Mister Download Manager 下载选定链接</g3>。页面的引用页和 Cookie 会随每个链接一起发送。"
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "在 Windows 上，窗口通过 Direct3D 12（eframe 的 wgpu，仅使用其 Direct3D 12 后端）绘制，或者当“视图”→“绘制方式”选择 OpenGL 时，通过 OpenGL（eframe 的 glow）绘制；Linux 和 macOS 使用 OpenGL。当所选方式无法启动时，会尝试另一种方式，因此窗口总能打开。"
+  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "默认情况下，MDM 会像其他 BitTorrent 程序一样，优先下载拥有最少对等点的分块。这样，当某个分块只有一个对等点拥有时，它会在该对等点离开前被获取，MDM 也能更快地将其传递给其他对等点。在 MDM 的测试群中，它的完成速度与按顺序下载一样快，并且是唯一一种在稀有分块的唯一持有者离开时仍能完成下载的顺序。"
@@ -1397,6 +1401,10 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "删除 <x1/> 文件夹（或将其设置为只读），相同的副本就会像普通的 zip 文件一样：它将数据保存在 <x2/> 中。"
+  },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>视图</g1> — 显示或隐藏类别，对列表进行排序（<g2>整理文件</g2>），<g3>深色模式支持</g3>，<g4>始终为深色</g4>，<g5>绘制方式</g5>（Windows：Direct3D 或 OpenGL）和<g6>语言</g6>。"
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -2070,6 +2078,10 @@
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDM 在种子首次需要时启动其种子引擎。如果<g1>没有种子运行时停止种子引擎</g1>处于开启状态（默认），则在没有种子运行或共享一分钟后，它会再次停止。当它运行时，其他对等点可以连接到 MDM，MDM 会要求您的路由器转发其端口 (UPnP)。Windows 可能会询问是否允许 MDM 通过防火墙：仅在专用网络上允许它。"
   },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "从显卡制造商网站（Intel、AMD 或 NVIDIA）更新显卡驱动程序可以解决许多此类问题。"
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>每个连接，实时显示</g1> 每个连接的进度、速度和剩余时间都会实时显示。防崩溃续传功能可在中断处继续下载。"
@@ -2445,6 +2457,10 @@
   "3c333ba83ce0943b": {
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>种子和您的安全</g2></g1> — 他人可见的信息、网络切换、阻止列表、代理。"
+  },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "冻结或崩溃报告会说明是哪种方式在绘制：在报告问题时请附上它。"
   },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
@@ -3473,6 +3489,10 @@
   "57e101e4403fd046": {
    "source": "Command",
    "text": "命令"
+  },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "如果在 MDM 运行时显卡被重置（驱动程序更新），MDM 会自行重新启动。"
   },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
@@ -5774,6 +5794,10 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid、AllDebrid 或 Premiumize 等网盘服务是一种付费帐户，它从文件主机下载文件到自己的服务器。它会返回一个..."
   },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "如果 Direct3D 无法在您的计算机上启动（没有 Direct3D 12 驱动程序，某些虚拟机），或者其第一个窗口在 10 秒内没有显示，MDM 会使用 OpenGL 绘制，并且<g1>视图 → 绘制方式</g1>会显示这一点。再次选择<g2>Direct3D</g2>会在下次启动时再次尝试。"
+  },
   "920f5f8c86e123ee": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
    "text": "通过 MDM 浏览器扩展，支持 Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi，以及基于它们构建的浏览器，例如 Helium。对 Firefox（也包括 Zen 和 LibreWolf）的支持已完成编写，正在测试中。该扩展会将下载任务及其 Cookie 和 referrer 移交给 MDM，因此需要登录才能下载的文件仍然有效，它还会将“使用 Mister Download Manager 下载”添加到右键菜单，并在视频上方添加一个“下载视频”按钮。请参阅“浏览器集成”。"
@@ -6701,6 +6725,10 @@
   "a9d705964d2ca3bb": {
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>内置86种语言。</g1> 包括从右到左的语言，首次启动时选择。"
+  },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>内存</g1>（在“进程”选项卡中）是 MDM 独立占用的内存，即其<g2>专用工作集</g2>。在窗口打开且没有下载任务时，大约是 70 MB。"
   },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
@@ -8566,6 +8594,10 @@
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "列表中的数字和日期（<g1>上次尝试日期</g1>、<g2>添加时间</g2>）遵循 Windows 中设置的区域（<g3>设置 → 时间和语言 → 语言和区域 → 区域格式</g3>），因此数字、分隔符和日期顺序看起来与您习惯的方式相同。在英文中，MDM 的书写方式与 IDM 相同（<x4/>）。"
   },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>工作集</g1>（“详细信息”选项卡，添加该列）会加上与其他程序共享的内存。MDM 使用显卡绘制窗口，因此显卡驱动程序的内存也计算在内，总共大约 120 MB。"
+  },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "是。MDM 接受 IDM 熟悉的命令行开关，附带 misterdownloadmanager-cli 用于从终端下载，并具有一个本地的、受令牌保护的自动化 API，可以列出、暂停、开始和删除下载。此 API 默认关闭，直到您将其打开。请参阅命令行和自动化。"
@@ -9642,6 +9674,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "在左侧选择<g1>主下载队列</g1>。<g2>计划</g2>选项卡将打开。"
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "在 Windows 上，MDM 使用 Direct3D 12 绘制窗口；在 Linux 和 macOS 上，使用 OpenGL。显卡驱动程序仍然可能出现异常：窗口卡住几秒、闪烁或显示错误的颜色或色块。在 Windows 上，请尝试另一种方式：选择<g1>视图 → 绘制方式 → OpenGL</g1>，然后退出 MDM（<g2>任务 → 退出</g2>）并重新启动。通过<g3>视图 → 绘制方式 → Direct3D</g3>可以以同样的方式切换回来。"
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "在<g1>“常规”类别的默认下载目录</g1>中，点击<g2>浏览</g2>并选择 U 盘上的一个文件夹，例如<x3/>。"
@@ -9685,6 +9721,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "默认情况下，每个下载使用八个连接。如果您在选项 → 连接中选择，最多可达32个；勾选允许超过32个连接后，可达128个。当服务器允许的连接数较少时，MDM会使用较少的连接…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "如果两者都无法启动，MDM 会使用 Microsoft 的软件渲染器绘制，因此窗口仍然会打开（远程桌面，没有显卡驱动程序的虚拟机）。它能工作，但会使处理器更繁忙。"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",

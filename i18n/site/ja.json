@@ -842,6 +842,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>ブラウザ。</g1>ページを右クリックして<g2>Mister Download Manager で全リンクをダウンロード</g2>を選択するか、ページの一部を選択して<g3>Mister Download Manager で選択したリンクをダウンロード</g3>を選択します。ページの参照元とCookieは各リンクに付随します。"
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "Windowsでは、ウィンドウはDirect3D 12（eframeのwgpu、Direct3D 12バックエンドのみ）または、表示 → 描画方法で選択された場合はOpenGL（eframeのglow）で描画されます。LinuxとmacOSはOpenGLを使用します。選択された方が起動できない場合、もう一方が試行されるため、ウィンドウは常に開きます。"
+  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "デフォルトでは、MDMはBitTorrentプログラムが通常行うように、最も少ないピアが持っているピースを最初にダウンロードします。これにより、1つのピアしか持っていないピースは、そのピアが離れる前に取得され、MDMはそれを他のピアに早く渡すことができます。MDMのテストスワームでは、順番にダウンロードするのと同じ速さで完了し、希少なピースの唯一の保持者が離れた場合でも完了したのはこの順序だけでした。"
@@ -1389,6 +1393,10 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "<x1/> フォルダーを削除するか (または読み取り専用にするか) すると、同じコピーは通常の zip と同じように動作し、データは <x2/> に保存されます。"
+  },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>表示</g1> — カテゴリの表示/非表示、リストの並べ替え（<g2>ファイルを整理</g2>）、<g3>ダーク モードのサポート</g3>、<g4>常にダーク</g4>、<g5>描画方法</g5>（Windows: Direct3D または OpenGL）、および<g6>言語</g6>。"
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -2062,6 +2070,10 @@
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDMは、トレントが必要とする最初のときにトレントエンジンを起動します。<g1>トレントが実行されていないときにトレント エンジンを停止する</g1>がオン（デフォルト）の場合、トレントが実行または共有されていない1分後に再び停止します。実行中は、他のピアがMDMに接続でき、MDMはルーターにポート転送（UPnP）を要求します。Windowsは、ファイアウォールを介してMDMを許可するかどうかを尋ねる場合があります。プライベートネットワークでのみ許可してください。"
   },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "カードメーカーのサイト（Intel、AMD、NVIDIA）からグラフィックドライバーを更新することで、これらの問題の多くが解決されます。"
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>すべての接続をライブで</g1> 各接続が埋まっていく様子を、速度と残り時間とともに表示。クラッシュしても安全な再開で、停止した場所から再開します。"
@@ -2437,6 +2449,10 @@
   "3c333ba83ce0943b": {
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>トレントとセキュリティ</g2></g1> — 他のユーザーに見える情報、ネットワークスイッチ、ブロックリスト、プロキシについて。"
+  },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "フリーズまたはクラッシュレポートには、どちらが描画していたかが記載されています。問題を報告する際には、これを含めてください。"
   },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
@@ -3465,6 +3481,10 @@
   "57e101e4403fd046": {
    "source": "Command",
    "text": "コマンド"
+  },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "MDMの実行中にグラフィックカードがリセットされた場合（ドライバーの更新など）、MDMは自動的に再起動します。"
   },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
@@ -5762,6 +5782,10 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid、AllDebrid、Premiumizeなどのデブリットサービスは、ファイルホストから自身のサーバーにファイルをダウンロードする有料アカウントです。それは…"
   },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "お使いのコンピューターでDirect3Dが起動できない場合（Direct3D 12ドライバーがない、一部の仮想マシン）、または最初のウィンドウが10秒以内に表示されない場合、MDMはOpenGLで描画し、<g1>表示 → 描画方法</g1>にその旨が表示されます。<g2>Direct3D</g2>を再度選択すると、次回の起動時に再試行されます。"
+  },
   "920f5f8c86e123ee": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
    "text": "Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi、およびHeliumなどのそれらをベースにしたブラウザは、MDMブラウザ拡張機能を通じて動作します。ZenやLibreWolfも含むFirefoxのサポートは、現在開発中でテスト中です。この拡張機能は、ダウンロードをクッキーとリファラーと共にMDMに渡し、サインインが必要なファイルもダウンロードできるようにします。また、右クリックメニューにMister Download Manager でダウンロードを追加し、動画の上に動画をダウンロードボタンを表示します。ブラウザ統合をご覧ください。"
@@ -6689,6 +6713,10 @@
   "a9d705964d2ca3bb": {
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>86言語を内蔵。</g1>初回起動時に右から左への表示も選択可能。"
+  },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>メモリ</g1>（「プロセス」タブ）は、MDMが単独で保持する<g2>プライベートワーキングセット</g2>です。ウィンドウを開いて何もダウンロードしていない場合、約70MBです。"
   },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
@@ -8550,6 +8578,10 @@
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "リスト内の数字と日付（<g1>最終試行日時</g1>、<g2>追加日時</g2>）は、Windowsで設定された地域（<g3>設定 → 時刻と言語 → 言語と地域 → 地域の形式</g3>）に従うため、数字、区切り文字、日付の順序は慣れている表示になります。英語では、MDMはIDMと同じように記述します（<x4/>）。"
   },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>ワーキングセット</g1>（「詳細」タブで列を追加）は、他のプログラムと共有されるメモリも加算されます。MDMはグラフィックカードでウィンドウを描画するため、グラフィックドライバーのメモリもここにカウントされ、合計で約120MBになります。"
+  },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "はい。MDMはIDMでおなじみのコマンドラインスイッチに対応しており、ターミナルからダウンロードするためのmisterdownloadmanager-cliが付属しています。また、ダウンロードのリスト表示、一時停止、開始、削除ができる、トークンで保護されたローカルの自動化APIも備えています。このAPIは、有効にするまでオフになっています。コマンドラインと自動化をご覧ください。"
@@ -9626,6 +9658,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "左側で<g1>メインダウンロードキュー</g1>を選択します。<g2>スケジュール</g2>タブが開きます。"
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "Windowsでは、MDMはDirect3D 12でウィンドウを描画し、LinuxとmacOSではOpenGLで描画します。グラフィックドライバーが誤動作する可能性はまだあります。例えば、ウィンドウが数秒間フリーズしたり、ちらついたり、間違った色やブロックを表示したりする場合があります。Windowsでは、別の方法を試してみてください。<g1>表示 → 描画方法 → OpenGL</g1>を選択し、MDMを終了（<g2>タスク → 終了</g2>）して、再度起動します。<g3>表示 → 描画方法 → Direct3D</g3>で元に戻すことも同じ方法です。"
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "<g1>「一般」カテゴリの既定のダウンロードディレクトリ</g1>で、<g2>参照</g2>をクリックし、スティック上のフォルダー（例：<x3/>）を選択します。"
@@ -9669,6 +9705,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "デフォルトではダウンロードごとに8つ、オプション → 接続で選択すると最大32、さらに32以上の接続を許可にチェックを入れると128まで使用できます。MDMはそれより少なく…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "どちらも起動できない場合、MDMはMicrosoftのソフトウェアレンダラーで描画するため、ウィンドウは開きます（リモートデスクトップ、グラフィックドライバーのない仮想マシン）。これは機能しますが、プロセッサーの負荷が高くなります。"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",

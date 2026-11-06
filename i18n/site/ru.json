@@ -842,6 +842,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>Браузер.</g1> Щелкните правой кнопкой мыши на странице, чтобы выбрать <g2>Загрузить все ссылки с Mister Download Manager</g2>, или выделите часть страницы, чтобы выбрать <g3>Загрузить выбранные ссылки с Mister Download Manager</g3>. Реферер и файлы cookie страницы передаются с каждой ссылкой."
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "В Windows окна отрисовываются с помощью Direct3D 12 (wgpu eframe, только с его бэкендом Direct3D 12) или с помощью OpenGL (glow eframe), если выбран пункт меню Вид → Отрисовка с помощью; Linux и macOS используют OpenGL. Если выбранный вариант не запускается, пробуется другой, поэтому окна всегда открываются."
+  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "По умолчанию MDM сначала загружает части, которые есть у наименьшего числа пиров, как это обычно делают BitTorrent-программы. Таким образом, часть, которая есть только у одного пира, загружается до того, как этот пир уйдет, и MDM может быстрее передать ее другим. В тестовых роях MDM завершал загрузку так же быстро, как и при последовательной загрузке, и это был единственный порядок, который завершался, когда уходил единственный держатель редкой части."
@@ -1397,6 +1401,10 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "Удалите папку <x1/> (или сделайте её доступной только для чтения), и та же копия будет вести себя как обычный zip-архив: она будет хранить свои данные в <x2/>."
+  },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>Вид</g1> — показать или скрыть категории, отсортировать список (<g2>Упорядочить файлы</g2>), <g3>Поддержка темного режима</g3>, <g4>Всегда темная</g4>, <g5>Отрисовка с помощью</g5> (Windows: Direct3D или OpenGL) и <g6>Язык</g6>."
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -2070,6 +2078,10 @@
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDM запускает свой торрент-движок, когда торрент требуется впервые. При включённой (по умолчанию) опции <g1>Останавливать торрент-движок, когда торренты не запущены</g1> он снова останавливается через минуту после того, как ни один торрент не запущен или не раздаётся. Пока он работает, другие пиры могут подключаться к MDM, и MDM просит ваш маршрутизатор перенаправить его порт (UPnP). Windows может спросить, разрешить ли MDM через брандмауэр: разрешайте только в частных сетях."
   },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "Обновление графического драйвера с сайта производителя карты (Intel, AMD или NVIDIA) решает многие из этих проблем."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>Каждое соединение в реальном времени</g1> Каждое соединение отображается по мере заполнения, со скоростью и оставшимся временем. Безопасное возобновление после сбоя начинается с того места, где остановилось."
@@ -2445,6 +2457,10 @@
   "3c333ba83ce0943b": {
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>Торренты и ваша безопасность</g2></g1> — что видят другие, сетевые переключатели, чёрные списки, прокси."
+  },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "Отчёт о зависании или сбое указывает, какой из них использовался для отрисовки: включите его при сообщении о проблеме."
   },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
@@ -3473,6 +3489,10 @@
   "57e101e4403fd046": {
    "source": "Command",
    "text": "Команда"
+  },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "Если графическая карта сбрасывается во время работы MDM (обновление драйвера), MDM запускается снова сам по себе."
   },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
@@ -5774,6 +5794,10 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Дебрид-сервис (например, Real-Debrid, AllDebrid или Premiumize) — это платная учетная запись, которая загружает файлы с файловых хостингов на свои собственные серверы. Он возвращает..."
   },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "Если Direct3D не может запуститься на вашем компьютере (нет драйвера Direct3D 12, некоторые виртуальные машины) или его первое окно не отображается в течение 10 секунд, MDM отрисовывает с помощью OpenGL, и <g1>Вид → Отрисовка с помощью</g1> сообщает об этом. Повторный выбор <g2>Direct3D</g2> снова попытается запустить его при следующем старте."
+  },
   "920f5f8c86e123ee": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
    "text": "Google Chrome, Microsoft Edge, Brave, Opera и Vivaldi — через расширение MDM для браузера, а также браузеры на их основе, такие как Helium. Поддержка Firefox, которая также охватывает Zen и LibreWolf, написана и находится на стадии тестирования. Расширение передает загрузки в MDM вместе с их файлами cookie и реферером, поэтому файлы, требующие входа в систему, по-прежнему работают, и оно добавляет Загрузить с помощью Mister Download Manager в контекстное меню, а также кнопку Скачать видео над видео. См. Интеграция с браузером."
@@ -6701,6 +6725,10 @@
   "a9d705964d2ca3bb": {
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>86 встроенных языков.</g1> Включая письмо справа налево, выбирается при первом запуске."
+  },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>Память</g1> (на вкладке «Процессы») — это то, что MDM использует только для себя, его <g2>частный рабочий набор</g2>. При открытом окне и отсутствии загрузок это около 70 МБ."
   },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
@@ -8566,6 +8594,10 @@
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "Числа и даты в списке (<g1>Дата последней попытки</g1>, <g2>Добавлено</g2>) соответствуют региону, установленному в Windows (<g3>Настройки → Время и язык → Язык и регион → Региональный формат</g3>), поэтому цифры, разделители и порядок дат выглядят так, как вы привыкли. На английском языке MDM записывает их так же, как IDM (<x4/>)."
   },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>Рабочий набор</g1> (вкладка «Подробности», добавьте столбец) включает память, используемую совместно с другими программами. MDM отрисовывает свои окна с помощью видеокарты, поэтому память графического драйвера также учитывается здесь, всего около 120 МБ."
+  },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Да. MDM поддерживает привычные параметры командной строки IDM, поставляется с misterdownloadmanager-cli для загрузок из терминала и имеет локальный API автоматизации, защищенный токеном, который может перечислять, приостанавливать, запускать и удалять загрузки. API отключен, пока вы его не включите. См. Командная строка и автоматизация."
@@ -9642,6 +9674,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "Выберите <g1>Основная очередь загрузки</g1> слева. Откроется вкладка <g2>Расписание</g2>."
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "В Windows MDM отрисовывает свои окна с помощью Direct3D 12; в Linux и macOS — с помощью OpenGL. Графический драйвер всё ещё может работать некорректно: окно может зависать на секунды, мерцать или отображать неправильные цвета или блоки. В Windows попробуйте другой вариант: выберите <g1>Вид → Отрисовка с помощью → OpenGL</g1>, затем закройте MDM (<g2>Задачи → Выход</g2>) и запустите его снова. <g3>Вид → Отрисовка с помощью → Direct3D</g3> возвращается тем же способом."
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "В поле <g1>Папка для загрузок по умолчанию для категории «Общие»</g1> нажмите <g2>Обзор</g2> и выберите папку на флешке, например <x3/>."
@@ -9685,6 +9721,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "По умолчанию восемь на загрузку, и до 32, если вы выберете в Параметры → Подключение, или 128 после установки флажка Разрешить более 32 подключений там. MDM использует меньше…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Если ни один из них не может запуститься, MDM отрисовывает с помощью программного рендерера Microsoft, поэтому окно всё равно открывается (удалённый рабочий стол, виртуальная машина без графического драйвера). Это работает, но процессор остаётся более загруженным."
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
