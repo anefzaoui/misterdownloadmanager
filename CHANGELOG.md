@@ -339,6 +339,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: Ubuntu's Firefox reaches MDM** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
+  the Snap Firefox never makes the folder MDM looked for, so browser integration wasn't set up
+  for it and its extension couldn't find MDM. It is now, and the Snap goes through the desktop,
+  which asks once (**Allow**); the help says how to be asked again after **Don't allow**.
+  Chromium as a Snap ran MDM's helper inside its sandbox, away from MDM (it started a second,
+  sandboxed MDM): MDM no longer offers it, and the help says why.
 - **A server without ranges no longer sends the file twice**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)): when the extra
   connections' answers came late (a busy computer), the download could finish and then start over
