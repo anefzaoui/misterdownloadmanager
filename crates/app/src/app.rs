@@ -1645,8 +1645,8 @@ impl App {
                     ctx.set_zoom_factor(z);
                 }
             }
-            // Debug builds: Direct3D's device lost on purpose; MDM starts again (renderer.rs).
-            #[cfg(all(windows, debug_assertions))]
+            // Direct3D's device lost on purpose; MDM starts again (renderer.rs).
+            #[cfg(windows)]
             "renderer-lost" if crate::offscreen() => crate::renderer::test_device_lost(),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),

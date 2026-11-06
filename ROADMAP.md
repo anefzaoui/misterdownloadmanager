@@ -32,7 +32,7 @@ Everything below ships together, in one release.
   ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111))
 - ✅ Less memory in the notification area after Minimize too, and again 2 minutes after hiding
   ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
-- ✅ Windows: draw with Direct3D 12 instead of OpenGL (**View → Draw with**), an option for now;
+- ✅ Windows: MDM draws with Direct3D 12 by default; **View → Draw with** goes back to OpenGL, and
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
 - ✅ Screen readers see a window's contents the first time they read it, not only its title bar
@@ -192,8 +192,6 @@ Everything below ships together, in one release.
 
 ### Look and performance
 
-- 📋 Direct3D as the default on Windows, once the comparison with OpenGL is in
-  ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 A smaller download ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - 📋 Benchmarks against other download managers

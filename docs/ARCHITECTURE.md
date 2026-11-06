@@ -68,8 +68,8 @@ before file names (`fileicons.rs`): the Windows shell's system image lists, macO
 Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's
 icons (bundled) stand in until the system's icon is ready, and wherever the system has none.
 
-The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses
-Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start.
+On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend
+only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL.
 `renderer.rs` falls back to the other one when the chosen one can't start, so the windows
 always open.
 

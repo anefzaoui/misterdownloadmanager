@@ -59,19 +59,21 @@ A magnet link has to get the torrent's file list from other peers first. That ca
 
 Task Manager shows several figures, and they mean different things:
 
-- **Memory** (on the Processes tab) is what MDM holds for itself alone, its *private working set*. With the window open and nothing downloading, that is about 50 MB.
-- **Working set** (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.
+- **Memory** (on the Processes tab) is what MDM holds for itself alone, its *private working set*. With the window open and nothing downloading, that is about 70 MB.
+- **Working set** (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.
 - **Commit size** is memory MDM has reserved, whether in use or not.
 
 Closed to the notification area, MDM gives its memory back to Windows: **Memory** drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (**View → Language**) loads fonts for every script while it's open; MDM lets them go when it closes.
 
 ## The window freezes or draws wrongly
 
-MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose **View → Draw with → Direct3D** to draw with Direct3D 12 instead, from the next start; **View → Draw with → OpenGL** goes back.
+On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose **View → Draw with → OpenGL**, then quit MDM (**Tasks → Exit**) and start it again. **View → Draw with → Direct3D** goes back the same way.
 
-- If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and **View → Draw with** says so. Choosing **Direct3D** again tries it again at the next start.
-- On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).
-- A freeze or crash report says which one was drawing.
+- If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and **View → Draw with** says so. Choosing **Direct3D** again tries it again at the next start.
+- If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.
+- If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.
+- Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.
+- A freeze or crash report says which one was drawing: include it when you report a problem.
 
 ## The setup or MDM won't start
 

@@ -36,15 +36,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Every torrent connection goes out from the adapter's address, with the same kill switch as
   downloads: peers, trackers, the DHT and the listening port. When the adapter disconnects,
   torrents stop, nothing goes out another way, and they start again when it is back.
-- **Windows: draw with Direct3D** ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89)).
-  **View → Draw with** chooses between OpenGL, as before and still the default, and Direct3D 12,
-  from the next start. Direct3D may avoid the stalls some graphics drivers' OpenGL has
-  ([#82](https://github.com/anefzaoui/misterdownloadmanager/issues/82)). When the chosen one
-  can't start, MDM draws with the other, so its window always opens: Direct3D falls back to
-  OpenGL (and the menu says so), and OpenGL to Direct3D or Microsoft's software renderer (Remote
-  Desktop, virtual machines without a graphics driver). A start with Direct3D that ends before
-  its first window is drawn is remembered the same way. Freeze and crash reports say what was
-  drawing. Linux and macOS keep OpenGL.
+- **Windows: MDM draws with Direct3D 12** ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89)).
+  Its windows open faster (about a quarter of a second sooner on our test PC), and Direct3D may
+  avoid the stalls some graphics drivers' OpenGL has
+  ([#82](https://github.com/anefzaoui/misterdownloadmanager/issues/82)). **View → Draw with**
+  goes back to OpenGL, as before, from the next start; a choice of OpenGL is kept. The window
+  always opens: when Direct3D can't start, its first frame doesn't come within 10 seconds, or a
+  start with it ends before its first frame, MDM draws with OpenGL until Direct3D is chosen
+  again (the menu says so); without a usable OpenGL either, it draws with Microsoft's software
+  renderer (Remote Desktop, virtual machines without a graphics driver). When the graphics card
+  is reset while MDM runs (a driver update), MDM starts again by itself. Freeze and crash
+  reports say what was drawing. Linux and macOS keep OpenGL.
 - **The extension lists the media a page has loaded**
   ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
   window has **Media on this page**: the HLS and DASH streams the page's players loaded (each

@@ -53,9 +53,8 @@ pub enum Adapters {
     Software,
     /// A card first, else WARP: the last way to open the windows at all.
     Any,
-    /// None at all: Direct3D fails to start (debug builds' `MDM_RENDERER=direct3d-none`, to
-    /// check the way back to OpenGL).
-    #[cfg_attr(not(debug_assertions), allow(dead_code))]
+    /// None at all: Direct3D fails to start (`MDM_RENDERER=direct3d-none` in off-screen test
+    /// copies, to check the way back to OpenGL).
     Nothing,
 }
 
@@ -91,8 +90,7 @@ fn parse(name: &str) -> Option<Attempt> {
             Some(Attempt::Direct3D(Adapters::Hardware))
         }
         "warp" => Some(Attempt::Direct3D(Adapters::Software)),
-        #[cfg(debug_assertions)]
-        "direct3d-none" => Some(Attempt::Direct3D(Adapters::Nothing)),
+        "direct3d-none" if crate::offscreen() => Some(Attempt::Direct3D(Adapters::Nothing)),
         _ => None,
     }
 }
@@ -106,7 +104,9 @@ pub struct Plan {
 }
 
 /// What to try: the override if any, else the setting (or [`DEFAULT`]) unless Direct3D failed
-/// here before; then the other way. Only OpenGL where Direct3D isn't built.
+/// here before; then the other way. A graphics card's Direct3D falls back to OpenGL, then to
+/// Direct3D on Microsoft's software renderer (Remote Desktop, a virtual machine: no card's
+/// driver, and Windows' own OpenGL 1.1 can't draw MDM). Only OpenGL where Direct3D isn't built.
 pub fn plan(setting: Option<Api>, overridden: Option<&str>, failed_before: bool) -> Plan {
     let forced = overridden.and_then(|o| {
         let a = parse(o);
@@ -121,12 +121,15 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, failed_before: bool)
         None if chosen == Api::Direct3D && !failed_before => Attempt::Direct3D(Adapters::Hardware),
         None => Attempt::OpenGl,
     };
-    let then = match first {
-        Attempt::OpenGl => Attempt::Direct3D(Adapters::Any),
-        Attempt::Direct3D(_) => Attempt::OpenGl,
+    let then: &[Attempt] = match first {
+        Attempt::OpenGl => &[Attempt::Direct3D(Adapters::Any)],
+        Attempt::Direct3D(Adapters::Hardware) if forced.is_none() => {
+            &[Attempt::OpenGl, Attempt::Direct3D(Adapters::Software)]
+        }
+        Attempt::Direct3D(_) => &[Attempt::OpenGl],
     };
-    let attempts: Vec<Attempt> = [first, then]
-        .into_iter()
+    let attempts: Vec<Attempt> = std::iter::once(first)
+        .chain(then.iter().copied())
         .filter(|a| cfg!(windows) || *a == Attempt::OpenGl)
         .collect();
     Plan {
@@ -216,6 +219,11 @@ pub fn forget_failure() {
     }
 }
 
+/// A test's failure asked for (`name`=1), honoured only by off-screen test copies.
+fn testing(name: &str) -> bool {
+    crate::offscreen() && std::env::var_os(name).is_some_and(|v| v == "1")
+}
+
 /// The first frame was drawn (presented).
 static DRAWN: AtomicBool = AtomicBool::new(false);
 
@@ -226,9 +234,9 @@ pub fn frame_done(ctx: &egui::Context) {
     if DRAWN.load(Ordering::Relaxed) || ctx.cumulative_frame_nr() == 0 {
         return;
     }
-    // Debug builds' MDM_TEST_NO_FIRST_FRAME=1: a first frame that never comes (the watchdog's
-    // check).
-    if cfg!(debug_assertions) && std::env::var_os("MDM_TEST_NO_FIRST_FRAME").is_some_and(|v| v == "1") {
+    // MDM_TEST_NO_FIRST_FRAME=1 (off-screen test copies): a first frame that never comes (the
+    // watchdog's check).
+    if testing("MDM_TEST_NO_FIRST_FRAME") {
         return;
     }
     DRAWN.store(true, Ordering::Relaxed);
@@ -323,7 +331,16 @@ pub fn run<A: eframe::App + 'static>(
 /// The window's options for one way of drawing.
 fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
     match attempt {
-        Attempt::OpenGl => opts.renderer = eframe::Renderer::Glow,
+        Attempt::OpenGl => {
+            opts.renderer = eframe::Renderer::Glow;
+            // MDM_TEST_NO_OPENGL=1 (off-screen test copies): a pixel format no OpenGL has, as on
+            // a computer whose only OpenGL is Windows' own 1.1 (Remote Desktop, a VM).
+            if testing("MDM_TEST_NO_OPENGL") {
+                opts.multisampling = 255;
+                opts.depth_buffer = 255;
+                opts.stencil_buffer = 255;
+            }
+        }
         #[cfg(windows)]
         Attempt::Direct3D(adapters) => {
             opts.renderer = eframe::Renderer::Wgpu;
@@ -365,8 +382,9 @@ fn started(cc: &eframe::CreationContext<'_>, attempt: Attempt, instead: Option<S
     let _ = ACTIVE.set(attempt.api());
 }
 
-/// Debug builds' `/show renderer-lost`: Direct3D's device lost on purpose (MDM starts again).
-#[cfg(all(windows, debug_assertions))]
+/// `/show renderer-lost` (off-screen test copies): Direct3D's device lost on purpose (MDM starts
+/// again).
+#[cfg(windows)]
 pub fn test_device_lost() {
     direct3d::lose_device();
 }
@@ -447,8 +465,7 @@ mod direct3d {
     static DEVICE: std::sync::OnceLock<wgpu::Device> = std::sync::OnceLock::new();
     static TEST_LOSS: AtomicBool = AtomicBool::new(false);
 
-    /// Debug builds' `/show renderer-lost` (off-screen test copies): lose the device on purpose.
-    #[cfg(debug_assertions)]
+    /// `/show renderer-lost` (off-screen test copies): lose the device on purpose.
     pub fn lose_device() {
         if let Some(d) = DEVICE.get() {
             TEST_LOSS.store(true, Ordering::Relaxed);
@@ -563,13 +580,17 @@ mod direct3d {
 #[cfg(windows)]
 fn choose(list: &[(eframe::wgpu::DeviceType, bool)], adapters: Adapters) -> Option<usize> {
     use eframe::wgpu::DeviceType;
-    let hardware = |t: DeviceType| t != DeviceType::Cpu;
+    // MDM_TEST_NO_HARDWARE=1 (off-screen test copies): no graphics card's Direct3D 12, only
+    // Microsoft's software renderer, as over Remote Desktop.
+    let no_card = testing("MDM_TEST_NO_HARDWARE");
+    let hardware = |t: DeviceType| t != DeviceType::Cpu && !no_card;
+    let software = |t: DeviceType| t == DeviceType::Cpu;
     let first =
         |want: &dyn Fn(DeviceType) -> bool| list.iter().position(|&(t, fits)| fits && want(t));
     match adapters {
         Adapters::Hardware => first(&hardware),
-        Adapters::Software => first(&|t| !hardware(t)),
-        Adapters::Any => first(&hardware).or_else(|| first(&|t| !hardware(t))),
+        Adapters::Software => first(&software),
+        Adapters::Any => first(&hardware).or_else(|| first(&software)),
         Adapters::Nothing => None,
     }
 }
@@ -583,13 +604,14 @@ mod tests {
         let d3d = Attempt::Direct3D(Adapters::Hardware);
         let any = Attempt::Direct3D(Adapters::Any);
         if cfg!(windows) {
-            // Nothing chosen: Direct3D (#89), its start watched; OpenGL behind it.
+            // Nothing chosen: Direct3D (#89), its start watched; OpenGL behind it, then WARP.
+            let warp = Attempt::Direct3D(Adapters::Software);
             let p = plan(None, None, false);
-            assert_eq!(p.attempts, [d3d, Attempt::OpenGl]);
+            assert_eq!(p.attempts, [d3d, Attempt::OpenGl, warp]);
             assert!(p.watched);
             // Direct3D chosen: the same.
             let p = plan(Some(Api::Direct3D), None, false);
-            assert_eq!(p.attempts, [d3d, Attempt::OpenGl]);
+            assert_eq!(p.attempts, [d3d, Attempt::OpenGl, warp]);
             assert!(p.watched);
             // ... unless it failed here before, chosen or by default.
             for setting in [None, Some(Api::Direct3D)] {
