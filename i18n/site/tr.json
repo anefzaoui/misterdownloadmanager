@@ -862,6 +862,10 @@
    "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
    "text": "Windows'ta pencereler Direct3D 12 (eframe'in wgpu'su, yalnızca Direct3D 12 arka ucuyla) veya Görünüm → Şununla çiz seçeneği belirlendiğinde OpenGL (eframe'in glow'u) ile çizilir; Linux ve macOS OpenGL kullanır. Seçilen başlatılamadığında diğeri denenir, böylece pencereler her zaman açılır."
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "Varsayılan olarak MDM, BitTorrent programlarının genellikle yaptığı gibi, en az eşin sahip olduğu parçaları önce indirir. Bu sayede sadece bir eşin sahip olduğu bir parça, o eş ayrılmadan önce alınır ve MDM bunu diğerlerine daha erken aktarabilir. MDM'nin test sürülerinde, sırayla indirme kadar hızlı tamamlandı ve kıt bir parçanın tek sahibinin ayrıldığı durumlarda tamamlanan tek sıraydı."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>GitHub'a gönder</g1>, tarayıcınızda GitHub'ın <g2>Kilitlenme raporu</g2> formunu, raporu içeren klasörle birlikte önceden doldurulmuş olarak açar. Rapor dosyasını forma sürükleyin, kontrol edin ve gönderin. Bir GitHub hesabınızın olması gerekir. <g3>Hiçbir şey kendi kendine gönderilmez.</g3>"
@@ -1070,9 +1074,17 @@
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>Sonsuza dek ücretsizdir.</g1> Süresi dolan deneme sürümü, lisans anahtarı, reklam yok. GNU GPL, ücretsiz kalmasını garanti eder."
   },
+  "1accfe27df04b7d9": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support…",
+   "text": "MDM tarayıcı uzantısı aracılığıyla Google Chrome, Microsoft Edge, Brave, Opera ve Vivaldi ile ve Helium gibi bu tarayıcılar üzerine kurulu olanlarla çalışır. Firefox desteği…"
+  },
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 s</g1><g2></g2>"
+  },
+  "1ae1f6b28d64deef": {
+   "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
+   "text": "Tarayıcı eklentisi uygulama ile birlikte gelir ve <g1>Chrome, Edge, Brave, Opera ve Vivaldi</g1> ile <g2>Firefox</g2> için ayrı bir indirme olarak sunulur. Mağaza listelemeleri yolda. Her dosya, GitHub Actions tarafından herkese açık kaynaktan oluşturulur ve SHA-256 sağlama toplamı ile listelenir."
   },
   "1afe0a44e06cfa4b": {
    "source": "To check MDM's side, open <g1>Options → General</g1> in MDM and click <g2>Test browser integration...</g2>. It checks that browser integration is on, that this is the installed copy, that the browsers can find MDM, and which browsers' extension has connected; <g3>How to fix it</g3> opens the section for the first that fails.",
@@ -1373,6 +1385,10 @@
   "20e3deb3f4421710": {
    "source": "The download list",
    "text": "İndirme listesi"
+  },
+  "20e4fa05d9c374d9": {
+   "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
+   "text": "<g1>Geçici Eklenti Yükle</g1>'ye tıklayın ve <x2/> seçeneğini belirleyin."
   },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
@@ -1758,6 +1774,10 @@
    "source": "MDM comes with an MCP server, misterdownloadmanager-mcp, so an AI assistant that supports MCP (Claude Desktop, Claude Code, Cursor, VS Code and others) can…",
    "text": "MDM, bir MCP sunucusu olan misterdownloadmanager-mcp ile birlikte gelir, böylece MCP'yi destekleyen bir yapay zeka asistanı (Claude Desktop, Claude Code, Cursor, VS Code ve diğerleri) şunları yapabilir..."
   },
+  "2a73a935ac5fc81d": {
+   "source": "Open <x1/> and click <g2>This Firefox</g2>.",
+   "text": "<x1/> adresini açın ve <g2>Bu Firefox</g2>'a tıklayın."
+  },
   "2a86bffcb4952c03": {
    "source": "<g1>Logging in.</g1> Write the login in the address (<x2/>), tick <g3>Use authorization</g3>, or save it in <g4>Options → Sites Logins</g4>. Without one, MDM logs in as <x5/>. The path is relative to the folder the login starts in; to start from the server's root, write <x6/> after the server (<x7/>).",
    "text": "<g1>Giriş yapılıyor.</g1> Giriş bilgilerini adrese (<x2/>) yazın, <g3>Yetkilendirme kullan</g3> seçeneğini işaretleyin veya <g4>Seçenekler → Site Oturum Açmaları</g4> bölümüne kaydedin. Bunlardan biri olmadan MDM <x5/> olarak giriş yapar. Yol, girişin başladığı klasöre göredir; sunucunun kökünden başlamak için sunucudan sonra <x6/> yazın (<x7/>)."
@@ -2138,6 +2158,10 @@
    "source": "Closing the window with its close box keeps the download running.",
    "text": "Pencereyi kapatma kutusuyla kapatmak, indirme işleminin çalışmaya devam etmesini sağlar."
   },
+  "335df06d95749e68": {
+   "source": "Chrome, Edge, Brave, Opera, Vivaldi; Firefox in testing",
+   "text": "Chrome, Edge, Brave, Opera, Vivaldi; Firefox test aşamasında"
+  },
   "336d90cdead9909e": {
    "source": "Delete the selected downloads and their files (asks first)",
    "text": "Seçili indirmeleri ve dosyalarını sil (önce sorar)"
@@ -2161,6 +2185,10 @@
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM, bağımsız bir geliştirici olan Ahmed Nefzaoui tarafından yapılmıştır ve <g1>GitHub</g1> üzerindeki katkılara açıktır. Hata raporları, çeviriler ve kodlar memnuniyetle karşılanır."
+  },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "<g1>Önce ilk ve son parçalar</g1> (varsayılan olarak açık) ile her dosyanın son parçaları da erken gelir. Çoğu video dosyası dizinini sonda tutar ve bir oynatıcı bir şey çalmadan önce onu okur."
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -2574,6 +2602,10 @@
    "source": "For all downloads together",
    "text": "Tüm indirmeler birlikte"
   },
+  "3e7256dcef6e5886": {
+   "source": "Browser extension: submitted to the stores, awaiting approval. <g1><g2><x3/>Firefox</g2> <g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g1>",
+   "text": "Tarayıcı eklentisi: mağazalara gönderildi, onay bekleniyor. <g1><g2><x3/>Firefox</g2> <g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g1>"
+  },
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "MDM'yi önce başlatmanıza gerek yoktur. Tarayıcı bir indirmeyi devrettiğinde ve MDM çalışmıyorsa, yardımcı program onu başlatır ve indirmeyi iletir."
@@ -2601,6 +2633,10 @@
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
    "text": "Yükleyici. Bir nedeniniz yoksa bunu seçin. Tarayıcı entegrasyonunu kurabilir ve <x1/> dosyalarını ve magnet bağlantılarını MDM ile açabilir."
+  },
+  "3f1a155dbf3600d3": {
+   "source": "<g1>Firefox</g1> (<x2/>, in testing)",
+   "text": "<g1>Firefox</g1> (<x2/>, test aşamasında)"
   },
   "3f2e32c284681794": {
    "source": "If Windows says <g1>Windows protected your PC</g1>, click <g2>More info</g2>, check that the file is <x3/> from the <g4>Releases</g4> page, then click <g5>Run anyway</g5>.",
@@ -2754,6 +2790,10 @@
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
    "text": "İlk sürüm: Windows için ücretsiz bir indirme yöneticisi, Internet Download Manager kullanıcılarının beklediği şekilde düzenlenmiş, macOS ve Linux için deneysel yapılarla."
   },
+  "43bc6e18a0433b8b": {
+   "source": "Firefox removes a temporary add-on when it closes, so you have to load it again after each restart.",
+   "text": "Firefox, geçici bir eklentiyi kapandığında kaldırır, bu nedenle her yeniden başlatmadan sonra tekrar yüklemeniz gerekir."
+  },
   "43cb42591f1e4934": {
    "source": "<g1>No proxy/socks</g1> — connect directly. This is the default.",
    "text": "<g1>Proxy/SOCKS yok</g1> — doğrudan bağlanın. Bu varsayılandır."
@@ -2841,6 +2881,10 @@
   "45bc5ceaa76685a9": {
    "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
    "text": "Tarayıcının zaten başlatmış olduğu bir indirme (MDM onu tarayıcıdan devraldı) olduğu gibi indirilir: barındırıcı dosyayı zaten gönderiyor."
+  },
+  "45cafb7bca129310": {
+   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
+   "text": "<g1><g2>Tarayıcı entegrasyonu</g2></g1> — Chrome, Edge, Brave ve Firefox için uzantı, hangi indirmeleri aldığı ve MDM çalışmadığında ne olduğu."
   },
   "45ce55f4ec4843d8": {
    "source": "<g1>Start now</g1> and <g2>Stop</g2> run or halt the selected queue straight away.",
@@ -3626,6 +3670,10 @@
    "source": "Unzip anywhere, a USB stick too; everything stays in its folder",
    "text": "Herhangi bir yere, USB belleğe bile açın; her şey kendi klasöründe kalır"
   },
+  "5b4c0d90aeddada8": {
+   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
+   "text": "Uzantı yüklü ve açık mı? Tarayıcının uzantılar sayfasında <g1>Mister Download Manager</g1> uygulamasını arayın. Firefox'ta, geçici bir eklenti yeniden başlatıldıktan sonra kaybolur. Bkz. <g2>Tarayıcı entegrasyonu</g2>."
+  },
   "5bc4b6e9ef830d3c": {
    "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
    "text": "<g1>Linux ve macOS</g1>: MDM'nin ayarlarında, yalnızca sizin okuyabileceğiniz (0700) bir veri klasöründe, henüz sistemin anahtar zincirinde değil. Anahtar zincirinde tutulması planlanıyor."
@@ -3973,6 +4021,10 @@
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "Zamanlayıcı"
+  },
+  "63b637699436b285": {
+   "source": "Store listings for Chrome, Edge and Firefox are on the way and will make this one click. The <g1>step-by-step guide</g1> shows each browser.",
+   "text": "Chrome, Edge ve Firefox için mağaza listelemeleri yolda ve bu işlemi tek tıklamayla yapacak. <g1>Adım adım kılavuz</g1> her tarayıcıyı gösterir."
   },
   "63ce30d5a4972748": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.",
@@ -5022,6 +5074,10 @@
    "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
    "text": "<g1>Adanmış boyut</g1>, MDM'nin kullanılsın veya kullanılmasın ayırdığı bellektir."
   },
+  "7d9082fb6f1abec9": {
+   "source": "Firefox 140 or later is needed.",
+   "text": "Firefox 140 veya sonraki bir sürümü gereklidir."
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Kalite</g1> her video için geçerlidir: <g2>En iyi kalite</g2>, belirli bir yüksekliğe <g3>Kadar</g3> (her video o yükseklikte veya en yakın altındaki), <g4>Yalnızca ses, orijinal</g4>, <g5>Yalnızca ses MP3</g5>, <g6>Yalnızca ses OPUS</g6> veya <g7>Yalnızca ses FLAC</g7>. ffmpeg olmadan, yalnızca sesiyle birlikte gelen kaliteler sunulur ve MP3, Opus veya FLAC sunulmaz."
@@ -5518,6 +5574,10 @@
    "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
    "text": "<g1>Şimdi İndir</g1> her videoyu ayrı bir indirme olarak ekler ve <g2>Zamanlayıcı</g2> bölümünde (<g3>Aynı anda N dosya indir</g3>) ayarladığınız kadarını aynı anda çalıştıran ana kuyruğu başlatır. <g4>Sonra</g4> seçeneği, indirmeleri başlatmadan ekler. Aynı anda 500'den fazla eklemek önce onay ister."
   },
+  "89fc33b1b049584c": {
+   "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
+   "text": "Tarayıcınızın indirmelerini çerezleriyle birlikte MDM'ye aktarır, sağ tıklama menüsüne <g1>Mister Download Manager ile İndir</g1> seçeneğini ekler ve videoların üzerine bir <g2>Videoyu indir</g2> düğmesi koyar. Uygulama ile birlikte, <x3/> klasöründe ve ayrıca şurada bulunur:"
+  },
   "89fd713eb7dedf38": {
    "source": "Starts the main download queue.",
    "text": "Ana indirme kuyruğunu başlatır."
@@ -5738,6 +5798,14 @@
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
    "text": "<g1>Dökümü okuma.</g1> Monitör, dökümü Mozilla'nın <x2/> ile okur. Sürümün Breakpad sembolleri bulunduğunda bunları kullanır. Kaynaktan derlenen bir yapı, <x4/> ile derlendiğinde yanındaki yerel hata ayıklama bilgilerini (kendi <x3/>, DWARF) de okuyabilir; gönderilen uygulama, birkaç MB olan bu okuyucu olmadan gelir. Raporun <g5>İmza</g5>sı (örneğin <x6/>) bir sorunla ilgili raporlarda aynı kalır ve pencere, bunun için mevcut sorunları arar."
   },
+  "8fe29a431a6dd71a": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
+   "text": "Bir bağlantıya, videoya, sese veya resme sağ tıklayın ve <g1>Mister Download Manager ile İndir</g1> seçeneğini seçin. MDM, türü ne olursa olsun onu indirir: siz istediğiniz için, dosya türleri listesi ve hariç tutulan siteler burada geçerli değildir (bunlar yalnızca MDM'nin hangi indirmeleri kendiliğinden devralacağına karar verir). Akış olarak oynayan bir video <g2>Videoyu indir</g2> penceresine gider."
+  },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "Bir videoyu indirilirken izlemek için <g1>Sırayla indir</g1> seçeneğini işaretleyin (bkz. <g2>Sırayla indir</g2>)."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5,5 s<g1><g2>2</g2></g1>"
@@ -5793,6 +5861,10 @@
   "91f65bb0d07ece23": {
    "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
    "text": "Bilgisayarınızda Direct3D başlayamazsa (Direct3D 12 sürücüsü yok, bazı sanal makineler) veya ilk penceresi 10 saniye içinde görünmezse, MDM OpenGL ile çizer ve <g1>Görünüm → Şununla çiz</g1> bunu belirtir. <g2>Direct3D</g2> seçeneğini tekrar seçmek, bir sonraki başlatmada tekrar denemesini sağlar."
+  },
+  "920f5f8c86e123ee": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "MDM tarayıcı uzantısı aracılığıyla Google Chrome, Microsoft Edge, Brave, Opera ve Vivaldi ile ve Helium gibi bu tarayıcılar üzerine kurulu olanlarla çalışır. Zen ve LibreWolf'u da kapsayan Firefox desteği yazıldı ve test aşamasındadır. Uzantı, indirmeleri çerezleri ve yönlendiren bilgisiyle MDM'ye aktarır, böylece oturum açma gerektiren dosyalar bile çalışır ve sağ tıklama menüsüne Mister Download Manager ile İndir seçeneğini, videoların üzerine ise Videoyu indir düğmesini ekler. Bkz. Tarayıcı entegrasyonu."
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -6234,6 +6306,10 @@
    "source": "Latest",
    "text": "En son"
   },
+  "9d6226802f0baf4b": {
+   "source": "<g1>Firefox</g1><g2>Mozilla · in testing</g2>",
+   "text": "<g1>Firefox</g1><g2>Mozilla · test aşamasında</g2>"
+  },
   "9d9eb270f47daa62": {
    "source": "Check <g1>Download limits</g1> in the Scheduler. When the limit is reached, downloads wait with <g2>Waiting: the download limit is reached (Scheduler)</g2>.",
    "text": "Zamanlayıcı'daki <g1>İndirme sınırları</g1> bölümünü kontrol edin. Sınıra ulaşıldığında, indirmeler <g2>Bekleniyor: indirme sınırına ulaşıldı (Zamanlayıcı)</g2> ile bekler."
@@ -6253,6 +6329,10 @@
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "İlerleme göstergeli (<x1/>, <x2/>) başsız indirmeler, videolar, torrentler ve otomasyon API komutları: uygulamanın programının çalıştırdığı bir kütüphane (<x3/>) ve aynı argümanlar, terminal ve çıkış koduyla başlatan küçük bir başlatıcı (<x4/>)"
+  },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "Sırayla indir"
   },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
@@ -6358,6 +6438,10 @@
    "source": "What each one says it offers, on its own website or in its code's README. A dash means it isn't among the features it lists, not that it can't be done.",
    "text": "Her birinin kendi web sitesinde veya kodunun README dosyasında sunduğunu söylediği şeyler. Bir çizgi, listelediği özellikler arasında olmadığını, yapılamayacağı anlamına gelmez."
   },
+  "a0d1f871bdc969b4": {
+   "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
+   "text": "Uzantı aracılığıyla Chrome, Edge, Brave, Opera ve Vivaldi; Firefox test aşamasındadır. Uzantı olmadan, bir bağlantıyı kopyalayın ve MDM indirme penceresini açar. <g1>Daha fazla</g1>"
+  },
   "a0f44b2041902a09": {
    "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
    "text": "gallery-dl, çevrimiçi olmadan adresi bilgisayarınızda kontrol eder. Satırda <g1>gallery-dl bu galerinin dosyalarını indirebilir</g1> yazdığında hazırsınız demektir."
@@ -6438,6 +6522,10 @@
    "source": "Learn the download list →",
    "text": "İndirme listesini öğrenin →"
   },
+  "a30f62455a77a82a": {
+   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> is removed when Firefox closes, so for now it has to be loaded again after each restart (see <g2>Browser integration</g2>). A signed add-on that Firefox keeps is on the way.",
+   "text": "<g1>Geçici Eklentiyi Yükle</g1> ile yüklenen bir eklenti Firefox kapandığında kaldırılır, bu yüzden şimdilik her yeniden başlatmadan sonra tekrar yüklenmesi gerekir (<g2>Tarayıcı tümleştirmesi</g2> bölümüne bakın). Firefox'un tutacağı imzalı bir eklenti yolda."
+  },
   "a332d36c2ada2664": {
    "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
    "text": "Kullanıcı adları ve parola isteyen siteler için parolalar. <g1>Yeni</g1> bir satır ekler: site (oturum açma yalnızca bir kısmı içinse bir yolla birlikte), kullanıcı adı ve parola. <g2>Düzenle</g2> ve <g3>Kaldır</g3> seçili satırı değiştirir veya siler. MDM, o siteden yapılan her indirme için oturum açmayı kullanır. <g4>URL Ekle</g4> (<g5>Yetkilendirme kullan</g5>) bölümüne yazılan bir oturum açma, o tek indirme için önceliklidir."
@@ -6509,6 +6597,10 @@
   "a50025a18eca7051": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "MDM arayüzü 86 dilde mevcuttur: Windows 11'in sunduğu Afrikaans'tan Vietnamca'ya kadar tüm görüntüleme dilleri, her iki Çince yazı tipi, İspanya ve Meksika için İspanyolca, Fransa ve Kanada için Fransızca, Portekiz ve Brezilya için Portekizce ve Kiril ve Latin harfleriyle Sırpça dahil."
+  },
+  "a52b4fbee3f29f57": {
+   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> (<x2/>: unzip, then <g3>Load unpacked</g3> on the browser's extensions page with Developer mode on)",
+   "text": "<g1>Chrome, Edge, Brave, Opera ve Vivaldi</g1> (<x2/>: sıkıştırılmış dosyayı açın, ardından Geliştirici modu açıkken tarayıcının uzantılar sayfasında <g3>Paketlenmemiş uzantıyı yükle</g3> seçeneğini kullanın)"
   },
   "a52f4d11aad99887": {
    "source": "Select all downloads",
@@ -6621,6 +6713,10 @@
   "a7a3f7c6b7a38022": {
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
    "text": "<g1>İndirme listesinin dosya simgeleri</g1> liste yana kaydırıldığında Kategoriler bölmesinin üzerine çiziliyordu (Kategoriler ağacı ve Zamanlayıcı aynı hataya sahipti)."
+  },
+  "a7d84ef6d2022e62": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); load the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
+   "text": "Tarayıcı entegrasyonu, Linux ve macOS'ta MDM tarafından her başlangıçta otomatik olarak kurulur (o anda yüklü olan tarayıcılar bulunur); uzantıyı <g1>Tarayıcı entegrasyonu</g1> bölümünde açıklandığı gibi yükleyin. Flatpak veya Snap olarak yüklenen tarayıcılar MDM'ye erişemeyebilir."
   },
   "a801181e521c3efe": {
    "source": "Start and stop a queue",
@@ -6810,6 +6906,10 @@
    "source": "The download manager you already know. Rebuilt to be faster.",
    "text": "Bildiğiniz indirme yöneticisi. Daha hızlı olmak için yeniden tasarlandı."
   },
+  "aca7e2c7c8203a37": {
+   "source": "Browser integration needs one more step in each browser: loading the extension. <g1>Browser integration</g1> shows how.",
+   "text": "Tarayıcı entegrasyonu her tarayıcıda bir adım daha gerektirir: uzantıyı yüklemek. <g1>Tarayıcı entegrasyonu</g1> nasıl yapılacağını gösterir."
+  },
   "acb8437ecc383f9f": {
    "source": "Opens the checked package in your system's package installer, which asks for your password.",
    "text": "Denetlenen paketi sisteminizin paket yükleyicisinde açar, bu da parolanızı ister."
@@ -6889,6 +6989,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>Teslimat seçenekleri</g1><g2>Sürüm 0.2.4 · herkes için ücretsiz</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>Sırayla indir</g1> bunun yerine bir dosyanın başlangıcını önce alır, böylece bir videoyu indirilirken izleyebilirsiniz: ilk kısım geldiğinde oynatıcınızda açın. Bunu <g2>Torrent ekle</g2> bölümünde işaretleyin veya liste sağ tıklama menüsünde <g3>Torrent → Sırayla indir</g3> seçeneğini istediğiniz zaman, hatta çalışırken bile seçin. İstenen sonraki parçalar yeni sırayı takip eder."
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7474,6 +7578,10 @@
    "source": "Scenario",
    "text": "Senaryo"
   },
+  "bd77253f80822cfe": {
+   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. Then load the extension in your browser from MDM's <x2/> folder: open the browser's extensions page, turn on Developer mode and choose <g3>Load unpacked</g3>. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The <g4>tutorial</g4> walks through it.",
+   "text": "MDM'yi kurulumla yükleyin ve <g1>Tarayıcı tümleştirmesini ayarla</g1> seçeneğini işaretli bırakın. Ardından uzantıyı tarayıcınızda MDM'nin <x2/> klasöründen yükleyin: tarayıcının uzantılar sayfasını açın, Geliştirici modunu açın ve <g3>Paketlenmemiş yükle</g3> seçeneğini seçin. Chrome, Edge ve Firefox için mağaza listeleri yolda, bu da bunu tek tıklamayla yapacak. <g4>Eğitim</g4> bunu adım adım anlatır."
+  },
   "bda4c8ea3c9ccb34": {
    "source": "Download the AppImage",
    "text": "AppImage'ı indir"
@@ -7509,6 +7617,10 @@
   "be977a71e686a263": {
    "source": "Questions and answers",
    "text": "Sorular ve cevaplar"
+  },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "Sırayla indirilen bir torrent daha hızlı bitmez ve sürüye daha az yardımcı olur: bunu şimdi izlemek istediğiniz şeyler için kullanın."
   },
   "bed20915ba662ba4": {
    "source": "Benchmark",
@@ -7585,6 +7697,10 @@
   "c15931e3d969d63f": {
    "source": "Download overnight",
    "text": "Gece boyunca indirin"
+  },
+  "c15bd3350cc4e4a5": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. Then load the extension in your browser from MDM's extension folder: open the browser's extensions page, turn on Developer mode and choose Load unpacked. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The tutorial walks through it.",
+   "text": "MDM'yi kurulumla yükleyin ve Tarayıcı entegrasyonunu ayarla seçeneğini işaretli bırakın. Ardından eklentiyi MDM'nin eklenti klasöründen tarayıcınıza yükleyin: tarayıcının eklentiler sayfasını açın, Geliştirici modunu açın ve Paketlenmemiş yükle'yi seçin. Chrome, Edge ve Firefox için mağaza listeleri yolda, bu da tek tıklamayla kurulum sağlayacak. Eğitimde bu adımlar anlatılmaktadır."
   },
   "c16bf35f546c4e5c": {
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
@@ -7814,6 +7930,10 @@
    "source": "Your account, your rules",
    "text": "Hesabınız, kurallarınız"
   },
+  "c7be639a8acd89dc": {
+   "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
+   "text": "Uzantıyı bir kez kurduğunuzda, Chrome, Edge veya Brave'de tıkladığınız her indirme bağlantısı MDM'ye gider. (Firefox da çalışır, ancak desteği hala test edilmektedir.)"
+  },
   "c7c2a61fcf5da6b1": {
    "source": "Use your own copies",
    "text": "Kendi kopyalarınızı kullanın"
@@ -7885,6 +8005,10 @@
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
    "text": "<g1>Yeniden duyur</g1> — bir sonraki turu beklemek yerine, torrentin izleyicilerinden şimdi tekrar eşleri ister. Torrent çalışırken veya paylaşılırken çalışır."
+  },
+  "c9d39512b1b393af": {
+   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
+   "text": "MDM tarayıcı uzantısı aracılığıyla Google Chrome, Microsoft Edge, Brave, Opera ve Vivaldi ile ve Helium gibi bu tarayıcılar üzerine kurulu olanlarla çalışır. Zen ve LibreWolf'u da kapsayan Firefox desteği yazıldı ve test aşamasındadır. Uzantı, indirmeleri çerezleri ve yönlendiren bilgisiyle MDM'ye aktarır, böylece oturum açma gerektiren dosyalar bile çalışır ve sağ tıklama menüsüne <g1>Mister Download Manager ile İndir</g1> seçeneğini, videoların üzerine ise <g2>Videoyu indir</g2> düğmesini ekler. Bkz. <g3>Tarayıcı entegrasyonu</g3>."
   },
   "c9da130585eae7fa": {
    "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
@@ -8109,6 +8233,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com statik bir sitedir. Size gösterilmesinde üç şirket rol alır:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>Sırayla indir</g1> — torrent dosyalarını baştan itibaren indirir (aşağıya bakın). En nadir parçalara geri dönmek için tekrar tıklayın."
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -8513,6 +8641,10 @@
   "da6e8c125b6f0d96": {
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "Site dosyayı yeni bir sürümle değiştirdiyse, MDM'nin sahip olduğu parçalar artık uymaz. İndirmeye sağ tıklayın ve baştan başlamak için <g1>Yeniden indir</g1>'i seçin. Tamamlanmış bir dosya, yalnızca yeni indirme tamamlandığında değiştirilir."
+  },
+  "da79240d48094d5f": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. Then load the extension in your browser from MDM's extension folder: open the…",
+   "text": "MDM'yi kurulumla yükleyin ve Tarayıcı entegrasyonunu ayarla seçeneğini işaretli bırakın. Ardından eklentiyi MDM'nin eklenti klasöründen tarayıcınıza yükleyin: tarayıcının..."
   },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
@@ -9062,6 +9194,10 @@
    "source": "Add to Firefox",
    "text": "Firefox'a Ekle"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "Birkaç dosya, isme göre sıralanmış olarak art arda indirilir."
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "Tarayıcı tümleştirmesi ayrıntılı (Firefox, gizli pencereler, ne gönderilir) →"
@@ -9534,6 +9670,10 @@
    "source": "The zips hold the same programs as the setup: the app, <x1/> (downloads from the command line; see <g2>Command line and automation</g2>) and the <x3/> folder.",
    "text": "Zip dosyaları, kurulumdaki programların aynısını içerir: uygulama, <x1/> (komut satırından indirmeler; bkz. <g2>Komut satırı ve otomasyon</g2>) ve <x3/> klasörü."
   },
+  "f6809253500ba067": {
+   "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
+   "text": "Aşağıdaki gibi, kullandığınız her tarayıcıya eklentiyi yükleyin. Eklentinin dosyaları, MDM'nin yüklü olduğu <x1/> klasöründedir: kendiniz için yüklediyseniz <x2/> veya herkes için yüklediyseniz <x3/>. Her sürümde ayrıca kendi indirmeleri olarak da bulunur: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; önce sıkıştırmayı açın) ve <x5/>."
+  },
   "f6ab5be4ad52a472": {
    "source": "Trackers",
    "text": "İzleyiciler"
@@ -9593,6 +9733,10 @@
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "Aynı liste MDM'de Yardım → Klavye kısayolları altında bulunur ve menüler her komutun tuşlarını yanında gösterir. Bir Mac'te, ⌘ (Command) Ctrl'nin yerini alır: ⌘N…"
+  },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "Daha yavaş eşler parçaları biraz daha ileriden alır, böylece başlangıç onları beklemez."
   },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
@@ -9793,6 +9937,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "Örneklerde Windows yolları kullanılmıştır; macOS ve Linux'ta programlar <x1/> olmadan aynı adlara sahiptir."
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>Önce ilk ve son parçalar</g1> — <g2>Sırayla indir</g2> ile her dosyanın ilk ve son parçaları diğerlerinden önce gelir. Bu varsayılan olarak açıktır."
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",

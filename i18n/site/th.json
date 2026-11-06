@@ -866,6 +866,10 @@
    "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
    "text": "บน Windows หน้าต่างจะถูกวาดด้วย Direct3D 12 (wgpu ของ eframe โดยใช้แบ็กเอนด์ Direct3D 12 เท่านั้น) หรือด้วย OpenGL (glow ของ eframe) เมื่อเลือกจาก มุมมอง → วาดด้วย; ส่วน Linux และ macOS ใช้ OpenGL หากตัวเลือกที่เลือกไม่สามารถเริ่มต้นได้ ระบบจะลองใช้อีกตัวเลือกหนึ่ง เพื่อให้หน้าต่างเปิดได้เสมอ"
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "โดยค่าเริ่มต้น MDM จะดาวน์โหลดชิ้นส่วนที่เพียร์มีน้อยที่สุดก่อน เช่นเดียวกับที่โปรแกรม BitTorrent ทำโดยทั่วไป ด้วยวิธีนี้ ชิ้นส่วนที่เพียร์มีเพียงรายเดียวจะถูกดึงมาก่อนที่เพียร์นั้นจะจากไป และ MDM สามารถส่งต่อไปยังผู้อื่นได้เร็วขึ้น ในการทดสอบสวอร์มของ MDM พบว่าเสร็จสิ้นเร็วพอๆ กับการดาวน์โหลดตามลำดับ และเป็นลำดับเดียวที่เสร็จสิ้นเมื่อผู้ถือชิ้นส่วนที่หายากเพียงรายเดียวจากไป"
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>ส่งบน GitHub</g1> จะเปิดฟอร์ม <g2>รายงานข้อขัดข้อง</g2> ของ GitHub ในเบราว์เซอร์ของคุณ ซึ่งกรอกข้อมูลไว้แล้ว พร้อมกับโฟลเดอร์ที่เก็บรายงาน ลากไฟล์รายงานลงในฟอร์ม ตรวจสอบและส่ง คุณต้องมีบัญชี GitHub <g3>ไม่มีอะไรถูกส่งไปเอง</g3>"
@@ -893,6 +897,10 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "ได้ MDM รองรับสวิตช์บรรทัดคำสั่งที่คุ้นเคยของ IDM มาพร้อมกับ misterdownloadmanager-cli สำหรับการดาวน์โหลดจากเทอร์มินัล และมี API ระบบอัตโนมัติในเครื่องที่ป้องกันด้วยโทเค็น…"
+  },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "แถวที่มีเส้น <x1/> อยู่ด้านบนถูกแปลโดยเครื่องจักร เมื่อคุณตรวจสอบแล้ว (และแก้ไขหากจำเป็น) ให้ลบเส้น <x2/> นั้นออก"
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1081,6 +1089,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 วินาที</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "บน Windows เอ็นจิ้นทอร์เรนต์ยังไม่สามารถผูกกับอะแดปเตอร์ได้ ดังนั้น ทอร์เรนต์จะไม่เริ่มทำงานในขณะที่เลือกอะแดปเตอร์ไว้ (\"ทอร์เรนต์ยังไม่สามารถผ่านอะแดปเตอร์เครือข่ายที่เลือกบน Windows ได้\") แทนที่จะเลี่ยงผ่านมัน ชื่อตัวติดตามยังคงถูกค้นหาโดย DNS ของระบบ"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2193,6 +2205,10 @@
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM สร้างโดย Ahmed Nefzaoui นักพัฒนาอิสระ และเปิดรับการมีส่วนร่วมจากทุกคนบน <g1>GitHub</g1> รายงานข้อผิดพลาด, การแปล และโค้ด ยินดีต้อนรับทั้งหมด"
+  },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "เมื่อเลือก <g1>ชิ้นส่วนแรกและชิ้นส่วนสุดท้ายก่อน</g1> (เปิดใช้งานโดยค่าเริ่มต้น) ชิ้นส่วนสุดท้ายของแต่ละไฟล์ก็จะมาเร็วด้วย ไฟล์วิดีโอส่วนใหญ่จะเก็บดัชนีไว้ที่ส่วนท้าย และโปรแกรมเล่นจะอ่านก่อนที่จะเล่นอะไร"
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -5106,6 +5122,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "ต้องใช้ Firefox เวอร์ชัน 140 หรือใหม่กว่า"
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>ตัวเลือก → พร็อกซี / SOCKS → อะแดปเตอร์เครือข่าย</g1> จะเชื่อมต่อ MDM กับอะแดปเตอร์หนึ่งตัว ซึ่งมักจะเป็นของ VPN (<g2>ตัวเลือก</g2>) บน Linux และ macOS เอ็นจิ้นทอร์เรนต์จะผูกทุกซ็อกเก็ตเข้ากับอะแดปเตอร์นั้น: เพียร์, ตัวติดตาม, DHT และพอร์ตการฟังของมัน UPnP และการค้นหาเพียร์ในเครื่องจะถูกปิดใช้งาน เนื่องจากจะสื่อสารกับเครือข่ายในเครื่องแทนที่จะผ่านอะแดปเตอร์ หากอะแดปเตอร์หายไป เอ็นจิ้นจะหยุดทำงาน และจะเริ่มทำงานอีกครั้งผ่านอะแดปเตอร์เมื่อกลับมา"
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>คุณภาพ</g1> ใช้กับทุกวิดีโอ: <g2>คุณภาพดีที่สุด</g2>, <g3>สูงสุด</g3> ตามความสูง (แต่ละวิดีโอที่ความสูงนั้น หรือใกล้เคียงที่สุดที่ต่ำกว่า), <g4>เฉพาะเสียง, ต้นฉบับ</g4>, <g5>เฉพาะเสียง MP3</g5>, <g6>เฉพาะเสียง OPUS</g6> หรือ <g7>เฉพาะเสียง FLAC</g7> หากไม่มี ffmpeg จะมีเฉพาะคุณภาพที่มีเสียงมาด้วย และไม่มี MP3, Opus หรือ FLAC ให้เลือก"
@@ -5838,6 +5858,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "คลิกขวาที่ลิงก์ วิดีโอ เสียง หรือรูปภาพ แล้วเลือก <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> MDM จะดาวน์โหลดไม่ว่าจะเป็นชนิดใด: คุณร้องขอ ดังนั้นรายการชนิดไฟล์และเว็บไซต์ที่ยกเว้นจึงไม่นำมาใช้ที่นี่ (จะตัดสินใจเฉพาะการดาวน์โหลดที่ MDM จะรับช่วงต่อเองเท่านั้น) วิดีโอที่เล่นเป็นสตรีมจะไปที่หน้าต่าง <g2>ดาวน์โหลดวิดีโอ</g2>"
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "หากต้องการดูวิดีโอขณะดาวน์โหลด ให้เลือก <g1>ดาวน์โหลดตามลำดับ</g1> (ดู <g2>ดาวน์โหลดตามลำดับ</g2>)"
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5.5 วินาที<g1><g2>2</g2></g1>"
@@ -6365,6 +6389,10 @@
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "การดาวน์โหลดแบบ Headless พร้อมความคืบหน้า (<x1/>, <x2/>), วิดีโอ, ทอร์เรนต์ และคำสั่งของ API สำหรับการทำงานอัตโนมัติ: ไลบรารีที่โปรแกรมของแอปทำงาน (<x3/>) และ <x4/> ซึ่งเป็นตัวเปิดขนาดเล็กที่เริ่มทำงานด้วยอาร์กิวเมนต์ เทอร์มินัล และรหัสออกเดียวกัน"
+  },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "ดาวน์โหลดตามลำดับ"
   },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
@@ -6986,6 +7014,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>หมวดหมู่</g1> — เลือกจากประเภทของไฟล์ (บีบอัด, เอกสาร, เพลง, โปรแกรม, วิดีโอ หรือทั่วไป) แต่ละหมวดหมู่มีโฟลเดอร์ของตัวเอง เครื่องหมาย <g2>+</g2> ข้าง ๆ จะสร้างหมวดหมู่ใหม่"
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>อะแดปเตอร์เครือข่าย</g1> — <g2>ใดก็ได้ (ระบบเลือกเอง)</g2> คือค่าเริ่มต้น เลือกอะแดปเตอร์ โดยปกติคือของ VPN ของคุณ และการเชื่อมต่อทุกครั้งที่ MDM เปิดจะส่งผ่านอะแดปเตอร์นั้น หรือไม่ส่งเลย ซึ่งครอบคลุมการดาวน์โหลด, FTP, DNS ที่คุณเลือก, การดาวน์โหลดของ MDM เอง และการตรวจสอบการอัปเดต มันทำงานเหมือนสวิตช์ตัดการทำงาน: เมื่ออะแดปเตอร์ตัดการเชื่อมต่อ หรือ VPN ถูกปิด จะไม่มีอะไรส่งออกผ่านการเชื่อมต่อปกติของคุณ การดาวน์โหลดที่กำลังดำเนินอยู่จะหยุดด้วยข้อความ \"… ไม่ได้เชื่อมต่อ\" และจะเริ่มใหม่เมื่ออะแดปเตอร์กลับมาใช้งานได้ บรรทัดใต้รายการจะแสดงที่อยู่ของอะแดปเตอร์ หรือสถานะว่าไม่ได้เชื่อมต่อ"
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "คลิก <g1>ค้นหา</g1> รายการที่ตรงกันรายการแรกจะถูกเลือก"
@@ -7029,6 +7061,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>ตัวเลือกการจัดส่ง</g1><g2>เวอร์ชัน 0.2.4 · ฟรีสำหรับทุกคน</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>ดาวน์โหลดตามลำดับ</g1> จะดึงส่วนเริ่มต้นของไฟล์ก่อนแทน เพื่อให้คุณสามารถดูวิดีโอขณะดาวน์โหลดได้: เปิดในโปรแกรมเล่นของคุณเมื่อส่วนแรกเข้ามา เลือกใน <g2>เพิ่มทอร์เรนต์</g2> หรือเลือก <g3>ทอร์เรนต์ → ดาวน์โหลดตามลำดับ</g3> ในเมนูคลิกขวาของรายการได้ตลอดเวลา แม้ในขณะที่กำลังทำงานอยู่ ชิ้นส่วนถัดไปที่ร้องขอจะตามลำดับใหม่"
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7670,6 +7706,10 @@
    "source": "Questions and answers",
    "text": "คำถามและคำตอบ"
   },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "การดาวน์โหลดทอร์เรนต์ตามลำดับไม่ได้ทำให้เสร็จเร็วขึ้น และช่วยสวอร์มน้อยลง: ใช้สำหรับสิ่งที่คุณต้องการดูตอนนี้เท่านั้น"
+  },
   "bed20915ba662ba4": {
    "source": "Benchmark",
    "text": "การเปรียบเทียบ"
@@ -8281,6 +8321,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com เป็นเว็บไซต์แบบคงที่ มีสามบริษัทที่เกี่ยวข้องกับการแสดงเว็บไซต์นี้ให้คุณเห็น:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>ดาวน์โหลดตามลำดับ</g1> — ดาวน์โหลดไฟล์ทอร์เรนต์จากจุดเริ่มต้น (ดูด้านล่าง) คลิกอีกครั้งเพื่อกลับไปที่ชิ้นส่วนที่หายากที่สุดก่อน"
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -9246,6 +9290,10 @@
    "source": "Add to Firefox",
    "text": "เพิ่มใน Firefox"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "ไฟล์หลายไฟล์จะถูกดาวน์โหลดทีละไฟล์ โดยเรียงตามชื่อ"
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "รายละเอียดการรวมเบราว์เซอร์ (Firefox, หน้าต่างส่วนตัว, สิ่งที่ถูกส่ง) →"
@@ -9786,6 +9834,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "รายการเดียวกันนี้อยู่ใน MDM ภายใต้ วิธีใช้ → แป้นพิมพ์ลัด และเมนูจะแสดงปุ่มคำสั่งแต่ละคำสั่งอยู่ข้างๆ บน Mac, ⌘ (Command) จะแทนที่ Ctrl: ⌘N…"
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "เพียร์ที่ช้ากว่าจะรับชิ้นส่วนที่อยู่ไกลออกไปเล็กน้อย เพื่อให้ส่วนเริ่มต้นไม่ต้องรอพวกเขา"
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "กดปุ่มที่โฟกัส, ทำเครื่องหมายในช่องทำเครื่องหมาย, ทำเครื่องหมายในแถวที่เลือกของรายการ"
@@ -9985,6 +10037,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "ตัวอย่างใช้พาธของ Windows; บน macOS และ Linux โปรแกรมมีชื่อเดียวกันโดยไม่มี <x1/>"
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>ชิ้นส่วนแรกและชิ้นส่วนสุดท้ายก่อน</g1> — เมื่อเลือก <g2>ดาวน์โหลดตามลำดับ</g2> ชิ้นส่วนแรกและชิ้นส่วนสุดท้ายของแต่ละไฟล์จะมาก่อนส่วนที่เหลือ ซึ่งเปิดใช้งานโดยค่าเริ่มต้น"
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",

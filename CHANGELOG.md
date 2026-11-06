@@ -31,6 +31,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Through a proxy MDM says so instead of guessing, and a CDN's server (Cloudflare, CloudFront,
   Fastly, Akamai and others) is said to be the CDN's, not the site owner's. Properties keeps what
   the last run saw. MDM is about 770 KB larger (the table 674 KB, the flags 95 KB).
+- **Torrents: Download in order**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): to watch a video while
+  it downloads, tick **Download in order** in **Add torrent**, or choose **Torrent → Download in
+  order** in the list's right-click menu, even while it runs. A file's start comes first, and with
+  **First and last pieces first** (on by default) its end comes early too, which most video files
+  need before they play. Slower peers take pieces a little further on, so the start isn't waiting
+  for them. Other torrents now download the rarest pieces first, as BitTorrent programs usually
+  do: on MDM's test swarms they finished just as fast, and they finished where a scarce piece's
+  only holder left. Torrents already in the list carry on, with nothing checked again.
+- MDM now honours a peer's request to cancel a piece it no longer needs, so its upload isn't
+  spent on data nobody wants.
 - **The extension is in the Chrome Web Store**: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp), for Chrome,
   Edge, Brave, Opera and Vivaldi, installed with one click and kept up to date. MDM's **Add
   Mister Download Manager to your browser** window opens it in each of them (**Install it by

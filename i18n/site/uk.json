@@ -866,6 +866,10 @@
    "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
    "text": "У Windows вікна малюються за допомогою Direct3D 12 (wgpu eframe, лише з його бекендом Direct3D 12) або за допомогою OpenGL (glow eframe), якщо вибрано Вигляд → Малювати за допомогою; Linux і macOS використовують OpenGL. Якщо обраний варіант не запускається, спробується інший, тому вікна завжди відкриваються."
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "За замовчуванням MDM спочатку завантажує частини, які мають найменше пірів, як це зазвичай роблять програми BitTorrent. Таким чином, частина, яку має лише один пір, завантажується до того, як цей пір залишить мережу, і MDM може швидше передати її іншим. У тестових роях MDM це завершувалося так само швидко, як і завантаження по порядку, і це був єдиний порядок, який завершувався, коли єдиний власник рідкісної частини залишав мережу."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>Надіслати на GitHub</g1> відкриває у вашому браузері форму <g2>Звіт про збій</g2> на GitHub, вже заповнену, разом із папкою, що містить звіт. Перетягніть файл звіту у форму, перевірте його та надішліть. Вам потрібен обліковий запис GitHub. <g3>Нічого не надсилається самостійно.</g3>"
@@ -893,6 +897,10 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Так. MDM підтримує звичні параметри командного рядка IDM, постачається з misterdownloadmanager-cli для завантажень з терміналу та має локальний, захищений токеном…"
+  },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "Рядок з рядком <x1/> над ним був перекладений машиною. Коли ви його перевірили (і виправили, якщо потрібно), видаліть цей рядок <x2/>."
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1081,6 +1089,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 с</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "У Windows торрент-рушій ще не може прив’язуватися до адаптера. Тому торренти не запускаються, поки вибрано адаптер (\"торренти ще не можуть проходити через вибраний мережевий адаптер у Windows\"), замість того, щоб обходити його. Імена трекерів все ще шукаються за допомогою системного DNS."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2193,6 +2205,10 @@
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM створено незалежним розробником Ahmed Nefzaoui та відкритий для внесків від будь-кого на <g1>GitHub</g1>. Повідомлення про помилки, переклади та код — усе вітається."
+  },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "З <g1>Спочатку перші та останні частини</g1> (увімкнено за замовчуванням) останні частини кожного файлу також завантажуються раніше. Більшість відеофайлів зберігають свій індекс в кінці, і плеєр читає його перед відтворенням."
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -5106,6 +5122,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Потрібен Firefox 140 або новішої версії."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "У <g1>Параметри → Проксі / Socks → Мережевий адаптер</g1> MDM прив’язує свої з’єднання до одного адаптера, зазвичай VPN (<g2>Параметри</g2>). У Linux та macOS торрент-рушій прив’язує до нього кожен сокет: піри, трекери, DHT та його порт для прослуховування. UPnP та виявлення локальних пірів вимикаються, оскільки вони спілкуються з локальною мережею, а не через адаптер. Якщо адаптер зникає, рушій зупиняється і знову запускається через адаптер, коли той повертається."
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Якість</g1> застосовується до кожного відео: <g2>Найкраща якість</g2>, <g3>До</g3> певної висоти (кожне відео цієї висоти або найближчої нижчої), <g4>Лише аудіо, оригінал</g4>, <g5>Лише аудіо MP3</g5>, <g6>Лише аудіо OPUS</g6> або <g7>Лише аудіо FLAC</g7>. Без ffmpeg пропонуються лише якості, які мають власний звук, і немає MP3, Opus або FLAC."
@@ -5838,6 +5858,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "Клацніть правою кнопкою миші посилання, відео, звук або зображення та виберіть <g1>Завантажити за допомогою Mister Download Manager</g1>. MDM завантажує його незалежно від типу: ви попросили про це, тому список типів файлів та виключені сайти тут не застосовуються (вони лише вирішують, які завантаження MDM перехоплює сам). Відео, яке відтворюється як потік, переходить до вікна <g2>Завантажити відео</g2>."
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "Щоб дивитися відео під час завантаження, поставте позначку <g1>Завантажувати по порядку</g1> (див. <g2>Завантажувати по порядку</g2>)."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5,5 с<g1><g2>2</g2></g1>"
@@ -6365,6 +6389,10 @@
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "Завантаження без інтерфейсу з прогресом (<x1/>, <x2/>), відео, торренти та команди API автоматизації: бібліотека, яку запускає програма (<x3/>), і <x4/>, невеликий запускник, який запускає її з тими ж аргументами, терміналом та кодом виходу"
+  },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "Завантажувати по порядку"
   },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
@@ -6986,6 +7014,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Категорія</g1> — обирається за типом файлу (Стиснуті, Документи, Музика, Програми, Відео або Загальні). Кожна категорія має власну папку. <g2>+</g2> поруч створює нову категорію."
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Мережевий адаптер</g1> — <g2>Будь-який (система вибирає)</g2> є типовим. Виберіть адаптер, зазвичай ваш VPN, і кожне з'єднання, яке відкриває MDM, проходить через нього або не проходить взагалі. Це стосується завантажень, FTP, обраного вами DNS, власних завантажень MDM та перевірки оновлень. Це працює як аварійний вимикач: коли адаптер відключається або VPN вимикається, нічого не проходить через ваше звичайне з'єднання. Завантаження, що виконуються, зупиняються з повідомленням «… не підключено» і відновлюються, коли адаптер знову підключається. Рядок під списком показує адресу адаптера або те, що він не підключений."
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "Натисніть <g1>Знайти</g1>. Буде вибрано перший збіг."
@@ -7029,6 +7061,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>Варіанти доставки</g1><g2>Версія 0.2.4 · безкоштовно для всіх</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>Завантажувати по порядку</g1> спочатку отримує початок файлу, тож ви можете дивитися відео під час його завантаження: відкрийте його у своєму плеєрі, щойно завантажиться перша частина. Поставте позначку в <g2>Додати торрент</g2> або виберіть <g3>Торрент → Завантажувати по порядку</g3> у контекстному меню списку в будь-який час, навіть під час роботи. Наступні запитувані частини слідують новому порядку."
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7670,6 +7706,10 @@
    "source": "Questions and answers",
    "text": "Запитання та відповіді"
   },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "Торрент по порядку не завершується швидше, і він менше допомагає рою: використовуйте його для того, що ви хочете подивитися зараз."
+  },
   "bed20915ba662ba4": {
    "source": "Benchmark",
    "text": "Бенчмарк"
@@ -8281,6 +8321,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com — це статичний сайт. Три компанії беруть участь у його відображенні:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>Завантажувати по порядку</g1> — завантажує файли торрента з їхнього початку (див. нижче). Натисніть ще раз, щоб повернутися до завантаження найрідкісніших частин спочатку."
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -9246,6 +9290,10 @@
    "source": "Add to Firefox",
    "text": "Додати до Firefox"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "Кілька файлів завантажуються один за одним, відсортовані за назвою."
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "Детальніше про інтеграцію з браузером (Firefox, приватні вікна, що надсилається) →"
@@ -9786,6 +9834,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "Цей самий список знаходиться в MDM у меню Довідка → Сполучення клавіш, а меню показують клавіші кожної команди поруч. На Mac, ⌘ (Command) замінює Ctrl: ⌘N…"
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "Повільніші піри беруть частини трохи далі, щоб початок не чекав на них."
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "Натиснути сфокусовану кнопку, поставити позначку у прапорці, позначити вибраний рядок списку"
@@ -9985,6 +10037,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "Приклади використовують шляхи Windows; на macOS та Linux програми мають ті самі назви без <x1/>."
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>Спочатку перші та останні частини</g1> — з <g2>Завантажувати по порядку</g2> перші та останні частини кожного файлу завантажуються раніше за решту. Увімкнено за замовчуванням."
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",

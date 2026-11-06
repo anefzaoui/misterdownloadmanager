@@ -866,6 +866,10 @@
    "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
    "text": "Op Windows worden de vensters getekend met Direct3D 12 (eframe's wgpu, alleen met de Direct3D 12-backend), of met OpenGL (eframe's glow) wanneer Beeld → Tekenen met dit kiest; Linux en macOS gebruiken OpenGL. Wanneer de gekozen optie niet kan starten, wordt de andere geprobeerd, zodat de vensters altijd openen."
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "Standaard downloadt MDM eerst de delen die de minste peers hebben, zoals BitTorrent-programma's gewoonlijk doen. Op die manier wordt een deel dat slechts één peer heeft, opgehaald voordat die peer vertrekt, en kan MDM het eerder doorgeven aan anderen. Op de testswarms van MDM was het net zo snel klaar als downloaden in volgorde, en het was de enige volgorde die klaar was toen de enige houder van een schaars deel vertrok."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>Verzenden op GitHub</g1> opent het <g2>Crashrapport</g2>-formulier van GitHub in uw browser, al ingevuld, samen met de map die het rapport bevat. Sleep het rapportbestand naar het formulier, controleer het en dien het in. U hebt een GitHub-account nodig. <g3>Er wordt niets vanzelf verzonden.</g3>"
@@ -893,6 +897,10 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Ja. MDM accepteert de bekende opdrachtregelschakelaars van IDM, wordt geleverd met misterdownloadmanager-cli voor downloads vanaf een terminal, en heeft een lokale, met tokens beveiligde…"
+  },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "Een rij met een <x1/>-regel erboven is machinaal vertaald. Wanneer u deze hebt gecontroleerd (en indien nodig gecorrigeerd), verwijdert u die <x2/>-regel."
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1081,6 +1089,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 s</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Op Windows kan de torrent-engine nog niet aan een adapter binden. Torrents starten dus niet wanneer er een is gekozen (\"torrents kunnen nog niet via een gekozen netwerkadapter op Windows\"), in plaats van eromheen te gaan. Tracker-namen worden nog steeds opgezocht door de DNS van het systeem."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2193,6 +2205,10 @@
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM is gemaakt door Ahmed Nefzaoui, een onafhankelijke ontwikkelaar, en staat open voor bijdragen van iedereen op <g1>GitHub</g1>. Bugrapporten, vertalingen en code zijn allemaal welkom."
+  },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "Met <g1>Eerste en laatste delen eerst</g1> (standaard ingeschakeld) komen ook de laatste delen van elk bestand vroeg. De meeste videobestanden bewaren hun index aan het einde, en een speler leest deze voordat er iets wordt afgespeeld."
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -5106,6 +5122,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 of nieuwer is vereist."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>Opties → Proxy/Socks → Netwerkadapter</g1> verbindt MDM met één adapter, meestal die van een VPN (<g2>Opties</g2>). Op Linux en macOS bindt de torrent-engine elke socket eraan: peers, trackers, de DHT en de luisterpoort. UPnP en lokale peer-detectie worden dan uitgeschakeld, omdat ze met het lokale netwerk communiceren in plaats van via de adapter. Als de adapter wegvalt, stopt de engine, en start deze weer via de adapter wanneer deze terug is."
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Kwaliteit</g1> is van toepassing op elke video: <g2>Beste kwaliteit</g2>, <g3>Tot</g3> een bepaalde hoogte (elke video op die hoogte, of de dichtstbijzijnde daaronder), <g4>Alleen audio, origineel</g4>, <g5>Alleen audio MP3</g5>, <g6>Alleen audio OPUS</g6> of <g7>Alleen audio FLAC</g7>. Zonder ffmpeg worden alleen de kwaliteiten aangeboden die met hun geluid komen, en geen MP3, Opus of FLAC."
@@ -5838,6 +5858,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "Klik met de rechtermuisknop op een koppeling, een video, een geluid of een afbeelding en kies <g1>Downloaden met Mister Download Manager</g1>. MDM downloadt het, ongeacht het type: u hebt erom gevraagd, dus de lijst met bestandstypen en de uitgesloten sites zijn hier niet van toepassing (zij bepalen alleen welke downloads MDM zelf overneemt). Een video die als stream wordt afgespeeld, gaat naar het venster <g2>Video downloaden</g2>."
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "Om een video te bekijken terwijl deze wordt gedownload, vinkt u <g1>In volgorde downloaden</g1> aan (zie <g2>In volgorde downloaden</g2>)."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5,5 s<g1><g2>2</g2></g1>"
@@ -6365,6 +6389,10 @@
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "Downloads zonder grafische interface met voortgang (<x1/>, <x2/>), video's, torrents en de commando's van de automatiserings-API: een bibliotheek die het programma van de app uitvoert (<x3/>), en <x4/>, een kleine launcher die deze start met dezelfde argumenten, terminal en exitcode"
+  },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "In volgorde downloaden"
   },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
@@ -6986,6 +7014,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Categorie</g1> — gekozen op basis van het bestandstype (Gecomprimeerd, Documenten, Muziek, Programma's, Video of Algemeen). Elke categorie heeft zijn eigen map. <g2>+</g2> ernaast maakt een nieuwe categorie."
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Netwerkadapter</g1> — <g2>Elke (het systeem kiest)</g2> is de standaardinstelling. Kies een adapter, meestal die van uw VPN, en elke verbinding die MDM opent, gaat erdoorheen, of helemaal niet. Dit omvat downloads, FTP, de DNS die u hebt gekozen, MDM's eigen downloads en de updatecontrole. Het werkt als een kill switch: wanneer de adapter de verbinding verbreekt, of de VPN wordt uitgeschakeld, gaat er niets meer via uw normale verbinding. Lopende downloads stoppen met \"… is niet verbonden\" en starten opnieuw wanneer de adapter weer beschikbaar is. De regel onder de lijst toont het adres van de adapter, of dat deze niet is verbonden."
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "Klik op <g1>Zoeken</g1>. De eerste overeenkomst wordt geselecteerd."
@@ -7029,6 +7061,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>Leveringsopties</g1><g2>Versie 0.2.4 · gratis voor iedereen</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>In volgorde downloaden</g1> haalt in plaats daarvan eerst het begin van een bestand op, zodat u een video kunt bekijken terwijl deze wordt gedownload: open deze in uw speler zodra het eerste deel binnen is. Vink het aan in <g2>Torrent toevoegen</g2>, of kies <g3>Torrent → In volgorde downloaden</g3> in het rechtermuisklikmenu van de lijst, op elk moment, zelfs terwijl het draait. De volgende gevraagde delen volgen de nieuwe volgorde."
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7670,6 +7706,10 @@
    "source": "Questions and answers",
    "text": "Vragen en antwoorden"
   },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "Een torrent in volgorde is niet sneller klaar, en het helpt de swarm minder: gebruik het voor wat u nu wilt bekijken."
+  },
   "bed20915ba662ba4": {
    "source": "Benchmark",
    "text": "Benchmark"
@@ -8281,6 +8321,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com is een statische site. Drie bedrijven helpen mee om deze aan u te tonen:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>In volgorde downloaden</g1> — downloadt de bestanden van de torrent vanaf het begin (zie hieronder). Klik er nogmaals op om terug te gaan naar de zeldzaamste delen eerst."
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -9246,6 +9290,10 @@
    "source": "Add to Firefox",
    "text": "Toevoegen aan Firefox"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "Meerdere bestanden worden na elkaar gedownload, gesorteerd op naam."
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "Browserintegratie in detail (Firefox, privévensters, wat wordt verzonden) →"
@@ -9786,6 +9834,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "Dezelfde lijst staat in MDM onder Help → Toetsenbordsneltoetsen, en de menu's tonen de toetsen van elke opdracht ernaast. Op een Mac neemt ⌘ (Command) de plaats in van Ctrl: ⌘N…"
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "Langzamere peers nemen delen iets verderop, zodat het begin niet op hen hoeft te wachten."
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "Een knop met focus indrukken, een selectievakje aanvinken, de geselecteerde rij van een lijst aanvinken"
@@ -9985,6 +10037,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "De voorbeelden gebruiken Windows-paden; op macOS en Linux hebben de programma's dezelfde namen zonder <x1/>."
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>Eerste en laatste delen eerst</g1> — met <g2>In volgorde downloaden</g2> komen de eerste en laatste delen van elk bestand vóór de rest. Dit is standaard ingeschakeld."
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",
