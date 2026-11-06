@@ -477,6 +477,8 @@ pub struct App {
     duplicate_cleared: bool,
     downloads: PathBuf,
     dirty: bool,
+    /// `secrets::Vault::confirmed` when last seen.
+    secrets_confirmed: u64,
     last_save: Instant,
     /// Writes the list off the window's thread.
     saver: store::Saver,
@@ -893,6 +895,7 @@ impl App {
             duplicate_cleared: false,
             downloads,
             dirty: false,
+            secrets_confirmed: 0,
             last_save: Instant::now(),
             saver: store::Saver::new(),
             theme_checked: None,
@@ -4601,6 +4604,16 @@ impl App {
             if self.last_save.elapsed() > Duration::from_secs(30) {
                 self.dirty = true;
             }
+        }
+        // The keychain took a secret (#44): saved again, with its reference in its place.
+        let vault = crate::secrets::vault();
+        if vault.pending() {
+            ctx.request_repaint_after(Duration::from_millis(250));
+        }
+        let confirmed = vault.confirmed();
+        if confirmed != self.secrets_confirmed {
+            self.secrets_confirmed = confirmed;
+            self.dirty = true;
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
             // Written on the saver's thread (store::Saver); refused at once when the list

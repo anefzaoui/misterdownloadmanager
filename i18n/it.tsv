@@ -1492,6 +1492,10 @@
 	In a queue	In una coda
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	In the categories: the selected category's menu	Nelle categorie: menu della categoria selezionata
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	nel portachiavi bloccato
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 	Increase	Aumenta
@@ -2113,6 +2117,10 @@
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Ancora nessun peer. Forse poche persone condividono questo torrent, oppure un firewall, una VPN o la rete bloccano BitTorrent.
 #. text in the Options window
 	No proxy/socks	Nessun proxy/socks
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Nessun portachiavi di sistema ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, che solo tu puoi leggere.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	Nessun tracker aggiunto: li ha già tutti
@@ -2412,6 +2420,10 @@
 	Proxy / Socks	Proxy / Socks
 #. page title in the Options window
 	Proxy / socks configuration	Configurazione proxy / socks
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	server proxy
 #. label in the Options window
 	Proxy server address	Indirizzo del server proxy
 #. text in countries.rs
@@ -2772,6 +2784,18 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	Accedi nel browser
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Gli accessi e le password sono conservati nel portachiavi di macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Gli accessi e le password sono conservati nel portachiavi di sistema (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Gli accessi e le password sono conservati in Gestione credenziali di Windows.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 	Signed in as {user} ({state})	Accesso effettuato come {user} ({state})
@@ -3211,6 +3235,10 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Impossibile scaricare i simboli: alcune righe del rapporto mostrano indirizzi anziché nomi (gli sviluppatori possono comunque interpretarle).
 #. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Il portachiavi di sistema è bloccato e MDM non lo sblocca, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, che solo tu puoi leggere.
+#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 	The system's DNS	DNS di sistema
 #. text in whereis.rs
@@ -3282,6 +3310,14 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	Serve ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Questa copia portatile conserva gli accessi e le password nelle proprie impostazioni, crittografate per il tuo account Windows.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Questa copia portatile conserva gli accessi e le password nelle proprie impostazioni, che solo tu puoi leggere.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -3662,6 +3698,10 @@
 	What's new:	Novità:
 #. text in the Batch download window
 	Wildcard size	Lunghezza del carattere jolly
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Gestione credenziali di Windows non ha risposto, quindi gli accessi e le password sono conservati nelle impostazioni di MDM, crittografate per il tuo account Windows.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 	Windows refused	Windows ha rifiutato l'operazione

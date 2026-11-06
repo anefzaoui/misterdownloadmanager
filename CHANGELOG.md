@@ -22,6 +22,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Sign-ins in the system's keychain**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): debrid accounts, Sites
+  Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the
+  system keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) and in the
+  macOS keychain, and the settings keep only a reference. Those already saved move there on
+  the next start. A locked keyring is never unlocked and no keyring is ever asked for a
+  password: without one, they stay in MDM's settings as before. **Options → Accounts** says
+  where they are. A portable copy keeps them in its own folder, and uninstalling with **remove
+  the download list and settings** removes them from Credential Manager too.
 - **Torrents through your debrid account**
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): with **Send torrents and
   magnet links to the first account instead of to peers** ticked (**Options → Accounts**), a

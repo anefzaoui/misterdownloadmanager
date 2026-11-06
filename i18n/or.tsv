@@ -1872,6 +1872,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	ବର୍ଗଗୁଡ଼ିକରେ: ଚୟନିତ ବର୍ଗର ମେନୁ
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	ଲକ୍ ହୋଇଥିବା କୀରିଙ୍ଗରେ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2629,6 +2633,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	କୌଣସି ପ୍ରକ୍ସି/SOCKS ନାହିଁ
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	କୌଣସି ସିଷ୍ଟମ୍ କୀରିଙ୍ଗ୍ ଉତ୍ତର ଦେଇନାହିଁ, ତେଣୁ ସାଇନ୍-ଇନ୍ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକ MDM ର ସେଟିଙ୍ଗ୍ସରେ ରଖାଯାଇଛି, ଯାହାକୁ କେବଳ ଆପଣ ପଢ଼ିପାରିବେ।
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3016,6 +3024,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	ପ୍ରକ୍ସି / SOCKS ବିନ୍ୟାସ
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	ପ୍ରକ୍ସି ସର୍ଭର
 #. label in the Options window
 #, machine
 	Proxy server address	ପ୍ରକ୍ସି ସର୍ଭର ଠିକଣା
@@ -3472,6 +3484,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	ବ୍ରାଉଜରରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	ସାଇନ୍-ଇନ୍ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକ macOS କୀଚେନରେ ରଖାଯାଇଛି।
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	ସାଇନ୍-ଇନ୍ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକ ସିଷ୍ଟମ୍ କୀରିଙ୍ଗରେ (ସିକ୍ରେଟ୍ ସର୍ଭିସ୍) ରଖାଯାଇଛି।
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	ସାଇନ୍-ଇନ୍ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକ Windows କ୍ରେଡେନ୍ସିଆଲ୍ ମ୍ୟାନେଜରରେ ରଖାଯାଇଛି।
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4042,6 +4066,10 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	ସିମ୍ବଲ୍‌ଗୁଡ଼ିକୁ ଫେଚ୍ କରାଯାଇ ପାରିଲା ନାହିଁ: ରିପୋର୍ଟର କିଛି ଧାଡ଼ି ନାମ ବଦଳରେ ଠିକଣା ଦେଖାଉଛି (ଡେଭଲପରମାନେ ତଥାପି ସେଗୁଡ଼ିକୁ ପଢ଼ିପାରିବେ)।
 #. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	ସିଷ୍ଟମ୍ କୀରିଙ୍ଗ୍ ଲକ୍ ହୋଇଛି ଏବଂ MDM ଏହାକୁ ଅନଲକ୍ କରେ ନାହିଁ, ତେଣୁ ସାଇନ୍-ଇନ୍ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକ MDM ର ସେଟିଙ୍ଗ୍ସରେ ରଖାଯାଇଛି, ଯାହାକୁ କେବଳ ଆପଣ ପଢ଼ିପାରିବେ।
+#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	ସିଷ୍ଟମର DNS
@@ -4137,6 +4165,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ଏଥିପାଇଁ ffmpeg ଆବଶ୍ୟକ
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ଏହି ପୋର୍ଟେବଲ୍ କପି ସାଇନ୍-ଇନ୍ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକୁ ଏହାର ନିଜସ୍ୱ ସେଟିଙ୍ଗ୍ସରେ ରଖେ, ଯାହା ଆପଣଙ୍କ Windows ଆକାଉଣ୍ଟ୍ ପାଇଁ ଏନକ୍ରିପ୍ଟ ହୋଇଛି।
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ଏହି ପୋର୍ଟେବଲ୍ କପି ସାଇନ୍-ଇନ୍ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକୁ ଏହାର ନିଜସ୍ୱ ସେଟିଙ୍ଗ୍ସରେ ରଖେ, ଯାହାକୁ କେବଳ ଆପଣ ପଢ଼ିପାରିବେ।
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4613,6 +4649,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	ୱାଇଲ୍ଡକାର୍ଡ ଆକାର
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows କ୍ରେଡେନ୍ସିଆଲ୍ ମ୍ୟାନେଜର ଉତ୍ତର ଦେଇନାହିଁ, ତେଣୁ ସାଇନ୍-ଇନ୍ ଏବଂ ପାସୱାର୍ଡଗୁଡ଼ିକ MDM ର ସେଟିଙ୍ଗ୍ସରେ ରଖାଯାଇଛି, ଯାହା ଆପଣଙ୍କ Windows ଆକାଉଣ୍ଟ୍ ପାଇଁ ଏନକ୍ରିପ୍ଟ ହୋଇଛି।
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine

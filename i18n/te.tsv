@@ -1872,6 +1872,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	వర్గాలలో: ఎంచుకున్న వర్గం యొక్క మెను
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	లాక్ చేయబడిన కీరింగ్‌లో
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2629,6 +2633,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	ప్రాక్సీ/SOCKS లేదు
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	సిస్టమ్ కీరింగ్ స్పందించలేదు, కాబట్టి సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు MDM సెట్టింగ్‌లలో ఉంచబడతాయి, వీటిని మీరు మాత్రమే చదవగలరు.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3016,6 +3024,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	ప్రాక్సీ / SOCKS కాన్ఫిగరేషన్
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	ప్రాక్సీ సర్వర్
 #. label in the Options window
 #, machine
 	Proxy server address	ప్రాక్సీ సర్వర్ చిరునామా
@@ -3472,6 +3484,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	బ్రౌజర్‌లో సైన్ ఇన్ చేయండి
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు macOS కీచైన్‌లో ఉంచబడతాయి.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు సిస్టమ్ కీరింగ్‌లో (సీక్రెట్ సర్వీస్) ఉంచబడతాయి.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు Windows క్రెడెన్షియల్ మేనేజర్‌లో ఉంచబడతాయి.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4042,6 +4066,10 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	చిహ్నాలను పొందలేకపోయింది: నివేదికలోని కొన్ని పంక్తులు పేర్లకు బదులుగా చిరునామాలను చూపుతాయి (డెవలపర్‌లు వాటిని ఇప్పటికీ చదవగలరు).
 #. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	సిస్టమ్ కీరింగ్ లాక్ చేయబడింది మరియు MDM దానిని అన్‌లాక్ చేయదు, కాబట్టి సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు MDM సెట్టింగ్‌లలో ఉంచబడతాయి, వీటిని మీరు మాత్రమే చదవగలరు.
+#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	సిస్టమ్ DNS
@@ -4137,6 +4165,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	దీనికి ffmpeg అవసరం
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ఈ పోర్టబుల్ కాపీ సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లను దాని స్వంత సెట్టింగ్‌లలో ఉంచుతుంది, మీ Windows ఖాతా కోసం ఎన్‌క్రిప్ట్ చేయబడింది.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ఈ పోర్టబుల్ కాపీ సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లను దాని స్వంత సెట్టింగ్‌లలో ఉంచుతుంది, వీటిని మీరు మాత్రమే చదవగలరు.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4613,6 +4649,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	వైల్డ్‌కార్డ్ పరిమాణం
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows క్రెడెన్షియల్ మేనేజర్ స్పందించలేదు, కాబట్టి సైన్-ఇన్‌లు మరియు పాస్‌వర్డ్‌లు MDM సెట్టింగ్‌లలో ఉంచబడతాయి, మీ Windows ఖాతా కోసం ఎన్‌క్రిప్ట్ చేయబడ్డాయి.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine

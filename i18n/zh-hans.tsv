@@ -1872,6 +1872,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	在类别中：所选类别的菜单
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	在锁定的密钥环中
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2629,6 +2633,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	无代理/SOCKS
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	没有系统密钥环响应，因此登录信息和密码保存在 MDM 的设置中，只有您可以读取。
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3016,6 +3024,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	代理/Socks 配置
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	代理服务器
 #. label in the Options window
 #, machine
 	Proxy server address	代理服务器地址
@@ -3472,6 +3484,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	在浏览器中登录
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	登录信息和密码保存在 macOS 钥匙串中。
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	登录信息和密码保存在系统密钥环中(Secret Service)。
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	登录信息和密码保存在 Windows 凭据管理器中。
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4042,6 +4066,10 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	无法获取符号：报告中的某些行显示的是地址而不是名称（开发者仍然可以读取它们）。
 #. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	系统密钥环已锁定，MDM 不会解锁它，因此登录信息和密码保存在 MDM 的设置中，只有您可以读取。
+#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	系统的 DNS
@@ -4137,6 +4165,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	这需要 ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	此便携式副本将登录信息和密码保存在其自己的设置中，并为您的 Windows 帐户加密。
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	此便携式副本将登录信息和密码保存在其自己的设置中，只有您可以读取。
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4613,6 +4649,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	通配符大小
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows 凭据管理器没有响应，因此登录信息和密码保存在 MDM 的设置中，并为您的 Windows 帐户加密。
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine

@@ -1872,6 +1872,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	வகைகளில்: தேர்ந்தெடுக்கப்பட்ட வகையின் மெனு
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	பூட்டப்பட்ட கீரிங்கில்
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2629,6 +2633,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	ப்ராக்ஸி/SOCKS இல்லை
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	கணினி கீரிங் பதிலளிக்கவில்லை, எனவே உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் MDM இன் அமைப்புகளில் வைக்கப்பட்டுள்ளன, அதை நீங்கள் மட்டுமே படிக்க முடியும்.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3016,6 +3024,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	ப்ராக்ஸி / SOCKS கட்டமைப்பு
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	ப்ராக்ஸி சேவையகம்
 #. label in the Options window
 #, machine
 	Proxy server address	ப்ராக்ஸி சேவையக முகவரி
@@ -3472,6 +3484,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	உலாவியில் உள்நுழைக
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் macOS கீச்சினில் வைக்கப்பட்டுள்ளன.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் கணினி கீரிங்கில் (ரகசிய சேவை) வைக்கப்பட்டுள்ளன.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் Windows நற்சான்றிதழ் மேலாளரில் வைக்கப்பட்டுள்ளன.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4042,6 +4066,10 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	குறியீடுகளைப் பெற முடியவில்லை: அறிக்கையின் சில வரிகள் பெயர்களுக்குப் பதிலாக முகவரிகளைக் காட்டுகின்றன (டெவலப்பர்கள் இன்னும் அவற்றைப் படிக்கலாம்).
 #. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	கணினி கீரிங் பூட்டப்பட்டுள்ளது மற்றும் MDM அதைத் திறக்கவில்லை, எனவே உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் MDM இன் அமைப்புகளில் வைக்கப்பட்டுள்ளன, அதை நீங்கள் மட்டுமே படிக்க முடியும்.
+#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	சிஸ்டத்தின் DNS
@@ -4137,6 +4165,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	இதற்கு ffmpeg தேவை
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	இந்த கையடக்க நகல் உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை அதன் சொந்த அமைப்புகளில் வைத்திருக்கிறது, உங்கள் Windows கணக்கிற்காக குறியாக்கம் செய்யப்பட்டுள்ளது.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	இந்த கையடக்க நகல் உள்நுழைவுகள் மற்றும் கடவுச்சொற்களை அதன் சொந்த அமைப்புகளில் வைத்திருக்கிறது, அதை நீங்கள் மட்டுமே படிக்க முடியும்.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4613,6 +4649,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	வைல்ட்கார்டு அளவு
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows நற்சான்றிதழ் மேலாளர் பதிலளிக்கவில்லை, எனவே உள்நுழைவுகள் மற்றும் கடவுச்சொற்கள் MDM இன் அமைப்புகளில் வைக்கப்பட்டுள்ளன, உங்கள் Windows கணக்கிற்காக குறியாக்கம் செய்யப்பட்டுள்ளது.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine

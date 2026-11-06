@@ -1872,6 +1872,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	범주에서: 선택한 범주의 메뉴
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	잠긴 키링에 있음
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2629,6 +2633,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	프록시/SOCKS 없음
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	시스템 키링이 응답하지 않아 로그인 및 암호는 사용자만 읽을 수 있는 MDM 설정에 보관됩니다.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3016,6 +3024,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	프록시/Socks 구성
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	프록시 서버
 #. label in the Options window
 #, machine
 	Proxy server address	프록시 서버 주소
@@ -3472,6 +3484,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	브라우저에서 로그인
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	로그인 및 암호는 macOS 키체인에 보관됩니다.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	로그인 및 암호는 시스템 키링(Secret Service)에 보관됩니다.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	로그인 및 암호는 Windows 자격 증명 관리자에 보관됩니다.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4042,6 +4066,10 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	기호를 가져올 수 없습니다. 보고서의 일부 줄에 이름 대신 주소가 표시됩니다(개발자는 여전히 읽을 수 있습니다).
 #. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	시스템 키링이 잠겨 있고 MDM이 잠금을 해제하지 않으므로 로그인 및 암호는 사용자만 읽을 수 있는 MDM 설정에 보관됩니다.
+#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	시스템 DNS
@@ -4137,6 +4165,14 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ffmpeg가 필요합니다.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	이 휴대용 복사본은 로그인 및 암호를 사용자 Windows 계정용으로 암호화된 자체 설정에 보관합니다.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	이 휴대용 복사본은 로그인 및 암호를 사용자만 읽을 수 있는 자체 설정에 보관합니다.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4613,6 +4649,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	와일드카드 크기
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows 자격 증명 관리자가 응답하지 않아 로그인 및 암호는 사용자 Windows 계정용으로 암호화된 MDM 설정에 보관됩니다.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine

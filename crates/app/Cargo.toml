@@ -87,6 +87,9 @@ zbus = { version = "5.19.0", default-features = false, features = ["async-io", "
 objc2 = "0.6.5"
 objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSString", "NSGeometry", "objc2-core-foundation"] }
 objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std", "NSWorkspace", "NSImage", "NSImageRep", "NSBitmapImageRep", "NSGraphicsContext", "NSGraphics", "objc2-core-foundation"] }
+# Sign-in secrets in the login keychain (unix.rs, #44); already in the tree through rustls's
+# platform verifier.
+security-framework = "3.7.0"
 
 # Crash reports on Linux and macOS: thread and process ids, signals (unix.rs).
 [target.'cfg(unix)'.dependencies]
@@ -102,6 +105,8 @@ winresource = "0.1"
 
 [dev-dependencies]
 tempfile.workspace = true
+# secrets.rs's test that no secret reaches the log.
+tracing-subscriber.workspace = true
 # The command line's tests (tests/cli_*.rs) download from it.
 mdm-labserver.workspace = true
 
