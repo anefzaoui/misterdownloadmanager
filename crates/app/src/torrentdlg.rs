@@ -419,16 +419,14 @@ impl TorrentDialog {
 
         // The source: a magnet link, or a .torrent file chosen with "...".
         // i18n: noun: label before the torrent file or magnet link
-        text(
-            &p,
-            o.x + 11.0,
-            o.y + 23.0,
-            crate::i18n::t("Torrent"),
-            winui::TEXT(),
-        );
+        let source_label = crate::i18n::t("Torrent");
+        let folder_label = crate::i18n::t("Save to");
+        // The fields start after the longer label (German "Speichern unter").
+        let fx = winui::label_column(&p, 11.0, &[source_label, folder_label], 70.0);
+        text(&p, o.x + 11.0, o.y + 23.0, source_label, winui::TEXT());
         let edit = winui::edit(
             ui,
-            r(o, 70.0, 9.0, 410.0, 21.0),
+            r(o, fx, 9.0, 480.0 - fx, 21.0),
             &mut self.source,
             !busy,
             false,
@@ -589,16 +587,10 @@ impl TorrentDialog {
         }
 
         // Where.
-        text(
-            &p,
-            o.x + 11.0,
-            o.y + 375.0,
-            crate::i18n::t("Save to"),
-            winui::TEXT(),
-        );
+        text(&p, o.x + 11.0, o.y + 375.0, folder_label, winui::TEXT());
         if winui::edit(
             ui,
-            r(o, 70.0, 361.0, 491.0, 21.0),
+            r(o, fx, 361.0, 561.0 - fx, 21.0),
             &mut self.folder,
             true,
             false,
@@ -634,7 +626,7 @@ impl TorrentDialog {
                 &[("folder", &crate::i18n::ltr(&goes.display().to_string()))],
             );
             let (rect, cut) =
-                winui::text_fit(&p, o.x + 70.0, o.y + 402.0, &s, winui::MUTED(), o.x + 589.0);
+                winui::text_fit(&p, o.x + fx, o.y + 402.0, &s, winui::MUTED(), o.x + 589.0);
             if cut {
                 winui::full_on_hover(ui, rect, "torrent-goes", &s);
             }
