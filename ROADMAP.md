@@ -156,6 +156,11 @@ Everything below ships together, in one release.
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
   their logos, a feature-by-feature form and an MDM-vs-IDM label with the benchmark's times to scale
+- ✅ Website: the header fits its row in every language at every width (it hides the Sponsor heart,
+  then tightens, then turns into the menu, only as far as a language needs)
+  ([#168](https://github.com/anefzaoui/misterdownloadmanager/issues/168)), and no page scrolls
+  sideways on a phone, Arabic and Persian included: long paths, links and tables wrap or scroll
+  inside the page ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
 
 ### Being built
 
@@ -224,8 +229,6 @@ Everything below ships together, in one release.
 
 ### Look and performance
 
-- 📋 Website: the header's buttons fit in long languages ([#168](https://github.com/anefzaoui/misterdownloadmanager/issues/168)), and Arabic pages
-  don't scroll sideways on phones ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))
