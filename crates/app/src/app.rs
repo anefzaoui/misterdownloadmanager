@@ -4712,6 +4712,8 @@ impl App {
         items.push(Radio("Metro", Cmd::Theme("metro"), true, on("metro")));
         // i18n: View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
         items.push(Radio("Adwaita", Cmd::Theme("adwaita"), true, on("adwaita")));
+        // i18n: View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+        items.push(Radio("Breeze", Cmd::Theme("breeze"), true, on("breeze")));
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
                 items.push(Sep);

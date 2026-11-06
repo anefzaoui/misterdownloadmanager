@@ -29,6 +29,9 @@ Everything below ships together, in one release.
 - ✅ Themes: Adwaita, GNOME's look (its controls, a header bar on Windows, GNOME's Adwaita icons
   in colour and one colour)
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Breeze, KDE Plasma's look (its focus frame, check boxes, buttons and title bar on
+  Windows, KDE's Breeze icons)
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
