@@ -207,10 +207,9 @@ fn dialog_window<T>(
     }
     crate::crash::window(id);
     let out = ctx.show_viewport_immediate(ViewportId::from_hash_of(id), builder, |ui, _| {
-        if ui.ctx().input(|i| i.viewport().close_requested()) {
-            return Outcome::Closed;
-        }
-        egui::CentralPanel::no_frame()
+        // Painted in the pass that closes it too (see close_requested).
+        let close = close_requested(ui);
+        let out = egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(bg))
             .show(ui, |ui| {
                 let origin = ui.max_rect().min;
@@ -218,7 +217,8 @@ fn dialog_window<T>(
                 let _surface = winui::Surface::enter(origin.x, origin.x + client[0]);
                 body(ui, origin)
             })
-            .inner
+            .inner;
+        if close { Outcome::Closed } else { out }
     });
     // Give the window IDM's modal-dialog frame (3 px borders, 26 px caption) once it exists,
     // and again at a new size (a dialog that grows: the frame is sized from the client).
@@ -263,6 +263,15 @@ fn dialog_window<T>(
         ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
     }
     out
+}
+
+/// Whether the window manager asked this window to close (its title bar's ×, Alt+F4, a
+/// `WM_DELETE_WINDOW`). The window must still be painted in that pass, and the request honoured
+/// after it: egui clears a dialog's window to transparent black before each pass, so a pass that
+/// paints nothing leaves a black window on screen until the window is destroyed (#207: one to
+/// several seconds on Linux).
+pub(crate) fn close_requested(ui: &Ui) -> bool {
+    ui.ctx().input(|i| i.viewport().close_requested())
 }
 
 /// Bring dialog `id` to the front with the keyboard focus once it shows (a window that opens by
@@ -2679,5 +2688,82 @@ mod tests {
         });
         rx.recv_timeout(std::time::Duration::from_secs(20))
             .expect("Add URL hung");
+    }
+
+    /// #207: a dialog closed by the window manager (its title bar's ×) is painted in the pass
+    /// that closes it. The dialog's window is rendered as eframe renders it: its own pass, after
+    /// the window was cleared to transparent black. A pass that painted nothing left the window
+    /// black on screen until it was destroyed (seconds, on Linux).
+    #[test]
+    fn a_dialog_closed_by_the_window_manager_is_painted_in_its_last_pass() {
+        use std::cell::{Cell, RefCell};
+        use std::rc::Rc;
+
+        let close = Rc::new(Cell::new(false));
+        // How many shapes each pass of the dialog's window painted.
+        let painted = Rc::new(RefCell::new(Vec::new()));
+        {
+            let (close, painted) = (close.clone(), painted.clone());
+            egui::Context::set_immediate_viewport_renderer(move |ctx, viewport| {
+                let mut info = egui::ViewportInfo::default();
+                if close.get() {
+                    info.events.push(egui::ViewportEvent::Close);
+                }
+                let input = egui::RawInput {
+                    viewport_id: viewport.ids.this,
+                    viewports: std::iter::once((viewport.ids.this, info)).collect(),
+                    screen_rect: Some(egui::Rect::from_min_size(Pos2::ZERO, vec2(300.0, 200.0))),
+                    ..Default::default()
+                };
+                let mut ui_cb = viewport.viewport_ui_cb;
+                let mut out = ctx.run_ui(input, |ui| ui_cb(ui));
+                out.textures_delta.clear();
+                painted.borrow_mut().push(out.shapes.len());
+            });
+        }
+        // A test-only title, kept out of the catalog (extract.py reads literal titles).
+        let title = String::from("test window");
+        let title = title.as_str();
+        let ctx = egui::Context::default();
+        ctx.set_embed_viewports(false);
+        let pass = |closing: bool| {
+            close.set(closing);
+            let mut outcome = None;
+            let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+                outcome = Some(window(
+                    ui.ctx(),
+                    "test-207",
+                    title,
+                    [300.0, 200.0],
+                    false,
+                    egui::Color32::LIGHT_GRAY,
+                    |ui, origin| {
+                        ui.painter().text(
+                            origin + vec2(10.0, 10.0),
+                            egui::Align2::LEFT_TOP,
+                            "Mister Download Manager",
+                            egui::FontId::proportional(12.0),
+                            egui::Color32::BLACK,
+                        );
+                        Outcome::<()>::Open
+                    },
+                ));
+            });
+            out.textures_delta.clear();
+            outcome.unwrap()
+        };
+        assert!(matches!(pass(false), Outcome::Open));
+        assert!(matches!(pass(true), Outcome::Closed));
+        let painted = painted.borrow();
+        assert_eq!(
+            painted.len(),
+            2,
+            "the dialog's window rendered once per pass"
+        );
+        assert!(painted[0] > 0, "the open dialog painted nothing");
+        assert_eq!(
+            painted[1], painted[0],
+            "the pass that closes the dialog paints it as the one before"
+        );
     }
 }

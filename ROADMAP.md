@@ -13,6 +13,8 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ A window closed with its title bar's × keeps its contents until it goes, instead of turning
+  black for a moment (seconds on Linux) ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207))
 - ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
   its freeze report again ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202))
 - ✅ Where a download's server is: its country's flag and name and its round trip (near, medium or
@@ -42,6 +44,11 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Themes, the groundwork: every colour and size the controls are drawn with comes from one
   theme, and theme files can change them; the classic look is unchanged
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ View → Theme: Classic (the default), Native (the system's accent colour and high contrast,
+  followed as they change) and High contrast
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
+  red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
 - ✅ Download video: every button fits its text in every language (German **ffmpeg installieren**
