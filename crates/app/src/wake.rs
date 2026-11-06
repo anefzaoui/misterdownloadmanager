@@ -28,11 +28,11 @@ pub const LEAD: Duration = Duration::seconds(60);
 /// Whether this computer can be woken by MDM, and if not, why.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Support {
+    // macOS never can (see unix::wake_support).
+    #[cfg_attr(target_os = "macos", allow(dead_code))]
     Ready,
     /// Windows' power options don't allow wake timers now (on battery: `battery`).
-    TimersOff {
-        battery: bool,
-    },
+    TimersOff { battery: bool },
     /// Windows allows wake timers on mains power only, and this computer has a battery.
     NotOnBattery,
     /// Linux: the wake alarm is the administrator's (the guide shows how to allow it).

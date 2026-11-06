@@ -836,8 +836,14 @@ impl Scheduler {
         let f = &mut self.forms[self.selected];
         let can = support.can_tick();
         let enabled = f.start_at_on && can;
+        // Where waking can't be, the box shows it off (the setting is kept, for a data folder
+        // carried to a system that can).
+        let mut shown = f.wake && can;
         let resp =
-            winui::checkbox_light(ui, o + vec2(228.0, 229.0), &mut f.wake, WAKE_LABEL, enabled);
+            winui::checkbox_light(ui, o + vec2(228.0, 229.0), &mut shown, WAKE_LABEL, enabled);
+        if enabled {
+            f.wake = shown;
+        }
         let why = if !can {
             support_reason(&support).unwrap_or("")
         } else {
@@ -1320,15 +1326,25 @@ fn support_reason(s: &crate::wake::Support) -> Option<&'static str> {
             crate::i18n::mark("On battery, Windows' power options don't allow wake timers")
         }
         // i18n: the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
-        Support::TimersOff { battery: false } => crate::i18n::mark("Windows' power options don't allow wake timers"),
+        Support::TimersOff { battery: false } => {
+            crate::i18n::mark("Windows' power options don't allow wake timers")
+        }
         // i18n: the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
-        Support::NotOnBattery => crate::i18n::mark("Windows allows wake timers only while plugged in"),
+        Support::NotOnBattery => {
+            crate::i18n::mark("Windows allows wake timers only while plugged in")
+        }
         // i18n: the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
-        Support::NeedsAdmin => crate::i18n::mark("Only an administrator can let programs wake this computer"),
+        Support::NeedsAdmin => {
+            crate::i18n::mark("Only an administrator can let programs wake this computer")
+        }
         // i18n: the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
-        Support::NoAlarm => crate::i18n::mark("This computer has no wake alarm that programs can set"),
+        Support::NoAlarm => {
+            crate::i18n::mark("This computer has no wake alarm that programs can set")
+        }
         // i18n: the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
-        Support::MacAdmin => crate::i18n::mark("On macOS, only an administrator can schedule a wake"),
+        Support::MacAdmin => {
+            crate::i18n::mark("On macOS, only an administrator can schedule a wake")
+        }
     })
 }
 
