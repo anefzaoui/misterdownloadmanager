@@ -19,6 +19,9 @@ Everything below ships together, in one release.
 - ✅ View → Theme: Classic (the default), Native (the system's accent colour and high contrast,
   followed as they change) and High contrast
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Metro, Windows 8's flat look (its controls, a drawn title bar on Windows, Fluent
+  icons); themes choose each control's style and bring their own icons
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A smaller download: the installer 15 % and the zips 19 % smaller, nothing removed
   ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - ✅ Linux: MDM's first window opens seconds sooner; the system's fonts are looked up all at once

@@ -111,6 +111,9 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
   contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It
   follows them when you change them.
 - **High contrast**: black and white, a bright accent, every edge drawn, text at 7:1 or more.
+- **Metro**: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar
+  with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's
+  Fluent UI System Icons).
 
 Each has a light and a dark side: **Dark Mode support** and **Always dark** choose between
 them as before. Theme files you put in the themes folder (**View → Theme → Open themes folder**)

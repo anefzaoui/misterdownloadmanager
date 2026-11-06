@@ -46,6 +46,7 @@ mod settings;
 mod store;
 mod theme;
 mod themefile;
+mod themeicons;
 mod torrentdlg;
 mod torrents;
 mod transfer;

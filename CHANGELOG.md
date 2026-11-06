@@ -30,6 +30,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   accent, every edge drawn and text at 7:1 or more. A theme applies at once, light and dark alike,
   and theme files in the themes folder (**View → Theme → Open themes folder**) are listed too;
   High contrast is itself such a file, in the same format.
+- **Themes: Metro** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)), after
+  Windows 8's flat look, the layout kept: square corners, flat buttons, boxes that take an accent
+  border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their
+  arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and, on
+  Windows, a title bar MDM draws in the theme's colour with the title centred (resizing, Snap
+  Layouts on Maximize, double-click and Alt+Space work as with the system's). Theme files can now
+  choose each control's style (`[controls]`), an icon set, and a theme can be a folder that brings
+  its own icons.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the

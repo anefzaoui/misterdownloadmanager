@@ -64,6 +64,8 @@ pub enum IconKey {
     ExtLarge(String),
     /// A FamFamFam Silk icon (CC BY 2.5, assets/icons/silk/), by name.
     Silk(&'static str),
+    /// The theme icon set's icon for a need (`crate::themeicons`), else this Silk icon.
+    Themed(&'static str, &'static str),
 }
 
 /// The embedded Silk icons (XP-era look, like IDM's tree icons).
@@ -119,6 +121,13 @@ impl ShellIcons {
         match &key {
             IconKey::Silk(name) => {
                 if let Some(src) = silk(name) {
+                    paint_image(ui, painter, src, rc);
+                }
+            }
+            IconKey::Themed(need, name) => {
+                if !crate::themeicons::paint(ui, painter, need, rc, true)
+                    && let Some(src) = silk(name)
+                {
                     paint_image(ui, painter, src, rc);
                 }
             }
@@ -1658,11 +1667,17 @@ pub fn categories(
         }
         // Icons placed, not mirrored.
         icons.paint_in(ui, &tp, r.icon.clone(), pos2(icon_x, top));
-        if let Some(name) = r.badge
-            && let Some(src) = silk(name)
-        {
-            let rc = Rect::from_min_size(pos2(icon_x + 7.0, top + 7.0), vec2(9.0, 9.0));
-            paint_image(ui, &tp, src, winui::rect(rc));
+        if let Some(name) = r.badge {
+            let rc = winui::rect(Rect::from_min_size(
+                pos2(icon_x + 7.0, top + 7.0),
+                vec2(9.0, 9.0),
+            ));
+            // The check badge from the theme's icon set, where it has one.
+            let themed =
+                name == "tick" && crate::themeicons::paint(ui, &tp, "misc-emblem-ok", rc, true);
+            if !themed && let Some(src) = silk(name) {
+                paint_image(ui, &tp, src, rc);
+            }
         }
         text_font(
             &tp,
