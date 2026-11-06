@@ -179,8 +179,8 @@ debug = "line-tables-only"
 # (emilk/egui#8470); and a window's first accessibility request is answered with its last tree
 # (#131); Direct3D keeps only the graphics adapter in use (a laptop's other GPU sleeps) and, on
 # Intel Iris Xe, uploads no all-zero texel blocks (gfx-rs/wgpu#10651, #89); a hidden viewport
-# can ask for a pass (Context::request_ui_pass); OpenGL without a usable configuration is an error,
-# not a panic, so the next renderer is tried. craft-libs can take the same commits to share
+# can ask for a pass (Context::request_ui_pass: a dialog opened while minimized, #162); OpenGL
+# without a usable configuration is an error, not a panic, so the next renderer is tried. craft-libs can take the same commits to share
 # one egui again.
 [patch.crates-io]
 # librqbit 9.1.0 with per-torrent rate limits that change while a torrent runs (#39), and a

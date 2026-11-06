@@ -33,6 +33,7 @@ The browser started MDM's helper, but it stopped before answering. Security soft
 
 - Allow `misterdownloadmanager-nmhost.exe` (in MDM's folder) in your antivirus or anti-malware program.
 - Reinstall MDM to restore its files.
+- On Linux, with Firefox or Chromium installed as a Snap, see [Flatpak and Snap browsers](#linux-sandbox).
 
 ## MDM doesn't accept this copy of the extension {#forbidden}
 
@@ -75,7 +76,13 @@ An add-on loaded with **Load Temporary Add-on** (from `about:debugging`) is remo
 
 ## Linux: Flatpak and Snap browsers {#linux-sandbox}
 
-Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's `app.zen_browser.zen`) can't start MDM's helper, so MDM doesn't list them in **Add Mister Download Manager to your browser**. Install the browser from your distribution's packages (or the browser maker's own `.deb`, `.rpm`, tarball or AppImage) to use browser integration.
+Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.
+
+- **Firefox as a Snap** (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks **Allow Firefox to start WebExtension backend?** for Mister Download Manager: choose **Allow**. After **Don't allow**, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:
+
+  `gdbus call --session --dest org.freedesktop.impl.portal.PermissionStore --object-path /org/freedesktop/impl/portal/PermissionStore --method org.freedesktop.impl.portal.PermissionStore.Delete webextensions com.misterdownloadmanager.host`
+- **Chromium as a Snap** (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in **Add Mister Download Manager to your browser**. Use Firefox, or Google Chrome from its own `.deb`.
+- **Flatpak browsers** (such as Zen's `app.zen_browser.zen`) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own `.deb`, `.rpm`, tarball or AppImage) to use browser integration.
 
 ## Next steps
 
