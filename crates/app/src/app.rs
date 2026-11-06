@@ -139,6 +139,9 @@ enum Cmd {
     /// trackers (a window); copy its magnet link.
     TorrentRecheck,
     TorrentReannounce,
+    /// Right-click → Torrent → Download in order, and its first and last pieces first (#39).
+    TorrentInOrder,
+    TorrentEndsFirst,
     TorrentAddTrackers,
     TorrentCopyMagnet,
     /// Tasks → RSS feeds… (also the Add Torrent button's arrow), #39: true opens it on its
@@ -3085,6 +3088,8 @@ impl App {
                 uploaded: 0,
                 seeded_secs: 0,
                 upload_limit: None,
+                in_order: add.in_order,
+                ends_first: true,
             });
         }
         self.selection.set(id);
@@ -3092,6 +3097,26 @@ impl App {
             self.start(id, true);
         } else {
             self.queue_later(vec![id], self.settings.queue_panel_later);
+        }
+        self.dirty = true;
+    }
+
+    /// Right-click → Torrent → Download in order (`in_order`), or its first and last pieces
+    /// first (#39): kept with the torrent, and applied now if it runs (the next piece each peer
+    /// is asked for follows it).
+    fn toggle_torrent_order(&mut self, id: u64, in_order: bool) {
+        let Some(item) = self.item(id) else { return };
+        let Some(spec) = item.torrent.as_mut() else {
+            return;
+        };
+        if in_order {
+            spec.in_order = !spec.in_order;
+        } else {
+            spec.ends_first = !spec.ends_first;
+        }
+        let order = spec.order();
+        if let Some(model::Job::Torrent(run)) = item.live.as_ref().map(|l| &l.dl) {
+            run.set_order(order);
         }
         self.dirty = true;
     }
@@ -3334,6 +3359,8 @@ impl App {
             category: Category::Torrents,
             start_now: !r.later,
             from_magnet,
+            // RSS rules download as torrents usually do: the rarest pieces first.
+            in_order: false,
         });
         let feed = self
             .rss
@@ -4130,6 +4157,11 @@ impl App {
                     self.torrent_act(id, crate::torrents::Act::Reannounce);
                 }
             }
+            Cmd::TorrentInOrder | Cmd::TorrentEndsFirst => {
+                if let Some(id) = target {
+                    self.toggle_torrent_order(id, matches!(cmd, Cmd::TorrentInOrder));
+                }
+            }
             Cmd::TorrentAddTrackers => {
                 let torrent = |i: &&Item| i.torrent.is_some();
                 if let Some(i) = target
@@ -4884,6 +4916,21 @@ impl App {
                         // i18n: right-click → Torrent: ask the torrent's trackers for peers again now
                         I("Reannounce", Cmd::TorrentReannounce, !busy && going, false),
                         I("Add trackers...", Cmd::TorrentAddTrackers, !busy, false),
+                        Sep,
+                        // i18n: right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
+                        I(
+                            "Download in order",
+                            Cmd::TorrentInOrder,
+                            true,
+                            spec.in_order,
+                        ),
+                        // i18n: right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
+                        I(
+                            "First and last pieces first",
+                            Cmd::TorrentEndsFirst,
+                            spec.in_order,
+                            spec.in_order && spec.ends_first,
+                        ),
                         Sep,
                         I("Copy magnet link", Cmd::TorrentCopyMagnet, true, false),
                     ],

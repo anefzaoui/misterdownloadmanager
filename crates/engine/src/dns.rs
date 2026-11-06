@@ -621,38 +621,45 @@ impl Resolve for Resolver {
         let port = self.port;
         let dns = self.dns.clone();
         Box::pin(async move {
-            if let Route::Down { label } = &dns.route {
-                return Err(Box::new(DnsError::from(crate::net::NetError::Down {
-                    label: label.clone(),
-                }))
-                    as Box<dyn std::error::Error + Send + Sync>);
+            // Its time is left out of the connection's (#140, `server::dns_spent`).
+            let started = std::time::Instant::now();
+            let found: Result<Addrs, Box<dyn std::error::Error + Send + Sync>> = async {
+                if let Route::Down { label } = &dns.route {
+                    return Err(Box::new(DnsError::from(crate::net::NetError::Down {
+                        label: label.clone(),
+                    }))
+                        as Box<dyn std::error::Error + Send + Sync>);
+                }
+                let ips: Vec<IpAddr> = match fixed {
+                    Some(ips) => ips,
+                    None if dns.choice.is_system() || local_name(&host) => {
+                        tokio::net::lookup_host((host.as_str(), port))
+                            .await?
+                            .map(|a| a.ip())
+                            .collect()
+                    }
+                    None => {
+                        let resolver = dns
+                            .resolver
+                            .get_or_init(|| build(&dns.choice, &dns.extra_roots, &dns.route))
+                            .await
+                            .as_ref()
+                            .map_err(|e| {
+                                Box::new(e.clone()) as Box<dyn std::error::Error + Send + Sync>
+                            })?;
+                        ask(resolver, &dns.choice, &host, port).await?
+                    }
+                };
+                // An address of the family the adapter lacks would be connected unbound (#35).
+                let ips = reachable(ips, &dns.route)?;
+                let ips = reachable_first(&host, ips, port, &dns.route).await;
+                // Port 0: reqwest then uses the URL's port (a non-zero port here would win).
+                let addrs: Addrs = Box::new(ips.into_iter().map(|ip| SocketAddr::new(ip, 0)));
+                Ok(addrs)
             }
-            let ips: Vec<IpAddr> = match fixed {
-                Some(ips) => ips,
-                None if dns.choice.is_system() || local_name(&host) => {
-                    tokio::net::lookup_host((host.as_str(), port))
-                        .await?
-                        .map(|a| a.ip())
-                        .collect()
-                }
-                None => {
-                    let resolver = dns
-                        .resolver
-                        .get_or_init(|| build(&dns.choice, &dns.extra_roots, &dns.route))
-                        .await
-                        .as_ref()
-                        .map_err(|e| {
-                            Box::new(e.clone()) as Box<dyn std::error::Error + Send + Sync>
-                        })?;
-                    ask(resolver, &dns.choice, &host, port).await?
-                }
-            };
-            // An address of the family the adapter lacks would be connected unbound (#35).
-            let ips = reachable(ips, &dns.route)?;
-            let ips = reachable_first(&host, ips, port, &dns.route).await;
-            // Port 0: reqwest then uses the URL's port (a non-zero port here would win).
-            let addrs: Addrs = Box::new(ips.into_iter().map(|ip| SocketAddr::new(ip, 0)));
-            Ok(addrs)
+            .await;
+            crate::server::dns_spent(started.elapsed());
+            found
         })
     }
 }

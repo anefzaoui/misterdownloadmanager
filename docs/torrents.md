@@ -11,7 +11,8 @@ MDM downloads BitTorrent files from magnet links and `.torrent` files. Torrents 
 3. MDM reads the torrent and shows its files as a folder tree. A `.torrent` file is read at once. A magnet link first has to get the file list from other peers, usually within seconds. While it waits, **Add torrent** shows how many peers it found, from the trackers, the DHT or your local network, and how many answered. After 30 seconds without an answer, it says what may be in the way: a link with no trackers while the DHT is off, or a firewall, a VPN or a network that blocks BitTorrent.
 4. Untick the folders or files you don't want. **Select all** and **Select none** help with big torrents. **Selected** shows how many files and how much data you picked.
 5. Check **Save to**. **Files go to** shows the exact folder. Torrents have their own category, so by default this is `Downloads\Torrents`.
-6. Click **Download Now**, or **Later** to add it to the list without starting.
+6. To watch a video while it downloads, tick **Download in order** (see [Download in order](#download-in-order)).
+7. Click **Download Now**, or **Later** to add it to the list without starting.
 
 ![Add torrent](images/add-torrent.png)
 
@@ -48,9 +49,23 @@ Right-click a torrent in the list and open **Torrent**:
 - **Recheck files** — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.
 - **Reannounce** — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.
 - **Add trackers...** — adds trackers, one address a line (`http`, `https` or `udp`). They are kept with the torrent, after the ones it has, and the **Trackers** tab shows them. A tracker on your computer or your local network is refused: MDM never contacts those ([why](torrent-security.md)).
+- **Download in order** — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.
+- **First and last pieces first** — with **Download in order**, each file's first and last pieces come before the rest. It's on by default.
 - **Copy magnet link** — copies a magnet link for the torrent, with its trackers.
 
 Each command's outcome goes into the torrent's event log; hover its **Status** cell in the list to read it.
+
+## Download in order
+
+By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.
+
+**Download in order** gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in **Add torrent**, or choose **Torrent → Download in order** in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.
+
+- With **First and last pieces first** (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.
+- Several files are downloaded one after another, sorted by name.
+- Slower peers take pieces a little further on, so the start isn't waiting for them.
+
+A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.
 
 ## RSS feeds
 

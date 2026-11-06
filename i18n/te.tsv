@@ -187,6 +187,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS కాన్ఫిగరేషన్ ID ఆరు అక్షరాలు మరియు అంకెలు (0-9, a-f) కలిగి ఉంటుంది.
+#. text in whereis.rs
+#. the tooltip of where a download's server is, when a proxy carries the download
+#, machine
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	ఈ డౌన్‌లోడ్‌ను ప్రాక్సీ నిర్వహిస్తుంది: స్థలం మరియు సమయం సర్వర్‌కు చెందినవి కావు, ప్రాక్సీకి చెందినవి.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -210,6 +214,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager గురించి
+#. text in whereis.rs
+#. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
+#, machine
+	about {ms} ms ({reach})	సుమారు {ms} మి.సె. ({reach})
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -316,6 +324,10 @@
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	చిరునామా:
+#. text in whereis.rs
+#. the tooltip of where a download's server is: its IP address
+#, machine
+	Address: {address}	చిరునామా: {address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
@@ -328,6 +340,22 @@
 #. a check of Test browser integration (Options → General)
 #, machine
 	Advanced browser integration is on	అధునాతన బ్రౌజర్ అనుసంధానం ఆన్‌లో ఉంది
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Afghanistan	ఆఫ్ఘనిస్తాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aland Islands	ఆలాండ్ దీవులు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Albania	అల్బేనియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Algeria	అల్జీరియా
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	అన్ని డౌన్‌లోడ్‌లు
@@ -382,6 +410,22 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	AM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	American Samoa	అమెరికన్ సమోవా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Andorra	అండొర్రా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Angola	అంగోలా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Anguilla	అంగ్విల్లా
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
@@ -391,6 +435,14 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	{ms} msలో సమాధానం ఇవ్వబడింది: {ip}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antarctica	అంటార్కిటికా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antigua and Barbuda	ఆంటిగ్వా మరియు బార్బుడా
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
 #, machine
@@ -416,9 +468,21 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager డౌన్‌లోడ్‌ల జాబితా నుండి "{name}"ని తొలగించాలనుకుంటున్నారా?
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Argentina	అర్జెంటీనా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Armenia	అర్మేనియా
 #. text in rssdlg.rs
 #, machine
 	Articles	కథనాలు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aruba	అరుబా
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	సిస్టమ్ ప్రాంతం వ్రాసినట్లు
@@ -454,6 +518,14 @@
 #. text in the Scheduler window
 #, machine
 	August	ఆగస్టు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Australia	ఆస్ట్రేలియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Austria	ఆస్ట్రియా
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -461,23 +533,95 @@
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	కింది ఫైల్ రకాలను స్వయంచాలకంగా డౌన్‌లోడ్ చేయడం ప్రారంభించండి:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Azerbaijan	అజర్‌బైజాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahamas	బహామాస్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahrain	బహ్రెయిన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bangladesh	బంగ్లాదేశ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Barbados	బార్బడోస్
 #. window title in the Batch download window
 #, machine
 	Batch download	బ్యాచ్ డౌన్‌లోడ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belarus	బెలారస్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belgium	బెల్జియం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belize	బెలిజ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Benin	బెనిన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bermuda	బెర్ముడా
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
 #, machine
 	Best quality	ఉత్తమ నాణ్యత
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bhutan	భూటాన్
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
 	Block the addresses in this list (P2P or eMule format):	ఈ జాబితాలోని చిరునామాలను బ్లాక్ చేయండి (P2P లేదా eMule ఫార్మాట్):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bolivia	బొలీవియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bonaire, Sint Eustatius and Saba	బొనైర్, సింట్ యూస్టాటియస్ మరియు సబా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bosnia and Herzegovina	బోస్నియా మరియు హెర్జెగోవినా
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	రెండూ ఓపెన్ సోర్స్. MDM వాటిని దాని స్వంత డౌన్‌లోడర్‌తో వాటి అధికారిక విడుదలల నుండి పొందుతుంది మరియు అది రన్ చేయడానికి ముందు ప్రతి ఫైల్ యొక్క సంతకాన్ని తనిఖీ చేస్తుంది. సుమారు 100 MB, ఒకసారి.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Botswana	బోట్స్వానా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bouvet Island	బౌవెట్ దీవి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brazil	బ్రెజిల్
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names}ను అవి షిప్ చేసిన విధంగా తిరిగి తీసుకురావాలా: వాటి పేర్లు, ఫైల్ రకాలు మరియు ఫోల్డర్‌లు? మీ స్వంత వర్గాలు, జనరల్ మరియు టోరెంట్‌లు ఉన్నవి ఉన్నట్లుగానే ఉంటాయి. ఇప్పటికే జనరల్‌కు తరలించబడిన డౌన్‌లోడ్‌లు అక్కడే ఉంటాయి.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	British Indian Ocean Territory	బ్రిటిష్ ఇండియన్ ఓషన్ టెరిటరీ
 #. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
@@ -492,6 +636,22 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	బ్రౌజర్/సిస్టమ్ ఇంటిగ్రేషన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brunei	బ్రూనై
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bulgaria	బల్గేరియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burkina Faso	బుర్కినా ఫాసో
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burundi	బురుండి
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
@@ -502,6 +662,22 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	లింక్ గ్రాబర్ ద్వారా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cabo Verde	కేప్ వర్డే
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cambodia	కంబోడియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cameroon	కామెరూన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Canada	కెనడా
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
@@ -547,10 +723,22 @@
 #. text in categories.rs
 #, machine
 	Category properties	వర్గ లక్షణాలు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cayman Islands	కేమాన్ దీవులు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Central African Republic	మధ్య ఆఫ్రికా రిపబ్లిక్
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	సర్టిఫికేట్ పేరు:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chad	చాద్
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -610,6 +798,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	తనిఖీ చేస్తోంది...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chile	చిలీ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	China	చైనా
 #. text in langpick.rs
 #, machine
 	Choose a language	భాషను ఎంచుకోండి
@@ -620,6 +816,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	{name} ఎంచుకోండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Christmas Island	క్రిస్మస్ దీవి
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -642,6 +842,18 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Close a menu or dialog	మెనూ లేదా డైలాగ్‌ను మూసివేయండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cocos (Keeling) Islands	కోకోస్ (కీలింగ్) దీవులు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Colombia	కొలంబియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Comoros	కొమొరోస్
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -661,6 +873,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	డౌన్‌లోడ్‌ల తొలగింపును నిర్ధారించండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Congo	కాంగో
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -682,6 +898,10 @@
 #. text in the Options window
 #, machine
 	Connections:	కనెక్షన్‌లు:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cook Islands	కుక్ దీవులు
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	క్లిప్‌బోర్డ్‌కు కాపీ చేయబడింది.
@@ -696,6 +916,10 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	నివేదికను కాపీ చేయండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Costa Rica	కోస్టా రికా
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
@@ -709,6 +933,18 @@
 #. window title in a dialog box
 #, machine
 	Create folder	ఫోల్డర్‌ను సృష్టించండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Croatia	క్రొయేషియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cuba	క్యూబా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Curaçao	కురాకో
 #. text in the Options window
 #, machine
 	Customize "Download progress" dialog	"డౌన్‌లోడ్ పురోగతి" డైలాగ్‌ను అనుకూలీకరించండి
@@ -721,6 +957,18 @@
 #. text in the Options window
 #, machine
 	Customize MDM menu items in context menu of browsers	బ్రౌజర్‌ల సందర్భ మెనూలో MDM మెనూ ఐటెమ్‌లను అనుకూలీకరించండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cyprus	సైప్రస్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Czech Republic	చెక్ రిపబ్లిక్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Côte d'Ivoire	కోట్ డి ఐవోర్
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
@@ -789,6 +1037,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads and their files (asks first)	ఎంచుకున్న డౌన్‌లోడ్‌లను మరియు వాటి ఫైల్‌లను తొలగించు (ముందు అడుగుతుంది)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Denmark	డెన్మార్క్
 #. text in a dialog box
 #, machine
 	Description	వివరణ
@@ -809,6 +1061,10 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	క్యూల జాబితాలో ప్రదర్శించబడుతుంది
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Djibouti	జిబౌటి
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
@@ -834,6 +1090,14 @@
 #. category name: documents (pdf, doc…)
 #, machine
 	Documents	డాక్యుమెంట్లు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominica	డొమినికా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominican Republic	డొమినికన్ రిపబ్లిక్
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 #, machine
@@ -877,6 +1141,10 @@
 #. window title in a dialog box
 #, machine
 	Download File Info	ఫైల్ సమాచారాన్ని డౌన్‌లోడ్ చేయండి
+#. text in the Add torrent window
+#. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
+#, machine
+	Download in order	క్రమంగా డౌన్‌లోడ్ చేయి
 #. button in a dialog box
 #, machine
 	Download Later	తర్వాత డౌన్‌లోడ్ చేయండి
@@ -979,6 +1247,10 @@
 #. {time} = a time of day (keep the braces as they are)
 #, machine
 	Downloads stopped and will resume automatically at {time}.	డౌన్‌లోడ్‌లు ఆగిపోయాయి మరియు {time}కి స్వయంచాలకంగా పునఃప్రారంభమవుతాయి.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	DR Congo	DR కాంగో
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1005,6 +1277,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	ప్రతి ఫైల్ యొక్క వర్గ ఫోల్డర్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ecuador	ఈక్వెడార్
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -1024,6 +1300,14 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Edit...	సవరించు...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Egypt	ఈజిప్ట్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	El Salvador	ఎల్ సాల్వడార్
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ఇమెయిల్
@@ -1059,6 +1343,14 @@
 #. RSS feeds window, Download rules: the episode filter can't be read
 #, machine
 	Episodes: like 1x2;1x5-8;2x1- (season x episode)	ఎపిసోడ్‌లు: 1x2;1x5-8;2x1- వంటివి (సీజన్ x ఎపిసోడ్)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Equatorial Guinea	ఈక్వటోరియల్ గినియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eritrea	ఎరిట్రియా
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1070,6 +1362,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Error: {error}	ఎర్రర్: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Estonia	ఎస్టోనియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eswatini	ఎస్వతిని
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ethiopia	ఇథియోపియా
 #. text in the Options window
 #, machine
 	Event	ఈవెంట్
@@ -1133,6 +1437,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	ఎక్స్‌ట్రాక్ట్ చేస్తోంది...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Falkland Islands	ఫాక్‌ల్యాండ్ దీవులు
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (over 150 ms)
+#, machine
+	far	దూరం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Faroe Islands	ఫారో దీవులు
 #. text in the Scheduler window
 #, machine
 	February	ఫిబ్రవరి
@@ -1156,6 +1472,10 @@
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
 	ffmpeg: joins picture and sound	ffmpeg: చిత్రం మరియు ధ్వనిని కలుపుతుంది
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Fiji	ఫిజీ
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -1232,6 +1552,10 @@
 #. adjective: the downloads that are complete
 #, machine
 	Finished	పూర్తయింది
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Finland	ఫిన్లాండ్
 #. text in the Options window
 #, machine
 	First day of the week:	వారంలో మొదటి రోజు:
@@ -1263,6 +1587,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	శుక్ర
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	France	ఫ్రాన్స్
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
@@ -1271,6 +1599,18 @@
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
 	Free, official and checked	ఉచిత, అధికారిక మరియు తనిఖీ చేయబడినవి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Guiana	ఫ్రెంచ్ గయానా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Polynesia	ఫ్రెంచ్ పాలినేషియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Southern Territories	ఫ్రెంచ్ సదరన్ టెరిటరీస్
 #. text in the Scheduler window
 #, machine
 	Friday	శుక్రవారం
@@ -1307,6 +1647,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gabon	గాబన్
 #. text in gallerydlg.rs
 #. in Download a gallery, before gallery-dl is installed
 #, machine
@@ -1325,12 +1669,24 @@
 #. a gallery download's error: the helper program it needs is missing
 #, machine
 	gallery-dl is not installed (Add URL with a gallery's address installs it)	గ్యాలరీ-dl ఇన్‌స్టాల్ చేయబడలేదు (గ్యాలరీ చిరునామాతో URLని జోడించు దీన్ని ఇన్‌స్టాల్ చేస్తుంది)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gambia	గాంబియా
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
 #, machine
 	General	జనరల్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Georgia	జార్జియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Germany	జర్మనీ
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
@@ -1347,6 +1703,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	పీర్‌ల నుండి ఫైల్ జాబితాను పొందుతోంది... {n} సె
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ghana	ఘనా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gibraltar	జిబ్రాల్టర్
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -1355,6 +1719,50 @@
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
 	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive ఈ ఫైల్‌ను ఇప్పుడు ఇవ్వదు: {message} (మీ బ్రౌజర్‌లో Googleకు సైన్ ఇన్ చేయడం తరచుగా సహాయపడుతుంది; లేకపోతే, తర్వాత మళ్లీ ప్రయత్నించండి)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greece	గ్రీస్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greenland	గ్రీన్‌ల్యాండ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Grenada	గ్రెనడా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guadeloupe	గ్వాడెలోప్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guam	గ్వామ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guatemala	గ్వాటెమాలా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guernsey	గ్వెర్న్సీ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea	గినియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea-Bissau	గినియా-బిస్సావు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guyana	గయానా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Haiti	హైతీ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	పూర్తయినప్పుడు మోడెమ్‌ను నిలిపివేయండి
@@ -1362,6 +1770,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	ఉన్నాయి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Heard Island and McDonald Islands	హెర్డ్ ఐలాండ్ మరియు మెక్‌డొనాల్డ్ ఐలాండ్స్
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1400,6 +1812,14 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	హోమ్ పేజీ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Honduras	హోండురాస్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hong Kong	హాంగ్ కాంగ్
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1410,9 +1830,17 @@
 #. checkbox in the Options window
 #, machine
 	https	https
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hungary	హంగేరీ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	నేను Mister Download Managerతో డౌన్‌లోడ్ చేస్తాను: వేగంగా, ఉచితంగా మరియు మీకు ఇప్పటికే తెలిసిన డౌన్‌లోడ్ మేనేజర్ లాగా ఉంటుంది. {link}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iceland	ఐస్‌ల్యాండ్
 #. text in the Options window
 #, machine
 	If a duplicate download link is added:	నకిలీ డౌన్‌లోడ్ లింక్ జోడించబడితే:
@@ -1439,6 +1867,14 @@
 #. a spin box's arrow, for screen readers: one more
 #, machine
 	Increase	పెంచు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	India	భారతదేశం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Indonesia	ఇండోనేషియా
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -1478,6 +1914,26 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	IP చిరునామాలు (ఐచ్ఛికం):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iran	ఇరాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iraq	ఇరాక్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ireland	ఐర్లాండ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Isle of Man	ఐల్ ఆఫ్ మ్యాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Israel	ఇజ్రాయెల్
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1511,6 +1967,10 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, మొదలైన img100.jpg వంటి వరుస ఫైల్ పేర్ల సమూహాన్ని MDM డౌన్‌లోడ్ క్యూకి జోడించడం సాధ్యపడుతుంది.\nఫైల్ పేరు నమూనా కోసం ఆస్టరిస్క్ వైల్డ్‌కార్డ్‌ను ఉపయోగించండి.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Italy	ఇటలీ
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1518,9 +1978,25 @@
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	దాని విడుదల సమాచారం ఊహించిన విధంగా లేదు: {detail}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jamaica	జమైకా
 #. text in the Scheduler window
 #, machine
 	January	జనవరి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Japan	జపాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jersey	జెర్సీ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jordan	జోర్డాన్
 #. text in the Scheduler window
 #, machine
 	July	జూలై
@@ -1530,12 +2006,20 @@
 #. text in the Scheduler window
 #, machine
 	June	జూన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kazakhstan	కజకిస్తాన్
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KBytes/సెకను
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	టొరెంట్‌లు పూర్తయిన తర్వాత వాటిని షేర్ చేస్తూ ఉండండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kenya	కెన్యా
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
@@ -1551,10 +2035,34 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	కీలు...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kiribati	కిరిబాటి
+#. text in a download's Properties window
+#. Properties, where a download's server is: not seen yet (it hasn't run)
+#, machine
+	known once it has run	ఇది రన్ అయిన తర్వాత తెలుస్తుంది
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kosovo	కొసావో
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kuwait	కువైట్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kyrgyzstan	కిర్గిజిస్తాన్
 #. text in langpick.rs
 #. window title (the interface language)
 #, machine
 	Language	భాష
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Laos	లావోస్
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
@@ -1571,16 +2079,40 @@
 #. button: add it now, start downloading later
 #, machine
 	Later	తర్వాత
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Latvia	లాట్వియా
 #. text in the Options window
 #, machine
 	Launch Mister Download Manager on startup	ప్రారంభంలో Mister Download Managerను లాంచ్ చేయి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lebanon	లెబనాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lesotho	లెసోతో
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
 	Letters	అక్షరాలు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liberia	లైబీరియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Libya	లిబియా
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Licenses and credits	లైసెన్స్‌లు మరియు క్రెడిట్‌లు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liechtenstein	లిచెన్‌స్టీన్
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	అన్ని డౌన్‌లోడ్‌లను కలిపి దీనికి పరిమితం చేయండి
@@ -1628,6 +2160,10 @@
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	అడ్రస్‌ల జాబితాలు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lithuania	లిథువేనియా
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
@@ -1665,6 +2201,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	పేజీని వెతుకుతోంది...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Luxembourg	లక్సెంబర్గ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Macau	మకావు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Madagascar	మడగాస్కర్
 #. message or event log entry in the main window
 #, machine
 	Main download queue	ప్రధాన డౌన్‌లోడ్ క్యూ
@@ -1675,6 +2223,26 @@
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	నివేదికను చదవగలిగేలా చేస్తోంది: చిహ్నాలను పొందుతోంది ({total} MBలో {done})…
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malawi	మలావి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malaysia	మలేషియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Maldives	మాల్దీవులు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mali	మాలి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malta	మాల్టా
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	మాన్యువల్ ప్రాక్సీ/SOCKS కాన్ఫిగరేషన్
@@ -1685,12 +2253,28 @@
 #. text in the Scheduler window
 #, machine
 	March	మార్చి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Marshall Islands	మార్షల్ దీవులు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Martinique	మార్టినిక్
 #. checkbox in the Find window
 #, machine
 	Match case	కేసును సరిపోల్చండి
 #. checkbox in the Find window
 #, machine
 	Match whole string only	మొత్తం స్ట్రింగ్‌ను మాత్రమే సరిపోల్చండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritania	మౌరిటానియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritius	మారిషస్
 #. group box title in the Options window
 #, machine
 	Max. connections number	గరిష్ట కనెక్షన్‌ల సంఖ్య
@@ -1713,6 +2297,22 @@
 #. the month (the fifth of the year)
 #, machine
 	May	మే
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mayotte	మాయోట్
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (60 to 150 ms)
+#, machine
+	medium	మధ్యస్థం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mexico	మెక్సికో
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Micronesia	మైక్రోనేషియా
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
 #, machine
@@ -1771,13 +2371,37 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	సో
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Moldova	మోల్డోవా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Monaco	మొనాకో
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Monday	సోమవారం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mongolia	మంగోలియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montenegro	మోంటెనెగ్రో
 #. text in the Options window
 #. a date's order: month first (10/30/2026)
 #, machine
 	Month, day, year	నెల, రోజు, సంవత్సరం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montserrat	మాంట్‌సెరాట్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Morocco	మొరాకో
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
@@ -1817,6 +2441,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ఫైల్‌ను తరలిస్తోంది...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mozambique	మొజాంబిక్
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	ఇతర కనెక్షన్‌ల కంటే చాలా నెమ్మదిగా ఉంది; మళ్లీ కనెక్ట్ అవుతోంది
@@ -1835,6 +2463,10 @@
 #. option (radio button) in the Options window
 #, machine
 	My own way:	నా స్వంత మార్గం:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Myanmar	మయన్మార్
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
@@ -1852,10 +2484,30 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	మీ హోస్ట్‌ల ఫైల్‌లోని పేర్లు మరియు స్థానిక పేర్లు (ఒకే పదాలు, .local, .lan) సిస్టమ్ DNSతో ఉంటాయి. వీడియో పేజీలు మరియు టోరెంట్ ట్రాకర్‌లు ప్రస్తుతానికి సిస్టమ్ DNSని ఉపయోగిస్తాయి.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Namibia	నమీబియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nauru	నౌరు
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (under 60 ms)
+#, machine
+	near	సమీపంలో
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	లాగిన్ అవసరం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nepal	నేపాల్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Netherlands	నెదర్లాండ్స్
 #. text in the Options window
 #, machine
 	Network adapter:	నెట్‌వర్క్ అడాప్టర్:
@@ -1869,6 +2521,10 @@
 #. button: create a new item
 #, machine
 	New	కొత్త
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Caledonia	న్యూ కాలెడోనియా
 #. text in the Options window
 #, machine
 	New exception	కొత్త మినహాయింపు
@@ -1880,6 +2536,26 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	కొత్త నియమం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Zealand	న్యూజిలాండ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nicaragua	నికరాగువా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niger	నైజర్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nigeria	నైజీరియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niue	నియూ
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	లేదు
@@ -1977,6 +2653,26 @@
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ఏదీ లేదు: పీర్‌లు DHT మరియు ఇతర పీర్‌ల నుండి వస్తాయి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norfolk Island	నార్ఫోక్ దీవి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Korea	ఉత్తర కొరియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Macedonia	ఉత్తర మాసిడోనియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Northern Mariana Islands	ఉత్తర మరియానా దీవులు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norway	నార్వే
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	ఇది చదవలేని చెక్‌సమ్ కాదు
@@ -2009,6 +2705,9 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	ఇప్పుడే వద్దా? వాటిని తర్వాత టాస్క్‌లు → పేజీ నుండి వీడియోను డౌన్‌లోడ్ చేయండి నుండి పొందండి.
+#. text in a download's Properties window
+#, machine
+	not one server (peers, or a helper's)	ఒక సర్వర్ కాదు (పీర్‌లు లేదా సహాయకుడిది)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2055,6 +2754,10 @@
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	సరే
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Oman	ఒమన్
 #. text in a download's progress window
 #, machine
 	on download stop/resume	డౌన్‌లోడ్ ఆపివేసినప్పుడు/పునఃప్రారంభించినప్పుడు
@@ -2155,6 +2858,30 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	పేజీ చిరునామా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pakistan	పాకిస్తాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palau	పలావు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palestine	పాలస్తీనా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Panama	పనామా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Papua New Guinea	పాపువా న్యూ గినియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Paraguay	పరాగ్వే
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	పాస్‌వర్డ్
@@ -2204,10 +2931,22 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	ఆవర్తన సమకాలీకరణ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Peru	పెరూ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Philippines	ఫిలిప్పీన్స్
 #. text in a download's progress window
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	భాగాలు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pitcairn	పిట్‌కైర్న్
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
@@ -2220,6 +2959,10 @@
 #. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	PM	PM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Poland	పోలాండ్
 #. label in the Options window
 #, machine
 	Port	పోర్ట్
@@ -2227,6 +2970,10 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	పోర్ట్:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Portugal	పోర్చుగల్
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
@@ -2263,6 +3010,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	ప్రాక్సీ సర్వర్ చిరునామా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Puerto Rico	ప్యూర్టో రికో
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2271,6 +3022,10 @@
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
 	Put them into the video	వాటిని వీడియోలో ఉంచండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Qatar	ఖతార్
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
 #. label before the quality chosen for all of a playlist's videos
@@ -2402,9 +3157,25 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	మళ్లీ ప్రయత్నిస్తోంది: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Romania	రొమేనియా
 #. window title in rssdlg.rs
 #, machine
 	RSS feeds	RSS ఫీడ్‌లు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Russia	రష్యా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Rwanda	రువాండా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Réunion	రీయూనియన్
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2414,9 +3185,53 @@
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
 	Sa	శని
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Barthélemy	సెయింట్ బార్తెలెమీ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Helena, Ascension and Tristan da Cunha	సెయింట్ హెలెనా, అసెన్షన్ మరియు ట్రిస్టాన్ డా కున్హా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Kitts and Nevis	సెయింట్ కిట్స్ మరియు నెవిస్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Lucia	సెయింట్ లూసియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Martin	సెయింట్ మార్టిన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Pierre and Miquelon	సెయింట్ పియరీ మరియు మిక్వెలాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Vincent and the Grenadines	సెయింట్ విన్సెంట్ మరియు గ్రెనడైన్స్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Samoa	సమోవా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	San Marino	శాన్ మారినో
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sao Tome and Principe	సావో టోమ్ మరియు ప్రిన్సిపే
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Saturday	శనివారం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saudi Arabia	సౌదీ అరేబియా
 #. text in a dialog box
 #, machine
 	Save As	ఇలా సేవ్ చేయి
@@ -2503,6 +3318,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	దీన్ని స్నేహితుడికి పంపండి:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Senegal	సెనెగల్
 #. text in a download's progress window
 #. column title: how much went to the peer
 #. how much was sent to other peers
@@ -2511,10 +3330,15 @@
 #. text in the Scheduler window
 #, machine
 	September	సెప్టెంబర్
-#. text in the Options window
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Serbia	సెర్బియా
+#. text in a dialog box; text in the Options window; text in a download's progress window
+#. label before where a download's server is (its country and round trip)
 #, machine
 	Server	సర్వర్
-#. text in the Options window
+#. text in the Options window; text in a download's Properties window
 #, machine
 	Server:	సర్వర్:
 #. text in the Options window
@@ -2545,6 +3369,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Settings...	సెట్టింగ్‌లు...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Seychelles	సీషెల్స్
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -2615,6 +3443,10 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	షట్ డౌన్ చేయి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sierra Leone	సియెర్రా లియోన్
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
@@ -2627,6 +3459,14 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	సైన్ అవుట్ చేయబడింది: మళ్ళీ సైన్ ఇన్ చేయండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Singapore	సింగపూర్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sint Maarten	సింట్ మార్టెన్
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	సైట్ పేరు/డౌన్‌లోడ్ లింక్/పేరెంట్ వెబ్ పేజీ/రిఫరర్
@@ -2666,6 +3506,22 @@
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
 	Sleep	స్లీప్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovakia	స్లోవేకియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovenia	స్లోవేనియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Solomon Islands	సోలమన్ దీవులు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Somalia	సోమాలియా
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
@@ -2692,6 +3548,26 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Source: {source}	మూలం: {source}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Africa	దక్షిణాఫ్రికా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Georgia and the South Sandwich Islands	దక్షిణ జార్జియా మరియు దక్షిణ శాండ్‌విచ్ దీవులు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Korea	దక్షిణ కొరియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Sudan	దక్షిణ సూడాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Spain	స్పెయిన్
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2699,6 +3575,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	స్పీడ్ లిమిటర్ సెట్టింగ్‌లు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sri Lanka	శ్రీలంక
 #. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 #, machine
@@ -2828,15 +3708,51 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language}లో ఉపశీర్షికలను డౌన్‌లోడ్ చేయలేకపోయాము: {site} తిరస్కరించింది (ఎక్కువ అభ్యర్థనలు).
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sudan	సూడాన్
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	ఆదివారం
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Support MDM on GitHub Sponsors	GitHub స్పాన్సర్‌లలో MDMకి మద్దతు ఇవ్వండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Suriname	సురినామ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Svalbard and Jan Mayen	స్వాల్‌బార్డ్ మరియు జాన్ మాయెన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sweden	స్వీడన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Switzerland	స్విట్జర్లాండ్
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	సమకాలీకరణ క్యూ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Syria	సిరియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Taiwan	తైవాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tajikistan	తజికిస్తాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tanzania	టాంజానియా
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2863,6 +3779,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	గురు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Thailand	థాయిలాండ్
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3104,6 +4024,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	సిస్టమ్ DNS
+#. text in whereis.rs
+#. the tooltip of where a download's server is: how the time shown is measured
+#, machine
+	The time is a round trip, measured as this download's own connections opened.	సమయం రౌండ్ ట్రిప్, ఈ డౌన్‌లోడ్ యొక్క స్వంత కనెక్షన్‌లు తెరవబడినట్లుగా కొలవబడుతుంది.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3154,6 +4078,10 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	ఈ వర్గం లేదా క్యూలో ఇంకా డౌన్‌లోడ్‌లు లేవు.
+#. text in whereis.rs
+#. where a download's server is: on this computer or the local network (no country)
+#, machine
+	this computer or the local network	ఈ కంప్యూటర్ లేదా స్థానిక నెట్‌వర్క్
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
@@ -3214,12 +4142,24 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	ఈ వీడియోకు మీరు సైన్ ఇన్ చేయాలి. మీ సైన్-ఇన్‌ను పాస్ చేసే మీ బ్రౌజర్‌లో దానిపై ఉన్న డౌన్‌లోడ్ వీడియో బటన్‌ను ఉపయోగించండి.
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it (the proxy's place not known)
+#, machine
+	through a proxy	ప్రాక్సీ ద్వారా
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it: {country} is the proxy's country
+#, machine
+	through a proxy in {country}	{country}లోని ప్రాక్సీ ద్వారా
 #. text in the Scheduler window
 #, machine
 	Thursday	గురువారం
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	మిగిలిన సమయం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Timor-Leste	తూర్పు తైమూర్
 #. text in the Batch download window
 #, machine
 	To:	దీనికి:
@@ -3227,6 +4167,18 @@
 #. link under the calendar: {date} = today's date
 #, machine
 	Today: {date}	ఈరోజు: {date}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Togo	టోగో
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tokelau	టోకెలావ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tonga	టోంగా
 #. text in errors.rs
 #, machine
 	too many redirects	చాలా ఎక్కువ దారి మళ్లింపులు
@@ -3273,6 +4225,10 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	బదిలీ రేటు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Trinidad and Tobago	ట్రినిడాడ్ మరియు టొబాగో
 #. button in helpers.rs
 #, machine
 	Try again	మళ్లీ ప్రయత్నించండి
@@ -3283,6 +4239,18 @@
 #. text in the Scheduler window
 #, machine
 	Tuesday	మంగళవారం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tunisia	ట్యునీషియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turkmenistan	తుర్క్‌మెనిస్తాన్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turks and Caicos Islands	టర్క్స్ అండ్ కైకోస్ దీవులు
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 #, machine
@@ -3301,6 +4269,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ఆన్ చేయండి
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tuvalu	టువాలు
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	రెండు ఉచిత సహాయకులు దీన్ని పని చేస్తాయి. వాటిని ఇప్పుడే పొందండి, మరియు మీరు ఒక వీడియోను కనుగొన్నప్పుడు దాన్ని సేవ్ చేయడం ఒక క్లిక్ దూరంలో ఉంటుంది.
@@ -3348,6 +4320,18 @@
 #. text in a download's Properties window
 #, machine
 	Type:	రకం:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Türkiye	టర్కీ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uganda	ఉగాండా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ukraine	ఉక్రెయిన్
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
@@ -3356,11 +4340,29 @@
 #. adjective: the downloads that are not complete yet
 #, machine
 	Unfinished	అసంపూర్ణం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Arab Emirates	యునైటెడ్ అరబ్ ఎమిరేట్స్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Kingdom	యునైటెడ్ కింగ్‌డమ్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States	యునైటెడ్ స్టేట్స్
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States Minor Outlying Islands	యునైటెడ్ స్టేట్స్ మైనర్ ఔట్‌లయింగ్ దీవులు
 #. text in a download's Properties window
 #, machine
 	Unknown	తెలియదు
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known
+#. where a download's server is: not known (no address seen)
+#. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	తెలియదు
 #. button in the Options window
@@ -3382,6 +4384,10 @@
 #. text in a dialog box
 #, machine
 	URL	URL
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uruguay	ఉరుగ్వే
 #. text in the Options window
 #, machine
 	Use advanced browser integration	అధునాతన బ్రౌజర్ అనుసంధానాన్ని ఉపయోగించండి
@@ -3454,13 +4460,29 @@
 #. label in the Options window
 #, machine
 	UserName	వినియోగదారు పేరు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uzbekistan	ఉజ్బెకిస్తాన్
 #. text in a download's progress window
 #, machine
 	Value	విలువ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vanuatu	వనౌటు
 #. text in the Link grabber window
 #. Link grabber: the package of links that belong to no other
 #, machine
 	Various files	వివిధ ఫైల్‌లు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vatican City	వాటికన్ సిటీ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Venezuela	వెనిజులా
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3495,6 +4517,18 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	వీడియోలు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vietnam	వియత్నాం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (British)	వర్జిన్ దీవులు (బ్రిటిష్)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (U.S.)	వర్జిన్ దీవులు (U.S.)
 #. text in the Options window
 #, machine
 	Virus checking settings	వైరస్ తనిఖీ సెట్టింగ్‌లు
@@ -3516,6 +4550,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	వేచి ఉంది: డౌన్‌లోడ్ పరిమితికి చేరుకుంది (షెడ్యూలర్)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Wallis and Futuna	వాలిస్ అండ్ ఫుటునా
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3527,6 +4565,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	బుధవారం
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Western Sahara	పశ్చిమ సహారా
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
@@ -3577,6 +4619,10 @@
 #. a date's order: year first (2026-10-30)
 #, machine
 	Year, month, day	సంవత్సరం, నెల, రోజు
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Yemen	యెమెన్
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	అవును
@@ -3620,6 +4666,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: వీడియోను కనుగొంటుంది
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zambia	జాంబియా
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zimbabwe	జింబాబ్వే
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -3649,6 +4703,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	{browser}: the extension {version} connected	{browser}: పొడిగింపు {version} కనెక్ట్ చేయబడింది
+#. text in whereis.rs
+#. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
+#, machine
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} ఈ ఫైల్‌ను అందిస్తుంది: స్థలం దాని సర్వర్‌కు చెందినది, తరచుగా మీకు దగ్గరగా ఉంటుంది, సైట్ యజమానికి కాదు.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4391,6 +5449,10 @@ menu	Direct3D didn't start here: OpenGL draws	Direct3D ఇక్కడ ప్ర
 #, machine
 menu	Download &video from a page...	పేజీ నుండి &వీడియోను డౌన్‌లోడ్ చేయండి...
 #. menu command in the main window
+#. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
+#, machine
+menu	Download in order	క్రమంగా డౌన్‌లోడ్ చేయి
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
 #, machine
 menu	Draw with	దీనితో గీయండి
@@ -4412,6 +5474,10 @@ menu	Find (Ctrl-F)	కనుగొనండి (Ctrl-F)
 #. menu command in the main window
 #, machine
 menu	Find Next (F3)	తదుపరి కనుగొనండి (F3)
+#. menu command in the main window
+#. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
+#, machine
+menu	First and last pieces first	మొదటి మరియు చివరి భాగాలు ముందు
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine

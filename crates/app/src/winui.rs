@@ -215,6 +215,52 @@ pub fn galley(p: &Painter, font: FontId, s: &str, color: Color32) -> std::sync::
     p.layout_job(job)
 }
 
+/// The banner atop a first-start window (the browser extension's offer, the video helpers):
+/// MDM's logo at the start side, a bold headline, and a muted subline that wraps. 84 px tall, and
+/// taller by what a long translation's extra lines need: that extra is returned, for the window
+/// to add to its height and to move what is below the banner down by (it is known from the frame
+/// before: [`crate::dialogs::grow_extra`] under `key`).
+#[allow(clippy::too_many_arguments)]
+pub fn banner(
+    ui: &Ui,
+    p: &Painter,
+    o: Pos2,
+    w: f32,
+    key: &str,
+    headline: &str,
+    subline: &str,
+) -> f32 {
+    const PLANNED: f32 = 84.0;
+    let extra = crate::dialogs::grow_extra(ui.ctx(), key);
+    let h = PLANNED + extra;
+    // `r` gives the rect where it is on screen (mirrored in RTL): the logo at the start side.
+    p.rect_filled(r(o, 0.0, 0.0, w, h), 0.0, FIELD());
+    fill_l(p, o.x, o.y + h, o.x + w - 1.0, o.y + h, FIELD_EDGE());
+    egui::Image::new(egui::include_image!("../assets/icons/app/mdm-48.png"))
+        .paint_at(ui, r(o, 18.0, 18.0, 48.0, 48.0));
+    // The headline on one line: cut with "..." at the far edge (a long translation), whole on
+    // hover.
+    let bold = FontId::new(16.0, FontFamily::Name("tahoma-bold".into()));
+    let shown = ellipsize(p, &bold, headline, w - 18.0 - 80.0);
+    let drawn = text_font(p, bold, o.x + 80.0, o.y + 36.0, &shown, TEXT());
+    if shown != headline {
+        full_on_hover(ui, drawn, (key, "headline"), headline);
+    }
+    let lines = paragraph(
+        p,
+        o.x + 80.0,
+        o.y + 57.0,
+        subline,
+        MUTED(),
+        o.x + w - 18.0,
+        14.0,
+    );
+    // As planned, two lines: the second one's baseline at 71, then 13 px of descent and margin.
+    let need = 57.0 + 14.0 * (lines.max(2) as f32 - 1.0) + 13.0;
+    crate::dialogs::grow_px(ui.ctx(), key, need - PLANNED);
+    extra
+}
+
 /// Draw `s` with its pen (its start) at English `x` and its baseline (last cap row) at
 /// `baseline`. Returns the text's advance rect on screen.
 pub fn text(p: &Painter, x: f32, baseline: f32, s: &str, color: Color32) -> Rect {
@@ -4782,6 +4828,29 @@ pub mod caption {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// `r` already gives the screen rect (mirrored in RTL); `rect` around it mirrors it back,
+    /// so the thing stays at its English place in Arabic (#170: the browser offer window's logo
+    /// over its subline). No window does that.
+    #[test]
+    fn no_rect_is_mirrored_twice() {
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let twice = ["rect(r(", "rect(winui::r("];
+        let mut found = Vec::new();
+        for entry in std::fs::read_dir(dir).unwrap() {
+            let path = entry.unwrap().path();
+            let Ok(src) = std::fs::read_to_string(&path) else {
+                continue;
+            };
+            for (n, line) in src.lines().enumerate() {
+                let code = line.split("//").next().unwrap_or_default();
+                if twice.iter().any(|t| code.contains(t)) && !code.contains("\"rect(") {
+                    found.push(format!("{}:{}", path.display(), n + 1));
+                }
+            }
+        }
+        assert!(found.is_empty(), "rect(r(...)) mirrors twice: {found:?}");
+    }
 
     /// `f` with a painter whose Tahoma is the interface font (as on macOS and Linux).
     fn with_painter(f: impl FnOnce(&Painter)) {

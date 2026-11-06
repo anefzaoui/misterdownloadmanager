@@ -146,6 +146,10 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Un ID di configurazione NextDNS è composto da sei caratteri tra lettere e cifre (0-9, a-f).
+#. text in whereis.rs
+#. the tooltip of where a download's server is, when a proxy carries the download
+#, machine
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Un proxy gestisce questo download: il luogo e l'ora sono quelli del proxy, non del server.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	È stato salvato un rapporto. Inviarlo agli sviluppatori su GitHub li aiuta a risolvere il problema; prima puoi leggere qui sotto tutto ciò che contiene. Non viene inviato nulla in automatico: Invia apre nel browser il modulo di segnalazione già compilato, così puoi controllarlo e inviarlo.
@@ -163,6 +167,10 @@
 	a volume of it is missing	ne manca un volume
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	About Mister Download Manager	Informazioni su Mister Download Manager
+#. text in whereis.rs
+#. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
+#, machine
+	about {ms} ms ({reach})	circa {ms} ms ({reach})
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 	Accept incoming connections	Accetta connessioni in ingresso
@@ -241,6 +249,10 @@
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 	Address:	Indirizzo:
+#. text in whereis.rs
+#. the tooltip of where a download's server is: its IP address
+#, machine
+	Address: {address}	Indirizzo: {address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 	Addresses left to the browser	Indirizzi lasciati al browser
@@ -250,6 +262,22 @@
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 	Advanced browser integration is on	L'integrazione avanzata del browser è attiva
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Afghanistan	Afghanistan
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aland Islands	Isole Aland
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Albania	Albania
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Algeria	Algeria
 #. item in the Categories tree in the main window
 	All Downloads	Tutti i download
 #. message or event log entry in the main window
@@ -289,6 +317,22 @@
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 	AM	AM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	American Samoa	Samoa Americane
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Andorra	Andorra
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Angola	Angola
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Anguilla	Anguilla
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
@@ -296,6 +340,14 @@
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 	Answered in {ms} ms: {ip}	Risposta in {ms} ms: {ip}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antarctica	Antartide
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antigua and Barbuda	Antigua e Barbuda
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
 	Any (the system chooses)	Qualsiasi (sceglie il sistema)
@@ -315,8 +367,20 @@
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Vuoi davvero eliminare "{name}" dall'elenco dei download di Mister Download Manager?
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Argentina	Argentina
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Armenia	Armenia
 #. text in rssdlg.rs
 	Articles	Articoli
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aruba	Aruba
 #. option (radio button) in the Options window
 	As the system's region writes them	Come nelle impostazioni internazionali del sistema
 #. text in the Options window
@@ -343,23 +407,103 @@
 	Audio only, original {type}	Solo audio, {type} originale
 #. text in the Scheduler window
 	August	agosto
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Australia	Australia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Austria	Austria
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Automatically put in "{category}" category the following file types:	Inserisci automaticamente nella categoria "{category}" i seguenti tipi di file:
 #. text in the Options window
 	Automatically start downloading the following file types:	Avvia automaticamente il download dei seguenti tipi di file:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Azerbaijan	Azerbaigian
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahamas	Bahamas
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahrain	Bahrein
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bangladesh	Bangladesh
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Barbados	Barbados
 #. window title in the Batch download window
 	Batch download	Download in batch
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belarus	Bielorussia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belgium	Belgio
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belize	Belize
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Benin	Benin
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bermuda	Bermuda
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
 	Best quality	Qualità migliore
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bhutan	Bhutan
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 	Block the addresses in this list (P2P or eMule format):	Blocca gli indirizzi di questo elenco (formato P2P o eMule):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bolivia	Bolivia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bonaire, Sint Eustatius and Saba	Bonaire, Sint Eustatius e Saba
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bosnia and Herzegovina	Bosnia ed Erzegovina
 #. text in helpers.rs
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Entrambi sono open source. MDM li scarica dalle release ufficiali con il proprio downloader e verifica la firma di ogni file prima di eseguirlo. Circa 100 MB, una sola volta.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Botswana	Botswana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bouvet Island	Isola Bouvet
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brazil	Brasile
 #. text in the Options window
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Ripristinare {names} come in origine (nomi, tipi di file e cartelle)? Le tue categorie, Generale e Torrent restano invariate. I download già spostati in Generale restano lì.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	British Indian Ocean Territory	Territorio britannico dell'Oceano Indiano
 #. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 	Browse	Sfoglia
@@ -370,6 +514,22 @@
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	L'integrazione con i browser non è configurata su questo computer, quindi nessun browser può ancora raggiungere Mister Download Manager.
 #. page title in the Options window
 	Browser/System Integration	Integrazione browser/sistema
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brunei	Brunei
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bulgaria	Bulgaria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burkina Faso	Burkina Faso
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burundi	Burundi
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 	Busy, try later	Occupato, riprova più tardi
@@ -377,6 +537,22 @@
 	by batch download	tramite download in batch
 #. message or event log entry in the main window
 	by Link grabber	tramite Link grabber
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cabo Verde	Cabo Verde
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cambodia	Cambogia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cameroon	Camerun
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Canada	Canada
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 	Cancel	Annulla
@@ -409,9 +585,21 @@
 	Category folder	Cartella della categoria
 #. text in categories.rs
 	Category properties	Proprietà della categoria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cayman Islands	Isole Cayman
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Central African Republic	Repubblica Centrafricana
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 	Certificate name:	Nome certificato:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chad	Ciad
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Change folder for "{category}" category on last selected	Imposta come cartella della categoria "{category}" l'ultima selezionata
@@ -457,6 +645,14 @@
 #. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 	Checking...	Verifica in corso...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chile	Cile
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	China	Cina
 #. text in langpick.rs
 	Choose a language	Scegli una lingua
 #. text in langpick.rs
@@ -464,6 +660,10 @@
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 	Choose {name}	Scegli {name}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Christmas Island	Isola Christmas
 #. button in the download list
 #. verb: clears this filter
 	Clear	Cancella
@@ -481,6 +681,18 @@
 	Close	Chiudi
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Close a menu or dialog	Chiudi un menu o una finestra di dialogo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cocos (Keeling) Islands	Isole Cocos (Keeling)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Colombia	Colombia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Comoros	Comore
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -495,6 +707,10 @@
 	Confirm before deleting downloads	Chiedi conferma prima di eliminare i download
 #. window title in a dialog box
 	Confirm deletion of downloads	Conferma eliminazione dei download
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Congo	Congo
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 	Connected	Connesso
@@ -510,6 +726,10 @@
 	Connections and Limits	Connessioni e limiti
 #. text in the Options window
 	Connections:	Connessioni:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cook Islands	Isole Cook
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Copied to the clipboard.	Copiato negli Appunti.
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -520,6 +740,10 @@
 #. button in crashui.rs
 #. crash report window button: copy the report's text
 	Copy report	Copia rapporto
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Costa Rica	Costa Rica
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
@@ -530,6 +754,18 @@
 	Couldn't extract {name}: {why}	Impossibile estrarre {name}: {why}
 #. window title in a dialog box
 	Create folder	Crea cartella
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Croatia	Croazia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cuba	Cuba
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Curaçao	Curaçao
 #. text in the Options window
 	Customize "Download progress" dialog	Personalizza la finestra "Avanzamento download"
 #. text in the Options window
@@ -538,6 +774,18 @@
 	Customize MDM Download panels in browsers	Personalizza i pannelli di download di MDM nei browser
 #. text in the Options window
 	Customize MDM menu items in context menu of browsers	Personalizza le voci di MDM nel menu contestuale dei browser
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cyprus	Cipro
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Czech Republic	Repubblica Ceca
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Côte d'Ivoire	Costa d'Avorio
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 	Daily	Ogni giorno
@@ -587,6 +835,10 @@
 	Delete the selected downloads (asks first)	Elimina i download selezionati (con conferma)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Delete the selected downloads and their files (asks first)	Elimina i download selezionati e i relativi file (con conferma)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Denmark	Danimarca
 #. text in a dialog box
 	Description	Descrizione
 #. checkbox in the Find window
@@ -601,6 +853,10 @@
 	disk error: {error}	errore del disco: {error}
 #. text in the Scheduler window
 	displayed in the list of queues	visualizzata nell'elenco delle code
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Djibouti	Gibuti
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 	DNS over HTTPS	DNS su HTTPS
@@ -619,6 +875,14 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: documents (pdf, doc…)
 	Documents	Documenti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominica	Dominica
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominican Republic	Repubblica Dominicana
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 	Don't ask again	Non chiedere più
@@ -649,6 +913,10 @@
 	Download failed	Download non riuscito
 #. window title in a dialog box
 	Download File Info	Informazioni sul file da scaricare
+#. text in the Add torrent window
+#. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
+#, machine
+	Download in order	Scarica in ordine
 #. button in a dialog box
 	Download Later	Scarica più tardi
 #. window title in a dialog box
@@ -725,6 +993,10 @@
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 	Downloads stopped and will resume automatically at {time}.	I download sono stati interrotti e riprenderanno automaticamente alle {time}.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	DR Congo	RD del Congo
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 	Drag .torrent files or lists of addresses here	Trascina qui file .torrent o elenchi di indirizzi
@@ -744,6 +1016,10 @@
 #. text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 	Each file's category folder	Cartella della categoria di ogni file
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ecuador	Ecuador
 #. button in the Options window
 #. verb: edit the item
 	Edit	Modifica
@@ -758,6 +1034,14 @@
 #. verb: edit the item
 #. the trailing ... means it opens a window: keep it
 	Edit...	Modifica...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Egypt	Egitto
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	El Salvador	El Salvador
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Email	E-mail
 #. text in gallerydlg.rs
@@ -783,6 +1067,14 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the episode filter can't be read
 	Episodes: like 1x2;1x5-8;2x1- (season x episode)	Episodi: ad esempio 1x2;1x5-8;2x1- (stagione x episodio)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Equatorial Guinea	Guinea Equatoriale
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eritrea	Eritrea
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -792,6 +1084,18 @@
 #. a download's status: it failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 	Error: {error}	Errore: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Estonia	Estonia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eswatini	Eswatini
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ethiopia	Etiopia
 #. text in the Options window
 	Event	Evento
 #. text in the Options window
@@ -838,6 +1142,18 @@
 #. a download's status: its archive is being extracted (#37)
 #. the trailing ... means it is still going on: keep it
 	Extracting...	Estrazione in corso...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Falkland Islands	Isole Falkland
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (over 150 ms)
+#, machine
+	far	lontano
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Faroe Islands	Isole Fær Øer
 #. text in the Scheduler window
 	February	febbraio
 #. text in rssdlg.rs
@@ -855,6 +1171,10 @@
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 	ffmpeg: joins picture and sound	ffmpeg: unisce video e audio
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Fiji	Figi
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 	File	File
@@ -909,6 +1229,10 @@
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are complete
 	Finished	Completati
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Finland	Finlandia
 #. text in the Options window
 	First day of the week:	Primo giorno della settimana:
 #. text in the Batch download window
@@ -931,12 +1255,28 @@
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 	Fr	Ve
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	France	Francia
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 	free account: links need premium	account gratuito: i collegamenti richiedono un account premium
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 	Free, official and checked	Gratuiti, ufficiali e verificati
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Guiana	Guyana francese
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Polynesia	Polinesia francese
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Southern Territories	Territori francesi del sud
 #. text in the Scheduler window
 	Friday	venerdì
 #. message or event log entry in the main window
@@ -962,6 +1302,10 @@
 	From:	Da:
 #. checkbox in the Options window
 	ftp	ftp
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gabon	Gabon
 #. text in gallerydlg.rs
 #. in Download a gallery, before gallery-dl is installed
 	Galleries use gallery-dl (about 23 MB, checked against its signature).	Le gallerie usano gallery-dl (circa 23 MB, verificato con la sua firma).
@@ -975,11 +1319,23 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl non è installato (lo installa Aggiungi URL con l'indirizzo di una galleria)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gambia	Gambia
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
 	General	Generale
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Georgia	Georgia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Germany	Germania
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 	Get 7-Zip	Scarica 7-Zip
@@ -992,17 +1348,73 @@
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
 	Getting the file list from peers...  {n} s	Recupero dell'elenco dei file dai peer...  {n} s
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ghana	Ghana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gibraltar	Gibilterra
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 	Goes on after the download finishes	Continua dopo la fine del download
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive non fornisce questo file al momento: {message} (spesso aiuta accedere a Google nel browser; altrimenti riprova più tardi)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greece	Grecia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greenland	Groenlandia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Grenada	Grenada
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guadeloupe	Guadalupa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guam	Guam
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guatemala	Guatemala
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guernsey	Guernsey
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea	Guinea
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea-Bissau	Guinea-Bissau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guyana	Guyana
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Haiti	Haiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Hang up modem when done	Disconnetti il modem al termine
 #. text in a download's progress window
 #. legend: pieces downloaded
 	Have	Scaricate
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Heard Island and McDonald Islands	Isole Heard e McDonald
 #. button in the Options window
 #. noun: button that opens the help
 	Help	Guida
@@ -1031,6 +1443,14 @@
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Tieni premuto Alt mentre fai clic su un collegamento per farlo scaricare al browser invece che a Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Home page	Home page
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Honduras	Honduras
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hong Kong	Hong Kong
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 	How to fix it	Come risolvere
@@ -1038,8 +1458,16 @@
 	http	http
 #. checkbox in the Options window
 	https	https
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hungary	Ungheria
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Scarico con Mister Download Manager: è veloce, gratuito e somiglia al download manager che conosci già. {link}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iceland	Islanda
 #. text in the Options window
 	If a duplicate download link is added:	Se viene aggiunto un collegamento di download duplicato:
 #. text in the Options window
@@ -1058,6 +1486,14 @@
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 	Increase	Aumenta
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	India	India
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Indonesia	Indonesia
 #. text in a download's progress window
 #. column title: what the connection is doing
 	Info	Info
@@ -1088,6 +1524,26 @@
 #. text in the Options window
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 	IP addresses (optional):	Indirizzi IP (facoltativo):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iran	Iran
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iraq	Iraq
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ireland	Irlanda
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Isle of Man	Isola di Man
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Israel	Israele
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	it holds too many files or folders	contiene troppi file o cartelle
@@ -1113,23 +1569,51 @@
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Puoi aggiungere alla coda di download di MDM un gruppo di file con nomi in sequenza,\ncome img001.jpg, img002.jpg, ..., img100.jpg. Usa l'asterisco come carattere jolly nel modello del nome file.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Italy	Italia
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 	its files could not be written: {error}	impossibile scrivere i suoi file: {error}
 #. text in errors.rs
 	its release information is not as expected: {detail}	le informazioni sulla release non sono quelle previste: {detail}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jamaica	Giamaica
 #. text in the Scheduler window
 	January	gennaio
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Japan	Giappone
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jersey	Jersey
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jordan	Giordania
 #. text in the Scheduler window
 	July	luglio
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Jump to the download whose name starts with it	Passa al download il cui nome inizia così
 #. text in the Scheduler window
 	June	giugno
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kazakhstan	Kazakistan
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 	KBytes/sec	KB/sec
 #. checkbox in the Add torrent window
 	Keep sharing torrents after they finish	Continua a condividere i torrent dopo il completamento
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kenya	Kenya
 #. text in the Add torrent window
 #. Add trackers: under the box
 	Kept with the torrent, after the trackers it has.	Vengono salvati con il torrent, dopo i tracker che ha già.
@@ -1141,9 +1625,33 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 	Keys...	Tasti...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kiribati	Kiribati
+#. text in a download's Properties window
+#. Properties, where a download's server is: not seen yet (it hasn't run)
+#, machine
+	known once it has run	noto una volta eseguito
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kosovo	Kosovo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kuwait	Kuwait
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kyrgyzstan	Kirghizistan
 #. text in langpick.rs
 #. window title (the interface language)
 	Language	Lingua
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Laos	Laos
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 	larger than a feed can be	troppo grande per essere un feed
@@ -1156,13 +1664,37 @@
 #. button: not now (download the update later)
 #. button: add it now, start downloading later
 	Later	Più tardi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Latvia	Lettonia
 #. text in the Options window
 	Launch Mister Download Manager on startup	Avvia Mister Download Manager all'avvio del sistema
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lebanon	Libano
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lesotho	Lesotho
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 	Letters	Lettere
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liberia	Liberia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Libya	Libia
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Licenses and credits	Licenze e riconoscimenti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liechtenstein	Liechtenstein
 #. checkbox in a dialog box
 	Limit all downloads together to	Limita il totale di tutti i download a
 #. text in a download's progress window
@@ -1199,6 +1731,10 @@
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 	Lists of addresses	Elenchi di indirizzi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lithuania	Lituania
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 	Load more	Carica altro
@@ -1227,6 +1763,18 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 	Looking the page up...	Analisi della pagina...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Luxembourg	Lussemburgo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Macau	Macao
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Madagascar	Madagascar
 #. message or event log entry in the main window
 	Main download queue	Coda di download principale
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
@@ -1234,6 +1782,26 @@
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	Preparazione del rapporto: download dei simboli ({done} di {total} MB)…
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malawi	Malawi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malaysia	Malesia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Maldives	Maldive
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mali	Mali
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malta	Malta
 #. text in the Options window
 	Manual proxy/socks configuration	Configurazione manuale proxy/socks
 #. checkbox in the Add torrent window
@@ -1241,10 +1809,26 @@
 	Map the port on the router (UPnP)	Apri la porta sul router (UPnP)
 #. text in the Scheduler window
 	March	marzo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Marshall Islands	Isole Marshall
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Martinique	Martinica
 #. checkbox in the Find window
 	Match case	Maiuscole/minuscole
 #. checkbox in the Find window
 	Match whole string only	Solo stringa intera
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritania	Mauritania
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritius	Mauritius
 #. group box title in the Options window
 	Max. connections number	Numero massimo di connessioni
 #. text in standard windows
@@ -1261,6 +1845,22 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 	May	maggio
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mayotte	Mayotte
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (60 to 150 ms)
+#, machine
+	medium	medio
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mexico	Messico
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Micronesia	Micronesia
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
 	Minimize	Riduci a icona
@@ -1304,11 +1904,35 @@
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	Lu
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Moldova	Moldavia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Monaco	Monaco
 #. text in the Options window; text in the Scheduler window
 	Monday	lunedì
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mongolia	Mongolia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montenegro	Montenegro
 #. text in the Options window
 #. a date's order: month first (10/30/2026)
 	Month, day, year	Mese, giorno, anno
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montserrat	Montserrat
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Morocco	Marocco
 #. button in a download's Properties window
 #. verb: move the file to another folder
 	Move	Sposta
@@ -1336,6 +1960,10 @@
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 	Moving the file...	Spostamento del file...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mozambique	Mozambico
 #. text in errors.rs
 	much slower than the other connections; reconnecting	molto più lenta delle altre connessioni; nuova connessione in corso
 #. text in the download list (sizes, speeds, status)
@@ -1349,6 +1977,10 @@
 	Must not contain:	Non deve contenere:
 #. option (radio button) in the Options window
 	My own way:	Personalizzato:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Myanmar	Myanmar
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 	N.	N.
@@ -1362,9 +1994,29 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	I nomi presenti nel file hosts e i nomi locali (parole singole, .local, .lan) usano il DNS di sistema. Per ora le pagine video e i tracker torrent usano il DNS di sistema.
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Namibia	Namibia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nauru	Nauru
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (under 60 ms)
+#, machine
+	near	vicino
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 	Needs a login	Richiede un accesso
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nepal	Nepal
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Netherlands	Paesi Bassi
 #. text in the Options window
 	Network adapter:	Scheda di rete:
 #. text in errors.rs
@@ -1374,6 +2026,10 @@
 #. button in the Options window
 #. button: create a new item
 	New	Nuovo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Caledonia	Nuova Caledonia
 #. text in the Options window
 	New exception	Nuova eccezione
 #. text in the Options window
@@ -1382,6 +2038,26 @@
 #. RSS feeds window: the name a new download rule starts with
 #. RSS feeds window, Download rules: make a new rule
 	New rule	Nuova regola
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Zealand	Nuova Zelanda
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nicaragua	Nicaragua
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niger	Niger
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nigeria	Nigeria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niue	Niue
 #. button in a dialog box; text in a download's progress window
 	No	No
 #. text in a dialog box
@@ -1452,6 +2128,26 @@
 	None ticked: every feed.	Nessuno selezionato: tutti i feed.
 #. text in a download's progress window
 	None: peers come from the DHT and other peers	Nessuno: i peer arrivano dalla DHT e da altri peer
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norfolk Island	Isola Norfolk
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Korea	Corea del Nord
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Macedonia	Macedonia del Nord
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Northern Mariana Islands	Isole Marianne Settentrionali
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norway	Norvegia
 #. text in the Checksum window
 	Not a checksum this can read	Formato di checksum non riconosciuto
 #. text in rssdlg.rs
@@ -1475,6 +2171,9 @@
 	Not now	Non ora
 #. text in helpers.rs
 	Not now? Get them later from Tasks → Download video from a page.	Non ora? Puoi scaricarli più tardi da Attività → Scarica video da una pagina.
+#. text in a download's Properties window
+#, machine
+	not one server (peers, or a helper's)	non un server (peer o di un helper)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 	not supported by this service	non supportato da questo servizio
@@ -1507,6 +2206,10 @@
 	Offline ({status})	Offline ({status})
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 	OK	OK
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Oman	Oman
 #. text in a download's progress window
 	on download stop/resume	all'interruzione/ripresa del download
 #. text in the Scheduler window; option (radio button) in the Scheduler window
@@ -1579,6 +2282,30 @@
 	Package	Pacchetto
 #. text in gallerydlg.rs; text in the Download video window
 	Page address	Indirizzo della pagina
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pakistan	Pakistan
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palau	Palau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palestine	Palestina
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Panama	Panama
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Papua New Guinea	Papua Nuova Guinea
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Paraguay	Paraguay
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 	Password	Password
 #. text in the Link grabber window; text in the Options window
@@ -1615,9 +2342,21 @@
 	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Sono stati trovati dei peer, ma nessuno ha ancora risposto. Un firewall o una VPN potrebbe bloccare le connessioni.
 #. option (radio button) in the Scheduler window
 	Periodic synchronization	Sincronizzazione periodica
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Peru	Perù
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Philippines	Filippine
 #. text in a download's progress window
 #. tab title: the parts the torrent is made of
 	Pieces	Parti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pitcairn	Pitcairn
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 	plain DNS	DNS normale
@@ -1627,11 +2366,19 @@
 #. text in regional.rs; text in the Scheduler window
 #. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
 	PM	PM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Poland	Polonia
 #. label in the Options window
 	Port	Porta
 #. text in the Add torrent window
 #. Torrent settings: the port to listen on (empty: any)
 	Port:	Porta:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Portugal	Portogallo
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 	premium	premium
@@ -1658,12 +2405,20 @@
 	Proxy / socks configuration	Configurazione proxy / socks
 #. label in the Options window
 	Proxy server address	Indirizzo del server proxy
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Puerto Rico	Porto Rico
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	Put a * in the address where the numbers or letters go	Inserisci un * nell'indirizzo al posto dei numeri o delle lettere
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 	Put them into the video	Incorporali nel video
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Qatar	Qatar
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
 #. label before the quality chosen for all of a playlist's videos
@@ -1762,8 +2517,24 @@
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
 	Retrying: {error}	Nuovo tentativo: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Romania	Romania
 #. window title in rssdlg.rs
 	RSS feeds	Feed RSS
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Russia	Russia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Rwanda	Ruanda
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Réunion	Riunione
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -1771,8 +2542,52 @@
 #. text in the Scheduler window
 #. Saturday, as short as a calendar's column head (two letters in English)
 	Sa	Sa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Barthélemy	Saint Barthélemy
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Helena, Ascension and Tristan da Cunha	Sant'Elena, Ascensione e Tristan da Cunha
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Kitts and Nevis	Saint Kitts e Nevis
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Lucia	Santa Lucia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Martin	Saint Martin
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Pierre and Miquelon	Saint-Pierre e Miquelon
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Vincent and the Grenadines	Saint Vincent e Grenadine
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Samoa	Samoa
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	San Marino	San Marino
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sao Tome and Principe	São Tomé e Príncipe
 #. text in the Options window; text in the Scheduler window
 	Saturday	sabato
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saudi Arabia	Arabia Saudita
 #. text in a dialog box
 	Save As	Salva con nome
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
@@ -1835,15 +2650,24 @@
 	Send on GitHub	Invia su GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Send this to a friend:	Invia questo messaggio a un amico:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Senegal	Senegal
 #. text in a download's progress window
 #. column title: how much went to the peer
 #. how much was sent to other peers
 	Sent	Inviato
 #. text in the Scheduler window
 	September	settembre
-#. text in the Options window
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Serbia	Serbia
+#. text in a dialog box; text in the Options window; text in a download's progress window
+#. label before where a download's server is (its country and round trip)
 	Server	Server
-#. text in the Options window
+#. text in the Options window; text in a download's Properties window
 	Server:	Server:
 #. text in the Options window
 #. Options → DNS settings: label before the DNS servers' addresses, as IP addresses
@@ -1866,6 +2690,10 @@
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
 	Settings...	Impostazioni...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Seychelles	Seychelles
 #. text in a download's progress window
 #. sent divided by received
 	Share ratio	Rapporto di condivisione
@@ -1916,6 +2744,10 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 	Shut down	Spegni
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sierra Leone	Sierra Leone
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	Accedi nel browser
@@ -1925,6 +2757,14 @@
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 	signed out: sign in again	disconnesso: accedi di nuovo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Singapore	Singapore
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sint Maarten	Sint Maarten
 #. checkbox in the Find window
 	Site name/Download link/Parent web page/Referer	Nome sito/Collegamento di download/Pagina web di origine/Referer
 #. text in the Options window
@@ -1953,6 +2793,22 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 	Sleep	Sospendi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovakia	Slovacchia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovenia	Slovenia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Solomon Islands	Isole Salomone
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Somalia	Somalia
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 	Some	Parziali
@@ -1972,11 +2828,35 @@
 #. Link grabber: {source} is where the links came from ("Links from the browser", a file's name, "Pasted")
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 	Source: {source}	Origine: {source}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Africa	Sudafrica
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Georgia and the South Sandwich Islands	Georgia del Sud e Isole Sandwich Australi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Korea	Corea del Sud
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Sudan	Sud Sudan
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Spain	Spagna
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 	Speed Limiter	Limitatore di velocità
 #. window title in a dialog box
 	Speed Limiter settings	Impostazioni del limitatore di velocità
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sri Lanka	Sri Lanka
 #. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 	Start	Avvia
@@ -2072,13 +2952,49 @@
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Impossibile scaricare i sottotitoli in {language}: {site} ha rifiutato (troppe richieste).
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sudan	Sudan
 #. text in the Options window; text in the Scheduler window
 	Sunday	domenica
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Support MDM on GitHub Sponsors	Sostieni MDM su GitHub Sponsors
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Suriname	Suriname
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Svalbard and Jan Mayen	Svalbard e Jan Mayen
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sweden	Svezia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Switzerland	Svizzera
 #. message or event log entry in the main window
 	Synchronization queue	Coda di sincronizzazione
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Syria	Siria
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Taiwan	Taiwan
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tajikistan	Tagikistan
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tanzania	Tanzania
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Attività → Link grabber, oppure "Scarica tutti i collegamenti" del browser: i volumi di un archivio\ndiviso formano un pacchetto, gli altri collegamenti della pagina un altro.
@@ -2098,6 +3014,10 @@
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 	Th	Gi
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Thailand	Thailandia
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 	That is more than 100,000 files: make the range smaller	Sono più di 100.000 file: riduci l'intervallo
@@ -2272,6 +3192,10 @@
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 	The system's DNS	DNS di sistema
+#. text in whereis.rs
+#. the tooltip of where a download's server is: how the time shown is measured
+#, machine
+	The time is a round trip, measured as this download's own connections opened.	Il tempo è un viaggio di andata e ritorno, misurato come le connessioni aperte di questo download.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The torrent could not be saved: {error}	Impossibile salvare il torrent: {error}
@@ -2308,6 +3232,10 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	This category or queue holds no downloads yet.	Questa categoria o coda non contiene ancora download.
+#. text in whereis.rs
+#. where a download's server is: on this computer or the local network (no country)
+#, machine
+	this computer or the local network	questo computer o la rete locale
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 	This date has passed: the queue will not start	Questa data è già passata: la coda non partirà
@@ -2352,15 +3280,39 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	Questo video richiede l'accesso. Usa nel browser il pulsante Scarica video che compare sopra di esso: trasmette anche il tuo accesso.
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it (the proxy's place not known)
+#, machine
+	through a proxy	tramite un proxy
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it: {country} is the proxy's country
+#, machine
+	through a proxy in {country}	tramite un proxy in {country}
 #. text in the Scheduler window
 	Thursday	giovedì
 #. text in a download's progress window; text in the Scheduler window
 	Time left	Tempo rimanente
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Timor-Leste	Timor Est
 #. text in the Batch download window
 	To:	A:
 #. text in the Scheduler window
 #. link under the calendar: {date} = today's date
 	Today: {date}	Oggi: {date}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Togo	Togo
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tokelau	Tokelau
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tonga	Tonga
 #. text in errors.rs
 	too many redirects	troppi reindirizzamenti
 #. value in a column's filter list in the download list; text in the Add torrent window
@@ -2395,6 +3347,10 @@
 	Trackers to add to {name}, one address a line:	Tracker da aggiungere a {name}, un indirizzo per riga:
 #. text in a download's progress window
 	Transfer rate	Velocità di trasferimento
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Trinidad and Tobago	Trinidad e Tobago
 #. button in helpers.rs
 	Try again	Riprova
 #. text in the Scheduler window
@@ -2402,6 +3358,18 @@
 	Tu	Ma
 #. text in the Scheduler window
 	Tuesday	martedì
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tunisia	Tunisia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turkmenistan	Turkmenistan
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turks and Caicos Islands	Isole Turks e Caicos
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 	Turn off	Disattiva
@@ -2415,6 +3383,10 @@
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter on
 	Turn on	Attiva
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tuvalu	Tuvalu
 #. text in helpers.rs
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Servono due programmi di supporto gratuiti. Scaricali ora: quando troverai un video, basterà un clic per salvarlo.
 #. text in rssdlg.rs
@@ -2450,16 +3422,46 @@
 	Type what to find, and tick at least one place to look	Digita cosa cercare e seleziona almeno un campo in cui cercare
 #. text in a download's Properties window
 	Type:	Tipo:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Türkiye	Turchia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uganda	Uganda
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ukraine	Ucraina
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 	Uncheck all	Deseleziona tutti
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 	Unfinished	Non completati
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Arab Emirates	Emirati Arabi Uniti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Kingdom	Regno Unito
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States	Stati Uniti
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States Minor Outlying Islands	Isole minori esterne degli Stati Uniti
 #. text in a download's Properties window
 	Unknown	Sconosciuto
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known
+#. where a download's server is: not known (no address seen)
+#. where a download's server is: an address the location table doesn't place
 	unknown	sconosciuto
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
@@ -2475,6 +3477,10 @@
 	Updates could not be checked: {error}	Impossibile verificare gli aggiornamenti: {error}
 #. text in a dialog box
 	URL	URL
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uruguay	Uruguay
 #. text in the Options window
 	Use advanced browser integration	Usa l'integrazione avanzata con i browser
 #. button in helpers.rs
@@ -2526,11 +3532,27 @@
 	User:	Utente:
 #. label in the Options window
 	UserName	Nome utente
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uzbekistan	Uzbekistan
 #. text in a download's progress window
 	Value	Valore
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vanuatu	Vanuatu
 #. text in the Link grabber window
 #. Link grabber: the package of links that belong to no other
 	Various files	File vari
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vatican City	Città del Vaticano
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Venezuela	Venezuela
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 	Verify	Verifica
@@ -2556,6 +3578,18 @@
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 	Videos	Video
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vietnam	Vietnam
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (British)	Isole Vergini britanniche
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (U.S.)	Isole Vergini americane
 #. text in the Options window
 	Virus checking settings	Impostazioni antivirus
 #. text in extracting archives (a download's log, the Archive password window)
@@ -2572,6 +3606,10 @@
 	Waiting	In attesa
 #. message or event log entry in the main window
 	Waiting: the download limit is reached (Scheduler)	In attesa: limite di download raggiunto (Pianificatore)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Wallis and Futuna	Wallis e Futuna
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
 	We	Me
@@ -2580,6 +3618,10 @@
 	Web	Web
 #. text in the Scheduler window
 	Wednesday	mercoledì
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Western Sahara	Sahara occidentale
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 	What an archive holds goes:	Dove estrarre il contenuto di un archivio:
@@ -2616,6 +3658,10 @@
 #. text in the Options window
 #. a date's order: year first (2026-10-30)
 	Year, month, day	Anno, mese, giorno
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Yemen	Yemen
 #. button in a dialog box; text in a download's progress window
 	Yes	Sì
 #. button in helpers.rs
@@ -2648,6 +3694,14 @@
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 	yt-dlp: finds the video	yt-dlp: trova il video
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zambia	Zambia
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zimbabwe	Zimbabwe
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ e XZ; un archivio diviso (.part1.rar, .7z.001) quando\ntutti i volumi sono presenti. Un file già presente viene mantenuto: il nuovo viene numerato.
@@ -2670,6 +3724,10 @@
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 	{browser}: the extension {version} connected	{browser}: l'estensione {version} si è connessa
+#. text in whereis.rs
+#. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
+#, machine
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} serve questo file: il luogo è quello del suo server, spesso vicino a te, non quello del proprietario del sito.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 	{column} contains	{column} contiene
@@ -3237,6 +4295,10 @@ menu	Direct3D didn't start here: OpenGL draws	Direct3D non è stato avviato: dis
 #. the trailing ... means it opens a window: keep it
 menu	Download &video from a page...	Scarica &video da una pagina...
 #. menu command in the main window
+#. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
+#, machine
+menu	Download in order	Scarica in ordine
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
 #, machine
 menu	Draw with	Disegna con
@@ -3253,6 +4315,10 @@ menu	Extract	Estrai
 menu	Find (Ctrl-F)	Trova (Ctrl+F)
 #. menu command in the main window
 menu	Find Next (F3)	Trova successivo (F3)
+#. menu command in the main window
+#. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
+#, machine
+menu	First and last pieces first	Prima i primi e gli ultimi pezzi
 #. menu command in the main window
 #. noun: the list's font (submenu)
 menu	Font	Carattere

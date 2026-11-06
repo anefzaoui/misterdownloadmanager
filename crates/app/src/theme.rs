@@ -179,6 +179,32 @@ const SCRIPT_LANGS: &[(&str, &str)] = &[
     ("ml", "ml"),
 ];
 
+/// Marks that neither the interface font nor the script fonts have (✔ ✖ ↩ ⇧ ⌘ ⌥ ⌦, and → on
+/// Linux: #185): the system's symbol fonts, last in every family's chain, in every language,
+/// each one that is there. macOS keeps ✔ and ✖ in Zapf Dingbats, not in Apple Symbols.
+#[cfg(windows)]
+const SYMBOL_FONTS: &[&str] = &["seguisym.ttf"];
+#[cfg(target_os = "macos")]
+const SYMBOL_FONTS: &[&str] = &["Apple Symbols.ttf", "ZapfDingbats.ttf"];
+/// Linux: the font fontconfig picks for those marks (glyph_tests lists every one the windows
+/// draw; a new one goes here too).
+#[cfg(not(any(windows, target_os = "macos")))]
+const SYMBOL_PATTERN: &str = ":charset=2024 2192 21a9 21e7 2318 2325 2326 2714 2716";
+
+/// The symbol fonts' bytes, in fallback order ([`SYMBOL_FONTS`], [`SYMBOL_PATTERN`]).
+fn symbol_fonts() -> Vec<Vec<u8>> {
+    #[cfg(any(windows, target_os = "macos"))]
+    return SYMBOL_FONTS
+        .iter()
+        .filter_map(|f| std::fs::read(font_dir().join(f)).ok())
+        .collect();
+    #[cfg(not(any(windows, target_os = "macos")))]
+    return fc_match(SYMBOL_PATTERN)
+        .and_then(|f| std::fs::read(f).ok())
+        .into_iter()
+        .collect();
+}
+
 /// The folder the font tables name files in.
 #[cfg(any(windows, target_os = "macos"))]
 fn font_dir() -> std::path::PathBuf {
@@ -254,7 +280,9 @@ fn fc_files() -> &'static std::collections::HashMap<String, std::path::PathBuf> 
     static FILES: std::sync::OnceLock<std::collections::HashMap<String, std::path::PathBuf>> =
         std::sync::OnceLock::new();
     FILES.get_or_init(|| {
-        let running: Vec<_> = std::iter::once("sans-serif".to_owned())
+        let running: Vec<_> = ["sans-serif", SYMBOL_PATTERN]
+            .into_iter()
+            .map(str::to_owned)
             .chain(SCRIPT_LANGS.iter().map(|(_, fc)| format!(":lang={fc}")))
             .filter_map(|pattern| {
                 let child = Command::new("fc-match")
@@ -378,6 +406,11 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
         defs.font_data.insert(key.clone(), on_baseline(bytes));
         fallbacks.push(key);
     }
+    for (k, bytes) in symbol_fonts().into_iter().enumerate() {
+        let key = format!("symbols-{k}");
+        defs.font_data.insert(key.clone(), on_baseline(bytes));
+        fallbacks.push(key);
+    }
     for list in defs.families.values_mut() {
         for f in &fallbacks {
             // Segoe UI already leads the two built-in families (as itself, not a fallback).
@@ -486,5 +519,173 @@ mod mode_tests {
             assert_eq!(wanted(true, false, system), system, "following the system");
             assert!(!wanted(false, false, system), "support off: light");
         }
+    }
+}
+
+/// Every mark a window draws (punctuation, arrows, ✔, quotation marks…: what isn't a letter or a
+/// digit) has a glyph in every language's font chain, so none comes out as an empty box (#185:
+/// "✔ Connected" in the browser offer window; "→" on Linux).
+#[cfg(test)]
+mod glyph_tests {
+    use std::collections::{BTreeMap, BTreeSet};
+    use std::path::Path;
+    use unicode_segmentation::UnicodeSegmentation;
+
+    const ROOT: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../..");
+
+    /// Drawn as nothing on purpose: bidi controls and isolates, joiners, the soft hyphen, the
+    /// BOM (craft-i18n's isolates around data, the translations' own marks).
+    fn invisible(c: char) -> bool {
+        matches!(c, '\u{00ad}' | '\u{200b}'..='\u{200f}' | '\u{202a}'..='\u{202e}'
+            | '\u{2060}'..='\u{2069}' | '\u{feff}' | '\u{fe00}'..='\u{fe0f}')
+    }
+
+    /// The marks in `text`: each grapheme's first character that is neither a letter, a digit,
+    /// a space nor invisible (a grapheme's other characters are its accents and joiners).
+    fn marks(text: &str, out: &mut BTreeSet<char>) {
+        for g in text.graphemes(true) {
+            if let Some(c) = g.chars().next()
+                && !c.is_alphanumeric()
+                && !c.is_whitespace()
+                && !c.is_control()
+                && !invisible(c)
+            {
+                out.insert(c);
+            }
+        }
+    }
+
+    /// A catalog's texts: the translations (and the English sources, which a missing row shows).
+    fn catalog(code: &str) -> String {
+        let file = Path::new(ROOT).join("i18n").join(format!("{code}.tsv"));
+        let text = std::fs::read_to_string(&file).unwrap();
+        text.lines()
+            .filter(|l| !l.starts_with('#') && !l.starts_with('@'))
+            .flat_map(|l| l.split('\t').skip(1))
+            .collect::<Vec<_>>()
+            .join("\n")
+    }
+
+    /// The marks the code draws itself, beside the catalogs' ("\u{2714} {}", "→"): every
+    /// string literal in the app's sources, escapes read.
+    fn literals() -> BTreeSet<char> {
+        let mut out = BTreeSet::new();
+        let dir = Path::new(ROOT).join("crates/app/src");
+        for entry in std::fs::read_dir(dir).unwrap() {
+            let path = entry.unwrap().path();
+            if path.extension().is_none_or(|e| e != "rs") {
+                continue;
+            }
+            let src = std::fs::read_to_string(&path).unwrap();
+            // The tests' own data (other scripts, emoji in file names) is not drawn.
+            let src = src.split("#[cfg(test)]").next().unwrap_or_default();
+            for lit in src.split('"').skip(1).step_by(2) {
+                let mut s = String::new();
+                let mut rest = lit;
+                while let Some(at) = rest.find("\\u{") {
+                    s.push_str(&rest[..at]);
+                    let end = rest[at..].find('}').map_or(rest.len(), |e| at + e);
+                    if let Some(c) = u32::from_str_radix(&rest[at + 3..end], 16)
+                        .ok()
+                        .and_then(char::from_u32)
+                    {
+                        s.push(c);
+                    }
+                    rest = &rest[(end + 1).min(rest.len())..];
+                }
+                s.push_str(rest);
+                // Only what isn't plain ASCII: every font has that.
+                let mut found = BTreeSet::new();
+                marks(&s, &mut found);
+                out.extend(found.into_iter().filter(|c| !c.is_ascii()));
+            }
+        }
+        out
+    }
+
+    fn languages() -> Vec<String> {
+        let file = Path::new(ROOT).join("i18n/languages.tsv");
+        std::fs::read_to_string(file)
+            .unwrap()
+            .lines()
+            .filter(|l| !l.starts_with('#') && !l.trim().is_empty())
+            .filter_map(|l| l.split('\t').next().map(str::to_owned))
+            .collect()
+    }
+
+    #[test]
+    fn every_language_draws_its_marks() {
+        let code_marks = literals();
+        let families = [
+            egui::FontFamily::Name("tahoma".into()),
+            egui::FontFamily::Name("tahoma-bold".into()),
+            egui::FontFamily::Proportional,
+        ];
+        let mut missing: BTreeMap<String, BTreeSet<char>> = BTreeMap::new();
+        let mut skipped = Vec::new();
+        for code in languages() {
+            let text = catalog(&code);
+            let mut needed = code_marks.clone();
+            marks(&text, &mut needed);
+            let ctx = egui::Context::default();
+            super::fonts(&ctx, &code, false);
+            let mut out = ctx.run_ui(Default::default(), |_| {});
+            out.textures_delta.clear();
+            // A computer without the language's script font draws none of it (a CI image without
+            // CJK fonts): nothing to check there.
+            let letters: Vec<char> = text
+                .chars()
+                .filter(|c| c.is_alphabetic() && !c.is_ascii())
+                .take(200)
+                .collect();
+            let has_script = ctx.fonts_mut(|f| {
+                let id = egui::FontId::new(11.0, families[0].clone());
+                letters.is_empty()
+                    || letters.iter().filter(|c| f.has_glyph(&id, **c)).count() * 10
+                        >= letters.len() * 9
+            });
+            if !has_script {
+                skipped.push(code);
+                continue;
+            }
+            for family in &families {
+                let id = egui::FontId::new(11.0, family.clone());
+                let lacks: Vec<char> = ctx.fonts_mut(|f| {
+                    needed
+                        .iter()
+                        .copied()
+                        .filter(|c| !f.has_glyph(&id, *c))
+                        .collect()
+                });
+                if !lacks.is_empty() {
+                    missing
+                        .entry(format!("{code} ({family:?})"))
+                        .or_default()
+                        .extend(lacks);
+                }
+            }
+        }
+        if !skipped.is_empty() {
+            eprintln!(
+                "no font for these languages' script on this computer, not checked: {skipped:?}"
+            );
+        }
+        let report: Vec<String> = missing
+            .iter()
+            .map(|(k, v)| {
+                format!(
+                    "{k}: {}",
+                    v.iter()
+                        .map(|c| format!("{c} U+{:04X}", *c as u32))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                )
+            })
+            .collect();
+        assert!(
+            report.is_empty(),
+            "marks without a glyph:\n{}",
+            report.join("\n")
+        );
     }
 }

@@ -43,6 +43,8 @@ pub struct TorrentAdd {
     pub category: Category,
     pub start_now: bool,
     pub from_magnet: bool,
+    /// Download in order (#39): the files' start first, to watch while it downloads.
+    pub in_order: bool,
 }
 
 pub struct TorrentDialog {
@@ -72,6 +74,8 @@ pub struct TorrentDialog {
     from_magnet: bool,
     focused: bool,
     start_now: Option<bool>,
+    /// Download in order (#39).
+    in_order: bool,
     /// Asking to create a missing folder.
     asking: Option<(crate::dialogs::CreateFolder, ())>,
     /// Asking whether to use files of the torrent's names already in the folder (#40).
@@ -236,6 +240,7 @@ impl TorrentDialog {
             from_magnet: false,
             focused: false,
             start_now: None,
+            in_order: false,
             asking: None,
             asking_files: None,
             remote,
@@ -403,6 +408,7 @@ impl TorrentDialog {
                     files,
                     start_now: self.start_now.unwrap_or(true),
                     from_magnet: self.from_magnet,
+                    in_order: self.in_order,
                 })
             }
         }
@@ -632,6 +638,16 @@ impl TorrentDialog {
             }
         }
 
+        // #39: its files' start first, to watch a video while it downloads (also later, from
+        // its right-click menu).
+        winui::checkbox(
+            ui,
+            pos2(o.x + 14.0, o.y + 432.0),
+            &mut self.in_order,
+            // i18n: Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
+            "Download in order",
+            has,
+        );
         let ready = has && count > 0 && !self.folder.trim().is_empty() && !busy;
         let now = winui::button(
             ui,
