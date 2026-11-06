@@ -695,6 +695,37 @@ fn no_line_start(c: char) -> bool {
 /// for its place).
 pub fn progress_bar(p: &Painter, rc: Rect, fraction: Option<f32>, time: f64) {
     let c = crate::theme::colors();
+    // Windows 8: a bordered bar, filled.
+    if crate::theme::current().controls.progress == crate::palette::ProgressLook::Bar {
+        let border = crate::theme::metrics().border;
+        p.rect_filled(rect(rc), 0.0, c.meter_track);
+        let inner = rc.shrink(border);
+        let (from, to) = match fraction {
+            Some(f) => (0.0, f.clamp(0.0, 1.0)),
+            None => {
+                let t = (time * 0.6).fract() as f32;
+                ((t * 1.4 - 0.4).max(0.0), (t * 1.4).min(1.0))
+            }
+        };
+        if to > from {
+            let w = inner.width();
+            p.rect_filled(
+                rect(Rect::from_min_max(
+                    pos2(inner.left() + from * w, inner.top()),
+                    pos2(inner.left() + to * w, inner.bottom()),
+                )),
+                0.0,
+                c.progress_bar,
+            );
+        }
+        p.rect_stroke(
+            rect(rc),
+            0.0,
+            Stroke::new(border, c.meter_edge),
+            StrokeKind::Inside,
+        );
+        return;
+    }
     let (track, accent) = (c.progress_track, c.progress_bar);
     let r = rc.height() / 2.0;
     // The track is a 1 px line through the middle, as Windows 11 draws it.
@@ -1729,6 +1760,16 @@ pub fn edit_focus_line(ui: &Ui, resp: &Response, rc: Rect) {
 /// frame, curving into the corners as Windows 11 draws it; dark: IDM's straight line.
 pub fn focus_bottom(p: &Painter, rc: Rect) {
     let h = crate::theme::metrics().focus_line;
+    // Windows 8 and XP: the whole border in the accent, not a line along the bottom.
+    if crate::theme::current().controls.field_focus == crate::palette::FieldFocus::Border {
+        p.rect_stroke(
+            rc,
+            control_radius(),
+            Stroke::new(crate::theme::metrics().border, accent()),
+            StrokeKind::Inside,
+        );
+        return;
+    }
     if crate::theme::colors().focus_line_straight {
         fill(
             p,
@@ -3611,6 +3652,42 @@ pub fn row_check(
 }
 
 pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
+    // Windows 8: the box keeps its inside and border (the border in the accent under the
+    // pointer), a tick in the accent.
+    if crate::theme::current().controls.check == crate::palette::CheckLook::Square {
+        let (fill_c, border) = fluent_box(state);
+        let m = crate::theme::metrics();
+        if let Some(f) = fill_c {
+            p.rect_filled(rc, m.check_radius, f);
+        }
+        let border = if matches!(state, State::Hot | State::Pressed) {
+            accent()
+        } else {
+            border
+        };
+        p.rect_stroke(
+            rc,
+            m.check_radius,
+            Stroke::new(m.border, border),
+            StrokeKind::Inside,
+        );
+        if checked {
+            let ink = if state == State::Disabled {
+                crate::theme::colors().check_on_disabled
+            } else {
+                fluent_accent(state)
+            };
+            p.line(
+                vec![
+                    pos2(rc.left() + 2.5, rc.top() + 6.5),
+                    pos2(rc.left() + 5.5, rc.top() + 9.5),
+                    pos2(rc.left() + 10.5, rc.top() + 3.0),
+                ],
+                Stroke::new(2.0, ink),
+            );
+        }
+        return;
+    }
     if checked {
         p.rect_filled(
             rc,
@@ -4746,7 +4823,7 @@ pub mod caption {
     /// The title and glyphs while the window isn't the active one, and a greyed button's: the
     /// one disabled ink of every control.
     fn caption_ink_inactive() -> Color32 {
-        TEXT_DISABLED()
+        crate::theme::colors().caption_text_inactive
     }
     /// Close's hover red with a white glyph; pressed, the red at 0.9 and the glyph at 0.7
     /// (WinUI's, both themes).
@@ -4786,9 +4863,55 @@ pub mod caption {
             }
         }
 
-        /// Its glyph: Segoe Fluent's shapes drawn as our own 1 px vectors, 10 px across.
-        fn glyph(self, p: &Painter, c: Pos2, ink: Color32) {
+        /// The theme icon set's name for its glyph (`crate::themeicons`).
+        fn need(self, maximized: bool) -> &'static str {
+            match self {
+                CaptionButton::Close => "ui-close",
+                CaptionButton::Maximize if maximized => "ui-restore",
+                CaptionButton::Maximize => "ui-maximize",
+                CaptionButton::Minimize => "ui-minimize",
+                CaptionButton::ToTray => "ui-to-tray",
+            }
+        }
+
+        /// Its glyph: the theme's icon set's where it has one, else Segoe Fluent's shapes drawn
+        /// as our own 1 px vectors, 10 px across (Restore's two squares while maximized).
+        fn glyph(self, ui: &Ui, p: &Painter, c: Pos2, ink: Color32, maximized: bool) {
+            if let Some((src, _)) = crate::themeicons::source(self.need(maximized), 16.0) {
+                let rc = Rect::from_center_size(c, vec2(16.0, 16.0));
+                let img = egui::Image::new(src);
+                if let Ok(egui::load::TexturePoll::Ready { texture }) =
+                    img.load_for_size(ui.ctx(), rc.size())
+                {
+                    p.image(
+                        texture.id,
+                        rc,
+                        Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0)),
+                        ink,
+                    );
+                    return;
+                }
+            }
             let s = Stroke::new(1.0, ink);
+            if self == CaptionButton::Maximize && maximized {
+                p.rect_stroke(
+                    Rect::from_center_size(c + vec2(-1.0, 1.0), vec2(8.0, 8.0)),
+                    1.0,
+                    s,
+                    egui::StrokeKind::Inside,
+                );
+                p.line(
+                    vec![
+                        c + vec2(-1.5, -3.5),
+                        c + vec2(-1.5, -4.5),
+                        c + vec2(4.5, -4.5),
+                        c + vec2(4.5, 1.5),
+                        c + vec2(3.5, 1.5),
+                    ],
+                    s,
+                );
+                return;
+            }
             match self {
                 CaptionButton::Minimize => {
                     p.line_segment([c + vec2(-5.0, 0.5), c + vec2(5.0, 0.5)], s);
@@ -4818,6 +4941,19 @@ pub mod caption {
     /// doesn't, and the system menu, Alt+Space and taskbar minimize need the styles kept.
     const SYSTEM_SPEAKS: bool = cfg!(windows);
 
+    thread_local! {
+        /// The next title bar's Maximize as the window's frame sees it (hot, pressed): where the
+        /// frame answers for it (Snap Layouts, win32::drawn_frame), egui never sees the pointer
+        /// there.
+        static FRAME_MAX: std::cell::Cell<(bool, bool)> = const { std::cell::Cell::new((false, false)) };
+    }
+
+    /// Tell the next [`title_bar`] how its window's frame sees Maximize: under the pointer,
+    /// pressed.
+    pub fn frame_maximize(hot: bool, pressed: bool) {
+        FRAME_MAX.with(|c| c.set((hot, pressed)));
+    }
+
     /// Keep `resp`'s node out of the accessibility tree (screen readers hear the system's).
     fn unspoken(ui: &Ui, resp: &Response) {
         ui.ctx().accesskit_node_builder(resp.id, |n| n.set_hidden());
@@ -4846,8 +4982,13 @@ pub mod caption {
             unspoken(ui, &resp);
         }
         let p = ui.painter();
-        let hover = enabled && resp.hovered();
-        let pressed = enabled && resp.is_pointer_button_down_on();
+        let (frame_hot, frame_pressed) = if b == CaptionButton::Maximize {
+            FRAME_MAX.with(|c| c.get())
+        } else {
+            (false, false)
+        };
+        let hover = enabled && (resp.hovered() || frame_hot);
+        let pressed = enabled && (resp.is_pointer_button_down_on() || frame_pressed);
         let close = b == CaptionButton::Close;
         let fill = match (pressed, hover, close) {
             (true, _, true) => Some(close_pressed()),
@@ -4868,7 +5009,8 @@ pub mod caption {
         } else {
             CAPTION_INK()
         };
-        b.glyph(p, rc.center().round(), ink);
+        let maximized = ui.ctx().input(|i| i.viewport().maximized) == Some(true);
+        b.glyph(ui, p, rc.center().round(), ink, maximized);
         show_focus(ui, &resp, rc.shrink(3.0));
         let clicked = resp.clicked();
         if b == CaptionButton::ToTray {
@@ -4916,6 +5058,8 @@ pub mod caption {
             }
             rects.push(rc);
         }
+        // The frame's word on Maximize holds for this bar only.
+        FRAME_MAX.with(|c| c.set((false, false)));
         let buttons_w = bw * buttons.len() as f32;
         let icon_c = if rtl {
             pos2(rect.right() - 16.0, rect.center().y)
@@ -4937,6 +5081,28 @@ pub mod caption {
         } else {
             (egui::Align2::LEFT_CENTER, rect.left() + CAPTION_ICON_W)
         };
+        // Windows 8 centres the title in the bar (kept clear of the icon and the buttons).
+        let (anchor, x) =
+            if crate::theme::current().controls.caption == crate::palette::CaptionLook::Metro {
+                let half = text_width_font(&p, font.clone(), &shown) / 2.0;
+                let (lo, hi) = if rtl {
+                    (
+                        rect.left() + buttons_w + half,
+                        rect.right() - CAPTION_ICON_W - half,
+                    )
+                } else {
+                    (
+                        rect.left() + CAPTION_ICON_W + half,
+                        rect.right() - buttons_w - half,
+                    )
+                };
+                (
+                    egui::Align2::CENTER_CENTER,
+                    rect.center().x.clamp(lo.min(hi), hi.max(lo)),
+                )
+            } else {
+                (anchor, x)
+            };
         let drawn = p.text(pos2(x, rect.center().y), anchor, &shown, font, ink);
         let label = ui.interact(drawn, widget_id(ui, "caption-title"), Sense::hover());
         // The window's own name says the title to screen readers (where the system speaks for
@@ -5621,10 +5787,19 @@ mod tests {
                     pressed.bottom, pressed.border,
                     "pressed flattens the bottom edge"
                 );
-                assert_ne!(
-                    rest.bottom, rest.border,
-                    "at rest the bottom edge is darker"
-                );
+                // A flat style (Windows 8) has no darker bottom edge; pressed is then told by
+                // its face.
+                if c.button_bottom != c.button_border {
+                    assert_ne!(
+                        rest.bottom, rest.border,
+                        "at rest the bottom edge is darker"
+                    );
+                } else {
+                    assert_ne!(
+                        pressed.fill, rest.fill,
+                        "a flat button's pressed face differs"
+                    );
+                }
                 assert_ne!(hot.fill, rest.fill, "hot differs from rest");
             }
             let disabled = button_colors(ButtonKind::Disabled, State::Disabled, c);

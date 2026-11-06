@@ -245,7 +245,34 @@ impl Icon {
         )
     }
 
+    /// The theme icon set's name for this icon (`crate::themeicons`), for the ones a set can
+    /// replace: the toolbar's.
+    fn need(self) -> Option<&'static str> {
+        Some(match self {
+            Icon::AddUrl => "tb-add-url",
+            Icon::AddTorrent => "tb-add-torrent",
+            Icon::Resume => "tb-resume",
+            Icon::Stop => "tb-stop",
+            Icon::StopAll => "tb-stop-all",
+            Icon::Delete => "tb-delete",
+            Icon::DeleteCompleted => "tb-delete-completed",
+            Icon::Options => "tb-options",
+            Icon::Scheduler => "tb-scheduler",
+            Icon::StartQueue => "tb-start-queue",
+            Icon::StopQueue => "tb-stop-queue",
+            _ => return None,
+        })
+    }
+
+    /// The icon, enabled or greyed: the theme's own where its icon set has one (tinted when the
+    /// set is one colour), else the classic outline.
     pub fn image(self, enabled: bool) -> Image<'static> {
+        if let Some((src, mono)) = self
+            .need()
+            .and_then(|need| crate::themeicons::source(need, 32.0))
+        {
+            return Image::new(src).tint(crate::themeicons::tint(mono, enabled));
+        }
         Image::new(self.source(enabled))
     }
 

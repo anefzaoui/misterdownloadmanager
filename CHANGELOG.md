@@ -48,6 +48,22 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   hand** stays there for a browser that can't use its store), Chrome offers it by itself once
   MDM is installed, and the website, the help and the README offer **Add to Chrome** beside
   **Add to Firefox**.
+- **Themes: View → Theme** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)).
+  **Classic** is MDM's look, unchanged and still the default. **Native** takes your system's
+  colours: Windows' accent colour and, when it is on, its contrast theme; the desktop's accent
+  colour and higher-contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour
+  on macOS; it follows them when they change. **High contrast** is black and white with a bright
+  accent, every edge drawn and text at 7:1 or more. A theme applies at once, light and dark alike,
+  and theme files in the themes folder (**View → Theme → Open themes folder**) are listed too;
+  High contrast is itself such a file, in the same format.
+- **Themes: Metro** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)), after
+  Windows 8's flat look, the layout kept: square corners, flat buttons, boxes that take an accent
+  border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their
+  arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and, on
+  Windows, a title bar MDM draws in the theme's colour with the title centred (resizing, Snap
+  Layouts on Maximize, double-click and Alt+Space work as with the system's). Theme files can now
+  choose each control's style (`[controls]`), an icon set, and a theme can be a folder that brings
+  its own icons.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
@@ -303,7 +319,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   pixel by pixel (`shots.sh`, `shot-host.sh`, `pixdiff.py`), HLS and DASH hand-overs from the Snap
   Firefox and Google Chrome (`streams.mjs`, `streams-chrome.mjs`), the extension's proxy switch
   (`proxy-optin.mjs`), hand-overs and the Scheduler while minimized, torrents without a network,
-  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows.
+  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows. The
+  machine also has copies on KDE Plasma, Cinnamon and XFCE (`desktop.sh`), which get a build
+  copied over instead of making one (`vm.ps1 deploy`); a window harness shoots many windows from
+  one running MDM in any language, mode and theme, with real clicks and keys inside the machine
+  (`win.sh`, `win-host.sh`); and a store package is checked before it ships (`store-check.mjs`,
+  `chrome-menu.mjs`).
 - **Developers: the engine tests no longer fail on a busy computer**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
   depended on timing: a refused connection coming back, the learned connection limit, and a dead
@@ -404,6 +425,18 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   ends before it. Where a window has no room left, the buttons wider than their text give some
   back first. English is unchanged, and in Arabic and the other right-to-left languages the
   buttons widen the mirrored way.
+- **Menus without a black band across their top**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
+  Insider build (22635), every menu and submenu showed a black band a title bar tall across its
+  top and a thin one down its left side, its items moved down by as much and its last ones cut
+  off. A menu's window had a title bar's style, hidden by MDM, and something on that build placed
+  the menu's picture where the title bar would have ended. Menus are now plain pop-up windows, as
+  Windows' own menus are, with nothing above their items to take for a title bar.
+- **A window closed with its title bar's × no longer turns black first**
+  ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
+  progress window turned black for a moment when closed with the × or Alt+F4, rather than with
+  Esc or one of its buttons: one to several seconds on Linux, a few hundredths of a second on
+  Windows. The window now keeps its contents until it goes.
 - **A freeze while MDM handles a command is reported again**
   ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202)): since the clock and
   what comes in from outside (a second launch, the browser, the automation API) run in every
@@ -416,6 +449,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   answered "Unsupported URL". Now, when one of them is used and no stream is known, the extension
   reads the start of what the player fetched (a few kilobytes, never on sight) and recognises an
   HLS playlist or a DASH manifest.
+- **Dark mode: grey notes and error texts are easier to read**
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): they now have the
+  contrast WCAG asks for (4.5:1) on every dark surface, Options' failed checks no longer use light
+  mode's dark red on the dark dialog, and an editable drop-down's arrow is tinted dark under the
+  pointer.
 - **A minimized MDM keeps working**: with the main window minimized (not to the notification
   area), queues didn't start their next file, the Scheduler's starts and stops didn't fire,
   download limits, the network adapter's kill switch, the clipboard monitor, the update check, the

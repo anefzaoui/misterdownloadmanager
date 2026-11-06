@@ -214,6 +214,8 @@ pub struct CaptionHits {
     pub strip_h: i32,
     pub icon: [i32; 4],
     pub buttons: Vec<[i32; 4]>,
+    /// Which of `buttons` is Maximize, answered as the system's (a resizable window, #45).
+    pub max_button: Option<usize>,
 }
 
 thread_local! {
@@ -338,6 +340,226 @@ unsafe extern "system" fn thin_frame_proc(
     res
 }
 
+/// The Maximize button of a resizable window whose title bar is ours: under the pointer, or
+/// pressed. Windows hit-tests it as the system's (HTMAXBUTTON), so Windows 11 shows its Snap
+/// Layouts over it; the clicks are then the frame's, and so is its hover, which egui can't see:
+/// the title bar reads it from here ([`max_button_state`]).
+#[derive(Clone, Copy, Default, PartialEq, Eq)]
+pub struct MaxButton {
+    pub hot: bool,
+    pub pressed: bool,
+}
+
+thread_local! {
+    static MAX_BUTTON: std::cell::RefCell<std::collections::HashMap<isize, MaxButton>> =
+        Default::default();
+}
+
+/// Window `hwnd`'s Maximize button's state (see [`MaxButton`]).
+pub fn max_button_state(hwnd: isize) -> MaxButton {
+    MAX_BUTTON.with(|m| {
+        m.try_borrow()
+            .ok()
+            .and_then(|m| m.get(&hwnd).copied())
+            .unwrap_or_default()
+    })
+}
+
+fn set_max_button(hwnd: HWND, state: MaxButton) {
+    use windows_sys::Win32::Graphics::Gdi::InvalidateRect;
+    let changed = MAX_BUTTON.with(|m| {
+        m.try_borrow_mut()
+            .is_ok_and(|mut m| m.insert(hwnd as isize, state) != Some(state))
+    });
+    if changed {
+        // SAFETY: our own window; a repaint is asked for (winit draws a frame).
+        unsafe { InvalidateRect(hwnd, std::ptr::null(), 0) };
+    }
+}
+
+/// The sizing frame's thickness at the window's top, in client pixels (Windows' own measure for
+/// the window's DPI).
+fn top_frame(hwnd: HWND) -> i32 {
+    use windows_sys::Win32::UI::HiDpi::{GetDpiForWindow, GetSystemMetricsForDpi};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{SM_CXPADDEDBORDER, SM_CYSIZEFRAME};
+    // SAFETY: plain calls about our own window.
+    unsafe {
+        let dpi = GetDpiForWindow(hwnd).max(96);
+        GetSystemMetricsForDpi(SM_CYSIZEFRAME, dpi) + GetSystemMetricsForDpi(SM_CXPADDEDBORDER, dpi)
+    }
+}
+
+/// A resizable window with its title bar drawn by us (the main window with a style theme, #45),
+/// as Windows Terminal does it: the system frame and WS_CAPTION stay (resizing on every edge,
+/// Aero Snap and shake, the system menu and Alt+Space, the DWM shadow), the caption is given to
+/// the client, which draws it; the hit test reads where the drawn parts are. The top sizing edge
+/// is ours (the client starts at the window's top), and Maximize answers as the system's.
+unsafe extern "system" fn drawn_frame_proc(
+    hwnd: HWND,
+    msg: u32,
+    wparam: WPARAM,
+    lparam: LPARAM,
+    _id: usize,
+    _data: usize,
+) -> LRESULT {
+    use windows_sys::Win32::UI::Input::KeyboardAndMouse::{
+        TME_LEAVE, TME_NONCLIENT, TRACKMOUSEEVENT, TrackMouseEvent,
+    };
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        HTMAXBUTTON, HTTOP, HTTOPLEFT, HTTOPRIGHT, IsZoomed, SC_MAXIMIZE, SC_RESTORE, SendMessageW,
+        WM_NCACTIVATE, WM_NCLBUTTONDBLCLK, WM_NCLBUTTONDOWN, WM_NCLBUTTONUP, WM_NCMOUSELEAVE,
+        WM_NCMOUSEMOVE, WM_SYSCOMMAND,
+    };
+    const HT_MAX: LRESULT = HTMAXBUTTON as LRESULT;
+    if msg == WM_NCCALCSIZE && wparam != 0 {
+        // SAFETY: with wParam TRUE, lParam points to NCCALCSIZE_PARAMS (Win32 contract).
+        let p = unsafe { &mut *(lparam as *mut NCCALCSIZE_PARAMS) };
+        let top = p.rgrc[0].top;
+        let res = unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) };
+        // No system caption: the client starts at the window's top; maximized, the window
+        // overhangs the screen by its frame, so the bar starts that much lower.
+        // SAFETY: our own window.
+        let zoomed = unsafe { IsZoomed(hwnd) } != 0;
+        p.rgrc[0].top = if zoomed { top + top_frame(hwnd) } else { top };
+        return res;
+    }
+    if msg == WM_NCACTIVATE {
+        return unsafe { DefSubclassProc(hwnd, msg, wparam, -1) };
+    }
+    if msg == WM_SYSCOMMAND && (wparam & 0xFFF0) == SC_HIDE_TO_TRAY {
+        HIDE_ASKED.with(|s| {
+            if let Ok(mut s) = s.try_borrow_mut() {
+                s.insert(hwnd as isize);
+            }
+        });
+        return 0;
+    }
+    // Maximize: pressed and released on it toggles the window (the system's own button would
+    // draw itself over ours).
+    if (msg == WM_NCLBUTTONDOWN || msg == WM_NCLBUTTONDBLCLK) && wparam as LRESULT == HT_MAX {
+        set_max_button(
+            hwnd,
+            MaxButton {
+                hot: true,
+                pressed: true,
+            },
+        );
+        return 0;
+    }
+    if msg == WM_NCLBUTTONUP && wparam as LRESULT == HT_MAX {
+        let was = max_button_state(hwnd as isize);
+        set_max_button(
+            hwnd,
+            MaxButton {
+                hot: true,
+                pressed: false,
+            },
+        );
+        if was.pressed {
+            // SAFETY: our own window, a system command it handles.
+            let zoomed = unsafe { IsZoomed(hwnd) } != 0;
+            let cmd = if zoomed { SC_RESTORE } else { SC_MAXIMIZE };
+            unsafe { SendMessageW(hwnd, WM_SYSCOMMAND, cmd as WPARAM, 0) };
+        }
+        return 0;
+    }
+    if msg == WM_NCMOUSEMOVE {
+        let on = wparam as LRESULT == HT_MAX;
+        let was = max_button_state(hwnd as isize);
+        set_max_button(
+            hwnd,
+            MaxButton {
+                hot: on,
+                pressed: was.pressed && on,
+            },
+        );
+        if on {
+            let mut t = TRACKMOUSEEVENT {
+                cbSize: size_of::<TRACKMOUSEEVENT>() as u32,
+                dwFlags: TME_LEAVE | TME_NONCLIENT,
+                hwndTrack: hwnd,
+                dwHoverTime: 0,
+            };
+            // SAFETY: a plain call with a filled struct, our own window.
+            unsafe { TrackMouseEvent(&mut t) };
+        }
+    }
+    if msg == WM_NCMOUSELEAVE {
+        set_max_button(hwnd, MaxButton::default());
+    }
+    let res = unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) };
+    if msg == WM_NCHITTEST && res == HTCLIENT {
+        use windows_sys::Win32::Foundation::POINT;
+        use windows_sys::Win32::Graphics::Gdi::ScreenToClient;
+        let mut pt = POINT {
+            x: (lparam & 0xffff) as i16 as i32,
+            y: ((lparam >> 16) & 0xffff) as i16 as i32,
+        };
+        // SAFETY: our own window; the point is a local.
+        unsafe { ScreenToClient(hwnd, &mut pt) };
+        // The top sizing edge (corners too), where the system's caption had it.
+        // SAFETY: our own window.
+        if unsafe { IsZoomed(hwnd) } == 0 && pt.y >= 0 && pt.y < top_frame(hwnd) {
+            let mut rc: RECT = unsafe { zeroed() };
+            unsafe { windows_sys::Win32::UI::WindowsAndMessaging::GetClientRect(hwnd, &mut rc) };
+            let corner = 2 * top_frame(hwnd);
+            return if pt.x < corner {
+                HTTOPLEFT as LRESULT
+            } else if pt.x >= rc.right - corner {
+                HTTOPRIGHT as LRESULT
+            } else {
+                HTTOP as LRESULT
+            };
+        }
+        let hit = CAPTION_HITS.with(|m| {
+            m.try_borrow().ok().and_then(|m| {
+                m.get(&(hwnd as isize)).map(|h| {
+                    if h.max_button
+                        .and_then(|i| h.buttons.get(i))
+                        .is_some_and(|b| inside(b, pt.x, pt.y))
+                    {
+                        HT_MAX
+                    } else {
+                        frame_hit(pt.x, pt.y, h)
+                    }
+                })
+            })
+        });
+        return hit.unwrap_or(HTCLIENT);
+    }
+    res
+}
+
+/// Give the resizable window titled `title` its title bar drawn by us (`on`), or the system's
+/// back. Returns the window when done.
+pub fn drawn_frame(title: &str, on: bool) -> Option<isize> {
+    use windows_sys::Win32::UI::Shell::RemoveWindowSubclass;
+    let hwnd = find_own_window(title)?;
+    // SAFETY: our own window; the subclass id is ours.
+    unsafe {
+        if on {
+            SetWindowSubclass(hwnd, Some(drawn_frame_proc), 0x1d7, 0);
+        } else {
+            RemoveWindowSubclass(hwnd, Some(drawn_frame_proc), 0x1d7);
+            forget_caption(hwnd as isize);
+        }
+        SetWindowPos(
+            hwnd,
+            std::ptr::null_mut(),
+            0,
+            0,
+            0,
+            0,
+            SWP_FRAMECHANGED
+                | SWP_NOMOVE
+                | windows_sys::Win32::UI::WindowsAndMessaging::SWP_NOSIZE
+                | SWP_NOZORDER
+                | SWP_NOACTIVATE,
+        );
+    }
+    Some(hwnd as isize)
+}
+
 /// Give our window titled `title` IDM's thin progress-window frame with its title bar drawn by
 /// us (winui::caption, #63): 2 px borders, no system caption, the client staying `client`
 /// points (the drawn title bar included) at `scale` pixels per point. With `hide_item` (the
@@ -395,6 +617,7 @@ mod frame_tests {
                     [x1 - 69, 0, x1, 48]
                 })
                 .collect(),
+            max_button: None,
         };
         assert_eq!(frame_hit(10, 10, &h), HTSYSMENU);
         assert_eq!(frame_hit(300, 10, &h), HTCAPTION);
@@ -476,8 +699,86 @@ pub fn main_minimize_to_tray(ctx: &egui::Context, enabled: bool) -> bool {
     })
 }
 
+/// A menu window's style: a plain popup, as Win32's own menus are, without the caption, frame
+/// and caption buttons winit gives every borderless window (it keeps WS_CAPTION and hides the
+/// frame in WM_NCCALCSIZE). With a caption style, whatever lays the window out by its styles
+/// rather than by our WM_NCCALCSIZE puts the client a caption lower and a frame to the right:
+/// on a Windows 11 Insider build (22635) each menu showed a black band a caption tall across
+/// its top and its items moved down by as much (#208). Without one, every reading agrees: the
+/// client is the whole window.
+pub(crate) fn menu_style(style: u32) -> u32 {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        WS_CAPTION, WS_MAXIMIZEBOX, WS_MINIMIZEBOX, WS_POPUP, WS_SYSMENU,
+    };
+    (style & !(WS_CAPTION | WS_THICKFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX))
+        | WS_POPUP
+}
+
+#[cfg(test)]
+mod menu_style_tests {
+    use super::*;
+    use windows_sys::Win32::Foundation::RECT;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        AdjustWindowRectEx, WS_CLIPCHILDREN, WS_CLIPSIBLINGS, WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW,
+        WS_EX_TOPMOST, WS_POPUP, WS_VISIBLE,
+    };
+
+    /// winit's borderless window as it creates a menu (style 0x16CB0000: a caption, system
+    /// menu, minimize and maximize boxes) and the extended styles menu_window gives it.
+    const WINIT_MENU: u32 = 0x16CB_0000;
+    const MENU_EX: u32 = 0x0804_0198;
+
+    fn frame(style: u32, ex: u32) -> [i32; 4] {
+        let mut rc = RECT {
+            left: 0,
+            top: 0,
+            right: 279,
+            bottom: 275,
+        };
+        // SAFETY: plain computation on a local rectangle.
+        unsafe { AdjustWindowRectEx(&mut rc, style, 0, ex) };
+        [-rc.left, -rc.top, rc.right - 279, rc.bottom - 275]
+    }
+
+    #[test]
+    fn a_menu_window_is_a_popup_whose_client_is_all_of_it() {
+        // As created, the styles alone give it a caption and a frame: what a reader of the
+        // styles (rather than of our WM_NCCALCSIZE) took for its client on build 22635 (#208).
+        assert_ne!(frame(WINIT_MENU, MENU_EX), [0, 0, 0, 0]);
+        let style = menu_style(WINIT_MENU);
+        assert_eq!(
+            style,
+            WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN
+        );
+        // As a popup, no reading of its styles finds a frame (at any scale: none to scale).
+        assert_eq!(frame(style, MENU_EX), [0, 0, 0, 0]);
+        // Applied again (winit setting its styles once more), nothing changes.
+        assert_eq!(menu_style(style), style);
+    }
+
+    #[test]
+    fn a_menu_window_keeps_its_extended_styles() {
+        // winit's own extended styles for it, without ours: they come back.
+        let winit_ex = WS_EX_TOPMOST | 0x0000_0100 | 0x0000_0010;
+        let ex = menu_ex_style(winit_ex);
+        assert_eq!(ex & WS_EX_NOACTIVATE, WS_EX_NOACTIVATE);
+        assert_eq!(ex & WS_EX_TOOLWINDOW, WS_EX_TOOLWINDOW);
+        assert_eq!(ex & WS_EX_TOPMOST, WS_EX_TOPMOST);
+    }
+}
+
+/// The extended styles a menu window keeps: never activated, no taskbar button or Alt+Tab entry.
+fn menu_ex_style(ex: u32) -> u32 {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW};
+    ex | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW
+}
+
 /// Menu windows answer mouse-activation with "don't activate": clicking an item must not take
-/// focus from the main window (which would close the menu before the click completes).
+/// focus from the main window (which would close the menu before the click completes). They
+/// keep their popup styles when winit sets the styles again (it does on every change of its
+/// window flags, showing the window included), and their client is the whole window, with no
+/// frame (winit's borderless frame moves the client a pixel down, for a shadow drawn round a
+/// caption style, which a popup has no need of).
 unsafe extern "system" fn menu_proc(
     hwnd: HWND,
     msg: u32,
@@ -486,10 +787,27 @@ unsafe extern "system" fn menu_proc(
     _id: usize,
     _data: usize,
 ) -> LRESULT {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{STYLESTRUCT, WM_STYLECHANGING};
     const WM_MOUSEACTIVATE: u32 = 0x0021;
     const MA_NOACTIVATE: LRESULT = 3;
     if msg == WM_MOUSEACTIVATE {
         return MA_NOACTIVATE;
+    }
+    if msg == WM_STYLECHANGING && lparam != 0 {
+        // SAFETY: for WM_STYLECHANGING, lParam points to the STYLESTRUCT of the change, whose
+        // styleNew the window may alter (Win32 contract).
+        let s = unsafe { &mut *(lparam as *mut STYLESTRUCT) };
+        match wparam as i32 {
+            GWL_STYLE => s.styleNew = menu_style(s.styleNew),
+            GWL_EXSTYLE => s.styleNew = menu_ex_style(s.styleNew),
+            _ => {}
+        }
+        return 0;
+    }
+    if msg == WM_NCCALCSIZE {
+        // No non-client area: the proposed window rectangle (rgrc[0], or the RECT itself when
+        // wParam is FALSE) stays as the client's.
+        return 0;
     }
     unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) }
 }
@@ -497,14 +815,15 @@ unsafe extern "system" fn menu_proc(
 /// Make our borderless window titled `title` behave and look like a Win32 menu popup: never
 /// activated (the main window keeps focus and keyboard), no taskbar entry, Windows 11's small
 /// rounded corners, shadow and a 1 px border in `border` (0x00BBGGRR), and no window-open
-/// animation (menus just appear). Cheap to call every frame: returns true only on the call
-/// that applied it — the window is created hidden and should be shown then.
+/// animation (menus just appear); a plain popup window whose client is all of it
+/// ([`menu_style`], #208). Cheap to call every frame: returns true only on the call that applied
+/// it — the window is created hidden and should be shown then.
 pub fn menu_window(title: &str, border: u32) -> bool {
     use windows_sys::Win32::Graphics::Dwm::{
         DWMWA_BORDER_COLOR, DWMWA_TRANSITIONS_FORCEDISABLED, DWMWA_WINDOW_CORNER_PREFERENCE,
         DWMWCP_ROUNDSMALL, DwmSetWindowAttribute,
     };
-    use windows_sys::Win32::UI::WindowsAndMessaging::{WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{SWP_NOSIZE, WS_EX_NOACTIVATE};
     let Some(hwnd) = find_own_window(title) else {
         return false;
     };
@@ -520,12 +839,21 @@ pub fn menu_window(title: &str, border: u32) -> bool {
             &off as *const i32 as *const c_void,
             size_of::<i32>() as u32,
         );
-        SetWindowLongPtrW(
-            hwnd,
-            GWL_EXSTYLE,
-            (ex | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW) as isize,
-        );
+        // The subclass first: it keeps the styles below when winit sets its own again.
         SetWindowSubclass(hwnd, Some(menu_proc), 0x3e1, 0);
+        SetWindowLongPtrW(hwnd, GWL_EXSTYLE, menu_ex_style(ex) as isize);
+        let style = GetWindowLongPtrW(hwnd, GWL_STYLE) as u32;
+        SetWindowLongPtrW(hwnd, GWL_STYLE, menu_style(style) as isize);
+        // The frame measured again (WM_NCCALCSIZE): no caption, the client the whole window.
+        SetWindowPos(
+            hwnd,
+            std::ptr::null_mut(),
+            0,
+            0,
+            0,
+            0,
+            SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
+        );
         let corner = DWMWCP_ROUNDSMALL;
         DwmSetWindowAttribute(
             hwnd,
@@ -687,6 +1015,74 @@ pub fn apps_use_dark() -> bool {
         )
     };
     rc == 0 && value == 0
+}
+
+/// Windows' accent colour and its shades, from the personalisation settings (`AccentPalette`:
+/// 8 colours of 4 bytes, R G B and an unused byte, lightest first: Light3, Light2, Light1, the
+/// accent, Dark1, Dark2, Dark3, and one more). None when Windows has none (older versions).
+pub fn accent_palette() -> Option<[[u8; 3]; 7]> {
+    use windows_sys::Win32::System::Registry::{
+        HKEY_CURRENT_USER, RRF_RT_REG_BINARY, RegGetValueW,
+    };
+    let key: Vec<u16> = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent\0"
+        .encode_utf16()
+        .collect();
+    let name: Vec<u16> = "AccentPalette\0".encode_utf16().collect();
+    let mut bytes = [0u8; 32];
+    let mut size = bytes.len() as u32;
+    // SAFETY: a registry read into a 32-byte buffer of the stated size.
+    let rc = unsafe {
+        RegGetValueW(
+            HKEY_CURRENT_USER,
+            key.as_ptr(),
+            name.as_ptr(),
+            RRF_RT_REG_BINARY,
+            std::ptr::null_mut(),
+            bytes.as_mut_ptr() as *mut c_void,
+            &mut size,
+        )
+    };
+    (rc == 0 && size >= 28).then(|| crate::native::accent_palette_bytes(&bytes))
+}
+
+/// Windows' high-contrast colours while high contrast is on (Settings → Accessibility →
+/// Contrast themes): background, text, selection, selection's text, links, greyed text. None
+/// while it is off.
+pub fn high_contrast_colors() -> Option<[egui::Color32; 6]> {
+    use windows_sys::Win32::Graphics::Gdi::{
+        COLOR_GRAYTEXT, COLOR_HIGHLIGHT, COLOR_HIGHLIGHTTEXT, COLOR_HOTLIGHT, COLOR_WINDOW,
+        COLOR_WINDOWTEXT, GetSysColor,
+    };
+    use windows_sys::Win32::UI::Accessibility::{HCF_HIGHCONTRASTON, HIGHCONTRASTW};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{SPI_GETHIGHCONTRAST, SystemParametersInfoW};
+    // SAFETY: HIGHCONTRASTW is plain data; its size is set as the call requires.
+    let mut hc: HIGHCONTRASTW = unsafe { zeroed() };
+    hc.cbSize = size_of::<HIGHCONTRASTW>() as u32;
+    // SAFETY: a read into the struct above, of the size it states.
+    let ok = unsafe {
+        SystemParametersInfoW(
+            SPI_GETHIGHCONTRAST,
+            hc.cbSize,
+            &mut hc as *mut HIGHCONTRASTW as *mut c_void,
+            0,
+        )
+    };
+    if ok == 0 || hc.dwFlags & HCF_HIGHCONTRASTON == 0 {
+        return None;
+    }
+    let color = |i| {
+        // SAFETY: a plain call; COLORREF is 0x00BBGGRR.
+        let c = unsafe { GetSysColor(i) };
+        egui::Color32::from_rgb(c as u8, (c >> 8) as u8, (c >> 16) as u8)
+    };
+    Some([
+        color(COLOR_WINDOW),
+        color(COLOR_WINDOWTEXT),
+        color(COLOR_HIGHLIGHT),
+        color(COLOR_HIGHLIGHTTEXT),
+        color(COLOR_HOTLIGHT),
+        color(COLOR_GRAYTEXT),
+    ])
 }
 
 /// Sleep now (not hibernate: rundll32's SetSuspendState read its own window handle as
