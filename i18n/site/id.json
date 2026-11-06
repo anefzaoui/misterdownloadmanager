@@ -166,6 +166,10 @@
    "source": "Contribute",
    "text": "Berkontribusi"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Terakhir diperbarui 2026-11-06 · berlaku untuk aplikasi, ekstensi peramban, dan misterdownloadmanager.com"
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Jawaban tentang Mister Download Manager: apakah gratis, apakah aman, perbandingannya dengan IDM, peramban, video, torrent, kecepatan, Mac dan Linux, dan lainnya."
@@ -193,6 +197,10 @@
   "0491cdf50cd840a6": {
    "source": "RSS feeds",
    "text": "Umpan RSS"
+  },
+  "049652ed195253e0": {
+   "source": "MDM is free and always will be. If it saves you time, you can support its creator on GitHub Sponsors.",
+   "text": "MDM gratis dan akan selalu begitu. Jika MDM menghemat waktu Anda, Anda bisa mendukung pembuatnya di GitHub Sponsors."
   },
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
@@ -425,6 +433,10 @@
   "09c82864f82bd0f8": {
    "source": "Menu bar.",
    "text": "Bilah menu."
+  },
+  "09d11cac644c01da": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "Firefox (dari addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi, melalui ekstensi peramban MDM, serta peramban yang dibangun di atasnya: Zen dan LibreWolf, Helium. Ekstensi ini menyerahkan unduhan ke MDM beserta cookie dan referer-nya, sehingga berkas di balik login tetap berfungsi, dan menambahkan Unduh dengan Mister Download Manager ke menu klik kanan serta tombol Unduh video di atas video. Lihat Integrasi peramban."
   },
   "09e228aaadb34e64": {
    "source": "Each download is then held to that speed. <g1>Downloads → Speed Limiter → Turn off</g1> gives full speed again. Tick <g2>Always turn on Speed Limiter on Mister Download Manager startup</g2> to have it on every time.",
@@ -698,10 +710,6 @@
    "source": "Torrents and magnet links",
    "text": "Torrent dan tautan magnet"
   },
-  "1192c6aacd81c9e9": {
-   "source": "Last updated 2026-11-05",
-   "text": "Terakhir diperbarui 2026-11-05"
-  },
   "11c2e6a758e059a3": {
    "source": "Space",
    "text": "Spasi"
@@ -861,10 +869,6 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Ya. MDM menerima perintah baris perintah IDM yang sudah dikenal, dilengkapi dengan misterdownloadmanager-cli untuk mengunduh dari terminal, dan memiliki API otomatisasi lokal yang dilindungi token…"
-  },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "Baris dengan garis <x1/> di atasnya diterjemahkan oleh mesin. Setelah Anda memeriksanya (dan memperbaikinya jika perlu), hapus garis <x2/> tersebut."
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1034,6 +1038,10 @@
    "source": "Link grabber and archives",
    "text": "Link grabber dan arsip"
   },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>Opsi → Proksi / Socks → Adaptor jaringan</g1> menahan koneksi MDM ke satu adaptor, biasanya VPN (<g2>Opsi</g2>). Mesin torrent mengikat setiap soket ke adaptor tersebut: rekan (TCP, dan melalui proksi SOCKS), pelacak HTTP dan UDP, DHT, dan port pendengar. Di Linux dan macOS, ia mengikat adaptor itu sendiri. Di Windows, ia mengikat alamat adaptor (alamat IPv4-nya jika ada), dan Windows hanya mengirim paket melalui adaptor yang memiliki alamat sumbernya. UPnP dan penemuan rekan lokal dimatikan saat itu, karena mereka berkomunikasi dengan jaringan lokal daripada melalui adaptor."
+  },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>Gratis, selamanya.</g1> Tanpa uji coba yang kedaluwarsa, tanpa kunci lisensi, tanpa iklan. GNU GPL menjaminnya tetap gratis."
@@ -1045,10 +1053,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 dtk</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Di Windows, mesin torrent belum dapat mengikat ke adaptor. Jadi torrent tidak dimulai saat salah satu dipilih (\"torrent belum dapat melalui adaptor jaringan yang dipilih di Windows\"), daripada melewatinya. Nama pelacak masih dicari oleh DNS sistem."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1274,6 +1278,10 @@
    "source": "Windows, macOS, Linux (Java)",
    "text": "Windows, macOS, Linux (Java)"
   },
+  "1ec161dd36dfe603": {
+   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM. Opera and Vivaldi take it the same way.",
+   "text": "<g1>Mister Download Manager</g1> muncul di daftar. Biarkan tetap aktif. Sematkan tombolnya ke bilah alat untuk melihat sekilas apakah browser terhubung ke MDM. Opera dan Vivaldi menginstalnya dengan cara yang sama."
+  },
   "1ed401e594a9c102": {
    "source": "0.03 s",
    "text": "0,03 dtk"
@@ -1397,6 +1405,10 @@
   "223eac9bc2498002": {
    "source": "<g1>FTP</g1><g2>and FTPS</g2>",
    "text": "<g1>FTP</g1><g2>dan FTPS</g2>"
+  },
+  "228586c26511a211": {
+   "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
+   "text": "Buka halaman pengaya di addons.mozilla.org, <g1>Mister Download Manager</g1>, lalu klik <g2>Tambahkan ke Firefox</g2>. Zen dan LibreWolf menggunakan halaman yang sama."
   },
   "22b1c6afc644a89a": {
    "source": "Small and quick to set up, with a browser extension that catches video and audio",
@@ -1610,6 +1622,10 @@
    "source": "What a report contains",
    "text": "Apa yang terkandung dalam laporan"
   },
+  "276afd4c43c34307": {
+   "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos.",
+   "text": "Ekstensi ini menyerahkan unduhan browser Anda ke MDM beserta cookie-nya, menambahkan <g1>Unduh dengan Mister Download Manager</g1> ke menu klik kanan, dan menempatkan tombol <g2>Unduh video</g2> di atas video."
+  },
   "276d4f05431a73f3": {
    "source": "<g1>The automation API's JSON Schema</g1>, <g2>automation-api.schema.json</g2>, made from the code the app answers with. Each download in its list now says why it failed (<x3/>), and the \"it is off\" answer carries <x4/> for programs to check.",
    "text": "<g1>Skema JSON API otomatisasi</g1>, <g2>automation-api.schema.json</g2>, dibuat dari kode yang dijawab aplikasi. Setiap unduhan dalam daftarnya sekarang menyatakan mengapa unduhan gagal (<x3/>), dan jawaban \"mati\" membawa <x4/> untuk diperiksa program."
@@ -1689,6 +1705,10 @@
   "298c9f2b74a2990f": {
    "source": "How it works",
    "text": "Cara kerjanya"
+  },
+  "2991dd6051b6e56c": {
+   "source": "By hand for now, while the Chrome Web Store reviews the extension. Its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
+   "text": "Secara manual untuk saat ini, selagi Chrome Web Store meninjau ekstensi. File-nya ada di folder <x1/> tempat MDM diinstal: <x2/> jika Anda menginstalnya untuk diri sendiri, atau <x3/> jika Anda menginstalnya untuk semua orang. Setiap rilis juga menyediakannya sebagai unduhan tersendiri, <x4/> (ekstrak dulu)."
   },
   "29b29fea4e1dcc73": {
    "source": "Download limits",
@@ -2474,6 +2494,10 @@
    "source": "<g1><g2>Yes</g2></g1><g3>Apache-2.0</g3>",
    "text": "<g1><g2>Ya</g2></g1><g3>Apache-2.0</g3>"
   },
+  "3d950db13c28924b": {
+   "source": "Sponsor on GitHub",
+   "text": "Sponsori di GitHub"
+  },
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "Klik <g1>Lanjutkan</g1> di bilah alat (atau klik kanan → <g2>Lanjutkan Unduhan</g2>)."
@@ -2505,6 +2529,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "Anda tidak perlu memulai MDM terlebih dahulu. Saat browser menyerahkan unduhan dan MDM tidak berjalan, pembantu akan memulainya dan meneruskan unduhan tersebut."
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "Ini berfungsi sebagai sakelar pemutus. Saat adaptor terputus, torrent yang sedang berjalan berhenti dengan pesan \"… tidak terhubung; akan dilanjutkan saat terhubung kembali\", dan akan mulai lagi melalui adaptor saat terhubung. Sampai MDM menyadarinya (dalam satu detik), soket mesin masih terikat ke alamat yang sudah tidak ada, sehingga tidak ada yang bisa keluar dengan cara lain. Torrent yang ditambahkan saat adaptor tidak terhubung tidak akan dimulai, dan akan memberitahukan alasannya. Nama pelacak masih dicari oleh DNS sistem."
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -2634,6 +2662,10 @@
    "source": "Crash reports",
    "text": "Laporan kerusakan"
   },
+  "41d7fb067ecb2748": {
+   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g2>Download with Mister Download Manager</g2> to the right-click menu and a <g3>Download video</g3> button over videos. See <g4>Browser integration</g4>.",
+   "text": "Firefox (dari <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi, melalui ekstensi peramban MDM, serta peramban yang dibangun di atasnya: Zen dan LibreWolf, Helium. Ekstensi ini menyerahkan unduhan ke MDM beserta cookie dan referer-nya, sehingga berkas di balik login tetap berfungsi, dan menambahkan <g2>Unduh dengan Mister Download Manager</g2> ke menu klik kanan serta tombol <g3>Unduh video</g3> di atas video. Lihat <g4>Integrasi peramban</g4>."
+  },
   "4208f79380d548a0": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (sekitar 80 MB) menggabungkan video dan suaranya saat situs memisahkannya, yang dilakukan sebagian besar situs untuk kualitas yang lebih tinggi, dan mengubah suara menjadi file MP3, Opus, atau FLAC. Klik <g2>Instal ffmpeg</g2> saat MDM menawarkannya. MDM memeriksanya terhadap checksum yang diterbitkan rilisnya."
@@ -2694,9 +2726,17 @@
    "source": "Links that come while the window is open join the ones already there. A link that is already in the window isn't added twice. A link that is already in your download list goes under <g1>Already in the list</g1>, unticked.",
    "text": "Tautan yang masuk saat jendela terbuka akan bergabung dengan tautan yang sudah ada. Tautan yang sudah ada di jendela tidak akan ditambahkan dua kali. Tautan yang sudah ada di daftar unduhan Anda akan masuk ke bagian <g1>Sudah ada dalam daftar</g1>, tidak dicentang."
   },
+  "43ff6b9c3376c383": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
+   "text": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi"
+  },
   "4409b6268f79d30a": {
    "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
    "text": "<g1>Menempel.</g1> Pilih <g2>Tugas → Link grabber...</g2> dan tekan <g3>Ctrl+V</g3>: setiap alamat web dalam teks yang disalin akan ditambahkan."
+  },
+  "440d7c9f4a9ff3a8": {
+   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose <g4>Load unpacked</g4> and pick the <x5/> folder in MDM's folder. The <g6>tutorial</g6> walks through it.",
+   "text": "Instal MDM dengan program pemasang dan biarkan <g1>Siapkan integrasi peramban</g1> tetap dicentang. Di Firefox, lalu buka <g2>halaman pengaya di addons.mozilla.org</g2> dan klik <g3>Tambahkan ke Firefox</g3>. Di Chrome, Edge, Brave, Opera, dan Vivaldi, muat secara manual untuk saat ini, selagi Chrome Web Store meninjaunya: buka halaman ekstensi peramban, aktifkan Mode pengembang, pilih <g4>Muat yang belum dikemas</g4> dan pilih folder <x5/> di folder MDM. <g6>Tutorial</g6> akan memandu Anda."
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -3078,6 +3118,10 @@
    "source": "Check <g1>Save to</g1> (the Video category's folder by default) and <g2>File name</g2>, which comes from the video's title.",
    "text": "Periksa <g1>Simpan ke</g1> (folder kategori Video secara default) dan <g2>Nama file</g2>, yang berasal dari judul video."
   },
+  "4e46cacda919db98": {
+   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> (from <x2/>) is removed when Firefox closes. Remove it and install the add-on from <g3>its page on addons.mozilla.org</g3> instead: Firefox keeps that one, and updates it.",
+   "text": "Pengaya yang dimuat dengan <g1>Load Temporary Add-on</g1> (dari <x2/>) akan dihapus saat Firefox ditutup. Hapus pengaya tersebut dan instal dari <g3>halamannya di addons.mozilla.org</g3> sebagai gantinya: Firefox akan menyimpannya dan memperbaruinya."
+  },
   "4f23b5962ea59819": {
    "source": "<g1>ffmpeg</g1><g2>merges picture and sound</g2>",
    "text": "<g1>ffmpeg</g1><g2>menggabungkan gambar dan suara</g2>"
@@ -3298,6 +3342,10 @@
    "source": "What it takes",
    "text": "Apa yang diperlukan"
   },
+  "54e5466052010a84": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
+   "text": "MDM sendiri menyiapkan integrasi browser setiap kali dimulai di Linux dan macOS (browser yang terinstal saat itu akan ditemukan); tambahkan ekstensi seperti di <g1>Integrasi browser</g1>. Browser yang diinstal sebagai Flatpak atau Snap mungkin tidak dapat menjangkau MDM."
+  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "Klik <g1>Penjadwal</g1> di bilah alat (atau <g2>Unduhan → Penjadwal</g2>)."
@@ -3485,6 +3533,14 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "Mulai menyiapkan"
+  },
+  "59e78792626130dd": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension: Firefox's from <g1>its add-ons store</g1>, the others by hand for now. Without the extension, copy a link and MDM opens the download window. <g2>More</g2>",
+   "text": "Firefox, Chrome, Edge, Brave, Opera, dan Vivaldi melalui ekstensi: untuk Firefox dari <g1>toko pengaya-nya</g1>, yang lain secara manual untuk saat ini. Tanpa ekstensi, salin tautan dan MDM akan membuka jendela unduhan. <g2>Selengkapnya</g2>"
+  },
+  "5a277738c32493f8": {
+   "source": "Support MDM",
+   "text": "Dukung MDM"
   },
   "5a4d6f48645f0903": {
    "source": "Windows, macOS, Linux",
@@ -3902,6 +3958,10 @@
    "source": "<g1>Status</g1> — <g2>Connecting...</g2>, <g3>Receiving data...</g3>, <g4>Paused</g4>, <g5>Complete</g5> or the error.",
    "text": "<g1>Status</g1> — <g2>Menyambungkan...</g2>, <g3>Menerima data...</g3>, <g4>Dijeda</g4>, <g5>Selesai</g5> atau kesalahan."
   },
+  "63e26fb51d5d8858": {
+   "source": "Sponsor",
+   "text": "Sponsori"
+  },
   "63f14dc462397998": {
    "source": "Get MDM <g1>only from this site or the project's GitHub releases</g1>. Copies elsewhere may be altered.",
    "text": "Dapatkan MDM <g1>hanya dari situs ini atau rilis GitHub proyek</g1>. Salinan di tempat lain mungkin telah diubah."
@@ -4005,6 +4065,10 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "Untuk merutekan <g1>semuanya</g1> melalui jaringan lain, gunakan VPN untuk seluruh komputer."
+  },
+  "67b7e3e016904e39": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
+   "text": "Instal MDM dengan program pemasang dan biarkan Set up browser integration tetap dicentang. Di Firefox, lalu buka halaman pengaya di addons.mozilla.org dan klik Add to…"
   },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
@@ -4141,6 +4205,10 @@
   "6a664e307dbf6d65": {
    "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
    "text": "<g1>Plain DNS</g1>: tidak terenkripsi. MDM memintanya melalui TCP, tidak pernah UDP, sehingga tidak pernah memerlukan pengecualian firewall."
+  },
+  "6a721813ad40ae31": {
+   "source": "<g1>Firefox</g1><g2>Mozilla · <g3>Add to Firefox</g3></g2>",
+   "text": "<g1>Firefox</g1><g2>Mozilla · <g3>Tambah ke Firefox</g3></g2>"
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4454,6 +4522,10 @@
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
    "text": "Unduh gambar-gambar galeri (kategori Wikimedia Commons, album Flickr, ...) ke dalam folder yang dinamai sesuai galeri tersebut di dalam <x1/>; <x2/> mengambil paling banyak sejumlah itu, yang pertama dicantumkan situs. Jika dimulai lagi, hanya mengambil yang baru."
   },
+  "720d6bdebec42762": {
+   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: by hand for now, while the Chrome Web Store reviews it. It comes with the app, in its <x2/> folder, and <g3>as its own download</g3> (<x4/>: unzip, then <g5>Load unpacked</g5> on the browser's extensions page with Developer mode on). The <g6>step-by-step guide</g6> shows each browser.",
+   "text": "<g1>Chrome, Edge, Brave, Opera, dan Vivaldi</g1>: untuk saat ini, secara manual, selagi Chrome Web Store meninjaunya. Ekstensi ini disertakan dengan aplikasi, di folder <x2/>, dan <g3>sebagai unduhan terpisah</g3> (<x4/>: ekstrak, lalu <g5>Muat ekstensi yang belum dikemas</g5> di halaman ekstensi browser dengan mode Pengembang diaktifkan). <g6>Panduan langkah demi langkah</g6> menunjukkan setiap browser."
+  },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
    "text": "1.2.0 desktop beta<g1>25 Okt 2026</g1>"
@@ -4465,10 +4537,6 @@
   "7255d87a5a4d1b5d": {
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "Seluruh sumber bersifat publik, dan setiap rilis dibangun darinya di server GitHub. Tanpa adware, tanpa spyware, tanpa penawaran yang dibundel. Pembantu yang diunduh untuk video diverifikasi sebelum dijalankan. <g1>Selengkapnya</g1>"
-  },
-  "725638a5e448140e": {
-   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Terakhir diperbarui 2026-11-05 · berlaku untuk aplikasi, ekstensi peramban, dan misterdownloadmanager.com"
   },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
@@ -4665,6 +4733,10 @@
   "77a30c9b7d2a6105": {
    "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
    "text": "Semuanya bisa dilakukan dari keyboard, dan MDM berfungsi dengan pembaca layar (seperti Narrator dan NVDA di Windows): jendela, dialog, dan menunya memberi tahu mereka apa setiap kontrol dan statusnya, serta daftar unduhan membaca nama, status, dan ukuran setiap unduhan. Panel <g1>Kategori</g1> terbaca sebagai pohon (setiap kategori dengan jumlahnya, terbuka atau tertutup, terpilih atau tidak), dan bilah menu serta setiap menu klik kanan sebagai menu yang itemnya dapat dijalankan dari sana."
+  },
+  "77a524c1d8c2a24b": {
+   "source": "<g1>Firefox</g1> (and Zen, LibreWolf): one click from its add-ons store, and Firefox keeps it up to date.",
+   "text": "<g1>Firefox</g1> (dan Zen, LibreWolf): satu klik dari toko add-on-nya, dan Firefox akan selalu memperbaruinya."
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -4902,6 +4974,10 @@
    "source": "While it downloads.",
    "text": "Selama mengunduh."
   },
+  "7d66a86529cac810": {
+   "source": "Sponsor the creator",
+   "text": "Sponsori kreator"
+  },
   "7d71c5be1f245ab6": {
    "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
    "text": "<g1>Commit size</g1> adalah memori yang sudah MDM pesan, baik sedang dipakai atau tidak."
@@ -4909,10 +4985,6 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Diperlukan Firefox 140 atau yang lebih baru."
-  },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>Opsi → Proksi / Socks → Adaptor jaringan</g1> menahan koneksi MDM ke satu adaptor, biasanya milik VPN (<g2>Opsi</g2>). Di Linux dan macOS, mesin torrent mengikat setiap soket ke sana: rekan, pelacak, DHT, dan port pendengarnya. UPnP dan penemuan rekan lokal dimatikan saat itu, karena mereka berbicara ke jaringan lokal daripada melalui adaptor. Jika adaptor hilang, mesin berhenti, dan mulai lagi melalui adaptor saat kembali."
   },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
@@ -4989,6 +5061,10 @@
   "7f12a262bf26f1cd": {
    "source": "Description",
    "text": "Deskripsi"
+  },
+  "7f50cb9ccd546bfc": {
+   "source": "Sponsor the creator on GitHub",
+   "text": "Sponsori kreator di GitHub"
   },
   "7f6e9b487e59c00f": {
    "source": "The list shows the queue's downloads in the order they will run. The arrow buttons under it move the selected download down or up; the cross takes it out of the queue.",
@@ -5237,6 +5313,14 @@
   "853ac467ba7801e6": {
    "source": "Put downloads in a queue →",
    "text": "Masukkan unduhan ke dalam antrean →"
+  },
+  "855283d97ca22cdb": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others by hand for now, while the Chrome Web Store reviews it.",
+   "text": "Tambahkan ekstensi ke setiap browser yang Anda gunakan, seperti di bawah ini: Firefox dari toko add-on-nya, yang lain secara manual untuk saat ini, selagi Chrome Web Store meninjaunya."
+  },
+  "859b311c937bc36f": {
+   "source": "In Chrome, Edge or Brave",
+   "text": "Di Chrome, Edge, atau Brave"
   },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
@@ -5490,6 +5574,10 @@
    "source": "Can it download a video's subtitles?",
    "text": "Bisakah MDM mengunduh subtitel video?"
   },
+  "8c9a12e93a193e44": {
+   "source": "In Firefox",
+   "text": "Di Firefox"
+  },
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "Koneksi per file"
@@ -5597,6 +5685,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB dalam 1,0 dtk</g1> <g2>IDM: 5,5 dtk</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Adaptor jaringan</g1> — <g2>Apa pun (sistem memilih)</g2> adalah pengaturan bawaan. Pilih adaptor, biasanya adaptor VPN Anda, dan setiap koneksi yang dibuka MDM akan melalui adaptor tersebut, atau tidak sama sekali. Ini mencakup unduhan, FTP, torrent, DNS yang Anda pilih, unduhan MDM sendiri, dan pemeriksaan pembaruan. Ini berfungsi sebagai sakelar pemutus: ketika adaptor terputus, atau VPN dimatikan, tidak ada yang keluar melalui koneksi normal Anda. Unduhan yang sedang berjalan berhenti dengan pesan \"… tidak terhubung\" dan mulai lagi ketika adaptor kembali. Baris di bawah daftar menunjukkan alamat adaptor, atau bahwa adaptor tidak terhubung."
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -5729,6 +5821,10 @@
   "9353e613d2835a1f": {
    "source": "Find by name",
    "text": "Cari berdasarkan nama"
+  },
+  "938b387bfbc70706": {
+   "source": "Browser extension: <g1><x2/>Add to Firefox</g1>. For Chrome, Edge, Brave and Opera, by hand for now, while the Chrome Web Store reviews it. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>",
+   "text": "Ekstensi peramban: <g1><x2/>Tambah ke Firefox</g1>. Untuk Chrome, Edge, Brave, dan Opera, saat ini secara manual, selagi Chrome Web Store meninjaunya. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>"
   },
   "93a9d8c882d29583": {
    "source": "Tick <g1>Use Speed Limiter</g1>.",
@@ -6134,6 +6230,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "Tujuh unduhan, masing-masing dijalankan setidaknya tujuh kali oleh kedua aplikasi. Batang menunjukkan paruh tengah dari jalannya, garis menunjukkan median."
   },
+  "9e4744c9b576debc": {
+   "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
+   "text": "Buka halaman web dan klik tautan unduhan, misalnya file ZIP atau EXE: MDM akan membuka <g1>Info File Unduhan</g1>. Klik <g2>Mulai Unduhan</g2>."
+  },
   "9e5f6ea1de61f755": {
    "source": "Blocking addresses",
    "text": "Memblokir alamat"
@@ -6201,6 +6301,10 @@
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "Terjemahan yang lebih panjang dari bahasa Inggris akan berakhir dengan <g1>...</g1> jika tidak muat; arahkan kursor ke sana untuk membacanya secara keseluruhan."
+  },
+  "a06fa72ad54fa126": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
+   "text": "Instal MDM dengan program pemasang dan biarkan Set up browser integration tetap dicentang. Di Firefox, lalu buka halaman pengaya di addons.mozilla.org dan klik Add to Firefox. Di Chrome, Edge, Brave, Opera, dan Vivaldi, muat secara manual untuk saat ini, selagi Chrome Web Store meninjaunya: buka halaman ekstensi peramban, aktifkan Developer mode, pilih Load unpacked dan pilih folder extension\\chromium di folder MDM. Tutorial akan memandu Anda."
   },
   "a09cf46e49e64bbb": {
    "source": "A sweep through every window for the small things that make a program feel finished: how each control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers, and a long list of fixes found by reviewing all of it (issue #7 and more).",
@@ -6698,6 +6802,10 @@
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "Mencari unduhan dalam daftar panjang — Bantuan Mister Download Manager"
   },
+  "ad06056d9a651b28": {
+   "source": "Firefox asks to confirm: click <g1>Add</g1>. Firefox keeps the add-on up to date.",
+   "text": "Firefox akan meminta konfirmasi: klik <g1>Tambahkan</g1>. Firefox akan terus memperbarui pengaya."
+  },
   "ad15abc4931df4fd": {
    "source": "; a choice's <x1/> is what <x2/> takes, a subtitle's <x3/> what <x4/> takes.",
    "text": "; <x1/> pilihan adalah apa yang diambil <x2/>, <x3/> subtitle adalah apa yang diambil <x4/>."
@@ -6717,10 +6825,6 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Kategori</g1> — dipilih dari jenis file (Terkompresi, Dokumen, Musik, Program, Video, atau Umum). Setiap kategori memiliki foldernya sendiri. <g2>+</g2> di sampingnya membuat kategori baru."
-  },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Adaptor jaringan</g1> — <g2>Apa pun (sistem memilih)</g2> adalah pengaturan bawaan. Pilih adaptor, biasanya adaptor VPN Anda, dan setiap koneksi yang dibuka MDM akan melalui adaptor tersebut, atau tidak sama sekali. Ini mencakup unduhan, FTP, DNS yang Anda pilih, unduhan MDM sendiri, dan pemeriksaan pembaruan. Ini berfungsi sebagai sakelar pemutus: ketika adaptor terputus, atau VPN dimatikan, tidak ada yang keluar melalui koneksi normal Anda. Unduhan yang sedang berjalan berhenti dengan \"… tidak terhubung\" dan dimulai lagi ketika adaptor kembali. Baris di bawah daftar menunjukkan alamat adaptor, atau bahwa adaptor tidak terhubung."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -6829,6 +6933,10 @@
   "afae30c6c42a7afb": {
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "Jika Mister Download Manager ditutup secara tidak terduga atau berhenti merespons, jendela <g1>laporan kerusakan</g1> akan terbuka. Jendela ini menunjukkan apa yang terjadi, memungkinkan Anda membaca seluruh laporan, dan dapat mengirimkannya ke pengembang di GitHub. Setiap laporan membantu memperbaiki masalah untuk semua orang."
+  },
+  "afb13e3cfd9283df": {
+   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.",
+   "text": "Cukup atur ekstensi sekali, dan setiap tautan unduhan yang Anda klik di Firefox, Chrome, Edge, atau Brave akan masuk ke MDM."
   },
   "afc32cfba2a08d06": {
    "source": "Choose a download",
@@ -7022,6 +7130,10 @@
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>Unduhan MDM sendiri menggunakan pengunduh miliknya</g1>: yt-dlp, ffmpeg, pembaruan MDM, dan simbol laporan kerusakan kini diunduh dengan beberapa koneksi, dapat dilanjutkan setelah koneksi terputus, dan melewati pengaturan proksi Anda. Setiap file masih diperiksa terhadap checksum yang ditandatangani oleh penerbitnya sebelum digunakan."
   },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "Baris dengan garis <x1/> di atasnya diterjemahkan oleh mesin. Setelah Anda memeriksanya (dan mengoreksinya jika perlu), hapus garis <x2/> itu. Sejak saat itu baris tersebut menjadi milik Anda: terjemahan mesin tidak akan pernah menggantinya."
+  },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
    "text": "Mempelajari batas dari jawaban server, mematuhinya, dan mengingatnya untuk lain waktu. Selesai dalam 12,6 d."
@@ -7130,6 +7242,10 @@
    "source": "On <g1>Q</g1>, tick <g2>In a queue</g2> or <g3>Not in a queue</g3>.",
    "text": "Pada <g1>Antrean</g1>, centang <g2>Dalam antrean</g2> atau <g3>Tidak dalam antrean</g3>."
   },
+  "b7da4b8cc0d5495e": {
+   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge and Brave, which downloads it takes, and what happens when MDM isn't running.",
+   "text": "<g1><g2>Integrasi peramban</g2></g1> — ekstensi untuk Firefox (dari addons.mozilla.org), Chrome, Edge, dan Brave, unduhan apa yang diambilnya, dan apa yang terjadi jika MDM tidak berjalan."
+  },
   "b7e47ad1f6a91134": {
    "source": "The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.",
    "text": "Aplikasi ini tersedia dalam 86 bahasa, semua yang ditawarkan Windows 11. Aplikasi ini mengikuti bahasa komputer Anda, dan Anda dapat mengubahnya kapan saja di Tampilan → Bahasa."
@@ -7162,6 +7278,10 @@
    "source": "Click <g1>Apply</g1>.",
    "text": "Klik <g1>Terapkan</g1>."
   },
+  "b8face0bc8562340": {
+   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
+   "text": "Apakah ekstensi sudah dimuat dan diaktifkan? Cari <g1>Mister Download Manager</g1> di halaman ekstensi browser. Di Firefox, instal dari addons.mozilla.org: add-on sementara akan hilang setelah browser dimulai ulang. Lihat <g2>Integrasi browser</g2>."
+  },
   "b921c33f58e520a8": {
    "source": "<g1>5.4×</g1><g2>faster</g2>",
    "text": "<g1>5,4×</g1><g2>lebih cepat</g2>"
@@ -7173,6 +7293,10 @@
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 bahasa, juga kanan ke kiri"
+  },
+  "b95c95d9143dace0": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them…",
+   "text": "Firefox (dari addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera, dan Vivaldi, melalui ekstensi peramban MDM, serta peramban yang dibangun di atasnya…"
   },
   "b95ce4f23354e44d": {
    "source": "AI assistants (MCP) — Mister Download Manager help",
@@ -7269,6 +7393,10 @@
   "bc1065924c4077d9": {
    "source": "The Pieces tab: a square for each piece, filled once it's here",
    "text": "Tab Potongan: kotak untuk setiap potongan, terisi setelah ada"
+  },
+  "bc21a99be8efd606": {
+   "source": "By hand for now, while the Chrome Web Store reviews the extension:",
+   "text": "Untuk saat ini, secara manual, selagi Chrome Web Store meninjau ekstensi:"
   },
   "bc21bd767c7774ea": {
    "source": "The terms for using Mister Download Manager and misterdownloadmanager.com: free software under the GNU GPL 3.0, used at your own risk, for downloads you have the right to make.",
@@ -7998,6 +8126,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Setiap unduhan yang berjalan memiliki jendela progresnya sendiri. Jendela ini terbuka saat unduhan dimulai; untuk membukanya lagi, klik dua kali unduhan tersebut dalam daftar."
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "Terakhir diperbarui 2026-11-06"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "File dari torrent ditandai sebagai <g1>diunduh dari internet</g1>, seperti unduhan browser. Windows SmartScreen memeriksa program sebelum pertama kali dijalankan, dan Office membuka dokumen di Tampilan Terproteksi. Di Mac, Gatekeeper memeriksa aplikasi."
@@ -8225,6 +8357,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "Ujung ke ujung, median (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "Baris tanpa tanda <x1/> adalah milik Anda mulai saat itu: <x2/> tidak akan pernah mengirimkannya ke terjemahan mesin lagi, dan CI (<x3/>) akan menolak permintaan tarik apa pun yang menghapusnya atau menandainya <x4/> lagi."
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
@@ -8658,6 +8794,10 @@
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
    "text": "<g1>Unduh tautan terpilih</g1> dan <g2>Unduh semua tautan</g2> membaca tautan halaman (atau pilihan Anda) saat Anda memilihnya, dan meneruskannya ke MDM bersama alamat halaman dan cookie situsnya."
   },
+  "e39c7ec3d5c0fd70": {
+   "source": "The browser extension: for Firefox, from its add-ons store. For Chrome, Edge, Brave, Opera and Vivaldi it comes with the app and as <g1>its own download</g1>, added by hand for now, while the Chrome Web Store reviews it. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
+   "text": "Ekstensi peramban: untuk Firefox, dari toko pengaya-nya. Untuk Chrome, Edge, Brave, Opera, dan Vivaldi, ekstensi ini disertakan dengan aplikasi dan sebagai <g1>unduhan tersendiri</g1>, ditambahkan secara manual untuk saat ini, selagi Chrome Web Store meninjaunya. Setiap berkas dibuat dari sumber publik oleh GitHub Actions dan dicantumkan dengan checksum SHA-256-nya."
+  },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
    "text": "Ke mana waktu pergi"
@@ -8890,6 +9030,10 @@
    "source": "The free IDM alternative: Mister Download Manager",
    "text": "Alternatif IDM gratis: Mister Download Manager"
   },
+  "e87dda35b116dcd8": {
+   "source": "Add to Firefox",
+   "text": "Tambahkan ke Firefox"
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "Integrasi browser secara detail (Firefox, jendela pribadi, apa yang dikirim) →"
@@ -8933,6 +9077,10 @@
   "eac1d064497401fd": {
    "source": "It comes with every download of MDM, next to the app (the installer puts it in MDM's folder). It works on its own: the app needn't run, except for <x1/> and <x2/>.",
    "text": "Ini disertakan dengan setiap unduhan MDM, di samping aplikasi (penginstal menempatkannya di folder MDM). Ini berfungsi sendiri: aplikasi tidak perlu berjalan, kecuali untuk <x1/> dan <x2/>."
+  },
+  "eacdcb2992653dee": {
+   "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
+   "text": "Dibutuhkan Firefox 140 atau yang lebih baru. Instal add-on dari halamannya di addons.mozilla.org, <g1>Mister Download Manager</g1>: klik <g2>Tambahkan ke Firefox</g2>. Firefox akan terus memperbaruinya. Zen dan LibreWolf menginstalnya dari halaman yang sama. (Jendela <g3>Tambahkan Mister Download Manager ke browser Anda</g3> MDM akan membuka halaman itu untuk Anda.)"
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9273,6 +9421,10 @@
   "f3a16665a583e72f": {
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "Daftar menunjukkan urutan unduhan akan berjalan. Gunakan tombol panah di bawahnya untuk memindahkan unduhan ke atas atau ke bawah."
+  },
+  "f3b0722f5a504a62": {
+   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge and Brave, load it by hand for now, while the Chrome Web Store reviews it. <g3>Browser integration</g3> shows how.",
+   "text": "Integrasi browser memerlukan satu langkah lagi di setiap browser: menambahkan ekstensi. Di Firefox, klik <g1>Tambahkan ke Firefox</g1> di <g2>halamannya di addons.mozilla.org</g2>; di Chrome, Edge, dan Brave, muat secara manual untuk saat ini, sementara Chrome Web Store meninjaunya. <g3>Integrasi browser</g3> menunjukkan caranya."
   },
   "f3d28d86765197f1": {
    "source": "Intel",

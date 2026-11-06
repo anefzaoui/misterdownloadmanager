@@ -12,6 +12,9 @@ use crate::winui::{self, ButtonKind, r};
 
 /// The repository: home page, user guide (`docs/`), problem reports, source, licences.
 pub const REPO: &str = "https://github.com/anefzaoui/misterdownloadmanager";
+/// The creator's GitHub Sponsors page: Help → Support MDM, About's last line. The website, the
+/// extension's popup and the repository's Sponsor button (.github/FUNDING.yml) point there too.
+pub const SPONSORS: &str = "https://github.com/sponsors/anefzaoui";
 const LATEST: &str = "https://api.github.com/repos/anefzaoui/misterdownloadmanager/releases/latest";
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const COMMIT: &str = env!("MDM_COMMIT");
@@ -29,6 +32,15 @@ pub fn open_page(path: &str) {
         format!("{REPO}/blob/main/docs/{path}")
     };
     let _ = open::that_detached(url);
+}
+
+/// Help → Support MDM and About's link: the Sponsors page in the browser. Asked for only: MDM
+/// never brings it up by itself, and never in an off-screen test run (MDM_OFFSCREEN), whose
+/// clicks come from scripts, not from a person at the browser.
+pub fn support() {
+    if !crate::offscreen() {
+        let _ = open::that_detached(SPONSORS);
+    }
 }
 
 /// A new GitHub issue on the Bug report form (.github/ISSUE_TEMPLATE/bug.yml), filled with
@@ -565,7 +577,7 @@ impl About {
             ctx,
             "about",
             "About Mister Download Manager",
-            [420.0, 214.0 + extra],
+            [420.0, 236.0 + extra],
             false,
             winui::BG(),
             |ui, o| {
@@ -634,11 +646,23 @@ impl About {
                 ) {
                     let _ = open::that_detached(format!("{REPO}/blob/main/ATTRIBUTION.md"));
                 }
-                // The links' last row ends above OK (at 182 when it fits as planned).
-                crate::dialogs::grow_px(ui.ctx(), "about", y + 12.0 - (o.y + 172.0));
+                // Its own row under them: the creator's Sponsors page (Help → Support MDM).
+                y += 22.0;
+                if winui::link(
+                    ui,
+                    &p,
+                    o.x + 80.0,
+                    y,
+                    "Support MDM on GitHub Sponsors",
+                    "support",
+                ) {
+                    support();
+                }
+                // The last row ends above OK (at 204 when it fits as planned).
+                crate::dialogs::grow_px(ui.ctx(), "about", y + 12.0 - (o.y + 194.0));
                 let ok = winui::button(
                     ui,
-                    r(o, 336.0, 182.0 + extra, 73.0, 21.0),
+                    r(o, 336.0, 204.0 + extra, 73.0, 21.0),
                     "OK",
                     ButtonKind::Default,
                     false,

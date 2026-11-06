@@ -60,6 +60,10 @@ by machine translation, and each row marked `#, machine` waits for a native spea
 2. Fix the translation in the row's third column and delete its `#, machine` line.
 3. Keep `{placeholders}` and the one `&` (the keyboard shortcut letter) as they are.
 
+A row without its `#, machine` line is yours from then on: `tools/i18n/translate.py` never sends
+it to machine translation again, and CI (`tools/i18n/reviewed_guard.py`) fails any pull request
+that drops it or marks it `#, machine` again.
+
 `cargo test -p mdm-app every_catalog` checks every catalog. To see whether your texts fit, set
 `MDM_FIT_AUDIT` to a file and take the screenshots in your language
 (`tools\lab\docs-shots.ps1 ... -Lang <code>`): every text that runs past its window or over

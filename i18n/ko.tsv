@@ -2827,6 +2827,9 @@
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	일요일
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Support MDM on GitHub Sponsors	GitHub Sponsors에서 MDM 지원
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	동기화 큐
@@ -3245,10 +3248,6 @@
 #. category name: torrent downloads (BitTorrent)
 #, machine
 	Torrents	토렌트
-#. text in torrent downloads
-#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
-#, machine
-	torrents can't go through a chosen network adapter on Windows yet	Windows에서는 선택한 네트워크 어댑터를 통해 토렌트를 사용할 수 없습니다.
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -4024,6 +4023,10 @@ extension	Protected video: it can't be saved	보호된 비디오: 저장할 수 
 #, machine
 extension	Sent to Mister Download Manager	Mister Download Manager으로 보냄
 #. text in the browser extension
+#. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
+#, machine
+extension	Support MDM	MDM 지원
+#. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
 extension	Take downloads from this browser	이 브라우저에서 다운로드 가져오기
@@ -4537,6 +4540,10 @@ menu	Stop	중지
 #. menu command in the main window
 #, machine
 menu	Stop Download	다운로드 중지
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Support &MDM	MDM &지원
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

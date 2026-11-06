@@ -44,7 +44,7 @@ context	source	translation
 ```
 
 - **source** is the English text; leave it as it is. Change only **translation**.
-- A row with a `#, machine` line above it was translated by machine. When you have checked it (and corrected it if needed), delete that `#, machine` line.
+- A row with a `#, machine` line above it was translated by machine. When you have checked it (and corrected it if needed), delete that `#, machine` line. From then on the row is yours: machine translation never replaces it.
 - Lines starting with `#.` are notes for translators: where the text appears and what it means.
 - Keep `{name}` slots, such as `{n}` or `{file}`, exactly as they are. You can move them within the sentence.
 - `&` marks the keyboard letter of a menu item or button. Keep one `&` before a letter of your translation.

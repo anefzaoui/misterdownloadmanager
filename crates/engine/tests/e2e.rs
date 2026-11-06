@@ -282,27 +282,57 @@ async fn a_refusal_below_the_learned_cap_is_retried() {
     // a connection of ours that just closed and the server hasn't noticed yet): the second
     // connection is refused while only one works. It must come back once the slot frees, not
     // leave the whole file to one connection (benchmark 2026-10-29).
-    let s = server("rate=2M&max_conns=2").await;
+    // The blocker holds its slot until our download has been refused (it stops at its byte
+    // 12 MiB, held back by the server, until the faults change): on a busy machine it used to be
+    // done before our second connection asked (#136). Our file is shorter, so it isn't held.
+    let s = server("rate=2M&max_conns=2&stall_at=12M").await;
     let limits = std::sync::Arc::new(mdm_engine::hosts::HostLimits::default());
     limits.refused("127.0.0.1", 2);
     limits.refused("127.0.0.1", 2);
-    // Margins both ways, for slow, busy machines: the blocker (1 MiB at 2 MB/s) holds its slot
-    // for about half a second, long enough for our download to start into it (512 KiB was gone
-    // first on CI runners); the file (8 MiB, 4 s on one connection) outlasts the retries'
-    // growing waits, so a second connection can still join.
     let blocker = tokio::spawn(
-        reqwest::get(s.url("/gen/1M/blocker.bin?seed=1"))
+        reqwest::get(s.url("/gen/16M/blocker.bin?seed=1&rate=0"))
             .await
             .unwrap()
             .bytes(),
     );
-    tokio::time::sleep(std::time::Duration::from_millis(50)).await;
     let opts = Options {
         host_limits: Some(limits),
         ..fast_opts()
     };
-    let (log, size) = fetch(&s, "/gen/8M/c.bin?seed=33", 33, opts).await;
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/8M/c.bin?seed=33").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, opts);
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    while !s
+        .log()
+        .iter()
+        .any(|e| e.path.contains("c.bin") && e.outcome == "fault:max_conns")
+    {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "the blocker held a slot"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    // The slot frees: a second connection can join.
+    s.set_faults(Faults::parse("rate=2M&max_conns=2").unwrap());
+    let out = dl.wait().await.expect("download succeeds");
+    let size = out.size;
+    let mut want = vec![0; 8 << 20];
+    content::fill(33, 0, &mut want);
+    assert!(
+        std::fs::read(&out.path).unwrap() == want,
+        "content mismatch"
+    );
     blocker.await.unwrap().unwrap();
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
     assert_eq!(size, 8 << 20);
     let ours: Vec<_> = log.iter().filter(|e| e.path.contains("c.bin")).collect();
     assert!(
@@ -435,9 +465,38 @@ async fn respects_server_connection_limit() {
 #[tokio::test]
 async fn no_range_server_uses_one_connection() {
     // Rate-limited: unlimited, the 200 sent to a range attempt can fit whole into the socket
-    // buffers before the engine drops it, and the server logs it complete (macOS runners).
-    let s = server("no_range=true&rate=8M").await;
-    let (log, size) = fetch(&s, "/gen/3M?seed=4", 4, fast_opts()).await;
+    // buffers before the engine drops it, and the server logs it complete (macOS runners). The
+    // byte at 2 MiB is held back until the engine knows the server has no ranges, so the range
+    // attempts always come while the probe is still streaming, however busy the machine (#136).
+    let s = server("no_range=true&rate=8M&stall_at=2M").await;
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/3M?seed=4").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, fast_opts());
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    while dl.snapshot().resumable != Some(false) {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "never learned the server has no ranges"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    s.set_faults(Faults::parse("no_range=true&rate=8M").unwrap());
+    let out = dl.wait().await.expect("download succeeds");
+    let size = out.size;
+    let mut want = vec![0; 3 << 20];
+    content::fill(4, 0, &mut want);
+    assert!(
+        std::fs::read(&out.path).unwrap() == want,
+        "content mismatch"
+    );
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    let log = s.log();
     assert_eq!(size, 3 << 20);
     // Like IDM (lab S6): range attempts get 200 and are dropped; the probe finishes alone.
     let complete: Vec<_> = log.iter().filter(|e| e.outcome == "complete").collect();
@@ -455,6 +514,69 @@ async fn no_range_server_uses_one_connection() {
         .collect();
     assert_eq!(complete.len(), 1, "{requests:#?}");
     assert_eq!(complete[0].range, None, "the probe is a plain GET");
+}
+
+/// Part of #136: a server without ranges sends the file once, even when the range attempts are
+/// answered after the probe's plain GET has run on (a busy machine): every part is taken by the
+/// probe, none is fetched again by a fresh start on one connection.
+#[tokio::test]
+async fn a_server_without_ranges_sends_the_file_once() {
+    // The probe takes about 375 ms; every range attempt is answered after 300 ms, so the first
+    // answers come while it runs and a retry's after it has ended.
+    let s = server("no_range=true&rate=8M&range_latency_ms=300").await;
+    let (log, size) = fetch(&s, "/gen/3M?seed=41", 41, fast_opts()).await;
+    assert_eq!(size, 3 << 20);
+    let sent: u64 = log.iter().map(|e| e.bytes_sent).sum();
+    let requests: Vec<_> = log
+        .iter()
+        .map(|e| (e.range.clone(), e.outcome.clone(), e.bytes_sent))
+        .collect();
+    // One plain GET, the probe: no start over on one connection. The bytes served beyond the
+    // file are what the server had written into the range attempts' sockets when the engine
+    // dropped them (a few hundred KiB on a busy machine); a second copy would double them.
+    assert_eq!(
+        log.iter().filter(|e| e.range.is_none()).count(),
+        1,
+        "{requests:#?}"
+    );
+    assert!(
+        sent < 2 * size,
+        "{sent} bytes served for a {size}-byte file: {requests:#?}"
+    );
+    assert_eq!(
+        log.iter().filter(|e| e.outcome == "complete").count(),
+        1,
+        "{requests:#?}"
+    );
+}
+
+/// A CDN whose edges sometimes ignore ranges, with the same file and the same ETag: a full
+/// answer to a range request is retried, and the download stays on several connections (#136:
+/// telling it from a server without ranges must not cost it its speed). `every` = 2: the very
+/// first range request is the one answered in full; 3: one in three.
+async fn a_cdn_ignoring_ranges_now_and_then(every: u32, seed: u64) {
+    let s = server(&format!("rate=2M&no_range_every={every}")).await;
+    let path = format!("/gen/8M/cdn.bin?seed={seed}");
+    let (log, size) = fetch(&s, &path, seed, fast_opts()).await;
+    assert_eq!(size, 8 << 20);
+    let ranged: Vec<LogEntry> = log.iter().filter(|e| e.status == 206).cloned().collect();
+    assert!(
+        max_concurrent(&ranged) >= 2,
+        "one connection only: {:?}",
+        log.iter()
+            .map(|e| (e.range.clone(), e.status, e.outcome.clone()))
+            .collect::<Vec<_>>()
+    );
+}
+
+#[tokio::test]
+async fn a_cdn_ignoring_the_first_range_stays_segmented() {
+    a_cdn_ignoring_ranges_now_and_then(2, 44).await;
+}
+
+#[tokio::test]
+async fn a_cdn_ignoring_one_range_in_three_stays_segmented() {
+    a_cdn_ignoring_ranges_now_and_then(3, 45).await;
 }
 
 #[tokio::test]

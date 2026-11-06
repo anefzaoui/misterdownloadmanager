@@ -47,9 +47,9 @@ To route *everything* through another network, use a VPN for the whole computer.
 
 ## A network adapter
 
-**Options → Proxy / Socks → Network adapter** holds MDM's connections to one adapter, usually a VPN's ([Options](options.md#proxy--socks)). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.
+**Options → Proxy / Socks → Network adapter** holds MDM's connections to one adapter, usually a VPN's ([Options](options.md#proxy--socks)). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.
 
-On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen ("torrents can't go through a chosen network adapter on Windows yet"), rather than going around it. Tracker names are still looked up by the system's DNS.
+It works as a kill switch. When the adapter disconnects, running torrents stop with "… is not connected; it goes on when it is back", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.
 
 ## Reporting a problem
 

@@ -376,7 +376,7 @@ metrics! {
 }
 
 /// How the outline icons (toolbar, Options pages, helpers) are inked.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, Default)]
 pub enum IconStyle {
     /// Each icon's own two-colour gradient (the classic toolbar).
     #[default]

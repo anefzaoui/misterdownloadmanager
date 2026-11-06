@@ -11,6 +11,9 @@ pub const STORE_ID: &str = "STORE_ID_PENDING";
 /// Its IDs in Microsoft Edge Add-ons and Opera add-ons, which give their own; placeholders until
 /// listed there, never served then (`valid_id`).
 pub const OTHER_STORE_IDS: [&str; 2] = ["EDGE_ADDONS_ID_PENDING", "OPERA_ADDONS_ID_PENDING"];
+/// The Firefox add-on's page on addons.mozilla.org (listed: Firefox installs and updates it from
+/// there).
+pub const FIREFOX_PAGE: &str = "https://addons.mozilla.org/firefox/addon/mister-download-manager/";
 /// The Firefox add-on's ID (extension/manifest.firefox.json).
 pub const FIREFOX_ID: &str = "integration@misterdownloadmanager.com";
 /// Chrome's update service: an external-install entry naming it makes Chrome offer the store's

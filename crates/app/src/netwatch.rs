@@ -55,7 +55,43 @@ fn compute(wanted: &str) -> Route {
     if wanted.trim().is_empty() {
         return Route::Any;
     }
-    mdm_engine::net::route_for(wanted, &mdm_engine::net::adapters())
+    mdm_engine::net::route_for(wanted, &adapters())
+}
+
+/// The computer's network adapters, as Options lists them and the watch reads them. Debug
+/// builds only: MDM_TEST_ADAPTER="Lab adapter=127.0.0.2" adds an adapter with that address (one
+/// on loopback, which the system's list leaves out), for tests by hand that must not reach the
+/// network or listen beyond this computer (#143); "@file" reads that line from a file each
+/// time, so deleting the file disconnects the adapter.
+pub fn adapters() -> Vec<mdm_engine::net::Adapter> {
+    #[allow(unused_mut)]
+    let mut all = mdm_engine::net::adapters();
+    #[cfg(debug_assertions)]
+    if let Some((name, ip)) = std::env::var("MDM_TEST_ADAPTER")
+        .ok()
+        .and_then(|v| match v.strip_prefix('@') {
+            Some(file) => std::fs::read_to_string(file).ok(),
+            None => Some(v),
+        })
+        .and_then(|v| {
+            let (n, a) = v.trim().split_once('=')?;
+            Some((n.trim().to_owned(), a.trim().parse().ok()?))
+        })
+    {
+        let (mut v4, mut v6) = (Vec::new(), Vec::new());
+        match ip {
+            std::net::IpAddr::V4(a) => v4.push(a),
+            std::net::IpAddr::V6(a) => v6.push(a),
+        }
+        all.push(mdm_engine::net::Adapter {
+            name,
+            index: 0,
+            v4,
+            v6,
+            local_only: Vec::new(),
+        });
+    }
+    all
 }
 
 fn watch(shared: Arc<Mutex<Shared>>) {
