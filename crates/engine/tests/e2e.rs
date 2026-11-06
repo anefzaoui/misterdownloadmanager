@@ -1290,16 +1290,12 @@ async fn speed_limit_caps_the_whole_download() {
     let s = server("").await;
     // The download alone is timed, not the wait for the server's log (#201: `fetch` waits for
     // it, which a starved CPU stretched to seconds).
-    let timed = |path: &str, seed: u64, speed_limit: Option<u64>| {
+    let timed = |path: &str, seed: u64, opts: Options| {
         let dir = tempfile::tempdir().unwrap();
         let req = Request {
             url: s.url(path).parse().unwrap(),
             headers: Default::default(),
             dest: Destination::Dir(dir.path().to_owned()),
-        };
-        let opts = Options {
-            speed_limit,
-            ..fast_opts()
         };
         async move {
             let started = std::time::Instant::now();
@@ -1318,20 +1314,30 @@ async fn speed_limit_caps_the_whole_download() {
             secs
         }
     };
-    // The same size at the same time without a limit: what the machine takes right now.
-    let (secs, free) = tokio::join!(
-        timed("/gen/2M/limited.bin?seed=12", 12, Some(1 << 20)),
-        timed("/gen/2M/free.bin?seed=13", 13, None),
+    // At the same time, a yardstick: the same 2 MiB at 1 MiB/s, paced by the server on one
+    // connection, with no limit of ours. It takes 2 s on an idle machine, and as long as the
+    // machine makes it on a busy one.
+    let limited = Options {
+        speed_limit: Some(1 << 20),
+        ..fast_opts()
+    };
+    let one = Options {
+        max_connections: 1,
+        ..fast_opts()
+    };
+    let (secs, paced) = tokio::join!(
+        timed("/gen/2M/limited.bin?seed=12", 12, limited),
+        timed("/gen/2M/paced.bin?seed=13&rate=1M", 13, one),
     );
     // At least the time the limit allows: the budget builds up from the download's start, so
     // 2 MiB can't come in under 2 s (without the limit: well under a second).
     assert!(secs >= 1.9, "2 MB at 1 MB/s took {secs:.2}s");
-    // The upper bound only catches a limit far too strict: 6 s on an idle machine (as before),
-    // plus twice what the machine took without the limit (#201: a starved CPU, or a busy CI
-    // runner, took 6-17 s).
+    // The upper bound only catches a limit far too strict: 3 times the yardstick, about 6 s on an
+    // idle machine as before (#201: a fixed 6 s failed on a starved CPU or a busy CI runner,
+    // which took 6-17 s).
     assert!(
-        secs < 6.0 + 2.0 * free,
-        "2 MB at 1 MB/s took {secs:.2}s (without the limit: {free:.2}s)"
+        secs < 3.0 * paced,
+        "2 MB at 1 MB/s took {secs:.2}s (paced by the server: {paced:.2}s)"
     );
 }
 
