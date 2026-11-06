@@ -75,6 +75,16 @@ The extension's button shows whether the browser reaches MDM. A red **!** means 
 - **Open Mister Download Manager** and **Options...**.
 - **Media on this page**: what the page has loaded that MDM can download (see below).
 
+## A VPN or proxy extension
+
+A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on **Send downloads
+through this browser's proxy or VPN extension** in the extension's toolbar popup: Firefox asks you
+once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from
+the browser through the same proxy (with **Options → Proxy / Socks → Use proxy/socks from a
+browser's request**, on by default; see [Options](options.md#proxy--socks)). Switch it off to take
+that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the
+same proxy in MDM's **Options → Proxy / Socks**.
+
 ## Media on this page
 
 Some pages play a video without a link to it, and some players hide it from the download button
@@ -82,7 +92,10 @@ too. The toolbar button lists what the page has loaded, so you can still save it
 
 - **Streams**: HLS (`.m3u8`) and DASH (`.mpd`), the way most sites play long videos. Each stream
   is listed once, however many qualities its player switched between, with its qualities (`1080p ·
-  720p`) and its length when the extension can read them.
+  720p`) and its length when the extension can read them. A stream whose address doesn't end in
+  `.m3u8` or `.mpd`, served as plain text, is found too: when you open the list (or press the
+  download button over its player) and the player plays a stream, the extension reads the first
+  few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.
 - **Video and sound files** the page played (MP4, WebM, MP3 and the like), with their size and,
   for a video, its picture size.
 

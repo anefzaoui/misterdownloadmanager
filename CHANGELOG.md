@@ -130,8 +130,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   or auto-config script) with it. MDM downloads through the same proxy while Options → Proxy /
   Socks → "Use proxy/socks from a browser's request" is on, which is the default. A proxy that
   needs the VPN extension's own login can't be shared: the download says so rather than going
-  without it. The extension asks for the browser's *proxy* permission for this, to read the
-  browser's proxy, never to change it.
+  without it. In Firefox it is an opt-in: **Send downloads through this browser's proxy or VPN
+  extension** in the extension's popup asks for the browser's *proxy* permission (to read the
+  browser's proxy, never to change it), so the extension's update asks for no new permission.
+  Chrome and the other Chromium browsers can't make that permission optional, so their extension
+  doesn't hand the proxy over yet: set the same proxy in **Options → Proxy / Socks** there.
 - **Hide to the notification area** ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63)):
   a download's progress window has a button that hides it in the tray while the download goes
   on: on Windows in its title bar, left of Minimize (the progress window draws its own Windows 11
@@ -272,6 +275,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: the engine tests no longer fail on a busy computer**
+  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
+  depended on timing: a refused connection coming back, the learned connection limit, and a dead
+  address (a server without ranges was fixed earlier). Each now waits for the state it checks. The lab server
+  can hold a connection slot for a test (`hold_slot`), and `settled()` now also means every
+  slot is free.
 - **A smaller download** ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158)):
   the program is built for size, which takes the installer from 16.1 to 13.6 MB and the zips
   from 19.3 to 15.6 MB, with the same features and the same download speed.
@@ -350,6 +359,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Streams served as plain text, from addresses without .m3u8 or .mpd**
+  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171)): some players load
+  their stream from such an address, and the extension didn't know it as one. The button over the
+  video, the right-click menu and **Media on this page** then sent the page alone, which yt-dlp
+  answered "Unsupported URL". Now, when one of them is used and no stream is known, the extension
+  reads the start of what the player fetched (a few kilobytes, never on sight) and recognises an
+  HLS playlist or a DASH manifest.
 - **A minimized MDM keeps working**: with the main window minimized (not to the notification
   area), queues didn't start their next file, the Scheduler's starts and stops didn't fire,
   download limits, the network adapter's kill switch, the clipboard monitor, the update check, the

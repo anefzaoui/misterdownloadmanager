@@ -40,8 +40,11 @@ async fn fetch(s: &LabServer, path: &str, seed: u64, opts: Options) -> (Vec<LogE
     content::fill(seed, 0, &mut want);
     assert!(data == want, "content mismatch");
     assert_eq!(data.len() as u64, out.size);
-    // The server logs a request when its response body is dropped, which can trail the client.
-    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+    // The server logs a request when its response body is dropped, which can trail the client:
+    // wait until every one is in the log (and its connection slot is free).
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
     (s.log(), out.size)
 }
 
@@ -82,11 +85,14 @@ async fn connections_skip_a_dead_address() {
     let s = server("").await;
     let port = s.url("/").parse::<url::Url>().unwrap().port().unwrap();
     // The host's first address never answers (TEST-NET-1); the second is the lab server.
+    // A connect timeout long enough that waiting on the dead address can't pass for a slow
+    // machine (#136): 60 s per address, against the 30 s the whole download is given.
     let opts = Options {
         hosts: vec![(
             "mirror.test".into(),
             vec!["192.0.2.1".parse().unwrap(), "127.0.0.1".parse().unwrap()],
         )],
+        connect_timeout: std::time::Duration::from_secs(120),
         ..Options::default()
     };
     let dir = tempfile::tempdir().unwrap();
@@ -97,14 +103,16 @@ async fn connections_skip_a_dead_address() {
         headers: Default::default(),
         dest: Destination::Dir(dir.path().to_owned()),
     };
-    let started = std::time::Instant::now();
-    let out = Download::start(req, opts).wait().await.expect("completes");
-    // Without the race every connection would wait 15 s (half the 30 s connect timeout).
-    assert!(
-        started.elapsed() < std::time::Duration::from_secs(3),
-        "took {:?}",
-        started.elapsed()
-    );
+    // Without the race every connection would wait 60 s on the dead address (half the connect
+    // timeout) before trying the next. A 3 s budget failed on a starved CPU, where 2 MiB alone
+    // can take longer (#136).
+    let out = tokio::time::timeout(
+        std::time::Duration::from_secs(30),
+        Download::start(req, opts).wait(),
+    )
+    .await
+    .expect("the connections waited for the dead address")
+    .expect("completes");
     let mut want = vec![0; 2 << 20];
     content::fill(19, 0, &mut want);
     assert!(
@@ -155,18 +163,20 @@ async fn a_slow_download_does_not_rewrite_its_state_every_tick() {
 #[tokio::test]
 async fn a_global_cap_is_shared_by_all_downloads() {
     let s = server("").await;
+    // Timed from the cap's start: its budget builds up from then on, however long the
+    // downloads take to start (a burst of up to a second's), so 2 MiB can't take less than 2 s.
+    let started = std::time::Instant::now();
     let global = std::sync::Arc::new(mdm_engine::limiter::Limiter::new(Some(1 << 20)));
     let opts = Options {
         global: Some(global),
         ..fast_opts()
     };
-    let started = std::time::Instant::now();
     let (a, b) = tokio::join!(
         fetch(&s, "/gen/1M/a.bin?seed=25", 25, opts.clone()),
         fetch(&s, "/gen/1M/b.bin?seed=26", 26, opts.clone()),
     );
     assert_eq!((a.1, b.1), (1 << 20, 1 << 20));
-    // 2 MiB through one 1 MiB/s cap (fetch adds 0.3 s of its own per download).
+    // 2 MiB through one 1 MiB/s cap.
     let took = started.elapsed();
     assert!(
         took >= std::time::Duration::from_millis(1700),
@@ -256,14 +266,46 @@ async fn the_event_log_tells_what_happened() {
 
 #[tokio::test]
 async fn a_host_connection_limit_is_learned_and_reused() {
-    let s = server("rate=2M&max_conns=2").await;
+    // The cap is learned from the connections seen receiving at once when others are refused.
+    // On a starved CPU the first connection (the probe) could finish its part before the second
+    // had its first bytes, so only one was ever seen and the cap learned was 1 (#136). Now the
+    // byte at 256 KiB, inside the probe's part however the file is split, is held back until
+    // the cap is learned: the probe keeps receiving while the other connection fetches the rest.
+    let s = server("rate=2M&max_conns=2&stall_at=256K").await;
     let limits = std::sync::Arc::new(mdm_engine::hosts::HostLimits::default());
     let opts = Options {
         host_limits: Some(limits.clone()),
         ..fast_opts()
     };
-    let (first, _) = fetch(&s, "/gen/4M/a.bin?seed=30", 30, opts.clone()).await;
-    assert!(first.iter().any(|e| e.outcome == "fault:max_conns"));
+    let dir = tempfile::tempdir().unwrap();
+    let req = Request {
+        url: s.url("/gen/4M/a.bin?seed=30").parse().unwrap(),
+        headers: Default::default(),
+        dest: Destination::Dir(dir.path().to_owned()),
+    };
+    let dl = Download::start(req, opts.clone());
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(20);
+    while limits.cap("127.0.0.1") != Some(2) {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "the cap learned: {:?}",
+            limits.learned()
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    s.set_faults(Faults::parse("rate=2M&max_conns=2").unwrap());
+    let out = dl.wait().await.expect("download succeeds");
+    let mut want = vec![0; 4 << 20];
+    content::fill(30, 0, &mut want);
+    assert!(
+        std::fs::read(&out.path).unwrap() == want,
+        "content mismatch"
+    );
+    // Every request of the first download has ended and given its slot back.
+    tokio::time::timeout(SETTLE, s.settled())
+        .await
+        .expect("every request ends");
+    assert!(s.log().iter().any(|e| e.outcome == "fault:max_conns"));
     assert_eq!(limits.cap("127.0.0.1"), Some(2), "{:?}", limits.learned());
     // The next download from the host opens only what it allows: nothing is refused.
     s.clear_log();
@@ -282,21 +324,20 @@ async fn a_refusal_below_the_learned_cap_is_retried() {
     // a connection of ours that just closed and the server hasn't noticed yet): the second
     // connection is refused while only one works. It must come back once the slot frees, not
     // leave the whole file to one connection (benchmark 2026-10-29).
-    // The blocker holds its slot until our download has been refused (it stops at its byte
-    // 12 MiB, held back by the server, until the faults change): on a busy machine it used to be
-    // done before our second connection asked (#136). Our file is shorter, so it isn't held.
-    let s = server("rate=2M&max_conns=2&stall_at=12M").await;
+    // The other client's slot is held by the test until our download has been refused (#136:
+    // a blocking request could end before our second connection asked). Our download can't
+    // finish meanwhile either: the server holds back its byte at 6 MiB until a second connection
+    // has joined, so on a starved CPU the first one can't fetch the whole file alone before it.
+    let s = server("rate=2M&max_conns=2&stall_at=6M").await;
+    let ip: std::net::IpAddr = "127.0.0.1".parse().unwrap();
     let limits = std::sync::Arc::new(mdm_engine::hosts::HostLimits::default());
     limits.refused("127.0.0.1", 2);
     limits.refused("127.0.0.1", 2);
-    let blocker = tokio::spawn(
-        reqwest::get(s.url("/gen/16M/blocker.bin?seed=1&rate=0"))
-            .await
-            .unwrap()
-            .bytes(),
-    );
+    let blocker = s.hold_slot(ip);
     let opts = Options {
         host_limits: Some(limits),
+        // Room to come back after the slot frees, however slowly the test notices the refusal.
+        max_retries: 8,
         ..fast_opts()
     };
     let dir = tempfile::tempdir().unwrap();
@@ -318,7 +359,22 @@ async fn a_refusal_below_the_learned_cap_is_retried() {
         );
         tokio::time::sleep(std::time::Duration::from_millis(20)).await;
     }
-    // The slot frees: a second connection can join.
+    // The slot frees: a second connection can join, and once it has the first may go on.
+    drop(blocker);
+    let receiving = |dl: &Download| {
+        dl.snapshot()
+            .connections
+            .iter()
+            .filter(|c| matches!(c.status, mdm_engine::download::ConnStatus::Receiving))
+            .count()
+    };
+    while receiving(&dl) < 2 {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "no second connection joined"
+        );
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
     s.set_faults(Faults::parse("rate=2M&max_conns=2").unwrap());
     let out = dl.wait().await.expect("download succeeds");
     let size = out.size;
@@ -328,7 +384,6 @@ async fn a_refusal_below_the_learned_cap_is_retried() {
         std::fs::read(&out.path).unwrap() == want,
         "content mismatch"
     );
-    blocker.await.unwrap().unwrap();
     tokio::time::timeout(SETTLE, s.settled())
         .await
         .expect("every request ends");

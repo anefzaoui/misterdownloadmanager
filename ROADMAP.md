@@ -6,12 +6,19 @@ issue, where the details and the discussion are. Released changes are in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues).
 
 ✅ done, not released yet · 🔄 being built · 📋 planned · 🔍 looking into it
+## The next release: 0.3.0
+Everything below ships together, in one release, as version 0.3.0.
 
 ## The next release
 
 Everything below ships together, in one release.
 
 ### Done
+- ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
+  the extension's update asks for no new permission; Chrome's extension leaves it out for now
+- ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
+  the button over the video, the right-click menu and the media list, read only when asked
+  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
 
 - ✅ The extension in the [Chrome Web Store](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp): **Add to Chrome** beside **Add to Firefox**
   on the website, in the help, the FAQ and the README; MDM's **Add Mister Download Manager to
@@ -19,6 +26,9 @@ Everything below ships together, in one release.
   manual install as the fallback
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
+- ✅ The engine tests that failed now and then on a busy computer (a refused connection coming
+  back, the learned connection limit, a dead address) wait for what they check, not for time
+  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 - ✅ Download video: every button fits its text in every language (German **ffmpeg installieren**
   was cut), right to left too ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172))
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
@@ -163,6 +173,11 @@ Everything below ships together, in one release.
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
   their logos, a feature-by-feature form and an MDM-vs-IDM label with the benchmark's times to scale
+- ✅ Website: the header fits its row in every language at every width (it hides the Sponsor heart,
+  then tightens, then turns into the menu, only as far as a language needs)
+  ([#168](https://github.com/anefzaoui/misterdownloadmanager/issues/168)), and no page scrolls
+  sideways on a phone, Arabic and Persian included: long paths, links and tables wrap or scroll
+  inside the page ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
 
 ### Being built
 
@@ -176,10 +191,6 @@ Everything below ships together, in one release.
   MDM; no address is sent anywhere ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
 - 🔄 Torrents: download in order, to watch a video while it downloads; the other torrents rarest
   first ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
-- 🔄 A stream whose address doesn't end in `.m3u8` or `.mpd` is still recognised by its contents
-  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
-- 🔄 Firefox: reading the browser's proxy or VPN extension becomes a switch in the add-on, so the
-  update asks for no new permission ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 - 🔄 MDM's browser window: the check mark before **Connected** shows in every language (an empty
   box in Arabic and on Linux), the German subtitle fits, the Arabic layout is mirrored
   ([#185](https://github.com/anefzaoui/misterdownloadmanager/issues/185), [#170](https://github.com/anefzaoui/misterdownloadmanager/issues/170))
@@ -217,6 +228,8 @@ Everything below ships together, in one release.
   ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
 
 ### Browser extension
+- 📋 Chrome: read the browser's proxy or VPN extension's (#42 is Firefox's for now: Chrome can't
+  make that permission optional, so it needs a release that can add it)
 
 - ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
 - ✅ On the Chrome Web Store: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp)
@@ -225,8 +238,6 @@ Everything below ships together, in one release.
 
 ### Look and performance
 
-- 📋 Website: the header's buttons fit in long languages ([#168](https://github.com/anefzaoui/misterdownloadmanager/issues/168)), and Arabic pages
-  don't scroll sideways on phones ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))
