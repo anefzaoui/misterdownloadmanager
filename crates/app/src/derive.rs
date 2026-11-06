@@ -387,7 +387,12 @@ pub fn strengthen(p: &mut Palette) {
         *c = edge;
     }
     // Grid lines and dividers clearly seen, quieter than the edges.
-    for c in [&mut p.grid, &mut p.list_grid, &mut p.table_line, &mut p.tree_lines] {
+    for c in [
+        &mut p.grid,
+        &mut p.list_grid,
+        &mut p.table_line,
+        &mut p.tree_lines,
+    ] {
         *c = mix(p.window, p.text, 0.45);
     }
     p.focus_ring = p.accent;

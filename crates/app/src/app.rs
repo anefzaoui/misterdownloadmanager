@@ -1751,6 +1751,12 @@ impl App {
                     p.show_tab(tab);
                 }
             }
+            // View → Theme → a theme, as the menu picks it (#45): `theme:native` (tests of the
+            // live switch without a click).
+            "theme" => {
+                let id = crate::chrome::label(tab);
+                self.run(Cmd::Theme(id), None, ctx);
+            }
             // A menu of the menu bar open (menu:0 is Tasks), for screenshots; menu:3:draw opens
             // View with its Draw with submenu (#89).
             "menu" => {
