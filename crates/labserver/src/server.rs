@@ -390,9 +390,10 @@ impl LabServer {
         self.shared.log.lock().unwrap().clear();
     }
 
-    /// Resolves once every request begun so far is in the log. A response is logged when its
-    /// body is dropped, which can trail the client: after a download is stopped, the server
-    /// sees its connections close only as it next writes to them.
+    /// Resolves once every request begun so far is in the log, and has given back its
+    /// `max_conns` slot. A response is logged when its body is dropped, which can trail the
+    /// client: after a download is stopped, the server sees its connections close only as it
+    /// next writes to them.
     pub async fn settled(&self) {
         let pending = &self.shared.pending;
         loop {
@@ -403,6 +404,18 @@ impl LabServer {
                 return;
             }
             changed.await;
+        }
+    }
+
+    /// Take one of `ip`'s `max_conns` slots, as another client's response would, until the
+    /// guard is dropped: a test holds a slot for exactly as long as it needs.
+    pub fn hold_slot(&self, ip: IpAddr) -> SlotHold {
+        *self.shared.active.lock().unwrap().entry(ip).or_insert(0) += 1;
+        SlotHold {
+            _slot: ActiveSlot {
+                shared: self.shared.clone(),
+                ip,
+            },
         }
     }
 
@@ -645,6 +658,11 @@ async fn clear_log(State(s): State<Arc<Shared>>) -> StatusCode {
 
 fn header_str(h: &HeaderMap, name: header::HeaderName) -> Option<String> {
     h.get(name).and_then(|v| v.to_str().ok()).map(str::to_owned)
+}
+
+/// A `max_conns` slot held by a test ([`LabServer::hold_slot`]), given back when dropped.
+pub struct SlotHold {
+    _slot: ActiveSlot,
 }
 
 /// Releases a client's concurrent-response slot (for `max_conns`) when dropped.
@@ -959,6 +977,7 @@ pub(crate) async fn serve(
     if f.once == Some(true) {
         let key = format!("{}?{query}", entry.path);
         if !shared.used_once.lock().unwrap().insert(key) {
+            drop(slot);
             shared.record(entry, 410, "fault:once");
             return (StatusCode::GONE, "this link was already used\n").into_response();
         }
@@ -991,6 +1010,7 @@ pub(crate) async fn serve(
             Ok(v) if v.len() == 1 => range = Some((*v[0].start(), *v[0].end() + 1)),
             Ok(_) => {}
             Err(_) => {
+                drop(slot);
                 shared.record(entry, 416, "error");
                 let mut resp = StatusCode::RANGE_NOT_SATISFIABLE.into_response();
                 resp.headers_mut().insert(
@@ -1066,7 +1086,7 @@ pub(crate) async fn serve(
         started: Instant::now(),
         sent: 0,
         dropped: false,
-        _slot: slot,
+        slot: Some(slot),
     };
     builder
         .body(Body::from_stream(transfer.into_stream()))
@@ -1199,7 +1219,8 @@ struct Transfer {
     started: Instant,
     sent: u64,
     dropped: bool,
-    _slot: ActiveSlot,
+    /// Given back before the request is logged, so `settled` means every slot is free.
+    slot: Option<ActiveSlot>,
 }
 
 impl Transfer {
@@ -1246,6 +1267,7 @@ impl Transfer {
 
 impl Drop for Transfer {
     fn drop(&mut self) {
+        self.slot.take();
         if let Some(mut entry) = self.entry.take() {
             entry.bytes_sent = self.sent;
             let outcome = if self.dropped {

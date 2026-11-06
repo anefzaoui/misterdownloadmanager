@@ -75,6 +75,16 @@ The extension's button shows whether the browser reaches MDM. A red **!** means 
 - **Open Mister Download Manager** and **Options...**.
 - **Media on this page**: what the page has loaded that MDM can download (see below).
 
+## A VPN or proxy extension
+
+A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on **Send downloads
+through this browser's proxy or VPN extension** in the extension's toolbar popup: Firefox asks you
+once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from
+the browser through the same proxy (with **Options → Proxy / Socks → Use proxy/socks from a
+browser's request**, on by default; see [Options](options.md#proxy--socks)). Switch it off to take
+that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the
+same proxy in MDM's **Options → Proxy / Socks**.
+
 ## Media on this page
 
 Some pages play a video without a link to it, and some players hide it from the download button
