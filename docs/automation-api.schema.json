@@ -217,6 +217,38 @@
       ],
       "type": "object"
     },
+    "PairAnswer": {
+      "description": "`{\"pair\": true}` (#157): a new pairing code for the remote control, while it is on.",
+      "properties": {
+        "code": {
+          "description": "The 8-digit code; it works once, for `minutes`.",
+          "type": "string"
+        },
+        "minutes": {
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "qr": {
+          "description": "A QR code of the first address with the code, drawn with text blocks for a terminal.",
+          "type": "string"
+        },
+        "urls": {
+          "description": "The page's addresses, the one a phone most likely reaches first.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "code",
+        "minutes",
+        "urls",
+        "qr"
+      ],
+      "type": "object"
+    },
     "QueueInfo": {
       "description": "One queue of the list.",
       "properties": {
@@ -343,6 +375,11 @@
             "string",
             "null"
           ]
+        },
+        "pair": {
+          "default": false,
+          "description": "The remote control (#157, `misterdownloadmanager-cli pair`): show a new pairing code;\nanswered with it, the page's addresses and a QR code to scan ([`api::PairAnswer`]).",
+          "type": "boolean"
         },
         "panel_hide_site": {
           "default": null,

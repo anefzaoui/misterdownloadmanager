@@ -211,3 +211,30 @@ fn tell(app: &mut crate::app::App) -> bool {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn flags_win_over_the_environment() {
+        let args: Vec<String> = ["--headless", "--port", "9000", "--listen=127.0.0.1"]
+            .iter()
+            .map(|s| s.to_string())
+            .collect();
+        assert!(asked(&args));
+        assert!(!asked(&["/d".into(), "x".into()]));
+        assert_eq!(
+            setting(&args, "port", "MDM_TEST_UNSET_PORT").as_deref(),
+            Some("9000")
+        );
+        assert_eq!(
+            setting(&args, "listen", "MDM_TEST_UNSET_LISTEN").as_deref(),
+            Some("127.0.0.1")
+        );
+        assert_eq!(setting(&args, "hosts", "MDM_TEST_UNSET_HOSTS"), None);
+        // An empty value is no value.
+        let empty: Vec<String> = vec!["--downloads".into(), " ".into()];
+        assert_eq!(setting(&empty, "downloads", "MDM_TEST_UNSET_DL"), None);
+    }
+}

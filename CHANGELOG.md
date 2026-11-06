@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Run MDM on a server** ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157)):
+  `misterdownloadmanager --headless` runs MDM without a window (a home server, a NAS, Docker,
+  Unraid), its folders and port set by flags or the environment; a `Dockerfile`, a Compose file
+  and an Unraid template come with it. Phones pair with the code it prints (or
+  `misterdownloadmanager-cli pair`), and the browser extension can **send downloads to another
+  MDM**. [Guide](docs/server.md).
 - **Control MDM from your phone** ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141)):
   **Options → Remote**, off by default. A phone or another computer on the local network, paired
   with a code (or a QR code) MDM shows, opens a page MDM serves over HTTPS: it adds links, magnet

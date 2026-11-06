@@ -13,6 +13,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Run MDM on a server without a window (Docker, Unraid, any Linux machine), and send it
+  downloads from the phone or the browser extension
+  ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
 - ✅ Control MDM from a phone or another computer on the local network: **Options → Remote**, off
   by default; a paired device adds links, magnets and torrents, sees the list and pauses, starts
   and removes downloads ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
@@ -240,8 +243,6 @@ Everything below ships together, in one release, as version 0.3.0.
 ### Network
 
 - 📋 Video pages through a chosen network adapter too ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
-- 📋 Run MDM headless on a server (Docker, Unraid) and send it downloads from the browser
-  ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
 
 ### Browser extension
 
