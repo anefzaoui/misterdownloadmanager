@@ -2721,6 +2721,9 @@ mod tests {
                 painted.borrow_mut().push(out.shapes.len());
             });
         }
+        // A test-only title, kept out of the catalog (extract.py reads literal titles).
+        let title = String::from("test window");
+        let title = title.as_str();
         let ctx = egui::Context::default();
         ctx.set_embed_viewports(false);
         let pass = |closing: bool| {
@@ -2730,7 +2733,7 @@ mod tests {
                 outcome = Some(window(
                     ui.ctx(),
                     "test-207",
-                    "About",
+                    title,
                     [300.0, 200.0],
                     false,
                     egui::Color32::LIGHT_GRAY,
