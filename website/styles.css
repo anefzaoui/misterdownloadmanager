@@ -202,8 +202,9 @@ dt, .field-name, .carrier-row h3, .doc-nav p, th[scope="col"] {
 .nav a[aria-current] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; }
 .top-actions { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; }
 /* Sponsor, a heart beside GitHub, in the board's ink (never green: green is Download's); only
-   where the header has room for it beside the full nav (the menu has it under 1100px). */
-@media (max-width: 1179px) { .top-sponsor { display: none; } }
+   where the header has room for it beside the full nav in every language (the longest, pt, needs
+   1440px; the menu has it under 1100px). */
+@media (max-width: 1439px) { .top-sponsor { display: none; } }
 .top-dl { height: 40px; padding: 0 16px; font-size: 15px; margin-inline-start: 6px; }
 .menu { display: none; position: relative; }
 .menu-panel {
