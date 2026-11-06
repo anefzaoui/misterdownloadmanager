@@ -6,20 +6,18 @@ issue, where the details and the discussion are. Released changes are in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues).
 
 ✅ done, not released yet · 🔄 being built · 📋 planned · 🔍 looking into it
+
 ## The next release: 0.3.0
+
 Everything below ships together, in one release, as version 0.3.0.
 
-## The next release
-
-Everything below ships together, in one release.
-
 ### Done
-- ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
-  the extension's update asks for no new permission; Chrome's extension leaves it out for now
 
 - ✅ A Linux test machine for every change, scripted: an Ubuntu 24.04 desktop that builds each
   branch and drives MDM, Firefox and Chrome there (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
+  the extension's update asks for no new permission; Chrome's extension leaves it out for now
 - ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
   the button over the video, the right-click menu and the media list, read only when asked
   ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
@@ -231,9 +229,9 @@ Everything below ships together, in one release.
   ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
 
 ### Browser extension
+
 - 📋 Chrome: read the browser's proxy or VPN extension's (#42 is Firefox's for now: Chrome can't
   make that permission optional, so it needs a release that can add it)
-
 - ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
 - ✅ On the Chrome Web Store: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp)
 - 📋 Chrome: use the browser's proxy or VPN extension for downloads too (it needs a permission
