@@ -1638,6 +1638,18 @@ impl App {
             "tray" => self.hide_to_tray(ctx),
             // The main window minimized, not to the tray (tests of #162).
             "minimized" => ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true)),
+            // Off-screen test copies: the interface zoomed (`zoom:1.5`) while running, as a
+            // display's scale changing does to every window (#89's checks).
+            "zoom" if crate::offscreen() => {
+                if let Ok(z) = tab.parse::<f32>()
+                    && (0.5..=4.0).contains(&z)
+                {
+                    ctx.set_zoom_factor(z);
+                }
+            }
+            // Direct3D's device lost on purpose; MDM starts again (renderer.rs).
+            #[cfg(windows)]
+            "renderer-lost" if crate::offscreen() => crate::renderer::test_device_lost(),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
             // The first download's: Add trackers (a torrent), its right-click menu.
@@ -7027,6 +7039,8 @@ impl eframe::App for App {
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         // The freeze watchdog times every frame (crash.rs).
         crate::crash::frame_begin();
+        // A lost graphics device is noticed before this frame paints (renderer.rs).
+        crate::renderer::frame_begin();
         // Off-screen test runs: no window of ours may become the foreground one (win32.rs). Linux
         // and macOS need no such pass: their off-screen windows open inactive (main.rs `quiet`)
         // and nothing raises them then (dialogs::raise).
@@ -7105,7 +7119,7 @@ impl eframe::App for App {
             .show(ui, |ui| self.paint(ui));
         self.dialogs(&ctx);
         crate::crash::frame_end();
-        crate::renderer::frame_done();
+        crate::renderer::frame_done(&ctx);
     }
 }
 
