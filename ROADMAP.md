@@ -201,6 +201,5 @@ Everything below ships together, in one release.
 ### Look and performance
 
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
-- 📋 A smaller download ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))
