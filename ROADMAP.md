@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
+  the button over the video, the right-click menu and the media list, read only when asked
+  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
   video, the right-click menu (it did nothing in Firefox) and the media list
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))

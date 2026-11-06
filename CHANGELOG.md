@@ -344,6 +344,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Streams served as plain text, from addresses without .m3u8 or .mpd**
+  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171)): some players load
+  their stream from such an address, and the extension didn't know it as one. The button over the
+  video, the right-click menu and **Media on this page** then sent the page alone, which yt-dlp
+  answered "Unsupported URL". Now, when one of them is used and no stream is known, the extension
+  reads the start of what the player fetched (a few kilobytes, never on sight) and recognises an
+  HLS playlist or a DASH manifest.
 - **HLS and DASH videos from the browser, as their stream**
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155)): a video played as a
   stream (most sites' long videos) failed with yt-dlp's "Unsupported URL" when the extension sent

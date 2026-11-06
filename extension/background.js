@@ -337,6 +337,11 @@ const SEGMENT_TYPE = /^(video\/mp2t|video\/iso\.segment|audio\/iso\.segment)$/;
 const SEGMENT_EXT = /\.(ts|m4s|m4f|cmfv|cmfa|cmft)$/;
 const MEDIA_EXT = /\.(mp4|m4v|webm|mkv|mov|avi|wmv|flv|3gp|ogv|mp3|m4a|aac|ogg|oga|opus|flac|wav|wma)$/;
 const AUDIO_EXT = /^(mp3|m4a|aac|oga|ogg|opus|flac|wav|wma)$/;
+// The types a manifest is sometimes served as, besides its own (#171): plain text, no type, a
+// file's, XML. Such an answer is only noted (`maybe`, MAYBE_MAX a tab), never listed unread.
+const MAYBE_TYPE = /^(text\/plain|(application|binary)\/octet-stream|(application|text)\/xml|)$/;
+const MAYBE_MAX = 20;
+const MANIFEST_MAX = 2 << 20;
 
 const pathOf = (url) => url.split(/[?#]/)[0];
 const headerOf = (d, name) => ((d.responseHeaders || []).find((h) => h.name.toLowerCase() === name) || {}).value || "";
@@ -352,6 +357,12 @@ function mediaKind(d) {
   if (/\.mpd$/.test(path) || /dash\+xml/.test(mime)) return { kind: "dash", mime, size: 0 };
   if (SEGMENT_TYPE.test(mime) || SEGMENT_EXT.test(path)) return null;
   const ext = (MEDIA_EXT.exec(path) || [])[1] || "";
+  // Maybe a manifest whose address and type don't say so (#171): a player's own small text or
+  // untyped answer, read only when a stream is asked for and none is known (`sniffTab`).
+  if (d.type !== "media" && !ext && MAYBE_TYPE.test(mime) && d.statusCode !== 206 && !headerOf(d, "content-range")) {
+    const len = Number(headerOf(d, "content-length"));
+    return len > MANIFEST_MAX ? null : { kind: "maybe", mime, size: 0 };
+  }
   const typed = /^(video|audio)\//.test(mime) || mime === "application/ogg";
   const untyped = !mime || /^(application|binary)\/octet-stream$/.test(mime);
   if (!typed && !(ext && untyped)) return null;
@@ -408,11 +419,88 @@ function noteMedia(d, found) {
   keepMedia();
 }
 
+// A response that may be a manifest (#171), noted apart: the newest MAYBE_MAX of the tab.
+function noteMaybe(d, found) {
+  const tab = media.get(d.tabId) || { page: null, items: [] };
+  if (tab.items.some((it) => it.url === d.url)) return;
+  tab.maybe = (tab.maybe || []).filter((m) => m.url !== d.url);
+  tab.maybe.push({ url: d.url, frameId: d.frameId || 0, mime: found.mime });
+  if (tab.maybe.length > MAYBE_MAX) tab.maybe.splice(0, tab.maybe.length - MAYBE_MAX);
+  if (!media.has(d.tabId)) {
+    media.set(d.tabId, tab);
+    for (const id of media.keys()) {
+      if (media.size <= MEDIA_TABS) break;
+      media.delete(id);
+    }
+  }
+  keepMedia();
+}
+
+// What a text starts as: an HLS playlist ("hls"), a DASH manifest ("dash"), or neither ("").
+function manifestKind(text) {
+  const t = String(text).replace(/^﻿/, "").trimStart();
+  if (t.startsWith("#EXTM3U")) return "hls";
+  // An XML declaration, comments, then the MPD element (with a namespace prefix or not).
+  if (/^(?:<\?xml[^>]*\?>\s*)?(?:<!--[\s\S]*?-->\s*)*<(?:[\w-]+:)?MPD[\s>/]/.test(t)) return "dash";
+  return "";
+}
+
+// The start of a response (SNIFF_BYTES), fetched again with the site's cookies as `probe` does:
+// what it is (`manifestKind`), or "" (not a manifest, refused, too slow).
+const SNIFF_BYTES = 4096;
+async function sniff(url) {
+  let reader = null;
+  try {
+    const r = await withTimeout(fetch(url, { credentials: "include" }), 5000);
+    if (!r.ok) return "";
+    if (!r.body || !r.body.getReader) return manifestKind((await withTimeout(r.text(), 5000)).slice(0, SNIFF_BYTES));
+    reader = r.body.getReader();
+    const dec = new TextDecoder();
+    let text = "";
+    while (text.length < SNIFF_BYTES) {
+      const { done, value } = await withTimeout(reader.read(), 5000);
+      if (done) break;
+      text += dec.decode(value, { stream: true });
+    }
+    return manifestKind(text);
+  } catch {
+    return "";
+  } finally {
+    // The rest is never read.
+    if (reader) reader.cancel().catch(() => {});
+  }
+}
+
+// The tab's possible manifests read, those of `frames` only (a Set of frame ids, or null: all),
+// each once: the ones that are become its streams, in the order they were loaded. One reading at
+// a time per tab: a second ask waits for the first.
+const sniffing = new Map();
+function sniffTab(tabId, frames) {
+  const run = async () => {
+    const tab = media.get(tabId);
+    if (!tab || !tab.maybe || !tab.maybe.length) return;
+    const asked = tab.maybe.filter((m) => !frames || frames.has(m.frameId));
+    if (!asked.length) return;
+    tab.maybe = tab.maybe.filter((m) => !asked.includes(m));
+    const kinds = await Promise.all(asked.map((m) => sniff(m.url)));
+    // The tab went to another page meanwhile: its old page's answers don't count.
+    if (media.get(tabId) !== tab) return;
+    asked.forEach((m, i) => {
+      if (kinds[i]) noteMedia({ tabId, url: m.url, frameId: m.frameId }, { kind: kinds[i], mime: m.mime, size: 0 });
+    });
+    keepMedia();
+  };
+  const next = (sniffing.get(tabId) || Promise.resolve()).then(run, run);
+  sniffing.set(tabId, next);
+  next.finally(() => sniffing.get(tabId) === next && sniffing.delete(tabId)).catch(() => {});
+  return next;
+}
+
 if (ext.webRequest && ext.webRequest.onResponseStarted) {
   ext.webRequest.onResponseStarted.addListener(
     (d) => {
       const found = mediaKind(d);
-      if (found) mediaBack.then(() => noteMedia(d, found));
+      if (found) mediaBack.then(() => (found.kind === "maybe" ? noteMaybe(d, found) : noteMedia(d, found)));
     },
     { urls: ["<all_urls>"], types: ["xmlhttprequest", "media", "other"] },
     ["responseHeaders"],
@@ -450,7 +538,8 @@ const mediaBack = session
         for (const [id, kept] of v.media || []) {
           const now = media.get(id);
           const fresh = ((now && now.items) || []).filter((s) => !kept.items.some((o) => o.url === s.url));
-          media.set(id, { ...kept, page: (now && now.page) || kept.page, items: [...kept.items, ...fresh].slice(-MEDIA_MAX) });
+          const maybe = [...(kept.maybe || []), ...((now && now.maybe) || [])].filter((m, i, all) => all.findIndex((o) => o.url === m.url) === i);
+          media.set(id, { ...kept, page: (now && now.page) || kept.page, items: [...kept.items, ...fresh].slice(-MEDIA_MAX), maybe: maybe.slice(-MAYBE_MAX) });
         }
       })
       .catch(() => {})
@@ -461,6 +550,19 @@ function streamOf(sender) {
   const list = ((sender.tab && media.get(sender.tab.id)) || { items: [] }).items.filter(isStream);
   const mine = list.find((s) => s.frameId === sender.frameId);
   return (mine || list[0] || {}).url || "";
+}
+
+// The same for a player that plays from a blob: (asked by the button over it or the right-click
+// menu), reading the tab's possible manifests when no stream is known (#171): the frame's own
+// first, then the tab's other frames'.
+async function streamFor(sender) {
+  const tabId = sender.tab && sender.tab.id;
+  if (tabId === undefined || tabId === null) return streamOf(sender);
+  const frameId = sender.frameId || 0;
+  const own = () => ((media.get(tabId) || { items: [] }).items.some((it) => isStream(it) && it.frameId === frameId));
+  if (!own()) await sniffTab(tabId, new Set([frameId]));
+  if (!own() && !streamOf(sender)) await sniffTab(tabId, null);
+  return streamOf(sender);
 }
 
 // ---- a stream's manifest: its qualities, length, and whether it is protected -------------------
@@ -547,7 +649,6 @@ function parseDash(text) {
 // A manifest, fetched again by the extension (the player's copy can't be read): its details, or
 // {failed: true}: a site that refuses the extension's request (it checks the page that asks) is
 // listed without them.
-const MANIFEST_MAX = 2 << 20;
 async function probe(item) {
   try {
     const r = await withTimeout(fetch(item.url, { credentials: "include" }), 5000);
@@ -577,9 +678,7 @@ function mediaElements() {
 // (qualities, length, size, protected). Manifests are read once.
 async function mediaList(tabId) {
   await mediaBack;
-  const tab = media.get(tabId);
-  if (!tab) return [];
-  await Promise.all(tab.items.filter((it) => isStream(it) && !it.info).map(async (it) => (it.info = await probe(it))));
+  if (!media.get(tabId)) return [];
   const frames = {};
   try {
     const found = await withTimeout(ext.scripting.executeScript({ target: { tabId, allFrames: true }, func: mediaElements }), 3000);
@@ -587,6 +686,14 @@ async function mediaList(tabId) {
   } catch {
     // A page extensions may not read: listed without its players' details.
   }
+  // #171: the possible manifests of frames whose player plays from a blob: (a MediaSource), read.
+  const fed = Object.entries(frames)
+    .filter(([, f]) => f.players.some((v) => /^blob:/i.test(v.src)))
+    .map(([id]) => Number(id));
+  if (fed.length) await sniffTab(tabId, new Set(fed));
+  const tab = media.get(tabId);
+  if (!tab) return [];
+  await Promise.all(tab.items.filter((it) => isStream(it) && !it.info).map(async (it) => (it.info = await probe(it))));
   tab.frames = Object.fromEntries(Object.entries(frames).map(([id, f]) => [id, f.href]));
   keepMedia();
   const out = [];
@@ -1139,7 +1246,7 @@ ext.contextMenus.onClicked.addListener(async (info, tab) => {
     if ((url && /^(blob|mediastream):/i.test(url)) || (player && !url)) {
       const page = info.frameUrl || info.pageUrl;
       await mediaBack;
-      const src = streamOf({ tab, frameId: info.frameId || 0 });
+      const src = await streamFor({ tab, frameId: info.frameId || 0 });
       const reply = await native({
         video: true,
         explicit: true,
@@ -1257,7 +1364,7 @@ async function pageMessage(m, sender) {
   }
   if (m.type === "video" && page) {
     await mediaBack;
-    const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : streamOf(sender);
+    const src = typeof m.src === "string" && /^https?:/i.test(m.src) ? m.src : await streamFor(sender);
     const reply = await native({
       video: true,
       url: page,
