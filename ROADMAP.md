@@ -6,14 +6,18 @@ issue, where the details and the discussion are. Released changes are in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues).
 
 ✅ done, not released yet · 🔄 being built · 📋 planned · 🔍 looking into it
+
 ## The next release: 0.3.0
+
 Everything below ships together, in one release, as version 0.3.0.
 
-## The next release
-
-Everything below ships together, in one release.
-
 ### Done
+
+- ✅ Every mark in the windows is drawn in every language (the browser window's ✔ Connected
+  was an empty box, → on Linux), and the browser and video-helper windows put their logo at the
+  start side in Arabic and Persian and fit a long German headline and subline
+  ([#185](https://github.com/anefzaoui/misterdownloadmanager/issues/185),
+  [#170](https://github.com/anefzaoui/misterdownloadmanager/issues/170))
 - ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
   the extension's update asks for no new permission; Chrome's extension leaves it out for now
 - ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
@@ -23,12 +27,6 @@ Everything below ships together, in one release.
   on the website, in the help, the FAQ and the README; MDM's **Add Mister Download Manager to
   your browser** window opens the store in Chrome, Edge, Brave, Opera and Vivaldi, with the
   manual install as the fallback
-
-- ✅ Every mark in the windows is drawn in every language (the browser window's ✔ Connected
-  was an empty box, → on Linux), and the browser and video-helper windows put their logo at the
-  start side in Arabic and Persian and fit a long German headline and subline
-  ([#185](https://github.com/anefzaoui/misterdownloadmanager/issues/185),
-  [#170](https://github.com/anefzaoui/misterdownloadmanager/issues/170))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
 - ✅ The engine tests that failed now and then on a busy computer (a refused connection coming
@@ -230,9 +228,9 @@ Everything below ships together, in one release.
   ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
 
 ### Browser extension
+
 - 📋 Chrome: read the browser's proxy or VPN extension's (#42 is Firefox's for now: Chrome can't
   make that permission optional, so it needs a release that can add it)
-
 - ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
 - ✅ On the Chrome Web Store: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp)
 - 📋 Chrome: use the browser's proxy or VPN extension for downloads too (it needs a permission
