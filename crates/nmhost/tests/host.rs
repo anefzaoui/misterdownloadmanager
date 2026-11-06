@@ -214,7 +214,15 @@ fn zen_and_helium_alone_are_registered() {
         serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap()
     };
     assert!(manifest(&mozilla_hosts)["allowed_extensions"].is_array());
-    assert!(manifest(&helium_hosts)["allowed_origins"].is_array());
+    // Both copies of the extension connect: the Chrome Web Store's and the app folder's.
+    let origins = manifest(&helium_hosts)["allowed_origins"].clone();
+    for id in [
+        "ejoleppdfgjdndddcjoehopknmlglojp",
+        "oogbclbbninliongijffeeggalppliok",
+    ] {
+        let origin = serde_json::json!(format!("chrome-extension://{id}/"));
+        assert!(origins.as_array().unwrap().contains(&origin), "{origins}");
+    }
     host("--unregister");
     for dir in [&mozilla_hosts, &helium_hosts] {
         assert!(!dir.join("com.misterdownloadmanager.host.json").exists());

@@ -17,6 +17,10 @@ Everything below ships together, in one release.
   far) in Download File Info, the progress window and Properties, from a table that comes with MDM
   (no address is sent anywhere); a proxy or a CDN said as such
   ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
+- ✅ The extension in the [Chrome Web Store](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp): **Add to Chrome** beside **Add to Firefox**
+  on the website, in the help, the FAQ and the README; MDM's **Add Mister Download Manager to
+  your browser** window opens the store in Chrome, Edge, Brave, Opera and Vivaldi, with the
+  manual install as the fallback
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
@@ -34,8 +38,7 @@ Everything below ships together, in one release.
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Firefox's add-on offered from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
   first: **Add to Firefox** on the website, in the help, the FAQ and the README, and in MDM's
-  **Add Mister Download Manager to your browser** window (for Zen and LibreWolf too); Chrome,
-  Edge, Brave, Opera and Vivaldi by hand until the Chrome Web Store listing is approved
+  **Add Mister Download Manager to your browser** window (for Zen and LibreWolf too)
 - ✅ Support MDM: a way to support its creator on [GitHub Sponsors](https://github.com/sponsors/anefzaoui),
   asked for only (**Help → Support MDM**, a line in About, the website, the README, the
   extension's popup and GitHub's Sponsor button); MDM stays free, nothing changes or unlocks
@@ -175,8 +178,6 @@ Everything below ships together, in one release.
   first ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
 - 🔄 A stream whose address doesn't end in `.m3u8` or `.mpd` is still recognised by its contents
   ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
-- 🔄 Chrome Web Store: **Add to Chrome** beside **Add to Firefox** in MDM, on the website and in the
-  help, and MDM's browser window opens each browser's store
 - 🔄 Firefox: reading the browser's proxy or VPN extension becomes a switch in the add-on, so the
   update asks for no new permission ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
 - 🔄 MDM's browser window: the check mark before **Connected** shows in every language (an empty

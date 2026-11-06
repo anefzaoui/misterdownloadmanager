@@ -31,6 +31,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Through a proxy MDM says so instead of guessing, and a CDN's server (Cloudflare, CloudFront,
   Fastly, Akamai and others) is said to be the CDN's, not the site owner's. Properties keeps what
   the last run saw. MDM is about 770 KB larger (the table 674 KB, the flags 95 KB).
+- **The extension is in the Chrome Web Store**: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp), for Chrome,
+  Edge, Brave, Opera and Vivaldi, installed with one click and kept up to date. MDM's **Add
+  Mister Download Manager to your browser** window opens it in each of them (**Install it by
+  hand** stays there for a browser that can't use its store), Chrome offers it by itself once
+  MDM is installed, and the website, the help and the README offer **Add to Chrome** beside
+  **Add to Firefox**.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
