@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
+  the extension's update asks for no new permission; Chrome's extension leaves it out for now
 - ✅ Linux: Ubuntu's Firefox (the Snap) reaches MDM: browser integration is set up for it, and the
   help says what the desktop asks the first time; Chromium as a Snap, which can't reach MDM, is no
   longer offered (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
@@ -192,6 +194,8 @@ Everything below ships together, in one release.
 
 ### Browser extension
 
+- 📋 Chrome: read the browser's proxy or VPN extension's (#42 is Firefox's for now: Chrome can't
+  make that permission optional, so it needs a release that can add it)
 - ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
 - 📋 Chrome Web Store listing (in review)
 
