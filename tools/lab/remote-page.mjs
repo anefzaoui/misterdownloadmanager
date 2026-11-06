@@ -196,8 +196,10 @@ try {
   check(false, e.message);
 } finally {
   proc.kill();
+  await new Promise((r) => (proc.exitCode !== null ? r() : proc.once("exit", r)));
   await sleep(500);
-  if (!opt("keep-profile")) fs.rmSync(profile, { recursive: true, force: true, maxRetries: 5 });
+  // Chromium's helpers can hold the profile a moment longer: left for the system to clean then.
+  if (!opt("keep-profile")) try { fs.rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 300 }); } catch {}
 }
 console.log(failed ? `${failed} failed` : "all passed");
 process.exit(failed ? 1 : 0);
