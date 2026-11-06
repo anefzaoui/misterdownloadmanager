@@ -1365,8 +1365,12 @@ async function run() {
         const seen = path.join(data, "extension-seen");
         fs.rmSync(seen, { force: true });
         let seenAs = "";
+        // E2E_OLD_APP=1: an app older than extension-seen (0.2.4, for the compatibility runs:
+        // a new extension with a released app): the extension is given time to reach it instead.
         const ready = () =>
-          until(`${name}'s extension reaching the host`, 20000, () => {
+          process.env.E2E_OLD_APP
+            ? sleep(8000).then(() => (seenAs = "(an older app: not reported)"))
+            : until(`${name}'s extension reaching the host`, 20000, () => {
             try {
               seenAs = fs.readFileSync(seen, "utf8").split("\t")[0];
               return seenAs;
