@@ -434,6 +434,10 @@
    "source": "Menu bar.",
    "text": "菜单栏。"
   },
+  "09d11cac644c01da": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "Firefox（来自 addons.mozilla.org）、Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi，通过 MDM 浏览器扩展程序，以及基于它们的浏览器：Zen 和 LibreWolf、Helium。该扩展程序会将下载任务及其 cookie 和 referrer 传递给 MDM，因此需要登录才能下载的文件仍然有效，它还会将使用 Mister Download Manager 下载添加到右键菜单，并在视频上方添加一个下载视频按钮。请参阅浏览器集成。"
+  },
   "09e228aaadb34e64": {
    "source": "Each download is then held to that speed. <g1>Downloads → Speed Limiter → Turn off</g1> gives full speed again. Tick <g2>Always turn on Speed Limiter on Mister Download Manager startup</g2> to have it on every time.",
    "text": "然后，每个下载都会被限制在该速度。选择<g1>下载 → 速度限制器 → 关闭</g1>会再次恢复全速。勾选<g2>Mister Download Manager 启动时始终开启速度限制器</g2>，以便每次都开启它。"
@@ -837,6 +841,10 @@
   "14ca42cba15b46ce": {
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>浏览器。</g1>右键单击页面，选择<g2>使用 Mister Download Manager 下载所有链接</g2>，或选择页面的一部分，选择<g3>使用 Mister Download Manager 下载选定链接</g3>。页面的引用页和 Cookie 会随每个链接一起发送。"
+  },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "在 Windows 上，窗口通过 Direct3D 12（eframe 的 wgpu，仅使用其 Direct3D 12 后端）绘制，或者当“视图”→“绘制方式”选择 OpenGL 时，通过 OpenGL（eframe 的 glow）绘制；Linux 和 macOS 使用 OpenGL。当所选方式无法启动时，会尝试另一种方式，因此窗口总能打开。"
   },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
@@ -1274,6 +1282,10 @@
    "source": "Windows, macOS, Linux (Java)",
    "text": "Windows, macOS, Linux (Java)"
   },
+  "1ec161dd36dfe603": {
+   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM. Opera and Vivaldi take it the same way.",
+   "text": "<g1>Mister Download Manager</g1> 会出现在列表中。保持其开启状态。将其按钮固定到工具栏，以便一目了然地查看浏览器是否连接到 MDM。Opera 和 Vivaldi 也以同样的方式安装。"
+  },
   "1ed401e594a9c102": {
    "source": "0.03 s",
    "text": "0.03 秒"
@@ -1378,6 +1390,10 @@
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "删除 <x1/> 文件夹（或将其设置为只读），相同的副本就会像普通的 zip 文件一样：它将数据保存在 <x2/> 中。"
   },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>视图</g1> — 显示或隐藏类别，对列表进行排序（<g2>整理文件</g2>），<g3>深色模式支持</g3>，<g4>始终为深色</g4>，<g5>绘制方式</g5>（Windows：Direct3D 或 OpenGL）和<g6>语言</g6>。"
+  },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
    "text": "<g1>Statcounter</g1> 统计访问量，以便我们了解人们阅读了哪些页面以及他们来自何处。其脚本会记录您打开的页面、链接到该页面的页面、您的浏览器、系统和屏幕尺寸，以及根据您的 IP 地址推断的大致位置，并设置一个 Cookie 来区分新访客和回访者。我们在 Statcounter 的控制面板中将这些信息视为统计数据；我们不会使用它们来识别您的身份，也不会出售或分享它们。请参阅 <g2>Statcounter 的隐私政策</g2>。在您的浏览器中阻止 statcounter.com 的 Cookie 或脚本，或使用内容拦截器，可以使您不被计入统计；网站功能保持不变。"
@@ -1397,6 +1413,10 @@
   "223eac9bc2498002": {
    "source": "<g1>FTP</g1><g2>and FTPS</g2>",
    "text": "<g1>FTP</g1><g2>和 FTPS</g2>"
+  },
+  "228586c26511a211": {
+   "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
+   "text": "在 addons.mozilla.org 上打开附加组件页面，<g1>Mister Download Manager</g1>，然后点击<g2>添加到 Firefox</g2>。Zen 和 LibreWolf 使用相同的页面。"
   },
   "22b1c6afc644a89a": {
    "source": "Small and quick to set up, with a browser extension that catches video and audio",
@@ -1610,6 +1630,10 @@
    "source": "What a report contains",
    "text": "报告包含什么"
   },
+  "276afd4c43c34307": {
+   "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos.",
+   "text": "它将您浏览器的下载任务及其 Cookie 交给 MDM 处理，在右键菜单中添加<g1>使用 Mister Download Manager 下载</g1>，并在视频上方放置一个<g2>下载视频</g2>按钮。"
+  },
   "276d4f05431a73f3": {
    "source": "<g1>The automation API's JSON Schema</g1>, <g2>automation-api.schema.json</g2>, made from the code the app answers with. Each download in its list now says why it failed (<x3/>), and the \"it is off\" answer carries <x4/> for programs to check.",
    "text": "<g1>自动化 API 的 JSON Schema</g1>，<g2>automation-api.schema.json</g2>，由应用响应的代码生成。其列表中的每个下载现在都会说明失败原因（<x3/>），并且“已关闭”的响应会带有 <x4/> 供程序检查。"
@@ -1689,6 +1713,10 @@
   "298c9f2b74a2990f": {
    "source": "How it works",
    "text": "工作原理"
+  },
+  "2991dd6051b6e56c": {
+   "source": "By hand for now, while the Chrome Web Store reviews the extension. Its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
+   "text": "目前需手动添加，Chrome 网上应用店正在审核此扩展。其文件位于 MDM 安装目录下的 <x1/> 文件夹中：如果您是为自己安装，则在 <x2/>；如果您是为所有人安装，则在 <x3/>。每个版本也都有单独的下载文件，<x4/>（请先解压）。"
   },
   "29b29fea4e1dcc73": {
    "source": "Download limits",
@@ -2037,6 +2065,10 @@
   "314870831b11d2bd": {
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDM 在种子首次需要时启动其种子引擎。如果<g1>没有种子运行时停止种子引擎</g1>处于开启状态（默认），则在没有种子运行或共享一分钟后，它会再次停止。当它运行时，其他对等点可以连接到 MDM，MDM 会要求您的路由器转发其端口 (UPnP)。Windows 可能会询问是否允许 MDM 通过防火墙：仅在专用网络上允许它。"
+  },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "从显卡制造商网站（Intel、AMD 或 NVIDIA）更新显卡驱动程序可以解决许多此类问题。"
   },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
@@ -2410,6 +2442,10 @@
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>种子和您的安全</g2></g1> — 他人可见的信息、网络切换、阻止列表、代理。"
   },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "冻结或崩溃报告会说明是哪种方式在绘制：在报告问题时请附上它。"
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "安装程序或 MDM 无法启动"
@@ -2642,6 +2678,10 @@
    "source": "Crash reports",
    "text": "崩溃报告"
   },
+  "41d7fb067ecb2748": {
+   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g2>Download with Mister Download Manager</g2> to the right-click menu and a <g3>Download video</g3> button over videos. See <g4>Browser integration</g4>.",
+   "text": "Firefox（来自 <g1>addons.mozilla.org</g1>）、Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi，通过 MDM 浏览器扩展程序，以及基于它们的浏览器：Zen 和 LibreWolf、Helium。该扩展程序会将下载任务及其 cookie 和 referrer 传递给 MDM，因此需要登录才能下载的文件仍然有效，它还会将<g2>使用 Mister Download Manager 下载</g2>添加到右键菜单，并在视频上方添加一个<g3>下载视频</g3>按钮。请参阅<g4>浏览器集成</g4>。"
+  },
   "4208f79380d548a0": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1>（约 80 MB）用于合并视频和音频，当网站将它们分开时（大多数网站为了更高质量会这样做），并将音频转换为 MP3、Opus 或 FLAC 文件。当 MDM 提示时，点击<g2>安装 ffmpeg</g2>。MDM 会根据其发布版本提供的校验和进行检查。"
@@ -2702,9 +2742,17 @@
    "source": "Links that come while the window is open join the ones already there. A link that is already in the window isn't added twice. A link that is already in your download list goes under <g1>Already in the list</g1>, unticked.",
    "text": "当窗口打开时到达的链接会加入已有的链接。窗口中已有的链接不会被添加两次。已在下载列表中的链接会显示在<g1>已在列表中</g1>下方，未勾选。"
   },
+  "43ff6b9c3376c383": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
+   "text": "Firefox、Chrome、Edge、Brave、Opera、Vivaldi"
+  },
   "4409b6268f79d30a": {
    "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
    "text": "<g1>粘贴。</g1>选择<g2>任务 → 链接抓取器...</g2>并按<g3>Ctrl+V</g3>：复制文本中的每个网址都会被添加。"
+  },
+  "440d7c9f4a9ff3a8": {
+   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose <g4>Load unpacked</g4> and pick the <x5/> folder in MDM's folder. The <g6>tutorial</g6> walks through it.",
+   "text": "用安装程序安装 MDM，并勾选<g1>设置浏览器集成</g1>。在 Firefox 中，打开<g2>addons.mozilla.org 上的附加组件页面</g2>，然后点击<g3>添加到 Firefox</g3>。在 Chrome、Edge、Brave、Opera 和 Vivaldi 中，目前需要手动加载，因为 Chrome 网上应用店正在审核：打开浏览器的扩展程序页面，开启开发者模式，选择<g4>加载已解压的扩展程序</g4>，然后选择 MDM 文件夹中的 <x5/> 文件夹。<g6>教程</g6>会详细介绍。"
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -3090,6 +3138,10 @@
    "source": "Check <g1>Save to</g1> (the Video category's folder by default) and <g2>File name</g2>, which comes from the video's title.",
    "text": "检查<g1>保存到</g1>（默认为视频类别的文件夹）和<g2>文件名</g2>，文件名来自视频标题。"
   },
+  "4e46cacda919db98": {
+   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> (from <x2/>) is removed when Firefox closes. Remove it and install the add-on from <g3>its page on addons.mozilla.org</g3> instead: Firefox keeps that one, and updates it.",
+   "text": "通过<x2/>中的<g1>加载临时附加组件</g1>加载的附加组件会在 Firefox 关闭时被移除。请移除它，然后从<g3>addons.mozilla.org 上的页面</g3>安装附加组件：Firefox 会保留并更新该组件。"
+  },
   "4f23b5962ea59819": {
    "source": "<g1>ffmpeg</g1><g2>merges picture and sound</g2>",
    "text": "<g1>ffmpeg</g1><g2>合并图像和声音</g2>"
@@ -3310,6 +3362,10 @@
    "source": "What it takes",
    "text": "所需条件"
   },
+  "54e5466052010a84": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
+   "text": "在 Linux 和 macOS 上，MDM 每次启动时都会自行设置浏览器集成（会找到当时已安装的浏览器）；按照<g1>浏览器集成</g1>中的说明添加扩展。以 Flatpak 或 Snap 方式安装的浏览器可能无法访问 MDM。"
+  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "点击工具栏上的<g1>计划程序</g1>（或<g2>下载 → 计划程序</g2>）。"
@@ -3422,6 +3478,10 @@
    "source": "Command",
    "text": "命令"
   },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "如果在 MDM 运行时显卡被重置（驱动程序更新），MDM 会自行重新启动。"
+  },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
    "text": "（以及表格、幻灯片、绘图）。"
@@ -3497,6 +3557,10 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "开始设置"
+  },
+  "59e78792626130dd": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension: Firefox's from <g1>its add-ons store</g1>, the others by hand for now. Without the extension, copy a link and MDM opens the download window. <g2>More</g2>",
+   "text": "通过扩展程序支持 Firefox、Chrome、Edge、Brave、Opera 和 Vivaldi：Firefox 扩展程序可从<g1>其附加组件商店</g1>获取，其他浏览器目前需手动添加。如果没有扩展程序，复制链接后 MDM 会打开下载窗口。<g2>更多</g2>"
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -4026,6 +4090,10 @@
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "要将<g1>所有</g1>流量通过另一个网络路由，请为整台计算机使用VPN。"
   },
+  "67b7e3e016904e39": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
+   "text": "安装 MDM 时，请勾选设置浏览器集成。在 Firefox 中，打开 addons.mozilla.org 上的附加组件页面，然后点击添加到…。"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4161,6 +4229,10 @@
   "6a664e307dbf6d65": {
    "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
    "text": "<g1>普通 DNS</g1>：未加密。MDM 通过 TCP 查询，从不通过 UDP，因此它从不需要防火墙例外。"
+  },
+  "6a721813ad40ae31": {
+   "source": "<g1>Firefox</g1><g2>Mozilla · <g3>Add to Firefox</g3></g2>",
+   "text": "<g1>Firefox</g1><g2>Mozilla · <g3>添加到 Firefox</g3></g2>"
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4474,6 +4546,10 @@
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
    "text": "将图库的图片（维基共享资源类别、Flickr 相册等）下载到 <x1/> 中以其命名的文件夹内；<x2/> 最多下载这么多，即网站列出的前几个。再次启动时，它只会获取新的图片。"
   },
+  "720d6bdebec42762": {
+   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: by hand for now, while the Chrome Web Store reviews it. It comes with the app, in its <x2/> folder, and <g3>as its own download</g3> (<x4/>: unzip, then <g5>Load unpacked</g5> on the browser's extensions page with Developer mode on). The <g6>step-by-step guide</g6> shows each browser.",
+   "text": "<g1>Chrome、Edge、Brave、Opera 和 Vivaldi</g1>：目前需要手动安装，因为 Chrome 网上应用店正在审核。它随应用程序一起提供，位于其<x2/>文件夹中，并且<g3>作为单独的下载</g3>（<x4/>：解压后，在浏览器扩展程序页面上启用开发者模式，然后点击<g5>加载已解压的扩展程序</g5>）。<g6>分步指南</g6>会展示每个浏览器如何操作。"
+  },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
    "text": "1.2.0 桌面测试版<g1>2026年10月25日</g1>"
@@ -4681,6 +4757,10 @@
   "77a30c9b7d2a6105": {
    "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
    "text": "所有操作都可以通过键盘完成，MDM 支持屏幕阅读器（如 Windows 上的“讲述人”和 NVDA）：它的窗口、对话框和菜单会告诉屏幕阅读器每个控件是什么及其状态，下载列表会朗读每个下载的名称、状态和大小。<g1>类别</g1>窗格会作为树状结构朗读（每个类别及其计数、打开或关闭、选中或未选中），菜单栏和每个右键菜单会作为菜单朗读，其项目可以从那里运行。"
+  },
+  "77a524c1d8c2a24b": {
+   "source": "<g1>Firefox</g1> (and Zen, LibreWolf): one click from its add-ons store, and Firefox keeps it up to date.",
+   "text": "<g1>Firefox</g1>（以及 Zen、LibreWolf）：从其附加组件商店一键安装，Firefox 会保持其最新状态。"
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -5258,6 +5338,14 @@
    "source": "Put downloads in a queue →",
    "text": "将下载放入队列 →"
   },
+  "855283d97ca22cdb": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others by hand for now, while the Chrome Web Store reviews it.",
+   "text": "按以下步骤，将扩展添加到您使用的每个浏览器：Firefox 从其附加组件商店获取，其他浏览器目前需手动添加，Chrome 网上应用店正在审核中。"
+  },
+  "859b311c937bc36f": {
+   "source": "In Chrome, Edge or Brave",
+   "text": "在 Chrome、Edge 或 Brave 中"
+  },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
    "text": "下载 Mister Download Manager 0.2.4 — 免费支持 Windows、macOS 和 Linux"
@@ -5510,6 +5598,10 @@
    "source": "Can it download a video's subtitles?",
    "text": "可以下载视频字幕吗？"
   },
+  "8c9a12e93a193e44": {
+   "source": "In Firefox",
+   "text": "在 Firefox 中"
+  },
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "每个文件的连接数"
@@ -5626,6 +5718,10 @@
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
    "text": "<g1>读取转储文件。</g1> 监视器使用 Mozilla 的 <x2/> 读取转储文件。如果找到，它会使用发布版本的 Breakpad 符号。如果使用 <x4/> 构建，来自源代码的构建也可以读取旁边的原生调试信息（其 <x3/>，DWARF）；随附的应用程序没有该读取器，因为它有几 MB。报告的 <g5>签名</g5>（例如 <x6/>）在同一问题的报告中保持不变，窗口会搜索现有问题以查找它。"
   },
+  "8fe29a431a6dd71a": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
+   "text": "右键点击链接、视频、声音或图片，然后选择 <g1>使用 Mister Download Manager 下载</g1>。MDM 会下载它，无论其类型如何：您要求下载，因此文件类型列表和排除的网站不适用于此处（它们只决定 MDM 自行接管哪些下载）。作为流播放的视频会进入 <g2>下载视频</g2> 窗口。"
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5.5 秒<g1><g2>2</g2></g1>"
@@ -5677,6 +5773,10 @@
   "91ebb9f0dfb7f3d7": {
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid、AllDebrid 或 Premiumize 等网盘服务是一种付费帐户，它从文件主机下载文件到自己的服务器。它会返回一个..."
+  },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "如果 Direct3D 无法在您的计算机上启动（没有 Direct3D 12 驱动程序，某些虚拟机），或者其第一个窗口在 10 秒内没有显示，MDM 会使用 OpenGL 绘制，并且<g1>视图 → 绘制方式</g1>会显示这一点。再次选择<g2>Direct3D</g2>会在下次启动时再次尝试。"
   },
   "920f5f8c86e123ee": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
@@ -5749,6 +5849,10 @@
   "9353e613d2835a1f": {
    "source": "Find by name",
    "text": "按名称查找"
+  },
+  "938b387bfbc70706": {
+   "source": "Browser extension: <g1><x2/>Add to Firefox</g1>. For Chrome, Edge, Brave and Opera, by hand for now, while the Chrome Web Store reviews it. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>",
+   "text": "浏览器扩展：<g1><x2/>添加到 Firefox</g1>。Chrome、Edge、Brave 和 Opera 浏览器目前需手动添加，Chrome 网上应用店正在审核中。<g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>"
   },
   "93a9d8c882d29583": {
    "source": "Tick <g1>Use Speed Limiter</g1>.",
@@ -6154,6 +6258,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "两款应用都至少运行了七次下载，每次下载七个文件。条形图表示运行时间中间一半的范围，线表示中位数。"
   },
+  "9e4744c9b576debc": {
+   "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
+   "text": "转到网页并点击下载链接，例如 ZIP 或 EXE：MDM 会打开<g1>下载文件信息</g1>。点击<g2>开始下载</g2>。"
+  },
   "9e5f6ea1de61f755": {
    "source": "Blocking addresses",
    "text": "阻止地址"
@@ -6221,6 +6329,10 @@
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "如果翻译比英文长，不适合显示的部分会以<g1>...</g1>结尾；指向它即可阅读完整内容。"
+  },
+  "a06fa72ad54fa126": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
+   "text": "安装 MDM 时，请勾选设置浏览器集成。在 Firefox 中，打开 addons.mozilla.org 上的附加组件页面，然后点击添加到 Firefox。在 Chrome、Edge、Brave、Opera 和 Vivaldi 中，目前请手动加载，因为 Chrome Web Store 正在审核中：打开浏览器的扩展程序页面，开启开发者模式，选择加载已解压的扩展程序，然后选择 MDM 文件夹中的 extension\\chromium 文件夹。教程会详细说明此过程。"
   },
   "a09cf46e49e64bbb": {
    "source": "A sweep through every window for the small things that make a program feel finished: how each control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers, and a long list of fixes found by reviewing all of it (issue #7 and more).",
@@ -6590,6 +6702,10 @@
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>内置86种语言。</g1> 包括从右到左的语言，首次启动时选择。"
   },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>内存</g1>（在“进程”选项卡中）是 MDM 独立占用的内存，即其<g2>专用工作集</g2>。在窗口打开且没有下载任务时，大约是 70 MB。"
+  },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
    "text": "从浏览器捕获下载"
@@ -6718,6 +6834,10 @@
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "在长列表中查找下载 — Mister Download Manager 帮助"
   },
+  "ad06056d9a651b28": {
+   "source": "Firefox asks to confirm: click <g1>Add</g1>. Firefox keeps the add-on up to date.",
+   "text": "Firefox 会要求确认：点击<g1>添加</g1>。Firefox 会保持附加组件最新。"
+  },
   "ad15abc4931df4fd": {
    "source": "; a choice's <x1/> is what <x2/> takes, a subtitle's <x3/> what <x4/> takes.",
    "text": "；一个选项的 <x1/> 是 <x2/> 所接受的，一个字幕的 <x3/> 是 <x4/> 所接受的。"
@@ -6845,6 +6965,10 @@
   "afae30c6c42a7afb": {
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "如果 Mister Download Manager 意外关闭或停止响应，会打开一个<g1>崩溃报告</g1>窗口。它会显示发生了什么，让您阅读完整的报告，并可以将其发送给 GitHub 上的开发者。每份报告都有助于为所有人解决问题。"
+  },
+  "afb13e3cfd9283df": {
+   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.",
+   "text": "安装一次扩展，您在 Firefox、Chrome、Edge 或 Brave 中点击的每个下载链接都会转到 MDM。"
   },
   "afc32cfba2a08d06": {
    "source": "Choose a download",
@@ -7150,6 +7274,10 @@
    "source": "On <g1>Q</g1>, tick <g2>In a queue</g2> or <g3>Not in a queue</g3>.",
    "text": "在 <g1>队列</g1> 上，勾选 <g2>在队列中</g2> 或 <g3>不在队列中</g3>。"
   },
+  "b7da4b8cc0d5495e": {
+   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge and Brave, which downloads it takes, and what happens when MDM isn't running.",
+   "text": "<g1><g2>浏览器集成</g2></g1> — 适用于 Firefox（来自 addons.mozilla.org）、Chrome、Edge 和 Brave 的扩展程序，它会接管哪些下载，以及 MDM 未运行时会发生什么。"
+  },
   "b7e47ad1f6a91134": {
    "source": "The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.",
    "text": "本应用支持 86 种语言，涵盖 Windows 11 提供的所有语言。它会跟随您电脑的语言设置，您也可以随时在“视图”→“语言”中切换。"
@@ -7182,6 +7310,10 @@
    "source": "Click <g1>Apply</g1>.",
    "text": "点击<g1>应用</g1>。"
   },
+  "b8face0bc8562340": {
+   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
+   "text": "扩展程序是否已加载并开启？在浏览器的扩展程序页面上查找<g1>Mister Download Manager</g1>。在 Firefox 中，请从 addons.mozilla.org 安装：临时附加组件在重启后会消失。请参阅<g2>浏览器集成</g2>。"
+  },
   "b921c33f58e520a8": {
    "source": "<g1>5.4×</g1><g2>faster</g2>",
    "text": "<g1>快<g2>5.4 倍</g2></g1>"
@@ -7193,6 +7325,10 @@
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 种语言，也支持从右到左"
+  },
+  "b95c95d9143dace0": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them…",
+   "text": "Firefox（来自 addons.mozilla.org）、Google Chrome、Microsoft Edge、Brave、Opera 和 Vivaldi，通过 MDM 浏览器扩展程序，以及基于它们的浏览器……"
   },
   "b95ce4f23354e44d": {
    "source": "AI assistants (MCP) — Mister Download Manager help",
@@ -7289,6 +7425,10 @@
   "bc1065924c4077d9": {
    "source": "The Pieces tab: a square for each piece, filled once it's here",
    "text": "分块选项卡：每个分块一个方块，一旦存在就会被填充"
+  },
+  "bc21a99be8efd606": {
+   "source": "By hand for now, while the Chrome Web Store reviews the extension:",
+   "text": "目前需要手动操作，因为 Chrome 网上应用店正在审核此扩展："
   },
   "bc21bd767c7774ea": {
    "source": "The terms for using Mister Download Manager and misterdownloadmanager.com: free software under the GNU GPL 3.0, used at your own risk, for downloads you have the right to make.",
@@ -8414,6 +8554,10 @@
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "列表中的数字和日期（<g1>上次尝试日期</g1>、<g2>添加时间</g2>）遵循 Windows 中设置的区域（<g3>设置 → 时间和语言 → 语言和区域 → 区域格式</g3>），因此数字、分隔符和日期顺序看起来与您习惯的方式相同。在英文中，MDM 的书写方式与 IDM 相同（<x4/>）。"
   },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>工作集</g1>（“详细信息”选项卡，添加该列）会加上与其他程序共享的内存。MDM 使用显卡绘制窗口，因此显卡驱动程序的内存也计算在内，总共大约 120 MB。"
+  },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "是。MDM 接受 IDM 熟悉的命令行开关，附带 misterdownloadmanager-cli 用于从终端下载，并具有一个本地的、受令牌保护的自动化 API，可以列出、暂停、开始和删除下载。此 API 默认关闭，直到您将其打开。请参阅命令行和自动化。"
@@ -8686,6 +8830,10 @@
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
    "text": "当您选择<g1>下载选定链接</g1>和<g2>下载所有链接</g2>时，它们会读取页面（或您选择的）链接，并将其与页面地址及其网站 cookie 一起传递给 MDM。"
   },
+  "e39c7ec3d5c0fd70": {
+   "source": "The browser extension: for Firefox, from its add-ons store. For Chrome, Edge, Brave, Opera and Vivaldi it comes with the app and as <g1>its own download</g1>, added by hand for now, while the Chrome Web Store reviews it. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
+   "text": "浏览器扩展：Firefox 浏览器可从其附加组件商店获取。Chrome、Edge、Brave、Opera 和 Vivaldi 浏览器随应用程序提供，也可作为<g1>独立下载</g1>，目前需手动添加，Chrome 网上应用店正在审核中。所有文件均由 GitHub Actions 从公共源代码构建，并列出其 SHA-256 校验和。"
+  },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
    "text": "时间都去哪儿了"
@@ -8918,6 +9066,10 @@
    "source": "The free IDM alternative: Mister Download Manager",
    "text": "免费的 IDM 替代品：Mister Download Manager"
   },
+  "e87dda35b116dcd8": {
+   "source": "Add to Firefox",
+   "text": "添加到 Firefox"
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "浏览器集成详情（Firefox、隐私窗口、发送内容）→"
@@ -8961,6 +9113,10 @@
   "eac1d064497401fd": {
    "source": "It comes with every download of MDM, next to the app (the installer puts it in MDM's folder). It works on its own: the app needn't run, except for <x1/> and <x2/>.",
    "text": "它随 MDM 的每次下载一起提供，位于应用程序旁边（安装程序将其放在 MDM 的文件夹中）。它可以独立工作：应用程序无需运行，除了 <x1/> 和 <x2/>。"
+  },
+  "eacdcb2992653dee": {
+   "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
+   "text": "需要 Firefox 140 或更高版本。从 addons.mozilla.org 上的 <g1>Mister Download Manager</g1> 页面安装附加组件：点击<g2>添加到 Firefox</g2>。Firefox 会保持其更新。Zen 和 LibreWolf 从同一页面安装。 （MDM 的<g3>将 Mister Download Manager 添加到您的浏览器</g3>窗口会为您打开该页面。）"
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9302,6 +9458,10 @@
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "列表显示了它们将运行的顺序。使用下面的箭头按钮可以向上或向下移动下载。"
   },
+  "f3b0722f5a504a62": {
+   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge and Brave, load it by hand for now, while the Chrome Web Store reviews it. <g3>Browser integration</g3> shows how.",
+   "text": "浏览器集成在每个浏览器中还需要一个步骤：添加扩展。在 Firefox 中，点击<g2>其在 addons.mozilla.org 上的页面</g2>上的<g1>添加到 Firefox</g1>；在 Chrome、Edge 和 Brave 中，目前需要手动加载，等待 Chrome 网上应用店审核。<g3>浏览器集成</g3>展示了如何操作。"
+  },
   "f3d28d86765197f1": {
    "source": "Intel",
    "text": "Intel"
@@ -9466,6 +9626,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "在左侧选择<g1>主下载队列</g1>。<g2>计划</g2>选项卡将打开。"
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "在 Windows 上，MDM 使用 Direct3D 12 绘制窗口；在 Linux 和 macOS 上，使用 OpenGL。显卡驱动程序仍然可能出现异常：窗口卡住几秒、闪烁或显示错误的颜色或色块。在 Windows 上，请尝试另一种方式：选择<g1>视图 → 绘制方式 → OpenGL</g1>，然后退出 MDM（<g2>任务 → 退出</g2>）并重新启动。通过<g3>视图 → 绘制方式 → Direct3D</g3>可以以同样的方式切换回来。"
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "在<g1>“常规”类别的默认下载目录</g1>中，点击<g2>浏览</g2>并选择 U 盘上的一个文件夹，例如<x3/>。"
@@ -9509,6 +9673,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "默认情况下，每个下载使用八个连接。如果您在选项 → 连接中选择，最多可达32个；勾选允许超过32个连接后，可达128个。当服务器允许的连接数较少时，MDM会使用较少的连接…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "如果两者都无法启动，MDM 会使用 Microsoft 的软件渲染器绘制，因此窗口仍然会打开（远程桌面，没有显卡驱动程序的虚拟机）。它能工作，但会使处理器更繁忙。"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",

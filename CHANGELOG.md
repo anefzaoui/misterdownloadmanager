@@ -22,6 +22,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
+  installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
+  **Add Mister Download Manager to your browser** window opens it for them; the website, the
+  help and the README offer it first.
 - **Support MDM**: **Help → Support MDM** and a line in **About** open the creator's
   [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
   README and the browser extension's popup link to it too. Only when asked: MDM stays free, with
@@ -32,15 +36,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Every torrent connection goes out from the adapter's address, with the same kill switch as
   downloads: peers, trackers, the DHT and the listening port. When the adapter disconnects,
   torrents stop, nothing goes out another way, and they start again when it is back.
-- **Windows: draw with Direct3D** ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89)).
-  **View → Draw with** chooses between OpenGL, as before and still the default, and Direct3D 12,
-  from the next start. Direct3D may avoid the stalls some graphics drivers' OpenGL has
-  ([#82](https://github.com/anefzaoui/misterdownloadmanager/issues/82)). When the chosen one
-  can't start, MDM draws with the other, so its window always opens: Direct3D falls back to
-  OpenGL (and the menu says so), and OpenGL to Direct3D or Microsoft's software renderer (Remote
-  Desktop, virtual machines without a graphics driver). A start with Direct3D that ends before
-  its first window is drawn is remembered the same way. Freeze and crash reports say what was
-  drawing. Linux and macOS keep OpenGL.
+- **Windows: MDM draws with Direct3D 12** ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89)).
+  Its windows open faster (about a quarter of a second sooner on our test PC), and Direct3D may
+  avoid the stalls some graphics drivers' OpenGL has
+  ([#82](https://github.com/anefzaoui/misterdownloadmanager/issues/82)). **View → Draw with**
+  goes back to OpenGL, as before, from the next start; a choice of OpenGL is kept. The window
+  always opens: when Direct3D can't start, its first frame doesn't come within 10 seconds, or a
+  start with it ends before its first frame, MDM draws with OpenGL until Direct3D is chosen
+  again (the menu says so); without a usable OpenGL either, it draws with Microsoft's software
+  renderer (Remote Desktop, virtual machines without a graphics driver). When the graphics card
+  is reset while MDM runs (a driver update), MDM starts again by itself. Freeze and crash
+  reports say what was drawing. Linux and macOS keep OpenGL.
 - **The extension lists the media a page has loaded**
   ([#38](https://github.com/anefzaoui/misterdownloadmanager/issues/38)). The toolbar button's
   window has **Media on this page**: the HLS and DASH streams the page's players loaded (each
@@ -260,6 +266,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **A smaller download** ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158)):
+  the program is built for size, which takes the installer from 16.1 to 13.6 MB and the zips
+  from 19.3 to 15.6 MB, with the same features and the same download speed.
 - **Translators: a reviewed translation is never replaced by machine translation.** A row whose
   `#, machine` line a person deleted is kept by `tools/i18n/translate.py` in every case (`--redo`
   included; a check it fails is printed for the person to decide), and CI fails a pull request
@@ -344,6 +353,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   stream's own server, not the page's.
 - **Add torrent: the labels fit in every language**: in German, **Speichern unter** ran under
   its field.
+- **Linux: the first window opens seconds sooner, and no longer freezes on a busy computer**
+  (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): MDM asked
+  fontconfig for its fonts one at a time (one program for each of some thirty scripts, more each
+  time the language list opened) while the window waited, 2 s on an idle computer and long
+  enough on a busy one for a freeze report on the very first start. It now asks once, all
+  together, while the rest of MDM starts.
 - **A server without ranges no longer sends the file twice**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)): when the extra
   connections' answers came late (a busy computer), the download could finish and then start over

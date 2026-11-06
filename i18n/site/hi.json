@@ -434,6 +434,10 @@
    "source": "Menu bar.",
    "text": "मेनू बार।"
   },
+  "09d11cac644c01da": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "MDM ब्राउज़र एक्सटेंशन के ज़रिए Firefox (addons.mozilla.org से), Google Chrome, Microsoft Edge, Brave, Opera और Vivaldi, और उन पर बने ब्राउज़र: Zen और LibreWolf, Helium. एक्सटेंशन डाउनलोड को उनकी कुकीज़ और रेफ़रर के साथ MDM को सौंपता है, ताकि साइन-इन के पीछे की फ़ाइलें भी काम करें, और यह राइट-क्लिक मेनू में Mister Download Manager से डाउनलोड करें और वीडियो पर एक वीडियो डाउनलोड करें बटन जोड़ता है. ब्राउज़र इंटीग्रेशन देखें."
+  },
   "09e228aaadb34e64": {
    "source": "Each download is then held to that speed. <g1>Downloads → Speed Limiter → Turn off</g1> gives full speed again. Tick <g2>Always turn on Speed Limiter on Mister Download Manager startup</g2> to have it on every time.",
    "text": "प्रत्येक डाउनलोड को फिर उस गति पर रखा जाता है। <g1>डाउनलोड → गति सीमित करने वाला → बंद करें</g1> फिर से पूरी गति देता है। हर बार इसे चालू रखने के लिए <g2>Mister Download Manager स्टार्टअप पर हमेशा गति सीमित करने वाला चालू करें</g2> पर टिक करें।"
@@ -837,6 +841,10 @@
   "14ca42cba15b46ce": {
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>ब्राउज़र से।</g1> <g2>Mister Download Manager के साथ सभी लिंक डाउनलोड करें</g2> के लिए किसी पृष्ठ पर राइट-क्लिक करें, या <g3>Mister Download Manager के साथ चयनित लिंक डाउनलोड करें</g3> के लिए उसका कुछ हिस्सा चुनें। पृष्ठ का रेफ़रर और कुकीज़ प्रत्येक लिंक के साथ जाते हैं।"
+  },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "Windows पर, विंडोज़ Direct3D 12 (eframe का wgpu, केवल इसके Direct3D 12 बैकएंड के साथ) या OpenGL (eframe का glow) के साथ ड्रा की जाती हैं, जब देखें → इसके साथ ड्रा करें इसे चुनता है; Linux और macOS OpenGL का उपयोग करते हैं। जब चुना गया एक शुरू नहीं हो पाता, तो दूसरा आज़माया जाता है, ताकि विंडोज़ हमेशा खुलें।"
   },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
@@ -1274,6 +1282,10 @@
    "source": "Windows, macOS, Linux (Java)",
    "text": "Windows, macOS, Linux (Java)"
   },
+  "1ec161dd36dfe603": {
+   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM. Opera and Vivaldi take it the same way.",
+   "text": "सूची में <g1>Mister Download Manager</g1> दिखाई देता है। इसे चालू रहने दें। यह देखने के लिए कि ब्राउज़र MDM तक पहुँच रहा है या नहीं, इसके बटन को टूलबार पर पिन करें। Opera और Vivaldi इसे इसी तरह लेते हैं।"
+  },
   "1ed401e594a9c102": {
    "source": "0.03 s",
    "text": "0.03 सेकंड"
@@ -1378,6 +1390,10 @@
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "<x1/> फ़ोल्डर को हटा दें (या उसे केवल पढ़ने योग्य बना दें) और वही कॉपी सादे ज़िप की तरह व्यवहार करती है: यह अपना डेटा <x2/> में रखती है।"
   },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>देखें</g1> — श्रेणियाँ दिखाएँ या छिपाएँ, सूची को सॉर्ट करें (<g2>फ़ाइलें व्यवस्थित करें</g2>), <g3>डार्क मोड समर्थन</g3>, <g4>हमेशा गहरा</g4>, <g5>इसके साथ ड्रा करें</g5> (Windows: Direct3D, या OpenGL) और <g6>भाषा</g6>।"
+  },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
    "text": "<g1>Statcounter</g1> विज़िट की गणना करता है ताकि हमें पता चले कि लोग कौन से पेज पढ़ते हैं और वे कहाँ से आते हैं। इसकी स्क्रिप्ट आपके द्वारा खोले गए पेज, उससे लिंक किए गए पेज, आपका ब्राउज़र, सिस्टम और स्क्रीन का आकार, और आपके IP पते से आपका अनुमानित स्थान रिकॉर्ड करती है, और नए विज़िटर को लौटने वाले विज़िटर से अलग बताने के लिए एक कुकी सेट करती है। हम इन्हें Statcounter के डैशबोर्ड में आँकड़ों के रूप में देखते हैं; हम इनका उपयोग आपकी पहचान करने के लिए नहीं करते हैं, और हम इन्हें बेचते या साझा नहीं करते हैं। <g2>Statcounter की गोपनीयता नीति</g2> देखें। अपने ब्राउज़र में statcounter.com के लिए कुकीज़ या स्क्रिप्ट को ब्लॉक करना, या एक सामग्री अवरोधक, आपको गणना से बाहर रखता है; साइट वैसे ही काम करती है।"
@@ -1397,6 +1413,10 @@
   "223eac9bc2498002": {
    "source": "<g1>FTP</g1><g2>and FTPS</g2>",
    "text": "<g1>FTP</g1><g2>और FTPS</g2>"
+  },
+  "228586c26511a211": {
+   "source": "Open the add-on's page on addons.mozilla.org, <g1>Mister Download Manager</g1>, and click <g2>Add to Firefox</g2>. Zen and LibreWolf use the same page.",
+   "text": "addons.mozilla.org पर ऐड-ऑन का पेज, <g1>Mister Download Manager</g1> खोलें, और <g2>Firefox में जोड़ें</g2> पर क्लिक करें। Zen और LibreWolf एक ही पेज का उपयोग करते हैं।"
   },
   "22b1c6afc644a89a": {
    "source": "Small and quick to set up, with a browser extension that catches video and audio",
@@ -1610,6 +1630,10 @@
    "source": "What a report contains",
    "text": "एक रिपोर्ट में क्या होता है"
   },
+  "276afd4c43c34307": {
+   "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos.",
+   "text": "यह आपके ब्राउज़र के डाउनलोड को उनकी कुकीज़ के साथ MDM को सौंपता है, राइट-क्लिक मेनू में <g1>Mister Download Manager से डाउनलोड करें</g1> जोड़ता है और वीडियो पर एक <g2>वीडियो डाउनलोड करें</g2> बटन लगाता है।"
+  },
   "276d4f05431a73f3": {
    "source": "<g1>The automation API's JSON Schema</g1>, <g2>automation-api.schema.json</g2>, made from the code the app answers with. Each download in its list now says why it failed (<x3/>), and the \"it is off\" answer carries <x4/> for programs to check.",
    "text": "<g1>ऑटोमेशन API का JSON स्कीमा</g1>, <g2>automation-api.schema.json</g2>, ऐप द्वारा दिए गए कोड से बनाया गया है। इसकी सूची में प्रत्येक डाउनलोड अब बताता है कि यह क्यों विफल हुआ (<x3/>), और \"यह बंद है\" उत्तर प्रोग्रामों को जाँचने के लिए <x4/> वहन करता है।"
@@ -1689,6 +1713,10 @@
   "298c9f2b74a2990f": {
    "source": "How it works",
    "text": "यह कैसे काम करता है"
+  },
+  "2991dd6051b6e56c": {
+   "source": "By hand for now, while the Chrome Web Store reviews the extension. Its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
+   "text": "Chrome Web Store द्वारा एक्सटेंशन की समीक्षा किए जाने तक, अभी इसे मैन्युअल रूप से करें। इसकी फ़ाइलें उस <x1/> फ़ोल्डर में हैं जहाँ MDM इंस्टॉल है: <x2/> यदि आपने इसे अपने लिए इंस्टॉल किया है, या <x3/> यदि आपने इसे सभी के लिए इंस्टॉल किया है। प्रत्येक रिलीज़ में वे अपने स्वयं के डाउनलोड के रूप में भी उपलब्ध हैं, <x4/> (पहले इसे अनज़िप करें)।"
   },
   "29b29fea4e1dcc73": {
    "source": "Download limits",
@@ -2037,6 +2065,10 @@
   "314870831b11d2bd": {
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDM अपने टॉरेंट इंजन को पहली बार तब शुरू करता है जब किसी टॉरेंट को इसकी आवश्यकता होती है। <g1>जब कोई टॉरेंट नहीं चल रहा हो तो टॉरेंट इंजन बंद करें</g1> चालू होने पर (डिफ़ॉल्ट), यह एक मिनट बाद फिर से बंद हो जाता है जब कोई टॉरेंट नहीं चल रहा होता या साझा नहीं हो रहा होता। जब यह चलता है, तो अन्य पीयर MDM से कनेक्ट हो सकते हैं, और MDM आपके राउटर से अपने पोर्ट (UPnP) को फ़ॉरवर्ड करने के लिए कहता है। Windows पूछ सकता है कि क्या MDM को फ़ायरवॉल के माध्यम से अनुमति दी जाए: इसे केवल निजी नेटवर्क पर अनुमति दें।"
+  },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "कार्ड निर्माता की साइट (Intel, AMD या NVIDIA) से ग्राफ़िक्स ड्राइवर को अपडेट करने से इनमें से कई समस्याएँ ठीक हो जाती हैं।"
   },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
@@ -2410,6 +2442,10 @@
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>टॉरेंट और आपकी सुरक्षा</g2></g1> — दूसरे क्या देख सकते हैं, नेटवर्क स्विच, ब्लॉकलिस्ट, प्रॉक्सी।"
   },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "एक फ़्रीज़ या क्रैश रिपोर्ट बताती है कि कौन सा ड्राइंग कर रहा था: समस्या की रिपोर्ट करते समय इसे शामिल करें।"
+  },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
    "text": "सेटअप या MDM शुरू नहीं हो रहा है"
@@ -2642,6 +2678,10 @@
    "source": "Crash reports",
    "text": "क्रैश रिपोर्ट"
   },
+  "41d7fb067ecb2748": {
+   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g2>Download with Mister Download Manager</g2> to the right-click menu and a <g3>Download video</g3> button over videos. See <g4>Browser integration</g4>.",
+   "text": "MDM ब्राउज़र एक्सटेंशन के ज़रिए Firefox (<g1>addons.mozilla.org</g1> से), Google Chrome, Microsoft Edge, Brave, Opera और Vivaldi, और उन पर बने ब्राउज़र: Zen और LibreWolf, Helium. एक्सटेंशन डाउनलोड को उनकी कुकीज़ और रेफ़रर के साथ MDM को सौंपता है, ताकि साइन-इन के पीछे की फ़ाइलें भी काम करें, और यह राइट-क्लिक मेनू में <g2>Mister Download Manager से डाउनलोड करें</g2> और वीडियो पर एक <g3>वीडियो डाउनलोड करें</g3> बटन जोड़ता है. <g4>ब्राउज़र इंटीग्रेशन</g4> देखें."
+  },
   "4208f79380d548a0": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "<g1>ffmpeg</g1> (लगभग 80 MB) एक वीडियो और उसकी आवाज़ को जोड़ता है, जब कोई साइट उन्हें अलग रखती है, जो ज़्यादातर साइटें उच्च गुणवत्ता के लिए करती हैं, और आवाज़ को MP3, Opus या FLAC फ़ाइल में बदलता है। जब MDM इसे ऑफ़र करे तो <g2>ffmpeg इंस्टॉल करें</g2> पर क्लिक करें। MDM इसे अपने रिलीज़ द्वारा प्रकाशित चेकसम के विरुद्ध जाँचता है।"
@@ -2702,9 +2742,17 @@
    "source": "Links that come while the window is open join the ones already there. A link that is already in the window isn't added twice. A link that is already in your download list goes under <g1>Already in the list</g1>, unticked.",
    "text": "जब विंडो खुली होती है तो आने वाले लिंक पहले से मौजूद लिंक में शामिल हो जाते हैं। जो लिंक पहले से विंडो में है उसे दोबारा नहीं जोड़ा जाता है। जो लिंक पहले से आपकी डाउनलोड सूची में है वह <g1>पहले से सूची में है</g1> के तहत आता है, अनटिक किया हुआ।"
   },
+  "43ff6b9c3376c383": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi",
+   "text": "Firefox, Chrome, Edge, Brave, Opera, Vivaldi"
+  },
   "4409b6268f79d30a": {
    "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
    "text": "<g1>पेस्ट करना।</g1> <g2>कार्य → लिंक ग्रैबर...</g2> चुनें और <g3>Ctrl+V</g3> दबाएँ: कॉपी किए गए टेक्स्ट में हर वेब पता जोड़ा जाता है।"
+  },
+  "440d7c9f4a9ff3a8": {
+   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose <g4>Load unpacked</g4> and pick the <x5/> folder in MDM's folder. The <g6>tutorial</g6> walks through it.",
+   "text": "MDM को सेटअप के साथ इंस्टॉल करें और <g1>ब्राउज़र एकीकरण सेट करें</g1> को टिक किया हुआ रखें। Firefox में, फिर <g2>addons.mozilla.org पर ऐड-ऑन का पेज</g2> खोलें और <g3>Firefox में जोड़ें</g3> पर क्लिक करें। Chrome, Edge, Brave, Opera और Vivaldi में, Chrome वेब स्टोर द्वारा इसकी समीक्षा किए जाने तक, इसे अभी मैन्युअल रूप से लोड करें: ब्राउज़र का एक्सटेंशन पेज खोलें, डेवलपर मोड चालू करें, <g4>अनपैक्ड लोड करें</g4> चुनें और MDM के फ़ोल्डर में <x5/> फ़ोल्डर चुनें। <g6>ट्यूटोरियल</g6> इसमें मदद करेगा।"
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -3090,6 +3138,10 @@
    "source": "Check <g1>Save to</g1> (the Video category's folder by default) and <g2>File name</g2>, which comes from the video's title.",
    "text": "<g1>इसमें सहेजें</g1> (डिफ़ॉल्ट रूप से वीडियो श्रेणी का फ़ोल्डर) और <g2>फ़ाइल का नाम</g2> की जाँच करें, जो वीडियो के शीर्षक से आता है।"
   },
+  "4e46cacda919db98": {
+   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> (from <x2/>) is removed when Firefox closes. Remove it and install the add-on from <g3>its page on addons.mozilla.org</g3> instead: Firefox keeps that one, and updates it.",
+   "text": "<g1>अस्थायी ऐड-ऑन लोड करें</g1> (<x2/> से) के साथ लोड किया गया ऐड-ऑन Firefox बंद होने पर हट जाता है। इसे हटाएँ और इसके बजाय <g3>addons.mozilla.org पर इसके पेज</g3> से ऐड-ऑन इंस्टॉल करें: Firefox उसे रखता है और अपडेट करता है।"
+  },
   "4f23b5962ea59819": {
    "source": "<g1>ffmpeg</g1><g2>merges picture and sound</g2>",
    "text": "<g1>ffmpeg</g1><g2>चित्र और ध्वनि को जोड़ता है</g2>"
@@ -3310,6 +3362,10 @@
    "source": "What it takes",
    "text": "क्या लगता है"
   },
+  "54e5466052010a84": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
+   "text": "ब्राउज़र इंटीग्रेशन को MDM खुद ही Linux और macOS पर हर बार शुरू होने पर सेट करता है (तब इंस्टॉल किए गए ब्राउज़र मिल जाते हैं); एक्सटेंशन को <g1>ब्राउज़र इंटीग्रेशन</g1> में बताए अनुसार जोड़ें। Flatpak या Snap के रूप में इंस्टॉल किए गए ब्राउज़र MDM तक नहीं पहुँच सकते हैं।"
+  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "टूलबार पर <g1>शेड्यूलर</g1> पर क्लिक करें (या <g2>डाउनलोड → शेड्यूलर</g2>)।"
@@ -3422,6 +3478,10 @@
    "source": "Command",
    "text": "कमांड"
   },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "यदि MDM चलते समय ग्राफ़िक्स कार्ड रीसेट हो जाता है (एक ड्राइवर अपडेट), तो MDM अपने आप फिर से शुरू हो जाता है।"
+  },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
    "text": "(और शीट्स, स्लाइड्स, ड्रॉइंग्स)।"
@@ -3497,6 +3557,10 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "सेटअप करना"
+  },
+  "59e78792626130dd": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension: Firefox's from <g1>its add-ons store</g1>, the others by hand for now. Without the extension, copy a link and MDM opens the download window. <g2>More</g2>",
+   "text": "एक्सटेंशन के माध्यम से Firefox, Chrome, Edge, Brave, Opera और Vivaldi: Firefox का <g1>इसके ऐड-ऑन स्टोर</g1> से, अन्य अभी मैन्युअल रूप से। एक्सटेंशन के बिना, एक लिंक कॉपी करें और MDM डाउनलोड विंडो खोल देगा। <g2>और जानें</g2>"
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -4026,6 +4090,10 @@
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "किसी दूसरे नेटवर्क के ज़रिए <g1>सब कुछ</g1> भेजने के लिए, पूरे कंप्यूटर के लिए VPN का इस्तेमाल करें।"
   },
+  "67b7e3e016904e39": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
+   "text": "MDM को सेटअप के साथ इंस्टॉल करें और ब्राउज़र इंटीग्रेशन सेट करें को टिक किया हुआ रखें। Firefox में, फिर addons.mozilla.org पर ऐड-ऑन का पेज खोलें और जोड़ें पर क्लिक करें।"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4161,6 +4229,10 @@
   "6a664e307dbf6d65": {
    "source": "<g1>Plain DNS</g1>: not encrypted. MDM asks it over TCP, never UDP, so it never needs a firewall exception.",
    "text": "<g1>प्लेन DNS</g1>: एन्क्रिप्टेड नहीं। MDM इसे TCP पर पूछता है, कभी UDP पर नहीं, इसलिए इसे कभी फ़ायरवॉल अपवाद की आवश्यकता नहीं होती है।"
+  },
+  "6a721813ad40ae31": {
+   "source": "<g1>Firefox</g1><g2>Mozilla · <g3>Add to Firefox</g3></g2>",
+   "text": "<g1>Firefox</g1><g2>Mozilla · <g3>Firefox में जोड़ें</g3></g2>"
   },
   "6a7ee36650d0988c": {
    "source": "The Scheduler: a queue started and stopped by the clock.",
@@ -4474,6 +4546,10 @@
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
    "text": "एक गैलरी की तस्वीरें (एक विकिमीडिया कॉमन्स श्रेणी, एक फ़्लिकर एल्बम, ...) को <x1/> के अंदर उसके नाम के फ़ोल्डर में डाउनलोड करें; <x2/> अधिकतम उतनी ही लेता है, जितनी साइट पहली सूची में दिखाती है। दोबारा शुरू करने पर, यह केवल नई तस्वीरें प्राप्त करता है।"
   },
+  "720d6bdebec42762": {
+   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: by hand for now, while the Chrome Web Store reviews it. It comes with the app, in its <x2/> folder, and <g3>as its own download</g3> (<x4/>: unzip, then <g5>Load unpacked</g5> on the browser's extensions page with Developer mode on). The <g6>step-by-step guide</g6> shows each browser.",
+   "text": "<g1>Chrome, Edge, Brave, Opera और Vivaldi</g1>: Chrome वेब स्टोर इसकी समीक्षा कर रहा है, इसलिए अभी इसे मैन्युअल रूप से जोड़ना होगा। यह ऐप के साथ, उसके <x2/> फ़ोल्डर में आता है, और <g3>अपने स्वयं के डाउनलोड के रूप में</g3> (<x4/>: अनज़िप करें, फिर डेवलपर मोड चालू करके ब्राउज़र के एक्सटेंशन पेज पर <g5>अनपैक्ड लोड करें</g5>)। <g6>स्टेप-बाय-स्टेप गाइड</g6> हर ब्राउज़र के लिए दिखाता है।"
+  },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
    "text": "1.2.0 डेस्कटॉप बीटा<g1>25 अक्टूबर 2026</g1>"
@@ -4681,6 +4757,10 @@
   "77a30c9b7d2a6105": {
    "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
    "text": "सब कुछ कीबोर्ड से किया जा सकता है, और MDM स्क्रीन रीडर (जैसे Windows पर Narrator और NVDA) के साथ काम करता है: इसकी विंडो, डायलॉग और मेनू उन्हें बताते हैं कि प्रत्येक कंट्रोल क्या है और उसकी स्थिति क्या है, और डाउनलोड सूची प्रत्येक डाउनलोड का नाम, स्थिति और आकार पढ़ती है। <g1>श्रेणियाँ</g1> फलक एक ट्री के रूप में पढ़ा जाता है (प्रत्येक श्रेणी अपनी संख्या के साथ, खुली या बंद, चयनित या नहीं), और मेनू बार और प्रत्येक राइट-क्लिक मेनू ऐसे मेनू के रूप में पढ़े जाते हैं जिनके आइटम वहीं से चलाए जा सकते हैं।"
+  },
+  "77a524c1d8c2a24b": {
+   "source": "<g1>Firefox</g1> (and Zen, LibreWolf): one click from its add-ons store, and Firefox keeps it up to date.",
+   "text": "<g1>Firefox</g1> (और Zen, LibreWolf): इसके ऐड-ऑन स्टोर से एक क्लिक में, और Firefox इसे अपडेट रखता है।"
   },
   "77bd0523361e1992": {
    "source": "Next, MDM offers its two free video helpers: <g1>yt-dlp</g1>, which finds the video on a page, and <g2>ffmpeg</g2>, which joins its picture and sound. Click <g3>Yes, download them (recommended)</g3> and they download in the background, about 100 MB, once. <g4>Not now</g4> leaves them for later: the video window offers them when you first need them. More in <g5>Videos</g5>.",
@@ -5258,6 +5338,14 @@
    "source": "Put downloads in a queue →",
    "text": "डाउनलोड को कतार में डालें →"
   },
+  "855283d97ca22cdb": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others by hand for now, while the Chrome Web Store reviews it.",
+   "text": "नीचे दिए गए अनुसार, आप जिस भी ब्राउज़र का उपयोग करते हैं, उसमें एक्सटेंशन जोड़ें: Firefox के लिए उसके ऐड-ऑन स्टोर से, और Chrome Web Store द्वारा समीक्षा किए जाने तक अन्य ब्राउज़रों के लिए मैन्युअल रूप से।"
+  },
+  "859b311c937bc36f": {
+   "source": "In Chrome, Edge or Brave",
+   "text": "Chrome, Edge या Brave में"
+  },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
    "text": "Mister Download Manager 0.2.4 डाउनलोड करें — Windows, macOS और Linux के लिए मुफ़्त"
@@ -5510,6 +5598,10 @@
    "source": "Can it download a video's subtitles?",
    "text": "क्या यह वीडियो के सबटाइटल डाउनलोड कर सकता है?"
   },
+  "8c9a12e93a193e44": {
+   "source": "In Firefox",
+   "text": "Firefox में"
+  },
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "प्रति फ़ाइल कनेक्शन"
@@ -5626,6 +5718,10 @@
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
    "text": "<g1>डंप पढ़ना।</g1> मॉनिटर Mozilla के <x2/> के साथ डंप पढ़ता है। यह रिलीज़ के Breakpad सिंबल का उपयोग करता है जब वे मिलते हैं। स्रोत से बना एक बिल्ड इसके साथ नेटिव डीबग जानकारी (इसका <x3/>, DWARF) भी पढ़ सकता है जब इसे <x4/> के साथ बनाया जाता है; शिप किया गया ऐप उस रीडर के बिना आता है, जो कई MB का होता है। रिपोर्ट का <g5>हस्ताक्षर</g5> (उदाहरण के लिए <x6/>) एक ही समस्या की रिपोर्टों में समान रहता है, और विंडो इसके लिए मौजूदा समस्याओं को खोजती है।"
   },
+  "8fe29a431a6dd71a": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
+   "text": "एक लिंक, एक वीडियो, एक ध्वनि या एक चित्र पर राइट-क्लिक करें और <g1>Mister Download Manager से डाउनलोड करें</g1> चुनें। MDM इसे किसी भी प्रकार का होने पर डाउनलोड करता है: आपने इसके लिए पूछा है, इसलिए फ़ाइल प्रकारों की सूची और बहिष्कृत साइटें यहां लागू नहीं होती हैं (वे केवल यह तय करती हैं कि MDM स्वयं कौन से डाउनलोड लेता है)। एक वीडियो जो स्ट्रीम के रूप में चलता है, वह <g2>वीडियो डाउनलोड करें</g2> विंडो में जाता है।"
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5.5 सेकंड<g1><g2>2</g2></g1>"
@@ -5677,6 +5773,10 @@
   "91ebb9f0dfb7f3d7": {
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid, AllDebrid या Premiumize जैसी डीब्रिड सेवा एक सशुल्क खाता है जो फ़ाइल होस्ट से फ़ाइलों को अपने सर्वर पर डाउनलोड करती है। यह वापस देती है..."
+  },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "यदि आपके कंप्यूटर पर Direct3D शुरू नहीं हो सकता है (कोई Direct3D 12 ड्राइवर नहीं, कुछ वर्चुअल मशीनें), या इसकी पहली विंडो 10 सेकंड के भीतर नहीं दिखती है, तो MDM OpenGL से बनाता है, और <g1>देखें → इसके साथ ड्रा करें</g1> ऐसा कहता है। <g2>Direct3D</g2> को फिर से चुनने पर अगली शुरुआत में इसे फिर से आज़माया जाता है।"
   },
   "920f5f8c86e123ee": {
    "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
@@ -5749,6 +5849,10 @@
   "9353e613d2835a1f": {
    "source": "Find by name",
    "text": "नाम से ढूँढें"
+  },
+  "938b387bfbc70706": {
+   "source": "Browser extension: <g1><x2/>Add to Firefox</g1>. For Chrome, Edge, Brave and Opera, by hand for now, while the Chrome Web Store reviews it. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>",
+   "text": "ब्राउज़र एक्सटेंशन: <g1><x2/>Firefox में जोड़ें</g1>। Chrome, Edge, Brave और Opera के लिए, Chrome वेब स्टोर द्वारा इसकी समीक्षा किए जाने तक, अभी इसे मैन्युअल रूप से जोड़ें। <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>"
   },
   "93a9d8c882d29583": {
    "source": "Tick <g1>Use Speed Limiter</g1>.",
@@ -6154,6 +6258,10 @@
    "source": "Seven downloads, each run at least seven times by both apps. The bar is the middle half of the runs, the line the median.",
    "text": "दोनों ऐप द्वारा कम से कम सात बार चलाए गए सात डाउनलोड। बार रन के मध्य आधे हिस्से को दर्शाता है, लाइन माध्यिका को।"
   },
+  "9e4744c9b576debc": {
+   "source": "Go to a web page and click a download link, for example a ZIP or an EXE: MDM opens <g1>Download File Info</g1>. Click <g2>Start Download</g2>.",
+   "text": "एक वेब पेज पर जाएं और एक डाउनलोड लिंक पर क्लिक करें, उदाहरण के लिए एक ZIP या एक EXE: MDM <g1>फ़ाइल जानकारी डाउनलोड करें</g1> खोलता है। <g2>डाउनलोड प्रारंभ करें</g2> पर क्लिक करें।"
+  },
   "9e5f6ea1de61f755": {
    "source": "Blocking addresses",
    "text": "पते ब्लॉक करना"
@@ -6221,6 +6329,10 @@
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "एक अनुवाद जो अंग्रेजी से लंबा है, <g1>...</g1> में समाप्त होता है जहाँ वह फिट नहीं होता; उसे पूरा पढ़ने के लिए उस पर इंगित करें।"
+  },
+  "a06fa72ad54fa126": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
+   "text": "MDM को सेटअप के साथ इंस्टॉल करें और ब्राउज़र इंटीग्रेशन सेट करें को टिक किया हुआ रखें। Firefox में, फिर addons.mozilla.org पर ऐड-ऑन का पेज खोलें और Firefox में जोड़ें पर क्लिक करें। Chrome, Edge, Brave, Opera और Vivaldi में, Chrome Web Store द्वारा इसकी समीक्षा किए जाने तक, इसे अभी मैन्युअल रूप से लोड करें: ब्राउज़र का एक्सटेंशन पेज खोलें, डेवलपर मोड चालू करें, अनपैक्ड लोड करें चुनें और MDM के फ़ोल्डर में extension\\chromium फ़ोल्डर चुनें। ट्यूटोरियल इसमें मदद करेगा।"
   },
   "a09cf46e49e64bbb": {
    "source": "A sweep through every window for the small things that make a program feel finished: how each control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers, and a long list of fixes found by reviewing all of it (issue #7 and more).",
@@ -6590,6 +6702,10 @@
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>86 भाषाएँ अंतर्निहित।</g1> पहली बार शुरू करने पर दाएँ से बाएँ शामिल, चुनी गई।"
   },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>मेमोरी</g1> (प्रोसेस टैब पर) वह है जो MDM अपने लिए रखता है, उसका <g2>निजी वर्किंग सेट</g2>। जब विंडो खुली हो और कुछ भी डाउनलोड न हो रहा हो, तो यह लगभग 70 MB होता है।"
+  },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
    "text": "अपने ब्राउज़र से डाउनलोड कैप्चर करें"
@@ -6718,6 +6834,10 @@
    "source": "Find a download in a long list — Mister Download Manager help",
    "text": "लंबी सूची में डाउनलोड ढूँढें — Mister Download Manager सहायता"
   },
+  "ad06056d9a651b28": {
+   "source": "Firefox asks to confirm: click <g1>Add</g1>. Firefox keeps the add-on up to date.",
+   "text": "Firefox पुष्टि करने के लिए पूछता है: <g1>जोड़ें</g1> पर क्लिक करें। Firefox ऐड-ऑन को अपडेट रखता है।"
+  },
   "ad15abc4931df4fd": {
    "source": "; a choice's <x1/> is what <x2/> takes, a subtitle's <x3/> what <x4/> takes.",
    "text": "; एक विकल्प का <x1/> वह है जो <x2/> लेता है, एक उपशीर्षक का <x3/> वह है जो <x4/> लेता है।"
@@ -6845,6 +6965,10 @@
   "afae30c6c42a7afb": {
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "यदि Mister Download Manager अप्रत्याशित रूप से बंद हो जाता है या प्रतिक्रिया देना बंद कर देता है, तो एक <g1>क्रैश रिपोर्ट</g1> विंडो खुलती है। यह दिखाती है कि क्या हुआ, आपको पूरी रिपोर्ट पढ़ने देती है, और इसे GitHub पर डेवलपर्स को भेज सकती है। प्रत्येक रिपोर्ट सभी के लिए समस्या को ठीक करने में मदद करती है।"
+  },
+  "afb13e3cfd9283df": {
+   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.",
+   "text": "एक्सटेंशन को एक बार सेट करें, और Firefox, Chrome, Edge या Brave में आपके द्वारा क्लिक किया गया हर डाउनलोड लिंक MDM पर जाएगा।"
   },
   "afc32cfba2a08d06": {
    "source": "Choose a download",
@@ -7150,6 +7274,10 @@
    "source": "On <g1>Q</g1>, tick <g2>In a queue</g2> or <g3>Not in a queue</g3>.",
    "text": "<g1>Q</g1> पर, <g2>एक कतार में</g2> या <g3>कतार में नहीं</g3> चुनें।"
   },
+  "b7da4b8cc0d5495e": {
+   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge and Brave, which downloads it takes, and what happens when MDM isn't running.",
+   "text": "<g1><g2>ब्राउज़र इंटीग्रेशन</g2></g1> — Firefox (addons.mozilla.org से), Chrome, Edge और Brave के लिए एक्सटेंशन, यह कौन से डाउनलोड लेता है, और जब MDM नहीं चल रहा होता है तो क्या होता है।"
+  },
   "b7e47ad1f6a91134": {
    "source": "The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.",
    "text": "ऐप 86 भाषाओं में आता है, हर वह भाषा जो Windows 11 प्रदान करता है। यह आपके कंप्यूटर की भाषा का पालन करता है, और आप किसी भी समय देखें → भाषा में स्विच कर सकते हैं।"
@@ -7182,6 +7310,10 @@
    "source": "Click <g1>Apply</g1>.",
    "text": "<g1>लागू करें</g1> पर क्लिक करें।"
   },
+  "b8face0bc8562340": {
+   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
+   "text": "क्या एक्सटेंशन लोड और चालू है? ब्राउज़र के एक्सटेंशन पेज पर <g1>Mister Download Manager</g1> खोजें। Firefox में, इसे addons.mozilla.org से इंस्टॉल करें: एक अस्थायी ऐड-ऑन रीस्टार्ट के बाद चला जाता है। <g2>ब्राउज़र इंटीग्रेशन</g2> देखें।"
+  },
   "b921c33f58e520a8": {
    "source": "<g1>5.4×</g1><g2>faster</g2>",
    "text": "<g1>5.4 गुना</g1><g2>तेज़</g2>"
@@ -7193,6 +7325,10 @@
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 भाषाएँ, दाएँ से बाएँ भी"
+  },
+  "b95c95d9143dace0": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them…",
+   "text": "MDM ब्राउज़र एक्सटेंशन के ज़रिए Firefox (addons.mozilla.org से), Google Chrome, Microsoft Edge, Brave, Opera और Vivaldi, और उन पर बने ब्राउज़र…"
   },
   "b95ce4f23354e44d": {
    "source": "AI assistants (MCP) — Mister Download Manager help",
@@ -7289,6 +7425,10 @@
   "bc1065924c4077d9": {
    "source": "The Pieces tab: a square for each piece, filled once it's here",
    "text": "भाग टैब: प्रत्येक भाग के लिए एक वर्ग, एक बार यहाँ होने पर भर जाता है"
+  },
+  "bc21a99be8efd606": {
+   "source": "By hand for now, while the Chrome Web Store reviews the extension:",
+   "text": "अभी के लिए हाथ से, जबकि Chrome वेब स्टोर एक्सटेंशन की समीक्षा करता है:"
   },
   "bc21bd767c7774ea": {
    "source": "The terms for using Mister Download Manager and misterdownloadmanager.com: free software under the GNU GPL 3.0, used at your own risk, for downloads you have the right to make.",
@@ -8414,6 +8554,10 @@
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "सूची में संख्याएँ और तिथियाँ (<g1>अंतिम प्रयास की तिथि</g1>, <g2>जोड़ा गया</g2>) Windows में सेट क्षेत्र (<g3>सेटिंग्स → समय और भाषा → भाषा और क्षेत्र → क्षेत्रीय प्रारूप</g3>) का पालन करती हैं, इसलिए अंक, विभाजक और तिथि का क्रम वैसे ही दिखते हैं जैसे आप आदी हैं। अंग्रेजी में, MDM उन्हें वैसे ही लिखता है जैसे IDM करता है (<x4/>)।"
   },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>वर्किंग सेट</g1> (डिटेल्स टैब, कॉलम जोड़ें) में अन्य प्रोग्रामों के साथ साझा की गई मेमोरी भी शामिल होती है। MDM अपनी विंडो को ग्राफ़िक्स कार्ड से बनाता है, इसलिए ग्राफ़िक्स ड्राइवर की मेमोरी भी इसमें गिनी जाती है, कुल मिलाकर लगभग 120 MB।"
+  },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "हाँ। MDM, IDM के परिचित कमांड-लाइन स्विच स्वीकार करता है, टर्मिनल से डाउनलोड के लिए misterdownloadmanager-cli के साथ आता है, और इसमें एक स्थानीय, टोकन-सुरक्षित ऑटोमेशन API है जो डाउनलोड को सूचीबद्ध कर सकता है, रोक सकता है, शुरू कर सकता है और हटा सकता है। API तब तक बंद रहता है जब तक आप इसे चालू नहीं करते। कमांड लाइन और ऑटोमेशन देखें।"
@@ -8686,6 +8830,10 @@
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
    "text": "<g1>चयनित लिंक डाउनलोड करें</g1> और <g2>सभी लिंक डाउनलोड करें</g2> जब आप उन्हें चुनते हैं, तो पृष्ठ के लिंक (या आपके चयन के) को पढ़ते हैं, और उन्हें पृष्ठ के पते और उसकी साइट की कुकीज़ के साथ MDM को पास करते हैं।"
   },
+  "e39c7ec3d5c0fd70": {
+   "source": "The browser extension: for Firefox, from its add-ons store. For Chrome, Edge, Brave, Opera and Vivaldi it comes with the app and as <g1>its own download</g1>, added by hand for now, while the Chrome Web Store reviews it. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
+   "text": "ब्राउज़र एक्सटेंशन: Firefox के लिए, इसके ऐड-ऑन स्टोर से। Chrome, Edge, Brave, Opera और Vivaldi के लिए यह ऐप के साथ आता है और <g1>इसके अपने डाउनलोड</g1> के रूप में, Chrome वेब स्टोर द्वारा इसकी समीक्षा किए जाने तक, अभी इसे मैन्युअल रूप से जोड़ा जाता है। प्रत्येक फ़ाइल GitHub Actions द्वारा सार्वजनिक स्रोत से बनाई जाती है और इसके SHA-256 चेकसम के साथ सूचीबद्ध होती है।"
+  },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
    "text": "समय कहाँ जाता है"
@@ -8918,6 +9066,10 @@
    "source": "The free IDM alternative: Mister Download Manager",
    "text": "मुफ्त IDM विकल्प: Mister Download Manager"
   },
+  "e87dda35b116dcd8": {
+   "source": "Add to Firefox",
+   "text": "Firefox में जोड़ें"
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "ब्राउज़र एकीकरण विस्तार से (Firefox, निजी विंडो, क्या भेजा जाता है) →"
@@ -8961,6 +9113,10 @@
   "eac1d064497401fd": {
    "source": "It comes with every download of MDM, next to the app (the installer puts it in MDM's folder). It works on its own: the app needn't run, except for <x1/> and <x2/>.",
    "text": "यह MDM के हर डाउनलोड के साथ आता है, ऐप के बगल में (इंस्टॉलर इसे MDM के फ़ोल्डर में रखता है)। यह अपने आप काम करता है: ऐप को चलने की आवश्यकता नहीं है, सिवाय <x1/> और <x2/> के।"
+  },
+  "eacdcb2992653dee": {
+   "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
+   "text": "Firefox 140 या बाद का संस्करण आवश्यक है। addons.mozilla.org पर इसके पेज, <g1>Mister Download Manager</g1> से ऐड-ऑन इंस्टॉल करें: <g2>Firefox में जोड़ें</g2> पर क्लिक करें। Firefox इसे अपडेटेड रखता है। Zen और LibreWolf इसे उसी पेज से इंस्टॉल करते हैं। (MDM की <g3>Mister Download Manager को अपने ब्राउज़र में जोड़ें</g3> विंडो आपके लिए वह पेज खोलती है।)"
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9302,6 +9458,10 @@
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "सूची वह क्रम दिखाती है जिसमें वे चलेंगे। डाउनलोड को ऊपर या नीचे ले जाने के लिए उसके नीचे तीर बटन का उपयोग करें।"
   },
+  "f3b0722f5a504a62": {
+   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge and Brave, load it by hand for now, while the Chrome Web Store reviews it. <g3>Browser integration</g3> shows how.",
+   "text": "ब्राउज़र इंटीग्रेशन को हर ब्राउज़र में एक और कदम की ज़रूरत होती है: एक्सटेंशन जोड़ना। Firefox में, <g2>addons.mozilla.org पर इसके पेज</g2> पर <g1>Firefox में जोड़ें</g1> पर क्लिक करें; Chrome, Edge और Brave में, Chrome वेब स्टोर इसकी समीक्षा कर रहा है, इसलिए अभी इसे मैन्युअल रूप से लोड करें। <g3>ब्राउज़र इंटीग्रेशन</g3> बताता है कि कैसे करें।"
+  },
   "f3d28d86765197f1": {
    "source": "Intel",
    "text": "Intel"
@@ -9466,6 +9626,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "बाईं ओर <g1>मुख्य डाउनलोड कतार</g1> चुनें। <g2>शेड्यूल</g2> टैब खुलता है।"
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "Windows पर, MDM अपनी विंडो को Direct3D 12 से बनाता है; Linux और macOS पर, OpenGL से। एक ग्राफ़िक्स ड्राइवर अभी भी गलत व्यवहार कर सकता है: एक विंडो जो सेकंडों तक स्थिर रहती है, झिलमिलाती है, या गलत रंग या ब्लॉक दिखाती है। Windows पर, दूसरा विकल्प आज़माएँ: <g1>देखें → इसके साथ ड्रा करें → OpenGL</g1> चुनें, फिर MDM से बाहर निकलें (<g2>कार्य → बाहर निकलें</g2>) और इसे फिर से शुरू करें। <g3>देखें → इसके साथ ड्रा करें → Direct3D</g3> उसी तरह वापस चला जाता है।"
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "<g1>\"सामान्य\" श्रेणी के लिए डिफ़ॉल्ट डाउनलोड निर्देशिका</g1> में, <g2>ब्राउज़ करें</g2> पर क्लिक करें और स्टिक पर एक फ़ोल्डर चुनें, उदाहरण के लिए <x3/>।"
@@ -9509,6 +9673,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "डिफ़ॉल्ट रूप से प्रति डाउनलोड आठ कनेक्शन, और यदि आप विकल्प → कनेक्शन में चुनते हैं तो 32 तक, या वहाँ 32 से अधिक कनेक्शन की अनुमति दें पर टिक करने के बाद 128 तक। MDM कम…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "यदि दोनों में से कोई भी शुरू नहीं हो सकता है, तो MDM Microsoft के सॉफ़्टवेयर रेंडरर से बनाता है, इसलिए विंडो अभी भी खुलती है (रिमोट डेस्कटॉप, ग्राफ़िक्स ड्राइवर के बिना एक वर्चुअल मशीन)। यह काम करता है, लेकिन प्रोसेसर को अधिक व्यस्त रखता है।"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",

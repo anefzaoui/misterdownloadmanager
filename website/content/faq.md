@@ -55,11 +55,11 @@ Open Windows **Settings → Apps**, find Mister Download Manager and choose Unin
 
 ### Which browsers does it work with? {#browsers}
 
-Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds **Download with Mister Download Manager** to the right-click menu and a **Download video** button over videos. See [Browser integration](/help/browser-integration.html).
+Firefox (from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/)), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds **Download with Mister Download Manager** to the right-click menu and a **Download video** button over videos. See [Browser integration](/help/browser-integration.html).
 
 ### How do I install the browser extension? {#install-extension}
 
-Install MDM with the setup and keep **Set up browser integration** ticked. Then load the extension in your browser from MDM's `extension` folder: open the browser's extensions page, turn on Developer mode and choose **Load unpacked**. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The [tutorial](/help/guide-catch-browser-downloads.html) walks through it.
+Install MDM with the setup and keep **Set up browser integration** ticked. In Firefox, then open [the add-on's page on addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/) and click **Add to Firefox**. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose **Load unpacked** and pick the `extension\chromium` folder in MDM's folder. The [tutorial](/help/guide-catch-browser-downloads.html) walks through it.
 
 ### Why doesn't MDM take over my download? {#not-catching}
 

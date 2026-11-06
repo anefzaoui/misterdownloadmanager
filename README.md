@@ -13,13 +13,13 @@
 </p>
 
 <p align="center">
-  🧩 <b>Browser extension:</b> submitted to the stores and awaiting approval<br>
-  <img src="docs/images/browsers/firefox.png" width="16" height="16" alt=""> Firefox ·
+  🧩 <b>Browser extension:</b><br>
+  <a href="https://addons.mozilla.org/firefox/addon/mister-download-manager/"><img src="https://img.shields.io/badge/Add%20to-Firefox-2a78d6?style=flat-square&logo=firefoxbrowser&logoColor=white" alt="Add to Firefox" height="34"></a><br>
   <img src="docs/images/browsers/chrome.png" width="16" height="16" alt=""> Chrome ·
   <img src="docs/images/browsers/edge.png" width="16" height="16" alt=""> Edge ·
   <img src="docs/images/browsers/brave.png" width="16" height="16" alt=""> Brave ·
   <img src="docs/images/browsers/opera.png" width="16" height="16" alt=""> Opera<br>
-  <sub>Until then, load it from MDM's folder in a minute (<a href="docs/browser-integration.md">how</a>).</sub>
+  <sub>By hand for now, while the Chrome Web Store reviews it: a minute from MDM's folder (<a href="docs/browser-integration.md">how</a>).</sub>
 </p>
 
 <p align="center">
@@ -53,6 +53,7 @@
   <a href="https://github.com/anefzaoui/misterdownloadmanager/releases"><img src="https://img.shields.io/github/downloads/anefzaoui/misterdownloadmanager/total?logo=github" alt="Downloads"></a>
   <a href="https://github.com/anefzaoui/misterdownloadmanager/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/anefzaoui/misterdownloadmanager/ci.yml?logo=github&label=ci" alt="CI"></a>
   <a href="https://github.com/anefzaoui/misterdownloadmanager/stargazers"><img src="https://img.shields.io/github/stars/anefzaoui/misterdownloadmanager?logo=github" alt="GitHub stars"></a>
+  <a href="https://addons.mozilla.org/firefox/addon/mister-download-manager/"><img src="https://img.shields.io/amo/v/mister-download-manager?logo=firefoxbrowser&label=Firefox%20add-on" alt="Firefox add-on"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/anefzaoui/misterdownloadmanager" alt="GPL-3.0 license"></a>
 </p>
 
@@ -102,7 +103,7 @@ one:
 | **`...-setup.exe`** | **Not sure? Take this one.** It installs MDM, connects it to your browser and asks your language. |
 | `...-portable.zip` | You want MDM on a USB stick or without installing: unzip and run. Everything stays in its folder. |
 | `...-x64.zip` | You want the plain programs without an installer. |
-| `...-extension-chromium.zip`, `...-extension-firefox.xpi` | You want only the browser extension (the setup already includes it): Chrome, Edge, Brave, Opera, Vivaldi, or Firefox. |
+| `...-extension-chromium.zip` | You want only the browser extension for Chrome, Edge, Brave, Opera or Vivaldi (the setup already includes it). For Firefox, [add it from addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/). |
 
 > [!NOTE]
 > Windows may say *"Windows protected your PC"* the first time, because this early version isn't
@@ -255,7 +256,7 @@ right-to-left window.
 - **Speeds up every download** by fetching parts of the file at the same time, and keeps
   re-balancing until the last byte.
 - **Resumes** after a crash, a restart or a dropped connection, without starting over.
-- **Catches downloads from Chrome, Edge and Brave** (Firefox in testing), and gives them back to
+- **Catches downloads from Firefox, Chrome, Edge and Brave**, and gives them back to
   the browser when MDM isn't running.
 - **Downloads videos** from web pages (a button appears over the video), and **torrents and magnet links**.
 - **Downloads overnight** with queues and a scheduler, then shuts the computer down if you like.
@@ -385,7 +386,7 @@ MDM is an early preview: the engine and the main window are solid, some corners 
 
 - **Translations are machine-made.** Rows marked `#, machine` in [`i18n/`](i18n) wait for a
   native speaker; fixing one is a one-line pull request ([how](docs/languages.md)).
-- Not yet: code signing, Firefox out of testing. The macOS and Linux builds are untested.
+- Not yet: code signing, the Chrome Web Store listing (in review). The macOS and Linux builds are untested.
 
 Bug reports and ideas are welcome in
 [Issues](https://github.com/anefzaoui/misterdownloadmanager/issues/new/choose): **Help → Report a problem**
