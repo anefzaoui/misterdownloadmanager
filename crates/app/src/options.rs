@@ -2380,7 +2380,7 @@ impl OptionsDialog {
             winui::full_on_hover(ui, rect, "opt-remote-state", &line);
         }
         if !changed && let Some(first) = urls.first() {
-            readonly(ui, r(o, 30.0, 215.0, 364.0, 21.0), first);
+            readonly_ltr(ui, r(o, 30.0, 215.0, 364.0, 21.0), first);
         }
         if let Some(fp) = self.remote.as_ref().and_then(|r| r.fingerprint()) {
             let label = crate::i18n::fmt(
@@ -2592,7 +2592,7 @@ impl OptionsDialog {
                     None => url.clone(),
                 };
                 crate::remote::paint_qr(&p, r(o, 90.0, 56.0, 180.0, 180.0), &link);
-                readonly(ui, r(o, 14.0, 246.0, 332.0, 21.0), url);
+                readonly_ltr(ui, r(o, 14.0, 246.0, 332.0, 21.0), url);
                 match &shown {
                     Some((code, left)) => {
                         // i18n: Options → Remote → Pair a device: label before the 8-digit code
@@ -3984,6 +3984,18 @@ fn readonly(ui: &mut Ui, rc: Rect, value: &str) {
         value,
         LIGHT_PAGE(),
         false,
+        ("options", rc.left() as i32, rc.top() as i32),
+    );
+}
+
+/// [`readonly`] for an address: left to right in every language.
+fn readonly_ltr(ui: &mut Ui, rc: Rect, value: &str) {
+    winui::readonly_field(
+        ui,
+        rc,
+        value,
+        LIGHT_PAGE(),
+        true,
         ("options", rc.left() as i32, rc.top() as i32),
     );
 }
