@@ -178,7 +178,7 @@
       stretch(segs[0], 0, Math.min(at, start), axis);
       stretch(segs[1], start, Math.max(start, Math.min(at, start + xfer)), axis);
       stretch(segs[2], start + xfer, Math.max(start + xfer, at), axis);
-      lane.querySelector(".lane-stamp").style.left = (all / axis * 100) + "%";
+      lane.querySelector(".lane-stamp").style.setProperty("--at", all / axis);
       lane.classList.toggle("done", done);
       lane.querySelector("[data-time]").textContent = fmt(at);
       lane.querySelector("[data-state]").textContent = done ? t("Done") : now < start ? t("Starting\u2026") : now < start + xfer ? t("Downloading") : t("Finishing");

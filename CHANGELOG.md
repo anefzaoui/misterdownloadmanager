@@ -275,6 +275,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: the engine tests no longer fail on a busy computer**
+  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
+  depended on timing: a refused connection coming back, the learned connection limit, and a dead
+  address (a server without ranges was fixed earlier). Each now waits for the state it checks. The lab server
+  can hold a connection slot for a test (`hold_slot`), and `settled()` now also means every
+  slot is free.
 - **A smaller download** ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158)):
   the program is built for size, which takes the installer from 16.1 to 13.6 MB and the zips
   from 19.3 to 15.6 MB, with the same features and the same download speed.
