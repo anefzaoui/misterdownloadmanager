@@ -303,7 +303,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   pixel by pixel (`shots.sh`, `shot-host.sh`, `pixdiff.py`), HLS and DASH hand-overs from the Snap
   Firefox and Google Chrome (`streams.mjs`, `streams-chrome.mjs`), the extension's proxy switch
   (`proxy-optin.mjs`), hand-overs and the Scheduler while minimized, torrents without a network,
-  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows.
+  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows. The
+  machine also has copies on KDE Plasma, Cinnamon and XFCE (`desktop.sh`), which get a build
+  copied over instead of making one (`vm.ps1 deploy`); a window harness shoots many windows from
+  one running MDM in any language, mode and theme, with real clicks and keys inside the machine
+  (`win.sh`, `win-host.sh`); and a store package is checked before it ships (`store-check.mjs`,
+  `chrome-menu.mjs`).
 - **Developers: the engine tests no longer fail on a busy computer**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
   depended on timing: a refused connection coming back, the learned connection limit, and a dead
