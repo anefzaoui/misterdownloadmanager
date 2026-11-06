@@ -16,6 +16,11 @@ Everything below ships together, in one release.
 - ✅ Themes, the groundwork: every colour and size the controls are drawn with comes from one
   theme, and theme files can change them; the classic look is unchanged
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ A smaller download: the installer 15 % and the zips 19 % smaller, nothing removed
+  ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
+- ✅ Linux: MDM's first window opens seconds sooner; the system's fonts are looked up all at once
+  while it starts, not one by one in the window (on a busy computer that froze it, part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Firefox's add-on offered from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
   first: **Add to Firefox** on the website, in the help, the FAQ and the README, and in MDM's
   **Add Mister Download Manager to your browser** window (for Zen and LibreWolf too); Chrome,
@@ -32,7 +37,7 @@ Everything below ships together, in one release.
   ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111))
 - ✅ Less memory in the notification area after Minimize too, and again 2 minutes after hiding
   ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72))
-- ✅ Windows: draw with Direct3D 12 instead of OpenGL (**View → Draw with**), an option for now;
+- ✅ Windows: MDM draws with Direct3D 12 by default; **View → Draw with** goes back to OpenGL, and
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
 - ✅ Screen readers see a window's contents the first time they read it, not only its title bar
@@ -192,8 +197,6 @@ Everything below ships together, in one release.
 
 ### Look and performance
 
-- 📋 Direct3D as the default on Windows, once the comparison with OpenGL is in
-  ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
 - 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 A smaller download ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - 📋 Benchmarks against other download managers
