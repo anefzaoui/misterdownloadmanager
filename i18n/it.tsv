@@ -2070,6 +2070,9 @@
 	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Impossibile scaricare i sottotitoli in {language}: {site} ha rifiutato (troppe richieste).
 #. text in the Options window; text in the Scheduler window
 	Sunday	domenica
+#. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Support MDM on GitHub Sponsors	Sostieni MDM su GitHub Sponsors
 #. message or event log entry in the main window
 	Synchronization queue	Coda di sincronizzazione
 #. text in the Options window
@@ -2372,9 +2375,6 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 	Torrents	Torrent
-#. text in torrent downloads
-#. an error: torrents are refused while Options → Proxy / Socks → Network adapter names one (Windows only)
-	torrents can't go through a chosen network adapter on Windows yet	su Windows i torrent non possono ancora passare per una scheda di rete scelta
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -2952,6 +2952,10 @@ extension	Protected video: it can't be saved	Video protetto: non può essere sal
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	Inviato a Mister Download Manager
 #. text in the browser extension
+#. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
+#, machine
+extension	Support MDM	Sostieni MDM
+#. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 extension	Take downloads from this browser	Acquisisci i download da questo browser
 #. text in the browser extension
@@ -3138,6 +3142,10 @@ menu	Add category	Aggiungi categoria
 #. the trailing ... means it opens a window: keep it
 menu	Add trackers...	Aggiungi tracker...
 #. menu command in the main window
+#. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
+#, machine
+menu	Applies the next time MDM starts	Applicato al prossimo avvio di MDM
+#. menu command in the main window
 menu	Arrange files	Ordina file
 #. menu command in the main window
 #. verb: opens this category's download folder
@@ -3205,9 +3213,21 @@ menu	Delete	Elimina
 #. menu command in the main window
 menu	Delete from queue	Rimuovi dalla coda
 #. menu command in the main window
+#. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+#, machine
+menu	Direct3D	Direct3D
+#. menu command in the main window
+#. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Direct3D didn't start here: OpenGL draws	Direct3D non è stato avviato: disegna OpenGL
+#. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 menu	Download &video from a page...	Scarica &video da una pagina...
+#. menu command in the main window
+#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#, machine
+menu	Draw with	Disegna con
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -3257,6 +3277,10 @@ menu	Open folder	Apri cartella
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 menu	Open with...	Apri con...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name, usually kept as is
+#, machine
+menu	OpenGL	OpenGL
 #. menu command in the main window
 #. what double-clicking a download does — noun: show its properties
 #. noun: opens the download's Properties window
@@ -3323,6 +3347,10 @@ menu	Start now	Avvia ora
 menu	Stop	Interrompi
 #. menu command in the main window
 menu	Stop Download	Interrompi download
+#. menu command in the main window
+#. & marks the keyboard shortcut letter: keep one & before a letter of the translation
+#, machine
+menu	Support &MDM	Sostieni &MDM
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 menu	Tell a &friend	Consiglia a un &amico
@@ -3410,23 +3438,3 @@ unit	{n} MB	{n} MB
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 unit	{n} MB/sec	{n} MB/sec
-#. menu command in the main window
-#. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
-#, machine
-menu	Applies the next time MDM starts	Applicato al prossimo avvio di MDM
-#. menu command in the main window
-#. View → Draw with: a graphics system's name (Microsoft's), usually kept as is
-#, machine
-menu	Direct3D	Direct3D
-#. menu command in the main window
-#. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
-#, machine
-menu	Direct3D didn't start here: OpenGL draws	Direct3D non è stato avviato: disegna OpenGL
-#. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
-#, machine
-menu	Draw with	Disegna con
-#. menu command in the main window
-#. View → Draw with: a graphics system's name, usually kept as is
-#, machine
-menu	OpenGL	OpenGL
