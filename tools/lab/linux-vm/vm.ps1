@@ -7,12 +7,6 @@ and clipboard are never touched; keep the VM's clipboard sharing and drag-and-dr
   tools/lab/linux-vm/vm.ps1 start                   # boot headless, wait for the desktop
   tools/lab/linux-vm/vm.ps1 setup [-Branch <name>]  # copy the guest scripts to ~/lab and run setup.sh
                                                     # (long: packages, Rust, the first build)
-
-In the guest (~/lab): build.sh <ref> [label] builds a branch, PR (pr/<n>) or commit with the lab's
-vmtest profile into ~/lab/bin/<label>/ in a terminal on its desktop; measure.sh times a build's
-start; streams.mjs and streams-chrome.mjs hand HLS and DASH players to MDM from the Snap Firefox
-and Google Chrome (the extension's three paths, checked against the lab server's log);
-use-system-helpers.sh makes MDM use the system's yt-dlp, ffmpeg and gallery-dl.
   tools/lab/linux-vm/vm.ps1 run "<bash command>"    # run in the desktop user's session
   tools/lab/linux-vm/vm.ps1 shot <file.png>         # screenshot of the VM's screen
   tools/lab/linux-vm/vm.ps1 get <guest path> <host folder>
@@ -20,6 +14,23 @@ use-system-helpers.sh makes MDM use the system's yt-dlp, ffmpeg and gallery-dl.
   tools/lab/linux-vm/vm.ps1 clone <new name> [-Snapshot <name>] [-Cpus 6] [-MemoryMb 10240]
                                                     # a linked clone of a snapshot of $MDM_VM, its own
                                                     # hostname; then `start` it with MDM_VM=<name>
+
+In the guest (~/lab, from `setup`):
+  build.sh <ref> [label]       a branch, PR (pr/<n>) or commit, built with the lab's vmtest profile
+                               into ~/lab/bin/<label>/, in a terminal on the lab's desktop
+  restart-lab.sh <label>       the lab server and MDM from one build, restarted
+  shots.sh <label> <window> <lang> <light|dark>   one window ready for a screenshot (its frame
+                               printed); shot-host.sh, on the host, crops VirtualBox's screenshot
+                               to it; pixdiff.py compares two folders of shots pixel by pixel
+  measure.sh <program> <label> MDM's start-up timings
+  streams.mjs, streams-chrome.mjs, run-streams.sh   HLS and DASH players handed to MDM from the
+                               Snap Firefox and Google Chrome by the extension's three paths,
+                               checked against the lab server's log
+  proxy-optin.mjs, chrome-popup.mjs   the extension's popup: the proxy switch and its permission
+                               prompt in Firefox; any check of the popup in Chrome
+  handoff-minimized.sh, queue-minimized.sh   hand-overs and the Scheduler while MDM is minimized
+  torrent-menu.sh              a torrent in the list with no network, for the torrent windows
+  use-system-helpers.sh        MDM uses the system's yt-dlp, ffmpeg and gallery-dl
 
 Snapshots for clones are taken powered off (`clone` shuts the VM down first when the snapshot
 doesn't exist yet): a live snapshot saves the whole memory, and under Hyper-V (VirtualBox's NEM
@@ -88,7 +99,7 @@ switch ($Action) {
     'setup' {
         Invoke-Guest 'mkdir -p ~/lab'
         # The guest side: setup, the build, the harnesses (everything here but this script).
-        $files = Get-ChildItem $PSScriptRoot -File | Where-Object { $_.Extension -in '.sh', '.mjs' } | ForEach-Object FullName
+        $files = Get-ChildItem $PSScriptRoot -File | Where-Object { $_.Extension -in '.sh', '.mjs' -and $_.Name -ne 'shot-host.sh' } | ForEach-Object FullName
         & $vbox guestcontrol $vm copyto @auth --target-directory /home/$user/lab/ @files
         Invoke-Guest "bash ~/lab/setup.sh --branch '$Branch'"
     }

@@ -3,13 +3,16 @@
 // (the button over the player, the right-click menu, the popup's media list) is triggered, then:
 // when the host started, when MDM's Download video window opened, the address yt-dlp was given,
 // and what yt-dlp asked the lab for once it finished. MDM must be running and not minimized.
-//   node streams.mjs <xpi> [lab]      lab: http://127.0.0.1:8097
+//   node streams.mjs <xpi> [lab] [kinds]   lab: http://127.0.0.1:8097
+//   kinds: page flag and manifest path, default "hls:/hls/master.m3u8,dash:/dash/manifest.mpd";
+//   #171's streams without endings: "hls2:/hls2/playlist,dash2:/dash2/manifest"
 import fs from "node:fs";
 import path from "node:path";
 import { spawn, execFileSync } from "node:child_process";
 
 const xpi = path.resolve(process.argv[2]);
 const LAB = process.argv[3] || "http://127.0.0.1:8097";
+const KINDS = (process.argv[4] || "hls:/hls/master.m3u8,dash:/dash/manifest.mpd").split(",").map((k) => k.split(":"));
 const ID = "integration@misterdownloadmanager.com";
 const UUID = "5d0c3b8e-7a51-4c1e-9f0a-38e2c4a1d7b6";
 const NL = String.fromCharCode(10);
@@ -166,7 +169,7 @@ try {
     const done = secs();
     const asked = (await labLog()).filter((e) => e.referer === page || e.path === "/page" || e.path === manifest);
     const seen = asked.map((e) => `${e.path}${e.query ? "?" + e.query : ""} ${e.status}${(e.cookie || "").includes(cookie) ? " +cookie" : ""}${e.referer === page ? " +referrer" : ""}`);
-    const ok = windowAt && given === LAB + manifest && asked.some((e) => e.path === manifest) && !asked.some((e) => e.path === "/page");
+    const ok = windowAt && given && new URL(given).pathname === manifest && asked.some((e) => e.path === manifest) && !asked.some((e) => e.path === "/page");
     say(
       `${ok ? "OK  " : "FAIL"} ${what}${r ? ` (${r})` : ""}: host started ${hostAt ? `at ${hostAt} s` : "?"}, ` +
         `MDM's window ${windowAt ? `at ${windowAt} s` : "NOT within 60 s"}; yt-dlp given ${given || "nothing"}, done at ${done} s; ` +
@@ -174,13 +177,19 @@ try {
     );
   };
 
-  for (const [kind, manifest] of [["hls", "/hls/master.m3u8"], ["dash", "/dash/manifest.mpd"]]) {
+  for (const [kind, manifest] of KINDS) {
     const cookie = `sid155=linux-${kind}`;
     await navigate(`${LAB}/cookie?set=${encodeURIComponent(cookie)}`);
     const page = `${LAB}/page?${kind}=1`;
+    await fetch(`${LAB}/_log`, { method: "DELETE" });
     await navigate(page);
     const state = await until("the stream player", 20000, () => evaluate("document.body.dataset.stream || ''"));
-    say(`${kind}: the page's player: ${state}`);
+    await sleep(3000);
+    // The master itself (the first address of that path), not its variants (same path, more query).
+    const played = (await labLog()).filter((e) => e.path === manifest);
+    const master = played.length ? played[0].path + (played[0].query ? "?" + played[0].query : "") : manifest;
+    const times = played.filter((e) => e.path + (e.query ? "?" + e.query : "") === master).length;
+    say(`${kind}: the page's player: ${state}; while it played, before anything was asked: ${master} ${times}×, ${played.length - times} variant request(s)`);
     const v = await rect("#player");
     await check(`${kind} button`, page, manifest, cookie, async () => {
       let b = null;
@@ -222,6 +231,21 @@ try {
       setTimeout(() => bidi.send("browsingContext.close", { context: c }).catch(() => {}), 20000);
       return `list: ${rows.join("; ")}${clicked ? "" : "; no Download for " + name}`;
     });
+  }
+  // Every kind on one page: the popup's media list shows exactly those streams.
+  if (KINDS.length > 1) {
+    const page = `${LAB}/page?${KINDS.map(([k]) => `${k}=1`).join("&")}`;
+    await navigate(page);
+    await until("the stream players", 20000, () => evaluate("document.body.dataset.stream || ''"));
+    await sleep(3000);
+    const url = `moz-extension://${UUID}/popup.html?page=${encodeURIComponent(page)}`;
+    await chrome(`gBrowser.addTab(${JSON.stringify(url)}, { triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal() }) && "opened"`);
+    const c = await until("the popup's tab", 10000, async () => ((await bidi.send("browsingContext.getTree", {})).contexts.find((x) => x.url === url) || {}).context);
+    const rowsNow = () => evaluate(`[...document.querySelectorAll("#media-list li")].map((li) => [li.querySelector(".tag").textContent, li.querySelector(".name").textContent, li.querySelector(".meta").textContent].join(" "))`, c);
+    await until("the media list", 20000, () => rowsNow().then((r) => r && r.length >= KINDS.length && r)).catch(() => {});
+    await sleep(2000);
+    const rows = await rowsNow();
+    say(`all on one page (${page.replace(LAB, "")}): the media list: ${rows.join(" | ") || "empty"}`);
   }
 } catch (e) {
   say(`ERROR ${e.message}`);

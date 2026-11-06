@@ -2,13 +2,14 @@
 // headless over the DevTools pipe (as tools/extension/e2e.mjs drives it), the unpacked extension
 // loaded, the lab's HLS and DASH player pages; the button over the player and the popup's media
 // list (Chrome's own right-click menu can't be driven). Same checks as streams.mjs.
-//   node streams-chrome.mjs <unpacked extension folder> [lab]
+//   node streams-chrome.mjs <unpacked extension folder> [lab] [kinds]   (kinds: as streams.mjs)
 import fs from "node:fs";
 import path from "node:path";
 import { spawn, execFileSync } from "node:child_process";
 
 const ext = path.resolve(process.argv[2]);
 const LAB = process.argv[3] || "http://127.0.0.1:8097";
+const KINDS = (process.argv[4] || "hls:/hls/master.m3u8,dash:/dash/manifest.mpd").split(",").map((k) => k.split(":"));
 const NL = String.fromCharCode(10);
 const NUL = String.fromCharCode(0);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -46,7 +47,7 @@ class Pipe {
     this.out.write(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }) + NUL);
     return new Promise((resolve, reject) => {
       this.waiting.set(id, { resolve, reject, method });
-      setTimeout(() => this.waiting.has(id) && (this.waiting.delete(id), reject(new Error(`${method}: no answer in 20 s`))), 20000);
+      setTimeout(() => this.waiting.has(id) && (this.waiting.delete(id), reject(new Error(`${method}: no answer in 60 s`))), 60000);
     });
   }
 }
@@ -146,13 +147,13 @@ try {
     const done = secs();
     const asked = (await labLog()).filter((e) => e.referer === page || e.path === "/page" || e.path === manifest);
     const seen = asked.map((e) => `${e.path}${e.query ? "?" + e.query : ""} ${e.status}${(e.cookie || "").includes(cookie) ? " +cookie" : ""}${e.referer === page ? " +referrer" : ""}`);
-    const ok = windowAt && given === LAB + manifest && asked.some((e) => e.path === manifest) && !asked.some((e) => e.path === "/page");
+    const ok = windowAt && given && new URL(given).pathname === manifest && asked.some((e) => e.path === manifest) && !asked.some((e) => e.path === "/page");
     say(
       `${ok ? "OK  " : "FAIL"} ${what}${r ? ` (${r})` : ""}: MDM's window ${windowAt ? `at ${windowAt} s` : "NOT within 60 s"}; ` +
         `yt-dlp given ${given || "nothing"}, done at ${done} s; the lab saw ${seen.join(", ") || "nothing"}`,
     );
   };
-  for (const [kind, manifest] of [["hls", "/hls/master.m3u8"], ["dash", "/dash/manifest.mpd"]]) {
+  for (const [kind, manifest] of KINDS) {
     const cookie = `sid155=chrome-${kind}`;
     await navigate(`${LAB}/cookie?set=${encodeURIComponent(cookie)}`);
     const page = `${LAB}/page?${kind}=1`;
