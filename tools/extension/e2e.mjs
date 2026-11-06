@@ -13,7 +13,9 @@
 // forwarded), names (Content-Disposition), redirect, form (POST, 303), alt (Alt+click leaves it
 // to the browser), opened (a PDF or MP3 the browser would show or play), csp (the video button
 // under a strict CSP), hls (the stream a player loaded), streams (HLS and DASH players handed over
-// by the button, the right-click menu and the media list, and read by yt-dlp; #155), media (the
+// by the button, the right-click menu and the media list, and read by yt-dlp; #155; also with no
+// .m3u8 or .mpd, served as text/plain or octet-stream, #171), sniffed (#171 without yt-dlp: such
+// streams found only when asked, by the button and the media list, a text decoy never), media (the
 // toolbar button's list of the media a tab loaded: streams, files, a protected stream; #38), video (shown, clicked, dragged,
 // kept; "never on the site" in the last browser), start (MDM not running: the host starts it).
 //
@@ -717,8 +719,10 @@ async function streamLookedUp(trigger, manifest, page, cookie) {
     appWindows(pid, VIDEO_WINDOW);
   }
   const got = await asked();
-  const first = got.find((x) => x.path === manifest);
-  if (!first) throw new Error(`yt-dlp didn't ask for ${manifest}: ${got.map((x) => x.path).join(", ")}`);
+  // The address with its query: #171's master and variants share one path.
+  const full = (x) => `${x.path}${x.query ? `?${x.query}` : ""}`;
+  const first = got.find((x) => full(x) === manifest);
+  if (!first) throw new Error(`yt-dlp didn't ask for ${manifest}: ${got.map(full).join(", ")}`);
   if (got.some((x) => x.path === "/page")) throw new Error("yt-dlp was given the page too");
   if (!(first.cookie || "").includes(cookie)) throw new Error(`${manifest} without the cookie ${cookie}: ${first.cookie}`);
   return `${address.replace(LAB, "")} read by yt-dlp${ready ? "" : "?"} (cookie, referrer)`;
@@ -1096,7 +1100,15 @@ const CASES = {
         throw e;
       }
     };
-    for (const [kind, manifest] of [["hls", "/hls/master.m3u8"], ["dash", "/dash/manifest.mpd"]]) {
+    // #171: the same with no .m3u8 or .mpd and served as text/plain or octet-stream, after a
+    // text answer that is no manifest (the player's settings, never sent).
+    const kinds = [
+      ["hls", "/hls/master.m3u8"],
+      ["dash", "/dash/manifest.mpd"],
+      ["hls2", "/hls2/playlist?id=lab"],
+      ["dash2", "/dash2/manifest?id=lab"],
+    ];
+    for (const [kind, manifest] of kinds) {
       await t.session.navigate(`${LAB}/page?${kind}=1`);
       const state = await until("the stream player", 15000, () => t.session.evaluate("document.body.dataset.stream || ''"));
       if (state !== "done") throw new Error(`the page's ${kind} player: ${state}`);
@@ -1119,7 +1131,7 @@ const CASES = {
       // The toolbar button's media list.
       const popup = await t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(page)}`);
       try {
-        const name = manifest.split("/").pop();
+        const name = manifest.split("?")[0].split("/").pop();
         await until("the popup's media list", 15000, () =>
           popup.evaluate(`[...document.querySelectorAll("#media-list li")].some((li) => li.querySelector(".name").textContent === ${JSON.stringify(name)} && li.querySelector("button"))`),
         );
@@ -1135,6 +1147,60 @@ const CASES = {
     }
     if (!t.session.menu) done.push("right-click menu: not drivable in Chromium (tools/extension/test.mjs)");
     return done.join("; ");
+  },
+
+  // #171: a page whose players load streams with no .m3u8 or .mpd in any address, served as
+  // text/plain (HLS) and application/octet-stream (DASH), each after a text answer that is no
+  // manifest. Nothing is read while the page plays; the button over the player sends the HLS
+  // master; the media list shows the two streams with their qualities, and nothing else.
+  async sniffed(t) {
+    const play = async (q) => {
+      await clearLog();
+      await t.session.navigate(`${LAB}/page?${q}`);
+      const state = await until("the stream players", 20000, () => t.session.evaluate("document.body.dataset.stream || ''"));
+      if (state !== "done") throw new Error(`the page's players: ${state}`);
+      return t.session.evaluate("location.href");
+    };
+    const masters = async () => (await (await fetch(`${LAB}/_log`)).json()).filter((x) => x.path === "/hls2/playlist" && x.query === "id=lab");
+    // The HLS player alone (two players race: either manifest could come first).
+    await play("hls2=1");
+    await sleep(500);
+    const before = (await masters()).length;
+    if (before !== 1) throw new Error(`the master was asked for ${before} times while the page played (the player's once)`);
+    // The button over the HLS player: no stream known, the frame's possible manifests are read.
+    const v = await rect(t.session, "#player");
+    const b = await hover(t.session, v);
+    if (!b) throw new Error("no button over the stream's player");
+    const address = await clickButton(t.session, b);
+    const want = `${LAB}/hls2/playlist?id=lab`;
+    if (address !== want) throw new Error(`the video window got ${address}, not ${want}`);
+    const read = (await masters()).length - before;
+    // The media list, on the page played again (nothing known yet).
+    const page = await play("hls2=1&dash2=1");
+    const popup = await t.session.tab(`${t.session.base}popup.html?page=${encodeURIComponent(page)}`);
+    try {
+      const rows = () =>
+        popup.evaluate(`[...document.querySelectorAll("#media-list li")].map((li) => ({
+          tag: li.querySelector(".tag").textContent, name: li.querySelector(".name").textContent,
+          meta: li.querySelector(".meta").textContent, get: Boolean(li.querySelector("button")) }))`);
+      await until("the popup's media list", 15000, async () => (await rows().catch(() => [])).length >= 2);
+      await sleep(500);
+      const all = await rows();
+      const want = [
+        ["HLS", "playlist", "720p · 360p"],
+        ["DASH", "manifest", "720p · 360p · 0:12"],
+      ];
+      for (const [tag, name, meta] of want) {
+        const r = all.find((x) => x.tag === tag && x.name === name);
+        if (!r) throw new Error(`not listed: ${tag} ${name} (the list: ${JSON.stringify(all)})`);
+        if (!r.meta.startsWith(meta) || !r.get) throw new Error(`${name}: ${JSON.stringify(r)}, not "${meta}" with a Download button`);
+      }
+      if (all.length !== want.length) throw new Error(`${all.length} rows, not ${want.length}: ${JSON.stringify(all)}`);
+      await keptNothing(t.dl);
+      return `nothing read while playing; the button sent ${address.replace(LAB, "")} (then the master was asked for ${read} more times, the extension's read among them); listed ${all.map((r) => `${r.tag} ${r.name} (${r.meta})`).join(", ")}, not the settings`;
+    } finally {
+      await popup.close();
+    }
   },
 
   // #38: the toolbar button's list of what the tab loaded. A page plays a video file (behind a

@@ -359,6 +359,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Streams served as plain text, from addresses without .m3u8 or .mpd**
+  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171)): some players load
+  their stream from such an address, and the extension didn't know it as one. The button over the
+  video, the right-click menu and **Media on this page** then sent the page alone, which yt-dlp
+  answered "Unsupported URL". Now, when one of them is used and no stream is known, the extension
+  reads the start of what the player fetched (a few kilobytes, never on sight) and recognises an
+  HLS playlist or a DASH manifest.
 - **A minimized MDM keeps working**: with the main window minimized (not to the notification
   area), queues didn't start their next file, the Scheduler's starts and stops didn't fire,
   download limits, the network adapter's kill switch, the clipboard monitor, the update check, the
