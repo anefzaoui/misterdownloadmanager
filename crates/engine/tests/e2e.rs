@@ -599,8 +599,11 @@ async fn no_range_server_uses_one_connection() {
 #[tokio::test]
 async fn a_server_without_ranges_sends_the_file_once() {
     // The probe takes about 375 ms; every range attempt is answered after 300 ms, so the first
-    // answers come while it runs and a retry's after it has ended.
-    let s = server("no_range=true&rate=8M&range_latency_ms=300").await;
+    // answers come while it runs and a retry's after it has ended. The range attempts' answers
+    // (the whole file, which the engine drops at their headers) come at 32 KB/s: at the probe's
+    // 8 MB/s the server filled each one's socket (1.3 MiB on Windows) before a starved CPU had
+    // dropped them, and 7 of them made 12.8 MB served for 3 MiB (#201).
+    let s = server("no_range=true&rate=8M&range_latency_ms=300&range_rate=32K").await;
     let (log, size) = fetch(&s, "/gen/3M?seed=41", 41, fast_opts()).await;
     assert_eq!(size, 3 << 20);
     let sent: u64 = log.iter().map(|e| e.bytes_sent).sum();
@@ -610,7 +613,7 @@ async fn a_server_without_ranges_sends_the_file_once() {
         .collect();
     // One plain GET, the probe: no start over on one connection. The bytes served beyond the
     // file are what the server had written into the range attempts' sockets when the engine
-    // dropped them (a few hundred KiB on a busy machine); a second copy would double them.
+    // dropped them (32 KB a second each); a second copy would double them.
     assert_eq!(
         log.iter().filter(|e| e.range.is_none()).count(),
         1,
@@ -1317,8 +1320,11 @@ async fn speed_limit_caps_the_whole_download() {
     // At the same time, a yardstick: the same 2 MiB at 1 MiB/s, paced by the server on one
     // connection, with no limit of ours. It takes 2 s on an idle machine, and as long as the
     // machine makes it on a busy one.
+    // An unlimited global cap beside the limit counts the bytes the connections pay for.
+    let paid = std::sync::Arc::new(mdm_engine::limiter::Limiter::new(None));
     let limited = Options {
         speed_limit: Some(1 << 20),
+        global: Some(paid.clone()),
         ..fast_opts()
     };
     let one = Options {
@@ -1332,11 +1338,14 @@ async fn speed_limit_caps_the_whole_download() {
     // At least the time the limit allows: the budget builds up from the download's start, so
     // 2 MiB can't come in under 2 s (without the limit: well under a second).
     assert!(secs >= 1.9, "2 MB at 1 MB/s took {secs:.2}s");
-    // The upper bound only catches a limit far too strict: 3 times the yardstick, about 6 s on an
-    // idle machine as before (#201: a fixed 6 s failed on a starved CPU or a busy CI runner,
-    // which took 6-17 s).
+    // Every byte kept was paid for once: no byte waits for the limit twice (or for bytes thrown
+    // away), whatever the machine's speed.
+    assert_eq!(paid.taken(), 2 << 20, "bytes paid for");
+    // The upper bound only catches a limit far too strict: 4 times the yardstick, about 8 s on an
+    // idle machine (#201: a fixed 6 s failed on a starved CPU or a busy CI runner, which took
+    // 6-17 s; there the limited download took up to 3.4 times as long as the yardstick).
     assert!(
-        secs < 3.0 * paced,
+        secs < 4.0 * paced,
         "2 MB at 1 MB/s took {secs:.2}s (paced by the server: {paced:.2}s)"
     );
 }
@@ -1367,7 +1376,7 @@ async fn stop_is_prompt_under_a_low_limit() {
         tokio::time::sleep(std::time::Duration::from_millis(50)).await;
     }
     // A wait that can't pass for a slow machine (#201: a 1 s budget failed on a starved CPU,
-    // where the stop itself took up to 3.4 s, while the waits it must not sit out were ~4 s).
+    // where the stop itself took up to 3.4 s, about as long as the waits it must not sit out).
     // The cap goes to 32 KB/s with 4 MiB owed: any connection paying from now on waits two
     // minutes. Stop is pressed once one of them is in that wait.
     global.set(Some(32 << 10));

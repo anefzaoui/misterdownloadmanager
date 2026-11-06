@@ -312,13 +312,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 ### Changed
 
 - **Developers: the rest of the engine tests no longer fail on a busy computer**
-  ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)). Nine tests checked a
+  ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)). Eight tests checked a
   time or a speed that a starved CPU or a busy CI runner can't keep. Each now checks the state
-  itself: a slow request's own duration, a stop measured from Stop against a wait of minutes,
-  the first bytes before a pause, a limit against the same download unlimited, requests asked
-  again instead of a deadline, and the bytes a sparse file takes on the drive. The
-  slow-connection test now fails without shedding (it passed without it before). The lab server
-  can hand out signed links that expire after a number of requests (`/redirect?uses=N`).
+  itself, or times from the event it is about: a slow request's own duration, a stop measured
+  from Stop against a wait of minutes, the first bytes before a pause, a speed limit against a
+  download the server paces at the same time, parts asked again instead of a deadline, links
+  that expire after a number of requests instead of milliseconds, and the bytes a sparse file
+  takes on the drive. The slow-connection test now fails without shedding (it passed without it
+  before). The lab server can hand out such links (`/redirect?uses=N`).
 - **Developers: a Linux test machine, scripted** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   `tools/lab/linux-vm/` sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host
   (`vm.ps1`: hardware, headless start, linked clones; `setup.sh`: packages, Rust, Node, the

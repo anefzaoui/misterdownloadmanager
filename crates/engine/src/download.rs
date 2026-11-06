@@ -2584,8 +2584,7 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
         };
         match joined.expect("worker panicked") {
             Err(e) if e.is_fatal() => {
-                ctx.cancel.cancel();
-                set.shutdown().await;
+                stop_connections(&ctx, &mut set).await;
                 return Err(e);
             }
             Err(e) => last_err = Some(e),
@@ -2596,7 +2595,7 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
         // a busy machine) have nothing left to fetch. Stopped now, a late answer can't start
         // the download over (#136: a server without ranges sent the whole file twice).
         if complete {
-            set.shutdown().await;
+            stop_connections(&ctx, &mut set).await;
             break;
         }
         if set.is_empty() {
@@ -2608,6 +2607,18 @@ async fn supervise(ctx: Arc<Ctx>, first: Option<Body>) -> Result<(), Error> {
         }
     }
     Ok(())
+}
+
+/// Stop the connections still running, and wait until each has. They are told to stop, not
+/// aborted: a connection aborted in a blocking read or write of the part file (the check of
+/// its overlap, a write) leaves that call running, with the file open, after the download has
+/// ended. A finished download then failed with "part file still in use", the rename's handle
+/// still taken (#201: a connection taken over in its overlap check, on a busy machine), and a
+/// stopped one went on writing after it had returned. Every wait of a connection ends on its
+/// token, and a blocking call only takes as long as one read or write.
+async fn stop_connections(ctx: &Ctx, set: &mut JoinSet<Result<(), Error>>) {
+    ctx.cancel.cancel();
+    while set.join_next().await.is_some() {}
 }
 
 /// One connection: take an assignment, fetch it, repeat until there is nothing left to do.
@@ -3048,7 +3059,11 @@ async fn receive(
                 // A segment another connection shortened leaves an HTTP body far from its end
                 // (dropped); an FTP session is kept either way.
                 if err.is_none() && (pos >= to || matches!(body, Body::Ftp(_))) {
-                    body.done(ended).await;
+                    // Not past a stop (`stop_connections` waits for this connection).
+                    tokio::select! {
+                        _ = ctx.cancel.cancelled() => {}
+                        () = body.done(ended) => {}
+                    }
                 }
                 return Ok(Some(end));
             }

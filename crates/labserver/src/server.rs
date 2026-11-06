@@ -467,6 +467,7 @@ GET|HEAD /gen/{size}[/{name}]?seed=N&<file params>&<faults>   size: 12345, 64K, 
     rate=SIZE slow_every=N slow_rate=SIZE max_conns=N drop_after=SIZE drop_every=N
     fail_every=N fail_first=N no_range=1 no_range_every=N html=1 etag_change_every=N
     etag=weak|per-request|none latency_ms=N range_latency_ms=N (only requests with a Range)
+    range_rate=SIZE  the rate of answers to requests with a Range (instead of rate)
     stall_at=SIZE  never send the file's byte at that offset: a response stops there and waits
                    (until the server's faults change, from a test; a URL's own value stays)
     require_cookie=NAME=VALUE|NAME   403 unless the Cookie header has it
@@ -1084,6 +1085,8 @@ pub(crate) async fn serve(
 
     let rate = if every(n, f.slow_every) {
         f.slow_rate.or(f.rate)
+    } else if entry.range.is_some() {
+        f.range_rate.or(f.rate)
     } else {
         f.rate
     };
