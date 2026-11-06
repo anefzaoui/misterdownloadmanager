@@ -250,19 +250,48 @@ impl Icon {
     }
 
     /// The icon as an image source (fileicons.rs shows Add Torrent's magnet for a .torrent).
+    /// Made once per icon and ink (a theme's change makes new ones): drawing it again each frame
+    /// allocates nothing.
     pub fn source(self, enabled: bool) -> ImageSource<'static> {
-        let (a, b) = self.stops(enabled);
-        // Keyed by its ink too: another theme's icon is another texture.
-        let uri = format!(
-            "bytes://mdm/toolbar/{}-{}-{}{}.svg",
-            self.name(),
-            if enabled { "on" } else { "off" },
-            a.trim_start_matches('#'),
-            b.trim_start_matches('#'),
-        );
-        ImageSource::Bytes {
-            uri: uri.into(),
-            bytes: self.svg(&a, &b).into_bytes().into(),
+        use crate::palette::IconStyle;
+        use std::cell::RefCell;
+        use std::collections::HashMap;
+        type Key = (Icon, bool, IconStyle, [u8; 4], [u8; 4]);
+        thread_local! {
+            static MADE: RefCell<HashMap<Key, ImageSource<'static>>> = RefCell::default();
         }
+        let c = crate::theme::colors();
+        let style = crate::theme::current().icons;
+        let (x, y) = match (enabled, style) {
+            (false, _) => (c.icon_disabled, c.icon_disabled_end),
+            (true, IconStyle::Color) => (egui::Color32::TRANSPARENT, egui::Color32::TRANSPARENT),
+            (true, IconStyle::Mono) => (c.text, c.text),
+            (true, IconStyle::Accent) => (c.accent, c.accent),
+        };
+        let key = (self, enabled, style, x.to_array(), y.to_array());
+        MADE.with(|made| {
+            made.borrow_mut()
+                .entry(key)
+                .or_insert_with(|| {
+                    let (a, b) = self.stops(enabled);
+                    // Keyed by its ink too: another theme's icon is another texture. Kept for
+                    // the program's life, as its texture is (a few per theme).
+                    let uri: &'static str = Box::leak(
+                        format!(
+                            "bytes://mdm/toolbar/{}-{}-{}{}.svg",
+                            self.name(),
+                            if enabled { "on" } else { "off" },
+                            a.trim_start_matches('#'),
+                            b.trim_start_matches('#'),
+                        )
+                        .into_boxed_str(),
+                    );
+                    ImageSource::Bytes {
+                        uri: uri.into(),
+                        bytes: egui::load::Bytes::Shared(self.svg(&a, &b).into_bytes().into()),
+                    }
+                })
+                .clone()
+        })
     }
 }
