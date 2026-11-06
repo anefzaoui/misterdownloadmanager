@@ -157,7 +157,7 @@ try {
       await js("document.getElementById('to-remote').click(); true");
       await js(`document.getElementById('remote-url').value = ${JSON.stringify(base)}; true`);
       await sleep(300);
-      const { data } = await page("Page.captureScreenshot", { format: "png", captureBeyondViewport: true });
+      const { data } = await page("Page.captureScreenshot", { format: "png" });
       fs.writeFileSync(path.join(out, `popup-${lang}-${theme}.png`), Buffer.from(data, "base64"));
       await b.close();
     }
