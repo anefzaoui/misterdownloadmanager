@@ -550,6 +550,35 @@ async fn a_server_without_ranges_sends_the_file_once() {
     );
 }
 
+/// A CDN whose edges sometimes ignore ranges, with the same file and the same ETag: a full
+/// answer to a range request is retried, and the download stays on several connections (#136:
+/// telling it from a server without ranges must not cost it its speed). `every` = 2: the very
+/// first range request is the one answered in full; 3: one in three.
+async fn a_cdn_ignoring_ranges_now_and_then(every: u32, seed: u64) {
+    let s = server(&format!("rate=2M&no_range_every={every}")).await;
+    let path = format!("/gen/8M/cdn.bin?seed={seed}");
+    let (log, size) = fetch(&s, &path, seed, fast_opts()).await;
+    assert_eq!(size, 8 << 20);
+    let ranged: Vec<LogEntry> = log.iter().filter(|e| e.status == 206).cloned().collect();
+    assert!(
+        max_concurrent(&ranged) >= 2,
+        "one connection only: {:?}",
+        log.iter()
+            .map(|e| (e.range.clone(), e.status, e.outcome.clone()))
+            .collect::<Vec<_>>()
+    );
+}
+
+#[tokio::test]
+async fn a_cdn_ignoring_the_first_range_stays_segmented() {
+    a_cdn_ignoring_ranges_now_and_then(2, 44).await;
+}
+
+#[tokio::test]
+async fn a_cdn_ignoring_one_range_in_three_stays_segmented() {
+    a_cdn_ignoring_ranges_now_and_then(3, 45).await;
+}
+
 #[tokio::test]
 async fn probe_is_a_plain_get() {
     let s = server("rate=4M").await;

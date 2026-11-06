@@ -2809,13 +2809,7 @@ fn per_node_etag(ctx: &Ctx, sent: Option<&HeaderValue>, resp: &Response) -> bool
     // Sent with an ETag (dates never start with a quote) — possibly one another connection has
     // just dropped, so don't compare it with the current one.
     let sent_etag = sent.is_some_and(|s| s.as_bytes().starts_with(b"\""));
-    // Another node's ETag: a different one. The same ETag in a full answer is a server that
-    // doesn't do ranges (#136), not a CDN node of its own.
-    let theirs = header_str(resp.headers(), header::ETAG);
-    let other_etag =
-        theirs.is_some() && theirs.map(str::as_bytes) != sent.map(HeaderValue::as_bytes);
     let same = sent_etag
-        && other_etag
         && resp.content_length() == Some(ctx.size)
         && v.last_modified.is_some()
         && header_str(resp.headers(), header::LAST_MODIFIED) == v.last_modified.as_deref();

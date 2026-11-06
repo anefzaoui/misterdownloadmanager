@@ -323,8 +323,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - **A server without ranges no longer sends the file twice**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)): when the extra
   connections' answers came late (a busy computer), the download could finish and then start over
-  on one connection, fetching the whole file again. MDM now stops once every byte is in, and tells
-  a server that ignores ranges from a CDN node with its own ETag on the first answer.
+  on one connection, fetching the whole file again. MDM now stops its other connections once every
+  byte is in.
 - **Screen readers reach every row of a list, not only those in view**
   ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111)): a list's rows out of
   view (the last qualities of Download video, a long playlist, the downloads) are there too,
