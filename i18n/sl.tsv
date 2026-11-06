@@ -153,6 +153,10 @@
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
 	(the Torrents category's folder)	(mapa kategorije Torrenti)
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent datoteka
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -230,6 +234,10 @@
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
 	Accounts	Računi
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Dodaj
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Dodaj prenos (Dodaj URL)
@@ -311,6 +319,14 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Added {source}	Dodano {source}
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Dodano.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Dodano. MDM bere torrent: kmalu se bo pridružil seznamu.
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -320,6 +336,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Naslov spremenjen v {host}
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Naslov ali magnetna povezava
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -356,6 +376,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Algeria	Alžirija
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Vse
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Vsi prenosi
@@ -526,6 +550,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	Avstrija
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Samodejno (po vrsti datoteke)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -678,7 +706,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Kanada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Prekliči
@@ -713,7 +741,8 @@
 #. page title in the Options window
 #, machine
 	Categories, file types, folders	Kategorije, vrste datotek, mape
-#. text in a dialog box; text in the Options window
+#. text in a dialog box; text in the Options window; text in remote.rs
+#. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	Kategorija
 #. text in categories.rs
@@ -731,6 +760,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Central African Republic	Srednjeafriška republika
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	Potrdilo (SHA-256): {fingerprint}
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
@@ -806,6 +839,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	China	Kitajska
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Izberite datoteko .torrent
 #. text in langpick.rs
 #, machine
 	Choose a language	Izberite jezik
@@ -846,6 +883,14 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cocos (Keeling) Islands	Kokosovi (Keelingovi) otoki
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Koda
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	Koda:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -854,7 +899,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Komori
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
@@ -1026,6 +1071,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its files stay where they are.	Izbrišem kategorijo »{category}«? Njene datoteke ostanejo tam, kjer so.
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	Izbriši tudi datoteko
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1050,6 +1099,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Opis:
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	Naprava
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
@@ -1114,7 +1167,8 @@
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	Ne prevzemajte datotek, manjših od (KB, 0 = poljubna velikost):
-#. text in a download's progress window
+#. text in the Options window; text in a download's progress window
+#. button: close the window (the device is paired)
 #, machine
 	Done	Končano
 #. button in the Options window
@@ -1207,7 +1261,7 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	Preneseno {size} ({bytes} bajtov)
-#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	Prenašanje
@@ -1351,7 +1405,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	Eritreja
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1381,6 +1435,10 @@
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
 	Every connection goes through it, from {ip}.	Vsaka povezava gre skozi to, iz {ip}.
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	Vsak naslov lokalnega omrežja
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1548,8 +1606,9 @@
 #. text in the Find window
 #, machine
 	Find:	Poišči:
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
+#. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Dokončano
 #. text in countries.rs
@@ -1583,6 +1642,14 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	Prisili procese v prekinitev
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Pozabi to napravo
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Pozabi to napravo? Za ponovno povezavo potrebuje novo kodo.
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1624,6 +1691,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	s strani (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	iz seznanjene naprave
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
@@ -1934,6 +2005,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Israel	Izrael
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	Ni se mogel zagnati: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2070,6 +2146,10 @@
 #. text in the Batch download window
 #, machine
 	Last file:	Zadnja datoteka:
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	Zadnjič videno
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 #, machine
@@ -2094,6 +2174,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Lesotho	Lesoto
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Dovoli telefonom in računalnikom v lokalnem omrežju nadzor MDM-ja
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2141,6 +2225,10 @@
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
 	List the rest	Navedi preostalo
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	Poslušaj na:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2301,6 +2389,35 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mayotte	Mayotte
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	MDM trenutno ni dosegljiv v omrežju: možnosti → oddaljeno pove, zakaj.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM ne more prenesti tega naslova.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM je ni mogel dodati.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM tega ni mogel storiti.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM ne odgovarja. Preverite, ali se izvaja in je v istem omrežju.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM ne odgovarja. Poskušam znova...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM trenutno ne prikazuje kode. Najprej kliknite Seznani napravo.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2398,6 +2515,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Montserrat	Montserrat
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Več
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2525,6 +2646,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Caledonia	Nova Kaledonija
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Nova koda
 #. text in the Options window
 #, machine
 	New exception	Nova izjema
@@ -2582,6 +2707,10 @@
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
 	No downloads here	Tukaj ni prenosov
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Tukaj ni prenosov.
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
@@ -2603,6 +2732,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	Ni ustreznih jezikov.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	Trenutno ni lokalnega omrežja: začne se, ko se računalnik pridruži enemu.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2745,6 +2878,10 @@
 #, machine
 	Off: a finished torrent stops, like any download.	Izklopljeno: dokončan torrent se ustavi, kot vsak prenos.
 #. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Izklopljeno: nič v omrežju ne more doseči MDM-ja.
+#. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Ponudi prenos povezav, kopiranih v odložišče
 #. text in the Link grabber window
@@ -2761,6 +2898,18 @@
 #. text in a download's progress window
 #, machine
 	on download stop/resume	ob ustavitvi/nadaljevanju prenosa
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	V računalniku odprite Možnosti, nato Oddaljeno in kliknite Seznani napravo. Vnesite kodo, ki jo prikaže.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	V telefonu skenirajte to kodo s kamero ali odprite naslov in vnesite kodo.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Vklopljeno. V telefonu odprite ta naslov:
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Enkrat ob
@@ -2788,6 +2937,10 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Samo videoposnetki MP4 in MKV lahko vsebujejo podnapise
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Samo seznanjene naprave vidijo ali spremenijo karkoli. Prvič bo brskalnik telefona opozoril na lastno potrdilo MDM-ja: njegov prstni odtis je tisti zgoraj.
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -2858,6 +3011,31 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Naslov strani
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Seznani
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Seznani napravo
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Seznani napravo...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Poveži z Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Povezano
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Povezane naprave:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2908,8 +3086,9 @@
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
 	Pasted	Prilepljeno
-#. text in a download's progress window
+#. text in a download's progress window; text in remote.rs
 #. verb: pause the download
+#. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	Začasno ustavi
 #. text in a download's Properties window
@@ -2966,7 +3145,12 @@
 #. label in the Options window
 #, machine
 	Port	Vrata
-#. text in the Add torrent window
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Vrata {port} uporablja drug program: izberite druga vrata.
+#. text in the Options window; text in the Add torrent window
+#. Options → Remote: label before the port number box
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Vrata:
@@ -3042,6 +3226,10 @@
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	Obdelava čakalne vrste ustavljena/končana
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	V čakalni vrsti
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3109,8 +3297,17 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	Zapomni si to pot za kategorijo »{category}«
-#. button in the Options window; button in rssdlg.rs
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Daljinsko
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Daljinsko upravljanje
+#. button in the Options window; text in remote.rs; button in rssdlg.rs
 #. verb: remove the item
+#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	Odstrani
@@ -3121,6 +3318,11 @@
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
 	Remove its downloads from the list (running ones move to General)	Odstrani prenose s seznama (aktivni se premaknejo v Splošno)
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Ali želite odstraniti {name} s seznama?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3579,8 +3781,9 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sri Lanka	Šrilanka
-#. text in the Link grabber window
+#. text in the Link grabber window; text in remote.rs
 #. Link grabber button: download the ticked links now
+#. remote control page (on a phone): button: start a download or a queue
 #, machine
 	Start	Zaženi
 #. button in a dialog box
@@ -3598,6 +3801,10 @@
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Začni glavno čakalno vrsto za prenos
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Začni zdaj
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	Začetni položaji in napredek prenosa po povezavah
@@ -3629,7 +3836,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	Stanje
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -3638,13 +3845,14 @@
 #. label before the download's state
 #, machine
 	Status:	Stanje:
-#. text in the Add torrent window
+#. text in remote.rs; text in the Add torrent window
+#. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Ustavi
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Ustavi prenos ob
-#. button in playlistdlg.rs
+#. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
 	Stop listing	Ustavi navajanje
@@ -3667,7 +3875,7 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	Ustavi {queue}
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
@@ -3823,6 +4031,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Brskalniki lahko najdejo Mister Download Manager
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Spremembe se uveljavijo, ko kliknete V redu.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4078,6 +4290,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Ta kategorija ali čakalna vrsta še ne vsebuje prenosov.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Te kode ni več mogoče uporabiti.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Samo ta računalnik (127.0.0.1)
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4086,6 +4306,14 @@
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
 	This date has passed: the queue will not start	Ta datum je že mimo: čakalna vrsta se ne bo zagnala
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Ime te naprave
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Ta datoteka je prevelika, da bi bila torrent.
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Ta mapa ne obstaja:
@@ -4100,6 +4328,10 @@
 #. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	to ni magnetna povezava ali datoteka .torrent
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	To ni datoteka torrent.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4184,6 +4416,7 @@
 	too many redirects	preveč preusmeritev
 #. value in a column's filter list in the download list; text in the Add torrent window
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#. noun: label before the torrent file or magnet link
 #, machine
 	Torrent	Torrent
 #. text in the download list (sizes, speeds, status)
@@ -4269,6 +4502,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	Vklopi
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	Najprej vklopite daljinsko upravljanje.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4336,8 +4573,9 @@
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	Počisti vse
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are not complete yet
+#. remote control page (on a phone): tab: downloads not finished yet
 #, machine
 	Unfinished	Nedokončano
 #. text in countries.rs
@@ -4537,16 +4775,30 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	volume {n} of it is missing	manjka mu zvezek {n}
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Počakajte trenutek in poskusite znova.
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
 	Wait for the list, or stop listing	Počakajte na seznam ali ustavite navajanje
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Počakaj v {queue}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Čakanje
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Čakam na napravo. Koda deluje {time}.
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Čakanje: dosežena je omejitev prenosa (Razporejevalnik)
@@ -4580,6 +4832,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	Kaj je novega:
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Kdaj
 #. text in the Batch download window
 #, machine
 	Wildcard size	Velikost nadomestnega znaka
@@ -4607,6 +4863,15 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Zapis datumov in časov
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Napačna koda. Prikažite novo kodo v MDM in poskusite znova.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Napačna koda. Preostali poskusi: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4716,6 +4981,15 @@
 #. {count} = a number (keep the braces as they are)
 #, machine
 	{count}, {speed}	{count}, {speed}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} je povezan. Zdaj lahko upravlja MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} od {size}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -4876,6 +5150,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	{size} ({bytes} Bytes)	{size} ({bytes} bajtov)
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} prosto
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine

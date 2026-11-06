@@ -153,6 +153,10 @@
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
 	(the Torrents category's folder)	(ટોરેન્ટ્સ કેટેગરીનું ફોલ્ડર)
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent ફાઇલ
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -230,6 +234,10 @@
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
 	Accounts	એકાઉન્ટ્સ
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	ઉમેરો
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ડાઉનલોડ ઉમેરો (URL ઉમેરો)
@@ -311,6 +319,14 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Added {source}	{source} ઉમેર્યું
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	ઉમેરાયું.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	ઉમેરાયું. MDM ટોરેન્ટ વાંચી રહ્યું છે: તે થોડીવારમાં સૂચિમાં જોડાશે.
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -320,6 +336,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	સરનામું {host} માં બદલ્યું
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	સરનામું અથવા મેગ્નેટ લિંક
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -356,6 +376,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Algeria	અલ્જેરિયા
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	બધા
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	બધા ડાઉનલોડ્સ
@@ -526,6 +550,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	ઓસ્ટ્રિયા
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	આપોઆપ (ફાઇલ પ્રકાર મુજબ)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -678,7 +706,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	કેનેડા
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	રદ કરો
@@ -713,7 +741,8 @@
 #. page title in the Options window
 #, machine
 	Categories, file types, folders	શ્રેણીઓ, ફાઇલ પ્રકારો, ફોલ્ડર્સ
-#. text in a dialog box; text in the Options window
+#. text in a dialog box; text in the Options window; text in remote.rs
+#. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	શ્રેણી
 #. text in categories.rs
@@ -731,6 +760,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Central African Republic	મધ્ય આફ્રિકન પ્રજાસત્તાક
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	પ્રમાણપત્ર (SHA-256): {fingerprint}
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
@@ -806,6 +839,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	China	ચીન
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	.torrent ફાઇલ પસંદ કરો
 #. text in langpick.rs
 #, machine
 	Choose a language	ભાષા પસંદ કરો
@@ -846,6 +883,14 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cocos (Keeling) Islands	કોકોસ (કીલિંગ) ટાપુઓ
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	કોડ
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	કોડ:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -854,7 +899,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	કોમોરોસ
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
@@ -1026,6 +1071,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its files stay where they are.	"{category}" કેટેગરી કાઢી નાખો? તેની ફાઇલો જ્યાં છે ત્યાં જ રહેશે.
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	ફાઇલ પણ કાઢી નાખો
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1050,6 +1099,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	વર્ણન:
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	ઉપકરણ
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
@@ -1114,7 +1167,8 @@
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	નાની ફાઇલો ન લો (KB, 0 = કોઈપણ કદ):
-#. text in a download's progress window
+#. text in the Options window; text in a download's progress window
+#. button: close the window (the device is paired)
 #, machine
 	Done	થઈ ગયું
 #. button in the Options window
@@ -1207,7 +1261,7 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} બાઇટ્સ) ડાઉનલોડ કરેલ
-#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	ડાઉનલોડ થઈ રહ્યું છે
@@ -1351,7 +1405,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	એરિટ્રિયા
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1381,6 +1435,10 @@
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
 	Every connection goes through it, from {ip}.	દરેક કનેક્શન તેમાંથી, {ip} થી જાય છે.
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	દરેક સ્થાનિક નેટવર્ક સરનામું
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1548,8 +1606,9 @@
 #. text in the Find window
 #, machine
 	Find:	શોધો:
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
+#. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	પૂર્ણ થયું
 #. text in countries.rs
@@ -1583,6 +1642,14 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	પ્રક્રિયાઓને સમાપ્ત કરવા દબાણ કરો
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	આ ઉપકરણ ભૂલી જાઓ
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	આ ઉપકરણ ભૂલી જવું છે? ફરીથી કનેક્ટ કરવા માટે તેને નવા કોડની જરૂર પડશે.
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1624,6 +1691,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	એક પૃષ્ઠમાંથી (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	જોડાયેલ ઉપકરણમાંથી
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
@@ -1934,6 +2005,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Israel	ઇઝરાયેલ
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	તે શરૂ થઈ શક્યું નથી: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2070,6 +2146,10 @@
 #. text in the Batch download window
 #, machine
 	Last file:	છેલ્લી ફાઇલ:
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	છેલ્લે જોયું
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 #, machine
@@ -2094,6 +2174,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Lesotho	લેસોથો
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	સ્થાનિક નેટવર્ક પરના ફોન અને કમ્પ્યુટર્સને MDM ને નિયંત્રિત કરવા દો
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2141,6 +2225,10 @@
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
 	List the rest	બાકીની સૂચિ બનાવો
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	આના પર સાંભળો:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2301,6 +2389,35 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mayotte	માયોટ
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	MDM નેટવર્ક પર હવે પહોંચી શકાતું નથી: વિકલ્પો → રીમોટ શા માટે તે કહે છે.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM આ સરનામું ડાઉનલોડ કરી શકતું નથી.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM તેને ઉમેરી શક્યું નથી.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM તે કરી શક્યું નથી.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM જવાબ આપતું નથી. તપાસો કે તે ચાલી રહ્યું છે અને તે જ નેટવર્ક પર છે.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM જવાબ આપતું નથી. ફરી પ્રયાસ કરી રહ્યું છે...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM હવે કોઈ કોડ બતાવતું નથી. પહેલા ત્યાં ઉપકરણ જોડો પર ક્લિક કરો.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2398,6 +2515,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Montserrat	મોન્ટસેરાત
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	વધુ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2525,6 +2646,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Caledonia	ન્યૂ કેલેડોનિયા
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	નવો કોડ
 #. text in the Options window
 #, machine
 	New exception	નવી અપવાદ
@@ -2582,6 +2707,10 @@
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
 	No downloads here	અહીં કોઈ ડાઉનલોડ નથી
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	અહીં કોઈ ડાઉનલોડ નથી.
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
@@ -2603,6 +2732,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	કોઈ ભાષા મળતી નથી.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	હવે કોઈ સ્થાનિક નેટવર્ક નથી: જ્યારે કમ્પ્યુટર એકમાં જોડાશે ત્યારે તે શરૂ થશે.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2745,6 +2878,10 @@
 #, machine
 	Off: a finished torrent stops, like any download.	બંધ: પૂર્ણ થયેલ ટોરેન્ટ કોઈપણ ડાઉનલોડની જેમ અટકી જાય છે.
 #. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	બંધ: નેટવર્ક પર કંઈપણ MDM સુધી પહોંચી શકતું નથી.
+#. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ક્લિપબોર્ડ પર કૉપિ કરેલી લિંક્સ ડાઉનલોડ કરવાની ઑફર કરો
 #. text in the Link grabber window
@@ -2761,6 +2898,18 @@
 #. text in a download's progress window
 #, machine
 	on download stop/resume	ડાઉનલોડ રોકવા/ફરી શરૂ કરવા પર
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	કમ્પ્યુટર પર, વિકલ્પો ખોલો, પછી રીમોટ, અને ઉપકરણ જોડો પર ક્લિક કરો. તે બતાવેલો કોડ દાખલ કરો.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	ફોન પર, કેમેરા વડે આ કોડ સ્કેન કરો, અથવા સરનામું ખોલો અને કોડ દાખલ કરો.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	ચાલુ. ફોન પર, આ સરનામું ખોલો:
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	એકવાર
@@ -2788,6 +2937,10 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	માત્ર MP4 અને MKV વિડિઓઝ સબટાઈટલ રાખી શકે છે
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	ફક્ત જોડેલા ઉપકરણો જ કંઈપણ જોઈ અથવા બદલી શકે છે. પ્રથમ વખત, ફોનનું બ્રાઉઝર MDM ના પોતાના પ્રમાણપત્ર વિશે ચેતવણી આપે છે: તેની ફિંગરપ્રિન્ટ ઉપરની છે.
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -2858,6 +3011,31 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	પૃષ્ઠ સરનામું
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	જોડો
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	ઉપકરણ જોડો
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	ઉપકરણ જોડો...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager સાથે જોડો
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	જોડાયેલ
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	જોડાયેલા ઉપકરણો:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2908,8 +3086,9 @@
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
 	Pasted	પેસ્ટ કરેલ
-#. text in a download's progress window
+#. text in a download's progress window; text in remote.rs
 #. verb: pause the download
+#. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	થોભાવો
 #. text in a download's Properties window
@@ -2966,7 +3145,12 @@
 #. label in the Options window
 #, machine
 	Port	પોર્ટ
-#. text in the Add torrent window
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	પોર્ટ {port} નો ઉપયોગ અન્ય પ્રોગ્રામ દ્વારા થાય છે: બીજો પસંદ કરો.
+#. text in the Options window; text in the Add torrent window
+#. Options → Remote: label before the port number box
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	પોર્ટ:
@@ -3042,6 +3226,10 @@
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	કતાર પ્રક્રિયા બંધ/પૂર્ણ થઈ
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	કતારમાં
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3109,8 +3297,17 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	"{category}" શ્રેણી માટે આ પાથ યાદ રાખો
-#. button in the Options window; button in rssdlg.rs
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	રિમોટ
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	રિમોટ કંટ્રોલ
+#. button in the Options window; text in remote.rs; button in rssdlg.rs
 #. verb: remove the item
+#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	દૂર કરો
@@ -3121,6 +3318,11 @@
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
 	Remove its downloads from the list (running ones move to General)	તેના ડાઉનલોડ્સને સૂચિમાંથી દૂર કરો (ચાલુ હોય તેવા સામાન્યમાં ખસેડવામાં આવશે)
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	સૂચિમાંથી {name} દૂર કરવું છે?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3579,8 +3781,9 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sri Lanka	શ્રીલંકા
-#. text in the Link grabber window
+#. text in the Link grabber window; text in remote.rs
 #. Link grabber button: download the ticked links now
+#. remote control page (on a phone): button: start a download or a queue
 #, machine
 	Start	શરૂ કરો
 #. button in a dialog box
@@ -3598,6 +3801,10 @@
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	મુખ્ય ડાઉનલોડ કતાર શરૂ કરો
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	હવે શરૂ કરો
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	કનેક્શન્સ દ્વારા પ્રારંભિક સ્થાનો અને ડાઉનલોડ પ્રગતિ
@@ -3629,7 +3836,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	સ્થિતિ
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -3638,13 +3845,14 @@
 #. label before the download's state
 #, machine
 	Status:	સ્થિતિ:
-#. text in the Add torrent window
+#. text in remote.rs; text in the Add torrent window
+#. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	રોકો
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	આના પર ડાઉનલોડ રોકો
-#. button in playlistdlg.rs
+#. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
 	Stop listing	સૂચિ બનાવવાનું બંધ કરો
@@ -3667,7 +3875,7 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} રોકો
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
@@ -3823,6 +4031,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	બ્રાઉઝર Mister Download Manager શોધી શકે છે
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	જ્યારે તમે OK ક્લિક કરશો ત્યારે ફેરફારો લાગુ પડશે.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4078,6 +4290,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	આ શ્રેણી અથવા કતારમાં હજી કોઈ ડાઉનલોડ નથી.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	આ કોડનો હવે ઉપયોગ કરી શકાતો નથી.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	ફક્ત આ કમ્પ્યુટર (127.0.0.1)
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4086,6 +4306,14 @@
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
 	This date has passed: the queue will not start	આ તારીખ પસાર થઈ ગઈ છે: કતાર શરૂ થશે નહીં
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	આ ઉપકરણનું નામ
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	આ ફાઇલ ટોરેન્ટ બનવા માટે ખૂબ મોટી છે.
 #. text in a dialog box
 #, machine
 	This folder does not exist:	આ ફોલ્ડર અસ્તિત્વમાં નથી:
@@ -4100,6 +4328,10 @@
 #. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	આ મેગ્નેટ લિંક અથવા .torrent ફાઇલ નથી
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	આ ટોરેન્ટ ફાઇલ નથી.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4184,6 +4416,7 @@
 	too many redirects	ખૂબ વધુ રીડાયરેક્ટ્સ
 #. value in a column's filter list in the download list; text in the Add torrent window
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#. noun: label before the torrent file or magnet link
 #, machine
 	Torrent	ટૉરેન્ટ
 #. text in the download list (sizes, speeds, status)
@@ -4269,6 +4502,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ચાલુ કરો
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	પહેલા રિમોટ કંટ્રોલ ચાલુ કરો.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4336,8 +4573,9 @@
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	બધાને અનચેક કરો
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are not complete yet
+#. remote control page (on a phone): tab: downloads not finished yet
 #, machine
 	Unfinished	અપૂર્ણ
 #. text in countries.rs
@@ -4537,16 +4775,30 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	volume {n} of it is missing	તેનું વોલ્યુમ {n} ખૂટે છે
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	થોડીવાર રાહ જુઓ, પછી ફરી પ્રયાસ કરો.
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
 	Wait for the list, or stop listing	સૂચિની રાહ જુઓ, અથવા સૂચિ બનાવવાનું બંધ કરો
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue} માં રાહ જુઓ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	પ્રતીક્ષામાં
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	ઉપકરણની રાહ જોઈ રહ્યા છીએ. કોડ {time} માટે કામ કરે છે.
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	પ્રતીક્ષામાં: ડાઉનલોડ મર્યાદા પહોંચી ગઈ છે (શેડ્યૂલર)
@@ -4580,6 +4832,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	નવું શું છે:
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	ક્યારે
 #. text in the Batch download window
 #, machine
 	Wildcard size	વાઇલ્ડકાર્ડ કદ
@@ -4607,6 +4863,15 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	તારીખો અને સમય લખો
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	ખોટો કોડ. MDM માં નવો કોડ બતાવો અને ફરી પ્રયાસ કરો.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	ખોટો કોડ. બાકી રહેલા પ્રયાસો: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4716,6 +4981,15 @@
 #. {count} = a number (keep the braces as they are)
 #, machine
 	{count}, {speed}	{count}, {speed}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} જોડાયેલ છે. તે હવે MDM ને નિયંત્રિત કરી શકે છે.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size} માંથી {done}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -4876,6 +5150,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	{size} ({bytes} Bytes)	{size} ({bytes} બાઇટ્સ)
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} ખાલી
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine

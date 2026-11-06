@@ -18,7 +18,7 @@ use crate::torrents::Host;
 use crate::winui::{self, ButtonKind, fill_l as fill, r, text};
 
 /// How long a magnet may take to get its file list from peers.
-const METADATA_WAIT: Duration = Duration::from_secs(180);
+pub const METADATA_WAIT: Duration = Duration::from_secs(180);
 const ROW: f32 = 17.0;
 
 type Slot = Arc<Mutex<Option<Result<Meta, String>>>>;
@@ -41,6 +41,11 @@ pub struct TorrentAdd {
     pub from_magnet: bool,
     /// Download in order (#39): the files' start first, to watch while it downloads.
     pub in_order: bool,
+    /// The queue it waits in, chosen already (a paired device's, #141); None: Download Later
+    /// asks as it does for any download.
+    pub queue: Option<usize>,
+    /// No progress window when it starts (sent from a paired device).
+    pub quiet: bool,
 }
 
 pub struct TorrentDialog {
@@ -83,7 +88,7 @@ pub struct TorrentDialog {
 
 /// The category of a torrent: its largest file's.
 /// Every torrent goes to the Torrents category and its folder (D-021), whatever it holds.
-fn category_of(_meta: &Meta) -> Category {
+pub fn category_of(_meta: &Meta) -> Category {
     Category::Torrents
 }
 
@@ -405,6 +410,8 @@ impl TorrentDialog {
                     start_now: self.start_now.unwrap_or(true),
                     from_magnet: self.from_magnet,
                     in_order: self.in_order,
+                    queue: None,
+                    quiet: false,
                 })
             }
         }

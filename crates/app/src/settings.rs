@@ -226,6 +226,14 @@ pub struct Settings {
     /// The local automation API (beyond IDM): status queries over the command channel. Off by
     /// default; `misterdownloadmanager-cli api on` turns it on.
     pub automation_api: bool,
+    /// Options → Remote (#141, beyond IDM): paired phones and computers on the local network
+    /// add and control downloads (crates/remote). Off by default.
+    pub remote_on: bool,
+    /// Its port.
+    pub remote_port: u16,
+    /// Where it listens: "" every local network address, `127.0.0.1` this computer only, or
+    /// one address (`mdm_remote::addrs::chosen`).
+    pub remote_listen: String,
     /// Torrents keep sharing after they finish (D-018: off; a finished torrent stops, like any
     /// download).
     pub torrent_keep_sharing: bool,
@@ -403,6 +411,9 @@ impl Default for Settings {
             debrid_on: true,
             sounds: Default::default(),
             automation_api: false,
+            remote_on: false,
+            remote_port: mdm_remote::PORT,
+            remote_listen: String::new(),
             torrent_keep_sharing: false,
             torrent_associations: false,
             torrent_incoming: true,
