@@ -43,6 +43,11 @@ pub struct Faults {
     /// Delay before answering a request that asks for a range, ms (on top of `latency_ms`): the
     /// probe's plain GET runs ahead of the range attempts, as on a busy machine.
     pub range_latency_ms: Option<u64>,
+    /// Per-response speed cap for the answers to requests that ask for a range (instead of
+    /// `rate`): a range attempt a server without ranges answers in full can't fill the sockets
+    /// of a busy machine before the client drops it.
+    #[serde(deserialize_with = "size_opt")]
+    pub range_rate: Option<u64>,
     /// 403 unless the request's `Cookie` holds this pair (`sid=1`), or a cookie of this name
     /// (`sid`): a file behind a session.
     pub require_cookie: Option<String>,
@@ -82,6 +87,7 @@ impl Faults {
             etag: over.etag.clone().or(self.etag.clone()),
             latency_ms: over.latency_ms.or(self.latency_ms),
             range_latency_ms: over.range_latency_ms.or(self.range_latency_ms),
+            range_rate: over.range_rate.or(self.range_rate),
             require_cookie: over.require_cookie.clone().or(self.require_cookie.clone()),
             require_referer: over
                 .require_referer

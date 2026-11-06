@@ -491,6 +491,12 @@ pub struct App {
     ticked: Option<Instant>,
     /// The main window's caption matches the mode.
     caption_set: bool,
+    /// Windows: whether the main window's title bar is ours (a style theme's, #45), as applied
+    /// to its frame; None until the window exists. And the window, once it is.
+    #[cfg_attr(not(windows), allow(dead_code))]
+    drawn_frame: Option<bool>,
+    #[cfg_attr(not(windows), allow(dead_code))]
+    main_hwnd: Option<isize>,
     list: list::ListState,
     icons: ShellIcons,
     /// Open top-level menu (index into `chrome::menus()`).
@@ -675,17 +681,19 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
 }
 
 /// Silk icons standing in for IDM's XP-era category icons.
+/// A theme's icon set may replace them (`crate::themeicons`).
 fn category_icon(c: Category) -> IconKey {
-    IconKey::Silk(match c {
-        Category::Compressed => "page_white_zip",
-        Category::Documents => "page_white",
-        Category::Music => "music",
-        Category::Programs => "application_xp",
-        Category::Video => "film",
-        Category::General => "page_white",
-        Category::Torrents => "folder_link",
-        Category::Custom(_) => "folder",
-    })
+    let (need, silk) = match c {
+        Category::Compressed => ("cat-compressed", "page_white_zip"),
+        Category::Documents => ("cat-documents", "page_white"),
+        Category::Music => ("cat-music", "music"),
+        Category::Programs => ("cat-programs", "application_xp"),
+        Category::Video => ("cat-video", "film"),
+        Category::General => ("cat-documents", "page_white"),
+        Category::Torrents => ("cat-torrents", "folder_link"),
+        Category::Custom(_) => ("cat-folder", "folder"),
+    };
+    IconKey::Themed(need, silk)
 }
 
 impl App {
@@ -903,6 +911,9 @@ impl App {
             themes_changed: crate::themefile::changed(),
             ticked: None,
             caption_set: false,
+            // The system's title bar is the frame's own: nothing to apply for it.
+            drawn_frame: Some(false),
+            main_hwnd: None,
             list,
             icons: ShellIcons,
             open_menu: None,
@@ -4906,6 +4917,13 @@ impl App {
             true,
             on("high-contrast"),
         ));
+        items.push(Sep);
+        // i18n: View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
+        items.push(Radio("Metro", Cmd::Theme("metro"), true, on("metro")));
+        // i18n: View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
+        items.push(Radio("Adwaita", Cmd::Theme("adwaita"), true, on("adwaita")));
+        // i18n: View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+        items.push(Radio("Breeze", Cmd::Theme("breeze"), true, on("breeze")));
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
                 items.push(Sep);
@@ -5291,7 +5309,7 @@ impl App {
         let mut branch =
             |label, open: bool, icon, badge, view: View, b: Branch, child: fn(Category) -> View| {
                 rows.push((
-                    row(0, label, Some(open), IconKey::Silk(icon), badge, Some(view)),
+                    row(0, label, Some(open), icon, badge, Some(view)),
                     Some(view),
                     b,
                 ));
@@ -5317,7 +5335,7 @@ impl App {
         branch(
             "All Downloads",
             self.all_open,
-            "folder",
+            IconKey::Themed("cat-all", "folder"),
             None,
             View::All,
             Branch::All,
@@ -5327,7 +5345,7 @@ impl App {
             // i18n: adjective: the downloads that are not complete yet
             "Unfinished",
             self.unfinished_open,
-            "folder_go",
+            IconKey::Themed("cat-unfinished", "folder_go"),
             None,
             View::Unfinished(None),
             Branch::Unfinished,
@@ -5337,7 +5355,7 @@ impl App {
             // i18n: adjective: the downloads that are complete
             "Finished",
             self.finished_open,
-            "folder",
+            IconKey::Themed("cat-finished", "folder"),
             Some("tick"),
             View::Finished(None),
             Branch::Finished,
@@ -5350,7 +5368,7 @@ impl App {
                 // i18n: plural noun: the download queues
                 "Queues",
                 Some(self.queues_open),
-                IconKey::Silk("folder"),
+                IconKey::Themed("cat-queues", "folder"),
                 Some("page_white_stack"),
                 None,
             ),
@@ -5394,6 +5412,78 @@ impl App {
         self.popup = Some((kind, at, self.popup_serial));
     }
 
+    /// The main window's title bar where the theme draws its own (Windows only: elsewhere the
+    /// window manager owns the title bar): the frame is switched to ours or back as the theme
+    /// changes, the bar drawn at the top of `full`; returns what is left for the layout.
+    fn drawn_caption(&mut self, ui: &mut Ui, full: egui::Rect) -> egui::Rect {
+        #[cfg(windows)]
+        {
+            use crate::winui::caption::{self, CAPTION_H, CaptionButton};
+            let want =
+                crate::theme::current().controls.caption != crate::palette::CaptionLook::System;
+            if self.drawn_frame != Some(want)
+                && let Some(h) = crate::win32::drawn_frame(crate::MAIN_TITLE, want)
+            {
+                self.drawn_frame = Some(want);
+                self.main_hwnd = Some(h);
+                ui.ctx().request_repaint();
+            }
+            if !want || self.drawn_frame != Some(true) {
+                return full;
+            }
+            let rect = egui::Rect::from_min_size(full.min, egui::vec2(full.width(), CAPTION_H));
+            if let Some(h) = self.main_hwnd {
+                let m = crate::win32::max_button_state(h);
+                caption::frame_maximize(m.hot, m.pressed);
+            }
+            let buttons = [
+                (CaptionButton::Close, true),
+                (CaptionButton::Maximize, true),
+                (CaptionButton::Minimize, true),
+            ];
+            let bar = caption::title_bar(ui, rect, crate::MAIN_TITLE, &buttons);
+            if let Some(h) = self.main_hwnd {
+                let ppp = ui.ctx().pixels_per_point();
+                let px = |r: egui::Rect| {
+                    let (a, b) = ((r.min - full.min) * ppp, (r.max - full.min) * ppp);
+                    [
+                        a.x.round() as i32,
+                        a.y.round() as i32,
+                        b.x.round() as i32,
+                        b.y.round() as i32,
+                    ]
+                };
+                crate::win32::set_caption_hits(
+                    h,
+                    crate::win32::CaptionHits {
+                        strip_h: (CAPTION_H * ppp).round() as i32,
+                        icon: px(bar.icon),
+                        buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
+                        max_button: Some(1),
+                    },
+                );
+            }
+            let ctx = ui.ctx();
+            match bar.pressed {
+                Some(CaptionButton::Close) => ctx.send_viewport_cmd(egui::ViewportCommand::Close),
+                Some(CaptionButton::Minimize) => {
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true))
+                }
+                Some(CaptionButton::Maximize) => {
+                    let max = ctx.input(|i| i.viewport().maximized) == Some(true);
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(!max));
+                }
+                _ => {}
+            }
+            egui::Rect::from_min_max(egui::pos2(full.min.x, full.min.y + CAPTION_H), full.max)
+        }
+        #[cfg(not(windows))]
+        {
+            let _ = ui;
+            full
+        }
+    }
+
     fn toggle(&mut self, b: Branch) {
         match b {
             Branch::All => self.all_open = !self.all_open,
@@ -5407,11 +5497,14 @@ impl App {
     fn paint(&mut self, ui: &mut Ui) {
         let ctx = ui.ctx().clone();
         let full = ui.max_rect();
+        // The client area, laid out from the right in a right-to-left interface (winui).
+        let _surface = winui::Surface::enter(full.min.x, full.max.x);
+        // A style theme's title bar, drawn above the layout (Windows; #45), mirrored right to
+        // left as the progress window's.
+        let full = self.drawn_caption(ui, full);
         let o = full.min;
         let (w, h) = (full.width(), full.height());
         let mut chosen: Option<(Cmd, Option<u64>)> = None;
-        // The client area, laid out from the right in a right-to-left interface (winui).
-        let _surface = winui::Surface::enter(o.x, o.x + w);
 
         // The menu bar from the keyboard: F10 or Alt pressed alone opens its first menu, Alt and a
         // menu's underlined letter that menu (Windows and Linux); on macOS, whose apps have no
