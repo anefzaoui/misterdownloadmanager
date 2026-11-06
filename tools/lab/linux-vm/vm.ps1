@@ -159,9 +159,13 @@ switch ($Action) {
             Invoke-Guest "mkdir -p ~/lab/bin && rm -rf ~/lab/bin/$label" -On $to
             & $vbox guestcontrol $to copyto @auth --recursive --target-directory "/home/$user/lab/bin/" (Join-Path $tmp $label)
             if ($LASTEXITCODE) { throw "copy to $to failed ($LASTEXITCODE)" }
-            # The guest scripts too, so the clone runs the same harnesses as the lab.
-            $files = Get-ChildItem $PSScriptRoot -File | Where-Object { $_.Extension -in '.sh', '.mjs', '.py' -and $_.Name -ne 'shot-host.sh' } | ForEach-Object FullName
-            & $vbox guestcontrol $to copyto @auth --target-directory /home/$user/lab/ @files
+            # The guest scripts too, so the clone runs the same harnesses as the lab: copied beside
+            # and renamed into place, since bash reads a running script as it goes (a build.sh
+            # overwritten mid-build broke at its next line).
+            $files = Get-ChildItem $PSScriptRoot -File | Where-Object { $_.Extension -in '.sh', '.mjs', '.py' -and $_.Name -notlike '*-host.sh' } | ForEach-Object FullName
+            Invoke-Guest 'rm -rf ~/lab/.incoming && mkdir -p ~/lab/.incoming' -On $to
+            & $vbox guestcontrol $to copyto @auth --target-directory /home/$user/lab/.incoming/ @files
+            Invoke-Guest 'mv -f ~/lab/.incoming/* ~/lab/ && rmdir ~/lab/.incoming' -On $to
             # The copy keeps no file modes: the programs made runnable again.
             Invoke-Guest "chmod +x ~/lab/bin/$label/* && ls -l ~/lab/bin/$label" -On $to
         } finally {
