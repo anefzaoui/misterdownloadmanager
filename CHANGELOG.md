@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Torrents through the chosen network adapter on Windows**
+  ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
+  Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.
+  Every torrent connection goes out from the adapter's address, with the same kill switch as
+  downloads: peers, trackers, the DHT and the listening port. When the adapter disconnects,
+  torrents stop, nothing goes out another way, and they start again when it is back.
 - **Windows: draw with Direct3D** ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89)).
   **View → Draw with** chooses between OpenGL, as before and still the default, and Direct3D 12,
   from the next start. Direct3D may avoid the stalls some graphics drivers' OpenGL has
@@ -256,6 +262,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   theme, unchanged pixel for pixel. Theme files (TOML or JSON in the data folder's `themes`
   folder) can already change any role; choosing one in the app, more built-in themes, pywal and
   Base16 come next.
+- **Translators: a reviewed translation is never replaced by machine translation.** A row whose
+  `#, machine` line a person deleted is kept by `tools/i18n/translate.py` in every case (`--redo`
+  included; a check it fails is printed for the person to decide), and CI fails a pull request
+  that drops such a row or marks it `#, machine` again (`tools/i18n/reviewed_guard.py`). The first
+  reviewed catalog is Italian ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150)).
 - **Developers: two engine tests no longer fail now and then**
   ([#123](https://github.com/anefzaoui/misterdownloadmanager/issues/123)): the pause-and-resume
   and event-log tests no longer depend on how fast the machine is. The lab server can hold a
@@ -326,6 +337,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A server without ranges no longer sends the file twice**
+  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)): when the extra
+  connections' answers came late (a busy computer), the download could finish and then start over
+  on one connection, fetching the whole file again. MDM now stops its other connections once every
+  byte is in, and a server that never said it takes ranges is known for one at its first full
+  answer (a CDN that says it does and misses a range now and then still gets several connections).
+- **Screen readers reach every row of a list, not only those in view**
+  ([#111](https://github.com/anefzaoui/misterdownloadmanager/issues/111)): a list's rows out of
+  view (the last qualities of Download video, a long playlist, the downloads) are there too,
+  named, with their place ("12 of 40"), and can be scrolled into view or selected. A list of
+  thousands offers 300 rows around the view, so it stays as fast.
 - **Less memory in the notification area, also after Minimize**
   ([#72](https://github.com/anefzaoui/misterdownloadmanager/issues/72)): a window minimized to the
   notification area (on by default) now gives its memory back too, as a closed one did; and both
@@ -468,8 +490,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 - Bangla shows Bangladesh's flag instead of India's, in the language picker, on the website and
   in the README ([#27](https://github.com/anefzaoui/misterdownloadmanager/issues/27)).
 - MDM closed with an internal error when a window opened while the main window was minimized
-  or hidden, for example Download File Info for a browser download
-  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22)). The cause was in egui,
+  or hidden in the notification area, for example Download File Info for a download from the
+  browser, or Add torrent for a magnet link opened in the browser
+  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22),
+  [#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145)). The cause was in egui,
   the toolkit MDM is drawn with ([emilk/egui#8470](https://github.com/emilk/egui/issues/8470)),
   and is fixed in MDM's copy of it.
 - **View → Dark Mode support** did nothing on Linux: MDM asked the window system for the

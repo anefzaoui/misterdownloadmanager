@@ -1400,7 +1400,7 @@ impl OptionsDialog {
             .as_ref()
             .is_none_or(|(at, _)| at.elapsed() >= std::time::Duration::from_secs(2));
         if stale {
-            self.adapters = Some((std::time::Instant::now(), mdm_engine::net::adapters()));
+            self.adapters = Some((std::time::Instant::now(), crate::netwatch::adapters()));
         }
         let adapters = self
             .adapters

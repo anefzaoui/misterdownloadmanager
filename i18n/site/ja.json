@@ -166,6 +166,10 @@
    "source": "Contribute",
    "text": "貢献する"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最終更新日 2026-11-06 · アプリ、ブラウザ拡張機能、misterdownloadmanager.com に適用されます"
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager に関する回答：無料か、安全か、IDMとの比較、ブラウザー、ビデオ、トレント、速度、MacとLinuxなど。"
@@ -698,10 +702,6 @@
    "source": "Torrents and magnet links",
    "text": "トレントとマグネットリンク"
   },
-  "1192c6aacd81c9e9": {
-   "source": "Last updated 2026-11-05",
-   "text": "最終更新日：2026年11月5日"
-  },
   "11c2e6a758e059a3": {
    "source": "Space",
    "text": "Space"
@@ -861,10 +861,6 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "はい。MDMはIDMでおなじみのコマンドラインスイッチに対応しており、ターミナルからダウンロードするためのmisterdownloadmanager-cliが付属しています。また、トークンで保護されたローカルの自動化APIも備えており…"
-  },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "<x1/>行が上にある行は機械翻訳されたものです。確認（必要に応じて修正）したら、その<x2/>行を削除してください。"
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1034,6 +1030,10 @@
    "source": "Link grabber and archives",
    "text": "リンクグラバーとアーカイブ"
   },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "<g1>オプション → プロキシ / SOCKS → ネットワークアダプター</g1>は、MDMの接続を1つのアダプター（通常はVPNのもの）に保持します（<g2>オプション</g2>）。トレントエンジンは、すべてのソケットをそれにバインドします。ピア（TCP、およびSOCKSプロキシ経由）、HTTPおよびUDPトラッカー、DHT、およびリッスンポートです。LinuxとmacOSではアダプター自体をバインドします。Windowsではアダプターのアドレス（IPv4アドレスがある場合はそれ）をバインドし、Windowsはソースアドレスを持つアダプターを介してのみパケットを送信します。UPnPとローカルピア検出は、アダプターを介するのではなくローカルネットワークと通信するため、その場合はオフになります。"
+  },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>ずっと無料です。</g1> 期限切れの試用版も、ライセンスキーも、広告もありません。GNU GPLにより、無料が保証されています。"
@@ -1045,10 +1045,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 秒</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windowsでは、トレントエンジンはまだアダプターにバインドできません。そのため、アダプターが選択されている間はトレントが開始されず（「Windowsでは、選択されたネットワークアダプター経由でトレントを開始できません」）、アダプターを迂回することもありません。トラッカー名は引き続きシステムのDNSによって検索されます。"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2505,6 +2501,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "最初に MDM を起動する必要はありません。ブラウザーがダウンロードを渡し、MDM が実行されていない場合、ヘルパーが MDM を起動し、ダウンロードを渡します。"
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "これはキルスイッチとして機能します。アダプターが切断されると、実行中のトレントは「…は接続されていません。接続が戻ると再開します」というメッセージとともに停止し、接続が戻るとアダプターを介して再び開始します。MDMが（1秒以内に）気づくまで、エンジンのソケットはまだ失われたアドレスにバインドされているため、他の方法で何も送信されることはありません。アダプターが接続されていない間に追加されたトレントは開始せず、その理由が表示されます。トラッカー名は引き続きシステムのDNSによって検索されます。"
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -4466,10 +4466,6 @@
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "すべてのソースは公開されており、すべてのリリースはGitHubのサーバーでそこからビルドされています。アドウェア、スパイウェア、バンドルされたオファーはありません。ビデオ用にダウンロードされるヘルパーは、実行前に検証されます。<g1>詳細</g1>"
   },
-  "725638a5e448140e": {
-   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最終更新日 2026-11-05 · アプリ、ブラウザ拡張機能、misterdownloadmanager.com に適用されます"
-  },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "Google ドライブのリンクは、<g1>共有 → リンクをコピー</g1>で取得したものをそのまま貼り付けてください。"
@@ -4909,10 +4905,6 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 以降が必要です。"
-  },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>オプション → プロキシ / SOCKS → ネットワークアダプター</g1>は、MDMの接続を1つのアダプター（通常はVPNのもの）に保持します（<g2>オプション</g2>）。LinuxとmacOSでは、トレントエンジンはすべてのソケットをそれにバインドします。ピア、トラッカー、DHT、およびそのリスニングポートです。UPnPとローカルピア検出は、アダプター経由ではなくローカルネットワークと通信するため、その場合はオフになります。アダプターがなくなるとエンジンは停止し、戻るとアダプター経由で再び開始します。"
   },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
@@ -5597,6 +5589,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB を 1.0 秒で</g1> <g2>IDM: 5.5 秒</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>ネットワークアダプター</g1> — デフォルトは<g2>任意 (システムが選択)</g2>です。アダプター（通常はVPNのもの）を選択すると、MDMが開くすべての接続がそのアダプターを経由するか、まったく接続されなくなります。これには、ダウンロード、FTP、トレント、選択したDNS、MDM自身のダウンロード、更新チェックが含まれます。これはキルスイッチとして機能します。アダプターが切断されたり、VPNがオフになったりすると、通常の接続からは何も送信されません。実行中のダウンロードは「…が接続されていません」と表示されて停止し、アダプターが戻ると再開します。リストの下の行には、アダプターのアドレス、または接続されていないことが表示されます。"
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -6718,10 +6714,6 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>カテゴリ</g1> — ファイルの種類（圧縮、ドキュメント、音楽、プログラム、ビデオ、または一般）から選択されます。各カテゴリには独自のフォルダがあります。その横の<g2>+</g2>で新しいカテゴリを作成します。"
   },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>ネットワークアダプター</g1> — <g2>任意 (システムが選択)</g2>がデフォルトです。アダプター（通常はVPNのもの）を選択すると、MDMが開くすべての接続がそれを通して行われるか、まったく行われません。これにはダウンロード、FTP、選択したDNS、MDM自身のダウンロード、更新チェックが含まれます。これはキルスイッチとして機能します。アダプターが切断されたり、VPNがオフになったりすると、通常の接続からは何も送信されません。実行中のダウンロードは「…が接続されていません」と表示されて停止し、アダプターが戻ると再開します。リストの下の行には、アダプターのアドレス、または接続されていないことが表示されます。"
-  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "<g1>検索</g1>をクリックします。最初の一致が選択されます。"
@@ -7021,6 +7013,10 @@
   "b4ca8797bf90ea72": {
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>MDM 自身のダウンロードに独自のダウンローダーを使用</g1>: yt-dlp、ffmpeg、MDM の更新、クラッシュレポートのシンボルが、複数の接続でダウンロードされ、接続が切れても再開し、プロキシ設定を通過するようになりました。各ファイルは使用前に発行元の署名付きチェックサムと照合してチェックされます。"
+  },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "<x1/>の線がある行は機械翻訳されました。内容を確認し（必要であれば修正し）たら、その<x2/>の線を削除してください。それ以降、その行はあなたのものとなり、機械翻訳によって置き換えられることはありません。"
   },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
@@ -7998,6 +7994,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "実行中のダウンロードにはそれぞれ進行状況ウィンドウがあります。ダウンロードが開始されると開きます。再度開くには、リスト内のダウンロードをダブルクリックします。"
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "最終更新日 2026-11-06"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "トレントからのファイルは、ブラウザのダウンロードと同様に、<g1>インターネットからダウンロードされた</g1>ものとしてマークされます。Windows SmartScreenは、プログラムが最初に実行される前にチェックし、Officeはドキュメントを保護されたビューで開きます。Macでは、Gatekeeperがアプリをチェックします。"
@@ -8225,6 +8225,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "エンドツーエンド、中央値 (IQR)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "<x1/>の行がない行は、それ以降あなたのものです。<x2/>はそれを機械翻訳に二度と送信せず、CI (<x3/>) は、その行を削除したり、再度<x4/>とマークしたりするプルリクエストを失敗させます。"
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
