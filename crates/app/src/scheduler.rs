@@ -1335,7 +1335,7 @@ fn support_reason(s: &crate::wake::Support) -> Option<&'static str> {
         }
         Support::NeedsAdmin => {
             // i18n: the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
-            crate::i18n::mark("Only an administrator can let programs wake this computer")
+            crate::i18n::mark("Only an administrator can allow this")
         }
         Support::NoAlarm => {
             // i18n: the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
