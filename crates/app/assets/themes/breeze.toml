@@ -72,8 +72,9 @@ check = "#fcfcfc"
 "check.on.hot" = "#3daee9"
 "check.on.pressed" = "#2e94c9"
 "check.mark" = "#232629"
-# The keyboard focus: a frame in the accent.
-"focus.ring" = "#3daee9"
+# The keyboard focus: a frame in the accent, a shade deeper on the light window so keyboard
+# users see it (3:1, WCAG non-text contrast; KDE's own #3daee9 is 2.2:1 there).
+"focus.ring" = "#1891d1"
 # Toolbar buttons: flat, the accent's edge under the pointer, tinted with it pressed.
 "toolbar.hot" = "#e3f2fa"
 "toolbar.hot.faint" = "#f0f8fc"

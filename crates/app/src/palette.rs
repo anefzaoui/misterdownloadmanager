@@ -741,6 +741,35 @@ mod tests {
         }
     }
 
+    /// The style themes' keyboard focus ring is seen (WCAG 2.1 non-text contrast, 3:1) on the
+    /// window and on the boxes, light and dark, its transparency included. Classic keeps IDM's
+    /// dotted grey rectangle.
+    #[test]
+    fn style_themes_focus_rings_are_seen() {
+        use crate::derive::contrast;
+        let over = |fg: Color32, bg: Color32| {
+            let a = fg.a() as f32 / 255.0;
+            // Color32 is premultiplied: its channels already carry the alpha.
+            let mix = |f: u8, b: u8| (f as f32 + b as f32 * (1.0 - a)).round().min(255.0) as u8;
+            Color32::from_rgb(
+                mix(fg.r(), bg.r()),
+                mix(fg.g(), bg.g()),
+                mix(fg.b(), bg.b()),
+            )
+        };
+        for t in builtins() {
+            if t.id == "classic" || t.id == "high-contrast" {
+                continue;
+            }
+            for p in [&t.light, &t.dark] {
+                for bg in [p.window, p.field] {
+                    let r = contrast(over(p.focus_ring, bg), bg);
+                    assert!(r >= 3.0, "{} {}: focus ring {r:.2} on {bg:?}", t.id, p.dark);
+                }
+            }
+        }
+    }
+
     /// A theme shipped as a file reads without a warning.
     #[test]
     fn built_in_theme_files_read_cleanly() {
