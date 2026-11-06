@@ -272,6 +272,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: a Linux test machine, scripted** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
+  `tools/lab/linux-vm/` sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host
+  (`vm.ps1`: hardware, headless start, linked clones; `setup.sh`: packages, Rust, Node, the
+  browsers, UI automation, an unlocked keyring), builds any branch or pull request there with a
+  quick test profile (`build.sh`), and checks pull requests on it: windows shot and compared
+  pixel by pixel (`shots.sh`, `shot-host.sh`, `pixdiff.py`), HLS and DASH hand-overs from the Snap
+  Firefox and Google Chrome (`streams.mjs`, `streams-chrome.mjs`), the extension's proxy switch
+  (`proxy-optin.mjs`), hand-overs and the Scheduler while minimized, torrents without a network,
+  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows.
 - **Developers: the engine tests no longer fail on a busy computer**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
   depended on timing: a refused connection coming back, the learned connection limit, and a dead

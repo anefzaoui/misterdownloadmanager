@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ A Linux test machine for every change, scripted: an Ubuntu 24.04 desktop that builds each
+  branch and drives MDM, Firefox and Chrome there (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
   the button over the video, the right-click menu and the media list, read only when asked
   ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
