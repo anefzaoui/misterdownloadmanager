@@ -75,13 +75,28 @@ pub fn wake_for(start: NaiveDateTime, now: NaiveDateTime) -> NaiveDateTime {
     if early > now { early } else { start }
 }
 
-/// The earliest wake the queues want after `now`: (when, local time; the queue's name).
-pub fn next_wake(queues: &[Queue], now: NaiveDateTime) -> Option<(NaiveDateTime, String)> {
+/// A wake the queues want: when (local time), for which start, of which queue.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Wake {
+    pub at: NaiveDateTime,
+    pub start: NaiveDateTime,
+    pub queue: String,
+}
+
+/// The earliest wake the queues want after `now`.
+pub fn next_wake(queues: &[Queue], now: NaiveDateTime) -> Option<Wake> {
     queues
         .iter()
         .filter(|q| q.schedule.wake)
-        .filter_map(|q| Some((wake_for(next_start(&q.schedule, now)?, now), q.name.clone())))
-        .min_by_key(|(at, _)| *at)
+        .filter_map(|q| {
+            let start = next_start(&q.schedule, now)?;
+            Some(Wake {
+                at: wake_for(start, now),
+                start,
+                queue: q.name.clone(),
+            })
+        })
+        .min_by_key(|w| w.at)
 }
 
 /// A local time as UTC. A time the clocks skip (summer time) is taken an hour later, as the
@@ -156,8 +171,8 @@ fn ask_support() -> Support {
 /// What the app keeps: the wake asked of the system, and whether it keeps the computer awake.
 #[derive(Default)]
 pub struct Waker {
-    /// The wake last asked for: (UTC, the queue).
-    wanted: Option<(DateTime<Utc>, String)>,
+    /// The wake last asked for: (UTC, the queue, the start it is for).
+    wanted: Option<(DateTime<Utc>, String, NaiveDateTime)>,
     /// Whether the system has a wake of ours now.
     armed: bool,
     /// Why the last attempt failed (shown in the Scheduler), if it did.
@@ -176,11 +191,20 @@ impl Waker {
     /// it asks the system only when the wake changes, and once a minute).
     pub fn sync(&mut self, queues: &[Queue]) {
         let now = Local::now().naive_local();
-        let want = next_wake(queues, now).and_then(|(at, q)| Some((to_utc(at)?, q)));
+        let mut want = next_wake(queues, now).and_then(|w| Some((to_utc(w.at)?, w.queue, w.start)));
+        // A start keeps the wake set for it: in the minute before the start, the wake worked out
+        // now would be the start itself, moving a timer that is just going off.
+        if let (Some(w), Some(set)) = (&mut want, &self.wanted)
+            && (&w.1, w.2) == (&set.1, set.2)
+        {
+            *w = set.clone();
+        }
         let stale = self
             .checked
             .is_none_or(|t| t.elapsed() > std::time::Duration::from_secs(60));
-        if want == self.wanted && !stale {
+        // Once its time has come, a wake isn't set again (a Linux alarm in the past is refused).
+        let passed = want.as_ref().is_some_and(|w| w.0 <= Utc::now());
+        if want == self.wanted && (!stale || passed) {
             return;
         }
         self.checked = Some(std::time::Instant::now());
@@ -198,11 +222,11 @@ impl Waker {
             self.error = None;
             return;
         }
-        match arm(want.as_ref().map(|(at, q)| (*at, q.as_str()))) {
+        match arm(want.as_ref().map(|(at, q, _)| (*at, q.as_str()))) {
             Ok(()) => {
                 if changed {
                     match &want {
-                        Some((at, q)) => tracing::info!(
+                        Some((at, q, _)) => tracing::info!(
                             "wake: the computer wakes at {} UTC for the queue {q:?}",
                             at.format("%Y-%m-%d %H:%M:%S")
                         ),
@@ -381,7 +405,11 @@ mod tests {
         ];
         assert_eq!(
             next_wake(&queues, now),
-            Some((at(2026, 11, 6, 18, 59, 0), "evening".to_owned()))
+            Some(Wake {
+                at: at(2026, 11, 6, 18, 59, 0),
+                start: at(2026, 11, 6, 19, 0, 0),
+                queue: "evening".to_owned()
+            })
         );
         assert_eq!(next_wake(&queues[..1], now), None);
     }
