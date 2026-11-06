@@ -1636,6 +1636,8 @@ impl App {
             "about" => self.run(Cmd::About, None, ctx),
             // The main window into the tray, as closing it does (tests and #72's measurements).
             "tray" => self.hide_to_tray(ctx),
+            // The main window minimized, not to the tray (tests of #162).
+            "minimized" => ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true)),
             // Off-screen test copies: the interface zoomed (`zoom:1.5`) while running, as a
             // display's scale changing does to every window (#89's checks).
             "zoom" if crate::offscreen() => {
@@ -7013,6 +7015,27 @@ impl App {
 }
 
 impl eframe::App for App {
+    /// What comes in from outside (a second launch, the browser's native host, the automation
+    /// API) is handled here, which runs at every frame: `ui` doesn't run while the main window
+    /// is minimized, and a magnet or a download handed over then waited until it was restored
+    /// (#162). A command that opens a window gets the UI pass that creates it, minimized or not
+    /// (no window is raised or focused for it beyond what the command itself does).
+    fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        let mut handled = false;
+        while let Ok(inc) = self.commands.try_recv() {
+            handled = true;
+            match inc.reply {
+                Some(reply) => {
+                    let _ = reply.send(self.answer(&inc.cmd));
+                }
+                None => self.handle_command(inc.cmd, ctx),
+            }
+        }
+        if handled {
+            ctx.request_ui_pass(egui::ViewportId::ROOT);
+        }
+    }
+
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
         // The freeze watchdog times every frame (crash.rs).
         crate::crash::frame_begin();
@@ -7033,14 +7056,7 @@ impl eframe::App for App {
         self.network_adapter_tick(&ctx);
         self.debrid_tick();
         dialogs::publish_main_rect(&ctx);
-        while let Ok(inc) = self.commands.try_recv() {
-            match inc.reply {
-                Some(reply) => {
-                    let _ = reply.send(self.answer(&inc.cmd));
-                }
-                None => self.handle_command(inc.cmd, &ctx),
-            }
-        }
+        // Incoming commands: `logic`, just before.
         self.poll(&ctx);
         // What failed in any window, told here (dialogs::tell).
         if let Some((title, text)) = dialogs::told().pop() {
