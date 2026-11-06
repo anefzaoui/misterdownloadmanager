@@ -120,7 +120,9 @@ img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 3px solid var(--link); outline-offset: 2px; border-radius: 4px; }
-h1, h2, h3, h4 { margin: 0; font-weight: 800; font-stretch: 78%; line-height: 1.05; letter-spacing: -.01em; text-wrap: balance; }
+/* A word wider than the line (Russian's "конфиденциальности" at a phone's page title) breaks rather
+   than push the page wide. */
+h1, h2, h3, h4 { margin: 0; font-weight: 800; font-stretch: 78%; line-height: 1.05; letter-spacing: -.01em; text-wrap: balance; overflow-wrap: break-word; }
 p { margin: 0; }
 p, li, dd, figcaption { text-wrap: pretty; }
 code, kbd, samp, pre { font-family: var(--mono); font-size: .88em; }
@@ -150,7 +152,9 @@ dt, .field-name, .carrier-row h3, .doc-nav p, th[scope="col"] {
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 9px;
   height: 46px; padding: 0 20px; border: 0; border-radius: 8px;
-  font: 700 16px/1 var(--font); font-stretch: 92%; text-decoration: none; white-space: nowrap; cursor: pointer;
+  /* Its words wrap (two lines fit its height) when a long language's label is wider than the
+     space it has, rather than run out of the label or the page. */
+  font: 700 16px/1 var(--font); font-stretch: 92%; text-align: center; text-decoration: none; cursor: pointer;
   transition: background-color .15s ease, transform .15s cubic-bezier(.16, 1, .3, 1);
 }
 .btn:active { transform: translateY(1px); }
@@ -197,15 +201,25 @@ dt, .field-name, .carrier-row h3, .doc-nav p, th[scope="col"] {
 .brand { display: inline-flex; align-items: center; gap: 10px; flex: none; text-decoration: none; }
 .brand span { font-size: 18px; font-weight: 800; font-stretch: 80%; letter-spacing: -.005em; }
 .nav { display: flex; gap: 4px; }
-.nav a { padding: 8px 10px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none; }
+.nav a { padding: 8px 10px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .nav a:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
 .nav a[aria-current] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; }
 .top-actions { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; }
-/* Sponsor, a heart beside GitHub, in the board's ink (never green: green is Download's); only
-   where the header has room for it beside the full nav in every language (the longest, pt, needs
-   1440px; the menu has it under 1100px). */
+/* Sponsor, a heart beside GitHub, in the board's ink (never green: green is Download's); from
+   1440px, where its row has room for it (the menu has it under 1100px). */
 @media (max-width: 1439px) { .top-sponsor { display: none; } }
-.top-dl { height: 40px; padding: 0 16px; font-size: 15px; margin-inline-start: 6px; }
+/* What the header gives up when its row doesn't fit this language (build.py's HEADER_FIT, #168),
+   one step at a time: the heart, some spacing, the links for the menu, the language's name. */
+.top.fit-sponsor .top-sponsor { display: none; }
+.top.fit-tight .top-inner { gap: 16px; }
+.top.fit-tight .nav { gap: 0; }
+.top.fit-tight .nav a { padding-inline: 7px; }
+.top.fit-menu .nav { display: none; }
+.top.fit-menu .menu { display: block; }
+.top.fit-flag .langs-cur { display: none; }
+.top.fit-flag .langs-btn { padding: 0 10px; }
+.top.fit-flag .top-dl { margin-inline-start: 0; }
+.top-dl { height: 40px; padding: 0 16px; font-size: 15px; margin-inline-start: 6px; white-space: nowrap; }
 .menu { display: none; position: relative; }
 .menu-panel {
   position: absolute; inset-inline-end: 0; top: calc(100% + 10px); z-index: 60; display: grid; min-width: 240px;
@@ -363,14 +377,21 @@ main > .sec:last-child { padding-bottom: var(--gap-section); }
 .lane-mark { flex: none; display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 4px; background: var(--paper-2); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink-3); font-size: 9.5px; font-weight: 800; font-stretch: 75%; letter-spacing: .02em; }
 .lane-time { grid-area: time; }
 /* One rule on the axis both lanes share: dashed while the app starts, solid while the file comes in. */
-.lane-track { grid-area: track; position: relative; height: 46px; direction: ltr; }
+.lane-track { grid-area: track; position: relative; height: 46px; direction: ltr; container-type: inline-size; }
 .lane-track::before { content: ""; position: absolute; inset-inline: 0; bottom: 9px; height: 1px; background: var(--line); }
 .seg { position: absolute; bottom: 6px; height: 7px; width: 0; }
 .seg.wait { background: repeating-linear-gradient(90deg, var(--ink-3) 0 6px, transparent 6px 10px); height: 3px; bottom: 8px; }
 .seg.run, .seg.end { background: var(--ink); }
 .lane.idm .seg.run, .lane.idm .seg.end { background: var(--ink-2); }
 .lane.done .seg.run, .lane.done .seg.end { background: var(--go); }
-.lane-stamp { position: absolute; top: 0; transform: translateX(-100%) rotate(-4deg); transform-origin: right bottom; opacity: 0; font-size: 11px; padding: 2px 7px; transition: opacity .2s ease; }
+/* The stamp lands where its lane finished (--at, 0 to 1 of the axis; main.js), its end on the
+   finish, but never starts before the track does: a lane done in 1% of the axis, or a stamp still
+   waiting at the start, would stick out of the sheet, and right to left past the page (#169). */
+.lane-stamp {
+  position: absolute; top: 0; left: calc(var(--at, 1) * 100%);
+  transform: translateX(max(-100%, calc(var(--at, 1) * -100cqw))) rotate(-4deg); transform-origin: right bottom;
+  opacity: 0; font-size: 11px; padding: 2px 7px; transition: opacity .2s ease;
+}
 .lane.done .lane-stamp { opacity: 1; animation: thunk .32s cubic-bezier(.16, 1, .3, 1); }
 @keyframes thunk { from { opacity: 0; scale: 1.6; } }
 .lane-events { grid-area: events; display: flex; flex-wrap: wrap; gap: 4px 22px; margin: 0; padding: 0; list-style: none; font-size: 13.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; min-height: 1.4em; }
@@ -569,7 +590,9 @@ tbody th { font-weight: 650; }
 .doc .prose { padding: clamp(24px, 4vw, 52px) clamp(20px, 4vw, 56px); }
 
 /* Reading: the help, the FAQ, the news and the legal pages. */
-.prose { min-width: 0; font-size: 17px; line-height: 1.7; color: var(--ink); }
+/* A word longer than the column (a link, a path, a command) breaks rather than push the page wide
+   (#169). */
+.prose { min-width: 0; font-size: 17px; line-height: 1.7; color: var(--ink); overflow-wrap: break-word; }
 .prose > * + * { margin-top: 1.05em; }
 .prose p, .prose li { max-width: 72ch; }
 .prose h2 { margin-top: 2.2em; font-size: clamp(26px, 2.6vw, 32px); font-stretch: 78%; }
@@ -581,7 +604,7 @@ tbody th { font-weight: 650; }
 .prose li + li { margin-top: .35em; }
 .prose li::marker { color: var(--ink-3); }
 .prose b, .prose strong { font-weight: 700; }
-.prose code { padding: .12em .38em; border-radius: 4px; background: var(--paper-2); box-shadow: inset 0 0 0 1px var(--line); white-space: nowrap; }
+.prose code { padding: .12em .38em; border-radius: 4px; background: var(--paper-2); box-shadow: inset 0 0 0 1px var(--line); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .prose pre { padding: 16px 18px; overflow-x: auto; border-radius: 8px; background: var(--paper-2); box-shadow: inset 0 0 0 1px var(--line); line-height: 1.55; direction: ltr; text-align: left; }
 .prose pre code { padding: 0; background: none; box-shadow: none; white-space: pre; }
 .prose kbd { display: inline-block; padding: .05em .45em; border-radius: 4px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--ink-3), inset 0 -2px 0 var(--ink-3); font-size: .82em; line-height: 1.5; }
@@ -759,7 +782,8 @@ html.lb-on { overflow: hidden; }
     order: 2; position: relative; inset: auto; top: auto; width: min(100%, 520px); margin: -48px auto 0; align-self: center;
     transform: rotate(-1.2deg);
   }
-  [dir="rtl"] .parcel .waybill { transform: rotate(1.2deg); }
+  /* The desktop's right-to-left width (max 340px) would hold it wider than a phone (#169). */
+  [dir="rtl"] .parcel .waybill { transform: rotate(1.2deg); width: min(100%, 520px); }
   .parcel-window figcaption { text-align: start; }
   .tour { grid-template-columns: 1fr; }
   .customs-inner, .facts-inner, .sender-inner, .closing-inner { grid-template-columns: 1fr; }
@@ -987,8 +1011,10 @@ html.lb-on { overflow: hidden; }
   /* The split label: the field over its two values. */
   .vs, .vs tbody { display: block; table-layout: auto; }
   .vs thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .vs tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+  /* Two equal halves whatever the words; a word longer than its half is hyphenated, or broken. */
+  .vs tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
   .vs :is(th, td), .vs tbody th { display: block; width: auto; padding: 0; border: 0; text-align: start; background: none; }
+  .vs td { hyphens: auto; overflow-wrap: anywhere; }
   .vs tbody th { order: -1; grid-column: 1 / -1; padding-bottom: 6px; color: var(--ink); }
   .vs td::before { content: attr(data-label); display: block; margin-bottom: 2px; font-size: 11px; font-weight: 750; font-stretch: 74%; letter-spacing: .045em; color: var(--ink-3); }
   .vs td:first-child .vs-line, .vs td:last-child .vs-line { flex-direction: row; justify-content: flex-start; }

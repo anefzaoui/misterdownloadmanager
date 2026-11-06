@@ -13,7 +13,8 @@
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
-//! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`)
+//! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`); `/hls2/*`, `/dash2/*` the same with
+//!   no `.m3u8`/`.mpd` in their addresses, served as text/plain or octet-stream (#171)
 //! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
 //!   pages, Docs exports, the sign-in page
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
@@ -315,6 +316,11 @@ impl LabServer {
             .route("/dash/manifest.mpd", get(streams::dash_manifest))
             .route("/dash/protected.mpd", get(streams::dash_protected))
             .route("/dash/{rep}/{file}", get(streams::dash_file))
+            .route("/hls2/playlist", get(streams::hls2_playlist))
+            .route("/hls2/seg", get(streams::hls2_segment))
+            .route("/hls2/config", get(streams::hls2_config))
+            .route("/dash2/manifest", get(streams::dash2_manifest))
+            .route("/dash2/{rep}/{file}", get(streams::dash_file))
             .route_layer(axum::middleware::from_fn_with_state(
                 shared.clone(),
                 log_simple,
@@ -384,9 +390,10 @@ impl LabServer {
         self.shared.log.lock().unwrap().clear();
     }
 
-    /// Resolves once every request begun so far is in the log. A response is logged when its
-    /// body is dropped, which can trail the client: after a download is stopped, the server
-    /// sees its connections close only as it next writes to them.
+    /// Resolves once every request begun so far is in the log, and has given back its
+    /// `max_conns` slot. A response is logged when its body is dropped, which can trail the
+    /// client: after a download is stopped, the server sees its connections close only as it
+    /// next writes to them.
     pub async fn settled(&self) {
         let pending = &self.shared.pending;
         loop {
@@ -397,6 +404,18 @@ impl LabServer {
                 return;
             }
             changed.await;
+        }
+    }
+
+    /// Take one of `ip`'s `max_conns` slots, as another client's response would, until the
+    /// guard is dropped: a test holds a slot for exactly as long as it needs.
+    pub fn hold_slot(&self, ip: IpAddr) -> SlotHold {
+        *self.shared.active.lock().unwrap().entry(ip).or_insert(0) += 1;
+        SlotHold {
+            _slot: ActiveSlot {
+                shared: self.shared.clone(),
+                ip,
+            },
         }
     }
 
@@ -482,6 +501,9 @@ GET /page?<any of>
                    #player3), which fetches /hls/master.m3u8, /dash/manifest.mpd or
                    /dash/protected.mpd, the first variant's and the audio's playlists and every
                    segment, then sets <body data-stream=done> once all are (or error)
+    hls2=1, dash2=1  the same for /hls2/playlist?id=lab and /dash2/manifest?id=lab (no .m3u8 or
+                   .mpd, text/plain and octet-stream, #171); each player first fetches
+                   /hls2/config?id=lab, a text/plain answer that is no manifest
     csp=strict     Content-Security-Policy: default-src 'none'; style-src 'self'; img-src 'self';
                    media-src 'self'; script-src 'self' (+ frame-src 'self' with iframe,
                    + connect-src 'self' and media-src blob: with hls or dash)
@@ -501,6 +523,12 @@ GET /dash/manifest.mpd  (application/dash+xml) the same tracks as Representation
     SegmentTemplate: /dash/{720p,360p,audio}/init.mp4 and seg1..3.m4s (video/mp4, audio/mp4)
 GET /dash/protected.mpd  the same, each AdaptationSet marked encrypted (CENC, Widevine's
     ContentProtection), as a DRM-protected stream's manifest is
+GET /hls2/playlist?id=ID  the HLS stream again with no .m3u8 anywhere, all text/plain (#171):
+    variants playlist?id=ID&track={720p,360p,audio}, segments seg?id=ID&track=T&i=0..2
+    (application/octet-stream)
+GET /dash2/manifest?id=ID  the DASH manifest as application/octet-stream, no .mpd; segments
+    /dash2/{720p,360p,audio}/init.mp4 and seg1..3.m4s
+GET /hls2/config?id=ID  {"autoplay":false,"volume":0.8} as text/plain: not a manifest
 
 GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
     drive.google.com, drive.usercontent.google.com, docs.google.com, accounts.google.com and
@@ -630,6 +658,11 @@ async fn clear_log(State(s): State<Arc<Shared>>) -> StatusCode {
 
 fn header_str(h: &HeaderMap, name: header::HeaderName) -> Option<String> {
     h.get(name).and_then(|v| v.to_str().ok()).map(str::to_owned)
+}
+
+/// A `max_conns` slot held by a test ([`LabServer::hold_slot`]), given back when dropped.
+pub struct SlotHold {
+    _slot: ActiveSlot,
 }
 
 /// Releases a client's concurrent-response slot (for `max_conns`) when dropped.
@@ -944,6 +977,7 @@ pub(crate) async fn serve(
     if f.once == Some(true) {
         let key = format!("{}?{query}", entry.path);
         if !shared.used_once.lock().unwrap().insert(key) {
+            drop(slot);
             shared.record(entry, 410, "fault:once");
             return (StatusCode::GONE, "this link was already used\n").into_response();
         }
@@ -976,6 +1010,7 @@ pub(crate) async fn serve(
             Ok(v) if v.len() == 1 => range = Some((*v[0].start(), *v[0].end() + 1)),
             Ok(_) => {}
             Err(_) => {
+                drop(slot);
                 shared.record(entry, 416, "error");
                 let mut resp = StatusCode::RANGE_NOT_SATISFIABLE.into_response();
                 resp.headers_mut().insert(
@@ -1051,7 +1086,7 @@ pub(crate) async fn serve(
         started: Instant::now(),
         sent: 0,
         dropped: false,
-        _slot: slot,
+        slot: Some(slot),
     };
     builder
         .body(Body::from_stream(transfer.into_stream()))
@@ -1184,7 +1219,8 @@ struct Transfer {
     started: Instant,
     sent: u64,
     dropped: bool,
-    _slot: ActiveSlot,
+    /// Given back before the request is logged, so `settled` means every slot is free.
+    slot: Option<ActiveSlot>,
 }
 
 impl Transfer {
@@ -1231,6 +1267,7 @@ impl Transfer {
 
 impl Drop for Transfer {
     fn drop(&mut self) {
+        self.slot.take();
         if let Some(mut entry) = self.entry.take() {
             entry.bytes_sent = self.sent;
             let outcome = if self.dropped {
