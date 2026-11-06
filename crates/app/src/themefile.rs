@@ -44,8 +44,6 @@ pub fn dir() -> Option<PathBuf> {
 }
 
 /// A theme the user can pick: a built-in, or a file in [`dir`].
-// The theme picker (#45, next) lists them.
-#[allow(dead_code)]
 #[derive(Clone, Debug, PartialEq)]
 pub struct Entry {
     pub id: String,
@@ -56,7 +54,6 @@ pub struct Entry {
 
 /// The built-in themes, then the theme files in [`dir`] (by name), each once: a file named as a
 /// built-in is skipped (the built-in keeps its id).
-#[allow(dead_code)]
 pub fn list() -> Vec<Entry> {
     let mut out: Vec<Entry> = palette::builtins()
         .iter()
@@ -73,13 +70,19 @@ pub fn list() -> Vec<Entry> {
         .flatten()
         .filter_map(|e| {
             let path = e.path();
+            // A theme in a folder of its own (`<id>/theme.toml`, with its icons beside it).
+            if path.is_dir() {
+                let file = folder_file(&path)?;
+                return Some((path.file_name()?.to_str()?.to_owned(), file));
+            }
             let id = theme_id(&path)?;
             Some((id, path))
         })
         .collect();
     files.sort();
     for (id, path) in files {
-        if out.iter().any(|e| e.id == id) {
+        // Built-ins keep their ids (Native too, which is made, not read).
+        if out.iter().any(|e| e.id == id) || id == "native" {
             continue;
         }
         // The name the file gives itself, else its file name.
@@ -95,6 +98,19 @@ pub fn list() -> Vec<Entry> {
         });
     }
     out
+}
+
+/// When the themes folder last changed (a file added, removed or renamed); None without one.
+pub fn changed() -> Option<std::time::SystemTime> {
+    std::fs::metadata(dir()?).ok()?.modified().ok()
+}
+
+/// A theme folder's file: `theme.toml` or `theme.json`.
+fn folder_file(dir: &Path) -> Option<PathBuf> {
+    ["theme.toml", "theme.json"]
+        .iter()
+        .map(|f| dir.join(f))
+        .find(|p| p.is_file())
 }
 
 /// A theme file's id: its name without `.toml` or `.json`; None for any other file.
@@ -130,14 +146,32 @@ fn load_in(folder: &Path, id: &str, depth: usize) -> Result<Loaded, String> {
     if depth > 8 {
         return Err(format!("{id}: too many themes inherit one another"));
     }
+    let own = folder.join(id);
     let path = ["toml", "json"]
         .iter()
         .map(|ext| folder.join(format!("{id}.{ext}")))
         .find(|p| p.is_file())
+        .or_else(|| folder_file(&own))
         .ok_or_else(|| format!("{id}: no such theme"))?;
     let text = std::fs::read_to_string(&path).map_err(|e| format!("{}: {e}", path.display()))?;
     let value = read_value(&path, &text)?;
-    parse(id, &value, |base| load_in(folder, base, depth + 1))
+    let mut loaded = parse(id, &value, |base| load_in(folder, base, depth + 1))?;
+    // A theme folder's own icons (`<id>/icons/16`, `24`), unless the file names a set.
+    let icons = own.join("icons");
+    if value.get("icon-set").is_none() && icons.is_dir() {
+        let mono = value
+            .get("icon-mono")
+            .and_then(Value::as_bool)
+            .unwrap_or(false);
+        if crate::themeicons::load_folder(id, &icons, mono) {
+            loaded.theme.icon_set = Some(id.to_owned().into());
+        } else {
+            loaded
+                .warnings
+                .push("icons: no icon MDM knows in the folder".into());
+        }
+    }
+    Ok(loaded)
 }
 
 /// A file's contents as one value tree: TOML, or JSON for a `.json` file.
@@ -150,6 +184,37 @@ fn read_value(path: &Path, text: &str) -> Result<Value, String> {
         serde_json::from_str(text).map_err(|e| format!("{}: {e}", path.display()))
     } else {
         toml::from_str(text).map_err(|e| format!("{}: {e}", path.display()))
+    }
+}
+
+/// A built-in theme shipped as a theme file (inheriting the classic look at most): a file that
+/// doesn't read is a bug, caught by the tests, and falls back to the classic look.
+pub fn builtin(id: &str, text: &str) -> Theme {
+    let read = toml::from_str::<Value>(text)
+        .map_err(|e| e.to_string())
+        .and_then(|v| {
+            parse(id, &v, |base| {
+                if base == "classic" {
+                    Ok(Loaded {
+                        theme: palette::CLASSIC.clone(),
+                        warnings: Vec::new(),
+                    })
+                } else {
+                    Err(format!(
+                        "{base}: a built-in theme inherits the classic look only"
+                    ))
+                }
+            })
+        });
+    match read {
+        Ok(l) => {
+            debug_assert!(l.warnings.is_empty(), "{id}: {:?}", l.warnings);
+            l.theme
+        }
+        Err(e) => {
+            debug_assert!(false, "{id}: {e}");
+            palette::CLASSIC.clone()
+        }
     }
 }
 
@@ -181,14 +246,43 @@ pub fn parse(
         Some(n) => n.to_owned().into(),
         None => id.to_owned().into(),
     };
+    // A few colours, every role derived from them (before the roles a file sets itself).
+    if let Some(v) = top.get("seeds") {
+        seeds(v, &mut theme, &mut warnings);
+    }
+    // High contrast: every edge in the text's colour (then the file's own roles still win).
+    match top.get("contrast").map(|c| c.as_str()) {
+        None | Some(Some("normal")) => {}
+        Some(Some("high")) => {
+            crate::derive::strengthen(&mut theme.light);
+            crate::derive::strengthen(&mut theme.dark);
+        }
+        Some(_) => warnings.push("contrast: \"normal\" or \"high\"".into()),
+    }
     for (key, value) in top {
         match key.as_str() {
-            "name" | "inherits" => {}
+            "name" | "inherits" | "seeds" | "contrast" | "icon-mono" => {}
+            // A built-in icon set by name (a theme folder's own icons are read by `load_in`).
+            "icon-set" => match value.as_str() {
+                Some(name) => theme.icon_set = Some(name.to_owned().into()),
+                None => warnings.push("icon-set: a set's name".into()),
+            },
             "icons" => match value.as_str().and_then(IconStyle::from_key) {
                 Some(s) => theme.icons = s,
                 None => warnings.push(format!("icons: {value} is not color, mono or accent")),
             },
             "sizes" => sizes(value, &mut theme, &mut warnings),
+            "controls" => match value.as_object() {
+                Some(table) => {
+                    for (k, v) in table {
+                        let ok = v.as_str().is_some_and(|v| theme.controls.set(k, v));
+                        if !ok {
+                            warnings.push(format!("controls.{k}: {v} is not a style of it"));
+                        }
+                    }
+                }
+                None => warnings.push("controls: not a table".into()),
+            },
             "colors" | "colours" => {
                 colors(key, value, &mut theme.light, &mut warnings);
                 colors(key, value, &mut theme.dark, &mut warnings);
@@ -199,6 +293,63 @@ pub fn parse(
         }
     }
     Ok(Loaded { theme, warnings })
+}
+
+/// `[seeds]` (both variants), `[seeds.light]` and `[seeds.dark]`: each variant given any is
+/// derived again from its seeds (`crate::derive`), the ones not given kept from the theme it
+/// inherits.
+fn seeds(v: &Value, theme: &mut Theme, warnings: &mut Vec<String>) {
+    let Some(table) = v.as_object() else {
+        warnings.push("seeds: not a table".into());
+        return;
+    };
+    // Shared seeds are read for both variants: their warnings once.
+    let mut found = Vec::new();
+    for (variant, pal) in [("light", &mut theme.light), ("dark", &mut theme.dark)] {
+        let mut s = crate::derive::Seeds::of(pal);
+        let mut given = false;
+        let both = table.iter().filter(|(k, _)| *k != "light" && *k != "dark");
+        let own = table
+            .get(variant)
+            .and_then(Value::as_object)
+            .into_iter()
+            .flatten();
+        for (key, value) in both.chain(own) {
+            let Some(c) = value.as_str().and_then(palette::parse_hex) else {
+                found.push(format!("seeds.{key}: {value} is not a colour"));
+                continue;
+            };
+            let slot = match key.as_str() {
+                "background" => &mut s.background,
+                "surface" => &mut s.surface,
+                "header" => &mut s.header,
+                "text" => &mut s.text,
+                "accent" => &mut s.accent,
+                "error" => &mut s.error,
+                "warning" => &mut s.warning,
+                "success" => &mut s.success,
+                "selection" => {
+                    s.selection = Some(c);
+                    given = true;
+                    continue;
+                }
+                _ => {
+                    found.push(format!("seeds.{key}: not a seed"));
+                    continue;
+                }
+            };
+            *slot = c;
+            given = true;
+        }
+        if given {
+            *pal = crate::derive::derive(&s);
+        }
+    }
+    for w in found {
+        if !warnings.contains(&w) {
+            warnings.push(w);
+        }
+    }
 }
 
 fn sizes(v: &Value, theme: &mut Theme, warnings: &mut Vec<String>) {

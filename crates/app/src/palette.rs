@@ -148,10 +148,13 @@ palette! {
     window: "window", "Windows' and dialogs' background" = grey(0x39), grey(0xf0);
     text: "text", "Text and glyphs" = grey(0xff), grey(0x00);
     text_disabled: "text.disabled", "Disabled text, the one grey of every greyed control and label" = grey(0x8a), grey(0x8a);
-    muted: "text.muted", "Secondary text: notes, sizes, versions" = grey(0xa0), grey(0x6d);
+    // Dark: #ababab, 4.5:1 on the dark tab page (#a0a0a0 was 4.0:1 there, 4.4:1 on the window).
+    muted: "text.muted", "Secondary text: notes, sizes, versions" = grey(0xab), grey(0x6d);
     link: "link", "Text that opens something" = rgb(0x99, 0xc8, 0xff), rgb(0x00, 0x66, 0xcc);
-    error: "error", "Error text" = rgb(0xff, 0x80, 0x80), rgb(0xc4, 0x2b, 0x1c);
-    error_strong: "error.strong", "A failed check's message in Options (connection, browser and helper tests)" = rgb(0xc4, 0x2b, 0x1c), rgb(0xc4, 0x2b, 0x1c);
+    // Dark: #ff9999, 5:1 on the dark tab page (#ff8080 was 4.3:1 there).
+    error: "error", "Error text" = rgb(0xff, 0x99, 0x99), rgb(0xc4, 0x2b, 0x1c);
+    // Dark: the error colour (light mode's #c42b1c was 2:1 on the dark dialog).
+    error_strong: "error.strong", "A failed check's message in Options (connection, browser and helper tests)" = rgb(0xff, 0x99, 0x99), rgb(0xc4, 0x2b, 0x1c);
     warning: "warning", "Warning text" = rgb(0x9d, 0x5d, 0x00), rgb(0x9d, 0x5d, 0x00);
     success: "success", "Success text (a matching checksum)" = rgb(0x6c, 0xcb, 0x5f), rgb(0x0f, 0x7b, 0x0f);
     reach_near: "reach.near", "A download's server near by its round trip (under 60 ms), in Properties" = rgb(0x6c, 0xcb, 0x5f), rgb(0x10, 0x7c, 0x10);
@@ -189,8 +192,9 @@ palette! {
     field_readonly: "field.readonly", "A read-only text box's inside" = grey(0x30), grey(0xf3);
     field_readonly_border: "field.readonly.border", "A read-only text box's border" = grey(0x4b), grey(0xe2);
     combo_chevron: "combo.chevron", "A drop-down's chevron" = grey(0x6f), grey(0x6f);
-    combo_arrow_hot: "combo.arrow.hot", "An editable drop-down's arrow zone under the pointer" = grey(0xf3), grey(0xf3);
-    combo_arrow_pressed: "combo.arrow.pressed", "An editable drop-down's arrow zone pressed or open" = grey(0xe8), grey(0xe8);
+    // Dark: the dark parts' tints (light mode's greys showed over the dark box).
+    combo_arrow_hot: "combo.arrow.hot", "An editable drop-down's arrow zone under the pointer" = grey(0x45), grey(0xf3);
+    combo_arrow_pressed: "combo.arrow.pressed", "An editable drop-down's arrow zone pressed or open" = grey(0x26), grey(0xe8);
     // ---- buttons ----
     button: "button", "A button's face" = grey(0x44), grey(0xfd);
     button_hot: "button.hot", "A button's face under the pointer" = grey(0x4b), grey(0xf6);
@@ -296,6 +300,7 @@ palette! {
     // ---- title bars we draw ----
     caption: "caption", "A title bar MDM draws itself" = grey(0x20), grey(0xff);
     caption_text: "caption.text", "Its title and glyphs" = grey(0xff), grey(0x00);
+    caption_text_inactive: "caption.text.inactive", "Its title and glyphs while the window isn't the active one, and a greyed button's" = grey(0x8a), grey(0x8a);
     caption_hot: "caption.hot", "A caption button under the pointer (a tint over the bar)" = rgba(0xff, 0xff, 0xff, 0x0f), rgba(0x00, 0x00, 0x00, 0x09);
     caption_pressed: "caption.pressed", "A caption button pressed (a tint over the bar)" = rgba(0xff, 0xff, 0xff, 0x0a), rgba(0x00, 0x00, 0x00, 0x06);
     caption_close: "caption.close", "Close under the pointer" = rgb(0xc4, 0x2b, 0x1c), rgb(0xc4, 0x2b, 0x1c);
@@ -402,6 +407,86 @@ impl IconStyle {
     }
 }
 
+/// How the shared painters draw each kind of control (#45): the classic look's are Windows 11's;
+/// the style themes pick their era's. Colours and sizes still come from the palette and metrics.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Controls {
+    /// A focused text box: an accent line along its bottom (Windows 11), or its whole border in
+    /// the accent (Windows 8, XP).
+    pub field_focus: FieldFocus,
+    /// A check box: Windows 11's (the accent filled, a light tick), or a box that keeps its
+    /// inside and takes a tick in the accent (Windows 8).
+    pub check: CheckLook,
+    /// A progress bar: Windows 11's thin line, or a bordered bar filled (Windows 8).
+    pub progress: ProgressLook,
+    /// A scroll bar: Windows 11's (thin until hovered, arrows then), or arrows always shown and a
+    /// square thumb the bar's width (Windows 8, the classic bars).
+    pub scroll: ScrollLook,
+    /// The title bar: the system's, or drawn by MDM in the theme's style (Windows only).
+    pub caption: CaptionLook,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum FieldFocus {
+    Line,
+    Border,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CheckLook {
+    Fluent,
+    Square,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ScrollLook {
+    Overlay,
+    Classic,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ProgressLook {
+    Line,
+    Bar,
+}
+
+/// A drawn title bar's look: its buttons and where the title sits.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CaptionLook {
+    /// The system draws it (Windows' own frame, the window manager's elsewhere).
+    System,
+    /// Windows 8: a flat bar in the theme's caption colour, the title centred, flat buttons.
+    Metro,
+}
+
+impl Controls {
+    pub const CLASSIC: Self = Self {
+        field_focus: FieldFocus::Line,
+        check: CheckLook::Fluent,
+        progress: ProgressLook::Line,
+        scroll: ScrollLook::Overlay,
+        caption: CaptionLook::System,
+    };
+
+    /// Sets the control with this key to the style named `value`; false when either is unknown.
+    pub fn set(&mut self, key: &str, value: &str) -> bool {
+        match (key, value) {
+            ("field-focus", "line") => self.field_focus = FieldFocus::Line,
+            ("field-focus", "border") => self.field_focus = FieldFocus::Border,
+            ("check", "fluent") => self.check = CheckLook::Fluent,
+            ("check", "square") => self.check = CheckLook::Square,
+            ("progress", "line") => self.progress = ProgressLook::Line,
+            ("progress", "bar") => self.progress = ProgressLook::Bar,
+            ("scroll", "overlay") => self.scroll = ScrollLook::Overlay,
+            ("scroll", "classic") => self.scroll = ScrollLook::Classic,
+            ("caption", "system") => self.caption = CaptionLook::System,
+            ("caption", "metro") => self.caption = CaptionLook::Metro,
+            _ => return false,
+        }
+        true
+    }
+}
+
 /// A whole theme: its two variants, its sizes and its icons.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Theme {
@@ -413,6 +498,10 @@ pub struct Theme {
     pub dark: Palette,
     pub metrics: Metrics,
     pub icons: IconStyle,
+    /// The theme's icon set (`crate::themeicons`), by name; None: the classic icons.
+    pub icon_set: Option<Cow<'static, str>>,
+    /// How each kind of control is drawn.
+    pub controls: Controls,
 }
 
 impl Theme {
@@ -430,11 +519,26 @@ pub static CLASSIC: Theme = Theme {
     dark: Palette::classic(true),
     metrics: Metrics::CLASSIC,
     icons: IconStyle::Color,
+    icon_set: None,
+    controls: Controls::CLASSIC,
 };
 
-/// The built-in themes, the default first.
-pub fn builtins() -> [&'static Theme; 1] {
-    [&CLASSIC]
+/// The built-in themes that don't change by themselves, the default first: the classic look
+/// (written out above), then the ones shipped as theme files (`assets/themes/`, in the format
+/// users write, so they double as examples). Native follows the system and is made when chosen
+/// (`crate::native`).
+pub fn builtins() -> [&'static Theme; 3] {
+    static HIGH_CONTRAST: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin(
+            "high-contrast",
+            include_str!("../assets/themes/high-contrast.toml"),
+        )
+    });
+    // The style themes (#45): their era's look, the layout kept.
+    static METRO: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin("metro", include_str!("../assets/themes/metro.toml"))
+    });
+    [&CLASSIC, &HIGH_CONTRAST, &METRO]
 }
 
 /// `#rrggbb` or `#rrggbbaa` (the `#` optional, as Base16 writes them) as a colour.
@@ -517,5 +621,126 @@ mod tests {
         assert!(d.dark && !l.dark);
         assert_eq!(CLASSIC.metrics.control_radius, 3.0);
         assert_eq!(CLASSIC.metrics.list_row, 17.0);
+    }
+
+    /// Every built-in theme's text reads (WCAG 2.1 AA, 4.5:1), High contrast's at AAA (7:1),
+    /// and its accent stands out from the background (3:1).
+    #[test]
+    fn built_in_themes_meet_wcag_contrast() {
+        use crate::derive::contrast;
+        let mut themes: Vec<Theme> = builtins().iter().map(|t| (*t).clone()).collect();
+        // Native with a few accents, and with Windows' high-contrast colours.
+        for accent in [
+            rgb(0x00, 0x78, 0xd4),
+            rgb(0xe7, 0x48, 0x56),
+            rgb(0xff, 0xb9, 0x00),
+        ] {
+            themes.push(crate::native::theme(&crate::native::System {
+                accent: Some(crate::native::Accent::from_color(accent)),
+                ..Default::default()
+            }));
+        }
+        themes.push(crate::native::theme(&crate::native::System {
+            high_contrast: Some([
+                grey(0x00),
+                grey(0xff),
+                rgb(0x1a, 0xeb, 0xff),
+                grey(0x00),
+                rgb(0xff, 0xff, 0x00),
+                rgb(0x3f, 0xf2, 0x3f),
+            ]),
+            ..Default::default()
+        }));
+        for t in &themes {
+            let high = t.id == "high-contrast" || t.light.focus_ring == t.light.accent;
+            let min = if high { 7.0 } else { 4.5 };
+            for p in [&t.light, &t.dark] {
+                let pairs = [
+                    ("text / window", p.text, p.window),
+                    ("text / field", p.text, p.field),
+                    ("text / list", p.text, p.list),
+                    ("menu text / menu", p.menu_text, p.menu),
+                    ("selection", p.selection_text, p.selection),
+                    ("button text", p.button_text, p.button),
+                    ("muted / window", p.muted, p.window),
+                ];
+                for (what, fg, bg) in pairs {
+                    let r = contrast(fg, bg);
+                    // The classic look keeps today's pixels: its dark grey notes on the dark
+                    // window are 4.42:1 (#a0a0a0 on #393939), reported for its own fix.
+                    if t.id == "classic" && p.dark && what == "muted / window" {
+                        assert!(r >= 4.4, "{} {}: {what} {r:.2}", t.id, p.dark);
+                        continue;
+                    }
+                    assert!(r >= min, "{} {}: {what} {r:.2}", t.id, p.dark);
+                }
+                let r = contrast(p.link, p.window);
+                assert!(r >= 4.5, "{} {}: link {r:.2}", t.id, p.dark);
+                let r = contrast(p.accent, p.window);
+                assert!(r >= 3.0, "{} {}: accent {r:.2}", t.id, p.dark);
+                let r = contrast(p.button_accent_text, p.button_accent);
+                assert!(r >= 4.5, "{} {}: accent button {r:.2}", t.id, p.dark);
+            }
+        }
+    }
+
+    /// A theme shipped as a file reads without a warning.
+    #[test]
+    fn built_in_theme_files_read_cleanly() {
+        for (id, name, text) in [
+            (
+                "high-contrast",
+                "High contrast",
+                include_str!("../assets/themes/high-contrast.toml"),
+            ),
+            (
+                "metro",
+                "Metro",
+                include_str!("../assets/themes/metro.toml"),
+            ),
+        ] {
+            let v: serde_json::Value = toml::from_str(text).unwrap();
+            let l = crate::themefile::parse(id, &v, |_| {
+                Ok(crate::themefile::Loaded {
+                    theme: CLASSIC.clone(),
+                    warnings: Vec::new(),
+                })
+            })
+            .unwrap();
+            assert!(l.warnings.is_empty(), "{id}: {:?}", l.warnings);
+            assert_eq!(l.theme.name, name);
+            assert!(l.theme.dark.dark && !l.theme.light.dark);
+        }
+        let metro = builtins()[2];
+        assert_eq!(metro.icon_set.as_deref(), Some("metro"));
+        assert_eq!(metro.controls.caption, CaptionLook::Metro);
+        assert_eq!(metro.metrics.control_radius, 0.0);
+    }
+
+    /// The classic look's dark secondary and error texts read on every dark surface they sit on
+    /// (WCAG 2.1 AA, 4.5:1): the window, a tab page, a text box.
+    #[test]
+    fn classic_dark_texts_read() {
+        let ratio = |a: Color32, b: Color32| {
+            let lum = |c: Color32| {
+                let f = |v: u8| {
+                    let v = v as f32 / 255.0;
+                    if v <= 0.04045 {
+                        v / 12.92
+                    } else {
+                        ((v + 0.055) / 1.055).powf(2.4)
+                    }
+                };
+                0.2126 * f(c.r()) + 0.7152 * f(c.g()) + 0.0722 * f(c.b())
+            };
+            let (x, y) = (lum(a), lum(b));
+            (x.max(y) + 0.05) / (x.min(y) + 0.05)
+        };
+        let d = &CLASSIC.dark;
+        for fg in [d.muted, d.error, d.error_strong] {
+            for bg in [d.window, d.tab_page, d.field] {
+                assert!(ratio(fg, bg) >= 4.5, "{fg:?} on {bg:?}: {}", ratio(fg, bg));
+            }
+        }
     }
 }
