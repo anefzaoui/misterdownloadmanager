@@ -291,10 +291,12 @@ impl Progress {
             ViewportId::from_hash_of(("progress", self.id)),
             builder,
             |ui, _| {
-                if ui.ctx().input(|i| i.viewport().close_requested()) {
-                    return Action::Close;
-                }
-                if minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true)) {
+                // Painted in the pass that closes it too (see dialogs::close_requested).
+                let close = crate::dialogs::close_requested(ui);
+                if !close
+                    && minimize_hides
+                    && ui.ctx().input(|i| i.viewport().minimized == Some(true))
+                {
                     return Action::Hide;
                 }
                 let action = egui::CentralPanel::no_frame()
@@ -325,6 +327,9 @@ impl Progress {
                         }
                     })
                     .inner;
+                if close {
+                    return Action::Close;
+                }
                 // Escape hides the window (the download goes on), as the × does.
                 if matches!(action, Action::None) && winui::escape_pressed(ui) {
                     Action::Close
