@@ -344,6 +344,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A minimized MDM keeps working**: with the main window minimized (not to the notification
+  area), queues didn't start their next file, the Scheduler's starts and stops didn't fire,
+  download limits, the network adapter's kill switch, the clipboard monitor, the update check, the
+  taskbar's progress and saving the list all waited until the window was restored. They run in
+  every window state now, and their windows (Download complete, a limit's notice) open at once.
 - **HLS and DASH videos from the browser, as their stream**
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155)): a video played as a
   stream (most sites' long videos) failed with yt-dlp's "Unsupported URL" when the extension sent
