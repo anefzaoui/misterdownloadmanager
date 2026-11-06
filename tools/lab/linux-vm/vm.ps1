@@ -18,9 +18,12 @@ use-system-helpers.sh makes MDM use the system's yt-dlp, ffmpeg and gallery-dl.
   tools/lab/linux-vm/vm.ps1 get <guest path> <host folder>
   tools/lab/linux-vm/vm.ps1 put <host file> <guest path>
   tools/lab/linux-vm/vm.ps1 clone <new name> [-Snapshot <name>] [-Cpus 6] [-MemoryMb 10240]
-                                                    # a linked clone of a snapshot of $MDM_VM (taken
-                                                    # powered off when it doesn't exist yet), its
-                                                    # own hostname; then `start` it with MDM_VM=<name>
+                                                    # a linked clone of a snapshot of $MDM_VM, its own
+                                                    # hostname; then `start` it with MDM_VM=<name>
+
+Snapshots for clones are taken powered off (`clone` shuts the VM down first when the snapshot
+doesn't exist yet): a live snapshot saves the whole memory, and under Hyper-V (VirtualBox's NEM
+mode, "VT-x is not available") it stalled with an empty .sav file and had to be killed.
 
 The VM's name, user and password come from MDM_VM, MDM_VM_USER and MDM_VM_PASSWORD (defaults:
 mdm-ubuntu, mdm, and the lab's throwaway password). Commands run with the desktop session's
