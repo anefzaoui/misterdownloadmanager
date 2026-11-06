@@ -842,6 +842,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>Przeglądarka.</g1> Kliknij prawym przyciskiem myszy stronę, aby wybrać <g2>Pobierz wszystkie łącza za pomocą Mister Download Manager</g2>, lub zaznacz jej część, aby wybrać <g3>Pobierz wybrane łącza za pomocą Mister Download Manager</g3>. Referer strony i pliki cookie są przesyłane z każdym łączem."
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "W systemie Windows okna są rysowane za pomocą Direct3D 12 (wgpu eframe, tylko z jego backendem Direct3D 12) lub za pomocą OpenGL (glow eframe), gdy wybrano to w Widok → Rysuj za pomocą; Linux i macOS używają OpenGL. Gdy wybrany nie może się uruchomić, próbowany jest drugi, więc okna zawsze się otwierają."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>Wyślij na GitHub</g1> otwiera w przeglądarce formularz <g2>Raport o błędach</g2> na GitHub, już wypełniony, wraz z folderem zawierającym raport. Przeciągnij plik raportu do formularza, sprawdź go i wyślij. Potrzebujesz konta GitHub. <g3>Nic nie jest wysyłane automatycznie.</g3>"
@@ -1046,17 +1050,9 @@
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>Jest darmowy, na zawsze.</g1> Bez wygasającej wersji próbnej, bez klucza licencyjnego, bez reklam. Licencja GNU GPL gwarantuje, że pozostanie darmowy."
   },
-  "1accfe27df04b7d9": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support…",
-   "text": "Google Chrome, Microsoft Edge, Brave, Opera i Vivaldi za pośrednictwem rozszerzenia przeglądarki MDM oraz przeglądarki na nich oparte, takie jak Helium. Obsługa przeglądarki Firefox…"
-  },
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 s</g1><g2></g2>"
-  },
-  "1ae1f6b28d64deef": {
-   "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
-   "text": "Rozszerzenie przeglądarki jest dołączone do aplikacji i dostępne jako osobne pobranie dla <g1>Chrome, Edge, Brave, Opera i Vivaldi</g1> oraz <g2>Firefoxa</g2>. Wpisy w sklepach są w drodze. Każdy plik jest budowany z publicznego kodu źródłowego przez GitHub Actions i wymieniony z sumą kontrolną SHA-256."
   },
   "1afe0a44e06cfa4b": {
    "source": "To check MDM's side, open <g1>Options → General</g1> in MDM and click <g2>Test browser integration...</g2>. It checks that browser integration is on, that this is the installed copy, that the browsers can find MDM, and which browsers' extension has connected; <g3>How to fix it</g3> opens the section for the first that fails.",
@@ -1362,10 +1358,6 @@
    "source": "The download list",
    "text": "Lista pobierania"
   },
-  "20e4fa05d9c374d9": {
-   "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
-   "text": "Kliknij <g1>Załaduj tymczasowy dodatek</g1> i wybierz <x2/>."
-  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "Główne okno Mister Download Manager: klasyczny układ z paskiem narzędzi, kategoriami i listą pobierania."
@@ -1385,6 +1377,10 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "Usuń folder <x1/> (lub ustaw go jako tylko do odczytu), a ta sama kopia będzie działać jak zwykły plik zip: będzie przechowywać swoje dane w <x2/>."
+  },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>Widok</g1> — pokaż lub ukryj kategorie, posortuj listę (<g2>Uporządkuj pliki</g2>), <g3>Obsługa trybu ciemnego</g3>, <g4>Zawsze ciemny</g4>, <g5>Rysuj za pomocą</g5> (Windows: Direct3D lub OpenGL) i <g6>Język</g6>."
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -1734,10 +1730,6 @@
    "source": "MDM comes with an MCP server, misterdownloadmanager-mcp, so an AI assistant that supports MCP (Claude Desktop, Claude Code, Cursor, VS Code and others) can…",
    "text": "MDM zawiera serwer MCP, misterdownloadmanager-mcp, dzięki czemu asystent AI obsługujący MCP (Claude Desktop, Claude Code, Cursor, VS Code i inne) może…"
   },
-  "2a73a935ac5fc81d": {
-   "source": "Open <x1/> and click <g2>This Firefox</g2>.",
-   "text": "Otwórz <x1/> i kliknij <g2>Ten Firefox</g2>."
-  },
   "2a86bffcb4952c03": {
    "source": "<g1>Logging in.</g1> Write the login in the address (<x2/>), tick <g3>Use authorization</g3>, or save it in <g4>Options → Sites Logins</g4>. Without one, MDM logs in as <x5/>. The path is relative to the folder the login starts in; to start from the server's root, write <x6/> after the server (<x7/>).",
    "text": "<g1>Logowanie.</g1> Wpisz login w adresie (<x2/>), zaznacz <g3>Użyj autoryzacji</g3> lub zapisz go w <g4>Opcje → Loginy do witryn</g4>. Bez loginu MDM loguje się jako <x5/>. Ścieżka jest względna do folderu, w którym rozpoczyna się logowanie; aby rozpocząć od katalogu głównego serwera, wpisz <x6/> po serwerze (<x7/>)."
@@ -2058,6 +2050,10 @@
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDM uruchamia swój silnik torrenta za pierwszym razem, gdy torrent tego potrzebuje. Gdy <g1>Zatrzymaj silnik torrenta, gdy nie działa żaden torrent</g1> jest włączone (domyślnie), zatrzymuje się ponownie minutę po tym, jak żaden torrent nie działa ani nie jest udostępniany. Podczas jego działania inni uczestnicy mogą łączyć się z MDM, a MDM prosi router o przekierowanie swojego portu (UPnP). System Windows może zapytać, czy zezwolić MDM na dostęp przez zaporę: zezwól tylko w sieciach prywatnych."
   },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "Aktualizacja sterownika graficznego ze strony producenta karty (Intel, AMD lub NVIDIA) rozwiązuje wiele z tych problemów."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>Każde połączenie, na żywo</g1> Każde połączenie rysowane w miarę wypełniania, z prędkością i pozostałym czasem. Bezpieczne wznawianie po awarii kontynuuje od miejsca, w którym się zatrzymało."
@@ -2097,10 +2093,6 @@
   "335ddbe14ee4164c": {
    "source": "Closing the window with its close box keeps the download running.",
    "text": "Zamknięcie okna za pomocą przycisku zamykania powoduje, że pobieranie jest kontynuowane."
-  },
-  "335df06d95749e68": {
-   "source": "Chrome, Edge, Brave, Opera, Vivaldi; Firefox in testing",
-   "text": "Chrome, Edge, Brave, Opera, Vivaldi; Firefox w fazie testów"
   },
   "336d90cdead9909e": {
    "source": "Delete the selected downloads and their files (asks first)",
@@ -2153,10 +2145,6 @@
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "Połączenia z tym komputerem (<x1/>) nie są wiązane. Proxy na tym komputerze obsługuje pobieranie, a to, dokąd je wysyła, zależy od niego."
-  },
-  "354fca97a75c4b55": {
-   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
-   "text": "Jeśli Direct3D nie może uruchomić się na Twoim komputerze (brak sterownika Direct3D 12, niektóre maszyny wirtualne), MDM rysuje za pomocą OpenGL, a <g1>Widok → Rysuj za pomocą</g1> informuje o tym. Ponowne wybranie <g2>Direct3D</g2> próbuje ponownie przy następnym uruchomieniu."
   },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
@@ -2350,10 +2338,6 @@
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "Kliknij prawym przyciskiem myszy dowolne pole tekstowe, aby wybrać <g1>Wytnij</g1>, <g2>Kopiuj</g2>, <g3>Wklej</g3>, <g4>Usuń</g4> i <g5>Zaznacz wszystko</g5>."
   },
-  "3a3fcee9f3378a95": {
-   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
-   "text": "<g1>Pamięć</g1> (na karcie Procesy) to pamięć, którą MDM przechowuje tylko dla siebie, jego <g2>prywatny zestaw roboczy</g2>. Przy otwartym oknie i braku pobierania jest to około 50 MB."
-  },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
    "text": "MDM instaluje aktualizację tylko wtedy, gdy lista sum kontrolnych wydania jest podpisana kluczem wydania MDM, a plik jest zgodny z nią; wszystko inne jest odrzucane, a <g1>Pobierz</g1> otwiera zamiast tego stronę <g2>Wydania</g2>. Aktualizacja w ten sposób rozpoczyna się od wersji 0.2.1: wcześniejsze wersje otwierają stronę Wydania."
@@ -2429,6 +2413,10 @@
   "3c333ba83ce0943b": {
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>Torrenty i Twoje bezpieczeństwo</g2></g1> — co widzą inni, przełączniki sieciowe, listy blokad, serwery proxy."
+  },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "Raport o zawieszeniu lub awarii wskazuje, która opcja rysowania była używana: dołącz go, zgłaszając problem."
   },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
@@ -2522,10 +2510,6 @@
    "source": "For all downloads together",
    "text": "Dla wszystkich pobierań razem"
   },
-  "3e7256dcef6e5886": {
-   "source": "Browser extension: submitted to the stores, awaiting approval. <g1><g2><x3/>Firefox</g2> <g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g1>",
-   "text": "Rozszerzenie przeglądarki: przesłane do sklepów, oczekuje na zatwierdzenie. <g1><g2><x3/>Firefox</g2> <g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g1>"
-  },
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "Nie musisz najpierw uruchamiać MDM. Gdy przeglądarka przekazuje pobieranie, a MDM nie działa, pomocnik uruchamia go i przekazuje pobieranie."
@@ -2553,10 +2537,6 @@
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
    "text": "Instalator. Wybierz ten, chyba że masz powód, by tego nie robić. Może on skonfigurować integrację z przeglądarką i otwierać pliki <x1/> oraz linki magnet za pomocą MDM."
-  },
-  "3f1a155dbf3600d3": {
-   "source": "<g1>Firefox</g1> (<x2/>, in testing)",
-   "text": "<g1>Firefox</g1> (<x2/>, w fazie testów)"
   },
   "3f2e32c284681794": {
    "source": "If Windows says <g1>Windows protected your PC</g1>, click <g2>More info</g2>, check that the file is <x3/> from the <g4>Releases</g4> page, then click <g5>Run anyway</g5>.",
@@ -2609,10 +2589,6 @@
   "4087eca64b1e9c7f": {
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "Więcej w <g1>Połączenia i prędkość</g1>."
-  },
-  "40a17209f38d66d2": {
-   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
-   "text": "MDM rysuje swoje okna za pomocą OpenGL. W systemie Windows, OpenGL niektórych sterowników graficznych może zatrzymać okno na kilka sekund lub wyświetlić je nieprawidłowo. Wybierz <g1>Widok → Rysuj za pomocą → Direct3D</g1>, aby zamiast tego rysować za pomocą Direct3D 12, począwszy od następnego uruchomienia; <g2>Widok → Rysuj za pomocą → OpenGL</g2> przywraca poprzednie ustawienie."
   },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
@@ -2714,10 +2690,6 @@
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
    "text": "Pierwsze wydanie: darmowy menedżer pobierania dla systemu Windows, zaprojektowany tak, jak oczekują użytkownicy Internet Download Manager, z eksperymentalnymi kompilacjami dla macOS i Linux."
   },
-  "43bc6e18a0433b8b": {
-   "source": "Firefox removes a temporary add-on when it closes, so you have to load it again after each restart.",
-   "text": "Firefox usuwa tymczasowy dodatek po zamknięciu, więc musisz go ponownie załadować po każdym ponownym uruchomieniu."
-  },
   "43cb42591f1e4934": {
    "source": "<g1>No proxy/socks</g1> — connect directly. This is the default.",
    "text": "<g1>Brak proxy/SOCKS</g1> — połącz się bezpośrednio. Jest to ustawienie domyślne."
@@ -2809,10 +2781,6 @@
   "45bc5ceaa76685a9": {
    "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
    "text": "Pobieranie, które przeglądarka już rozpoczęła (MDM przejął je od przeglądarki), jest pobierane tak, jak jest: host już wysyła plik."
-  },
-  "45cafb7bca129310": {
-   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
-   "text": "<g1><g2>Integracja z przeglądarką</g2></g1> — rozszerzenie dla Chrome, Edge, Brave i Firefox, jakie pobierania przejmuje i co się dzieje, gdy MDM nie jest uruchomiony."
   },
   "45ce55f4ec4843d8": {
    "source": "<g1>Start now</g1> and <g2>Stop</g2> run or halt the selected queue straight away.",
@@ -3458,6 +3426,10 @@
    "source": "Command",
    "text": "Polecenie"
   },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "Jeśli karta graficzna zostanie zresetowana podczas działania MDM (aktualizacja sterownika), MDM uruchomi się ponownie samodzielnie."
+  },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
    "text": "(oraz Arkusze, Prezentacje, Rysunki)."
@@ -3590,10 +3562,6 @@
    "source": "Unzip anywhere, a USB stick too; everything stays in its folder",
    "text": "Rozpakuj w dowolnym miejscu, także na pendrive; wszystko zostaje w folderze"
   },
-  "5b4c0d90aeddada8": {
-   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
-   "text": "Czy rozszerzenie jest załadowane i włączone? Poszukaj <g1>Mister Download Manager</g1> na stronie rozszerzeń przeglądarki. W przeglądarce Firefox tymczasowy dodatek znika po ponownym uruchomieniu. Zobacz <g2>Integracja z przeglądarką</g2>."
-  },
   "5bc4b6e9ef830d3c": {
    "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
    "text": "<g1>Linux i macOS</g1>: w ustawieniach MDM, w folderze danych, który tylko Ty możesz odczytać (0700), jeszcze nie w systemowym pęku kluczy. Przechowywanie w pęku kluczy jest planowane."
@@ -3629,10 +3597,6 @@
   "5cf4f742d0a41f0e": {
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "pobiera galerię do folderu nazwanego jej imieniem. Zobacz <g1>Wiersz poleceń i automatyzacja</g1>."
-  },
-  "5d132ac4f8b0c1aa": {
-   "source": "A freeze or crash report says which one was drawing.",
-   "text": "Raport o zawieszeniu lub awarii informuje, który z nich był używany do rysowania."
   },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
@@ -3941,10 +3905,6 @@
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "Harmonogram"
-  },
-  "63b637699436b285": {
-   "source": "Store listings for Chrome, Edge and Firefox are on the way and will make this one click. The <g1>step-by-step guide</g1> shows each browser.",
-   "text": "Wpisy w sklepach Chrome, Edge i Firefox są w drodze i sprawią, że instalacja będzie wymagała jednego kliknięcia. <g1>Przewodnik krok po kroku</g1> pokazuje każdą przeglądarkę."
   },
   "63d0ba3e76606052": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains none of IDM's code or artwork. Its windows are laid out the way IDM users expect, so you can switch without learning anything new — and because MDM is free, there is nothing to crack. Please don't download \"cracked\" download managers: they are a common way to spread malware.",
@@ -4462,10 +4422,6 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM otwiera <g1>Informacje o pliku do pobrania</g1> zamiast przeglądarki pobierającej plik. Kliknij <g2>Rozpocznij pobieranie</g2>."
   },
-  "70949fe6f15631f5": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
-   "text": "<g1>Widok</g1> — pokaż lub ukryj kategorie, posortuj listę (<g2>Uporządkuj pliki</g2>), <g3>Obsługa trybu ciemnego</g3>, <g4>Zawsze ciemny</g4>, <g5>Rysuj za pomocą</g5> (Windows: OpenGL lub Direct3D) i <g6>Język</g6>."
-  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "Co pozostaje na Twoim komputerze"
@@ -4982,10 +4938,6 @@
    "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
    "text": "<g1>Rozmiar zatwierdzenia</g1> to pamięć, którą MDM zarezerwował, niezależnie od tego, czy jest używana, czy nie."
   },
-  "7d9082fb6f1abec9": {
-   "source": "Firefox 140 or later is needed.",
-   "text": "Wymagany jest Firefox 140 lub nowszy."
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Jakość</g1> dotyczy każdego wideo: <g2>Najlepsza jakość</g2>, <g3>Do</g3> wysokości (każde wideo o tej wysokości lub najbliższej niższej), <g4>Tylko dźwięk, oryginał</g4>, <g5>Tylko dźwięk MP3</g5>, <g6>Tylko dźwięk OPUS</g6> lub <g7>Tylko dźwięk FLAC</g7>. Bez ffmpeg oferowane są tylko jakości, które zawierają dźwięk, oraz brak MP3, Opus lub FLAC."
@@ -5478,10 +5430,6 @@
    "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
    "text": "<g1>Pobierz teraz</g1> dodaje każdy film jako osobne pobieranie i uruchamia główną kolejkę, która pobiera tyle plików jednocześnie, ile ustawiono w <g2>Harmonogram</g2> (<g3>Pobierz N plików jednocześnie</g3>). <g4>Później</g4> dodaje je bez uruchamiania. Dodanie więcej niż 500 plików naraz wymaga potwierdzenia."
   },
-  "89fc33b1b049584c": {
-   "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
-   "text": "Przekazuje ono pobieranie z przeglądarki do MDM wraz z plikami cookie, dodaje <g1>Pobierz za pomocą Mister Download Manager</g1> do menu kontekstowego i umieszcza przycisk <g2>Pobierz wideo</g2> nad filmami. Jest ono dołączone do aplikacji, w folderze <x3/>, oraz osobno:"
-  },
   "89fd713eb7dedf38": {
    "source": "Starts the main download queue.",
    "text": "Uruchamia główną kolejkę pobierania."
@@ -5581,10 +5529,6 @@
   "8caba3a68088fa00": {
    "source": "Connections per file",
    "text": "Połączenia na plik"
-  },
-  "8cb163cde329bcf4": {
-   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.",
-   "text": "<g1>Mister Download Manager</g1> pojawia się na liście. Pozostaw go włączonego. Przypnij jego przycisk do paska narzędzi, aby na pierwszy rzut oka widzieć, czy przeglądarka łączy się z MDM."
   },
   "8cfa4742e8d4318b": {
    "source": "The harness",
@@ -5750,9 +5694,9 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Usługa debrid, taka jak Real-Debrid, AllDebrid czy Premiumize, to płatne konto, które pobiera pliki z hostów plików na własne serwery. Zwraca..."
   },
-  "920f5f8c86e123ee": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "Google Chrome, Microsoft Edge, Brave, Opera i Vivaldi za pośrednictwem rozszerzenia przeglądarki MDM oraz przeglądarki na nich oparte, takie jak Helium. Obsługa przeglądarki Firefox, która obejmuje również Zen i LibreWolf, jest napisana i testowana. Rozszerzenie przekazuje pobierane pliki do MDM wraz z ich plikami cookie i odsyłaczem, dzięki czemu pliki wymagające logowania nadal działają, a także dodaje Pobierz za pomocą Mister Download Manager do menu kontekstowego i przycisk Pobierz wideo nad filmami. Zobacz Integracja z przeglądarką."
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "Jeśli Direct3D nie może uruchomić się na Twoim komputerze (brak sterownika Direct3D 12, niektóre maszyny wirtualne) lub jego pierwsze okno nie pojawi się w ciągu 10 sekund, MDM rysuje za pomocą OpenGL, a <g1>Widok → Rysuj za pomocą</g1> to potwierdza. Ponowne wybranie <g2>Direct3D</g2> próbuje ponownie przy następnym uruchomieniu."
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -6194,10 +6138,6 @@
    "source": "Latest",
    "text": "Najnowsze"
   },
-  "9d6226802f0baf4b": {
-   "source": "<g1>Firefox</g1><g2>Mozilla · in testing</g2>",
-   "text": "<g1>Firefox</g1><g2>Mozilla · w fazie testów</g2>"
-  },
   "9d9eb270f47daa62": {
    "source": "Check <g1>Download limits</g1> in the Scheduler. When the limit is reached, downloads wait with <g2>Waiting: the download limit is reached (Scheduler)</g2>.",
    "text": "Sprawdź <g1>Limity pobierania</g1> w Harmonogramie. Po osiągnięciu limitu pobieranie czeka z komunikatem <g2>Oczekiwanie: osiągnięto limit pobierania (Harmonogram)</g2>."
@@ -6322,10 +6262,6 @@
    "source": "What each one says it offers, on its own website or in its code's README. A dash means it isn't among the features it lists, not that it can't be done.",
    "text": "Co każdy z nich oferuje, na swojej stronie internetowej lub w pliku README swojego kodu. Myślnik oznacza, że nie ma go wśród wymienionych funkcji, a nie, że nie można tego zrobić."
   },
-  "a0d1f871bdc969b4": {
-   "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
-   "text": "Chrome, Edge, Brave, Opera i Vivaldi przez rozszerzenie; Firefox jest w fazie testów. Bez rozszerzenia, skopiuj link, a MDM otworzy okno pobierania. <g1>Więcej</g1>"
-  },
   "a0f44b2041902a09": {
    "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
    "text": "gallery-dl sprawdza adres na twoim komputerze, bez łączenia się z internetem. Gdy pojawi się komunikat <g1>gallery-dl może pobrać pliki z tej galerii</g1>, jesteś gotowy."
@@ -6406,10 +6342,6 @@
    "source": "Learn the download list →",
    "text": "Poznaj listę pobierania →"
   },
-  "a30f62455a77a82a": {
-   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> is removed when Firefox closes, so for now it has to be loaded again after each restart (see <g2>Browser integration</g2>). A signed add-on that Firefox keeps is on the way.",
-   "text": "Dodatek załadowany za pomocą <g1>Załaduj tymczasowy dodatek</g1> jest usuwany po zamknięciu Firefoxa, więc na razie musi być ponownie ładowany po każdym ponownym uruchomieniu (patrz <g2>Integracja z przeglądarką</g2>). Podpisany dodatek, który Firefox zachowuje, jest w drodze."
-  },
   "a332d36c2ada2664": {
    "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
    "text": "Nazwy użytkowników i hasła do witryn, które ich wymagają. <g1>Nowy</g1> dodaje wiersz: witrynę (ze ścieżką, jeśli login dotyczy tylko jej części), nazwę użytkownika i hasło. <g2>Edytuj</g2> i <g3>Usuń</g3> zmieniają lub usuwają wybrany wiersz. MDM używa loginu dla każdego pobierania z tej witryny. Login wpisany w <g4>Dodaj URL</g4> (<g5>Użyj autoryzacji</g5>) ma priorytet dla tego jednego pobierania."
@@ -6485,10 +6417,6 @@
   "a50025a18eca7051": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "Interfejs MDM jest dostępny w 86 językach: we wszystkich językach wyświetlania oferowanych przez Windows 11, od afrikaans po wietnamski, w tym w obu chińskich pismach, hiszpańskim dla Hiszpanii i Meksyku, francuskim dla Francji i Kanady, portugalskim dla Portugalii i Brazylii oraz serbskim w cyrylicy i łacinie."
-  },
-  "a52b4fbee3f29f57": {
-   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> (<x2/>: unzip, then <g3>Load unpacked</g3> on the browser's extensions page with Developer mode on)",
-   "text": "<g1>Chrome, Edge, Brave, Opera i Vivaldi</g1> (<x2/>: rozpakuj, następnie <g3>Załaduj rozpakowane</g3> na stronie rozszerzeń przeglądarki z włączonym trybem programisty)"
   },
   "a52f4d11aad99887": {
    "source": "Select all downloads",
@@ -6602,10 +6530,6 @@
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
    "text": "<g1>Ikony plików na liście pobierania</g1> były rysowane nad panelem Kategorii, gdy lista była przewijana w bok (drzewo Kategorii i Harmonogram miały tę samą usterkę)."
   },
-  "a7d84ef6d2022e62": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); load the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "Integracja z przeglądarką jest konfigurowana przez MDM przy każdym uruchomieniu w systemach Linux i macOS (znajdowane są wtedy zainstalowane przeglądarki); załaduj rozszerzenie, jak opisano w <g1>Integracja z przeglądarką</g1>. Przeglądarki zainstalowane jako Flatpak lub Snap mogą nie być w stanie połączyć się z MDM."
-  },
   "a801181e521c3efe": {
    "source": "Start and stop a queue",
    "text": "Uruchamianie i zatrzymywanie kolejki"
@@ -6673,6 +6597,10 @@
   "a9d705964d2ca3bb": {
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>86 języków wbudowanych.</g1> W tym od prawej do lewej, wybierane przy pierwszym uruchomieniu."
+  },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>Pamięć</g1> (na karcie Procesy) to pamięć, którą MDM rezerwuje wyłącznie dla siebie, czyli jego <g2>prywatny zestaw roboczy</g2>. Przy otwartym oknie i braku pobierania wynosi ona około 70 MB."
   },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
@@ -6785,10 +6713,6 @@
   "ac85d17c17b64879": {
    "source": "The download manager you already know. Rebuilt to be faster.",
    "text": "Menedżer pobierania, który już znasz. Stworzony od nowa, by działać szybciej."
-  },
-  "aca7e2c7c8203a37": {
-   "source": "Browser integration needs one more step in each browser: loading the extension. <g1>Browser integration</g1> shows how.",
-   "text": "Integracja z przeglądarką wymaga jeszcze jednego kroku w każdej przeglądarce: załadowania rozszerzenia. <g1>Integracja z przeglądarką</g1> pokazuje, jak to zrobić."
   },
   "acb8437ecc383f9f": {
    "source": "Opens the checked package in your system's package installer, which asks for your password.",
@@ -7378,10 +7302,6 @@
    "source": "App",
    "text": "Aplikacja"
   },
-  "bbb4a37acc8f6a42": {
-   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
-   "text": "Okna są rysowane za pomocą OpenGL (glow z eframe). W systemie Windows, Widok → Rysuj za pomocą zamiast tego wybiera Direct3D 12 (wgpu z eframe, tylko z jego backendem Direct3D 12), od następnego uruchomienia. <x1/> przełącza się na drugą opcję, gdy wybrana nie może się uruchomić, więc okna zawsze się otwierają."
-  },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
    "text": "Przechwytywanie pobierania z przeglądarki — pomoc Mister Download Manager"
@@ -7449,10 +7369,6 @@
   "bd38ebc1b5f00936": {
    "source": "Scenario",
    "text": "Scenariusz"
-  },
-  "bd77253f80822cfe": {
-   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. Then load the extension in your browser from MDM's <x2/> folder: open the browser's extensions page, turn on Developer mode and choose <g3>Load unpacked</g3>. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The <g4>tutorial</g4> walks through it.",
-   "text": "Zainstaluj MDM za pomocą instalatora i pozostaw zaznaczoną opcję <g1>Skonfiguruj integrację z przeglądarką</g1>. Następnie załaduj rozszerzenie w przeglądarce z folderu <x2/> MDM: otwórz stronę rozszerzeń przeglądarki, włącz tryb deweloperski i wybierz <g3>Załaduj rozpakowane</g3>. W drodze są wpisy do sklepów dla Chrome, Edge i Firefox, co sprawi, że będzie to jedno kliknięcie. <g4>Samouczek</g4> przeprowadzi Cię przez to."
   },
   "bda4c8ea3c9ccb34": {
    "source": "Download the AppImage",
@@ -7565,10 +7481,6 @@
   "c15931e3d969d63f": {
    "source": "Download overnight",
    "text": "Pobieranie w nocy"
-  },
-  "c15bd3350cc4e4a5": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. Then load the extension in your browser from MDM's extension folder: open the browser's extensions page, turn on Developer mode and choose Load unpacked. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The tutorial walks through it.",
-   "text": "Zainstaluj MDM za pomocą instalatora i pozostaw zaznaczoną opcję Skonfiguruj integrację z przeglądarką. Następnie załaduj rozszerzenie w przeglądarce z folderu rozszerzeń MDM: otwórz stronę rozszerzeń przeglądarki, włącz Tryb programisty i wybierz Załaduj rozpakowane. W drodze są wpisy do sklepów Chrome, Edge i Firefox, co sprawi, że będzie to jedno kliknięcie. Samouczek przeprowadzi Cię przez ten proces."
   },
   "c16bf35f546c4e5c": {
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
@@ -7798,10 +7710,6 @@
    "source": "Your account, your rules",
    "text": "Twoje konto, Twoje zasady"
   },
-  "c7be639a8acd89dc": {
-   "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
-   "text": "Skonfiguruj rozszerzenie raz, a każdy link do pobrania, który klikniesz w Chrome, Edge lub Brave, zostanie przekazany do MDM. (Firefox również działa, ale jego obsługa jest nadal testowana.)"
-  },
   "c7c2a61fcf5da6b1": {
    "source": "Use your own copies",
    "text": "Użyj własnych kopii"
@@ -7869,10 +7777,6 @@
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
    "text": "<g1>Ponownie ogłoś</g1> — prosi trackery torrenta o ponowne wyszukanie peerów, zamiast czekać na ich następną rundę. Działa, gdy torrent działa lub jest udostępniany."
-  },
-  "c9d39512b1b393af": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
-   "text": "Google Chrome, Microsoft Edge, Brave, Opera i Vivaldi za pośrednictwem rozszerzenia przeglądarki MDM oraz przeglądarki na nich oparte, takie jak Helium. Obsługa przeglądarki Firefox, która obejmuje również Zen i LibreWolf, jest napisana i testowana. Rozszerzenie przekazuje pobierane pliki do MDM wraz z ich plikami cookie i odsyłaczem, dzięki czemu pliki wymagające logowania nadal działają, a także dodaje <g1>Pobierz za pomocą Mister Download Manager</g1> do menu kontekstowego i przycisk <g2>Pobierz wideo</g2> nad filmami. Zobacz <g3>Integracja z przeglądarką</g3>."
   },
   "c9da130585eae7fa": {
    "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
@@ -8406,10 +8310,6 @@
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
    "text": "Jedno okno egui rysowane na stałych współrzędnych pikseli, plus jeden natychmiastowy obszar widoku na każde okno dialogowe. <x1/> przechowuje stan (pobrane pliki, kolejki, ustawienia, zaznaczenie listy) i zamienia polecenia menu, paska narzędzi, klawiszy i IPC w akcje. Każde okno dialogowe jest własnym modułem i zwraca <x2/> (otwarte, zamknięte, zakończone z wartością). Wywołania specyficzne dla systemu Windows są ograniczone do <x3/>, a ich odpowiedniki dla systemów Linux i macOS do <x4/> (począwszy od sesji, hosta przeglądarek, dźwięków, pokaż w folderze, obsługi awarii); każdy inny plik jest bezpiecznym, przenośnym kodem Rust. Czcionki pochodzą z systemu: folder Fonts w systemie Windows, czcionki systemowe w systemie macOS, fontconfig w systemie Linux (<x5/>). Podobnie jest z ikonami przed nazwami plików (<x6/>): listy obrazów systemowych powłoki Windows, Finder w macOS (NSWorkspace), motyw ikon pulpitu Linux (<x7/>, shared-mime-info i specyfikacja motywu ikon). Każdy typ jest wyszukiwany raz na rozmiar piksela, w wątku w tle. Ikony Tango (dołączone) zastępują ikony systemowe, dopóki ikona systemowa nie będzie gotowa, oraz wszędzie tam, gdzie system jej nie posiada."
   },
-  "d83a2cb66a2a3629": {
-   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
-   "text": "<g1>Zestaw roboczy</g1> (karta Szczegóły, dodaj kolumnę) dodaje pamięć współdzieloną z innymi programami. MDM rysuje swoje okna za pomocą karty graficznej, więc pamięć sterownika graficznego również się tu liczy, łącznie około 85 MB."
-  },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
    "text": "5. Brak gwarancji"
@@ -8478,10 +8378,6 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "Jeśli witryna zastąpiła plik nową wersją, części, które ma MDM, już nie pasują. Kliknij prawym przyciskiem myszy pobieranie i wybierz <g1>Pobierz ponownie</g1>, aby rozpocząć od początku. Ukończony plik jest zastępowany tylko wtedy, gdy nowe pobieranie zostanie zakończone."
   },
-  "da79240d48094d5f": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. Then load the extension in your browser from MDM's extension folder: open the…",
-   "text": "Zainstaluj MDM za pomocą instalatora i pozostaw zaznaczoną opcję Skonfiguruj integrację z przeglądarką. Następnie załaduj rozszerzenie w przeglądarce z folderu rozszerzeń MDM: otwórz…"
-  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "Warunki użytkowania — Mister Download Manager"
@@ -8521,6 +8417,10 @@
   "db2c1528b5634e7b": {
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "Liczby i daty na liście (<g1>Data ostatniej próby</g1>, <g2>Dodano</g2>) są zgodne z regionem ustawionym w systemie Windows (<g3>Ustawienia → Czas i język → Język i region → Format regionalny</g3>), więc cyfry, separatory i kolejność dat wyglądają tak, jak jesteś do tego przyzwyczajony. W języku angielskim MDM zapisuje je tak, jak IDM (<x4/>)."
+  },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>Zestaw roboczy</g1> (karta Szczegóły, dodaj kolumnę) obejmuje pamięć współdzieloną z innymi programami. MDM rysuje swoje okna za pomocą karty graficznej, więc pamięć sterownika graficznego również się tu liczy, łącznie około 120 MB."
   },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
@@ -9134,10 +9034,6 @@
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "Czy mogę przenieść moje pobrane pliki z IDM do Mister Download Manager?"
   },
-  "eccd08c375bd5161": {
-   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
-   "text": "W systemie Windows, jeśli OpenGL nie może się uruchomić, MDM próbuje Direct3D, a następnie programowego renderera Microsoftu, dzięki czemu okno nadal się otwiera (Pulpit zdalny, maszyna wirtualna bez sterownika graficznego)."
-  },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",
    "text": "Domyślnie pobrane pliki trafiają do folderu Pobrane pliki na używanym komputerze. Aby zachować je na pendrive:"
@@ -9502,10 +9398,6 @@
    "source": "The zips hold the same programs as the setup: the app, <x1/> (downloads from the command line; see <g2>Command line and automation</g2>) and the <x3/> folder.",
    "text": "Archiwa zip zawierają te same programy co instalator: aplikację, <x1/> (pobieranie z wiersza poleceń; zobacz <g2>Wiersz poleceń i automatyzacja</g2>) oraz folder <x3/>."
   },
-  "f6809253500ba067": {
-   "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
-   "text": "Załaduj rozszerzenie w każdej używanej przeglądarce, jak poniżej. Pliki rozszerzenia znajdują się w folderze <x1/>, w którym zainstalowano MDM: <x2/>, jeśli zainstalowałeś go dla siebie, lub <x3/>, jeśli zainstalowałeś go dla wszystkich. Każde wydanie ma je również jako osobne pliki do pobrania: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; najpierw rozpakuj) i <x5/>."
-  },
   "f6ab5be4ad52a472": {
    "source": "Trackers",
    "text": "Trackery"
@@ -9590,6 +9482,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "Wybierz <g1>Główna kolejka pobierania</g1> po lewej stronie. Otworzy się zakładka <g2>Harmonogram</g2>."
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "W systemie Windows MDM rysuje swoje okna za pomocą Direct3D 12; w systemach Linux i macOS za pomocą OpenGL. Sterownik graficzny może jednak działać nieprawidłowo: okno może zatrzymywać się na kilka sekund, migotać lub wyświetlać błędne kolory czy bloki. W systemie Windows spróbuj innej opcji: wybierz <g1>Widok → Rysuj za pomocą → OpenGL</g1>, następnie zamknij MDM (<g2>Zadania → Zakończ</g2>) i uruchom go ponownie. <g3>Widok → Rysuj za pomocą → Direct3D</g3> wraca w ten sam sposób."
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "W <g1>Domyślny katalog pobierania dla kategorii „Domyślne”</g1> kliknij <g2>Przeglądaj</g2> i wybierz folder na pendrive, na przykład <x3/>."
@@ -9633,6 +9529,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "Domyślnie osiem na pobieranie, a do 32, jeśli wybierzesz w Opcje → Połączenie, lub 128 po zaznaczeniu Zezwól na więcej niż 32 połączenia tam. MDM używa mniej…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Jeśli żadna z opcji nie może się uruchomić, MDM rysuje za pomocą renderera programowego Microsoftu, więc okno nadal się otwiera (Pulpit zdalny, maszyna wirtualna bez sterownika graficznego). Działa, ale bardziej obciąża procesor."
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
