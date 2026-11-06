@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ A smaller download: the installer 15 % and the zips 19 % smaller, nothing removed
+  ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158))
 - ✅ Linux: MDM's first window opens seconds sooner; the system's fonts are looked up all at once
   while it starts, not one by one in the window (on a busy computer that froze it, part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))

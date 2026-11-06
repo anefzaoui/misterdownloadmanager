@@ -264,6 +264,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **A smaller download** ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158)):
+  the program is built for size, which takes the installer from 16.1 to 13.6 MB and the zips
+  from 19.3 to 15.6 MB, with the same features and the same download speed.
 - **Translators: a reviewed translation is never replaced by machine translation.** A row whose
   `#, machine` line a person deleted is kept by `tools/i18n/translate.py` in every case (`--redo`
   included; a check it fails is printed for the person to decide), and CI fails a pull request
