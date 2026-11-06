@@ -1012,10 +1012,21 @@ fn rtc_offset() -> i64 {
 /// Wake the computer at `at` (seconds since 1970, UTC), or cancel MDM's wake (None).
 #[cfg(target_os = "linux")]
 pub fn wake_at(at: Option<i64>) -> Result<(), String> {
-    use std::sync::Mutex;
-    // The alarm MDM set (in the chip's time), to tell it from another program's.
-    static OURS: Mutex<Option<i64>> = Mutex::new(None);
-    let mut ours = OURS.lock().unwrap_or_else(|e| e.into_inner());
+    // The alarm MDM set (in the chip's time), to tell it from another program's: kept in the
+    // data folder, so an alarm left by an MDM that was killed (or signed out of) is still ours.
+    let file = mdm_ipc::data_dir().map(|d| d.join("wake-alarm"));
+    let mut ours = file
+        .as_ref()
+        .and_then(|f| std::fs::read_to_string(f).ok())
+        .and_then(|s| s.trim().parse::<i64>().ok());
+    let keep = |v: Option<i64>| {
+        if let Some(f) = &file {
+            let _ = match v {
+                Some(v) => std::fs::write(f, v.to_string()),
+                None => std::fs::remove_file(f),
+            };
+        }
+    };
     let set_now = std::fs::read_to_string(WAKEALARM)
         .ok()
         .and_then(|s| s.trim().parse::<i64>().ok());
@@ -1024,11 +1035,15 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
     let close = |a: i64, b: i64| (a - b).abs() <= 2;
     match (set_now, want) {
         (Some(now), Some(w)) if close(now, w) => {
-            *ours = Some(now);
+            if ours != Some(now) {
+                keep(Some(now));
+            }
             return Ok(());
         }
         (None, None) => {
-            *ours = None;
+            if ours.is_some() {
+                keep(None);
+            }
             return Ok(());
         }
         _ => {}
@@ -1051,11 +1066,12 @@ pub fn wake_at(at: Option<i64>) -> Result<(), String> {
     if set_now.is_some() {
         write("0")?;
     }
-    *ours = None;
+    ours = None;
     if let Some(v) = want {
         write(&v.to_string())?;
-        *ours = Some(v);
+        ours = Some(v);
     }
+    keep(ours);
     Ok(())
 }
 
