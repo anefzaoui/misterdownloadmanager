@@ -180,25 +180,29 @@ const SCRIPT_LANGS: &[(&str, &str)] = &[
 ];
 
 /// Marks that neither the interface font nor the script fonts have (✔ ✖ ↩ ⇧ ⌘ ⌥ ⌦, and → on
-/// Linux: #185): the system's symbols font, last in every family's chain, in every language.
-/// The first file found is used.
+/// Linux: #185): the system's symbol fonts, last in every family's chain, in every language,
+/// each one that is there. macOS keeps ✔ and ✖ in Zapf Dingbats, not in Apple Symbols.
 #[cfg(windows)]
 const SYMBOL_FONTS: &[&str] = &["seguisym.ttf"];
 #[cfg(target_os = "macos")]
-const SYMBOL_FONTS: &[&str] = &["Apple Symbols.ttf"];
+const SYMBOL_FONTS: &[&str] = &["Apple Symbols.ttf", "ZapfDingbats.ttf"];
 /// Linux: the font fontconfig picks for those marks (glyph_tests lists every one the windows
 /// draw; a new one goes here too).
 #[cfg(not(any(windows, target_os = "macos")))]
 const SYMBOL_PATTERN: &str = ":charset=2024 2192 21a9 21e7 2318 2325 2326 2714 2716";
 
-/// The symbols font's bytes ([`SYMBOL_FONTS`], [`SYMBOL_PATTERN`]).
-fn symbol_font() -> Option<Vec<u8>> {
+/// The symbol fonts' bytes, in fallback order ([`SYMBOL_FONTS`], [`SYMBOL_PATTERN`]).
+fn symbol_fonts() -> Vec<Vec<u8>> {
     #[cfg(any(windows, target_os = "macos"))]
     return SYMBOL_FONTS
         .iter()
-        .find_map(|f| std::fs::read(font_dir().join(f)).ok());
+        .filter_map(|f| std::fs::read(font_dir().join(f)).ok())
+        .collect();
     #[cfg(not(any(windows, target_os = "macos")))]
-    return fc_match(SYMBOL_PATTERN).and_then(|f| std::fs::read(f).ok());
+    return fc_match(SYMBOL_PATTERN)
+        .and_then(|f| std::fs::read(f).ok())
+        .into_iter()
+        .collect();
 }
 
 /// The folder the font tables name files in.
@@ -402,9 +406,10 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
         defs.font_data.insert(key.clone(), on_baseline(bytes));
         fallbacks.push(key);
     }
-    if let Some(bytes) = symbol_font() {
-        defs.font_data.insert("symbols".into(), on_baseline(bytes));
-        fallbacks.push("symbols".into());
+    for (k, bytes) in symbol_fonts().into_iter().enumerate() {
+        let key = format!("symbols-{k}");
+        defs.font_data.insert(key.clone(), on_baseline(bytes));
+        fallbacks.push(key);
     }
     for list in defs.families.values_mut() {
         for f in &fallbacks {
