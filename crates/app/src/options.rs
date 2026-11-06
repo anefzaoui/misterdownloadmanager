@@ -1485,14 +1485,9 @@ impl OptionsDialog {
                     crate::i18n::t("Every connection goes through it, from {ip}."),
                     &[("ip", &crate::i18n::ltr(&ip.unwrap_or_default()))],
                 );
-                // What can't be held to it on this system (refused, not sent around it).
-                #[cfg(windows)]
-                // i18n: Options → Network adapter (Windows): video pages (yt-dlp) and torrents don't start while an adapter is chosen
-                let not_yet = crate::i18n::t("Video pages and torrents can't use it yet.");
-                #[cfg(not(windows))]
-                // i18n: Options → Network adapter (Linux, macOS): video pages (yt-dlp) don't start while an adapter is chosen
-                let not_yet = crate::i18n::t("Video pages can't use it yet.");
-                (format!("{line}\n{not_yet}"), true)
+                // Downloads, torrents (#143), video pages and galleries (through the helpers'
+                // relay, #35) all go through it on every system: nothing more to say.
+                (line, true)
             }
         };
         let color = if ok {
