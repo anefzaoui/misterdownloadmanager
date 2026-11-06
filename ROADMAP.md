@@ -17,6 +17,9 @@ Everything below ships together, in one release.
   far) in Download File Info, the progress window and Properties, from a table that comes with MDM
   (no address is sent anywhere); a proxy or a CDN said as such
   ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
+- ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
+  video, the right-click menu (it did nothing in Firefox) and the media list
+  ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
 - ✅ A download or magnet link sent while the window is minimized opens its window at once
   ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162))
 - ✅ Linux: Ubuntu's Firefox (the Snap) reaches MDM: browser integration is set up for it, and the
@@ -172,8 +175,6 @@ Everything below ships together, in one release.
 - 🔍 A crash on Linux as Download File Info opens
   ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22
 - 🔍 Linux display issues ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
-- 🔍 Firefox: an HLS stream handed to MDM fails with yt-dlp's "Unsupported URL"
-  ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
 
 ## Planned
 
