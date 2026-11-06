@@ -56,6 +56,20 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   accent, every edge drawn and text at 7:1 or more. A theme applies at once, light and dark alike,
   and theme files in the themes folder (**View → Theme → Open themes folder**) are listed too;
   High contrast is itself such a file, in the same format.
+- **Themes: Metro** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)), after
+  Windows 8's flat look, the layout kept: square corners, flat buttons, boxes that take an accent
+  border when focused, check boxes with a tick, a bordered progress bar, scroll bars with their
+  arrows always shown, one-colour icons (Microsoft's Fluent UI System Icons, MIT) and, on
+  Windows, a title bar MDM draws in the theme's colour with the title centred (resizing, Snap
+  Layouts on Maximize, double-click and Alt+Space work as with the system's). Theme files can now
+  choose each control's style (`[controls]`), an icon set, and a theme can be a folder that brings
+  its own icons.
+- **Themes: Adwaita** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)),
+  after GNOME's look, the layout kept: round corners, flat grey buttons, a rounded focus ring,
+  boxes that take a ring when focused, GNOME's check boxes and radio buttons, GNOME's Adwaita
+  icons (LGPL-3.0), in colour for files and categories and one colour in the toolbar, and, on
+  Windows, a header bar MDM draws with the title in bold and round buttons. An icon set can now
+  mix PNG pictures with SVG drawings, and one-colour icons (`-symbolic.svg`) with coloured ones.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
@@ -311,7 +325,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   pixel by pixel (`shots.sh`, `shot-host.sh`, `pixdiff.py`), HLS and DASH hand-overs from the Snap
   Firefox and Google Chrome (`streams.mjs`, `streams-chrome.mjs`), the extension's proxy switch
   (`proxy-optin.mjs`), hand-overs and the Scheduler while minimized, torrents without a network,
-  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows.
+  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows. The
+  machine also has copies on KDE Plasma, Cinnamon and XFCE (`desktop.sh`), which get a build
+  copied over instead of making one (`vm.ps1 deploy`); a window harness shoots many windows from
+  one running MDM in any language, mode and theme, with real clicks and keys inside the machine
+  (`win.sh`, `win-host.sh`); and a store package is checked before it ships (`store-check.mjs`,
+  `chrome-menu.mjs`).
 - **Developers: the engine tests no longer fail on a busy computer**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
   depended on timing: a refused connection coming back, the learned connection limit, and a dead
@@ -409,6 +428,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   theme the desktop gives its programs (a name such as Adwaita-dark, Mint-Y-Dark or Greybird-dark
   is dark), GNOME's own dark style setting when there is no portal, and GTK's settings with no
   desktop at all, and it follows changes as they happen. The portal still comes first.
+- **Menus without a black band across their top**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
+  Insider build (22635), every menu and submenu showed a black band a title bar tall across its
+  top and a thin one down its left side, its items moved down by as much and its last ones cut
+  off. A menu's window had a title bar's style, hidden by MDM, and something on that build placed
+  the menu's picture where the title bar would have ended. Menus are now plain pop-up windows, as
+  Windows' own menus are, with nothing above their items to take for a title bar.
 - **A window closed with its title bar's × no longer turns black first**
   ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
   progress window turned black for a moment when closed with the × or Alt+F4, rather than with

@@ -14,6 +14,9 @@ and clipboard are never touched; keep the VM's clipboard sharing and drag-and-dr
   tools/lab/linux-vm/vm.ps1 clone <new name> [-Snapshot <name>] [-Cpus 6] [-MemoryMb 10240]
                                                     # a linked clone of a snapshot of $MDM_VM, its own
                                                     # hostname; then `start` it with MDM_VM=<name>
+  tools/lab/linux-vm/vm.ps1 deploy <to VM> <label>  # ~/lab/bin/<label> from $MDM_VM to another VM
+                                                    # (through a folder on the host), with the guest
+                                                    # scripts: a clone tests a build without making it
 
 In the guest (~/lab, from `setup`):
   build.sh <ref> [label]       a branch, PR (pr/<n>) or commit, built with the lab's vmtest profile
@@ -28,6 +31,14 @@ In the guest (~/lab, from `setup`):
                                checked against the lab server's log
   proxy-optin.mjs, chrome-popup.mjs   the extension's popup: the proxy switch and its permission
                                prompt in Firefox; any check of the popup in Chrome
+  win.sh (with win-host.sh on the host)   one MDM kept running while several of its windows are
+                               shot in turn: start with a language, mode and theme, open, close,
+                               switch theme live, real clicks and keys inside the VM
+  store-check.mjs              a store package (.xpi, unpacked Chrome zip) installed, its popup, an
+                               ordinary download handed to MDM
+  chrome-menu.mjs              an HLS stream from Google Chrome's right-click menu (a real right-click
+                               in a Chrome window, which headless Chrome can't show)
+  desktop.sh                   KDE Plasma, Cinnamon or XFCE beside GNOME in a clone, auto-login to it
   handoff-minimized.sh, queue-minimized.sh   hand-overs and the Scheduler while MDM is minimized
   torrent-menu.sh              a torrent in the list with no network, for the torrent windows
   use-system-helpers.sh        MDM uses the system's yt-dlp, ffmpeg and gallery-dl
@@ -41,7 +52,7 @@ mdm-ubuntu, mdm, and the lab's throwaway password). Commands run with the deskto
 DISPLAY and D-Bus, so GUI programs open on the VM's screen.
 #>
 param(
-    [Parameter(Position = 0, Mandatory)] [ValidateSet('configure', 'start', 'setup', 'run', 'shot', 'get', 'put', 'clone')] [string] $Action,
+    [Parameter(Position = 0, Mandatory)] [ValidateSet('configure', 'start', 'setup', 'run', 'shot', 'get', 'put', 'clone', 'deploy')] [string] $Action,
     [Parameter(Position = 1)] [string] $Arg1,
     [Parameter(Position = 2)] [string] $Arg2,
     [string] $Branch = 'main',
@@ -56,12 +67,12 @@ $user = if ($env:MDM_VM_USER) { $env:MDM_VM_USER } else { 'mdm' }
 $pass = if ($env:MDM_VM_PASSWORD) { $env:MDM_VM_PASSWORD } else { 'mdm123456789' }
 $auth = @('--username', $user, '--password', $pass)
 
-function Invoke-Guest([string] $Command) {
+function Invoke-Guest([string] $Command, [string] $On = $vm) {
     # The desktop session's display and bus, so GUI programs and gsettings reach it.
     $session = 'export DISPLAY=:0 XDG_RUNTIME_DIR=/run/user/$(id -u) DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus; ' +
         'export XAUTHORITY=$(ls /run/user/$(id -u)/gdm/Xauthority 2>/dev/null || echo $HOME/.Xauthority); ' +
         "export MDM_SUDO_PASSWORD='$pass'; [ -f ~/.cargo/env ] && . ~/.cargo/env; "
-    & $vbox guestcontrol $vm run --exe /bin/bash @auth --wait-stdout --wait-stderr -- -c ($session + $Command)
+    & $vbox guestcontrol $On run --exe /bin/bash @auth --wait-stdout --wait-stderr -- -c ($session + $Command)
     if ($LASTEXITCODE) { throw "guest command failed ($LASTEXITCODE)" }
 }
 
@@ -133,6 +144,34 @@ switch ($Action) {
         Start-Sleep 10
         & $vbox guestcontrol $name run --exe /bin/bash @auth --wait-stdout --wait-stderr -- -c `
             "echo '$pass' | sudo -S -p '' hostnamectl set-hostname $name && echo '$pass' | sudo -S -p '' sed -i 's/$vm/$name/g' /etc/hosts && hostname"
+    }
+    'deploy' {
+        # The programs of one build, from the VM that built them to one that only tests (a clone
+        # with another desktop): no toolchain or second build needed there. VirtualBox copies
+        # between guest and host only, so through a folder on the host, removed afterwards.
+        $to = $Arg1; $label = $Arg2
+        if (-not $to -or -not $label) { throw 'deploy: <to VM> <label>' }
+        $tmp = Join-Path ([IO.Path]::GetTempPath()) "mdm-lab-deploy-$label"
+        Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
+        New-Item -ItemType Directory $tmp | Out-Null
+        try {
+            & $vbox guestcontrol $vm copyfrom @auth --recursive --target-directory "$tmp\\" "/home/$user/lab/bin/$label"
+            if ($LASTEXITCODE) { throw "copy from $vm failed ($LASTEXITCODE)" }
+            Invoke-Guest "mkdir -p ~/lab/bin && rm -rf ~/lab/bin/$label" -On $to
+            & $vbox guestcontrol $to copyto @auth --recursive --target-directory "/home/$user/lab/bin/" (Join-Path $tmp $label)
+            if ($LASTEXITCODE) { throw "copy to $to failed ($LASTEXITCODE)" }
+            # The guest scripts too, so the clone runs the same harnesses as the lab: copied beside
+            # and renamed into place, since bash reads a running script as it goes (a build.sh
+            # overwritten mid-build broke at its next line).
+            $files = Get-ChildItem $PSScriptRoot -File | Where-Object { $_.Extension -in '.sh', '.mjs', '.py' -and $_.Name -notlike '*-host.sh' } | ForEach-Object FullName
+            Invoke-Guest 'rm -rf ~/lab/.incoming && mkdir -p ~/lab/.incoming' -On $to
+            & $vbox guestcontrol $to copyto @auth --target-directory /home/$user/lab/.incoming/ @files
+            Invoke-Guest 'mv -f ~/lab/.incoming/* ~/lab/ && rmdir ~/lab/.incoming' -On $to
+            # The copy keeps no file modes: the programs made runnable again.
+            Invoke-Guest "chmod +x ~/lab/bin/$label/* && ls -l ~/lab/bin/$label" -On $to
+        } finally {
+            Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
+        }
     }
     'run' { Invoke-Guest $Arg1 }
     'shot' { & $vbox controlvm $vm screenshotpng ([IO.Path]::GetFullPath($Arg1)) }

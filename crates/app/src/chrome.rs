@@ -64,6 +64,8 @@ pub enum IconKey {
     ExtLarge(String),
     /// A FamFamFam Silk icon (CC BY 2.5, assets/icons/silk/), by name.
     Silk(&'static str),
+    /// The theme icon set's icon for a need (`crate::themeicons`), else this Silk icon.
+    Themed(&'static str, &'static str),
 }
 
 /// The embedded Silk icons (XP-era look, like IDM's tree icons).
@@ -119,6 +121,13 @@ impl ShellIcons {
         match &key {
             IconKey::Silk(name) => {
                 if let Some(src) = silk(name) {
+                    paint_image(ui, painter, src, rc);
+                }
+            }
+            IconKey::Themed(need, name) => {
+                if !crate::themeicons::paint(ui, painter, need, rc, true)
+                    && let Some(src) = silk(name)
+                {
                     paint_image(ui, painter, src, rc);
                 }
             }
@@ -867,7 +876,26 @@ fn popup_level<C: Clone>(
     let mut sub_at: Option<(usize, f32)> = None;
     let vid = egui::ViewportId::from_hash_of(("menu", id, depth));
     let parent_vid = ctx.viewport_id();
+    // Set when this pass made the new (hidden) window a menu window: shown below. (Elsewhere a
+    // menu's window is created visible.)
+    #[cfg_attr(not(windows), allow(unused_mut))]
+    let mut styled = false;
     ctx.show_viewport_immediate(vid, builder, |ui, _| {
+        // Made a menu window (win32::menu_window) in its own pass, before anything is drawn in
+        // it: its frame changes (#208), and a picture drawn before that was lost with the old
+        // frame, so the menu showed black until something made it draw again.
+        #[cfg(windows)]
+        {
+            styled = crate::win32::menu_window(
+                &title,
+                u32::from_le_bytes([
+                    POPUP_BORDER().r(),
+                    POPUP_BORDER().g(),
+                    POPUP_BORDER().b(),
+                    0,
+                ]),
+            );
+        }
         // What happens in this window, for popup() and keyboard(), which run in the parent's
         // pass: they must not ask egui about a menu window by its id, which creates one when it
         // isn't open (a submenu, mostly): an untitled copy of the main window, opened and closed
@@ -1132,16 +1160,7 @@ fn popup_level<C: Clone>(
             y += SLOT;
         }
     });
-    #[cfg(windows)]
-    if crate::win32::menu_window(
-        &title,
-        u32::from_le_bytes([
-            POPUP_BORDER().r(),
-            POPUP_BORDER().g(),
-            POPUP_BORDER().b(),
-            0,
-        ]),
-    ) {
+    if styled {
         ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
         // The command is carried out on the menu's next frame: a menu opened from the keyboard
         // (Shift+F10, the Menu key) or a screen reader moves no pointer to bring one, and stayed
@@ -1658,11 +1677,17 @@ pub fn categories(
         }
         // Icons placed, not mirrored.
         icons.paint_in(ui, &tp, r.icon.clone(), pos2(icon_x, top));
-        if let Some(name) = r.badge
-            && let Some(src) = silk(name)
-        {
-            let rc = Rect::from_min_size(pos2(icon_x + 7.0, top + 7.0), vec2(9.0, 9.0));
-            paint_image(ui, &tp, src, winui::rect(rc));
+        if let Some(name) = r.badge {
+            let rc = winui::rect(Rect::from_min_size(
+                pos2(icon_x + 7.0, top + 7.0),
+                vec2(9.0, 9.0),
+            ));
+            // The check badge from the theme's icon set, where it has one.
+            let themed =
+                name == "tick" && crate::themeicons::paint(ui, &tp, "misc-emblem-ok", rc, true);
+            if !themed && let Some(src) = silk(name) {
+                paint_image(ui, &tp, src, rc);
+            }
         }
         text_font(
             &tp,
