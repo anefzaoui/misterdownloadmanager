@@ -482,6 +482,8 @@ pub struct App {
     /// View → Theme's choices (#45), and when the themes folder last changed (read again then).
     theme_list: Vec<crate::themefile::Entry>,
     themes_changed: Option<std::time::SystemTime>,
+    /// When `logic`'s every-2-seconds work last ran (crash state, torrents, #174).
+    ticked: Option<Instant>,
     /// The main window's caption matches the mode.
     caption_set: bool,
     list: list::ListState,
@@ -893,6 +895,7 @@ impl App {
             theme_checked: None,
             theme_list: crate::themefile::list(),
             themes_changed: crate::themefile::changed(),
+            ticked: None,
             caption_set: false,
             list,
             icons: ShellIcons,
@@ -7114,6 +7117,48 @@ impl eframe::App for App {
         if handled {
             ctx.request_ui_pass(egui::ViewportId::ROOT);
         }
+        // The clock: what must go on whatever the main window's state (#174). Minimized, egui
+        // runs no `ui`, and the queues, the Scheduler's starts and stops, the download limits,
+        // the kill switch, saving the list, the clipboard monitor, the update check, the tray and
+        // the taskbar's progress all stood still until the window was restored.
+        crate::settings::share_proxy(self.settings.proxy());
+        crate::settings::share_dns(self.settings.dns());
+        self.follow_assistive_technology(ctx);
+        self.network_adapter_tick(ctx);
+        self.debrid_tick();
+        self.poll(ctx);
+        // What failed in any window, told here (dialogs::tell).
+        if let Some((title, text)) = dialogs::told().pop() {
+            self.notice = Some((title, text));
+        }
+        self.auto_update_check(ctx);
+        self.apply_global_limit();
+        self.watch_clipboard(ctx);
+        self.tray(ctx);
+        // The taskbar button's green bar: everything running, as one.
+        #[cfg(windows)]
+        crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
+        if self
+            .ticked
+            .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
+        {
+            self.ticked = Some(Instant::now());
+            // For a crash report: what MDM has open and running (sent when it changes).
+            crate::crash::state(
+                self.items.len(),
+                self.items.iter().filter(|i| i.live.is_some()).count(),
+                self.queues.len(),
+                ctx.pixels_per_point(),
+            );
+            self.torrent_tick();
+            // Minimized, the windows these open (Download complete, a limit's notice, Download
+            // File Info for a copied link, an update) are made by a pass of the main window's
+            // UI, which egui runs then only when asked: every 2 s, as the clock repaints.
+            if ctx.input(|i| i.viewport().minimized == Some(true)) {
+                ctx.request_ui_pass(egui::ViewportId::ROOT);
+            }
+        }
+        ctx.request_repaint_after(Duration::from_secs(2));
     }
 
     fn ui(&mut self, ui: &mut Ui, _frame: &mut eframe::Frame) {
@@ -7128,31 +7173,15 @@ impl eframe::App for App {
         if crate::offscreen() {
             crate::win32::keep_from_foreground();
         }
-        crate::settings::share_proxy(self.settings.proxy());
-        crate::settings::share_dns(self.settings.dns());
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
-        self.follow_assistive_technology(&ctx);
-        self.network_adapter_tick(&ctx);
-        self.debrid_tick();
         dialogs::publish_main_rect(&ctx);
-        // Incoming commands: `logic`, just before.
-        self.poll(&ctx);
-        // What failed in any window, told here (dialogs::tell).
-        if let Some((title, text)) = dialogs::told().pop() {
-            self.notice = Some((title, text));
-        }
+        // Incoming commands and the clock (downloads, queues, Scheduler, saving…): `logic`, just
+        // before, which runs minimized too.
         self.poll_picks(&ctx);
         self.drop_target(&ctx);
         self.main_drops(&ctx);
         self.remember_layout(&ctx);
-        self.auto_update_check(&ctx);
-        self.apply_global_limit();
-        self.watch_clipboard(&ctx);
-        self.tray(&ctx);
-        // The taskbar button's green bar: everything running, as one.
-        #[cfg(windows)]
-        crate::win32::taskbar_progress(crate::MAIN_TITLE, self.overall_progress());
         // Light or dark: IDM follows Windows' app mode (checked every 2 s) unless View → Dark
         // Mode support is off. Switches live (IDM asks to restart).
         if self
@@ -7197,16 +7226,7 @@ impl eframe::App for App {
             if changed {
                 ctx.request_repaint();
             }
-            // For a crash report: what MDM has open and running (sent when it changes).
-            crate::crash::state(
-                self.items.len(),
-                self.items.iter().filter(|i| i.live.is_some()).count(),
-                self.queues.len(),
-                ctx.pixels_per_point(),
-            );
-            self.torrent_tick();
         }
-        ctx.request_repaint_after(Duration::from_secs(2));
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(chrome::WINDOW_BG()))
             .show(ui, |ui| self.paint(ui));
