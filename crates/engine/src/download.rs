@@ -688,6 +688,8 @@ pub struct Snapshot {
     /// What happened, oldest first (the last `EVENTS`): the download's event log. Never
     /// cookies or credentials.
     pub events: Vec<Event>,
+    /// Where its server is, as its connections saw it (#140).
+    pub server: Option<crate::Server>,
 }
 
 /// One entry of a download's event log; `seq` counts up within one `Download`.
@@ -708,6 +710,8 @@ pub struct ProbeInfo {
     pub size: Option<u64>,
     /// Suggested local name (Content-Disposition, else URL).
     pub file_name: String,
+    /// Where the server is, as the look saw it (#140).
+    pub server: Option<crate::Server>,
 }
 
 /// One plain `GET` (or `Options::post`'s POST) to learn the final URL, size and name, through
@@ -731,6 +735,8 @@ pub struct KeptAnswer {
     at: std::time::Instant,
     /// The service's direct link it was asked at (#44), with its connection cap and name.
     unlocked: Option<crate::unlock::Unlocked>,
+    /// What its client learnt of the server (#140): the download goes on with it.
+    seen: Arc<crate::server::ServerSeen>,
 }
 
 impl std::fmt::Debug for KeptAnswer {
@@ -761,6 +767,7 @@ pub async fn probe_kept(
                 file_name: naming::file_name(None, &url),
                 final_url: url,
                 size: facts.size,
+                server: None,
             },
             None,
         ));
@@ -773,7 +780,8 @@ pub async fn probe_kept(
         Some(u) => (u.url.clone(), HeaderMap::new()),
         None => (url.clone(), headers),
     };
-    let client = client(opts, &target, &as_get)?;
+    let seen = Arc::new(crate::server::ServerSeen::default());
+    let client = client(opts, &target, &as_get, &seen)?;
     let (resp, headers, took) = get(
         &client,
         target,
@@ -783,6 +791,7 @@ pub async fn probe_kept(
         &CancellationToken::new(),
     )
     .await?;
+    seen.answered(&resp);
     let final_url = resp.url().clone();
     let (size, from_zero) = match resp.status() {
         StatusCode::PARTIAL_CONTENT => {
@@ -798,10 +807,12 @@ pub async fn probe_kept(
         final_url,
         size: size.or(unlocked.as_ref().and_then(|u| u.size)),
         file_name,
+        server: seen.get(),
     };
     let kept = from_zero.then(|| KeptAnswer {
         url,
         client,
+        seen,
         as_get,
         resp,
         headers,
@@ -815,7 +826,7 @@ pub async fn probe_kept(
 /// A client for requests to `url`'s server that aren't downloads (a debrid service's API, #44):
 /// the same proxy, DNS and network adapter as `opts`' downloads.
 pub fn http_client(opts: &Options, url: &Url) -> Result<Client, Error> {
-    client(opts, url, &AsGet::default())
+    client(opts, url, &AsGet::default(), &Default::default())
 }
 
 /// The file's name: the server's (Content-Disposition), else the service's (#44), else the
@@ -936,7 +947,9 @@ impl Download {
                 error: None,
                 failure: None,
                 events: Vec::new(),
+                server: None,
             }),
+            seen: Default::default(),
             planner: Mutex::new(None),
             limiter: Limiter::new(None),
             best_speed: Default::default(),
@@ -1015,6 +1028,9 @@ pub async fn fetch(
 
 struct Shared {
     view: Mutex<Snapshot>,
+    /// What the download's client learnt of its server (#140); the look's when it went on
+    /// from the look's answer.
+    seen: std::sync::OnceLock<Arc<crate::server::ServerSeen>>,
     planner: Mutex<Option<Planner>>,
     limiter: Limiter,
     /// The best speed one connection of this download sustained (≥ 1 s), bytes/s: what a good
@@ -1025,6 +1041,7 @@ struct Shared {
 impl Shared {
     fn snapshot(&self) -> Snapshot {
         let mut s = self.view.lock().unwrap().clone();
+        s.server = self.seen.get().and_then(|seen| seen.get());
         if let Some(p) = self.planner.lock().unwrap().as_ref() {
             s.downloaded = p.downloaded();
             s.segments = p
@@ -1240,7 +1257,12 @@ impl Ctx {
 const POOL_IDLE: Duration = Duration::from_secs(15);
 
 /// The client for a download of `url`; a POST download's redirects are noted in `as_get`.
-fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
+fn client(
+    opts: &Options,
+    url: &Url,
+    as_get: &AsGet,
+    seen: &Arc<crate::server::ServerSeen>,
+) -> Result<Client, Error> {
     let port = url.port_or_known_default().unwrap_or(443);
     let route = &opts.route;
     // An IP address in the URL never reaches the resolver, which drops what the chosen adapter
@@ -1268,15 +1290,22 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
         }
         Ok(())
     };
+    // Whether a proxy carries this download (#140: the address that answers is then the
+    // proxy's): known here for each kind of setting.
+    let mut proxied = false;
     let builder = match (&opts.proxy, system) {
         (Proxy::None, _) => builder.no_proxy(),
         (Proxy::System, Some(Some(proxy))) => {
             check_proxy(&proxy, true)?;
+            proxied = true;
             builder.no_proxy().proxy(reqwest::Proxy::all(&proxy)?)
         }
         (Proxy::System, Some(None)) => builder.no_proxy(),
         // reqwest reads the system's proxy by default.
-        (Proxy::System, None) => builder,
+        (Proxy::System, None) => {
+            proxied = net::system_proxy(url).is_some();
+            builder
+        }
         (
             Proxy::Manual {
                 url: proxy,
@@ -1293,6 +1322,11 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
             if *http || *https {
                 check_proxy(proxy, *http && *https)?;
             }
+            proxied = if url.scheme() == "https" {
+                *https
+            } else {
+                *http
+            };
             let mut b = builder.no_proxy();
             if *http {
                 b = b.proxy(with_login(reqwest::Proxy::http(proxy.as_str())?));
@@ -1319,10 +1353,14 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
             match first {
                 Some(Some(p)) => {
                     check_proxy(&p, true)?;
+                    proxied = true;
                     builder.no_proxy().proxy(reqwest::Proxy::all(&p)?)
                 }
                 Some(None) => builder.no_proxy(),
-                None => builder,
+                None => {
+                    proxied = net::system_proxy(url).is_some();
+                    builder
+                }
             }
         }
     };
@@ -1355,7 +1393,10 @@ fn client(opts: &Options, url: &Url, as_get: &AsGet) -> Result<Client, Error> {
             }
         }))
     };
+    seen.set_proxied(proxied);
     Ok(builder
+        // Each connection's opening timed (#140): the download's own, no extra probe.
+        .connector_layer(crate::server::Timed(seen.clone()))
         .dns_resolver(Arc::new(dns::Resolver::new(
             &opts.hosts,
             port,
@@ -1418,6 +1459,7 @@ async fn run_fresh(
             shared.event(
                 "Connection 1: continuing from the answer the file's information window got",
             );
+            let _ = shared.seen.set(k.seen);
             (k.as_get, k.client, (k.resp, k.headers), k.took)
         }
         None => {
@@ -1430,9 +1472,11 @@ async fn run_fresh(
                 None => (req.url.clone(), req.headers.clone()),
             };
             let as_get = AsGet::default();
-            let client0 = client(&opts, &target, &as_get)?;
+            let seen = shared.seen.get_or_init(Default::default).clone();
+            let client0 = client(&opts, &target, &as_get, &seen)?;
             let (answer, ttfb) =
                 first_get(&client0, &target, &asked, &opts, shared, cancel).await?;
+            seen.answered(&answer.0);
             (as_get, client0, answer, ttfb)
         }
     };
@@ -1727,7 +1771,8 @@ async fn run_fresh_ftp(
         );
         saved.checksum = opts.checksum.clone();
         let ctx = Arc::new(Ctx {
-            client: client(&opts, &req.url, &AsGet::default())?,
+            // FTP's connections are its own (`ftp`): this client's are none of the server's.
+            client: client(&opts, &req.url, &AsGet::default(), &Default::default())?,
             validators: Mutex::new(validators),
             target: Mutex::new(Target {
                 url,
@@ -1797,7 +1842,8 @@ async fn run_resume(
     // Signed links from a redirect expire: ask the original address again for today's target
     // (it must still be the same file), else keep the stored one.
     let as_get = AsGet::default();
-    let client = client(&opts, &saved.url, &as_get)?;
+    let seen = shared.seen.get_or_init(Default::default).clone();
+    let client = client(&opts, &saved.url, &as_get, &seen)?;
     let refreshed = if saved.url != saved.final_url {
         let post = opts.post.as_ref();
         let agent = &opts.user_agent;

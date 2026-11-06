@@ -23,10 +23,32 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  geo:
+    # Where a download's server is (#140): this month's IP-to-country table (DB-IP's IP to Country
+    # Lite, CC BY 4.0) for every build. A failed download keeps the committed one, with a warning.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: IP-to-country table
+        run: python3 tools/geo/build.py --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: geo-data
+          path: crates/geo/data/*
+          retention-days: 7
+
   windows:
+    needs: geo
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: geo-data
+          path: crates/geo/data
 
       - name: Toolchain
         run: rustup show active-toolchain || rustup toolchain install
@@ -176,9 +198,15 @@ jobs:
 
   linux:
     # The oldest supported Ubuntu: the programs run on its glibc (2.35) and newer.
+    needs: geo
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: geo-data
+          path: crates/geo/data
 
       - name: Toolchain
         run: rustup show active-toolchain || rustup toolchain install
@@ -207,9 +235,15 @@ jobs:
           path: target/dist/*
 
   macos:
+    needs: geo
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: geo-data
+          path: crates/geo/data
 
       - name: Toolchain
         run: rustup show active-toolchain || rustup toolchain install

@@ -187,6 +187,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 設定識別碼為六個字母和數字 (0-9, a-f)。
+#. text in whereis.rs
+#. the tooltip of where a download's server is, when a proxy carries the download
+#, machine
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	此下載由 Proxy 執行：位置和時間皆為 Proxy 的，而非伺服器的。
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -210,6 +214,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	關於 Mister Download Manager
+#. text in whereis.rs
+#. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
+#, machine
+	about {ms} ms ({reach})	約 {ms} 毫秒 ({reach})
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -316,6 +324,10 @@
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	位址:
+#. text in whereis.rs
+#. the tooltip of where a download's server is: its IP address
+#, machine
+	Address: {address}	位址：{address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
@@ -328,6 +340,22 @@
 #. a check of Test browser integration (Options → General)
 #, machine
 	Advanced browser integration is on	進階瀏覽器整合已開啟
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Afghanistan	阿富汗
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aland Islands	奧蘭群島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Albania	阿爾巴尼亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Algeria	阿爾及利亞
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	所有下載
@@ -382,6 +410,22 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	上午
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	American Samoa	美屬薩摩亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Andorra	安道爾
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Angola	安哥拉
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Anguilla	安圭拉
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
@@ -391,6 +435,14 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	在 {ms} 毫秒內回應: {ip}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antarctica	南極洲
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antigua and Barbuda	安地卡及巴布達
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
 #, machine
@@ -416,9 +468,21 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	您確定要從 Mister Download Manager 下載清單中刪除「{name}」嗎？
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Argentina	阿根廷
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Armenia	亞美尼亞
 #. text in rssdlg.rs
 #, machine
 	Articles	文章
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aruba	阿魯巴
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	依系統地區設定寫入
@@ -454,6 +518,14 @@
 #. text in the Scheduler window
 #, machine
 	August	八月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Australia	澳洲
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Austria	奧地利
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -461,23 +533,95 @@
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	自動開始下載以下檔案類型:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Azerbaijan	亞塞拜然
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahamas	巴哈馬
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahrain	巴林
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bangladesh	孟加拉
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Barbados	巴貝多
 #. window title in the Batch download window
 #, machine
 	Batch download	批次下載
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belarus	白俄羅斯
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belgium	比利時
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belize	貝里斯
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Benin	貝南
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bermuda	百慕達
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
 #, machine
 	Best quality	最佳品質
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bhutan	不丹
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
 	Block the addresses in this list (P2P or eMule format):	封鎖此清單中的位址 (P2P 或 eMule 格式)：
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bolivia	玻利維亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bonaire, Sint Eustatius and Saba	波奈、聖佑達修斯和薩巴
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bosnia and Herzegovina	波士尼亞與赫塞哥維納
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	兩者都是開放原始碼。MDM 會從其官方版本下載，並在執行前檢查每個檔案的簽章。大約 100 MB，一次。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Botswana	波札那
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bouvet Island	布威島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brazil	巴西
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	還原 {names} 為出廠設定：其名稱、檔案類型和資料夾？您自己的類別、一般和 Torrent 保持不變。已移至一般的下載項目會保留在該處。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	British Indian Ocean Territory	英屬印度洋屬地
 #. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
@@ -492,6 +636,22 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	瀏覽器/系統整合
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brunei	汶萊
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bulgaria	保加利亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burkina Faso	布吉納法索
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burundi	蒲隆地
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
@@ -502,6 +662,22 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	由連結擷取器
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cabo Verde	維德角
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cambodia	柬埔寨
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cameroon	喀麥隆
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Canada	加拿大
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
@@ -547,10 +723,22 @@
 #. text in categories.rs
 #, machine
 	Category properties	類別屬性
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cayman Islands	開曼群島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Central African Republic	中非共和國
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	憑證名稱:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chad	查德
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -610,6 +798,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	正在檢查...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chile	智利
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	China	中國
 #. text in langpick.rs
 #, machine
 	Choose a language	選擇語言
@@ -620,6 +816,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	選擇 {name}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Christmas Island	聖誕島
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -642,6 +842,18 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Close a menu or dialog	關閉功能表或對話方塊
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cocos (Keeling) Islands	科科斯 (基林) 群島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Colombia	哥倫比亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Comoros	葛摩
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -661,6 +873,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	確認刪除下載
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Congo	剛果
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -682,6 +898,10 @@
 #. text in the Options window
 #, machine
 	Connections:	連線：
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cook Islands	庫克群島
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	已複製到剪貼簿。
@@ -696,6 +916,10 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	複製報告
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Costa Rica	哥斯大黎加
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
@@ -709,6 +933,18 @@
 #. window title in a dialog box
 #, machine
 	Create folder	建立資料夾
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Croatia	克羅埃西亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cuba	古巴
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Curaçao	古拉索
 #. text in the Options window
 #, machine
 	Customize "Download progress" dialog	自訂「下載進度」對話方塊
@@ -721,6 +957,18 @@
 #. text in the Options window
 #, machine
 	Customize MDM menu items in context menu of browsers	自訂瀏覽器內容功能表中的 MDM 功能表項目
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cyprus	賽普勒斯
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Czech Republic	捷克
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Côte d'Ivoire	象牙海岸
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
@@ -789,6 +1037,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads and their files (asks first)	刪除選取的下載項目及其檔案 (先詢問)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Denmark	丹麥
 #. text in a dialog box
 #, machine
 	Description	描述
@@ -809,6 +1061,10 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	顯示在佇列清單中
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Djibouti	吉布地
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
@@ -834,6 +1090,14 @@
 #. category name: documents (pdf, doc…)
 #, machine
 	Documents	文件
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominica	多米尼克
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominican Republic	多明尼加
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 #, machine
@@ -877,6 +1141,10 @@
 #. window title in a dialog box
 #, machine
 	Download File Info	下載檔案資訊
+#. text in the Add torrent window
+#. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
+#, machine
+	Download in order	依序下載
 #. button in a dialog box
 #, machine
 	Download Later	稍後下載
@@ -979,6 +1247,10 @@
 #. {time} = a time of day (keep the braces as they are)
 #, machine
 	Downloads stopped and will resume automatically at {time}.	下載已停止，將於 {time} 自動恢復。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	DR Congo	剛果民主共和國
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1005,6 +1277,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	每個檔案的類別資料夾
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ecuador	厄瓜多
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -1024,6 +1300,14 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Edit...	編輯...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Egypt	埃及
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	El Salvador	薩爾瓦多
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	電子郵件
@@ -1059,6 +1343,14 @@
 #. RSS feeds window, Download rules: the episode filter can't be read
 #, machine
 	Episodes: like 1x2;1x5-8;2x1- (season x episode)	集數：例如 1x2;1x5-8;2x1- (季數 x 集數)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Equatorial Guinea	赤道幾內亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eritrea	厄利垂亞
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1070,6 +1362,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Error: {error}	錯誤: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Estonia	愛沙尼亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eswatini	史瓦帝尼
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ethiopia	衣索比亞
 #. text in the Options window
 #, machine
 	Event	事件
@@ -1133,6 +1437,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	正在解壓縮...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Falkland Islands	福克蘭群島
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (over 150 ms)
+#, machine
+	far	遠
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Faroe Islands	法羅群島
 #. text in the Scheduler window
 #, machine
 	February	二月
@@ -1156,6 +1472,10 @@
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
 	ffmpeg: joins picture and sound	ffmpeg：合併影像和音訊
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Fiji	斐濟
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -1232,6 +1552,10 @@
 #. adjective: the downloads that are complete
 #, machine
 	Finished	已完成
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Finland	芬蘭
 #. text in the Options window
 #, machine
 	First day of the week:	一週的第一天：
@@ -1263,6 +1587,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	週五
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	France	法國
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
@@ -1271,6 +1599,18 @@
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
 	Free, official and checked	免費、官方且已檢查
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Guiana	法屬圭亞那
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Polynesia	法屬玻里尼西亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Southern Territories	法屬南部領地
 #. text in the Scheduler window
 #, machine
 	Friday	星期五
@@ -1307,6 +1647,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gabon	加彭
 #. text in gallerydlg.rs
 #. in Download a gallery, before gallery-dl is installed
 #, machine
@@ -1325,12 +1669,24 @@
 #. a gallery download's error: the helper program it needs is missing
 #, machine
 	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl 未安裝 (使用圖庫位址新增 URL 即可安裝)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gambia	甘比亞
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
 #, machine
 	General	一般
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Georgia	喬治亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Germany	德國
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
@@ -1347,6 +1703,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	正在從同儕取得檔案清單... {n} 秒
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ghana	迦納
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gibraltar	直布羅陀
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -1355,6 +1719,50 @@
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
 	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google 雲端硬碟現在不提供此檔案：{message} (在瀏覽器中登入 Google 通常有幫助；否則，請稍後再試)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greece	希臘
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greenland	格陵蘭
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Grenada	格瑞那達
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guadeloupe	瓜德羅普
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guam	關島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guatemala	瓜地馬拉
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guernsey	根西
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea	幾內亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea-Bissau	幾內亞比索
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guyana	蓋亞那
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Haiti	海地
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	完成時掛斷數據機
@@ -1362,6 +1770,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	擁有
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Heard Island and McDonald Islands	赫德島與麥唐納群島
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1400,6 +1812,14 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	首頁
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Honduras	宏都拉斯
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hong Kong	香港
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1410,9 +1830,17 @@
 #. checkbox in the Options window
 #, machine
 	https	https
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hungary	匈牙利
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	我使用 Mister Download Manager 下載：快速、免費，而且它看起來就像您已經知道的下載管理員。{link}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iceland	冰島
 #. text in the Options window
 #, machine
 	If a duplicate download link is added:	如果新增重複的下載連結:
@@ -1439,6 +1867,14 @@
 #. a spin box's arrow, for screen readers: one more
 #, machine
 	Increase	增加
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	India	印度
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Indonesia	印尼
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -1478,6 +1914,26 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	IP 位址 (選用):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iran	伊朗
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iraq	伊拉克
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ireland	愛爾蘭
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Isle of Man	曼島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Israel	以色列
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1511,6 +1967,10 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	您可以將 img001.jpg、img002.jpg 等一系列檔案名稱新增至\nMDM 下載佇列。檔案名稱模式請使用星號萬用字元。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Italy	義大利
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1518,9 +1978,25 @@
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	其發行資訊不如預期：{detail}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jamaica	牙買加
 #. text in the Scheduler window
 #, machine
 	January	一月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Japan	日本
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jersey	澤西
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jordan	約旦
 #. text in the Scheduler window
 #, machine
 	July	七月
@@ -1530,12 +2006,20 @@
 #. text in the Scheduler window
 #, machine
 	June	六月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kazakhstan	哈薩克
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/秒
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	完成後繼續分享 torrent
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kenya	肯亞
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
@@ -1551,10 +2035,34 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	金鑰...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kiribati	吉里巴斯
+#. text in a download's Properties window
+#. Properties, where a download's server is: not seen yet (it hasn't run)
+#, machine
+	known once it has run	執行後才得知
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kosovo	科索沃
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kuwait	科威特
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kyrgyzstan	吉爾吉斯
 #. text in langpick.rs
 #. window title (the interface language)
 #, machine
 	Language	語言
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Laos	寮國
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
@@ -1571,16 +2079,40 @@
 #. button: add it now, start downloading later
 #, machine
 	Later	稍後
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Latvia	拉脫維亞
 #. text in the Options window
 #, machine
 	Launch Mister Download Manager on startup	啟動時執行 Mister Download Manager
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lebanon	黎巴嫩
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lesotho	賴索托
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
 	Letters	字母
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liberia	賴比瑞亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Libya	利比亞
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Licenses and credits	授權與鳴謝
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liechtenstein	列支敦斯登
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	將所有下載限制為
@@ -1628,6 +2160,10 @@
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	位址清單
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lithuania	立陶宛
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
@@ -1665,6 +2201,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	正在查詢頁面...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Luxembourg	盧森堡
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Macau	澳門
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Madagascar	馬達加斯加
 #. message or event log entry in the main window
 #, machine
 	Main download queue	主要下載佇列
@@ -1675,6 +2223,26 @@
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	正在使報告可讀：正在擷取符號 ({done} / {total} MB)…
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malawi	馬拉威
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malaysia	馬來西亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Maldives	馬爾地夫
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mali	馬利
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malta	馬爾他
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	手動 Proxy/SOCKS 設定
@@ -1685,12 +2253,28 @@
 #. text in the Scheduler window
 #, machine
 	March	三月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Marshall Islands	馬紹爾群島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Martinique	馬丁尼克
 #. checkbox in the Find window
 #, machine
 	Match case	大小寫須相符
 #. checkbox in the Find window
 #, machine
 	Match whole string only	僅符合整個字串
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritania	茅利塔尼亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritius	模里西斯
 #. group box title in the Options window
 #, machine
 	Max. connections number	最大連線數
@@ -1713,6 +2297,22 @@
 #. the month (the fifth of the year)
 #, machine
 	May	五月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mayotte	馬約特
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (60 to 150 ms)
+#, machine
+	medium	中
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mexico	墨西哥
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Micronesia	密克羅尼西亞
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
 #, machine
@@ -1771,13 +2371,37 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	週一
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Moldova	摩爾多瓦
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Monaco	摩納哥
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Monday	星期一
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mongolia	蒙古
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montenegro	蒙特內哥羅
 #. text in the Options window
 #. a date's order: month first (10/30/2026)
 #, machine
 	Month, day, year	月、日、年
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montserrat	蒙哲臘
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Morocco	摩洛哥
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
@@ -1817,6 +2441,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	正在移動檔案...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mozambique	莫三比克
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	比其他連線慢很多；正在重新連線
@@ -1835,6 +2463,10 @@
 #. option (radio button) in the Options window
 #, machine
 	My own way:	我的方式：
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Myanmar	緬甸
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
@@ -1852,10 +2484,30 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	主機檔案中的名稱和本機名稱 (單字、.local、.lan) 仍使用系統的 DNS。視訊頁面和 torrent 追蹤器目前使用系統的 DNS。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Namibia	納米比亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nauru	諾魯
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (under 60 ms)
+#, machine
+	near	近
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	需要登入
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nepal	尼泊爾
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Netherlands	荷蘭
 #. text in the Options window
 #, machine
 	Network adapter:	網路介面卡：
@@ -1869,6 +2521,10 @@
 #. button: create a new item
 #, machine
 	New	新增
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Caledonia	新喀里多尼亞
 #. text in the Options window
 #, machine
 	New exception	新增例外
@@ -1880,6 +2536,26 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	新規則
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Zealand	紐西蘭
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nicaragua	尼加拉瓜
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niger	尼日
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nigeria	奈及利亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niue	紐埃
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	否
@@ -1977,6 +2653,26 @@
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	無：對等點來自 DHT 和其他對等點
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norfolk Island	諾福克島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Korea	北韓
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Macedonia	北馬其頓
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Northern Mariana Islands	北馬利安納群島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norway	挪威
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	這不是可讀取的總和檢查碼
@@ -2009,6 +2705,9 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	暫不處理？稍後從「工作」→「從頁面下載影片」取得。
+#. text in a download's Properties window
+#, machine
+	not one server (peers, or a helper's)	非單一伺服器 (對等節點或輔助程式)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2055,6 +2754,10 @@
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	確定
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Oman	阿曼
 #. text in a download's progress window
 #, machine
 	on download stop/resume	在下載停止/繼續時
@@ -2155,6 +2858,30 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	頁面位址
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pakistan	巴基斯坦
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palau	帛琉
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palestine	巴勒斯坦
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Panama	巴拿馬
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Papua New Guinea	巴布亞紐幾內亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Paraguay	巴拉圭
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	密碼
@@ -2204,10 +2931,22 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	定期同步處理
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Peru	秘魯
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Philippines	菲律賓
 #. text in a download's progress window
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	區塊
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pitcairn	皮特肯群島
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
@@ -2220,6 +2959,10 @@
 #. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	PM	下午
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Poland	波蘭
 #. label in the Options window
 #, machine
 	Port	連接埠
@@ -2227,6 +2970,10 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	連接埠：
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Portugal	葡萄牙
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
@@ -2263,6 +3010,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	Proxy 伺服器位址
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Puerto Rico	波多黎各
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2271,6 +3022,10 @@
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
 	Put them into the video	將其放入影片中
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Qatar	卡達
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
 #. label before the quality chosen for all of a playlist's videos
@@ -2402,9 +3157,25 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	正在重試: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Romania	羅馬尼亞
 #. window title in rssdlg.rs
 #, machine
 	RSS feeds	RSS 摘要
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Russia	俄羅斯
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Rwanda	盧安達
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Réunion	留尼旺
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2414,9 +3185,53 @@
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
 	Sa	週六
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Barthélemy	聖巴瑟米
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Helena, Ascension and Tristan da Cunha	聖赫勒拿、亞森欣與崔斯坦達庫尼亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Kitts and Nevis	聖克里斯多福及尼維斯
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Lucia	聖露西亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Martin	聖馬丁
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Pierre and Miquelon	聖皮耶與密克隆
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Vincent and the Grenadines	聖文森及格瑞那丁
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Samoa	薩摩亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	San Marino	聖馬利諾
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sao Tome and Principe	聖多美普林西比
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Saturday	星期六
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saudi Arabia	沙烏地阿拉伯
 #. text in a dialog box
 #, machine
 	Save As	另存新檔
@@ -2503,6 +3318,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	傳送給朋友:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Senegal	塞內加爾
 #. text in a download's progress window
 #. column title: how much went to the peer
 #. how much was sent to other peers
@@ -2511,10 +3330,15 @@
 #. text in the Scheduler window
 #, machine
 	September	九月
-#. text in the Options window
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Serbia	塞爾維亞
+#. text in a dialog box; text in the Options window; text in a download's progress window
+#. label before where a download's server is (its country and round trip)
 #, machine
 	Server	伺服器
-#. text in the Options window
+#. text in the Options window; text in a download's Properties window
 #, machine
 	Server:	伺服器:
 #. text in the Options window
@@ -2545,6 +3369,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Settings...	設定...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Seychelles	塞席爾
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -2615,6 +3443,10 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	關機
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sierra Leone	獅子山
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
@@ -2627,6 +3459,14 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	已登出：請重新登入
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Singapore	新加坡
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sint Maarten	聖馬丁
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	網站名稱/下載連結/父網頁/參照位址
@@ -2666,6 +3506,22 @@
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
 	Sleep	睡眠
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovakia	斯洛伐克
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovenia	斯洛維尼亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Solomon Islands	索羅門群島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Somalia	索馬利亞
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
@@ -2692,6 +3548,26 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Source: {source}	來源：{source}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Africa	南非
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Georgia and the South Sandwich Islands	南喬治亞與南桑威奇群島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Korea	南韓
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Sudan	南蘇丹
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Spain	西班牙
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2699,6 +3575,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	速度限制器設定
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sri Lanka	斯里蘭卡
 #. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 #, machine
@@ -2828,15 +3708,51 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} 字幕無法下載：{site} 拒絕 (要求過多)。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sudan	蘇丹
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	星期日
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Support MDM on GitHub Sponsors	在 GitHub Sponsors 上支援 MDM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Suriname	蘇利南
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Svalbard and Jan Mayen	斯瓦巴和揚馬延
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sweden	瑞典
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Switzerland	瑞士
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	同步佇列
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Syria	敘利亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Taiwan	台灣
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tajikistan	塔吉克
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tanzania	坦尚尼亞
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2863,6 +3779,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	週四
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Thailand	泰國
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3104,6 +4024,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	系統的 DNS
+#. text in whereis.rs
+#. the tooltip of where a download's server is: how the time shown is measured
+#, machine
+	The time is a round trip, measured as this download's own connections opened.	時間為往返時間，以本次下載的連線開啟時間測量。
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3154,6 +4078,10 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	此類別或佇列尚無下載項目。
+#. text in whereis.rs
+#. where a download's server is: on this computer or the local network (no country)
+#, machine
+	this computer or the local network	此電腦或區域網路
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
@@ -3214,12 +4142,24 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	此視訊需要您登入。請在瀏覽器中使用其上方的「下載視訊」按鈕，這會傳遞您的登入資訊。
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it (the proxy's place not known)
+#, machine
+	through a proxy	透過 Proxy
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it: {country} is the proxy's country
+#, machine
+	through a proxy in {country}	透過 {country} 的 Proxy
 #. text in the Scheduler window
 #, machine
 	Thursday	星期四
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	剩餘時間
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Timor-Leste	東帝汶
 #. text in the Batch download window
 #, machine
 	To:	到:
@@ -3227,6 +4167,18 @@
 #. link under the calendar: {date} = today's date
 #, machine
 	Today: {date}	今天：{date}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Togo	多哥
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tokelau	托克勞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tonga	東加
 #. text in errors.rs
 #, machine
 	too many redirects	重新導向次數過多
@@ -3273,6 +4225,10 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	傳輸速率
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Trinidad and Tobago	千里達及托巴哥
 #. button in helpers.rs
 #, machine
 	Try again	再試一次
@@ -3283,6 +4239,18 @@
 #. text in the Scheduler window
 #, machine
 	Tuesday	星期二
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tunisia	突尼西亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turkmenistan	土庫曼
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turks and Caicos Islands	土克斯及開科斯群島
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 #, machine
@@ -3301,6 +4269,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	開啟
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tuvalu	吐瓦魯
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	兩個免費的輔助程式讓它運作。立即取得它們，當您找到影片時，只需按一下即可儲存。
@@ -3348,6 +4320,18 @@
 #. text in a download's Properties window
 #, machine
 	Type:	類型:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Türkiye	土耳其
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uganda	烏干達
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ukraine	烏克蘭
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
@@ -3356,11 +4340,29 @@
 #. adjective: the downloads that are not complete yet
 #, machine
 	Unfinished	未完成
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Arab Emirates	阿拉伯聯合大公國
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Kingdom	英國
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States	美國
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States Minor Outlying Islands	美國本土外小島嶼
 #. text in a download's Properties window
 #, machine
 	Unknown	未知
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known
+#. where a download's server is: not known (no address seen)
+#. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	未知
 #. button in the Options window
@@ -3382,6 +4384,10 @@
 #. text in a dialog box
 #, machine
 	URL	URL
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uruguay	烏拉圭
 #. text in the Options window
 #, machine
 	Use advanced browser integration	使用進階瀏覽器整合
@@ -3454,13 +4460,29 @@
 #. label in the Options window
 #, machine
 	UserName	使用者名稱
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uzbekistan	烏茲別克
 #. text in a download's progress window
 #, machine
 	Value	值
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vanuatu	萬那杜
 #. text in the Link grabber window
 #. Link grabber: the package of links that belong to no other
 #, machine
 	Various files	各種檔案
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vatican City	梵蒂岡
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Venezuela	委內瑞拉
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3495,6 +4517,18 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	影片
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vietnam	越南
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (British)	英屬維京群島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (U.S.)	美屬維京群島
 #. text in the Options window
 #, machine
 	Virus checking settings	病毒檢查設定
@@ -3516,6 +4550,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	等待中: 已達到下載限制 (排程器)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Wallis and Futuna	瓦利斯群島和富圖那群島
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3527,6 +4565,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	星期三
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Western Sahara	西撒哈拉
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
@@ -3577,6 +4619,10 @@
 #. a date's order: year first (2026-10-30)
 #, machine
 	Year, month, day	年、月、日
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Yemen	葉門
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	是
@@ -3620,6 +4666,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp：尋找影片
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zambia	尚比亞
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zimbabwe	辛巴威
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -3649,6 +4703,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	{browser}: the extension {version} connected	{browser}：擴充功能 {version} 已連線
+#. text in whereis.rs
+#. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
+#, machine
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} 提供此檔案：位置是其伺服器的位置，通常在您附近，而不是網站擁有者的位置。
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -3984,6 +5042,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager 未安裝，或其瀏覽器整合未設定
 #. text in the browser extension
+#. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager 會透過此瀏覽器使用的相同 Proxy 進行下載。瀏覽器會要求您允許一次；關閉此選項會撤銷該權限。
+#. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
 extension	More options	更多選項
@@ -4022,6 +5084,10 @@ extension	Protected	受保護
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
 extension	Protected video: it can't be saved	受保護影片：無法儲存
+#. text in the browser extension
+#. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
+#, machine
+extension	Send downloads through this browser's proxy or VPN extension	透過此瀏覽器的 Proxy 或 VPN 擴充功能傳送下載
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -4387,6 +5453,10 @@ menu	Direct3D didn't start here: OpenGL draws	Direct3D 未在此處啟動：Open
 #, machine
 menu	Download &video from a page...	從頁面下載影片(&V)...
 #. menu command in the main window
+#. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
+#, machine
+menu	Download in order	依序下載
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
 #, machine
 menu	Draw with	繪製方式
@@ -4408,6 +5478,10 @@ menu	Find (Ctrl-F)	尋找 (Ctrl-F)
 #. menu command in the main window
 #, machine
 menu	Find Next (F3)	尋找下一個 (F3)
+#. menu command in the main window
+#. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
+#, machine
+menu	First and last pieces first	優先下載首尾區塊
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine

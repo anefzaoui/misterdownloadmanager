@@ -801,11 +801,45 @@ const proxyLogins = new Set();
 const proxyUsed = new Map();
 const PAC_MAX = 256 * 1024;
 
-if (ext.webRequest && ext.webRequest.onAuthRequired) {
+// Reading the browser's proxy is the user's choice: the optional "proxy" permission, asked for by
+// the popup's switch (Firefox). Chromium can't make "proxy" optional, so the extension there
+// doesn't have it yet, and none of this runs: downloads go as they did before #42, with no
+// permission call at all. `proxyAllowed` follows the permission as it is granted or removed.
+const PROXY_PERMISSION = { permissions: ["proxy"] };
+const [PROXY_DECLARED, PROXY_REQUIRED] = (() => {
+  try {
+    const m = ext.runtime.getManifest();
+    const required = (m.permissions || []).includes("proxy");
+    return [required || (m.optional_permissions || []).includes("proxy"), required];
+  } catch {
+    return [false, false];
+  }
+})();
+// A required permission is there from the start; an optional one once checked.
+let proxyAllowed = PROXY_REQUIRED;
+async function checkProxy() {
+  try {
+    proxyAllowed = PROXY_DECLARED && Boolean(await ext.permissions.contains(PROXY_PERMISSION));
+  } catch {
+    proxyAllowed = false;
+  }
+  if (!proxyAllowed) {
+    // Nothing kept of what was seen while it was allowed.
+    proxyLogins.clear();
+    proxyUsed.clear();
+  }
+}
+const proxyChecked = PROXY_DECLARED ? checkProxy() : Promise.resolve();
+if (PROXY_DECLARED && ext.permissions && ext.permissions.onAdded) {
+  ext.permissions.onAdded.addListener(checkProxy);
+  ext.permissions.onRemoved.addListener(checkProxy);
+}
+
+if (PROXY_DECLARED && ext.webRequest && ext.webRequest.onAuthRequired) {
   try {
     ext.webRequest.onAuthRequired.addListener(
       (d) => {
-        if (d.isProxy && d.challenger) proxyLogins.add(`${d.challenger.host}:${d.challenger.port}`.toLowerCase());
+        if (proxyAllowed && d.isProxy && d.challenger) proxyLogins.add(`${d.challenger.host}:${d.challenger.port}`.toLowerCase());
       },
       { urls: ["<all_urls>"] },
     );
@@ -813,10 +847,10 @@ if (ext.webRequest && ext.webRequest.onAuthRequired) {
     // Not offered here: no login is noticed.
   }
 }
-if (FIREFOX && ext.webRequest && ext.webRequest.onResponseStarted) {
+if (PROXY_DECLARED && FIREFOX && ext.webRequest && ext.webRequest.onResponseStarted) {
   ext.webRequest.onResponseStarted.addListener(
     (d) => {
-      if (!d.proxyInfo || d.proxyInfo.type === "direct") return;
+      if (!proxyAllowed || !d.proxyInfo || d.proxyInfo.type === "direct") return;
       forget(proxyUsed, 120000);
       proxyUsed.set(d.url, { info: d.proxyInfo, at: Date.now() });
     },
@@ -860,8 +894,10 @@ async function pacText(url) {
 }
 
 // What the app needs to download `url` through the browser's proxy: {} when it uses none (or
-// the system's, which the app reads itself).
+// the system's, which the app reads itself), and {} unless the user switched it on (above).
 async function browserProxy(url, incognito) {
+  await proxyChecked;
+  if (!proxyAllowed) return {};
   let u;
   try {
     u = new URL(url);
