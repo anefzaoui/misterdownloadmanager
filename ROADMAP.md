@@ -13,6 +13,8 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
+  its freeze report again ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202))
 - ✅ A Linux test machine for every change, scripted: an Ubuntu 24.04 desktop that builds each
   branch and drives MDM, Firefox and Chrome there (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))

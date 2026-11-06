@@ -368,6 +368,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A freeze while MDM handles a command is reported again**
+  ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202)): since the clock and
+  what comes in from outside (a second launch, the browser, the automation API) run in every
+  window state, a freeze there opened no crash report window and wrote no freeze report, minimized
+  or not. The watchdog now times that part of each frame too.
 - **Streams served as plain text, from addresses without .m3u8 or .mpd**
   ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171)): some players load
   their stream from such an address, and the extension didn't know it as one. The button over the
