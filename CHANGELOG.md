@@ -402,6 +402,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: Dark Mode support follows XFCE, MATE and other desktops too**
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156)): MDM followed the
+  desktop's light or dark setting only where the freedesktop portal answers (GNOME, KDE,
+  Cinnamon). Where it doesn't, as on XFCE, MDM stayed light under a dark theme. It now reads the
+  theme the desktop gives its programs (a name such as Adwaita-dark, Mint-Y-Dark or Greybird-dark
+  is dark), GNOME's own dark style setting when there is no portal, and GTK's settings with no
+  desktop at all, and it follows changes as they happen. The portal still comes first.
 - **A window closed with its title bar's × no longer turns black first**
   ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
   progress window turned black for a moment when closed with the × or Alt+F4, rather than with

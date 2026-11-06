@@ -13,6 +13,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Linux: Dark Mode support follows the desktop's dark or light theme on XFCE, MATE and others
+  without the portal's setting, and on GNOME without the portal, live
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - ✅ A window closed with its title bar's × keeps its contents until it goes, instead of turning
   black for a moment (seconds on Linux) ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207))
 - ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
@@ -256,6 +259,5 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Look and performance
 
-- 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))
