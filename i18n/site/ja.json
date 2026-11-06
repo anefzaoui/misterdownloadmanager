@@ -322,6 +322,10 @@
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
    "text": "上記の<g1>setup.exe</g1>をダウンロードして実行します。Windowsが許可を求める場合がありますが、インストーラーはまだコード署名されていないため、<g2>詳細情報 → 強制実行</g2>を選択してください。"
   },
+  "0717a2923d7e72cc": {
+   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: one click from the Chrome Web Store, and the browser keeps it up to date. Edge first asks to allow extensions from other stores.",
+   "text": "<g1>Chrome、Edge、Brave、Opera、Vivaldi</g1>：Chromeウェブストアからワンクリックで追加でき、ブラウザが常に最新の状態に保ちます。Edgeでは、最初に他のストアからの拡張機能を許可するよう求められます。"
+  },
   "072428c8bd6ba91a": {
    "source": "When the limit is reached, MDM stops downloading. New downloads show <g1>Waiting: the download limit is reached (Scheduler)</g1>. Everything resumes on its own when the period is over. <g2>Show warning before stopping downloads</g2> tells you when this happens and when downloads will go on.",
    "text": "制限に達すると、MDMはダウンロードを停止します。新しいダウンロードは<g1>待機中: ダウンロード制限に達しました (スケジューラー)</g1>と表示されます。期間が終了すると、すべて自動的に再開されます。<g2>ダウンロードを停止する前に警告を表示</g2>は、この状況とダウンロードがいつ再開されるかを通知します。"
@@ -433,10 +437,6 @@
   "09c82864f82bd0f8": {
    "source": "Menu bar.",
    "text": "メニューバー。"
-  },
-  "09d11cac644c01da": {
-   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "MDMブラウザ拡張機能を通じて、Firefox（addons.mozilla.orgから）、Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi、およびそれらをベースにしたブラウザ（Zen、LibreWolf、Helium）で動作します。この拡張機能は、ダウンロードをクッキーとリファラーとともにMDMに渡し、サインインが必要なファイルもダウンロードできるようにします。また、右クリックメニューにMister Download Manager でダウンロードを追加し、動画の上に動画をダウンロードボタンを表示します。ブラウザ統合をご覧ください。"
   },
   "09e228aaadb34e64": {
    "source": "Each download is then held to that speed. <g1>Downloads → Speed Limiter → Turn off</g1> gives full speed again. Tick <g2>Always turn on Speed Limiter on Mister Download Manager startup</g2> to have it on every time.",
@@ -697,6 +697,10 @@
   "115de9018b2cce4b": {
    "source": "Star it on GitHub",
    "text": "GitHubでスターを付ける"
+  },
+  "11670b26bfb183a4": {
+   "source": "<g1>Chrome</g1><g2>Google · <g3>Add to Chrome</g3></g2>",
+   "text": "<g1>Chrome</g1><g2>Google · <g3>Chrome に追加</g3></g2>"
   },
   "1171655e77148bd2": {
    "source": "Every release, with its notes and files, is on <g1>GitHub Releases</g1>. The source code is at <g2>github.com/anefzaoui/misterdownloadmanager</g2> under the GNU GPL, version 3.",
@@ -1274,10 +1278,6 @@
    "source": "Windows, macOS, Linux (Java)",
    "text": "Windows、macOS、Linux (Java)"
   },
-  "1ec161dd36dfe603": {
-   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM. Opera and Vivaldi take it the same way.",
-   "text": "リストに<g1>Mister Download Manager</g1>が表示されます。オンのままにしてください。ブラウザーが MDM に接続しているかどうかを一目で確認できるように、そのボタンをツールバーにピン留めしてください。Opera と Vivaldi も同じ方法で追加します。"
-  },
   "1ed401e594a9c102": {
    "source": "0.03 s",
    "text": "0.03 秒"
@@ -1670,6 +1670,10 @@
    "source": "The race",
    "text": "競争"
   },
+  "28363ce0cfaf4e8e": {
+   "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
+   "text": "ブラウザ拡張機能は、各ブラウザのストアから入手できます。Chrome ウェブストアのものは、Edge、Brave、Opera、Vivaldi でも利用できます。また、アプリに同梱されているほか、<g1>単独でダウンロード</g1>して手動で追加することも可能です。すべてのファイルは、GitHub Actions によって公開ソースからビルドされ、SHA-256 チェックサムとともにリストされています。"
+  },
   "286a2be607456e48": {
    "source": "Set <g1>Maximum download speed</g1> in KBytes/sec. The new limit applies at once.",
    "text": "<g1>最大ダウンロード速度</g1>をKB/秒で設定します。新しい制限はすぐに適用されます。"
@@ -1681,6 +1685,10 @@
   "28b1c28428b1047e": {
    "source": "Close",
    "text": "閉じる"
+  },
+  "28b58f9af9a6fed9": {
+   "source": "In Chrome, Edge, Brave, Opera or Vivaldi",
+   "text": "Chrome、Edge、Brave、Opera、Vivaldiの場合"
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -1701,10 +1709,6 @@
   "298c9f2b74a2990f": {
    "source": "How it works",
    "text": "仕組み"
-  },
-  "2991dd6051b6e56c": {
-   "source": "By hand for now, while the Chrome Web Store reviews the extension. Its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
-   "text": "Chrome Web Store で拡張機能が審査中のため、今のところ手動で追加します。拡張機能のファイルは、MDM がインストールされている <x1/> フォルダーにあります。自分用にインストールした場合は <x2/>、全員用にインストールした場合は <x3/> です。各リリースには、それら自身のダウンロードとして <x4/> もあります（最初に解凍してください）。"
   },
   "29b29fea4e1dcc73": {
    "source": "Download limits",
@@ -1938,6 +1942,10 @@
    "source": "Yes: <x1/>, and FTP over TLS both ways (<x2/> and <x3/>), with several connections at once, resume, and logins from the address or from Sites Logins. See <g4>Adding downloads</g4>.",
    "text": "はい、<x1/>、および双方向のFTP over TLS（<x2/>と<x3/>）に対応しています。複数同時接続、レジューム、アドレスまたはサイトのログインからのログインが可能です。<g4>ダウンロードの追加</g4>をご覧ください。"
   },
+  "2e1e011c1da4eb87": {
+   "source": "Open the extension's page in the Chrome Web Store, <g1>Mister Download Manager</g1>, and click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>, and Edge first asks to <g4>Allow extensions from other stores</g4>: click <g5>Allow</g5>.",
+   "text": "Chromeウェブストアの拡張機能ページ<g1>Mister Download Manager</g1>を開き、<g2>Chromeに追加</g2>をクリックします。Edgeではボタンが<g3>入手</g3>で、Edgeは最初に<g4>他のストアからの拡張機能を許可する</g4>かどうかを尋ねます。<g5>許可</g5>をクリックしてください。"
+  },
   "2e238218e51993b0": {
    "source": "Mac",
    "text": "Mac"
@@ -2001,6 +2009,10 @@
   "2f6173f7ee8ac832": {
    "source": "<g1>Exit Mister Download Manager when done</g1>.",
    "text": "<g1>完了時にMister Download Managerを終了する</g1>。"
+  },
+  "2f68e4b0dfb1bc04": {
+   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from <g2>the Chrome Web Store</g2>), through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g3>Download with Mister Download Manager</g3> to the right-click menu and a <g4>Download video</g4> button over videos. See <g5>Browser integration</g5>.",
+   "text": "MDMブラウザ拡張機能を使用すると、Firefox（<g1>addons.mozilla.org</g1>から）、Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi（<g2>Chromeウェブストア</g2>から）、およびそれらをベースにしたブラウザ（Zen、LibreWolf、Helium）で動作します。この拡張機能は、ダウンロードをクッキーとリファラーと共にMDMに渡し、サインインが必要なファイルでも機能するようにします。また、右クリックメニューに<g3>Mister Download Manager でダウンロード</g3>を追加し、動画の上に<g4>動画をダウンロード</g4>ボタンを追加します。<g5>ブラウザ統合</g5>を参照してください。"
   },
   "2f8778f636a6a38d": {
    "source": "Connections and speed →",
@@ -2190,6 +2202,10 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "速度制限は、MDMが接続帯域をすべて使用するのを防ぎます。"
   },
+  "36ef08c42af60d54": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
+   "text": "拡張機能を通じて、Firefox、Chrome、Edge、Brave、Opera、Vivaldi に対応しており、<g1>Firefox のアドオンストア</g1>と<g2>Chrome ウェブストア</g2>から入手できます。拡張機能なしで、リンクをコピーすると MDM がダウンロードウィンドウを開きます。<g3>詳細</g3>"
+  },
   "37018c365c78d873": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all…",
    "text": "MDMは、独立開発者であるAhmed Nefzaouiによって作成されており、GitHubで誰からの貢献も受け入れています。バグ報告、翻訳、コードはすべて…"
@@ -2321,6 +2337,10 @@
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
    "text": "動画ページの場合、MDMは初回使用時にyt-dlp（および、結合された品質が必要な場合はffmpeg）をダウンロードします。"
+  },
+  "39b196f386c16245": {
+   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), which downloads it takes, and what happens when MDM isn't running.",
+   "text": "<g1><g2>ブラウザ連携</g2></g1> — Firefox（addons.mozilla.orgより）、Chrome、Edge、Brave、Opera、Vivaldi（Chromeウェブストアより）用の拡張機能、どのダウンロードをMDMが引き受けるか、MDMが実行されていない場合に何が起こるか。"
   },
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
@@ -2638,10 +2658,6 @@
    "source": "Crash reports",
    "text": "クラッシュレポート"
   },
-  "41d7fb067ecb2748": {
-   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g2>Download with Mister Download Manager</g2> to the right-click menu and a <g3>Download video</g3> button over videos. See <g4>Browser integration</g4>.",
-   "text": "MDMブラウザ拡張機能を通じて、Firefox（<g1>addons.mozilla.org</g1>から）、Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi、およびそれらをベースにしたブラウザ（Zen、LibreWolf、Helium）で動作します。この拡張機能は、ダウンロードをクッキーとリファラーとともにMDMに渡し、サインインが必要なファイルもダウンロードできるようにします。また、右クリックメニューに<g2>Mister Download Manager でダウンロード</g2>を追加し、動画の上に<g3>動画をダウンロード</g3>ボタンを表示します。<g4>ブラウザ統合</g4>をご覧ください。"
-  },
   "4208f79380d548a0": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "サイトが動画と音声を別々に保存している場合（ほとんどのサイトが高品質のためにそうしています）、<g1>ffmpeg</g1>（約80MB）はそれらを結合し、音声をMP3、Opus、またはFLACファイルに変換します。MDMが提供する際に<g2>ffmpeg をインストール</g2>をクリックしてください。MDMは、公開されているチェックサムと照合して確認します。"
@@ -2705,10 +2721,6 @@
   "4409b6268f79d30a": {
    "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
    "text": "<g1>貼り付け。</g1><g2>タスク → リンク グラバー...</g2>を選択し、<g3>Ctrl+V</g3>を押すと、コピーされたテキスト内のすべてのWebアドレスが追加されます。"
-  },
-  "440d7c9f4a9ff3a8": {
-   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose <g4>Load unpacked</g4> and pick the <x5/> folder in MDM's folder. The <g6>tutorial</g6> walks through it.",
-   "text": "セットアップでMDMをインストールし、<g1>ブラウザ統合を設定</g1>にチェックを入れたままにします。Firefoxでは、<g2>addons.mozilla.orgのアドオンページ</g2>を開き、<g3>Firefoxへ追加</g3>をクリックします。Chrome、Edge、Brave、Opera、Vivaldiでは、Chromeウェブストアが審査中のため、現時点では手動でロードしてください。ブラウザの拡張機能ページを開き、開発者モードをオンにし、<g4>パッケージ化されていない拡張機能を読み込む</g4>を選択して、MDMフォルダ内の<x5/>フォルダを選びます。<g6>チュートリアル</g6>で手順を説明しています。"
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -2877,6 +2889,10 @@
   "48ca7e0fd6df660f": {
    "source": "<g1>Downloaded file names are cleaned</g1> before they become paths, so a server can't write outside the folder you chose.",
    "text": "<g1>ダウンロードされたファイル名はクリーンアップされます</g1>。これにより、サーバーが選択したフォルダの外に書き込むことができなくなります。"
+  },
+  "48f2a56d5061d294": {
+   "source": "Browser extension: <g1><x2/>Add to Firefox</g1> <g3><x4/>Add to Chrome</g3>, for Edge, Brave and Opera too. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>",
+   "text": "ブラウザ拡張機能：<g1><x2/>Firefox に追加</g1> <g3><x4/>Chrome に追加</g3>。Edge、Brave、Opera にも対応しています。<g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>"
   },
   "492c16c1bfe5a3c4": {
    "source": "<g1>File size</g1>, <g2>Downloaded</g2> and <g3>Transfer rate</g3>.",
@@ -3314,10 +3330,6 @@
    "source": "What it takes",
    "text": "必要なもの"
   },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "LinuxとmacOSでは、MDMが起動するたびにブラウザ統合が自動的に設定されます（その時点でインストールされているブラウザが検出されます）。<g1>ブラウザ統合</g1>の指示に従って拡張機能を追加してください。FlatpakまたはSnapとしてインストールされたブラウザは、MDMにアクセスできない場合があります。"
-  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "ツールバーの<g1>スケジューラ</g1>をクリックします（または<g2>ダウンロード → スケジューラ</g2>）。"
@@ -3509,10 +3521,6 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "セットアップ"
-  },
-  "59e78792626130dd": {
-   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension: Firefox's from <g1>its add-ons store</g1>, the others by hand for now. Without the extension, copy a link and MDM opens the download window. <g2>More</g2>",
-   "text": "拡張機能を通じて Firefox、Chrome、Edge、Brave、Opera、Vivaldi に対応: Firefox 用は<g1>アドオンストア</g1>から、その他は現在手動で追加します。拡張機能なしの場合、リンクをコピーすると MDM がダウンロードウィンドウを開きます。<g2>詳細</g2>"
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -3909,6 +3917,10 @@
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "スケジューラ"
+  },
+  "63ce30d5a4972748": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.",
+   "text": "お使いの各ブラウザーに、以下のように拡張機能を追加してください。Firefox はアドオンストアから、その他のブラウザーは Chrome Web Store から追加します。"
   },
   "63d0ba3e76606052": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains none of IDM's code or artwork. Its windows are laid out the way IDM users expect, so you can switch without learning anything new — and because MDM is free, there is nothing to crack. Please don't download \"cracked\" download managers: they are a common way to spread malware.",
@@ -4382,6 +4394,10 @@
    "source": "Numbers and dates",
    "text": "数字と日付"
   },
+  "6f86a54724149403": {
+   "source": "<g1>Firefox as a Snap</g1> (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks <g2>Allow Firefox to start WebExtension backend?</g2> for Mister Download Manager: choose <g3>Allow</g3>. After <g4>Don't allow</g4>, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:",
+   "text": "<g1>Snap 版 Firefox</g1> (Ubuntu 独自の Firefox) はデスクトップを介して MDM にアクセスします。拡張機能が初めて MDM を呼び出すと、デスクトップは Mister Download Manager に対して <g2>Firefox が WebExtension バックエンドを開始することを許可しますか？</g2> と尋ねます。<g3>許可</g3> を選択してください。<g4>許可しない</g4> を選択すると、拡張機能は接続に失敗したと表示され、デスクトップは再度尋ねません。再度尋ねられるようにするには、ターミナルでこれを実行してから、拡張機能を再度使用してください。"
+  },
   "6f93f457f41d4fa3": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
    "text": "<g1>手動で追加したダウンロードの User-Agent</g1> — 自分で追加したダウンロードについて、MDM がサーバーに自身を名乗る方法です。ブラウザからのダウンロードでは、ブラウザ自身の User-Agent が使用されます。"
@@ -4481,10 +4497,6 @@
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
    "text": "ギャラリーの画像（Wikimedia Commonsのカテゴリ、Flickrのアルバムなど）を<x1/>内のその名前のフォルダーにダウンロードします。<x2/>は最大でその数だけ、サイトがリストする最初のものを取得します。再度開始すると、新しいものだけをフェッチします。"
-  },
-  "720d6bdebec42762": {
-   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: by hand for now, while the Chrome Web Store reviews it. It comes with the app, in its <x2/> folder, and <g3>as its own download</g3> (<x4/>: unzip, then <g5>Load unpacked</g5> on the browser's extensions page with Developer mode on). The <g6>step-by-step guide</g6> shows each browser.",
-   "text": "<g1>Chrome、Edge、Brave、Opera、Vivaldi</g1>：Chromeウェブストアでの審査中のため、現在は手動で追加します。アプリに付属しており、<x2/>フォルダー内にあります。また、<g3>単独でダウンロード</g3>することもできます（<x4/>：解凍後、開発者モードをオンにしたブラウザの拡張機能ページで<g5>展開した拡張機能を読み込む</g5>）。<g6>ステップバイステップガイド</g6>で各ブラウザの手順を確認できます。"
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4690,6 +4702,10 @@
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "フォルダパスでは <x1/> と表示されるユーザー名。"
   },
+  "779d3d89172c13c6": {
+   "source": "The browser asks to confirm: click <g1>Add extension</g1>. It keeps the extension up to date.",
+   "text": "ブラウザが確認を求めます。<g1>拡張機能を追加</g1>をクリックしてください。これにより拡張機能は最新の状態に保たれます。"
+  },
   "77a30c9b7d2a6105": {
    "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
    "text": "すべての操作はキーボードから実行でき、MDMはスクリーンリーダー（WindowsのナレーターやNVDAなど）と連携します。MDMのウィンドウ、ダイアログ、メニューは、各コントロールの機能と状態をスクリーンリーダーに伝え、ダウンロードリストは各ダウンロードの名前、ステータス、サイズを読み上げます。<g1>カテゴリ</g1>ペインはツリーとして読み上げられ（各カテゴリはカウント、開閉状態、選択状態が読み上げられます）、メニューバーとすべての右クリックメニューは、そこから項目を実行できるメニューとして読み上げられます。"
@@ -4806,6 +4822,10 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "すべてのリリースには、各ファイルのSHA-256チェックサムが<g1>SHA256SUMS.txt</g1>に記載されています。Windowsでは<x2/>と比較し、macOSおよびLinuxでは<x3/>と比較してください。すべてのファイルはGitHub Actionsによって公開ソースからビルドされており、ビルドログは<g4>GitHub</g4>にあります。"
   },
+  "7abae1f3c6a9aed0": {
+   "source": "Chrome, Edge, Brave, Opera and Vivaldi",
+   "text": "Chrome、Edge、Brave、Opera、Vivaldi"
+  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "<g1>すべてのダウンロードを合計で制限する</g1>にチェックを入れ、KB/秒で速度を入力します。接続速度の約3分の2から始めるのが良いでしょう。（1 MB/秒は約1000 KB/秒です。）"
@@ -4838,6 +4858,10 @@
    "source": "<g1>Alt+Down</g1> or <g2>F4</g2>",
    "text": "<g1>Alt+Down</g1> または <g2>F4</g2>"
   },
+  "7b96ddc4c567caf5": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.",
+   "text": "Flatpak または Snap としてインストールされたブラウザーはサンドボックス内で実行され、MDM にアクセスできるかどうかを決定します。"
+  },
   "7bc3766c50fc6fcd": {
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
    "text": "<g1>0.2.4</g1> <g2>24.1 MB</g2>"
@@ -4869,10 +4893,6 @@
   "7c20476510c27bb9": {
    "source": "<g1></g1>Open (GPL-3.0)",
    "text": "<g1></g1>オープンソース (GPL-3.0)"
-  },
-  "7c2056684aa2bec5": {
-   "source": "Chrome, Edge and Brave",
-   "text": "Chrome、Edge、Brave"
   },
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
@@ -5013,6 +5033,10 @@
   "7f06477bf6037af8": {
    "source": "A window in MDM may be waiting for you (a question, <g1>Add torrent</g1>); answer it and ask again.",
    "text": "MDMのウィンドウが応答を待っている可能性があります（質問、<g1>トレントを追加</g1>など）。それに答えてから再度要求してください。"
+  },
+  "7f0667de08ce7313": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "MDMブラウザ拡張機能を使用すると、Firefox（addons.mozilla.orgから）、Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi（Chromeウェブストアから）、およびそれらをベースにしたブラウザ（Zen、LibreWolf、Helium）で動作します。この拡張機能は、ダウンロードをクッキーとリファラーと共にMDMに渡し、サインインが必要なファイルでも機能するようにします。また、右クリックメニューにMister Download Manager でダウンロードを追加し、動画の上に動画をダウンロードボタンを追加します。ブラウザ統合を参照してください。"
   },
   "7f12a262bf26f1cd": {
    "source": "Description",
@@ -5254,6 +5278,14 @@
    "source": "<g1>Sort:</g1> click a column title. Click again to reverse the order, and a third time to go back to the order of addition. <g2>View → Arrange files</g2> does the same from the menu.",
    "text": "<g1>並べ替え:</g1> 列のタイトルをクリックします。もう一度クリックすると逆順になり、3回クリックすると追加順に戻ります。<g2>表示 → ファイルを整理</g2>でも同じ操作ができます。"
   },
+  "84de272d8a1575cb": {
+   "source": "Add to Chrome",
+   "text": "Chromeに追加"
+  },
+  "84e7d646757f7bb2": {
+   "source": "Without the store",
+   "text": "ストアなしの場合"
+  },
   "84f216589454c750": {
    "source": "You can set a number for a server yourself: <g1>Options → Connection → New</g1>, then type the server's name and the number of connections.",
    "text": "サーバーの接続数を自分で設定できます。「<g1>オプション → 接続 → 新規</g1>」でサーバー名と接続数を入力します。"
@@ -5269,14 +5301,6 @@
   "853ac467ba7801e6": {
    "source": "Put downloads in a queue →",
    "text": "ダウンロードをキューに入れる →"
-  },
-  "855283d97ca22cdb": {
-   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others by hand for now, while the Chrome Web Store reviews it.",
-   "text": "使用する各ブラウザーに、以下のように拡張機能を追加してください。Firefox はアドオンストアから、その他のブラウザーは、Chrome Web Store で審査中のため、今のところ手動で追加します。"
-  },
-  "859b311c937bc36f": {
-   "source": "In Chrome, Edge or Brave",
-   "text": "Chrome、Edge、Braveの場合"
   },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
@@ -5446,6 +5470,10 @@
    "source": "Still stuck? Use <g1>Help → Report a problem</g1> and include the page address.",
    "text": "まだ解決しませんか？<g1>ヘルプ → 問題の報告</g1>を使用し、ページのURLを含めてください。"
   },
+  "8a28300cfedb3a20": {
+   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, open <g4>its page in the Chrome Web Store</g4> and click <g5>Add to Chrome</g5> (Edge shows <g6>Get</g6>, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose <g7>Load unpacked</g7> and pick the <x8/> folder in MDM's folder. The <g9>tutorial</g9> walks through it.",
+   "text": "MDMをセットアップでインストールし、<g1>ブラウザ統合を設定</g1>にチェックを入れたままにします。Firefoxでは、<g2>addons.mozilla.orgのアドオンページ</g2>を開き、<g3>Firefoxへ追加</g3>をクリックします。Chrome、Edge、Brave、Opera、Vivaldiでは、<g4>Chromeウェブストアのページ</g4>を開き、<g5>Chromeに追加</g5>をクリックします（Edgeでは<g6>入手</g6>と表示され、最初に他のストアからの拡張機能を許可するか尋ねられます）。ストアを使用できない場合は、ブラウザの拡張機能ページを開き、開発者モードをオンにして、<g7>パッケージ化されていない拡張機能を読み込む</g7>を選択し、MDMのフォルダ内にある<x8/>フォルダを選びます。<g9>チュートリアル</g9>で手順を説明しています。"
+  },
   "8a40a7060dae6e26": {
    "source": "<g1><g2>Connections and speed</g2></g1> — the progress window, how MDM splits a file over several connections, resuming, and the Speed Limiter.",
    "text": "<g1><g2>接続と速度</g2></g1> — 進行状況ウィンドウ、MDMがファイルを複数の接続に分割する方法、再開、および 速度制限。"
@@ -5534,6 +5562,10 @@
    "source": "Connections per file",
    "text": "ファイルあたりの接続数"
   },
+  "8cb163cde329bcf4": {
+   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.",
+   "text": "<g1>Mister Download Manager</g1> がリストに表示されます。オンのままにしておいてください。ブラウザーが MDM に接続されているかどうかを一目で確認できるように、そのボタンをツールバーにピン留めしてください。"
+  },
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "ハーネス"
@@ -5565,6 +5597,10 @@
   "8dbeeeabcf1f6918": {
    "source": "<g1>86 interface languages</g1>, every language Windows 11 offers, chosen by flag on the first start or in <g2>View → Language...</g2>; right to left for Arabic, Hebrew, Persian, Urdu and Uyghur; fonts for every script from the system itself. The installer speaks the same languages, and the browser extension speaks your browser's (50 languages).",
    "text": "<g1>86のインターフェース言語</g1>、Windows 11が提供するすべての言語で、初回起動時または<g2>表示 → 言語...</g2>でフラグによって選択できます。アラビア語、ヘブライ語、ペルシャ語、ウルドゥー語、ウイグル語は右から左への表示。システム自体からすべてのスクリプト用のフォント。インストーラーも同じ言語を話し、ブラウザ拡張機能はブラウザの言語を話します（50言語）。"
+  },
+  "8dbf6ff24d2ed734": {
+   "source": "Can't use a store? It comes with the app, in its <x1/> folder, and <g2>as its own download</g2> for Chromium browsers (<x3/>: unzip, then <g4>Load unpacked</g4> on the browser's extensions page with Developer mode on). The <g5>step-by-step guide</g5> shows each browser.",
+   "text": "ストアが使えない場合でも、アプリに付属の<x1/>フォルダーに入っています。また、Chromium系ブラウザ向けに<g2>単独でダウンロード</g2>することもできます（<x3/>：解凍後、ブラウザの拡張機能ページで開発者モードをオンにして<g4>パッケージ化されていない拡張機能を読み込む</g4>）。<g5>ステップバイステップガイド</g5>で各ブラウザの手順が示されています。"
   },
   "8de593350090e7e8": {
    "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
@@ -5765,10 +5801,6 @@
   "9353e613d2835a1f": {
    "source": "Find by name",
    "text": "名前で検索"
-  },
-  "938b387bfbc70706": {
-   "source": "Browser extension: <g1><x2/>Add to Firefox</g1>. For Chrome, Edge, Brave and Opera, by hand for now, while the Chrome Web Store reviews it. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>",
-   "text": "ブラウザ拡張機能: <g1><x2/>Firefox に追加</g1>。Chrome、Edge、Brave、Opera については、Chrome ウェブストアでの審査中のため、現在は手動で追加してください。<g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>"
   },
   "93a9d8c882d29583": {
    "source": "Tick <g1>Use Speed Limiter</g1>.",
@@ -6242,10 +6274,6 @@
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "英語よりも長い翻訳は、収まらない場合<g1>...</g1>で終わります。全体を読むには、その部分をポイントしてください。"
   },
-  "a06fa72ad54fa126": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
-   "text": "MDMをセットアップでインストールし、「ブラウザ統合を設定」にチェックを入れたままにします。Firefoxでは、addons.mozilla.orgでアドオンのページを開き、「Firefoxへ追加」をクリックします。Chrome、Edge、Brave、Opera、Vivaldiでは、Chromeウェブストアでの審査中に手動で読み込みます。ブラウザの拡張機能ページを開き、デベロッパーモードをオンにし、「パッケージ化されていない拡張機能を読み込む」を選択して、MDMフォルダ内のextension\\chromiumフォルダを選びます。チュートリアルで手順を説明します。"
-  },
   "a09cf46e49e64bbb": {
    "source": "A sweep through every window for the small things that make a program feel finished: how each control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers, and a long list of fixes found by reviewing all of it (issue #7 and more).",
    "text": "プログラムが完成したと感じさせる小さな点、つまり各コントロールがどのように見え、マウスとキーボードにどのように反応するか、ダークモードの全面適用、スクリーンリーダー、そしてこれらすべてを見直すことで見つかった多数の修正（問題 #7 など）について、すべてのウィンドウを徹底的に見直しました。"
@@ -6369,10 +6397,6 @@
   "a3fad5053e035413": {
    "source": "Torrents and your security — Mister Download Manager help",
    "text": "トレントとセキュリティ — Mister Download Manager ヘルプ"
-  },
-  "a411ca96569c91a2": {
-   "source": "<g1>Chrome</g1><g2>Google</g2>",
-   "text": "<g1>Chrome</g1><g2>Google</g2>"
   },
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
@@ -6638,6 +6662,10 @@
    "source": "<g1>Page Up</g1> / <g2>Page Down</g2>",
    "text": "<g1>Page Up</g1> / <g2>Page Down</g2>"
   },
+  "aab5074afda2571f": {
+   "source": "On Linux, with Firefox or Chromium installed as a Snap, see <g1>Flatpak and Snap browsers</g1>.",
+   "text": "Linux で Firefox または Chromium を Snap としてインストールした場合は、<g1>Flatpak および Snap ブラウザー</g1>を参照してください。"
+  },
   "aac0379eae040d8f": {
    "source": "The browser doesn't send downloads to MDM",
    "text": "ブラウザーがダウンロードをMDMに送信しない"
@@ -6826,6 +6854,10 @@
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "初回起動、ディスクの速度が遅い、またはアンチウイルスがMDMをスキャンしている場合、これほど時間がかかることがあります。次回からは通常は高速です。"
   },
+  "af2b3b86f75da30b": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see <g2>Flatpak and Snap browsers</g2>).",
+   "text": "LinuxとmacOSでは、MDMが起動するたびにブラウザ統合が自動的に設定されます（その時点でインストールされているブラウザが検出されます）。<g1>ブラウザ統合</g1>の説明に従って拡張機能を追加してください。Snap（Ubuntu）としてインストールされたFirefoxは、許可すればMDMに接続できますが、他のSnapおよびFlatpakブラウザはできません（<g2>FlatpakおよびSnapブラウザ</g2>を参照）。"
+  },
   "af2d311733924046": {
    "source": "IDM",
    "text": "IDM"
@@ -6857,10 +6889,6 @@
   "afae30c6c42a7afb": {
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "Mister Download Manager が予期せず終了したり、応答を停止したりすると、<g1>クラッシュレポート</g1>ウィンドウが開きます。このウィンドウには、何が起こったか、レポート全体を読むことができること、そして GitHub で開発者に送信できることが表示されます。各レポートは、すべての人の問題を解決するのに役立ちます。"
-  },
-  "afb13e3cfd9283df": {
-   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.",
-   "text": "一度拡張機能を設定すれば、Firefox、Chrome、Edge、BraveでクリックするすべてのダウンロードリンクがMDMに送られます。"
   },
   "afc32cfba2a08d06": {
    "source": "Choose a download",
@@ -6945,6 +6973,10 @@
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
    "text": "実行中のダウンロードを一時停止します。"
+  },
+  "b23e9f6d4d6a6718": {
+   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
+   "text": "ブラウザ連携には、各ブラウザで拡張機能を追加するというもう1つのステップが必要です。Firefoxでは、<g2>addons.mozilla.orgのページ</g2>で<g1>Firefoxへ追加</g1>をクリックします。Chrome、Edge、Brave、Opera、Vivaldiでは、<g4>Chromeウェブストアのページ</g4>で<g3>Chromeに追加</g3>をクリックします。<g5>ブラウザ連携</g5>でその方法が示されています。"
   },
   "b2679b7b14f46791": {
    "source": "The video then downloads like any other file, with its own row in the list and its progress window. yt-dlp brings it in over one stream of its own, so the window's connections table stays empty.",
@@ -7166,10 +7198,6 @@
    "source": "On <g1>Q</g1>, tick <g2>In a queue</g2> or <g3>Not in a queue</g3>.",
    "text": "<g1>Q</g1>で、<g2>キュー内</g2>または<g3>キューにありません</g3>にチェックを入れます。"
   },
-  "b7da4b8cc0d5495e": {
-   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge and Brave, which downloads it takes, and what happens when MDM isn't running.",
-   "text": "<g1><g2>ブラウザ連携</g2></g1> — Firefox (addons.mozilla.orgから)、Chrome、Edge、Brave用の拡張機能、どのダウンロードをMDMが引き受けるか、MDMが実行されていない場合に何が起こるか。"
-  },
   "b7e47ad1f6a91134": {
    "source": "The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.",
    "text": "このアプリは、Windows 11が提供する86の言語に対応しています。お使いのコンピューターの言語に従いますが、表示 → 言語でいつでも切り替えることができます。"
@@ -7217,10 +7245,6 @@
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86言語、右から左への表示にも対応"
-  },
-  "b95c95d9143dace0": {
-   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them…",
-   "text": "MDMブラウザ拡張機能を通じて、Firefox（addons.mozilla.orgから）、Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi、およびそれらをベースにしたブラウザで動作します。"
   },
   "b95ce4f23354e44d": {
    "source": "AI assistants (MCP) — Mister Download Manager help",
@@ -7282,6 +7306,10 @@
    "source": "6. Limitation of liability",
    "text": "6. 責任の制限"
   },
+  "bb1244178952e02b": {
+   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera or Vivaldi goes to MDM.",
+   "text": "一度拡張機能を設定すれば、Firefox、Chrome、Edge、Brave、Opera、VivaldiでクリックしたすべてのダウンロードリンクがMDMに送られます。"
+  },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
    "text": "<g1>Web</g1>（Webサーバー）または<g2>トレント</g2>。"
@@ -7313,10 +7341,6 @@
   "bc1065924c4077d9": {
    "source": "The Pieces tab: a square for each piece, filled once it's here",
    "text": "ピースタブ：各ピースの四角形、そこにあると塗りつぶされる"
-  },
-  "bc21a99be8efd606": {
-   "source": "By hand for now, while the Chrome Web Store reviews the extension:",
-   "text": "Chromeウェブストアが拡張機能を審査中のため、今のところ手動で設定してください。"
   },
   "bc21bd767c7774ea": {
    "source": "The terms for using Mister Download Manager and misterdownloadmanager.com: free software under the GNU GPL 3.0, used at your own risk, for downloads you have the right to make.",
@@ -7826,6 +7850,10 @@
    "source": "Can I download without the browser extension?",
    "text": "ブラウザ拡張機能なしでダウンロードできますか？"
   },
+  "cb565e5b28b1036b": {
+   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
+   "text": "<g1><x2/> Firefox に追加</g1><g3><x4/> Chrome に追加</g3>"
+  },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
    "text": "ダウンロードの進行状況ウィンドウにある、ダウンロード独自の<g1>速度制限</g1>タブを確認してください。"
@@ -7941,6 +7969,10 @@
   "ce7c22009e3efda1": {
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "これはあなたのWindowsアカウントのみに適用されます。<x1/>で元に戻せます。その後、上記のように、zipの<x2/>フォルダーから拡張機能を読み込みます。"
+  },
+  "ce8618d4437420dc": {
+   "source": "To load it by hand instead (a browser that can't use the store, or a build of your own): its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
+   "text": "代わりに手動でロードする場合（ストアを使用できないブラウザー、または独自のビルドの場合）：拡張機能のファイルは、MDM がインストールされている <x1/> フォルダー内にあります。自分用にインストールした場合は <x2/>、全員用にインストールした場合は <x3/> です。各リリースには、それら自身のダウンロードとして <x4/> も含まれています（最初に解凍してください）。"
   },
   "ceafeaa62d5e59ca": {
    "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
@@ -8354,6 +8386,10 @@
    "source": "<g1>Credentials stay with their site.</g1> Logins and cookies are sent only to the host they belong to, even across redirects.",
    "text": "<g1>認証情報はサイトに留まります。</g1> ログイン情報とCookieは、リダイレクトをまたいでも、それらが属するホストにのみ送信されます。"
   },
+  "d9686c3ea1ff4f0a": {
+   "source": "Install the extension from its page in the Chrome Web Store, <g1>Mister Download Manager</g1>: click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>: Edge first asks to <g4>Allow extensions from other stores</g4> (click <g5>Allow</g5>), then <g6>Add extension</g6>. The browser keeps it updated. MDM's <g7>Add Mister Download Manager to your browser</g7> window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.",
+   "text": "Chrome Web Store のページから拡張機能をインストールします。<g1>Mister Download Manager</g1> のページで、<g2>Chrome に追加</g2> をクリックします。Edge の場合はボタンが <g3>入手</g3> となっており、まず Edge が <g4>他のストアからの拡張機能を許可する</g4> かどうかを尋ねてくるので（<g5>許可</g5> をクリック）、次に <g6>拡張機能を追加</g6> をクリックします。ブラウザーが拡張機能を最新の状態に保ちます。MDM の <g7>Mister Download Manager をブラウザーに追加する</g7> ウィンドウは、各ブラウザーでそのページを開きます。MDM がインストールされると、Chrome は次回の起動時に自動的に拡張機能の追加を提案することもあります。"
+  },
   "d9702d61beba459f": {
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "ダウンロードのリスト表示と操作にはMDMの自動化APIが必要です。これはオンにするまでオフになっています。MDMが実行中に、これを一度実行します（オンのままになります）。"
@@ -8477,10 +8513,6 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "HTTP、BitTorrent、マグネット、ed2kに対応し、REST APIも備え、ほぼどこでも動作"
-  },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "Flatpak または Snap としてインストールされたブラウザーは、サンドボックス内で実行されるため、外部のプログラムを起動できない場合があります。そのため、MDM に到達できない可能性があります。Flatpak ブラウザー（Zen の <x1/> など）は MDM のヘルパーを起動できないため、MDM はそれらを <g2>Mister Download Manager をブラウザーに追加する</g2> に表示しません。ブラウザー統合を使用するには、ディストリビューションのパッケージ（またはブラウザーメーカー独自の <x3/>、<x4/>、tarball、AppImage）からブラウザーをインストールしてください。"
   },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
@@ -8693,10 +8725,6 @@
   "e393d2a019bf4cc9": {
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
    "text": "<g1>選択したリンクをダウンロード</g1>と<g2>すべてのリンクをダウンロード</g2>は、選択時にページのリンク（または選択範囲のリンク）を読み取り、ページのURLとそのサイトのクッキーとともにMDMに渡します。"
-  },
-  "e39c7ec3d5c0fd70": {
-   "source": "The browser extension: for Firefox, from its add-ons store. For Chrome, Edge, Brave, Opera and Vivaldi it comes with the app and as <g1>its own download</g1>, added by hand for now, while the Chrome Web Store reviews it. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
-   "text": "ブラウザ拡張機能: Firefox 用はアドオンストアから。Chrome、Edge、Brave、Opera、Vivaldi 用はアプリに付属しており、<g1>単独でダウンロード</g1>できますが、Chrome ウェブストアでの審査中のため、現在は手動で追加してください。すべてのファイルは GitHub Actions によって公開ソースからビルドされ、SHA-256 チェックサムとともにリストされています。"
   },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
@@ -9126,6 +9154,10 @@
    "source": "Open source",
    "text": "オープンソース"
   },
+  "eee3dbbafbb8e53c": {
+   "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
+   "text": "- <g1>Snap 版 Chromium</g1> (Ubuntu の Chromium) は、サンドボックス内で MDM のヘルパーを起動しますが、MDM にアクセスできないため、MDM は <g2>Mister Download Manager をブラウザーに追加する</g2> にそれを表示しません。Firefox、または Google Chrome を独自の <x3/> から使用してください。- <g4>Flatpak ブラウザー</g4> (Zen の <x5/> など) は MDM のヘルパーを起動できないため、MDM はそれらも表示しません。ブラウザー統合を使用するには、ディストリビューションのパッケージ (またはブラウザーメーカー独自の <x6/>、<x7/>、tarball、または AppImage) からブラウザーをインストールしてください。"
+  },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",
    "text": "<g1>macOSのアプリのアイコン</g1>: MDMの実行中、Dockに小さくぼやけたアイコンが表示されていましたが、現在はアプリ独自のアイコンを保持しています。他の場所では、ウィンドウは大きなサイズからアイコンを取得します（どのスケーリングでも鮮明です）。"
@@ -9262,6 +9294,10 @@
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's <g1>Media on this page</g1> shows such a stream as <g2>Protected</g2> and doesn't send it.",
    "text": "DRMで保護された動画（ほとんどの有料ストリーミングサービス）はダウンロードできず、MDMも試みません。ブラウザ拡張機能の<g1>このページのメディア</g1>は、そのようなストリームを<g2>保護されています</g2>と表示し、送信しません。"
   },
+  "f262d1421b480e2f": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), through the MDM browser extension…",
+   "text": "MDMブラウザ拡張機能を使用すると、Firefox（addons.mozilla.orgから）、Google Chrome、Microsoft Edge、Brave、Opera、Vivaldi（Chromeウェブストアから）、およびそれらをベースにしたブラウザで動作します。"
+  },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",
    "text": "<g1>アドレス</g1>に、数字または文字が変わる場所にアスタリスクを1つ付けてアドレスを記述します。<x2/>。"
@@ -9317,10 +9353,6 @@
   "f3a16665a583e72f": {
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "リストは実行される順序を示しています。その下の矢印ボタンを使って、ダウンロードを上下に移動させます。"
-  },
-  "f3b0722f5a504a62": {
-   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge and Brave, load it by hand for now, while the Chrome Web Store reviews it. <g3>Browser integration</g3> shows how.",
-   "text": "ブラウザ統合には、各ブラウザでさらに1つのステップが必要です。拡張機能の追加です。Firefoxでは、<g2>addons.mozilla.orgのページ</g2>で<g1>Firefoxへ追加</g1>をクリックします。Chrome、Edge、Braveでは、Chromeウェブストアでの審査が完了するまで、手動で読み込んでください。<g3>ブラウザ統合</g3>で方法が示されています。"
   },
   "f3d28d86765197f1": {
    "source": "Intel",
@@ -9586,6 +9618,10 @@
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",
    "text": "MDM はマグネットリンクと <x1/> ファイルから BitTorrent ファイルをダウンロードします。トレントは他のダウンロードと同じリストに表示され、「<g3>ソース</g3>」列に「<g2>トレント</g2>」とマークされ、他のダウンロードと同様にキューに入れたりスケジュールしたりできます。"
   },
+  "fb3cc6240014e2b2": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
+   "text": "MDMをセットアップでインストールし、「ブラウザ統合を設定」にチェックを入れたままにします。Firefoxでは、addons.mozilla.orgのアドオンページを開き、「Firefoxへ追加」をクリックします。Chrome、Edge、Brave、Opera、Vivaldiでは、Chromeウェブストアでそのページを開き、「Chromeに追加」をクリックします（Edgeでは「入手」と表示され、最初に他のストアからの拡張機能を許可するか尋ねられます）。ストアを使用できない場合は、ブラウザの拡張機能ページを開き、開発者モードをオンにし、「パッケージ化されていない拡張機能を読み込む」を選択して、MDMフォルダ内のextension\\chromiumフォルダを選択します。チュートリアルで手順を説明しています。"
+  },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",
    "text": "MDMは自分の言語で利用できますか？"
@@ -9681,6 +9717,10 @@
   "fdcffa742865c035": {
    "source": "<g1>Everything else</g1> goes into <g2>Various files</g2>.",
    "text": "<g1>その他すべて</g1>は<g2>その他のファイル</g2>に入ります。"
+  },
+  "fde4e6f4f17a1676": {
+   "source": "When a browser can't use its store (a computer managed by an organization, or a build of your own), add the extension by hand:",
+   "text": "ブラウザがストアを使用できない場合（組織によって管理されているコンピューター、または独自のビルドの場合）、手動で拡張機能を追加します。"
   },
   "fdf01d37915b1a04": {
    "source": "Browser extension",

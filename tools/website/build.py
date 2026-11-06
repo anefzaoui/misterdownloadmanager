@@ -45,6 +45,9 @@ REPO = "https://github.com/anefzaoui/misterdownloadmanager"
 # The Firefox add-on's listing (crates/ipc/src/extension.rs FIREFOX_PAGE): {{AMO}} in pages, and
 # <!--@amo--> for its Add to Firefox button.
 AMO = "https://addons.mozilla.org/firefox/addon/mister-download-manager/"
+# The extension's listing in the Chrome Web Store (crates/ipc/src/extension.rs STORE_ID), for
+# Chrome, Edge, Brave, Opera and Vivaldi: {{CWS}} in pages; <!--@stores--> is both buttons.
+CWS = "https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp"
 # The creator's GitHub Sponsors page: the header, the footer and the home page's Support MDM
 # (the app's Help menu and About, the extension's popup and .github/FUNDING.yml point there too).
 SPONSORS = "https://github.com/sponsors/anefzaoui"
@@ -278,6 +281,18 @@ def amo_button(extra_class: str = "") -> str:
     is an English picture)."""
     return (f'<a class="btn btn-line store-btn{extra_class}" href="{AMO}">'
             '<img src="/assets/browsers/firefox.svg" width="22" height="22" alt=""> Add to Firefox</a>')
+
+
+def cws_button(extra_class: str = "") -> str:
+    """Add to Chrome: the extension's listing in the Chrome Web Store (Edge, Brave, Opera and
+    Vivaldi install from it too), drawn as Add to Firefox is."""
+    return (f'<a class="btn btn-line store-btn{extra_class}" href="{CWS}">'
+            '<img src="/assets/browsers/chrome.svg" width="22" height="22" alt=""> Add to Chrome</a>')
+
+
+def store_buttons() -> str:
+    """Both stores' buttons side by side: Firefox's, then the Chrome Web Store's."""
+    return f'<span class="store-btns">{amo_button()}{cws_button()}</span>'
 
 
 def header(section: str = "") -> str:
@@ -908,7 +923,9 @@ def fill(text: str) -> str:
     for k in ("stars", "forks", "issues", "watchers"):
         text = text.replace("{{" + k.upper() + "}}", STATS.get(k, "–"))
     text = text.replace("<!--@split-->", split_button()).replace("<!--@gh-->", gh_pill("btn btn-ghost btn-big gh-big"))
-    text = text.replace("<!--@amo-->", amo_button()).replace("{{AMO}}", AMO)
+    text = text.replace("<!--@stores-->", store_buttons()).replace("<!--@amo-->", amo_button())
+    text = text.replace("<!--@cws-->", cws_button())
+    text = text.replace("{{AMO}}", AMO).replace("{{CWS}}", CWS)
     text = text.replace("<!--@fields-->", waybill_fields()).replace("<!--@barcode-->", barcode.svg(f"MDM {VERSION}"))
     return (text.replace("{{VERSION}}", VERSION).replace("{{REPO}}", REPO).replace("{{SITE}}", SITE)
             .replace("{{SPONSORS}}", SPONSORS).replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))
