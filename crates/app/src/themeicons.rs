@@ -337,7 +337,7 @@ static SETS: LazyLock<Mutex<HashMap<String, Arc<Set>>>> = LazyLock::new(|| {
             "cat-finished-symbolic.svg", "cat-folder-open-symbolic.svg",
             "cat-folder-symbolic.svg", "cat-music.svg", "cat-programs-symbolic.svg",
             "cat-queues-symbolic.svg", "cat-torrents.svg", "cat-unfinished-symbolic.svg",
-            "cat-video.svg", "ft-archive.svg", "ft-audio.svg", "ft-code.svg", "ft-disk-image.svg",
+            "cat-video.svg", "ft-archive.svg", "ft-audio.svg", "ft-code.svg", "ft-disk-image-symbolic.svg",
             "ft-document.svg", "ft-executable-symbolic.svg", "ft-font.svg", "ft-generic.svg",
             "ft-image.svg", "ft-pdf.svg", "ft-presentation.svg", "ft-spreadsheet.svg",
             "ft-text.svg", "ft-torrent.svg", "ft-video.svg", "misc-down-symbolic.svg",
