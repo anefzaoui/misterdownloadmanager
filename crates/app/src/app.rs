@@ -1636,6 +1636,18 @@ impl App {
             "about" => self.run(Cmd::About, None, ctx),
             // The main window into the tray, as closing it does (tests and #72's measurements).
             "tray" => self.hide_to_tray(ctx),
+            // Off-screen test copies: the interface zoomed (`zoom:1.5`) while running, as a
+            // display's scale changing does to every window (#89's checks).
+            "zoom" if crate::offscreen() => {
+                if let Ok(z) = tab.parse::<f32>()
+                    && (0.5..=4.0).contains(&z)
+                {
+                    ctx.set_zoom_factor(z);
+                }
+            }
+            // Debug builds: Direct3D's device lost on purpose; MDM starts again (renderer.rs).
+            #[cfg(all(windows, debug_assertions))]
+            "renderer-lost" if crate::offscreen() => crate::renderer::test_device_lost(),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
             // The first download's: Add trackers (a torrent), its right-click menu.
@@ -7089,7 +7101,7 @@ impl eframe::App for App {
             .show(ui, |ui| self.paint(ui));
         self.dialogs(&ctx);
         crate::crash::frame_end();
-        crate::renderer::frame_done();
+        crate::renderer::frame_done(&ctx);
     }
 }
 
