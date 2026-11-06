@@ -644,10 +644,13 @@ const brief = (e) => `${e.method} ${e.status} ${e.outcome} ${e.range || "-"}`;
 const sizeOf = async (url) => Number((await fetch(url, { method: "HEAD" })).headers.get("content-length"));
 
 // The browser kept nothing: its download folder is empty (no .part, no .crdownload, no
-// "Unconfirmed", no placeholder).
+// "Unconfirmed", no placeholder). Chromium deletes its working file (`<uuid>.tmp`) on its own
+// after the extension cancels its copy, sometimes a second or two later on a busy computer or
+// with an older app's host (seen past 5 s while other builds ran): a file still there after 10 s is kept.
 async function keptNothing(dl) {
   await sleep(1000);
-  const left = fs.readdirSync(dl);
+  let left = fs.readdirSync(dl);
+  for (const end = Date.now() + 9000; left.length && Date.now() < end; left = fs.readdirSync(dl)) await sleep(250);
   if (left.length) throw new Error(`the browser kept: ${left.join(", ")}`);
 }
 
