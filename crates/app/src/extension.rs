@@ -9,7 +9,7 @@
 use std::path::PathBuf;
 use std::time::Duration;
 
-use egui::{FontFamily, FontId, Pos2, Ui};
+use egui::{Pos2, Ui};
 
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
@@ -97,13 +97,15 @@ impl Extension {
         }
         ctx.request_repaint_after(Duration::from_secs(1));
         let h = BANNER + 16.0 + self.browsers.len() as f32 * ROW + 104.0;
+        // A long translation's subline makes the banner taller (winui::banner).
+        let extra = crate::dialogs::grow_extra(ctx, "extension-banner");
         let mut answer = None;
         window(
             ctx,
             "extension",
             // i18n: title of the window that offers the browser extension
             "Add Mister Download Manager to your browser",
-            [W, h],
+            [W, h + extra],
             false,
             winui::BG(),
             |ui, o| {
@@ -122,37 +124,20 @@ impl Extension {
         let p = ui.painter().clone();
         let (ink, muted) = (winui::TEXT(), winui::MUTED());
         // The banner: the logo, what the extension does, in one line, and how.
-        p.rect_filled(winui::rect(r(o, 0.0, 0.0, W, BANNER)), 0.0, winui::FIELD());
-        winui::fill_l(
+        let extra = winui::banner(
+            ui,
             &p,
-            o.x,
-            o.y + BANNER,
-            o.x + W - 1.0,
-            o.y + BANNER,
-            winui::FIELD_EDGE(),
-        );
-        egui::Image::new(egui::include_image!("../assets/icons/app/mdm-48.png"))
-            .paint_at(ui, winui::rect(r(o, 18.0, 18.0, 48.0, 48.0)));
-        winui::text_font(
-            &p,
-            FontId::new(16.0, FontFamily::Name("tahoma-bold".into())),
-            o.x + 80.0,
-            o.y + 36.0,
+            o,
+            W,
+            "extension-banner",
             // i18n: the headline of the window that offers the browser extension
             crate::i18n::t("Catch downloads from your browser"),
-            ink,
-        );
-        winui::paragraph(
-            &p,
-            o.x + 80.0,
-            o.y + 57.0,
             crate::i18n::t(
                 "Add the free extension: files you download in your browser come here, and videos get a Download button.",
             ),
-            muted,
-            o.x + W - 18.0,
-            14.0,
         );
+        // Everything below it moves down with a taller banner.
+        let o = o + egui::vec2(0.0, extra);
 
         // One row per browser: its name, and the button that opens the extension's page in it:
         // Firefox's on addons.mozilla.org, the Chrome Web Store's for the others (the tutorial
