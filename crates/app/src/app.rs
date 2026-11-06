@@ -687,7 +687,10 @@ impl App {
         loaded: store::Loaded,
     ) -> Self {
         // The look (#45): the chosen theme before anything is drawn.
-        crate::theme::select(&loaded.settings.theme, &cc.egui_ctx);
+        crate::theme::select(
+            &crate::theme::startup_id(&loaded.settings.theme),
+            &cc.egui_ctx,
+        );
         crate::theme::apply(&cc.egui_ctx);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
@@ -1753,11 +1756,17 @@ impl App {
                 let (index, sub) = tab.split_once(':').unwrap_or((tab, ""));
                 let index = index.parse().unwrap_or(0);
                 self.open_menu = Some(index);
+                // menu:3:theme opens View → Theme (#45).
+                let wanted = match sub {
+                    "draw" => "Draw with",
+                    "theme" => "Theme",
+                    _ => "",
+                };
                 let at = self
                     .menu_entries(index)
                     .iter()
-                    .position(|e| matches!(e, MenuEntry::Sub("Draw with", ..)));
-                if let (Some(at), "draw") = (at, sub) {
+                    .position(|e| matches!(e, MenuEntry::Sub(name, ..) if *name == wanted));
+                if let Some(at) = at {
                     chrome::open_sub_at(ctx, &format!("menu-{index}"), at);
                 }
             }
@@ -4647,26 +4656,17 @@ impl App {
         let chosen = self.settings.theme.as_str();
         let mut items = Vec::new();
         let mut files = false;
+        let on = |id: &str| chosen == id;
+        // i18n: View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
+        items.push(Radio("Classic", Cmd::Theme("classic"), true, on("classic")));
+        // i18n: View → Theme: the system's own colours (its accent colour, its high contrast)
+        items.push(Radio("Native", Cmd::Theme("native"), true, on("native")));
+        // i18n: View → Theme: black and white with strong edges, for low vision
         items.push(Radio(
-            // i18n: View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
-            "Classic",
-            Cmd::Theme("classic"),
-            true,
-            chosen == "classic",
-        ));
-        items.push(Radio(
-            // i18n: View → Theme: the system's own colours (its accent colour, its high contrast)
-            "Native",
-            Cmd::Theme("native"),
-            true,
-            chosen == "native",
-        ));
-        items.push(Radio(
-            // i18n: View → Theme: black and white with strong edges, for low vision
             "High contrast",
             Cmd::Theme("high-contrast"),
             true,
-            chosen == "high-contrast",
+            on("high-contrast"),
         ));
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
@@ -4680,7 +4680,7 @@ impl App {
         items.push(Sep);
         // i18n: View → Theme: opens the folder where theme files go (TOML or JSON)
         items.push(I("Open themes folder", Cmd::OpenThemesFolder, true, false));
-        // i18n: View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Modern…
+        // i18n: View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
         Sub("Theme", true, items)
     }
 

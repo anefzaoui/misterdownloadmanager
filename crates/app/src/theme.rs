@@ -76,14 +76,10 @@ pub fn set(theme: Theme) {
 }
 
 /// Makes the theme with this id the active one: a built-in, or a file in the themes folder
-/// (`themefile`). `MDM_THEME`, for tests and screenshots, names one instead (an id, or a theme
-/// file's path). A theme that can't be read leaves the classic look, logged. Returns what was
-/// skipped or went wrong.
+/// (`themefile`), or a theme file's path; Native is made from what the system says. A theme
+/// that can't be read leaves the classic look, logged. Returns what was skipped or went wrong.
 pub fn select(id: &str, ctx: &egui::Context) -> Vec<String> {
-    let id = std::env::var("MDM_THEME")
-        .ok()
-        .filter(|s| !s.is_empty())
-        .unwrap_or_else(|| id.to_owned());
+    let id = id.to_owned();
     if id.is_empty() || id == CLASSIC.id {
         set(CLASSIC.clone());
         return Vec::new();
@@ -114,6 +110,15 @@ pub fn select(id: &str, ctx: &egui::Context) -> Vec<String> {
             vec![e]
         }
     }
+}
+
+/// The theme to start with: `MDM_THEME` (tests and screenshots: an id or a theme file's path),
+/// else the setting.
+pub fn startup_id(setting: &str) -> String {
+    std::env::var("MDM_THEME")
+        .ok()
+        .filter(|s| !s.is_empty())
+        .unwrap_or_else(|| setting.to_owned())
 }
 
 /// What the system said when Native was last made.
