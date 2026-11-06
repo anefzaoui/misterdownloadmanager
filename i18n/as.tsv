@@ -187,6 +187,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	এটা NextDNS কনফিগাৰেচন ID ছয়টা আখৰ আৰু অংকৰ (0-9, a-f) হয়।
+#. text in whereis.rs
+#. the tooltip of where a download's server is, when a proxy carries the download
+#, machine
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	এটা প্ৰক্সীয়ে এই ডাউনলোডটো কঢ়িয়াইছে: স্থান আৰু সময় ছাৰ্ভাৰৰ নহয়, প্ৰক্সীৰহে।
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -210,6 +214,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager ৰ বিষয়ে
+#. text in whereis.rs
+#. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
+#, machine
+	about {ms} ms ({reach})	প্ৰায় {ms} মি.ছে. ({reach})
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -316,6 +324,10 @@
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	ঠিকনা:
+#. text in whereis.rs
+#. the tooltip of where a download's server is: its IP address
+#, machine
+	Address: {address}	ঠিকনা: {address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
@@ -328,6 +340,22 @@
 #. a check of Test browser integration (Options → General)
 #, machine
 	Advanced browser integration is on	উন্নত ব্ৰাউজাৰ ইন্টিগ্ৰেচন অন আছে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Afghanistan	আফগানিস্তান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aland Islands	আলেণ্ড দ্বীপপুঞ্জ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Albania	আলবেনিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Algeria	আলজেৰিয়া
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	সকলো ডাউনলোড
@@ -382,6 +410,22 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	AM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	American Samoa	আমেৰিকান চামোৱা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Andorra	এণ্ডোৰা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Angola	এংগোলা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Anguilla	এংগুইলা
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
@@ -391,6 +435,14 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	উত্তৰ দিলে {ms} ms ত: {ip}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antarctica	এণ্টাৰ্কটিকা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antigua and Barbuda	এণ্টিগুয়া আৰু বাৰ্বুডা
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
 #, machine
@@ -416,9 +468,21 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	আপুনি নিশ্চিতনে যে আপুনি Mister Download Manager ৰ ডাউনলোড তালিকাৰ পৰা "{name}" মচি পেলাব বিচাৰে?
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Argentina	আৰ্জেণ্টিনা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Armenia	আৰ্মেনিয়া
 #. text in rssdlg.rs
 #, machine
 	Articles	প্ৰবন্ধসমূহ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aruba	আৰুবা
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	ছিষ্টেমৰ অঞ্চলৰ দৰে লিখক
@@ -454,6 +518,14 @@
 #. text in the Scheduler window
 #, machine
 	August	আগষ্ট
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Australia	অষ্ট্ৰেলিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Austria	অষ্ট্ৰিয়া
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -461,23 +533,95 @@
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	নিম্নলিখিত ফাইল প্ৰকাৰসমূহ স্বয়ংক্ৰিয়ভাৱে ডাউনলোড কৰা আৰম্ভ কৰক:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Azerbaijan	আজেৰবাইজান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahamas	বাহামাছ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahrain	বাহৰেইন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bangladesh	বাংলাদেশ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Barbados	বাৰ্বাডোছ
 #. window title in the Batch download window
 #, machine
 	Batch download	বেচ ডাউনলোড
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belarus	বেলাৰুছ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belgium	বেলজিয়াম
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belize	বেলাইজ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Benin	বেনিন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bermuda	বাৰ্মুডা
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
 #, machine
 	Best quality	শ্ৰেষ্ঠ মানদণ্ড
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bhutan	ভূটান
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
 	Block the addresses in this list (P2P or eMule format):	এই তালিকাত ঠিকনাবোৰ ব্লক কৰক (P2P বা eMule ফৰ্মেট):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bolivia	বলিভিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bonaire, Sint Eustatius and Saba	বনায়াৰ, চেইণ্ট ইউষ্টেটিয়াছ আৰু চাবা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bosnia and Herzegovina	বচনিয়া আৰু হাৰ্জেগোভিনা
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	দুয়োটাই মুক্ত উৎস। MDM-এ নিজৰ ডাউনল'ডাৰৰ সৈতে সিহঁতৰ অফিচিয়েল ৰিলিজৰ পৰা সিহঁতক পায় আৰু চলাবলৈ দিয়াৰ আগতে প্ৰতিটো ফাইলৰ স্বাক্ষৰ পৰীক্ষা কৰে। প্ৰায় 100 MB, এবাৰত।
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Botswana	বটছৱানা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bouvet Island	বভেট দ্বীপ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brazil	ব্ৰাজিল
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} শিপিং কৰাৰ দৰে ঘূৰাই আনিবনে: সিহঁতৰ নাম, ফাইলৰ প্ৰকাৰ আৰু ফোল্ডাৰ? আপোনাৰ নিজা শ্ৰেণী, সাধাৰণ আৰু টৰেণ্ট যেনেকৈ আছে তেনেকৈয়ে থাকিব। সাধাৰণলৈ স্থানান্তৰ কৰা ডাউনল’ডসমূহ তাতে থাকিব।
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	British Indian Ocean Territory	ব্ৰিটিছ ভাৰত মহাসাগৰীয় অঞ্চল
 #. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
@@ -492,6 +636,22 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ব্ৰাউজাৰ/ছিষ্টেম ইন্টিগ্ৰেচন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brunei	ব্ৰুনাই
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bulgaria	বুলগেৰিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burkina Faso	বুৰ্কিনা ফাছো
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burundi	বুৰুণ্ডি
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
@@ -502,6 +662,22 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	লিংক গ্ৰেবাৰৰ দ্বাৰা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cabo Verde	কেপ ভাৰ্ডে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cambodia	কম্বোডিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cameroon	কেমেৰুন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Canada	কানাডা
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
@@ -547,10 +723,22 @@
 #. text in categories.rs
 #, machine
 	Category properties	শ্ৰেণীৰ বৈশিষ্ট্যসমূহ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cayman Islands	কেমেন দ্বীপপুঞ্জ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Central African Republic	মধ্য আফ্ৰিকান গণৰাজ্য
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	প্ৰমাণপত্ৰৰ নাম:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chad	চাড
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -610,6 +798,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	পৰীক্ষা কৰি আছে...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chile	চিলি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	China	চীন
 #. text in langpick.rs
 #, machine
 	Choose a language	এটা ভাষা বাছক
@@ -620,6 +816,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	{name} বাছক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Christmas Island	খ্ৰীষ্টমাছ দ্বীপ
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -642,6 +842,18 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Close a menu or dialog	এটা মেনু বা ডাইলগ বন্ধ কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cocos (Keeling) Islands	কোকোছ (কিলিং) দ্বীপপুঞ্জ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Colombia	কলম্বিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Comoros	কোমোৰোছ
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -661,6 +873,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	ডাউনলোডসমূহ বিলোপ কৰাৰ নিশ্চিতকৰণ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Congo	কংগো
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -682,6 +898,10 @@
 #. text in the Options window
 #, machine
 	Connections:	সংযোগসমূহ:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cook Islands	কুক দ্বীপপুঞ্জ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	ক্লিপব'ৰ্ডত কপি কৰা হৈছে।
@@ -696,6 +916,10 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	প্ৰতিবেদন কপি কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Costa Rica	কষ্টা ৰিকা
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
@@ -709,6 +933,18 @@
 #. window title in a dialog box
 #, machine
 	Create folder	ফোল্ডাৰ সৃষ্টি কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Croatia	ক্ৰ'ৱেছিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cuba	কিউবা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Curaçao	কুৰাচাও
 #. text in the Options window
 #, machine
 	Customize "Download progress" dialog	"ডাউনলোড প্ৰগ্ৰেছ" ডাইলগ কাষ্টমাইজ কৰক
@@ -721,6 +957,18 @@
 #. text in the Options window
 #, machine
 	Customize MDM menu items in context menu of browsers	ব্ৰাউজাৰসমূহৰ প্ৰসংগ মেনুত MDM মেনু আইটেমসমূহ কাষ্টমাইজ কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cyprus	চাইপ্ৰাছ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Czech Republic	চেক গণৰাজ্য
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Côte d'Ivoire	কোট ডি'আইভৰি
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
@@ -789,6 +1037,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads and their files (asks first)	নিৰ্বাচিত ডাউনল'ড আৰু ইয়াৰ ফাইলবোৰ বিলোপ কৰক (প্ৰথমে সোধে)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Denmark	ডেনমাৰ্ক
 #. text in a dialog box
 #, machine
 	Description	বিৱৰণ
@@ -809,6 +1061,10 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	শাৰীৰ তালিকাত প্ৰদৰ্শিত
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Djibouti	জিবুতি
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
@@ -834,6 +1090,14 @@
 #. category name: documents (pdf, doc…)
 #, machine
 	Documents	ডকুমেন্টছ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominica	ডোমিনিকা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominican Republic	ডোমিনিকান গণৰাজ্য
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 #, machine
@@ -877,6 +1141,10 @@
 #. window title in a dialog box
 #, machine
 	Download File Info	ফাইল তথ্য ডাউনল'ড কৰক
+#. text in the Add torrent window
+#. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
+#, machine
+	Download in order	ক্ৰমানুসৰি ডাউনল'ড কৰক
 #. button in a dialog box
 #, machine
 	Download Later	পিছত ডাউনল'ড কৰক
@@ -979,6 +1247,10 @@
 #. {time} = a time of day (keep the braces as they are)
 #, machine
 	Downloads stopped and will resume automatically at {time}.	ডাউনল’ডসমূহ বন্ধ কৰা হৈছে আৰু {time} বজাত স্বয়ংক্ৰিয়ভাৱে পুনৰ আৰম্ভ হ’ব।
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	DR Congo	ডি আৰ কংগো
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1005,6 +1277,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	প্ৰতিটো ফাইলৰ শ্ৰেণী ফোল্ডাৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ecuador	ইকুৱেডৰ
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -1024,6 +1300,14 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Edit...	সম্পাদনা কৰক...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Egypt	ইজিপ্ত
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	El Salvador	এল চালভাডৰ
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ইমেইল
@@ -1059,6 +1343,14 @@
 #. RSS feeds window, Download rules: the episode filter can't be read
 #, machine
 	Episodes: like 1x2;1x5-8;2x1- (season x episode)	খণ্ডসমূহ: যেনে 1x2;1x5-8;2x1- (ছিজন x খণ্ড)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Equatorial Guinea	বিষুৱীয় গিনি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eritrea	এৰিথ্ৰিয়া
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1070,6 +1362,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Error: {error}	ত্ৰুটি: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Estonia	এষ্টোনিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eswatini	ইছৱাটিনি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ethiopia	ইথিওপিয়া
 #. text in the Options window
 #, machine
 	Event	ইভেণ্ট
@@ -1133,6 +1437,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	এক্সট্ৰেক্ট কৰি থকা হৈছে...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Falkland Islands	ফকলণ্ড দ্বীপপুঞ্জ
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (over 150 ms)
+#, machine
+	far	দূৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Faroe Islands	ফেৰো দ্বীপপুঞ্জ
 #. text in the Scheduler window
 #, machine
 	February	ফেব্ৰুৱাৰী
@@ -1156,6 +1472,10 @@
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
 	ffmpeg: joins picture and sound	ffmpeg: ছবি আৰু শব্দ সংযোগ কৰে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Fiji	ফিজি
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -1232,6 +1552,10 @@
 #. adjective: the downloads that are complete
 #, machine
 	Finished	সম্পূৰ্ণ হ’ল
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Finland	ফিনলেণ্ড
 #. text in the Options window
 #, machine
 	First day of the week:	সপ্তাহৰ প্ৰথম দিন:
@@ -1263,6 +1587,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	শুক্ৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	France	ফ্ৰান্স
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
@@ -1271,6 +1599,18 @@
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
 	Free, official and checked	বিনামূলীয়া, অফিচিয়েল আৰু পৰীক্ষিত
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Guiana	ফ্ৰেন্স গায়ানা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Polynesia	ফ্ৰেন্স পলিমেছিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Southern Territories	ফ্ৰেন্স ছাডাৰ্ণ টেৰিটৰীজ
 #. text in the Scheduler window
 #, machine
 	Friday	শুক্ৰবাৰ
@@ -1307,6 +1647,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gabon	গেবন
 #. text in gallerydlg.rs
 #. in Download a gallery, before gallery-dl is installed
 #, machine
@@ -1325,12 +1669,24 @@
 #. a gallery download's error: the helper program it needs is missing
 #, machine
 	gallery-dl is not installed (Add URL with a gallery's address installs it)	গেলাৰী-ডিএল ইনষ্টল কৰা হোৱা নাই (এটা গেলাৰীৰ ঠিকনাৰ সৈতে URL যোগ কৰিলে ইয়াক ইনষ্টল কৰে)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gambia	গাম্বিয়া
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
 #, machine
 	General	সাধাৰণ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Georgia	জৰ্জিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Germany	জাৰ্মানী
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
@@ -1347,6 +1703,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	পিয়াৰৰ পৰা ফাইল তালিকা পোৱা হৈছে... {n} ছেকেণ্ড
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ghana	ঘানা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gibraltar	জিব্ৰাল্টাৰ
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -1355,6 +1719,50 @@
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
 	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive-এ এতিয়া এই ফাইলটো নিদিব: {message} (আপোনাৰ ব্ৰাউজাৰত Google-লৈ ছাইন ইন কৰিলে প্ৰায়ে সহায় হয়; অন্যথা, পিছত পুনৰ চেষ্টা কৰক)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greece	গ্ৰীচ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greenland	গ্ৰীনলেণ্ড
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Grenada	গ্ৰেনাডা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guadeloupe	গুয়াডেলুপ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guam	গুৱাম
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guatemala	গুৱাটামালা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guernsey	গাৰ্নছি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea	গিনি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea-Bissau	গিনি-বিছাউ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guyana	গায়ানা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Haiti	হাইতি
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	সম্পূৰ্ণ হ’লে মডেম হেং আপ কৰক
@@ -1362,6 +1770,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	আছে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Heard Island and McDonald Islands	হাৰ্ড দ্বীপ আৰু মেকডনাল্ড দ্বীপপুঞ্জ
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1400,6 +1812,14 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	গৃহ পৃষ্ঠা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Honduras	হণ্ডুৰাছ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hong Kong	হং কং
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1410,9 +1830,17 @@
 #. checkbox in the Options window
 #, machine
 	https	https
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hungary	হাংগেৰী
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	মই Mister Download Manager-ৰ সৈতে ডাউনলোড কৰোঁ: দ্ৰুত, বিনামূলীয়া, আৰু ই আপুনি ইতিমধ্যে জনা ডাউনলোড মেনেজাৰৰ দৰেই দেখায়। {link}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iceland	আইচলেণ্ড
 #. text in the Options window
 #, machine
 	If a duplicate download link is added:	যদি এটা ডুপ্লিকেট ডাউনল’ড লিংক যোগ কৰা হয়:
@@ -1439,6 +1867,14 @@
 #. a spin box's arrow, for screen readers: one more
 #, machine
 	Increase	বৃদ্ধি কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	India	ভাৰত
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Indonesia	ইণ্ডোনেছিয়া
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -1478,6 +1914,26 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	IP ঠিকনাসমূহ (ঐচ্ছিক):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iran	ইৰাণ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iraq	ইৰাক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ireland	আয়াৰলেণ্ড
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Isle of Man	আইল অৱ মেন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Israel	ইজৰাইল
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1511,6 +1967,10 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	MDM ডাউনলোড কিউলৈ img001.jpg, img002.jpg, ইত্যাদি, img100.jpg-ৰ দৰে ক্ৰমিক ফাইল নামৰ এটা গোট যোগ কৰাটো সম্ভৱ। ফাইল নামৰ আৰ্হিৰ বাবে এষ্টাৰিস্ক ৱাইল্ডকাৰ্ড ব্যৱহাৰ কৰক।
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Italy	ইটালী
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1518,9 +1978,25 @@
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	ইয়াৰ ৰিলিজ তথ্য আশা কৰা ধৰণৰ নহয়: {detail}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jamaica	জামাইকা
 #. text in the Scheduler window
 #, machine
 	January	জানুৱাৰী
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Japan	জাপান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jersey	জাৰ্ছি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jordan	জৰ্ডান
 #. text in the Scheduler window
 #, machine
 	July	জুলাই
@@ -1530,12 +2006,20 @@
 #. text in the Scheduler window
 #, machine
 	June	জুন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kazakhstan	কাজাখস্তান
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	কিলোবাইট/ছেকেণ্ড
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	টৰেন্ট শেষ হোৱাৰ পিছতো শ্বেয়াৰ কৰি থাকক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kenya	কেনিয়া
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
@@ -1551,10 +2035,34 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	কীবোৰ...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kiribati	কিৰিবাটি
+#. text in a download's Properties window
+#. Properties, where a download's server is: not seen yet (it hasn't run)
+#, machine
+	known once it has run	চলিবলৈ আৰম্ভ কৰাৰ পিছত জনা যাব
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kosovo	কোছোভো
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kuwait	কুৱেইট
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kyrgyzstan	কিৰগিজস্তান
 #. text in langpick.rs
 #. window title (the interface language)
 #, machine
 	Language	ভাষা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Laos	লাওছ
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
@@ -1571,16 +2079,40 @@
 #. button: add it now, start downloading later
 #, machine
 	Later	পিছত
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Latvia	লাটভিয়া
 #. text in the Options window
 #, machine
 	Launch Mister Download Manager on startup	আৰম্ভণিতে Mister Download Manager আৰম্ভ কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lebanon	লেবানন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lesotho	লেছ’থো
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
 	Letters	বৰ্ণ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liberia	লাইবেৰিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Libya	লিবিয়া
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Licenses and credits	লাইচেন্স আৰু ক্ৰেডিট
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liechtenstein	লিখটেনষ্টাইন
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	সকলো ডাউনলোড একেলগে সীমিত কৰক
@@ -1628,6 +2160,10 @@
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	ঠিকনাসমূহৰ তালিকা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lithuania	লিথুৱেনিয়া
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
@@ -1665,6 +2201,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	পৃষ্ঠাখন চাই আছে...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Luxembourg	লাক্সেমবাৰ্গ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Macau	মাকাও
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Madagascar	মাদাগাস্কাৰ
 #. message or event log entry in the main window
 #, machine
 	Main download queue	মুখ্য ডাউনলোড কিউ
@@ -1675,6 +2223,26 @@
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	প্ৰতিবেদন পঢ়িব পৰা কৰি আছে: চিহ্নসমূহ আহৰণ কৰি আছে ({total} MB ৰ {done})…
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malawi	মালাৱি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malaysia	মালয়েছিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Maldives	মালদ্বীপ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mali	মালি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malta	মাল্টা
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	মেনুৱেল প্ৰক্সি/SOCKS কনফিগাৰেচন
@@ -1685,12 +2253,28 @@
 #. text in the Scheduler window
 #, machine
 	March	মাৰ্চ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Marshall Islands	মাৰ্শ্বেল দ্বীপপুঞ্জ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Martinique	মাৰ্টিনিক
 #. checkbox in the Find window
 #, machine
 	Match case	কেছ মিলাওক
 #. checkbox in the Find window
 #, machine
 	Match whole string only	কেৱল সম্পূৰ্ণ ষ্ট্ৰিং মিলাওক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritania	মৌৰিটানিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritius	মৰিছাছ
 #. group box title in the Options window
 #, machine
 	Max. connections number	সৰ্বাধিক সংযোগ সংখ্যা
@@ -1713,6 +2297,22 @@
 #. the month (the fifth of the year)
 #, machine
 	May	মে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mayotte	মায়োট
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (60 to 150 ms)
+#, machine
+	medium	মধ্যম
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mexico	মেক্সিকো
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Micronesia	মাইক্ৰোনেছিয়া
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
 #, machine
@@ -1771,13 +2371,37 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	সোম
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Moldova	মলডোভা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Monaco	মোনাকো
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Monday	সোমবাৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mongolia	মংগোলিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montenegro	মণ্টেনিগ্ৰো
 #. text in the Options window
 #. a date's order: month first (10/30/2026)
 #, machine
 	Month, day, year	মাহ, দিন, বছৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montserrat	মণ্টছেৰাট
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Morocco	মৰক্কো
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
@@ -1817,6 +2441,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ফাইল স্থানান্তৰ কৰা হৈ আছে...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mozambique	মোজাম্বিক
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	আন সংযোগবোৰতকৈ বহু লেহেম; পুনৰ সংযোগ কৰি আছে
@@ -1835,6 +2463,10 @@
 #. option (radio button) in the Options window
 #, machine
 	My own way:	মোৰ নিজা ধৰণে:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Myanmar	ম্যানমাৰ
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
@@ -1852,10 +2484,30 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	আপোনাৰ হোষ্ট ফাইলত থকা নাম আৰু স্থানীয় নাম (এটা শব্দ, .local, .lan) ছিষ্টেমৰ DNS ৰ সৈতে থাকে। ভিডিঅ' পৃষ্ঠা আৰু টৰেণ্ট ট্ৰেকাৰসমূহে বৰ্তমানৰ বাবে ছিষ্টেমৰ DNS ব্যৱহাৰ কৰে।
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Namibia	নামিবিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nauru	নাউৰু
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (under 60 ms)
+#, machine
+	near	ওচৰত
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	লগইন লাগে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nepal	নেপাল
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Netherlands	নেদাৰলেণ্ড
 #. text in the Options window
 #, machine
 	Network adapter:	নেটৱৰ্ক এডাপ্টাৰ:
@@ -1869,6 +2521,10 @@
 #. button: create a new item
 #, machine
 	New	নতুন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Caledonia	নিউ কেলেডোনিয়া
 #. text in the Options window
 #, machine
 	New exception	নতুন ব্যতিক্ৰম
@@ -1880,6 +2536,26 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	নতুন নিয়ম
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Zealand	নিউজিলেণ্ড
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nicaragua	নিকাৰাগুয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niger	নাইজাৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nigeria	নাইজেৰিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niue	নিউ
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	নহয়
@@ -1977,6 +2653,26 @@
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	একো নাই: পিয়াৰসমূহ DHT আৰু অন্যান্য পিয়াৰৰ পৰা আহে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norfolk Island	নৰফক দ্বীপ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Korea	উত্তৰ কোৰিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Macedonia	উত্তৰ মেচিডোনিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Northern Mariana Islands	উত্তৰ মেৰিয়ানা দ্বীপপুঞ্জ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norway	নৰৱে
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	এইটো পঢ়িব পৰা কোনো চেকছাম নহয়
@@ -2009,6 +2705,9 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	এতিয়া নহয়? পিছত Task → এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনল'ড কৰক-ৰ পৰা সিহঁতক পাওক।
+#. text in a download's Properties window
+#, machine
+	not one server (peers, or a helper's)	এটা চাৰ্ভাৰ নহয় (পিয়াৰ, বা সহায়কৰ)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2055,6 +2754,10 @@
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	ঠিক আছে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Oman	ওমান
 #. text in a download's progress window
 #, machine
 	on download stop/resume	ডাউনল’ড বন্ধ/পুনৰ আৰম্ভ কৰাত
@@ -2155,6 +2858,30 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	পৃষ্ঠাৰ ঠিকনা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pakistan	পাকিস্তান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palau	পালাউ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palestine	ফিলিস্তিন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Panama	পানামা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Papua New Guinea	পাপুয়া নিউ গিনি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Paraguay	পাৰাগুৱে
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	পাছৱৰ্ড
@@ -2204,10 +2931,22 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	সাময়িক ছিংক্ৰ’নাইজেচন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Peru	পেৰু
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Philippines	ফিলিপাইনছ
 #. text in a download's progress window
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	খণ্ডসমূহ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pitcairn	পিটকেয়াৰ্ণ
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
@@ -2220,6 +2959,10 @@
 #. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	PM	PM
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Poland	পলেণ্ড
 #. label in the Options window
 #, machine
 	Port	প'ৰ্ট
@@ -2227,6 +2970,10 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	প'ৰ্ট:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Portugal	পৰ্তুগাল
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
@@ -2263,6 +3010,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	প্ৰক্সি ছাৰ্ভাৰ ঠিকনা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Puerto Rico	পুয়েৰ্টো ৰিকো
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2271,6 +3022,10 @@
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
 	Put them into the video	এইবোৰ ভিডিঅ'ত ৰাখক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Qatar	কাটাৰ
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
 #. label before the quality chosen for all of a playlist's videos
@@ -2402,9 +3157,25 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	পুনৰ চেষ্টা কৰি আছে: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Romania	ৰোমানিয়া
 #. window title in rssdlg.rs
 #, machine
 	RSS feeds	RSS ফিডসমূহ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Russia	ৰাছিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Rwanda	ৰুৱাণ্ডা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Réunion	ৰিউনিয়ন
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2414,9 +3185,53 @@
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
 	Sa	শনি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Barthélemy	ছেইণ্ট বাৰ্থেলেমি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Helena, Ascension and Tristan da Cunha	ছেইণ্ট হেলেনা, এচেনচন আৰু ট্ৰিস্তান ডা কুনহা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Kitts and Nevis	ছেইণ্ট কিটছ আৰু নেভিছ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Lucia	ছেইণ্ট লুচিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Martin	ছেইণ্ট মাৰ্টিন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Pierre and Miquelon	ছেইণ্ট পিয়েৰ আৰু মিকুৱেলন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Vincent and the Grenadines	ছেইণ্ট ভিনচেণ্ট আৰু গ্ৰেনাডাইনছ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Samoa	চামোয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	San Marino	চান মেৰিনো
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sao Tome and Principe	চাও টোম আৰু প্ৰিন্সিপে
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Saturday	শনিবাৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saudi Arabia	চৌদি আৰব
 #. text in a dialog box
 #, machine
 	Save As	এইদৰে সংৰক্ষণ কৰক
@@ -2503,6 +3318,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	এজন বন্ধুলৈ এইটো পঠিয়াওক:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Senegal	চেনেগাল
 #. text in a download's progress window
 #. column title: how much went to the peer
 #. how much was sent to other peers
@@ -2511,10 +3330,15 @@
 #. text in the Scheduler window
 #, machine
 	September	ছেপ্টেম্বৰ
-#. text in the Options window
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Serbia	ছাৰ্বিয়া
+#. text in a dialog box; text in the Options window; text in a download's progress window
+#. label before where a download's server is (its country and round trip)
 #, machine
 	Server	ছাৰ্ভাৰ
-#. text in the Options window
+#. text in the Options window; text in a download's Properties window
 #, machine
 	Server:	ছাৰ্ভাৰ:
 #. text in the Options window
@@ -2545,6 +3369,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Settings...	ছেটিংছ...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Seychelles	ছেইচেলছ
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -2615,6 +3443,10 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	বন্ধ কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sierra Leone	চিয়েৰা লিয়ন
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
@@ -2627,6 +3459,14 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	ছাইন আউট কৰা হৈছে: পুনৰ ছাইন ইন কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Singapore	ছিংগাপুৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sint Maarten	ছিণ্ট মাৰ্টেন
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	ছাইটৰ নাম/ডাউনলোড লিংক/পেৰেণ্ট ৱেব পৃষ্ঠা/ৰেফাৰাৰ
@@ -2666,6 +3506,22 @@
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
 	Sleep	শুই থাকক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovakia	শ্লোভাকিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovenia	শ্লোভেনিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Solomon Islands	চলোমন দ্বীপপুঞ্জ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Somalia	চোমালিয়া
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
@@ -2692,6 +3548,26 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Source: {source}	উৎস: {source}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Africa	দক্ষিণ আফ্ৰিকা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Georgia and the South Sandwich Islands	দক্ষিণ জৰ্জিয়া আৰু দক্ষিণ চেণ্ডউইচ দ্বীপপুঞ্জ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Korea	দক্ষিণ কোৰিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Sudan	দক্ষিণ চুডান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Spain	স্পেইন
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2699,6 +3575,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	গতি সীমিতকাৰী ছেটিংছ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sri Lanka	শ্ৰীলংকা
 #. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 #, machine
@@ -2828,15 +3708,51 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} ভাষাত ছাবটাইটেল ডাউনল’ড কৰিব পৰা নগ’ল: {site} এ অস্বীকাৰ কৰিছিল (অতিৰিক্ত অনুৰোধ)।
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sudan	চুডান
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	দেওবাৰ
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Support MDM on GitHub Sponsors	GitHub স্পনছৰত MDM-ক সমৰ্থন কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Suriname	ছুৰিনাম
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Svalbard and Jan Mayen	ভালবাৰ্ড আৰু জান মায়েন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sweden	ছুইডেন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Switzerland	ছুইজাৰলেণ্ড
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	ছিংক্ৰোনাইজেচন কিউ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Syria	ছিৰিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Taiwan	টাইৱান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tajikistan	তাজিকিস্তান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tanzania	তাঞ্জানিয়া
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2863,6 +3779,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	বৃহ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Thailand	থাইলেণ্ড
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3104,6 +4024,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	ছিষ্টেমৰ DNS
+#. text in whereis.rs
+#. the tooltip of where a download's server is: how the time shown is measured
+#, machine
+	The time is a round trip, measured as this download's own connections opened.	সময়টো এটা ৰাউণ্ড ট্ৰিপ, এই ডাউনলোডৰ নিজা সংযোগ খোলা হিচাপে জোখা হয়।
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3154,6 +4078,10 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	এই শ্ৰেণী বা শাৰীত এতিয়ালৈকে কোনো ডাউনলোড নাই।
+#. text in whereis.rs
+#. where a download's server is: on this computer or the local network (no country)
+#, machine
+	this computer or the local network	এই কম্পিউটাৰ বা স্থানীয় নেটৱৰ্ক
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
@@ -3214,12 +4142,24 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	এই ভিডিঅ'টোৰ বাবে আপুনি ছাইন ইন কৰিব লাগিব। আপোনাৰ ব্ৰাউজাৰত ইয়াৰ ওপৰত থকা ডাউনলোড ভিডিঅ' বুটামটো ব্যৱহাৰ কৰক, যিয়ে আপোনাৰ ছাইন-ইন পাছ কৰে।
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it (the proxy's place not known)
+#, machine
+	through a proxy	এটা প্ৰক্সিৰ জৰিয়তে
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it: {country} is the proxy's country
+#, machine
+	through a proxy in {country}	{country}ত এটা প্ৰক্সিৰ জৰিয়তে
 #. text in the Scheduler window
 #, machine
 	Thursday	বৃহস্পতিবাৰ
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	সময় বাকী
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Timor-Leste	টিমৰ-লেষ্টে
 #. text in the Batch download window
 #, machine
 	To:	লৈ:
@@ -3227,6 +4167,18 @@
 #. link under the calendar: {date} = today's date
 #, machine
 	Today: {date}	আজি: {date}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Togo	টোগো
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tokelau	টকেলৌ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tonga	টোংগা
 #. text in errors.rs
 #, machine
 	too many redirects	অতি বেছি পুনৰ্নিৰ্দেশনা
@@ -3274,6 +4226,10 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	স্থানান্তৰৰ হাৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Trinidad and Tobago	ট্ৰিনিদাদ আৰু টোবাগো
 #. button in helpers.rs
 #, machine
 	Try again	পুনৰ চেষ্টা কৰক
@@ -3284,6 +4240,18 @@
 #. text in the Scheduler window
 #, machine
 	Tuesday	মঙলবাৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tunisia	টুনিছিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turkmenistan	তুৰ্কমেনিস্তান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turks and Caicos Islands	টাৰ্কছ এণ্ড কাইকছ দ্বীপপুঞ্জ
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 #, machine
@@ -3302,6 +4270,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	চালু কৰক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tuvalu	টুভালু
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	দুটা বিনামূলীয়া সহায়কে ইয়াক কাম কৰায়। এতিয়াই সিহঁতক পাওক, আৰু আপুনি এটা ভিডিঅ' পালে ইয়াক সংৰক্ষণ কৰাটো এটা ক্লিক দূৰত।
@@ -3349,6 +4321,18 @@
 #. text in a download's Properties window
 #, machine
 	Type:	প্ৰকাৰ:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Türkiye	তুৰস্ক
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uganda	উগাণ্ডা
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ukraine	ইউক্ৰেইন
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
@@ -3357,11 +4341,29 @@
 #. adjective: the downloads that are not complete yet
 #, machine
 	Unfinished	অসম্পূৰ্ণ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Arab Emirates	সংযুক্ত আৰব আমিৰাত
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Kingdom	যুক্তৰাজ্য
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States	আমেৰিকা যুক্তৰাষ্ট্ৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States Minor Outlying Islands	আমেৰিকা যুক্তৰাষ্ট্ৰৰ ক্ষুদ্ৰ বহিৰ্ভূত দ্বীপসমূহ
 #. text in a download's Properties window
 #, machine
 	Unknown	অজ্ঞাত
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known
+#. where a download's server is: not known (no address seen)
+#. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	অজ্ঞাত
 #. button in the Options window
@@ -3383,6 +4385,10 @@
 #. text in a dialog box
 #, machine
 	URL	URL
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uruguay	উৰুগুৱে
 #. text in the Options window
 #, machine
 	Use advanced browser integration	উন্নত ব্ৰাউজাৰ একত্ৰীকৰণ ব্যৱহাৰ কৰক
@@ -3455,13 +4461,29 @@
 #. label in the Options window
 #, machine
 	UserName	ব্যৱহাৰকাৰীৰ নাম
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uzbekistan	উজবেকিস্তান
 #. text in a download's progress window
 #, machine
 	Value	মান
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vanuatu	ভানuatu
 #. text in the Link grabber window
 #. Link grabber: the package of links that belong to no other
 #, machine
 	Various files	বিভিন্ন ফাইল
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vatican City	ভেটিকান চিটি
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Venezuela	ভেনেজুৱেলা
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3496,6 +4518,18 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	ভিডিঅ’সমূহ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vietnam	ভিয়েটনাম
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (British)	ভাৰ্জিন দ্বীপপুঞ্জ (ব্ৰিটিছ)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (U.S.)	ভাৰ্জিন দ্বীপপুঞ্জ (আমেৰিকা)
 #. text in the Options window
 #, machine
 	Virus checking settings	ভাইৰাছ পৰীক্ষাৰ ছেটিংছ
@@ -3517,6 +4551,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	অপেক্ষা কৰি আছে: ডাউনল’ডৰ সীমা পোৱা গৈছে (ছেডিউলাৰ)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Wallis and Futuna	ৱালিছ আৰু ফুটুনা
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3528,6 +4566,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	বুধবাৰ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Western Sahara	পশ্চিমীয়া চাহাৰা
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
@@ -3578,6 +4620,10 @@
 #. a date's order: year first (2026-10-30)
 #, machine
 	Year, month, day	বছৰ, মাহ, দিন
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Yemen	য়েমেন
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	হয়
@@ -3621,6 +4667,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: ভিডিঅ' বিচাৰে
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zambia	জাম্বিয়া
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zimbabwe	জিম্বাবুৱে
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -3650,6 +4704,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	{browser}: the extension {version} connected	{browser}: এক্সটেনচন {version} সংযুক্ত হৈছে
+#. text in whereis.rs
+#. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
+#, machine
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} এ এই ফাইলটো সেৱা আগবঢ়ায়: স্থানটো ইয়াৰ চাৰ্ভাৰৰ, প্ৰায়ে আপোনাৰ ওচৰত, চাইটৰ মালিকৰ নহয়।
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -3985,6 +5043,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ইনষ্টল কৰা হোৱা নাই, বা ইয়াৰ ব্ৰাউজাৰ ইন্টিগ্ৰেচন ছেট আপ কৰা হোৱা নাই
 #. text in the browser extension
+#. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager এতিয়া এই ব্ৰাউজাৰৰ দৰে একে প্ৰক্সিৰ জৰিয়তে ডাউনল'ড কৰে। ব্ৰাউজাৰে আপোনাক এবাৰ ইয়াক অনুমতি দিবলৈ কয়; ইয়াক বন্ধ কৰিলে সেয়া ঘূৰাই লয়।
+#. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
 extension	More options	অধিক বিকল্প
@@ -4023,6 +5085,10 @@ extension	Protected	সুৰক্ষিত
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
 extension	Protected video: it can't be saved	সুৰক্ষিত ভিডিঅ': ইয়াক সংৰক্ষণ কৰিব নোৱাৰি
+#. text in the browser extension
+#. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
+#, machine
+extension	Send downloads through this browser's proxy or VPN extension	এই ব্ৰাউজাৰৰ প্ৰক্সি বা VPN এক্সটেনচনৰ জৰিয়তে ডাউনল'ড প্ৰেৰণ কৰক
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -4392,6 +5458,10 @@ menu	Direct3D didn't start here: OpenGL draws	Direct3D ইয়াত আৰম
 #, machine
 menu	Download &video from a page...	এটা পৃষ্ঠাৰ পৰা ভিডিঅ' ডাউনল'ড কৰক...(&v)
 #. menu command in the main window
+#. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
+#, machine
+menu	Download in order	ক্ৰমানুসৰি ডাউনল'ড কৰক
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
 #, machine
 menu	Draw with	আঁকক
@@ -4413,6 +5483,10 @@ menu	Find (Ctrl-F)	সন্ধান কৰক (Ctrl-F)
 #. menu command in the main window
 #, machine
 menu	Find Next (F3)	পৰৱৰ্তী সন্ধান কৰক (F3)
+#. menu command in the main window
+#. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
+#, machine
+menu	First and last pieces first	প্ৰথম আৰু শেষ অংশ প্ৰথমে
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine

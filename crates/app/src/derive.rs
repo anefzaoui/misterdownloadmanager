@@ -212,6 +212,11 @@ pub fn derive(s: &Seeds) -> Palette {
         error_strong: readable(s.error, bg, 4.5),
         warning: readable(s.warning, bg, 4.5),
         success: readable(s.success, bg, 4.5),
+        // A server's round trip in Properties: near, medium, far as success, warning, error.
+        reach_near: readable(s.success, bg, 4.5),
+        reach_medium: readable(s.warning, bg, 4.5),
+        reach_far: readable(s.error, bg, 4.5),
+        flag_edge: Color32::from_black_alpha(40),
         accent,
         focus_ring: toward(bg, 0.85),
         selection,

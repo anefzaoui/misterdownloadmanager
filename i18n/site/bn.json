@@ -686,6 +686,10 @@
    "source": "From IDM",
    "text": "IDM থেকে"
   },
+  "1105c4be357dbf30": {
+   "source": "<g1>Properties</g1> keeps what the last run saw, so a finished download still shows where it came from.",
+   "text": "<g1>বৈশিষ্ট্য</g1> শেষ রান যা দেখেছিল তা রাখে, তাই একটি সম্পূর্ণ ডাউনলোড এখনও দেখায় এটি কোথা থেকে এসেছে।"
+  },
   "110d6b2bd87a92ac": {
    "source": "Works with what you already use",
    "text": "আপনার ব্যবহৃত জিনিসের সাথে কাজ করে"
@@ -737,6 +741,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "বেঞ্চমার্ক ডেটা লোড করা যায়নি।"
+  },
+  "129f913e421a0374": {
+   "source": "Torrents, videos and galleries have no single server of MDM's own (peers, or yt-dlp's and gallery-dl's), so their windows don't show one.",
+   "text": "টরেন্ট, ভিডিও এবং গ্যালারির MDM-এর নিজস্ব কোনো একক সার্ভার নেই (পিয়ার, বা yt-dlp এবং gallery-dl-এর), তাই তাদের উইন্ডোগুলি একটি দেখায় না।"
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -798,6 +806,10 @@
    "source": "Download Later",
    "text": "পরে ডাউনলোড করুন"
   },
+  "13fab708d8179610": {
+   "source": "<g1>A content delivery network</g1> (Cloudflare, Amazon CloudFront, Fastly, Akamai and others) serves a file from a server near you, not from the site owner's. The tooltip says so: the place is the network's server, not where the site is.",
+   "text": "<g1>একটি কন্টেন্ট ডেলিভারি নেটওয়ার্ক</g1> (Cloudflare, Amazon CloudFront, Fastly, Akamai এবং অন্যান্য) আপনার কাছাকাছি একটি সার্ভার থেকে ফাইল সরবরাহ করে, সাইট মালিকের সার্ভার থেকে নয়। টুলটিপটি তাই বলে: স্থানটি নেটওয়ার্কের সার্ভার, সাইটটি যেখানে অবস্থিত সেখানে নয়।"
+  },
   "141ec6fe9135de0f": {
    "source": "Use Help → Report a problem in MDM: it opens the bug report form on GitHub with your version, system and language filled in. Or open the form yourself.…",
    "text": "MDM-এ সহায়তা → একটি সমস্যা রিপোর্ট করুন ব্যবহার করুন: এটি আপনার সংস্করণ, সিস্টেম এবং ভাষা পূরণ করে GitHub-এ বাগ রিপোর্ট ফর্ম খোলে। অথবা আপনি নিজেই ফর্মটি খুলুন।…"
@@ -854,6 +866,10 @@
    "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
    "text": "Windows-এ, উইন্ডোগুলি Direct3D 12 (eframe-এর wgpu, শুধুমাত্র এর Direct3D 12 ব্যাকএন্ড সহ) দিয়ে আঁকা হয়, অথবা View → Draw with যখন OpenGL বেছে নেয় তখন OpenGL (eframe-এর glow) দিয়ে আঁকা হয়; Linux এবং macOS OpenGL ব্যবহার করে। যখন নির্বাচিতটি শুরু হতে পারে না, তখন অন্যটি চেষ্টা করা হয়, যাতে উইন্ডোগুলি সবসময় খোলে।"
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "ডিফল্টরূপে MDM সেই অংশগুলি প্রথমে ডাউনলোড করে যা সবচেয়ে কম পিয়ারদের কাছে আছে, যেমনটি সাধারণত BitTorrent প্রোগ্রামগুলি করে থাকে। এইভাবে, যে অংশটি শুধুমাত্র একটি পিয়ারের কাছে আছে সেটি সেই পিয়ার চলে যাওয়ার আগেই আনা হয়, এবং MDM এটি অন্যদের কাছে দ্রুত পৌঁছে দিতে পারে। MDM-এর পরীক্ষা স্বার্মগুলিতে এটি ক্রমানুসারে ডাউনলোডের মতোই দ্রুত শেষ হয়েছিল, এবং এটিই একমাত্র ক্রম ছিল যা শেষ হয়েছিল যখন একটি দুর্লভ অংশের একমাত্র ধারক চলে গিয়েছিল।"
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>GitHub-এ পাঠান</g1> আপনার ব্রাউজারে GitHub-এর <g2>ক্র্যাশ রিপোর্ট</g2> ফর্মটি খোলে, যা আগে থেকেই পূরণ করা থাকে, এবং রিপোর্টের ফাইলটি যে ফোল্ডারে আছে সেটিও খোলে। রিপোর্টের ফাইলটি ফর্মে টেনে আনুন, এটি পরীক্ষা করুন এবং জমা দিন। আপনার একটি GitHub অ্যাকাউন্ট থাকা প্রয়োজন। <g3>নিজেই কিছু পাঠানো হয় না।</g3>"
@@ -881,6 +897,10 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "হ্যাঁ। MDM, IDM-এর পরিচিত কমান্ড-লাইন সুইচগুলি গ্রহণ করে, টার্মিনাল থেকে ডাউনলোডের জন্য misterdownloadmanager-cli সহ আসে এবং একটি স্থানীয়, টোকেন-সুরক্ষিত…"
+  },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "যে সারির উপরে একটি <x1/> লাইন আছে, সেটি মেশিন দ্বারা অনুবাদ করা হয়েছে। আপনি এটি পরীক্ষা করার পর (এবং প্রয়োজন হলে সংশোধন করার পর), সেই <x2/> লাইনটি মুছে দিন।"
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -994,6 +1014,10 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "19156d7406477513": {
+   "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
+   "text": "<g1>সার্ভার</g1> — সার্ভারটি কোথায় আছে: এর দেশের পতাকা ও নাম এবং সেখানে যেতে কত সময় লাগে। <g2>সার্ভারটি কোথায় আছে</g2> দেখুন। ব্রাউজার যখন তার নাম ও আকার সহ ডাউনলোডটি হস্তান্তর করে, তখন এটি ফাঁকা থাকে, কারণ MDM-এর সার্ভারকে জিজ্ঞাসা করার প্রয়োজন হয়নি।"
+  },
   "1970ad20e03db6c3": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>সমস্যা ধরা।</g1> যখন MDM ক্র্যাশ করে (Windows-এ একটি ব্যতিক্রম, Linux-এ একটি সিগন্যাল, macOS-এ একটি ম্যাক ব্যতিক্রম), প্যানিক করে, বা ফ্রিজ হয়ে যায়, তখন এটি মনিটরের কাছে একটি ডাম্পের জন্য অনুরোধ করে। একটি ফ্রিজ হলো উইন্ডোর একটি ফ্রেম যা 8 সেকেন্ডের বেশি সময় ধরে চলে, যা একটি ওয়াচডগ থ্রেড দ্বারা দেখা হয় যা ঘুমানোর সময়কে উপেক্ষা করে। ওয়াচডগ এই সময়ের মধ্যে উইন্ডো থ্রেড কতটা প্রসেসর সময় পেয়েছে তাও পরিমাপ করে, এবং রিপোর্টে বলা হয় এর অর্থ কী: এটি সব সময় চলছিল (একটি লুপ), এটি একটি লক বা I/O-এর জন্য অপেক্ষা করছিল (একটি ডেডলক), অথবা এটি সাধারণ কোডে খুব কমই চলছিল, যার অর্থ হলো কম্পিউটার MDM চালানোর জন্য খুব ব্যস্ত বা ডিস্ক থেকে লোড করতে ধীর, যা সম্ভবত MDM-এর বাগ নয় (এগুলি একটি স্বাক্ষর ভাগ করে, <x2/>)। macOS এখনও এটি পরিমাপ করে না। মনিটর তখন বাইরে থেকে প্রতিটি থ্রেডের একটি <g3>মিনিডাম্প</g3> লেখে, <x4/> এবং <x5/> এর মাধ্যমে। একটি ক্র্যাশ হওয়া প্রক্রিয়া কখনও নিজের ডাম্প লেখে না, যা Firefox, Crashpad এবং Sentry-ও করে থাকে।"
@@ -1065,6 +1089,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 সে</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "Windows-এ টরেন্ট ইঞ্জিন এখনও একটি অ্যাডাপ্টারের সাথে আবদ্ধ হতে পারে না। তাই একটি অ্যাডাপ্টার নির্বাচন করা হলে টরেন্টগুলি শুরু হয় না (\"Windows-এ টরেন্টগুলি এখনও নির্বাচিত নেটওয়ার্ক অ্যাডাপ্টারের মাধ্যমে যেতে পারে না\"), বরং এটি এড়িয়ে যায়। ট্র্যাকার নামগুলি এখনও সিস্টেমের DNS দ্বারা দেখা হয়।"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1410,6 +1438,10 @@
    "source": "<g1>Default download directory for \"…\" category</g1> — the category's folder. Type a path or click <g2>Browse</g2>.",
    "text": "<g1>\"…\" শ্রেণীর জন্য ডিফল্ট ডাউনলোড ডিরেক্টরি</g1> — শ্রেণীর ফোল্ডার। একটি পাথ টাইপ করুন অথবা <g2>ব্রাউজ করুন</g2> ক্লিক করুন।"
   },
+  "21e0a24c92fe95eb": {
+   "source": "Hover over the line for the server's address and how the time was measured.",
+   "text": "সার্ভারের ঠিকানা এবং সময় কীভাবে পরিমাপ করা হয়েছিল তা দেখতে লাইনের উপর হোভার করুন।"
+  },
   "22135141999ab3ab": {
    "source": "Find a download",
    "text": "একটি ডাউনলোড খুঁজুন"
@@ -1573,6 +1605,10 @@
   "25b4db9aa4024862": {
    "source": "The current speed.",
    "text": "বর্তমান গতি।"
+  },
+  "25e1ffe092788c2a": {
+   "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
+   "text": "<g1>ফাইল তথ্য ডাউনলোড করুন</g1>, প্রগ্রেস উইন্ডো এবং <g2>বৈশিষ্ট্য</g2> দেখায় একটি ডাউনলোডের সার্ভার কোথায়: এর দেশের পতাকা এবং নাম, তারপর সেখানে একটি রাউন্ড ট্রিপের সময়, যেমন <g3>প্রায় 24 মি.সে. (কাছে)</g3>।"
   },
   "2606a30b44fb755e": {
    "source": "Select one or more downloads and press <g1>Delete</g1>, click <g2>Delete</g2> on the toolbar, or choose <g3>File → Remove</g3>. MDM asks first:",
@@ -1774,6 +1810,10 @@
    "source": "Feature by feature",
    "text": "বৈশিষ্ট্য অনুযায়ী"
   },
+  "2ab8acec08b25c9a": {
+   "source": "<g1>A server on your computer or your local network</g1> shows as such, with no flag.",
+   "text": "<g1>আপনার কম্পিউটার বা আপনার স্থানীয় নেটওয়ার্কে একটি সার্ভার</g1> এভাবেই দেখানো হয়, কোনো পতাকা ছাড়া।"
+  },
   "2ac9c8a3b555e84c": {
    "source": "p (Mann-Whitney)",
    "text": "p (ম্যান-হুইটনি)"
@@ -1893,6 +1933,10 @@
   "2cc56bc5771aeae6": {
    "source": "<g1>The other links of one page</g1> form a package named after the page.",
    "text": "<g1>একটি পেজের অন্যান্য লিঙ্ক</g1> পেজের নামে একটি প্যাকেজ তৈরি করে।"
+  },
+  "2cc84db987b16ce7": {
+   "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
+   "text": "<g1>দেশটি</g1> MDM-এর সাথে আসা ঠিকানা পরিসরের একটি সারণী থেকে আসে (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), যা আপনার কম্পিউটারে দেখা হয়। MDM ঠিকানাটি কোথায় তা জিজ্ঞাসা করার জন্য কোথাও পাঠায় না। সারণীটি প্রতিটি রিলিজের সাথে আপডেট করা হয়; একটি ঠিকানা যা স্থানান্তরিত হয়েছে তা তার পুরানো দেশ দেখাতে পারে।"
   },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
@@ -2162,6 +2206,10 @@
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM তৈরি করেছেন আহমেদ নেফজাউই, একজন স্বাধীন ডেভেলপার, এবং <g1>GitHub-এ</g1> যে কারো অবদান গ্রহণ করা হয়। বাগ রিপোর্ট, অনুবাদ এবং কোড—সবই স্বাগত জানানো হয়।"
   },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "<g1>প্রথম এবং শেষ অংশগুলি প্রথমে</g1> (ডিফল্টরূপে চালু) বিকল্পের সাথে, প্রতিটি ফাইলের শেষ অংশগুলিও তাড়াতাড়ি আসে। বেশিরভাগ ভিডিও ফাইল তাদের সূচক শেষে রাখে, এবং একটি প্লেয়ার কিছু চালানোর আগে এটি পড়ে।"
+  },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
    "text": "না। MDM হলো Rust ব্যবহার করে সম্পূর্ণ নতুন করে লেখা একটি স্বতন্ত্র প্রোগ্রাম। Internet Download Manager (IDM)-এর নির্মাতা Tonec Inc.-এর সাথে এর কোনো সম্পর্ক নেই। এতে আছে…"
@@ -2185,6 +2233,10 @@
   "3508dab985cc0335": {
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "Windows-এর জন্য একটি বিনামূল্যের, ওপেন-সোর্স ডাউনলোড ম্যানেজার, macOS এবং Linux-এর পরীক্ষামূলক সংস্করণও আছে। এটি IDM-এর পরিচিত বিন্যাস অনুসরণ করে, আমাদের বেঞ্চমার্কে 5 গুণ দ্রুত: একবারে সব সংযোগ, ক্র্যাশ-সেফ রিজুম, টরেন্ট, ওয়েবপেজ থেকে ভিডিও ডাউনলোড, ব্রাউজার ইন্টিগ্রেশন এবং 86টি ভাষা সমর্থন করে।"
+  },
+  "3513f93cb0fa7d72": {
+   "source": "<g1>Far</g1> (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.",
+   "text": "<g1>দূরে</g1> (লাল): 150 মি.সে.-এর উপরে, সাধারণত অন্য মহাদেশ। একটি দূরের সার্ভার প্রায়শই ধীর হয় এবং বেশি সংযোগ এটিকে সবচেয়ে বেশি সাহায্য করে।"
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
@@ -3541,6 +3593,10 @@
   "5887d550311226da": {
    "source": "Open that menu (Windows and Linux)",
    "text": "সেই মেনু খুলুন (Windows এবং Linux)"
+  },
+  "588db309f4fc3eb6": {
+   "source": "<g1>Medium</g1> (amber): 60 to 150 ms, usually the same continent.",
+   "text": "<g1>মাঝারি</g1> (আম্বার): 60 থেকে 150 মি.সে., সাধারণত একই মহাদেশ।"
   },
   "58bec232807ab18d": {
    "source": "The progress window in detail →",
@@ -5066,6 +5122,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 বা তার পরের সংস্করণ প্রয়োজন।"
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "<g1>বিকল্প → প্রক্সি / SOCKS → নেটওয়ার্ক অ্যাডাপ্টার</g1> MDM-এর সংযোগগুলিকে একটি অ্যাডাপ্টারের সাথে ধরে রাখে, সাধারণত একটি VPN-এর (<g2>বিকল্প</g2>)। Linux এবং macOS-এ টরেন্ট ইঞ্জিন প্রতিটি সকেটকে এর সাথে আবদ্ধ করে: পিয়ার, ট্র্যাকার, DHT এবং এর লিসেনিং পোর্ট। UPnP এবং স্থানীয় পিয়ার ডিসকভারি তখন বন্ধ হয়ে যায়, কারণ তারা অ্যাডাপ্টারের মাধ্যমে না গিয়ে স্থানীয় নেটওয়ার্কের সাথে কথা বলে। যদি অ্যাডাপ্টারটি চলে যায়, ইঞ্জিন বন্ধ হয়ে যায় এবং এটি ফিরে এলে অ্যাডাপ্টারের মাধ্যমে আবার শুরু হয়।"
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>গুণমান</g1> প্রতিটি ভিডিওর জন্য প্রযোজ্য: <g2>সেরা গুণমান</g2>, একটি নির্দিষ্ট উচ্চতা <g3>পর্যন্ত</g3> (প্রতিটি ভিডিও সেই উচ্চতায়, অথবা তার নিকটতম নিচের উচ্চতায়), <g4>শুধুমাত্র অডিও, আসল</g4>, <g5>শুধুমাত্র অডিও MP3</g5>, <g6>শুধুমাত্র অডিও OPUS</g6> অথবা <g7>শুধুমাত্র অডিও FLAC</g7>। ffmpeg ছাড়া, শুধুমাত্র সেই গুণমানগুলি দেওয়া হয় যেগুলি তাদের শব্দ সহ আসে, এবং কোনো MP3, Opus বা FLAC দেওয়া হয় না।"
@@ -5798,6 +5858,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "একটি লিঙ্ক, একটি ভিডিও, একটি শব্দ বা একটি ছবিতে ডান-ক্লিক করুন এবং <g1>Mister Download Manager দিয়ে ডাউনলোড করুন</g1> নির্বাচন করুন। MDM এটি ডাউনলোড করে এর প্রকার যাই হোক না কেন: আপনি এটি চেয়েছেন, তাই ফাইলের প্রকারের তালিকা এবং বাদ দেওয়া সাইটগুলি এখানে প্রযোজ্য নয় (তারা কেবল সিদ্ধান্ত নেয় কোন ডাউনলোডগুলি MDM নিজে গ্রহণ করবে)। একটি ভিডিও যা স্ট্রিম হিসাবে চলে তা <g2>ভিডিও ডাউনলোড করুন</g2> উইন্ডোতে যায়।"
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "ডাউনলোড হওয়ার সময় ভিডিও দেখতে চাইলে, <g1>ক্রমানুসারে ডাউনলোড করুন</g1> বিকল্পটি টিক দিন (<g2>ক্রমানুসারে ডাউনলোড করুন</g2> দেখুন)।"
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5.5 সেকেন্ড<g1><g2>2</g2></g1>"
@@ -6222,6 +6286,10 @@
    "source": "<g1>Torrents</g1> are peer to peer: other people in a torrent's swarm see your IP address, as with every torrent client.",
    "text": "<g1>টরেন্ট</g1> হল পিয়ার টু পিয়ার: একটি টরেন্টের সোয়ার্মে থাকা অন্য লোকেরা আপনার আইপি ঠিকানা দেখতে পায়, যেমনটি প্রতিটি টরেন্ট ক্লায়েন্টের ক্ষেত্রে হয়।"
   },
+  "9b191ff0c3c9dbb1": {
+   "source": "How MDM knows:",
+   "text": "MDM কীভাবে জানে:"
+  },
   "9b3dde1851a80204": {
    "source": "<g1>Match case</g1> tells capitals apart. <g2>Match whole string only</g2> finds only an exact, complete match.",
    "text": "<g1>কেস মিলান</g1> বড় হাতের অক্ষর আলাদা করে। <g2>শুধুমাত্র সম্পূর্ণ স্ট্রিং মিলান</g2> শুধুমাত্র একটি সঠিক, সম্পূর্ণ মিল খুঁজে বের করে।"
@@ -6322,6 +6390,10 @@
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "অগ্রগতিসহ হেডলেস ডাউনলোড (<x1/>, <x2/>), ভিডিও, টরেন্ট এবং অটোমেশন API-এর কমান্ড: একটি লাইব্রেরি যা অ্যাপের প্রোগ্রাম চালায় (<x3/>), এবং <x4/>, একটি ছোট লঞ্চার যা একই আর্গুমেন্ট, টার্মিনাল এবং এক্সিট কোড সহ এটি শুরু করে"
   },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "ক্রমানুসারে ডাউনলোড করুন"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 বনাম Mister Download Manager ডাউনলোড বেঞ্চমার্ক"
@@ -6405,6 +6477,10 @@
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "ইংরেজি থেকে দীর্ঘতর অনুবাদ <g1>...</g1> দিয়ে শেষ হয় যেখানে এটি ফিট হয় না; পুরোটা পড়তে এটির উপর পয়েন্ট করুন।"
+  },
+  "a05a0538e9ea2498": {
+   "source": "<g1>File Properties</g1> shows a download's type, status, size and folder, its address, your description, the page it came from (<g2>Referer</g2>), where its server is (<g3>country and round trip</g3>, as its last run saw them) and a login for the site. <g4>Last try</g4> and <g5>Result</g5> tell you how its last attempt went.",
+   "text": "<g1>ফাইলের বৈশিষ্ট্য</g1> একটি ডাউনলোডের ধরন, অবস্থা, আকার এবং ফোল্ডার, এর ঠিকানা, আপনার বর্ণনা, এটি যে পৃষ্ঠা থেকে এসেছে (<g2>রেফারার</g2>), এর সার্ভার কোথায় আছে (<g3>দেশ এবং রাউন্ড ট্রিপ</g3>, যেমনটি শেষবার দেখা গেছে) এবং সাইটের জন্য একটি লগইন দেখায়। <g4>শেষ চেষ্টা</g4> এবং <g5>ফলাফল</g5> আপনাকে জানায় যে শেষ প্রচেষ্টাটি কেমন ছিল।"
   },
   "a06fa72ad54fa126": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
@@ -6938,6 +7014,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>শ্রেণী</g1> — ফাইলের প্রকার থেকে বেছে নেওয়া হয় (সংকুচিত, ডকুমেন্টস, সঙ্গীত, প্রোগ্রাম, ভিডিও অথবা সাধারণ)। প্রতিটি শ্রেণীর নিজস্ব ফোল্ডার আছে। এর পাশে <g2>+</g2> একটি নতুন শ্রেণী তৈরি করে।"
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>নেটওয়ার্ক অ্যাডাপ্টার</g1> — <g2>যেকোনো (সিস্টেম বেছে নেয়)</g2> হলো ডিফল্ট। একটি অ্যাডাপ্টার বেছে নিন, সাধারণত আপনার VPN-এর, এবং MDM যে সংযোগগুলি খোলে তার প্রতিটি এর মাধ্যমে যাবে, অথবা একেবারেই যাবে না। এটি ডাউনলোড, FTP, আপনার বেছে নেওয়া DNS, MDM-এর নিজস্ব ডাউনলোড এবং আপডেট চেক কভার করে। এটি একটি কিল সুইচের মতো কাজ করে: যখন অ্যাডাপ্টার সংযোগ বিচ্ছিন্ন হয়, বা VPN বন্ধ করা হয়, তখন আপনার স্বাভাবিক সংযোগের মাধ্যমে কিছুই যায় না। চলমান ডাউনলোডগুলি \"… সংযুক্ত নয়\" বার্তা দিয়ে বন্ধ হয়ে যায় এবং অ্যাডাপ্টার ফিরে এলে আবার শুরু হয়। তালিকার নিচের লাইনটি অ্যাডাপ্টারের ঠিকানা দেখায়, অথবা এটি সংযুক্ত নয় তা দেখায়।"
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "<g1>খুঁজুন</g1> ক্লিক করুন। প্রথম মিলটি নির্বাচিত হবে।"
@@ -6981,6 +7061,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>ডেলিভারি বিকল্প</g1><g2>সংস্করণ 0.2.4 · সবার জন্য বিনামূল্যে</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>ক্রমানুসারে ডাউনলোড করুন</g1> একটি ফাইলের শুরু প্রথমে পায়, যাতে আপনি ডাউনলোড হওয়ার সময় একটি ভিডিও দেখতে পারেন: প্রথম অংশটি আসার পর আপনার প্লেয়ারে এটি খুলুন। <g2>টরেন্ট যোগ করুন</g2>-এ এটি টিক দিন, অথবা তালিকার রাইট-ক্লিক মেনুতে <g3>টরেন্ট → ক্রমানুসারে ডাউনলোড করুন</g3> নির্বাচন করুন, যেকোনো সময়, এমনকি এটি চলার সময়ও। পরবর্তী অনুরোধ করা অংশগুলি নতুন ক্রম অনুসরণ করে।"
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7378,6 +7462,10 @@
    "source": "<g1>A tour of the features</g1> on the website instead of a wall of screenshots.",
    "text": "স্ক্রিনশটের দেয়ালের পরিবর্তে ওয়েবসাইটে <g1>বৈশিষ্ট্যগুলির একটি ট্যুর</g1>।"
   },
+  "b826ee150172085c": {
+   "source": "Where the server is",
+   "text": "সার্ভারটি কোথায়"
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "সেটআপ দিয়ে ইনস্টল করুন"
@@ -7489,6 +7577,10 @@
   "bb2a946ec0764dee": {
    "source": "Hover over the download's <g1>Status</g1>, or open its progress window, to read yt-dlp's message.",
    "text": "ডাউনলোডের <g1>স্ট্যাটাস</g1> এর উপর হোভার করুন, অথবা yt-dlp এর বার্তা পড়তে এর অগ্রগতি উইন্ডো খুলুন।"
+  },
+  "bb66b5a231ef607c": {
+   "source": "<g1>The time</g1> is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says <g2>about</g2>. The quickest connection counts.",
+   "text": "<g1>সময়টি</g1> ডাউনলোডের নিজস্ব সংযোগগুলি থেকে পরিমাপ করা হয়, যখন প্রতিটি সংযোগ খোলে: MDM সার্ভারে অতিরিক্ত কিছু পাঠায় না। এটি একটি অনুমান (একটি সংযোগ খুলতে সময়, এর রাউন্ড ট্রিপ দ্বারা বিভক্ত: HTTP-এর জন্য একটি, HTTPS-এর জন্য দুটি), তাই এটি <g2>প্রায়</g2> বলে। দ্রুততম সংযোগটি গণনা করা হয়।"
   },
   "bb8defdec6234c3c": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers.",
@@ -7613,6 +7705,10 @@
   "be977a71e686a263": {
    "source": "Questions and answers",
    "text": "প্রশ্ন ও উত্তর"
+  },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "ক্রমানুসারে একটি টরেন্ট দ্রুত শেষ হয় না, এবং এটি স্বার্মকে কম সাহায্য করে: আপনি যা এখন দেখতে চান তার জন্য এটি ব্যবহার করুন।"
   },
   "bed20915ba662ba4": {
    "source": "Benchmark",
@@ -7974,6 +8070,10 @@
    "source": "<g1>9</g1> of 10",
    "text": "10 এর মধ্যে <g1>9</g1>"
   },
+  "c8faf12a4c3d4e99": {
+   "source": "<g1>Server</g1> — where the server is, and how near. See <g2>Where the server is</g2>.",
+   "text": "<g1>সার্ভার</g1> — সার্ভারটি কোথায় এবং কতটা কাছে। <g2>সার্ভারটি কোথায়</g2> দেখুন।"
+  },
   "c9044c08663d0af5": {
    "source": "A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in <g1>Options → File types</g1> (not on the excluded sites). To turn this off, untick <g2>Also take files the browser would open</g2> in <g3>Options → General → Keys...</g3>. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox.",
    "text": "একটি PDF, একটি গান বা একটি ভিডিও যা ব্রাউজার নিজে দেখাবে বা চালাবে, সেটিও MDM-এ যায়, যখন এর প্রকার <g1>বিকল্প → ফাইলের প্রকার</g1>-এ থাকে (বাদ দেওয়া সাইটগুলিতে নয়)। এটি বন্ধ করতে, <g2>ব্রাউজার যে ফাইলগুলি খুলবে সেগুলিও নিন</g2> বিকল্পটি <g3>বিকল্প → সাধারণ → কী...</g3>-এ আনটিক করুন। এর জন্য Chromium ব্রাউজার (Chrome, Edge, Brave, Opera, Vivaldi) সংস্করণ 128 বা তার পরের সংস্করণ, অথবা Firefox প্রয়োজন।"
@@ -8182,6 +8282,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf28e1b873f9178c": {
+   "source": "<g1>Near</g1> (green): under 60 ms, usually the same country or the next one.",
+   "text": "<g1>কাছে</g1> (সবুজ): 60 মি.সে.-এর নিচে, সাধারণত একই দেশ বা পাশের দেশ।"
+  },
   "cf3a9ec3dbd55233": {
    "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
    "text": "<g1>মুছুন</g1> — একটি বিভাগ সরান, আপনার নিজের বা একটি বিল্ট-ইন (সাধারণ বা টরেন্ট নয়)। MDM জিজ্ঞাসা করে এর ডাউনলোডগুলির কী হবে: <g2>এর ডাউনলোডগুলি সাধারণে সরান</g2>, অথবা <g3>তালিকা থেকে এর ডাউনলোডগুলি সরান</g3> (একটি চলমান ডাউনলোড এর পরিবর্তে সাধারণে চলে যায়)। তাদের ফাইলগুলি উভয় ক্ষেত্রেই যেখানে আছে সেখানেই থাকে। এরপর থেকে, এর প্রকারের ফাইলগুলি অন্য একটি বিভাগে যায় যেখানে সেগুলি আছে, অথবা সাধারণে যায়।"
@@ -8217,6 +8321,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com একটি স্ট্যাটিক সাইট। এটি আপনাকে দেখানোর জন্য তিনটি কোম্পানি জড়িত:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>ক্রমানুসারে ডাউনলোড করুন</g1> — টরেন্টের ফাইলগুলি শুরু থেকে ডাউনলোড করে (নিচে দেখুন)। বিরল অংশগুলি প্রথমে ডাউনলোড করার জন্য এটিতে আবার ক্লিক করুন।"
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -8538,6 +8646,10 @@
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
    "text": "একটি egui উইন্ডো নির্দিষ্ট পিক্সেল স্থানাঙ্কে আঁকা হয়, সাথে প্রতিটি ডায়ালগের জন্য একটি তাৎক্ষণিক ভিউপোর্ট। <x1/> অবস্থা (ডাউনলোড, সারি, সেটিংস, তালিকার নির্বাচন) ধরে রাখে এবং মেনু, টুলবার, কী ও IPC কমান্ডকে কার্যক্রমে পরিণত করে। প্রতিটি ডায়ালগ তার নিজস্ব মডিউল এবং একটি <x2/> (খোলা, বন্ধ, একটি মান সহ সম্পন্ন) ফেরত দেয়। শুধুমাত্র Windows-এর জন্য কলগুলি <x3/>-এর মধ্যে সীমাবদ্ধ এবং তাদের Linux ও macOS প্রতিরূপগুলি <x4/>-এর মধ্যে সীমাবদ্ধ (সেশন দিয়ে শুরু, ব্রাউজারগুলির হোস্ট, শব্দ, ফোল্ডারে দেখানো, ক্র্যাশ হ্যান্ডলার); অন্য প্রতিটি ফাইল নিরাপদ, পোর্টেবল Rust। ফন্টগুলি সিস্টেম থেকে আসে: Windows-এর Fonts ফোল্ডার, macOS-এর সিস্টেম ফন্ট, Linux-এ fontconfig (<x5/>)। ফাইল নামের আগে আইকনগুলিও তাই (<x6/>): Windows শেল-এর সিস্টেম ইমেজ তালিকা, macOS Finder-এর (NSWorkspace), Linux ডেস্কটপের আইকন থিম (<x7/>, shared-mime-info এবং Icon Theme Specification)। প্রতিটি প্রকারের জন্য প্রতি পিক্সেল আকারে একবার, একটি ব্যাকগ্রাউন্ড থ্রেডে দেখা হয়। Tango-এর আইকনগুলি (বান্ডেল করা) সিস্টেমের আইকন প্রস্তুত না হওয়া পর্যন্ত এবং যেখানে সিস্টেমের কোনো আইকন নেই সেখানে ব্যবহার করা হয়।"
   },
+  "d835a1659f05d750": {
+   "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them. A stream whose address doesn't end in <x5/> or <x6/>, served as plain text, is found too: when you open the list (or press the download button over its player) and the player plays a stream, the extension reads the first few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.",
+   "text": "<g1>স্ট্রিম</g1>: HLS (<x2/>) এবং DASH (<x3/>), বেশিরভাগ সাইট যেভাবে দীর্ঘ ভিডিও চালায়। প্রতিটি স্ট্রিম একবার তালিকাভুক্ত করা হয়, প্লেয়ার যতবারই গুণমান পরিবর্তন করুক না কেন, এর গুণমান (<x4/>) এবং এর দৈর্ঘ্য সহ, যখন এক্সটেনশন সেগুলি পড়তে পারে। একটি স্ট্রিম যার ঠিকানা <x5/> বা <x6/> দিয়ে শেষ হয় না, যা প্লেইন টেক্সট হিসাবে পরিবেশিত হয়, সেটিও খুঁজে পাওয়া যায়: যখন আপনি তালিকাটি খোলেন (বা এর প্লেয়ারের উপর ডাউনলোড বোতাম টিপুন) এবং প্লেয়ার একটি স্ট্রিম চালায়, তখন এক্সটেনশনটি প্লেয়ার দ্বারা আনা প্রথম কয়েক কিলোবাইট পড়ে এটিকে চিনতে পারে। আপনি না চাওয়া পর্যন্ত কিছুই পড়া হয় না।"
+  },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
    "text": "<g1>ওয়ার্কিং সেট</g1> (ডিটেইলস ট্যাব, কলাম যোগ করুন) অন্যান্য প্রোগ্রামের সাথে শেয়ার করা মেমরি যোগ করে। MDM তার উইন্ডোগুলি গ্রাফিক্স কার্ড দিয়ে আঁকে, তাই গ্রাফিক্স ড্রাইভারের মেমরিও এখানে গণনা করা হয়, সব মিলিয়ে প্রায় 85 MB।"
@@ -8597,6 +8709,10 @@
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
    "text": "<g1><g2>একটি পৃষ্ঠা থেকে একটি ভিডিও ডাউনলোড করুন</g2></g1> — একটি গুণমান চয়ন করুন এবং একটি ভিডিও সংরক্ষণ করুন।"
+  },
+  "d9dcf7778d51f367": {
+   "source": "<g1>Through a proxy</g1>, MDM only sees the proxy, so it says <g2>through a proxy</g2> (with the proxy's country when it knows it) instead of guessing the server's. A VPN that works at the system level can't be seen: the country is then the server's, but the time includes the VPN's detour.",
+   "text": "<g1>একটি প্রক্সির মাধ্যমে</g1>, MDM শুধুমাত্র প্রক্সিটি দেখতে পায়, তাই এটি সার্ভারের অনুমান করার পরিবর্তে <g2>একটি প্রক্সির মাধ্যমে</g2> (যখন এটি জানে তখন প্রক্সির দেশ সহ) বলে। একটি VPN যা সিস্টেম স্তরে কাজ করে তা দেখা যায় না: তখন দেশটি সার্ভারের হয়, তবে সময়টিতে VPN-এর পথ পরিবর্তন অন্তর্ভুক্ত থাকে।"
   },
   "da12a252ee14babe": {
    "source": "To stop in the morning whatever is left, tick <g1>Stop download at</g1> and set a time, for example 7:00:00 AM.",
@@ -9174,6 +9290,10 @@
    "source": "Add to Firefox",
    "text": "Firefox-এ যোগ করুন"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "কয়েকটি ফাইল একটার পর একটা ডাউনলোড হয়, নাম অনুসারে সাজানো থাকে।"
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "ব্রাউজার ইন্টিগ্রেশন বিস্তারিত (Firefox, ব্যক্তিগত উইন্ডো, কী পাঠানো হয়) →"
@@ -9714,6 +9834,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "একই তালিকা MDM-এ সহায়তা → কিবোর্ড শর্টকাট-এর অধীনে রয়েছে, এবং মেনুগুলি প্রতিটি কমান্ডের কীগুলি এর পাশে দেখায়। একটি Mac-এ, ⌘ (Command) Ctrl-এর স্থান নেয়: ⌘N..."
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "ধীরগতির পিয়াররা কিছুটা দূরের অংশ নেয়, যাতে শুরু তাদের জন্য অপেক্ষা না করে।"
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "একটি ফোকাস করা বোতাম চাপুন, একটি চেক বক্স টিক দিন, একটি তালিকার নির্বাচিত সারি টিক দিন"
@@ -9913,6 +10037,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "উদাহরণগুলিতে Windows-এর পাথ ব্যবহার করা হয়েছে; macOS এবং Linux-এ প্রোগ্রামগুলির একই নাম রয়েছে <x1/> ছাড়া।"
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>প্রথম এবং শেষ অংশগুলি প্রথমে</g1> — <g2>ক্রমানুসারে ডাউনলোড করুন</g2> বিকল্পের সাথে, প্রতিটি ফাইলের প্রথম এবং শেষ অংশগুলি বাকি অংশের আগে আসে। এটি ডিফল্টরূপে চালু থাকে।"
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",
