@@ -854,6 +854,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>ব্রাউজার।</g1> একটি পেজে রাইট-ক্লিক করে <g2>Mister Download Manager দিয়ে সমস্ত লিঙ্ক ডাউনলোড করুন</g2> নির্বাচন করুন, অথবা এর কিছু অংশ নির্বাচন করে <g3>Mister Download Manager দিয়ে নির্বাচিত লিঙ্কগুলি ডাউনলোড করুন</g3>। পেজের রেফারার এবং কুকিজ প্রতিটি লিঙ্কের সাথে যায়।"
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "Windows-এ, উইন্ডোগুলি Direct3D 12 (eframe-এর wgpu, শুধুমাত্র এর Direct3D 12 ব্যাকএন্ড সহ) দিয়ে আঁকা হয়, অথবা View → Draw with যখন OpenGL বেছে নেয় তখন OpenGL (eframe-এর glow) দিয়ে আঁকা হয়; Linux এবং macOS OpenGL ব্যবহার করে। যখন নির্বাচিতটি শুরু হতে পারে না, তখন অন্যটি চেষ্টা করা হয়, যাতে উইন্ডোগুলি সবসময় খোলে।"
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>GitHub-এ পাঠান</g1> আপনার ব্রাউজারে GitHub-এর <g2>ক্র্যাশ রিপোর্ট</g2> ফর্মটি খোলে, যা আগে থেকেই পূরণ করা থাকে, এবং রিপোর্টের ফাইলটি যে ফোল্ডারে আছে সেটিও খোলে। রিপোর্টের ফাইলটি ফর্মে টেনে আনুন, এটি পরীক্ষা করুন এবং জমা দিন। আপনার একটি GitHub অ্যাকাউন্ট থাকা প্রয়োজন। <g3>নিজেই কিছু পাঠানো হয় না।</g3>"
@@ -1389,6 +1393,10 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "<x1/> ফোল্ডারটি মুছে ফেলুন (অথবা এটিকে শুধু-পঠনযোগ্য করুন) এবং একই কপি সাধারণ জিপের মতো আচরণ করবে: এটি তার ডেটা <x2/>-এ রাখে।"
+  },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>দেখুন</g1> — ক্যাটাগরিগুলি দেখান বা লুকান, তালিকা সাজান (<g2>ফাইলগুলি সাজান</g2>), <g3>ডার্ক মোড সমর্থন</g3>, <g4>সর্বদা ডার্ক</g4>, <g5>এর সাথে আঁকুন</g5> (Windows: Direct3D, অথবা OpenGL) এবং <g6>ভাষা</g6>।"
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -2074,6 +2082,10 @@
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "একটি টরেন্টের প্রয়োজন হলে MDM তার টরেন্ট ইঞ্জিন চালু করে। <g1>কোনো টরেন্ট না চললে টরেন্ট ইঞ্জিন বন্ধ করুন</g1> চালু থাকলে (ডিফল্ট), কোনো টরেন্ট না চললে বা শেয়ার না করলে এক মিনিট পর এটি আবার বন্ধ হয়ে যায়। এটি চলার সময়, অন্যান্য পিয়ার MDM-এর সাথে সংযোগ করতে পারে, এবং MDM আপনার রাউটারকে তার পোর্ট ফরওয়ার্ড করতে বলে (UPnP)। Windows জিজ্ঞাসা করতে পারে যে MDM-কে ফায়ারওয়ালের মাধ্যমে অনুমতি দেওয়া হবে কিনা: শুধুমাত্র ব্যক্তিগত নেটওয়ার্কে অনুমতি দিন।"
   },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "কার্ড প্রস্তুতকারকের সাইট (Intel, AMD বা NVIDIA) থেকে গ্রাফিক্স ড্রাইভার আপডেট করলে এই সমস্যাগুলির অনেকগুলি সমাধান হয়।"
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>প্রতিটি সংযোগ, লাইভ</g1> প্রতিটি সংযোগ তার গতি এবং অবশিষ্ট সময় সহ পূরণ হওয়ার সাথে সাথে প্রদর্শিত হয়। ক্র্যাশ-সেফ রিজুম যেখানে থেমেছিল সেখান থেকে শুরু হয়।"
@@ -2445,6 +2457,10 @@
   "3c333ba83ce0943b": {
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>টরেন্ট এবং আপনার নিরাপত্তা</g2></g1> — অন্যরা কী দেখতে পারে, নেটওয়ার্ক সুইচ, ব্লক-লিস্ট, প্রক্সি।"
+  },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "একটি ফ্রিজ বা ক্র্যাশ রিপোর্টে বলা হয় কোনটি আঁকছিল: সমস্যা রিপোর্ট করার সময় এটি অন্তর্ভুক্ত করুন।"
   },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
@@ -3457,6 +3473,10 @@
   "57e101e4403fd046": {
    "source": "Command",
    "text": "কমান্ড"
+  },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "MDM চলার সময় যদি গ্রাফিক্স কার্ড রিসেট হয় (একটি ড্রাইভার আপডেট), MDM নিজে থেকেই আবার শুরু হয়।"
   },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
@@ -5734,6 +5754,10 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "রিয়েল-ডিব্রিড, অলডিব্রিড বা প্রিমিয়ামাইজের মতো একটি ডিব্রিড পরিষেবা হলো একটি পেইড অ্যাকাউন্ট যা ফাইল হোস্ট থেকে ফাইলগুলি তার নিজস্ব সার্ভারে ডাউনলোড করে। এটি একটি…"
   },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "যদি আপনার কম্পিউটারে Direct3D শুরু না হতে পারে (কোন Direct3D 12 ড্রাইভার নেই, কিছু ভার্চুয়াল মেশিন), অথবা এর প্রথম উইন্ডো 10 সেকেন্ডের মধ্যে না দেখায়, MDM OpenGL দিয়ে আঁকে, এবং <g1>দেখুন → এর সাথে আঁকুন</g1> তা বলে। আবার <g2>Direct3D</g2> নির্বাচন করলে পরের শুরুতে এটি আবার চেষ্টা করে।"
+  },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
    "text": "সমস্ত সংখ্যা"
@@ -6562,6 +6586,10 @@
    "source": "MDM doesn't use a temporary folder: every connection writes straight into the final file's place, so there is nothing to put together at the end.",
    "text": "MDM একটি অস্থায়ী ফোল্ডার ব্যবহার করে না: প্রতিটি সংযোগ সরাসরি চূড়ান্ত ফাইলের স্থানে লেখে, তাই শেষে একত্রিত করার কিছু থাকে না।"
   },
+  "a75a919684323859": {
+   "source": "<g1>File Properties</g1> shows a download's type, status, size and folder, its address, your description, the page it came from (<g2>Referer</g2>) and a login for the site. <g3>Last try</g3> and <g4>Result</g4> tell you how its last attempt went.",
+   "text": "<g1>ফাইলের বৈশিষ্ট্য</g1> একটি ডাউনলোডের প্রকার, স্ট্যাটাস, আকার এবং ফোল্ডার, এর ঠিকানা, আপনার বর্ণনা, যে পৃষ্ঠা থেকে এটি এসেছে (<g2>রেফারার</g2>) এবং সাইটের জন্য একটি লগইন দেখায়। <g3>শেষ চেষ্টা</g3> এবং <g4>ফলাফল</g4> আপনাকে বলে যে এর শেষ প্রচেষ্টা কেমন হয়েছিল।"
+  },
   "a76617f8c395dcdd": {
    "source": "Can other programs or scripts control MDM? — Mister Download Manager",
    "text": "অন্যান্য প্রোগ্রাম বা স্ক্রিপ্ট কি MDM নিয়ন্ত্রণ করতে পারে? — Mister Download Manager"
@@ -6637,6 +6665,10 @@
   "a9d705964d2ca3bb": {
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>86টি ভাষা বিল্ট ইন।</g1> প্রথমবার চালু করার সময় ডান থেকে বামে লেখার ভাষাও বেছে নেওয়া যায়।"
+  },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>মেমরি</g1> (প্রসেস ট্যাবে) হলো MDM শুধুমাত্র নিজের জন্য যে মেমরি ব্যবহার করে, তার <g2>প্রাইভেট ওয়ার্কিং সেট</g2>। উইন্ডো খোলা থাকলে এবং কিছু ডাউনলোড না হলে, এটি প্রায় 70 MB হয়।"
   },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
@@ -8482,6 +8514,10 @@
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "তালিকায় সংখ্যা ও তারিখ (<g1>শেষ চেষ্টার তারিখ</g1>, <g2>যোগ করা হয়েছে</g2>) Windows-এ সেট করা অঞ্চল অনুসরণ করে (<g3>সেটিংস → সময় ও ভাষা → ভাষা ও অঞ্চল → আঞ্চলিক বিন্যাস</g3>), তাই সংখ্যা, বিভাজক এবং তারিখের ক্রম আপনার অভ্যস্ত উপায়ে দেখায়। ইংরেজিতে, MDM সেগুলোকে IDM-এর মতো করে লেখে (<x4/>)।"
   },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>ওয়ার্কিং সেট</g1> (ডিটেইলস ট্যাব, কলাম যোগ করুন) অন্যান্য প্রোগ্রামের সাথে শেয়ার করা মেমরি যোগ করে। MDM গ্রাফিক্স কার্ড দিয়ে তার উইন্ডো আঁকে, তাই গ্রাফিক্স ড্রাইভারের মেমরিও এখানে গণনা করা হয়, সব মিলিয়ে প্রায় 120 MB।"
+  },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "হ্যাঁ। MDM, IDM-এর পরিচিত কমান্ড-লাইন সুইচগুলি গ্রহণ করে, টার্মিনাল থেকে ডাউনলোডের জন্য misterdownloadmanager-cli সহ আসে এবং একটি স্থানীয়, টোকেন-সুরক্ষিত অটোমেশন API আছে যা ডাউনলোডগুলি তালিকাভুক্ত করতে, থামাতে, শুরু করতে এবং সরাতে পারে। আপনি চালু না করা পর্যন্ত API বন্ধ থাকে। কমান্ড লাইন এবং অটোমেশন দেখুন।"
@@ -9546,6 +9582,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "বাম দিকে <g1>প্রধান ডাউনলোড কিউ</g1> নির্বাচন করুন। <g2>সময়সূচী</g2> ট্যাবটি খুলবে।"
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "Windows-এ, MDM Direct3D 12 দিয়ে তার উইন্ডো আঁকে; Linux এবং macOS-এ, OpenGL দিয়ে। একটি গ্রাফিক্স ড্রাইভার এখনও ভুল আচরণ করতে পারে: একটি উইন্ডো যা কয়েক সেকেন্ডের জন্য স্থির থাকে, ঝিকিমিকি করে, বা ভুল রঙ বা ব্লক দেখায়। Windows-এ, অন্যটি চেষ্টা করুন: <g1>দেখুন → এর সাথে আঁকুন → OpenGL</g1> নির্বাচন করুন, তারপর MDM বন্ধ করুন (<g2>কাজগুলি → প্রস্থান করুন</g2>) এবং এটি আবার শুরু করুন। <g3>দেখুন → এর সাথে আঁকুন → Direct3D</g3> একই ভাবে ফিরে যায়।"
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "<g1>\"সাধারণ\" শ্রেণীর জন্য ডিফল্ট ডাউনলোড ডিরেক্টরি</g1>-তে, <g2>ব্রাউজ করুন</g2> ক্লিক করুন এবং স্টিকে একটি ফোল্ডার নির্বাচন করুন, উদাহরণস্বরূপ <x3/>।"
@@ -9589,6 +9629,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "স্বাভাবিকভাবে প্রতিটি ডাউনলোডের জন্য আটটি সংযোগ ব্যবহার করা হয়। আপনি যদি বিকল্প → সংযোগ-এ গিয়ে নির্বাচন করেন, তাহলে 32টি পর্যন্ত সংযোগ ব্যবহার করা যাবে। আর যদি সেখানে 32টির বেশি সংযোগের অনুমতি দিন বিকল্পটি টিক দেন, তাহলে 128টি পর্যন্ত সংযোগ ব্যবহার করা যাবে। MDM কম সংযোগ ব্যবহার করে…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "যদি কোনটিই শুরু না হতে পারে, MDM মাইক্রোসফটের সফটওয়্যার রেন্ডারার দিয়ে আঁকে, তাই উইন্ডোটি এখনও খোলে (রিমোট ডেস্কটপ, গ্রাফিক্স ড্রাইভার ছাড়া একটি ভার্চুয়াল মেশিন)। এটি কাজ করে, তবে প্রসেসরকে বেশি ব্যস্ত রাখে।"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",

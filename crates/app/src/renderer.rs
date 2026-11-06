@@ -1,12 +1,15 @@
-//! What draws the windows (#89). OpenGL (eframe's glow) everywhere; on Windows also Direct3D 12
-//! (eframe's wgpu with wgpu's Direct3D 12 backend only), chosen in View → Draw with and used
-//! from the next start. Linux and macOS draw with OpenGL only: wgpu isn't built there (its
-//! Vulkan and Metal backends would add size for windows OpenGL already draws well).
+//! What draws the windows (#89). On Windows, Direct3D 12 (eframe's wgpu with wgpu's Direct3D 12
+//! backend only) by default, or OpenGL (eframe's glow) when chosen in View → Draw with, from the
+//! next start. Linux and macOS draw with OpenGL only: wgpu isn't built there (its Vulkan and
+//! Metal backends would add size for windows OpenGL already draws well).
 //!
 //! The windows always open: when the chosen way can't start (no Direct3D 12 driver, a virtual
 //! machine, Remote Desktop), the other is tried, and the reason is logged. A start with Direct3D
-//! that ends before its first frame (a crash or a kill inside the driver) is remembered, and the
-//! next starts draw with OpenGL until Direct3D is chosen again.
+//! that ends before its first frame (a crash or a kill inside the driver) is remembered, and so
+//! is one whose first frame doesn't come within [`FIRST_FRAME_WITHIN`] (MDM starts again, with
+//! OpenGL): the next starts draw with OpenGL until Direct3D is chosen again. A graphics card
+//! lost while MDM runs (a driver update or reset) starts MDM again; a second loss soon after
+//! counts as Direct3D failing.
 //!
 //! Testing overrides, in this order: `/renderer <name>` on the command line, then
 //! `MDM_RENDERER=<name>`. Names: `opengl` (`gl`), `direct3d` (`d3d`), `warp` (Direct3D drawn by
@@ -14,7 +17,7 @@
 
 use std::path::PathBuf;
 use std::sync::OnceLock;
-use std::sync::atomic::{AtomicBool, AtomicU32, Ordering};
+use std::sync::atomic::{AtomicBool, Ordering};
 
 use serde::{Deserialize, Serialize};
 
@@ -27,9 +30,19 @@ pub enum Api {
     Direct3D,
 }
 
-/// What draws when the user chose nothing (the settings' `renderer: None`). OpenGL until the
-/// comparison in #89 says otherwise.
-pub const DEFAULT: Api = Api::OpenGl;
+/// What draws when the user chose nothing (the settings' `renderer: None`): Direct3D on Windows
+/// (#89), OpenGL elsewhere (the only one built there).
+pub const DEFAULT: Api = if cfg!(windows) {
+    Api::Direct3D
+} else {
+    Api::OpenGl
+};
+
+/// How long a watched Direct3D start may take to its first frame before MDM starts again with
+/// OpenGL (a driver stuck in its first present, a window that never shows). Generous: a slow
+/// computer just after it starts (#57) can take seconds.
+#[cfg(windows)]
+const FIRST_FRAME_WITHIN: std::time::Duration = std::time::Duration::from_secs(10);
 
 /// Which graphics adapters a Direct3D start may use.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -40,9 +53,8 @@ pub enum Adapters {
     Software,
     /// A card first, else WARP: the last way to open the windows at all.
     Any,
-    /// None at all: Direct3D fails to start (debug builds' `MDM_RENDERER=direct3d-none`, to
-    /// check the way back to OpenGL).
-    #[cfg_attr(not(debug_assertions), allow(dead_code))]
+    /// None at all: Direct3D fails to start (`MDM_RENDERER=direct3d-none` in off-screen test
+    /// copies, to check the way back to OpenGL).
     Nothing,
 }
 
@@ -78,8 +90,7 @@ fn parse(name: &str) -> Option<Attempt> {
             Some(Attempt::Direct3D(Adapters::Hardware))
         }
         "warp" => Some(Attempt::Direct3D(Adapters::Software)),
-        #[cfg(debug_assertions)]
-        "direct3d-none" => Some(Attempt::Direct3D(Adapters::Nothing)),
+        "direct3d-none" if crate::offscreen() => Some(Attempt::Direct3D(Adapters::Nothing)),
         _ => None,
     }
 }
@@ -93,7 +104,9 @@ pub struct Plan {
 }
 
 /// What to try: the override if any, else the setting (or [`DEFAULT`]) unless Direct3D failed
-/// here before; then the other way. Only OpenGL where Direct3D isn't built.
+/// here before; then the other way. A graphics card's Direct3D falls back to OpenGL, then to
+/// Direct3D on Microsoft's software renderer (Remote Desktop, a virtual machine: no card's
+/// driver, and Windows' own OpenGL 1.1 can't draw MDM). Only OpenGL where Direct3D isn't built.
 pub fn plan(setting: Option<Api>, overridden: Option<&str>, failed_before: bool) -> Plan {
     let forced = overridden.and_then(|o| {
         let a = parse(o);
@@ -108,12 +121,15 @@ pub fn plan(setting: Option<Api>, overridden: Option<&str>, failed_before: bool)
         None if chosen == Api::Direct3D && !failed_before => Attempt::Direct3D(Adapters::Hardware),
         None => Attempt::OpenGl,
     };
-    let then = match first {
-        Attempt::OpenGl => Attempt::Direct3D(Adapters::Any),
-        Attempt::Direct3D(_) => Attempt::OpenGl,
+    let then: &[Attempt] = match first {
+        Attempt::OpenGl => &[Attempt::Direct3D(Adapters::Any)],
+        Attempt::Direct3D(Adapters::Hardware) if forced.is_none() => {
+            &[Attempt::OpenGl, Attempt::Direct3D(Adapters::Software)]
+        }
+        Attempt::Direct3D(_) => &[Attempt::OpenGl],
     };
-    let attempts: Vec<Attempt> = [first, then]
-        .into_iter()
+    let attempts: Vec<Attempt> = std::iter::once(first)
+        .chain(then.iter().copied())
         .filter(|a| cfg!(windows) || *a == Attempt::OpenGl)
         .collect();
     Plan {
@@ -203,20 +219,36 @@ pub fn forget_failure() {
     }
 }
 
-/// Frames drawn since the start (counted to two).
-static FRAMES: AtomicU32 = AtomicU32::new(0);
+/// A test's failure asked for (`name`=1), honoured only by off-screen test copies.
+fn testing(name: &str) -> bool {
+    crate::offscreen() && std::env::var_os(name).is_some_and(|v| v == "1")
+}
 
-/// The end of every main-window frame. The second one means the first was drawn: a watched
+/// The start of every main-window pass: Direct3D's device checked (see `direct3d::poll`).
+pub fn frame_begin() {
+    #[cfg(windows)]
+    direct3d::poll();
+}
+
+/// The first frame was drawn (presented).
+static DRAWN: AtomicBool = AtomicBool::new(false);
+
+/// The end of every main-window pass. Once a frame has been completed before this one (egui's
+/// frame count, not its passes: a first frame can run two), the first was drawn: a watched
 /// Direct3D start made it.
-pub fn frame_done() {
-    if FRAMES.load(Ordering::Relaxed) >= 2 {
+pub fn frame_done(ctx: &egui::Context) {
+    if DRAWN.load(Ordering::Relaxed) || ctx.cumulative_frame_nr() == 0 {
         return;
     }
-    if FRAMES.fetch_add(1, Ordering::Relaxed) == 1 {
-        tracing::info!("first frame drawn, {} ms after start", since_start());
-        if let Some(f) = file(STARTING) {
-            let _ = std::fs::remove_file(f);
-        }
+    // MDM_TEST_NO_FIRST_FRAME=1 (off-screen test copies): a first frame that never comes (the
+    // watchdog's check).
+    if testing("MDM_TEST_NO_FIRST_FRAME") {
+        return;
+    }
+    DRAWN.store(true, Ordering::Relaxed);
+    tracing::info!("first frame drawn, {} ms after start", since_start());
+    if let Some(f) = file(STARTING) {
+        let _ = std::fs::remove_file(f);
     }
 }
 
@@ -260,6 +292,13 @@ pub fn run<A: eframe::App + 'static>(
         {
             let _ = std::fs::write(f, "");
         }
+        // A watched Direct3D start must show its first frame in time, or MDM starts again.
+        #[cfg(windows)]
+        if n == 0 && plan.watched {
+            direct3d::watch_first_frame();
+        }
+        #[cfg(windows)]
+        direct3d::TRYING.store(attempt.api() == Api::Direct3D, Ordering::Relaxed);
         let mut opts = options();
         configure(&mut opts, attempt);
         tracing::info!("drawing with {}", attempt.name());
@@ -298,7 +337,16 @@ pub fn run<A: eframe::App + 'static>(
 /// The window's options for one way of drawing.
 fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
     match attempt {
-        Attempt::OpenGl => opts.renderer = eframe::Renderer::Glow,
+        Attempt::OpenGl => {
+            opts.renderer = eframe::Renderer::Glow;
+            // MDM_TEST_NO_OPENGL=1 (off-screen test copies): a pixel format no OpenGL has, as on
+            // a computer whose only OpenGL is Windows' own 1.1 (Remote Desktop, a VM).
+            if testing("MDM_TEST_NO_OPENGL") {
+                opts.multisampling = 255;
+                opts.depth_buffer = 255;
+                opts.stencil_buffer = 255;
+            }
+        }
         #[cfg(windows)]
         Attempt::Direct3D(adapters) => {
             opts.renderer = eframe::Renderer::Wgpu;
@@ -332,16 +380,138 @@ fn started(cc: &eframe::CreationContext<'_>, attempt: Attempt, instead: Option<S
     );
     // The crash reports say it ("Direct3D 12 on Intel(R) UHD Graphics 620 (driver …)").
     crate::crash::renderer(&detail);
+    // Errors are logged, not panics, and a lost graphics card starts MDM again.
+    #[cfg(windows)]
+    if let Some(rs) = &cc.wgpu_render_state {
+        direct3d::watch_device(&rs.device);
+    }
     let _ = ACTIVE.set(attempt.api());
+}
+
+/// `/show renderer-lost` (off-screen test copies): Direct3D's device lost on purpose (MDM starts
+/// again).
+#[cfg(windows)]
+pub fn test_device_lost() {
+    direct3d::lose_device();
 }
 
 /// eframe's wgpu set up for Direct3D 12 only.
 #[cfg(windows)]
 mod direct3d {
-    use super::Adapters;
+    use super::{Adapters, DRAWN, FIRST_FRAME_WITHIN, file, remember_failure};
     use eframe::egui_wgpu::{WgpuConfiguration, WgpuSetup, WgpuSetupCreateNew};
     use eframe::wgpu;
     use std::sync::Arc;
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::time::{Duration, Instant, SystemTime};
+
+    /// The try under way is Direct3D's (a failed one goes on to OpenGL in the same process).
+    pub static TRYING: AtomicBool = AtomicBool::new(false);
+
+    /// The first frame of this Direct3D start must come within [`FIRST_FRAME_WITHIN`]; if it
+    /// doesn't (a driver stuck in its first present, a window left black), Direct3D is
+    /// remembered as failed and MDM starts again, drawing with OpenGL.
+    pub fn watch_first_frame() {
+        let _ = std::thread::Builder::new()
+            .name("first frame watch".into())
+            .spawn(|| {
+                let until = Instant::now() + FIRST_FRAME_WITHIN;
+                while Instant::now() < until {
+                    if DRAWN.load(Ordering::Relaxed) || !TRYING.load(Ordering::Relaxed) {
+                        return;
+                    }
+                    std::thread::sleep(Duration::from_millis(100));
+                }
+                if DRAWN.load(Ordering::Relaxed) || !TRYING.load(Ordering::Relaxed) {
+                    return;
+                }
+                let why = format!(
+                    "Direct3D drew no first frame within {} s",
+                    FIRST_FRAME_WITHIN.as_secs()
+                );
+                remember_failure(&why);
+                // Remembered as this reason, not as a start that ended before its first frame.
+                if let Some(f) = file(super::STARTING) {
+                    let _ = std::fs::remove_file(f);
+                }
+                start_again(&why);
+            });
+    }
+
+    /// When the graphics card is lost twice this close together, Direct3D counts as failing.
+    const LOST_AGAIN_WITHIN: Duration = Duration::from_secs(600);
+    /// When the card was last lost (its time inside).
+    const LOST: &str = "direct3d-lost";
+
+    /// wgpu's errors go to the log instead of ending MDM (its default handler panics), and a
+    /// device lost while MDM runs (a driver update or reset: Direct3D 12 doesn't recover) starts
+    /// MDM again, with Direct3D, or with OpenGL after a second loss within 10 minutes.
+    pub fn watch_device(device: &wgpu::Device) {
+        device.on_uncaptured_error(Arc::new(|e| {
+            tracing::error!("Direct3D: {e}");
+        }));
+        device.set_device_lost_callback(|reason, message| {
+            let testing = TEST_LOSS.load(Ordering::Relaxed);
+            if reason != wgpu::DeviceLostReason::Unknown && !testing {
+                return;
+            }
+            let why = format!("the graphics card was lost ({reason:?}: {message})");
+            let now = SystemTime::now()
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .map_or(0, |d| d.as_secs());
+            let last = file(LOST)
+                .and_then(|f| std::fs::read_to_string(f).ok())
+                .and_then(|t| t.trim().parse::<u64>().ok());
+            if last.is_some_and(|t| now.saturating_sub(t) < LOST_AGAIN_WITHIN.as_secs()) {
+                remember_failure(&format!("{why}, twice within 10 minutes"));
+            } else if let Some(f) = file(LOST) {
+                let _ = std::fs::write(f, now.to_string());
+            }
+            start_again(&why);
+        });
+        let _ = DEVICE.set(device.clone());
+    }
+
+    static DEVICE: std::sync::OnceLock<wgpu::Device> = std::sync::OnceLock::new();
+
+    /// Each main-window pass, before its frame is painted: wgpu notices a lost device here and
+    /// calls [`watch_device`]'s callback, before painting with it would fail.
+    pub fn poll() {
+        if let Some(d) = DEVICE.get() {
+            let _ = d.poll(wgpu::PollType::Poll);
+        }
+    }
+    static TEST_LOSS: AtomicBool = AtomicBool::new(false);
+
+    /// `/show renderer-lost` (off-screen test copies): lose the device on purpose.
+    pub fn lose_device() {
+        if let Some(d) = DEVICE.get() {
+            TEST_LOSS.store(true, Ordering::Relaxed);
+            d.destroy();
+            poll();
+        }
+    }
+
+    /// End this copy and start MDM again: the new one waits for this one to be gone (as after
+    /// an update), and draws as the failure markers now say.
+    fn start_again(why: &str) {
+        tracing::warn!("{why}: starting MDM again");
+        let started = std::env::current_exe().ok().and_then(|exe| {
+            std::process::Command::new(exe)
+                .arg(crate::update::UPDATED)
+                // An override would bring the same failure back.
+                .env_remove("MDM_RENDERER")
+                .spawn()
+                .ok()
+        });
+        if started.is_none() {
+            tracing::error!("MDM couldn't start again");
+        }
+        crate::crash::clean_exit();
+        // The window thread may be stuck in the driver: end at once, without unwinding.
+        crate::win32::end_process(std::process::id());
+        std::process::exit(1);
+    }
 
     pub fn options(adapters: Adapters) -> WgpuConfiguration {
         let mut setup = WgpuSetupCreateNew::without_display_handle();
@@ -429,13 +599,17 @@ mod direct3d {
 #[cfg(windows)]
 fn choose(list: &[(eframe::wgpu::DeviceType, bool)], adapters: Adapters) -> Option<usize> {
     use eframe::wgpu::DeviceType;
-    let hardware = |t: DeviceType| t != DeviceType::Cpu;
+    // MDM_TEST_NO_HARDWARE=1 (off-screen test copies): no graphics card's Direct3D 12, only
+    // Microsoft's software renderer, as over Remote Desktop.
+    let no_card = testing("MDM_TEST_NO_HARDWARE");
+    let hardware = |t: DeviceType| t != DeviceType::Cpu && !no_card;
+    let software = |t: DeviceType| t == DeviceType::Cpu;
     let first =
         |want: &dyn Fn(DeviceType) -> bool| list.iter().position(|&(t, fits)| fits && want(t));
     match adapters {
         Adapters::Hardware => first(&hardware),
-        Adapters::Software => first(&|t| !hardware(t)),
-        Adapters::Any => first(&hardware).or_else(|| first(&|t| !hardware(t))),
+        Adapters::Software => first(&software),
+        Adapters::Any => first(&hardware).or_else(|| first(&software)),
         Adapters::Nothing => None,
     }
 }
@@ -449,17 +623,25 @@ mod tests {
         let d3d = Attempt::Direct3D(Adapters::Hardware);
         let any = Attempt::Direct3D(Adapters::Any);
         if cfg!(windows) {
-            // Nothing chosen: OpenGL, and Direct3D if OpenGL can't start.
+            // Nothing chosen: Direct3D (#89), its start watched; OpenGL behind it, then WARP.
+            let warp = Attempt::Direct3D(Adapters::Software);
             let p = plan(None, None, false);
+            assert_eq!(p.attempts, [d3d, Attempt::OpenGl, warp]);
+            assert!(p.watched);
+            // Direct3D chosen: the same.
+            let p = plan(Some(Api::Direct3D), None, false);
+            assert_eq!(p.attempts, [d3d, Attempt::OpenGl, warp]);
+            assert!(p.watched);
+            // ... unless it failed here before, chosen or by default.
+            for setting in [None, Some(Api::Direct3D)] {
+                let p = plan(setting, None, true);
+                assert_eq!(p.attempts, [Attempt::OpenGl, any]);
+                assert!(!p.watched);
+            }
+            // OpenGL chosen: kept, Direct3D only if OpenGL can't start.
+            let p = plan(Some(Api::OpenGl), None, false);
             assert_eq!(p.attempts, [Attempt::OpenGl, any]);
             assert!(!p.watched);
-            // Direct3D chosen: tried first, its start watched; OpenGL behind it.
-            let p = plan(Some(Api::Direct3D), None, false);
-            assert_eq!(p.attempts, [d3d, Attempt::OpenGl]);
-            assert!(p.watched);
-            // ... unless it failed here before.
-            let p = plan(Some(Api::Direct3D), None, true);
-            assert_eq!(p.attempts, [Attempt::OpenGl, any]);
             // Overrides win, failure or not, and aren't watched.
             let p = plan(Some(Api::OpenGl), Some("D3D"), true);
             assert_eq!(p.attempts, [d3d, Attempt::OpenGl]);
@@ -472,13 +654,11 @@ mod tests {
                 [Attempt::Direct3D(Adapters::Software), Attempt::OpenGl]
             );
             // An unknown name is ignored.
-            assert_eq!(
-                plan(None, Some("vulkan"), false).attempts[0],
-                Attempt::OpenGl
-            );
+            assert_eq!(plan(None, Some("vulkan"), false).attempts[0], d3d);
         } else {
             // Direct3D isn't built: OpenGL whatever was asked.
             for p in [
+                plan(None, None, false),
                 plan(Some(Api::Direct3D), None, false),
                 plan(None, Some("d3d"), false),
             ] {

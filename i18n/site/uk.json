@@ -854,6 +854,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>Браузер.</g1> Клацніть правою кнопкою миші на сторінці, щоб вибрати <g2>Завантажити всі посилання за допомогою Mister Download Manager</g2>, або виділіть її частину для <g3>Завантажити вибрані посилання за допомогою Mister Download Manager</g3>. Реферер та файли cookie сторінки передаються з кожним посиланням."
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "У Windows вікна малюються за допомогою Direct3D 12 (wgpu eframe, лише з його бекендом Direct3D 12) або за допомогою OpenGL (glow eframe), якщо вибрано Вигляд → Малювати за допомогою; Linux і macOS використовують OpenGL. Якщо обраний варіант не запускається, спробується інший, тому вікна завжди відкриваються."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>Надіслати на GitHub</g1> відкриває у вашому браузері форму <g2>Звіт про збій</g2> на GitHub, вже заповнену, разом із папкою, що містить звіт. Перетягніть файл звіту у форму, перевірте його та надішліть. Вам потрібен обліковий запис GitHub. <g3>Нічого не надсилається самостійно.</g3>"
@@ -1389,6 +1393,10 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "Видаліть папку <x1/> (або зробіть її доступною лише для читання), і та сама копія поводитиметься як звичайний zip-архів: вона зберігатиме свої дані в <x2/>."
+  },
+  "21b6b286e6b24cb5": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
+   "text": "<g1>Вигляд</g1> — показати або приховати категорії, сортувати список (<g2>Упорядкувати файли</g2>), <g3>Підтримка темного режиму</g3>, <g4>Завжди темний</g4>, <g5>Малювати за допомогою</g5> (Windows: Direct3D або OpenGL) та <g6>Мова</g6>."
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -2074,6 +2082,10 @@
    "source": "MDM starts its torrent engine the first time a torrent needs it. With <g1>Stop the torrent engine when no torrent is running</g1> on (the default), it stops again a minute after no torrent is running or sharing. While it runs, other peers can connect to MDM, and MDM asks your router to forward its port (UPnP). Windows may ask whether to allow MDM through the firewall: allow it on private networks only.",
    "text": "MDM запускає свій торрент-рушій, коли торрент вперше його потребує. Якщо ввімкнено <g1>Зупинити торрент-рушій, коли не запущено жодного торрента</g1> (за замовчуванням), він знову зупиняється через хвилину після того, як жоден торрент не працює або не ділиться. Поки він працює, інші піри можуть підключатися до MDM, і MDM просить ваш маршрутизатор перенаправити його порт (UPnP). Windows може запитати, чи дозволити MDM через брандмауер: дозволяйте його лише в приватних мережах."
   },
+  "315ec1116b53cad4": {
+   "source": "Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.",
+   "text": "Оновлення графічного драйвера з сайту виробника карти (Intel, AMD або NVIDIA) вирішує багато з цих проблем."
+  },
   "3175f66bedeb42a3": {
    "source": "<g1>Every connection, live</g1> Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.",
    "text": "<g1>Кожне з’єднання, наживо</g1> Кожне з’єднання відображається під час заповнення, зі швидкістю та часом, що залишився. Безпечне відновлення після збою продовжує з того місця, де зупинилося."
@@ -2445,6 +2457,10 @@
   "3c333ba83ce0943b": {
    "source": "<g1><g2>Torrents and your security</g2></g1> — what others can see, the network switches, blocklists, proxies.",
    "text": "<g1><g2>Торренти та ваша безпека</g2></g1> — що можуть бачити інші, мережеві перемикачі, чорні списки, проксі."
+  },
+  "3c66b34f9fe57c3f": {
+   "source": "A freeze or crash report says which one was drawing: include it when you report a problem.",
+   "text": "Звіт про зависання або збій вказує, який саме використовувався для малювання: включіть його, коли повідомляєте про проблему."
   },
   "3c77dee3eaf67f2c": {
    "source": "The setup or MDM won't start",
@@ -3457,6 +3473,10 @@
   "57e101e4403fd046": {
    "source": "Command",
    "text": "Команда"
+  },
+  "57eb60e0b91d33ca": {
+   "source": "If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.",
+   "text": "Якщо графічна карта скидається під час роботи MDM (оновлення драйвера), MDM запускається знову самостійно."
   },
   "57f708f18604d10d": {
    "source": "(and Sheets, Slides, Drawings).",
@@ -5734,6 +5754,10 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Дебрід-сервіс, як-от Real-Debrid, AllDebrid або Premiumize, — це платний обліковий запис, який завантажує файли з файлообмінників на власні сервери. Він повертає..."
   },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "Якщо Direct3D не може запуститися на вашому комп’ютері (немає драйвера Direct3D 12, деякі віртуальні машини), або його перше вікно не відображається протягом 10 секунд, MDM малює за допомогою OpenGL, і <g1>Вигляд → Малювати за допомогою</g1> про це повідомляє. Повторний вибір <g2>Direct3D</g2> спробує його знову під час наступного запуску."
+  },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
    "text": "Усі числа"
@@ -6562,6 +6586,10 @@
    "source": "MDM doesn't use a temporary folder: every connection writes straight into the final file's place, so there is nothing to put together at the end.",
    "text": "MDM не використовує тимчасову папку: кожне з'єднання записує дані безпосередньо в місце призначення кінцевого файлу, тому в кінці нічого не потрібно збирати."
   },
+  "a75a919684323859": {
+   "source": "<g1>File Properties</g1> shows a download's type, status, size and folder, its address, your description, the page it came from (<g2>Referer</g2>) and a login for the site. <g3>Last try</g3> and <g4>Result</g4> tell you how its last attempt went.",
+   "text": "<g1>Властивості файлу</g1> показує тип, стан, розмір та папку завантаження, його адресу, ваш опис, сторінку, з якої воно походить (<g2>Referer</g2>), та логін для сайту. <g3>Остання спроба</g3> та <g4>Результат</g4> повідомляють, як пройшла остання спроба."
+  },
   "a76617f8c395dcdd": {
    "source": "Can other programs or scripts control MDM? — Mister Download Manager",
    "text": "Чи можуть інші програми або скрипти керувати MDM? — Mister Download Manager"
@@ -6637,6 +6665,10 @@
   "a9d705964d2ca3bb": {
    "source": "<g1>86 languages built in.</g1> Right to left included, chosen on the first start.",
    "text": "<g1>86 мов.</g1> Включно з письмом справа наліво, обирається під час першого запуску."
+  },
+  "a9db3c477db73349": {
+   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 70 MB.",
+   "text": "<g1>Пам’ять</g1> (на вкладці «Процеси») — це те, що MDM тримає лише для себе, його <g2>особистий робочий набір</g2>. Коли вікно відкрите і нічого не завантажується, це близько 70 МБ."
   },
   "a9e931861de964cf": {
    "source": "Catch downloads from your browser",
@@ -8482,6 +8514,10 @@
    "source": "Numbers and the dates in the list (<g1>Last Try Date</g1>, <g2>Added</g2>) follow the region set in Windows (<g3>Settings → Time &amp; language → Language &amp; region → Regional format</g3>), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (<x4/>).",
    "text": "Числа та дати у списку (<g1>Дата останньої спроби</g1>, <g2>Додано</g2>) відповідають регіону, встановленому у Windows (<g3>Налаштування → Час і мова → Мова та регіон → Регіональний формат</g3>), тому цифри, роздільники та порядок дати виглядають так, як ви звикли. Англійською MDM пише їх так само, як IDM (<x4/>)."
   },
+  "db4c3e21ec3c44a4": {
+   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 120 MB in all.",
+   "text": "<g1>Робочий набір</g1> (вкладка «Деталі», додайте стовпець) додає пам’ять, спільну з іншими програмами. MDM малює свої вікна за допомогою відеокарти, тому пам’ять графічного драйвера також враховується тут, загалом близько 120 МБ."
+  },
   "db518ca5cd5e57ca": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Так. MDM підтримує звичні параметри командного рядка IDM, постачається з misterdownloadmanager-cli для завантажень з терміналу та має локальний, захищений токеном API автоматизації, який може перераховувати, призупиняти, запускати та видаляти завантаження. API вимкнено, доки ви його не ввімкнете. Дивіться Командний рядок та автоматизація."
@@ -9546,6 +9582,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "Виберіть <g1>Основна черга завантажень</g1> ліворуч. Відкриється вкладка <g2>Розклад</g2>."
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "У Windows MDM малює свої вікна за допомогою Direct3D 12; у Linux та macOS — за допомогою OpenGL. Графічний драйвер все ще може працювати некоректно: вікно, яке застигає на секунди, мерехтить або показує неправильні кольори чи блоки. У Windows спробуйте інший варіант: виберіть <g1>Вигляд → Малювати за допомогою → OpenGL</g1>, потім вийдіть з MDM (<g2>Завдання → Вихід</g2>) і запустіть його знову. <g3>Вигляд → Малювати за допомогою → Direct3D</g3> повертає все назад таким же чином."
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "У <g1>Типова директорія завантажень для категорії \"Загальні\"</g1> натисніть <g2>Огляд</g2> та оберіть папку на флешці, наприклад <x3/>."
@@ -9589,6 +9629,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "За замовчуванням вісім на завантаження, і до 32, якщо ви оберете в Параметри → Підключення, або 128 після встановлення прапорця Дозволити більше 32 підключень там. MDM використовує менше…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Якщо жоден з них не може запуститися, MDM малює за допомогою програмного рендерера Microsoft, тому вікно все одно відкривається (віддалений робочий стіл, віртуальна машина без графічного драйвера). Це працює, але процесор залишається більш завантаженим."
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
