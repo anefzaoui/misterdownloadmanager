@@ -280,6 +280,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: the engine tests no longer fail on a busy computer**
+  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
+  depended on timing: a refused connection coming back, the learned connection limit, and a dead
+  address (a server without ranges was fixed earlier). Each now waits for the state it checks. The lab server
+  can hold a connection slot for a test (`hold_slot`), and `settled()` now also means every
+  slot is free.
 - **Themes, the groundwork** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)):
   every colour and size MDM's controls are drawn with (corner radii, borders, font sizes, the
   list's row height, the icons' ink) now comes from one theme, by role. The classic look is that
@@ -364,6 +370,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Streams served as plain text, from addresses without .m3u8 or .mpd**
+  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171)): some players load
+  their stream from such an address, and the extension didn't know it as one. The button over the
+  video, the right-click menu and **Media on this page** then sent the page alone, which yt-dlp
+  answered "Unsupported URL". Now, when one of them is used and no stream is known, the extension
+  reads the start of what the player fetched (a few kilobytes, never on sight) and recognises an
+  HLS playlist or a DASH manifest.
 - **A minimized MDM keeps working**: with the main window minimized (not to the notification
   area), queues didn't start their next file, the Scheduler's starts and stops didn't fire,
   download limits, the network adapter's kill switch, the clipboard monitor, the update check, the

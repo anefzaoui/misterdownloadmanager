@@ -175,10 +175,12 @@ def esc(s: str) -> str:
 
 
 def md(text: str) -> str:
-    return markdown.markdown(
+    out = markdown.markdown(
         text, extensions=["tables", "fenced_code", "toc", "attr_list", "sane_lists", "md_in_html"],
         extension_configs={"toc": {"permalink": False}},
     )
+    # A table wider than the column scrolls inside its own box, not the page (#169).
+    return re.sub(r"<table\b.*?</table>", lambda m: f'<div class="table-wrap">{m.group(0)}</div>', out, flags=re.S)
 
 
 def plain(text: str) -> str:
@@ -331,7 +333,37 @@ def header(section: str = "") -> str:
         </details>
       </div>
     </div>
-  </header>"""
+  </header>
+  {HEADER_FIT}"""
+
+
+# Right after the header, before the first paint: the header gives up, one step at a time, what
+# doesn't fit its row in this language at this width (the Sponsor heart, then some spacing, then
+# the links for the menu, then the language's name beside its flag), so no language runs past the
+# page (#168). The media queries in styles.css are the floor, and all there is without scripts.
+HEADER_FIT = """<script>
+    (function () {
+      var top = document.currentScript.previousElementSibling, row = top.firstElementChild;
+      var steps = ['fit-sponsor', 'fit-tight', 'fit-menu', 'fit-flag'];
+      // Its pieces, end to end, against the row's content box (overflow into the padding counts).
+      function over() {
+        var s = getComputedStyle(row), lo = Infinity, hi = -Infinity;
+        for (var k = row.firstElementChild; k; k = k.nextElementSibling) {
+          var b = k.getBoundingClientRect();
+          if (b.width) { lo = Math.min(lo, b.left); hi = Math.max(hi, b.right); }
+        }
+        return hi - lo > row.clientWidth - parseFloat(s.paddingLeft) - parseFloat(s.paddingRight) + 0.5;
+      }
+      function fit() {
+        for (var i = 0; i < steps.length; i++) top.classList.remove(steps[i]);
+        for (var j = 0; j < steps.length && over(); j++) top.classList.add(steps[j]);
+      }
+      fit();
+      if (window.ResizeObserver) new ResizeObserver(fit).observe(row);
+      // Archivo may arrive after this runs (or start loading only once laid out): fit again then.
+      if (document.fonts) { document.fonts.ready.then(fit); document.fonts.addEventListener('loadingdone', fit); }
+    })();
+  </script>"""
 
 
 def footer() -> str:
@@ -869,8 +901,7 @@ def bench_report() -> str:
     text = (ROOT / "docs" / "bench" / "run5" / "REPORT.md").read_text("utf-8")
     table = "\n".join(l for l in text.splitlines() if l.startswith("|"))
     env = next((l for l in text.splitlines()[1:] if l.strip()), "")
-    return md(table).replace("<table>", '<div class="table-wrap"><table>').replace("</table>", "</table></div>") + \
-        f'<p class="fine">{esc(env)}</p>'
+    return md(table) + f'<p class="fine">{esc(env)}</p>'
 
 
 # ---- Pages written as Markdown (legal) -----------------------------------------------------------
