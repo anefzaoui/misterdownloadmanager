@@ -180,12 +180,22 @@ fn dialog_window<T>(
     // The title in the interface language (Win32 finds the window by it, so it is used as is
     // from here on).
     let title = crate::i18n::t(title);
+    // A style theme's title bar is ours (Windows, #45): drawn above the layout, which keeps its
+    // size; the frame (win32::thin_frame) gives the caption to the client.
+    let drawn = drawn_captions();
+    let caption_h = if drawn {
+        crate::winui::caption::CAPTION_H
+    } else {
+        0.0
+    };
+    let outer = [client[0], client[1] + caption_h];
     // Hidden until `keep_theme` has given it its theme (see there).
     let mut builder = ViewportBuilder::default()
         .with_visible(false)
         .with_title(title)
-        .with_inner_size(client)
-        .with_resizable(false)
+        .with_inner_size(outer)
+        // The thin frame trims the sizing borders and keeps the size fixed.
+        .with_resizable(drawn)
         .with_minimize_button(minimize)
         .with_maximize_button(false);
     // Every dialog carries the app icon: without one Windows draws its generic placeholder.
@@ -202,7 +212,7 @@ fn dialog_window<T>(
             egui::WindowLevel::Normal
         });
     }
-    if let Some(p) = place(ctx, key, client) {
+    if let Some(p) = place(ctx, key, outer) {
         builder = builder.with_position(p);
     }
     crate::crash::window(id);
@@ -215,7 +225,27 @@ fn dialog_window<T>(
                 let origin = ui.max_rect().min;
                 // The client area, laid out from the right in a right-to-left interface.
                 let _surface = winui::Surface::enter(origin.x, origin.x + client[0]);
-                body(ui, origin)
+                // Our title bar's ×: like the window manager's, the window is painted in its
+                // closing pass too (#207), then closes.
+                let mut caption_close = false;
+                if drawn {
+                    use crate::winui::caption::CaptionButton;
+                    let mut buttons = vec![(CaptionButton::Close, true)];
+                    if minimize {
+                        buttons.push((CaptionButton::Minimize, true));
+                    }
+                    let hwnd = ui.ctx().data(|d| d.get_temp::<isize>(key.with("hwnd")));
+                    match drawn_title(ui, origin, client[0], title, &buttons, hwnd) {
+                        Some(CaptionButton::Close) => caption_close = true,
+                        Some(CaptionButton::Minimize) => {
+                            ui.ctx()
+                                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                        }
+                        _ => {}
+                    }
+                }
+                let out = body(ui, origin + egui::vec2(0.0, caption_h));
+                if caption_close { Outcome::Closed } else { out }
             })
             .inner;
         if close { Outcome::Closed } else { out }
@@ -226,10 +256,24 @@ fn dialog_window<T>(
     {
         let framed = key.with("framed");
         let scale = ctx.input_for(ViewportId::from_hash_of(id), |i| i.pixels_per_point);
-        if ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(client)
-            && crate::win32::dialog_frame(title, client, !crate::theme::dark_surface(), scale)
-        {
-            ctx.data_mut(|d| d.insert_temp(framed, client));
+        // The size and whose title bar it is: either changing frames it again.
+        let want = [outer[0], outer[1] + if drawn { 1e6 } else { 0.0 }];
+        if ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(want) {
+            if drawn {
+                if let Some(h) = crate::win32::thin_frame(title, outer, scale, None) {
+                    ctx.data_mut(|d| {
+                        d.insert_temp(framed, want);
+                        d.insert_temp(key.with("hwnd"), h);
+                    });
+                }
+            } else if crate::win32::dialog_frame(
+                title,
+                client,
+                !crate::theme::dark_surface(),
+                scale,
+            ) {
+                ctx.data_mut(|d| d.insert_temp(framed, want));
+            }
         }
     }
     keep_theme(
@@ -260,9 +304,60 @@ fn dialog_window<T>(
         ctx.data_mut(|d| d.remove::<bool>(focused));
         forget_place(ctx, key);
         #[cfg(windows)]
-        ctx.data_mut(|d| d.remove::<[f32; 2]>(key.with("framed")));
+        ctx.data_mut(|d| {
+            d.remove::<[f32; 2]>(key.with("framed"));
+            d.remove::<isize>(key.with("hwnd"));
+        });
     }
     out
+}
+
+/// Whether the windows' title bars are ours: a style theme's on Windows (#45). Elsewhere the
+/// window manager draws them, which takes no style of ours (Wayland places its own buttons).
+pub fn drawn_captions() -> bool {
+    cfg!(windows) && crate::theme::current().controls.caption != crate::palette::CaptionLook::System
+}
+
+/// A title bar we draw (where the window's frame is ours: win32::thin_frame), `width` points
+/// wide at `o`, with `buttons` from the window's end; the button pressed. Where its buttons and
+/// icon are goes to the window's hit test (win32::set_caption_hits), in client pixels, each
+/// frame (`hwnd`: the window, once its frame is applied).
+pub fn drawn_title(
+    ui: &mut Ui,
+    o: Pos2,
+    width: f32,
+    title: &str,
+    buttons: &[(crate::winui::caption::CaptionButton, bool)],
+    hwnd: Option<isize>,
+) -> Option<crate::winui::caption::CaptionButton> {
+    use crate::winui::caption::CAPTION_H;
+    let rect = egui::Rect::from_min_size(o, egui::vec2(width, CAPTION_H));
+    let bar = crate::winui::caption::title_bar(ui, rect, title, buttons);
+    #[cfg(windows)]
+    if let Some(hwnd) = hwnd {
+        let ppp = ui.ctx().pixels_per_point();
+        let px = |r: egui::Rect| {
+            let (a, b) = ((r.min - o) * ppp, (r.max - o) * ppp);
+            [
+                a.x.round() as i32,
+                a.y.round() as i32,
+                b.x.round() as i32,
+                b.y.round() as i32,
+            ]
+        };
+        crate::win32::set_caption_hits(
+            hwnd,
+            crate::win32::CaptionHits {
+                strip_h: (CAPTION_H * ppp).round() as i32,
+                icon: px(bar.icon),
+                buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
+                max_button: None,
+            },
+        );
+    }
+    #[cfg(not(windows))]
+    let _ = hwnd;
+    bar.pressed
 }
 
 /// Whether the window manager asked this window to close (its title bar's ×, Alt+F4, a

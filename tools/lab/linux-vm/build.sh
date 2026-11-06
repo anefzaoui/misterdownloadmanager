@@ -16,7 +16,9 @@ if [ $# -gt 0 ]; then
   git fetch -q origin '+refs/heads/*:refs/remotes/origin/*' '+refs/pull/*/head:refs/remotes/origin/pr/*'
   ref=$(git rev-parse -q --verify "origin/$1^{commit}" || git rev-parse -q --verify "$1^{commit}") || {
     echo "== no branch, PR or commit named $1"; exit 1; }
-  git checkout -q --detach "$ref"
+  # The lab's checkout is a scratch copy: a Cargo.lock that a test run rewrote must not keep it on
+  # the last commit (the build would then carry the wrong label).
+  git checkout -q -f --detach "$ref" || { echo "== could not check out $1"; exit 1; }
 fi
 profile=${MDM_PROFILE:-vmtest}
 label=${2:-$(echo "$ref_name" | tr '/' '-')}
