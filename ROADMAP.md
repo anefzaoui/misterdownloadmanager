@@ -13,6 +13,10 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Firefox's add-on offered from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
+  first: **Add to Firefox** on the website, in the help, the FAQ and the README, and in MDM's
+  **Add Mister Download Manager to your browser** window (for Zen and LibreWolf too); Chrome,
+  Edge, Brave, Opera and Vivaldi by hand until the Chrome Web Store listing is approved
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
   Italian is the first catalog reviewed by a native speaker
   ([#150](https://github.com/anefzaoui/misterdownloadmanager/pull/150))
