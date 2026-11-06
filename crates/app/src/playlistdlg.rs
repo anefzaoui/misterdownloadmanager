@@ -483,9 +483,32 @@ impl PlaylistView {
     /// Select all, Select none; Stop listing or Load more; how many are chosen.
     fn buttons(&mut self, ui: &mut Ui, o: Pos2, n: usize) {
         let p = ui.painter().clone();
+        // i18n: button in Download video for a channel: list its next videos
+        let load_more = crate::i18n::mark("Load more");
+        // i18n: button in Download video: go on listing a playlist from where it stopped
+        let list_rest = crate::i18n::mark("List the rest");
+        // i18n: button in Download video: stop listing a playlist's videos (those listed stay)
+        let stop = crate::i18n::mark("Stop listing");
+        let third = if self.listing.is_some() {
+            stop
+        } else if self.paged {
+            load_more
+        } else {
+            list_rest
+        };
+        // Each as wide as its label in this language (#172), side by side from the left.
+        let [all_at, none_at, third_at] = winui::buttons_from_left(
+            &p,
+            11.0,
+            8.0,
+            &[("Select all", 90.0), ("Select none", 90.0), (third, 100.0)],
+            150.0,
+        )[..] else {
+            unreachable!("three buttons")
+        };
         let all = winui::button(
             ui,
-            r(o, 11.0, 222.0, 90.0, 21.0),
+            r(o, all_at.0, 222.0, all_at.1, 21.0),
             // i18n: button in Download video for a playlist: tick every video
             "Select all",
             ButtonKind::Normal,
@@ -495,7 +518,7 @@ impl PlaylistView {
         .clicked();
         let none = winui::button(
             ui,
-            r(o, 109.0, 222.0, 90.0, 21.0),
+            r(o, none_at.0, 222.0, none_at.1, 21.0),
             // i18n: button in Download video for a playlist: untick every video
             "Select none",
             ButtonKind::Normal,
@@ -513,9 +536,8 @@ impl PlaylistView {
         if self.listing.is_some() {
             if winui::button(
                 ui,
-                r(o, 207.0, 222.0, 100.0, 21.0),
-                // i18n: button in Download video: stop listing a playlist's videos (those listed stay)
-                "Stop listing",
+                r(o, third_at.0, 222.0, third_at.1, 21.0),
+                stop,
                 ButtonKind::Normal,
                 false,
                 None,
@@ -531,14 +553,8 @@ impl PlaylistView {
         } else if self.more
             && winui::button(
                 ui,
-                r(o, 207.0, 222.0, 100.0, 21.0),
-                if self.paged {
-                    // i18n: button in Download video for a channel: list its next videos
-                    "Load more"
-                } else {
-                    // i18n: button in Download video: go on listing a playlist from where it stopped
-                    "List the rest"
-                },
+                r(o, third_at.0, 222.0, third_at.1, 21.0),
+                third,
                 ButtonKind::Normal,
                 false,
                 None,

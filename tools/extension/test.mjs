@@ -13,8 +13,27 @@ const DEFAULT_TYPES = "3GP 7Z AAC EXE ISO MP3 MP4 MSI PDF R0* RAR ZIP";
 // `appName`: what runtime.getBrowserInfo says (Firefox's family only; "Zen").
 // `session`: storage.session's contents (shared between two loads: the browser stopped the
 // script and started it again); `frames`: what each frame's players are (mediaElements);
-// `tabs`: tabs.get's answers by id.
-function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = true, finished, panelOn, access = true, rules = {}, appName, proxy, session, frames, tabs = {} }) {
+// `tabs`: tabs.get's answers by id. `proxyPerm`: how the manifest has the "proxy" permission
+// ("optional": Firefox's; "required"; none: Chrome's, it can't be optional there), `proxyGranted`
+// whether it is granted (a required one always is), `proxyAnswer` what permissions.request says.
+function fakeApi({
+  firefox,
+  reply = { ok: true },
+  types = DEFAULT_TYPES,
+  host = true,
+  finished,
+  panelOn,
+  access = true,
+  rules = {},
+  appName,
+  proxy,
+  session,
+  frames,
+  tabs = {},
+  proxyPerm = firefox ? "optional" : undefined,
+  proxyGranted = false,
+  proxyAnswer = true,
+}) {
   const raw = [];
   // Objects made inside the sandbox have its prototypes: compare plain copies.
   const calls = { push: (c) => raw.push(JSON.parse(JSON.stringify(c))) };
@@ -31,6 +50,7 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
     };
   };
   const store = {};
+  const granted = { proxy: proxyGranted };
   const downloads = {
     pause: async (id) => calls.push(["pause", id]),
     cancel: async (id) => calls.push(["cancel", id]),
@@ -64,7 +84,29 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
         return [{ name: "sid", value: "1" }];
       },
     },
-    permissions: { contains: async () => access },
+    permissions: {
+      // The "proxy" permission (#42), else a site's access.
+      contains: async (q) => {
+        if (!(q.permissions || []).includes("proxy")) return access;
+        calls.push(["contains-proxy"]);
+        return proxyPerm === "required" || (proxyPerm === "optional" && granted.proxy);
+      },
+      request: async (q) => {
+        calls.push(["request", q.permissions]);
+        if (proxyPerm !== "optional" || !proxyAnswer) return false;
+        granted.proxy = true;
+        listeners.permAdded && listeners.permAdded(q);
+        return true;
+      },
+      remove: async (q) => {
+        calls.push(["remove", q.permissions]);
+        granted.proxy = false;
+        listeners.permRemoved && listeners.permRemoved(q);
+        return true;
+      },
+      onAdded: event("permAdded"),
+      onRemoved: event("permRemoved"),
+    },
     runtime: {
       sendNativeMessage: async (name, m) => {
         if (!host) throw new Error("Specified native messaging host not found.");
@@ -77,7 +119,12 @@ function fakeApi({ firefox, reply = { ok: true }, types = DEFAULT_TYPES, host = 
         if (m.panel) return { ok: panelOn !== false };
         return reply;
       },
-      getManifest: () => ({ version: "0.2.5", content_scripts: [{ js: ["video.js"] }, { js: ["page.js"] }] }),
+      getManifest: () => ({
+        version: "0.2.5",
+        content_scripts: [{ js: ["video.js"] }, { js: ["page.js"] }],
+        permissions: ["downloads", ...(proxyPerm === "required" ? ["proxy"] : [])],
+        ...(proxyPerm === "optional" ? { optional_permissions: ["proxy"] } : {}),
+      }),
       onInstalled: event("installed"),
       onStartup: event("startup"),
       onMessage: event("message"),
@@ -152,11 +199,15 @@ async function fakeFetch(url, opts) {
   return { ok: (r.status || 200) < 300, status: r.status || 200, headers: { get: () => null }, body, text: async () => r.body };
 }
 
+// What background.js wrote to the console as an error or a warning (#42: none, granted or not).
+const complaints = [];
+const quietConsole = { ...console, error: (...a) => complaints.push(["error", ...a]), warn: (...a) => complaints.push(["warn", ...a]) };
+
 function load(api, firefox) {
   const ctx = {
     fetch: fakeFetch,
     navigator: { userAgent: "UA", userAgentData: { brands: [{ brand: "Chromium" }, { brand: "Brave" }] } },
-    console,
+    console: quietConsole,
     URL,
     URLSearchParams,
     TextDecoder,
@@ -915,11 +966,13 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("translations complete");
 }
 
-// #42: the browser's proxy goes with the download, so the app uses the same one.
+// #42: the browser's proxy goes with the download, so the app uses the same one: an opt-in, the
+// "proxy" permission. Chromium can't make it optional, so the Chrome extension doesn't have it
+// yet: these first four are its reading, for the release that adds it ("required").
 {
   // Chromium, a VPN extension's fixed SOCKS5 proxy: remote DNS (socks5h), as Chromium does.
   const proxy = { mode: "fixed_servers", rules: { singleProxy: { scheme: "socks5", host: "vpn.example", port: 1080 }, bypassList: ["<local>"] } };
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxy });
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required" });
   load(api, false);
   listeners.determining({ id: 31, url: "https://files.example/p.zip", filename: "p.zip" }, () => {});
   await settle();
@@ -931,7 +984,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
 {
   // Its bypass list: a local name goes direct, so nothing is sent.
   const proxy = { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "p", port: 8080 }, bypassList: ["*.intranet.example"] } };
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxy });
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required" });
   load(api, false);
   listeners.determining({ id: 32, url: "https://files.intranet.example/p.zip", filename: "p.zip" }, () => {});
   await settle();
@@ -941,7 +994,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
 {
   // A proxy that asked for a login (the VPN extension answers it): flagged for the app.
   const proxy = { mode: "fixed_servers", rules: { proxyForHttps: { scheme: "https", host: "gw.vpn.example", port: 443 } } };
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxy });
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy, proxyPerm: "required" });
   load(api, false);
   listeners.authRequired({ isProxy: true, challenger: { host: "gw.vpn.example", port: 443 } });
   listeners.determining({ id: 33, url: "https://x/q.zip", filename: "q.zip" }, () => {});
@@ -953,7 +1006,7 @@ const MPD = (protect) => `<?xml version="1.0"?>
 {
   // A PAC script set by the extension: its text goes.
   const data = 'function FindProxyForURL(u, h) { return "PROXY p:3128"; }';
-  const { api, calls, listeners } = fakeApi({ firefox: false, proxy: { mode: "pac_script", pacScript: { data } } });
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxy: { mode: "pac_script", pacScript: { data } }, proxyPerm: "required" });
   load(api, false);
   listeners.determining({ id: 34, url: "https://x/r.zip", filename: "r.zip" }, () => {});
   await settle();
@@ -961,9 +1014,11 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("Chrome: a PAC script's text goes with the download");
 }
 {
-  // Firefox: the proxy its own request for the file took (proxy.onRequest extensions too).
-  const { api, calls, listeners } = fakeApi({ firefox: true });
+  // Firefox, switched on (the optional permission granted): the proxy its own request for the
+  // file took (proxy.onRequest extensions too).
+  const { api, calls, listeners } = fakeApi({ firefox: true, proxyGranted: true });
   load(api, true);
+  await settle();
   listeners.responseStarted({ url: "https://x/s.zip", proxyInfo: { type: "socks", host: "10.8.0.1", port: 1080, proxyDNS: true, username: "u" } });
   listeners.created({ id: 35, url: "https://x/s.zip", filename: "C:\\dl\\s.zip" });
   await settle();
@@ -972,8 +1027,69 @@ const MPD = (protect) => `<?xml version="1.0"?>
   ok("Firefox: the request's own proxy goes, its login flagged");
 }
 {
-  // No proxy API (or none in use): nothing extra.
+  // Firefox, not switched on (as installed, or the request refused): as before #42, nothing read
+  // and nothing sent, the browser's own proxy settings included; no complaint in the console.
+  const before = complaints.length;
+  const settings = { proxyType: "manual", http: "10.0.0.9:3128", httpProxyAll: true };
+  const { api, calls, listeners } = fakeApi({ firefox: true, proxy: settings, proxyAnswer: false });
+  let read = 0;
+  api.proxy.settings.get = async () => (read++, { value: settings });
+  load(api, true);
+  await settle();
+  listeners.responseStarted({ url: "https://x/u.zip", proxyInfo: { type: "http", host: "10.0.0.9", port: 3128 } });
+  listeners.authRequired({ isProxy: true, challenger: { host: "10.0.0.9", port: 3128 } });
+  listeners.created({ id: 37, url: "https://x/u.zip", filename: "C:\\dl\\u.zip" });
+  await settle();
+  const m = natives(calls)[0];
+  assert.deepEqual([m.proxy, m.proxyPac, m.proxyLogin], [undefined, undefined, undefined]);
+  assert.equal(read, 0, "the browser's proxy settings never read");
+  // Refused: still nothing.
+  assert.equal(await api.permissions.request({ permissions: ["proxy"] }), false);
+  listeners.created({ id: 38, url: "https://x/u.zip", filename: "C:\\dl\\u2.zip" });
+  await settle();
+  assert.equal(natives(calls)[1].proxy, undefined);
+  assert.equal(complaints.length, before, `the console: ${JSON.stringify(complaints.slice(before))}`);
+  ok("Firefox, not switched on or refused: no proxy read or sent, nothing in the console");
+}
+{
+  // Firefox: switched on (granted while it runs), then off (removed): it follows at once, and
+  // what it saw while on is forgotten.
+  const { api, calls, listeners } = fakeApi({ firefox: true });
+  load(api, true);
+  await settle();
+  assert.equal(await api.permissions.request({ permissions: ["proxy"] }), true);
+  await settle();
+  listeners.responseStarted({ url: "https://x/v.zip", proxyInfo: { type: "http", host: "10.0.0.9", port: 3128 } });
+  listeners.created({ id: 39, url: "https://x/v.zip", filename: "C:\\dl\\v.zip" });
+  await settle();
+  assert.equal(natives(calls)[0].proxy, "http://10.0.0.9:3128", "granted: the request's proxy goes");
+  listeners.responseStarted({ url: "https://x/w.zip", proxyInfo: { type: "http", host: "10.0.0.9", port: 3128 } });
+  await api.permissions.remove({ permissions: ["proxy"] });
+  await settle();
+  listeners.created({ id: 40, url: "https://x/w.zip", filename: "C:\\dl\\w.zip" });
+  await settle();
+  assert.equal(natives(calls)[1].proxy, undefined, "removed: nothing, not even what it saw before");
+  ok("Firefox: switched on, then off: the proxy goes only while on");
+}
+{
+  // Chrome as shipped (no "proxy" permission, its API absent): as before #42, and the extension
+  // never asks about the permission; nothing in the console.
+  const before = complaints.length;
   const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  listeners.authRequired && listeners.authRequired({ isProxy: true, challenger: { host: "p", port: 1 } });
+  listeners.determining({ id: 41, url: "https://x/y.zip", filename: "y.zip" }, () => {});
+  await settle();
+  const m = natives(calls)[0];
+  assert.deepEqual([m.proxy, m.proxyPac, m.proxyLogin], [undefined, undefined, undefined]);
+  assert.ok(!calls.some((c) => c[0] === "contains-proxy" || c[0] === "request"), "no permission call");
+  assert.equal(listeners.authRequired, undefined, "no proxy-login listener");
+  assert.equal(complaints.length, before, `the console: ${JSON.stringify(complaints.slice(before))}`);
+  ok("Chrome as shipped: no proxy permission, no reading, no permission call, nothing in the console");
+}
+{
+  // No proxy in use (permission there): nothing extra.
+  const { api, calls, listeners } = fakeApi({ firefox: false, proxyPerm: "required" });
   load(api, false);
   listeners.determining({ id: 36, url: "https://x/t.zip", filename: "t.zip" }, () => {});
   await settle();
@@ -981,5 +1097,20 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.deepEqual([m.proxy, m.proxyPac, m.proxyLogin], [undefined, undefined, undefined]);
   ok("no proxy: nothing extra goes");
 }
+
+// The manifests (#42): "proxy" optional in Firefox's, absent from Chrome's (it can't be optional
+// there); the popup's switch is shown only where it is optional.
+{
+  const chrome = JSON.parse(readFileSync(new URL("../../extension/manifest.json", import.meta.url), "utf8"));
+  const firefox = JSON.parse(readFileSync(new URL("../../extension/manifest.firefox.json", import.meta.url), "utf8"));
+  assert.ok(!(chrome.permissions || []).includes("proxy") && !(chrome.optional_permissions || []).includes("proxy"), "Chrome: no proxy");
+  assert.ok(!(firefox.permissions || []).includes("proxy"), "Firefox: proxy not required");
+  assert.deepEqual(firefox.optional_permissions, ["proxy"], "Firefox: proxy optional");
+  const popup = readFileSync(new URL("../../extension/popup.js", import.meta.url), "utf8");
+  assert.ok(/optional_permissions \|\| \[\]\)\.includes\("proxy"\)/.test(popup), "the switch only where proxy is optional");
+  assert.ok(/permissions\.request\(PROXY\)/.test(popup) && /permissions\.remove\(PROXY\)/.test(popup), "asked for and taken back on the switch");
+  ok("manifests: proxy optional in Firefox, absent in Chrome; the popup's switch");
+}
+assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 
 console.log(`extension: ${passed} checks passed`);

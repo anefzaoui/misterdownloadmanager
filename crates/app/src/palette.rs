@@ -154,6 +154,10 @@ palette! {
     error_strong: "error.strong", "A failed check's message in Options (connection, browser and helper tests)" = rgb(0xc4, 0x2b, 0x1c), rgb(0xc4, 0x2b, 0x1c);
     warning: "warning", "Warning text" = rgb(0x9d, 0x5d, 0x00), rgb(0x9d, 0x5d, 0x00);
     success: "success", "Success text (a matching checksum)" = rgb(0x6c, 0xcb, 0x5f), rgb(0x0f, 0x7b, 0x0f);
+    reach_near: "reach.near", "A download's server near by its round trip (under 60 ms), in Properties" = rgb(0x6c, 0xcb, 0x5f), rgb(0x10, 0x7c, 0x10);
+    reach_medium: "reach.medium", "A server at a medium round trip (60 to 150 ms)" = rgb(0xf7, 0xb0, 0x40), rgb(0x9d, 0x5d, 0x00);
+    reach_far: "reach.far", "A server far by its round trip (over 150 ms)" = rgb(0xff, 0x99, 0xa4), rgb(0xc4, 0x2b, 0x1c);
+    flag_edge: "flag.edge", "The thin edge around a country's flag" = rgba(0x00, 0x00, 0x00, 40), rgba(0x00, 0x00, 0x00, 40);
     accent: "accent", "The accent: focus lines, open and default controls, filters, links' focus" = rgb(0x60, 0xcd, 0xff), rgb(0x00, 0x78, 0xd4);
     focus_ring: "focus.ring", "The dotted keyboard focus rectangle" = grey(0xcc), grey(0x0d);
     // ---- selection ----

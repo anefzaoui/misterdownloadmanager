@@ -187,6 +187,10 @@
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
 	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 構成 ID は、6 文字の英数字 (0-9、a-f) です。
+#. text in whereis.rs
+#. the tooltip of where a download's server is, when a proxy carries the download
+#, machine
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	このダウンロードはプロキシを経由しています。場所と時間はサーバーではなくプロキシのものです。
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -210,6 +214,10 @@
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager について
+#. text in whereis.rs
+#. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
+#, machine
+	about {ms} ms ({reach})	約 {ms} ミリ秒 ({reach})
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
@@ -316,6 +324,10 @@
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
 	Address:	アドレス:
+#. text in whereis.rs
+#. the tooltip of where a download's server is: its IP address
+#, machine
+	Address: {address}	アドレス: {address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
@@ -328,6 +340,22 @@
 #. a check of Test browser integration (Options → General)
 #, machine
 	Advanced browser integration is on	高度なブラウザー統合がオンです
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Afghanistan	アフガニスタン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aland Islands	オーランド諸島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Albania	アルバニア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Algeria	アルジェリア
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	すべてのダウンロード
@@ -382,6 +410,22 @@
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	AM	午前
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	American Samoa	アメリカ領サモア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Andorra	アンドラ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Angola	アンゴラ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Anguilla	アンギラ
 #. text in the Options window
 #. Options → Connection → DNS: a DNS server the user types in
 #. the trailing ... means it is still going on: keep it
@@ -391,6 +435,14 @@
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
 	Answered in {ms} ms: {ip}	{ms} ミリ秒で応答: {ip}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antarctica	南極
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Antigua and Barbuda	アンティグア・バーブーダ
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
 #, machine
@@ -416,9 +468,21 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Mister Download Manager のダウンロード リストから "{name}" を削除してもよろしいですか?
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Argentina	アルゼンチン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Armenia	アルメニア
 #. text in rssdlg.rs
 #, machine
 	Articles	記事
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Aruba	アルバ
 #. option (radio button) in the Options window
 #, machine
 	As the system's region writes them	システムの地域設定に従う
@@ -454,6 +518,14 @@
 #. text in the Scheduler window
 #, machine
 	August	8 月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Australia	オーストラリア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Austria	オーストリア
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -461,23 +533,95 @@
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	次のファイルの種類を自動的にダウンロードし始める:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Azerbaijan	アゼルバイジャン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahamas	バハマ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bahrain	バーレーン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bangladesh	バングラデシュ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Barbados	バルバドス
 #. window title in the Batch download window
 #, machine
 	Batch download	バッチ ダウンロード
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belarus	ベラルーシ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belgium	ベルギー
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Belize	ベリーズ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Benin	ベナン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bermuda	バミューダ
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video's best
 #, machine
 	Best quality	最高品質
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bhutan	ブータン
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
 	Block the addresses in this list (P2P or eMule format):	このリストのアドレスをブロックする (P2P または eMule 形式):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bolivia	ボリビア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bonaire, Sint Eustatius and Saba	ボネール、シント・ユースタティウスおよびサバ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bosnia and Herzegovina	ボスニア・ヘルツェゴビナ
 #. text in helpers.rs
 #, machine
 	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	どちらもオープンソースです。MDM は公式リリースから独自のダウンローダーで取得し、実行前に各ファイルの署名をチェックします。約 100 MB、1 回限りです。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Botswana	ボツワナ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bouvet Island	ブーベ島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brazil	ブラジル
 #. text in the Options window
 #, machine
 	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	出荷時の状態に{names}を戻しますか？名前、ファイルの種類、フォルダーは出荷時の状態に戻ります。独自のカテゴリ、[全般]、[トレント] はそのまま残ります。既に [全般] に移動されたダウンロードはそのまま残ります。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	British Indian Ocean Territory	イギリス領インド洋地域
 #. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
@@ -492,6 +636,22 @@
 #. page title in the Options window
 #, machine
 	Browser/System Integration	ブラウザー/システム統合
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Brunei	ブルネイ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Bulgaria	ブルガリア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burkina Faso	ブルキナファソ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Burundi	ブルンジ
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
@@ -502,6 +662,22 @@
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	リンク グラバーによる
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cabo Verde	カーボベルデ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cambodia	カンボジア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cameroon	カメルーン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Canada	カナダ
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
@@ -547,10 +723,22 @@
 #. text in categories.rs
 #, machine
 	Category properties	カテゴリのプロパティ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cayman Islands	ケイマン諸島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Central African Republic	中央アフリカ共和国
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
 	Certificate name:	証明書名:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chad	チャド
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -610,6 +798,14 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Checking...	確認中...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Chile	チリ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	China	中国
 #. text in langpick.rs
 #, machine
 	Choose a language	言語の選択
@@ -620,6 +816,10 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	Choose {name}	{name} を選択
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Christmas Island	クリスマス島
 #. button in the download list
 #. verb: clears this filter
 #, machine
@@ -642,6 +842,18 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Close a menu or dialog	メニューまたはダイアログを閉じる
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cocos (Keeling) Islands	ココス (キーリング) 諸島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Colombia	コロンビア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Comoros	コモロ
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -661,6 +873,10 @@
 #. window title in a dialog box
 #, machine
 	Confirm deletion of downloads	ダウンロードの削除を確認
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Congo	コンゴ
 #. text in extension.rs
 #. in the browser extension's window, beside a browser whose extension reached MDM
 #, machine
@@ -682,6 +898,10 @@
 #. text in the Options window
 #, machine
 	Connections:	接続:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cook Islands	クック諸島
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	クリップボードにコピーされました。
@@ -696,6 +916,10 @@
 #. crash report window button: copy the report's text
 #, machine
 	Copy report	レポートをコピー
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Costa Rica	コスタリカ
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
@@ -709,6 +933,18 @@
 #. window title in a dialog box
 #, machine
 	Create folder	フォルダーの作成
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Croatia	クロアチア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cuba	キューバ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Curaçao	キュラソー
 #. text in the Options window
 #, machine
 	Customize "Download progress" dialog	「ダウンロードの進行状況」ダイアログをカスタマイズ
@@ -721,6 +957,18 @@
 #. text in the Options window
 #, machine
 	Customize MDM menu items in context menu of browsers	ブラウザーのコンテキスト メニューの MDM メニュー項目をカスタマイズ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Cyprus	キプロス
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Czech Republic	チェコ共和国
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Côte d'Ivoire	コートジボワール
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
@@ -789,6 +1037,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads and their files (asks first)	選択したダウンロードとそのファイルを削除する (最初に確認)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Denmark	デンマーク
 #. text in a dialog box
 #, machine
 	Description	説明
@@ -809,6 +1061,10 @@
 #. text in the Scheduler window
 #, machine
 	displayed in the list of queues	キューのリストに表示
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Djibouti	ジブチ
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
@@ -834,6 +1090,14 @@
 #. category name: documents (pdf, doc…)
 #, machine
 	Documents	ドキュメント
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominica	ドミニカ国
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Dominican Republic	ドミニカ共和国
 #. button in extension.rs
 #. button in the browser extension's window: stop offering it at each start
 #, machine
@@ -877,6 +1141,10 @@
 #. window title in a dialog box
 #, machine
 	Download File Info	ダウンロード ファイル情報
+#. text in the Add torrent window
+#. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
+#, machine
+	Download in order	順番にダウンロード
 #. button in a dialog box
 #, machine
 	Download Later	後でダウンロード
@@ -979,6 +1247,10 @@
 #. {time} = a time of day (keep the braces as they are)
 #, machine
 	Downloads stopped and will resume automatically at {time}.	ダウンロードは停止され、{time}に自動的に再開されます。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	DR Congo	コンゴ民主共和国
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1005,6 +1277,10 @@
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
 	Each file's category folder	各ファイルのカテゴリ フォルダー
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ecuador	エクアドル
 #. button in the Options window
 #. verb: edit the item
 #, machine
@@ -1024,6 +1300,14 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Edit...	編集...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Egypt	エジプト
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	El Salvador	エルサルバドル
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	メール
@@ -1059,6 +1343,14 @@
 #. RSS feeds window, Download rules: the episode filter can't be read
 #, machine
 	Episodes: like 1x2;1x5-8;2x1- (season x episode)	エピソード: 1x2;1x5-8;2x1- のように (シーズン x エピソード)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Equatorial Guinea	赤道ギニア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eritrea	エリトリア
 #. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
@@ -1070,6 +1362,18 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Error: {error}	エラー: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Estonia	エストニア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Eswatini	エスワティニ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ethiopia	エチオピア
 #. text in the Options window
 #, machine
 	Event	イベント
@@ -1133,6 +1437,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Extracting...	展開中...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Falkland Islands	フォークランド諸島
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (over 150 ms)
+#, machine
+	far	遠い
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Faroe Islands	フェロー諸島
 #. text in the Scheduler window
 #, machine
 	February	2 月
@@ -1156,6 +1472,10 @@
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
 	ffmpeg: joins picture and sound	ffmpeg: 映像と音声を結合します
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Fiji	フィジー
 #. text in a download's progress window; text in a download's Properties window
 #. noun: a file of no known type
 #, machine
@@ -1232,6 +1552,10 @@
 #. adjective: the downloads that are complete
 #, machine
 	Finished	完了
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Finland	フィンランド
 #. text in the Options window
 #, machine
 	First day of the week:	週の最初の曜日:
@@ -1263,6 +1587,10 @@
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
 	Fr	金
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	France	フランス
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
@@ -1271,6 +1599,18 @@
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
 	Free, official and checked	無料、公式、チェック済み
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Guiana	フランス領ギアナ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Polynesia	フランス領ポリネシア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	French Southern Territories	フランス領南方地域
 #. text in the Scheduler window
 #, machine
 	Friday	金曜日
@@ -1307,6 +1647,10 @@
 #. checkbox in the Options window
 #, machine
 	ftp	ftp
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gabon	ガボン
 #. text in gallerydlg.rs
 #. in Download a gallery, before gallery-dl is installed
 #, machine
@@ -1325,12 +1669,24 @@
 #. a gallery download's error: the helper program it needs is missing
 #, machine
 	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl がインストールされていません (ギャラリーのアドレスで [URL を追加] を行うとインストールされます)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gambia	ガンビア
 #. text in the download list (sizes, speeds, status); text in the Options window; text in a download's progress window
 #. category name: files of no particular kind
 #. tab title: general settings
 #. tab title: general information
 #, machine
 	General	一般
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Georgia	ジョージア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Germany	ドイツ
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
@@ -1347,6 +1703,14 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	Getting the file list from peers...  {n} s	ピアからファイル リストを取得しています... {n} 秒
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ghana	ガーナ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Gibraltar	ジブラルタル
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
@@ -1355,6 +1719,50 @@
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
 	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google ドライブは現在このファイルを提供していません: {message} (ブラウザーで Google にサインインすると解決することがよくあります。そうでない場合は、後でもう一度お試しください)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greece	ギリシャ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Greenland	グリーンランド
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Grenada	グレナダ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guadeloupe	グアドループ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guam	グアム
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guatemala	グアテマラ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guernsey	ガーンジー
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea	ギニア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guinea-Bissau	ギニアビサウ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Guyana	ガイアナ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Haiti	ハイチ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Hang up modem when done	完了時にモデムを切断する
@@ -1362,6 +1770,10 @@
 #. legend: pieces downloaded
 #, machine
 	Have	所有
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Heard Island and McDonald Islands	ハード島・マクドナルド諸島
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1400,6 +1812,14 @@
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	ホームページ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Honduras	ホンジュラス
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hong Kong	香港
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1410,9 +1830,17 @@
 #. checkbox in the Options window
 #, machine
 	https	https
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Hungary	ハンガリー
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Mister Download Manager を使ってダウンロードしています。高速で無料で、使い慣れたダウンロードマネージャーのように見えます。{link}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iceland	アイスランド
 #. text in the Options window
 #, machine
 	If a duplicate download link is added:	重複するダウンロードリンクが追加された場合:
@@ -1439,6 +1867,14 @@
 #. a spin box's arrow, for screen readers: one more
 #, machine
 	Increase	増やす
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	India	インド
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Indonesia	インドネシア
 #. text in a download's progress window
 #. column title: what the connection is doing
 #, machine
@@ -1478,6 +1914,26 @@
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
 	IP addresses (optional):	IP アドレス (オプション):
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iran	イラン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Iraq	イラク
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ireland	アイルランド
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Isle of Man	マン島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Israel	イスラエル
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1511,6 +1967,10 @@
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg、img002.jpg など、\nimg100.jpg のような連続したファイル名のグループを MDM ダウンロード キューに追加できます。ファイル名パターンにはアスタリスクのワイルドカードを使用してください。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Italy	イタリア
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1518,9 +1978,25 @@
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	リリース情報が予期されたものではありません: {detail}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jamaica	ジャマイカ
 #. text in the Scheduler window
 #, machine
 	January	1 月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Japan	日本
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jersey	ジャージー
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Jordan	ヨルダン
 #. text in the Scheduler window
 #, machine
 	July	7 月
@@ -1530,12 +2006,20 @@
 #. text in the Scheduler window
 #, machine
 	June	6 月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kazakhstan	カザフスタン
 #. text in a dialog box; text in a download's progress window; text in the Add torrent window
 #, machine
 	KBytes/sec	KB/秒
 #. checkbox in the Add torrent window
 #, machine
 	Keep sharing torrents after they finish	完了後もトレントを共有し続ける
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kenya	ケニア
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
@@ -1551,10 +2035,34 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Keys...	キー...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kiribati	キリバチ
+#. text in a download's Properties window
+#. Properties, where a download's server is: not seen yet (it hasn't run)
+#, machine
+	known once it has run	実行後に判明
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kosovo	コソボ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kuwait	クウェート
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Kyrgyzstan	キルギス
 #. text in langpick.rs
 #. window title (the interface language)
 #, machine
 	Language	言語
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Laos	ラオス
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
@@ -1571,16 +2079,40 @@
 #. button: add it now, start downloading later
 #, machine
 	Later	後で
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Latvia	ラトビア
 #. text in the Options window
 #, machine
 	Launch Mister Download Manager on startup	Mister Download Manager をスタートアップ時に起動する
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lebanon	レバノン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lesotho	レソト
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
 	Letters	文字
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liberia	リベリア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Libya	リビア
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Licenses and credits	ライセンスとクレジット
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Liechtenstein	リヒテンシュタイン
 #. checkbox in a dialog box
 #, machine
 	Limit all downloads together to	すべてのダウンロードを合計で制限する
@@ -1628,6 +2160,10 @@
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
 	Lists of addresses	アドレスの一覧
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Lithuania	リトアニア
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
@@ -1665,6 +2201,18 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Looking the page up...	ページを検索中...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Luxembourg	ルクセンブルク
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Macau	マカオ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Madagascar	マダガスカル
 #. message or event log entry in the main window
 #, machine
 	Main download queue	メインダウンロードキュー
@@ -1675,6 +2223,26 @@
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
 	Making the report readable: fetching the symbols ({done} of {total} MB)…	レポートを読みやすくしています: シンボルをフェッチ中 ({total} MB 中 {done} MB)…
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malawi	マラウイ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malaysia	マレーシア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Maldives	モルディブ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mali	マリ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Malta	マルタ
 #. text in the Options window
 #, machine
 	Manual proxy/socks configuration	手動プロキシ/SOCKS 構成
@@ -1685,12 +2253,28 @@
 #. text in the Scheduler window
 #, machine
 	March	3 月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Marshall Islands	マーシャル諸島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Martinique	マルティニーク
 #. checkbox in the Find window
 #, machine
 	Match case	大文字と小文字を区別する
 #. checkbox in the Find window
 #, machine
 	Match whole string only	文字列全体のみ一致
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritania	モーリタニア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mauritius	モーリシャス
 #. group box title in the Options window
 #, machine
 	Max. connections number	最大接続数
@@ -1713,6 +2297,22 @@
 #. the month (the fifth of the year)
 #, machine
 	May	5 月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mayotte	マヨット
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (60 to 150 ms)
+#, machine
+	medium	中
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mexico	メキシコ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Micronesia	ミクロネシア
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
 #, machine
@@ -1771,13 +2371,37 @@
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
 	Mo	月
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Moldova	モルドバ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Monaco	モナコ
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Monday	月曜日
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mongolia	モンゴル
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montenegro	モンテネグロ
 #. text in the Options window
 #. a date's order: month first (10/30/2026)
 #, machine
 	Month, day, year	月、日、年
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Montserrat	モントセラト
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Morocco	モロッコ
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
@@ -1817,6 +2441,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Moving the file...	ファイルを移動中...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Mozambique	モザンビーク
 #. text in errors.rs
 #, machine
 	much slower than the other connections; reconnecting	他の接続よりはるかに低速です。再接続しています
@@ -1835,6 +2463,10 @@
 #. option (radio button) in the Options window
 #, machine
 	My own way:	独自の方法:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Myanmar	ミャンマー
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
@@ -1852,10 +2484,30 @@
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
 	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	ホスト ファイル内の名前とローカル名 (単一の単語、.local、.lan) はシステムの DNS に残ります。ビデオ ページとトレント トラッカーは、現時点ではシステムの DNS を使用します。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Namibia	ナミビア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nauru	ナウル
+#. text in whereis.rs
+#. how far a download's server is, by its round trip (under 60 ms)
+#, machine
+	near	近
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
 	Needs a login	ログインが必要です
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nepal	ネパール
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Netherlands	オランダ
 #. text in the Options window
 #, machine
 	Network adapter:	ネットワーク アダプター:
@@ -1869,6 +2521,10 @@
 #. button: create a new item
 #, machine
 	New	新規
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Caledonia	ニューカレドニア
 #. text in the Options window
 #, machine
 	New exception	新しい例外
@@ -1880,6 +2536,26 @@
 #. RSS feeds window, Download rules: make a new rule
 #, machine
 	New rule	新しいルール
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	New Zealand	ニュージーランド
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nicaragua	ニカラグア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niger	ニジェール
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Nigeria	ナイジェリア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Niue	ニウエ
 #. button in a dialog box; text in a download's progress window
 #, machine
 	No	いいえ
@@ -1977,6 +2653,26 @@
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	なし: ピアは DHT および他のピアから取得されます
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norfolk Island	ノーフォーク島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Korea	北朝鮮
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	North Macedonia	北マケドニア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Northern Mariana Islands	北マリアナ諸島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Norway	ノルウェー
 #. text in the Checksum window
 #, machine
 	Not a checksum this can read	読み取れないチェックサムです
@@ -2009,6 +2705,9 @@
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	今はしませんか？ 後で [タスク] → [ページから動画をダウンロード] から取得できます。
+#. text in a download's Properties window
+#, machine
+	not one server (peers, or a helper's)	サーバーなし (ピアまたはヘルパー)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2055,6 +2754,10 @@
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; text in extracting archives (a download's log, the Archive password window); text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's Properties window; button in the Scheduler window; button in the Add torrent window
 #, machine
 	OK	OK
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Oman	オマーン
 #. text in a download's progress window
 #, machine
 	on download stop/resume	ダウンロード停止/再開時
@@ -2155,6 +2858,30 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ページ アドレス
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pakistan	パキスタン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palau	パラオ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Palestine	パレスチナ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Panama	パナマ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Papua New Guinea	パプアニューギニア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Paraguay	パラグアイ
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in the Options window; text in a download's Properties window
 #, machine
 	Password	パスワード
@@ -2204,10 +2931,22 @@
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	定期的な同期
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Peru	ペルー
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Philippines	フィリピン
 #. text in a download's progress window
 #. tab title: the parts the torrent is made of
 #, machine
 	Pieces	ピース
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Pitcairn	ピトケアン
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
@@ -2220,6 +2959,10 @@
 #. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
 	PM	午後
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Poland	ポーランド
 #. label in the Options window
 #, machine
 	Port	ポート
@@ -2227,6 +2970,10 @@
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	ポート:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Portugal	ポルトガル
 #. text in debrid.rs
 #. Options → Accounts: a debrid account with premium (no end date given)
 #, machine
@@ -2263,6 +3010,10 @@
 #. label in the Options window
 #, machine
 	Proxy server address	プロキシ サーバー アドレス
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Puerto Rico	プエルトリコ
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -2271,6 +3022,10 @@
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
 	Put them into the video	ビデオに埋め込む
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Qatar	カタール
 #. text in the Download video window
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
 #. label before the quality chosen for all of a playlist's videos
@@ -2402,9 +3157,25 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	Retrying: {error}	再試行中: {error}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Romania	ルーマニア
 #. window title in rssdlg.rs
 #, machine
 	RSS feeds	RSS フィード
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Russia	ロシア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Rwanda	ルワンダ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Réunion	レユニオン
 #. text in the Scheduler window
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -2414,9 +3185,53 @@
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
 	Sa	土
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Barthélemy	サン・バルテルミー
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Helena, Ascension and Tristan da Cunha	セントヘレナ・アセンションおよびトリスタン・ダ・クーニャ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Kitts and Nevis	セントクリストファー・ネイビス
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Lucia	セントルシア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Martin	サン・マルタン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Pierre and Miquelon	サンピエール島・ミクロン島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saint Vincent and the Grenadines	セントビンセントおよびグレナディーン諸島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Samoa	サモア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	San Marino	サンマリノ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sao Tome and Principe	サントメ・プリンシペ
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Saturday	土曜日
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Saudi Arabia	サウジアラビア
 #. text in a dialog box
 #, machine
 	Save As	名前を付けて保存
@@ -2503,6 +3318,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	これを友人に送信:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Senegal	セネガル
 #. text in a download's progress window
 #. column title: how much went to the peer
 #. how much was sent to other peers
@@ -2511,10 +3330,15 @@
 #. text in the Scheduler window
 #, machine
 	September	9 月
-#. text in the Options window
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Serbia	セルビア
+#. text in a dialog box; text in the Options window; text in a download's progress window
+#. label before where a download's server is (its country and round trip)
 #, machine
 	Server	サーバー
-#. text in the Options window
+#. text in the Options window; text in a download's Properties window
 #, machine
 	Server:	サーバー:
 #. text in the Options window
@@ -2545,6 +3369,10 @@
 #. the trailing ... means it opens a window: keep it
 #, machine
 	Settings...	設定...
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Seychelles	セーシェル
 #. text in a download's progress window
 #. sent divided by received
 #, machine
@@ -2615,6 +3443,10 @@
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
 	Shut down	シャットダウン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sierra Leone	シエラレオネ
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
@@ -2627,6 +3459,14 @@
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
 	signed out: sign in again	サインアウト済み: もう一度サインインしてください
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Singapore	シンガポール
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sint Maarten	シント・マールテン
 #. checkbox in the Find window
 #, machine
 	Site name/Download link/Parent web page/Referer	サイト名/ダウンロードリンク/親ウェブページ/リファラー
@@ -2666,6 +3506,22 @@
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
 	Sleep	スリープ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovakia	スロバキア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Slovenia	スロベニア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Solomon Islands	ソロモン諸島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Somalia	ソマリア
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
@@ -2692,6 +3548,26 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Source: {source}	ソース: {source}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Africa	南アフリカ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Georgia and the South Sandwich Islands	サウスジョージア・サウスサンドウィッチ諸島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Korea	韓国
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	South Sudan	南スーダン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Spain	スペイン
 #. text in a download's progress window; text in the tray icon's menu
 #. tab title: the tool that limits the download speed
 #, machine
@@ -2699,6 +3575,10 @@
 #. window title in a dialog box
 #, machine
 	Speed Limiter settings	スピード リミッター設定
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sri Lanka	スリランカ
 #. text in the Link grabber window
 #. Link grabber button: download the ticked links now
 #, machine
@@ -2828,15 +3708,51 @@
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
 	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} の字幕をダウンロードできませんでした: {site} が拒否しました (リクエストが多すぎます)。
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sudan	スーダン
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Sunday	日曜日
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Support MDM on GitHub Sponsors	GitHub Sponsors で MDM をサポート
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Suriname	スリナム
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Svalbard and Jan Mayen	スバールバル諸島およびヤンマイエン島
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Sweden	スウェーデン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Switzerland	スイス
 #. message or event log entry in the main window
 #, machine
 	Synchronization queue	同期キュー
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Syria	シリア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Taiwan	台湾
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tajikistan	タジキスタン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tanzania	タンザニア
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2863,6 +3779,10 @@
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
 	Th	木
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Thailand	タイ
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3104,6 +4024,10 @@
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	システムの DNS
+#. text in whereis.rs
+#. the tooltip of where a download's server is: how the time shown is measured
+#, machine
+	The time is a round trip, measured as this download's own connections opened.	この時間は、このダウンロードの独自の接続が開かれたときに測定されるラウンドトリップです。
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3154,6 +4078,10 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	このカテゴリまたはキューにはまだダウンロードがありません。
+#. text in whereis.rs
+#. where a download's server is: on this computer or the local network (no country)
+#, machine
+	this computer or the local network	このコンピューターまたはローカルネットワーク
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
@@ -3214,12 +4142,24 @@
 #. the Download video window: the video needs the user to be signed in
 #, machine
 	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on.	この動画を視聴するにはサインインが必要です。ブラウザーでその上にある [動画をダウンロード] ボタンを使用すると、サインイン情報が渡されます。
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it (the proxy's place not known)
+#, machine
+	through a proxy	プロキシ経由
+#. text in whereis.rs
+#. where a download's server is, when a proxy carries it: {country} is the proxy's country
+#, machine
+	through a proxy in {country}	{country} のプロキシ経由
 #. text in the Scheduler window
 #, machine
 	Thursday	木曜日
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	残り時間
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Timor-Leste	東ティモール
 #. text in the Batch download window
 #, machine
 	To:	宛先:
@@ -3227,6 +4167,18 @@
 #. link under the calendar: {date} = today's date
 #, machine
 	Today: {date}	今日: {date}
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Togo	トーゴ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tokelau	トケラウ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tonga	トンガ
 #. text in errors.rs
 #, machine
 	too many redirects	リダイレクトが多すぎます
@@ -3274,6 +4226,10 @@
 #. text in a download's progress window
 #, machine
 	Transfer rate	転送速度
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Trinidad and Tobago	トリニダード・トバゴ
 #. button in helpers.rs
 #, machine
 	Try again	再試行
@@ -3284,6 +4240,18 @@
 #. text in the Scheduler window
 #, machine
 	Tuesday	火曜日
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tunisia	チュニジア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turkmenistan	トルクメニスタン
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Turks and Caicos Islands	タークス・カイコス諸島
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 #, machine
@@ -3302,6 +4270,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	オンにする
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Tuvalu	ツバル
 #. text in helpers.rs
 #, machine
 	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	2 つの無料ヘルパーで動作します。今すぐ入手すれば、動画を見つけたときにワンクリックで保存できます。
@@ -3349,6 +4321,18 @@
 #. text in a download's Properties window
 #, machine
 	Type:	種類:
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Türkiye	トルコ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uganda	ウガンダ
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Ukraine	ウクライナ
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
@@ -3357,11 +4341,29 @@
 #. adjective: the downloads that are not complete yet
 #, machine
 	Unfinished	未完了
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Arab Emirates	アラブ首長国連邦
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United Kingdom	イギリス
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States	アメリカ合衆国
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	United States Minor Outlying Islands	合衆国領有小離島
 #. text in a download's Properties window
 #, machine
 	Unknown	不明
-#. text in a dialog box; text in a download's progress window
+#. text in a dialog box; text in a download's progress window; text in whereis.rs
 #. the reason a download failed is not known
+#. where a download's server is: not known (no address seen)
+#. where a download's server is: an address the location table doesn't place
 #, machine
 	unknown	不明
 #. button in the Options window
@@ -3383,6 +4385,10 @@
 #. text in a dialog box
 #, machine
 	URL	URL
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uruguay	ウルグアイ
 #. text in the Options window
 #, machine
 	Use advanced browser integration	高度なブラウザー統合を使用する
@@ -3455,13 +4461,29 @@
 #. label in the Options window
 #, machine
 	UserName	ユーザー名
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Uzbekistan	ウズベキスタン
 #. text in a download's progress window
 #, machine
 	Value	値
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vanuatu	バヌアツ
 #. text in the Link grabber window
 #. Link grabber: the package of links that belong to no other
 #, machine
 	Various files	その他のファイル
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vatican City	バチカン市国
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Venezuela	ベネズエラ
 #. text in the Checksum window
 #. both verbs: Verify = check the file now; Close = close the window
 #, machine
@@ -3496,6 +4518,18 @@
 #. what a screen reader calls the list of a playlist's videos
 #, machine
 	Videos	動画
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Vietnam	ベトナム
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (British)	ヴァージン諸島 (イギリス)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Virgin Islands (U.S.)	ヴァージン諸島 (アメリカ)
 #. text in the Options window
 #, machine
 	Virus checking settings	ウイルス チェック設定
@@ -3517,6 +4551,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	待機中: ダウンロード制限に達しました (スケジューラー)
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Wallis and Futuna	ウォリス・フツナ
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3528,6 +4566,10 @@
 #. text in the Scheduler window
 #, machine
 	Wednesday	水曜日
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Western Sahara	西サハラ
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
@@ -3578,6 +4620,10 @@
 #. a date's order: year first (2026-10-30)
 #, machine
 	Year, month, day	年、月、日
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Yemen	イエメン
 #. button in a dialog box; text in a download's progress window
 #, machine
 	Yes	はい
@@ -3621,6 +4667,14 @@
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
 	yt-dlp: finds the video	yt-dlp: 動画を検索します
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zambia	ザンビア
+#. text in countries.rs
+#. a country's name (where a download's server is)
+#, machine
+	Zimbabwe	ジンバブエ
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -3650,6 +4704,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	{browser}: the extension {version} connected	{browser}: 拡張機能 {version} が接続されました
+#. text in whereis.rs
+#. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
+#, machine
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} がこのファイルを配信しています。場所はサーバーのもので、多くの場合ユーザーの近くにあり、サイト所有者のものではありません。
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -3985,6 +5043,10 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #, machine
 extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager がインストールされていないか、ブラウザー統合が設定されていません
 #. text in the browser extension
+#. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
+#, machine
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager は、このブラウザーと同じプロキシ経由でダウンロードします。ブラウザーは一度だけ許可を求めます。これをオフにすると、その許可は取り消されます。
+#. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
 extension	More options	その他のオプション
@@ -4023,6 +5085,10 @@ extension	Protected	保護されています
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
 extension	Protected video: it can't be saved	保護されたビデオ: 保存できません
+#. text in the browser extension
+#. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
+#, machine
+extension	Send downloads through this browser's proxy or VPN extension	このブラウザーのプロキシまたは VPN 拡張機能経由でダウンロードを送信する
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -4396,6 +5462,10 @@ menu	Direct3D didn't start here: OpenGL draws	Direct3D が起動しませんで�
 #, machine
 menu	Download &video from a page...	ページからビデオをダウンロード(&V)...
 #. menu command in the main window
+#. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
+#, machine
+menu	Download in order	順番にダウンロード
+#. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
 #, machine
 menu	Draw with	描画方法
@@ -4417,6 +5487,10 @@ menu	Find (Ctrl-F)	検索 (Ctrl+F)
 #. menu command in the main window
 #, machine
 menu	Find Next (F3)	次を検索 (F3)
+#. menu command in the main window
+#. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
+#, machine
+menu	First and last pieces first	最初と最後のピースを優先
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine

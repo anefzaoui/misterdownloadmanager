@@ -686,6 +686,10 @@
    "source": "From IDM",
    "text": "من IDM"
   },
+  "1105c4be357dbf30": {
+   "source": "<g1>Properties</g1> keeps what the last run saw, so a finished download still shows where it came from.",
+   "text": "تحتفظ <g1>الخصائص</g1> بما رأته آخر عملية تشغيل، لذلك لا يزال التنزيل المكتمل يظهر مصدره."
+  },
   "110d6b2bd87a92ac": {
    "source": "Works with what you already use",
    "text": "يعمل مع ما تستخدمه بالفعل"
@@ -737,6 +741,10 @@
   "1294135f300139c9": {
    "source": "The benchmark data could not be loaded.",
    "text": "تعذر تحميل بيانات المعيار."
+  },
+  "129f913e421a0374": {
+   "source": "Torrents, videos and galleries have no single server of MDM's own (peers, or yt-dlp's and gallery-dl's), so their windows don't show one.",
+   "text": "لا تحتوي التورنت ومقاطع الفيديو والمعارض على خادم واحد خاص بـ MDM (نظراء، أو yt-dlp و gallery-dl)، لذلك لا تعرض نوافذها خادما واحدا."
   },
   "12a228101626f4bc": {
    "source": "How MDM uses connections",
@@ -798,6 +806,10 @@
    "source": "Download Later",
    "text": "تنزيل لاحقا"
   },
+  "13fab708d8179610": {
+   "source": "<g1>A content delivery network</g1> (Cloudflare, Amazon CloudFront, Fastly, Akamai and others) serves a file from a server near you, not from the site owner's. The tooltip says so: the place is the network's server, not where the site is.",
+   "text": "<g1>شبكة توصيل المحتوى</g1> (Cloudflare، Amazon CloudFront، Fastly، Akamai وغيرها) تقدم ملفا من خادم قريب منك، وليس من خادم مالك الموقع. تظهر تلميحة الأدوات ذلك: المكان هو خادم الشبكة، وليس مكان الموقع."
+  },
   "141ec6fe9135de0f": {
    "source": "Use Help → Report a problem in MDM: it opens the bug report form on GitHub with your version, system and language filled in. Or open the form yourself.…",
    "text": "استخدم تعليمات ← الإبلاغ عن مشكلة في MDM: سيفتح ذلك نموذج الإبلاغ عن الأخطاء على GitHub مع ملء معلومات الإصدار والنظام واللغة الخاصة بك. أو افتح النموذج بنفسك…"
@@ -854,6 +866,10 @@
    "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
    "text": "على نظام Windows، ترسم النوافذ باستخدام Direct3D 12 (wgpu الخاص بـ eframe، مع الواجهة الخلفية Direct3D 12 فقط)، أو باستخدام OpenGL (glow الخاص بـ eframe) عندما يتم اختيارها من عرض ← الرسم باستخدام؛ يستخدم نظاما Linux و macOS تقنية OpenGL. عندما لا يمكن بدء التشغيل بالخيار المختار، يتم تجربة الخيار الآخر، بحيث تفتح النوافذ دائما."
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "بشكل افتراضي، ينزل MDM القطع التي يمتلكها أقل عدد من النظراء أولا، كما تفعل برامج BitTorrent عادة. بهذه الطريقة يتم جلب القطعة التي يمتلكها نظير واحد فقط قبل أن يغادر هذا النظير، ويمكن لـ MDM تمريرها إلى الآخرين بشكل أسرع. في مجموعات اختبار MDM، انتهى بنفس سرعة التنزيل بالترتيب، وكان الترتيب الوحيد الذي انتهى عندما غادر المالك الوحيد لقطعة نادرة."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>إرسال على GitHub</g1> يفتح نموذج <g2>تقرير الأعطال</g2> الخاص بـ GitHub في متصفحك، وهو مملوء مسبقا، بالإضافة إلى المجلد الذي يحتوي على التقرير. اسحب ملف التقرير إلى النموذج، وتحقق منه، ثم أرسله. تحتاج إلى حساب GitHub. <g3>لا يتم إرسال أي شيء تلقائيا.</g3>"
@@ -881,6 +897,10 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "نعم. يقبل MDM مفاتيح سطر الأوامر المألوفة لـ IDM، ويأتي مع misterdownloadmanager-cli للتنزيلات من الطرفية، ولديه واجهة برمجة تطبيقات (API) أتمتة محلية محمية برمز مميز…"
+  },
+  "15e53ab6d7a4fe85": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
+   "text": "الصف الذي يحتوي على سطر <x1/> فوقه تمت ترجمته بواسطة الآلة. عندما تراجعه (وتصححه إذا لزم الأمر)، احذف سطر <x2/> هذا."
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -994,6 +1014,10 @@
    "source": "Ctrl+Space",
    "text": "تبديل التحديد"
   },
+  "19156d7406477513": {
+   "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
+   "text": "<g1>الخادم</g1> — مكان الخادم: علم بلده واسمه، ومدة الرحلة ذهابا وإيابا إليه. انظر <g2>أين يوجد الخادم</g2>. يبقى هذا الحقل فارغا عندما يسلم المتصفح التنزيل باسمه وحجمه، حيث لم يحتج MDM إلى سؤال الخادم."
+  },
   "1970ad20e03db6c3": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
    "text": "<g1>اكتشاف المشاكل.</g1> عندما يتعطل MDM (استثناء في Windows، إشارة في Linux، استثناء Mach في macOS)، أو يتوقف فجأة، أو يتجمد، فإنه يطلب من المراقب تفريغا للذاكرة. التجمد هو إطار من النافذة يعمل لأكثر من 8 ثوان، يراه مؤشر مراقبة يتجاهل الوقت المستغرق في وضع السكون. يقيس مؤشر المراقبة أيضا مقدار وقت المعالج الذي حصل عليه مؤشر النافذة في هذه الأثناء، ويذكر التقرير ما يعنيه ذلك: لقد عمل طوال الوقت (حلقة)، أو انتظر في قفل أو على الإدخال/الإخراج (توقف تام)، أو بالكاد عمل في التعليمات البرمجية العادية، وهو ما يعني أن الكمبيوتر مشغول جدا لتشغيل MDM أو بطيء في تحميله من القرص، وعلى الأرجح ليس خطأ في MDM (تتشارك هذه المشاكل توقيعا واحدا، <x2/>). لا يقيس macOS ذلك بعد. ثم يكتب المراقب <g3>تفريغا مصغرا</g3> لكل مؤشر ترابط من الخارج، عبر <x4/> و <x5/>. لا يكتب أي عملية متعطلة تفريغ الذاكرة الخاص بها، وهذا هو الأسلوب الذي تتبعه Firefox و Crashpad و Sentry أيضا."
@@ -1065,6 +1089,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 ثانية</g1><g2></g2>"
+  },
+  "1ad91cd214e9ba4e": {
+   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
+   "text": "على نظام Windows، لا يمكن لمحرك التورنت الربط بمحول بعد. لذلك لا تبدأ التورنتات بينما يتم اختيار واحد (\"لا يمكن للتورنتات المرور عبر محول شبكة مختار على Windows بعد\")، بدلا من تجاوزها. لا تزال أسماء المتتبعات تبحث بواسطة DNS الخاص بالنظام."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -1410,6 +1438,10 @@
    "source": "<g1>Default download directory for \"…\" category</g1> — the category's folder. Type a path or click <g2>Browse</g2>.",
    "text": "<g1>دليل التنزيل الافتراضي لفئة \"…\"</g1> — مجلد الفئة. اكتب مسارا أو انقر فوق <g2>استعراض</g2>."
   },
+  "21e0a24c92fe95eb": {
+   "source": "Hover over the line for the server's address and how the time was measured.",
+   "text": "مرر مؤشر الفأرة فوق السطر لمعرفة عنوان الخادم وكيف تم قياس الوقت."
+  },
   "22135141999ab3ab": {
    "source": "Find a download",
    "text": "البحث عن تنزيل"
@@ -1573,6 +1605,10 @@
   "25b4db9aa4024862": {
    "source": "The current speed.",
    "text": "السرعة الحالية."
+  },
+  "25e1ffe092788c2a": {
+   "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
+   "text": "تعرض نافذة <g1>معلومات ملف التنزيل</g1> ونافذة التقدم و<g2>الخصائص</g2> مكان خادم التنزيل: علم بلده واسمه، ثم الوقت الذي تستغرقه رحلة ذهاب وعودة إليه، مثل <g3>حوالي 24 مللي ثانية (قريب)</g3>."
   },
   "2606a30b44fb755e": {
    "source": "Select one or more downloads and press <g1>Delete</g1>, click <g2>Delete</g2> on the toolbar, or choose <g3>File → Remove</g3>. MDM asks first:",
@@ -1774,6 +1810,10 @@
    "source": "Feature by feature",
    "text": "ميزة بميزة"
   },
+  "2ab8acec08b25c9a": {
+   "source": "<g1>A server on your computer or your local network</g1> shows as such, with no flag.",
+   "text": "يظهر <g1>الخادم الموجود على جهاز الكمبيوتر الخاص بك أو شبكتك المحلية</g1> على هذا النحو، بدون علم."
+  },
   "2ac9c8a3b555e84c": {
    "source": "p (Mann-Whitney)",
    "text": "ع (مان-ويتني)"
@@ -1893,6 +1933,10 @@
   "2cc56bc5771aeae6": {
    "source": "<g1>The other links of one page</g1> form a package named after the page.",
    "text": "<g1>الروابط الأخرى لصفحة واحدة</g1> تشكل حزمة تحمل اسم الصفحة."
+  },
+  "2cc84db987b16ce7": {
+   "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
+   "text": "تأتي <g1>البلد</g1> من جدول نطاقات العناوين الذي يأتي مع MDM (<g2>IP to Country Lite by DB-IP</g2>، CC BY 4.0)، ويتم البحث عنه على جهاز الكمبيوتر الخاص بك. لا يرسل MDM العنوان إلى أي مكان للسؤال عن مكانه. يتم تحديث الجدول مع كل إصدار؛ قد يظهر العنوان الذي تغير مكانه منذ ذلك الحين بلده القديم."
   },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
@@ -2162,6 +2206,10 @@
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "برنامج MDM من تطوير أحمد نفزاوي، وهو مطور مستقل، ومفتوح لمساهمات أي شخص على <g1>GitHub</g1>. نرحب بجميع تقارير الأخطاء والترجمات والتعليمات البرمجية."
   },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "مع <g1>القطع الأولى والأخيرة أولا</g1> (مفعلة افتراضيا)، تأتي القطع الأخيرة لكل ملف مبكرا أيضا. تحتفظ معظم ملفات الفيديو بفهرسها في النهاية، ويقرأ المشغل هذا الفهرس قبل تشغيل أي شيء."
+  },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
    "text": "لا. MDM هو برنامج مستقل مكتوب من الصفر بلغة Rust، ولا توجد له أي صلة بشركة Tonec Inc.، صانعة برنامج Internet Download Manager (IDM). لا يحتوي على..."
@@ -2185,6 +2233,10 @@
   "3508dab985cc0335": {
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "مدير تنزيلات مجاني ومفتوح المصدر لنظام Windows، مع إصدارات تجريبية لنظامي macOS وLinux. تصميم IDM الذي تعرفه، أسرع 5 مرات في معيارنا: كل اتصال في وقت واحد، استئناف آمن من الأعطال، تورنت، فيديو من صفحات الويب، تكامل المتصفح، 86 لغة."
+  },
+  "3513f93cb0fa7d72": {
+   "source": "<g1>Far</g1> (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.",
+   "text": "<g1>بعيد</g1> (أحمر): أكثر من 150 مللي ثانية، وعادة ما يكون في قارة أخرى. غالبا ما يكون الخادم البعيد أبطأ، وتساعده الاتصالات المتعددة أكثر."
   },
   "3514fb404711d6ec": {
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
@@ -3541,6 +3593,10 @@
   "5887d550311226da": {
    "source": "Open that menu (Windows and Linux)",
    "text": "فتح تلك القائمة (Windows و Linux)"
+  },
+  "588db309f4fc3eb6": {
+   "source": "<g1>Medium</g1> (amber): 60 to 150 ms, usually the same continent.",
+   "text": "<g1>متوسط</g1> (كهرماني): من 60 إلى 150 مللي ثانية، وعادة ما يكون في نفس القارة."
   },
   "58bec232807ab18d": {
    "source": "The progress window in detail →",
@@ -5066,6 +5122,10 @@
    "source": "Firefox 140 or later is needed.",
    "text": "يلزم Firefox 140 أو أحدث."
   },
+  "7d9cbd5bf6ab33e4": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
+   "text": "تبقي <g1>الخيارات ← الوكيل / SOCKS ← محول الشبكة</g1> اتصالات MDM على محول واحد، عادة ما يكون محول VPN (<g2>الخيارات</g2>). على نظامي Linux و macOS، يربط محرك التورنت كل مقبس به: الأقران، المتتبعات، DHT ومنفذ الاستماع الخاص به. يتم إيقاف تشغيل UPnP واكتشاف الأقران المحليين حينها، لأنهما يتحدثان إلى الشبكة المحلية بدلا من المرور عبر المحول. إذا اختفى المحول، يتوقف المحرك، ويبدأ مرة أخرى عبر المحول عند عودته."
+  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>الجودة</g1> تنطبق على كل فيديو: <g2>أفضل جودة</g2>، <g3>حتى</g3> ارتفاع معين (كل فيديو بهذا الارتفاع، أو الأقرب تحته)، <g4>صوت فقط، أصلي</g4>، <g5>صوت فقط MP3</g5>، <g6>صوت فقط OPUS</g6> أو <g7>صوت فقط FLAC</g7>. بدون ffmpeg، لا تعرض إلا الجودات التي تأتي مع صوتها، ولا يتوفر MP3 أو Opus أو FLAC."
@@ -5798,6 +5858,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "انقر بزر الماوس الأيمن على رابط أو فيديو أو صوت أو صورة واختر <g1>تنزيل باستخدام Mister Download Manager</g1>. يقوم MDM بتنزيله مهما كان نوعه: لقد طلبت ذلك، لذلك لا تنطبق قائمة أنواع الملفات والمواقع المستبعدة هنا (فهي تحدد فقط التنزيلات التي يتولى MDM مسؤوليتها بنفسه). ينتقل الفيديو الذي يتم تشغيله كبث إلى نافذة <g2>تنزيل الفيديو</g2>."
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "لمشاهدة فيديو أثناء تنزيله، ضع علامة في مربع <g1>تنزيل بالترتيب</g1> (انظر <g2>تنزيل بالترتيب</g2>)."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5.5 ثوان<g1><g2>2</g2></g1>"
@@ -6222,6 +6286,10 @@
    "source": "<g1>Torrents</g1> are peer to peer: other people in a torrent's swarm see your IP address, as with every torrent client.",
    "text": "<g1>التورنت</g1> هو نظير إلى نظير: يرى الأشخاص الآخرون في مجموعة التورنت عنوان IP الخاص بك، كما هو الحال مع كل عميل تورنت."
   },
+  "9b191ff0c3c9dbb1": {
+   "source": "How MDM knows:",
+   "text": "كيف يعرف MDM:"
+  },
   "9b3dde1851a80204": {
    "source": "<g1>Match case</g1> tells capitals apart. <g2>Match whole string only</g2> finds only an exact, complete match.",
    "text": "تفرق <g1>مطابقة حالة الأحرف</g1> بين الأحرف الكبيرة والصغيرة. تجد <g2>مطابقة السلسلة بأكملها فقط</g2> التطابق التام والكامل فقط."
@@ -6322,6 +6390,10 @@
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "تنزيلات بدون واجهة مع التقدم (<x1/>، <x2/>)، ومقاطع الفيديو، والتورنت، وأوامر واجهة برمجة التطبيقات للأتمتة: مكتبة يشغلها برنامج التطبيق (<x3/>)، و<x4/>، وهو مشغل صغير يبدأ تشغيلها بنفس الوسائط والطرفية ورمز الخروج"
   },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "تنزيل بالترتيب"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "مقارنة سرعة التنزيل: IDM 6.42 ضد Mister Download Manager"
@@ -6405,6 +6477,10 @@
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "الترجمة الأطول من الإنجليزية تنتهي بـ <g1>...</g1> حيث لا تتسع؛ أشر إليها لقراءتها بالكامل."
+  },
+  "a05a0538e9ea2498": {
+   "source": "<g1>File Properties</g1> shows a download's type, status, size and folder, its address, your description, the page it came from (<g2>Referer</g2>), where its server is (<g3>country and round trip</g3>, as its last run saw them) and a login for the site. <g4>Last try</g4> and <g5>Result</g5> tell you how its last attempt went.",
+   "text": "<g1>خصائص الملف</g1> تعرض نوع التنزيل وحالته وحجمه ومجلده، وعنوانه، ووصفك له، والصفحة التي جاء منها (<g2>المرجع</g2>)، وموقع خادمه (<g3>البلد ووقت الذهاب والإياب</g3>، كما رآها في آخر تشغيل)، وتسجيل الدخول للموقع. <g4>المحاولة الأخيرة</g4> و<g5>النتيجة</g5> تخبرانك كيف سارت محاولته الأخيرة."
   },
   "a06fa72ad54fa126": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
@@ -6938,6 +7014,10 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>الفئة</g1> — يتم اختيارها من نوع الملف (مضغوط، مستندات، موسيقى، برامج، فيديو أو عام). كل فئة لها مجلد خاص بها. <g2>+</g2> بجانبها ينشئ فئة جديدة."
   },
+  "ad45e0dd35085a55": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>محول الشبكة</g1> — <g2>أي (يختاره النظام)</g2> هو الافتراضي. اختر محولا، وعادة ما يكون محول VPN الخاص بك، وستمر كل الاتصالات التي يفتحها MDM من خلاله، أو لن تمر على الإطلاق. وهذا يشمل التنزيلات، وFTP، وDNS الذي اخترته، وتنزيلات MDM الخاصة، وفحص التحديثات. يعمل هذا كمفتاح إيقاف: عندما ينقطع المحول، أو يتم إيقاف تشغيل VPN، لا يخرج أي شيء عبر اتصالك العادي. تتوقف التنزيلات الجارية مع رسالة \"… غير متصل\" وتبدأ مرة أخرى عندما يعود المحول. يعرض السطر الموجود أسفل القائمة عنوان المحول، أو أنه غير متصل."
+  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "انقر على <g1>بحث</g1>. سيتم تحديد أول تطابق."
@@ -6981,6 +7061,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>خيارات التسليم</g1><g2>الإصدار 0.2.4 · مجاني للجميع</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>تنزيل بالترتيب</g1> يحصل على بداية الملف أولا بدلا من ذلك، حتى تتمكن من مشاهدة الفيديو أثناء تنزيله: افتحه في مشغل الفيديو الخاص بك بمجرد وصول الجزء الأول. ضع علامة عليه في <g2>إضافة تورنت</g2>، أو اختر <g3>تورنت ← تنزيل بالترتيب</g3> في قائمة النقر بزر الفأرة الأيمن للقائمة، في أي وقت، حتى أثناء تشغيله. القطع التالية المطلوبة تتبع الترتيب الجديد."
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7378,6 +7462,10 @@
    "source": "<g1>A tour of the features</g1> on the website instead of a wall of screenshots.",
    "text": "<g1>جولة في الميزات</g1> على الموقع بدلا من مجموعة كبيرة من لقطات الشاشة."
   },
+  "b826ee150172085c": {
+   "source": "Where the server is",
+   "text": "أين يوجد الخادم"
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "التثبيت باستخدام الإعداد"
@@ -7489,6 +7577,10 @@
   "bb2a946ec0764dee": {
    "source": "Hover over the download's <g1>Status</g1>, or open its progress window, to read yt-dlp's message.",
    "text": "مرر مؤشر الماوس فوق <g1>الحالة</g1> الخاصة بالتنزيل، أو افتح نافذة التقدم الخاصة به، لقراءة رسالة yt-dlp."
+  },
+  "bb66b5a231ef607c": {
+   "source": "<g1>The time</g1> is measured from the download's own connections, as each one opens: MDM sends nothing extra to the server. It is an estimate (the time to open a connection, divided by its round trips: one for http, two for https), so it says <g2>about</g2>. The quickest connection counts.",
+   "text": "يتم قياس <g1>الوقت</g1> من اتصالات التنزيل نفسها، مع فتح كل اتصال: لا يرسل MDM أي شيء إضافي إلى الخادم. إنه تقدير (الوقت اللازم لفتح اتصال، مقسوما على رحلات الذهاب والإياب: واحدة لـ HTTP، واثنتان لـ HTTPS)، لذلك يقول <g2>حوالي</g2>. الاتصال الأسرع هو الذي يحتسب."
   },
   "bb8defdec6234c3c": {
    "source": "<g1><g2>Keyboard shortcuts</g2></g1> — every key the main window answers.",
@@ -7613,6 +7705,10 @@
   "be977a71e686a263": {
    "source": "Questions and answers",
    "text": "أسئلة وأجوبة"
+  },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "التورنت بالترتيب ليس أسرع في الانتهاء، ويساعد المجموعة بشكل أقل: استخدمه لما تريد مشاهدته الآن."
   },
   "bed20915ba662ba4": {
    "source": "Benchmark",
@@ -7974,6 +8070,10 @@
    "source": "<g1>9</g1> of 10",
    "text": "<g1>9</g1> من 10"
   },
+  "c8faf12a4c3d4e99": {
+   "source": "<g1>Server</g1> — where the server is, and how near. See <g2>Where the server is</g2>.",
+   "text": "<g1>الخادم</g1> — مكان الخادم ومدى قربه. انظر <g2>أين يوجد الخادم</g2>."
+  },
   "c9044c08663d0af5": {
    "source": "A PDF, a song or a video that the browser would show or play itself goes to MDM too, when its type is in <g1>Options → File types</g1> (not on the excluded sites). To turn this off, untick <g2>Also take files the browser would open</g2> in <g3>Options → General → Keys...</g3>. This needs a Chromium browser (Chrome, Edge, Brave, Opera, Vivaldi) version 128 or later, or Firefox.",
    "text": "ملف PDF أو أغنية أو فيديو سيعرضه المتصفح أو يشغله بنفسه يذهب إلى MDM أيضا، عندما يكون نوعه في <g1>الخيارات → أنواع الملفات</g1> (وليس في المواقع المستبعدة). لإيقاف تشغيل هذا، قم بإلغاء تحديد <g2>أخذ الملفات التي سيفتحها المتصفح أيضا</g2> في <g3>الخيارات → عام → المفاتيح...</g3>. يتطلب هذا متصفح Chromium (Chrome، Edge، Brave، Opera، Vivaldi) الإصدار 128 أو أحدث، أو Firefox."
@@ -8182,6 +8282,10 @@
    "source": "Neat Download Manager",
    "text": "Neat Download Manager"
   },
+  "cf28e1b873f9178c": {
+   "source": "<g1>Near</g1> (green): under 60 ms, usually the same country or the next one.",
+   "text": "<g1>قريب</g1> (أخضر): أقل من 60 مللي ثانية، وعادة ما يكون في نفس البلد أو البلد المجاور."
+  },
   "cf3a9ec3dbd55233": {
    "source": "<g1>Delete</g1> — remove a category, your own or a built-in one (not General or Torrents). MDM asks what happens to its downloads: <g2>Move its downloads to General</g2>, or <g3>Remove its downloads from the list</g3> (a download that is running moves to General instead). Their files stay where they are either way. From then on, files of its types go to another category that has them, or to General.",
    "text": "<g1>حذف</g1> — لإزالة فئة، سواء كانت من صنعك أو مضمنة (وليس عام أو التورنت). يسألك MDM عما سيحدث لتنزيلاتها: <g2>نقل تنزيلاته إلى عام</g2>، أو <g3>إزالة تنزيلاته من القائمة</g3> (التنزيل الذي يعمل ينتقل إلى عام بدلا من ذلك). تبقى ملفاتها في مكانها في كلتا الحالتين. ومن ثم، تنتقل ملفات أنواعها إلى فئة أخرى تحتوي عليها، أو إلى عام."
@@ -8217,6 +8321,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com هو موقع ثابت. تشارك ثلاث شركات في عرضه لك:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>تنزيل بالترتيب</g1> — ينزل ملفات التورنت من بدايتها (انظر أدناه). انقر عليه مرة أخرى للعودة إلى القطع النادرة أولا."
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -8538,6 +8646,10 @@
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
    "text": "نافذة egui واحدة مرسومة بإحداثيات بكسل ثابتة، بالإضافة إلى منفذ عرض فوري واحد لكل مربع حوار. <x1/> يحتفظ بالحالة (التنزيلات، قوائم الانتظار، الإعدادات، تحديد القائمة) ويحول أوامر القائمة وشريط الأدوات والمفاتيح وIPC إلى إجراءات. كل مربع حوار هو وحدة خاصة به ويعيد <x2/> (مفتوح، مغلق، منجز بقيمة). المكالمات الخاصة بنظام Windows فقط محصورة في <x3/> ونظيراتها في Linux وmacOS في <x4/> (بدءا من الجلسة، مضيف المتصفحات، الأصوات، العرض في المجلد، معالج الأعطال)؛ كل ملف آخر هو Rust آمن ومحمول. تأتي الخطوط من النظام: مجلد Fonts في Windows، وخطوط النظام في macOS، وfontconfig في Linux (<x5/>). وكذلك الأيقونات قبل أسماء الملفات (<x6/>): قوائم صور النظام في shell الخاص بـ Windows، وmacOS Finder (NSWorkspace)، وموضوع أيقونات سطح مكتب Linux (<x7/>، shared-mime-info ومواصفات موضوع الأيقونات). يتم البحث عن كل نوع مرة واحدة لكل حجم بكسل، في خيط خلفي. أيقونات Tango (المضمنة) تحل محلها حتى تصبح أيقونة النظام جاهزة، وحيثما لا يوجد أيقونة للنظام."
   },
+  "d835a1659f05d750": {
+   "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them. A stream whose address doesn't end in <x5/> or <x6/>, served as plain text, is found too: when you open the list (or press the download button over its player) and the player plays a stream, the extension reads the first few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.",
+   "text": "<g1>البثوث</g1>: HLS (<x2/>) و DASH (<x3/>)، وهي الطريقة التي تشغل بها معظم المواقع مقاطع الفيديو الطويلة. يدرج كل بث مرة واحدة، بغض النظر عن عدد الجودات التي تبدل مشغله بينها، مع جوداته (<x4/>) وطوله عندما يتمكن الملحق من قراءتها. يتم العثور أيضا على البث الذي لا ينتهي عنوانه بـ <x5/> أو <x6/>، والذي يقدم كنص عادي: عندما تفتح القائمة (أو تضغط على زر التنزيل فوق مشغله) ويشغل المشغل بثا، يقرأ الملحق الكيلوبايتات القليلة الأولى مما جلبه ذلك المشغل للتعرف عليه. لا يقرأ أي شيء حتى تطلب ذلك."
+  },
   "d83a2cb66a2a3629": {
    "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
    "text": "<g1>مجموعة العمل</g1> (علامة تبويب التفاصيل، أضف العمود) تضيف الذاكرة المشتركة مع برامج أخرى. يرسم MDM نوافذه باستخدام بطاقة الرسوميات، لذا تحسب ذاكرة برنامج تشغيل الرسوميات هنا أيضا، حوالي 85 ميجابايت إجمالا."
@@ -8597,6 +8709,10 @@
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
    "text": "<g1><g2>تنزيل فيديو من صفحة</g2></g1> — اختر جودة واحفظ الفيديو."
+  },
+  "d9dcf7778d51f367": {
+   "source": "<g1>Through a proxy</g1>, MDM only sees the proxy, so it says <g2>through a proxy</g2> (with the proxy's country when it knows it) instead of guessing the server's. A VPN that works at the system level can't be seen: the country is then the server's, but the time includes the VPN's detour.",
+   "text": "<g1>عبر وكيل</g1>، يرى MDM الوكيل فقط، لذلك يقول <g2>عبر وكيل</g2> (مع بلد الوكيل عندما يعرفه) بدلا من تخمين خادم الوكيل. لا يمكن رؤية شبكة VPN التي تعمل على مستوى النظام: يكون البلد حينئذ هو بلد الخادم، ولكن الوقت يشمل تحويلة VPN."
   },
   "da12a252ee14babe": {
    "source": "To stop in the morning whatever is left, tick <g1>Stop download at</g1> and set a time, for example 7:00:00 AM.",
@@ -9174,6 +9290,10 @@
    "source": "Add to Firefox",
    "text": "أضف إلى Firefox"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "يتم تنزيل عدة ملفات الواحد تلو الآخر، مرتبة حسب الاسم."
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "تكامل المتصفح بالتفصيل (Firefox، النوافذ الخاصة، ما يتم إرساله) →"
@@ -9714,6 +9834,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "توجد نفس القائمة في MDM تحت تعليمات ← اختصارات لوحة المفاتيح، وتظهر القوائم مفاتيح كل أمر بجانبه. على جهاز Mac، يحل ⌘ (Command) محل Ctrl: ⌘N..."
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "النظراء الأبطأ يأخذون القطع الأبعد قليلا، لذلك لا تنتظرهم البداية."
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "الضغط على زر عليه التركيز، تحديد مربع اختيار، تحديد الصف المختار من القائمة"
@@ -9913,6 +10037,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "تستخدم الأمثلة مسارات Windows؛ في macOS و Linux، البرامج لها نفس الأسماء بدون <x1/>."
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>القطع الأولى والأخيرة أولا</g1> — مع <g2>تنزيل بالترتيب</g2>، تأتي القطع الأولى والأخيرة لكل ملف قبل البقية. وهي مفعلة افتراضيا."
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",
