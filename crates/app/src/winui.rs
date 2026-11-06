@@ -462,6 +462,17 @@ pub fn text_width_font(p: &Painter, font: FontId, s: &str) -> f32 {
     p.layout_no_wrap(s.to_owned(), font, TEXT()).size().x
 }
 
+/// Where the fields of a column of labelled rows start (offset from the dialog's left), for
+/// labels drawn at `label_x`: `field_x` as laid out for English, or further right when a
+/// translated label is longer, so no label runs under its field. Every row shares it.
+pub fn label_column(p: &Painter, label_x: f32, labels: &[&str], field_x: f32) -> f32 {
+    let widest = labels
+        .iter()
+        .map(|l| text_width(p, l))
+        .fold(0.0_f32, f32::max);
+    field_x.max((label_x + widest + 6.0).ceil())
+}
+
 /// `s` cut with "..." (three periods, as Windows' DT_END_ELLIPSIS) to fit `max` px.
 pub fn ellipsize(p: &Painter, font: &FontId, s: &str, max: f32) -> String {
     if text_width_font(p, font.clone(), s) <= max {
