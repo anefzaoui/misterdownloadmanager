@@ -322,6 +322,10 @@
    "source": "Download <g1>setup.exe</g1> above and run it. Windows may ask whether to allow it: the installer isn't code-signed yet, so choose <g2>More info → Run anyway</g2>.",
    "text": "위에서 <g1>setup.exe</g1>를 다운로드하여 실행합니다. Windows에서 허용 여부를 물을 수 있습니다. 설치 프로그램은 아직 코드 서명이 되어 있지 않으므로 <g2>자세히 → 그래도 실행</g2>을 선택하세요."
   },
+  "0717a2923d7e72cc": {
+   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: one click from the Chrome Web Store, and the browser keeps it up to date. Edge first asks to allow extensions from other stores.",
+   "text": "<g1>Chrome, Edge, Brave, Opera, Vivaldi</g1>: Chrome 웹 스토어에서 한 번 클릭하면 브라우저가 자동으로 최신 상태로 유지합니다. Edge는 먼저 다른 스토어의 확장 프로그램을 허용할지 묻습니다."
+  },
   "072428c8bd6ba91a": {
    "source": "When the limit is reached, MDM stops downloading. New downloads show <g1>Waiting: the download limit is reached (Scheduler)</g1>. Everything resumes on its own when the period is over. <g2>Show warning before stopping downloads</g2> tells you when this happens and when downloads will go on.",
    "text": "제한에 도달하면 MDM은 다운로드를 중지합니다. 새 다운로드는 <g1>대기 중: 다운로드 제한에 도달했습니다(스케줄러)</g1>로 표시됩니다. 기간이 끝나면 모든 것이 자동으로 다시 시작됩니다. <g2>다운로드 중지 전 경고 표시</g2>는 이 상황이 발생할 때와 다운로드가 다시 시작될 때를 알려줍니다."
@@ -433,10 +437,6 @@
   "09c82864f82bd0f8": {
    "source": "Menu bar.",
    "text": "메뉴 모음."
-  },
-  "09d11cac644c01da": {
-   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "MDM 브라우저 확장 프로그램을 통해 addons.mozilla.org에서 다운로드한 Firefox, Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 이를 기반으로 구축된 브라우저(Zen, LibreWolf, Helium)에서 작동합니다. 이 확장 프로그램은 다운로드 시 쿠키와 리퍼러를 MDM에 전달하므로 로그인 뒤에 있는 파일도 작동하며, 마우스 오른쪽 버튼 메뉴에 Mister Download Manager으로 다운로드를 추가하고 동영상 위에 비디오 다운로드 버튼을 추가합니다. 브라우저 통합을 참조하십시오."
   },
   "09e228aaadb34e64": {
    "source": "Each download is then held to that speed. <g1>Downloads → Speed Limiter → Turn off</g1> gives full speed again. Tick <g2>Always turn on Speed Limiter on Mister Download Manager startup</g2> to have it on every time.",
@@ -697,6 +697,10 @@
   "115de9018b2cce4b": {
    "source": "Star it on GitHub",
    "text": "GitHub에서 별표 표시하기"
+  },
+  "11670b26bfb183a4": {
+   "source": "<g1>Chrome</g1><g2>Google · <g3>Add to Chrome</g3></g2>",
+   "text": "<g1>Chrome</g1><g2>Google · <g3>Chrome에 추가</g3></g2>"
   },
   "1171655e77148bd2": {
    "source": "Every release, with its notes and files, is on <g1>GitHub Releases</g1>. The source code is at <g2>github.com/anefzaoui/misterdownloadmanager</g2> under the GNU GPL, version 3.",
@@ -1274,10 +1278,6 @@
    "source": "Windows, macOS, Linux (Java)",
    "text": "Windows, macOS, Linux (Java)"
   },
-  "1ec161dd36dfe603": {
-   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM. Opera and Vivaldi take it the same way.",
-   "text": "<g1>Mister Download Manager</g1>가 목록에 나타납니다. 켜진 상태로 두세요. 브라우저가 MDM에 연결되는지 한눈에 확인하려면 버튼을 도구 모음에 고정하세요. Opera와 Vivaldi도 같은 방식으로 설치합니다."
-  },
   "1ed401e594a9c102": {
    "source": "0.03 s",
    "text": "0.03초"
@@ -1670,6 +1670,10 @@
    "source": "The race",
    "text": "경쟁"
   },
+  "28363ce0cfaf4e8e": {
+   "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
+   "text": "브라우저 자체 스토어에서 제공되는 브라우저 확장 프로그램: Chrome 웹 스토어의 확장 프로그램은 Edge, Brave, Opera, Vivaldi도 지원합니다. 또한 앱과 함께 제공되며, 수동으로 추가할 수 있도록 <g1>별도의 다운로드</g1>로도 제공됩니다. 모든 파일은 GitHub Actions에 의해 공개 소스에서 빌드되며 SHA-256 체크섬과 함께 나열됩니다."
+  },
   "286a2be607456e48": {
    "source": "Set <g1>Maximum download speed</g1> in KBytes/sec. The new limit applies at once.",
    "text": "KB/초 단위로 <g1>최대 다운로드 속도</g1>를 설정합니다. 새로운 제한은 즉시 적용됩니다."
@@ -1681,6 +1685,10 @@
   "28b1c28428b1047e": {
    "source": "Close",
    "text": "닫기"
+  },
+  "28b58f9af9a6fed9": {
+   "source": "In Chrome, Edge, Brave, Opera or Vivaldi",
+   "text": "Chrome, Edge, Brave, Opera 또는 Vivaldi에서"
   },
   "28eeaa8ad9bf85a3": {
    "source": "Requests",
@@ -1701,10 +1709,6 @@
   "298c9f2b74a2990f": {
    "source": "How it works",
    "text": "작동 방식"
-  },
-  "2991dd6051b6e56c": {
-   "source": "By hand for now, while the Chrome Web Store reviews the extension. Its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
-   "text": "Chrome 웹 스토어에서 확장 프로그램을 검토 중이므로 현재는 수동으로 추가해야 합니다. 확장 프로그램 파일은 MDM이 설치된 <x1/> 폴더에 있습니다. 직접 설치한 경우 <x2/>에, 모든 사용자를 위해 설치한 경우 <x3/>에 있습니다. 모든 릴리스에는 자체 다운로드 파일인 <x4/>도 있습니다 (먼저 압축을 풀어야 합니다)."
   },
   "29b29fea4e1dcc73": {
    "source": "Download limits",
@@ -1938,6 +1942,10 @@
    "source": "Yes: <x1/>, and FTP over TLS both ways (<x2/> and <x3/>), with several connections at once, resume, and logins from the address or from Sites Logins. See <g4>Adding downloads</g4>.",
    "text": "예: <x1/> 및 양방향 TLS를 통한 FTP(<x2/> 및 <x3/>)를 여러 연결로 동시에 지원하며, 재개 기능과 주소 또는 사이트 로그인에서 로그인할 수 있습니다. <g4>다운로드 추가</g4>를 참조하세요."
   },
+  "2e1e011c1da4eb87": {
+   "source": "Open the extension's page in the Chrome Web Store, <g1>Mister Download Manager</g1>, and click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>, and Edge first asks to <g4>Allow extensions from other stores</g4>: click <g5>Allow</g5>.",
+   "text": "Chrome 웹 스토어에서 확장 프로그램 페이지인 <g1>Mister Download Manager</g1>를 열고 <g2>Chrome에 추가</g2>를 클릭합니다. Edge에서는 버튼이 <g3>가져오기</g3>이며, Edge는 먼저 <g4>다른 스토어의 확장 프로그램 허용</g4>을 요청합니다. <g5>허용</g5>을 클릭합니다."
+  },
   "2e238218e51993b0": {
    "source": "Mac",
    "text": "Mac"
@@ -2001,6 +2009,10 @@
   "2f6173f7ee8ac832": {
    "source": "<g1>Exit Mister Download Manager when done</g1>.",
    "text": "<g1>완료 시 Mister Download Manager 종료</g1>."
+  },
+  "2f68e4b0dfb1bc04": {
+   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from <g2>the Chrome Web Store</g2>), through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g3>Download with Mister Download Manager</g3> to the right-click menu and a <g4>Download video</g4> button over videos. See <g5>Browser integration</g5>.",
+   "text": "MDM 브라우저 확장 프로그램을 통해 Firefox(<g1>addons.mozilla.org</g1>에서), Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi(<g2>Chrome 웹 스토어</g2>에서) 및 이를 기반으로 구축된 브라우저(Zen, LibreWolf, Helium)에서 작동합니다. 이 확장 프로그램은 다운로드 시 쿠키와 리퍼러를 MDM으로 전달하므로 로그인 뒤에 있는 파일도 계속 작동하며, 마우스 오른쪽 버튼 메뉴에 <g3>Mister Download Manager으로 다운로드</g3>를 추가하고 동영상 위에 <g4>비디오 다운로드</g4> 버튼을 추가합니다. <g5>브라우저 통합</g5>을 참조하세요."
   },
   "2f8778f636a6a38d": {
    "source": "Connections and speed →",
@@ -2190,6 +2202,10 @@
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "속도 제한기는 MDM이 사용자의 모든 연결을 사용하는 것을 방지합니다."
   },
+  "36ef08c42af60d54": {
+   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
+   "text": "확장 프로그램을 통해 Firefox의 <g1>부가 기능 스토어</g1>와 <g2>Chrome 웹 스토어</g2>에서 Firefox, Chrome, Edge, Brave, Opera, Vivaldi를 지원합니다. 확장 프로그램 없이 링크를 복사하면 MDM이 다운로드 창을 엽니다. <g3>더 보기</g3>"
+  },
   "37018c365c78d873": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all…",
    "text": "MDM은 독립 개발자인 Ahmed Nefzaoui가 만들었으며, GitHub에서 누구나 기여할 수 있도록 열려 있습니다. 버그 보고서, 번역 및 코드는 모두 환영합니다."
@@ -2321,6 +2337,10 @@
   "39ac0465b60ebf5b": {
    "source": "For video pages, MDM downloads yt-dlp (and ffmpeg if you want merged qualities) on first use.",
    "text": "비디오 페이지의 경우, MDM은 처음 사용할 때 yt-dlp (그리고 병합된 품질을 원하면 ffmpeg)를 다운로드합니다."
+  },
+  "39b196f386c16245": {
+   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), which downloads it takes, and what happens when MDM isn't running.",
+   "text": "<g1><g2>브라우저 통합</g2></g1> — Firefox(addons.mozilla.org에서), Chrome, Edge, Brave, Opera, Vivaldi(Chrome 웹 스토어에서)용 확장 프로그램, 어떤 다운로드를 가져오는지, MDM이 실행되지 않을 때 어떤 일이 발생하는지."
   },
   "39c6e3069cb8cc85": {
    "source": "Click <g1>OK</g1>.",
@@ -2638,10 +2658,6 @@
    "source": "Crash reports",
    "text": "충돌 보고서"
   },
-  "41d7fb067ecb2748": {
-   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g2>Download with Mister Download Manager</g2> to the right-click menu and a <g3>Download video</g3> button over videos. See <g4>Browser integration</g4>.",
-   "text": "MDM 브라우저 확장 프로그램을 통해 <g1>addons.mozilla.org</g1>에서 다운로드한 Firefox, Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 이를 기반으로 구축된 브라우저(Zen, LibreWolf, Helium)에서 작동합니다. 이 확장 프로그램은 다운로드 시 쿠키와 리퍼러를 MDM에 전달하므로 로그인 뒤에 있는 파일도 작동하며, 마우스 오른쪽 버튼 메뉴에 <g2>Mister Download Manager으로 다운로드</g2>를 추가하고 동영상 위에 <g3>비디오 다운로드</g3> 버튼을 추가합니다. <g4>브라우저 통합</g4>을 참조하십시오."
-  },
   "4208f79380d548a0": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
    "text": "사이트에서 영상과 소리를 따로 제공하는 경우(대부분의 고화질 영상이 그렇습니다), <g1>ffmpeg</g1>(약 80MB)은 영상과 소리를 합치고, 소리를 MP3, Opus 또는 FLAC 파일로 변환합니다. MDM에서 <g2>ffmpeg 설치</g2>를 제안하면 클릭하세요. MDM은 릴리스에 게시된 체크섬과 비교하여 확인합니다."
@@ -2705,10 +2721,6 @@
   "4409b6268f79d30a": {
    "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
    "text": "<g1>붙여넣기.</g1> <g2>작업 → 링크 그래버...</g2>를 선택하고 <g3>Ctrl+V</g3>를 누르면 복사된 텍스트의 모든 웹 주소가 추가됩니다."
-  },
-  "440d7c9f4a9ff3a8": {
-   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose <g4>Load unpacked</g4> and pick the <x5/> folder in MDM's folder. The <g6>tutorial</g6> walks through it.",
-   "text": "설치 프로그램을 사용하여 MDM을 설치하고 <g1>브라우저 통합 설정</g1>을 선택된 상태로 유지하세요. Firefox에서는 <g2>addons.mozilla.org의 부가 기능 페이지</g2>를 열고 <g3>Firefox에 추가</g3>를 클릭하세요. Chrome 웹 스토어에서 검토 중이므로 Chrome, Edge, Brave, Opera 및 Vivaldi에서는 현재 수동으로 로드해야 합니다. 브라우저의 확장 프로그램 페이지를 열고 개발자 모드를 켠 다음 <g4>압축 해제된 확장 프로그램 로드</g4>를 선택하고 MDM 폴더에 있는 <x5/> 폴더를 선택하세요. <g6>튜토리얼</g6>에서 자세히 설명합니다."
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -2877,6 +2889,10 @@
   "48ca7e0fd6df660f": {
    "source": "<g1>Downloaded file names are cleaned</g1> before they become paths, so a server can't write outside the folder you chose.",
    "text": "<g1>다운로드된 파일 이름은 정리됩니다</g1> 경로가 되기 전에, 서버가 선택한 폴더 외부로 쓸 수 없도록 합니다."
+  },
+  "48f2a56d5061d294": {
+   "source": "Browser extension: <g1><x2/>Add to Firefox</g1> <g3><x4/>Add to Chrome</g3>, for Edge, Brave and Opera too. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>",
+   "text": "브라우저 확장 프로그램: <g1><x2/>Firefox에 추가</g1> <g3><x4/>Chrome에 추가</g3>, Edge, Brave, Opera도 지원합니다. <g5><g6><x7/>Chrome</g6> <g8><x9/>Edge</g8> <g10><x11/>Brave</g10> <g12><x13/>Opera</g12></g5>"
   },
   "492c16c1bfe5a3c4": {
    "source": "<g1>File size</g1>, <g2>Downloaded</g2> and <g3>Transfer rate</g3>.",
@@ -3314,10 +3330,6 @@
    "source": "What it takes",
    "text": "작동 방식"
   },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "Linux 및 macOS에서는 MDM이 시작할 때마다 브라우저 통합을 설정합니다(설치된 브라우저를 찾음). <g1>브라우저 통합</g1>에 따라 확장 프로그램을 추가하세요. Flatpak 또는 Snap으로 설치된 브라우저는 MDM에 연결하지 못할 수 있습니다."
-  },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
    "text": "도구 모음에서 <g1>예약 관리자</g1>를 클릭합니다(또는 <g2>다운로드 → 예약 관리자</g2>)."
@@ -3509,10 +3521,6 @@
   "59cee3ff8dcef9d9": {
    "source": "Getting set up",
    "text": "설정하기"
-  },
-  "59e78792626130dd": {
-   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension: Firefox's from <g1>its add-ons store</g1>, the others by hand for now. Without the extension, copy a link and MDM opens the download window. <g2>More</g2>",
-   "text": "확장 프로그램을 통해 Firefox, Chrome, Edge, Brave, Opera, Vivaldi를 지원합니다. Firefox용은 <g1>애드온 스토어</g1>에서, 다른 브라우저용은 현재 수동으로 추가해야 합니다. 확장 프로그램 없이 링크를 복사하면 MDM이 다운로드 창을 엽니다. <g2>더 보기</g2>"
   },
   "5a277738c32493f8": {
    "source": "Support MDM",
@@ -3909,6 +3917,10 @@
   "63ac412dcec0525a": {
    "source": "The Scheduler",
    "text": "예약 관리자"
+  },
+  "63ce30d5a4972748": {
+   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.",
+   "text": "사용하는 각 브라우저에 아래와 같이 확장 프로그램을 추가하세요. Firefox는 자체 추가 기능 스토어에서, 다른 브라우저는 Chrome 웹 스토어에서 추가합니다."
   },
   "63d0ba3e76606052": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains none of IDM's code or artwork. Its windows are laid out the way IDM users expect, so you can switch without learning anything new — and because MDM is free, there is nothing to crack. Please don't download \"cracked\" download managers: they are a common way to spread malware.",
@@ -4382,6 +4394,10 @@
    "source": "Numbers and dates",
    "text": "숫자 및 날짜"
   },
+  "6f86a54724149403": {
+   "source": "<g1>Firefox as a Snap</g1> (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks <g2>Allow Firefox to start WebExtension backend?</g2> for Mister Download Manager: choose <g3>Allow</g3>. After <g4>Don't allow</g4>, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:",
+   "text": "<g1>Snap으로 설치된 Firefox</g1>(Ubuntu 자체 Firefox)는 데스크톱을 통해 MDM에 도달합니다. 확장 프로그램이 MDM을 처음 호출할 때 데스크톱은 Mister Download Manager에 대해 <g2>Firefox가 WebExtension 백엔드를 시작하도록 허용하시겠습니까?</g2>라고 묻습니다. <g3>허용</g3>을 선택하세요. <g4>허용 안 함</g4>을 선택하면 확장 프로그램은 연결 실패를 알리고 데스크톱은 다시 묻지 않습니다. 다시 질문을 받으려면 터미널에서 다음을 실행한 다음 확장 프로그램을 다시 사용하세요."
+  },
   "6f93f457f41d4fa3": {
    "source": "<g1>User-Agent for manually added downloads</g1> — how MDM names itself to servers for downloads you add yourself. Downloads from the browser use the browser's own User-Agent.",
    "text": "<g1>수동으로 추가된 다운로드의 User-Agent</g1> — 직접 추가하는 다운로드에 대해 MDM이 서버에 자신을 알리는 방식입니다. 브라우저에서 시작된 다운로드는 브라우저 자체의 User-Agent를 사용합니다."
@@ -4481,10 +4497,6 @@
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
    "text": "갤러리 사진(Wikimedia Commons 카테고리, Flickr 앨범 등)을 <x1/> 내부에 해당 이름으로 된 폴더에 다운로드합니다. <x2/>는 사이트에서 나열하는 첫 번째 사진을 최대 그만큼 가져옵니다. 다시 시작하면 새 사진만 가져옵니다."
-  },
-  "720d6bdebec42762": {
-   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: by hand for now, while the Chrome Web Store reviews it. It comes with the app, in its <x2/> folder, and <g3>as its own download</g3> (<x4/>: unzip, then <g5>Load unpacked</g5> on the browser's extensions page with Developer mode on). The <g6>step-by-step guide</g6> shows each browser.",
-   "text": "<g1>Chrome, Edge, Brave, Opera, Vivaldi</g1>: Chrome 웹 스토어에서 검토 중이므로 현재는 수동으로 설치해야 합니다. 앱과 함께 <x2/> 폴더에 포함되어 있으며, <g3>별도의 다운로드</g3>로도 제공됩니다(<x4/>: 압축을 풀고, 브라우저 확장 프로그램 페이지에서 개발자 모드를 켠 다음 <g5>압축 해제된 확장 프로그램 로드</g5>). <g6>단계별 가이드</g6>는 각 브라우저에 대한 방법을 보여줍니다."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4690,6 +4702,10 @@
    "source": "your user name, which shows as <x1/> in folder paths.",
    "text": "폴더 경로에 <x1/>로 표시되는 사용자 이름."
   },
+  "779d3d89172c13c6": {
+   "source": "The browser asks to confirm: click <g1>Add extension</g1>. It keeps the extension up to date.",
+   "text": "브라우저가 확인을 요청하면 <g1>확장 프로그램 추가</g1>를 클릭합니다. 그러면 확장 프로그램이 최신 상태로 유지됩니다."
+  },
   "77a30c9b7d2a6105": {
    "source": "Everything can be done from the keyboard, and MDM works with screen readers (such as Narrator and NVDA on Windows): its windows, dialogs and menus tell them what each control is and its state, and the download list reads each download's name, status and size. The <g1>Categories</g1> pane reads as a tree (each category with its count, open or shut, selected or not), and the menu bar and every right-click menu as menus whose items can be run from there.",
    "text": "모든 작업은 키보드로 할 수 있으며, MDM은 화면 판독기(예: Windows의 Narrator 및 NVDA)와 함께 작동합니다. MDM의 창, 대화 상자 및 메뉴는 각 컨트롤의 기능과 상태를 알려주며, 다운로드 목록은 각 다운로드의 이름, 상태 및 크기를 읽어줍니다. <g1>범주</g1> 창은 트리 형태로 읽히고(각 범주는 개수, 열림/닫힘, 선택 여부 포함), 메뉴 모음과 모든 오른쪽 클릭 메뉴는 항목을 실행할 수 있는 메뉴로 읽힙니다."
@@ -4806,6 +4822,10 @@
    "source": "Every release lists the SHA-256 checksum of each file in <g1>SHA256SUMS.txt</g1>. On Windows, compare it with <x2/>; on macOS and Linux with <x3/>. All files are built from the public source by GitHub Actions; the build logs are on <g4>GitHub</g4>.",
    "text": "모든 릴리스는 <g1>SHA256SUMS.txt</g1>에 각 파일의 SHA-256 체크섬을 나열합니다. Windows에서는 <x2/>와 비교하고, macOS 및 Linux에서는 <x3/>와 비교합니다. 모든 파일은 GitHub Actions에 의해 공개 소스에서 빌드됩니다. 빌드 로그는 <g4>GitHub</g4>에서 확인할 수 있습니다."
   },
+  "7abae1f3c6a9aed0": {
+   "source": "Chrome, Edge, Brave, Opera and Vivaldi",
+   "text": "Chrome, Edge, Brave, Opera 및 Vivaldi"
+  },
   "7acc73393492b437": {
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "<g1>모든 다운로드 제한</g1>을 선택하고 KBytes/sec 단위로 속도를 입력합니다. 연결 속도의 약 3분의 2가 좋은 시작점입니다. (1 MByte/sec는 약 1000 KBytes/sec입니다.)"
@@ -4838,6 +4858,10 @@
    "source": "<g1>Alt+Down</g1> or <g2>F4</g2>",
    "text": "<g1>Alt+Down</g1> 또는 <g2>F4</g2>"
   },
+  "7b96ddc4c567caf5": {
+   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.",
+   "text": "Flatpak 또는 Snap으로 설치된 브라우저는 샌드박스에서 실행되며, 샌드박스는 MDM에 도달할 수 있는지 여부를 결정합니다."
+  },
   "7bc3766c50fc6fcd": {
    "source": "<g1>0.2.4</g1> <g2>24.1 MB</g2>",
    "text": "<g1>0.2.4</g1> <g2>24.1 MB</g2>"
@@ -4869,10 +4893,6 @@
   "7c20476510c27bb9": {
    "source": "<g1></g1>Open (GPL-3.0)",
    "text": "<g1></g1>오픈 소스 (GPL-3.0)"
-  },
-  "7c2056684aa2bec5": {
-   "source": "Chrome, Edge and Brave",
-   "text": "Chrome, Edge 및 Brave"
   },
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
@@ -5013,6 +5033,10 @@
   "7f06477bf6037af8": {
    "source": "A window in MDM may be waiting for you (a question, <g1>Add torrent</g1>); answer it and ask again.",
    "text": "MDM의 창이 응답을 기다리고 있을 수 있습니다(질문, <g1>토렌트 추가</g1>). 응답하고 다시 요청하세요."
+  },
+  "7f0667de08ce7313": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
+   "text": "MDM 브라우저 확장 프로그램을 통해 Firefox(addons.mozilla.org에서), Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi(Chrome 웹 스토어에서) 및 이를 기반으로 구축된 브라우저(Zen, LibreWolf, Helium)에서 작동합니다. 이 확장 프로그램은 다운로드 시 쿠키와 리퍼러를 MDM으로 전달하므로 로그인 뒤에 있는 파일도 계속 작동하며, 마우스 오른쪽 버튼 메뉴에 Mister Download Manager으로 다운로드를 추가하고 동영상 위에 비디오 다운로드 버튼을 추가합니다. 브라우저 통합을 참조하세요."
   },
   "7f12a262bf26f1cd": {
    "source": "Description",
@@ -5254,6 +5278,14 @@
    "source": "<g1>Sort:</g1> click a column title. Click again to reverse the order, and a third time to go back to the order of addition. <g2>View → Arrange files</g2> does the same from the menu.",
    "text": "<g1>정렬:</g1> 열 제목을 클릭합니다. 다시 클릭하면 역순으로 정렬되고, 세 번째 클릭하면 추가된 순서로 돌아갑니다. <g2>보기 → 파일 정렬</g2> 메뉴에서도 동일하게 작동합니다."
   },
+  "84de272d8a1575cb": {
+   "source": "Add to Chrome",
+   "text": "Chrome에 추가"
+  },
+  "84e7d646757f7bb2": {
+   "source": "Without the store",
+   "text": "스토어 없이"
+  },
   "84f216589454c750": {
    "source": "You can set a number for a server yourself: <g1>Options → Connection → New</g1>, then type the server's name and the number of connections.",
    "text": "서버에 대한 연결 수를 직접 설정할 수 있습니다. <g1>옵션 → 연결 → 새로 만들기</g1>를 선택한 다음 서버 이름과 연결 수를 입력하세요."
@@ -5269,14 +5301,6 @@
   "853ac467ba7801e6": {
    "source": "Put downloads in a queue →",
    "text": "다운로드를 대기열에 넣기 →"
-  },
-  "855283d97ca22cdb": {
-   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others by hand for now, while the Chrome Web Store reviews it.",
-   "text": "사용하는 각 브라우저에 아래와 같이 확장 프로그램을 추가하세요. Firefox는 부가 기능 스토어에서, 다른 브라우저는 Chrome 웹 스토어에서 검토 중이므로 현재는 수동으로 추가해야 합니다."
-  },
-  "859b311c937bc36f": {
-   "source": "In Chrome, Edge or Brave",
-   "text": "Chrome, Edge 또는 Brave에서"
   },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
@@ -5446,6 +5470,10 @@
    "source": "Still stuck? Use <g1>Help → Report a problem</g1> and include the page address.",
    "text": "여전히 문제가 해결되지 않았나요? <g1>도움말 → 문제 보고</g1>를 사용하여 페이지 주소를 포함해 주세요."
   },
+  "8a28300cfedb3a20": {
+   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, open <g4>its page in the Chrome Web Store</g4> and click <g5>Add to Chrome</g5> (Edge shows <g6>Get</g6>, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose <g7>Load unpacked</g7> and pick the <x8/> folder in MDM's folder. The <g9>tutorial</g9> walks through it.",
+   "text": "설치 프로그램으로 MDM을 설치하고 <g1>브라우저 통합 설정</g1>을 선택된 상태로 유지하세요. Firefox에서는 <g2>addons.mozilla.org의 부가 기능 페이지</g2>를 열고 <g3>Firefox에 추가</g3>를 클릭하세요. Chrome, Edge, Brave, Opera, Vivaldi에서는 <g4>Chrome 웹 스토어의 해당 페이지</g4>를 열고 <g5>Chrome에 추가</g5>를 클릭하세요 (Edge는 <g6>가져오기</g6>를 표시하며, 먼저 다른 스토어의 확장 프로그램을 허용할지 묻습니다). 스토어를 사용할 수 없나요? 브라우저의 확장 프로그램 페이지를 열고 개발자 모드를 켠 다음 <g7>압축 해제된 확장 프로그램 로드</g7>를 선택하고 MDM 폴더에 있는 <x8/> 폴더를 선택하세요. <g9>튜토리얼</g9>에서 자세히 안내합니다."
+  },
   "8a40a7060dae6e26": {
    "source": "<g1><g2>Connections and speed</g2></g1> — the progress window, how MDM splits a file over several connections, resuming, and the Speed Limiter.",
    "text": "<g1><g2>연결 및 속도</g2></g1> — 진행 창, MDM이 여러 연결을 통해 파일을 분할하는 방법, 다시 시작, 그리고 속도 제한."
@@ -5534,6 +5562,10 @@
    "source": "Connections per file",
    "text": "파일당 연결 수"
   },
+  "8cb163cde329bcf4": {
+   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM.",
+   "text": "<g1>Mister Download Manager</g1>가 목록에 나타납니다. 켜진 상태로 두세요. 브라우저가 MDM에 연결되는지 한눈에 확인하려면 버튼을 도구 모음에 고정하세요."
+  },
   "8cfa4742e8d4318b": {
    "source": "The harness",
    "text": "하네스"
@@ -5565,6 +5597,10 @@
   "8dbeeeabcf1f6918": {
    "source": "<g1>86 interface languages</g1>, every language Windows 11 offers, chosen by flag on the first start or in <g2>View → Language...</g2>; right to left for Arabic, Hebrew, Persian, Urdu and Uyghur; fonts for every script from the system itself. The installer speaks the same languages, and the browser extension speaks your browser's (50 languages).",
    "text": "<g1>86개 인터페이스 언어</g1>, Windows 11이 제공하는 모든 언어는 첫 시작 시 또는 <g2>보기 → 언어...</g2>에서 플래그로 선택할 수 있습니다. 아랍어, 히브리어, 페르시아어, 우르두어 및 위구르어는 오른쪽에서 왼쪽으로 표시됩니다. 시스템 자체의 모든 스크립트용 글꼴. 설치 프로그램은 동일한 언어를 사용하며, 브라우저 확장 프로그램은 브라우저의 언어를 사용합니다(50개 언어)."
+  },
+  "8dbf6ff24d2ed734": {
+   "source": "Can't use a store? It comes with the app, in its <x1/> folder, and <g2>as its own download</g2> for Chromium browsers (<x3/>: unzip, then <g4>Load unpacked</g4> on the browser's extensions page with Developer mode on). The <g5>step-by-step guide</g5> shows each browser.",
+   "text": "스토어를 사용할 수 없나요? 앱과 함께 <x1/> 폴더에 있으며, Chromium 브라우저용으로 <g2>별도로 다운로드</g2>할 수도 있습니다(<x3/>: 압축을 푼 다음 개발자 모드를 켠 상태에서 브라우저 확장 프로그램 페이지에서 <g4>압축 해제된 확장 프로그램 로드</g4>). <g5>단계별 가이드</g5>에서 각 브라우저를 보여줍니다."
   },
   "8de593350090e7e8": {
    "source": "If MDM never opens, see <g1>The setup or MDM won't start</g1>.",
@@ -5765,10 +5801,6 @@
   "9353e613d2835a1f": {
    "source": "Find by name",
    "text": "이름으로 찾기"
-  },
-  "938b387bfbc70706": {
-   "source": "Browser extension: <g1><x2/>Add to Firefox</g1>. For Chrome, Edge, Brave and Opera, by hand for now, while the Chrome Web Store reviews it. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>",
-   "text": "브라우저 확장 프로그램: <g1><x2/>Firefox에 추가</g1>. Chrome, Edge, Brave, Opera의 경우, Chrome 웹 스토어에서 검토 중이므로 현재는 수동으로 추가해야 합니다. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>"
   },
   "93a9d8c882d29583": {
    "source": "Tick <g1>Use Speed Limiter</g1>.",
@@ -6242,10 +6274,6 @@
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "영어보다 긴 번역은 맞지 않는 경우 <g1>...</g1>로 끝납니다. 전체를 읽으려면 해당 부분을 가리키세요."
   },
-  "a06fa72ad54fa126": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
-   "text": "설치 프로그램을 사용하여 MDM을 설치하고 브라우저 통합 설정이 선택되어 있는지 확인하세요. Firefox에서는 addons.mozilla.org에서 부가 기능 페이지를 열고 Firefox에 추가를 클릭하세요. Chrome, Edge, Brave, Opera, Vivaldi에서는 Chrome 웹 스토어에서 검토 중이므로 지금은 수동으로 로드해야 합니다. 브라우저의 확장 프로그램 페이지를 열고 개발자 모드를 켠 다음 압축 해제된 확장 프로그램 로드를 선택하고 MDM 폴더 내의 extension\\chromium 폴더를 선택하세요. 튜토리얼에서 자세히 설명합니다."
-  },
   "a09cf46e49e64bbb": {
    "source": "A sweep through every window for the small things that make a program feel finished: how each control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers, and a long list of fixes found by reviewing all of it (issue #7 and more).",
    "text": "프로그램을 완성된 것처럼 느끼게 하는 작은 것들을 위해 모든 창을 훑어보았습니다. 각 컨트롤이 마우스와 키보드에 어떻게 보이고 응답하는지, 모든 곳의 다크 모드, 화면 판독기, 그리고 모든 것을 검토하여 발견된 긴 수정 목록 (이슈 #7 등)이 포함됩니다."
@@ -6369,10 +6397,6 @@
   "a3fad5053e035413": {
    "source": "Torrents and your security — Mister Download Manager help",
    "text": "토렌트 및 보안 — Mister Download Manager 도움말"
-  },
-  "a411ca96569c91a2": {
-   "source": "<g1>Chrome</g1><g2>Google</g2>",
-   "text": "<g1>Chrome</g1><g2>Google</g2>"
   },
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
@@ -6638,6 +6662,10 @@
    "source": "<g1>Page Up</g1> / <g2>Page Down</g2>",
    "text": "<g1>Page Up</g1> / <g2>Page Down</g2>"
   },
+  "aab5074afda2571f": {
+   "source": "On Linux, with Firefox or Chromium installed as a Snap, see <g1>Flatpak and Snap browsers</g1>.",
+   "text": "Linux에서 Firefox 또는 Chromium이 Snap으로 설치된 경우, <g1>Flatpak 및 Snap 브라우저</g1>를 참조하세요."
+  },
   "aac0379eae040d8f": {
    "source": "The browser doesn't send downloads to MDM",
    "text": "브라우저가 MDM으로 다운로드를 보내지 않습니다"
@@ -6826,6 +6854,10 @@
    "source": "A first start, a slow disk, or an antivirus scanning MDM can take that long. Next time it is usually quick.",
    "text": "첫 시작, 느린 디스크 또는 MDM을 스캔하는 백신 프로그램으로 인해 시간이 오래 걸릴 수 있습니다. 다음번에는 일반적으로 빠릅니다."
   },
+  "af2b3b86f75da30b": {
+   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Firefox installed as a Snap (Ubuntu's) reaches MDM once you allow it; other Snap and Flatpak browsers can't (see <g2>Flatpak and Snap browsers</g2>).",
+   "text": "Linux 및 macOS에서는 MDM이 시작할 때마다 브라우저 통합을 설정합니다(설치된 브라우저를 찾음). <g1>브라우저 통합</g1>에 따라 확장 프로그램을 추가하세요. Snap(Ubuntu)으로 설치된 Firefox는 허용하면 MDM에 연결됩니다. 다른 Snap 및 Flatpak 브라우저는 연결할 수 없습니다(<g2>Flatpak 및 Snap 브라우저</g2> 참조)."
+  },
   "af2d311733924046": {
    "source": "IDM",
    "text": "IDM"
@@ -6857,10 +6889,6 @@
   "afae30c6c42a7afb": {
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "Mister Download Manager가 예기치 않게 종료되거나 응답을 중지하면 <g1>충돌 보고서</g1> 창이 열립니다. 이 창은 발생한 상황을 보여주고, 전체 보고서를 읽을 수 있게 하며, GitHub의 개발자에게 보낼 수 있습니다. 각 보고서는 모든 사람의 문제를 해결하는 데 도움이 됩니다."
-  },
-  "afb13e3cfd9283df": {
-   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.",
-   "text": "확장 프로그램을 한 번 설정하면 Firefox, Chrome, Edge 또는 Brave에서 클릭하는 모든 다운로드 링크가 MDM으로 이동합니다."
   },
   "afc32cfba2a08d06": {
    "source": "Choose a download",
@@ -6945,6 +6973,10 @@
   "b23baab9a4561a1d": {
    "source": "Pauses running downloads.",
    "text": "실행 중인 다운로드를 일시 중지합니다."
+  },
+  "b23e9f6d4d6a6718": {
+   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
+   "text": "브라우저 통합을 위해서는 각 브라우저에서 한 단계 더 필요합니다: 확장 프로그램 추가. Firefox에서는 <g2>addons.mozilla.org 페이지</g2>에서 <g1>Firefox에 추가</g1>를 클릭하고, Chrome, Edge, Brave, Opera, Vivaldi에서는 <g4>Chrome 웹 스토어 페이지</g4>에서 <g3>Chrome에 추가</g3>를 클릭하세요. <g5>브라우저 통합</g5>에서 방법을 보여줍니다."
   },
   "b2679b7b14f46791": {
    "source": "The video then downloads like any other file, with its own row in the list and its progress window. yt-dlp brings it in over one stream of its own, so the window's connections table stays empty.",
@@ -7166,10 +7198,6 @@
    "source": "On <g1>Q</g1>, tick <g2>In a queue</g2> or <g3>Not in a queue</g3>.",
    "text": "<g1>큐</g1>에서 <g2>큐에 있음</g2> 또는 <g3>큐에 없음</g3>을 선택합니다."
   },
-  "b7da4b8cc0d5495e": {
-   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge and Brave, which downloads it takes, and what happens when MDM isn't running.",
-   "text": "<g1><g2>브라우저 통합</g2></g1> — Firefox(addons.mozilla.org에서), Chrome, Edge 및 Brave용 확장 프로그램, 어떤 다운로드를 가져오는지, 그리고 MDM이 실행되고 있지 않을 때 어떤 일이 발생하는지."
-  },
   "b7e47ad1f6a91134": {
    "source": "The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.",
    "text": "이 앱은 Windows 11에서 제공하는 모든 언어인 86개 언어로 제공됩니다. 컴퓨터 언어를 따르며, 보기 → 언어에서 언제든지 전환할 수 있습니다."
@@ -7217,10 +7245,6 @@
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86개 언어, RTL 지원"
-  },
-  "b95c95d9143dace0": {
-   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them…",
-   "text": "MDM 브라우저 확장 프로그램을 통해 addons.mozilla.org에서 다운로드한 Firefox, Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi 및 이를 기반으로 구축된 브라우저…"
   },
   "b95ce4f23354e44d": {
    "source": "AI assistants (MCP) — Mister Download Manager help",
@@ -7282,6 +7306,10 @@
    "source": "6. Limitation of liability",
    "text": "6. 책임의 제한"
   },
+  "bb1244178952e02b": {
+   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge, Brave, Opera or Vivaldi goes to MDM.",
+   "text": "확장 프로그램을 한 번 설정하면 Firefox, Chrome, Edge, Brave, Opera 또는 Vivaldi에서 클릭하는 모든 다운로드 링크가 MDM으로 이동합니다."
+  },
   "bb1f21fe59e69934": {
    "source": "<g1>Web</g1> (a web server) or <g2>Torrent</g2>.",
    "text": "<g1>웹</g1> (웹 서버) 또는 <g2>토렌트</g2>."
@@ -7313,10 +7341,6 @@
   "bc1065924c4077d9": {
    "source": "The Pieces tab: a square for each piece, filled once it's here",
    "text": "조각 탭: 각 조각에 대한 사각형, 조각이 있으면 채워짐"
-  },
-  "bc21a99be8efd606": {
-   "source": "By hand for now, while the Chrome Web Store reviews the extension:",
-   "text": "Chrome 웹 스토어에서 확장 프로그램을 검토하는 동안에는 지금은 수동으로 해야 합니다."
   },
   "bc21bd767c7774ea": {
    "source": "The terms for using Mister Download Manager and misterdownloadmanager.com: free software under the GNU GPL 3.0, used at your own risk, for downloads you have the right to make.",
@@ -7826,6 +7850,10 @@
    "source": "Can I download without the browser extension?",
    "text": "브라우저 확장 프로그램 없이 다운로드할 수 있나요?"
   },
+  "cb565e5b28b1036b": {
+   "source": "<g1><x2/> Add to Firefox</g1><g3><x4/> Add to Chrome</g3>",
+   "text": "<g1><x2/> Firefox에 추가</g1><g3><x4/> Chrome에 추가</g3>"
+  },
   "cb75f147f406ef80": {
    "source": "Check the download's own <g1>Speed Limiter</g1> tab in its progress window.",
    "text": "진행 창에서 다운로드 자체의 <g1>속도 제한</g1> 탭을 확인하세요."
@@ -7941,6 +7969,10 @@
   "ce7c22009e3efda1": {
    "source": "This is for your Windows account only. <x1/> undoes it. Then load the extension as above, from the zip's <x2/> folder.",
    "text": "이것은 귀하의 Windows 계정에만 해당됩니다. <x1/>은 이를 취소합니다. 그런 다음 위와 같이 zip 파일의 <x2/> 폴더에서 확장 프로그램을 로드합니다."
+  },
+  "ce8618d4437420dc": {
+   "source": "To load it by hand instead (a browser that can't use the store, or a build of your own): its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
+   "text": "수동으로 로드하려면(스토어를 사용할 수 없는 브라우저 또는 직접 빌드한 경우): 확장 프로그램 파일은 MDM이 설치된 <x1/> 폴더에 있습니다. 자신을 위해 설치했다면 <x2/>에, 모든 사용자를 위해 설치했다면 <x3/>에 있습니다. 모든 릴리스에는 자체 다운로드 파일인 <x4/>도 있습니다(먼저 압축을 풀어야 합니다)."
   },
   "ceafeaa62d5e59ca": {
    "source": "The videos go into a folder named after the list, inside <g1>Save to</g1>, each under its own title.",
@@ -8354,6 +8386,10 @@
    "source": "<g1>Credentials stay with their site.</g1> Logins and cookies are sent only to the host they belong to, even across redirects.",
    "text": "<g1>자격 증명은 해당 사이트에 유지됩니다.</g1> 로그인 및 쿠키는 리디렉션을 거치더라도 해당 호스트에만 전송됩니다."
   },
+  "d9686c3ea1ff4f0a": {
+   "source": "Install the extension from its page in the Chrome Web Store, <g1>Mister Download Manager</g1>: click <g2>Add to Chrome</g2>. In Edge the button is <g3>Get</g3>: Edge first asks to <g4>Allow extensions from other stores</g4> (click <g5>Allow</g5>), then <g6>Add extension</g6>. The browser keeps it updated. MDM's <g7>Add Mister Download Manager to your browser</g7> window opens that page in each browser for you, and Chrome may offer it by itself at its next start once MDM is installed.",
+   "text": "Chrome 웹 스토어의 <g1>Mister Download Manager</g1> 페이지에서 확장 프로그램을 설치하세요. <g2>Chrome에 추가</g2>를 클릭합니다. Edge에서는 버튼이 <g3>가져오기</g3>입니다. Edge는 먼저 <g4>다른 스토어의 확장 허용</g4>을 요청하고(<g5>허용</g5> 클릭), 그 다음 <g6>확장 추가</g6>를 요청합니다. 브라우저가 확장 프로그램을 최신 상태로 유지합니다. MDM의 <g7>브라우저에 Mister Download Manager 추가</g7> 창은 각 브라우저에서 해당 페이지를 열어주며, MDM이 설치되면 Chrome이 다음 시작 시 자동으로 확장 프로그램을 제안할 수도 있습니다."
+  },
   "d9702d61beba459f": {
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "다운로드 목록을 만들고 조치하려면 MDM의 자동화 API가 필요하며, 이 API는 켤 때까지 꺼져 있습니다. MDM이 실행 중인 상태에서 다음을 한 번 실행하세요(계속 켜져 있습니다):"
@@ -8477,10 +8513,6 @@
   "dd626c4273adae29": {
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "HTTP, BitTorrent, 마그넷 및 ed2k를 지원하며 REST API를 통해 거의 모든 곳에서 실행 가능"
-  },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "Flatpak 또는 Snap으로 설치된 브라우저는 샌드박스에서 실행되므로 외부 프로그램을 시작하지 못할 수 있으며, MDM에 연결하지 못할 수도 있습니다. Flatpak 브라우저(예: Zen의 <x1/>)는 MDM의 도우미를 시작할 수 없으므로 MDM은 <g2>브라우저에 Mister Download Manager 추가</g2>에 해당 브라우저를 표시하지 않습니다. 브라우저 통합을 사용하려면 배포판 패키지(또는 브라우저 제작사의 자체 <x3/>, <x4/>, tarball 또는 AppImage)에서 브라우저를 설치하세요."
   },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
@@ -8693,10 +8725,6 @@
   "e393d2a019bf4cc9": {
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
    "text": "<g1>선택한 링크 다운로드</g1> 및 <g2>모든 링크 다운로드</g2>는 선택 시 페이지(또는 선택 항목)의 링크를 읽고 페이지 주소 및 해당 사이트의 쿠키와 함께 MDM으로 전달합니다."
-  },
-  "e39c7ec3d5c0fd70": {
-   "source": "The browser extension: for Firefox, from its add-ons store. For Chrome, Edge, Brave, Opera and Vivaldi it comes with the app and as <g1>its own download</g1>, added by hand for now, while the Chrome Web Store reviews it. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
-   "text": "브라우저 확장 프로그램: Firefox용은 애드온 스토어에서 제공됩니다. Chrome, Edge, Brave, Opera, Vivaldi용은 앱과 함께 제공되며, Chrome 웹 스토어에서 검토 중이므로 현재는 <g1>별도 다운로드</g1>로 수동 추가해야 합니다. 모든 파일은 GitHub Actions에 의해 공개 소스에서 빌드되며 SHA-256 체크섬과 함께 나열됩니다."
   },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
@@ -9126,6 +9154,10 @@
    "source": "Open source",
    "text": "오픈 소스"
   },
+  "eee3dbbafbb8e53c": {
+   "source": "- <g1>Chromium as a Snap</g1> (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in <g2>Add Mister Download Manager to your browser</g2>. Use Firefox, or Google Chrome from its own <x3/>. - <g4>Flatpak browsers</g4> (such as Zen's <x5/>) can't start MDM's helper, so MDM doesn't list them either. Install the browser from your distribution's packages (or the browser maker's own <x6/>, <x7/>, tarball or AppImage) to use browser integration.",
+   "text": "- <g1>Snap으로 설치된 Chromium</g1>(Ubuntu의 Chromium)은 샌드박스 내에서 MDM의 도우미를 시작하며, 이 도우미는 MDM에 도달할 수 없으므로 MDM은 <g2>브라우저에 Mister Download Manager 추가</g2>에 이를 나열하지 않습니다. Firefox 또는 Google Chrome을 자체 <x3/>에서 사용하세요. - <g4>Flatpak 브라우저</g4>(예: Zen의 <x5/>)는 MDM의 도우미를 시작할 수 없으므로 MDM은 이들도 나열하지 않습니다. 브라우저 통합을 사용하려면 배포판 패키지(또는 브라우저 제작사의 자체 <x6/>, <x7/>, tarball 또는 AppImage)에서 브라우저를 설치하세요."
+  },
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",
    "text": "<g1>macOS의 앱 아이콘</g1>: MDM이 실행되는 동안 Dock에 작고 흐릿한 아이콘이 표시되었지만, 이제는 앱 자체 아이콘을 유지합니다. 다른 곳에서는 창이 큰 크기(어떤 배율에서도 선명함)에서 아이콘을 가져옵니다."
@@ -9262,6 +9294,10 @@
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's <g1>Media on this page</g1> shows such a stream as <g2>Protected</g2> and doesn't send it.",
    "text": "DRM으로 보호된 동영상(대부분의 유료 스트리밍 서비스)은 다운로드할 수 없으며, MDM도 시도하지 않습니다. 브라우저 확장 프로그램의 <g1>이 페이지의 미디어</g1>는 이러한 스트림을 <g2>보호됨</g2>으로 표시하며 전송하지 않습니다."
   },
+  "f262d1421b480e2f": {
+   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi (from the Chrome Web Store), through the MDM browser extension…",
+   "text": "MDM 브라우저 확장 프로그램을 통해 Firefox(addons.mozilla.org에서), Google Chrome, Microsoft Edge, Brave, Opera, Vivaldi(Chrome 웹 스토어에서)에서 작동합니다…"
+  },
   "f26764c71f561cf8": {
    "source": "In <g1>Address</g1>, write the address with one asterisk where the number or letter changes: <x2/>.",
    "text": "<g1>주소</g1>에 숫자나 문자가 변경되는 부분에 별표 하나를 사용하여 주소를 작성합니다. 예: <x2/>."
@@ -9317,10 +9353,6 @@
   "f3a16665a583e72f": {
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "목록은 실행될 순서를 보여줍니다. 아래의 화살표 버튼을 사용하여 다운로드를 위아래로 이동시킵니다."
-  },
-  "f3b0722f5a504a62": {
-   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge and Brave, load it by hand for now, while the Chrome Web Store reviews it. <g3>Browser integration</g3> shows how.",
-   "text": "브라우저 통합은 각 브라우저에서 한 단계 더 필요합니다: 확장 프로그램 추가. Firefox에서는 <g2>addons.mozilla.org 페이지</g2>에서 <g1>Firefox에 추가</g1>를 클릭하세요. Chrome, Edge 및 Brave에서는 Chrome 웹 스토어에서 검토 중이므로 지금은 수동으로 로드하세요. <g3>브라우저 통합</g3>에서 방법을 보여줍니다."
   },
   "f3d28d86765197f1": {
    "source": "Intel",
@@ -9586,6 +9618,10 @@
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",
    "text": "MDM은 마그넷 링크와 <x1/> 파일에서 BitTorrent 파일을 다운로드합니다. 토렌트는 다른 다운로드와 동일한 목록에 나타나며, <g3>원본</g3> 열에 <g2>토렌트</g2>로 표시되고, 다른 다운로드처럼 대기열에 추가하고 예약할 수 있습니다."
   },
+  "fb3cc6240014e2b2": {
+   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
+   "text": "설치 프로그램을 사용하여 MDM을 설치하고 브라우저 통합 설정이 선택되어 있는지 확인하세요. Firefox에서는 addons.mozilla.org에서 부가 기능 페이지를 열고 Firefox에 추가를 클릭하세요. Chrome, Edge, Brave, Opera, Vivaldi에서는 Chrome 웹 스토어에서 해당 페이지를 열고 Chrome에 추가를 클릭하세요 (Edge는 가져오기를 표시하며, 먼저 다른 스토어의 확장 프로그램을 허용할지 묻습니다). 스토어를 사용할 수 없나요? 브라우저의 확장 프로그램 페이지를 열고 개발자 모드를 켠 다음, 압축 해제된 확장 프로그램 로드를 선택하고 MDM 폴더 내의 extension\\chromium 폴더를 선택하세요. 튜토리얼에서 자세히 안내합니다."
+  },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",
    "text": "MDM이 제 언어로 제공되나요?"
@@ -9681,6 +9717,10 @@
   "fdcffa742865c035": {
    "source": "<g1>Everything else</g1> goes into <g2>Various files</g2>.",
    "text": "<g1>그 외 모든 것</g1>은 <g2>기타 파일</g2>로 이동합니다."
+  },
+  "fde4e6f4f17a1676": {
+   "source": "When a browser can't use its store (a computer managed by an organization, or a build of your own), add the extension by hand:",
+   "text": "브라우저가 스토어를 사용할 수 없는 경우(조직에서 관리하는 컴퓨터 또는 자체 빌드) 확장 프로그램을 수동으로 추가합니다."
   },
   "fdf01d37915b1a04": {
    "source": "Browser extension",

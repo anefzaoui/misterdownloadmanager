@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The extension is in the Chrome Web Store**: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp), for Chrome,
+  Edge, Brave, Opera and Vivaldi, installed with one click and kept up to date. MDM's **Add
+  Mister Download Manager to your browser** window opens it in each of them (**Install it by
+  hand** stays there for a browser that can't use its store), Chrome offers it by itself once
+  MDM is installed, and the website, the help and the README offer **Add to Chrome** beside
+  **Add to Firefox**.
 - **Themes: View → Theme** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)).
   **Classic** is MDM's look, unchanged and still the default. **Native** takes your system's
   colours: Windows' accent colour and, when it is on, its contrast theme; the desktop's accent
