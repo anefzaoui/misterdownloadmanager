@@ -339,6 +339,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: the first window opens seconds sooner, and no longer freezes on a busy computer**
+  (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): MDM asked
+  fontconfig for its fonts one at a time (one program for each of some thirty scripts, more each
+  time the language list opened) while the window waited, 2 s on an idle computer and long
+  enough on a busy one for a freeze report on the very first start. It now asks once, all
+  together, while the rest of MDM starts.
 - **A server without ranges no longer sends the file twice**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)): when the extra
   connections' answers came late (a busy computer), the download could finish and then start over

@@ -219,6 +219,9 @@ fn app() -> eframe::Result {
     };
     #[cfg(windows)]
     win32::mark_running();
+    // This launch is MDM: its fonts are looked up while the rest starts (only the instance pays
+    // for them, not a launch that hands its command over).
+    theme::prepare_fonts();
     // What an earlier update set aside (old programs, a Mac's old app, downloaded files).
     update::tidy();
     // The command channel opens now, before the window: the browser's host that started MDM

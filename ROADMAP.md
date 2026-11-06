@@ -13,6 +13,9 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ Linux: MDM's first window opens seconds sooner; the system's fonts are looked up all at once
+  while it starts, not one by one in the window (on a busy computer that froze it, part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Firefox's add-on offered from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
   first: **Add to Firefox** on the website, in the help, the FAQ and the README, and in MDM's
   **Add Mister Download Manager to your browser** window (for Zen and LibreWolf too); Chrome,
