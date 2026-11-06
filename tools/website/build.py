@@ -75,8 +75,24 @@ LATEST = github(f"repos/{REPO.split('github.com/')[1]}/releases/latest") or {}
 def published_version() -> str:
     """The latest published release's version: what the download links and the version shown
     point at. Cargo.toml's is ahead of it between a merged version bump and its release's
-    files (release.yml rebuilds the site once they are published); used offline."""
-    return LATEST.get("tag_name", "").lstrip("v") or CARGO_VERSION
+    files (release.yml rebuilds the site once they are published). Not known: on GitHub's
+    runners (GITHUB_ACTIONS) the build stops, as Cargo.toml's version would deploy download
+    links that don't exist yet; built here (offline), Cargo.toml's, with a warning."""
+    tag = LATEST.get("tag_name", "").lstrip("v")
+    if tag:
+        return tag
+    if os.environ.get("GITHUB_ACTIONS"):
+        sys.exit(
+            "error: the latest release couldn't be read from GitHub (see above), so the site "
+            "isn't built: with Cargo.toml's version "
+            f"({CARGO_VERSION}) its download links could point at files not published yet."
+        )
+    print(
+        f"warning: the latest release couldn't be read from GitHub; the download links use "
+        f"Cargo.toml's version ({CARGO_VERSION}), which may not be published yet",
+        file=sys.stderr,
+    )
+    return CARGO_VERSION
 
 
 def setup_size() -> str:

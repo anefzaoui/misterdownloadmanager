@@ -3,7 +3,7 @@ resolver = "3"
 members = ["crates/*"]
 
 [workspace.package]
-version = "0.2.4"
+version = "0.3.0"
 edition = "2024"
 rust-version = "1.95"
 license = "GPL-3.0-or-later"
@@ -16,6 +16,7 @@ mdm-crash = { path = "crates/crash", default-features = false }
 mdm-debrid = { path = "crates/debrid" }
 mdm-engine = { path = "crates/engine" }
 mdm-extract = { path = "crates/extract" }
+mdm-geo = { path = "crates/geo" }
 mdm-ipc = { path = "crates/ipc" }
 mdm-labserver = { path = "crates/labserver" }
 mdm-mcp = { path = "crates/mcp" }
@@ -188,17 +189,17 @@ debug = "line-tables-only"
 # magnet lookup's progress counted (#92), and every socket bound to one address (`bind_ip`,
 # #143), until upstream has them (ikatson/rqbit); every crate of that repository from the same
 # commit.
-librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
-librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "f4778b1e72835f0a6b1581f3ecf9f3fb4d22d22e" }
+librqbit = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-bencode = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-buffers = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-clone-to-owned = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-core = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-dht = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-lsd = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-peer-protocol = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-sha1-wrapper = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-tracker-comms = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
+librqbit-upnp = { git = "https://github.com/anefzaoui/rqbit.git", rev = "d0015a87bebf7ea581764ad45710a4abb6886dc6" }
 ecolor = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
 emath = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }
 epaint = { git = "https://github.com/anefzaoui/egui.git", rev = "41fb5992144720ba048e4351ecdc9c94d1115ec0" }

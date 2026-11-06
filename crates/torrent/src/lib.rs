@@ -13,6 +13,9 @@ use std::time::Duration;
 
 /// The library itself, for what this wrapper doesn't cover (making torrents, tests).
 pub use librqbit;
+/// The order a torrent's pieces are downloaded in (#39): in order (the file's start first, for
+/// playing it while it downloads) or the rarest first.
+pub use librqbit::PieceOrder;
 use librqbit::api::{Api, TorrentIdOrHash};
 use librqbit::{
     AddTorrent, AddTorrentOptions, AddTorrentResponse, ConnectionOptions, ListenerOptions, Session,
@@ -793,6 +796,20 @@ impl Torrents {
         self.session.unpause(&h).await.map_err(engine)
     }
 
+    /// The order its pieces are downloaded in (#39).
+    pub fn order(&self, hash: &str) -> Option<PieceOrder> {
+        let h = self.session.get(id(hash).ok()?)?;
+        Some(h.piece_order())
+    }
+
+    /// Change the order its pieces are downloaded in, running or not: the next piece each peer
+    /// is asked for follows it (#39).
+    pub fn set_order(&self, hash: &str, order: PieceOrder) -> Result<(), TorrentError> {
+        let h = self.session.get(id(hash)?).ok_or(TorrentError::Unknown)?;
+        h.set_piece_order(order);
+        Ok(())
+    }
+
     /// Change which files are downloaded.
     pub async fn choose(&self, hash: &str, files: &HashSet<usize>) -> Result<(), TorrentError> {
         let h = self.session.get(id(hash)?).ok_or(TorrentError::Unknown)?;
@@ -803,7 +820,8 @@ impl Torrents {
     }
 
     /// Take it out of the session and add it again from `torrent` (its .torrent, perhaps with
-    /// trackers added): the same folder, chosen files, paused or not, and own limits. With
+    /// trackers added): the same folder, chosen files, paused or not, own limits and piece
+    /// order. With
     /// `recheck`, every piece is read and checked again (Recheck); without, the pieces it had
     /// are kept (librqbit's saved piece map, which it checks on a sample) and only the .torrent
     /// changes (Add trackers).
@@ -823,6 +841,7 @@ impl Torrents {
         );
         let (files, paused) = (h.only_files(), h.is_paused());
         let limits = self.torrent_limits(hash);
+        let order = h.piece_order();
         drop(h);
         let map = self
             .session_dir
@@ -854,6 +873,7 @@ impl Torrents {
         if let Some((down, up)) = limits {
             let _ = self.set_torrent_limits(hash, down, up);
         }
+        let _ = self.set_order(hash, order);
         Ok(())
     }
 
@@ -1529,6 +1549,31 @@ mod tests {
         );
         seeder.stop().await;
         leecher.stop().await;
+    }
+
+    /// #39: a torrent's piece order is librqbit's in-order one until set; set, it is kept when
+    /// the torrent is added again (Add trackers, Recheck).
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn the_piece_order_is_set_and_kept() {
+        let tmp = tempfile::tempdir().unwrap();
+        let t = Torrents::start(offline(&tmp.path().join("state")))
+            .await
+            .unwrap();
+        let bytes = torrent_naming("fine.bin");
+        let hash = t
+            .add(&bytes, &tmp.path().join("out"), None, Vec::new(), true)
+            .await
+            .unwrap();
+        assert_eq!(t.order(&hash), Some(PieceOrder::default()));
+        t.set_order(&hash, PieceOrder::RarestFirst).unwrap();
+        assert_eq!(t.order(&hash), Some(PieceOrder::RarestFirst));
+        t.readd(&hash, &bytes, false).await.unwrap();
+        assert_eq!(t.order(&hash), Some(PieceOrder::RarestFirst), "kept");
+        assert!(
+            t.set_order(&"0".repeat(40), PieceOrder::RarestFirst)
+                .is_err()
+        );
+        t.stop().await;
     }
 
     /// #39, more torrent actions: adding again with trackers added keeps the pieces and the

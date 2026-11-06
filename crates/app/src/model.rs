@@ -384,6 +384,9 @@ pub struct Item {
     /// every volume is there.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub package: Option<PackageTag>,
+    /// Where its server was, as its last run saw it (#140): Properties shows it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub server: Option<crate::whereis::Seen>,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The engine's last view of this download (segments, connections).
@@ -479,6 +482,8 @@ fn tool_snapshot(p: mdm_tools::video::Progress, url: &Url) -> mdm_engine::Snapsh
                 text: text.clone(),
             })
             .collect(),
+        // yt-dlp's and gallery-dl's connections are theirs: not seen here (#140).
+        server: None,
     }
 }
 
@@ -647,6 +652,7 @@ impl Item {
             log: Vec::new(),
             name_from_url: false,
             package: None,
+            server: None,
             live: None,
             snap: None,
             login: None,
@@ -660,6 +666,9 @@ impl Item {
             return false;
         };
         let s = live.dl.snapshot();
+        if let Some(server) = &s.server {
+            self.server = Some(crate::whereis::Seen::from(server));
+        }
         self.downloaded = s.downloaded;
         self.size = s.size.or(self.size);
         self.resumable = s.resumable.or(self.resumable);

@@ -7,12 +7,29 @@ issue, where the details and the discussion are. Released changes are in
 
 ✅ done, not released yet · 🔄 being built · 📋 planned · 🔍 looking into it
 
-## The next release
+## The next release: 0.3.0
 
-Everything below ships together, in one release.
+Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Where a download's server is: its country's flag and name and its round trip (near, medium or
+  far) in Download File Info, the progress window and Properties, from a table that comes with MDM
+  (no address is sent anywhere); a proxy or a CDN said as such
+  ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
+- ✅ Torrents: Download in order, to watch a video while it downloads (each file's first and last
+  pieces first, its own choice); other torrents now take the rarest pieces first
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
+- ✅ Every mark in the windows is drawn in every language (the browser window's ✔ Connected
+  was an empty box, → on Linux), and the browser and video-helper windows put their logo at the
+  start side in Arabic and Persian and fit a long German headline and subline
+  ([#185](https://github.com/anefzaoui/misterdownloadmanager/issues/185),
+  [#170](https://github.com/anefzaoui/misterdownloadmanager/issues/170))
+- ✅ A Linux test machine for every change, scripted: an Ubuntu 24.04 desktop that builds each
+  branch and drives MDM, Firefox and Chrome there (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
+  the extension's update asks for no new permission; Chrome's extension leaves it out for now
 - ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
   the button over the video, the right-click menu and the media list, read only when asked
   ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171))
@@ -25,6 +42,8 @@ Everything below ships together, in one release.
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
+- ✅ Download video: every button fits its text in every language (German **ffmpeg installieren**
+  was cut), right to left too ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172))
 - ✅ The engine tests that failed now and then on a busy computer (a refused connection coming
   back, the learned connection limit, a dead address) wait for what they check, not for time
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
@@ -184,15 +203,6 @@ Everything below ships together, in one release.
   contrast; then style themes with their own control shapes, a drawn title bar on Windows and their
   own icons: Metro first, then Adwaita and Breeze, then Luna, Aero and Aqua with icons drawn for
   MDM. Theme files can be added by anyone, and Base16 and pywal schemes imported
-- 🔄 Where a download's server is: its country, flag and round trip, from a table that comes with
-  MDM; no address is sent anywhere ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
-- 🔄 Torrents: download in order, to watch a video while it downloads; the other torrents rarest
-  first ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
-- 🔄 Firefox: reading the browser's proxy or VPN extension becomes a switch in the add-on, so the
-  update asks for no new permission ([#42](https://github.com/anefzaoui/misterdownloadmanager/issues/42))
-- 🔄 MDM's browser window: the check mark before **Connected** shows in every language (an empty
-  box in Arabic and on Linux), the German subtitle fits, the Arabic layout is mirrored
-  ([#185](https://github.com/anefzaoui/misterdownloadmanager/issues/185), [#170](https://github.com/anefzaoui/misterdownloadmanager/issues/170))
 - 🔄 Linux supported like Windows, no longer experimental: every change is now checked on Ubuntu
   (GNOME) as well as Windows, then on KDE, Cinnamon and Xfce ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - 🔄 Before the release: every screenshot taken again on Windows and Linux (smaller files, WebP),
@@ -211,8 +221,6 @@ Everything below ships together, in one release.
 
 ### Downloads and windows
 
-- 📋 Download video: the **Install ffmpeg** button fits its text in every language
-  ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172))
 - 📋 The Scheduler wakes the computer from sleep to run a queue
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
@@ -230,6 +238,8 @@ Everything below ships together, in one release.
 
 ### Browser extension
 
+- 📋 Chrome: read the browser's proxy or VPN extension's (#42 is Firefox's for now: Chrome can't
+  make that permission optional, so it needs a release that can add it)
 - ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
 - ✅ On the Chrome Web Store: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp)
 - 📋 Chrome: use the browser's proxy or VPN extension for downloads too (it needs a permission

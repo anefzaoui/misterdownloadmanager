@@ -188,6 +188,29 @@ async function showMedia(tab, connected) {
   }
 }
 
+// #42: reading the browser's proxy (a VPN or proxy extension's) is an opt-in, the optional
+// "proxy" permission, asked for on this switch. Only where the browser lets it be optional
+// (Firefox); Chromium has no switch.
+const PROXY = { permissions: ["proxy"] };
+if ((ext.runtime.getManifest().optional_permissions || []).includes("proxy")) {
+  const row = $("proxy-row");
+  const box = $("proxy");
+  row.hidden = false;
+  row.title = t("popup_proxy_title");
+  const sync = () =>
+    ext.permissions
+      .contains(PROXY)
+      .catch(() => false)
+      .then((on) => (box.checked = Boolean(on)));
+  sync();
+  box.addEventListener("change", () => {
+    // Asked for in the click itself (the browser allows it from a user's action only): nothing
+    // awaited before it. Refused, or taken back: the switch shows what the browser says.
+    const asked = box.checked ? ext.permissions.request(PROXY) : ext.permissions.remove(PROXY);
+    asked.catch(() => false).then(sync);
+  });
+}
+
 $("take").addEventListener("change", async (e) => {
   await ask({ type: "pause", paused: !e.target.checked });
   show();

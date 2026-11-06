@@ -11,6 +11,7 @@ pub mod naming;
 pub mod net;
 pub mod pac;
 pub mod planner;
+pub mod server;
 pub mod sites;
 mod sparse;
 pub mod state;
@@ -23,5 +24,6 @@ pub use download::{
     ProbeInfo, Proxy, Request, Snapshot, fetch, http_client, probe, probe_kept, supported,
 };
 pub use net::{NetError, Route};
+pub use server::Server;
 pub use sites::Refusal;
 pub use unlock::{ServiceFault, Unlocked, Unlocker};
