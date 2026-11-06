@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ A download or magnet link sent while the window is minimized opens its window at once
+  ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162))
 - ✅ A server that can't resume a download no longer gets the file downloaded twice on a busy
   computer (part of [#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
 - ✅ Translators: a reviewed translation is never replaced by machine translation, and CI checks it;
