@@ -4482,10 +4482,6 @@
    "source": "<g1>Download list</g1> (right). One row per download. See <g2>The download list</g2>.",
    "text": "<g1>다운로드 목록</g1> (오른쪽). 다운로드당 한 줄. <g2>다운로드 목록</g2>을 참조하세요."
   },
-  "71ee3c989cceb48b": {
-   "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them.",
-   "text": "<g1>스트림</g1>: 대부분의 사이트에서 긴 비디오를 재생하는 방식인 HLS(<x2/>) 및 DASH(<x3/>). 각 스트림은 플레이어가 전환한 품질 수에 관계없이 한 번만 나열되며, 확장 프로그램이 읽을 수 있는 경우 품질(<x4/>)과 길이가 함께 표시됩니다."
-  },
   "71f8e678aea06824": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.2.4 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>모든 파일 및 체크섬</g1><g2>GitHub Releases의 버전 0.2.4, SHA256SUMS.txt 포함</g2>"
@@ -8341,6 +8337,10 @@
   "d830def677dfb3f0": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
    "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉각적인 뷰포트가 있습니다. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료됨)를 반환합니다. Windows 전용 호출은 <x3/>로 제한되고 Linux 및 macOS의 해당 호출은 <x4/>로 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다. Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)입니다. 파일 이름 앞의 아이콘도 마찬가지입니다(<x6/>). Windows 셸의 시스템 이미지 목록, macOS Finder(NSWorkspace), Linux 데스크톱의 아이콘 테마(<x7/>, shared-mime-info 및 아이콘 테마 사양)입니다. 각 유형은 백그라운드 스레드에서 픽셀 크기당 한 번 조회됩니다. Tango의 아이콘(번들로 제공됨)은 시스템 아이콘이 준비될 때까지 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
+  },
+  "d835a1659f05d750": {
+   "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them. A stream whose address doesn't end in <x5/> or <x6/>, served as plain text, is found too: when you open the list (or press the download button over its player) and the player plays a stream, the extension reads the first few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.",
+   "text": "<g1>스트림</g1>: 대부분의 사이트에서 긴 동영상을 재생하는 방식인 HLS(<x2/>) 및 DASH(<x3/>). 각 스트림은 플레이어가 전환한 품질 수에 관계없이 한 번만 나열되며, 확장 프로그램이 읽을 수 있는 경우 품질(<x4/>) 및 길이를 함께 표시합니다. 주소가 <x5/> 또는 <x6/>로 끝나지 않고 일반 텍스트로 제공되는 스트림도 찾을 수 있습니다. 목록을 열거나(또는 플레이어 위에서 다운로드 버튼을 누를 때) 플레이어가 스트림을 재생하면 확장 프로그램은 해당 플레이어가 가져온 처음 몇 킬로바이트를 읽어 스트림을 인식합니다. 요청하기 전까지는 아무것도 읽지 않습니다."
   },
   "d840a217a694ce9e": {
    "source": "5. No warranty",

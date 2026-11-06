@@ -7,9 +7,9 @@ issue, where the details and the discussion are. Released changes are in
 
 ✅ done, not released yet · 🔄 being built · 📋 planned · 🔍 looking into it
 
-## The next release
+## The next release: 0.3.0
 
-Everything below ships together, in one release.
+Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
