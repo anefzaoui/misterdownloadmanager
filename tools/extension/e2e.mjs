@@ -88,6 +88,8 @@ export class Pipe {
     this.out = proc.stdio[3];
     this.next = 1;
     this.waiting = new Map();
+    // Event listeners (`on`): each gets every event {method, params, sessionId}.
+    this.listeners = [];
     let buf = "";
     proc.stdio[4].on("data", (d) => {
       buf += d.toString("utf8");
@@ -100,9 +102,14 @@ export class Pipe {
         if (w) {
           this.waiting.delete(m.id);
           m.error ? w.reject(new Error(`${w.method}: ${m.error.message}`)) : w.resolve(m.result);
+        } else if (m.method) {
+          for (const f of this.listeners) f(m);
         }
       }
     });
+  }
+  on(f) {
+    this.listeners.push(f);
   }
   send(method, params = {}, sessionId) {
     const id = this.next++;
@@ -292,6 +299,24 @@ async function chromium(bin, profile, dl, page, ready) {
       pill,
       tab,
       trace,
+      // The errors in the extension's service worker's console so far (#42: none), Runtime.enable
+      // replaying those logged before it.
+      workerErrors: async () => {
+        const s = (await cdp.send("Target.attachToTarget", { targetId: sw.targetId, flatten: true })).sessionId;
+        const seen = [];
+        cdp.on((m) => {
+          if (m.sessionId !== s) return;
+          if (m.method === "Runtime.exceptionThrown") seen.push(`exception: ${m.params.exceptionDetails.exception?.description || m.params.exceptionDetails.text}`);
+          if (m.method === "Runtime.consoleAPICalled" && (m.params.type === "error" || m.params.type === "warning")) {
+            seen.push(`${m.params.type}: ${m.params.args.map((a) => a.value ?? a.description).join(" ")}`);
+          }
+          if (m.method === "Log.entryAdded" && m.params.entry.level === "error") seen.push(`log: ${m.params.entry.text}`);
+        });
+        await cdp.send("Runtime.enable", {}, s);
+        await cdp.send("Log.enable", {}, s);
+        await sleep(500);
+        return seen;
+      },
       // Run `expression` in the extension's service worker (the proxy case sets the browser's proxy
       // there, as a VPN extension does).
       inExtension: async (expression) => {
@@ -438,7 +463,28 @@ async function firefox(bin, profile, dl, page, ready) {
         if (r.type === "exception") throw new Error(`evaluate: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value === undefined ? undefined : JSON.parse(r.result.value);
       };
-      return { evaluate: ev, close: () => bidi.send("browsingContext.close", { context: c }).catch(() => {}) };
+      // A click at the centre of `selector`, as a user's (the tab brought to the front first):
+      // what a browser lets an extension's page ask a permission from.
+      const click = async (selector) => {
+        // An extension's page is privileged: BiDi won't bring it to the front, the browser's
+        // window does.
+        await inBrowser(`(() => { const t = [...gBrowser.tabs].find((x) => x.linkedBrowser.currentURI.spec === ${JSON.stringify(url)}); if (t) gBrowser.selectedTab = t; return Boolean(t); })()`);
+        const r = await ev(`(() => { const b = document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; })()`);
+        await bidi.send("input.performActions", {
+          context: c,
+          actions: [{ type: "pointer", id: "mouse", actions: [{ type: "pointerMove", x: Math.round(r[0]), y: Math.round(r[1]) }, { type: "pointerDown", button: 0 }, { type: "pointerUp", button: 0 }] }],
+        });
+      };
+      return { evaluate: ev, click, close: () => bidi.send("browsingContext.close", { context: c }).catch(() => {}) };
+    };
+    // An expression in the browser's own window (its chrome scope): its preferences, its console,
+    // its permission prompts.
+    const inBrowser = async (expression) => {
+      const { contexts: windows } = await bidi.send("browsingContext.getTree", { "moz:scope": "chrome" });
+      const json = `(async () => JSON.stringify(await (${expression})))()`;
+      const r = await bidi.send("script.evaluate", { expression: json, target: { context: windows[0].context }, awaitPromise: true, "moz:scope": "chrome" });
+      if (r.type === "exception") throw new Error(`in the browser: ${r.exceptionDetails.text} ${expression}`);
+      return r.result.value === undefined ? undefined : JSON.parse(r.result.value);
     };
     // The page's right-click menu at (x, y), and its item `label` chosen (#155): a right-click,
     // then the item activated in the browser's own window (its chrome scope). "chosen", or the
@@ -465,6 +511,7 @@ async function firefox(bin, profile, dl, page, ready) {
     };
     return {
       extension,
+      inBrowser,
       base: `moz-extension://${FIREFOX_UUID}/`,
       major,
       evaluate,
@@ -597,10 +644,13 @@ const brief = (e) => `${e.method} ${e.status} ${e.outcome} ${e.range || "-"}`;
 const sizeOf = async (url) => Number((await fetch(url, { method: "HEAD" })).headers.get("content-length"));
 
 // The browser kept nothing: its download folder is empty (no .part, no .crdownload, no
-// "Unconfirmed", no placeholder).
+// "Unconfirmed", no placeholder). Chromium deletes its working file (`<uuid>.tmp`) on its own
+// after the extension cancels its copy, sometimes a second or two later on a busy computer or
+// with an older app's host (seen past 5 s while other builds ran): a file still there after 10 s is kept.
 async function keptNothing(dl) {
   await sleep(1000);
-  const left = fs.readdirSync(dl);
+  let left = fs.readdirSync(dl);
+  for (const end = Date.now() + 9000; left.length && Date.now() < end; left = fs.readdirSync(dl)) await sleep(250);
   if (left.length) throw new Error(`the browser kept: ${left.join(", ")}`);
 }
 
@@ -877,29 +927,122 @@ async function mdmRequests(p) {
   return all.slice(1);
 }
 
+// #42 in Chrome: no "proxy" permission (Chrome can't make it optional), so no proxy API, no
+// switch in the popup, no error in the service worker's console, and downloads as before.
+async function proxyInChrome(t) {
+  const s = t.session;
+  const ext = await s.inExtension(`JSON.stringify({ api: typeof chrome.proxy, perms: chrome.runtime.getManifest().permissions, optional: chrome.runtime.getManifest().optional_permissions || [] })`);
+  const e = JSON.parse(ext);
+  if (e.api !== "undefined" || e.perms.includes("proxy") || e.optional.includes("proxy")) throw new Error(`Chrome has the proxy permission: ${ext}`);
+  const popup = await s.tab(`${s.base}popup.html`);
+  try {
+    await until("the popup", 10000, () =>
+      popup.evaluate(`location.href.startsWith(${JSON.stringify(s.base)}) && document.readyState === "complete" && Boolean(document.getElementById("proxy-row"))`).catch(() => false),
+    );
+    if (!(await popup.evaluate("document.getElementById('proxy-row').hidden"))) throw new Error("the proxy switch shows in Chrome");
+  } finally {
+    await popup.close();
+  }
+  // An ordinary download goes as before.
+  const file = `e2e-noproxy-${t.name}.zip`;
+  await clickLink(t, `/gen/1M/${file}`);
+  await arrived(file, 1 << 20);
+  await keptNothing(t.dl);
+  const errors = await s.workerErrors();
+  if (errors.length) throw new Error(`the service worker's console: ${errors.join(" | ")}`);
+  return `no proxy permission or API (${e.perms.join(", ")}), no switch, a download as before, no error in the service worker's console`;
+}
+
 const CASES = {
-  // #42: the browser behind a proxy extension. The extension sets the browser's proxy, as a VPN
-  // extension does; the file's host (lab.mdm.test) is known to that proxy only, so MDM can only
-  // download it through the same proxy, which the extension handed over with the download.
+  // #42: the browser behind a proxy (a VPN or proxy extension's). The file's host (lab.mdm.test) is
+  // known to that proxy only, so MDM can download it only through the same proxy, which the
+  // extension hands over with the download, once the user switched that on: the popup's switch
+  // asks for the optional "proxy" permission (Firefox). Chrome can't make it optional, so its
+  // extension has neither the permission nor the switch, and downloads as before #42.
   async proxy(t) {
-    if (!t.session.inExtension) throw new Skip("Firefox: its per-request proxy (proxyInfo) is covered by tools/extension/test.mjs");
-    const set = `chrome.proxy.settings.set({ value: { mode: "fixed_servers", rules: { singleProxy: { scheme: "http", host: "127.0.0.1", port: ${PROXY_PORT} } } }, scope: "regular" }).then(() => "set")`;
-    await t.session.inExtension(set);
-    try {
+    if (!t.session.inBrowser) return proxyInChrome(t);
+    const s = t.session;
+    const pref = (k, v) => s.inBrowser(`(Services.prefs.${typeof v === "number" ? "setIntPref" : typeof v === "boolean" ? "setBoolPref" : "setStringPref"}(${JSON.stringify(k)}, ${JSON.stringify(v)}), "set")`);
+    // The browser's proxy, as a VPN extension sets it (Firefox's own setting: 127.0.0.1 itself
+    // stays direct).
+    await pref("network.proxy.http", "127.0.0.1");
+    await pref("network.proxy.http_port", PROXY_PORT);
+    await pref("network.proxy.type", 1);
+    const popupUrl = `${s.base}popup.html`;
+    const granted = async (popup) => popup.evaluate("browser.permissions.contains({ permissions: ['proxy'] })");
+    // One file through the lab's host: how many of its requests went through the proxy (the
+    // browser's own first; MDM's when it got the proxy) after `wait` ms.
+    const fetchFile = async (label, wantMdm) => {
       proxyLog.length = 0;
-      // An .xz: Internet Download Manager, when installed and running, catches the usual types
-      // (.zip…) from every host but 127.0.0.1 and would take this download first. MDM's list has
-      // .xz for this run (see `auto_types` below): the test stays about MDM.
-      const file = `e2e-proxy-${t.name}.xz`;
+      const file = `e2e-proxy-${t.name}-${label}.xz`;
       await clickLink(t, `http://${PROXY_HOST}:${PORT}/gen/1M/${file}`);
-      await arrived(file, 1 << 20, "");
+      if (wantMdm) await arrived(file, 1 << 20, "");
+      else await sleep(8000);
       await keptNothing(t.dl);
-      const via = proxyLog.filter((e) => e.target.includes(file));
-      // The browser's own request, then MDM's: both through the proxy.
-      if (via.length < 2) throw new Error(`only ${via.length} request(s) through the proxy: ${JSON.stringify(proxyLog)}`);
-      return `${via.length} requests for the file through the browser's proxy (the browser's, then MDM's)`;
+      return proxyLog.filter((e) => e.target.includes(file)).length;
+    };
+    const done = [];
+    try {
+      const popup = await s.tab(popupUrl);
+      try {
+        await until("the popup", 10000, () => popup.evaluate(`document.readyState === "complete" && Boolean(document.getElementById("proxy-row"))`).catch(() => false));
+        await sleep(300);
+        // As installed: the switch shown, off; nothing handed over.
+        const shown = await popup.evaluate("[!document.getElementById('proxy-row').hidden, document.getElementById('proxy').checked]");
+        if (!shown[0] || shown[1]) throw new Error(`the switch as installed: ${JSON.stringify(shown)} (want shown, off)`);
+        if (await granted(popup)) throw new Error("the permission is granted as installed");
+        const off = await fetchFile("off", false);
+        if (off !== 1) throw new Error(`as installed: ${off} requests through the proxy (want the browser's only)`);
+        done.push("as installed: off, the browser's request only");
+
+        // Refused: the browser asks (its prompt), the user says no.
+        await pref("extensions.webextOptionalPermissionPrompts", true);
+        await popup.click("#proxy");
+        const ids = await until("the browser's permission prompt", 10000, () =>
+          s.inBrowser(`PopupNotifications._currentNotifications.map((n) => n.id)`).then((l) => l.length && l),
+        );
+        const refused = await s.inBrowser(`(() => {
+          const n = PopupNotifications._currentNotifications.find((x) => /permissions/.test(x.id));
+          if (!n) return "no prompt";
+          n.secondaryActions[0].callback();
+          PopupNotifications.remove(n);
+          return "refused";
+        })()`);
+        if (refused !== "refused") throw new Error(`the prompt (${JSON.stringify(ids)}): ${refused}`);
+        await until("the switch back off", 5000, async () => !(await popup.evaluate("document.getElementById('proxy').checked")));
+        if (await granted(popup)) throw new Error("refused, yet granted");
+        const no = await fetchFile("refused", false);
+        if (no !== 1) throw new Error(`refused: ${no} requests through the proxy`);
+        done.push(`refused at the prompt (${ids.join(", ")}): off, the browser's request only`);
+
+        // Granted: the switch on, MDM downloads through the same proxy.
+        await pref("extensions.webextOptionalPermissionPrompts", false);
+        await popup.click("#proxy");
+        await until("the permission granted", 10000, () => granted(popup));
+        await until("the switch on", 5000, () => popup.evaluate("document.getElementById('proxy').checked"));
+        const on = await fetchFile("on", true);
+        if (on < 2) throw new Error(`granted: only ${on} request(s) through the proxy`);
+        done.push(`granted: ${on} requests through the browser's proxy (the browser's, then MDM's)`);
+
+        // Revoked: the switch off again.
+        await popup.click("#proxy");
+        await until("the permission removed", 10000, async () => !(await granted(popup)));
+        const after = await fetchFile("revoked", false);
+        if (after !== 1) throw new Error(`revoked: ${after} requests through the proxy`);
+        done.push("switched off: removed, the browser's request only");
+      } finally {
+        await popup.close();
+      }
+      // Nothing in the browser's console from the extension.
+      const errors = await s.inBrowser(`Services.console.getMessageArray()
+        .filter((m) => m instanceof Ci.nsIScriptError && !(m.flags & Ci.nsIScriptError.warningFlag) && String(m.sourceName).startsWith(${JSON.stringify(s.base)}))
+        .map((m) => m.errorMessage)`);
+      if (errors.length) throw new Error(`the extension's console: ${errors.join(" | ")}`);
+      done.push("no error in the console");
+      return done.join("; ");
     } finally {
-      await t.session.inExtension(`chrome.proxy.settings.clear({ scope: "regular" }).then(() => "cleared")`).catch(() => {});
+      await pref("network.proxy.type", 0).catch(() => {});
+      await pref("extensions.webextOptionalPermissionPrompts", true).catch(() => {});
     }
   },
 
@@ -1452,8 +1595,12 @@ async function run() {
         const seen = path.join(data, "extension-seen");
         fs.rmSync(seen, { force: true });
         let seenAs = "";
+        // E2E_OLD_APP=1: an app older than extension-seen (0.2.4, for the compatibility runs:
+        // a new extension with a released app): the extension is given time to reach it instead.
         const ready = () =>
-          until(`${name}'s extension reaching the host`, 20000, () => {
+          process.env.E2E_OLD_APP
+            ? sleep(8000).then(() => (seenAs = "(an older app: not reported)"))
+            : until(`${name}'s extension reaching the host`, 20000, () => {
             try {
               seenAs = fs.readFileSync(seen, "utf8").split("\t")[0];
               return seenAs;

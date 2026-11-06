@@ -12,4 +12,4 @@ mod server;
 mod streams;
 
 pub use faults::Faults;
-pub use server::{Config, HELP, LabServer, LogEntry, LogSink};
+pub use server::{Config, HELP, LabServer, LogEntry, LogSink, SlotHold};

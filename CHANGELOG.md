@@ -139,8 +139,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   or auto-config script) with it. MDM downloads through the same proxy while Options → Proxy /
   Socks → "Use proxy/socks from a browser's request" is on, which is the default. A proxy that
   needs the VPN extension's own login can't be shared: the download says so rather than going
-  without it. The extension asks for the browser's *proxy* permission for this, to read the
-  browser's proxy, never to change it.
+  without it. In Firefox it is an opt-in: **Send downloads through this browser's proxy or VPN
+  extension** in the extension's popup asks for the browser's *proxy* permission (to read the
+  browser's proxy, never to change it), so the extension's update asks for no new permission.
+  Chrome and the other Chromium browsers can't make that permission optional, so their extension
+  doesn't hand the proxy over yet: set the same proxy in **Options → Proxy / Socks** there.
 - **Hide to the notification area** ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63)):
   a download's progress window has a button that hides it in the tray while the download goes
   on: on Windows in its title bar, left of Minimize (the progress window draws its own Windows 11
@@ -281,6 +284,21 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: a Linux test machine, scripted** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
+  `tools/lab/linux-vm/` sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host
+  (`vm.ps1`: hardware, headless start, linked clones; `setup.sh`: packages, Rust, Node, the
+  browsers, UI automation, an unlocked keyring), builds any branch or pull request there with a
+  quick test profile (`build.sh`), and checks pull requests on it: windows shot and compared
+  pixel by pixel (`shots.sh`, `shot-host.sh`, `pixdiff.py`), HLS and DASH hand-overs from the Snap
+  Firefox and Google Chrome (`streams.mjs`, `streams-chrome.mjs`), the extension's proxy switch
+  (`proxy-optin.mjs`), hand-overs and the Scheduler while minimized, torrents without a network,
+  and MDM's start-up time (`measure.sh`). Every change is now checked on Linux as on Windows.
+- **Developers: the engine tests no longer fail on a busy computer**
+  ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)). Three end-to-end tests
+  depended on timing: a refused connection coming back, the learned connection limit, and a dead
+  address (a server without ranges was fixed earlier). Each now waits for the state it checks. The lab server
+  can hold a connection slot for a test (`hold_slot`), and `settled()` now also means every
+  slot is free.
 - **A smaller download** ([#158](https://github.com/anefzaoui/misterdownloadmanager/issues/158)):
   the program is built for size, which takes the installer from 16.1 to 13.6 MB and the zips
   from 19.3 to 15.6 MB, with the same features and the same download speed.
@@ -380,6 +398,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   stream's own server, not the page's.
 - **Add torrent: the labels fit in every language**: in German, **Speichern unter** ran under
   its field.
+- **Download video: the buttons fit their text in every language**
+  ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172)): in German **ffmpeg
+  installieren** showed as "ffmpeg installie...", and in Russian **Helpers...** and **Install
+  ffmpeg** were cut too. Each button is now as wide as its translated text (English is unchanged),
+  and the page's title stops before the Install button instead of running under it. In Arabic
+  and the other right-to-left languages, a widened **Hide tab** in a download's window now grows
+  into the room beside it instead of towards the window's edge.
 - **A download or magnet link sent while the window is minimized opens at once**
   ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162)): with the main window
   minimized (not to the notification area), a download from the browser or a magnet link was

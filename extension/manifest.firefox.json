@@ -23,11 +23,13 @@
         "storage",
         "webRequest",
         "webRequestBlocking",
-        "scripting",
-        "proxy"
+        "scripting"
     ],
     "host_permissions": [
         "<all_urls>"
+    ],
+    "optional_permissions": [
+        "proxy"
     ],
     "background": {
         "scripts": [

@@ -282,6 +282,7 @@ Gently rounded, like die-cut label stock: sheets 10px, stuck-on labels and dialo
 ### Buttons
 Tactile and few. One green sticker, everything else drawn in line.
 - **Shape:** gently rounded (8px), 46px tall (40px in the header, 38px in the language offer).
+- **Long labels:** a label wider than its space wraps to two lines inside the button's height; only the header's Download stays on one line.
 - **Primary (Download):** Dispatch Green with Go Ink text, 700 weight at width 92%, 20px side padding, the sticker edge. A split variant keeps the system's download on the left and the other systems under an arrow that opens a sheet menu.
 - **Hover / Focus:** hover darkens to Go Hover; press moves 1px down; focus is a 3px Label Link Blue ring offset 2px.
 - **Line:** transparent with a 1.5px inset ring in the current text colour; hover tints 10% of that colour. Works on both board and sheet.
@@ -305,6 +306,7 @@ The site has no form inputs. Its "fields" are the label's data grid: two columns
 ### Navigation
 - **Header:** the board, 68px (60px on phones), a 1px Board Edge hairline under it, sticky. Links 15px/600 on-board, 6px rounded 12% tint on hover, the current page underlined 2px at 8px offset. The language button is outlined at 55% of the text colour; the header's green Download is always present.
 - **Menu (under 1100px):** a Lift sheet with ink links.
+- **Fit:** the header never runs past its row. Where a language's words don't fit, it gives up, in order and only as far as needed: the Sponsor heart, some spacing (16px gaps, 7px link padding), the links for the menu, then the language's name beside its flag.
 - **Help nav:** field-name group labels, 14.5px links in ink-2, the current page filled ink with paper text.
 - **Footer:** a full ink band with paper text, field-name column heads.
 
