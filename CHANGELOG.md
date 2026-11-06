@@ -130,8 +130,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   or auto-config script) with it. MDM downloads through the same proxy while Options → Proxy /
   Socks → "Use proxy/socks from a browser's request" is on, which is the default. A proxy that
   needs the VPN extension's own login can't be shared: the download says so rather than going
-  without it. The extension asks for the browser's *proxy* permission for this, to read the
-  browser's proxy, never to change it.
+  without it. In Firefox it is an opt-in: **Send downloads through this browser's proxy or VPN
+  extension** in the extension's popup asks for the browser's *proxy* permission (to read the
+  browser's proxy, never to change it), so the extension's update asks for no new permission.
+  Chrome and the other Chromium browsers can't make that permission optional, so their extension
+  doesn't hand the proxy over yet: set the same proxy in **Options → Proxy / Socks** there.
 - **Hide to the notification area** ([#63](https://github.com/anefzaoui/misterdownloadmanager/issues/63)):
   a download's progress window has a button that hides it in the tray while the download goes
   on: on Windows in its title bar, left of Minimize (the progress window draws its own Windows 11
