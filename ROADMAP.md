@@ -18,6 +18,9 @@ Everything below ships together, in one release, as version 0.3.0.
   start side in Arabic and Persian and fit a long German headline and subline
   ([#185](https://github.com/anefzaoui/misterdownloadmanager/issues/185),
   [#170](https://github.com/anefzaoui/misterdownloadmanager/issues/170))
+- ✅ A Linux test machine for every change, scripted: an Ubuntu 24.04 desktop that builds each
+  branch and drives MDM, Firefox and Chrome there (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
   the extension's update asks for no new permission; Chrome's extension leaves it out for now
 - ✅ Streams whose address doesn't end in .m3u8 or .mpd, served as plain text, are found too: by
@@ -29,6 +32,8 @@ Everything below ships together, in one release, as version 0.3.0.
   manual install as the fallback
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
   saving the list no longer wait for the window to be restored
+- ✅ Download video: every button fits its text in every language (German **ffmpeg installieren**
+  was cut), right to left too ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172))
 - ✅ The engine tests that failed now and then on a busy computer (a refused connection coming
   back, the learned connection limit, a dead address) wait for what they check, not for time
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136))
@@ -210,8 +215,6 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Downloads and windows
 
-- 📋 Download video: the **Install ffmpeg** button fits its text in every language
-  ([#172](https://github.com/anefzaoui/misterdownloadmanager/issues/172))
 - 📋 The Scheduler wakes the computer from sleep to run a queue
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
