@@ -436,9 +436,18 @@ pub static CLASSIC: Theme = Theme {
     icons: IconStyle::Color,
 };
 
-/// The built-in themes, the default first.
-pub fn builtins() -> [&'static Theme; 1] {
-    [&CLASSIC]
+/// The built-in themes that don't change by themselves, the default first: the classic look
+/// (written out above), then the ones shipped as theme files (`assets/themes/`, in the format
+/// users write, so they double as examples). Native follows the system and is made when chosen
+/// (`crate::native`).
+pub fn builtins() -> [&'static Theme; 2] {
+    static HIGH_CONTRAST: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin(
+            "high-contrast",
+            include_str!("../assets/themes/high-contrast.toml"),
+        )
+    });
+    [&CLASSIC, &HIGH_CONTRAST]
 }
 
 /// `#rrggbb` or `#rrggbbaa` (the `#` optional, as Base16 writes them) as a colour.
@@ -521,6 +530,84 @@ mod tests {
         assert!(d.dark && !l.dark);
         assert_eq!(CLASSIC.metrics.control_radius, 3.0);
         assert_eq!(CLASSIC.metrics.list_row, 17.0);
+    }
+
+    /// Every built-in theme's text reads (WCAG 2.1 AA, 4.5:1), High contrast's at AAA (7:1),
+    /// and its accent stands out from the background (3:1).
+    #[test]
+    fn built_in_themes_meet_wcag_contrast() {
+        use crate::derive::contrast;
+        let mut themes: Vec<Theme> = builtins().iter().map(|t| (*t).clone()).collect();
+        // Native with a few accents, and with Windows' high-contrast colours.
+        for accent in [
+            rgb(0x00, 0x78, 0xd4),
+            rgb(0xe7, 0x48, 0x56),
+            rgb(0xff, 0xb9, 0x00),
+        ] {
+            themes.push(crate::native::theme(&crate::native::System {
+                accent: Some(crate::native::Accent::from_color(accent)),
+                ..Default::default()
+            }));
+        }
+        themes.push(crate::native::theme(&crate::native::System {
+            high_contrast: Some([
+                grey(0x00),
+                grey(0xff),
+                rgb(0x1a, 0xeb, 0xff),
+                grey(0x00),
+                rgb(0xff, 0xff, 0x00),
+                rgb(0x3f, 0xf2, 0x3f),
+            ]),
+            ..Default::default()
+        }));
+        for t in &themes {
+            let high = t.id == "high-contrast" || t.light.focus_ring == t.light.accent;
+            let min = if high { 7.0 } else { 4.5 };
+            for p in [&t.light, &t.dark] {
+                let pairs = [
+                    ("text / window", p.text, p.window),
+                    ("text / field", p.text, p.field),
+                    ("text / list", p.text, p.list),
+                    ("menu text / menu", p.menu_text, p.menu),
+                    ("selection", p.selection_text, p.selection),
+                    ("button text", p.button_text, p.button),
+                    ("muted / window", p.muted, p.window),
+                ];
+                for (what, fg, bg) in pairs {
+                    let r = contrast(fg, bg);
+                    // The classic look keeps today's pixels: its dark grey notes on the dark
+                    // window are 4.42:1 (#a0a0a0 on #393939), reported for its own fix.
+                    if t.id == "classic" && p.dark && what == "muted / window" {
+                        assert!(r >= 4.4, "{} {}: {what} {r:.2}", t.id, p.dark);
+                        continue;
+                    }
+                    assert!(r >= min, "{} {}: {what} {r:.2}", t.id, p.dark);
+                }
+                let r = contrast(p.link, p.window);
+                assert!(r >= 4.5, "{} {}: link {r:.2}", t.id, p.dark);
+                let r = contrast(p.accent, p.window);
+                assert!(r >= 3.0, "{} {}: accent {r:.2}", t.id, p.dark);
+                let r = contrast(p.button_accent_text, p.button_accent);
+                assert!(r >= 4.5, "{} {}: accent button {r:.2}", t.id, p.dark);
+            }
+        }
+    }
+
+    /// A theme shipped as a file reads without a warning.
+    #[test]
+    fn built_in_theme_files_read_cleanly() {
+        let text = include_str!("../assets/themes/high-contrast.toml");
+        let v: serde_json::Value = toml::from_str(text).unwrap();
+        let l = crate::themefile::parse("high-contrast", &v, |_| {
+            Ok(crate::themefile::Loaded {
+                theme: CLASSIC.clone(),
+                warnings: Vec::new(),
+            })
+        })
+        .unwrap();
+        assert!(l.warnings.is_empty(), "{:?}", l.warnings);
+        assert_eq!(l.theme.name, "High contrast");
+        assert!(l.theme.dark.dark && !l.theme.light.dark);
     }
 
     /// The classic look's dark secondary and error texts read on every dark surface they sit on

@@ -89,7 +89,7 @@ From top to bottom:
   - **Tasks** — add downloads, torrents, batch downloads and videos; Link grabber; show the drop target; import and export the list; exit.
   - **File** — the selected download: **Stop Download**, **Remove**, **Download Now**, **Redownload**.
   - **Downloads** — **Pause All**, **Stop All**, **Delete All Completed**, **Find**, the **Scheduler**, queues, the **Speed Limiter** and **Options**.
-  - **View** — show or hide the categories, sort the list (**Arrange files**), **Dark Mode support**, **Always dark**, **Draw with** (Windows: Direct3D, or OpenGL) and **Language**.
+  - **View** — show or hide the categories, sort the list (**Arrange files**), **Dark Mode support**, **Always dark**, **Theme**, **Draw with** (Windows: Direct3D, or OpenGL) and **Language**.
   - **Help** — help pages, tutorials, **Keyboard shortcuts**, **Report a problem**, **Check for updates** and **About**.
 - **Toolbar.** **Add URL**, **Add Torrent**, **Resume**, **Stop**, **Stop All**, **Delete**, **Delete Completed**, **Options**, **Scheduler**, **Start Queue**, **Stop Queue**. The small arrow next to **Add Torrent**, **Start Queue** and **Stop Queue** opens more choices.
 - **Categories** (left). Choose what the list shows: **All Downloads**, **Unfinished**, **Finished** and **Queues**, each with its categories. Drag the gap between the pane and the list to make it wider.
@@ -100,6 +100,21 @@ From top to bottom:
 MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off **View → Dark Mode support**. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on **View → Always dark**.
 
 ![The main window in dark mode](images/main-dark.png)
+
+## Themes
+
+**View → Theme** changes MDM's look at once, keeping its layout:
+
+- **Classic**: MDM's own look, the default.
+- **Native**: your system's colours. Windows' accent colour (Settings → Personalization →
+  Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher
+  contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It
+  follows them when you change them.
+- **High contrast**: black and white, a bright accent, every edge drawn, text at 7:1 or more.
+
+Each has a light and a dark side: **Dark Mode support** and **Always dark** choose between
+them as before. Theme files you put in the themes folder (**View → Theme → Open themes folder**)
+are listed there too.
 
 ## The tray icon
 

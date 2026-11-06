@@ -689,6 +689,74 @@ pub fn apps_use_dark() -> bool {
     rc == 0 && value == 0
 }
 
+/// Windows' accent colour and its shades, from the personalisation settings (`AccentPalette`:
+/// 8 colours of 4 bytes, R G B and an unused byte, lightest first: Light3, Light2, Light1, the
+/// accent, Dark1, Dark2, Dark3, and one more). None when Windows has none (older versions).
+pub fn accent_palette() -> Option<[[u8; 3]; 7]> {
+    use windows_sys::Win32::System::Registry::{
+        HKEY_CURRENT_USER, RRF_RT_REG_BINARY, RegGetValueW,
+    };
+    let key: Vec<u16> = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Accent\0"
+        .encode_utf16()
+        .collect();
+    let name: Vec<u16> = "AccentPalette\0".encode_utf16().collect();
+    let mut bytes = [0u8; 32];
+    let mut size = bytes.len() as u32;
+    // SAFETY: a registry read into a 32-byte buffer of the stated size.
+    let rc = unsafe {
+        RegGetValueW(
+            HKEY_CURRENT_USER,
+            key.as_ptr(),
+            name.as_ptr(),
+            RRF_RT_REG_BINARY,
+            std::ptr::null_mut(),
+            bytes.as_mut_ptr() as *mut c_void,
+            &mut size,
+        )
+    };
+    (rc == 0 && size >= 28).then(|| crate::native::accent_palette_bytes(&bytes))
+}
+
+/// Windows' high-contrast colours while high contrast is on (Settings → Accessibility →
+/// Contrast themes): background, text, selection, selection's text, links, greyed text. None
+/// while it is off.
+pub fn high_contrast_colors() -> Option<[egui::Color32; 6]> {
+    use windows_sys::Win32::Graphics::Gdi::{
+        COLOR_GRAYTEXT, COLOR_HIGHLIGHT, COLOR_HIGHLIGHTTEXT, COLOR_HOTLIGHT, COLOR_WINDOW,
+        COLOR_WINDOWTEXT, GetSysColor,
+    };
+    use windows_sys::Win32::UI::Accessibility::{HCF_HIGHCONTRASTON, HIGHCONTRASTW};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{SPI_GETHIGHCONTRAST, SystemParametersInfoW};
+    // SAFETY: HIGHCONTRASTW is plain data; its size is set as the call requires.
+    let mut hc: HIGHCONTRASTW = unsafe { zeroed() };
+    hc.cbSize = size_of::<HIGHCONTRASTW>() as u32;
+    // SAFETY: a read into the struct above, of the size it states.
+    let ok = unsafe {
+        SystemParametersInfoW(
+            SPI_GETHIGHCONTRAST,
+            hc.cbSize,
+            &mut hc as *mut HIGHCONTRASTW as *mut c_void,
+            0,
+        )
+    };
+    if ok == 0 || hc.dwFlags & HCF_HIGHCONTRASTON == 0 {
+        return None;
+    }
+    let color = |i| {
+        // SAFETY: a plain call; COLORREF is 0x00BBGGRR.
+        let c = unsafe { GetSysColor(i) };
+        egui::Color32::from_rgb(c as u8, (c >> 8) as u8, (c >> 16) as u8)
+    };
+    Some([
+        color(COLOR_WINDOW),
+        color(COLOR_WINDOWTEXT),
+        color(COLOR_HIGHLIGHT),
+        color(COLOR_HIGHLIGHTTEXT),
+        color(COLOR_HOTLIGHT),
+        color(COLOR_GRAYTEXT),
+    ])
+}
+
 /// Sleep now (not hibernate: rundll32's SetSuspendState read its own window handle as
 /// "hibernate"). `force`: don't let programs delay it. False when Windows refused.
 pub fn sleep(force: bool) -> bool {
