@@ -463,7 +463,14 @@ impl ReportWindow {
             None
         };
         if let Some(s) = self.told.clone().or(status) {
-            winui::text(&p, o.x + 16.0, o.y + 452.0, &s, winui::TEXT());
+            // One line between the report and the check box: a long one (the symbols' note, a
+            // translation, an issue's title) is cut at the window's right margin with "...",
+            // and shown whole under the pointer (#164).
+            let (rc, cut) =
+                winui::text_fit(&p, o.x + 16.0, o.y + 452.0, &s, winui::TEXT(), o.x + 604.0);
+            if cut {
+                winui::full_on_hover(ui, rc, "crash-status", &s);
+            }
         }
         if let Some(d) = made.as_ref().and_then(|m| m.dump.as_ref())
             && d.exists()
