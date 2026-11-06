@@ -13,6 +13,8 @@ Everything below ships together, in one release.
 
 ### Done
 
+- ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
+  saving the list no longer wait for the window to be restored
 - ✅ A download or magnet link sent while the window is minimized opens its window at once
   ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162))
 - ✅ Firefox's add-on offered from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/)

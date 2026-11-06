@@ -339,6 +339,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A minimized MDM keeps working**: with the main window minimized (not to the notification
+  area), queues didn't start their next file, the Scheduler's starts and stops didn't fire,
+  download limits, the network adapter's kill switch, the clipboard monitor, the update check, the
+  taskbar's progress and saving the list all waited until the window was restored. They run in
+  every window state now, and their windows (Download complete, a limit's notice) open at once.
 - **A download or magnet link sent while the window is minimized opens at once**
   ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162)): with the main window
   minimized (not to the notification area), a download from the browser or a magnet link was
