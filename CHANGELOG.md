@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Themes: View → Theme** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)).
+  **Classic** is MDM's look, unchanged and still the default. **Native** takes your system's
+  colours: Windows' accent colour and, when it is on, its contrast theme; the desktop's accent
+  colour and higher-contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour
+  on macOS; it follows them when they change. **High contrast** is black and white with a bright
+  accent, every edge drawn and text at 7:1 or more. A theme applies at once, light and dark alike,
+  and theme files in the themes folder (**View → Theme → Open themes folder**) are listed too;
+  High contrast is itself such a file, in the same format.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
