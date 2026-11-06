@@ -6,7 +6,8 @@
 //! first second, so every large download paid it. A sparse file has no such fill. Elsewhere
 //! (`ftruncate` already makes sparse files) this is a no-op.
 //!
-//! The engine's only unsafe code: one `DeviceIoControl` call.
+//! The engine's only unsafe code: one `DeviceIoControl` call (and, in its test, one
+//! `GetCompressedFileSizeW`).
 #![allow(unsafe_code)]
 
 use std::fs::File;
@@ -70,25 +71,49 @@ mod tests {
         f.metadata().unwrap().file_attributes() & FILE_ATTRIBUTE_SPARSE_FILE != 0
     }
 
+    /// The bytes the file takes on the drive (for a sparse file, only its written ranges).
+    fn on_drive(path: &std::path::Path) -> u64 {
+        use std::os::windows::ffi::OsStrExt;
+        use windows_sys::Win32::Storage::FileSystem::GetCompressedFileSizeW;
+        let wide: Vec<u16> = path.as_os_str().encode_wide().chain([0]).collect();
+        let mut high = 0u32;
+        // SAFETY: `wide` is a NUL-terminated UTF-16 path that outlives the call; `high` is a
+        // valid u32 for the size's upper half.
+        let low = unsafe { GetCompressedFileSizeW(wide.as_ptr(), &mut high) };
+        if low == u32::MAX {
+            // Also a valid low half: only the error code tells.
+            let e = std::io::Error::last_os_error();
+            assert_eq!(e.raw_os_error(), Some(0), "GetCompressedFileSizeW: {e}");
+        }
+        (u64::from(high) << 32) | u64::from(low)
+    }
+
     #[test]
     fn a_sparse_part_file_is_written_far_in_without_a_fill() {
         let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("p.bin");
         let mut f = File::options()
             .read(true)
             .write(true)
             .create(true)
             .truncate(true)
-            .open(dir.path().join("p.bin"))
+            .open(&path)
             .unwrap();
         assert!(set(&f, true), "NTFS temp folder");
         assert!(is_sparse(&f));
         f.set_len(4 << 30).unwrap();
-        let started = std::time::Instant::now();
         f.seek(SeekFrom::Start(2 << 30)).unwrap();
         f.write_all(&[7u8; 1 << 20]).unwrap();
         f.sync_data().unwrap();
-        // A fill would write 2 GiB first (0.5–4 s on this machine).
-        assert!(started.elapsed() < std::time::Duration::from_millis(400));
+        // A fill would have written the 2 GiB before the write (0.5–4 s on this machine), and
+        // a file that isn't sparse takes its whole 4 GiB on the drive. This one holds only what
+        // was written: measured on the drive, not timed (#201: a 400 ms budget failed on a busy
+        // CI runner and on a starved CPU).
+        let used = on_drive(&path);
+        assert!(
+            ((1 << 20)..(64 << 20)).contains(&used),
+            "{used} bytes on the drive"
+        );
         // Clearing allocates any holes left, so only a fully written file is cleared: shrink
         // this mostly empty one first.
         f.set_len(0).unwrap();
