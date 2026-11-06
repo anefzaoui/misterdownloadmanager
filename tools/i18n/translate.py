@@ -7,7 +7,10 @@
 
 Only rows a catalog lacks (or whose English changed) are sent; rows already there are kept, so a
 re-run after new texts costs cents. Every row the model wrote gets a `#, machine` line above it
-for native review (delete the line once a native speaker approved the row).
+for native review (delete the line once a native speaker approved the row). A row without that
+line is a person's work: it is never sent again (not by --redo, not when a check flags it; the
+flag is printed for the person to decide), and tools/i18n/reviewed_guard.py fails CI when a pull
+request changes or drops one.
 
 The key: OPENROUTER_API_KEY, else %USERPROFILE%\\.mdm-dev\\openrouter.key (never in the repo).
 Requests run in parallel (--workers); a 429 or 5xx backs off and retries. Spending stops at
@@ -530,6 +533,7 @@ def main():
 
     # The work: per language, the rows its catalog lacks.
     jobs, state = [], {}
+    reviewed_flags = []
     for lang in langs:
         code = lang["code"]
         have = read_catalog(code)
@@ -539,6 +543,14 @@ def main():
             if row["context"] == "@id" and row["source"] == "language.name":
                 continue
             old = have.get((row["context"], row["source"]))
+            # A row without "#, machine" was checked by a person: it is never sent again, not by
+            # --redo and not when it fails a check below (that is reported, the person decides).
+            if old and not old[1]:
+                done[i], machine[i] = old
+                problem = check_row(code, row, old[0].split("|") if row["plural"] else old[0], forms)
+                if problem:
+                    reviewed_flags.append(f"{code}: {row['source'][:60]!r}: {problem}")
+                continue
             if redo and redo.search(row["source"]):
                 old = None
             if old and not check_row(code, row, old[0].split("|") if row["plural"] else old[0], forms):
@@ -550,6 +562,8 @@ def main():
             jobs.append((code, todo[k:k + args.batch], None))
 
     chars = sum(len(json.dumps([item(i, rows[i]) for i in b], ensure_ascii=False)) for _, b, _ in jobs)
+    for flag in reviewed_flags:
+        print(f"kept as reviewed (a person checked it), though a check flags it: {flag}")
     print(f"{len(langs)} language(s), {len(jobs)} request(s), ~{chars // 4 + len(jobs) * 1500:,} input tokens")
     if args.dry_run or not jobs:
         return

@@ -327,12 +327,32 @@ pub struct Config {
     /// The DHT's first nodes (`host:port`); None: librqbit's own (public routers). Tests and test
     /// tools name nodes on loopback.
     pub dht_bootstrap: Option<Vec<String>>,
-    /// Options → Proxy / Socks → Network adapter (#35): the device every socket of the session is
-    /// held to (librqbit's `bind_device_name`: Linux SO_BINDTODEVICE, macOS IP_BOUND_IF), and
-    /// whether it has IPv4 only. UPnP and local peer discovery are off then: they speak to the
-    /// local network, not through the adapter. Windows has no such binding in librqbit: the app
-    /// doesn't start torrents there while an adapter is chosen.
-    pub bind: Option<(String, bool)>,
+    /// Options → Proxy / Socks → Network adapter (#35, #143): what holds every socket of the
+    /// session to the adapter. UPnP and local peer discovery are off then: they speak to the
+    /// local network, not through the adapter.
+    pub bind: Option<Bind>,
+}
+
+/// How a session is held to the chosen network adapter (`Config::bind`).
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Bind {
+    /// Linux and macOS: its device (librqbit's `bind_device_name`: SO_BINDTODEVICE,
+    /// IP_BOUND_IF), and whether it has IPv4 only.
+    Device { name: String, v4_only: bool },
+    /// Windows: its address (librqbit's `bind_ip`). Windows sends a packet only through the
+    /// adapter that has its source address (strong host model), so a socket bound to it can't
+    /// leave another way; when the address is gone, nothing is sent. One family: IPv4 when the
+    /// adapter has it (IPv6 peers are then skipped), else IPv6.
+    Address(std::net::IpAddr),
+}
+
+impl Bind {
+    fn v4_only(&self) -> bool {
+        match self {
+            Bind::Device { v4_only, .. } => *v4_only,
+            Bind::Address(ip) => ip.is_ipv4(),
+        }
+    }
 }
 
 impl Config {
@@ -440,7 +460,11 @@ impl Torrents {
     pub async fn start(cfg: Config) -> Result<Torrents, TorrentError> {
         std::fs::create_dir_all(&cfg.state_dir).map_err(engine)?;
         let proxied = cfg.proxy.is_some();
-        let v4_only = cfg.bind.as_ref().is_some_and(|(_, v4)| *v4);
+        let v4_only = cfg.bind.as_ref().is_some_and(Bind::v4_only);
+        let bind_ip = match &cfg.bind {
+            Some(Bind::Address(ip)) => Some(*ip),
+            _ => None,
+        };
         // Offline only without one named: a test's DHT on loopback is still on.
         let dht_on = cfg.dht && !proxied && (!cfg.offline || cfg.dht_bootstrap.is_some());
         let dht = dht_on.then(|| librqbit::DhtSessionConfig {
@@ -452,7 +476,8 @@ impl Torrents {
             ..Default::default()
         });
         // Offline (tests): loopback only. A set address: that one (with the port asked for).
-        let ip = cfg.listen_ip.or(cfg
+        // Bound to an address: on it.
+        let ip = cfg.listen_ip.or(bind_ip).or(cfg
             .offline
             .then_some(std::net::IpAddr::V4(Ipv4Addr::LOCALHOST)));
         let listen = (cfg.listen && !proxied).then(|| ListenerOptions {
@@ -502,8 +527,12 @@ impl Torrents {
                 || proxied
                 || cfg.bind.is_some(),
             ipv4_only: cfg.offline || v4_only,
-            // Every socket of the session held to the chosen adapter (#35).
-            bind_device_name: cfg.bind.as_ref().map(|(name, _)| name.clone()),
+            // Every socket of the session held to the chosen adapter (#35, #143).
+            bind_device_name: match &cfg.bind {
+                Some(Bind::Device { name, .. }) => Some(name.clone()),
+                _ => None,
+            },
+            bind_ip,
             fastresume: true,
             persistence: Some(SessionPersistenceConfig::Json {
                 folder: Some(cfg.state_dir.join("session")),
@@ -517,9 +546,11 @@ impl Torrents {
             ..Default::default()
         };
         prepare_saved(&cfg.state_dir.join("session"), proxied);
+        // With its causes: "error starting listeners: error binding: …" says why (an adapter's
+        // address gone, #143).
         let session = Session::new_with_opts(cfg.state_dir.join("unsorted"), opts)
             .await
-            .map_err(engine)?;
+            .map_err(|e| engine(format!("{e:#}")))?;
         let api = Api::new(session.clone(), None);
         Ok(Torrents {
             session,
@@ -924,6 +955,250 @@ impl Torrents {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Where packets and connections to it came from: a UDP socket (`udp`) or a TCP listener
+    /// that answers each connection with `reply`, on 127.0.0.1.
+    struct Recorder {
+        addr: SocketAddr,
+        from: Arc<std::sync::Mutex<Vec<SocketAddr>>>,
+    }
+
+    impl Recorder {
+        async fn udp() -> Recorder {
+            let sock = tokio::net::UdpSocket::bind((Ipv4Addr::LOCALHOST, 0))
+                .await
+                .unwrap();
+            let from = Arc::new(std::sync::Mutex::new(Vec::new()));
+            let (addr, seen) = (sock.local_addr().unwrap(), from.clone());
+            tokio::spawn(async move {
+                let mut buf = [0u8; 2048];
+                loop {
+                    if let Ok((_, f)) = sock.recv_from(&mut buf).await {
+                        seen.lock().unwrap().push(f);
+                    }
+                }
+            });
+            Recorder { addr, from }
+        }
+
+        // Its tests bind 127.0.0.2, which macOS hasn't.
+        #[cfg(not(target_os = "macos"))]
+        async fn tcp(reply: &'static [u8]) -> Recorder {
+            let l = tokio::net::TcpListener::bind((Ipv4Addr::LOCALHOST, 0))
+                .await
+                .unwrap();
+            let from = Arc::new(std::sync::Mutex::new(Vec::new()));
+            let (addr, seen) = (l.local_addr().unwrap(), from.clone());
+            tokio::spawn(async move {
+                while let Ok((mut s, f)) = l.accept().await {
+                    seen.lock().unwrap().push(f);
+                    tokio::spawn(async move {
+                        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+                        let mut buf = [0u8; 4096];
+                        let _ = s.read(&mut buf).await;
+                        let _ = s.write_all(reply).await;
+                    });
+                }
+            });
+            Recorder { addr, from }
+        }
+
+        fn seen(&self) -> Vec<SocketAddr> {
+            self.from.lock().unwrap().clone()
+        }
+    }
+
+    /// #143: a session bound to an address (Windows' way of holding it to a network adapter)
+    /// sends everything from that address: its listener, outgoing peer connections, the DHT, UDP
+    /// and HTTP trackers. 127.0.0.2 stands for the adapter's address: Windows and Linux route
+    /// all of 127.0.0.0/8 to loopback (macOS only 127.0.0.1, so not there).
+    #[cfg(not(target_os = "macos"))]
+    #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+    async fn a_bound_session_sends_only_from_its_address() {
+        let bound: std::net::IpAddr = Ipv4Addr::new(127, 0, 0, 2).into();
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        let data: Vec<u8> = (0..200_000u32).map(|i| (i % 241) as u8).collect();
+        std::fs::write(src.join("a.bin"), &data).unwrap();
+        let torrent = make_torrent(&src).await;
+        let seeder = Torrents::start(offline(&tmp.path().join("s1")))
+            .await
+            .unwrap();
+        let hash = seeder
+            .add(&torrent, &src, None, Vec::new(), false)
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while seeder.stats(&hash).unwrap().phase != Phase::Finished {
+            assert!(std::time::Instant::now() < deadline, "seeder never checked");
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        let seed_addr = seeder.listen_addr().expect("seeder listens");
+
+        let dht = Recorder::udp().await;
+        let udp_tracker = Recorder::udp().await;
+        let http_tracker = Recorder::tcp(
+            b"HTTP/1.1 200 OK\r\nContent-Length: 27\r\n\r\nd8:intervali1800e5:peers0:e",
+        )
+        .await;
+        let other_peer = Recorder::tcp(b"").await;
+        let leecher = Torrents::start(Config {
+            upnp: false,
+            lsd: false,
+            dht: true,
+            dht_bootstrap: Some(vec![dht.addr.to_string()]),
+            bind: Some(Bind::Address(bound)),
+            ..Config::new(tmp.path().join("s2"))
+        })
+        .await
+        .unwrap();
+        assert_eq!(
+            leecher.listen_addr().map(|a| a.ip()),
+            Some(bound),
+            "it listens on its address only"
+        );
+        // Loopback trackers straight to the session: MDM's own `add` drops them (#40).
+        let out = tmp.path().join("got");
+        let added = leecher
+            .session
+            .add_torrent(
+                AddTorrent::from_bytes(torrent.clone()),
+                Some(AddTorrentOptions {
+                    output_folder: Some(out.to_string_lossy().into_owned()),
+                    overwrite: true,
+                    initial_peers: Some(vec![seed_addr, other_peer.addr]),
+                    trackers: Some(vec![
+                        format!("udp://{}/announce", udp_tracker.addr),
+                        format!("http://{}/announce", http_tracker.addr),
+                    ]),
+                    ..Default::default()
+                }),
+            )
+            .await
+            .unwrap();
+        let h2 = added.into_handle().unwrap().info_hash().as_string();
+        let deadline = std::time::Instant::now() + Duration::from_secs(30);
+        loop {
+            let done = leecher.stats(&h2).unwrap().phase == Phase::Finished;
+            let all = [&dht, &udp_tracker, &http_tracker, &other_peer]
+                .iter()
+                .all(|r| !r.seen().is_empty());
+            if done && all {
+                break;
+            }
+            assert!(
+                std::time::Instant::now() < deadline,
+                "done {done}; dht {:?} udp {:?} http {:?} peer {:?}",
+                dht.seen(),
+                udp_tracker.seen(),
+                http_tracker.seen(),
+                other_peer.seen()
+            );
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        // One file: librqbit writes it straight into the folder.
+        let file = [out.join("a.bin"), out.join("set").join("a.bin")]
+            .into_iter()
+            .find(|p| p.exists())
+            .expect("the file was written");
+        assert_eq!(std::fs::read(file).unwrap(), data);
+        for (what, r) in [
+            ("the DHT", &dht),
+            ("the UDP tracker", &udp_tracker),
+            ("the HTTP tracker", &http_tracker),
+            ("a peer", &other_peer),
+        ] {
+            let seen = r.seen();
+            assert!(
+                seen.iter().all(|f| f.ip() == bound),
+                "{what} was reached from {seen:?}, not only from {bound}"
+            );
+            eprintln!("#143: {what} reached from {seen:?}");
+        }
+        seeder.stop().await;
+        leecher.stop().await;
+    }
+
+    /// #143: through a SOCKS5 proxy (Torrent settings), the proxy is reached from the bound
+    /// address too, for peers and HTTP trackers alike.
+    #[cfg(not(target_os = "macos"))]
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn a_bound_session_reaches_its_proxy_from_its_address() {
+        let bound: std::net::IpAddr = Ipv4Addr::new(127, 0, 0, 2).into();
+        let tmp = tempfile::tempdir().unwrap();
+        let src = tmp.path().join("seed").join("set");
+        std::fs::create_dir_all(&src).unwrap();
+        std::fs::write(src.join("a.bin"), vec![1u8; 20_000]).unwrap();
+        let torrent = make_torrent(&src).await;
+        // It answers nothing: what matters is where the connections come from.
+        let proxy = Recorder::tcp(b"").await;
+        let t = Torrents::start(Config {
+            upnp: false,
+            lsd: false,
+            dht: false,
+            proxy: Some(format!("socks5://{}", proxy.addr)),
+            bind: Some(Bind::Address(bound)),
+            ..Config::new(tmp.path().join("s"))
+        })
+        .await
+        .unwrap();
+        t.session
+            .add_torrent(
+                AddTorrent::from_bytes(torrent),
+                Some(AddTorrentOptions {
+                    output_folder: Some(tmp.path().join("got").to_string_lossy().into_owned()),
+                    overwrite: true,
+                    initial_peers: Some(vec![SocketAddr::from((Ipv4Addr::new(10, 9, 8, 7), 6881))]),
+                    trackers: Some(vec!["http://192.0.2.9/announce".into()]),
+                    ..Default::default()
+                }),
+            )
+            .await
+            .unwrap();
+        let deadline = std::time::Instant::now() + Duration::from_secs(20);
+        while proxy.seen().len() < 2 {
+            assert!(
+                std::time::Instant::now() < deadline,
+                "the proxy saw {:?}",
+                proxy.seen()
+            );
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        let seen = proxy.seen();
+        assert!(seen.iter().all(|f| f.ip() == bound), "{seen:?}");
+        eprintln!("#143: the proxy reached from {seen:?}");
+        t.stop().await;
+    }
+
+    /// #143: bound to an address no adapter has (the adapter disconnected): the session doesn't
+    /// start, says why, and nothing was sent; without a listener and a DHT as well.
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn a_gone_address_sends_nothing() {
+        let tmp = tempfile::tempdir().unwrap();
+        // TEST-NET-1 (RFC 5737): no adapter has it.
+        let gone: std::net::IpAddr = Ipv4Addr::new(192, 0, 2, 1).into();
+        let dht = Recorder::udp().await;
+        for (n, (listen, dht_on)) in [(true, true), (false, false)].into_iter().enumerate() {
+            let started = Torrents::start(Config {
+                upnp: false,
+                lsd: false,
+                listen,
+                dht: dht_on,
+                dht_bootstrap: Some(vec![dht.addr.to_string()]),
+                bind: Some(Bind::Address(gone)),
+                ..Config::new(tmp.path().join(format!("s{n}")))
+            })
+            .await;
+            let Err(TorrentError::Engine(why)) = started else {
+                panic!("started bound to an address that isn't there");
+            };
+            assert!(why.contains("bind"), "says why: {why}");
+            eprintln!("#143: listen {listen}, DHT {dht_on}: {why}");
+        }
+        tokio::time::sleep(Duration::from_millis(300)).await;
+        assert!(dht.seen().is_empty(), "nothing was sent");
+    }
 
     #[test]
     fn magnets_are_recognised() {

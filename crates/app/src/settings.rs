@@ -526,11 +526,8 @@ impl Settings {
             lsd: self.torrent_lsd,
             proxy,
             blocklist,
-            // The chosen network adapter's device (#35; Linux and macOS, see torrents::route_refusal).
-            bind: match own_route() {
-                mdm_engine::Route::Bound(b) => Some((b.name.clone(), b.v6.is_none())),
-                _ => None,
-            },
+            // The chosen network adapter (#35, #143); the session takes it again when it starts.
+            bind: crate::torrents::route_bind(&own_route()).ok().flatten(),
             ..mdm_torrent::Config::new(state_dir)
         })
     }

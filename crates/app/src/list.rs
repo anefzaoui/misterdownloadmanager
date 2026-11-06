@@ -736,6 +736,19 @@ pub fn show(
         st.scroll += winui::wheel_rows(ui, ROW_H, page_rows) * ROW_H;
         st.hscroll -= ui.input(|i| i.smooth_scroll_delta.x);
     }
+    // Rows out of view are there for screen readers too (#111), as many as `reachable_rows`
+    // gives around the view; one asked to scroll into view shows from this frame on.
+    let row_id = |idx: usize| egui::Id::unique(("download-row", idx));
+    // The number of rows is the list's (UI Automation reads a row's "of M" from its list).
+    let a11y = ui
+        .ctx()
+        .accesskit_node_builder(resp.id, |n| n.set_size_of_set(rows.len()))
+        .is_some();
+    let page = (body.height() / ROW_H).floor().max(1.0) as usize;
+    let reach = winui::reachable_rows(rows.len(), (st.scroll / ROW_H).round() as usize, page);
+    if a11y && let Some(idx) = winui::row_asked_for(ui, reach.clone(), row_id) {
+        st.scroll_to = Some(idx);
+    }
     if let Some(row) = st.scroll_to.take() {
         let top = row as f32 * ROW_H;
         if top < st.scroll {
@@ -753,35 +766,68 @@ pub fn show(
     let last_right = cols.last().map_or(cl, |s| s.2);
     let mut cut_under_pointer = None;
     let keys_in_use = winui::keyboard_in_use(ui.ctx());
+    // A screen reader's row: the name, then Status and Size, selected or not, its place among all
+    // the rows, where it is (out of view: above or below the list).
+    let ppp = ui.ctx().pixels_per_point();
+    // The rows are the list's children (UI Automation reads "12 of 40" from the list, and finds
+    // them under it): made as widgets of a Ui whose parent is the list, clipped to nothing so
+    // they take no pointer from it.
+    let mut rows_ui = ui.new_child(
+        egui::UiBuilder::new()
+            .max_rect(screen(body))
+            .accessibility_parent(resp.id),
+    );
+    rows_ui.set_clip_rect(Rect::NOTHING);
+    let expose_row = |idx: usize, row: &Row, picked: bool| {
+        let top = body_top + (idx as f32 - first as f32) * ROW_H - offset;
+        let bounds = screen(Rect::from_min_size(
+            pos2(cl, top),
+            egui::vec2(rr - cl, ROW_H),
+        ));
+        rows_ui.interact(bounds, row_id(idx), egui::Sense::hover());
+        let spoken = [0usize, 3, 2]
+            .iter()
+            .map(|c| row.cells[*c].as_str())
+            .filter(|t| !t.is_empty())
+            .collect::<Vec<_>>()
+            .join(", ");
+        ui.ctx().accesskit_node_builder(row_id(idx), |n| {
+            n.set_role(egui::Role::ListBoxOption);
+            n.set_label(spoken);
+            n.set_selected(picked);
+            // AccessKit counts from 0 (UI Automation and AT-SPI say idx + 1).
+            n.set_position_in_set(idx);
+            n.set_size_of_set(rows.len());
+            n.add_action(egui::accesskit::Action::ScrollIntoView);
+            n.set_bounds(egui::accesskit::Rect {
+                x0: (bounds.left() * ppp) as f64,
+                y0: (bounds.top() * ppp) as f64,
+                x1: (bounds.right() * ppp) as f64,
+                y1: (bounds.bottom() * ppp) as f64,
+            });
+        });
+    };
+    // In the list's order: those above the view, those in it (below, as they are drawn), then
+    // those under it.
+    let reach = if a11y {
+        winui::reachable_rows(rows.len(), first, page)
+    } else {
+        0..0
+    };
+    let expose_out_of_view = |range: std::ops::Range<usize>| {
+        for idx in range {
+            if let Some(row) = rows.get(idx) {
+                expose_row(idx, row, selected.get(idx).copied().unwrap_or(false));
+            }
+        }
+    };
+    expose_out_of_view(reach.start..reach.end.min(first));
     for k in 0..visible {
         let idx = first + k;
         let top = body_top + k as f32 * ROW_H - offset;
         if let Some(row) = rows.get(idx) {
             let picked = selected.get(idx).copied().unwrap_or(false);
-            // A screen reader's row: the name, then Status and Size, selected or not.
-            let ppp = ui.ctx().pixels_per_point();
-            let bounds = screen(Rect::from_min_size(
-                pos2(cl, top),
-                egui::vec2(rr - cl, ROW_H),
-            ));
-            let spoken = [0usize, 3, 2]
-                .iter()
-                .map(|c| row.cells[*c].as_str())
-                .filter(|t| !t.is_empty())
-                .collect::<Vec<_>>()
-                .join(", ");
-            ui.ctx()
-                .accesskit_node_builder(egui::Id::unique(("download-row", idx)), |n| {
-                    n.set_role(egui::Role::ListBoxOption);
-                    n.set_label(spoken);
-                    n.set_selected(picked);
-                    n.set_bounds(egui::accesskit::Rect {
-                        x0: (bounds.left() * ppp) as f64,
-                        y0: (bounds.top() * ppp) as f64,
-                        x1: (bounds.right() * ppp) as f64,
-                        y1: (bounds.bottom() * ppp) as f64,
-                    });
-                });
+            expose_row(idx, row, picked);
             let sel = picked && st.focused;
             // The focused row's dotted outline only once the keyboard is in use, as every
             // control's focus (winui::keyboard_in_use).
@@ -885,6 +931,7 @@ pub fn show(
             fill(&bp, cl, gy, rr, gy, GRID_H());
         }
     }
+    expose_out_of_view(reach.start.max(first + visible)..reach.end);
     if let Some(full) = cut_under_pointer {
         // At the pointer: the list is one widget, and a tip placed by it showed under its
         // bottom edge, far from the row.

@@ -166,6 +166,10 @@
    "source": "Contribute",
    "text": "ساهم"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "آخر تحديث 2026-11-06 · ينطبق على التطبيق وإضافة المتصفح وموقع misterdownloadmanager.com"
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "إجابات حول Mister Download Manager: هل هو مجاني، هل هو آمن، كيف يقارن بـ IDM، المتصفحات، مقاطع الفيديو، التورنت، السرعة، Mac و Linux، والمزيد."
@@ -698,10 +702,6 @@
    "source": "Torrents and magnet links",
    "text": "التورنت وروابط المغناطيس"
   },
-  "1192c6aacd81c9e9": {
-   "source": "Last updated 2026-11-05",
-   "text": "آخر تحديث 2026-11-05"
-  },
   "11c2e6a758e059a3": {
    "source": "Space",
    "text": "تحديد الزر الافتراضي"
@@ -861,10 +861,6 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "نعم. يقبل MDM مفاتيح سطر الأوامر المألوفة لـ IDM، ويأتي مع misterdownloadmanager-cli للتنزيلات من الطرفية، ولديه واجهة برمجة تطبيقات (API) أتمتة محلية محمية برمز مميز…"
-  },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "الصف الذي يحتوي على سطر <x1/> فوقه تمت ترجمته بواسطة الآلة. عندما تراجعه (وتصححه إذا لزم الأمر)، احذف سطر <x2/> هذا."
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1034,6 +1030,10 @@
    "source": "Link grabber and archives",
    "text": "أداة التقاط الروابط والأرشيفات"
   },
+  "1a9a6da034f61a17": {
+   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). The torrent engine binds every socket to it: peers (TCP, and through a SOCKS proxy), HTTP and UDP trackers, the DHT and the listening port. On Linux and macOS it binds the adapter itself. On Windows it binds the adapter's address (its IPv4 one when it has one), and Windows sends a packet only through the adapter that has its source address. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter.",
+   "text": "تبقي <g1>الخيارات → الوكيل / SOCKS → محول الشبكة</g1> اتصالات MDM على محول واحد، عادة ما يكون محول VPN (<g2>الخيارات</g2>). يربط محرك التورنت كل مقبس به: النظراء (TCP، وعبر وكيل SOCKS)، ومتتبعات HTTP و UDP، و DHT، ومنفذ الاستماع. على Linux و macOS، يربط المحول نفسه. على Windows، يربط عنوان المحول (عنوان IPv4 الخاص به إذا كان موجودا)، ويرسل Windows الحزمة فقط عبر المحول الذي يحمل عنوان المصدر الخاص بها. يتم إيقاف تشغيل UPnP واكتشاف النظراء المحليين حينها، لأنهما يتصلان بالشبكة المحلية بدلا من الاتصال عبر المحول."
+  },
   "1aafdbaf510c3af8": {
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>إنه مجاني، للأبد.</g1> لا توجد فترة تجريبية تنتهي، ولا مفتاح ترخيص، ولا إعلانات. يضمن ترخيص GNU GPL بقاءه مجانيا."
@@ -1045,10 +1045,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 ثانية</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "على نظام Windows، لا يمكن لمحرك التورنت الربط بمحول بعد. لذلك لا تبدأ التورنتات بينما يتم اختيار واحد (\"لا يمكن للتورنتات المرور عبر محول شبكة مختار على Windows بعد\")، بدلا من تجاوزها. لا تزال أسماء المتتبعات تبحث بواسطة DNS الخاص بالنظام."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2505,6 +2501,10 @@
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "لا تحتاج إلى تشغيل MDM أولا. عندما يسلم المتصفح تنزيلا ولا يكون MDM قيد التشغيل، يقوم المساعد بتشغيله وتمرير التنزيل."
+  },
+  "3e87c1c47e7b6f4c": {
+   "source": "It works as a kill switch. When the adapter disconnects, running torrents stop with \"… is not connected; it goes on when it is back\", and they start again through the adapter when it is. Until MDM notices (within a second), the engine's sockets are still bound to an address that is gone, so nothing can leave another way. A torrent added while the adapter isn't connected doesn't start, and says why. Tracker names are still looked up by the system's DNS.",
+   "text": "يعمل كمفتاح إيقاف تلقائي. عندما ينقطع اتصال المحول، تتوقف التورنتات قيد التشغيل مع رسالة \"... غير متصل؛ سيستمر عند عودته\"، وتبدأ مرة أخرى عبر المحول عند عودته. حتى يلاحظ MDM (في غضون ثانية)، تظل مقابس المحرك مرتبطة بعنوان غير موجود، لذلك لا يمكن لأي شيء أن يغادر بطريقة أخرى. التورنت الذي يتم إضافته بينما المحول غير متصل لا يبدأ، ويذكر السبب. لا تزال أسماء المتتبعات يتم البحث عنها بواسطة DNS الخاص بالنظام."
   },
   "3e9e6b7b10d78723": {
    "source": "<g1>Start</g1> adds the ticked links to the <g2>Main download queue</g2> and starts the queue. It downloads as many files at once as the queue allows.",
@@ -4466,10 +4466,6 @@
    "source": "The whole source is public, and every release is built from it on GitHub's servers. No adware, no spyware, no bundled offers. The helpers it downloads for video are verified before they run. <g1>More</g1>",
    "text": "المصدر كاملا عام، وكل إصدار مبني منه على خوادم GitHub. لا برامج إعلانية، لا برامج تجسس، لا عروض مجمعة. يتم التحقق من المساعدين الذين يقوم بتنزيلهم للفيديو قبل تشغيلهم. <g1>المزيد</g1>"
   },
-  "725638a5e448140e": {
-   "source": "Last updated 2026-11-05 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "آخر تحديث 2026-11-05 · ينطبق على التطبيق وإضافة المتصفح وموقع misterdownloadmanager.com"
-  },
   "72769bded1d786a9": {
    "source": "Paste a Google Drive link as it is, the one <g1>Share → Copy link</g1> gives:",
    "text": "الصق رابط Google Drive كما هو، الرابط الذي يوفره <g1>مشاركة ← نسخ الرابط</g1>:"
@@ -4909,10 +4905,6 @@
   "7d9082fb6f1abec9": {
    "source": "Firefox 140 or later is needed.",
    "text": "يلزم Firefox 140 أو أحدث."
-  },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "تبقي <g1>الخيارات ← الوكيل / SOCKS ← محول الشبكة</g1> اتصالات MDM على محول واحد، عادة ما يكون محول VPN (<g2>الخيارات</g2>). على نظامي Linux و macOS، يربط محرك التورنت كل مقبس به: الأقران، المتتبعات، DHT ومنفذ الاستماع الخاص به. يتم إيقاف تشغيل UPnP واكتشاف الأقران المحليين حينها، لأنهما يتحدثان إلى الشبكة المحلية بدلا من المرور عبر المحول. إذا اختفى المحول، يتوقف المحرك، ويبدأ مرة أخرى عبر المحول عند عودته."
   },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
@@ -5597,6 +5589,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 جيجابايت في 1.0 ثانية</g1> <g2>IDM: 5.5 ثانية</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>محول الشبكة</g1> — <g2>أي (يختاره النظام)</g2> هو الخيار الافتراضي. اختر محولا، عادة محول VPN الخاص بك، وستمر جميع الاتصالات التي يفتحها MDM من خلاله، أو لن تمر على الإطلاق. يشمل ذلك التنزيلات، وFTP، والتورنت، ونظام DNS الذي اخترته، وتنزيلات MDM الخاصة، وفحص التحديثات. يعمل هذا كـ \"مفتاح إيقاف\": عندما ينقطع اتصال المحول، أو يتم إيقاف تشغيل VPN، لن يخرج أي شيء عبر اتصالك العادي. تتوقف التنزيلات الجارية مع رسالة \"… غير متصل\" وتبدأ مرة أخرى عند عودة المحول. يعرض السطر الموجود أسفل القائمة عنوان المحول، أو أنه غير متصل."
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -6718,10 +6714,6 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>الفئة</g1> — يتم اختيارها من نوع الملف (مضغوط، مستندات، موسيقى، برامج، فيديو أو عام). كل فئة لها مجلد خاص بها. <g2>+</g2> بجانبها ينشئ فئة جديدة."
   },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>محول الشبكة</g1> — <g2>أي (يختاره النظام)</g2> هو الافتراضي. اختر محولا، وعادة ما يكون محول VPN الخاص بك، وستمر كل الاتصالات التي يفتحها MDM من خلاله، أو لن تمر على الإطلاق. وهذا يشمل التنزيلات، وFTP، وDNS الذي اخترته، وتنزيلات MDM الخاصة، وفحص التحديثات. يعمل هذا كمفتاح إيقاف: عندما ينقطع المحول، أو يتم إيقاف تشغيل VPN، لا يخرج أي شيء عبر اتصالك العادي. تتوقف التنزيلات الجارية مع رسالة \"… غير متصل\" وتبدأ مرة أخرى عندما يعود المحول. يعرض السطر الموجود أسفل القائمة عنوان المحول، أو أنه غير متصل."
-  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "انقر على <g1>بحث</g1>. سيتم تحديد أول تطابق."
@@ -7021,6 +7013,10 @@
   "b4ca8797bf90ea72": {
    "source": "<g1>MDM's own downloads use its own downloader</g1>: yt-dlp, ffmpeg, MDM's updates and a crash report's symbols now come down with several connections, resume after a cut connection and go through your proxy settings. Each file is still checked against its publisher's signed checksums before use.",
    "text": "<g1>تنزيلات MDM الخاصة تستخدم برنامج التنزيل الخاص بها</g1>: يتم الآن تنزيل yt-dlp و ffmpeg وتحديثات MDM ورموز تقرير الأعطال بعدة اتصالات، وتستأنف بعد انقطاع الاتصال وتمر عبر إعدادات الوكيل الخاص بك. لا يزال يتم التحقق من كل ملف مقابل مجموعات التحقق الموقعة من ناشره قبل الاستخدام."
+  },
+  "b4cc48817081cfdd": {
+   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line. From then on the row is yours: machine translation never replaces it.",
+   "text": "الصف الذي يظهر فوقه خط <x1/> قد تمت ترجمته آليا. بعد مراجعته (وتصحيحه إذا لزم الأمر)، احذف خط <x2/>. من تلك اللحظة، يصبح هذا الصف ملكك: لن تحل الترجمة الآلية محله أبدا."
   },
   "b4e383c17ad547ef": {
    "source": "Learns the limit from the server's answer, keeps to it, and remembers it for next time. Finished in 12.6 s.",
@@ -7998,6 +7994,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح عند بدء التنزيل؛ لإعادة فتحها، انقر نقرا مزدوجا فوق التنزيل في القائمة."
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "آخر تحديث 2026-11-06"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "يتم وضع علامة على الملفات من التورنت على أنها <g1>تم تنزيلها من الإنترنت</g1>، مثل تنزيلات المتصفح. يتحقق Windows SmartScreen من البرنامج قبل تشغيله لأول مرة، ويفتح Office المستندات في طريقة العرض المحمية. على جهاز Mac، يتحقق Gatekeeper من التطبيقات."
@@ -8225,6 +8225,10 @@
   "d6dbe4a92e2a4d65": {
    "source": "End to end, median (IQR)",
    "text": "من البداية للنهاية، متوسط (المدى الربيعي)"
+  },
+  "d6f7760f32ed2ee3": {
+   "source": "A row without its <x1/> line is yours from then on: <x2/> never sends it to machine translation again, and CI (<x3/>) fails any pull request that drops it or marks it <x4/> again.",
+   "text": "الصف الذي لا يحتوي على علامة <x1/> يصبح ملكك من تلك اللحظة: <x2/> لن يرسله أبدا إلى الترجمة الآلية مرة أخرى، وستفشل CI (<x3/>) أي طلب سحب يحذفه أو يعلمه <x4/> مرة أخرى."
   },
   "d7448135d78a38db": {
    "source": "<g1>Use automatic configuration script</g1> — the proxy auto-config (PAC) script your network gives: type its address (<x2/>, or a file). MDM fetches it and asks it which proxy each download goes through (<x3/>, <x4/> or <x5/>), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.",
