@@ -831,6 +831,30 @@ fn downloadable(url: &str) -> bool {
 mod tests {
     use super::*;
 
+    /// The Chrome Web Store's copy and the app folder's (unpacked) both connect, and both are
+    /// served: the manifest's allowed_origins and the host's own caller check agree.
+    #[test]
+    fn store_and_unpacked_extensions_both_allowed() {
+        let manifest = chromium_manifest().unwrap();
+        for id in [
+            "ejoleppdfgjdndddcjoehopknmlglojp",
+            "oogbclbbninliongijffeeggalppliok",
+        ] {
+            let o = format!("chrome-extension://{id}/");
+            assert!(
+                manifest["allowed_origins"]
+                    .as_array()
+                    .unwrap()
+                    .contains(&serde_json::json!(o)),
+                "{manifest}"
+            );
+            assert!(our_caller(&[o]));
+        }
+        assert!(!our_caller(&[
+            "chrome-extension://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/".into()
+        ]));
+    }
+
     #[test]
     fn web_and_ftp_links_are_downloadable() {
         assert!(downloadable("https://x.org/a.zip") && downloadable("FTP://x.org/a.iso"));

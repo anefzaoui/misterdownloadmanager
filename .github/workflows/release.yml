@@ -100,6 +100,7 @@ jobs:
     # The signing step below runs only when the key is there (a step's `if` sees the job's env).
     env:
       AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+      CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -119,7 +120,8 @@ jobs:
           New-Item -ItemType Directory -Force target/dist | Out-Null
           Copy-Item target/extension/mdm-chromium.zip "target/dist/MisterDownloadManager-$v-extension-chromium.zip"
           Copy-Item target/extension/mdm-firefox.xpi "target/dist/MisterDownloadManager-$v-extension-firefox.xpi"
-          # Uploaded to the store by hand (its dashboard): kept with the build, not the release.
+          # For the Chrome Web Store (the next step, or its dashboard by hand): kept with the
+          # build, not the release.
           New-Item -ItemType Directory -Force target/store | Out-Null
           Copy-Item target/extension/mdm-chrome-store.zip "target/store/MisterDownloadManager-$v-chrome-web-store.zip"
 
@@ -144,6 +146,23 @@ jobs:
             }
             exit 1
           }
+
+      # The extension is listed in the Chrome Web Store (ejoleppdfgjdndddcjoehopknmlglojp,
+      # crates/ipc STORE_ID): with the store API's OAuth credentials in the repository's secrets
+      # (CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN, CWS_PUBLISHER_ID), each release's zip
+      # is uploaded and sent for review (not waited for); Chrome, Edge, Brave, Opera and Vivaldi
+      # update from the listing. Without them it is uploaded by hand from the chrome-web-store
+      # artifact. A store refusal (a version it has already) never fails the release.
+      - name: Send the extension to the Chrome Web Store
+        if: ${{ env.CWS_REFRESH_TOKEN != '' }}
+        continue-on-error: true
+        env:
+          CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+          PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+          EXTENSION_ID: ejoleppdfgjdndddcjoehopknmlglojp
+        run: npx --yes chrome-webstore-upload-cli@4 --source target/extension/mdm-chrome-store.zip
 
       - uses: actions/upload-artifact@v4
         with:
