@@ -16,6 +16,8 @@ Everything below ships together, in one release.
 - ✅ Themes, the groundwork: every colour and size the controls are drawn with comes from one
   theme, and theme files can change them; the classic look is unchanged
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
+  red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Firefox's add-on offered from [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
   first: **Add to Firefox** on the website, in the help, the FAQ and the README, and in MDM's
   **Add Mister Download Manager to your browser** window (for Zen and LibreWolf too); Chrome,

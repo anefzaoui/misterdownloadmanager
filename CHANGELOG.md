@@ -345,6 +345,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Dark mode: grey notes and error texts are easier to read**
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): they now have the
+  contrast WCAG asks for (4.5:1) on every dark surface, Options' failed checks no longer use light
+  mode's dark red on the dark dialog, and an editable drop-down's arrow is tinted dark under the
+  pointer.
 - **A server without ranges no longer sends the file twice**
   ([#136](https://github.com/anefzaoui/misterdownloadmanager/issues/136)): when the extra
   connections' answers came late (a busy computer), the download could finish and then start over
