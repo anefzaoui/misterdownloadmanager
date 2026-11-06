@@ -727,10 +727,11 @@ pub fn progress_bar(p: &Painter, rc: Rect, fraction: Option<f32>, time: f64) {
     }
 }
 
-/// Read-only text that scrolls inside `area` (English coordinates, the box's own frame drawn by
+/// Read-only data that scrolls inside `area` (English coordinates, the box's own frame drawn by
 /// the caller): the wheel or a trackpad over it, its scroll bar when the text is longer than the
 /// box, and with `keys` the window's Up, Down, Page Up, Page Down, Home and End. Where it is
-/// scrolled to is kept under `id`.
+/// scrolled to is kept under `id`. The text is data (a crash report, release notes): its line
+/// breaks are kept and it reads left to right in every language ([`data_paragraph`]).
 #[allow(clippy::too_many_arguments)]
 pub fn scroll_text(
     ui: &mut Ui,
@@ -747,7 +748,8 @@ pub fn scroll_text(
     let visible = ((area.height() - 6.0) / line_h).floor().max(1.0);
     // Laid out first where nothing shows: the bar takes room only when the text needs it.
     let measure = p.with_clip_rect(Rect::NOTHING);
-    let lines = |right: f32| paragraph(&measure, area.left() + PAD, 0.0, s, color, right, line_h);
+    let lines =
+        |right: f32| data_paragraph(&measure, area.left() + PAD, 0.0, s, color, right, line_h);
     let mut total = lines(area.right() - PAD) as f32;
     let bar = total > visible;
     let text_right = if bar {
@@ -792,7 +794,7 @@ pub fn scroll_text(
         ui.ctx().request_repaint();
     }
     let clip = p.with_clip_rect(rect(area.shrink(2.0)));
-    paragraph(
+    data_paragraph(
         &clip,
         area.left() + PAD,
         area.top() + 16.0 - top * line_h,
@@ -826,6 +828,7 @@ pub fn scroll_text(
 /// lines drawn. English keeps its line breaks (broken where IDM breaks it); a translation's
 /// copy of them is flowed again (`reflow`). A line too long for the room wraps at spaces, or
 /// between any two characters in scripts written without spaces (Chinese, Japanese, Thai…).
+/// (Data, whose line breaks are its own: [`data_paragraph`].)
 pub fn paragraph(
     p: &Painter,
     x: f32,
@@ -835,8 +838,6 @@ pub fn paragraph(
     right: f32,
     line_h: f32,
 ) -> usize {
-    let room = (right - x).max(1.0);
-    let mut lines: Vec<String> = Vec::new();
     // IDM's English is hard-wrapped; a translation's copy of those breaks is flowed again (a
     // blank line still starts a new paragraph). English keeps its own lines.
     let flowed;
@@ -846,7 +847,58 @@ pub fn paragraph(
         flowed = reflow(s);
         flowed.as_str()
     };
+    let lines = wrap_lines(p, s, (right - x).max(1.0));
+    for (i, l) in lines.iter().enumerate() {
+        text(p, x, baseline + line_h * i as f32, l, color);
+    }
+    lines.len()
+}
+
+/// Data shown as it is (a crash report, release notes), from English `x` to `right`, first
+/// baseline at `baseline`, `line_h` apart; returns the lines drawn. Its line breaks are its own
+/// in every language (a line longer than the room wraps, as in [`paragraph`]), and it reads left
+/// to right from the left edge of its room, inside a right-to-left window too: data keeps its
+/// direction there (the RTL notes above).
+pub fn data_paragraph(
+    p: &Painter,
+    x: f32,
+    baseline: f32,
+    s: &str,
+    color: Color32,
+    right: f32,
+    line_h: f32,
+) -> usize {
+    let lines = wrap_lines(p, s, (right - x).max(1.0));
+    let left = data_left(x, right);
+    for (i, l) in lines.iter().enumerate() {
+        let mut job = egui::text::LayoutJob::simple(l.clone(), tahoma(), color, f32::INFINITY);
+        job.direction = egui::epaint::text::TextDirection::LeftToRight;
+        paint_galley(
+            p,
+            left,
+            baseline + line_h * i as f32,
+            p.layout_job(job),
+            color,
+        );
+    }
+    lines.len()
+}
+
+/// Where data from English `x` to `right` starts on screen: its room's left edge (the mirror of
+/// its English right edge in RTL).
+fn data_left(x: f32, right: f32) -> f32 {
+    rect(Rect::from_min_max(pos2(x, 0.0), pos2(right, 0.0)))
+        .left()
+        .round()
+}
+
+/// `s` broken into the lines it shows in `room` px: at its own line breaks, and where a line is
+/// too long, at spaces, or between any two characters in scripts written without spaces.
+fn wrap_lines(p: &Painter, s: &str, room: f32) -> Vec<String> {
+    let mut lines: Vec<String> = Vec::new();
     for given in s.split('\n') {
+        // A Windows line end (a report written there) breaks the line too.
+        let given = given.strip_suffix('\r').unwrap_or(given);
         let mut line = String::new();
         for word in given.split_inclusive(' ') {
             let candidate = format!("{line}{word}");
@@ -897,10 +949,7 @@ pub fn paragraph(
         }
         lines.push(line.trim_end().to_owned());
     }
-    for (i, l) in lines.iter().enumerate() {
-        text(p, x, baseline + line_h * i as f32, l, color);
-    }
-    lines.len()
+    lines
 }
 
 /// Where the text before a line's first input box goes in a [`sentence`].
@@ -5198,6 +5247,45 @@ mod tests {
             assert_eq!(got, w);
             assert!((x + w / 2.0 - 516.5).abs() <= 1.0);
         });
+    }
+
+    #[test]
+    fn data_keeps_its_own_lines_and_reads_left_to_right() {
+        with_painter(|p| {
+            // A report's lines (Windows' line ends too) stay lines; only a long one wraps.
+            let report = "Kind: freeze\r\nTime: 2026-11-06 10:00:01\n\n  at mdm::app::update\nend";
+            assert_eq!(
+                wrap_lines(p, report, 1000.0),
+                vec![
+                    "Kind: freeze",
+                    "Time: 2026-11-06 10:00:01",
+                    "",
+                    "  at mdm::app::update",
+                    "end"
+                ]
+            );
+            let long = "one two three four five six seven eight nine ten";
+            let lines = wrap_lines(p, long, text_width(p, "one two three") + 1.0);
+            assert_eq!(lines[0], "one two three");
+            assert!(
+                lines
+                    .iter()
+                    .all(|l| text_width(p, l) <= text_width(p, "one two three") + 1.0)
+            );
+            // Drawn: as many lines (a translation's paragraph is flowed again, data never).
+            assert_eq!(
+                data_paragraph(p, 24.0, 100.0, report, TEXT(), 400.0, 14.0),
+                5
+            );
+        });
+    }
+
+    #[test]
+    fn data_starts_at_the_left_of_its_room_in_rtl_too() {
+        assert_eq!(data_left(24.0, 400.0), 24.0);
+        // English 24..400 in a 600 px window, mirrored: on screen 200..576, read from 200.
+        let _s = Surface::enter_if(true, 0.0, 600.0);
+        assert_eq!(data_left(24.0, 400.0), 200.0);
     }
 
     #[test]

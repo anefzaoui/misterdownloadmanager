@@ -13,6 +13,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ The crash report window in every language: the report keeps its lines (German and Arabic
+  ran them together) and reads left to right in Arabic and Persian; **End and restart MDM** fits
+  its text ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204))
 - ✅ Every window's buttons fit their text in every language: Download File Info (German
   **Später herunterladen** was cut), Download complete, Add torrent, Download a gallery, the
   progress window, the Scheduler, Options, the Help menu's windows, RSS feeds, the video helpers

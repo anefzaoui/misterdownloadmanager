@@ -394,6 +394,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **The crash report window in other languages**
+  ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204)): in any language but
+  English, the report in its box ran together on a few long lines, as its line breaks were taken
+  for a translation's and flowed again. The report now keeps its own lines in every language, and
+  in Arabic and Persian it reads left to right, from the box's left edge, as the English data it
+  is (the window around it stays right to left). The release notes in **Check for updates** keep
+  their lines the same way. **End and restart MDM** showed cut in German, French, Russian and
+  Arabic: the buttons are now as wide as their text, the others giving back room they don't need.
 - **Buttons fit their text in every language, in every window**
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192)): many windows gave
   their buttons a width made for English, so a longer translation was cut with "..." (German
