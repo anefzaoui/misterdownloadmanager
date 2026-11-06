@@ -13,6 +13,11 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Every window's buttons fit their text in every language: Download File Info (German
+  **Später herunterladen** was cut), Download complete, Add torrent, Download a gallery, the
+  progress window, the Scheduler, Options, the Help menu's windows, RSS feeds, the video helpers
+  and the browser window; English is unchanged, right to left too
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
 - ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes
   its freeze report again ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202))
 - ✅ Where a download's server is: its country's flag and name and its round trip (near, medium or

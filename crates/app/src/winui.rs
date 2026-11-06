@@ -2489,14 +2489,27 @@ pub fn button_rect_for(p: &Painter, rc: Rect, label: &str, max_width: f32) -> Re
 }
 
 /// How wide a [`button`] must be for its translated `label` to show whole, with the room it
-/// keeps inside its border: at least `min` (its English width: English labels fit IDM's
-/// buttons, so English never changes), at most `max` (past it the label ends in "..." and
-/// shows whole on hover, as on every button).
+/// keeps inside its border: at least `min` (its English width: English labels fit it, so English
+/// never changes), at most `max` (past it the label ends in "..." and shows whole on hover, as on
+/// every button).
 pub fn button_fit_width(p: &Painter, label: &str, min: f32, max: f32) -> f32 {
+    label_width(p, label, min).clamp(min, max.max(min))
+}
+
+/// The width a [`button`] `english` px wide wants for its translated `label`: the label and the
+/// room inside the border; no wider than `english` where the label shows whole in it (a label
+/// that fits as tightly as some English ones do keeps the button as it is), and narrower where the
+/// label needs less.
+fn label_width(p: &Painter, label: &str, english: f32) -> f32 {
     let shown = crate::i18n::t(label).replace('&', "");
-    (text_width(p, &shown) + 4.0 + 12.0)
-        .ceil()
-        .clamp(min, max.max(min))
+    let text = text_width(p, &shown);
+    let want = (text + 4.0 + 12.0).ceil();
+    // Whole on the button as it is ([`fit_label`]): it stays.
+    if text <= english - 4.0 {
+        want.min(english)
+    } else {
+        want
+    }
 }
 
 /// A row of [`button`]s laid out for their translated labels, `gap` apart, the first starting
@@ -2543,6 +2556,150 @@ pub fn buttons_to_right(
         .collect();
     out.reverse();
     out
+}
+
+/// A row of [`button`]s at their English places, `(label, English x, English width)` from left
+/// to right (IDM's rows, their gaps not all alike), laid out for their translated labels: the row
+/// keeps its right end, and starts no further left than English x `from` (what is beside it).
+/// Each button is as wide as [`button_fit_width`] says (at most `max`), widening to the left; one
+/// that comes closer than `gap` to the one before it (its English gap, if smaller) pushes it left,
+/// and one pushed past `from` pushes those after it back right, each moved no further than it
+/// must. When the row would not fit, the buttons wider than their label needs give back that room
+/// first (to their label, at least 73 px, Windows' button), then the widest are narrowed, their
+/// labels cut with "..." (whole on hover). Their English (x, width) in the order given, for
+/// [`r`]; in English every button keeps its place. ([`button_row_from_left`]: a row that keeps
+/// its left end.)
+pub fn button_row(
+    p: &Painter,
+    buttons: &[(&str, f32, f32)],
+    gap: f32,
+    from: f32,
+    max: f32,
+) -> Vec<(f32, f32)> {
+    let row: Vec<(f32, f32, f32)> = buttons
+        .iter()
+        .map(|(label, x, w)| (*x, *w, label_width(p, label, *w)))
+        .collect();
+    place_row(&row, gap, from, max)
+}
+
+/// [`button_row`] for a row that keeps its left end and ends no further right than English x
+/// `to`: its buttons widen to the right.
+pub fn button_row_from_left(
+    p: &Painter,
+    buttons: &[(&str, f32, f32)],
+    gap: f32,
+    to: f32,
+    max: f32,
+) -> Vec<(f32, f32)> {
+    // The same row seen in a mirror (x → −x): its left end becomes the right one.
+    let mirrored: Vec<(f32, f32, f32)> = buttons
+        .iter()
+        .rev()
+        .map(|(label, x, w)| (-(x + w), *w, label_width(p, label, *w)))
+        .collect();
+    place_row(&mirrored, gap, -to, max)
+        .into_iter()
+        .rev()
+        .map(|(x, w)| (-(x + w), w))
+        .collect()
+}
+
+/// [`button_row`]'s arithmetic: each button's English (x, width) and the width its label needs.
+fn place_row(row: &[(f32, f32, f32)], gap: f32, from: f32, max: f32) -> Vec<(f32, f32)> {
+    let n = row.len();
+    if n == 0 {
+        return Vec::new();
+    }
+    // Each at least `gap` (or its English gap) from the next.
+    let gaps: Vec<f32> = (1..n)
+        .map(|i| (row[i].0 - (row[i - 1].0 + row[i - 1].1)).min(gap))
+        .collect();
+    // As wide as the label needs, never narrower than in English.
+    let mut widths: Vec<f32> = row
+        .iter()
+        .map(|&(_, w, fit)| fit.clamp(w, max.max(w)))
+        .collect();
+    // Too long for its room even side by side: the overflow taken back one pixel at a time,
+    // first from the room labels don't need (down to their label, or 73 px), then from the widest
+    // of the widened buttons (down to their English width).
+    let right = row[n - 1].0 + row[n - 1].1;
+    let room = right - from - gaps.iter().sum::<f32>();
+    // Never narrower than this: its English width, or less where its label needs less (73 px
+    // at least, Windows' button).
+    let least: Vec<f32> = row
+        .iter()
+        .map(|&(_, w, fit)| w.min(fit.max(73.0)))
+        .collect();
+    // What its label needs (at least `least`).
+    let needs: Vec<f32> = row
+        .iter()
+        .zip(&least)
+        .map(|(&(_, _, fit), &l)| fit.max(l))
+        .collect();
+    let mut over = (widths.iter().sum::<f32>() - room).ceil();
+    // The button with the most room above `low` (or the widest with some), if any; the last
+    // first when alike.
+    let most = |widths: &[f32], low: &[f32], by_width: bool| -> Option<usize> {
+        (0..n)
+            .filter(|&i| widths[i] - low[i] >= 1.0)
+            .max_by(|&a, &b| {
+                let key = |i: usize| {
+                    if by_width {
+                        widths[i]
+                    } else {
+                        widths[i] - low[i]
+                    }
+                };
+                key(a).total_cmp(&key(b)).then(a.cmp(&b))
+            })
+    };
+    while over > 0.0 {
+        let Some(i) = most(&widths, &needs, false).or_else(|| most(&widths, &least, true)) else {
+            break;
+        };
+        widths[i] -= 1.0;
+        over -= 1.0;
+    }
+    // From the right end: each keeps its English right edge while it can, else stands its gap
+    // before the next.
+    let mut xs = vec![0.0; n];
+    let mut limit = f32::INFINITY;
+    for i in (0..n).rev() {
+        xs[i] = (row[i].0 + row[i].1).min(limit) - widths[i];
+        if i > 0 {
+            limit = xs[i] - gaps[i - 1];
+        }
+    }
+    // Then from `from`: those pushed past it come back right, as little as they must.
+    let mut least_x = from;
+    for i in 0..n {
+        xs[i] = xs[i].max(least_x);
+        least_x = xs[i] + widths[i] + gaps.get(i).copied().unwrap_or(0.0);
+    }
+    xs.into_iter().zip(widths).collect()
+}
+
+/// A lone [`button`] at English `x`, `w` wide, widened for its translated `label` around its
+/// centre, between English x `from` and `to` (what is beside it), moved inwards where it would
+/// reach either. Its English (x, width); in English, its place.
+pub fn button_around(p: &Painter, label: &str, x: f32, w: f32, from: f32, to: f32) -> (f32, f32) {
+    let width = button_fit_width(p, label, w, (to - from).max(w));
+    let left = (x + (w - width) / 2.0).floor();
+    (left.min(to - width).max(from), width)
+}
+
+/// Of a button's labels in turn (Pause and Resume), the one whose translation is the widest: the
+/// one to lay the button out for, so it keeps its size as its label changes.
+pub fn widest_label<'a>(p: &Painter, labels: &[&'a str]) -> &'a str {
+    labels
+        .iter()
+        .copied()
+        .max_by(|a, b| {
+            let shown_width = |l: &str| text_width(p, &crate::i18n::t(l).replace('&', ""));
+            shown_width(a).total_cmp(&shown_width(b))
+        })
+        .unwrap_or("")
 }
 
 /// `label` as it fits on a button `rc`: whole, or cut with "..." (true) when it would reach the
@@ -4874,6 +5031,172 @@ mod tests {
             // Its label then fits whole (no "...").
             let rc = Rect::from_min_size(pos2(0.0, 0.0), vec2(want, 21.0));
             assert!(!fit_label(p, long, rc).1);
+        });
+    }
+
+    #[test]
+    fn a_row_keeps_its_english_places_and_uneven_gaps() {
+        // Download File Info's row: gaps of 19 and 18 px, ending at 461.
+        let row = [
+            (97.0, 109.0, 90.0),
+            (225.0, 109.0, 95.0),
+            (352.0, 109.0, 50.0),
+        ];
+        assert_eq!(
+            place_row(&row, 19.0, 11.0, 200.0),
+            vec![(97.0, 109.0), (225.0, 109.0), (352.0, 109.0)]
+        );
+        // The middle one grows: it widens to the left and pushes the first, the gaps kept.
+        let row = [
+            (97.0, 109.0, 90.0),
+            (225.0, 109.0, 150.0),
+            (352.0, 109.0, 50.0),
+        ];
+        assert_eq!(
+            place_row(&row, 19.0, 11.0, 200.0),
+            vec![(56.0, 109.0), (184.0, 150.0), (352.0, 109.0)]
+        );
+        // A button with room before it grows into it without moving the others.
+        let row = [
+            (30.0, 138.0, 100.0),
+            (311.0, 82.0, 120.0),
+            (422.0, 73.0, 60.0),
+        ];
+        assert_eq!(
+            place_row(&row, 8.0, 30.0, 200.0),
+            vec![(30.0, 138.0), (273.0, 120.0), (422.0, 73.0)]
+        );
+        // The last one grows into the room before it, then pushes, `gap` apart.
+        let row = [(311.0, 82.0, 60.0), (422.0, 73.0, 120.0)];
+        assert_eq!(
+            place_row(&row, 8.0, 0.0, 200.0),
+            vec![(285.0, 82.0), (375.0, 120.0)]
+        );
+        // At most `max`.
+        let row = [(311.0, 82.0, 60.0), (422.0, 73.0, 300.0)];
+        assert_eq!(place_row(&row, 8.0, 0.0, 150.0)[1], (345.0, 150.0));
+        // The Scheduler's row: the first, at the row's start, grows; those it reaches move right
+        // as little as they must, the rest keep their places.
+        let english = [21.0, 102.0, 216.0, 297.0, 390.0, 484.0, 565.0];
+        let row: Vec<(f32, f32, f32)> = english
+            .iter()
+            .enumerate()
+            .map(|(i, &x)| (x, 73.0, if i == 0 { 116.0 } else { 60.0 }))
+            .collect();
+        let xs: Vec<f32> = place_row(&row, 8.0, 21.0, 200.0)
+            .iter()
+            .map(|p| p.0)
+            .collect();
+        assert_eq!(xs, [21.0, 145.0, 226.0, 307.0, 390.0, 484.0, 565.0]);
+    }
+
+    #[test]
+    fn a_full_row_takes_room_from_buttons_wider_than_their_label() {
+        // The crash report window's row: 588 px from 16 to 604, gaps of 6, no room to spare.
+        let english = [
+            (16.0, 170.0),
+            (192.0, 110.0),
+            (308.0, 110.0),
+            (424.0, 112.0),
+            (542.0, 62.0),
+        ];
+        let with = |fits: [f32; 5]| -> Vec<(f32, f32, f32)> {
+            english
+                .iter()
+                .zip(fits)
+                .map(|(&(x, w), f)| (x, w, f))
+                .collect()
+        };
+        // English: as it is.
+        let row = with([100.0, 80.0, 75.0, 110.0, 50.0]);
+        assert_eq!(place_row(&row, 6.0, 16.0, 260.0), english.to_vec());
+        // The fourth needs 166: the room is taken from those with the most to spare (the first,
+        // then the third); the row keeps both its ends and its gaps.
+        let row = with([110.0, 100.0, 95.0, 166.0, 50.0]);
+        let placed = place_row(&row, 6.0, 16.0, 260.0);
+        assert_eq!(placed[0], (16.0, 121.0));
+        assert_eq!(placed[1].1, 110.0);
+        assert_eq!(placed[2].1, 105.0);
+        assert_eq!(placed[3].1, 166.0);
+        assert_eq!(placed[4], (542.0, 62.0));
+        for w in placed.windows(2) {
+            assert_eq!(w[1].0 - (w[0].0 + w[0].1), 6.0);
+        }
+        // Not even then: no button goes under 73 px or its label, and the widest widened ones
+        // are narrowed (back to their English width at most).
+        let row = with([200.0, 150.0, 150.0, 250.0, 50.0]);
+        let placed = place_row(&row, 6.0, 16.0, 260.0);
+        let total: f32 = placed.iter().map(|p| p.1).sum::<f32>() + 4.0 * 6.0;
+        assert_eq!(placed[0].0, 16.0);
+        assert_eq!(total, 588.0);
+        assert!(placed.iter().zip(&english).all(|(p, e)| p.1 >= e.1));
+        assert!(
+            placed
+                .iter()
+                .zip(&row)
+                .all(|(p, r)| p.1 < r.2.max(r.1 + 1.0))
+        );
+    }
+
+    #[test]
+    fn a_label_that_fits_keeps_its_button_as_it_is() {
+        with_painter(|p| {
+            // Whole with less than the usual room around it (Download a gallery's English
+            // Install button): not widened, alone or in a row.
+            let label = "Install gallery-dl";
+            let text = text_width(p, label);
+            let tight = (text + 6.0).ceil();
+            assert_eq!(button_fit_width(p, label, tight, 300.0), tight);
+            assert_eq!(
+                button_row(p, &[(label, 100.0, tight)], 8.0, 0.0, 300.0),
+                vec![(100.0, tight)]
+            );
+            // Cut: as wide as the label and the usual room.
+            let cut = (text + 2.0).floor();
+            assert_eq!(button_fit_width(p, label, cut, 300.0), (text + 16.0).ceil());
+        });
+    }
+
+    #[test]
+    fn a_row_from_the_left_widens_to_the_right() {
+        with_painter(|p| {
+            let long = "A label much longer than its English button";
+            let want = (text_width(p, long) + 16.0).ceil();
+            // Short labels: their English places.
+            let row = [("OK", 11.0, 90.0), ("Cancel", 107.0, 90.0)];
+            assert_eq!(
+                button_row_from_left(p, &row, 6.0, 400.0, 300.0),
+                vec![(11.0, 90.0), (107.0, 90.0)]
+            );
+            assert_eq!(
+                button_row(p, &row, 6.0, 0.0, 300.0),
+                vec![(11.0, 90.0), (107.0, 90.0)]
+            );
+            // A long first one pushes the second right, the gap kept.
+            let row = [(long, 11.0, 90.0), ("Cancel", 107.0, 90.0)];
+            let placed = button_row_from_left(p, &row, 6.0, 600.0, 400.0);
+            assert_eq!(placed, vec![(11.0, want), (11.0 + want + 6.0, 90.0)]);
+            // The same as a row ending at the right: the first grows to the left.
+            let placed = button_row(p, &row, 6.0, -400.0, 400.0);
+            assert_eq!(placed, vec![(101.0 - want, want), (107.0, 90.0)]);
+            // Toggling labels: laid out for the widest translation.
+            assert_eq!(widest_label(p, &["OK", long]), long);
+            // A lone button widens around its centre, inside its room. (Labels from variables:
+            // the catalog's extractor takes literal ones as texts to translate.)
+            let short = "OK";
+            assert_eq!(
+                button_around(p, short, 480.0, 73.0, 460.0, 562.0),
+                (480.0, 73.0)
+            );
+            assert_eq!(
+                button_around(p, long, 480.0, 73.0, 460.0, 562.0),
+                (460.0, 102.0)
+            );
+            let label = "Preview the part downloaded";
+            let w = (text_width(p, label) + 16.0).ceil();
+            let (x, got) = button_around(p, label, 480.0, 73.0, 400.0, 600.0);
+            assert_eq!(got, w);
+            assert!((x + w / 2.0 - 516.5).abs() <= 1.0);
         });
     }
 
