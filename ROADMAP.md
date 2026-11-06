@@ -104,8 +104,10 @@ Everything below ships together, in one release.
   ([#28](https://github.com/anefzaoui/misterdownloadmanager/issues/28))
 - ✅ The extension's Download video menu keeps its highlight inside its edge
   ([#81](https://github.com/anefzaoui/misterdownloadmanager/issues/81))
-- ✅ No crash when a window opens while MDM is minimized
-  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22))
+- ✅ No crash when a window opens while MDM is minimized or in the notification area, such as a
+  download or a magnet link from the browser
+  ([#22](https://github.com/anefzaoui/misterdownloadmanager/issues/22),
+  [#145](https://github.com/anefzaoui/misterdownloadmanager/issues/145))
 - ✅ Long file names stay inside the progress window: the Save to path is shortened in the
   middle, in every language ([#62](https://github.com/anefzaoui/misterdownloadmanager/issues/62))
 - ✅ Every button translated: Download complete's Open with... no longer stays in English
