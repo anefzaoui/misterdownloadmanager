@@ -387,6 +387,11 @@ pub struct Item {
     /// Where its server was, as its last run saw it (#140): Properties shows it.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub server: Option<crate::whereis::Seen>,
+    /// Downloaded directly, never through a debrid account (#44): the user's choice (Download
+    /// File Info, File Properties), or the browser had already started it (the host was sending
+    /// the file). Kept, so a download goes the same way after a restart.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub direct: bool,
     #[serde(skip)]
     pub live: Option<Live>,
     /// The engine's last view of this download (segments, connections).
@@ -653,6 +658,7 @@ impl Item {
             name_from_url: false,
             package: None,
             server: None,
+            direct: false,
             live: None,
             snap: None,
             login: None,

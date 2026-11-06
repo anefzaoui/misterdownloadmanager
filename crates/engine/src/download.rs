@@ -1844,7 +1844,9 @@ async fn run_resume(
     let as_get = AsGet::default();
     let seen = shared.seen.get_or_init(Default::default).clone();
     let client = client(&opts, &saved.url, &as_get, &seen)?;
-    let refreshed = if saved.url != saved.final_url {
+    // Through a service account (#44), the service is asked for today's link even when the
+    // state holds none of its links (the download went directly until now).
+    let refreshed = if saved.url != saved.final_url || opts.unlocker.is_some() {
         let post = opts.post.as_ref();
         let agent = &opts.user_agent;
         refresh_final_url(

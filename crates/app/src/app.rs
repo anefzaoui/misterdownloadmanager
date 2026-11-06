@@ -1194,6 +1194,7 @@ impl App {
             },
         );
         self.name_guessed(id, fi.name_guessed());
+        self.set_direct(id, fi.direct);
         self.selection.set(id);
         if matches!(start, Start::Now) {
             // Later: the answer is closed (its download starts some other time).
@@ -1233,6 +1234,7 @@ impl App {
                 crate::i18n::mark("with Add URL")
             },
         );
+        self.set_direct(id, fi.direct);
         fi.early = Some(id);
         if let Some(k) = fi.take_kept() {
             self.kept_answers.insert(id, k);
@@ -1378,10 +1380,19 @@ impl App {
         item.size = size;
         item.description = description;
         item.login = login;
+        // The browser had started it: the host is already sending the file (#44).
+        item.direct = crate::debrid::browser_started(&context);
         item.context = context;
         self.items.push(item);
         self.dirty = true;
         id
+    }
+
+    /// Download `id` skips the debrid accounts, or goes through them again (#44).
+    fn set_direct(&mut self, id: u64, direct: bool) {
+        if let Some(item) = self.item(id) {
+            item.direct = direct;
+        }
     }
 
     /// Download `id`'s name is only its address's guess (`guessed`): the server names it when
@@ -1435,19 +1446,9 @@ impl App {
         }
     }
 
-    /// The unlocker for a download of `url` (#44): through the first account whose service takes
-    /// its host, unless turned off, or the browser had already started this download itself (it
-    /// came with the browser's own size or type, `ipc::Command`): that answer is the file already.
-    fn debrid_for(
-        &self,
-        url: &url::Url,
-        context: &ipc::Command,
-    ) -> Option<std::sync::Arc<dyn mdm_engine::Unlocker>> {
-        let browser_started = context.size.is_some() || context.mime.is_some();
-        if !self.settings.debrid_on || browser_started {
-            return None;
-        }
-        self.debrid.unlocker_for(url)
+    /// Which account downloads go through (#44), for the windows that show and change it.
+    pub fn debrid_route(&self) -> crate::debrid::Route {
+        crate::debrid::Route::new(&self.debrid, &self.settings)
     }
 
     fn network_adapter_tick(&mut self, ctx: &egui::Context) {
@@ -1952,7 +1953,7 @@ impl App {
             crate::torrents::is_torrent_url(u, cmd.name.as_deref(), cmd.mime.as_deref())
         };
         if !cmd.silent && (torrent(&url) || final_url.as_ref().is_some_and(torrent)) {
-            let parts = self.request_parts(&url, None, &cmd);
+            let parts = self.request_parts(&url, None, &cmd, crate::debrid::browser_started(&cmd));
             self.show_window(ctx);
             self.open_torrent_dialog_with(
                 Some(url.to_string()),
@@ -2003,11 +2004,15 @@ impl App {
     /// one Options → Sites Logins has for its address, else an FTP address's own (its resume
     /// state keeps the address without the password); the browser's Referer, Cookie,
     /// User-Agent and form (`context`); Options' connections, proxy and User-Agent.
+    ///
+    /// Through the first debrid account whose service takes its host (#44), unless turned off
+    /// or `direct` (`Item::direct`).
     pub fn request_parts(
         &self,
         url: &url::Url,
         login: Option<&(String, String)>,
         context: &ipc::Command,
+        direct: bool,
     ) -> RequestParts {
         let site_login = self.settings.site_login(url);
         let url_login = mdm_engine::ftp::is_ftp(url)
@@ -2035,7 +2040,7 @@ impl App {
             dns: self.settings.dns(),
             route: self.route.clone(),
             // Through a debrid account when one takes this host (#44).
-            unlocker: self.debrid_for(url, context),
+            unlocker: self.debrid_route().unlocker(url, direct),
             global: Some(self.global.clone()),
             host_limits: Some(self.host_limits.clone()),
             ignore_mtime: self.settings.ignore_mtime,
@@ -2089,13 +2094,14 @@ impl App {
             self.start_torrent(id, show);
             return;
         }
-        let Some((url, login, context, own_limit, checksum)) = self.item(id).map(|i| {
+        let Some((url, login, context, own_limit, checksum, direct)) = self.item(id).map(|i| {
             (
                 i.url.clone(),
                 i.login.clone(),
                 i.context.clone(),
                 i.own_limit,
                 i.checksum.clone(),
+                i.direct,
             )
         }) else {
             return;
@@ -2110,7 +2116,8 @@ impl App {
             self.dirty = true;
             return;
         }
-        let RequestParts { headers, mut opts } = self.request_parts(&url, login.as_ref(), &context);
+        let RequestParts { headers, mut opts } =
+            self.request_parts(&url, login.as_ref(), &context, direct);
         // Download File Info's open answer for it, if it has one (#28); used once.
         let kept = self.kept_answers.remove(&id);
         // The file's own remembered limit, else the Speed Limiter's.
@@ -2634,9 +2641,10 @@ impl App {
             );
             return;
         }
+        let route = self.debrid_route();
         if let Some(item) = self.items.iter().find(|i| i.id == id) {
             self.properties
-                .push(crate::properties::Properties::new(item));
+                .push(crate::properties::Properties::new(item, route));
         }
     }
 
@@ -2646,6 +2654,26 @@ impl App {
         item.description = c.description;
         item.login = c.login;
         item.context.referer = c.referer;
+        // "Through …" changed (#44): the next start goes the new way. The service's link is
+        // dropped from the resume state: directly, it continues from the host's own address;
+        // through the account, from a new link the service gives. The size and validators
+        // still have to match.
+        if let Some(direct) = c.direct {
+            item.direct = direct;
+            let state = mdm_engine::state::state_path(&item.dest);
+            if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
+                saved.final_url = saved.url.clone();
+                let _ = saved.write(&state);
+            }
+            item.note(if direct {
+                // i18n: event log: File Properties: the download no longer goes through the debrid account
+                crate::i18n::t("Set to download directly, not through the debrid account")
+                    .to_owned()
+            } else {
+                // i18n: event log: File Properties: the download goes through the debrid account again
+                crate::i18n::t("Set to download through the debrid account").to_owned()
+            });
+        }
         if let Some(url) = c.address {
             // Refresh download address: the resume state follows, so the download continues
             // from the new address (its size and validators still have to match).
@@ -5745,11 +5773,13 @@ impl App {
             self.file_info_waiting.push_back((new, context));
             return;
         }
-        let request = self.request_parts(&new.url, new.login.as_ref(), &context);
+        let direct = crate::debrid::browser_started(&context);
+        let request = self.request_parts(&new.url, new.login.as_ref(), &context, direct);
         let mut fi = FileInfo::new(
             new,
             context,
             request,
+            self.debrid_route(),
             self.downloads.clone(),
             self.settings.category_dirs.clone(),
             &self.rt,
@@ -6267,7 +6297,7 @@ impl App {
                 user_agent: d.user_agent.clone(),
                 ..Default::default()
             };
-            let parts = self.request_parts(&url, None, &context);
+            let parts = self.request_parts(&url, None, &context, false);
             let slot: std::sync::Arc<std::sync::Mutex<Option<_>>> = Default::default();
             let (out, ctx) = (slot.clone(), ctx.clone());
             self.rt.spawn(async move {
@@ -6667,8 +6697,12 @@ impl App {
                 // A .torrent's address (#39): Add torrent fetches it and shows what it holds.
                 Outcome::Done(new) if crate::torrents::is_torrent_url(&new.url, None, None) => {
                     self.add_url = None;
-                    let parts =
-                        self.request_parts(&new.url, new.login.as_ref(), &Default::default());
+                    let parts = self.request_parts(
+                        &new.url,
+                        new.login.as_ref(),
+                        &Default::default(),
+                        false,
+                    );
                     let remote = crate::torrents::Remote {
                         url: new.url.clone(),
                         parts,
@@ -7034,10 +7068,13 @@ impl App {
                 );
                 self.dirty = true;
             }
-            // The address was edited after the early start: that download is the old address's.
-            // It goes; the new one starts early in its turn (start_early).
+            // The address was edited after the early start, or "Download through" changed (#44):
+            // that download is the old one's. It goes; the new one starts early in its turn
+            // (start_early).
             if let Some(id) = fi.early
-                && self.item(id).is_some_and(|i| i.url != fi.url)
+                && self
+                    .item(id)
+                    .is_some_and(|i| i.url != fi.url || i.direct != fi.direct)
             {
                 self.stop(id);
                 self.after_stop.push((id, None));

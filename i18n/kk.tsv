@@ -1179,6 +1179,10 @@
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
 	Download supported file-host links through these accounts	Қолдау көрсетілетін файл-хост сілтемелерін осы есептік жазбалар арқылы жүктеу
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	{service} арқылы жүктеп алу
 #. window title in the Download video window
 #, machine
 	Download video from a page	Беттен бейне жүктеп алу
@@ -3364,6 +3368,14 @@
 #. button in Test browser integration: register MDM's helper with the browsers
 #, machine
 	Set it up	Орнату
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	Дебрид тіркелгісі арқылы емес, тікелей жүктеп алуға орнатылды
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	Дебрид тіркелгісі арқылы жүктеп алуға орнатылды
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3644,7 +3656,7 @@
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Stop download at	Жүктеуді тоқтату
-#. button in playlistdlg.rs
+#. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
 	Stop listing	Тізімдеуді тоқтату
@@ -4150,6 +4162,10 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	прокси арқылы {country} елінде
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	{service} арқылы
 #. text in the Scheduler window
 #, machine
 	Thursday	Бейсенбі
@@ -4184,6 +4200,7 @@
 	too many redirects	тым көп қайта бағыттау
 #. value in a column's filter list in the download list; text in the Add torrent window
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#. noun: label before the torrent file or magnet link
 #, machine
 	Torrent	Торрент
 #. text in the download list (sizes, speeds, status)

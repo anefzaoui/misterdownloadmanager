@@ -875,6 +875,9 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 	Download supported file-host links through these accounts	Download supported file-host links through these accounts
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+	Download through {service}	Download through {service}
 #. window title in the Download video window
 	Download video from a page	Download video from a page
 #. text in helpers.rs
@@ -2479,6 +2482,12 @@
 #. button in the browser extension's window: register MDM's helper with the browsers
 #. button in Test browser integration: register MDM's helper with the browsers
 	Set it up	Set it up
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+	Set to download directly, not through the debrid account	Set to download directly, not through the debrid account
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+	Set to download through the debrid account	Set to download through the debrid account
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3052,6 +3061,9 @@
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 	through a proxy in {country}	through a proxy in {country}
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+	Through {service}	Through {service}
 #. text in the Scheduler window
 	Thursday	Thursday
 #. text in a download's progress window; text in the Scheduler window

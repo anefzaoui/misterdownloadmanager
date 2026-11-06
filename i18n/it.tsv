@@ -942,6 +942,10 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 	Download supported file-host links through these accounts	Scarica i collegamenti dei file hosting supportati tramite questi account
+#. text in a dialog box
+#. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
+#, machine
+	Download through {service}	Scarica tramite {service}
 #. window title in the Download video window
 	Download video from a page	Scarica video da una pagina
 #. text in helpers.rs
@@ -2686,6 +2690,14 @@
 #. button in the browser extension's window: register MDM's helper with the browsers
 #. button in Test browser integration: register MDM's helper with the browsers
 	Set it up	Configura
+#. message or event log entry in the main window
+#. event log: File Properties: the download no longer goes through the debrid account
+#, machine
+	Set to download directly, not through the debrid account	Impostato per scaricare direttamente, non tramite l'account debrid
+#. message or event log entry in the main window
+#. event log: File Properties: the download goes through the debrid account again
+#, machine
+	Set to download through the debrid account	Impostato per scaricare tramite l'account debrid
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -2904,7 +2916,7 @@
 	Stop	Interrompi
 #. text in the Scheduler window; checkbox in the Scheduler window
 	Stop download at	Interrompi download alle
-#. button in playlistdlg.rs
+#. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 	Stop listing	Interrompi l'elenco
 #. text in the tray icon's menu
@@ -3288,6 +3300,10 @@
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
 	through a proxy in {country}	tramite un proxy in {country}
+#. text in a download's Properties window
+#. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
+#, machine
+	Through {service}	Tramite {service}
 #. text in the Scheduler window
 	Thursday	giovedì
 #. text in a download's progress window; text in the Scheduler window
@@ -3317,6 +3333,7 @@
 	too many redirects	troppi reindirizzamenti
 #. value in a column's filter list in the download list; text in the Add torrent window
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
+#. noun: label before the torrent file or magnet link
 	Torrent	Torrent
 #. text in the download list (sizes, speeds, status)
 	Torrent downloads (magnet links and .torrent files)	Download torrent (link magnet e file .torrent)

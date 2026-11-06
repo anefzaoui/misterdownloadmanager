@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Debrid accounts: one link directly, and the command line**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): **Download File Info**
+  says which account a link goes through (**Download through Real-Debrid (your account)**);
+  untick it to download that link directly. **File Properties** has the same choice for a
+  download in the list, and MDM keeps it after a restart. The command line's `get` and `resume`
+  go through the accounts of **Options → Accounts** too, and `--direct` skips them. A download
+  the browser had already started stays direct after a restart, and when one service doesn't
+  answer, the other accounts still work.
 - **Where a download's server is** ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140)):
   **Download File Info**, the progress window and **Properties** show the server's country, with
   its flag, and its round trip, such as **about 24 ms (near)**, in green, amber or red. The country

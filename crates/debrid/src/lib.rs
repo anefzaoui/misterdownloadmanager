@@ -529,21 +529,32 @@ impl Debrid {
         *sessions = kept;
     }
 
-    /// Read each account's service's supported domains.
-    pub async fn refresh_hosts(&self) -> Result<(), Fault> {
+    /// Read each account's service's supported domains. A service that doesn't answer leaves
+    /// the others' lists read: the first failure is returned, with its service, once every
+    /// account was asked.
+    pub async fn refresh_hosts(&self) -> Result<(), (ServiceKind, Fault)> {
         let sessions = self.sessions.read().unwrap().clone();
+        let mut first = None;
         for s in sessions {
             let list = match s.account.service {
-                ServiceKind::RealDebrid => realdebrid::domains(&s.http).await?,
-                ServiceKind::AllDebrid => alldebrid::domains(&s.http).await?,
+                ServiceKind::RealDebrid => realdebrid::domains(&s.http).await,
+                ServiceKind::AllDebrid => alldebrid::domains(&s.http).await,
                 // Premiumize lists its services to signed-in accounts.
-                ServiceKind::Premiumize => {
-                    premiumize::domains(&s.http, &s.token(false).await?).await?
-                }
+                ServiceKind::Premiumize => match s.token(false).await {
+                    Ok(t) => premiumize::domains(&s.http, &t).await,
+                    Err(e) => Err(e),
+                },
             };
-            self.domains.write().unwrap().insert(s.account.id, list);
+            match list {
+                Ok(list) => {
+                    self.domains.write().unwrap().insert(s.account.id, list);
+                }
+                Err(f) => {
+                    first.get_or_insert((s.account.service, f));
+                }
+            }
         }
-        Ok(())
+        first.map_or(Ok(()), Err)
     }
 
     /// Whether the host lists are there for every account.
