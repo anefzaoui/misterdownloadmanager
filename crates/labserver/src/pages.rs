@@ -58,7 +58,7 @@ fn video_tag(id: &str, src: &str, (w, h): (u32, u32), muted_loop: bool) -> Strin
 }
 
 /// `/page?link=PATH&video=PATH|1&w=&h=&muted_loop=1&iframe=1&shadow=1&several=N&audio=PATH|1&
-/// hls=1&dash=1&drm=1&csp=strict`: a web page with what the browser extension acts on (see
+/// hls=1&dash=1&drm=1&hls2=1&dash2=1&csp=strict`: a web page with what the browser extension acts on (see
 /// `HELP`).
 pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
     let pairs = pairs(q);
@@ -73,14 +73,15 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
     let several = num("several", 0).min(16);
     let csp = m.get("csp") == Some(&"strict");
     // A player for each stream asked for, in this order.
-    let streams: Vec<&str> = [
+    let streams: Vec<(&str, &str)> = [
         ("hls", "/hls/master.m3u8"),
         ("dash", "/dash/manifest.mpd"),
         ("drm", "/dash/protected.mpd"),
+        ("hls2", "/hls2/playlist?id=lab"),
+        ("dash2", "/dash2/manifest?id=lab"),
     ]
     .into_iter()
     .filter(|(k, _)| flag(k))
-    .map(|(_, m)| m)
     .collect();
     // `link` may come again: one link each, in order.
     let links: Vec<&str> = pairs
@@ -157,15 +158,22 @@ pub(crate) async fn page(RawQuery(q): RawQuery) -> Response {
     if let Some(src) = audio {
         body += &format!("<audio id=audio src=\"{}\" controls></audio>", esc(src));
     }
-    for (k, manifest) in streams.iter().enumerate() {
+    for (k, (kind, manifest)) in streams.iter().enumerate() {
         let id = if k == 0 {
             "player".to_owned()
         } else {
             format!("player{}", k + 1)
         };
+        // #171's have no .m3u8 or .mpd to tell: their kind, and a text answer first that is no
+        // manifest (a player's settings).
+        let more = match *kind {
+            "hls2" => " data-kind=hls data-decoy=\"/hls2/config?id=lab\"",
+            "dash2" => " data-kind=dash data-decoy=\"/hls2/config?id=lab\"",
+            _ => "",
+        };
         body += &format!(
             "<video id={id} width={} height={} controls></video>\
-             <script src=/assets/stream.js data-manifest=\"{manifest}\" data-player={id}>\
+             <script src=/assets/stream.js data-manifest=\"{manifest}\" data-player={id}{more}>\
              </script>",
             size.0, size.1
         );

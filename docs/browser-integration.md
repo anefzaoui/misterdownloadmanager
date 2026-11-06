@@ -82,7 +82,10 @@ too. The toolbar button lists what the page has loaded, so you can still save it
 
 - **Streams**: HLS (`.m3u8`) and DASH (`.mpd`), the way most sites play long videos. Each stream
   is listed once, however many qualities its player switched between, with its qualities (`1080p ·
-  720p`) and its length when the extension can read them.
+  720p`) and its length when the extension can read them. A stream whose address doesn't end in
+  `.m3u8` or `.mpd`, served as plain text, is found too: when you open the list (or press the
+  download button over its player) and the player plays a stream, the extension reads the first
+  few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.
 - **Video and sound files** the page played (MP4, WebM, MP3 and the like), with their size and,
   for a video, its picture size.
 
