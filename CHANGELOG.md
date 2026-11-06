@@ -354,6 +354,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   minimized (not to the notification area), a download from the browser or a magnet link was
   accepted but its window waited until MDM was restored. Download File Info and Add torrent now
   open right away, as they do with the window open or in the notification area.
+- **Linux: Ubuntu's Firefox reaches MDM** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
+  the Snap Firefox never makes the folder MDM looked for, so browser integration wasn't set up
+  for it and its extension couldn't find MDM. It is now, and the Snap goes through the desktop,
+  which asks once (**Allow**); the help says how to be asked again after **Don't allow**.
+  Chromium as a Snap ran MDM's helper inside its sandbox, away from MDM (it started a second,
+  sandboxed MDM): MDM no longer offers it, and the help says why.
 - **Linux: the first window opens seconds sooner, and no longer freezes on a busy computer**
   (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): MDM asked
   fontconfig for its fonts one at a time (one program for each of some thirty scripts, more each
