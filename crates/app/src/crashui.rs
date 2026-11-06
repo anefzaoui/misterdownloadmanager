@@ -25,7 +25,11 @@ const CLIENT: [f32; 2] = [620.0, 540.0];
 
 pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     mdm_crash::logs::init(&m.data, mdm_crash::logs::MONITOR);
-    tracing::info!("crash monitor for {}", m.parent);
+    tracing::info!(
+        "crash monitor (process {}) for {}",
+        std::process::id(),
+        m.parent
+    );
     let (tx, rx) = channel();
     {
         let (socket, data, tx) = (m.socket.clone(), m.data.clone(), tx.clone());
@@ -290,6 +294,8 @@ impl eframe::App for ReportWindow {
         // The caption in the window's light or dark, as every MDM window's (Windows would draw
         // it in its own app mode).
         if !self.caption_set {
+            // As the app logs its windows (crash.rs), for the log and the tests.
+            tracing::info!("window opened: crash-report");
             ui.ctx().send_viewport_cmd(egui::ViewportCommand::SetTheme(
                 crate::theme::system_theme(crate::theme::dark()),
             ));
