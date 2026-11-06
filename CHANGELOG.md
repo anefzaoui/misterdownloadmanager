@@ -349,6 +349,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   download limits, the network adapter's kill switch, the clipboard monitor, the update check, the
   taskbar's progress and saving the list all waited until the window was restored. They run in
   every window state now, and their windows (Download complete, a limit's notice) open at once.
+- **HLS and DASH videos from the browser, as their stream**
+  ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155)): a video played as a
+  stream (most sites' long videos) failed with yt-dlp's "Unsupported URL" when the extension sent
+  the page instead of the stream. **Download with Mister Download Manager** in the right-click
+  menu on such a video now sends the stream its player loaded, as the button over videos and
+  **Media on this page** do. In Firefox it did nothing at all. The cookies sent are those of the
+  stream's own server, not the page's.
+- **Add torrent: the labels fit in every language**: in German, **Speichern unter** ran under
+  its field.
 - **A download or magnet link sent while the window is minimized opens at once**
   ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162)): with the main window
   minimized (not to the notification area), a download from the browser or a magnet link was
