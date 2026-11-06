@@ -2261,11 +2261,11 @@ impl OptionsDialog {
         );
         let on = self.s.remote_on;
         let color = if on { LIGHT_TEXT() } else { LIGHT_DISABLED() };
-        // i18n: Options → Remote: label before the choice of the address MDM listens on
         text(
             &p,
             o.x + 21.0,
             o.y + 131.0,
+            // i18n: Options → Remote: label before the choice of the address MDM listens on
             crate::i18n::t("Listen on:"),
             color,
         );
@@ -2402,11 +2402,11 @@ impl OptionsDialog {
             }
         }
         // The paired devices.
-        // i18n: Options → Remote: label above the list of paired phones and computers
         text(
             &p,
             o.x + 21.0,
             o.y + 296.0,
+            // i18n: Options → Remote: label above the list of paired phones and computers
             crate::i18n::t("Paired devices:"),
             LIGHT_TEXT(),
         );
@@ -2595,11 +2595,11 @@ impl OptionsDialog {
                 readonly_ltr(ui, r(o, 14.0, 246.0, 332.0, 21.0), url);
                 match &shown {
                     Some((code, left)) => {
-                        // i18n: Options → Remote → Pair a device: label before the 8-digit code
                         text(
                             &p,
                             o.x + 14.0,
                             o.y + 300.0,
+                            // i18n: Options → Remote → Pair a device: label before the 8-digit code
                             crate::i18n::t("Code:"),
                             LIGHT_TEXT(),
                         );
@@ -3606,9 +3606,9 @@ fn tabs(ui: &mut Ui, o: Pos2, page: usize) -> Option<usize> {
         (3, crate::i18n::mark("Downloads"), 241.0, 330.0, 260.0),
         // i18n: tab title: connection settings
         (4, crate::i18n::mark("Connection"), 330.0, 419.0, 349.0),
-        // i18n: tab title: control MDM from a phone or another computer on the local network
         (
             REMOTE_PAGE,
+            // i18n: tab title: control MDM from a phone or another computer on the local network
             crate::i18n::mark("Remote"),
             380.0,
             419.0,
