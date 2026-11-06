@@ -329,6 +329,148 @@ pub fn desktop_dark(ctx: &egui::Context) -> Option<bool> {
     }
 }
 
+/// The desktop's accent colour and whether it asks for higher contrast (the freedesktop portal's
+/// `accent-color` and `contrast`, GNOME 47+, KDE Plasma), read on a thread of their own that
+/// follows their changes; `ctx` is repainted when one changes. None / false until the portal
+/// answers, or when it has neither.
+#[cfg(target_os = "linux")]
+fn desktop_look(ctx: &egui::Context) -> (Option<egui::Color32>, bool) {
+    use std::sync::Mutex;
+    static LOOK: Mutex<(Option<egui::Color32>, bool)> = Mutex::new((None, false));
+    static WATCH: std::sync::Once = std::sync::Once::new();
+    WATCH.call_once(|| {
+        let ctx = ctx.clone();
+        let _ = std::thread::Builder::new()
+            .name("desktop-look".into())
+            .spawn(move || {
+                let set = |name: &str, v: &zbus::zvariant::Value| {
+                    let mut look = LOOK.lock().unwrap_or_else(|e| e.into_inner());
+                    let before = *look;
+                    match name {
+                        "accent-color" => look.0 = accent_color(v),
+                        "contrast" => look.1 = color_scheme(v) == Some(1),
+                        _ => {}
+                    }
+                    if *look != before {
+                        ctx.request_repaint();
+                    }
+                };
+                let watch = || -> zbus::Result<()> {
+                    let conn = zbus::blocking::Connection::session()?;
+                    let portal = zbus::blocking::Proxy::new(
+                        &conn,
+                        "org.freedesktop.portal.Desktop",
+                        "/org/freedesktop/portal/desktop",
+                        "org.freedesktop.portal.Settings",
+                    )?;
+                    let changes = portal.receive_signal("SettingChanged")?;
+                    for name in ["accent-color", "contrast"] {
+                        let key = ("org.freedesktop.appearance", name);
+                        let now: zbus::Result<zbus::zvariant::OwnedValue> = portal
+                            .call("ReadOne", &key)
+                            .or_else(|_| portal.call("Read", &key));
+                        if let Ok(now) = now {
+                            set(name, &now);
+                        }
+                    }
+                    for change in changes {
+                        let (namespace, name, value): (String, String, zbus::zvariant::OwnedValue) =
+                            change.body().deserialize()?;
+                        if namespace == "org.freedesktop.appearance" {
+                            set(&name, &value);
+                        }
+                    }
+                    Ok(())
+                };
+                if let Err(e) = watch() {
+                    tracing::info!("desktop accent: no answer from the portal ({e})");
+                }
+            });
+    });
+    *LOOK.lock().unwrap_or_else(|e| e.into_inner())
+}
+
+/// The desktop's accent colour (the Native theme's), if it has one.
+#[cfg(target_os = "linux")]
+pub fn desktop_accent(ctx: &egui::Context) -> Option<egui::Color32> {
+    desktop_look(ctx).0
+}
+
+/// The desktop asks for higher contrast.
+#[cfg(target_os = "linux")]
+pub fn desktop_contrast(ctx: &egui::Context) -> bool {
+    desktop_look(ctx).1
+}
+
+/// The portal's `accent-color`: sRGB, each part from 0 to 1, unwrapped from `Read`'s variants;
+/// a part out of range means none is set.
+#[cfg(target_os = "linux")]
+fn accent_color(v: &zbus::zvariant::Value) -> Option<egui::Color32> {
+    use zbus::zvariant::Value;
+    match v {
+        Value::Value(inner) => accent_color(inner),
+        Value::Structure(s) => {
+            let parts: Vec<f64> = s
+                .fields()
+                .iter()
+                .filter_map(|f| match f {
+                    Value::F64(x) => Some(*x),
+                    _ => None,
+                })
+                .collect();
+            accent_parts(&parts)
+        }
+        _ => None,
+    }
+}
+
+/// Three parts from 0 to 1 as a colour; None for anything else.
+#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+fn accent_parts(parts: &[f64]) -> Option<egui::Color32> {
+    if parts.len() != 3 || parts.iter().any(|p| !(0.0..=1.0).contains(p)) {
+        return None;
+    }
+    let b = |p: f64| (p * 255.0).round() as u8;
+    Some(egui::Color32::from_rgb(
+        b(parts[0]),
+        b(parts[1]),
+        b(parts[2]),
+    ))
+}
+
+/// macOS's accent colour (System Settings → Appearance), from `defaults read -g
+/// AppleAccentColor`: -1 graphite, 0 red, 1 orange, 2 yellow, 3 green, 4 blue, 5 purple, 6 pink;
+/// no value is the default (multicolour: blue). Mapped to Apple's published system colours.
+#[cfg(target_os = "macos")]
+pub fn mac_accent() -> Option<egui::Color32> {
+    let out = Command::new("defaults")
+        .args(["read", "-g", "AppleAccentColor"])
+        .stderr(Stdio::null())
+        .output()
+        .ok()?;
+    let n = String::from_utf8_lossy(&out.stdout)
+        .trim()
+        .parse::<i32>()
+        .ok();
+    Some(mac_accent_color(n))
+}
+
+/// AppleAccentColor's number (None: not set) as the colour it stands for.
+#[cfg_attr(not(target_os = "macos"), allow(dead_code))]
+fn mac_accent_color(n: Option<i32>) -> egui::Color32 {
+    let rgb = egui::Color32::from_rgb;
+    match n {
+        Some(-1) => rgb(0x8c, 0x8c, 0x8c),
+        Some(0) => rgb(0xff, 0x3b, 0x30),
+        Some(1) => rgb(0xff, 0x95, 0x00),
+        Some(2) => rgb(0xff, 0xcc, 0x00),
+        Some(3) => rgb(0x28, 0xcd, 0x41),
+        Some(5) => rgb(0xaf, 0x52, 0xde),
+        Some(6) => rgb(0xff, 0x2d, 0x55),
+        _ => rgb(0x00, 0x7a, 0xff),
+    }
+}
+
 /// The portal's `color-scheme` number (0 no preference, 1 dark, 2 light), unwrapped from the
 /// variants `Read` adds around it.
 #[cfg(target_os = "linux")]

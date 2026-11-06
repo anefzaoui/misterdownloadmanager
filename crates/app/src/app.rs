@@ -101,6 +101,10 @@ enum Cmd {
     ToggleDarkMode,
     /// View → Always dark (#60).
     ToggleAlwaysDark,
+    /// View → Theme → a theme (#45): a built-in's id or a theme file's name.
+    Theme(&'static str),
+    /// View → Theme → Open themes folder.
+    OpenThemesFolder,
     /// View → Draw with → OpenGL / Direct3D (#89), from the next start.
     #[cfg(windows)]
     DrawWith(crate::renderer::Api),
@@ -473,6 +477,9 @@ pub struct App {
     saver: store::Saver,
     /// When the light/dark mode was last checked against Windows' app mode.
     theme_checked: Option<Instant>,
+    /// View → Theme's choices (#45), and when the themes folder last changed (read again then).
+    theme_list: Vec<crate::themefile::Entry>,
+    themes_changed: Option<std::time::SystemTime>,
     /// The main window's caption matches the mode.
     caption_set: bool,
     list: list::ListState,
@@ -680,7 +687,7 @@ impl App {
         loaded: store::Loaded,
     ) -> Self {
         // The look (#45): the chosen theme before anything is drawn.
-        crate::theme::select(&loaded.settings.theme);
+        crate::theme::select(&loaded.settings.theme, &cc.egui_ctx);
         crate::theme::apply(&cc.egui_ctx);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
@@ -879,6 +886,8 @@ impl App {
             last_save: Instant::now(),
             saver: store::Saver::new(),
             theme_checked: None,
+            theme_list: crate::themefile::list(),
+            themes_changed: crate::themefile::changed(),
             caption_set: false,
             list,
             icons: ShellIcons,
@@ -3980,6 +3989,24 @@ impl App {
                 self.theme_checked = None;
                 self.dirty = true;
             }
+            Cmd::Theme(id) => {
+                self.settings.theme = id.to_owned();
+                crate::theme::select(id, ctx);
+                // Live: egui's own visuals, the glyph rendering and the captions follow at once;
+                // every painter reads the new theme from its next frame.
+                crate::theme::apply_theme(ctx);
+                crate::theme::apply_mode(ctx);
+                self.caption_set = false;
+                self.theme_checked = None;
+                self.dirty = true;
+                ctx.request_repaint();
+            }
+            Cmd::OpenThemesFolder => {
+                if let Some(dir) = crate::themefile::dir() {
+                    let _ = std::fs::create_dir_all(&dir);
+                    let _ = open::that_detached(dir);
+                }
+            }
             #[cfg(windows)]
             Cmd::DrawWith(api) => {
                 // Chosen again after it failed here: its next start is tried.
@@ -4600,16 +4627,61 @@ impl App {
                 I("Tell a &friend", Cmd::TellFriend, true, false),
             ],
         };
-        // View → Draw with (MDM's, #89), after Always dark. Windows only: Linux and macOS draw
-        // with OpenGL only (renderer.rs).
-        #[cfg(windows)]
+        // View → Theme (MDM's, #45), after Always dark; then Draw with (#89), Windows only:
+        // Linux and macOS draw with OpenGL only (renderer.rs).
         if let Some(at) = menu
             .iter()
             .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
         {
-            menu.insert(at + 1, self.draw_with_menu());
+            menu.insert(at + 1, self.theme_menu());
+            #[cfg(windows)]
+            menu.insert(at + 2, self.draw_with_menu());
         }
         menu
+    }
+
+    /// View → Theme (#45): the built-in themes, the theme files in the themes folder, and a way
+    /// to that folder. Picked, a theme applies at once.
+    fn theme_menu(&self) -> MenuEntry<Cmd> {
+        use MenuEntry::{Item as I, Radio, Sep, Sub};
+        let chosen = self.settings.theme.as_str();
+        let mut items = Vec::new();
+        let mut files = false;
+        items.push(Radio(
+            // i18n: View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
+            "Classic",
+            Cmd::Theme("classic"),
+            true,
+            chosen == "classic",
+        ));
+        items.push(Radio(
+            // i18n: View → Theme: the system's own colours (its accent colour, its high contrast)
+            "Native",
+            Cmd::Theme("native"),
+            true,
+            chosen == "native",
+        ));
+        items.push(Radio(
+            // i18n: View → Theme: black and white with strong edges, for low vision
+            "High contrast",
+            Cmd::Theme("high-contrast"),
+            true,
+            chosen == "high-contrast",
+        ));
+        for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
+            if !files {
+                items.push(Sep);
+                files = true;
+            }
+            // A file's theme by its own name, untranslated.
+            let (id, name) = (crate::chrome::label(&e.id), crate::chrome::label(&e.name));
+            items.push(Radio(name, Cmd::Theme(id), true, e.id == chosen));
+        }
+        items.push(Sep);
+        // i18n: View → Theme: opens the folder where theme files go (TOML or JSON)
+        items.push(I("Open themes folder", Cmd::OpenThemesFolder, true, false));
+        // i18n: View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Modern…
+        Sub("Theme", true, items)
     }
 
     /// View → Draw with (#89): OpenGL or Direct3D, used from the next start; a greyed line says
@@ -7047,11 +7119,24 @@ impl eframe::App for App {
             .is_none_or(|t| t.elapsed() > Duration::from_secs(2))
         {
             self.theme_checked = Some(Instant::now());
+            // A theme file added, removed or renamed: View → Theme lists it.
+            let changed = crate::themefile::changed();
+            if changed != self.themes_changed {
+                self.themes_changed = changed;
+                self.theme_list = crate::themefile::list();
+            }
             let changed = crate::theme::update(
                 self.settings.dark_mode_support,
                 self.settings.always_dark,
                 &ctx,
             );
+            // Native follows the system's accent and contrast as they change.
+            let changed = if crate::theme::follow_system(&ctx) {
+                crate::theme::apply_theme(&ctx);
+                true
+            } else {
+                changed
+            };
             // The caption follows (first check: the window may not exist yet; retried).
             if changed || !self.caption_set {
                 crate::theme::apply_mode(&ctx);
