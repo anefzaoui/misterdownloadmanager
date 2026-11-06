@@ -58,6 +58,12 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Themes: Metro, Windows 8's flat look (its controls, a drawn title bar on Windows, Fluent
   icons); themes choose each control's style and bring their own icons
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Adwaita, GNOME's look (its controls, a header bar on Windows, GNOME's Adwaita icons
+  in colour and one colour)
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Breeze, KDE Plasma's look (its focus frame, check boxes, buttons and title bar on
+  Windows, KDE's Breeze icons)
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and

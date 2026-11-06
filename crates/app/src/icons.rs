@@ -264,14 +264,15 @@ impl Icon {
         })
     }
 
-    /// The icon, enabled or greyed: the theme's own where its icon set has one (tinted when the
-    /// set is one colour), else the classic outline.
+    /// The icon, enabled or greyed: the theme's own where its icon set has one (a one-colour
+    /// icon in the text colour), else the classic outline.
     pub fn image(self, enabled: bool) -> Image<'static> {
-        if let Some((src, mono)) = self
+        let ink = crate::themeicons::ink(enabled);
+        if let Some((src, tint)) = self
             .need()
-            .and_then(|need| crate::themeicons::source(need, 32.0))
+            .and_then(|need| crate::themeicons::source(need, 32.0, ink, enabled))
         {
-            return Image::new(src).tint(crate::themeicons::tint(mono, enabled));
+            return Image::new(src).tint(tint);
         }
         Image::new(self.source(enabled))
     }

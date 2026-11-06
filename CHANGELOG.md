@@ -64,6 +64,18 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Layouts on Maximize, double-click and Alt+Space work as with the system's). Theme files can now
   choose each control's style (`[controls]`), an icon set, and a theme can be a folder that brings
   its own icons.
+- **Themes: Adwaita** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)),
+  after GNOME's look, the layout kept: round corners, flat grey buttons, a rounded focus ring,
+  boxes that take a ring when focused, GNOME's check boxes and radio buttons, GNOME's Adwaita
+  icons (LGPL-3.0), in colour for files and categories and one colour in the toolbar, and, on
+  Windows, a header bar MDM draws with the title in bold and round buttons. An icon set can now
+  mix PNG pictures with SVG drawings, and one-colour icons (`-symbolic.svg`) with coloured ones.
+- **Themes: Breeze** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)), after
+  KDE Plasma's look, the layout kept: rounded corners, buttons and boxes whose edge takes the
+  accent under the pointer or when focused, KDE's check boxes and radio buttons (the accent's
+  edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and,
+  on Windows, a title bar MDM draws in KDE's style: the title centred, round buttons that fill
+  under the pointer (Close in red).
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
