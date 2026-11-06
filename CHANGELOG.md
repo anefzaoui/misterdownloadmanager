@@ -355,6 +355,20 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   contrast WCAG asks for (4.5:1) on every dark surface, Options' failed checks no longer use light
   mode's dark red on the dark dialog, and an editable drop-down's arrow is tinted dark under the
   pointer.
+- **HLS and DASH videos from the browser, as their stream**
+  ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155)): a video played as a
+  stream (most sites' long videos) failed with yt-dlp's "Unsupported URL" when the extension sent
+  the page instead of the stream. **Download with Mister Download Manager** in the right-click
+  menu on such a video now sends the stream its player loaded, as the button over videos and
+  **Media on this page** do. In Firefox it did nothing at all. The cookies sent are those of the
+  stream's own server, not the page's.
+- **Add torrent: the labels fit in every language**: in German, **Speichern unter** ran under
+  its field.
+- **A download or magnet link sent while the window is minimized opens at once**
+  ([#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162)): with the main window
+  minimized (not to the notification area), a download from the browser or a magnet link was
+  accepted but its window waited until MDM was restored. Download File Info and Add torrent now
+  open right away, as they do with the window open or in the notification area.
 - **Linux: Ubuntu's Firefox reaches MDM** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   the Snap Firefox never makes the folder MDM looked for, so browser integration wasn't set up
   for it and its extension couldn't find MDM. It is now, and the Snap goes through the desktop,
