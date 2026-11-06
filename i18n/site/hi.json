@@ -174,10 +174,6 @@
    "source": "Contribute",
    "text": "योगदान करें"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "पिछली बार अपडेट किया गया 2026-11-06 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager के बारे में उत्तर: क्या यह मुफ़्त है, क्या यह सुरक्षित है, IDM, ब्राउज़र, वीडियो, टॉरेंट, गति, Mac और Linux, और बहुत कुछ से इसकी तुलना कैसे की जाती है।"
@@ -297,6 +293,10 @@
   "063cb01120e3c2de": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "क्या आप Internet Download Manager (IDM) का कोई मुफ्त विकल्प ढूंढ रहे हैं? Mister Download Manager मुफ्त और ओपन सोर्स है, IDM जैसा दिखता है, और आपकी IDM सूची को इम्पोर्ट करता है। इसकी तुलना Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader और अन्य से करें।"
+  },
+  "0653a393fa30cb53": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
+   "text": "<g1>docker/unraid.xml</g1> एक टेम्पलेट है: इसे फ्लैश ड्राइव पर <x2/> पर कॉपी करें, फिर <g3>Docker → Add Container</g3> और <g4>misterdownloadmanager</g4> चुनें। यह <x5/> को <x6/>, <x7/> को एक शेयर, पोर्ट 8463 पर मैप करता है, और <x8/> (99:100) के रूप में चलता है, जैसा कि Unraid के शेयर उम्मीद करते हैं। इमेज को पहले (ऊपर) सर्वर पर बनाया जाना चाहिए या आपके द्वारा उपयोग की जाने वाली रजिस्ट्री में धकेला जाना चाहिए।"
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -818,6 +818,10 @@
    "source": "When it doesn't work",
    "text": "जब यह काम न करे"
   },
+  "13dbb4044f2f02cc": {
+   "source": "where downloads go (each category's folder inside)",
+   "text": "जहाँ डाउनलोड जाते हैं (प्रत्येक श्रेणी का फ़ोल्डर अंदर)"
+  },
   "13f638ddac98e283": {
    "source": "Download Later",
    "text": "बाद में डाउनलोड करें"
@@ -958,6 +962,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "MDM को चलने दें। मुख्य विंडो को बंद करना ठीक है: MDM ट्रे में चलता रहता है। <g1>कार्य → बाहर निकलें</g1> का उपयोग न करें।"
   },
+  "17a6b9e12e193121": {
+   "source": "<g1>New:</g1> the server mode is new in this version. Please <g2>tell us how it goes</g2>.",
+   "text": "<g1>नया:</g1> सर्वर मोड इस संस्करण में नया है। कृपया <g2>हमें बताएँ कि यह कैसा चल रहा है</g2>।"
+  },
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "एक <x1/> फ़ाइल जो वेब पते से प्राप्त की जाती है, डिस्क से खोली गई फ़ाइल के समान ही जाँच से गुजरती है, और MDM इसकी अधिकतम 10 MB ही पढ़ता है।"
@@ -1026,9 +1034,17 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "1909586657a6c8d0": {
+   "source": "Flag",
+   "text": "फ्लैग"
+  },
   "19156d7406477513": {
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>सर्वर</g1> — सर्वर कहाँ है: उसके देश का झंडा और नाम, और वहाँ तक पहुँचने में कितना समय लगता है। <g2>सर्वर कहाँ है</g2> देखें। यह खाली रहता है जब ब्राउज़र ने डाउनलोड को उसके नाम और आकार के साथ सौंप दिया, क्योंकि MDM को सर्वर से पूछने की ज़रूरत नहीं पड़ी।"
+  },
+  "19686779e1123d73": {
+   "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
+   "text": "सर्वर के नाम से पेज खोलने के लिए (<x1/>), MDM को वह नाम दें: <x2/> (कई: अल्पविराम से अलग किए गए)। अन्य नाम अस्वीकार कर दिए जाते हैं, ताकि कोई भी वेब पेज अपने नाम के माध्यम से MDM तक न पहुँच सके।"
   },
   "19810b030c072070": {
    "source": "Path",
@@ -1062,9 +1078,17 @@
    "source": "Batch download: many numbered files",
    "text": "बैच डाउनलोड: कई क्रमांकित फ़ाइलें"
   },
+  "1a359afa27050848": {
+   "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window).",
+   "text": "(<x1/>, #157) <x2/> को eframe के बिना चलाता है: एक लूप अपने <x3/> को (जो <x4/> हर फ्रेम पर चलाता है) एक नंगे <x5/> पर कॉल करता है, जो कमांड चैनल द्वारा जगाया जाता है, और कभी भी अपने <x6/> को नहीं; कमांड तब जोड़े जाते हैं जब रिमोट कंट्रोल उन्हें जोड़ता है (कोई विंडो नहीं)।"
+  },
   "1a3aff78add15e0b": {
    "source": "Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.",
    "text": "इन दस्तावेज़ों में स्क्रीनशॉट हल्के थीम वाले हैं, जब तक कि अन्यथा न बताया गया हो। MDM Windows के डार्क मोड को फॉलो करता है: जब Windows डार्क पर सेट होता है, तो MDM भी डार्क हो जाता है।"
+  },
+  "1a3b9d0d6a07985d": {
+   "source": "the page's address as you open it, shown with the pairing code",
+   "text": "पेज का पता जैसा कि आप इसे खोलते हैं, युग्मन कोड के साथ दिखाया गया है"
   },
   "1a4513aa7b897fc8": {
    "source": "<g1>Confirm before deleting downloads</g1> — ask before taking downloads off the list. On by default; <g2>Don't show this dialog again</g2> in that question turns it off, and ticking it here turns it back on.",
@@ -1237,6 +1261,10 @@
   "1cf59e936ec9e349": {
    "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
    "text": "<g1>7-Zip</g1> मिला या नहीं: 7z और RAR आर्काइव के लिए इसकी ज़रूरत होती है।"
+  },
+  "1d098969ea9cf781": {
+   "source": ": the user that owns those folders (MDM runs as no particular user).",
+   "text": ": उन फ़ोल्डरों का मालिक उपयोगकर्ता (MDM किसी विशेष उपयोगकर्ता के रूप में नहीं चलता है)।"
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -1453,6 +1481,10 @@
   "22eb9ce302891640": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with <x1/> for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See <g2>Command line and automation</g2>.",
    "text": "हाँ। MDM, IDM के परिचित कमांड-लाइन स्विच स्वीकार करता है, टर्मिनल से डाउनलोड के लिए <x1/> के साथ आता है, और इसमें एक स्थानीय, टोकन-सुरक्षित ऑटोमेशन API है जो डाउनलोड को सूचीबद्ध कर सकता है, रोक सकता है, शुरू कर सकता है और हटा सकता है। API तब तक बंद रहता है जब तक आप इसे चालू नहीं करते। <g2>कमांड लाइन और ऑटोमेशन</g2> देखें।"
+  },
+  "230325217f1c4b94": {
+   "source": "shows the address to open and, while no device is paired, a pairing code with a QR code:",
+   "text": "खोलने के लिए पता दिखाता है और, जब तक कोई डिवाइस युग्मित नहीं होता है, एक QR कोड के साथ एक युग्मन कोड दिखाता है:"
   },
   "2307e7989c795a73": {
    "source": "1.9.3<g1>18 Mar 2026</g1>",
@@ -1918,6 +1950,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>देश</g1> MDM के साथ आने वाली पता श्रेणियों की एक तालिका से आता है (<g2>DB-IP द्वारा IP to Country Lite</g2>, CC BY 4.0), जिसे आपके कंप्यूटर पर देखा जाता है। MDM कभी भी पता कहीं नहीं भेजता है यह पूछने के लिए कि वह कहाँ है। तालिका हर रिलीज़ के साथ अपडेट की जाती है; एक पता जो तब से बदल गया है, वह अपना पुराना देश दिखा सकता है।"
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "पिछला अपडेट 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>ब्राउज़ करें</g1> — एक्सप्लोरर में उसका फ़ोल्डर खोलें।"
@@ -2250,6 +2286,10 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon या Intel पर <g1>macOS 11</g1> या बाद का (प्रायोगिक)।"
   },
+  "36716abd18118575": {
+   "source": "the remote control's port (8463)",
+   "text": "रिमोट कंट्रोल का पोर्ट (8463)"
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "<g1>नया डाउनलोड जोड़ें</g1>, <g2>सभी चुनें</g2>, <g3>फ़ाइलें व्यवस्थित करें</g3>, <g4>सभी फ़िल्टर साफ़ करें(f)</g4> और <g5>सभी पूर्ण हुए मिटाएँ</g5> के लिए सूची के खाली स्थान पर राइट-क्लिक करें।"
@@ -2482,6 +2522,10 @@
    "source": "Add URL",
    "text": "URL जोड़ें"
   },
+  "3b8c53b20f84def3": {
+   "source": "the list, settings, certificate and paired devices",
+   "text": "सूची, सेटिंग्स, प्रमाणपत्र और युग्मित डिवाइस"
+  },
   "3b908b26074fe7d4": {
    "source": "<g1>Change folder for \"…\" category on last selected</g1> — when you pick another folder in <g2>Download File Info</g2>, it becomes the category's folder from then on. On by default. (It sets the first state of <g3>Remember this path</g3> in that window.)",
    "text": "<g1>अंतिम चयनित पर \"...\" श्रेणी के लिए फ़ोल्डर बदलें</g1> — जब आप <g2>फ़ाइल जानकारी डाउनलोड करें</g2> में कोई अन्य फ़ोल्डर चुनते हैं, तो वह तब से श्रेणी का फ़ोल्डर बन जाता है। डिफ़ॉल्ट रूप से चालू। (यह उस विंडो में <g3>यह पथ याद रखें</g3> की पहली स्थिति सेट करता है।)"
@@ -2589,6 +2633,10 @@
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "टूलबार पर <g1>फिर से शुरू करें</g1> पर क्लिक करें (या राइट-क्लिक करें → <g2>डाउनलोड फिर से शुरू करें</g2>)।"
+  },
+  "3dab45c85af12119": {
+   "source": "Or the variable",
+   "text": "या वेरिएबल"
   },
   "3dfd3b258b972ccc": {
    "source": "Files in the queue",
@@ -2934,6 +2982,10 @@
    "source": "A server that allows two connections at a time. Every square is one connection it saw in a typical run.",
    "text": "एक सर्वर जो एक बार में दो कनेक्शन की अनुमति देता है। प्रत्येक वर्ग एक कनेक्शन है जो उसने एक सामान्य रन में देखा।"
   },
+  "476a78eca0326f04": {
+   "source": "keeps the list, the settings, the certificate and the paired devices.",
+   "text": "सूची, सेटिंग्स, प्रमाणपत्र और युग्मित डिवाइस रखता है।"
+  },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "एक कतार को हटाने से पहले पूछा जाता है; एक चल रही कतार हटाए जाने पर रुक जाती है; टूलबार के कतार शुरू करें / रोकें तीर हमेशा काम करते हैं।"
@@ -3033,6 +3085,10 @@
   "49e22ffa819f63a8": {
    "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
    "text": "सूची में एक टॉरेंट पर राइट-क्लिक करें और <g1>टॉरेंट</g1> खोलें:"
+  },
+  "49faa92737cc6b16": {
+   "source": "Without Docker",
+   "text": "Docker के बिना"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3798,6 +3854,10 @@
    "source": "Edit this page on GitHub",
    "text": "इस पेज को GitHub पर संपादित करें"
   },
+  "5f31049fa5031c49": {
+   "source": "The remote control is on in this mode (<x1/> turns it off). It stops cleanly, saving its list, when the system stops it (<x2/>, systemd, Ctrl+C). It works on Windows and macOS too, the same way.",
+   "text": "रिमोट कंट्रोल इस मोड में चालू है (<x1/> इसे बंद कर देता है)। यह अपनी सूची को सहेजते हुए, जब सिस्टम इसे रोकता है (<x2/>, systemd, Ctrl+C) तो साफ-सुथरा बंद हो जाता है। यह Windows और macOS पर भी इसी तरह काम करता है।"
+  },
   "5f3bc376c2f41291": {
    "source": "Tests and benchmarks",
    "text": "परीक्षण और बेंचमार्क"
@@ -3921,6 +3981,10 @@
   "613ff676be295efe": {
    "source": "<g1><g2>Yes</g2></g1><g3>GPL-3.0</g3>",
    "text": "<g1><g2>हाँ</g2></g1><g3>GPL-3.0</g3>"
+  },
+  "6143c720cec9874d": {
+   "source": "With Docker",
+   "text": "Docker के साथ"
   },
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
@@ -4166,6 +4230,10 @@
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
    "text": "MDM को सेटअप के साथ इंस्टॉल करें और ब्राउज़र इंटीग्रेशन सेट करें को टिक किया हुआ रखें। Firefox में, फिर addons.mozilla.org पर ऐड-ऑन का पेज खोलें और जोड़ें पर क्लिक करें।"
   },
+  "67d7688dc5224a95": {
+   "source": "Run MDM on a server — Mister Download Manager help",
+   "text": "सर्वर पर MDM चलाएँ — Mister Download Manager सहायता"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4401,6 +4469,10 @@
   "6d0f7f45f8191505": {
    "source": "When it last ran.",
    "text": "यह आखिरी बार कब चला था।"
+  },
+  "6d136697adce7701": {
+   "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
+   "text": "MDM स्थापित किसी भी Linux मशीन पर (<x1/>, <x2/>, AppImage या <x3/>):"
   },
   "6d485e0daa042fc9": {
    "source": "The package box",
@@ -4657,6 +4729,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>ऊपर</g1> / <g2>नीचे</g2>, <g3>बाएँ</g3> / <g4>दाएँ</g4>"
+  },
+  "72ff8f6b37364fc1": {
+   "source": "is where files land: each category has its folder inside (<x1/>, <x2/>, <x3/>…). Mount a network share there to download straight onto it.",
+   "text": "वह जगह है जहाँ फ़ाइलें उतरती हैं: प्रत्येक श्रेणी का अपना फ़ोल्डर अंदर होता है (<x1/>, <x2/>, <x3/>…)। सीधे उस पर डाउनलोड करने के लिए वहाँ एक नेटवर्क शेयर माउंट करें।"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5666,6 +5742,10 @@
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "ब्राउज़र चेतावनी देता है कि कनेक्शन का प्रमाणपत्र विश्वसनीय नहीं है। यह अपेक्षित है: MDM ने आपके कंप्यूटर पर अपना स्वयं का प्रमाणपत्र बनाया है, और कोई सार्वजनिक प्राधिकरण इसे नहीं जानता है। यह सुनिश्चित करने के लिए कि पेज आपके MDM का है, चेतावनी का विवरण खोलें: प्रमाणपत्र का <g1>SHA-256 फ़िंगरप्रिंट</g1> वही है जो <g2>विकल्प → रिमोट</g2> दिखाता है। फिर पेज पर जारी रखें (Chrome में <g3>उन्नत → आगे बढ़ें</g3>, Safari में <g4>विवरण दिखाएँ → इस वेबसाइट पर जाएँ</g4>)।"
   },
+  "8c3034c70156f726": {
+   "source": "On Unraid",
+   "text": "Unraid पर"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "पूरी शर्तें <g1>इस्तेमाल की शर्तों</g1> में हैं।"
@@ -5858,6 +5938,10 @@
    "source": "When you added it.",
    "text": "जब आपने इसे जोड़ा था।"
   },
+  "91799f6f221cf37b": {
+   "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
+   "text": "एक कंटेनर के अंदर, MDM को जो पता मिलता है वह कंटेनर का अपना होता है: इसे वह पता दें जिसे आप खोलते हैं, <g1>सर्वर का</g1> पता उस पोर्ट के साथ जिसे आपने प्रकाशित किया है, जैसे <x2/>, और लॉग और QR कोड वह दिखाते हैं। फिर <g3>अपने फ़ोन से MDM नियंत्रित करें</g3> के अनुसार युग्मित करें। किसी भी समय दूसरे कोड के लिए:"
+  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "<g1>स्थिति</g1> पर, केवल <g2>त्रुटि</g2> चुनें ताकि विफल हुए डाउनलोड दिखें।"
@@ -6025,6 +6109,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "डाउनलोड"
+  },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "पिछली बार अपडेट किया गया 2026-11-07 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
   },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
@@ -6374,6 +6462,10 @@
    "source": "Download in order",
    "text": "क्रम में डाउनलोड करें"
   },
+  "9e18dba709154be4": {
+   "source": "Send downloads from your browser",
+   "text": "अपने ब्राउज़र से डाउनलोड भेजें"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 बनाम Mister Download Manager डाउनलोड बेंचमार्क"
@@ -6694,6 +6786,10 @@
    "source": "A 256 KiB file",
    "text": "एक 256 KiB फ़ाइल"
   },
+  "a69373ac180f98a4": {
+   "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
+   "text": "पहला बिल्ड लंबा होता है (एक छोटे सर्वर पर एक घंटे तक: पूरा प्रोग्राम एक के रूप में अनुकूलित होता है)। इमेज छोटी है, लगभग 175 MB: Debian का स्लिम बेस, MDM के दो प्रोग्राम और प्रमाणपत्र डाउनलोड जिनकी जाँच की जाती है। इसे किसी डेस्कटॉप लाइब्रेरी की आवश्यकता नहीं है: MDM उन्हें केवल एक विंडो खोलने के लिए लोड करता है, जो एक सर्वर कभी नहीं करता।"
+  },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. नाम और लोगो"
@@ -7013,6 +7109,10 @@
   "ae17b5b75df45e9d": {
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>विकल्पों का OK इस बीच किए गए परिवर्तनों को पूर्ववत कर देता है</g1> (टूलबार का गति सीमित करने वाला, टॉरेंट सेटिंग्स…), और शेड्यूलर का बंद करें कतार में जोड़े गए या हटाए गए डाउनलोड को पूर्ववत कर देता है।"
+  },
+  "ae55fbed6cc1702a": {
+   "source": "<g1>docker/compose.yml</g1> does the same with Docker Compose.",
+   "text": "<g1>docker/compose.yml</g1> Docker Compose के साथ भी ऐसा ही करता है।"
   },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
@@ -7442,6 +7542,10 @@
    "source": "Where the server is",
    "text": "सर्वर कहाँ है"
   },
+  "b84114a1d735eb2d": {
+   "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
+   "text": "<g1><g2>सर्वर पर MDM चलाएँ</g2></g1> — होम सर्वर या NAS (Docker, Unraid) पर बिना विंडो के MDM चलाएँ, फ़ोल्डरों में डाउनलोड करें; अपने फ़ोन या ब्राउज़र से इसे डाउनलोड भेजें।"
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "सेटअप के साथ इंस्टॉल करें"
@@ -7477,6 +7581,10 @@
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
    "text": "मीडियन से वास्तविक समय में चलाया गया।"
+  },
+  "b93c892b6f64e746": {
+   "source": "Then run it, with a folder for its settings and one for the downloads:",
+   "text": "फिर इसे चलाएँ, इसकी सेटिंग्स के लिए एक फ़ोल्डर और डाउनलोड के लिए एक फ़ोल्डर के साथ:"
   },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
@@ -7930,6 +8038,10 @@
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
    "text": "<g1>नियमों के आसपास कोई साइट-विशिष्ट शॉर्टकट नहीं।</g1> MDM साइटों के साथ एक जैसा व्यवहार करता है। इसमें किसी विशेष साइट की शर्तों, पेवॉल या सीमाओं को दरकिनार करने के लिए बनाई गई कोई सुविधा नहीं है।"
   },
+  "c62198270f0107d2": {
+   "source": "What it sets",
+   "text": "यह क्या सेट करता है"
+  },
   "c6320d84eeae5baf": {
    "source": "A few things to know before you start.",
    "text": "शुरू करने से पहले कुछ बातें जान लें।"
@@ -7941,6 +8053,10 @@
   "c696667963fca278": {
    "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
    "text": "PDF या वीडियो फ़ाइल के लिंक, जिन्हें ब्राउज़र खुद खोलता, वे भी MDM में जाते हैं जब उनका प्रकार सूचीबद्ध होता है। किसी एक को ब्राउज़र के लिए छोड़ने के लिए, उस पर क्लिक करते समय <g1>Alt</g1> दबाए रखें (Firefox उसे खोलता है; Chrome और Edge उसे खुद डाउनलोड करते हैं)। कोई भी अन्य लिंक: उस पर राइट-क्लिक करें और <g2>Mister Download Manager से डाउनलोड करें</g2> चुनें, जो किसी भी प्रकार को लेता है।"
+  },
+  "c6977329ca37f93c": {
+   "source": "Don't publish the port on the internet; reach your home network through a VPN instead.",
+   "text": "पोर्ट को इंटरनेट पर प्रकाशित न करें; इसके बजाय VPN के माध्यम से अपने होम नेटवर्क तक पहुँचें।"
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -8190,6 +8306,10 @@
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "आप अकेले उन फ़ाइलों के लिए जिम्मेदार हैं जिन्हें आप डाउनलोड करते हैं और आप सॉफ्टवेयर का उपयोग कैसे करते हैं।"
   },
+  "cd447cf77eb76adc": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your browser: the server downloads them into its own folders, such as a network share.",
+   "text": "Mister Download Manager को बिना विंडो के होम सर्वर या NAS (Docker, Unraid, कोई भी Linux मशीन) पर चलाएँ, और अपने फ़ोन या ब्राउज़र से इसे डाउनलोड भेजें: सर्वर उन्हें अपने फ़ोल्डरों में डाउनलोड करता है, जैसे कि नेटवर्क शेयर।"
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>32 से अधिक कनेक्शन की अनुमति दें</g1> — ऊपर की संख्या और अपवादों के लिए अधिकतम को 128 तक बढ़ाता है। अधिकांश सर्वर एक पते से बहुत कम की अनुमति देते हैं; MDM इसे पहचानता है और उनसे कम के लिए पूछता है। फिर से बंद करने पर, कोई भी उच्च संख्या 32 पर वापस आ जाती है।"
@@ -8318,6 +8438,10 @@
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "कई थीम, कतारों और शेड्यूलर के साथ एक आधुनिक रूप, और एक Android ऐप"
   },
+  "d0584e074b00b370": {
+   "source": "Build the image from MDM's source (a published image comes later):",
+   "text": "MDM के स्रोत से इमेज बनाएँ (एक प्रकाशित इमेज बाद में आएगी):"
+  },
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "यदि किसी ने पहले ही उसी समस्या की रिपोर्ट कर दी है, तो विंडो ऐसा कहती है (<g1>पहले ही समस्या #… के रूप में रिपोर्ट किया गया</g1>)। <g2>रिपोर्ट किया गया समस्या खोलें</g2> इसे खोलता है और आपकी रिपोर्ट को क्लिपबोर्ड पर रखता है, ताकि आप इसे एक टिप्पणी के रूप में जोड़ सकें।"
@@ -8333,10 +8457,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "प्रत्येक चल रहे डाउनलोड की अपनी प्रगति विंडो होती है। यह डाउनलोड शुरू होने पर खुलती है; इसे फिर से खोलने के लिए, सूची में डाउनलोड पर डबल-क्लिक करें।"
-  },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "अंतिम अपडेट 2026-11-06"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8714,6 +8834,10 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "यदि साइट ने फ़ाइल को एक नए संस्करण से बदल दिया है, तो MDM के पास के हिस्से अब फिट नहीं होते हैं। डाउनलोड पर राइट-क्लिक करें और शुरुआत से फिर से शुरू करने के लिए <g1>फिर से डाउनलोड करें</g1> चुनें। एक पूरी हुई फ़ाइल तभी बदली जाती है जब नया डाउनलोड पूरा हो जाता है।"
   },
+  "da6edd8a7cee18e1": {
+   "source": "where it listens: every local network address unless given",
+   "text": "जहाँ यह सुनता है: जब तक नहीं दिया जाता, तब तक हर स्थानीय नेटवर्क पता"
+  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "उपयोग की शर्तें — Mister Download Manager"
@@ -8762,9 +8886,17 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "हाँ। MDM, IDM के परिचित कमांड-लाइन स्विच स्वीकार करता है, टर्मिनल से डाउनलोड के लिए misterdownloadmanager-cli के साथ आता है, और इसमें एक स्थानीय, टोकन-सुरक्षित ऑटोमेशन API है जो डाउनलोड को सूचीबद्ध कर सकता है, रोक सकता है, शुरू कर सकता है और हटा सकता है। API तब तक बंद रहता है जब तक आप इसे चालू नहीं करते। कमांड लाइन और ऑटोमेशन देखें।"
   },
+  "db637c7ba77f6b99": {
+   "source": "In the browser extension's menu, <g1>Send downloads to → Another MDM</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "ब्राउज़र एक्सटेंशन के मेनू में, <g1>डाउनलोड यहां भेजें → एक और MDM</g1>: सर्वर का पता टाइप करें, उसके प्रमाणपत्र को स्वीकार करने के लिए उसे उस ब्राउज़र में एक बार खोलें, फिर एक पेयरिंग कोड डालें (<x2/> ऊपर)। एक्सटेंशन जिन डाउनलोड को पकड़ता है, और किसी लिंक पर <g3>Mister Download Manager से डाउनलोड करें</g3>, वे इस कंप्यूटर के बजाय सर्वर पर जाते हैं। ब्राउज़र की कुकीज़ सर्वर पर नहीं भेजी जाती हैं: जिस डाउनलोड के लिए आपको किसी साइट पर साइन इन होना ज़रूरी है, वह इसी कंप्यूटर पर रहता है।"
+  },
   "db74b9137912e0a2": {
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "एक प्रॉक्सी जो लॉगिन मांगता है जिसे VPN एक्सटेंशन खुद देता है, उसे साझा नहीं किया जा सकता: किसी अन्य प्रोग्राम के पास वह लॉगिन नहीं होता है। डाउनलोड तब रुक जाता है और ऐसा बताता है, बजाय प्रॉक्सी के बिना जाने के। VPN के अपने ऐप का उपयोग करें, या <g1>नेटवर्क एडाप्टर</g1> के तहत उसके एडाप्टर को चुनें।"
+  },
+  "db95c470f075e401": {
+   "source": "Run MDM on a server",
+   "text": "सर्वर पर MDM चलाएँ"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -9038,6 +9170,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "पूरी फ़ाइल की एक पट्टी, यह दिखाते हुए कि प्रत्येक कनेक्शन कहाँ से शुरू हुआ और वह कितनी दूर तक पहुँचा (<g1>कनेक्शन द्वारा प्रारंभ स्थिति और डाउनलोड प्रगति</g1>)।"
   },
+  "e430a7f95d146b8c": {
+   "source": "It is the same MDM as on a desktop: its list, categories, queues, Scheduler, speed limits and torrents. You control it with the <g1>remote control's page</g1> (from any phone or computer on your network), the browser extension pointed at it, or its command line.",
+   "text": "यह डेस्कटॉप पर MDM जैसा ही है: इसकी सूची, श्रेणियाँ, कतारें, शेड्यूलर, गति सीमाएँ और टॉरेंट। आप इसे <g1>रिमोट कंट्रोल के पेज</g1> (आपके नेटवर्क पर किसी भी फ़ोन या कंप्यूटर से), इस पर इंगित ब्राउज़र एक्सटेंशन, या इसकी कमांड लाइन से नियंत्रित करते हैं।"
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "ऑटोमेशन API"
@@ -9077,6 +9213,10 @@
   "e4e12c692325e7ee": {
    "source": "An archive is extracted:",
    "text": "एक संग्रह निकाला जाता है:"
+  },
+  "e4ee9fc91b52818e": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your…",
+   "text": "Mister Download Manager को होम सर्वर या NAS (Docker, Unraid, कोई भी Linux मशीन) पर बिना विंडो के चलाएँ, और अपने फ़ोन या अपने… से डाउनलोड भेजें।"
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
@@ -9226,6 +9366,10 @@
    "source": "Options, Connection page",
    "text": "विकल्प, कनेक्शन पेज"
   },
+  "e82a01cee0779d2a": {
+   "source": "The command line talks to it as to a desktop MDM, with the same data folder: <x1/> (once <x2/>), <x3/>, and adding an address: <x4/>.",
+   "text": "कमांड लाइन उसी डेटा फ़ोल्डर के साथ एक डेस्कटॉप MDM की तरह इससे बात करती है: <x1/> (एक बार <x2/>), <x3/>, और एक पता जोड़ना: <x4/>।"
+  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "Internet Download Manager के मुफ्त विकल्प"
@@ -9278,6 +9422,10 @@
    "source": "2. The software's licence",
    "text": "2. सॉफ्टवेयर का लाइसेंस"
   },
+  "e93a579d3c1901b9": {
+   "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
+   "text": "वीडियो पेज (yt-dlp) और इमेज गैलरी को अपने सहायकों की ज़रूरत होती है, जो इमेज में शामिल नहीं हैं।"
+  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "प्राप्त हो रहा है"
@@ -9317,6 +9465,10 @@
   "eacdcb2992653dee": {
    "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
    "text": "Firefox 140 या बाद का संस्करण आवश्यक है। addons.mozilla.org पर इसके पेज, <g1>Mister Download Manager</g1> से ऐड-ऑन इंस्टॉल करें: <g2>Firefox में जोड़ें</g2> पर क्लिक करें। Firefox इसे अपडेटेड रखता है। Zen और LibreWolf इसे उसी पेज से इंस्टॉल करते हैं। (MDM की <g3>Mister Download Manager को अपने ब्राउज़र में जोड़ें</g3> विंडो आपके लिए वह पेज खोलती है।)"
+  },
+  "eaee905df121bd52": {
+   "source": "Nothing opens a window: a download that would ask a question (a duplicate, files already there) takes the choice set in the settings, or isn't added.",
+   "text": "कोई विंडो नहीं खुलती है: जो डाउनलोड कोई सवाल पूछता (एक डुप्लिकेट, पहले से मौजूद फ़ाइलें) वह सेटिंग्स में चुने गए विकल्प को लेता है, या जोड़ा नहीं जाता है।"
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9445,6 +9597,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>क्या हुआ:</g1> त्रुटि और MDM के कोड में वह स्थान जहाँ यह हुआ।"
+  },
+  "ee84661ce4cf58b2": {
+   "source": "What a server doesn't do",
+   "text": "सर्वर क्या नहीं करता है"
   },
   "ee9034f4bfe810cf": {
    "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
@@ -9797,6 +9953,10 @@
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>इतने समय तक साझा करने के बाद साझा करना बंद करें … मिनट</g1> — या एक बार जब इसे इतनी देर तक साझा किया गया हो, इसके सभी रन के दौरान। डिफ़ॉल्ट रूप से बंद।"
+  },
+  "f82dc8051d1faab0": {
+   "source": "names besides its addresses the page may be opened by",
+   "text": "इसके पतों के अलावा वे नाम जिनसे पेज खोला जा सकता है"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

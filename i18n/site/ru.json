@@ -174,10 +174,6 @@
    "source": "Contribute",
    "text": "Внести вклад"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Последнее обновление: 06.11.2026 · Применяется к приложению, расширению для браузера и сайту misterdownloadmanager.com"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Ответы о Mister Download Manager: бесплатен ли он, безопасен ли, как он сравнивается с IDM, браузеры, видео, торренты, скорость, Mac и Linux и многое другое."
@@ -297,6 +293,10 @@
   "063cb01120e3c2de": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Ищете бесплатную альтернативу Internet Download Manager (IDM)? Mister Download Manager — это бесплатный менеджер загрузок с открытым исходным кодом, похожий на IDM и импортирующий ваш список IDM. Сравните его с Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader и другими."
+  },
+  "0653a393fa30cb53": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
+   "text": "<g1>docker/unraid.xml</g1> — это шаблон: скопируйте его в <x2/> на флеш-накопитель, затем <g3>Docker → Add Container</g3> и выберите <g4>misterdownloadmanager</g4>. Он сопоставляет <x5/> с <x6/>, <x7/> с общим ресурсом, порт 8463 и запускается как <x8/> (99:100), как ожидают общие ресурсы Unraid. Образ должен быть сначала собран (выше) на сервере или отправлен в используемый вами реестр."
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -818,6 +818,10 @@
    "source": "When it doesn't work",
    "text": "Когда не работает"
   },
+  "13dbb4044f2f02cc": {
+   "source": "where downloads go (each category's folder inside)",
+   "text": "куда сохраняются загрузки (внутри папки каждой категории)"
+  },
   "13f638ddac98e283": {
    "source": "Download Later",
    "text": "Загрузить позже"
@@ -958,6 +962,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "Оставьте MDM запущенным. Закрытие главного окна допустимо: MDM продолжит работу в трее. Не используйте <g1>Задачи → Выход</g1>."
   },
+  "17a6b9e12e193121": {
+   "source": "<g1>New:</g1> the server mode is new in this version. Please <g2>tell us how it goes</g2>.",
+   "text": "<g1>Новое:</g1> серверный режим появился в этой версии. Пожалуйста, <g2>сообщите нам, как он работает</g2>."
+  },
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "Файл <x1/>, полученный по веб-адресу, проходит те же проверки, что и файл, открытый с диска, при этом MDM считывает не более 10 МБ его содержимого."
@@ -1026,9 +1034,17 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Пробел"
   },
+  "1909586657a6c8d0": {
+   "source": "Flag",
+   "text": "Флаг"
+  },
   "19156d7406477513": {
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>Сервер</g1> — где находится сервер: флаг и название страны, а также время кругового пути до него. См. <g2>Где находится сервер</g2>. Остается пустым, если браузер передал загрузку с ее именем и размером, так как MDM не нужно было запрашивать сервер."
+  },
+  "19686779e1123d73": {
+   "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
+   "text": "Чтобы открыть страницу по имени сервера (<x1/>), укажите MDM это имя: <x2/> (несколько: разделенные запятыми). Другие имена отклоняются, чтобы ни одна веб-страница не могла получить доступ к MDM через свое собственное имя."
   },
   "19810b030c072070": {
    "source": "Path",
@@ -1062,9 +1078,17 @@
    "source": "Batch download: many numbered files",
    "text": "Пакетная загрузка: много пронумерованных файлов"
   },
+  "1a359afa27050848": {
+   "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window).",
+   "text": "(<x1/>, #157) запускает тот же <x2/> без eframe: цикл вызывает его <x3/> (то, что <x4/> запускает в каждом кадре) на чистом <x5/>, пробуждаемом каналом команд, и никогда его <x6/>; команды добавляются по мере их добавления пультом дистанционного управления (без окна)."
+  },
   "1a3aff78add15e0b": {
    "source": "Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.",
    "text": "Снимки экрана в этой документации показывают светлую тему, если не указано иное. MDM следует темному режиму Windows: когда в Windows установлен темный режим, MDM также становится темным."
+  },
+  "1a3b9d0d6a07985d": {
+   "source": "the page's address as you open it, shown with the pairing code",
+   "text": "адрес страницы, как вы ее открываете, отображается с кодом сопряжения"
   },
   "1a4513aa7b897fc8": {
    "source": "<g1>Confirm before deleting downloads</g1> — ask before taking downloads off the list. On by default; <g2>Don't show this dialog again</g2> in that question turns it off, and ticking it here turns it back on.",
@@ -1237,6 +1261,10 @@
   "1cf59e936ec9e349": {
    "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
    "text": "Найден ли <g1>7-Zip</g1>: он нужен для архивов 7z и RAR."
+  },
+  "1d098969ea9cf781": {
+   "source": ": the user that owns those folders (MDM runs as no particular user).",
+   "text": ": пользователь, которому принадлежат эти папки (MDM запускается без определенного пользователя)."
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -1453,6 +1481,10 @@
   "22eb9ce302891640": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with <x1/> for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See <g2>Command line and automation</g2>.",
    "text": "Да. MDM поддерживает привычные параметры командной строки IDM, поставляется с <x1/> для загрузок из терминала и имеет локальный API автоматизации, защищенный токеном, который может перечислять, приостанавливать, запускать и удалять загрузки. API отключен, пока вы его не включите. См. <g2>Командная строка и автоматизация</g2>."
+  },
+  "230325217f1c4b94": {
+   "source": "shows the address to open and, while no device is paired, a pairing code with a QR code:",
+   "text": "показывает адрес для открытия и, пока ни одно устройство не сопряжено, код сопряжения с QR-кодом:"
   },
   "2307e7989c795a73": {
    "source": "1.9.3<g1>18 Mar 2026</g1>",
@@ -1918,6 +1950,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Страна</g1> определяется по таблице диапазонов адресов, которая поставляется с MDM (<g2>IP to Country Lite от DB-IP</g2>, CC BY 4.0) и ищется на вашем компьютере. MDM никогда не отправляет адрес куда-либо, чтобы узнать, где он находится. Таблица обновляется с каждым выпуском; адрес, который переместился с тех пор, может показывать свою старую страну."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Последнее обновление: 7 ноября 2026 г."
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Обзор</g1> — открыть ее папку в Проводнике."
@@ -2250,6 +2286,10 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> или новее на Apple Silicon или Intel (экспериментально)."
   },
+  "36716abd18118575": {
+   "source": "the remote control's port (8463)",
+   "text": "порт удаленного управления (8463)"
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Щелкните правой кнопкой мыши пустое место списка для <g1>Добавить новую загрузку</g1>, <g2>Выбрать все</g2>, <g3>Упорядочить файлы</g3>, <g4>Очистить все фильтры</g4> и <g5>Удалить все завершенные</g5>."
@@ -2482,6 +2522,10 @@
    "source": "Add URL",
    "text": "Добавить URL"
   },
+  "3b8c53b20f84def3": {
+   "source": "the list, settings, certificate and paired devices",
+   "text": "список, настройки, сертификат и сопряженные устройства"
+  },
   "3b908b26074fe7d4": {
    "source": "<g1>Change folder for \"…\" category on last selected</g1> — when you pick another folder in <g2>Download File Info</g2>, it becomes the category's folder from then on. On by default. (It sets the first state of <g3>Remember this path</g3> in that window.)",
    "text": "<g1>Изменять папку для категории «…» по последнему выбранному</g1> — когда вы выбираете другую папку в <g2>Информация о загружаемом файле</g2>, она становится папкой категории с этого момента. По умолчанию включено. (Это устанавливает начальное состояние <g3>Запомнить этот путь</g3> в этом окне.)"
@@ -2589,6 +2633,10 @@
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "Нажмите <g1>Продолжить</g1> на панели инструментов (или щелкните правой кнопкой мыши → <g2>Возобновить загрузку</g2>)."
+  },
+  "3dab45c85af12119": {
+   "source": "Or the variable",
+   "text": "Или переменная"
   },
   "3dfd3b258b972ccc": {
    "source": "Files in the queue",
@@ -2934,6 +2982,10 @@
    "source": "A server that allows two connections at a time. Every square is one connection it saw in a typical run.",
    "text": "Сервер, который позволяет два соединения одновременно. Каждый квадрат — это одно соединение, которое он видел в типичном запуске."
   },
+  "476a78eca0326f04": {
+   "source": "keeps the list, the settings, the certificate and the paired devices.",
+   "text": "сохраняет список, настройки, сертификат и сопряженные устройства."
+  },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "Удаление очереди сначала запрашивает подтверждение; запущенная очередь останавливается при удалении; стрелки «Запустить / Остановить очередь» на панели инструментов всегда работают."
@@ -3033,6 +3085,10 @@
   "49e22ffa819f63a8": {
    "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
    "text": "Щелкните правой кнопкой мыши по торренту в списке и откройте <g1>Торрент</g1>:"
+  },
+  "49faa92737cc6b16": {
+   "source": "Without Docker",
+   "text": "Без Docker"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3798,6 +3854,10 @@
    "source": "Edit this page on GitHub",
    "text": "Редактировать эту страницу на GitHub"
   },
+  "5f31049fa5031c49": {
+   "source": "The remote control is on in this mode (<x1/> turns it off). It stops cleanly, saving its list, when the system stops it (<x2/>, systemd, Ctrl+C). It works on Windows and macOS too, the same way.",
+   "text": "Удаленное управление включено в этом режиме (<x1/> отключает его). Оно чисто останавливается, сохраняя свой список, когда система останавливает его (<x2/>, systemd, Ctrl+C). Оно работает на Windows и macOS так же."
+  },
   "5f3bc376c2f41291": {
    "source": "Tests and benchmarks",
    "text": "Тесты и бенчмарки"
@@ -3921,6 +3981,10 @@
   "613ff676be295efe": {
    "source": "<g1><g2>Yes</g2></g1><g3>GPL-3.0</g3>",
    "text": "<g1><g2>Да</g2></g1><g3>GPL-3.0</g3>"
+  },
+  "6143c720cec9874d": {
+   "source": "With Docker",
+   "text": "С Docker"
   },
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
@@ -4166,6 +4230,10 @@
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
    "text": "Установите MDM с помощью программы установки и оставьте флажок Настроить интеграцию с браузером включенным. В Firefox откройте страницу дополнения на addons.mozilla.org и нажмите Добавить в…"
   },
+  "67d7688dc5224a95": {
+   "source": "Run MDM on a server — Mister Download Manager help",
+   "text": "Запуск MDM на сервере — Справка Mister Download Manager"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4401,6 +4469,10 @@
   "6d0f7f45f8191505": {
    "source": "When it last ran.",
    "text": "Когда последний раз запускалась."
+  },
+  "6d136697adce7701": {
+   "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
+   "text": "На любой машине Linux с установленным MDM (<x1/>, <x2/>, AppImage или <x3/>):"
   },
   "6d485e0daa042fc9": {
    "source": "The package box",
@@ -4657,6 +4729,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>Вверх</g1> / <g2>Вниз</g2>, <g3>Влево</g3> / <g4>Вправо</g4>"
+  },
+  "72ff8f6b37364fc1": {
+   "source": "is where files land: each category has its folder inside (<x1/>, <x2/>, <x3/>…). Mount a network share there to download straight onto it.",
+   "text": "здесь сохраняются файлы: внутри каждой категории есть своя папка (<x1/>, <x2/>, <x3/>…). Смонтируйте сетевую папку здесь, чтобы загружать файлы прямо в нее."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5666,6 +5742,10 @@
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "Браузер предупредит, что сертификат соединения не является доверенным. Это ожидаемо: MDM создал свой собственный сертификат на вашем компьютере, и ни один публичный центр его не знает. Чтобы убедиться, что страница принадлежит вашему MDM, откройте подробности предупреждения: <g1>отпечаток SHA-256</g1> сертификата совпадает с тем, что показывает <g2>Параметры → Удаленное управление</g2>. Затем перейдите на страницу (<g3>Дополнительно → Продолжить</g3> в Chrome, <g4>Показать подробности → посетить этот веб-сайт</g4> в Safari)."
   },
+  "8c3034c70156f726": {
+   "source": "On Unraid",
+   "text": "На Unraid"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "Полные условия изложены в <g1>Условиях использования</g1>."
@@ -5858,6 +5938,10 @@
    "source": "When you added it.",
    "text": "Когда вы добавили."
   },
+  "91799f6f221cf37b": {
+   "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
+   "text": "Внутри контейнера адрес, который находит MDM, является собственным адресом контейнера: укажите ему тот, который вы открываете, адрес <g1>сервера</g1> с опубликованным вами портом, как <x2/>, и журнал и QR-код покажут именно его. Затем выполните сопряжение, как описано в разделе <g3>Управление MDM с телефона</g3>. Для получения другого кода в любое время:"
+  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "В столбце <g1>Состояние</g1> отметьте только <g2>Ошибка</g2>, чтобы увидеть неудачные загрузки."
@@ -6025,6 +6109,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "Загрузки"
+  },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Последнее обновление: 07.11.2026 · Применяется к приложению, расширению для браузера и сайту misterdownloadmanager.com"
   },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
@@ -6374,6 +6462,10 @@
    "source": "Download in order",
    "text": "Скачивать по порядку"
   },
+  "9e18dba709154be4": {
+   "source": "Send downloads from your browser",
+   "text": "Отправка загрузок из браузера"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "Сравнение скорости загрузки: IDM 6.42 и Mister Download Manager"
@@ -6694,6 +6786,10 @@
    "source": "A 256 KiB file",
    "text": "Файл 256 КиБ"
   },
+  "a69373ac180f98a4": {
+   "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
+   "text": "Первая сборка занимает много времени (до часа на небольшом сервере: вся программа оптимизирована как единое целое). Образ небольшой, около 175 МБ: минимальная база Debian, две программы MDM и сертификаты, по которым проверяются загрузки. Ему не нужны настольные библиотеки: MDM загружает их только для открытия окна, чего сервер никогда не делает."
+  },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. Названия и логотипы"
@@ -7013,6 +7109,10 @@
   "ae17b5b75df45e9d": {
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>Кнопка «ОК» в «Параметрах» отменяла изменения, сделанные тем временем</g1> («Ограничитель скорости» на панели инструментов, «Настройки торрента»…), а кнопка «Закрыть» в «Планировщике» отменяла добавление или удаление загрузок из очереди."
+  },
+  "ae55fbed6cc1702a": {
+   "source": "<g1>docker/compose.yml</g1> does the same with Docker Compose.",
+   "text": "<g1>docker/compose.yml</g1> делает то же самое с Docker Compose."
   },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
@@ -7442,6 +7542,10 @@
    "source": "Where the server is",
    "text": "Где находится сервер"
   },
+  "b84114a1d735eb2d": {
+   "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
+   "text": "<g1><g2>Запуск MDM на сервере</g2></g1> — MDM без окна на домашнем сервере или NAS (Docker, Unraid), загрузка в его папки; отправка ему загрузок с телефона или из браузера."
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "Установка с помощью программы установки"
@@ -7477,6 +7581,10 @@
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
    "text": "Воспроизведено в реальном времени по медианным значениям."
+  },
+  "b93c892b6f64e746": {
+   "source": "Then run it, with a folder for its settings and one for the downloads:",
+   "text": "Затем запустите его, указав папку для его настроек и папку для загрузок:"
   },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
@@ -7930,6 +8038,10 @@
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
    "text": "<g1>Без обхода правил для конкретных сайтов.</g1> MDM одинаково относится ко всем сайтам. У него нет функций, предназначенных для обхода условий, платного доступа или ограничений конкретного сайта."
   },
+  "c62198270f0107d2": {
+   "source": "What it sets",
+   "text": "Что устанавливает"
+  },
   "c6320d84eeae5baf": {
    "source": "A few things to know before you start.",
    "text": "Несколько вещей, которые нужно знать, прежде чем начать."
@@ -7941,6 +8053,10 @@
   "c696667963fca278": {
    "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
    "text": "Ссылки на PDF или видеофайлы, которые браузер обычно открывает сам, также будут переданы в MDM, если их тип указан в списке. Чтобы оставить такой файл для обработки браузером, удерживайте клавишу <g1>Alt</g1> при нажатии на ссылку (Firefox откроет его; Chrome и Edge загрузят его сами). Любая другая ссылка: нажмите на нее правой кнопкой мыши и выберите <g2>Загрузить с помощью Mister Download Manager</g2>, это работает для любого типа файла."
+  },
+  "c6977329ca37f93c": {
+   "source": "Don't publish the port on the internet; reach your home network through a VPN instead.",
+   "text": "Не публикуйте порт в интернете; вместо этого обращайтесь к вашей домашней сети через VPN."
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -8190,6 +8306,10 @@
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "Вы несёте единоличную ответственность за загружаемые файлы и за то, как вы используете программное обеспечение."
   },
+  "cd447cf77eb76adc": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your browser: the server downloads them into its own folders, such as a network share.",
+   "text": "Запускайте Mister Download Manager на домашнем сервере или NAS (Docker, Unraid, любая машина Linux) без окна и отправляйте ему загрузки со своего телефона или браузера: сервер загружает их в свои папки, например, в сетевую папку."
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>Разрешить более 32 соединений</g1> — увеличивает максимальное число до 128 для указанного выше значения и для исключений. Большинство серверов разрешают гораздо меньше соединений с одного адреса; MDM это замечает и запрашивает меньше. Если опция снова отключена, любое большее число вернется к 32."
@@ -8318,6 +8438,10 @@
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "Современный вид с несколькими темами, очередями и планировщиками, а также приложение для Android"
   },
+  "d0584e074b00b370": {
+   "source": "Build the image from MDM's source (a published image comes later):",
+   "text": "Создайте образ из исходного кода MDM (опубликованный образ появится позже):"
+  },
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "Если кто-то уже сообщил о той же проблеме, окно сообщает об этом (<g1>Уже сообщено как проблема #…</g1>). <g2>Открыть сообщенную проблему</g2> открывает ее и помещает ваш отчет в буфер обмена, чтобы вы могли добавить его в качестве комментария."
@@ -8333,10 +8457,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Каждая активная загрузка имеет собственное окно хода загрузки. Оно открывается при начале загрузки; чтобы открыть его снова, дважды щёлкните по загрузке в списке."
-  },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "Последнее обновление: 06.11.2026"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8714,6 +8834,10 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "Если сайт заменил файл новой версией, части, которые есть у MDM, больше не подходят. Щелкните правой кнопкой мыши загрузку и выберите <g1>Перезагрузить</g1>, чтобы начать заново. Завершенный файл заменяется только после завершения новой загрузки."
   },
+  "da6edd8a7cee18e1": {
+   "source": "where it listens: every local network address unless given",
+   "text": "где он прослушивает: каждый адрес локальной сети, если не указано"
+  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "Условия использования — Mister Download Manager"
@@ -8762,9 +8886,17 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Да. MDM поддерживает привычные параметры командной строки IDM, поставляется с misterdownloadmanager-cli для загрузок из терминала и имеет локальный API автоматизации, защищенный токеном, который может перечислять, приостанавливать, запускать и удалять загрузки. API отключен, пока вы его не включите. См. Командная строка и автоматизация."
   },
+  "db637c7ba77f6b99": {
+   "source": "In the browser extension's menu, <g1>Send downloads to → Another MDM</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "В меню расширения браузера <g1>Отправлять загрузки в → Другой MDM</g1>: введите адрес сервера, откройте его один раз в этом браузере, чтобы принять его сертификат, затем введите код сопряжения (<x2/> выше). Загрузки, перехваченные расширением, и <g3>Загрузить с помощью Mister Download Manager</g3> по ссылке, будут отправлены на сервер вместо этого компьютера. Файлы cookie браузера не отправляются на сервер: загрузка, для которой требуется вход на сайт, останется на этом компьютере."
+  },
   "db74b9137912e0a2": {
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "Прокси, который запрашивает логин, предоставляемый самим расширением VPN, не может быть общим: ни у одной другой программы нет этого логина. Загрузка тогда останавливается и сообщает об этом, вместо того чтобы идти без прокси. Используйте собственное приложение VPN или выберите его адаптер в разделе <g1>Сетевой адаптер</g1>."
+  },
+  "db95c470f075e401": {
+   "source": "Run MDM on a server",
+   "text": "Запуск MDM на сервере"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -9038,6 +9170,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "Полоса всего файла, показывающая, где началось каждое соединение и как далеко оно продвинулось (<g1>Начальные позиции и ход загрузки по соединениям</g1>)."
   },
+  "e430a7f95d146b8c": {
+   "source": "It is the same MDM as on a desktop: its list, categories, queues, Scheduler, speed limits and torrents. You control it with the <g1>remote control's page</g1> (from any phone or computer on your network), the browser extension pointed at it, or its command line.",
+   "text": "Это тот же MDM, что и на рабочем столе: его список, категории, очереди, Планировщик, ограничения скорости и торренты. Вы управляете им с <g1>страницы удаленного управления</g1> (с любого телефона или компьютера в вашей сети), расширения браузера, настроенного на него, или его командной строки."
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "API автоматизации"
@@ -9077,6 +9213,10 @@
   "e4e12c692325e7ee": {
    "source": "An archive is extracted:",
    "text": "Архив извлекается:"
+  },
+  "e4ee9fc91b52818e": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your…",
+   "text": "Запустите Mister Download Manager на домашнем сервере или NAS (Docker, Unraid, любая машина Linux) без окна и отправляйте ему загрузки со своего телефона или..."
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
@@ -9226,6 +9366,10 @@
    "source": "Options, Connection page",
    "text": "Параметры, страница Подключение"
   },
+  "e82a01cee0779d2a": {
+   "source": "The command line talks to it as to a desktop MDM, with the same data folder: <x1/> (once <x2/>), <x3/>, and adding an address: <x4/>.",
+   "text": "Командная строка взаимодействует с ним так же, как с настольным MDM, с той же папкой данных: <x1/> (один раз <x2/>), <x3/> и добавлением адреса: <x4/>."
+  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "Бесплатные альтернативы Internet Download Manager"
@@ -9278,6 +9422,10 @@
    "source": "2. The software's licence",
    "text": "2. Лицензия на программное обеспечение"
   },
+  "e93a579d3c1901b9": {
+   "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
+   "text": "Видеостраницы (yt-dlp) и галереи изображений требуют вспомогательных программ, которые образ не включает."
+  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "Получение"
@@ -9317,6 +9465,10 @@
   "eacdcb2992653dee": {
    "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
    "text": "Требуется Firefox 140 или новее. Установите дополнение с его страницы на addons.mozilla.org, <g1>Mister Download Manager</g1>: нажмите <g2>Добавить в Firefox</g2>. Firefox будет поддерживать его в актуальном состоянии. Zen и LibreWolf устанавливают его с той же страницы. (Окно MDM <g3>Добавить Mister Download Manager в браузер</g3> открывает эту страницу для вас.)"
+  },
+  "eaee905df121bd52": {
+   "source": "Nothing opens a window: a download that would ask a question (a duplicate, files already there) takes the choice set in the settings, or isn't added.",
+   "text": "Ничего не открывает окно: загрузка, которая задала бы вопрос (дубликат, уже существующие файлы), принимает выбор, установленный в настройках, или не добавляется."
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9445,6 +9597,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>Что произошло:</g1> ошибка и место в коде MDM, где она произошла."
+  },
+  "ee84661ce4cf58b2": {
+   "source": "What a server doesn't do",
+   "text": "Что сервер не делает"
   },
   "ee9034f4bfe810cf": {
    "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
@@ -9797,6 +9953,10 @@
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Остановить раздачу после раздачи в течение … минут</g1> — или как только он раздавался столько времени за все свои запуски. По умолчанию отключено."
+  },
+  "f82dc8051d1faab0": {
+   "source": "names besides its addresses the page may be opened by",
+   "text": "имена, помимо его адресов, по которым может быть открыта страница"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

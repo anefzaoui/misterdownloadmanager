@@ -174,10 +174,6 @@
    "source": "Contribute",
    "text": "贡献"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最后更新日期：2026年11月6日 · 适用于应用程序、浏览器扩展和misterdownloadmanager.com"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "关于 Mister Download Manager 的解答：它是否免费、是否安全、与 IDM 的比较、浏览器、视频、种子、速度、Mac 和 Linux 等。"
@@ -297,6 +293,10 @@
   "063cb01120e3c2de": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "正在寻找 Internet Download Manager (IDM) 的免费替代品？Mister Download Manager 是一款免费、开源的下载管理器，界面布局与 IDM 相似，并可导入您的 IDM 列表。将其与 Free Download Manager、AB Download Manager、Motrix、Neat、JDownloader 等进行比较。"
+  },
+  "0653a393fa30cb53": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
+   "text": "<g1>docker/unraid.xml</g1> 是一个模板：将其复制到闪存驱动器上的<x2/>，然后<g3>Docker → 添加容器</g3>并选择<g4>misterdownloadmanager</g4>。它将<x5/>映射到<x6/>，将<x7/>映射到共享，端口为 8463，并以<x8/>（99:100）运行，正如 Unraid 的共享所期望的那样。镜像必须首先在服务器上构建（如上所述），或推送到您使用的注册表。"
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -818,6 +818,10 @@
    "source": "When it doesn't work",
    "text": "不工作时"
   },
+  "13dbb4044f2f02cc": {
+   "source": "where downloads go (each category's folder inside)",
+   "text": "下载文件的存放位置（每个分类的子文件夹）"
+  },
   "13f638ddac98e283": {
    "source": "Download Later",
    "text": "稍后下载"
@@ -958,6 +962,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "让 MDM 保持运行。关闭主窗口没关系：MDM 会在系统托盘中继续运行。不要使用<g1>任务 → 退出</g1>。"
   },
+  "17a6b9e12e193121": {
+   "source": "<g1>New:</g1> the server mode is new in this version. Please <g2>tell us how it goes</g2>.",
+   "text": "<g1>新增：</g1>服务器模式是此版本的新功能。请<g2>告诉我们您的使用体验</g2>。"
+  },
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "从网址获取的 <x1/> 文件会经过与从磁盘打开的文件相同的检查，MDM 最多读取 10 MB 的内容。"
@@ -1026,9 +1034,17 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+空格"
   },
+  "1909586657a6c8d0": {
+   "source": "Flag",
+   "text": "标志"
+  },
   "19156d7406477513": {
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>服务器</g1> — 服务器的位置：其国家/地区旗帜和名称，以及往返所需时间。请参阅<g2>服务器位置</g2>。当浏览器将下载文件及其名称和大小移交给MDM时，此项会留空，因为MDM无需询问服务器。"
+  },
+  "19686779e1123d73": {
+   "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
+   "text": "要通过服务器名称（<x1/>）打开页面，请为 MDM 提供该名称：<x2/>（多个名称用逗号分隔）。其他名称将被拒绝，这样任何网页都无法通过其自己的名称访问 MDM。"
   },
   "19810b030c072070": {
    "source": "Path",
@@ -1062,9 +1078,17 @@
    "source": "Batch download: many numbered files",
    "text": "批量下载：许多带编号的文件"
   },
+  "1a359afa27050848": {
+   "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window).",
+   "text": "(<x1/>，#157) 运行相同的 <x2/>，但没有 eframe：一个循环在裸 <x5/> 上调用其 <x3/>（<x4/> 在每一帧运行的内容），由命令通道唤醒，并且从不调用其 <x6/>；命令由远程控制添加（无窗口）。"
+  },
   "1a3aff78add15e0b": {
    "source": "Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.",
    "text": "除非另有说明，本文档中的截图显示的是浅色主题。MDM 遵循 Windows 的深色模式：当 Windows 设置为深色时，MDM 也会变为深色。"
+  },
+  "1a3b9d0d6a07985d": {
+   "source": "the page's address as you open it, shown with the pairing code",
+   "text": "您打开页面时显示的地址，与配对码一起显示"
   },
   "1a4513aa7b897fc8": {
    "source": "<g1>Confirm before deleting downloads</g1> — ask before taking downloads off the list. On by default; <g2>Don't show this dialog again</g2> in that question turns it off, and ticking it here turns it back on.",
@@ -1237,6 +1261,10 @@
   "1cf59e936ec9e349": {
    "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
    "text": "是否找到 <g1>7-Zip</g1>：7z 和 RAR 压缩包需要它。"
+  },
+  "1d098969ea9cf781": {
+   "source": ": the user that owns those folders (MDM runs as no particular user).",
+   "text": "：拥有这些文件夹的用户（MDM 不以特定用户身份运行）。"
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -1453,6 +1481,10 @@
   "22eb9ce302891640": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with <x1/> for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See <g2>Command line and automation</g2>.",
    "text": "是。MDM 接受 IDM 熟悉的命令行开关，附带 <x1/> 用于从终端下载，并具有一个本地的、受令牌保护的自动化 API，可以列出、暂停、开始和删除下载。此 API 默认关闭，直到您将其打开。请参阅<g2>命令行和自动化</g2>。"
+  },
+  "230325217f1c4b94": {
+   "source": "shows the address to open and, while no device is paired, a pairing code with a QR code:",
+   "text": "显示要打开的地址，并且在没有设备配对时，显示一个带有二维码的配对码："
   },
   "2307e7989c795a73": {
    "source": "1.9.3<g1>18 Mar 2026</g1>",
@@ -1918,6 +1950,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>国家</g1>来自 MDM 附带的地址范围表（<g2>DB-IP 的 IP to Country Lite</g2>，CC BY 4.0），在您的计算机上查询。MDM 绝不会将地址发送到任何地方进行查询。该表随每个版本更新；自上次更新后地址已更改的，可能会显示旧的国家。"
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "最后更新：2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>浏览</g1> — 在资源管理器中打开其文件夹。"
@@ -2250,6 +2286,10 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon 或 Intel 芯片上的<g1>macOS 11</g1>或更高版本（实验性）。"
   },
+  "36716abd18118575": {
+   "source": "the remote control's port (8463)",
+   "text": "远程控制端口 (8463)"
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "右键点击列表的空白处，可选择<g1>添加新下载</g1>、<g2>全选</g2>、<g3>整理文件</g3>、<g4>清除所有筛选器</g4>和<g5>删除所有已完成</g5>。"
@@ -2482,6 +2522,10 @@
    "source": "Add URL",
    "text": "添加 URL"
   },
+  "3b8c53b20f84def3": {
+   "source": "the list, settings, certificate and paired devices",
+   "text": "列表、设置、证书和已配对设备"
+  },
   "3b908b26074fe7d4": {
    "source": "<g1>Change folder for \"…\" category on last selected</g1> — when you pick another folder in <g2>Download File Info</g2>, it becomes the category's folder from then on. On by default. (It sets the first state of <g3>Remember this path</g3> in that window.)",
    "text": "<g1>根据上次选择更改“…”类别的文件夹</g1> — 当您在<g2>下载文件信息</g2>中选择另一个文件夹时，它将成为该类别从那时起的文件夹。默认开启。（它设置了该窗口中<g3>记住此路径</g3>的初始状态。）"
@@ -2589,6 +2633,10 @@
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "点击工具栏上的<g1>恢复</g1>（或右键点击 → <g2>恢复下载</g2>）。"
+  },
+  "3dab45c85af12119": {
+   "source": "Or the variable",
+   "text": "或变量"
   },
   "3dfd3b258b972ccc": {
    "source": "Files in the queue",
@@ -2934,6 +2982,10 @@
    "source": "A server that allows two connections at a time. Every square is one connection it saw in a typical run.",
    "text": "一个服务器，一次只允许两个连接。每个方块代表一次典型运行中服务器看到的连接。"
   },
+  "476a78eca0326f04": {
+   "source": "keeps the list, the settings, the certificate and the paired devices.",
+   "text": "保留列表、设置、证书和已配对设备。"
+  },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "删除队列时会先询问；正在运行的队列在删除时会停止；工具栏的“开始/停止队列”箭头始终有效。"
@@ -3033,6 +3085,10 @@
   "49e22ffa819f63a8": {
    "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
    "text": "右键单击列表中的种子，然后打开<g1>种子</g1>："
+  },
+  "49faa92737cc6b16": {
+   "source": "Without Docker",
+   "text": "不使用 Docker"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3798,6 +3854,10 @@
    "source": "Edit this page on GitHub",
    "text": "在 GitHub 上编辑此页面"
   },
+  "5f31049fa5031c49": {
+   "source": "The remote control is on in this mode (<x1/> turns it off). It stops cleanly, saving its list, when the system stops it (<x2/>, systemd, Ctrl+C). It works on Windows and macOS too, the same way.",
+   "text": "在此模式下，远程控制已开启（<x1/>将其关闭）。当系统停止它时（<x2/>、systemd、Ctrl+C），它会干净地停止并保存其列表。它在 Windows 和 macOS 上也以相同的方式工作。"
+  },
   "5f3bc376c2f41291": {
    "source": "Tests and benchmarks",
    "text": "测试和基准"
@@ -3921,6 +3981,10 @@
   "613ff676be295efe": {
    "source": "<g1><g2>Yes</g2></g1><g3>GPL-3.0</g3>",
    "text": "<g1><g2>是</g2></g1><g3>GPL-3.0</g3>"
+  },
+  "6143c720cec9874d": {
+   "source": "With Docker",
+   "text": "使用 Docker"
   },
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
@@ -4166,6 +4230,10 @@
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
    "text": "安装 MDM 时，请勾选设置浏览器集成。在 Firefox 中，打开 addons.mozilla.org 上的附加组件页面，然后点击添加到…。"
   },
+  "67d7688dc5224a95": {
+   "source": "Run MDM on a server — Mister Download Manager help",
+   "text": "在服务器上运行 MDM — Mister Download Manager 帮助"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4401,6 +4469,10 @@
   "6d0f7f45f8191505": {
    "source": "When it last ran.",
    "text": "上次运行时间。"
+  },
+  "6d136697adce7701": {
+   "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
+   "text": "在任何安装了 MDM 的 Linux 机器上（<x1/>、<x2/>、AppImage 或<x3/>）："
   },
   "6d485e0daa042fc9": {
    "source": "The package box",
@@ -4657,6 +4729,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>上</g1> / <g2>下</g2>，<g3>左</g3> / <g4>右</g4>"
+  },
+  "72ff8f6b37364fc1": {
+   "source": "is where files land: each category has its folder inside (<x1/>, <x2/>, <x3/>…). Mount a network share there to download straight onto it.",
+   "text": "是文件存放的位置：每个分类都有其自己的子文件夹（<x1/>、<x2/>、<x3/>…）。在此处挂载网络共享，即可直接下载到共享中。"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5666,6 +5742,10 @@
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "浏览器会警告连接的证书不受信任。这是预期行为：MDM 在您的电脑上生成了自己的证书，任何公共机构都不知道它。为确保页面是您的 MDM 的，请打开警告详情：证书的<g1>SHA-256 指纹</g1>与<g2>选项 → 远程</g2>中显示的指纹一致。然后继续访问页面（Chrome 中为<g3>高级 → 继续</g3>，Safari 中为<g4>显示详情 → 访问此网站</g4>）。"
   },
+  "8c3034c70156f726": {
+   "source": "On Unraid",
+   "text": "在 Unraid 上"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "完整条款请参见<g1>使用条款</g1>。"
@@ -5858,6 +5938,10 @@
    "source": "When you added it.",
    "text": "添加时间。"
   },
+  "91799f6f221cf37b": {
+   "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
+   "text": "在容器内部，MDM 找到的地址是容器自身的地址：请提供您打开的地址，即带有您发布的端口的<g1>服务器</g1>地址，如<x2/>所示，日志和二维码将显示该地址。然后按照<g3>从手机控制 MDM</g3>所述进行配对。如需获取另一个代码，随时可以："
+  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "在 <g1>状态</g1> 上，只勾选 <g2>错误</g2> 以查看失败的下载。"
@@ -6025,6 +6109,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "下载"
+  },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最后更新日期：2026-11-07 · 适用于应用程序、浏览器扩展和 misterdownloadmanager.com"
   },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
@@ -6374,6 +6462,10 @@
    "source": "Download in order",
    "text": "按顺序下载"
   },
+  "9e18dba709154be4": {
+   "source": "Send downloads from your browser",
+   "text": "从浏览器发送下载"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 对比 Mister Download Manager 下载基准测试"
@@ -6694,6 +6786,10 @@
    "source": "A 256 KiB file",
    "text": "一个 256 KiB 文件"
   },
+  "a69373ac180f98a4": {
+   "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
+   "text": "首次构建时间较长（在小型服务器上可能长达一小时：整个程序作为一个整体进行优化）。镜像很小，大约 175 MB：包含 Debian 的精简基础、MDM 的两个程序以及用于检查下载的证书。它不需要桌面库：MDM 仅在打开窗口时才加载这些库，而服务器从不打开窗口。"
+  },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. 名称和徽标"
@@ -7013,6 +7109,10 @@
   "ae17b5b75df45e9d": {
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>“选项”中的“确定”撤消了同时进行的更改</g1>（工具栏的“速度限制器”、“种子设置”……），“计划程序”中的“关闭”撤消了添加到或从队列中移除的下载。"
+  },
+  "ae55fbed6cc1702a": {
+   "source": "<g1>docker/compose.yml</g1> does the same with Docker Compose.",
+   "text": "<g1>docker/compose.yml</g1> 使用 Docker Compose 实现相同功能。"
   },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
@@ -7442,6 +7542,10 @@
    "source": "Where the server is",
    "text": "服务器位置"
   },
+  "b84114a1d735eb2d": {
+   "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
+   "text": "<g1><g2>在服务器上运行 MDM</g2></g1> — 在家用服务器或 NAS（Docker、Unraid）上无窗口运行 MDM，下载到其文件夹中；从手机或浏览器向其发送下载任务。"
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "通过安装程序安装"
@@ -7477,6 +7581,10 @@
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
    "text": "根据中位数实时播放。"
+  },
+  "b93c892b6f64e746": {
+   "source": "Then run it, with a folder for its settings and one for the downloads:",
+   "text": "然后运行它，并为其设置和下载文件指定文件夹："
   },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
@@ -7930,6 +8038,10 @@
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
    "text": "<g1>不提供绕过规则的特定网站快捷方式。</g1> MDM 对待网站的方式相同。它没有旨在绕过特定网站条款、付费墙或限制的功能。"
   },
+  "c62198270f0107d2": {
+   "source": "What it sets",
+   "text": "设置内容"
+  },
   "c6320d84eeae5baf": {
    "source": "A few things to know before you start.",
    "text": "开始前须知"
@@ -7941,6 +8053,10 @@
   "c696667963fca278": {
    "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
    "text": "浏览器通常会自行打开的 PDF 或视频文件链接，如果其类型已列出，也会转到 MDM。要让浏览器自行处理某个链接，请在点击时按住 <g1>Alt</g1> 键（Firefox 会打开它；Chrome 和 Edge 会自行下载）。任何其他链接：右键点击并选择<g2>使用 Mister Download Manager 下载</g2>，这适用于任何类型的文件。"
+  },
+  "c6977329ca37f93c": {
+   "source": "Don't publish the port on the internet; reach your home network through a VPN instead.",
+   "text": "请勿在互联网上公开端口；请通过 VPN 访问您的家庭网络。"
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -8190,6 +8306,10 @@
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "您独自对您下载的文件以及您如何使用本软件负责。"
   },
+  "cd447cf77eb76adc": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your browser: the server downloads them into its own folders, such as a network share.",
+   "text": "在家庭服务器或 NAS（Docker、Unraid、任何 Linux 机器）上无窗口运行 Mister Download Manager，并从您的手机或浏览器向其发送下载任务：服务器会将文件下载到其自己的文件夹中，例如网络共享。"
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>允许超过 32 个连接</g1> — 将上述数字和例外情况的最大连接数提高到 128。大多数服务器允许来自一个地址的连接数远少于此；MDM 会注意到并请求更少的连接。如果再次关闭此选项，任何高于 32 的数字都将恢复到 32。"
@@ -8318,6 +8438,10 @@
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "现代外观，多种主题、队列和调度器，以及一个 Android 应用"
   },
+  "d0584e074b00b370": {
+   "source": "Build the image from MDM's source (a published image comes later):",
+   "text": "从 MDM 源代码构建镜像（发布的镜像稍后推出）："
+  },
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "如果有人已经报告了相同的问题，窗口会显示（<g1>已报告为问题 #…</g1>）。<g2>打开已报告的问题</g2>会打开它并将您的报告复制到剪贴板，以便您可以将其作为评论添加。"
@@ -8333,10 +8457,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "每个正在进行的下载都有自己的进度窗口。它在下载开始时打开；要再次打开它，请双击列表中的下载。"
-  },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "上次更新日期：2026-11-06"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8714,6 +8834,10 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "如果网站用新版本替换了文件，MDM 已下载的部分就不再匹配。右键点击下载并选择<g1>重新下载</g1>以从头开始。只有当新下载完成时，已完成的文件才会被替换。"
   },
+  "da6edd8a7cee18e1": {
+   "source": "where it listens: every local network address unless given",
+   "text": "监听地址：除非指定，否则为所有本地网络地址"
+  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "使用条款 — Mister Download Manager"
@@ -8762,9 +8886,17 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "是。MDM 接受 IDM 熟悉的命令行开关，附带 misterdownloadmanager-cli 用于从终端下载，并具有一个本地的、受令牌保护的自动化 API，可以列出、暂停、开始和删除下载。此 API 默认关闭，直到您将其打开。请参阅命令行和自动化。"
   },
+  "db637c7ba77f6b99": {
+   "source": "In the browser extension's menu, <g1>Send downloads to → Another MDM</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "在浏览器扩展程序的菜单中，选择<g1>将下载发送到 → 另一个 MDM</g1>：输入服务器地址，在该浏览器中打开一次以接受其证书，然后输入配对码（如<x2/>所示）。扩展程序捕获的下载，以及链接上的<g3>使用 Mister Download Manager 下载</g3>，将发送到服务器而不是这台电脑。浏览器的 Cookie 不会发送到服务器：需要您登录网站的下载将保留在这台电脑上。"
+  },
   "db74b9137912e0a2": {
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "需要 VPN 扩展自身提供登录信息的代理无法共享：没有其他程序拥有该登录信息。下载将停止并显示此信息，而不是在没有代理的情况下进行。请使用 VPN 自己的应用程序，或在<g1>网络适配器</g1>下选择其适配器。"
+  },
+  "db95c470f075e401": {
+   "source": "Run MDM on a server",
+   "text": "在服务器上运行 MDM"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -9038,6 +9170,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "显示整个文件的进度条，显示每个连接的起始位置和已完成的进度（<g1>连接的起始位置和下载进度</g1>）。"
   },
+  "e430a7f95d146b8c": {
+   "source": "It is the same MDM as on a desktop: its list, categories, queues, Scheduler, speed limits and torrents. You control it with the <g1>remote control's page</g1> (from any phone or computer on your network), the browser extension pointed at it, or its command line.",
+   "text": "它与桌面版 MDM 相同：包括列表、分类、队列、计划程序、速度限制和种子。您可以通过<g1>远程控制页面</g1>（从网络上的任何手机或电脑）、指向它的浏览器扩展程序或其命令行来控制它。"
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "自动化 API"
@@ -9077,6 +9213,10 @@
   "e4e12c692325e7ee": {
    "source": "An archive is extracted:",
    "text": "存档会在以下情况被提取："
+  },
+  "e4ee9fc91b52818e": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your…",
+   "text": "在家庭服务器或 NAS（Docker、Unraid、任何 Linux 机器）上无窗口运行 Mister Download Manager，并从您的手机或您的…发送下载"
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
@@ -9226,6 +9366,10 @@
    "source": "Options, Connection page",
    "text": "选项，连接页面"
   },
+  "e82a01cee0779d2a": {
+   "source": "The command line talks to it as to a desktop MDM, with the same data folder: <x1/> (once <x2/>), <x3/>, and adding an address: <x4/>.",
+   "text": "命令行与它通信，就像与桌面版 MDM 通信一样，使用相同的数据文件夹：<x1/>（曾经是<x2/>）、<x3/>，并添加一个地址：<x4/>。"
+  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "Internet Download Manager 的免费替代品"
@@ -9278,6 +9422,10 @@
    "source": "2. The software's licence",
    "text": "2. 软件许可"
   },
+  "e93a579d3c1901b9": {
+   "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
+   "text": "视频页面 (yt-dlp) 和图片库需要其辅助程序，而镜像中不包含这些程序。"
+  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "正在接收"
@@ -9317,6 +9465,10 @@
   "eacdcb2992653dee": {
    "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
    "text": "需要 Firefox 140 或更高版本。从 addons.mozilla.org 上的 <g1>Mister Download Manager</g1> 页面安装附加组件：点击<g2>添加到 Firefox</g2>。Firefox 会保持其更新。Zen 和 LibreWolf 从同一页面安装。 （MDM 的<g3>将 Mister Download Manager 添加到您的浏览器</g3>窗口会为您打开该页面。）"
+  },
+  "eaee905df121bd52": {
+   "source": "Nothing opens a window: a download that would ask a question (a duplicate, files already there) takes the choice set in the settings, or isn't added.",
+   "text": "不会打开任何窗口：需要提问的下载（重复文件、已存在的文件）将根据设置中的选择进行处理，或者不予添加。"
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9445,6 +9597,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>发生了什么：</g1>错误以及 MDM 代码中发生错误的位置。"
+  },
+  "ee84661ce4cf58b2": {
+   "source": "What a server doesn't do",
+   "text": "服务器不支持的功能"
   },
   "ee9034f4bfe810cf": {
    "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
@@ -9797,6 +9953,10 @@
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>共享时间达到以下时长后停止共享</g1> — 或者在所有运行中共享达到指定时长后停止。默认关闭。"
+  },
+  "f82dc8051d1faab0": {
+   "source": "names besides its addresses the page may be opened by",
+   "text": "除了其地址之外，页面可能通过其打开的名称"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

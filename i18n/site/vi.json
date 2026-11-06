@@ -174,10 +174,6 @@
    "source": "Contribute",
    "text": "Đóng góp"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Cập nhật lần cuối 06-11-2026 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Trả lời các câu hỏi về Mister Download Manager: nó có miễn phí không, có an toàn không, so sánh với IDM, trình duyệt, video, torrent, tốc độ, Mac và Linux, và nhiều hơn nữa."
@@ -297,6 +293,10 @@
   "063cb01120e3c2de": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Bạn đang tìm kiếm một lựa chọn thay thế miễn phí cho Internet Download Manager (IDM)? Mister Download Manager là phần mềm miễn phí và mã nguồn mở, có giao diện giống IDM và có thể nhập danh sách tải xuống từ IDM của bạn. Hãy so sánh nó với Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader và nhiều phần mềm khác."
+  },
+  "0653a393fa30cb53": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
+   "text": "<g1>docker/unraid.xml</g1> là một mẫu: sao chép nó vào <x2/> trên ổ đĩa flash, sau đó <g3>Docker → Thêm Container</g3> và chọn <g4>misterdownloadmanager</g4>. Nó ánh xạ <x5/> tới <x6/>, <x7/> tới một thư mục chia sẻ, cổng 8463, và chạy dưới dạng <x8/> (99:100), như các thư mục chia sẻ của Unraid mong đợi. Image phải được xây dựng trước (ở trên), trên máy chủ hoặc được đẩy lên một registry bạn sử dụng."
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -818,6 +818,10 @@
    "source": "When it doesn't work",
    "text": "Khi không hoạt động"
   },
+  "13dbb4044f2f02cc": {
+   "source": "where downloads go (each category's folder inside)",
+   "text": "nơi các bản tải xuống được lưu (thư mục của mỗi danh mục bên trong)"
+  },
   "13f638ddac98e283": {
    "source": "Download Later",
    "text": "Tải xuống sau"
@@ -958,6 +962,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "Để MDM chạy. Đóng cửa sổ chính không sao cả: MDM vẫn tiếp tục chạy trong khay hệ thống. Không sử dụng <g1>Tác vụ → Thoát</g1>."
   },
+  "17a6b9e12e193121": {
+   "source": "<g1>New:</g1> the server mode is new in this version. Please <g2>tell us how it goes</g2>.",
+   "text": "<g1>Mới:</g1> chế độ máy chủ là mới trong phiên bản này. Vui lòng <g2>cho chúng tôi biết trải nghiệm của bạn</g2>."
+  },
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "Một tệp <x1/> được tìm nạp từ địa chỉ web sẽ trải qua các kiểm tra tương tự như tệp được mở từ đĩa và MDM đọc tối đa 10 MB của tệp đó."
@@ -1026,9 +1034,17 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "1909586657a6c8d0": {
+   "source": "Flag",
+   "text": "Cờ"
+  },
   "19156d7406477513": {
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>Máy chủ</g1> — vị trí của máy chủ: cờ và tên quốc gia, cùng với thời gian khứ hồi đến đó. Xem <g2>Vị trí máy chủ</g2>. Mục này sẽ trống nếu trình duyệt đã chuyển giao tệp tải xuống cùng với tên và kích thước của nó, vì MDM không cần hỏi máy chủ."
+  },
+  "19686779e1123d73": {
+   "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
+   "text": "Để mở trang bằng tên máy chủ (<x1/>), hãy cung cấp cho MDM tên đó: <x2/> (nhiều tên: cách nhau bằng dấu phẩy). Các tên khác bị từ chối, để không có trang web nào có thể truy cập MDM thông qua tên riêng của nó."
   },
   "19810b030c072070": {
    "source": "Path",
@@ -1062,9 +1078,17 @@
    "source": "Batch download: many numbered files",
    "text": "Tải xuống hàng loạt: nhiều tệp được đánh số"
   },
+  "1a359afa27050848": {
+   "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window).",
+   "text": "(<x1/>, #157) chạy cùng <x2/> mà không có eframe: một vòng lặp gọi <x3/> của nó (những gì <x4/> chạy ở mỗi khung hình) trên một <x5/> trần, được đánh thức bởi kênh lệnh, và không bao giờ gọi <x6/> của nó; các lệnh được thêm vào khi điều khiển từ xa thêm chúng (không có cửa sổ)."
+  },
   "1a3aff78add15e0b": {
    "source": "Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.",
    "text": "Ảnh chụp màn hình trong tài liệu này hiển thị giao diện sáng trừ khi có ghi chú khác. MDM tuân theo chế độ tối của Windows: khi Windows được đặt ở chế độ tối, MDM cũng sẽ ở chế độ tối."
+  },
+  "1a3b9d0d6a07985d": {
+   "source": "the page's address as you open it, shown with the pairing code",
+   "text": "địa chỉ của trang khi bạn mở nó, hiển thị cùng với mã ghép nối"
   },
   "1a4513aa7b897fc8": {
    "source": "<g1>Confirm before deleting downloads</g1> — ask before taking downloads off the list. On by default; <g2>Don't show this dialog again</g2> in that question turns it off, and ticking it here turns it back on.",
@@ -1237,6 +1261,10 @@
   "1cf59e936ec9e349": {
    "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
    "text": "Đã tìm thấy <g1>7-Zip</g1> chưa: Cần có 7-Zip để giải nén các tệp lưu trữ 7z và RAR."
+  },
+  "1d098969ea9cf781": {
+   "source": ": the user that owns those folders (MDM runs as no particular user).",
+   "text": ": người dùng sở hữu các thư mục đó (MDM chạy mà không có người dùng cụ thể nào)."
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -1453,6 +1481,10 @@
   "22eb9ce302891640": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with <x1/> for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See <g2>Command line and automation</g2>.",
    "text": "Có. MDM chấp nhận các tùy chọn dòng lệnh quen thuộc của IDM, đi kèm với <x1/> để tải xuống từ terminal, và có một API tự động hóa cục bộ, được bảo vệ bằng token, có thể liệt kê, tạm dừng, bắt đầu và xóa các lượt tải xuống. API này tắt cho đến khi bạn bật nó lên. Xem <g2>Dòng lệnh và tự động hóa</g2>."
+  },
+  "230325217f1c4b94": {
+   "source": "shows the address to open and, while no device is paired, a pairing code with a QR code:",
+   "text": "hiển thị địa chỉ để mở và, khi chưa có thiết bị nào được ghép nối, một mã ghép nối với mã QR:"
   },
   "2307e7989c795a73": {
    "source": "1.9.3<g1>18 Mar 2026</g1>",
@@ -1918,6 +1950,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Quốc gia</g1> đến từ bảng dải địa chỉ đi kèm với MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), được tra cứu trên máy tính của bạn. MDM không bao giờ gửi địa chỉ đi bất cứ đâu để hỏi vị trí. Bảng được cập nhật theo mỗi bản phát hành; một địa chỉ đã di chuyển kể từ đó có thể hiển thị quốc gia cũ của nó."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Cập nhật lần cuối 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Duyệt</g1> — mở thư mục của nó trong Explorer."
@@ -2250,6 +2286,10 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> trở lên trên Apple Silicon hoặc Intel (thử nghiệm)."
   },
+  "36716abd18118575": {
+   "source": "the remote control's port (8463)",
+   "text": "cổng điều khiển từ xa (8463)"
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Nhấp chuột phải vào khoảng trống của danh sách để chọn <g1>Thêm tải xuống mới</g1>, <g2>Chọn tất cả</g2>, <g3>Sắp xếp tệp</g3>, <g4>Xóa tất cả bộ lọc</g4> và <g5>Xóa tất cả đã hoàn tất</g5>."
@@ -2482,6 +2522,10 @@
    "source": "Add URL",
    "text": "Thêm URL"
   },
+  "3b8c53b20f84def3": {
+   "source": "the list, settings, certificate and paired devices",
+   "text": "danh sách, cài đặt, chứng chỉ và các thiết bị đã ghép nối"
+  },
   "3b908b26074fe7d4": {
    "source": "<g1>Change folder for \"…\" category on last selected</g1> — when you pick another folder in <g2>Download File Info</g2>, it becomes the category's folder from then on. On by default. (It sets the first state of <g3>Remember this path</g3> in that window.)",
    "text": "<g1>Thay đổi thư mục cho danh mục \"…\" theo lần chọn cuối cùng</g1> — khi bạn chọn một thư mục khác trong <g2>Thông tin tệp tải xuống</g2>, nó sẽ trở thành thư mục của danh mục đó từ đó trở đi. Mặc định là bật. (Nó đặt trạng thái ban đầu của <g3>Ghi nhớ đường dẫn này</g3> trong cửa sổ đó.)"
@@ -2589,6 +2633,10 @@
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "Nhấp vào <g1>Tiếp tục</g1> trên thanh công cụ (hoặc nhấp chuột phải → <g2>Tiếp tục tải xuống</g2>)."
+  },
+  "3dab45c85af12119": {
+   "source": "Or the variable",
+   "text": "Hoặc biến"
   },
   "3dfd3b258b972ccc": {
    "source": "Files in the queue",
@@ -2934,6 +2982,10 @@
    "source": "A server that allows two connections at a time. Every square is one connection it saw in a typical run.",
    "text": "Một máy chủ chỉ cho phép hai kết nối cùng lúc. Mỗi ô vuông là một kết nối mà máy chủ đã thấy trong một lần chạy điển hình."
   },
+  "476a78eca0326f04": {
+   "source": "keeps the list, the settings, the certificate and the paired devices.",
+   "text": "giữ danh sách, cài đặt, chứng chỉ và các thiết bị đã ghép nối."
+  },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "Xóa một hàng đợi sẽ hỏi trước; một hàng đợi đang chạy sẽ dừng khi bị xóa; các mũi tên Bắt đầu / Dừng hàng đợi của thanh công cụ luôn hoạt động."
@@ -3033,6 +3085,10 @@
   "49e22ffa819f63a8": {
    "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
    "text": "Nhấp chuột phải vào một torrent trong danh sách và mở <g1>Torrent</g1>:"
+  },
+  "49faa92737cc6b16": {
+   "source": "Without Docker",
+   "text": "Không dùng Docker"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3798,6 +3854,10 @@
    "source": "Edit this page on GitHub",
    "text": "Sửa trang này trên GitHub"
   },
+  "5f31049fa5031c49": {
+   "source": "The remote control is on in this mode (<x1/> turns it off). It stops cleanly, saving its list, when the system stops it (<x2/>, systemd, Ctrl+C). It works on Windows and macOS too, the same way.",
+   "text": "Điều khiển từ xa được bật trong chế độ này (<x1/> tắt nó). Nó dừng sạch sẽ, lưu danh sách của nó, khi hệ thống dừng nó (<x2/>, systemd, Ctrl+C). Nó cũng hoạt động trên Windows và macOS, theo cùng một cách."
+  },
   "5f3bc376c2f41291": {
    "source": "Tests and benchmarks",
    "text": "Kiểm tra và đánh giá hiệu suất"
@@ -3921,6 +3981,10 @@
   "613ff676be295efe": {
    "source": "<g1><g2>Yes</g2></g1><g3>GPL-3.0</g3>",
    "text": "<g1><g2>Có</g2></g1><g3>GPL-3.0</g3>"
+  },
+  "6143c720cec9874d": {
+   "source": "With Docker",
+   "text": "Với Docker"
   },
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
@@ -4166,6 +4230,10 @@
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
    "text": "Cài đặt MDM bằng trình cài đặt và giữ nguyên tùy chọn Thiết lập tích hợp trình duyệt. Trong Firefox, sau đó mở trang tiện ích bổ sung trên addons.mozilla.org và nhấp vào Thêm vào…"
   },
+  "67d7688dc5224a95": {
+   "source": "Run MDM on a server — Mister Download Manager help",
+   "text": "Chạy MDM trên máy chủ — Trợ giúp Mister Download Manager"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4401,6 +4469,10 @@
   "6d0f7f45f8191505": {
    "source": "When it last ran.",
    "text": "Lần chạy cuối cùng."
+  },
+  "6d136697adce7701": {
+   "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
+   "text": "Trên bất kỳ máy Linux nào đã cài đặt MDM (tệp <x1/>, <x2/>, AppImage hoặc <x3/>):"
   },
   "6d485e0daa042fc9": {
    "source": "The package box",
@@ -4657,6 +4729,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>Lên</g1> / <g2>Xuống</g2>, <g3>Trái</g3> / <g4>Phải</g4>"
+  },
+  "72ff8f6b37364fc1": {
+   "source": "is where files land: each category has its folder inside (<x1/>, <x2/>, <x3/>…). Mount a network share there to download straight onto it.",
+   "text": "là nơi các tệp được lưu: mỗi danh mục có thư mục riêng bên trong (<x1/>, <x2/>, <x3/>…). Gắn một thư mục chia sẻ mạng vào đó để tải xuống trực tiếp."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5666,6 +5742,10 @@
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "Trình duyệt cảnh báo rằng chứng chỉ kết nối không đáng tin cậy. Điều này là bình thường: MDM đã tạo chứng chỉ riêng của nó, trên máy tính của bạn, và không có cơ quan công cộng nào biết nó. Để chắc chắn trang đó là của MDM của bạn, hãy mở chi tiết cảnh báo: <g1>dấu vân tay SHA-256</g1> của chứng chỉ là cái mà <g2>Tùy chọn → Điều khiển từ xa</g2> hiển thị. Sau đó tiếp tục đến trang (<g3>Nâng cao → Tiếp tục</g3> trong Chrome, <g4>Hiển thị chi tiết → truy cập trang web này</g4> trong Safari)."
   },
+  "8c3034c70156f726": {
+   "source": "On Unraid",
+   "text": "Trên Unraid"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "Các điều khoản đầy đủ có trong <g1>Điều khoản sử dụng</g1>."
@@ -5858,6 +5938,10 @@
    "source": "When you added it.",
    "text": "Thời điểm bạn thêm nó."
   },
+  "91799f6f221cf37b": {
+   "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
+   "text": "Bên trong một container, địa chỉ MDM tìm thấy là của riêng container đó: hãy cung cấp cho nó địa chỉ bạn mở, địa chỉ <g1>máy chủ</g1> với cổng bạn đã công bố, như <x2/>, và nhật ký cùng mã QR sẽ hiển thị địa chỉ đó. Sau đó ghép nối như <g3>Điều khiển MDM từ điện thoại của bạn</g3> đã nói. Để có mã khác, bất cứ lúc nào:"
+  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "Trên <g1>Trạng thái</g1>, chỉ đánh dấu <g2>Lỗi</g2> để xem các bản tải xuống bị lỗi."
@@ -6025,6 +6109,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "Tải xuống"
+  },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Cập nhật lần cuối 07-11-2026 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
   },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
@@ -6374,6 +6462,10 @@
    "source": "Download in order",
    "text": "Tải xuống theo thứ tự"
   },
+  "9e18dba709154be4": {
+   "source": "Send downloads from your browser",
+   "text": "Gửi tải xuống từ trình duyệt của bạn"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "So sánh tốc độ tải xuống: IDM 6.42 và Mister Download Manager"
@@ -6694,6 +6786,10 @@
    "source": "A 256 KiB file",
    "text": "Một tệp 256 KiB"
   },
+  "a69373ac180f98a4": {
+   "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
+   "text": "Lần xây dựng đầu tiên mất nhiều thời gian (lên đến một giờ trên một máy chủ nhỏ: toàn bộ chương trình được tối ưu hóa như một). Image nhỏ, khoảng 175 MB: nền tảng Debian slim, hai chương trình của MDM và các chứng chỉ tải xuống được kiểm tra. Nó không cần thư viện máy tính để bàn: MDM chỉ tải chúng để mở cửa sổ, điều mà máy chủ không bao giờ làm."
+  },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. Tên và logo"
@@ -7013,6 +7109,10 @@
   "ae17b5b75df45e9d": {
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>OK của Tùy chọn đã hoàn tác các thay đổi được thực hiện trong khi đó</g1> (Giới hạn tốc độ của thanh công cụ, Cài đặt torrent…), và Đóng của Bộ lập lịch đã hoàn tác các tải xuống được thêm vào hoặc xóa khỏi hàng đợi."
+  },
+  "ae55fbed6cc1702a": {
+   "source": "<g1>docker/compose.yml</g1> does the same with Docker Compose.",
+   "text": "<g1>docker/compose.yml</g1> thực hiện tương tự với Docker Compose."
   },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
@@ -7442,6 +7542,10 @@
    "source": "Where the server is",
    "text": "Vị trí máy chủ"
   },
+  "b84114a1d735eb2d": {
+   "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
+   "text": "<g1><g2>Chạy MDM trên máy chủ</g2></g1> — MDM không có cửa sổ trên máy chủ gia đình hoặc NAS (Docker, Unraid), tải xuống các thư mục của nó; gửi các lượt tải xuống từ điện thoại hoặc trình duyệt của bạn đến đó."
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "Cài đặt bằng trình cài đặt"
@@ -7477,6 +7581,10 @@
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
    "text": "Phát theo thời gian thực từ các giá trị trung vị."
+  },
+  "b93c892b6f64e746": {
+   "source": "Then run it, with a folder for its settings and one for the downloads:",
+   "text": "Sau đó chạy nó, với một thư mục cho các cài đặt của nó và một thư mục cho các bản tải xuống:"
   },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
@@ -7930,6 +8038,10 @@
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
    "text": "<g1>Không có lối tắt riêng cho từng trang web để vượt qua các quy tắc.</g1> MDM xử lý các trang web như nhau. Nó không có tính năng nào được tạo ra để vượt qua các điều khoản, tường phí hoặc giới hạn của một trang web cụ thể."
   },
+  "c62198270f0107d2": {
+   "source": "What it sets",
+   "text": "Nó thiết lập gì"
+  },
   "c6320d84eeae5baf": {
    "source": "A few things to know before you start.",
    "text": "Một vài điều cần biết trước khi bắt đầu."
@@ -7941,6 +8053,10 @@
   "c696667963fca278": {
    "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
    "text": "Các liên kết đến tệp PDF hoặc video mà trình duyệt sẽ tự mở cũng sẽ được chuyển đến MDM nếu loại tệp đó được liệt kê. Để trình duyệt tự xử lý một liên kết, hãy giữ phím <g1>Alt</g1> trong khi nhấp vào liên kết đó (Firefox sẽ mở; Chrome và Edge sẽ tự tải xuống). Với bất kỳ liên kết nào khác: nhấp chuột phải vào liên kết đó và chọn <g2>Tải xuống bằng Mister Download Manager</g2>, tùy chọn này chấp nhận mọi loại tệp."
+  },
+  "c6977329ca37f93c": {
+   "source": "Don't publish the port on the internet; reach your home network through a VPN instead.",
+   "text": "Không công bố cổng trên internet; thay vào đó, hãy truy cập mạng gia đình của bạn thông qua VPN."
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -8190,6 +8306,10 @@
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "Chỉ mình bạn chịu trách nhiệm về các tệp bạn tải xuống và cách bạn sử dụng phần mềm."
   },
+  "cd447cf77eb76adc": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your browser: the server downloads them into its own folders, such as a network share.",
+   "text": "Chạy Mister Download Manager trên máy chủ gia đình hoặc NAS (Docker, Unraid, bất kỳ máy Linux nào) mà không cần cửa sổ, và gửi các bản tải xuống từ điện thoại hoặc trình duyệt của bạn: máy chủ sẽ tải chúng vào các thư mục riêng của nó, chẳng hạn như một thư mục chia sẻ mạng."
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>Cho phép nhiều hơn 32 kết nối</g1> — tăng tối đa lên 128, cho số ở trên và cho các trường hợp ngoại lệ. Hầu hết các máy chủ chỉ cho phép ít kết nối hơn từ một địa chỉ; MDM sẽ nhận biết và yêu cầu ít hơn. Khi tắt lại, bất kỳ số nào cao hơn sẽ trở về 32."
@@ -8318,6 +8438,10 @@
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "Giao diện hiện đại với nhiều chủ đề, hàng đợi và bộ lập lịch, cùng ứng dụng Android"
   },
+  "d0584e074b00b370": {
+   "source": "Build the image from MDM's source (a published image comes later):",
+   "text": "Xây dựng image từ mã nguồn của MDM (một image đã phát hành sẽ có sau):"
+  },
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "Nếu ai đó đã báo cáo cùng một vấn đề, cửa sổ sẽ thông báo điều đó (<g1>Đã báo cáo là vấn đề #…</g1>). <g2>Mở vấn đề đã báo cáo</g2> sẽ mở nó và đặt báo cáo của bạn vào khay nhớ tạm, để bạn có thể thêm nó làm bình luận."
@@ -8333,10 +8457,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Mỗi lượt tải xuống đang chạy đều có cửa sổ tiến độ riêng. Cửa sổ này mở ra khi quá trình tải xuống bắt đầu; để mở lại, hãy nhấp đúp vào lượt tải xuống trong danh sách."
-  },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "Cập nhật lần cuối 2026-11-06"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8714,6 +8834,10 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "Nếu trang web đã thay thế tệp bằng một phiên bản mới, các phần mà MDM đã tải không còn phù hợp nữa. Nhấp chuột phải vào lượt tải xuống và chọn <g1>Tải xuống lại</g1> để bắt đầu lại từ đầu. Một tệp đã hoàn tất chỉ được thay thế khi lượt tải xuống mới hoàn thành."
   },
+  "da6edd8a7cee18e1": {
+   "source": "where it listens: every local network address unless given",
+   "text": "nơi nó lắng nghe: mọi địa chỉ mạng cục bộ trừ khi được cung cấp"
+  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "Điều khoản sử dụng — Mister Download Manager"
@@ -8762,9 +8886,17 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Có. MDM chấp nhận các tùy chọn dòng lệnh quen thuộc của IDM, đi kèm với misterdownloadmanager-cli để tải xuống từ terminal, và có một API tự động hóa cục bộ, được bảo vệ bằng token, có thể liệt kê, tạm dừng, bắt đầu và xóa các lượt tải xuống. API này tắt cho đến khi bạn bật nó lên. Xem Dòng lệnh và tự động hóa."
   },
+  "db637c7ba77f6b99": {
+   "source": "In the browser extension's menu, <g1>Send downloads to → Another MDM</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "Trong menu tiện ích mở rộng của trình duyệt, <g1>Gửi tải xuống đến → Một MDM khác</g1>: nhập địa chỉ máy chủ, mở nó một lần trong trình duyệt đó để chấp nhận chứng chỉ của nó, sau đó nhập mã ghép nối (<x2/> ở trên). Các lượt tải xuống mà tiện ích mở rộng bắt được và <g3>Tải xuống bằng Mister Download Manager</g3> trên một liên kết, sau đó sẽ chuyển đến máy chủ thay vì máy tính này. Cookie của trình duyệt không được gửi đến máy chủ: một lượt tải xuống yêu cầu bạn phải đăng nhập vào một trang web sẽ vẫn ở trên máy tính này."
+  },
   "db74b9137912e0a2": {
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "Một proxy yêu cầu thông tin đăng nhập mà tiện ích mở rộng VPN tự cung cấp không thể chia sẻ: không có chương trình nào khác có thông tin đăng nhập đó. Lượt tải xuống sau đó sẽ dừng và thông báo như vậy, thay vì tiếp tục mà không có proxy. Hãy sử dụng ứng dụng VPN của riêng bạn hoặc chọn bộ điều hợp của nó trong <g1>Bộ điều hợp mạng</g1>."
+  },
+  "db95c470f075e401": {
+   "source": "Run MDM on a server",
+   "text": "Chạy MDM trên máy chủ"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -9038,6 +9170,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "Một thanh của toàn bộ tệp, hiển thị vị trí bắt đầu của mỗi kết nối và mức độ đã tải xuống (<g1>Vị trí bắt đầu và tiến độ tải xuống theo kết nối</g1>)."
   },
+  "e430a7f95d146b8c": {
+   "source": "It is the same MDM as on a desktop: its list, categories, queues, Scheduler, speed limits and torrents. You control it with the <g1>remote control's page</g1> (from any phone or computer on your network), the browser extension pointed at it, or its command line.",
+   "text": "Đó là cùng một MDM như trên máy tính để bàn: danh sách, danh mục, hàng đợi, Bộ lập lịch, giới hạn tốc độ và torrent của nó. Bạn điều khiển nó bằng <g1>trang điều khiển từ xa</g1> (từ bất kỳ điện thoại hoặc máy tính nào trên mạng của bạn), tiện ích mở rộng trình duyệt được trỏ đến nó, hoặc dòng lệnh của nó."
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "API tự động hóa"
@@ -9077,6 +9213,10 @@
   "e4e12c692325e7ee": {
    "source": "An archive is extracted:",
    "text": "Một tệp lưu trữ được giải nén:"
+  },
+  "e4ee9fc91b52818e": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your…",
+   "text": "Chạy Mister Download Manager trên máy chủ gia đình hoặc NAS (Docker, Unraid, bất kỳ máy Linux nào) mà không cần cửa sổ, và gửi các lượt tải xuống từ điện thoại hoặc..."
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
@@ -9226,6 +9366,10 @@
    "source": "Options, Connection page",
    "text": "Tùy chọn, trang Kết nối"
   },
+  "e82a01cee0779d2a": {
+   "source": "The command line talks to it as to a desktop MDM, with the same data folder: <x1/> (once <x2/>), <x3/>, and adding an address: <x4/>.",
+   "text": "Dòng lệnh nói chuyện với nó như với một MDM trên máy tính để bàn, với cùng thư mục dữ liệu: <x1/> (một lần <x2/>), <x3/>, và thêm một địa chỉ: <x4/>."
+  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "Các lựa chọn thay thế miễn phí cho Internet Download Manager"
@@ -9278,6 +9422,10 @@
    "source": "2. The software's licence",
    "text": "2. Giấy phép của phần mềm"
   },
+  "e93a579d3c1901b9": {
+   "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
+   "text": "Các trang video (yt-dlp) và thư viện hình ảnh cần các công cụ hỗ trợ của chúng, mà ảnh không bao gồm."
+  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "Đang nhận"
@@ -9317,6 +9465,10 @@
   "eacdcb2992653dee": {
    "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
    "text": "Cần có Firefox 140 trở lên. Cài đặt tiện ích bổ sung từ trang của nó trên addons.mozilla.org, <g1>Mister Download Manager</g1>: nhấp vào <g2>Thêm vào Firefox</g2>. Firefox sẽ tự động cập nhật. Zen và LibreWolf cài đặt từ cùng trang này. (Cửa sổ <g3>Thêm Mister Download Manager vào trình duyệt của bạn</g3> của MDM sẽ mở trang đó cho bạn.)"
+  },
+  "eaee905df121bd52": {
+   "source": "Nothing opens a window: a download that would ask a question (a duplicate, files already there) takes the choice set in the settings, or isn't added.",
+   "text": "Không có gì mở một cửa sổ: một lượt tải xuống có thể đặt câu hỏi (một bản sao, các tệp đã có sẵn) sẽ chọn cài đặt đã đặt, hoặc không được thêm vào."
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9445,6 +9597,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>Điều gì đã xảy ra:</g1> lỗi và vị trí trong mã của MDM nơi nó xảy ra."
+  },
+  "ee84661ce4cf58b2": {
+   "source": "What a server doesn't do",
+   "text": "Những gì máy chủ không làm được"
   },
   "ee9034f4bfe810cf": {
    "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
@@ -9797,6 +9953,10 @@
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Dừng chia sẻ sau khi chia sẻ trong … phút</g1> — hoặc sau khi nó đã được chia sẻ trong khoảng thời gian đó, qua tất cả các lần chạy của nó. Mặc định là tắt."
+  },
+  "f82dc8051d1faab0": {
+   "source": "names besides its addresses the page may be opened by",
+   "text": "các tên ngoài địa chỉ của nó mà trang có thể được mở bằng"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

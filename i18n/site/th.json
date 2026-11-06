@@ -174,10 +174,6 @@
    "source": "Contribute",
    "text": "ร่วมสนับสนุน"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "อัปเดตล่าสุด 2026-11-06 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "คำตอบเกี่ยวกับ Mister Download Manager: ฟรีหรือไม่ ปลอดภัยหรือไม่ เปรียบเทียบกับ IDM อย่างไร, เบราว์เซอร์, วิดีโอ, ทอร์เรนต์, ความเร็ว, Mac และ Linux และอื่นๆ"
@@ -297,6 +293,10 @@
   "063cb01120e3c2de": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "กำลังมองหาโปรแกรมทางเลือกฟรีสำหรับ Internet Download Manager (IDM) อยู่ใช่ไหม? Mister Download Manager เป็นโปรแกรมฟรีและโอเพนซอร์ส มีหน้าตาเหมือน IDM และสามารถนำเข้ารายการดาวน์โหลดจาก IDM ของคุณได้ เปรียบเทียบกับ Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader และอื่นๆ"
+  },
+  "0653a393fa30cb53": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
+   "text": "<g1>docker/unraid.xml</g1> เป็นเทมเพลต: คัดลอกไปยัง <x2/> บนแฟลชไดรฟ์ จากนั้น <g3>Docker → Add Container</g3> และเลือก <g4>misterdownloadmanager</g4> มันแมป <x5/> ไปยัง <x6/>, <x7/> ไปยังแชร์, พอร์ต 8463 และทำงานเป็น <x8/> (99:100) ตามที่แชร์ของ Unraid คาดหวัง อิมเมจจะต้องถูกสร้างขึ้นก่อน (ด้านบน) บนเซิร์ฟเวอร์หรือพุชไปยังรีจิสทรีที่คุณใช้"
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -818,6 +818,10 @@
    "source": "When it doesn't work",
    "text": "เมื่อใช้งานไม่ได้"
   },
+  "13dbb4044f2f02cc": {
+   "source": "where downloads go (each category's folder inside)",
+   "text": "ที่ที่การดาวน์โหลดไป (โฟลเดอร์ของแต่ละหมวดหมู่ภายใน)"
+  },
   "13f638ddac98e283": {
    "source": "Download Later",
    "text": "ดาวน์โหลดภายหลัง"
@@ -958,6 +962,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "ปล่อยให้ MDM ทำงาน การปิดหน้าต่างหลักไม่เป็นไร: MDM จะยังคงทำงานอยู่ในถาดระบบ อย่าใช้ <g1>งาน → ออก</g1>"
   },
+  "17a6b9e12e193121": {
+   "source": "<g1>New:</g1> the server mode is new in this version. Please <g2>tell us how it goes</g2>.",
+   "text": "<g1>ใหม่:</g1> โหมดเซิร์ฟเวอร์เป็นของใหม่ในเวอร์ชันนี้ โปรด<g2>บอกเราว่ามันเป็นอย่างไรบ้าง</g2>"
+  },
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "ไฟล์ <x1/> ที่ดึงมาจากที่อยู่เว็บจะผ่านการตรวจสอบเช่นเดียวกับไฟล์ที่เปิดจากดิสก์ และ MDM จะอ่านได้สูงสุด 10 MB"
@@ -1026,9 +1034,17 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "1909586657a6c8d0": {
+   "source": "Flag",
+   "text": "แฟล็ก"
+  },
   "19156d7406477513": {
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>เซิร์ฟเวอร์</g1> — ตำแหน่งของเซิร์ฟเวอร์: ธงและชื่อประเทศ และเวลาที่ใช้ในการส่งข้อมูลไปกลับ ดูที่ <g2>ตำแหน่งของเซิร์ฟเวอร์</g2> ช่องนี้จะว่างเปล่าเมื่อเบราว์เซอร์ส่งการดาวน์โหลดมาพร้อมกับชื่อและขนาด เนื่องจาก MDM ไม่จำเป็นต้องสอบถามเซิร์ฟเวอร์"
+  },
+  "19686779e1123d73": {
+   "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
+   "text": "หากต้องการเปิดหน้าด้วยชื่อเซิร์ฟเวอร์ (<x1/>) ให้ MDM ทราบชื่อนั้น: <x2/> (หลายชื่อ: คั่นด้วยเครื่องหมายจุลภาค) ชื่ออื่น ๆ จะถูกปฏิเสธ เพื่อไม่ให้หน้าเว็บใด ๆ สามารถเข้าถึง MDM ผ่านชื่อของตัวเองได้"
   },
   "19810b030c072070": {
    "source": "Path",
@@ -1062,9 +1078,17 @@
    "source": "Batch download: many numbered files",
    "text": "ดาวน์โหลดเป็นชุด: ไฟล์ที่มีหมายเลขจำนวนมาก"
   },
+  "1a359afa27050848": {
+   "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window).",
+   "text": "(<x1/>, #157) รัน <x2/> เดียวกันโดยไม่มี eframe: ลูปจะเรียกใช้ <x3/> (สิ่งที่ <x4/> รันในทุกเฟรม) บน <x5/> เปล่า ๆ ซึ่งถูกปลุกโดยช่องคำสั่ง และไม่เคยเรียกใช้ <x6/> ของมันเลย; คำสั่งจะถูกเพิ่มเมื่อรีโมทคอนโทรลเพิ่มเข้ามา (ไม่มีหน้าต่าง)"
+  },
   "1a3aff78add15e0b": {
    "source": "Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.",
    "text": "ภาพหน้าจอในเอกสารเหล่านี้จะแสดงธีมสีอ่อน เว้นแต่จะระบุไว้เป็นอย่างอื่น MDM จะทำงานตามโหมดมืดของ Windows: เมื่อ Windows ตั้งค่าเป็นโหมดมืด MDM ก็จะเป็นโหมดมืดด้วย"
+  },
+  "1a3b9d0d6a07985d": {
+   "source": "the page's address as you open it, shown with the pairing code",
+   "text": "ที่อยู่ของหน้าตามที่คุณเปิด แสดงพร้อมรหัสการจับคู่"
   },
   "1a4513aa7b897fc8": {
    "source": "<g1>Confirm before deleting downloads</g1> — ask before taking downloads off the list. On by default; <g2>Don't show this dialog again</g2> in that question turns it off, and ticking it here turns it back on.",
@@ -1237,6 +1261,10 @@
   "1cf59e936ec9e349": {
    "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
    "text": "พบ <g1>7-Zip</g1> หรือไม่: ไฟล์เก็บถาวร 7z และ RAR จำเป็นต้องใช้"
+  },
+  "1d098969ea9cf781": {
+   "source": ": the user that owns those folders (MDM runs as no particular user).",
+   "text": ": ผู้ใช้ที่เป็นเจ้าของโฟลเดอร์เหล่านั้น (MDM ทำงานโดยไม่มีผู้ใช้เฉพาะ)"
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -1453,6 +1481,10 @@
   "22eb9ce302891640": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with <x1/> for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See <g2>Command line and automation</g2>.",
    "text": "ได้ MDM รองรับสวิตช์บรรทัดคำสั่งที่คุ้นเคยของ IDM มาพร้อมกับ <x1/> สำหรับการดาวน์โหลดจากเทอร์มินัล และมี API ระบบอัตโนมัติในเครื่องที่ป้องกันด้วยโทเค็น ซึ่งสามารถแสดงรายการ หยุดชั่วคราว เริ่ม และลบการดาวน์โหลดได้ API จะปิดอยู่จนกว่าคุณจะเปิดใช้งาน ดูที่ <g2>บรรทัดคำสั่งและระบบอัตโนมัติ</g2>"
+  },
+  "230325217f1c4b94": {
+   "source": "shows the address to open and, while no device is paired, a pairing code with a QR code:",
+   "text": "แสดงที่อยู่ที่จะเปิด และในขณะที่ยังไม่มีอุปกรณ์จับคู่ จะแสดงรหัสการจับคู่พร้อมรหัส QR:"
   },
   "2307e7989c795a73": {
    "source": "1.9.3<g1>18 Mar 2026</g1>",
@@ -1918,6 +1950,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>ประเทศ</g1> มาจากตารางช่วงที่อยู่ IP ที่มาพร้อมกับ MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0) ซึ่งค้นหาบนคอมพิวเตอร์ของคุณ MDM จะไม่ส่งที่อยู่ไปยังที่ใดเพื่อสอบถามตำแหน่ง ตารางจะได้รับการอัปเดตทุกครั้งที่ออกเวอร์ชันใหม่ ที่อยู่ที่มีการเปลี่ยนแปลงตำแหน่งอาจแสดงประเทศเก่า"
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "อัปเดตล่าสุด 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>เรียกดู</g1> — เปิดโฟลเดอร์ใน Explorer"
@@ -2250,6 +2286,10 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> หรือใหม่กว่าบน Apple Silicon หรือ Intel (ทดลอง)"
   },
+  "36716abd18118575": {
+   "source": "the remote control's port (8463)",
+   "text": "พอร์ตของการควบคุมระยะไกล (8463)"
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "คลิกขวาที่พื้นที่ว่างของรายการเพื่อ <g1>เพิ่มการดาวน์โหลดใหม่</g1>, <g2>เลือกทั้งหมด</g2>, <g3>จัดเรียงไฟล์</g3>, <g4>ล้างตัวกรองทั้งหมด</g4> และ <g5>ลบที่เสร็จสมบูรณ์ทั้งหมด</g5>"
@@ -2482,6 +2522,10 @@
    "source": "Add URL",
    "text": "เพิ่ม URL"
   },
+  "3b8c53b20f84def3": {
+   "source": "the list, settings, certificate and paired devices",
+   "text": "รายการ, การตั้งค่า, ใบรับรอง และอุปกรณ์ที่จับคู่"
+  },
   "3b908b26074fe7d4": {
    "source": "<g1>Change folder for \"…\" category on last selected</g1> — when you pick another folder in <g2>Download File Info</g2>, it becomes the category's folder from then on. On by default. (It sets the first state of <g3>Remember this path</g3> in that window.)",
    "text": "<g1>เปลี่ยนโฟลเดอร์สำหรับหมวดหมู่ \"…\" ตามที่เลือกครั้งล่าสุด</g1> — เมื่อคุณเลือกโฟลเดอร์อื่นใน <g2>ข้อมูลไฟล์ดาวน์โหลด</g2> โฟลเดอร์นั้นจะกลายเป็นโฟลเดอร์ของหมวดหมู่ตั้งแต่นั้นเป็นต้นไป เปิดอยู่โดยค่าเริ่มต้น (เป็นการตั้งค่าสถานะเริ่มต้นของ <g3>จดจำพาธนี้</g3> ในหน้าต่างนั้น)"
@@ -2589,6 +2633,10 @@
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "คลิก <g1>ดำเนินการต่อ</g1> บนแถบเครื่องมือ (หรือคลิกขวา → <g2>ดำเนินการดาวน์โหลดต่อ</g2>)"
+  },
+  "3dab45c85af12119": {
+   "source": "Or the variable",
+   "text": "หรือตัวแปร"
   },
   "3dfd3b258b972ccc": {
    "source": "Files in the queue",
@@ -2934,6 +2982,10 @@
    "source": "A server that allows two connections at a time. Every square is one connection it saw in a typical run.",
    "text": "เซิร์ฟเวอร์ที่อนุญาตให้เชื่อมต่อได้ครั้งละสองการเชื่อมต่อ สี่เหลี่ยมแต่ละช่องคือการเชื่อมต่อหนึ่งครั้งที่เซิร์ฟเวอร์เห็นในการทำงานปกติ"
   },
+  "476a78eca0326f04": {
+   "source": "keeps the list, the settings, the certificate and the paired devices.",
+   "text": "เก็บรายการ, การตั้งค่า, ใบรับรอง และอุปกรณ์ที่จับคู่"
+  },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "การลบคิวจะถามก่อน; คิวที่กำลังทำงานจะหยุดเมื่อถูกลบ; ลูกศรเริ่ม/หยุดคิวของแถบเครื่องมือทำงานเสมอ"
@@ -3033,6 +3085,10 @@
   "49e22ffa819f63a8": {
    "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
    "text": "คลิกขวาที่ทอร์เรนต์ในรายการแล้วเปิด <g1>ทอร์เรนต์</g1>:"
+  },
+  "49faa92737cc6b16": {
+   "source": "Without Docker",
+   "text": "ไม่มี Docker"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3798,6 +3854,10 @@
    "source": "Edit this page on GitHub",
    "text": "แก้ไขหน้านี้บน GitHub"
   },
+  "5f31049fa5031c49": {
+   "source": "The remote control is on in this mode (<x1/> turns it off). It stops cleanly, saving its list, when the system stops it (<x2/>, systemd, Ctrl+C). It works on Windows and macOS too, the same way.",
+   "text": "การควบคุมระยะไกลเปิดใช้งานในโหมดนี้ (<x1/> ปิดการใช้งาน) มันจะหยุดอย่างสะอาด โดยบันทึกรายการเมื่อระบบหยุดมัน (<x2/>, systemd, Ctrl+C) มันทำงานบน Windows และ macOS ด้วยวิธีเดียวกัน"
+  },
   "5f3bc376c2f41291": {
    "source": "Tests and benchmarks",
    "text": "การทดสอบและเกณฑ์มาตรฐาน"
@@ -3921,6 +3981,10 @@
   "613ff676be295efe": {
    "source": "<g1><g2>Yes</g2></g1><g3>GPL-3.0</g3>",
    "text": "<g1><g2>ใช่</g2></g1><g3>GPL-3.0</g3>"
+  },
+  "6143c720cec9874d": {
+   "source": "With Docker",
+   "text": "ด้วย Docker"
   },
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
@@ -4166,6 +4230,10 @@
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
    "text": "ติดตั้ง MDM ด้วยตัวติดตั้งและคง ตั้งค่าการรวมเบราว์เซอร์ ไว้ ใน Firefox ให้เปิดหน้าส่วนเสริมบน addons.mozilla.org แล้วคลิก เพิ่มไปยัง..."
   },
+  "67d7688dc5224a95": {
+   "source": "Run MDM on a server — Mister Download Manager help",
+   "text": "เรียกใช้ MDM บนเซิร์ฟเวอร์ — ความช่วยเหลือ Mister Download Manager"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4401,6 +4469,10 @@
   "6d0f7f45f8191505": {
    "source": "When it last ran.",
    "text": "ครั้งสุดท้ายที่ทำงาน"
+  },
+  "6d136697adce7701": {
+   "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
+   "text": "บนเครื่อง Linux ใดๆ ที่ติดตั้ง MDM (ไฟล์ <x1/>, <x2/>, AppImage หรือ <x3/>):"
   },
   "6d485e0daa042fc9": {
    "source": "The package box",
@@ -4657,6 +4729,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>ขึ้น</g1> / <g2>ลง</g2>, <g3>ซ้าย</g3> / <g4>ขวา</g4>"
+  },
+  "72ff8f6b37364fc1": {
+   "source": "is where files land: each category has its folder inside (<x1/>, <x2/>, <x3/>…). Mount a network share there to download straight onto it.",
+   "text": "คือที่ที่ไฟล์จะลง: แต่ละหมวดหมู่มีโฟลเดอร์ย่อยอยู่ภายใน (<x1/>, <x2/>, <x3/>…) ติดตั้งแชร์เครือข่ายที่นั่นเพื่อดาวน์โหลดลงไปโดยตรง"
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5666,6 +5742,10 @@
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "เบราว์เซอร์จะเตือนว่าใบรับรองการเชื่อมต่อไม่น่าเชื่อถือ นี่เป็นเรื่องปกติ: MDM สร้างใบรับรองของตัวเองบนคอมพิวเตอร์ของคุณ และไม่มีหน่วยงานสาธารณะใดรู้จัก หากต้องการให้แน่ใจว่าหน้าเว็บเป็นของ MDM ของคุณ ให้เปิดรายละเอียดคำเตือน: <g1>ลายนิ้วมือ SHA-256</g1> ของใบรับรองคืออันเดียวกับที่ <g2>ตัวเลือก → ระยะไกล</g2> แสดง จากนั้นดำเนินการต่อในหน้าเว็บ (<g3>ขั้นสูง → ดำเนินการต่อ</g3> ใน Chrome, <g4>แสดงรายละเอียด → เยี่ยมชมเว็บไซต์นี้</g4> ใน Safari)"
   },
+  "8c3034c70156f726": {
+   "source": "On Unraid",
+   "text": "บน Unraid"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "ข้อกำหนดฉบับเต็มอยู่ใน <g1>ข้อกำหนดการใช้งาน</g1>"
@@ -5858,6 +5938,10 @@
    "source": "When you added it.",
    "text": "เมื่อคุณเพิ่ม"
   },
+  "91799f6f221cf37b": {
+   "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
+   "text": "ภายในคอนเทนเนอร์ ที่อยู่ MDM ที่พบคือที่อยู่ของคอนเทนเนอร์เอง: ให้ที่อยู่ที่คุณเปิด ซึ่งเป็นที่อยู่<g1>ของเซิร์ฟเวอร์</g1>พร้อมพอร์ตที่คุณเผยแพร่ เช่น <x2/> และบันทึกและรหัส QR จะแสดงที่อยู่นั้น จากนั้นจับคู่ตามที่<g3>ควบคุม MDM จากโทรศัพท์ของคุณ</g3>ระบุ สำหรับรหัสอื่น ๆ ได้ตลอดเวลา:"
+  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "ที่ <g1>สถานะ</g1> ให้เลือกเฉพาะ <g2>ข้อผิดพลาด</g2> เพื่อดูการดาวน์โหลดที่ล้มเหลว"
@@ -6026,6 +6110,10 @@
    "source": "Downloads",
    "text": "การดาวน์โหลด"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "อัปเดตล่าสุด 2026-11-07 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>คำอธิบายหรือส่วนหนึ่งของคำอธิบาย</g1> — บันทึกย่อของคุณ"
@@ -6033,6 +6121,10 @@
   "95eaeb2d8a26031c": {
    "source": "Filter the list",
    "text": "กรองรายการ"
+  },
+  "95f874ce586a0506": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>การตรวจจับปัญหา</g1> เมื่อ MDM เกิดข้อขัดข้อง (ข้อยกเว้นของ Windows, สัญญาณบน Linux, ข้อยกเว้น Mach บน macOS), หยุดทำงานโดยไม่คาดคิด, หรือค้าง, โปรแกรมจะขอไฟล์ดัมพ์จากมอนิเตอร์ การค้างคือหน้าต่างที่ทำงานเกิน 8 วินาที ซึ่งถูกตรวจจับโดยเธรด watchdog ที่ไม่สนใจเวลาที่ใช้ในการพักเครื่อง โดยจะจับเวลาทั้งสองส่วนของเฟรม: สิ่งที่ MDM จัดการ (คำสั่งที่เข้ามา, นาฬิกาของการดาวน์โหลด, คิว และตัวจัดกำหนดการ) ซึ่งทำงานแบบย่อเล็กสุดด้วย และการวาดภาพ; ไม่ใช่การรอระหว่างเฟรม เธรด watchdog ยังวัดว่าเธรดหน้าต่างได้รับเวลาประมวลผลเท่าใดในระหว่างนั้น และรายงานจะบอกว่านั่นหมายถึงอะไร: มันทำงานตลอดเวลา (วนซ้ำ), มันรออยู่ในล็อกหรือบน I/O (การติดตาย), หรือมันแทบไม่ได้ทำงานในโค้ดปกติ ซึ่งหมายถึงคอมพิวเตอร์ยุ่งเกินกว่าจะรัน MDM หรือโหลดจากดิสก์ช้า ซึ่งส่วนใหญ่ไม่ใช่ข้อผิดพลาดของ MDM (สิ่งเหล่านี้มีลายเซ็นเดียวกัน <x2/>) macOS ยังไม่ได้วัดค่านี้ จากนั้นมอนิเตอร์จะเขียน <g3>minidump</g3> ของทุกเธรดจากภายนอก ผ่าน <x4/> และ <x5/> กระบวนการที่ขัดข้องจะไม่เขียนไฟล์ดัมพ์ของตัวเอง ซึ่งเป็นวิธีที่ Firefox, Crashpad และ Sentry ทำเช่นกัน"
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6370,6 +6462,10 @@
    "source": "Download in order",
    "text": "ดาวน์โหลดตามลำดับ"
   },
+  "9e18dba709154be4": {
+   "source": "Send downloads from your browser",
+   "text": "ส่งการดาวน์โหลดจากเบราว์เซอร์ของคุณ"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "เปรียบเทียบความเร็วการดาวน์โหลดระหว่าง IDM 6.42 กับ Mister Download Manager"
@@ -6690,6 +6786,10 @@
    "source": "A 256 KiB file",
    "text": "ไฟล์ขนาด 256 KiB"
   },
+  "a69373ac180f98a4": {
+   "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
+   "text": "การสร้างครั้งแรกใช้เวลานาน (สูงสุดหนึ่งชั่วโมงบนเซิร์ฟเวอร์ขนาดเล็ก: โปรแกรมทั้งหมดได้รับการปรับให้เหมาะสมเป็นหนึ่งเดียว) อิมเมจมีขนาดเล็กประมาณ 175 MB: ฐาน Debian แบบบาง, โปรแกรมสองตัวของ MDM และใบรับรองที่ใช้ตรวจสอบการดาวน์โหลด ไม่จำเป็นต้องมีไลบรารีเดสก์ท็อป: MDM โหลดไลบรารีเหล่านั้นเพื่อเปิดหน้าต่างเท่านั้น ซึ่งเซิร์ฟเวอร์ไม่เคยทำ"
+  },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. ชื่อและโลโก้"
@@ -7009,6 +7109,10 @@
   "ae17b5b75df45e9d": {
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>ปุ่มตกลงของตัวเลือกจะยกเลิกการเปลี่ยนแปลงที่ทำไปแล้ว</g1> (ตัวจำกัดความเร็วของแถบเครื่องมือ, การตั้งค่าทอร์เรนต์…) และปุ่มปิดของตัวจัดกำหนดการจะยกเลิกการดาวน์โหลดที่เพิ่มหรือลบออกจากคิว"
+  },
+  "ae55fbed6cc1702a": {
+   "source": "<g1>docker/compose.yml</g1> does the same with Docker Compose.",
+   "text": "<g1>docker/compose.yml</g1> ทำเช่นเดียวกันกับ Docker Compose"
   },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
@@ -7438,6 +7542,10 @@
    "source": "Where the server is",
    "text": "ตำแหน่งของเซิร์ฟเวอร์"
   },
+  "b84114a1d735eb2d": {
+   "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
+   "text": "<g1><g2>เรียกใช้ MDM บนเซิร์ฟเวอร์</g2></g1> — MDM ที่ไม่มีหน้าต่างบนโฮมเซิร์ฟเวอร์หรือ NAS (Docker, Unraid) ดาวน์โหลดลงในโฟลเดอร์ของมัน; ส่งการดาวน์โหลดจากโทรศัพท์หรือเบราว์เซอร์ของคุณ"
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "ติดตั้งด้วยตัวติดตั้ง"
@@ -7473,6 +7581,10 @@
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
    "text": "เล่นตามเวลาจริงจากค่ามัธยฐาน"
+  },
+  "b93c892b6f64e746": {
+   "source": "Then run it, with a folder for its settings and one for the downloads:",
+   "text": "จากนั้นเรียกใช้ โดยมีโฟลเดอร์สำหรับตั้งค่าและโฟลเดอร์สำหรับดาวน์โหลด:"
   },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
@@ -7926,6 +8038,10 @@
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
    "text": "<g1>ไม่มีทางลัดเฉพาะไซต์เพื่อหลีกเลี่ยงกฎ</g1> MDM ปฏิบัติต่อทุกไซต์เหมือนกัน ไม่มีคุณสมบัติที่สร้างขึ้นเพื่อหลีกเลี่ยงข้อกำหนด กำแพงการชำระเงิน หรือข้อจำกัดของไซต์ใดไซต์หนึ่งโดยเฉพาะ"
   },
+  "c62198270f0107d2": {
+   "source": "What it sets",
+   "text": "สิ่งที่ตั้งค่า"
+  },
   "c6320d84eeae5baf": {
    "source": "A few things to know before you start.",
    "text": "สิ่งที่ควรรู้ก่อนเริ่มต้น"
@@ -7937,6 +8053,10 @@
   "c696667963fca278": {
    "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
    "text": "ลิงก์ไปยังไฟล์ PDF หรือไฟล์วิดีโอที่เบราว์เซอร์จะเปิดเอง จะถูกส่งไปยัง MDM ด้วย หากประเภทของไฟล์นั้นอยู่ในรายการ หากต้องการให้เบราว์เซอร์จัดการเอง ให้กด <g1>Alt</g1> ค้างไว้ขณะคลิก (Firefox จะเปิดไฟล์นั้น; Chrome และ Edge จะดาวน์โหลดไฟล์นั้นเอง) สำหรับลิงก์อื่นๆ: คลิกขวาที่ลิงก์แล้วเลือก <g2>ดาวน์โหลดด้วย Mister Download Manager</g2> ซึ่งรองรับไฟล์ทุกประเภท"
+  },
+  "c6977329ca37f93c": {
+   "source": "Don't publish the port on the internet; reach your home network through a VPN instead.",
+   "text": "อย่าเผยแพร่พอร์ตบนอินเทอร์เน็ต; ให้เข้าถึงเครือข่ายภายในบ้านของคุณผ่าน VPN แทน"
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -8186,6 +8306,10 @@
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "คุณเป็นผู้รับผิดชอบแต่เพียงผู้เดียวสำหรับไฟล์ที่คุณดาวน์โหลดและวิธีการใช้ซอฟต์แวร์"
   },
+  "cd447cf77eb76adc": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your browser: the server downloads them into its own folders, such as a network share.",
+   "text": "เรียกใช้ Mister Download Manager บนโฮมเซิร์ฟเวอร์หรือ NAS (Docker, Unraid, เครื่อง Linux ใดๆ) โดยไม่มีหน้าต่าง และส่งการดาวน์โหลดจากโทรศัพท์หรือเบราว์เซอร์ของคุณ: เซิร์ฟเวอร์จะดาวน์โหลดไฟล์เหล่านั้นลงในโฟลเดอร์ของตัวเอง เช่น แชร์เครือข่าย"
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>อนุญาตการเชื่อมต่อมากกว่า 32 รายการ</g1> — เพิ่มจำนวนสูงสุดเป็น 128 สำหรับตัวเลขด้านบนและสำหรับข้อยกเว้น เซิร์ฟเวอร์ส่วนใหญ่อนุญาตการเชื่อมต่อจากที่อยู่เดียวได้น้อยกว่ามาก MDM จะสังเกตเห็นและขอจำนวนที่น้อยลง หากปิดอีกครั้ง ตัวเลขที่สูงกว่าจะกลับมาเป็น 32"
@@ -8314,6 +8438,10 @@
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "รูปลักษณ์ทันสมัยพร้อมธีมหลายแบบ, คิวและตัวกำหนดเวลา, และแอป Android"
   },
+  "d0584e074b00b370": {
+   "source": "Build the image from MDM's source (a published image comes later):",
+   "text": "สร้างอิมเมจจากซอร์สของ MDM (อิมเมจที่เผยแพร่จะตามมาภายหลัง):"
+  },
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "หากมีคนรายงานปัญหาเดียวกันแล้ว หน้าต่างจะแจ้งให้ทราบ (<g1>รายงานแล้วว่าเป็นปัญหา #…</g1>) <g2>เปิดปัญหาที่รายงาน</g2> จะเปิดปัญหานั้นและคัดลอกรายงานของคุณไปยังคลิปบอร์ด เพื่อให้คุณสามารถเพิ่มเป็นความคิดเห็นได้"
@@ -8329,10 +8457,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "การดาวน์โหลดแต่ละรายการที่กำลังทำงานอยู่จะมีหน้าต่างความคืบหน้าของตัวเอง หน้าต่างนี้จะเปิดขึ้นเมื่อการดาวน์โหลดเริ่มต้นขึ้น หากต้องการเปิดอีกครั้ง ให้ดับเบิลคลิกที่การดาวน์โหลดในรายการ"
-  },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "อัปเดตล่าสุด 2026-11-06"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8710,6 +8834,10 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "หากเว็บไซต์แทนที่ไฟล์ด้วยเวอร์ชันใหม่ ส่วนที่ MDM มีจะไม่เข้ากันอีกต่อไป คลิกขวาที่รายการดาวน์โหลดแล้วเลือก <g1>ดาวน์โหลดใหม่</g1> เพื่อเริ่มใหม่ตั้งแต่ต้น ไฟล์ที่ดาวน์โหลดเสร็จแล้วจะถูกแทนที่เมื่อการดาวน์โหลดใหม่เสร็จสมบูรณ์เท่านั้น"
   },
+  "da6edd8a7cee18e1": {
+   "source": "where it listens: every local network address unless given",
+   "text": "ที่ที่มันฟัง: ทุกที่อยู่เครือข่ายท้องถิ่น เว้นแต่จะระบุ"
+  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "ข้อกำหนดการใช้งาน — Mister Download Manager"
@@ -8758,9 +8886,17 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "ได้ MDM รองรับสวิตช์บรรทัดคำสั่งที่คุ้นเคยของ IDM มาพร้อมกับ misterdownloadmanager-cli สำหรับการดาวน์โหลดจากเทอร์มินัล และมี API ระบบอัตโนมัติในเครื่องที่ป้องกันด้วยโทเค็น ซึ่งสามารถแสดงรายการ หยุดชั่วคราว เริ่ม และลบการดาวน์โหลดได้ API จะปิดอยู่จนกว่าคุณจะเปิดใช้งาน ดูที่ บรรทัดคำสั่งและระบบอัตโนมัติ"
   },
+  "db637c7ba77f6b99": {
+   "source": "In the browser extension's menu, <g1>Send downloads to → Another MDM</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "ในเมนูส่วนขยายของเบราว์เซอร์ <g1>ส่งการดาวน์โหลดไปยัง → Another MDM</g1>: พิมพ์ที่อยู่ของเซิร์ฟเวอร์ เปิดในเบราว์เซอร์นั้นหนึ่งครั้งเพื่อยอมรับใบรับรอง จากนั้นป้อนรหัสจับคู่ (<x2/> ด้านบน) การดาวน์โหลดที่ส่วนขยายตรวจจับ และ <g3>ดาวน์โหลดด้วย Mister Download Manager</g3> บนลิงก์ จะไปที่เซิร์ฟเวอร์แทนคอมพิวเตอร์เครื่องนี้ คุกกี้ของเบราว์เซอร์จะไม่ถูกส่งไปยังเซิร์ฟเวอร์: การดาวน์โหลดที่ต้องการให้คุณลงชื่อเข้าใช้เว็บไซต์จะยังคงอยู่กับคอมพิวเตอร์เครื่องนี้"
+  },
   "db74b9137912e0a2": {
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "พร็อกซีที่ขอการเข้าสู่ระบบที่ส่วนขยาย VPN ให้ตัวเองไม่สามารถแชร์ได้: ไม่มีโปรแกรมอื่นใดที่มีการเข้าสู่ระบบนั้น การดาวน์โหลดจะหยุดและแจ้งให้ทราบ แทนที่จะดำเนินการโดยไม่มีพร็อกซี ใช้แอปของ VPN เอง หรือเลือกอะแดปเตอร์ภายใต้ <g1>อะแดปเตอร์เครือข่าย</g1>"
+  },
+  "db95c470f075e401": {
+   "source": "Run MDM on a server",
+   "text": "เรียกใช้ MDM บนเซิร์ฟเวอร์"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -9034,6 +9170,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "แถบของไฟล์ทั้งหมด แสดงตำแหน่งที่แต่ละการเชื่อมต่อเริ่มต้นและไปได้ไกลแค่ไหน (<g1>ตำแหน่งเริ่มต้นและความคืบหน้าการดาวน์โหลดตามการเชื่อมต่อ</g1>)"
   },
+  "e430a7f95d146b8c": {
+   "source": "It is the same MDM as on a desktop: its list, categories, queues, Scheduler, speed limits and torrents. You control it with the <g1>remote control's page</g1> (from any phone or computer on your network), the browser extension pointed at it, or its command line.",
+   "text": "เป็น MDM ตัวเดียวกับบนเดสก์ท็อป: รายการ, หมวดหมู่, คิว, ตัวจัดกำหนดการ, การจำกัดความเร็ว และทอร์เรนต์ คุณควบคุมมันด้วย<g1>หน้าการควบคุมระยะไกล</g1> (จากโทรศัพท์หรือคอมพิวเตอร์เครื่องใดก็ได้ในเครือข่ายของคุณ), ส่วนขยายเบราว์เซอร์ที่ชี้ไปที่มัน หรือบรรทัดคำสั่งของมัน"
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "API ระบบอัตโนมัติ"
@@ -9073,6 +9213,10 @@
   "e4e12c692325e7ee": {
    "source": "An archive is extracted:",
    "text": "ไฟล์เก็บถาวรจะถูกแตก:"
+  },
+  "e4ee9fc91b52818e": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your…",
+   "text": "เรียกใช้ Mister Download Manager บนโฮมเซิร์ฟเวอร์หรือ NAS (Docker, Unraid, เครื่อง Linux ใดก็ได้) โดยไม่มีหน้าต่าง และส่งการดาวน์โหลดจากโทรศัพท์ของคุณหรือ..."
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
@@ -9222,6 +9366,10 @@
    "source": "Options, Connection page",
    "text": "ตัวเลือก, หน้าการเชื่อมต่อ"
   },
+  "e82a01cee0779d2a": {
+   "source": "The command line talks to it as to a desktop MDM, with the same data folder: <x1/> (once <x2/>), <x3/>, and adding an address: <x4/>.",
+   "text": "บรรทัดคำสั่งจะสื่อสารกับมันเหมือนกับ MDM บนเดสก์ท็อป โดยใช้โฟลเดอร์ข้อมูลเดียวกัน: <x1/> (เมื่อก่อน <x2/>), <x3/> และเพิ่มที่อยู่: <x4/>"
+  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "ทางเลือกฟรีสำหรับ Internet Download Manager"
@@ -9274,6 +9422,10 @@
    "source": "2. The software's licence",
    "text": "2. สัญญาอนุญาตของซอฟต์แวร์"
   },
+  "e93a579d3c1901b9": {
+   "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
+   "text": "หน้าวิดีโอ (yt-dlp) และแกลเลอรีรูปภาพต้องการตัวช่วย ซึ่งอิมเมจไม่ได้รวมไว้"
+  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "กำลังรับ"
@@ -9313,6 +9465,10 @@
   "eacdcb2992653dee": {
    "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
    "text": "ต้องใช้ Firefox 140 หรือใหม่กว่า ติดตั้งส่วนเสริมจากหน้าของมันบน addons.mozilla.org, <g1>Mister Download Manager</g1>: คลิก <g2>เพิ่มไปยัง Firefox</g2> Firefox จะอัปเดตให้เอง Zen และ LibreWolf ติดตั้งจากหน้าเดียวกัน (หน้าต่าง <g3>เพิ่ม Mister Download Manager ไปยังเบราว์เซอร์ของคุณ</g3> ของ MDM จะเปิดหน้านั้นให้คุณ)"
+  },
+  "eaee905df121bd52": {
+   "source": "Nothing opens a window: a download that would ask a question (a duplicate, files already there) takes the choice set in the settings, or isn't added.",
+   "text": "ไม่มีอะไรเปิดหน้าต่าง: การดาวน์โหลดที่จะถามคำถาม (ไฟล์ซ้ำ, ไฟล์ที่มีอยู่แล้ว) จะเลือกตัวเลือกที่ตั้งไว้ในการตั้งค่า หรือไม่ถูกเพิ่ม"
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9441,6 +9597,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>สิ่งที่เกิดขึ้น:</g1> ข้อผิดพลาดและตำแหน่งในโค้ดของ MDM ที่เกิดเหตุการณ์ขึ้น"
+  },
+  "ee84661ce4cf58b2": {
+   "source": "What a server doesn't do",
+   "text": "สิ่งที่เซิร์ฟเวอร์ไม่ทำ"
   },
   "ee9034f4bfe810cf": {
    "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
@@ -9793,6 +9953,10 @@
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>หยุดการแชร์หลังจากแชร์เป็นเวลา … นาที</g1> — หรือเมื่อมีการแชร์เป็นเวลานานเท่าที่กำหนด ตลอดการทำงานทั้งหมด ปิดใช้งานโดยค่าเริ่มต้น"
+  },
+  "f82dc8051d1faab0": {
+   "source": "names besides its addresses the page may be opened by",
+   "text": "ชื่ออื่น ๆ นอกเหนือจากที่อยู่ของมันที่หน้าอาจถูกเปิดโดย"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

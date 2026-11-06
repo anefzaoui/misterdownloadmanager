@@ -1596,11 +1596,14 @@ const CASES = {
       if (said.startsWith("refused")) throw new Error(`pairing ${said}`);
       await clickLink(t, `/gen/1M/${file}`);
       const at = await until(`${file} in the server's folder`, 45000, () => findFile(r.downloads, file, 1 << 20));
-      const asked = await requests(`/gen/1M/${file}`);
-      if (asked.some((e) => (e.cookie || "").length)) throw new Error(`a cookie went to the server's download: ${asked.map((e) => e.cookie).join("; ")}`);
+      // The server's requests (not the browser's own first one, which it cancels): none with the
+      // browser's cookies.
+      const theirs = (await requests(`/gen/1M/${file}`)).filter((e) => e.user_agent !== t.ua);
+      if (!theirs.length) throw new Error("no request from the server");
+      if (theirs.some((e) => (e.cookie || "").length)) throw new Error(`a cookie went to the server's download: ${theirs.map((e) => e.cookie).join("; ")}`);
       if ((await mdmList().catch(() => [])).some((d) => d.file === file)) throw new Error("this computer's MDM got it too");
       await keptNothing(t.dl);
-      return `paired (${said}); ${file} downloaded by the server into ${path.relative(r.downloads, at)}, not by this computer`;
+      return `paired (${said}); ${file} downloaded by the server into ${path.relative(r.downloads, at)} (${theirs.length} request(s), no cookie), not by this computer`;
     } finally {
       await popup.evaluate(`(document.getElementById("to-here").click(), true)`).catch(() => {});
       await sleep(500);

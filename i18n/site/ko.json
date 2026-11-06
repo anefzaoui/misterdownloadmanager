@@ -174,10 +174,6 @@
    "source": "Contribute",
    "text": "기여하기"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "최종 업데이트: 2026-11-06 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager에 대한 답변: 무료인지, 안전한지, IDM과의 비교, 브라우저, 비디오, 토렌트, 속도, Mac 및 Linux 등."
@@ -297,6 +293,10 @@
   "063cb01120e3c2de": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Internet Download Manager(IDM)의 무료 대안을 찾으시나요? Mister Download Manager는 무료 오픈소스이며, IDM과 유사한 레이아웃을 가지고 있고, IDM 목록을 가져올 수 있습니다. Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader 등과 비교해 보세요."
+  },
+  "0653a393fa30cb53": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
+   "text": "<g1>docker/unraid.xml</g1>은 템플릿입니다: 플래시 드라이브의 <x2/>에 복사한 다음 <g3>Docker → Add Container</g3>를 선택하고 <g4>misterdownloadmanager</g4>를 선택합니다. <x5/>를 <x6/>에, <x7/>를 공유에, 포트 8463을 매핑하고, Unraid의 공유가 예상하는 대로 <x8/> (99:100)로 실행됩니다. 이미지는 서버에서 먼저 빌드하거나 사용하는 레지스트리로 푸시해야 합니다."
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -818,6 +818,10 @@
    "source": "When it doesn't work",
    "text": "작동하지 않을 때"
   },
+  "13dbb4044f2f02cc": {
+   "source": "where downloads go (each category's folder inside)",
+   "text": "다운로드가 저장되는 위치(각 카테고리의 폴더 포함)"
+  },
   "13f638ddac98e283": {
    "source": "Download Later",
    "text": "나중에 다운로드"
@@ -958,6 +962,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "MDM을 실행 상태로 둡니다. 메인 창을 닫아도 괜찮습니다. MDM은 트레이에서 계속 실행됩니다. <g1>작업 → 끝내기</g1>를 사용하지 마세요."
   },
+  "17a6b9e12e193121": {
+   "source": "<g1>New:</g1> the server mode is new in this version. Please <g2>tell us how it goes</g2>.",
+   "text": "<g1>새로운 기능:</g1> 서버 모드는 이번 버전에 새로 추가되었습니다. <g2>사용 후기를 알려주세요</g2>."
+  },
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "웹 주소에서 가져온 <x1/> 파일은 디스크에서 열린 파일과 동일한 검사를 거치며, MDM은 최대 10MB까지만 읽습니다."
@@ -1026,9 +1034,17 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Space"
   },
+  "1909586657a6c8d0": {
+   "source": "Flag",
+   "text": "플래그"
+  },
   "19156d7406477513": {
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>서버</g1> — 서버의 위치: 해당 국가의 국기 및 이름, 그리고 왕복 시간. <g2>서버 위치</g2>를 참조하세요. 브라우저가 다운로드 이름과 크기를 MDM에 넘겨주면 MDM이 서버에 요청할 필요가 없으므로 이 필드는 비어 있습니다."
+  },
+  "19686779e1123d73": {
+   "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
+   "text": "서버 이름(<x1/>)으로 페이지를 열려면 MDM에 해당 이름을 지정합니다: <x2/> (여러 개일 경우 쉼표로 구분). 다른 이름은 거부되므로 어떤 웹 페이지도 자체 이름을 통해 MDM에 접근할 수 없습니다."
   },
   "19810b030c072070": {
    "source": "Path",
@@ -1062,9 +1078,17 @@
    "source": "Batch download: many numbered files",
    "text": "일괄 다운로드: 여러 개의 번호가 매겨진 파일"
   },
+  "1a359afa27050848": {
+   "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window).",
+   "text": "(<x1/>, #157)는 eframe 없이 동일한 <x2/>를 실행합니다. 루프는 명령 채널에 의해 깨어나면서 베어 <x5/>에서 <x3/>(모든 프레임에서 <x4/>가 실행하는 것)를 호출하고 <x6/>는 호출하지 않습니다. 명령은 원격 제어가 추가하는 대로 추가됩니다(창 없음)."
+  },
   "1a3aff78add15e0b": {
    "source": "Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.",
    "text": "별도로 명시되지 않는 한, 이 문서의 스크린샷은 밝은 테마를 보여줍니다. MDM은 Windows의 다크 모드를 따릅니다. Windows가 다크 모드로 설정되면 MDM도 다크 모드가 됩니다."
+  },
+  "1a3b9d0d6a07985d": {
+   "source": "the page's address as you open it, shown with the pairing code",
+   "text": "페어링 코드와 함께 표시되는 페이지 주소"
   },
   "1a4513aa7b897fc8": {
    "source": "<g1>Confirm before deleting downloads</g1> — ask before taking downloads off the list. On by default; <g2>Don't show this dialog again</g2> in that question turns it off, and ticking it here turns it back on.",
@@ -1237,6 +1261,10 @@
   "1cf59e936ec9e349": {
    "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
    "text": "<g1>7-Zip</g1> 발견 여부: 7z 및 RAR 압축 파일에 필요합니다."
+  },
+  "1d098969ea9cf781": {
+   "source": ": the user that owns those folders (MDM runs as no particular user).",
+   "text": ": 해당 폴더를 소유하는 사용자(MDM은 특정 사용자로 실행되지 않습니다)."
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -1453,6 +1481,10 @@
   "22eb9ce302891640": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with <x1/> for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See <g2>Command line and automation</g2>.",
    "text": "예. MDM은 IDM의 익숙한 명령줄 스위치를 지원하며, 터미널에서 다운로드할 수 있는 <x1/>를 제공하고, 다운로드를 나열, 일시 중지, 시작 및 제거할 수 있는 로컬 토큰 보호 자동화 API를 갖추고 있습니다. 이 API는 사용자가 켤 때까지 꺼져 있습니다. <g2>명령줄 및 자동화</g2>를 참조하세요."
+  },
+  "230325217f1c4b94": {
+   "source": "shows the address to open and, while no device is paired, a pairing code with a QR code:",
+   "text": "열어야 할 주소와, 장치가 페어링되지 않은 동안에는 QR 코드와 함께 페어링 코드를 보여줍니다:"
   },
   "2307e7989c795a73": {
    "source": "1.9.3<g1>18 Mar 2026</g1>",
@@ -1918,6 +1950,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>국가</g1>는 MDM에 포함된 주소 범위 테이블(<g2>DB-IP의 IP to Country Lite</g2>, CC BY 4.0)에서 가져오며, 사용자 컴퓨터에서 조회됩니다. MDM은 주소의 위치를 묻기 위해 어디로도 보내지 않습니다. 테이블은 각 릴리스마다 업데이트됩니다. 그 이후로 이동한 주소는 이전 국가를 표시할 수 있습니다."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "최종 업데이트: 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>찾아보기</g1> — 탐색기에서 해당 폴더를 엽니다."
@@ -2250,6 +2286,10 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon 또는 Intel 기반 <g1>macOS 11</g1> 이상 (실험적)."
   },
+  "36716abd18118575": {
+   "source": "the remote control's port (8463)",
+   "text": "원격 제어 포트(8463)"
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "목록의 빈 공간을 마우스 오른쪽 버튼으로 클릭하면 <g1>새 다운로드 추가</g1>, <g2>모두 선택</g2>, <g3>파일 정렬</g3>, <g4>모든 필터 지우기</g4>, <g5>완료된 항목 모두 삭제</g5>를 사용할 수 있습니다."
@@ -2482,6 +2522,10 @@
    "source": "Add URL",
    "text": "URL 추가"
   },
+  "3b8c53b20f84def3": {
+   "source": "the list, settings, certificate and paired devices",
+   "text": "목록, 설정, 인증서 및 페어링된 장치"
+  },
   "3b908b26074fe7d4": {
    "source": "<g1>Change folder for \"…\" category on last selected</g1> — when you pick another folder in <g2>Download File Info</g2>, it becomes the category's folder from then on. On by default. (It sets the first state of <g3>Remember this path</g3> in that window.)",
    "text": "<g1>마지막으로 선택한 항목에 따라 \"…\" 범주의 폴더 변경</g1> — <g2>파일 정보 다운로드</g2>에서 다른 폴더를 선택하면, 그 폴더가 해당 범주의 폴더가 됩니다. 기본적으로 켜져 있습니다. (이것은 해당 창에서 <g3>이 경로 기억</g3>의 초기 상태를 설정합니다.)"
@@ -2589,6 +2633,10 @@
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "도구 모음에서 <g1>다시 시작</g1>을 클릭합니다 (또는 마우스 오른쪽 버튼 클릭 → <g2>다운로드 다시 시작</g2>)."
+  },
+  "3dab45c85af12119": {
+   "source": "Or the variable",
+   "text": "또는 변수"
   },
   "3dfd3b258b972ccc": {
    "source": "Files in the queue",
@@ -2934,6 +2982,10 @@
    "source": "A server that allows two connections at a time. Every square is one connection it saw in a typical run.",
    "text": "한 번에 두 개의 연결을 허용하는 서버. 각 사각형은 일반적인 실행에서 서버가 본 하나의 연결입니다."
   },
+  "476a78eca0326f04": {
+   "source": "keeps the list, the settings, the certificate and the paired devices.",
+   "text": "목록, 설정, 인증서 및 페어링된 장치를 유지합니다."
+  },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "대기열을 삭제할 때 먼저 확인합니다. 실행 중인 대기열은 삭제될 때 중지됩니다. 도구 모음의 대기열 시작/중지 화살표는 항상 작동합니다."
@@ -3033,6 +3085,10 @@
   "49e22ffa819f63a8": {
    "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
    "text": "목록에서 토렌트를 마우스 오른쪽 버튼으로 클릭하고 <g1>토렌트</g1>를 엽니다."
+  },
+  "49faa92737cc6b16": {
+   "source": "Without Docker",
+   "text": "Docker 없이"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3798,6 +3854,10 @@
    "source": "Edit this page on GitHub",
    "text": "GitHub에서 이 페이지 편집"
   },
+  "5f31049fa5031c49": {
+   "source": "The remote control is on in this mode (<x1/> turns it off). It stops cleanly, saving its list, when the system stops it (<x2/>, systemd, Ctrl+C). It works on Windows and macOS too, the same way.",
+   "text": "이 모드에서는 원격 제어가 켜져 있습니다(<x1/>는 끕니다). 시스템이 중지하면(<x2/>, systemd, Ctrl+C) 목록을 저장하고 깔끔하게 중지됩니다. Windows 및 macOS에서도 동일하게 작동합니다."
+  },
   "5f3bc376c2f41291": {
    "source": "Tests and benchmarks",
    "text": "테스트 및 벤치마크"
@@ -3921,6 +3981,10 @@
   "613ff676be295efe": {
    "source": "<g1><g2>Yes</g2></g1><g3>GPL-3.0</g3>",
    "text": "<g1><g2>예</g2></g1><g3>GPL-3.0</g3>"
+  },
+  "6143c720cec9874d": {
+   "source": "With Docker",
+   "text": "Docker 사용"
   },
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
@@ -4166,6 +4230,10 @@
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
    "text": "설치 프로그램을 사용하여 MDM을 설치하고 브라우저 통합 설정이 선택되어 있는지 확인하세요. Firefox에서는 addons.mozilla.org에서 부가 기능 페이지를 열고 Firefox에 추가를 클릭하세요."
   },
+  "67d7688dc5224a95": {
+   "source": "Run MDM on a server — Mister Download Manager help",
+   "text": "서버에서 MDM 실행 — Mister Download Manager 도움말"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4401,6 +4469,10 @@
   "6d0f7f45f8191505": {
    "source": "When it last ran.",
    "text": "마지막으로 실행된 시간입니다."
+  },
+  "6d136697adce7701": {
+   "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
+   "text": "MDM이 설치된 모든 Linux 머신에서(<x1/>, <x2/>, AppImage 또는 <x3/>):"
   },
   "6d485e0daa042fc9": {
    "source": "The package box",
@@ -4657,6 +4729,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>위</g1> / <g2>아래</g2>, <g3>왼쪽</g3> / <g4>오른쪽</g4>"
+  },
+  "72ff8f6b37364fc1": {
+   "source": "is where files land: each category has its folder inside (<x1/>, <x2/>, <x3/>…). Mount a network share there to download straight onto it.",
+   "text": "파일이 저장되는 위치입니다: 각 카테고리에는 그 안에 자체 폴더가 있습니다(<x1/>, <x2/>, <x3/>…). 네트워크 공유를 여기에 마운트하여 직접 다운로드할 수 있습니다."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5666,6 +5742,10 @@
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "브라우저는 연결 인증서를 신뢰할 수 없다고 경고합니다. 이는 예상된 동작입니다. MDM은 컴퓨터에서 자체 인증서를 만들었으며, 어떤 공공 기관도 이를 알지 못합니다. 페이지가 MDM의 것인지 확인하려면 경고 세부 정보를 엽니다. 인증서의 <g1>SHA-256 지문</g1>은 <g2>옵션 → 원격</g2>에 표시된 것과 동일합니다. 그런 다음 페이지로 계속 진행합니다(Chrome에서는 <g3>고급 → 계속</g3>, Safari에서는 <g4>세부 정보 표시 → 이 웹사이트 방문</g4>)."
   },
+  "8c3034c70156f726": {
+   "source": "On Unraid",
+   "text": "Unraid에서"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "전체 약관은 <g1>이용 약관</g1>에 명시되어 있습니다."
@@ -5858,6 +5938,10 @@
    "source": "When you added it.",
    "text": "추가된 시간입니다."
   },
+  "91799f6f221cf37b": {
+   "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
+   "text": "컨테이너 내부에서 MDM이 찾는 주소는 컨테이너 자체의 주소입니다. <x2/>와 같이 게시한 포트와 함께 <g1>서버</g1> 주소를 열 주소로 지정하면 로그와 QR 코드가 해당 주소를 보여줍니다. 그런 다음 <g3>휴대폰에서 MDM 제어</g3>에 따라 페어링합니다. 언제든지 다른 코드를 얻으려면:"
+  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "<g1>상태</g1>에서 <g2>오류</g2>만 선택하여 실패한 다운로드를 확인합니다."
@@ -6025,6 +6109,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "다운로드"
+  },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "최종 업데이트: 2026년 11월 7일 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
   },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
@@ -6374,6 +6462,10 @@
    "source": "Download in order",
    "text": "순서대로 다운로드"
   },
+  "9e18dba709154be4": {
+   "source": "Send downloads from your browser",
+   "text": "브라우저에서 다운로드 보내기"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 대 Mister Download Manager 다운로드 벤치마크"
@@ -6694,6 +6786,10 @@
    "source": "A 256 KiB file",
    "text": "256KiB 파일"
   },
+  "a69373ac180f98a4": {
+   "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
+   "text": "첫 빌드는 시간이 오래 걸립니다(작은 서버에서는 최대 1시간: 전체 프로그램이 하나로 최적화됩니다). 이미지는 약 175MB로 작습니다: Debian의 슬림 베이스, MDM의 두 프로그램 및 인증서 다운로드가 확인됩니다. 데스크톱 라이브러리가 필요하지 않습니다: MDM은 창을 열 때만 라이브러리를 로드하며, 서버는 창을 열지 않습니다."
+  },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. 이름 및 로고"
@@ -7013,6 +7109,10 @@
   "ae17b5b75df45e9d": {
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>옵션의 확인 버튼이 그동안 변경된 사항</g1>(도구 모음의 속도 제한, 토렌트 설정 등)을 되돌렸고, 예약 관리자의 닫기 버튼은 대기열에 추가되거나 제거된 다운로드를 되돌렸습니다."
+  },
+  "ae55fbed6cc1702a": {
+   "source": "<g1>docker/compose.yml</g1> does the same with Docker Compose.",
+   "text": "<g1>docker/compose.yml</g1>은 Docker Compose로 동일한 작업을 수행합니다."
   },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
@@ -7442,6 +7542,10 @@
    "source": "Where the server is",
    "text": "서버 위치"
   },
+  "b84114a1d735eb2d": {
+   "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
+   "text": "<g1><g2>서버에서 MDM 실행</g2></g1> — 홈 서버 또는 NAS(Docker, Unraid)에서 창 없이 MDM을 실행하여 해당 폴더로 다운로드하고, 휴대폰이나 브라우저에서 다운로드를 보냅니다."
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "설치 프로그램으로 설치"
@@ -7477,6 +7581,10 @@
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
    "text": "중앙값으로 실시간 재생되었습니다."
+  },
+  "b93c892b6f64e746": {
+   "source": "Then run it, with a folder for its settings and one for the downloads:",
+   "text": "그런 다음 설정 폴더와 다운로드 폴더를 지정하여 실행합니다:"
   },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
@@ -7930,6 +8038,10 @@
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
    "text": "<g1>규칙을 우회하는 사이트별 단축키 없음.</g1> MDM은 모든 사이트를 동일하게 취급합니다. 특정 사이트의 약관, 유료 결제 또는 제한을 우회하기 위한 기능은 없습니다."
   },
+  "c62198270f0107d2": {
+   "source": "What it sets",
+   "text": "설정 내용"
+  },
   "c6320d84eeae5baf": {
    "source": "A few things to know before you start.",
    "text": "시작하기 전에 알아야 할 몇 가지 사항."
@@ -7941,6 +8053,10 @@
   "c696667963fca278": {
    "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
    "text": "브라우저가 직접 열었을 PDF 또는 동영상 파일 링크는 해당 유형이 목록에 있으면 MDM으로도 이동합니다. 브라우저에 남겨두려면 링크를 클릭하는 동안 <g1>Alt</g1> 키를 누르세요 (Firefox는 열고, Chrome과 Edge는 직접 다운로드합니다). 다른 링크는 마우스 오른쪽 버튼을 클릭하고 <g2>Mister Download Manager으로 다운로드</g2>를 선택하면 어떤 유형이든 다운로드할 수 있습니다."
+  },
+  "c6977329ca37f93c": {
+   "source": "Don't publish the port on the internet; reach your home network through a VPN instead.",
+   "text": "인터넷에 포트를 공개하지 마십시오. 대신 VPN을 통해 홈 네트워크에 접속하십시오."
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -8190,6 +8306,10 @@
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "다운로드하는 파일과 소프트웨어 사용 방식에 대한 책임은 전적으로 귀하에게 있습니다."
   },
+  "cd447cf77eb76adc": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your browser: the server downloads them into its own folders, such as a network share.",
+   "text": "창 없이 홈 서버나 NAS(Docker, Unraid, 모든 Linux 머신)에서 Mister Download Manager를 실행하고, 휴대폰이나 브라우저에서 다운로드를 보낼 수 있습니다. 서버는 네트워크 공유와 같은 자체 폴더에 다운로드합니다."
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>32개 이상의 연결 허용</g1> — 위 숫자와 예외에 대해 최대 연결 수를 128개로 늘립니다. 대부분의 서버는 한 주소에서 훨씬 적은 연결을 허용하며, MDM은 이를 감지하여 더 적은 연결을 요청합니다. 다시 끄면, 32보다 높은 숫자는 32로 돌아옵니다."
@@ -8318,6 +8438,10 @@
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "여러 테마, 대기열 및 스케줄러, Android 앱을 갖춘 현대적인 모습"
   },
+  "d0584e074b00b370": {
+   "source": "Build the image from MDM's source (a published image comes later):",
+   "text": "MDM 소스에서 이미지를 빌드합니다(공개 이미지는 나중에 제공됩니다):"
+  },
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "누군가 이미 동일한 문제를 보고했다면 창에 그렇게 표시됩니다(<g1>이미 문제 #…으로 보고됨</g1>). <g2>보고된 문제 열기</g2>는 해당 문제를 열고 보고서를 클립보드에 넣어 댓글로 추가할 수 있도록 합니다."
@@ -8333,10 +8457,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "실행 중인 각 다운로드에는 자체 진행 창이 있습니다. 다운로드가 시작될 때 열리며, 다시 열려면 목록에서 다운로드를 두 번 클릭하세요."
-  },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "최종 업데이트: 2026-11-06"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8714,6 +8834,10 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "사이트가 파일을 새 버전으로 교체한 경우, MDM이 가지고 있는 부분은 더 이상 맞지 않습니다. 다운로드를 마우스 오른쪽 버튼으로 클릭하고 <g1>다시 다운로드</g1>를 선택하여 처음부터 다시 시작하십시오. 완료된 파일은 새 다운로드가 완료될 때만 교체됩니다."
   },
+  "da6edd8a7cee18e1": {
+   "source": "where it listens: every local network address unless given",
+   "text": "수신 대기 위치: 지정되지 않으면 모든 로컬 네트워크 주소"
+  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "이용 약관 — Mister Download Manager"
@@ -8762,9 +8886,17 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "예. MDM은 IDM의 익숙한 명령줄 스위치를 지원하며, 터미널에서 다운로드할 수 있는 misterdownloadmanager-cli를 제공하고, 다운로드를 나열, 일시 중지, 시작 및 제거할 수 있는 로컬 토큰 보호 자동화 API를 갖추고 있습니다. 이 API는 사용자가 켤 때까지 꺼져 있습니다. 명령줄 및 자동화를 참조하세요."
   },
+  "db637c7ba77f6b99": {
+   "source": "In the browser extension's menu, <g1>Send downloads to → Another MDM</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "브라우저 확장 프로그램 메뉴에서 <g1>다운로드 보낼 위치 → 다른 MDM</g1>을 선택합니다. 서버 주소를 입력하고, 해당 브라우저에서 한 번 열어 인증서를 수락한 다음, 페어링 코드(<x2/> 위 참조)를 입력합니다. 확장 프로그램이 감지하는 다운로드와 링크에서 <g3>Mister Download Manager으로 다운로드</g3>를 선택하면 이 컴퓨터 대신 서버로 전송됩니다. 브라우저의 쿠키는 서버로 전송되지 않습니다. 따라서 사이트에 로그인해야 하는 다운로드는 이 컴퓨터에 유지됩니다."
+  },
   "db74b9137912e0a2": {
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "VPN 확장 프로그램이 자체적으로 제공하는 로그인을 요구하는 프록시는 공유할 수 없습니다. 다른 프로그램은 해당 로그인을 가지고 있지 않기 때문입니다. 그러면 다운로드는 프록시 없이 진행되는 대신 중지되고 해당 메시지를 표시합니다. VPN 자체 앱을 사용하거나 <g1>네트워크 어댑터</g1>에서 해당 어댑터를 선택하십시오."
+  },
+  "db95c470f075e401": {
+   "source": "Run MDM on a server",
+   "text": "서버에서 MDM 실행"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -9038,6 +9170,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "각 연결이 시작된 위치와 진행 상황을 보여주는 전체 파일 막대(<g1>연결별 시작 위치 및 다운로드 진행률</g1>)."
   },
+  "e430a7f95d146b8c": {
+   "source": "It is the same MDM as on a desktop: its list, categories, queues, Scheduler, speed limits and torrents. You control it with the <g1>remote control's page</g1> (from any phone or computer on your network), the browser extension pointed at it, or its command line.",
+   "text": "데스크톱 MDM과 동일하게 목록, 카테고리, 대기열, 예약 관리자, 속도 제한 및 토렌트 기능을 제공합니다. <g1>원격 제어 페이지</g1>(네트워크의 모든 휴대폰 또는 컴퓨터에서), 연결된 브라우저 확장 프로그램 또는 명령줄을 통해 제어할 수 있습니다."
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "자동화 API"
@@ -9077,6 +9213,10 @@
   "e4e12c692325e7ee": {
    "source": "An archive is extracted:",
    "text": "압축 파일은 다음 경우에 추출됩니다."
+  },
+  "e4ee9fc91b52818e": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your…",
+   "text": "창 없이 홈 서버 또는 NAS(Docker, Unraid, 모든 Linux 머신)에서 Mister Download Manager를 실행하고 휴대폰 또는…에서 다운로드를 보냅니다."
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
@@ -9226,6 +9366,10 @@
    "source": "Options, Connection page",
    "text": "옵션, 연결 페이지"
   },
+  "e82a01cee0779d2a": {
+   "source": "The command line talks to it as to a desktop MDM, with the same data folder: <x1/> (once <x2/>), <x3/>, and adding an address: <x4/>.",
+   "text": "명령줄은 데스크톱 MDM과 동일한 데이터 폴더로 통신합니다: <x1/> (<x2/> 한 번), <x3/>, 그리고 주소 추가: <x4/>."
+  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "Internet Download Manager의 무료 대안"
@@ -9278,6 +9422,10 @@
    "source": "2. The software's licence",
    "text": "2. 소프트웨어 라이선스"
   },
+  "e93a579d3c1901b9": {
+   "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
+   "text": "비디오 페이지(yt-dlp) 및 이미지 갤러리는 도우미가 필요하며, 이미지에는 포함되어 있지 않습니다."
+  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "수신 중"
@@ -9317,6 +9465,10 @@
   "eacdcb2992653dee": {
    "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
    "text": "Firefox 140 이상이 필요합니다. addons.mozilla.org의 <g1>Mister Download Manager</g1> 페이지에서 부가 기능을 설치하세요. <g2>Firefox에 추가</g2>를 클릭하세요. Firefox가 자동으로 업데이트합니다. Zen과 LibreWolf도 같은 페이지에서 설치합니다. (MDM의 <g3>브라우저에 Mister Download Manager 추가</g3> 창에서 해당 페이지가 열립니다.)"
+  },
+  "eaee905df121bd52": {
+   "source": "Nothing opens a window: a download that would ask a question (a duplicate, files already there) takes the choice set in the settings, or isn't added.",
+   "text": "아무것도 창을 열지 않습니다. 질문을 요구하는 다운로드(중복, 이미 있는 파일)는 설정에서 지정된 선택을 따르거나 추가되지 않습니다."
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9445,6 +9597,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>발생한 상황:</g1> 오류 및 MDM 코드에서 오류가 발생한 위치."
+  },
+  "ee84661ce4cf58b2": {
+   "source": "What a server doesn't do",
+   "text": "서버가 수행하지 않는 작업"
   },
   "ee9034f4bfe810cf": {
    "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
@@ -9797,6 +9953,10 @@
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>다음 시간 동안 공유한 후 공유 중지: …분</g1> — 또는 모든 실행에서 해당 시간 동안 공유된 후 중지됩니다. 기본적으로 꺼져 있습니다."
+  },
+  "f82dc8051d1faab0": {
+   "source": "names besides its addresses the page may be opened by",
+   "text": "페이지를 열 수 있는 주소 외의 이름"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

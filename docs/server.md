@@ -21,6 +21,11 @@ cd misterdownloadmanager
 docker build -t misterdownloadmanager .
 ```
 
+The first build is long (up to an hour on a small server: the whole program is optimised as
+one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the
+certificates downloads are checked against. It needs no desktop libraries: MDM loads those only
+to open a window, which a server never does.
+
 Then run it, with a folder for its settings and one for the downloads:
 
 ```sh

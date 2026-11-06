@@ -174,10 +174,6 @@
    "source": "Contribute",
    "text": "Katkıda Bulun"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "Son güncelleme 06.11.2026 · uygulama, tarayıcı uzantısı ve misterdownloadmanager.com için geçerlidir"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager hakkında cevaplar: ücretsiz mi, güvenli mi, IDM ile karşılaştırması, tarayıcılar, videolar, torrentler, hız, Mac ve Linux ve daha fazlası."
@@ -297,6 +293,10 @@
   "063cb01120e3c2de": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Internet Download Manager (IDM) için ücretsiz bir alternatif mi arıyorsunuz? Mister Download Manager ücretsiz ve açık kaynaklıdır, IDM gibi düzenlenmiştir ve IDM listenizi içe aktarır. Onu Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader ve daha fazlasıyla karşılaştırın."
+  },
+  "0653a393fa30cb53": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
+   "text": "<g1>docker/unraid.xml</g1> bir şablondur: flash sürücüdeki <x2/> konumuna kopyalayın, ardından <g3>Docker → Kapsayıcı Ekle</g3> seçeneğini seçin ve <g4>misterdownloadmanager</g4> öğesini seçin. Bu, <x5/> öğesini <x6/> ile, <x7/> öğesini bir paylaşımla, 8463 numaralı bağlantı noktasını eşler ve Unraid'in paylaşımlarının beklediği gibi <x8/> (99:100) olarak çalışır. Görüntü önce sunucuda oluşturulmalı veya kullandığınız bir kayıt defterine gönderilmelidir (yukarıda)."
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -818,6 +818,10 @@
    "source": "When it doesn't work",
    "text": "Çalışmadığında"
   },
+  "13dbb4044f2f02cc": {
+   "source": "where downloads go (each category's folder inside)",
+   "text": "indirmelerin gittiği yer (her kategorinin içindeki klasör)"
+  },
   "13f638ddac98e283": {
    "source": "Download Later",
    "text": "Daha Sonra İndir"
@@ -958,6 +962,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "MDM'yi çalışır durumda bırakın. Ana pencereyi kapatmak sorun değil: MDM tepside çalışmaya devam eder. <g1>Görevler → Çıkış</g1> seçeneğini kullanmayın."
   },
+  "17a6b9e12e193121": {
+   "source": "<g1>New:</g1> the server mode is new in this version. Please <g2>tell us how it goes</g2>.",
+   "text": "<g1>Yeni:</g1> sunucu modu bu sürümde yenidir. Lütfen <g2>nasıl gittiğini bize bildirin</g2>."
+  },
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "Bir web adresinden alınan <x1/> dosyası, diskten açılan bir dosya ile aynı denetimlerden geçer ve MDM, dosyanın en fazla 10 MB'ını okur."
@@ -1026,9 +1034,17 @@
    "source": "Ctrl+Space",
    "text": "Ctrl+Ara Çubuğu"
   },
+  "1909586657a6c8d0": {
+   "source": "Flag",
+   "text": "Bayrak"
+  },
   "19156d7406477513": {
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>Sunucu</g1> — sunucunun konumu: ülkesinin bayrağı ve adı, ayrıca sunucuya gidiş dönüş süresi. Bkz. <g2>Sunucunun konumu</g2>. Tarayıcı indirmeyi adıyla ve boyutuyla devrettiğinde boş kalır, çünkü MDM'nin sunucuya sormasına gerek kalmamıştır."
+  },
+  "19686779e1123d73": {
+   "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
+   "text": "Sayfayı sunucunun adıyla (<x1/>) açmak için MDM'ye bu adı verin: <x2/> (birkaçı: virgülle ayrılmış). Diğer adlar reddedilir, böylece hiçbir web sayfası kendi adıyla MDM'ye ulaşamaz."
   },
   "19810b030c072070": {
    "source": "Path",
@@ -1062,9 +1078,17 @@
    "source": "Batch download: many numbered files",
    "text": "Toplu indirme: çok sayıda numaralı dosya"
   },
+  "1a359afa27050848": {
+   "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window).",
+   "text": "(<x1/>, #157) eframe olmadan aynı <x2/>'yi çalıştırır: bir döngü, komut kanalı tarafından uyandırılan çıplak bir <x5/> üzerinde <x3/>'ünü (her karede <x4/>'ün çalıştırdığı şey) çağırır ve asla <x6/>'sını çağırmaz; komutlar, uzaktan kumanda onları ekledikçe eklenir (pencere yok)."
+  },
   "1a3aff78add15e0b": {
    "source": "Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.",
    "text": "Bu belgelerdeki ekran görüntüleri, aksi belirtilmedikçe açık temayı gösterir. MDM, Windows'un karanlık modunu takip eder: Windows karanlık olarak ayarlandığında, MDM de karanlık olur."
+  },
+  "1a3b9d0d6a07985d": {
+   "source": "the page's address as you open it, shown with the pairing code",
+   "text": "eşleştirme koduyla gösterilen, açtığınız sayfanın adresi"
   },
   "1a4513aa7b897fc8": {
    "source": "<g1>Confirm before deleting downloads</g1> — ask before taking downloads off the list. On by default; <g2>Don't show this dialog again</g2> in that question turns it off, and ticking it here turns it back on.",
@@ -1237,6 +1261,10 @@
   "1cf59e936ec9e349": {
    "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
    "text": "<g1>7-Zip</g1> bulundu mu: 7z ve RAR arşivleri için gereklidir."
+  },
+  "1d098969ea9cf781": {
+   "source": ": the user that owns those folders (MDM runs as no particular user).",
+   "text": ": bu klasörlerin sahibi olan kullanıcı (MDM belirli bir kullanıcı olarak çalışmaz)."
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -1453,6 +1481,10 @@
   "22eb9ce302891640": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with <x1/> for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See <g2>Command line and automation</g2>.",
    "text": "Evet. MDM, IDM'nin bilinen komut satırı anahtarlarını kabul eder, terminalden indirmeler için <x1/> ile birlikte gelir ve indirmeleri listeleyebilen, duraklatabilen, başlatabilen ve kaldırabilen yerel, belirteç korumalı bir otomasyon API'sine sahiptir. API, siz açana kadar kapalıdır. Bkz. <g2>Komut satırı ve otomasyon</g2>."
+  },
+  "230325217f1c4b94": {
+   "source": "shows the address to open and, while no device is paired, a pairing code with a QR code:",
+   "text": "açılacak adresi ve hiçbir cihaz eşleştirilmemişken, bir QR kodu ile eşleştirme kodunu gösterir:"
   },
   "2307e7989c795a73": {
    "source": "1.9.3<g1>18 Mar 2026</g1>",
@@ -1918,6 +1950,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Ülke</g1>, MDM ile birlikte gelen (DB-IP tarafından <g2>IP to Country Lite</g2>, CC BY 4.0) adres aralıkları tablosundan gelir ve bilgisayarınızda aranır. MDM, adresin nerede olduğunu sormak için hiçbir yere göndermez. Tablo her sürümle güncellenir; o zamandan beri taşınmış bir adres eski ülkesini gösterebilir."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Son güncelleme 7 Kasım 2026"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Gözat</g1> — klasörünü Dosya Gezgini'nde açar."
@@ -2250,6 +2286,10 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "Apple Silicon veya Intel üzerinde <g1>macOS 11</g1> veya üzeri (deneysel)."
   },
+  "36716abd18118575": {
+   "source": "the remote control's port (8463)",
+   "text": "uzaktan kumandanın portu (8463)"
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "Listenin boş alanına sağ tıklayarak <g1>Yeni indirme ekle</g1>, <g2>Tümünü seç</g2>, <g3>Dosyaları düzenle</g3>, <g4>Tüm filtreleri temizle</g4> ve <g5>Tamamlananların Tümünü Sil</g5> seçeneklerini görebilirsiniz."
@@ -2482,6 +2522,10 @@
    "source": "Add URL",
    "text": "URL Ekle"
   },
+  "3b8c53b20f84def3": {
+   "source": "the list, settings, certificate and paired devices",
+   "text": "liste, ayarlar, sertifika ve eşleştirilmiş cihazlar"
+  },
   "3b908b26074fe7d4": {
    "source": "<g1>Change folder for \"…\" category on last selected</g1> — when you pick another folder in <g2>Download File Info</g2>, it becomes the category's folder from then on. On by default. (It sets the first state of <g3>Remember this path</g3> in that window.)",
    "text": "<g1>\"…\" kategorisi için klasörü son seçilene göre değiştir</g1> — <g2>Dosya Bilgilerini İndir</g2> penceresinde başka bir klasör seçtiğinizde, o andan itibaren kategorinin klasörü olur. Varsayılan olarak açıktır. (Bu, o penceredeki <g3>Bu yolu hatırla</g3> seçeneğinin ilk durumunu ayarlar.)"
@@ -2589,6 +2633,10 @@
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "Araç çubuğundaki <g1>Sürdür</g1>'e tıklayın (veya sağ tıklayın → <g2>İndirmeye Devam Et</g2>)."
+  },
+  "3dab45c85af12119": {
+   "source": "Or the variable",
+   "text": "Veya değişken"
   },
   "3dfd3b258b972ccc": {
    "source": "Files in the queue",
@@ -2934,6 +2982,10 @@
    "source": "A server that allows two connections at a time. Every square is one connection it saw in a typical run.",
    "text": "Aynı anda iki bağlantıya izin veren bir sunucu. Her kare, tipik bir çalıştırmada gördüğü bir bağlantıdır."
   },
+  "476a78eca0326f04": {
+   "source": "keeps the list, the settings, the certificate and the paired devices.",
+   "text": "listeyi, ayarları, sertifikayı ve eşleştirilmiş cihazları tutar."
+  },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "Bir kuyruğu silmek önce sorar; çalışan bir kuyruk silindiğinde durur; araç çubuğunun Kuyruğu Başlat / Durdur okları her zaman çalışır."
@@ -3033,6 +3085,10 @@
   "49e22ffa819f63a8": {
    "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
    "text": "Listede bir torrente sağ tıklayın ve <g1>Torrent</g1> seçeneğini açın:"
+  },
+  "49faa92737cc6b16": {
+   "source": "Without Docker",
+   "text": "Docker olmadan"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3798,6 +3854,10 @@
    "source": "Edit this page on GitHub",
    "text": "Bu sayfayı GitHub'da düzenle"
   },
+  "5f31049fa5031c49": {
+   "source": "The remote control is on in this mode (<x1/> turns it off). It stops cleanly, saving its list, when the system stops it (<x2/>, systemd, Ctrl+C). It works on Windows and macOS too, the same way.",
+   "text": "Bu modda uzaktan kumanda açıktır (<x1/> onu kapatır). Sistem durdurduğunda (<x2/>, systemd, Ctrl+C) listesini kaydederek temiz bir şekilde durur. Windows ve macOS'ta da aynı şekilde çalışır."
+  },
   "5f3bc376c2f41291": {
    "source": "Tests and benchmarks",
    "text": "Testler ve karşılaştırmalar"
@@ -3921,6 +3981,10 @@
   "613ff676be295efe": {
    "source": "<g1><g2>Yes</g2></g1><g3>GPL-3.0</g3>",
    "text": "<g1><g2>Evet</g2></g1><g3>GPL-3.0</g3>"
+  },
+  "6143c720cec9874d": {
+   "source": "With Docker",
+   "text": "Docker ile"
   },
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
@@ -4166,6 +4230,10 @@
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
    "text": "MDM'yi kurulum dosyasıyla kurun ve Tarayıcı entegrasyonunu ayarla seçeneğini işaretli bırakın. Firefox'ta, eklentinin addons.mozilla.org sayfasını açın ve Ekle'ye tıklayın."
   },
+  "67d7688dc5224a95": {
+   "source": "Run MDM on a server — Mister Download Manager help",
+   "text": "MDM'yi sunucuda çalıştırma — Mister Download Manager yardım"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows, macOS"
@@ -4401,6 +4469,10 @@
   "6d0f7f45f8191505": {
    "source": "When it last ran.",
    "text": "En son ne zaman çalıştığı."
+  },
+  "6d136697adce7701": {
+   "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
+   "text": "MDM yüklü herhangi bir Linux makinesinde (<x1/>, <x2/>, AppImage veya <x3/>):"
   },
   "6d485e0daa042fc9": {
    "source": "The package box",
@@ -4657,6 +4729,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>Yukarı</g1> / <g2>Aşağı</g2>, <g3>Sol</g3> / <g4>Sağ</g4>"
+  },
+  "72ff8f6b37364fc1": {
+   "source": "is where files land: each category has its folder inside (<x1/>, <x2/>, <x3/>…). Mount a network share there to download straight onto it.",
+   "text": "dosyaların indiği yerdir: her kategorinin içinde kendi klasörü vardır (<x1/>, <x2/>, <x3/>…). Doğrudan üzerine indirmek için oraya bir ağ paylaşımı bağlayın."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5666,6 +5742,10 @@
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "Tarayıcı, bağlantının sertifikasının güvenilir olmadığını uyarır. Bu beklenir: MDM kendi sertifikasını bilgisayarınızda oluşturmuştur ve hiçbir kamu otoritesi bunu bilmez. Sayfanın MDM'nize ait olduğundan emin olmak için uyarının ayrıntılarını açın: sertifikanın <g1>SHA-256 parmak izi</g1>, <g2>Seçenekler → Uzaktan</g2> bölümünde gösterilenle aynıdır. Ardından sayfaya devam edin (Chrome'da <g3>Gelişmiş → Devam et</g3>, Safari'de <g4>Ayrıntıları göster → bu web sitesini ziyaret et</g4>)."
   },
+  "8c3034c70156f726": {
+   "source": "On Unraid",
+   "text": "Unraid'de"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "Tüm koşullar <g1>Kullanım Koşulları</g1> sayfasındadır."
@@ -5858,6 +5938,10 @@
    "source": "When you added it.",
    "text": "Ne zaman eklediğiniz."
   },
+  "91799f6f221cf37b": {
+   "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
+   "text": "Bir kapsayıcının içinde, MDM'nin bulduğu adres kapsayıcının kendi adresidir: ona açtığınız adresi, yayınladığınız port ile <g1>sunucunun</g1> adresini <x2/> olarak verin, böylece günlük ve QR kodu onu gösterir. Ardından <g3>MDM'yi telefonunuzdan kontrol edin</g3> bölümünde belirtildiği gibi eşleştirin. Başka bir kod için, istediğiniz zaman:"
+  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "<g1>Durum</g1>'da, yalnızca başarısız olan indirmeleri görmek için <g2>Hata</g2>'yı işaretleyin."
@@ -6025,6 +6109,10 @@
   "95b8e4a4ea276d5d": {
    "source": "Downloads",
    "text": "İndirilenler"
+  },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Son güncelleme 7 Kasım 2026 · uygulama, tarayıcı eklentisi ve misterdownloadmanager.com için geçerlidir"
   },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
@@ -6374,6 +6462,10 @@
    "source": "Download in order",
    "text": "Sırayla indir"
   },
+  "9e18dba709154be4": {
+   "source": "Send downloads from your browser",
+   "text": "İndirmeleri tarayıcınızdan gönderin"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "IDM 6.42 ile Mister Download Manager indirme karşılaştırması"
@@ -6694,6 +6786,10 @@
    "source": "A 256 KiB file",
    "text": "256 KiB'lik bir dosya"
   },
+  "a69373ac180f98a4": {
+   "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
+   "text": "İlk derleme uzundur (küçük bir sunucuda bir saate kadar: tüm program tek bir bütün olarak optimize edilmiştir). Görüntü küçüktür, yaklaşık 175 MB: Debian'ın ince tabanı, MDM'nin iki programı ve indirilen sertifikalar kontrol edilir. Masaüstü kütüphanelerine ihtiyaç duymaz: MDM bunları yalnızca bir pencere açmak için yükler, ki bir sunucu bunu asla yapmaz."
+  },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. İsimler ve Logolar"
@@ -7013,6 +7109,10 @@
   "ae17b5b75df45e9d": {
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>Seçenekler'deki Tamam</g1> bu arada yapılan değişiklikleri (araç çubuğunun Hız Sınırlayıcı, Torrent ayarları…) geri alıyordu ve Zamanlayıcı'nın Kapat düğmesi bir kuyruğa eklenen veya kuyruktan kaldırılan indirmeleri geri alıyordu."
+  },
+  "ae55fbed6cc1702a": {
+   "source": "<g1>docker/compose.yml</g1> does the same with Docker Compose.",
+   "text": "<g1>docker/compose.yml</g1> Docker Compose ile aynı şeyi yapar."
   },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
@@ -7442,6 +7542,10 @@
    "source": "Where the server is",
    "text": "Sunucunun konumu"
   },
+  "b84114a1d735eb2d": {
+   "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
+   "text": "<g1><g2>MDM'i bir sunucuda çalıştırma</g2></g1> — MDM'i ev sunucunuzda veya NAS'ınızda (Docker, Unraid) penceresiz çalıştırma, dosyaları kendi klasörlerine indirme; telefonunuzdan veya tarayıcınızdan indirmeleri ona gönderme."
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "Kurulum ile yükle"
@@ -7477,6 +7581,10 @@
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
    "text": "Medyanlardan gerçek zamanlı oynatıldı."
+  },
+  "b93c892b6f64e746": {
+   "source": "Then run it, with a folder for its settings and one for the downloads:",
+   "text": "Ardından, ayarları için bir klasör ve indirmeler için bir klasörle çalıştırın:"
   },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
@@ -7930,6 +8038,10 @@
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
    "text": "<g1>Kuralları aşan siteye özel kısayollar yoktur.</g1> MDM, sitelere aynı şekilde davranır. Belirli bir sitenin koşullarını, ödeme duvarını veya sınırlamalarını aşmak için yapılmış özellikleri yoktur."
   },
+  "c62198270f0107d2": {
+   "source": "What it sets",
+   "text": "Ne ayarlar"
+  },
   "c6320d84eeae5baf": {
    "source": "A few things to know before you start.",
    "text": "Başlamadan önce bilmeniz gereken birkaç şey."
@@ -7941,6 +8053,10 @@
   "c696667963fca278": {
    "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
    "text": "Tarayıcının kendisinin açacağı PDF veya video dosyası bağlantıları, türleri listede olduğunda MDM'ye de gider. Birini tarayıcıya bırakmak için, tıklarken <g1>Alt</g1> tuşunu basılı tutun (Firefox açar; Chrome ve Edge kendileri indirir). Diğer tüm bağlantılar: sağ tıklayın ve her türü alan <g2>Mister Download Manager ile İndir</g2> seçeneğini seçin."
+  },
+  "c6977329ca37f93c": {
+   "source": "Don't publish the port on the internet; reach your home network through a VPN instead.",
+   "text": "Bağlantı noktasını internette yayınlamayın; bunun yerine bir VPN aracılığıyla ev ağınıza ulaşın."
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -8190,6 +8306,10 @@
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "İndirdiğiniz dosyalardan ve yazılımı nasıl kullandığınızdan yalnızca siz sorumlusunuz."
   },
+  "cd447cf77eb76adc": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your browser: the server downloads them into its own folders, such as a network share.",
+   "text": "Mister Download Manager'ı bir ev sunucusunda veya NAS'ta (Docker, Unraid, herhangi bir Linux makinesi) penceresiz çalıştırın ve telefonunuzdan veya tarayıcınızdan indirmeler gönderin: sunucu bunları ağ paylaşımı gibi kendi klasörlerine indirir."
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>32'den fazla bağlantıya izin ver</g1> — yukarıdaki sayı ve istisnalar için en fazla bağlantı sayısını 128'e çıkarır. Çoğu sunucu tek bir adresten çok daha azına izin verir; MDM bunu fark eder ve daha azını ister. Tekrar kapatıldığında, daha yüksek bir sayı 32'ye geri döner."
@@ -8318,6 +8438,10 @@
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "Çeşitli temalar, kuyruklar ve zamanlayıcılar ile modern bir görünüm ve bir Android uygulaması"
   },
+  "d0584e074b00b370": {
+   "source": "Build the image from MDM's source (a published image comes later):",
+   "text": "MDM'nin kaynağından görüntüyü oluşturun (yayınlanmış bir görüntü daha sonra gelir):"
+  },
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "Birisi aynı sorunu zaten bildirdiyse, pencere bunu belirtir (<g1>Zaten #… sorunu olarak bildirildi</g1>). <g2>Bildirilen sorunu aç</g2> onu açar ve raporunuzu panoya kopyalar, böylece yorum olarak ekleyebilirsiniz."
@@ -8333,10 +8457,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Her çalışan indirme işleminin kendi ilerleme penceresi vardır. İndirme başladığında açılır; tekrar açmak için listedeki indirme işlemine çift tıklayın."
-  },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "Son güncelleme: 6 Kasım 2026"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8714,6 +8834,10 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "Site dosyayı yeni bir sürümle değiştirdiyse, MDM'nin sahip olduğu parçalar artık uymaz. İndirmeye sağ tıklayın ve baştan başlamak için <g1>Yeniden indir</g1>'i seçin. Tamamlanmış bir dosya, yalnızca yeni indirme tamamlandığında değiştirilir."
   },
+  "da6edd8a7cee18e1": {
+   "source": "where it listens: every local network address unless given",
+   "text": "dinlediği yer: verilmediyse her yerel ağ adresi"
+  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "Kullanım koşulları — Mister Download Manager"
@@ -8762,9 +8886,17 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "Evet. MDM, IDM'nin bilinen komut satırı anahtarlarını kabul eder, terminalden indirmeler için misterdownloadmanager-cli ile birlikte gelir ve indirmeleri listeleyebilen, duraklatabilen, başlatabilen ve kaldırabilen yerel, belirteç korumalı bir otomasyon API'sine sahiptir. API, siz açana kadar kapalıdır. Bkz. Komut satırı ve otomasyon."
   },
+  "db637c7ba77f6b99": {
+   "source": "In the browser extension's menu, <g1>Send downloads to → Another MDM</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "Tarayıcı uzantısının menüsünde, <g1>İndirmeleri şuraya gönder → Başka bir MDM</g1>: sunucunun adresini yazın, sertifikasını kabul etmek için o tarayıcıda bir kez açın, ardından bir eşleştirme kodu girin (<x2/> yukarıda). Uzantının yakaladığı indirmeler ve bir bağlantıdaki <g3>Mister Download Manager ile İndir</g3> seçeneği, bu bilgisayar yerine sunucuya gider. Tarayıcının çerezleri sunucuya gönderilmez: bir sitede oturum açmanızı gerektiren bir indirme bu bilgisayarda kalır."
+  },
   "db74b9137912e0a2": {
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "VPN eklentisinin kendi kendine verdiği bir oturum açma bilgisi isteyen bir proxy paylaşılamaz: başka hiçbir programda bu oturum açma bilgisi yoktur. İndirme o zaman proxy olmadan devam etmek yerine durur ve bunu belirtir. VPN'in kendi uygulamasını kullanın veya <g1>Ağ bağdaştırıcısı</g1> altında bağdaştırıcısını seçin."
+  },
+  "db95c470f075e401": {
+   "source": "Run MDM on a server",
+   "text": "MDM'yi bir sunucuda çalıştırma"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -9038,6 +9170,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "Her bağlantının nerede başladığını ve ne kadar ilerlediğini gösteren tüm dosyanın bir çubuğu (<g1>Bağlantılara göre başlangıç konumları ve indirme ilerlemesi</g1>)."
   },
+  "e430a7f95d146b8c": {
+   "source": "It is the same MDM as on a desktop: its list, categories, queues, Scheduler, speed limits and torrents. You control it with the <g1>remote control's page</g1> (from any phone or computer on your network), the browser extension pointed at it, or its command line.",
+   "text": "Bu, masaüstündeki MDM ile aynıdır: listesi, kategorileri, kuyrukları, Zamanlayıcı, hız limitleri ve torrentleri. Bunu <g1>uzaktan kumanda sayfası</g1> (ağınızdaki herhangi bir telefon veya bilgisayardan), ona yönlendirilmiş tarayıcı uzantısı veya komut satırı ile kontrol edersiniz."
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "Otomasyon API'si"
@@ -9077,6 +9213,10 @@
   "e4e12c692325e7ee": {
    "source": "An archive is extracted:",
    "text": "Bir arşiv şu durumlarda ayıklanır:"
+  },
+  "e4ee9fc91b52818e": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your…",
+   "text": "Mister Download Manager'ı bir ev sunucusunda veya bir NAS'ta (Docker, Unraid, herhangi bir Linux makinesi) penceresiz çalıştırın ve telefonunuzdan veya..."
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
@@ -9226,6 +9366,10 @@
    "source": "Options, Connection page",
    "text": "Seçenekler, Bağlantı sayfası"
   },
+  "e82a01cee0779d2a": {
+   "source": "The command line talks to it as to a desktop MDM, with the same data folder: <x1/> (once <x2/>), <x3/>, and adding an address: <x4/>.",
+   "text": "Komut satırı, aynı veri klasörüyle masaüstü MDM'ye konuştuğu gibi konuşur: <x1/> (bir kez <x2/>), <x3/> ve bir adres ekleyerek: <x4/>."
+  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "Internet Download Manager'a ücretsiz alternatifler"
@@ -9278,6 +9422,10 @@
    "source": "2. The software's licence",
    "text": "2. Yazılımın Lisansı"
   },
+  "e93a579d3c1901b9": {
+   "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
+   "text": "Video sayfaları (yt-dlp) ve resim galerileri, görüntünün içermediği yardımcılarına ihtiyaç duyar."
+  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "Alınıyor"
@@ -9317,6 +9465,10 @@
   "eacdcb2992653dee": {
    "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
    "text": "Firefox 140 veya üzeri gereklidir. Eklentiyi addons.mozilla.org adresindeki <g1>Mister Download Manager</g1> sayfasından yükleyin: <g2>Firefox'a Ekle</g2> düğmesine tıklayın. Firefox güncellemelerini kendisi yapar. Zen ve LibreWolf de aynı sayfadan yükler. (MDM'nin <g3>Mister Download Manager uygulamasını tarayıcınıza ekleyin</g3> penceresi bu sayfayı sizin için açar.)"
+  },
+  "eaee905df121bd52": {
+   "source": "Nothing opens a window: a download that would ask a question (a duplicate, files already there) takes the choice set in the settings, or isn't added.",
+   "text": "Hiçbir şey bir pencere açmaz: bir soru soracak bir indirme (bir kopya, zaten orada olan dosyalar) ayarlarda belirlenen seçeneği alır veya eklenmez."
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9445,6 +9597,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>Ne oldu:</g1> hata ve MDM'nin kodunda nerede meydana geldiği."
+  },
+  "ee84661ce4cf58b2": {
+   "source": "What a server doesn't do",
+   "text": "Bir sunucunun yapmadıkları"
   },
   "ee9034f4bfe810cf": {
    "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
@@ -9797,6 +9953,10 @@
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>Şu kadar süre paylaşıldıktan sonra paylaşımı durdur … dakika</g1> — veya tüm çalışma süreleri boyunca o kadar süre paylaşıldıktan sonra. Varsayılan olarak kapalıdır."
+  },
+  "f82dc8051d1faab0": {
+   "source": "names besides its addresses the page may be opened by",
+   "text": "sayfanın açılabileceği adresleri dışındaki adlar"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",

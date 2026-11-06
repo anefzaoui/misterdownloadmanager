@@ -174,10 +174,6 @@
    "source": "Contribute",
    "text": "ساهم"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "آخر تحديث 2026-11-06 · ينطبق على التطبيق وإضافة المتصفح وموقع misterdownloadmanager.com"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "إجابات حول Mister Download Manager: هل هو مجاني، هل هو آمن، كيف يقارن بـ IDM، المتصفحات، مقاطع الفيديو، التورنت، السرعة، Mac و Linux، والمزيد."
@@ -297,6 +293,10 @@
   "063cb01120e3c2de": {
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "هل تبحث عن بديل مجاني لبرنامج Internet Download Manager (IDM)؟ برنامج Mister Download Manager مجاني ومفتوح المصدر، مصمم مثل IDM، ويستورد قائمة IDM الخاصة بك. قارنه مع Free Download Manager وAB Download Manager وMotrix وNeat وJDownloader والمزيد."
+  },
+  "0653a393fa30cb53": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
+   "text": "<g1>docker/unraid.xml</g1> هو قالب: انسخه إلى <x2/> على محرك الأقراص المحمول، ثم <g3>Docker → Add Container</g3> واختر <g4>misterdownloadmanager</g4>. يقوم بتعيين <x5/> إلى <x6/>، <x7/> إلى مشاركة، المنفذ 8463، ويعمل كـ <x8/> (99:100)، كما تتوقع مشاركات Unraid. يجب بناء الصورة أولا (أعلاه)، على الخادم أو دفعها إلى سجل تستخدمه."
   },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
@@ -818,6 +818,10 @@
    "source": "When it doesn't work",
    "text": "عندما لا يعمل"
   },
+  "13dbb4044f2f02cc": {
+   "source": "where downloads go (each category's folder inside)",
+   "text": "حيث تذهب التنزيلات (مجلد كل فئة بالداخل)"
+  },
   "13f638ddac98e283": {
    "source": "Download Later",
    "text": "تنزيل لاحقا"
@@ -958,6 +962,10 @@
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
    "text": "اترك MDM يعمل. إغلاق النافذة الرئيسية لا بأس به: يستمر MDM في العمل في علبة النظام. لا تستخدم <g1>المهام ← إنهاء</g1>."
   },
+  "17a6b9e12e193121": {
+   "source": "<g1>New:</g1> the server mode is new in this version. Please <g2>tell us how it goes</g2>.",
+   "text": "<g1>جديد:</g1> وضع الخادم جديد في هذا الإصدار. يرجى <g2>إخبارنا كيف يسير الأمر</g2>."
+  },
   "17c258da3c18b1a9": {
    "source": "A <x1/> file fetched from a web address goes through the same checks as one opened from disk, and MDM reads at most 10 MB of it.",
    "text": "يخضع ملف <x1/> الذي يتم جلبه من عنوان ويب لنفس الفحوصات التي يخضع لها الملف الذي يتم فتحه من القرص، ويقرأ MDM 10 ميجابايت كحد أقصى منه."
@@ -1026,9 +1034,17 @@
    "source": "Ctrl+Space",
    "text": "تبديل التحديد"
   },
+  "1909586657a6c8d0": {
+   "source": "Flag",
+   "text": "العلامة"
+  },
   "19156d7406477513": {
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>الخادم</g1> — مكان الخادم: علم بلده واسمه، ومدة الرحلة ذهابا وإيابا إليه. انظر <g2>أين يوجد الخادم</g2>. يبقى هذا الحقل فارغا عندما يسلم المتصفح التنزيل باسمه وحجمه، حيث لم يحتج MDM إلى سؤال الخادم."
+  },
+  "19686779e1123d73": {
+   "source": "To open the page by the server's name (<x1/>), give MDM that name: <x2/> (several: separated by commas). Other names are refused, so that no web page can reach MDM through a name of its own.",
+   "text": "لفتح الصفحة باسم الخادم (<x1/>)، أعط MDM هذا الاسم: <x2/> (عدة أسماء: مفصولة بفواصل). يتم رفض الأسماء الأخرى، بحيث لا تتمكن أي صفحة ويب من الوصول إلى MDM من خلال اسم خاص بها."
   },
   "19810b030c072070": {
    "source": "Path",
@@ -1062,9 +1078,17 @@
    "source": "Batch download: many numbered files",
    "text": "تنزيل دفعي: العديد من الملفات المرقمة"
   },
+  "1a359afa27050848": {
+   "source": "(<x1/>, #157) runs the same <x2/> without eframe: a loop calls its <x3/> (what <x4/> runs at every frame) on a bare <x5/>, woken by the command channel, and never its <x6/>; commands are added as the remote control adds them (no window).",
+   "text": "(<x1/>، #157) يشغل نفس <x2/> بدون eframe: حلقة تستدعي <x3/> الخاص به (ما يشغله <x4/> في كل إطار) على <x5/> مجرد، يتم إيقاظه بواسطة قناة الأوامر، ولا تستدعي أبدا <x6/> الخاص به؛ تضاف الأوامر عندما يضيفها جهاز التحكم عن بعد (لا توجد نافذة)."
+  },
   "1a3aff78add15e0b": {
    "source": "Screenshots in these docs show the light theme unless noted. MDM follows Windows' dark mode: when Windows is set to dark, MDM is dark too.",
    "text": "تظهر لقطات الشاشة في هذه المستندات المظهر الفاتح ما لم يذكر خلاف ذلك. يتبع MDM الوضع الداكن لنظام Windows: عندما يتم تعيين Windows على الوضع الداكن، يكون MDM داكنا أيضا."
+  },
+  "1a3b9d0d6a07985d": {
+   "source": "the page's address as you open it, shown with the pairing code",
+   "text": "عنوان الصفحة كما تفتحه، معروض مع رمز الإقران"
   },
   "1a4513aa7b897fc8": {
    "source": "<g1>Confirm before deleting downloads</g1> — ask before taking downloads off the list. On by default; <g2>Don't show this dialog again</g2> in that question turns it off, and ticking it here turns it back on.",
@@ -1237,6 +1261,10 @@
   "1cf59e936ec9e349": {
    "source": "Whether <g1>7-Zip</g1> was found: 7z and RAR archives need it.",
    "text": "هل تم العثور على <g1>7-Zip</g1>: تحتاج إليه أرشيفات 7z و RAR."
+  },
+  "1d098969ea9cf781": {
+   "source": ": the user that owns those folders (MDM runs as no particular user).",
+   "text": ": المستخدم الذي يملك هذه المجلدات (MDM يعمل بدون مستخدم معين)."
   },
   "1d26bf9aebfa246c": {
    "source": "The main window in Arabic, laid out right to left.",
@@ -1453,6 +1481,10 @@
   "22eb9ce302891640": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with <x1/> for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See <g2>Command line and automation</g2>.",
    "text": "نعم. يقبل MDM مفاتيح سطر الأوامر المألوفة لبرنامج IDM، ويأتي مع <x1/> لتنزيل الملفات من الطرفية، ولديه واجهة برمجة تطبيقات (API) محلية مؤمنة برمز مميز للتحكم الآلي، يمكنها عرض التنزيلات وإيقافها مؤقتا وبدئها وإزالتها. تكون واجهة برمجة التطبيقات هذه غير نشطة حتى تقوم بتشغيلها. انظر <g2>سطر الأوامر والأتمتة</g2>."
+  },
+  "230325217f1c4b94": {
+   "source": "shows the address to open and, while no device is paired, a pairing code with a QR code:",
+   "text": "يعرض العنوان لفتحه، وطالما لم يتم إقران أي جهاز، رمز إقران مع رمز QR:"
   },
   "2307e7989c795a73": {
    "source": "1.9.3<g1>18 Mar 2026</g1>",
@@ -1918,6 +1950,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "تأتي <g1>البلد</g1> من جدول نطاقات العناوين الذي يأتي مع MDM (<g2>IP to Country Lite by DB-IP</g2>، CC BY 4.0)، ويتم البحث عنه على جهاز الكمبيوتر الخاص بك. لا يرسل MDM العنوان إلى أي مكان للسؤال عن مكانه. يتم تحديث الجدول مع كل إصدار؛ قد يظهر العنوان الذي تغير مكانه منذ ذلك الحين بلده القديم."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "آخر تحديث 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>استعراض</g1> — فتح مجلدها في مستكشف الملفات."
@@ -2250,6 +2286,10 @@
    "source": "<g1>macOS 11</g1> or later on Apple Silicon or Intel (experimental).",
    "text": "<g1>macOS 11</g1> أو أحدث على Apple Silicon أو Intel (تجريبي)."
   },
+  "36716abd18118575": {
+   "source": "the remote control's port (8463)",
+   "text": "منفذ التحكم عن بعد (8463)"
+  },
   "3688ea6bb5b2fe83": {
    "source": "Right-click the list's blank space for <g1>Add new download</g1>, <g2>Select all</g2>, <g3>Arrange files</g3>, <g4>Clear all filters</g4> and <g5>Delete All Completed</g5>.",
    "text": "انقر بزر الفأرة الأيمن على المساحة الفارغة في القائمة من أجل <g1>إضافة تنزيل جديد</g1>، <g2>تحديد الكل</g2>، <g3>ترتيب الملفات</g3>، <g4>مسح كل العوامل المصفاة</g4> و<g5>حذف كل المكتملة</g5>."
@@ -2482,6 +2522,10 @@
    "source": "Add URL",
    "text": "إضافة URL"
   },
+  "3b8c53b20f84def3": {
+   "source": "the list, settings, certificate and paired devices",
+   "text": "القائمة، الإعدادات، الشهادة، والأجهزة المقترنة"
+  },
   "3b908b26074fe7d4": {
    "source": "<g1>Change folder for \"…\" category on last selected</g1> — when you pick another folder in <g2>Download File Info</g2>, it becomes the category's folder from then on. On by default. (It sets the first state of <g3>Remember this path</g3> in that window.)",
    "text": "<g1>تغيير مجلد فئة \"…\" بناء على آخر تحديد</g1> — عندما تختار مجلدا آخر في <g2>معلومات ملف التنزيل</g2>، يصبح مجلد الفئة من ذلك الحين فصاعدا. تشغيل افتراضيا. (يحدد الحالة الأولى لـ <g3>تذكر هذا المسار</g3> في تلك النافذة)."
@@ -2589,6 +2633,10 @@
   "3da4888c751f6f68": {
    "source": "Click <g1>Resume</g1> on the toolbar (or right-click → <g2>Resume Download</g2>).",
    "text": "انقر على <g1>استئناف</g1> في شريط الأدوات (أو انقر بزر الفأرة الأيمن ← <g2>استئناف التنزيل</g2>)."
+  },
+  "3dab45c85af12119": {
+   "source": "Or the variable",
+   "text": "أو المتغير"
   },
   "3dfd3b258b972ccc": {
    "source": "Files in the queue",
@@ -2934,6 +2982,10 @@
    "source": "A server that allows two connections at a time. Every square is one connection it saw in a typical run.",
    "text": "خادم يسمح باتصالين في نفس الوقت. كل مربع يمثل اتصالا واحدا رصده في تشغيل عادي."
   },
+  "476a78eca0326f04": {
+   "source": "keeps the list, the settings, the certificate and the paired devices.",
+   "text": "يحافظ على القائمة، الإعدادات، الشهادة، والأجهزة المقترنة."
+  },
   "478b98971f744119": {
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "حذف قائمة انتظار يسأل أولا؛ تتوقف قائمة انتظار قيد التشغيل عند حذفها؛ تعمل أسهم بدء/إيقاف قائمة الانتظار في شريط الأدوات دائما."
@@ -3033,6 +3085,10 @@
   "49e22ffa819f63a8": {
    "source": "Right-click a torrent in the list and open <g1>Torrent</g1>:",
    "text": "انقر بزر الماوس الأيمن على تورنت في القائمة وافتح <g1>تورنت</g1>:"
+  },
+  "49faa92737cc6b16": {
+   "source": "Without Docker",
+   "text": "بدون Docker"
   },
   "4a07096e6a9abc54": {
    "source": "The download list in detail →",
@@ -3798,6 +3854,10 @@
    "source": "Edit this page on GitHub",
    "text": "تحرير هذه الصفحة على GitHub"
   },
+  "5f31049fa5031c49": {
+   "source": "The remote control is on in this mode (<x1/> turns it off). It stops cleanly, saving its list, when the system stops it (<x2/>, systemd, Ctrl+C). It works on Windows and macOS too, the same way.",
+   "text": "التحكم عن بعد قيد التشغيل في هذا الوضع (<x1/> يوقفه). يتوقف بشكل نظيف، ويحفظ قائمته، عندما يوقفه النظام (<x2/>، systemd، Ctrl+C). يعمل على Windows و macOS أيضا، بنفس الطريقة."
+  },
   "5f3bc376c2f41291": {
    "source": "Tests and benchmarks",
    "text": "الاختبارات والمعايير"
@@ -3921,6 +3981,10 @@
   "613ff676be295efe": {
    "source": "<g1><g2>Yes</g2></g1><g3>GPL-3.0</g3>",
    "text": "<g1><g2>نعم</g2></g1><g3>GPL-3.0</g3>"
+  },
+  "6143c720cec9874d": {
+   "source": "With Docker",
+   "text": "مع Docker"
   },
   "615e187e2caacd27": {
    "source": "<g1>Otherwise:</g1> MDM shows the list of languages, each with its flag and its own name. Pick yours.",
@@ -4166,6 +4230,10 @@
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
    "text": "ثبت MDM باستخدام برنامج الإعداد، وتأكد من تفعيل خيار إعداد دمج المتصفح. في Firefox، افتح صفحة الإضافة على addons.mozilla.org ثم انقر على إضافة إلى…"
   },
+  "67d7688dc5224a95": {
+   "source": "Run MDM on a server — Mister Download Manager help",
+   "text": "تشغيل MDM على خادم — مساعدة Mister Download Manager"
+  },
   "67eb3f5fd7113d8c": {
    "source": "Windows, macOS",
    "text": "Windows، macOS"
@@ -4401,6 +4469,10 @@
   "6d0f7f45f8191505": {
    "source": "When it last ran.",
    "text": "متى تم تشغيله آخر مرة."
+  },
+  "6d136697adce7701": {
+   "source": "On any Linux machine with MDM installed (the <x1/>, <x2/>, AppImage or <x3/>):",
+   "text": "على أي جهاز Linux مثبت عليه MDM (ملف <x1/>، <x2/>، AppImage أو <x3/>):"
   },
   "6d485e0daa042fc9": {
    "source": "The package box",
@@ -4657,6 +4729,10 @@
   "72f3284ff6dd83fc": {
    "source": "<g1>Up</g1> / <g2>Down</g2>, <g3>Left</g3> / <g4>Right</g4>",
    "text": "<g1>أعلى</g1> / <g2>أسفل</g2>، <g3>يسار</g3> / <g4>يمين</g4>"
+  },
+  "72ff8f6b37364fc1": {
+   "source": "is where files land: each category has its folder inside (<x1/>, <x2/>, <x3/>…). Mount a network share there to download straight onto it.",
+   "text": "هو المكان الذي تهبط فيه الملفات: كل فئة لها مجلدها الخاص بالداخل (<x1/>، <x2/>، <x3/>...). قم بتركيب مشاركة شبكة هناك للتنزيل مباشرة عليها."
   },
   "730e5c154fbc775c": {
    "source": "Select it and click <g1>Resume</g1>.",
@@ -5666,6 +5742,10 @@
    "source": "The browser warns that the connection's certificate isn't trusted. That is expected: MDM made its own certificate, on your computer, and no public authority knows it. To be sure the page is your MDM's, open the warning's details: the certificate's <g1>SHA-256 fingerprint</g1> is the one <g2>Options → Remote</g2> shows. Then continue to the page (<g3>Advanced → Proceed</g3> in Chrome, <g4>Show details → visit this website</g4> in Safari).",
    "text": "يحذر المتصفح من أن شهادة الاتصال غير موثوق بها. هذا أمر متوقع: MDM أنشأ شهادته الخاصة، على جهاز الكمبيوتر الخاص بك، ولا تعرفها أي سلطة عامة. للتأكد من أن الصفحة هي صفحة MDM الخاص بك، افتح تفاصيل التحذير: <g1>بصمة SHA-256</g1> للشهادة هي تلك التي تظهرها <g2>الخيارات → التحكم عن بعد</g2>. ثم تابع إلى الصفحة (<g3>متقدم → متابعة</g3> في Chrome، <g4>إظهار التفاصيل → زيارة هذا الموقع</g4> في Safari)."
   },
+  "8c3034c70156f726": {
+   "source": "On Unraid",
+   "text": "على Unraid"
+  },
   "8c45e85312faa4e6": {
    "source": "The full terms are in the <g1>Terms of use</g1>.",
    "text": "الشروط الكاملة موجودة في <g1>شروط الاستخدام</g1>."
@@ -5858,6 +5938,10 @@
    "source": "When you added it.",
    "text": "متى أضفته."
   },
+  "91799f6f221cf37b": {
+   "source": "Inside a container, the address MDM finds is the container's own: give it the one you open, the <g1>server's</g1> address with the port you published, as <x2/>, and the log and the QR code show that one. Then pair as <g3>Control MDM from your phone</g3> says. For another code, at any time:",
+   "text": "داخل حاوية، العنوان الذي يجده MDM هو عنوان الحاوية الخاص بها: أعطه العنوان الذي تفتحه، عنوان <g1>الخادم</g1> مع المنفذ الذي نشرته، مثل <x2/>، وسيعرض السجل ورمز QR ذلك العنوان. ثم قم بالإقران كما تقول <g3>التحكم في MDM من هاتفك</g3>. للحصول على رمز آخر، في أي وقت:"
+  },
   "9189b83bf9497166": {
    "source": "On <g1>Status</g1>, tick only <g2>Error</g2> to see the downloads that failed.",
    "text": "في <g1>الحالة</g1>، حدد <g2>خطأ</g2> فقط لرؤية التنزيلات التي فشلت."
@@ -6026,6 +6110,10 @@
    "source": "Downloads",
    "text": "التنزيلات"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "آخر تحديث 2026-11-07 · ينطبق على التطبيق، إضافة المتصفح، وموقع misterdownloadmanager.com"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>الوصف أو جزء من الوصف</g1> — ملاحظاتك."
@@ -6033,6 +6121,10 @@
   "95eaeb2d8a26031c": {
    "source": "Filter the list",
    "text": "تصفية القائمة"
+  },
+  "95f874ce586a0506": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>اكتشاف المشاكل.</g1> عندما يتعطل MDM (استثناء في Windows، إشارة في Linux، استثناء Mach في macOS)، أو يتوقف بشكل مفاجئ، أو يتجمد، فإنه يطلب من المراقب تفريغا للذاكرة. التجمد هو إطار للنافذة يعمل لأكثر من 8 ثوان، يراه مؤشر مراقبة يتجاهل الوقت المستغرق في وضع السكون. يقيس كلا جزأي الإطار: ما يتعامل معه MDM (الأوامر الواردة، ساعة التنزيلات، قوائم الانتظار، والجدولة)، والذي يعمل مصغرا أيضا، والرسم؛ ولا يقيس أبدا الانتظار بين الإطارات. يقيس مؤشر المراقبة أيضا مقدار وقت المعالج الذي حصل عليه مؤشر النافذة في هذه الأثناء، ويذكر التقرير ما يعنيه ذلك: لقد عمل طوال الوقت (حلقة)، أو انتظر في قفل أو على الإدخال/الإخراج (توقف تام)، أو لم يعمل تقريبا في التعليمات البرمجية العادية، مما يعني أن الكمبيوتر مشغول جدا لتشغيل MDM أو بطيء في تحميله من القرص، ومن المرجح أن هذا ليس خطأ في MDM (تتشارك هذه الأخطاء توقيعا واحدا، <x2/>). لا يقيس macOS ذلك بعد. ثم يكتب المراقب <g3>تفريغا مصغرا</g3> لكل مؤشر ترابط من الخارج، عبر <x4/> و <x5/>. لا يكتب أي عملية متعطلة تفريغ الذاكرة الخاص بها، وهذا هو ما تفعله Firefox و Crashpad و Sentry أيضا."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6370,6 +6462,10 @@
    "source": "Download in order",
    "text": "تنزيل بالترتيب"
   },
+  "9e18dba709154be4": {
+   "source": "Send downloads from your browser",
+   "text": "إرسال التنزيلات من متصفحك"
+  },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
    "text": "مقارنة سرعة التنزيل: IDM 6.42 ضد Mister Download Manager"
@@ -6690,6 +6786,10 @@
    "source": "A 256 KiB file",
    "text": "ملف بحجم 256 كيلوبايت"
   },
+  "a69373ac180f98a4": {
+   "source": "The first build is long (up to an hour on a small server: the whole program is optimised as one). The image is small, about 175 MB: Debian's slim base, MDM's two programs and the certificates downloads are checked against. It needs no desktop libraries: MDM loads those only to open a window, which a server never does.",
+   "text": "الإنشاء الأول يستغرق وقتا طويلا (يصل إلى ساعة على خادم صغير: يتم تحسين البرنامج بأكمله كوحدة واحدة). الصورة صغيرة، حوالي 175 ميجابايت: قاعدة Debian النحيفة، برنامجي MDM، ويتم التحقق من تنزيلات الشهادات. لا تحتاج إلى مكتبات سطح المكتب: MDM يحملها فقط لفتح نافذة، وهو ما لا يفعله الخادم أبدا."
+  },
   "a69a751090bb15c5": {
    "source": "7. Names and logos",
    "text": "7. الأسماء والشعارات"
@@ -7009,6 +7109,10 @@
   "ae17b5b75df45e9d": {
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>زر موافق في الخيارات ألغى التغييرات التي تمت في هذه الأثناء</g1> (محدد السرعة في شريط الأدوات، إعدادات التورنت...)، وزر إغلاق في المجدول ألغى التنزيلات المضافة أو المحذوفة من قائمة الانتظار."
+  },
+  "ae55fbed6cc1702a": {
+   "source": "<g1>docker/compose.yml</g1> does the same with Docker Compose.",
+   "text": "<g1>docker/compose.yml</g1> يفعل الشيء نفسه مع Docker Compose."
   },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
@@ -7438,6 +7542,10 @@
    "source": "Where the server is",
    "text": "أين يوجد الخادم"
   },
+  "b84114a1d735eb2d": {
+   "source": "<g1><g2>Run MDM on a server</g2></g1> — MDM without a window on a home server or NAS (Docker, Unraid), downloading into its folders; send it downloads from your phone or browser.",
+   "text": "<g1><g2>تشغيل MDM على خادم</g2></g1> — MDM بدون نافذة على خادم منزلي أو NAS (Docker، Unraid)، يقوم بالتنزيل إلى مجلداته؛ أرسل إليه التنزيلات من هاتفك أو متصفحك."
+  },
   "b84ada2c25ba9d3b": {
    "source": "Install with the setup",
    "text": "التثبيت باستخدام الإعداد"
@@ -7473,6 +7581,10 @@
   "b928b0881ab89094": {
    "source": "Played in real time from the medians.",
    "text": "يتم التشغيل في الوقت الفعلي من القيم الوسيطة."
+  },
+  "b93c892b6f64e746": {
+   "source": "Then run it, with a folder for its settings and one for the downloads:",
+   "text": "ثم قم بتشغيله، مع مجلد لإعداداته وآخر للتنزيلات:"
   },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
@@ -7926,6 +8038,10 @@
    "source": "<g1>No site-specific shortcuts around rules.</g1> MDM treats sites the same way. It has no features made for getting around a particular site's terms, paywall or limits.",
    "text": "<g1>لا توجد اختصارات خاصة بالمواقع للتحايل على القواعد.</g1> يتعامل MDM مع المواقع بنفس الطريقة. لا يحتوي على ميزات مصممة للتحايل على شروط موقع معين أو جدار الدفع أو حدوده."
   },
+  "c62198270f0107d2": {
+   "source": "What it sets",
+   "text": "ما يحدده"
+  },
   "c6320d84eeae5baf": {
    "source": "A few things to know before you start.",
    "text": "بعض الأشياء التي يجب معرفتها قبل البدء."
@@ -7937,6 +8053,10 @@
   "c696667963fca278": {
    "source": "Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold <g1>Alt</g1> while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose <g2>Download with Mister Download Manager</g2>, which takes any type.",
    "text": "الروابط إلى ملف PDF أو ملف فيديو، والتي يفتحها المتصفح بنفسه، تنتقل إلى MDM أيضا عندما يكون نوعها مدرجا. لترك أحدها للمتصفح، اضغط باستمرار على <g1>Alt</g1> أثناء النقر عليه (يفتحه Firefox؛ ويقوم Chrome و Edge بتنزيلهما بأنفسهما). أي رابط آخر: انقر بزر الماوس الأيمن عليه واختر <g2>تنزيل باستخدام Mister Download Manager</g2>، والذي يأخذ أي نوع."
+  },
+  "c6977329ca37f93c": {
+   "source": "Don't publish the port on the internet; reach your home network through a VPN instead.",
+   "text": "لا تنشر المنفذ على الإنترنت؛ بدلا من ذلك، يمكنك الوصول إلى شبكتك المنزلية عبر VPN."
   },
   "c69d7be3af774f70": {
    "source": "In <g1>Add URL</g1>'s address and <g2>Download File Info</g2>'s <g3>Save As</g3>, <g4>Up</g4> / <g5>Down</g5> go through the addresses and folders used before.",
@@ -8186,6 +8306,10 @@
    "source": "You alone are responsible for the files you download and for how you use the software.",
    "text": "أنت وحدك المسؤول عن الملفات التي تقوم بتنزيلها وعن كيفية استخدامك للبرنامج."
   },
+  "cd447cf77eb76adc": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your browser: the server downloads them into its own folders, such as a network share.",
+   "text": "شغل Mister Download Manager على خادم منزلي أو جهاز NAS (Docker، Unraid، أي جهاز Linux) بدون نافذة، وأرسل إليه التنزيلات من هاتفك أو متصفحك: يقوم الخادم بتنزيلها إلى مجلداته الخاصة، مثل مشاركة شبكة."
+  },
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>السماح بأكثر من 32 اتصالا</g1> — يرفع الحد الأقصى إلى 128، للرقم أعلاه وللاستثناءات. تسمح معظم الخوادم بعدد أقل بكثير من عنوان واحد؛ يلاحظ MDM ذلك ويطلب عددا أقل. عند إيقاف تشغيله مرة أخرى، يعود أي رقم أعلى إلى 32."
@@ -8314,6 +8438,10 @@
    "source": "A modern look with several themes, queues and schedulers, and an Android app",
    "text": "مظهر عصري مع عدة سمات، وقوائم انتظار ومجدولات، وتطبيق أندرويد"
   },
+  "d0584e074b00b370": {
+   "source": "Build the image from MDM's source (a published image comes later):",
+   "text": "أنشئ الصورة من مصدر MDM (صورة منشورة ستأتي لاحقا):"
+  },
   "d068a48275a5c381": {
    "source": "If someone already reported the same problem, the window says so (<g1>Already reported as issue #…</g1>). <g2>Open the reported issue</g2> opens it and puts your report on the clipboard, so you can add it as a comment.",
    "text": "إذا كان شخص ما قد أبلغ بالفعل عن نفس المشكلة، فإن النافذة تخبرك بذلك (<g1>تم الإبلاغ عنه بالفعل كمشكلة #…</g1>). <g2>فتح المشكلة المبلغ عنها</g2> يفتحها ويضع تقريرك في الحافظة، حتى تتمكن من إضافته كتعليق."
@@ -8329,10 +8457,6 @@
   "d113af4acfe67d5d": {
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "لكل تنزيل قيد التشغيل نافذة تقدم خاصة به. تفتح عند بدء التنزيل؛ لإعادة فتحها، انقر نقرا مزدوجا فوق التنزيل في القائمة."
-  },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "آخر تحديث 2026-11-06"
   },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
@@ -8710,6 +8834,10 @@
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "إذا استبدل الموقع الملف بإصدار جديد، فإن الأجزاء التي يمتلكها MDM لم تعد مناسبة. انقر بزر الفأرة الأيمن على التنزيل واختر <g1>إعادة التنزيل</g1> للبدء من جديد. لا يتم استبدال الملف المكتمل إلا عند اكتمال التنزيل الجديد."
   },
+  "da6edd8a7cee18e1": {
+   "source": "where it listens: every local network address unless given",
+   "text": "حيث يستمع: كل عنوان شبكة محلية ما لم يعط"
+  },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
    "text": "شروط الاستخدام — Mister Download Manager"
@@ -8758,9 +8886,17 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected automation API that can list, pause, start and remove downloads. The API is off until you turn it on. See Command line and automation.",
    "text": "نعم. يقبل MDM مفاتيح سطر الأوامر المألوفة لبرنامج IDM، ويأتي مع misterdownloadmanager-cli لتنزيل الملفات من الطرفية، ولديه واجهة برمجة تطبيقات (API) محلية مؤمنة برمز مميز للتحكم الآلي، يمكنها عرض التنزيلات وإيقافها مؤقتا وبدئها وإزالتها. تكون واجهة برمجة التطبيقات هذه غير نشطة حتى تقوم بتشغيلها. انظر سطر الأوامر والأتمتة."
   },
+  "db637c7ba77f6b99": {
+   "source": "In the browser extension's menu, <g1>Send downloads to → Another MDM</g1>: type the server's address, open it once in that browser to accept its certificate, then enter a pairing code (<x2/> above). Downloads the extension catches, and <g3>Download with Mister Download Manager</g3> on a link, then go to the server instead of this computer. The browser's cookies are not sent to the server: a download that needs you to be signed in to a site stays with this computer.",
+   "text": "في قائمة إضافة المتصفح، <g1>إرسال التنزيلات إلى → MDM آخر</g1>: اكتب عنوان الخادم، افتحه مرة واحدة في ذلك المتصفح لقبول شهادته، ثم أدخل رمز الاقتران (<x2/> أعلاه). التنزيلات التي تلتقطها الإضافة، و<g3>تنزيل باستخدام Mister Download Manager</g3> على رابط، ثم تنتقل إلى الخادم بدلا من هذا الكمبيوتر. لا يتم إرسال ملفات تعريف الارتباط الخاصة بالمتصفح إلى الخادم: التنزيل الذي يتطلب منك تسجيل الدخول إلى موقع يبقى على هذا الكمبيوتر."
+  },
   "db74b9137912e0a2": {
    "source": "A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under <g1>Network adapter</g1>.",
    "text": "لا يمكن مشاركة الوكيل الذي يطلب تسجيل دخول يمنحه امتداد VPN لنفسه: لا يوجد برنامج آخر لديه هذا التسجيل. يتوقف التنزيل حينها ويذكر ذلك، بدلا من المضي قدما بدون الوكيل. استخدم تطبيق VPN الخاص بك، أو اختر محوله ضمن <g1>محول الشبكة</g1>."
+  },
+  "db95c470f075e401": {
+   "source": "Run MDM on a server",
+   "text": "تشغيل MDM على خادم"
   },
   "dbdba7e84dfb92b6": {
    "source": "A portable copy's server finds the portable copy's MDM by itself, from its own folder.",
@@ -9034,6 +9170,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "شريط للملف بأكمله، يوضح أين بدأ كل اتصال ومدى تقدمه (<g1>مواضع البدء وتقدم التنزيل حسب الاتصالات</g1>)."
   },
+  "e430a7f95d146b8c": {
+   "source": "It is the same MDM as on a desktop: its list, categories, queues, Scheduler, speed limits and torrents. You control it with the <g1>remote control's page</g1> (from any phone or computer on your network), the browser extension pointed at it, or its command line.",
+   "text": "إنه نفس MDM الموجود على سطح المكتب: قائمته، فئاته، قوائمه، الجدولة، حدود السرعة، والتورنت. يمكنك التحكم فيه من خلال <g1>صفحة التحكم عن بعد</g1> (من أي هاتف أو كمبيوتر على شبكتك)، أو إضافة المتصفح الموجهة إليه، أو سطر الأوامر الخاص به."
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "واجهة برمجة تطبيقات الأتمتة"
@@ -9073,6 +9213,10 @@
   "e4e12c692325e7ee": {
    "source": "An archive is extracted:",
    "text": "يتم استخراج الأرشيف:"
+  },
+  "e4ee9fc91b52818e": {
+   "source": "Run Mister Download Manager on a home server or a NAS (Docker, Unraid, any Linux machine) without a window, and send it downloads from your phone or your…",
+   "text": "قم بتشغيل Mister Download Manager على خادم منزلي أو NAS (Docker، Unraid، أي جهاز Linux) بدون نافذة، وأرسل إليه التنزيلات من هاتفك أو..."
   },
   "e4f68bd6699d80b6": {
    "source": "Mister Download Manager speaks 86 languages, every one Windows 11 offers, right to left included. See them all and help improve your own.",
@@ -9222,6 +9366,10 @@
    "source": "Options, Connection page",
    "text": "الخيارات، صفحة الاتصال"
   },
+  "e82a01cee0779d2a": {
+   "source": "The command line talks to it as to a desktop MDM, with the same data folder: <x1/> (once <x2/>), <x3/>, and adding an address: <x4/>.",
+   "text": "يتحدث سطر الأوامر إليه كما يتحدث إلى MDM لسطح المكتب، بنفس مجلد البيانات: <x1/> (مرة واحدة <x2/>)، <x3/>، وإضافة عنوان: <x4/>."
+  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "بدائل مجانية لبرنامج Internet Download Manager"
@@ -9274,6 +9422,10 @@
    "source": "2. The software's licence",
    "text": "2. ترخيص البرنامج"
   },
+  "e93a579d3c1901b9": {
+   "source": "Video pages (yt-dlp) and image galleries need their helpers, which the image doesn't include.",
+   "text": "تحتاج صفحات الفيديو (yt-dlp) ومعارض الصور إلى أدواتها المساعدة، والتي لا تتضمنها الصورة."
+  },
   "e98377c8fd21d3c7": {
    "source": "Receiving",
    "text": "جار الاستلام"
@@ -9313,6 +9465,10 @@
   "eacdcb2992653dee": {
    "source": "Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, <g1>Mister Download Manager</g1>: click <g2>Add to Firefox</g2>. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's <g3>Add Mister Download Manager to your browser</g3> window opens that page for you.)",
    "text": "يتطلب Firefox الإصدار 140 أو أحدث. ثبت الإضافة من صفحتها على addons.mozilla.org، <g1>Mister Download Manager</g1>: انقر على <g2>إضافة إلى Firefox</g2>. يتولى Firefox تحديثها. يقوم Zen وLibreWolf بتثبيتها من نفس الصفحة. (تفتح نافذة <g3>أضف Mister Download Manager إلى مستعرضك</g3> في MDM تلك الصفحة لك.)"
+  },
+  "eaee905df121bd52": {
+   "source": "Nothing opens a window: a download that would ask a question (a duplicate, files already there) takes the choice set in the settings, or isn't added.",
+   "text": "لا يفتح أي شيء نافذة: التنزيل الذي قد يطرح سؤالا (تكرار، ملفات موجودة بالفعل) يأخذ الخيار المحدد في الإعدادات، أو لا يتم إضافته."
   },
   "eaf52a338a127d67": {
    "source": "<g1>Help → Report a problem</g1> opens GitHub's bug report form in your browser with MDM's version, your system and its version, how MDM was installed and your language filled in. Nothing is sent until you choose to submit it on GitHub, where it becomes public; read it before you post.",
@@ -9441,6 +9597,10 @@
   "ee842e23c6f5db1a": {
    "source": "<g1>What happened:</g1> the error and the place in MDM's code where it happened.",
    "text": "<g1>ما حدث:</g1> الخطأ والمكان في كود MDM حيث حدث."
+  },
+  "ee84661ce4cf58b2": {
+   "source": "What a server doesn't do",
+   "text": "ما لا يفعله الخادم"
   },
   "ee9034f4bfe810cf": {
    "source": "<g1>Recheck files</g1> — reads every piece of the torrent's files and checks it, for example after you moved files in or a disk had errors. A running torrent goes on afterwards and fetches what is missing. A stopped one stays stopped. Its event log says how much was found: a finished torrent with a damaged piece becomes stopped, and resuming it fetches the piece again.",
@@ -9793,6 +9953,10 @@
   "f8092cd791a22a18": {
    "source": "<g1>Stop sharing after sharing for … minutes</g1> — or once it has been shared that long, over all its runs. Off by default.",
    "text": "<g1>إيقاف المشاركة بعد المشاركة لمدة … دقيقة</g1> — أو بمجرد مشاركته لهذه المدة، عبر جميع تشغيلاته. متوقف افتراضيا."
+  },
+  "f82dc8051d1faab0": {
+   "source": "names besides its addresses the page may be opened by",
+   "text": "أسماء بخلاف عناوينه التي يمكن فتح الصفحة بها"
   },
   "f8343b2a353d45b1": {
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
