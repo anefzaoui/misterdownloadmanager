@@ -3,7 +3,9 @@
 //! - crashes natively (win32.rs / unix.rs catch it through crash-handler),
 //! - panics (the hook here sends the message, then asks for the dump),
 //! - or freezes: a watchdog thread sees a frame of the window run past [`FREEZE_AFTER`] and asks
-//!   for a dump of every thread while MDM is still stuck (a deadlock, an endless loop).
+//!   for a dump of every thread while MDM is still stuck (a deadlock, an endless loop). A frame
+//!   is two timed stretches: the app's logic (commands and the clock, which egui runs alone while
+//!   the main window is minimized) and its UI. The waits between frames aren't timed.
 //!
 //! The monitor then shows the report window (crashui.rs). Without a monitor (it couldn't start)
 //! MDM runs on, and a panic still leaves a text report.
@@ -11,7 +13,7 @@
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 use std::path::Path;
-use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU8, AtomicU64, Ordering};
 use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
 
@@ -25,8 +27,12 @@ static REPORTER: OnceLock<Arc<Reporter>> = OnceLock::new();
 /// The session as sent, to send again when it learns more (what draws).
 static SESSION: std::sync::Mutex<Option<Session>> = std::sync::Mutex::new(None);
 static EPOCH: OnceLock<Instant> = OnceLock::new();
-/// When the current frame started (ms since EPOCH, + 1); 0 between frames.
+/// When the current stretch of a frame started (ms since EPOCH, + 1); 0 between them.
 static FRAME_START: AtomicU64 = AtomicU64::new(0);
+/// Which stretch that is ([`LOGIC`] or [`UI`]), for the log.
+static PART: AtomicU8 = AtomicU8::new(UI);
+const LOGIC: u8 = 0;
+const UI: u8 = 1;
 /// A freeze was reported and the window hasn't answered since.
 static FROZEN: AtomicBool = AtomicBool::new(false);
 /// A panic was reported: later ones (a burst on worker threads) are logged, not dumped again.
@@ -125,13 +131,14 @@ fn hook_panics() {
     }));
 }
 
-/// The window starts a frame (top of `App::ui`).
-pub fn frame_begin() {
+/// The window thread starts a timed stretch.
+fn stretch_begin(part: u8) {
+    PART.store(part, Ordering::Relaxed);
     FRAME_START.store(now_ms() + 1, Ordering::Release);
 }
 
-/// The window finished a frame: no freeze; windows opened or closed since the last are logged.
-pub fn frame_end() {
+/// The stretch ended: no freeze (or no more of one).
+fn stretch_end() {
     FRAME_START.store(0, Ordering::Release);
     if FROZEN.swap(false, Ordering::AcqRel) {
         tracing::warn!("the window answers again");
@@ -139,6 +146,27 @@ pub fn frame_end() {
             r.recovered();
         }
     }
+}
+
+/// The window starts a frame's logic (top of `App::logic`): commands that came in and the clock.
+/// egui runs it every frame, and alone while the main window is minimized (#202).
+pub fn logic_begin() {
+    stretch_begin(LOGIC);
+}
+
+/// The frame's logic is done (end of `App::logic`); its UI, when egui runs one, follows at once.
+pub fn logic_end() {
+    stretch_end();
+}
+
+/// The window starts drawing a frame (top of `App::ui`).
+pub fn frame_begin() {
+    stretch_begin(UI);
+}
+
+/// The window finished a frame: no freeze; windows opened or closed since the last are logged.
+pub fn frame_end() {
+    stretch_end();
     WINDOWS.with(|w| {
         let mut w = w.borrow_mut();
         let (now, last) = &mut *w;
@@ -185,8 +213,9 @@ pub fn clean_exit() {
     }
 }
 
-/// Watch the window's frames: one running past FREEZE_AFTER is reported once. Time the computer
-/// spent asleep (this loop's own tick much longer than asked) isn't counted.
+/// Watch the window's frames: a stretch of one (its logic or its UI) running past FREEZE_AFTER
+/// is reported once. Time the computer spent asleep (this loop's own tick much longer than
+/// asked) isn't counted, nor the waits between frames (no stretch runs then).
 fn watchdog() {
     let tick = Duration::from_millis(500);
     let mut last = now_ms();
@@ -219,8 +248,13 @@ fn watchdog() {
         reported_frame = start;
         FROZEN.store(true, Ordering::Release);
         tracing::error!(
-            "the window stopped responding ({} s into a frame)",
-            ran / 1000
+            "the window stopped responding ({} s into a frame, in its {})",
+            ran / 1000,
+            if PART.load(Ordering::Relaxed) == LOGIC {
+                "logic"
+            } else {
+                "UI"
+            }
         );
         let busy = seen.and_then(|(_, at, before)| {
             let (before, after) = (before?, usage(ui)?);
