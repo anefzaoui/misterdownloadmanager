@@ -38,6 +38,7 @@ In the guest (~/lab, from `setup`):
                                ordinary download handed to MDM
   chrome-menu.mjs              an HLS stream from Google Chrome's right-click menu (a real right-click
                                in a Chrome window, which headless Chrome can't show)
+  desktop.sh                   KDE Plasma, Cinnamon or XFCE beside GNOME in a clone, auto-login to it
   handoff-minimized.sh, queue-minimized.sh   hand-overs and the Scheduler while MDM is minimized
   torrent-menu.sh              a torrent in the list with no network, for the torrent windows
   use-system-helpers.sh        MDM uses the system's yt-dlp, ffmpeg and gallery-dl

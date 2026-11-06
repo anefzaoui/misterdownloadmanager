@@ -10,7 +10,7 @@ V="${VBOXMANAGE:-/c/Program Files/Oracle/VirtualBox/VBoxManage.exe}"
 user=${MDM_VM_USER:-mdm}
 pass=${MDM_VM_PASSWORD:?set MDM_VM_PASSWORD to the lab account password}
 vm=$1; out=$2; shift 2
-env="MDM_STATE=${MDM_STATE:-} MDM_SET='${MDM_SET:-}' MDM_SETTLE=${MDM_SETTLE:-} MDM_NATIVE_ACCENT=${MDM_NATIVE_ACCENT:-} MDM_NATIVE_CONTRAST=${MDM_NATIVE_CONTRAST:-}"
+env="MDM_STATE=${MDM_STATE:-} MDM_SET='${MDM_SET:-}' MDM_SETTLE=${MDM_SETTLE:-} MDM_ON=${MDM_ON:-} MDM_NATIVE_ACCENT=${MDM_NATIVE_ACCENT:-} MDM_NATIVE_CONTRAST=${MDM_NATIVE_CONTRAST:-}"
 geo=$(MSYS_NO_PATHCONV=1 "$V" guestcontrol "$vm" run --exe /bin/bash --username "$user" --password "$pass" --timeout 150000 --wait-stdout -- \
   -c "$env bash /home/$user/lab/win.sh $*" 2>/dev/null | tail -1)
 [ "$out" = - ] && { echo "$geo"; exit 0; }

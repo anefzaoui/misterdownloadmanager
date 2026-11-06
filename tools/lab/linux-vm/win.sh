@@ -12,6 +12,7 @@
 #   win.sh close                         every MDM window but the main one, closed as a person would
 #   win.sh theme <id>                    View → Theme → <id>, live (/show theme:<id>)
 #   win.sh click|hover|press|release <x> <y>   real input at a point of the main window's frame
+#                                        (MDM_ON=last: of the window last opened)
 #   win.sh key <key>...                  keys to the focused window (xdotool names)
 #   win.sh stop                          MDM ended
 #
@@ -83,6 +84,7 @@ PY
     done
     sleep 2
     timeout 5 wmctrl -i -a "$win"; sleep 1
+    sed -i '/^LAST=/d' "$state"; echo "LAST=$win" >> "$state"
     frame "$win"
     ;;
   close)
@@ -104,7 +106,9 @@ PY
     # held down or let go, or nothing. Prints the main window's frame. (`/show menu:…` opens the
     # wrong popup on X11, so menus are opened as a person would.)
     . "$state"
-    read -r fx fy fw fh < <(frame "$MAIN")
+    # MDM_ON=last: the point is in the window `open` showed last instead.
+    target=$MAIN; [ "${MDM_ON:-}" = last ] && target=${LAST:-$MAIN}
+    read -r fx fy fw fh < <(frame "$target")
     x=$1; y=$2; [ "$x" -lt 0 ] && x=$((fw + x))
     xdotool mousemove $((fx + x)) $((fy + y)); sleep 0.4
     case "$cmd" in
