@@ -616,6 +616,70 @@ async fn hls_and_dash() {
     assert_eq!(r.status(), 404);
 }
 
+/// #171: the same streams with no .m3u8 or .mpd in any address, as text/plain and octet-stream,
+/// and the pages that play them (a decoy text answer first).
+#[tokio::test]
+async fn hls_and_dash_without_their_endings_or_types() {
+    let s = server("").await;
+    let (h, master) = text(&s, "/hls2/playlist?id=x%201").await;
+    assert_eq!(h["content-type"], "text/plain; charset=utf-8");
+    assert!(master.starts_with("#EXTM3U\n") && master.contains("RESOLUTION=1280x720"));
+    assert!(master.contains("URI=\"playlist?id=x%201&track=audio\""));
+    let variants: Vec<&str> = master.lines().filter(|l| !l.starts_with('#')).collect();
+    assert_eq!(
+        variants,
+        [
+            "playlist?id=x%201&track=720p",
+            "playlist?id=x%201&track=360p"
+        ]
+    );
+    assert!(!master.contains(".m3u8"));
+    for (track, len) in [("720p", 48128), ("audio", 6016)] {
+        let (h, media) = text(&s, &format!("/hls2/playlist?id=x%201&track={track}")).await;
+        assert_eq!(h["content-type"], "text/plain; charset=utf-8");
+        assert!(media.contains("#EXT-X-ENDLIST"));
+        let segs: Vec<&str> = media.lines().filter(|l| !l.starts_with('#')).collect();
+        assert_eq!(segs.len(), 3);
+        assert_eq!(segs[0], format!("seg?id=x%201&track={track}&i=0"));
+        let r = reqwest::get(s.url(&format!("/hls2/{}", segs[2])))
+            .await
+            .unwrap();
+        assert_eq!(r.headers()["content-type"], "application/octet-stream");
+        let b = r.bytes().await.unwrap();
+        assert_eq!(b.len(), len);
+        assert!(b.iter().step_by(188).all(|x| *x == 0x47));
+    }
+    for missing in [
+        "/hls2/playlist?id=a&track=1080p",
+        "/hls2/seg?track=720p&i=3",
+        "/hls2/seg?track=720p",
+    ] {
+        let r = reqwest::get(s.url(missing)).await.unwrap();
+        assert_eq!(r.status(), 404, "{missing}");
+    }
+    let (h, mpd) = text(&s, "/dash2/manifest?id=lab").await;
+    assert_eq!(h["content-type"], "application/octet-stream");
+    assert!(mpd.contains("<MPD ") && mpd.contains("<Representation id=\"360p\""));
+    let r = reqwest::get(s.url("/dash2/720p/init.mp4")).await.unwrap();
+    assert_eq!(&r.bytes().await.unwrap()[4..8], b"ftyp");
+    let (h, config) = text(&s, "/hls2/config?id=lab").await;
+    assert_eq!(h["content-type"], "text/plain; charset=utf-8");
+    assert!(config.starts_with('{') && !config.contains("#EXTM3U"));
+
+    let (_, page) = text(&s, "/page?hls2=1&dash2=1").await;
+    assert!(page.contains(
+        "data-manifest=\"/hls2/playlist?id=lab\" data-player=player data-kind=hls \
+         data-decoy=\"/hls2/config?id=lab\">"
+    ));
+    assert!(
+        page.contains(
+            "data-manifest=\"/dash2/manifest?id=lab\" data-player=player2 data-kind=dash"
+        )
+    );
+    let (_, js) = text(&s, "/assets/stream.js").await;
+    assert!(js.contains("dataset.kind") && js.contains("dataset.decoy"));
+}
+
 #[tokio::test]
 async fn help_lists_the_routes() {
     let s = server("").await;
@@ -645,6 +709,10 @@ async fn help_lists_the_routes() {
         "/dash/manifest.mpd",
         "/dash/protected.mpd",
         "drm=1",
+        "hls2=1",
+        "/hls2/playlist?id=",
+        "/dash2/manifest?id=",
+        "/hls2/config?id=",
         "req_body_sha256",
         "referer",
     ] {

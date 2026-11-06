@@ -139,7 +139,17 @@ async function fakeFetch(url, opts) {
   fetched.push([String(url), opts && opts.credentials]);
   const r = served[url];
   if (!r) throw new TypeError("Failed to fetch");
-  return { ok: (r.status || 200) < 300, status: r.status || 200, headers: { get: () => null }, text: async () => r.body };
+  // Its body as a stream too, 1 KB a chunk: `r.read` counts what was pulled (#171 reads 4 KB).
+  const bytes = new TextEncoder().encode(r.body);
+  r.read = 0;
+  const body = new ReadableStream({
+    pull(c) {
+      if (r.read >= bytes.length) return c.close();
+      c.enqueue(bytes.slice(r.read, r.read + 1024));
+      r.read += 1024;
+    },
+  });
+  return { ok: (r.status || 200) < 300, status: r.status || 200, headers: { get: () => null }, body, text: async () => r.body };
 }
 
 function load(api, firefox) {
@@ -738,6 +748,124 @@ const MPD = (protect) => `<?xml version="1.0"?>
   );
   assert.equal(JSON.parse(JSON.stringify(state)).media.length, 1);
   ok("media list: kept across the script's restarts; the popup in a tab");
+}
+
+// #171: a manifest whose address and type don't say so (text/plain, octet-stream, no .m3u8 or
+// .mpd) is noted, never read on sight, and read (its first 4 KB) only when a stream is asked
+// for: the popup's list for a frame whose player plays from a blob:, the button, the menu.
+{
+  const PL = "https://cdn.test/p/playlist?id=7";
+  const PL_720 = "https://cdn.test/p/playlist?id=7&v=720";
+  const DASH = "https://cdn.test/q/manifest?id=7";
+  const CONFIG = "https://cdn.test/p/config?id=7";
+  const FEED = "https://cdn.test/p/feed";
+  const LONG = "https://cdn.test/p/log";
+  served = {
+    [PL]: { body: "#EXTM3U\n#EXT-X-STREAM-INF:BANDWIDTH=1280000,RESOLUTION=1280x720\nplaylist?id=7&v=720\n" },
+    [PL_720]: { body: "#EXTM3U\n#EXT-X-TARGETDURATION:4\n#EXTINF:4.0,\nseg?i=0\n#EXT-X-ENDLIST\n" },
+    // With a byte order mark and a comment before the MPD.
+    [DASH]: { body: `﻿<?xml version="1.0"?>\n<!-- made by a packager -->\n${MPD(false).replace(/^<\?xml[^>]*\?>\n/, "")}` },
+    [CONFIG]: { body: '{"autoplay":true}' },
+    [FEED]: { body: '<?xml version="1.0"?><rss><channel><title>MPD news</title></channel></rss>' },
+    // Text going on and on: only its start is read.
+    [LONG]: { body: "x".repeat(200_000) },
+  };
+  const blob = { 0: { href: "https://watch.test/v/3", players: [{ src: "blob:https://watch.test/a", w: 0, h: 0, duration: 0, drm: false }] } };
+  const tabs = { 9: { id: 9, url: "https://watch.test/v/3", title: "Clip", incognito: false } };
+  const { api, calls, listeners } = fakeApi({ firefox: false, frames: blob, tabs });
+  load(api, false);
+  listeners.tabUpdated(9, { url: "https://watch.test/v/3" });
+  await settle();
+  fetched.length = 0;
+  for (const d of [
+    res(PL, "xmlhttprequest", H("text/plain; charset=utf-8")),
+    res(PL_720, "xmlhttprequest", H("text/plain")),
+    res("https://cdn.test/p/seg?i=0", "xmlhttprequest", H("video/mp2t")),
+    res(DASH, "xmlhttprequest", H("application/octet-stream")),
+    res(CONFIG, "xmlhttprequest", H("text/plain")),
+    res(FEED, "other", H("application/xml")),
+    res(LONG, "xmlhttprequest", []),
+    // Not possible manifests: too large, a piece, a media element's own file, a page, JSON.
+    res("https://cdn.test/p/huge", "xmlhttprequest", H("text/plain", { "Content-Length": String(3 << 20) })),
+    res("https://cdn.test/p/part", "xmlhttprequest", H("application/octet-stream", { "Content-Range": "bytes 0-9/99" }), { statusCode: 206 }),
+    res("https://cdn.test/p/el", "media", H("text/plain")),
+    res("https://cdn.test/p/page", "xmlhttprequest", H("text/html")),
+    res("https://cdn.test/p/api", "xmlhttprequest", H("application/json")),
+  ]) {
+    listeners.responseStarted(d);
+  }
+  await settle();
+  assert.equal(fetched.length, 0, "nothing read on sight");
+  const { media } = await popupAsk(listeners, { type: "media", tab: 9 });
+  assert.deepEqual(
+    media.map((m) => [m.kind, m.url]),
+    [
+      ["hls", PL],
+      ["dash", DASH],
+    ],
+    "the manifests become streams (the variant inside its master); the rest stays unlisted",
+  );
+  assert.deepEqual(media[0].heights, [720]);
+  assert.deepEqual([media[1].heights, media[1].duration], [[1080, 480], 90]);
+  const sniffed = new Set(fetched.map(([u]) => u));
+  for (const u of [PL, PL_720, DASH, CONFIG, FEED, LONG]) assert.ok(sniffed.has(u), `read: ${u}`);
+  for (const u of ["https://cdn.test/p/huge", "https://cdn.test/p/part", "https://cdn.test/p/el", "https://cdn.test/p/page", "https://cdn.test/p/api"]) {
+    assert.ok(!sniffed.has(u), `never read: ${u}`);
+  }
+  // 4 KB, and the stream's own read-ahead of a chunk or two.
+  assert.ok(served[LONG].read <= 6 * 1024, `only the start read (${served[LONG].read} of 200000 bytes)`);
+  assert.ok(fetched.every(([, c]) => c === "include"), "read with the site's cookies");
+  const reads = fetched.length;
+  await popupAsk(listeners, { type: "media", tab: 9 });
+  assert.equal(fetched.length, reads, "each read once");
+  ok("#171: manifests without .m3u8/.mpd or their type: noted, read only when asked, listed");
+}
+{
+  // The popup reads nothing for a frame whose players have files of their own (no MediaSource).
+  served = { "https://cdn.test/p/playlist?id=8": { body: "#EXTM3U\n#EXT-X-ENDLIST\n" } };
+  const files = { 0: { href: "https://watch.test/v/4", players: [{ src: "https://files.test/movie.mp4", w: 0, h: 0, duration: 0, drm: false }] } };
+  const { api, listeners } = fakeApi({ firefox: false, frames: files, tabs: { 9: { id: 9, url: "https://watch.test/v/4" } } });
+  load(api, false);
+  listeners.tabUpdated(9, { url: "https://watch.test/v/4" });
+  await settle();
+  fetched.length = 0;
+  listeners.responseStarted(res("https://cdn.test/p/playlist?id=8", "xmlhttprequest", H("text/plain")));
+  await settle();
+  assert.deepEqual((await popupAsk(listeners, { type: "media", tab: 9 })).media, []);
+  assert.equal(fetched.length, 0, "no player fed by a MediaSource: nothing read");
+  ok("#171: nothing read where no player plays from a blob:");
+}
+{
+  // The button over a player playing from a blob: and the right-click menu: no stream known, the
+  // frame's possible manifests are read and the one that is goes; a frame of its own first.
+  const PL = "https://emb.test/e/playlist?id=9";
+  served = {
+    [PL]: { body: "#EXTM3U\n#EXT-X-STREAM-INF:RESOLUTION=640x360\nplaylist?id=9&v=360\n" },
+    "https://emb.test/e/settings": { body: "volume=1" },
+    "https://blog.test/ads/list": { body: "#EXTM3U\n#EXTINF:5,\nad.ts\n" },
+  };
+  const { api, calls, listeners } = fakeApi({ firefox: false });
+  load(api, false);
+  // The page's own frame loaded another playlist (an ad's); the player's frame (2) its stream.
+  listeners.responseStarted({ tabId: 7, frameId: 0, url: "https://blog.test/ads/list", type: "xmlhttprequest", statusCode: 200, responseHeaders: H("text/plain") });
+  listeners.responseStarted({ tabId: 7, frameId: 2, url: "https://emb.test/e/settings", type: "xmlhttprequest", statusCode: 200, responseHeaders: H("text/plain") });
+  listeners.responseStarted({ tabId: 7, frameId: 2, url: PL, type: "xmlhttprequest", statusCode: 200, responseHeaders: H("application/octet-stream") });
+  await settle();
+  fetched.length = 0;
+  await listeners.menu(
+    { menuItemId: "mdm-link", srcUrl: "blob:https://emb.test/1", frameId: 2, frameUrl: "https://emb.test/player", pageUrl: "https://blog.test/post" },
+    { id: 7, incognito: false },
+  );
+  await settle();
+  const m = natives(calls).find((x) => x.video);
+  assert.deepEqual([m.url, m.src], ["https://emb.test/player", PL], "the menu: the frame's sniffed stream");
+  assert.ok(!fetched.some(([u]) => u === "https://blog.test/ads/list"), "the frame's own found: the page's frame isn't read");
+  assert.ok(calls.some((c) => c[0] === "cookies" && c[1].url === PL), "the stream's cookies");
+  // The button in the page's frame (0): none of its own known yet; its frame's read, it goes.
+  const sender = { id: "ours", url: "https://blog.test/post", frameId: 0, tab: { id: 7, url: "https://blog.test/post" } };
+  await new Promise((r) => listeners.message({ type: "video", src: "" }, sender, r));
+  assert.equal(natives(calls).filter((x) => x.video).pop().src, "https://blog.test/ads/list", "the button: its own frame's");
+  ok("#171: the button and the menu read the frame's possible manifests when no stream is known");
 }
 
 // The button's logo is the extension's own icon, kept in video.js as data.
