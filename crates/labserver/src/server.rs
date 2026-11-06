@@ -13,7 +13,8 @@
 //! - `GET /hop?to=URL&how=meta|header[&wait=S][&cookie=N=V]` — a page that sends the browser on to
 //!   `URL` itself (`<meta http-equiv="refresh">` or a `Refresh` header), as download sites' waiting pages do
 //! - `GET /page`, `/formpage`, `/cookie`, `/assets/*` — web pages for the browser tests (`pages`)
-//! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`)
+//! - `GET /hls/*`, `/dash/*` — adaptive streams (`streams`); `/hls2/*`, `/dash2/*` the same with
+//!   no `.m3u8`/`.mpd` in their addresses, served as text/plain or octet-stream (#171)
 //! - Google Drive's addresses on its own host names (`drive`): links, the virus-scan and quota
 //!   pages, Docs exports, the sign-in page
 //! - `GET /_log` — the request log as JSON; `DELETE /_log` clears it
@@ -315,6 +316,11 @@ impl LabServer {
             .route("/dash/manifest.mpd", get(streams::dash_manifest))
             .route("/dash/protected.mpd", get(streams::dash_protected))
             .route("/dash/{rep}/{file}", get(streams::dash_file))
+            .route("/hls2/playlist", get(streams::hls2_playlist))
+            .route("/hls2/seg", get(streams::hls2_segment))
+            .route("/hls2/config", get(streams::hls2_config))
+            .route("/dash2/manifest", get(streams::dash2_manifest))
+            .route("/dash2/{rep}/{file}", get(streams::dash_file))
             .route_layer(axum::middleware::from_fn_with_state(
                 shared.clone(),
                 log_simple,
@@ -482,6 +488,9 @@ GET /page?<any of>
                    #player3), which fetches /hls/master.m3u8, /dash/manifest.mpd or
                    /dash/protected.mpd, the first variant's and the audio's playlists and every
                    segment, then sets <body data-stream=done> once all are (or error)
+    hls2=1, dash2=1  the same for /hls2/playlist?id=lab and /dash2/manifest?id=lab (no .m3u8 or
+                   .mpd, text/plain and octet-stream, #171); each player first fetches
+                   /hls2/config?id=lab, a text/plain answer that is no manifest
     csp=strict     Content-Security-Policy: default-src 'none'; style-src 'self'; img-src 'self';
                    media-src 'self'; script-src 'self' (+ frame-src 'self' with iframe,
                    + connect-src 'self' and media-src blob: with hls or dash)
@@ -501,6 +510,12 @@ GET /dash/manifest.mpd  (application/dash+xml) the same tracks as Representation
     SegmentTemplate: /dash/{720p,360p,audio}/init.mp4 and seg1..3.m4s (video/mp4, audio/mp4)
 GET /dash/protected.mpd  the same, each AdaptationSet marked encrypted (CENC, Widevine's
     ContentProtection), as a DRM-protected stream's manifest is
+GET /hls2/playlist?id=ID  the HLS stream again with no .m3u8 anywhere, all text/plain (#171):
+    variants playlist?id=ID&track={720p,360p,audio}, segments seg?id=ID&track=T&i=0..2
+    (application/octet-stream)
+GET /dash2/manifest?id=ID  the DASH manifest as application/octet-stream, no .mpd; segments
+    /dash2/{720p,360p,audio}/init.mp4 and seg1..3.m4s
+GET /hls2/config?id=ID  {"autoplay":false,"volume":0.8} as text/plain: not a manifest
 
 GOOGLE DRIVE  a fake one for the engine's tests, on Google's host names (resolve
     drive.google.com, drive.usercontent.google.com, docs.google.com, accounts.google.com and

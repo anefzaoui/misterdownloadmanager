@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The extension is in the Chrome Web Store**: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp), for Chrome,
+  Edge, Brave, Opera and Vivaldi, installed with one click and kept up to date. MDM's **Add
+  Mister Download Manager to your browser** window opens it in each of them (**Install it by
+  hand** stays there for a browser that can't use its store), Chrome offers it by itself once
+  MDM is installed, and the website, the help and the README offer **Add to Chrome** beside
+  **Add to Firefox**.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
@@ -344,6 +350,18 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Streams served as plain text, from addresses without .m3u8 or .mpd**
+  ([#171](https://github.com/anefzaoui/misterdownloadmanager/issues/171)): some players load
+  their stream from such an address, and the extension didn't know it as one. The button over the
+  video, the right-click menu and **Media on this page** then sent the page alone, which yt-dlp
+  answered "Unsupported URL". Now, when one of them is used and no stream is known, the extension
+  reads the start of what the player fetched (a few kilobytes, never on sight) and recognises an
+  HLS playlist or a DASH manifest.
+- **A minimized MDM keeps working**: with the main window minimized (not to the notification
+  area), queues didn't start their next file, the Scheduler's starts and stops didn't fire,
+  download limits, the network adapter's kill switch, the clipboard monitor, the update check, the
+  taskbar's progress and saving the list all waited until the window was restored. They run in
+  every window state now, and their windows (Download complete, a limit's notice) open at once.
 - **HLS and DASH videos from the browser, as their stream**
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155)): a video played as a
   stream (most sites' long videos) failed with yt-dlp's "Unsupported URL" when the extension sent
