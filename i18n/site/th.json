@@ -862,10 +862,6 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "ได้ MDM รองรับสวิตช์บรรทัดคำสั่งที่คุ้นเคยของ IDM มาพร้อมกับ misterdownloadmanager-cli สำหรับการดาวน์โหลดจากเทอร์มินัล และมี API ระบบอัตโนมัติในเครื่องที่ป้องกันด้วยโทเค็น…"
   },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "แถวที่มีเส้น <x1/> อยู่ด้านบนถูกแปลโดยเครื่องจักร เมื่อคุณตรวจสอบแล้ว (และแก้ไขหากจำเป็น) ให้ลบเส้น <x2/> นั้นออก"
-  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "ไฟล์ <x1/> หรือลิงก์ <x2/>"
@@ -1049,10 +1045,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 วินาที</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "บน Windows เอ็นจิ้นทอร์เรนต์ยังไม่สามารถผูกกับอะแดปเตอร์ได้ ดังนั้น ทอร์เรนต์จะไม่เริ่มทำงานในขณะที่เลือกอะแดปเตอร์ไว้ (\"ทอร์เรนต์ยังไม่สามารถผ่านอะแดปเตอร์เครือข่ายที่เลือกบน Windows ได้\") แทนที่จะเลี่ยงผ่านมัน ชื่อตัวติดตามยังคงถูกค้นหาโดย DNS ของระบบ"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2937,6 +2929,10 @@
   "4a575d95633d11ec": {
    "source": "Free Download Manager",
    "text": "Free Download Manager"
+  },
+  "4a68031b1da16fe4": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window with the stream its player loaded (HLS or DASH), as the <g3>button over videos</g3> sends it, with your cookies for the stream's server and the page as the referrer.",
+   "text": "คลิกขวาที่ลิงก์ วิดีโอ เสียง หรือรูปภาพ แล้วเลือก <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> MDM จะดาวน์โหลดไฟล์นั้นไม่ว่าจะเป็นประเภทใดก็ตาม: คุณเป็นคนสั่งให้ดาวน์โหลด ดังนั้นรายการประเภทไฟล์และเว็บไซต์ที่ยกเว้นจะไม่มีผลที่นี่ (สิ่งเหล่านี้จะตัดสินใจว่า MDM จะเข้าควบคุมการดาวน์โหลดใดด้วยตัวเองเท่านั้น) วิดีโอที่เล่นเป็นสตรีมจะไปที่หน้าต่าง <g2>ดาวน์โหลดวิดีโอ</g2> พร้อมกับสตรีมที่โปรแกรมเล่นโหลดมา (HLS หรือ DASH) เหมือนกับที่ <g3>ปุ่มที่อยู่เหนือวิดีโอ</g3> ส่งไป โดยมีคุกกี้ของคุณสำหรับเซิร์ฟเวอร์สตรีมและหน้าเว็บเป็นผู้แนะนำ"
   },
   "4a736a6235625512": {
    "source": "Connections and resuming in detail →",
@@ -4914,10 +4910,6 @@
    "source": "Firefox 140 or later is needed.",
    "text": "ต้องใช้ Firefox เวอร์ชัน 140 หรือใหม่กว่า"
   },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>ตัวเลือก → พร็อกซี / SOCKS → อะแดปเตอร์เครือข่าย</g1> จะเชื่อมต่อ MDM กับอะแดปเตอร์หนึ่งตัว ซึ่งมักจะเป็นของ VPN (<g2>ตัวเลือก</g2>) บน Linux และ macOS เอ็นจิ้นทอร์เรนต์จะผูกทุกซ็อกเก็ตเข้ากับอะแดปเตอร์นั้น: เพียร์, ตัวติดตาม, DHT และพอร์ตการฟังของมัน UPnP และการค้นหาเพียร์ในเครื่องจะถูกปิดใช้งาน เนื่องจากจะสื่อสารกับเครือข่ายในเครื่องแทนที่จะผ่านอะแดปเตอร์ หากอะแดปเตอร์หายไป เอ็นจิ้นจะหยุดทำงาน และจะเริ่มทำงานอีกครั้งผ่านอะแดปเตอร์เมื่อกลับมา"
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>คุณภาพ</g1> ใช้กับทุกวิดีโอ: <g2>คุณภาพดีที่สุด</g2>, <g3>สูงสุด</g3> ตามความสูง (แต่ละวิดีโอที่ความสูงนั้น หรือใกล้เคียงที่สุดที่ต่ำกว่า), <g4>เฉพาะเสียง, ต้นฉบับ</g4>, <g5>เฉพาะเสียง MP3</g5>, <g6>เฉพาะเสียง OPUS</g6> หรือ <g7>เฉพาะเสียง FLAC</g7> หากไม่มี ffmpeg จะมีเฉพาะคุณภาพที่มีเสียงมาด้วย และไม่มี MP3, Opus หรือ FLAC ให้เลือก"
@@ -5609,10 +5601,6 @@
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
    "text": "<g1>การอ่านไฟล์ดัมพ์</g1> มอนิเตอร์จะอ่านไฟล์ดัมพ์ด้วย <x2/> ของ Mozilla โดยจะใช้สัญลักษณ์ Breakpad ของรุ่นเมื่อพบ การสร้างจากซอร์สโค้ดสามารถอ่านข้อมูลดีบักแบบเนทีฟที่อยู่ข้างๆ ได้ด้วย (เช่น <x3/>, DWARF) เมื่อสร้างด้วย <x4/>; แอปที่จัดส่งจะไม่มีตัวอ่านนั้น ซึ่งมีขนาดหลาย MB <g5>ลายเซ็น</g5>ของรายงาน (เช่น <x6/>) จะยังคงเหมือนเดิมสำหรับรายงานปัญหาเดียวกัน และหน้าต่างจะค้นหาปัญหาที่มีอยู่ด้วยลายเซ็นนี้"
-  },
-  "8fe29a431a6dd71a": {
-   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
-   "text": "คลิกขวาที่ลิงก์ วิดีโอ เสียง หรือรูปภาพ แล้วเลือก <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> MDM จะดาวน์โหลดไม่ว่าจะเป็นชนิดใด: คุณร้องขอ ดังนั้นรายการชนิดไฟล์และเว็บไซต์ที่ยกเว้นจึงไม่นำมาใช้ที่นี่ (จะตัดสินใจเฉพาะการดาวน์โหลดที่ MDM จะรับช่วงต่อเองเท่านั้น) วิดีโอที่เล่นเป็นสตรีมจะไปที่หน้าต่าง <g2>ดาวน์โหลดวิดีโอ</g2>"
   },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
@@ -6725,10 +6713,6 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>หมวดหมู่</g1> — เลือกจากประเภทของไฟล์ (บีบอัด, เอกสาร, เพลง, โปรแกรม, วิดีโอ หรือทั่วไป) แต่ละหมวดหมู่มีโฟลเดอร์ของตัวเอง เครื่องหมาย <g2>+</g2> ข้าง ๆ จะสร้างหมวดหมู่ใหม่"
-  },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>อะแดปเตอร์เครือข่าย</g1> — <g2>ใดก็ได้ (ระบบเลือกเอง)</g2> คือค่าเริ่มต้น เลือกอะแดปเตอร์ โดยปกติคือของ VPN ของคุณ และการเชื่อมต่อทุกครั้งที่ MDM เปิดจะส่งผ่านอะแดปเตอร์นั้น หรือไม่ส่งเลย ซึ่งครอบคลุมการดาวน์โหลด, FTP, DNS ที่คุณเลือก, การดาวน์โหลดของ MDM เอง และการตรวจสอบการอัปเดต มันทำงานเหมือนสวิตช์ตัดการทำงาน: เมื่ออะแดปเตอร์ตัดการเชื่อมต่อ หรือ VPN ถูกปิด จะไม่มีอะไรส่งออกผ่านการเชื่อมต่อปกติของคุณ การดาวน์โหลดที่กำลังดำเนินอยู่จะหยุดด้วยข้อความ \"… ไม่ได้เชื่อมต่อ\" และจะเริ่มใหม่เมื่ออะแดปเตอร์กลับมาใช้งานได้ บรรทัดใต้รายการจะแสดงที่อยู่ของอะแดปเตอร์ หรือสถานะว่าไม่ได้เชื่อมต่อ"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",

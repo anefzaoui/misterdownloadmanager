@@ -862,10 +862,6 @@
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "Sí. MDM acepta los conocidos parámetros de línea de comandos de IDM, incluye misterdownloadmanager-cli para descargas desde un terminal y tiene una API de automatización local protegida por token…"
   },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "Una fila con una línea <x1/> encima fue traducida por máquina. Cuando la haya revisado (y corregido si es necesario), elimine esa línea <x2/>."
-  },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
    "text": "un archivo <x1/> o un enlace <x2/>"
@@ -1049,10 +1045,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5,5 s</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "En Windows, el motor de torrents aún no puede vincularse a un adaptador. Por lo tanto, los torrents no se inician mientras se elige uno (\"los torrents aún no pueden pasar por un adaptador de red elegido en Windows\"), en lugar de evitarlo. Los nombres de los rastreadores siguen siendo buscados por el DNS del sistema."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2937,6 +2929,10 @@
   "4a575d95633d11ec": {
    "source": "Free Download Manager",
    "text": "Free Download Manager"
+  },
+  "4a68031b1da16fe4": {
+   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window with the stream its player loaded (HLS or DASH), as the <g3>button over videos</g3> sends it, with your cookies for the stream's server and the page as the referrer.",
+   "text": "Haga clic con el botón derecho en un enlace, un vídeo, un sonido o una imagen y elija <g1>Descargar con Mister Download Manager</g1>. MDM lo descarga sea cual sea su tipo: usted lo ha pedido, por lo que la lista de tipos de archivo y los sitios excluidos no se aplican aquí (solo deciden qué descargas asume MDM por sí mismo). Un vídeo que se reproduce como un stream va a la ventana <g2>Descargar vídeo</g2> con el stream que cargó su reproductor (HLS o DASH), tal como lo envía el <g3>botón sobre los vídeos</g3>, con sus cookies para el servidor del stream y la página como referente."
   },
   "4a736a6235625512": {
    "source": "Connections and resuming in detail →",
@@ -4914,10 +4910,6 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Se necesita Firefox 140 o posterior."
   },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "Las conexiones de MDM se mantienen en un adaptador, normalmente el de una VPN, en <g1>Opciones → Proxy/Socks → Adaptador de red</g1> (<g2>Opciones</g2>). En Linux y macOS, el motor de torrents vincula todos los sockets a él: pares, rastreadores, la DHT y su puerto de escucha. UPnP y el descubrimiento de pares locales se desactivan entonces, porque se comunican con la red local en lugar de a través del adaptador. Si el adaptador desaparece, el motor se detiene y se reinicia a través del adaptador cuando este vuelve."
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>Calidad</g1> se aplica a cada vídeo: <g2>Mejor calidad</g2>, <g3>Hasta</g3> una altura (cada vídeo a esa altura, o la más cercana por debajo), <g4>Solo audio, original</g4>, <g5>Solo audio MP3</g5>, <g6>Solo audio OPUS</g6> o <g7>Solo audio FLAC</g7>. Sin ffmpeg, solo se ofrecen las calidades que vienen con su sonido, y no MP3, Opus o FLAC."
@@ -5609,10 +5601,6 @@
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
    "text": "<g1>Lectura del volcado.</g1> El monitor lee el volcado con <x2/> de Mozilla. Utiliza los símbolos Breakpad de la versión cuando los encuentra. Una compilación desde el código fuente también puede leer la información de depuración nativa junto a ella (su <x3/>, DWARF) cuando se compila con <x4/>; la aplicación distribuida no incluye ese lector, que ocupa varios MB. La <g5>Firma</g5> del informe (por ejemplo, <x6/>) permanece igual en los informes de un mismo problema, y la ventana busca problemas existentes con ella."
-  },
-  "8fe29a431a6dd71a": {
-   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
-   "text": "Haga clic derecho en un enlace, un vídeo, un sonido o una imagen y elija <g1>Descargar con Mister Download Manager</g1>. MDM lo descarga sea cual sea su tipo: usted lo pidió, por lo que la lista de tipos de archivo y los sitios excluidos no se aplican aquí (solo deciden qué descargas MDM toma por sí mismo). Un vídeo que se reproduce como un stream va a la ventana <g2>Descargar vídeo</g2>."
   },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
@@ -6725,10 +6713,6 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>Categoría</g1> — elegida según el tipo de archivo (Comprimido, Documentos, Música, Programas, Vídeo o General). Cada categoría tiene su propia carpeta. El signo <g2>+</g2> al lado crea una nueva categoría."
-  },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>Adaptador de red</g1>: <g2>Cualquiera (el sistema elige)</g2> es la opción predeterminada. Elija un adaptador, normalmente el de su VPN, y todas las conexiones que MDM abra saldrán a través de él, o no saldrán en absoluto. Esto cubre las descargas, FTP, el DNS que haya elegido, las propias descargas de MDM y la comprobación de actualizaciones. Funciona como un interruptor de seguridad: cuando el adaptador se desconecta, o la VPN se apaga, nada sale a través de su conexión normal. Las descargas en curso se detienen con «… no está conectado» y se reanudan cuando el adaptador vuelve a estar disponible. La línea debajo de la lista muestra la dirección del adaptador, o que no está conectado."
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
