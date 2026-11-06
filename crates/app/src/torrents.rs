@@ -34,6 +34,32 @@ pub struct TorrentSpec {
     /// Its own upload limit, bytes/s (None: only Torrent settings' limit for all torrents).
     #[serde(default)]
     pub upload_limit: Option<u64>,
+    /// Downloaded in order (#39): its files' start first, to watch a video while it
+    /// downloads. Off: the rarest pieces first, as BitTorrent clients usually do (better for
+    /// the swarm, and no slower). Torrents kept from before have it off.
+    #[serde(default)]
+    pub in_order: bool,
+    /// In order: each file's first and last pieces first (a video's index is often at its
+    /// end, and a player reads it before anything plays).
+    #[serde(default = "first_and_last_first")]
+    pub ends_first: bool,
+}
+
+fn first_and_last_first() -> bool {
+    true
+}
+
+impl TorrentSpec {
+    /// The order its pieces are downloaded in (#39).
+    pub fn order(&self) -> mdm_torrent::PieceOrder {
+        if self.in_order {
+            mdm_torrent::PieceOrder::InOrder {
+                first_and_last_first: self.ends_first,
+            }
+        } else {
+            mdm_torrent::PieceOrder::RarestFirst
+        }
+    }
 }
 
 /// Torrent settings' seeding limits (`Settings::sharing_limits`).
@@ -656,6 +682,9 @@ pub struct Run {
     /// (`TorrentSpec::upload_limit`). Set on the torrent once it is in the session, and again
     /// on each change.
     limit: Arc<Mutex<(Option<u64>, Option<u64>)>>,
+    /// The order its pieces are downloaded in (`TorrentSpec::order`): set once it is in the
+    /// session, and again on each change.
+    order: Arc<Mutex<mdm_torrent::PieceOrder>>,
     /// The torrents an action is busy with (`Host::act`): while this one is, it shows as
     /// checking, with the bytes last seen (`last`: done, total), not as gone or stopped.
     busy: Arc<Mutex<HashSet<String>>>,
@@ -709,12 +738,16 @@ impl Run {
     ) -> Run {
         let state = Arc::new(Mutex::new(RunState::Starting));
         let own = Arc::new(Mutex::new((limit, spec.upload_limit)));
+        let order = Arc::new(Mutex::new(spec.order()));
         let busy = host.busy.clone();
         let (out, host, spec2, own2) = (state.clone(), host.clone(), spec.clone(), own.clone());
+        let order2 = order.clone();
         rt.spawn(async move {
             let res = async {
                 let t = host.session(known).await?;
                 if t.has(&spec2.hash) {
+                    // Its order before it asks any peer for a piece.
+                    let _ = t.set_order(&spec2.hash, *order2.lock().unwrap());
                     t.resume(&spec2.hash)
                         .await
                         .map_err(|e| crate::errors::torrent(&e))?;
@@ -743,8 +776,11 @@ impl Run {
                     // either seen here or applied there once it is Ready. librqbit keeps a
                     // torrent's limits only while the session runs: set them each start.
                     let own = own2.lock().unwrap();
+                    let order = order2.lock().unwrap();
                     *out.lock().unwrap() = RunState::Ready(t.clone());
                     let _ = t.set_torrent_limits(&spec2.hash, own.0, own.1);
+                    // Added just now: still checking its files, no piece asked for yet.
+                    let _ = t.set_order(&spec2.hash, *order);
                 }
                 Err(e) => *out.lock().unwrap() = RunState::Failed(e),
             }
@@ -759,6 +795,7 @@ impl Run {
             folder: spec.folder.clone(),
             marked: Arc::new(std::sync::atomic::AtomicU8::new(0)),
             limit: own,
+            order,
             busy,
             last: Mutex::new((0, None)),
         }
@@ -882,6 +919,16 @@ impl Run {
         self.limit.lock().unwrap().0
     }
 
+    /// The order its pieces are downloaded in (#39): now if it is in the session, else once it
+    /// is.
+    pub fn set_order(&self, order: mdm_torrent::PieceOrder) {
+        let mut own = self.order.lock().unwrap();
+        *own = order;
+        if let Some(t) = self.session() {
+            let _ = t.set_order(&self.hash, order);
+        }
+    }
+
     /// This torrent's own upload limit: now if it is in the session, else once it is.
     pub fn set_upload_limit(&self, rate: Option<u64>) {
         let mut own = self.limit.lock().unwrap();
@@ -979,6 +1026,34 @@ mod tests {
         assert_eq!(a.sent("h", 90), 90);
     }
 
+    /// #39: a torrent kept from before downloads the rarest pieces first; asked, in order, with
+    /// each file's first and last pieces first unless that is turned off.
+    #[test]
+    fn the_piece_order_kept_and_chosen() {
+        let old: TorrentSpec =
+            serde_json::from_str(r#"{"hash":"h","files":null,"folder":"f"}"#).unwrap();
+        assert_eq!((old.in_order, old.ends_first), (false, true));
+        assert_eq!(old.order(), mdm_torrent::PieceOrder::RarestFirst);
+        let mut spec = old.clone();
+        spec.in_order = true;
+        assert_eq!(
+            spec.order(),
+            mdm_torrent::PieceOrder::InOrder {
+                first_and_last_first: true
+            }
+        );
+        spec.ends_first = false;
+        assert_eq!(
+            spec.order(),
+            mdm_torrent::PieceOrder::InOrder {
+                first_and_last_first: false
+            }
+        );
+        let back: TorrentSpec =
+            serde_json::from_str(&serde_json::to_string(&spec).unwrap()).unwrap();
+        assert_eq!(back, spec);
+    }
+
     /// #39: a finished torrent stops being shared at the share ratio or after the time set,
     /// whichever comes first; with both off, never.
     #[test]
@@ -990,6 +1065,8 @@ mod tests {
             uploaded,
             seeded_secs,
             upload_limit: None,
+            in_order: false,
+            ends_first: true,
         };
         let off = SharingLimits::default();
         let ratio2 = SharingLimits {

@@ -838,6 +838,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>Il browser.</g1> Fai clic destro su una pagina per <g2>Scarica tutti i collegamenti con Mister Download Manager</g2>, oppure seleziona una parte di essa per <g3>Scarica i collegamenti selezionati con Mister Download Manager</g3>. Il referrer e i cookie della pagina vengono inviati con ogni collegamento."
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "Per impostazione predefinita, MDM scarica prima i pezzi che il minor numero di peer possiede, come fanno di solito i programmi BitTorrent. In questo modo un pezzo che solo un peer ha viene recuperato prima che quel peer se ne vada, e MDM può passarlo ad altri più velocemente. Nei test di MDM, ha terminato con la stessa velocità del download in ordine, ed è stato l'unico ordine che ha terminato quando l'unico detentore di un pezzo scarso se n'è andato."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>Invia su GitHub</g1> apre nel tuo browser il modulo <g2>Crash report</g2> di GitHub, già compilato, insieme alla cartella che contiene il rapporto. Trascina il file del rapporto nel modulo, controllalo e invia. Hai bisogno di un account GitHub. <g3>Nulla viene inviato automaticamente.</g3>"
@@ -2105,6 +2109,10 @@
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM è realizzato da Ahmed Nefzaoui, uno sviluppatore indipendente, ed è aperto ai contributi di chiunque su <g1>GitHub</g1>. Segnalazioni di bug, traduzioni e codice sono tutti benvenuti."
+  },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "Con <g1>Prima i primi e gli ultimi pezzi</g1> (attivo per impostazione predefinita), anche gli ultimi pezzi di ogni file arrivano presto. La maggior parte dei file video mantiene il proprio indice alla fine, e un lettore lo legge prima che venga riprodotto qualsiasi cosa."
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -5626,6 +5634,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "Fai clic destro su un link, un video, un suono o un'immagine e scegli <g1>Scarica con Mister Download Manager</g1>. MDM lo scarica qualunque sia il suo tipo: l'hai chiesto tu, quindi l'elenco dei tipi di file e i siti esclusi non si applicano qui (decidono solo quali download MDM acquisisce da solo). Un video che viene riprodotto come stream va alla finestra <g2>Scarica video</g2>."
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "Per guardare un video mentre si scarica, spunta <g1>Scarica in ordine</g1> (vedi <g2>Scarica in ordine</g2>)."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5,5 s<g1><g2>2</g2></g1>"
@@ -6141,6 +6153,10 @@
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "Download senza interfaccia utente con avanzamento (<x1/>, <x2/>), video, torrent e i comandi dell'API di automazione: una libreria eseguita dal programma dell'app (<x3/>), e <x4/>, un piccolo launcher che la avvia con gli stessi argomenti, terminale e codice di uscita"
+  },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "Scarica in ordine"
   },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
@@ -6782,6 +6798,10 @@
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>Opzioni di consegna</g1><g2>Versione 0.2.4 · gratuito per tutti</g2>"
   },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>Scarica in ordine</g1> ottiene invece prima l'inizio di un file, così puoi guardare un video mentre si scarica: aprilo nel tuo lettore una volta che la prima parte è disponibile. Spuntalo in <g2>Aggiungi torrent</g2>, o scegli <g3>Torrent → Scarica in ordine</g3> nel menu contestuale della lista, in qualsiasi momento, anche mentre è in esecuzione. I pezzi successivi richiesti seguiranno il nuovo ordine."
+  },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
    "text": "Il contenuto del sito è fornito a scopo informativo. Cerchiamo di mantenerlo accurato, inclusi i confronti e i dati di benchmark, che sono documentati con i loro metodi e dati grezzi, ma non possiamo garantire che sia sempre completo o aggiornato. Segnalaci gli errori e li correggeremo. I link ad altri siti sono per comodità; non li controlliamo."
@@ -7382,6 +7402,10 @@
    "source": "Questions and answers",
    "text": "Domande e risposte"
   },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "Un torrent in ordine non è più veloce a finire, e aiuta meno lo swarm: usalo per ciò che vuoi guardare subito."
+  },
   "bed20915ba662ba4": {
    "source": "Benchmark",
    "text": "Benchmark"
@@ -7977,6 +8001,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com è un sito statico. Tre aziende partecipano a mostrartelo:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>Scarica in ordine</g1> — scarica i file del torrent dal loro inizio (vedi sotto). Clicca di nuovo per tornare ai pezzi più rari per primi."
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -8918,6 +8946,10 @@
    "source": "The free IDM alternative: Mister Download Manager",
    "text": "L'alternativa gratuita a IDM: Mister Download Manager"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "Diversi file vengono scaricati uno dopo l'altro, ordinati per nome."
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "Integrazione con il browser in dettaglio (Firefox, finestre private, cosa viene inviato) →"
@@ -9442,6 +9474,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "La stessa lista si trova in MDM sotto Guida → Scorciatoie da tastiera, e i menu mostrano i tasti di ogni comando accanto ad esso. Su un Mac, ⌘ (Comando) prende il posto di Ctrl: ⌘N…"
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "I peer più lenti prendono i pezzi un po' più avanti, così l'inizio non li aspetta."
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "Preme un pulsante con il focus, seleziona una casella di controllo, seleziona la riga scelta di una lista"
@@ -9629,6 +9665,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "Gli esempi usano i percorsi di Windows; su macOS e Linux i programmi hanno gli stessi nomi senza <x1/>."
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>Prima i primi e gli ultimi pezzi</g1> — con <g2>Scarica in ordine</g2>, i primi e gli ultimi pezzi di ogni file arrivano prima del resto. È attivo per impostazione predefinita."
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",

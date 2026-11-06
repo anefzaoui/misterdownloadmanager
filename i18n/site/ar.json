@@ -838,6 +838,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>المتصفح.</g1> انقر بزر الفأرة الأيمن على صفحة لاختيار <g2>تنزيل جميع الروابط باستخدام Mister Download Manager</g2>، أو حدد جزءا منها لاختيار <g3>تنزيل الروابط المحددة باستخدام Mister Download Manager</g3>. يتم إرسال مرجع الصفحة وملفات تعريف الارتباط مع كل رابط."
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "بشكل افتراضي، ينزل MDM القطع التي يمتلكها أقل عدد من النظراء أولا، كما تفعل برامج BitTorrent عادة. بهذه الطريقة يتم جلب القطعة التي يمتلكها نظير واحد فقط قبل أن يغادر هذا النظير، ويمكن لـ MDM تمريرها إلى الآخرين بشكل أسرع. في مجموعات اختبار MDM، انتهى بنفس سرعة التنزيل بالترتيب، وكان الترتيب الوحيد الذي انتهى عندما غادر المالك الوحيد لقطعة نادرة."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>إرسال على GitHub</g1> يفتح نموذج <g2>تقرير الأعطال</g2> الخاص بـ GitHub في متصفحك، وهو مملوء مسبقا، بالإضافة إلى المجلد الذي يحتوي على التقرير. اسحب ملف التقرير إلى النموذج، وتحقق منه، ثم أرسله. تحتاج إلى حساب GitHub. <g3>لا يتم إرسال أي شيء تلقائيا.</g3>"
@@ -865,10 +869,6 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "نعم. يقبل MDM مفاتيح سطر الأوامر المألوفة لـ IDM، ويأتي مع misterdownloadmanager-cli للتنزيلات من الطرفية، ولديه واجهة برمجة تطبيقات (API) أتمتة محلية محمية برمز مميز…"
-  },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "الصف الذي يحتوي على سطر <x1/> فوقه تمت ترجمته بواسطة الآلة. عندما تراجعه (وتصححه إذا لزم الأمر)، احذف سطر <x2/> هذا."
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1053,10 +1053,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 ثانية</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "على نظام Windows، لا يمكن لمحرك التورنت الربط بمحول بعد. لذلك لا تبدأ التورنتات بينما يتم اختيار واحد (\"لا يمكن للتورنتات المرور عبر محول شبكة مختار على Windows بعد\")، بدلا من تجاوزها. لا تزال أسماء المتتبعات تبحث بواسطة DNS الخاص بالنظام."
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2113,6 +2109,10 @@
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "برنامج MDM من تطوير أحمد نفزاوي، وهو مطور مستقل، ومفتوح لمساهمات أي شخص على <g1>GitHub</g1>. نرحب بجميع تقارير الأخطاء والترجمات والتعليمات البرمجية."
+  },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "مع <g1>القطع الأولى والأخيرة أولا</g1> (مفعلة افتراضيا)، تأتي القطع الأخيرة لكل ملف مبكرا أيضا. تحتفظ معظم ملفات الفيديو بفهرسها في النهاية، ويقرأ المشغل هذا الفهرس قبل تشغيل أي شيء."
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -4934,10 +4934,6 @@
    "source": "Firefox 140 or later is needed.",
    "text": "يلزم Firefox 140 أو أحدث."
   },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "تبقي <g1>الخيارات ← الوكيل / SOCKS ← محول الشبكة</g1> اتصالات MDM على محول واحد، عادة ما يكون محول VPN (<g2>الخيارات</g2>). على نظامي Linux و macOS، يربط محرك التورنت كل مقبس به: الأقران، المتتبعات، DHT ومنفذ الاستماع الخاص به. يتم إيقاف تشغيل UPnP واكتشاف الأقران المحليين حينها، لأنهما يتحدثان إلى الشبكة المحلية بدلا من المرور عبر المحول. إذا اختفى المحول، يتوقف المحرك، ويبدأ مرة أخرى عبر المحول عند عودته."
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>الجودة</g1> تنطبق على كل فيديو: <g2>أفضل جودة</g2>، <g3>حتى</g3> ارتفاع معين (كل فيديو بهذا الارتفاع، أو الأقرب تحته)، <g4>صوت فقط، أصلي</g4>، <g5>صوت فقط MP3</g5>، <g6>صوت فقط OPUS</g6> أو <g7>صوت فقط FLAC</g7>. بدون ffmpeg، لا تعرض إلا الجودات التي تأتي مع صوتها، ولا يتوفر MP3 أو Opus أو FLAC."
@@ -5638,6 +5634,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "انقر بزر الماوس الأيمن على رابط أو فيديو أو صوت أو صورة واختر <g1>تنزيل باستخدام Mister Download Manager</g1>. يقوم MDM بتنزيله مهما كان نوعه: لقد طلبت ذلك، لذلك لا تنطبق قائمة أنواع الملفات والمواقع المستبعدة هنا (فهي تحدد فقط التنزيلات التي يتولى MDM مسؤوليتها بنفسه). ينتقل الفيديو الذي يتم تشغيله كبث إلى نافذة <g2>تنزيل الفيديو</g2>."
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "لمشاهدة فيديو أثناء تنزيله، ضع علامة في مربع <g1>تنزيل بالترتيب</g1> (انظر <g2>تنزيل بالترتيب</g2>)."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5.5 ثوان<g1><g2>2</g2></g1>"
@@ -6153,6 +6153,10 @@
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "تنزيلات بدون واجهة مع التقدم (<x1/>، <x2/>)، ومقاطع الفيديو، والتورنت، وأوامر واجهة برمجة التطبيقات للأتمتة: مكتبة يشغلها برنامج التطبيق (<x3/>)، و<x4/>، وهو مشغل صغير يبدأ تشغيلها بنفس الوسائط والطرفية ورمز الخروج"
+  },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "تنزيل بالترتيب"
   },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
@@ -6750,10 +6754,6 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>الفئة</g1> — يتم اختيارها من نوع الملف (مضغوط، مستندات، موسيقى، برامج، فيديو أو عام). كل فئة لها مجلد خاص بها. <g2>+</g2> بجانبها ينشئ فئة جديدة."
   },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>محول الشبكة</g1> — <g2>أي (يختاره النظام)</g2> هو الافتراضي. اختر محولا، وعادة ما يكون محول VPN الخاص بك، وستمر كل الاتصالات التي يفتحها MDM من خلاله، أو لن تمر على الإطلاق. وهذا يشمل التنزيلات، وFTP، وDNS الذي اخترته، وتنزيلات MDM الخاصة، وفحص التحديثات. يعمل هذا كمفتاح إيقاف: عندما ينقطع المحول، أو يتم إيقاف تشغيل VPN، لا يخرج أي شيء عبر اتصالك العادي. تتوقف التنزيلات الجارية مع رسالة \"… غير متصل\" وتبدأ مرة أخرى عندما يعود المحول. يعرض السطر الموجود أسفل القائمة عنوان المحول، أو أنه غير متصل."
-  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "انقر على <g1>بحث</g1>. سيتم تحديد أول تطابق."
@@ -6797,6 +6797,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>خيارات التسليم</g1><g2>الإصدار 0.2.4 · مجاني للجميع</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>تنزيل بالترتيب</g1> يحصل على بداية الملف أولا بدلا من ذلك، حتى تتمكن من مشاهدة الفيديو أثناء تنزيله: افتحه في مشغل الفيديو الخاص بك بمجرد وصول الجزء الأول. ضع علامة عليه في <g2>إضافة تورنت</g2>، أو اختر <g3>تورنت ← تنزيل بالترتيب</g3> في قائمة النقر بزر الفأرة الأيمن للقائمة، في أي وقت، حتى أثناء تشغيله. القطع التالية المطلوبة تتبع الترتيب الجديد."
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7398,6 +7402,10 @@
    "source": "Questions and answers",
    "text": "أسئلة وأجوبة"
   },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "التورنت بالترتيب ليس أسرع في الانتهاء، ويساعد المجموعة بشكل أقل: استخدمه لما تريد مشاهدته الآن."
+  },
   "bed20915ba662ba4": {
    "source": "Benchmark",
    "text": "مقارنة الأداء"
@@ -7993,6 +8001,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com هو موقع ثابت. تشارك ثلاث شركات في عرضه لك:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>تنزيل بالترتيب</g1> — ينزل ملفات التورنت من بدايتها (انظر أدناه). انقر عليه مرة أخرى للعودة إلى القطع النادرة أولا."
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -8934,6 +8946,10 @@
    "source": "The free IDM alternative: Mister Download Manager",
    "text": "بديل IDM المجاني: Mister Download Manager"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "يتم تنزيل عدة ملفات الواحد تلو الآخر، مرتبة حسب الاسم."
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "تكامل المتصفح بالتفصيل (Firefox، النوافذ الخاصة، ما يتم إرساله) →"
@@ -9458,6 +9474,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "توجد نفس القائمة في MDM تحت تعليمات ← اختصارات لوحة المفاتيح، وتظهر القوائم مفاتيح كل أمر بجانبه. على جهاز Mac، يحل ⌘ (Command) محل Ctrl: ⌘N..."
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "النظراء الأبطأ يأخذون القطع الأبعد قليلا، لذلك لا تنتظرهم البداية."
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "الضغط على زر عليه التركيز، تحديد مربع اختيار، تحديد الصف المختار من القائمة"
@@ -9645,6 +9665,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "تستخدم الأمثلة مسارات Windows؛ في macOS و Linux، البرامج لها نفس الأسماء بدون <x1/>."
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>القطع الأولى والأخيرة أولا</g1> — مع <g2>تنزيل بالترتيب</g2>، تأتي القطع الأولى والأخيرة لكل ملف قبل البقية. وهي مفعلة افتراضيا."
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",

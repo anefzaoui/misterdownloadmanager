@@ -22,6 +22,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Torrents: Download in order**
+  ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39)): to watch a video while
+  it downloads, tick **Download in order** in **Add torrent**, or choose **Torrent → Download in
+  order** in the list's right-click menu, even while it runs. A file's start comes first, and with
+  **First and last pieces first** (on by default) its end comes early too, which most video files
+  need before they play. Slower peers take pieces a little further on, so the start isn't waiting
+  for them. Other torrents now download the rarest pieces first, as BitTorrent programs usually
+  do: on MDM's test swarms they finished just as fast, and they finished where a scarce piece's
+  only holder left. Torrents already in the list carry on, with nothing checked again.
+- MDM now honours a peer's request to cancel a piece it no longer needs, so its upload isn't
+  spent on data nobody wants.
 - **Support MDM**: **Help → Support MDM** and a line in **About** open the creator's
   [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
   README and the browser extension's popup link to it too. Only when asked: MDM stays free, with

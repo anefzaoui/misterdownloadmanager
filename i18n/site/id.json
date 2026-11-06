@@ -838,6 +838,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>Browser.</g1> Klik kanan halaman untuk <g2>Unduh semua tautan dengan Mister Download Manager</g2>, atau pilih sebagian halaman untuk <g3>Unduh tautan yang dipilih dengan Mister Download Manager</g3>. Referrer dan cookie halaman akan disertakan dengan setiap tautan."
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "Secara bawaan, MDM mengunduh potongan yang paling sedikit dimiliki oleh peer terlebih dahulu, seperti yang biasa dilakukan program BitTorrent. Dengan begitu, potongan yang hanya dimiliki satu peer akan diambil sebelum peer tersebut pergi, dan MDM dapat meneruskannya kepada yang lain lebih cepat. Pada swarm uji MDM, ini selesai secepat pengunduhan berurutan, dan ini adalah satu-satunya urutan yang selesai ketika satu-satunya pemegang potongan langka pergi."
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>Kirim di GitHub</g1> membuka formulir <g2>Laporan kerusakan</g2> GitHub di browser Anda, yang sudah terisi, bersama dengan folder yang berisi laporan. Seret file laporan ke dalam formulir, periksa, dan kirim. Anda memerlukan akun GitHub. <g3>Tidak ada yang dikirim dengan sendirinya.</g3>"
@@ -2105,6 +2109,10 @@
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM dibuat oleh Ahmed Nefzaoui, seorang pengembang independen, dan terbuka untuk kontribusi dari siapa pun di <g1>GitHub</g1>. Laporan bug, terjemahan, dan kode semuanya diterima."
+  },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "Dengan <g1>Potongan pertama dan terakhir dulu</g1> (aktif secara bawaan), potongan terakhir setiap berkas juga datang lebih awal. Sebagian besar berkas video menyimpan indeksnya di akhir, dan pemutar membacanya sebelum apa pun diputar."
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -5626,6 +5634,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "Klik kanan tautan, video, suara, atau gambar dan pilih <g1>Unduh dengan Mister Download Manager</g1>. MDM mengunduhnya apa pun jenisnya: Anda memintanya, jadi daftar jenis file dan situs yang dikecualikan tidak berlaku di sini (mereka hanya memutuskan unduhan mana yang diambil alih MDM sendiri). Video yang diputar sebagai streaming masuk ke jendela <g2>Unduh video</g2>."
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "Untuk menonton video saat sedang diunduh, centang <g1>Unduh berurutan</g1> (lihat <g2>Unduh berurutan</g2>)."
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5,5 dtk<g1><g2>2</g2></g1>"
@@ -6141,6 +6153,10 @@
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "Unduhan tanpa antarmuka dengan progres (<x1/>, <x2/>), video, torrent, dan perintah API otomatisasi: pustaka yang dijalankan oleh program aplikasi (<x3/>), dan <x4/>, peluncur kecil yang memulainya dengan argumen, terminal, dan kode keluar yang sama"
+  },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "Unduh berurutan"
   },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
@@ -6782,6 +6798,10 @@
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>Opsi pengiriman</g1><g2>Versi 0.2.4 · gratis untuk semua orang</g2>"
   },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>Unduh berurutan</g1> mendapatkan awal berkas terlebih dahulu, sehingga Anda dapat menonton video saat sedang diunduh: buka di pemutar Anda setelah bagian pertama masuk. Centang di <g2>Tambahkan torrent</g2>, atau pilih <g3>Torrent → Unduh berurutan</g3> di menu klik kanan daftar, kapan saja, bahkan saat sedang berjalan. Potongan berikutnya yang diminta mengikuti urutan baru."
+  },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
    "text": "Konten situs disediakan untuk informasi. Kami berusaha menjaganya tetap akurat, termasuk perbandingan dan angka tolok ukur, yang didokumentasikan dengan metode dan data mentahnya, tetapi kami tidak dapat menjamin bahwa itu selalu lengkap atau terbaru. Beri tahu kami tentang kesalahan dan kami akan memperbaikinya. Tautan ke situs lain adalah untuk kenyamanan; kami tidak mengontrolnya."
@@ -7382,6 +7402,10 @@
    "source": "Questions and answers",
    "text": "Tanya jawab"
   },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "Torrent berurutan tidak lebih cepat selesai, dan kurang membantu swarm: gunakan untuk apa yang ingin Anda tonton sekarang."
+  },
   "bed20915ba662ba4": {
    "source": "Benchmark",
    "text": "Benchmark"
@@ -7977,6 +8001,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com adalah situs statis. Tiga perusahaan terlibat dalam menampilkannya kepada Anda:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>Unduh berurutan</g1> — mengunduh berkas torrent dari awal (lihat di bawah). Klik lagi untuk kembali ke potongan paling langka dulu."
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -8918,6 +8946,10 @@
    "source": "The free IDM alternative: Mister Download Manager",
    "text": "Alternatif IDM gratis: Mister Download Manager"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "Beberapa berkas diunduh satu per satu, diurutkan berdasarkan nama."
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "Integrasi browser secara detail (Firefox, jendela pribadi, apa yang dikirim) →"
@@ -9442,6 +9474,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "Daftar yang sama ada di MDM di bawah Bantuan → Pintasan keyboard, dan menu menunjukkan tombol setiap perintah di sampingnya. Di Mac, ⌘ (Command) menggantikan Ctrl: ⌘N…"
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "Peer yang lebih lambat mengambil potongan sedikit lebih jauh, sehingga bagian awal tidak menunggu mereka."
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "Tekan tombol yang difokuskan, centang kotak centang, centang baris yang dipilih dari daftar"
@@ -9629,6 +9665,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "Contoh-contoh menggunakan jalur Windows; di macOS dan Linux program-program memiliki nama yang sama tanpa <x1/>."
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>Potongan pertama dan terakhir dulu</g1> — dengan <g2>Unduh berurutan</g2>, potongan pertama dan terakhir setiap berkas datang sebelum yang lain. Ini aktif secara bawaan."
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",

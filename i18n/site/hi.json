@@ -838,6 +838,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>ब्राउज़र से।</g1> <g2>Mister Download Manager के साथ सभी लिंक डाउनलोड करें</g2> के लिए किसी पृष्ठ पर राइट-क्लिक करें, या <g3>Mister Download Manager के साथ चयनित लिंक डाउनलोड करें</g3> के लिए उसका कुछ हिस्सा चुनें। पृष्ठ का रेफ़रर और कुकीज़ प्रत्येक लिंक के साथ जाते हैं।"
   },
+  "14fdd504d3380998": {
+   "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
+   "text": "डिफ़ॉल्ट रूप से MDM उन भागों को पहले डाउनलोड करता है जो सबसे कम साथियों के पास होते हैं, जैसा कि BitTorrent प्रोग्राम आमतौर पर करते हैं। इस तरह, केवल एक साथी के पास मौजूद भाग को उस साथी के जाने से पहले प्राप्त कर लिया जाता है, और MDM इसे दूसरों को जल्दी दे सकता है। MDM के परीक्षण झुंडों पर यह क्रम में डाउनलोड करने जितना ही तेज़ी से समाप्त हुआ, और यह एकमात्र क्रम था जो तब समाप्त हुआ जब एक दुर्लभ भाग का एकमात्र धारक चला गया।"
+  },
   "1511994700b20d33": {
    "source": "<g1>Send on GitHub</g1> opens GitHub's <g2>Crash report</g2> form in your browser, already filled in, along with the folder that holds the report. Drag the report's file into the form, check it, and submit. You need a GitHub account. <g3>Nothing is sent by itself.</g3>",
    "text": "<g1>GitHub पर भेजें</g1> आपके ब्राउज़र में GitHub का <g2>क्रैश रिपोर्ट</g2> फ़ॉर्म खोलता है, जो पहले से भरा हुआ होता है, साथ ही उस फ़ोल्डर को भी खोलता है जिसमें रिपोर्ट होती है। रिपोर्ट की फ़ाइल को फ़ॉर्म में खींचें, उसे जांचें और सबमिट करें। आपको एक GitHub खाते की आवश्यकता है। <g3>कुछ भी अपने आप नहीं भेजा जाता है।</g3>"
@@ -865,10 +869,6 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "हाँ। MDM, IDM के परिचित कमांड-लाइन स्विच स्वीकार करता है, टर्मिनल से डाउनलोड के लिए misterdownloadmanager-cli के साथ आता है, और इसमें एक स्थानीय, टोकन-सुरक्षित…"
-  },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "जिस पंक्ति के ऊपर <x1/> लाइन है, उसका अनुवाद मशीन द्वारा किया गया था। जब आप इसकी जाँच कर लें (और यदि आवश्यक हो तो इसे ठीक कर लें), तो उस <x2/> लाइन को हटा दें।"
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1053,10 +1053,6 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 से</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "Windows पर टॉरेंट इंजन अभी तक किसी एडाप्टर से जुड़ नहीं सकता है। इसलिए जब कोई एडाप्टर चुना जाता है तो टॉरेंट शुरू नहीं होते हैं (\"Windows पर टॉरेंट अभी तक चुने हुए नेटवर्क एडाप्टर के ज़रिए नहीं जा सकते हैं\"), बजाय इसके कि वे उसके चारों ओर जाएँ। ट्रैकर के नाम अभी भी सिस्टम के DNS द्वारा देखे जाते हैं।"
   },
   "1ae1f6b28d64deef": {
    "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
@@ -2113,6 +2109,10 @@
   "34100b5c1de1a9b1": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on <g1>GitHub</g1>. Bug reports, translations and code are all welcome.",
    "text": "MDM को एक स्वतंत्र डेवलपर, Ahmed Nefzaoui ने बनाया है, और यह <g1>GitHub</g1> पर किसी के भी योगदान के लिए खुला है। बग रिपोर्ट, अनुवाद और कोड, सभी का स्वागत है।"
+  },
+  "347561bddd3264b9": {
+   "source": "With <g1>First and last pieces first</g1> (on by default), each file's last pieces come early too. Most video files keep their index at the end, and a player reads it before anything plays.",
+   "text": "<g1>पहले और अंतिम भाग पहले</g1> (डिफ़ॉल्ट रूप से चालू) के साथ, प्रत्येक फ़ाइल के अंतिम भाग भी जल्दी आते हैं। अधिकांश वीडियो फ़ाइलें अपना इंडेक्स अंत में रखती हैं, और एक प्लेयर कुछ भी चलाने से पहले उसे पढ़ता है।"
   },
   "347b30cc38c9585e": {
    "source": "No. MDM is an independent program written from scratch in Rust, with no connection to Tonec Inc., the makers of Internet Download Manager (IDM). It contains…",
@@ -4934,10 +4934,6 @@
    "source": "Firefox 140 or later is needed.",
    "text": "Firefox 140 या उसके बाद का संस्करण आवश्यक है।"
   },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>विकल्प → प्रॉक्सी / SOCKS → नेटवर्क एडाप्टर</g1> MDM के कनेक्शन को एक एडाप्टर से जोड़ता है, आमतौर पर VPN के (<g2>विकल्प</g2>)। Linux और macOS पर टॉरेंट इंजन हर सॉकेट को इससे जोड़ता है: पीयर, ट्रैकर, DHT और उसका लिसनिंग पोर्ट। UPnP और लोकल पीयर डिस्कवरी तब बंद हो जाते हैं, क्योंकि वे एडाप्टर के बजाय लोकल नेटवर्क से बात करते हैं। अगर एडाप्टर चला जाता है, तो इंजन रुक जाता है, और जब वह वापस आता है तो एडाप्टर के ज़रिए फिर से शुरू होता है।"
-  },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
    "text": "<g1>गुणवत्ता</g1> हर वीडियो पर लागू होती है: <g2>सर्वोत्तम गुणवत्ता</g2>, एक ऊँचाई <g3>तक</g3> (प्रत्येक वीडियो उस ऊँचाई पर, या उसके ठीक नीचे), <g4>केवल ऑडियो, मूल</g4>, <g5>केवल ऑडियो MP3</g5>, <g6>केवल ऑडियो OPUS</g6> या <g7>केवल ऑडियो FLAC</g7>। ffmpeg के बिना, केवल वही गुणवत्ताएँ पेश की जाती हैं जो अपनी ध्वनि के साथ आती हैं, और कोई MP3, Opus या FLAC नहीं।"
@@ -5638,6 +5634,10 @@
    "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
    "text": "एक लिंक, एक वीडियो, एक ध्वनि या एक चित्र पर राइट-क्लिक करें और <g1>Mister Download Manager से डाउनलोड करें</g1> चुनें। MDM इसे किसी भी प्रकार का होने पर डाउनलोड करता है: आपने इसके लिए पूछा है, इसलिए फ़ाइल प्रकारों की सूची और बहिष्कृत साइटें यहां लागू नहीं होती हैं (वे केवल यह तय करती हैं कि MDM स्वयं कौन से डाउनलोड लेता है)। एक वीडियो जो स्ट्रीम के रूप में चलता है, वह <g2>वीडियो डाउनलोड करें</g2> विंडो में जाता है।"
   },
+  "8fe7cc9878663c27": {
+   "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
+   "text": "वीडियो को डाउनलोड होते समय देखने के लिए, <g1>क्रम में डाउनलोड करें</g1> पर टिक करें (देखें <g2>क्रम में डाउनलोड करें</g2>)।"
+  },
   "90012a00edfc6a68": {
    "source": "5.5 s<g1><g2>2</g2></g1>",
    "text": "5.5 सेकंड<g1><g2>2</g2></g1>"
@@ -6153,6 +6153,10 @@
   "9dd2cffc726c6f48": {
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "प्रगति (<x1/>, <x2/>), वीडियो, टोरेंट और ऑटोमेशन API के कमांड के साथ हेडलेस डाउनलोड: एक लाइब्रेरी जिसे ऐप का प्रोग्राम चलाता है (<x3/>), और <x4/>, एक छोटा लॉन्चर जो इसे समान आर्ग्यूमेंट्स, टर्मिनल और एग्जिट कोड के साथ शुरू करता है"
+  },
+  "9e0f0149f9728f26": {
+   "source": "Download in order",
+   "text": "क्रम में डाउनलोड करें"
   },
   "9e25aaa6cdfc1d95": {
    "source": "IDM 6.42 vs Mister Download Manager download benchmark",
@@ -6750,10 +6754,6 @@
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>श्रेणी</g1> — फ़ाइल के प्रकार (संपीड़ित, दस्तावेज़, संगीत, प्रोग्राम, वीडियो या सामान्य) से चुनी गई। प्रत्येक श्रेणी का अपना फ़ोल्डर होता है। इसके बगल में <g2>+</g2> एक नई श्रेणी बनाता है।"
   },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>नेटवर्क एडाप्टर</g1> — <g2>कोई भी (सिस्टम चुनता है)</g2> डिफ़ॉल्ट है। एक एडाप्टर चुनें, आमतौर पर आपके VPN का, और MDM द्वारा खोला गया हर कनेक्शन उसी के माध्यम से जाएगा, या बिल्कुल नहीं जाएगा। इसमें डाउनलोड, FTP, आपके द्वारा चुना गया DNS, MDM के अपने डाउनलोड और अपडेट जांच शामिल हैं। यह एक किल स्विच के रूप में काम करता है: जब एडाप्टर डिस्कनेक्ट हो जाता है, या VPN बंद हो जाता है, तो आपके सामान्य कनेक्शन के माध्यम से कुछ भी बाहर नहीं जाता है। चल रहे डाउनलोड \"...कनेक्टेड नहीं है\" के साथ रुक जाते हैं और एडाप्टर के वापस आने पर फिर से शुरू हो जाते हैं। सूची के नीचे की पंक्ति एडाप्टर का पता दिखाती है, या यह कि यह कनेक्टेड नहीं है।"
-  },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
    "text": "<g1>ढूंढें</g1> पर क्लिक करें। पहला मिलान चुना जाता है।"
@@ -6797,6 +6797,10 @@
   "ae63370addd92066": {
    "source": "<g1>Delivery options</g1><g2>Version 0.2.4 · free for everyone</g2>",
    "text": "<g1>डिलीवरी विकल्प</g1><g2>संस्करण 0.2.4 · सभी के लिए मुफ़्त</g2>"
+  },
+  "ae70092fa5e80f46": {
+   "source": "<g1>Download in order</g1> gets a file's start first instead, so you can watch a video while it downloads: open it in your player once the first part is in. Tick it in <g2>Add torrent</g2>, or choose <g3>Torrent → Download in order</g3> in the list's right-click menu, any time, even while it runs. The next pieces asked for follow the new order.",
+   "text": "<g1>क्रम में डाउनलोड करें</g1> इसके बजाय फ़ाइल की शुरुआत पहले प्राप्त करता है, ताकि आप वीडियो को डाउनलोड होते समय देख सकें: एक बार पहला भाग आ जाने पर इसे अपने प्लेयर में खोलें। इसे <g2>टॉरेंट जोड़ें</g2> में टिक करें, या सूची के राइट-क्लिक मेनू में <g3>टॉरेंट → क्रम में डाउनलोड करें</g3> चुनें, किसी भी समय, यहां तक कि जब यह चल रहा हो। मांगे गए अगले भाग नए क्रम का पालन करते हैं।"
   },
   "ae7d25df03a82361": {
    "source": "The site's content is provided for information. We try to keep it accurate, including the comparisons and benchmark figures, which are documented with their methods and raw data, but we can't guarantee it is always complete or up to date. Tell us about mistakes and we'll fix them. Links to other sites are for convenience; we don't control them.",
@@ -7398,6 +7402,10 @@
    "source": "Questions and answers",
    "text": "प्रश्न और उत्तर"
   },
+  "bebf1a7c82ae2be4": {
+   "source": "A torrent in order isn't faster to finish, and it helps the swarm less: use it for what you want to watch now.",
+   "text": "क्रम में एक टॉरेंट तेज़ी से समाप्त नहीं होता है, और यह झुंड की कम मदद करता है: इसका उपयोग उसके लिए करें जिसे आप अभी देखना चाहते हैं।"
+  },
   "bed20915ba662ba4": {
    "source": "Benchmark",
    "text": "बेंचमार्क"
@@ -7993,6 +8001,10 @@
   "d01313dd0d5afa65": {
    "source": "misterdownloadmanager.com is a static site. Three companies take part in showing it to you:",
    "text": "misterdownloadmanager.com एक स्थिर साइट है। इसे आप तक पहुँचाने में तीन कंपनियाँ शामिल हैं:"
+  },
+  "d013797562de4ed8": {
+   "source": "<g1>Download in order</g1> — downloads the torrent's files from their start (see below). Click it again to go back to the rarest pieces first.",
+   "text": "<g1>क्रम में डाउनलोड करें</g1> — टॉरेंट की फ़ाइलों को उनके शुरू से डाउनलोड करता है (नीचे देखें)। सबसे दुर्लभ भागों को पहले डाउनलोड करने के लिए इसे फिर से क्लिक करें।"
   },
   "d029c8a4207a6e22": {
    "source": "The file isn't smaller than <g1>Don't take files smaller than</g1> in <g2>Options → File types</g2>.",
@@ -8934,6 +8946,10 @@
    "source": "The free IDM alternative: Mister Download Manager",
    "text": "मुफ्त IDM विकल्प: Mister Download Manager"
   },
+  "e8cba16e3299c9aa": {
+   "source": "Several files are downloaded one after another, sorted by name.",
+   "text": "कई फ़ाइलें एक के बाद एक डाउनलोड की जाती हैं, नाम के अनुसार क्रमबद्ध।"
+  },
   "e8e60ab7a956c830": {
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "ब्राउज़र एकीकरण विस्तार से (Firefox, निजी विंडो, क्या भेजा जाता है) →"
@@ -9458,6 +9474,10 @@
    "source": "The same list is in MDM under Help → Keyboard shortcuts, and the menus show each command's keys beside it. On a Mac, ⌘ (Command) takes the place of Ctrl: ⌘N…",
    "text": "यही सूची MDM में सहायता → कीबोर्ड शॉर्टकट के तहत है, और मेनू प्रत्येक कमांड की कुंजियों को उसके बगल में दिखाते हैं। मैक पर, ⌘ (कमांड) Ctrl की जगह लेता है: ⌘N…"
   },
+  "f83a5475dd229215": {
+   "source": "Slower peers take pieces a little further on, so the start isn't waiting for them.",
+   "text": "धीमे साथी थोड़े आगे के भाग लेते हैं, ताकि शुरुआत उनके लिए इंतजार न करे।"
+  },
   "f850e1ec720abccf": {
    "source": "Press a focused button, tick a check box, tick the selected row of a list",
    "text": "एक फ़ोकस किया गया बटन दबाएँ, एक चेक बॉक्स पर टिक करें, एक सूची की चयनित पंक्ति पर टिक करें"
@@ -9645,6 +9665,10 @@
   "fd40efe02c1179f3": {
    "source": "The examples use Windows' paths; on macOS and Linux the programs have the same names without <x1/>.",
    "text": "उदाहरणों में Windows के पाथ का उपयोग किया गया है; macOS और Linux पर प्रोग्रामों के नाम <x1/> के बिना समान होते हैं।"
+  },
+  "fd63eb3e402437d2": {
+   "source": "<g1>First and last pieces first</g1> — with <g2>Download in order</g2>, each file's first and last pieces come before the rest. It's on by default.",
+   "text": "<g1>पहले और अंतिम भाग पहले</g1> — <g2>क्रम में डाउनलोड करें</g2> के साथ, प्रत्येक फ़ाइल के पहले और अंतिम भाग बाकी से पहले आते हैं। यह डिफ़ॉल्ट रूप से चालू होता है।"
   },
   "fd66ec497d4a47d6": {
    "source": "<g1>Ghost windows while a menu is open</g1> (issue #4): faded copies of the main window titled \"egui window\" opened and closed with every redraw of an open menu, and the toolbar's hover flickered under them. On a Mac in full screen they opened a space of their own and froze MDM (issue #5). They came with 0.2.0's menu keyboard support, which asked about a submenu's window that wasn't open, and that made one.",
