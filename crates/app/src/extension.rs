@@ -1,9 +1,10 @@
 //! The browser extension's offer: at each start, until a browser's extension has reached the
 //! app (the native host notes it: mdm_ipc::extension::seen), a window lists the browsers
 //! installed and opens the extension's page in the one picked (addons.mozilla.org for Firefox
-//! and its family, the Chrome Web Store for Chromium browsers once listed, the tutorial until
-//! then). Chrome may ask by itself too: registering the host also names the store's extension
-//! to it (crates/nmhost). "Don't ask again" stops the offer; `/show extension` brings it back.
+//! and its family, the Chrome Web Store for Chrome, Edge, Brave, Opera and Vivaldi), with the
+//! tutorial that adds it by hand as the fallback. Chrome may ask by itself too: registering the
+//! host also names the store's extension to it (crates/nmhost). "Don't ask again" stops the
+//! offer; `/show extension` brings it back.
 
 use std::path::PathBuf;
 use std::time::Duration;
@@ -154,8 +155,8 @@ impl Extension {
         );
 
         // One row per browser: its name, and the button that opens the extension's page in it:
-        // Firefox's on addons.mozilla.org, the Chrome Web Store's for the others once listed
-        // there (until then the tutorial).
+        // Firefox's on addons.mozilla.org, the Chrome Web Store's for the others (the tutorial
+        // while STORE_ID is a placeholder, as in a build of its own).
         let store = mdm_ipc::extension::store_page();
         for (k, (name, program)) in self.browsers.iter().enumerate() {
             let y = BANNER + 16.0 + k as f32 * ROW;
@@ -192,7 +193,7 @@ impl Extension {
                 );
             }
             let label = if page.is_none() {
-                // i18n: button in the browser extension's window: open the tutorial that adds the Firefox add-on
+                // i18n: button in the browser extension's window: open the tutorial that adds the extension
                 "Show me how"
             } else {
                 // i18n: button in the browser extension's window: open the extension's page in that browser
@@ -274,6 +275,21 @@ impl Extension {
         }
         winui::etched_h(&p, o.x + 16.0, o.y + h - 46.0, W - 32.0);
         let y = h - 36.0;
+        // The fallback, when a store can't be used (a managed browser, a store turned off): the
+        // tutorial, which adds it by hand.
+        if store.is_some()
+            && winui::link(
+                ui,
+                &p,
+                o.x + 18.0,
+                o.y + y + 17.0,
+                // i18n: link in the browser extension's window: the tutorial that adds it without the browser's store
+                "Install it by hand",
+                "by-hand",
+            )
+        {
+            let _ = open::that_detached(mdm_ipc::extension::GUIDE_PAGE);
+        }
         let close = winui::button(
             ui,
             r(o, W - 18.0 - 90.0, y, 90.0, 25.0),

@@ -5,9 +5,12 @@
 //! 188-byte packet with the 0x47 sync byte, DASH init segments with an `ftyp` box), enough for a
 //! client that lists, fetches or joins segments, not for one that decodes them.
 
-use axum::extract::Path;
+use std::collections::HashMap;
+
+use axum::extract::{Path, Query};
 use axum::http::{StatusCode, header};
 use axum::response::{IntoResponse, Response};
+use percent_encoding::{NON_ALPHANUMERIC, utf8_percent_encode};
 
 use crate::content;
 
@@ -183,6 +186,73 @@ fn mpd(protected: bool) -> String {
          </Period>\n</MPD>\n"
     );
     s
+}
+
+/// #171: the same HLS stream with no `.m3u8` in any address and served as `text/plain`, as some
+/// CDNs and players do: `/hls2/playlist?id=ID` (the master), `/hls2/playlist?id=ID&track=T` (a
+/// media playlist) and `/hls2/seg?id=ID&track=T&i=N` (`application/octet-stream`).
+pub(crate) async fn hls2_playlist(Query(q): Query<HashMap<String, String>>) -> Response {
+    let id = utf8_percent_encode(q.get("id").map_or("lab", String::as_str), NON_ALPHANUMERIC)
+        .to_string();
+    let Some(name) = q.get("track") else {
+        let mut s = format!(
+            "#EXTM3U\n#EXT-X-VERSION:3\n\
+             #EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID=\"aud\",NAME=\"English\",LANGUAGE=\"en\",\
+             DEFAULT=YES,AUTOSELECT=YES,URI=\"playlist?id={id}&track=audio\"\n"
+        );
+        for t in &TRACKS {
+            if let Some((w, h)) = t.video {
+                s += &format!(
+                    "#EXT-X-STREAM-INF:BANDWIDTH={},RESOLUTION={w}x{h},\
+                     CODECS=\"avc1.4d401f,mp4a.40.2\",AUDIO=\"aud\"\nplaylist?id={id}&track={}\n",
+                    t.bandwidth, t.name
+                );
+            }
+        }
+        return text(PLAIN, s);
+    };
+    if track(name).is_none() {
+        return StatusCode::NOT_FOUND.into_response();
+    }
+    let mut s = format!(
+        "#EXTM3U\n#EXT-X-VERSION:3\n#EXT-X-TARGETDURATION:{SEGMENT_SECS}\n\
+         #EXT-X-MEDIA-SEQUENCE:0\n#EXT-X-PLAYLIST-TYPE:VOD\n"
+    );
+    for i in 0..SEGMENTS {
+        s += &format!("#EXTINF:{SEGMENT_SECS}.000,\nseg?id={id}&track={name}&i={i}\n");
+    }
+    s += "#EXT-X-ENDLIST\n";
+    text(PLAIN, s)
+}
+
+const PLAIN: &str = "text/plain; charset=utf-8";
+
+/// `/hls2/seg?track=T&i=N`: segment N of track T, as `application/octet-stream`.
+pub(crate) async fn hls2_segment(Query(q): Query<HashMap<String, String>>) -> Response {
+    let found = q.get("track").and_then(|n| track(n));
+    let i = q.get("i").and_then(|i| i.parse::<u32>().ok());
+    match (found, i) {
+        (Some((ti, t)), Some(i)) if i < SEGMENTS => {
+            let mut buf = segment(ti, i, t.segment_len);
+            for packet in buf.chunks_mut(TS_PACKET) {
+                packet[0] = 0x47;
+            }
+            bytes("application/octet-stream", buf)
+        }
+        _ => StatusCode::NOT_FOUND.into_response(),
+    }
+}
+
+/// `/dash2/manifest?id=ID`: the DASH manifest with no `.mpd` in its address, served as
+/// `application/octet-stream`; its segments are `/dash2/{rep}/init.mp4` and `seg{n}.m4s`.
+pub(crate) async fn dash2_manifest() -> Response {
+    text("application/octet-stream", mpd(false))
+}
+
+/// `/hls2/config?id=ID`: a player's settings as `text/plain`, not a manifest (the pages' decoy:
+/// the extension may read it and must never list it).
+pub(crate) async fn hls2_config() -> Response {
+    text(PLAIN, "{\"autoplay\":false,\"volume\":0.8}\n".to_owned())
 }
 
 /// `/dash/{rep}/init.mp4` and `/dash/{rep}/seg{n}.m4s` (n from 1).
