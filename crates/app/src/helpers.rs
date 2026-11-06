@@ -6,7 +6,7 @@
 use std::sync::Arc;
 use std::sync::Mutex;
 
-use egui::{FontFamily, FontId, Pos2, Ui};
+use egui::{Pos2, Ui};
 
 use crate::dialogs::{Outcome, window};
 use crate::icons::Icon;
@@ -122,13 +122,18 @@ impl Helpers {
             ctx.request_repaint_after(std::time::Duration::from_millis(150));
         }
         let mut answer = None;
+        // A long translation's subline makes the banner taller (winui::banner).
+        let extra = crate::dialogs::grow_extra(ctx, "helpers-banner");
         window(
             ctx,
             "helpers",
             // i18n: title of the first start's window that offers yt-dlp and ffmpeg
             "Get ready for video downloads",
             // Taller once Yes is pressed: the progress under the last section.
-            [520.0, if self.job.is_some() { 418.0 } else { 382.0 }],
+            [
+                520.0,
+                if self.job.is_some() { 418.0 } else { 382.0 } + extra,
+            ],
             false,
             winui::BG(),
             |ui, o| {
@@ -158,38 +163,20 @@ impl Helpers {
         let (ink, muted) = (winui::TEXT(), winui::MUTED());
         let w = 520.0;
         // The banner: MDM's own logo, what this is for, in one line, and why now.
-        p.rect_filled(winui::rect(r(o, 0.0, 0.0, w, 84.0)), 0.0, winui::FIELD());
-        winui::fill_l(
+        let extra = winui::banner(
+            ui,
             &p,
-            o.x,
-            o.y + 84.0,
-            o.x + w - 1.0,
-            o.y + 84.0,
-            winui::FIELD_EDGE(),
-        );
-        egui::Image::new(egui::include_image!("../assets/icons/app/mdm-48.png"))
-            .paint_at(ui, winui::rect(r(o, 18.0, 18.0, 48.0, 48.0)));
-        let title = FontId::new(16.0, FontFamily::Name("tahoma-bold".into()));
-        winui::text_font(
-            &p,
-            title,
-            o.x + 80.0,
-            o.y + 36.0,
+            o,
+            w,
+            "helpers-banner",
             // i18n: the headline of the first start's helpers window
             crate::i18n::t("Download videos from YouTube and 1,000+ sites"),
-            ink,
-        );
-        winui::paragraph(
-            &p,
-            o.x + 80.0,
-            o.y + 57.0,
             crate::i18n::t(
                 "Two free helpers make it work. Get them now, and saving a video is one click away when you find one.",
             ),
-            muted,
-            o.x + w - 18.0,
-            14.0,
         );
+        // Everything below it moves down with a taller banner.
+        let o = o + egui::vec2(0.0, extra);
 
         let ffmpeg_here = !cfg!(windows)
             && self
@@ -236,7 +223,7 @@ impl Helpers {
         for (k, (icon, name, what)) in rows.iter().enumerate() {
             let y = 100.0 + k as f32 * 72.0;
             icon.image(true)
-                .paint_at(ui, winui::rect(r(o, 22.0, y + 2.0, 32.0, 32.0)));
+                .paint_at(ui, r(o, 22.0, y + 2.0, 32.0, 32.0));
             winui::text_font(
                 &p,
                 winui::tahoma_bold(),
@@ -323,11 +310,7 @@ impl Helpers {
             };
             drop(st);
             let bar_w = 320.0;
-            winui::meter(
-                &p,
-                winui::rect(r(o, (w - bar_w) / 2.0, 312.0, bar_w, 8.0)),
-                fraction,
-            );
+            winui::meter(&p, r(o, (w - bar_w) / 2.0, 312.0, bar_w, 8.0), fraction);
             // Centred on screen (the same place in both directions); cut to the window.
             let room = w - 40.0;
             let shown = winui::ellipsize(&p, &winui::tahoma(), &line, room);

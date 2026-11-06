@@ -359,7 +359,7 @@ impl ReportWindow {
                 .load_texture("crash-icon", img, egui::TextureOptions::LINEAR)
         });
         egui::Image::new((icon.id(), egui::vec2(32.0, 32.0)))
-            .paint_at(ui, winui::rect(r(o, 16.0, 16.0, 32.0, 32.0)));
+            .paint_at(ui, r(o, 16.0, 16.0, 32.0, 32.0));
         winui::text_font(
             &p,
             winui::tahoma_bold(),
