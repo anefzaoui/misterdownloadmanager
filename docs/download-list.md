@@ -91,7 +91,7 @@ The right-click menu has everything you can do with a download: **Open**, **Open
 
 ## Properties
 
-**File Properties** shows a download's type, status, size and folder, its address, your description, the page it came from (**Referer**) and a login for the site. **Last try** and **Result** tell you how its last attempt went.
+**File Properties** shows a download's type, status, size and folder, its address, your description, the page it came from (**Referer**), where its server is ([country and round trip](connections-and-speed.md#where-the-server-is), as its last run saw them) and a login for the site. **Last try** and **Result** tell you how its last attempt went.
 
 - **Move** — move a finished file to another folder, or choose another folder for a download that hasn't started.
 - **Address** — for an unfinished download, you can paste a new address here. See [Resume a broken download](guide-resume-broken-download.md).

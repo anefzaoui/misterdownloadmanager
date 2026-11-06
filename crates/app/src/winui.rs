@@ -226,6 +226,52 @@ pub fn galley(p: &Painter, font: FontId, s: &str, color: Color32) -> std::sync::
     p.layout_job(job)
 }
 
+/// The banner atop a first-start window (the browser extension's offer, the video helpers):
+/// MDM's logo at the start side, a bold headline, and a muted subline that wraps. 84 px tall, and
+/// taller by what a long translation's extra lines need: that extra is returned, for the window
+/// to add to its height and to move what is below the banner down by (it is known from the frame
+/// before: [`crate::dialogs::grow_extra`] under `key`).
+#[allow(clippy::too_many_arguments)]
+pub fn banner(
+    ui: &Ui,
+    p: &Painter,
+    o: Pos2,
+    w: f32,
+    key: &str,
+    headline: &str,
+    subline: &str,
+) -> f32 {
+    const PLANNED: f32 = 84.0;
+    let extra = crate::dialogs::grow_extra(ui.ctx(), key);
+    let h = PLANNED + extra;
+    // `r` gives the rect where it is on screen (mirrored in RTL): the logo at the start side.
+    p.rect_filled(r(o, 0.0, 0.0, w, h), 0.0, FIELD());
+    fill_l(p, o.x, o.y + h, o.x + w - 1.0, o.y + h, FIELD_EDGE());
+    egui::Image::new(egui::include_image!("../assets/icons/app/mdm-48.png"))
+        .paint_at(ui, r(o, 18.0, 18.0, 48.0, 48.0));
+    // The headline on one line: cut with "..." at the far edge (a long translation), whole on
+    // hover.
+    let bold = tahoma_title();
+    let shown = ellipsize(p, &bold, headline, w - 18.0 - 80.0);
+    let drawn = text_font(p, bold, o.x + 80.0, o.y + 36.0, &shown, TEXT());
+    if shown != headline {
+        full_on_hover(ui, drawn, (key, "headline"), headline);
+    }
+    let lines = paragraph(
+        p,
+        o.x + 80.0,
+        o.y + 57.0,
+        subline,
+        MUTED(),
+        o.x + w - 18.0,
+        14.0,
+    );
+    // As planned, two lines: the second one's baseline at 71, then 13 px of descent and margin.
+    let need = 57.0 + 14.0 * (lines.max(2) as f32 - 1.0) + 13.0;
+    crate::dialogs::grow_px(ui.ctx(), key, need - PLANNED);
+    extra
+}
+
 /// Draw `s` with its pen (its start) at English `x` and its baseline (last cap row) at
 /// `baseline`. Returns the text's advance rect on screen.
 pub fn text(p: &Painter, x: f32, baseline: f32, s: &str, color: Color32) -> Rect {
@@ -2430,13 +2476,73 @@ pub fn button(
 /// side, with room before it) to fit its translated `label` whole, with the room [`button`]
 /// keeps inside the border, at most to `max_width`. English labels fit IDM's buttons, so
 /// English never changes; a label that would still not fit ends in "..." and shows whole on
-/// hover, as on every button. (A button with room after it would widen to the right: add that
-/// when one needs it.)
+/// hover, as on every button. (A row of buttons: [`buttons_from_left`], [`buttons_to_right`].)
 pub fn button_rect_for(p: &Painter, rc: Rect, label: &str, max_width: f32) -> Rect {
+    let w = button_fit_width(p, label, rc.width(), max_width);
+    // Widened in English, where its right edge stays; on screen in RTL its left edge stays and
+    // it widens to the right, into the room before it (`rect` is its own inverse).
+    let english = rect(rc);
+    rect(Rect::from_min_max(
+        pos2(english.right() - w, english.top()),
+        english.max,
+    ))
+}
+
+/// How wide a [`button`] must be for its translated `label` to show whole, with the room it
+/// keeps inside its border: at least `min` (its English width: English labels fit IDM's
+/// buttons, so English never changes), at most `max` (past it the label ends in "..." and
+/// shows whole on hover, as on every button).
+pub fn button_fit_width(p: &Painter, label: &str, min: f32, max: f32) -> f32 {
     let shown = crate::i18n::t(label).replace('&', "");
-    let want = (text_width(p, &shown) + 4.0 + 12.0).ceil();
-    let w = want.clamp(rc.width(), max_width.max(rc.width()));
-    Rect::from_min_max(pos2(rc.right() - w, rc.top()), rc.max)
+    (text_width(p, &shown) + 4.0 + 12.0)
+        .ceil()
+        .clamp(min, max.max(min))
+}
+
+/// A row of [`button`]s laid out for their translated labels, `gap` apart, the first starting
+/// at English x `left`: each `(label, English width)` as wide as [`button_fit_width`] says (at
+/// most `max`). Their English (x, width) in the order given, for [`r`]; in English every button
+/// keeps its place.
+pub fn buttons_from_left(
+    p: &Painter,
+    left: f32,
+    gap: f32,
+    buttons: &[(&str, f32)],
+    max: f32,
+) -> Vec<(f32, f32)> {
+    let mut x = left;
+    buttons
+        .iter()
+        .map(|(label, min)| {
+            let w = button_fit_width(p, label, *min, max);
+            let at = (x, w);
+            x += w + gap;
+            at
+        })
+        .collect()
+}
+
+/// [`buttons_from_left`] for a row that ends at English x `right` (the last button's right
+/// edge): it grows to the left.
+pub fn buttons_to_right(
+    p: &Painter,
+    right: f32,
+    gap: f32,
+    buttons: &[(&str, f32)],
+    max: f32,
+) -> Vec<(f32, f32)> {
+    let mut x = right + gap;
+    let mut out: Vec<(f32, f32)> = buttons
+        .iter()
+        .rev()
+        .map(|(label, min)| {
+            let w = button_fit_width(p, label, *min, max);
+            x -= gap + w;
+            (x, w)
+        })
+        .collect();
+    out.reverse();
+    out
 }
 
 /// `label` as it fits on a button `rc`: whole, or cut with "..." (true) when it would reach the
@@ -4702,6 +4808,91 @@ pub mod caption {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// `r` already gives the screen rect (mirrored in RTL); `rect` around it mirrors it back,
+    /// so the thing stays at its English place in Arabic (#170: the browser offer window's logo
+    /// over its subline). No window does that.
+    #[test]
+    fn no_rect_is_mirrored_twice() {
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let twice = ["rect(r(", "rect(winui::r("];
+        let mut found = Vec::new();
+        for entry in std::fs::read_dir(dir).unwrap() {
+            let path = entry.unwrap().path();
+            let Ok(src) = std::fs::read_to_string(&path) else {
+                continue;
+            };
+            for (n, line) in src.lines().enumerate() {
+                let code = line.split("//").next().unwrap_or_default();
+                if twice.iter().any(|t| code.contains(t)) && !code.contains("\"rect(") {
+                    found.push(format!("{}:{}", path.display(), n + 1));
+                }
+            }
+        }
+        assert!(found.is_empty(), "rect(r(...)) mirrors twice: {found:?}");
+    }
+
+    /// `f` with a painter whose Tahoma is the interface font (as on macOS and Linux).
+    fn with_painter(f: impl FnOnce(&Painter)) {
+        let ctx = egui::Context::default();
+        let mut defs = egui::FontDefinitions::default();
+        install_fonts(&mut defs, None);
+        ctx.set_fonts(defs);
+        let mut f = Some(f);
+        let mut out = ctx.run_ui(egui::RawInput::default(), |ui| {
+            if let Some(f) = f.take() {
+                f(ui.painter());
+            }
+        });
+        out.textures_delta.clear();
+    }
+
+    #[test]
+    fn a_row_of_buttons_widens_for_long_labels_only() {
+        with_painter(|p| {
+            // Short labels keep their English places (Download video's bottom row).
+            let row = [("Later", 73.0), ("Cancel", 73.0)];
+            assert_eq!(
+                buttons_to_right(p, 489.0, 8.0, &row, 160.0),
+                vec![(335.0, 73.0), (416.0, 73.0)]
+            );
+            assert_eq!(
+                buttons_from_left(p, 11.0, 8.0, &row, 160.0),
+                vec![(11.0, 73.0), (92.0, 73.0)]
+            );
+            // A long one is as wide as its text and the room inside the border, up to the most
+            // allowed; the row keeps its end and its gaps.
+            let long = "A label much longer than its English button";
+            let want = (text_width(p, long) + 16.0).ceil();
+            let row = [(long, 90.0), ("Cancel", 73.0)];
+            let placed = buttons_to_right(p, 489.0, 8.0, &row, 400.0);
+            assert_eq!(placed[0], (489.0 - 73.0 - 8.0 - want, want));
+            assert_eq!(placed[1], (416.0, 73.0));
+            let placed = buttons_from_left(p, 11.0, 8.0, &row, 400.0);
+            assert_eq!(placed[1].0, 11.0 + want + 8.0);
+            assert_eq!(buttons_to_right(p, 489.0, 8.0, &row, 120.0)[0].1, 120.0);
+            // Its label then fits whole (no "...").
+            let rc = Rect::from_min_size(pos2(0.0, 0.0), vec2(want, 21.0));
+            assert!(!fit_label(p, long, rc).1);
+        });
+    }
+
+    #[test]
+    fn a_widened_button_grows_into_the_room_before_it_in_rtl_too() {
+        with_painter(|p| {
+            let long = "A label much longer than its English button";
+            let english = Rect::from_min_size(pos2(401.0, 135.0), vec2(96.0, 21.0));
+            let ltr = button_rect_for(p, english, long, 300.0);
+            assert_eq!(ltr.right(), 497.0);
+            assert!(ltr.left() < 401.0);
+            // Mirrored: the button is at the window's left, and grows to the right (inwards).
+            let _s = Surface::enter_if(true, 0.0, 600.0);
+            let shown = button_rect_for(p, rect(english), long, 300.0);
+            assert_eq!(shown.left(), 600.0 - 497.0);
+            assert_eq!(shown.width(), ltr.width());
+            assert_eq!(rect(shown), ltr);
+        });
+    }
 
     #[test]
     fn a_path_is_shortened_in_the_middle_and_keeps_its_file_name() {

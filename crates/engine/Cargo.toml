@@ -36,6 +36,9 @@ hickory-resolver.workspace = true
 socket2.workspace = true
 network-interface.workspace = true
 hyper-util.workspace = true
+# The client's connector timed, a layer around it (src/server.rs; already in the tree).
+tower-layer = "0.3.3"
+tower-service = "0.3.3"
 # hyper-util's proxy matcher takes an http::Uri (already in the tree through reqwest).
 http = "1.5.0"
 rustls.workspace = true
