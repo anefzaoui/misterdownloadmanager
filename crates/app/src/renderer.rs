@@ -224,6 +224,12 @@ fn testing(name: &str) -> bool {
     crate::offscreen() && std::env::var_os(name).is_some_and(|v| v == "1")
 }
 
+/// The start of every main-window pass: Direct3D's device checked (see `direct3d::poll`).
+pub fn frame_begin() {
+    #[cfg(windows)]
+    direct3d::poll();
+}
+
 /// The first frame was drawn (presented).
 static DRAWN: AtomicBool = AtomicBool::new(false);
 
@@ -424,6 +430,10 @@ mod direct3d {
                     FIRST_FRAME_WITHIN.as_secs()
                 );
                 remember_failure(&why);
+                // Remembered as this reason, not as a start that ended before its first frame.
+                if let Some(f) = file(super::STARTING) {
+                    let _ = std::fs::remove_file(f);
+                }
                 start_again(&why);
             });
     }
@@ -463,6 +473,14 @@ mod direct3d {
     }
 
     static DEVICE: std::sync::OnceLock<wgpu::Device> = std::sync::OnceLock::new();
+
+    /// Each main-window pass, before its frame is painted: wgpu notices a lost device here and
+    /// calls [`watch_device`]'s callback, before painting with it would fail.
+    pub fn poll() {
+        if let Some(d) = DEVICE.get() {
+            let _ = d.poll(wgpu::PollType::Poll);
+        }
+    }
     static TEST_LOSS: AtomicBool = AtomicBool::new(false);
 
     /// `/show renderer-lost` (off-screen test copies): lose the device on purpose.
@@ -470,6 +488,7 @@ mod direct3d {
         if let Some(d) = DEVICE.get() {
             TEST_LOSS.store(true, Ordering::Relaxed);
             d.destroy();
+            poll();
         }
     }
 
