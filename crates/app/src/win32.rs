@@ -476,8 +476,86 @@ pub fn main_minimize_to_tray(ctx: &egui::Context, enabled: bool) -> bool {
     })
 }
 
+/// A menu window's style: a plain popup, as Win32's own menus are, without the caption, frame
+/// and caption buttons winit gives every borderless window (it keeps WS_CAPTION and hides the
+/// frame in WM_NCCALCSIZE). With a caption style, whatever lays the window out by its styles
+/// rather than by our WM_NCCALCSIZE puts the client a caption lower and a frame to the right:
+/// on a Windows 11 Insider build (22635) each menu showed a black band a caption tall across
+/// its top and its items moved down by as much (#208). Without one, every reading agrees: the
+/// client is the whole window.
+pub(crate) fn menu_style(style: u32) -> u32 {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        WS_CAPTION, WS_MAXIMIZEBOX, WS_MINIMIZEBOX, WS_POPUP, WS_SYSMENU,
+    };
+    (style & !(WS_CAPTION | WS_THICKFRAME | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX))
+        | WS_POPUP
+}
+
+#[cfg(test)]
+mod menu_style_tests {
+    use super::*;
+    use windows_sys::Win32::Foundation::RECT;
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        AdjustWindowRectEx, WS_CLIPCHILDREN, WS_CLIPSIBLINGS, WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW,
+        WS_EX_TOPMOST, WS_POPUP, WS_VISIBLE,
+    };
+
+    /// winit's borderless window as it creates a menu (style 0x16CB0000: a caption, system
+    /// menu, minimize and maximize boxes) and the extended styles menu_window gives it.
+    const WINIT_MENU: u32 = 0x16CB_0000;
+    const MENU_EX: u32 = 0x0804_0198;
+
+    fn frame(style: u32, ex: u32) -> [i32; 4] {
+        let mut rc = RECT {
+            left: 0,
+            top: 0,
+            right: 279,
+            bottom: 275,
+        };
+        // SAFETY: plain computation on a local rectangle.
+        unsafe { AdjustWindowRectEx(&mut rc, style, 0, ex) };
+        [-rc.left, -rc.top, rc.right - 279, rc.bottom - 275]
+    }
+
+    #[test]
+    fn a_menu_window_is_a_popup_whose_client_is_all_of_it() {
+        // As created, the styles alone give it a caption and a frame: what a reader of the
+        // styles (rather than of our WM_NCCALCSIZE) took for its client on build 22635 (#208).
+        assert_ne!(frame(WINIT_MENU, MENU_EX), [0, 0, 0, 0]);
+        let style = menu_style(WINIT_MENU);
+        assert_eq!(
+            style,
+            WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN
+        );
+        // As a popup, no reading of its styles finds a frame (at any scale: none to scale).
+        assert_eq!(frame(style, MENU_EX), [0, 0, 0, 0]);
+        // Applied again (winit setting its styles once more), nothing changes.
+        assert_eq!(menu_style(style), style);
+    }
+
+    #[test]
+    fn a_menu_window_keeps_its_extended_styles() {
+        // winit's own extended styles for it, without ours: they come back.
+        let winit_ex = WS_EX_TOPMOST | 0x0000_0100 | 0x0000_0010;
+        let ex = menu_ex_style(winit_ex);
+        assert_eq!(ex & WS_EX_NOACTIVATE, WS_EX_NOACTIVATE);
+        assert_eq!(ex & WS_EX_TOOLWINDOW, WS_EX_TOOLWINDOW);
+        assert_eq!(ex & WS_EX_TOPMOST, WS_EX_TOPMOST);
+    }
+}
+
+/// The extended styles a menu window keeps: never activated, no taskbar button or Alt+Tab entry.
+fn menu_ex_style(ex: u32) -> u32 {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW};
+    ex | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW
+}
+
 /// Menu windows answer mouse-activation with "don't activate": clicking an item must not take
-/// focus from the main window (which would close the menu before the click completes).
+/// focus from the main window (which would close the menu before the click completes). They
+/// keep their popup styles when winit sets the styles again (it does on every change of its
+/// window flags, showing the window included), and their client is the whole window, with no
+/// frame (winit's borderless frame moves the client a pixel down, for a shadow drawn round a
+/// caption style, which a popup has no need of).
 unsafe extern "system" fn menu_proc(
     hwnd: HWND,
     msg: u32,
@@ -486,10 +564,27 @@ unsafe extern "system" fn menu_proc(
     _id: usize,
     _data: usize,
 ) -> LRESULT {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{STYLESTRUCT, WM_STYLECHANGING};
     const WM_MOUSEACTIVATE: u32 = 0x0021;
     const MA_NOACTIVATE: LRESULT = 3;
     if msg == WM_MOUSEACTIVATE {
         return MA_NOACTIVATE;
+    }
+    if msg == WM_STYLECHANGING && lparam != 0 {
+        // SAFETY: for WM_STYLECHANGING, lParam points to the STYLESTRUCT of the change, whose
+        // styleNew the window may alter (Win32 contract).
+        let s = unsafe { &mut *(lparam as *mut STYLESTRUCT) };
+        match wparam as i32 {
+            GWL_STYLE => s.styleNew = menu_style(s.styleNew),
+            GWL_EXSTYLE => s.styleNew = menu_ex_style(s.styleNew),
+            _ => {}
+        }
+        return 0;
+    }
+    if msg == WM_NCCALCSIZE {
+        // No non-client area: the proposed window rectangle (rgrc[0], or the RECT itself when
+        // wParam is FALSE) stays as the client's.
+        return 0;
     }
     unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) }
 }
@@ -497,14 +592,15 @@ unsafe extern "system" fn menu_proc(
 /// Make our borderless window titled `title` behave and look like a Win32 menu popup: never
 /// activated (the main window keeps focus and keyboard), no taskbar entry, Windows 11's small
 /// rounded corners, shadow and a 1 px border in `border` (0x00BBGGRR), and no window-open
-/// animation (menus just appear). Cheap to call every frame: returns true only on the call
-/// that applied it — the window is created hidden and should be shown then.
+/// animation (menus just appear); a plain popup window whose client is all of it
+/// ([`menu_style`], #208). Cheap to call every frame: returns true only on the call that applied
+/// it — the window is created hidden and should be shown then.
 pub fn menu_window(title: &str, border: u32) -> bool {
     use windows_sys::Win32::Graphics::Dwm::{
         DWMWA_BORDER_COLOR, DWMWA_TRANSITIONS_FORCEDISABLED, DWMWA_WINDOW_CORNER_PREFERENCE,
         DWMWCP_ROUNDSMALL, DwmSetWindowAttribute,
     };
-    use windows_sys::Win32::UI::WindowsAndMessaging::{WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{SWP_NOSIZE, WS_EX_NOACTIVATE};
     let Some(hwnd) = find_own_window(title) else {
         return false;
     };
@@ -520,12 +616,21 @@ pub fn menu_window(title: &str, border: u32) -> bool {
             &off as *const i32 as *const c_void,
             size_of::<i32>() as u32,
         );
-        SetWindowLongPtrW(
-            hwnd,
-            GWL_EXSTYLE,
-            (ex | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW) as isize,
-        );
+        // The subclass first: it keeps the styles below when winit sets its own again.
         SetWindowSubclass(hwnd, Some(menu_proc), 0x3e1, 0);
+        SetWindowLongPtrW(hwnd, GWL_EXSTYLE, menu_ex_style(ex) as isize);
+        let style = GetWindowLongPtrW(hwnd, GWL_STYLE) as u32;
+        SetWindowLongPtrW(hwnd, GWL_STYLE, menu_style(style) as isize);
+        // The frame measured again (WM_NCCALCSIZE): no caption, the client the whole window.
+        SetWindowPos(
+            hwnd,
+            std::ptr::null_mut(),
+            0,
+            0,
+            0,
+            0,
+            SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
+        );
         let corner = DWMWCP_ROUNDSMALL;
         DwmSetWindowAttribute(
             hwnd,

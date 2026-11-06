@@ -394,6 +394,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Menus without a black band across their top**
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
+  Insider build (22635), every menu and submenu showed a black band a title bar tall across its
+  top and a thin one down its left side, its items moved down by as much and its last ones cut
+  off. A menu's window had a title bar's style, hidden by MDM, and something on that build placed
+  the menu's picture where the title bar would have ended. Menus are now plain pop-up windows, as
+  Windows' own menus are, with nothing above their items to take for a title bar.
 - **A freeze while MDM handles a command is reported again**
   ([#202](https://github.com/anefzaoui/misterdownloadmanager/issues/202)): since the clock and
   what comes in from outside (a second launch, the browser, the automation API) run in every
