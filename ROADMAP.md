@@ -16,6 +16,8 @@ Everything below ships together, in one release.
 - ✅ Torrents: Download in order, to watch a video while it downloads (each file's first and last
   pieces first, its own choice); other torrents now take the rarest pieces first
   ([#39](https://github.com/anefzaoui/misterdownloadmanager/issues/39))
+- ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
+  saving the list no longer wait for the window to be restored
 - ✅ HLS and DASH videos from the browser reach yt-dlp as their stream, by the button over the
   video, the right-click menu (it did nothing in Firefox) and the media list
   ([#155](https://github.com/anefzaoui/misterdownloadmanager/issues/155))
@@ -168,8 +170,6 @@ Everything below ships together, in one release.
   contrast; then style themes with their own control shapes, a drawn title bar on Windows and their
   own icons: Metro first, then Adwaita and Breeze, then Luna, Aero and Aqua with icons drawn for
   MDM. Theme files can be added by anyone, and Base16 and pywal schemes imported
-- 🔄 A minimized MDM keeps working: queues, the Scheduler, speed limits, the kill switch and saving
-  no longer wait for the window to be restored (after [#162](https://github.com/anefzaoui/misterdownloadmanager/issues/162))
 - 🔄 Where a download's server is: its country, flag and round trip, from a table that comes with
   MDM; no address is sent anywhere ([#140](https://github.com/anefzaoui/misterdownloadmanager/issues/140))
 - 🔄 A stream whose address doesn't end in `.m3u8` or `.mpd` is still recognised by its contents
