@@ -867,7 +867,26 @@ fn popup_level<C: Clone>(
     let mut sub_at: Option<(usize, f32)> = None;
     let vid = egui::ViewportId::from_hash_of(("menu", id, depth));
     let parent_vid = ctx.viewport_id();
+    // Set when this pass made the new (hidden) window a menu window: shown below. (Elsewhere a
+    // menu's window is created visible.)
+    #[cfg_attr(not(windows), allow(unused_mut))]
+    let mut styled = false;
     ctx.show_viewport_immediate(vid, builder, |ui, _| {
+        // Made a menu window (win32::menu_window) in its own pass, before anything is drawn in
+        // it: its frame changes (#208), and a picture drawn before that was lost with the old
+        // frame, so the menu showed black until something made it draw again.
+        #[cfg(windows)]
+        {
+            styled = crate::win32::menu_window(
+                &title,
+                u32::from_le_bytes([
+                    POPUP_BORDER().r(),
+                    POPUP_BORDER().g(),
+                    POPUP_BORDER().b(),
+                    0,
+                ]),
+            );
+        }
         // What happens in this window, for popup() and keyboard(), which run in the parent's
         // pass: they must not ask egui about a menu window by its id, which creates one when it
         // isn't open (a submenu, mostly): an untitled copy of the main window, opened and closed
@@ -1132,16 +1151,7 @@ fn popup_level<C: Clone>(
             y += SLOT;
         }
     });
-    #[cfg(windows)]
-    if crate::win32::menu_window(
-        &title,
-        u32::from_le_bytes([
-            POPUP_BORDER().r(),
-            POPUP_BORDER().g(),
-            POPUP_BORDER().b(),
-            0,
-        ]),
-    ) {
+    if styled {
         ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
         // The command is carried out on the menu's next frame: a menu opened from the keyboard
         // (Shift+F10, the Menu key) or a screen reader moves no pointer to bring one, and stayed
