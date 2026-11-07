@@ -101,7 +101,9 @@ def main():
         out = knowledge(args.code, args.model)
         if args.write:
             lang = next(l for l in tr.languages() if l["code"] == args.code)
-            write(args.code, lang, out, ["the model's knowledge, not yet reviewed"])
+            # The style guide only: a termbase settles words for good, so its terms come from a
+            # person's review (learn.py without --knowledge), never from a model's guess.
+            write(args.code, lang, {"style": out.get("style", [])}, ["the model's knowledge, not yet reviewed"])
         return
 
     lang = next((l for l in tr.languages() if l["code"] == args.code), None)

@@ -160,6 +160,7 @@ def main():
                     help="how many rows the person approved unchanged to include (regressions)")
     ap.add_argument("--budget", type=float, default=8.0)
     ap.add_argument("--reviewer", default=REVIEWER)
+    ap.add_argument("--arbiter", default="", help="the model that accepts or refuses review changes")
     args = ap.parse_args()
 
     lang = next(l for l in tr.languages() if l["code"] == args.code)
@@ -174,6 +175,7 @@ def main():
     print(f"{args.code}: {len(pairs)} reviewed rows; testing on {len(changed)} corrected + {len(kept)} "
           f"approved as they were (train half: {len(train)} rows)")
 
+    tr.ARBITER_MODEL = args.arbiter
     key = tr.api_key()
     spend = tr.Spend(args.budget)
     # The judge's cost is the measurement's, not the pipeline's: counted apart.

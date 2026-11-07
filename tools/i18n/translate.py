@@ -48,6 +48,21 @@ URL = "https://openrouter.ai/api/v1/chat/completions"
 MODEL = "google/gemini-2.5-flash"
 # Reads every draft as a native reviewer would and fixes what one would change (--review).
 REVIEW_MODEL = "openai/gpt-6-luna"
+# Another family's model accepts a reviewer's change only when it clearly fixes a real error and
+# adds none (--arbiter): a cheap reviewer also changes good rows, and two models rarely err alike.
+ARBITER_MODEL = "anthropic/claude-haiku-5.5"
+
+ARBITER = """You check proposed corrections to {english} ({native}) translations of Mister Download
+Manager, a Windows download manager, before they replace the current text. For each row: the
+English, where it is used ("context", "notes"), the "current" translation and the "proposed" one.
+
+Answer "proposed" only when the proposed text fixes a real error in the current one (a wrong
+meaning, wrong grammar or agreement, the wrong form for a command, label or question, the wrong
+register, an unnatural or wrong term) and adds no error of its own. When both are correct, or you
+are not sure, answer "current": a correct translation is never replaced by another wording.
+
+Output one JSON object mapping each row's "id" to "current" or "proposed". Nothing else.
+"""
 BATCH = 40
 # Thinking off (Flash: cheaper, as good here); `--reasoning low` for models that must think.
 REASONING = {"enabled": False}
@@ -488,8 +503,9 @@ def style_section(lang):
     guide = lingo.style(lang["code"])
     if not guide:
         return ""
-    return (f"\nStyle guide for {lang['english']} (a native reviewer's rules for this program; "
-            f"where it differs from the general rules above, it wins):\n{guide}\n")
+    return (f"\nStyle guide for {lang['english']} (how this language writes this program: "
+            f"on wording and grammar it wins over the general rules above; the format rules, placeholders, "
+            f"'&', a trailing '...' or ':', spacing and example values, always hold):\n{guide}\n")
 
 
 def review_prompt(lang):
@@ -588,10 +604,26 @@ def review_drafts(key, review_model, lang, forms, rows, drafts, spend, pairs):
         print(f"{code}: review failed, drafts kept: {e}")
         fixed = {}
     out = dict(drafts)
+    proposed = {}
     for i in drafts:
         t = clean(code, unhide(fixed.get(str(i))))
-        if t is not None and not check_row(code, rows[i], t, forms):
-            out[i] = t
+        if t is not None and t != drafts[i] and not check_row(code, rows[i], t, forms):
+            proposed[i] = t
+    if proposed and ARBITER_MODEL:
+        items = []
+        for i, t in proposed.items():
+            d = item(i, rows[i], code)
+            d["current"] = drafts[i]
+            d["proposed"] = t
+            items.append(d)
+        try:
+            verdict = call(key, ARBITER_MODEL, ARBITER.format(english=lang["english"], native=lang["native"]),
+                           {"rows": items}, spend, max_tokens=8192)
+        except RuntimeError as e:
+            print(f"{code}: arbiter failed, changes dropped: {e}")
+            verdict = {}
+        proposed = {i: t for i, t in proposed.items() if verdict.get(str(i)) == "proposed"}
+    out.update(proposed)
     return out
 
 
@@ -623,6 +655,8 @@ def main():
     ap.add_argument("--model", default=MODEL)
     ap.add_argument("--review", default=REVIEW_MODEL,
                     help="the model that reviews each draft ('' for none)")
+    ap.add_argument("--arbiter", default=ARBITER_MODEL,
+                    help="the model that accepts or refuses each review change ('' for none)")
     ap.add_argument("--budget", type=float, default=12.0, help="stop spending at this many dollars")
     ap.add_argument("--workers", type=int, default=96)
     ap.add_argument("--batch", type=int, default=BATCH)
@@ -712,6 +746,8 @@ def main():
 
     if args.rereview and not args.review:
         sys.exit("--rereview needs a --review model")
+    # review_drafts reads the module's arbiter (the eval sets it too).
+    globals()["ARBITER_MODEL"] = args.arbiter
 
     def run(job):
         code, batch, reasons = job
