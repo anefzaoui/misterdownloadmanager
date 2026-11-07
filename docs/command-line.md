@@ -25,6 +25,7 @@ misterdownloadmanager.exe /d URL [/p folder] [/f name] [/a] [/n] [/s]
 | `/n` | Silent: no **Download File Info** window, the download starts (or is queued, with `/a`) at once. |
 | `/s` | Start the main download queue. |
 | `/exit` | Save and close the running app (the installer uses it before an upgrade). |
+| `/startup` | Start in the notification area, the window hidden: what **Launch Mister Download Manager on startup** starts MDM with when you sign in. Where no notification area shows MDM's icon (some Linux desktops), MDM starts minimized. A running MDM stays as it is. |
 | *a `.torrent` file or `magnet:` link* | Open it in **Add torrent** (what Windows passes when MDM opens torrents). |
 
 Switches can start with `/` or `-`, in any case. If MDM is running, the command goes to it; if not, MDM starts and carries it out. For example:

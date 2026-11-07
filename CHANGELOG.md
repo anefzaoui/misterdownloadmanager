@@ -22,6 +22,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Started with the computer, MDM waits in the notification area**
+  ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226)): with **Options →
+  General → Launch Mister Download Manager on startup**, MDM no longer opens its window in front
+  at every sign-in. It starts hidden, its icon in the notification area, with its downloads,
+  queues, Scheduler and browser hand-overs running; its icon, or starting MDM again, shows the
+  window as before. The same on Linux and macOS; where no notification area shows MDM's icon
+  (some Linux desktops), it starts minimized, and the option's tooltip says so (it waits for
+  one up to 30 seconds after its icon is made, its window hidden: a desktop's can come up after
+  MDM at sign-in). The startup entry now passes `/startup` (new on the [command line](docs/command-line.md)); an entry written by
+  an earlier version or its installer is written again at the next start, and the installer
+  writes the new one.
 - **Sign-ins in the system's keychain**
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): debrid accounts, Sites
   Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the
@@ -524,6 +535,26 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **The window no longer freezes when the system's sleep or keychain service is slow**
+  (follows [#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): a queue set to
+  **Wake the computer to run this queue** asks the system to keep the computer awake while it
+  runs. On Linux that is logind, which can be slow to answer just after the computer wakes,
+  exactly when such a queue starts, and MDM waited for it on the window's own thread (asking
+  again every 5 seconds while it refused). It is now asked in the background, on every system;
+  the queue's downloads, retries and log lines are the same. A keyring that doesn't answer at
+  start (a stopped GNOME Keyring) is now waited for once, at most 5 seconds, instead of once per
+  saved password, and saving the list no longer asks it at all. On Linux the check for a tray to
+  hide windows in, and in Download File Info the check that **Save As** isn't a folder (slow on a
+  network share that doesn't answer), no longer run on the window's thread on every frame.
+- **Linux: Dark Mode support follows XFCE, MATE and other desktops too**
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156)): MDM followed the
+  desktop's light or dark setting only where the freedesktop portal answers (GNOME, KDE,
+  Cinnamon). Where it doesn't, as on XFCE, MDM stayed light under a dark theme. It now reads the
+  theme the desktop gives its programs (a name such as Adwaita-dark, Mint-Y-Dark or Greybird-dark
+  is dark), GNOME's own dark style setting when there is no portal, and GTK's settings with no
+  desktop at all, and it follows changes as they happen. The portal still comes first. A change
+  now shows at once too: the window waited for its next theme check, up to 20 s on a busy
+  machine, on every desktop.
 - **Open folder no longer freezes the window on Linux**
   ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
   **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited
@@ -577,13 +608,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   on its own, with the file still open, and renaming the finished file failed. The connections are
   now told to stop and waited for, when a download completes and when it is stopped or fails, so
   none of them outlives it. A stopped download's last writes are also in its saved progress now.
-- **Menus without a black band across their top**
+- **Menus and the drop target without a black band across their top**
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
   Insider build (22635), every menu and submenu showed a black band a title bar tall across its
   top and a thin one down its left side, its items moved down by as much and its last ones cut
-  off. A menu's window had a title bar's style, hidden by MDM, and something on that build placed
-  the menu's picture where the title bar would have ended. Menus are now plain pop-up windows, as
-  Windows' own menus are, with nothing above their items to take for a title bar.
+  off; so did the drop target (Tasks → Show drop target), its icon moved down. Each of these
+  windows had a title bar's style, hidden by MDM, and something on that build placed the window's
+  picture where the title bar would have ended. Menus and the drop target are now plain pop-up
+  windows, as Windows' own menus are, with nothing above their contents to take for a title bar;
+  every window of MDM without a title bar is made one the same way.
 - **A window closed with its title bar's × no longer turns black first**
   ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
   progress window turned black for a moment when closed with the × or Alt+F4, rather than with
