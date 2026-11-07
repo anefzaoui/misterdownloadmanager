@@ -30,9 +30,10 @@ Many sites hand out links that only work for a while, or only while you are sign
 4. Paste the new link into **Address** in **File Properties** and click **OK**.
 5. Click **Resume**. The download continues from where it stopped, using the new address.
 
-![File Properties](images/properties.png)
-
 The new address has to point at the same file. If it doesn't, MDM stops with **the file changed on the server**.
+
+![File Properties with the download's address](images/help/resume-properties.webp)
+*Paste the new link into Address, then resume.*
 
 ## When the file changed on the server
 
@@ -41,8 +42,6 @@ If the site replaced the file with a new version, the parts MDM has don't fit an
 ## When resuming isn't possible
 
 Look at **Resume capability** in the progress window. **No** means the server can't send a file in parts. MDM then uses one connection, and a download that stops has to start over. For such servers, avoid stopping the download, and avoid a very low speed limit, which can make the server drop the connection.
-
-![The progress window](images/progress.png)
 
 ## Next steps
 

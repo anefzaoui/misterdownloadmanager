@@ -1537,6 +1537,7 @@ impl OptionsDialog {
             63.0,
             399.0,
         );
+        let vault = crate::secrets::vault();
         let rows: Vec<Vec<String>> = self
             .s
             .debrid_accounts
@@ -1546,8 +1547,15 @@ impl OptionsDialog {
                     a.service.name().to_owned(),
                     a.user.clone(),
                     if a.account().is_none() {
-                        // i18n: Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
-                        crate::i18n::t("signed out: sign in again").to_owned()
+                        if vault.unread(&format!("debrid/{}", a.id))
+                            && vault.kept() == crate::secrets::Kept::Locked
+                        {
+                            // i18n: Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+                            crate::i18n::t("in the locked keyring").to_owned()
+                        } else {
+                            // i18n: Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
+                            crate::i18n::t("signed out: sign in again").to_owned()
+                        }
                     } else {
                         a.state.clone()
                     },
@@ -1557,7 +1565,7 @@ impl OptionsDialog {
         let (_, del_key) = report(
             ui,
             o,
-            r(o, 21.0, 93.0, 383.0, 176.0),
+            r(o, 21.0, 93.0, 383.0, 124.0),
             &[
                 // i18n: column title: the debrid service (Real-Debrid…)
                 (crate::i18n::mark("Service"), 110.0),
@@ -1575,7 +1583,7 @@ impl OptionsDialog {
         // i18n: button: add a debrid service account (opens the sign-in)
         let add = winui::button_light(
             ui,
-            r(o, 21.0, 277.0, 90.0, 21.0),
+            r(o, 21.0, 225.0, 90.0, 21.0),
             "Add...",
             ButtonKind::Normal,
             false,
@@ -1590,7 +1598,7 @@ impl OptionsDialog {
         };
         let remove = winui::button_light(
             ui,
-            r(o, 117.0, 277.0, 90.0, 21.0),
+            r(o, 117.0, 225.0, 90.0, 21.0),
             "Remove",
             kind(sel.is_some()),
             false,
@@ -1600,7 +1608,7 @@ impl OptionsDialog {
         // i18n: button (short): move the account up the list (accounts are asked in the list's order)
         let up = winui::button_light(
             ui,
-            r(o, 213.0, 277.0, 90.0, 21.0),
+            r(o, 213.0, 225.0, 90.0, 21.0),
             "Up",
             kind(sel.is_some_and(|i| i > 0)),
             false,
@@ -1609,7 +1617,7 @@ impl OptionsDialog {
         // i18n: button (short): move the account down the list
         let down = winui::button_light(
             ui,
-            r(o, 309.0, 277.0, 95.0, 21.0),
+            r(o, 309.0, 225.0, 95.0, 21.0),
             "Down",
             kind(sel.is_some_and(|i| i + 1 < rows.len())),
             false,
@@ -1640,7 +1648,7 @@ impl OptionsDialog {
         winui::paragraph(
             &p,
             o.x + 21.0,
-            o.y + 308.0,
+            o.y + 256.0,
             note,
             crate::theme::colors().warning,
             o.x + 404.0,
@@ -1648,7 +1656,7 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(21.0, 354.0),
+            o + vec2(21.0, 302.0),
             &mut self.s.debrid_on,
             // i18n: Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
             "Download supported file-host links through these accounts",
@@ -1656,17 +1664,17 @@ impl OptionsDialog {
         );
         winui::checkbox_light(
             ui,
-            o + vec2(21.0, 376.0),
+            o + vec2(21.0, 324.0),
             &mut self.s.debrid_torrents,
             // i18n: Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
             "Send torrents and magnet links to the first account instead of to peers",
             self.s.debrid_on,
         );
         let p = ui.painter().clone();
-        winui::paragraph(
+        let lines = winui::paragraph(
             &p,
             o.x + 21.0,
-            o.y + 410.0,
+            o.y + 358.0,
             // i18n: Options → Accounts: what these accounts are, and the services' rule against sharing
             crate::i18n::t(
                 "A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.",
@@ -1675,6 +1683,23 @@ impl OptionsDialog {
             o.x + 404.0,
             14.0,
         );
+        // Where the sign-ins are kept (#44, secrets.rs); the list is two rows shorter for it.
+        let kept = vault.kept();
+        if kept == crate::secrets::Kept::Looking {
+            ui.ctx()
+                .request_repaint_after(std::time::Duration::from_millis(200));
+        }
+        if let Some(text) = kept_text(kept) {
+            winui::paragraph(
+                &p,
+                o.x + 21.0,
+                o.y + 358.0 + lines as f32 * 14.0 + 6.0,
+                crate::i18n::t(text),
+                LIGHT_TEXT(),
+                o.x + 404.0,
+                14.0,
+            );
+        }
     }
 
     fn logins(&mut self, ui: &mut Ui, o: Pos2) {
@@ -3497,4 +3522,52 @@ fn readonly(ui: &mut Ui, rc: Rect, value: &str) {
 /// A password edit (characters shown as bullets): the shared one, on the tab page.
 fn password(ui: &mut Ui, rc: Rect, value: &mut String, enabled: bool) {
     winui::password_light_on(ui, rc, value, enabled, LIGHT_PAGE());
+}
+
+/// Options → Accounts: where the sign-ins (and Sites Logins' passwords, the proxy's) are kept,
+/// as `secrets::Vault::kept` found it. None while it is still looking.
+fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
+    use crate::secrets::Kept;
+    Some(match kept {
+        Kept::Looking => return None,
+        #[cfg(windows)]
+        Kept::Keychain => {
+            // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+            crate::i18n::mark("Sign-ins and passwords are kept in Windows Credential Manager.")
+        }
+        #[cfg(target_os = "macos")]
+        Kept::Keychain => {
+            // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+            crate::i18n::mark("Sign-ins and passwords are kept in the macOS keychain.")
+        }
+        #[cfg(target_os = "linux")]
+        // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+        Kept::Keychain => crate::i18n::mark(
+            "Sign-ins and passwords are kept in the system keyring (Secret Service).",
+        ),
+        #[cfg(windows)]
+        // i18n: Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+        Kept::Portable => crate::i18n::mark(
+            "This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.",
+        ),
+        #[cfg(not(windows))]
+        // i18n: Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+        Kept::Portable => crate::i18n::mark(
+            "This portable copy keeps sign-ins and passwords in its own settings, which only you can read.",
+        ),
+        // i18n: Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+        Kept::Locked => crate::i18n::mark(
+            "The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.",
+        ),
+        #[cfg(windows)]
+        // i18n: Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+        Kept::Missing => crate::i18n::mark(
+            "Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.",
+        ),
+        #[cfg(not(windows))]
+        // i18n: Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+        Kept::Missing => crate::i18n::mark(
+            "No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.",
+        ),
+    })
 }

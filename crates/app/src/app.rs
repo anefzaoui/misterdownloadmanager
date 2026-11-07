@@ -272,6 +272,19 @@ fn next_trim(done: u32) -> Duration {
     }
 }
 
+/// A start with the session that found no notification area started minimized (#226). A
+/// desktop's tray often comes up a moment after the programs it starts (GNOME's AppIndicator
+/// extension, a panel still loading): one that shows up this soon after the start takes the
+/// window then, as if it had been there.
+const LATE_TRAY_WITHIN: Duration = Duration::from_secs(30);
+
+/// Started minimized for want of a tray (#226), `since` the start: whether to move the window
+/// into the notification area now, `tray` there now and the window `still_minimized` (not
+/// brought back by the user meanwhile).
+fn late_tray(since: Duration, tray: bool, still_minimized: bool) -> bool {
+    since <= LATE_TRAY_WITHIN && tray && still_minimized
+}
+
 /// Hand the memory the process isn't using now back to the system (#72).
 fn trim_memory() {
     #[cfg(windows)]
@@ -459,6 +472,10 @@ pub struct App {
     /// how many times it was since the window hid.
     trim_when_hidden: Option<Instant>,
     trims_since_hidden: u32,
+    /// Started with the session but minimized, no tray there yet (#226): when, and when a tray
+    /// was last looked for. A tray that comes within [`LATE_TRAY_WITHIN`] takes the window.
+    started_minimized: Option<Instant>,
+    late_tray_checked: Option<Instant>,
     exiting: bool,
     /// Clipboard watching (Options → General): the text last seen (outer None: not looked
     /// yet) and when.
@@ -477,6 +494,8 @@ pub struct App {
     duplicate_cleared: bool,
     downloads: PathBuf,
     dirty: bool,
+    /// `secrets::Vault::confirmed` when last seen.
+    secrets_confirmed: u64,
     last_save: Instant,
     /// Writes the list off the window's thread.
     saver: store::Saver,
@@ -912,6 +931,8 @@ impl App {
             hidden: start == crate::Start::Tray,
             trim_when_hidden: (start == crate::Start::Tray).then(|| Instant::now() + next_trim(0)),
             trims_since_hidden: 0,
+            started_minimized: (start == crate::Start::Minimized).then(Instant::now),
+            late_tray_checked: None,
             exiting: false,
             confirm_delete: None,
             confirm_queue_delete: None,
@@ -921,6 +942,7 @@ impl App {
             duplicate_cleared: false,
             downloads,
             dirty: false,
+            secrets_confirmed: 0,
             last_save: Instant::now(),
             saver: store::Saver::new(),
             theme_checked: None,
@@ -1711,8 +1733,9 @@ impl App {
             "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
             // rss:rules opens it on its Download rules tab.
             "rss" => self.run(Cmd::RssFeeds(tab == "rules"), None, ctx),
-            // menu:torrent opens it with its Torrent submenu open.
-            "menu" if first.is_some() => {
+            // menu:torrent opens it with its Torrent submenu open. A number (menu:3) is the
+            // menu bar's, below, with downloads in the list or not.
+            "menu" if first.is_some() && !tab.starts_with(|c: char| c.is_ascii_digit()) => {
                 if let Some(id) = first {
                     self.selection.set(id);
                 }
@@ -2500,6 +2523,42 @@ impl App {
         crate::tray::available()
     }
 
+    /// Started minimized for want of a tray (#226): a tray that shows up within
+    /// [`LATE_TRAY_WITHIN`] of the start (the desktop's, still coming up at login) takes the
+    /// window. Looked for once a second until then; never again after.
+    fn late_tray(&mut self, ctx: &egui::Context) {
+        let Some(started) = self.started_minimized else {
+            return;
+        };
+        if started.elapsed() > LATE_TRAY_WITHIN {
+            tracing::info!("started minimized: no notification area came, the window stays so");
+            self.started_minimized = None;
+            return;
+        }
+        if self
+            .late_tray_checked
+            .is_some_and(|t| t.elapsed() < Duration::from_secs(1))
+        {
+            ctx.request_repaint_after(Duration::from_secs(1));
+            return;
+        }
+        self.late_tray_checked = Some(Instant::now());
+        ctx.request_repaint_after(Duration::from_secs(1));
+        let minimized = ctx.input(|i| i.viewport().minimized != Some(false));
+        if late_tray(
+            started.elapsed(),
+            self.tray.is_some() && crate::can_start_in_tray(),
+            minimized,
+        ) {
+            tracing::info!(
+                "a notification area came {} ms after the start: the window goes into it",
+                started.elapsed().as_millis()
+            );
+            self.started_minimized = None;
+            self.hide_to_tray(ctx);
+        }
+    }
+
     /// The tray icon: created once, its commands run, and closing the window hides it there.
     fn tray(&mut self, ctx: &egui::Context) {
         // Off-screen test copies have none, but for MDM_TEST_TRAY=1 (#226's check: a start with
@@ -2543,6 +2602,7 @@ impl App {
                 .collect();
             t.set_downloads(&running);
         }
+        self.late_tray(ctx);
         let cmds = self.tray.as_ref().map(|t| t.poll()).unwrap_or_default();
         for c in cmds {
             use crate::tray::TrayCmd;
@@ -4656,6 +4716,16 @@ impl App {
             if self.last_save.elapsed() > Duration::from_secs(30) {
                 self.dirty = true;
             }
+        }
+        // The keychain took a secret (#44): saved again, with its reference in its place.
+        let vault = crate::secrets::vault();
+        if vault.pending() {
+            ctx.request_repaint_after(Duration::from_millis(250));
+        }
+        let confirmed = vault.confirmed();
+        if confirmed != self.secrets_confirmed {
+            self.secrets_confirmed = confirmed;
+            self.dirty = true;
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
             // Written on the saver's thread (store::Saver); refused at once when the list
@@ -7755,6 +7825,30 @@ fn share(cap: u64, other: f64) -> u64 {
         cap.saturating_sub(other as u64)
     };
     rest.max(half).max(1024)
+}
+
+#[cfg(test)]
+mod late_tray_tests {
+    use super::{LATE_TRAY_WITHIN, late_tray};
+    use std::time::Duration;
+
+    /// Started minimized for want of a tray (#226, GNOME's AppIndicator extension registering
+    /// its tray two seconds after MDM looked): a tray that comes soon after takes the window.
+    #[test]
+    fn a_tray_that_comes_soon_after_the_start_takes_the_window() {
+        let s = Duration::from_secs;
+        assert!(late_tray(s(2), true, true), "the tray came 2 s on");
+        assert!(late_tray(LATE_TRAY_WITHIN, true, true));
+        assert!(!late_tray(s(2), false, true), "no tray yet: minimized");
+        assert!(
+            !late_tray(s(2), true, false),
+            "brought back by the user meanwhile: theirs"
+        );
+        assert!(
+            !late_tray(LATE_TRAY_WITHIN + s(1), true, true),
+            "too late: the user knows it as a minimized window by now"
+        );
+    }
 }
 
 #[cfg(test)]

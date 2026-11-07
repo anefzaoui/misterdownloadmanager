@@ -155,6 +155,9 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Debrid accounts: torrents and magnet links through the service, their files downloaded over
   HTTP, no peer connections ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Sign-ins in the system's keychain: Windows Credential Manager, the Secret Service keyring on
+  Linux, the macOS keychain; for debrid accounts, Sites Logins and the proxy
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Torrents on Windows through the chosen network adapter, with the same kill switch
@@ -234,6 +237,9 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#113](https://github.com/anefzaoui/misterdownloadmanager/issues/113))
 - ✅ The README's, the docs' and the website's screenshots are taken on a stock Windows (GitHub's
   runner), so the file icons in them are Windows' own
+- ✅ The help shows what it describes: pictures of each window, numbered where a step points at
+  one control, step strips for the usual flows, in light and dark, made from one shot list
+  ([#228](https://github.com/anefzaoui/misterdownloadmanager/issues/228))
 - ✅ Website in European Portuguese, and an [intended use](https://misterdownloadmanager.com/intended-use.html) page
 - ✅ Website: the [free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html) page compares
   MDM with IDM and with nine other free download managers, each checked on its own site, with
@@ -275,8 +281,6 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Downloads and windows
 
-- 📋 Debrid services, the rest: the system keychains for the sign-ins
-  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
 ### Network
 

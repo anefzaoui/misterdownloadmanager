@@ -246,7 +246,7 @@ pub type Unlocking<'a> = std::pin::Pin<
 >;
 
 /// The debrid accounts the command line downloads through (#44): the ones in the app's Options
-/// → Accounts. They are kept sealed in the app's settings, which this library doesn't read: the
+/// → Accounts. The app keeps them in the system's keychain, which this library doesn't read: the
 /// app's program hands them over ([`main_with`]).
 pub trait Accounts: Send + Sync {
     /// The unlocker for `url`: the first account, in the user's order, whose service takes its

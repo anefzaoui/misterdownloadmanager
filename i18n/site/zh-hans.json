@@ -10,6 +10,10 @@
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
    "text": "扩展程序已连接，但 MDM 自己的设置将此下载留给浏览器。请在 MDM 中检查："
   },
+  "001408812fbef8cb": {
+   "source": "RSS feeds: the feeds MDM follows and their items",
+   "text": "RSS 源：MDM 关注的源及其项目"
+  },
   "00161c105e829376": {
    "source": "Every message to MDM also says which browser it comes from (its name, as the browser tells it) and the extension's version.",
    "text": "发送给 MDM 的每条消息还会说明它来自哪个浏览器（浏览器告知的名称）以及扩展的版本。"
@@ -89,6 +93,10 @@
   "02627b049e4a7241": {
    "source": "Image galleries",
    "text": "图片库"
+  },
+  "02676ddab1e18999": {
+   "source": "Click a download link in the browser: Download File Info opens in MDM.",
+   "text": "在浏览器中点击下载链接：MDM 中会打开“下载文件信息”窗口。"
   },
   "026a1b767daa1fa2": {
    "source": "<g1>File name or part of the name</g1> — on by default.",
@@ -170,13 +178,13 @@
    "source": "Contribute",
    "text": "贡献"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "最后更新日期：2026年11月6日 · 适用于应用程序、浏览器扩展和misterdownloadmanager.com"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "关于 Mister Download Manager 的解答：它是否免费、是否安全、与 IDM 的比较、浏览器、视频、种子、速度、Mac 和 Linux 等。"
+  },
+  "03fe2d590fecb966": {
+   "source": "Enter new address to download with the copied address filled in",
+   "text": "“输入要下载的新地址”已填入复制的地址"
   },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
@@ -209,6 +217,10 @@
   "04bb12464d3a29f6": {
    "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
    "text": "勾选开始时间下方的<g1>唤醒电脑以运行此队列</g1>，电脑将在开始时间被唤醒。此功能需要<g2>在以下时间开始下载</g2>。"
+  },
+  "04ea3f289327532e": {
+   "source": "Tick <g1>Send torrents and magnet links to the first account instead of to peers</g1> in <g2>Options → Accounts</g2>. A magnet link (Add URL, the browser, the clipboard, a drop) or a <x3/> file (Add torrent's <g4>Download Now</g4> or <g5>Later</g5>) then goes to the first account in the list:",
+   "text": "在<g2>选项 → 帐户</g2>中勾选<g1>将种子和磁力链接发送到第一个帐户，而不是发送给对等点</g1>。然后，磁力链接（添加 URL、浏览器、剪贴板、拖放）或<x3/>文件（添加种子中的<g4>立即下载</g4>或<g5>稍后</g5>）将发送到列表中的第一个帐户："
   },
   "050edc04316dd70a": {
    "source": "On the command line",
@@ -286,6 +298,10 @@
    "source": "Under <g1>Add to queue</g1>, pick <g2>Main download queue</g2>. Leave <g3>Start the queue now</g3> unticked. Click <g4>OK</g4>.",
    "text": "在<g1>添加到队列</g1>下，选择<g2>主下载队列</g2>。不要勾选<g3>立即启动队列</g3>。点击<g4>确定</g4>。"
   },
+  "060740273a407a0d": {
+   "source": "Options, Save to: a category's folder",
+   "text": "选项 → 保存到：一个类别的文件夹"
+  },
   "062e786e54295c85": {
    "source": "We'd rather you knew. IDM has a site grabber for whole websites, store-listed browser extensions, and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
    "text": "我们希望您了解。IDM 拥有用于抓取整个网站的网站抓取器、应用商店上架的浏览器扩展程序，以及多年的完善和兼容性修复。MDM 是新项目；如果您依赖的某些功能缺失，请<g1>提出需求</g1>。"
@@ -318,6 +334,10 @@
    "source": "Uninstall MDM from Windows <g1>Settings → Apps</g1>. The uninstaller asks whether to delete your download list and settings too. Your downloaded files are never touched.",
    "text": "从 Windows <g1>设置 → 应用</g1>中卸载 MDM。卸载程序会询问是否也删除您的下载列表和设置。您的下载文件永远不会被触及。"
   },
+  "06f1e7a5c9a5fcfc": {
+   "source": "Help → About: the version you have.",
+   "text": "帮助 → 关于：您拥有的版本。"
+  },
   "06f2b21b4750b749": {
    "source": "How do I report a bug or ask for a feature?",
    "text": "如何报告错误或提出功能请求？"
@@ -337,6 +357,14 @@
   "07367459e6405a5a": {
    "source": "<g1>Screen readers</g1> (Narrator, NVDA): every window, dialogs and menus included, now tells them what each control is, its name and its state; the download list reads each download.",
    "text": "<g1>屏幕阅读器</g1>（讲述人、NVDA）：现在每个窗口、对话框和菜单都包含在内，告知它们每个控件是什么、其名称和状态；下载列表会读取每个下载。"
+  },
+  "0748049168576df3": {
+   "source": "Options on its Downloads page: the start download dialog, Download complete and duplicate links",
+   "text": "“选项”的“下载”页面：开始下载对话框、“下载完成”和重复链接。"
+  },
+  "074e15c2678ecadd": {
+   "source": "Sounds: a sound for each event.",
+   "text": "声音：每个事件的声音。"
   },
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
@@ -550,6 +578,10 @@
    "source": "Before you start",
    "text": "开始之前"
   },
+  "0c13eec2a2e5a6da": {
+   "source": "Download File Info with the file's name, size and folder",
+   "text": "“下载文件信息”显示文件名、大小和文件夹"
+  },
   "0c1ddab7d81578c6": {
    "source": "<g1>Options → General → Use advanced browser integration</g1> must be on. Turn it off to send nothing to MDM.",
    "text": "<g1>选项 → 常规 → 使用高级浏览器集成</g1>必须开启。将其关闭则不会向 MDM 发送任何内容。"
@@ -573,6 +605,10 @@
   "0cdaa5a3dd07f272": {
    "source": "Archives (zip, 7z, rar, tar, gz, xz), and <g1>Link grabber</g1>.",
    "text": "存档（zip、7z、rar、tar、gz、xz）和<g1>链接抓取器</g1>。"
+  },
+  "0d2938337aca310a": {
+   "source": "The Subtitles list of the video window, with Put them into the video",
+   "text": "视频窗口的字幕列表，带有“将它们放入视频”选项"
   },
   "0d7f42041638ea02": {
    "source": "Portable: the <x1/> folder next to <x2/>.",
@@ -682,6 +718,10 @@
    "source": "<g1>Check for updates</g1>: the release notes scroll (the wheel, a trackpad, their scroll bar, and the arrow, Page and Home/End keys); their lines no longer break mid-sentence, and links show as their text (issue #5).",
    "text": "<g1>检查更新</g1>：发布说明可以滚动（滚轮、触控板、它们的滚动条以及箭头、Page 和 Home/End 键）；它们的行不再在句子中间断开，链接显示为它们的文本（问题 #5）。"
   },
+  "1058e8be7cc50b7e": {
+   "source": "High contrast",
+   "text": "高对比度"
+  },
   "10b8609f61290221": {
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>SHA-256 校验和</g1><g2>适用于每个文件</g2>"
@@ -713,6 +753,10 @@
   "1118f34ca5d1ce1f": {
    "source": "<g1>Put them into the video</g1> puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.",
    "text": "<g1>将它们放入视频</g1>会将字幕嵌入到视频文件中，作为您可以在播放器中切换的轨道。这需要 ffmpeg，并且视频格式为 MP4 或 MKV。"
+  },
+  "1151e5853122592c": {
+   "source": "RSS feeds, and the rules that pick what to download.",
+   "text": "RSS 源，以及选择下载内容的规则。"
   },
   "115de9018b2cce4b": {
    "source": "Star it on GitHub",
@@ -806,6 +850,10 @@
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (Options → General → Offer to download links copied to the clipboard, on by default). You can also paste links into Add URL, drag them onto the drop target, add a whole batch, or use the command line. See Adding downloads.",
    "text": "能。复制文件链接后，MDM 会立即提示下载（选项 → 常规 → 提供下载复制到剪贴板的链接，默认开启）。您也可以将链接粘贴到“添加 URL”中，拖放到下载目标上，批量添加，或使用命令行。请参阅“添加下载”。"
   },
+  "13ba3a9158c6660d": {
+   "source": "Tasks → Torrent settings...",
+   "text": "任务 → 种子设置..."
+  },
   "13bdd66fc5e4c600": {
    "source": "Server allowing 2 connections",
    "text": "服务器允许 2 个连接"
@@ -821,6 +869,10 @@
   "13fab708d8179610": {
    "source": "<g1>A content delivery network</g1> (Cloudflare, Amazon CloudFront, Fastly, Akamai and others) serves a file from a server near you, not from the site owner's. The tooltip says so: the place is the network's server, not where the site is.",
    "text": "<g1>内容分发网络</g1>（Cloudflare、Amazon CloudFront、Fastly、Akamai 等）从离您较近的服务器提供文件，而不是从网站所有者的服务器提供。工具提示会说明这一点：位置是网络服务器的位置，而不是网站的位置。"
+  },
+  "141df6a54c91efda": {
+   "source": "Helpers...: use your own yt-dlp or ffmpeg instead.",
+   "text": "帮助程序...：改为使用您自己的 yt-dlp 或 ffmpeg。"
   },
   "141ec6fe9135de0f": {
    "source": "Use Help → Report a problem in MDM: it opens the bug report form on GitHub with your version, system and language filled in. Or open the form yourself.…",
@@ -850,10 +902,6 @@
    "source": "Or choose <g1>Tasks → Download video from a page...</g1>, paste the address into <g2>Page address</g2> and click <g3>Look up</g3>.",
    "text": "或者选择<g1>任务 → 从页面下载视频...</g1>，将地址粘贴到<g2>页面地址</g2>中，然后点击<g3>查找</g3>。"
   },
-  "1490025afdf34bc3": {
-   "source": "File Properties",
-   "text": "文件属性"
-  },
   "149e0f5a36de6161": {
    "source": "Which systems does it run on? — Mister Download Manager",
    "text": "Mister Download Manager 适用于哪些系统？"
@@ -873,10 +921,6 @@
   "14ca42cba15b46ce": {
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>浏览器。</g1>右键单击页面，选择<g2>使用 Mister Download Manager 下载所有链接</g2>，或选择页面的一部分，选择<g3>使用 Mister Download Manager 下载选定链接</g3>。页面的引用页和 Cookie 会随每个链接一起发送。"
-  },
-  "14df350fc9bc4825": {
-   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
-   "text": "在 Windows 上，窗口通过 Direct3D 12（eframe 的 wgpu，仅使用其 Direct3D 12 后端）绘制，或者当“视图”→“绘制方式”选择 OpenGL 时，通过 OpenGL（eframe 的 glow）绘制；Linux 和 macOS 使用 OpenGL。当所选方式无法启动时，会尝试另一种方式，因此窗口总能打开。"
   },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
@@ -953,6 +997,10 @@
   "1745fe3e724c0846": {
    "source": "<g1><g2>Link grabber and archives</g2></g1> — many links at once, in packages; zip, 7z and rar archives extracted when they are downloaded.",
    "text": "<g1><g2>链接抓取器和压缩包</g2></g1> — 一次处理多个链接，以包的形式下载；下载完成后自动解压 zip、7z 和 rar 压缩包。"
+  },
+  "178857076aff1609": {
+   "source": "Archives: extract when downloaded, and where the files go.",
+   "text": "存档：下载后解压，以及文件存放位置。"
   },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
@@ -1042,6 +1090,10 @@
    "source": "Sites Logins",
    "text": "站点登录"
   },
+  "19a3fe3b4ef2bca1": {
+   "source": "All Downloads, Unfinished, Finished and Queues, each by category.",
+   "text": "所有下载、未完成、已完成和队列，每个都按类别显示。"
+  },
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "这里是人们最常问的问题的简短回答，每个问题都附有完整指南的链接。"
@@ -1089,6 +1141,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 秒</g1><g2></g2>"
+  },
+  "1adaa7c4de6bc9e1": {
+   "source": "Paste the new link into Address, then resume.",
+   "text": "将新链接粘贴到“地址”中，然后恢复下载。"
   },
   "1afe0a44e06cfa4b": {
    "source": "To check MDM's side, open <g1>Options → General</g1> in MDM and click <g2>Test browser integration...</g2>. It checks that browser integration is on, that this is the installed copy, that the browsers can find MDM, and which browsers' extension has connected; <g3>How to fix it</g3> opens the section for the first that fails.",
@@ -1162,6 +1218,10 @@
    "source": "<g1>Save to</g1>: the folder its torrents go to; empty, the Torrents category's folder. <g2>Add them without starting them</g2> adds them as <g3>Download Later</g3> would.",
    "text": "<g1>保存到</g1>：其种子保存到的文件夹；如果为空，则为种子类别的文件夹。<g2>添加但不启动</g2>会像<g3>稍后下载</g3>一样添加它们。"
   },
+  "1bcf62be8def689c": {
+   "source": "Download File Info with Download Later ringed",
+   "text": "“下载文件信息”中圈出的“稍后下载”"
+  },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
    "text": "<g1>键盘焦点丢失</g1>：当按钮变灰或 Escape 键关闭下拉菜单时，Tab 键会从窗口顶部重新开始。现在它会像 Windows 中一样继续移动或返回。"
@@ -1210,6 +1270,10 @@
    "source": "Windows 10/11; macOS, Linux to try",
    "text": "Windows 10/11；macOS、Linux 可试用"
   },
+  "1c90a99a45e311c8": {
+   "source": "If the service can't get the torrent (no peers, too big, refused), the list says why.",
+   "text": "如果服务无法获取种子（无对等点、文件过大、被拒绝），列表会说明原因。"
+  },
   "1ca5420546545830": {
    "source": "<g1>Force processes to terminate</g1> closes programs that would otherwise hold Windows up.",
    "text": "<g1>强制终止进程</g1>会关闭那些可能导致 Windows 无法正常关闭的程序。"
@@ -1253,6 +1317,10 @@
   "1d698c89212c8b9b": {
    "source": "Median CPU time each app used during a run, and its peak memory. MDM draws its window with the GPU, which takes more memory than IDM's classic Windows controls.",
    "text": "每次运行期间，各应用使用的 CPU 时间中位数及其内存峰值。MDM 使用 GPU 绘制窗口，这比 IDM 的经典 Windows 控件占用更多内存。"
+  },
+  "1d6ccabe01271561": {
+   "source": "The progress window: speed, time left and each connection's share of the file",
+   "text": "进度窗口：速度、剩余时间以及每个连接的文件份额"
   },
   "1da156143837aec9": {
    "source": "Click <g1>Add Torrent</g1> on the toolbar to choose a <x2/> file. Or click the arrow next to it and choose <g3>Open torrent file...</g3> or <g4>Add magnet link...</g4> (also under <g5>Tasks</g5>).",
@@ -1338,10 +1406,6 @@
    "source": "A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.",
    "text": "种子下载进度窗口的“分块”选项卡：每个分块一个方块，下载完成后填充。"
   },
-  "1f9b1c3bb92ecf66": {
-   "source": "Find file",
-   "text": "查找文件"
-  },
   "1fa9954a1941617d": {
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "MDM 会打开链接来源的网页（如果它知道），以及下载的<g1>文件属性</g1>。"
@@ -1390,6 +1454,10 @@
    "source": "The download list",
    "text": "下载列表"
   },
+  "2129b0c6ab15598e": {
+   "source": "Test browser integration... says whether the browser reaches MDM.",
+   "text": "测试浏览器集成... 会显示浏览器是否能连接到 MDM。"
+  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "Mister Download Manager 的主窗口：带有工具栏、类别和下载列表的经典布局。"
@@ -1405,6 +1473,10 @@
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "不使用它来超载、攻击或绕过您不拥有的服务器的限制。"
+  },
+  "219d3a9eddb4a1de": {
+   "source": "It downloads like any other file, in its own row and window.",
+   "text": "它会像其他文件一样下载，有自己的行和窗口。"
   },
   "21aa032bde745310": {
    "source": "A download's first request (<x1/>) follows redirects and the pages that lead on to a file by themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module in <x2/> (Google Drive: <x3/>): it turns the link into the file's address, reads the site's own pages (a confirmation form, an error page) and names its refusals (<x4/>), with pure functions tested without a network. The lab server plays such a site on its real host names for the end-to-end tests (<x5/>).",
@@ -1477,6 +1549,10 @@
   "23581ac5b064e529": {
    "source": "<g1>Home</g1> / <g2>End</g2>",
    "text": "<g1>Home</g1> / <g2>End</g2>"
+  },
+  "2365e47d5b9e0466": {
+   "source": "Accounts: your debrid accounts.",
+   "text": "帐户：您的网盘帐户。"
   },
   "23758e159e5ed6c1": {
    "source": "<g1>The mouse wheel scrolls as many lines a notch as Windows' mouse settings say</g1>, in every list, tree and text box; Page Up / Page Down in the download list go to the edge of what's shown first, as in Explorer; text boxes of several lines have the lists' scroll bar.",
@@ -1577,6 +1653,10 @@
   "258b3fe2653f7ccb": {
    "source": "The top branches show how many downloads they hold. <g1>View → Hide categories</g1> gives the list the whole window.",
    "text": "顶部节点显示它们包含的下载数量。<g1>视图 → 隐藏类别</g1>使列表占据整个窗口。"
+  },
+  "259b061fde6fe554": {
+   "source": "File Properties: the file's name, address, folder, size, status and description",
+   "text": "文件属性：文件的名称、地址、文件夹、大小、状态和描述"
   },
   "25a8339210f17932": {
    "source": "Save to",
@@ -1722,6 +1802,10 @@
    "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "浏览器扩展程序，可从浏览器各自的商店获取：Chrome 网上应用店的版本也适用于 Edge、Brave、Opera 和 Vivaldi。它也随应用程序提供，并可作为<g1>单独下载</g1>，以便手动添加。每个文件都由 GitHub Actions 从公共源代码构建，并列出其 SHA-256 校验和。"
   },
+  "285bca50f6f03a0a": {
+   "source": "Start Download: the progress window shows it coming in.",
+   "text": "开始下载：进度窗口显示文件正在下载。"
+  },
   "286a2be607456e48": {
    "source": "Set <g1>Maximum download speed</g1> in KBytes/sec. The new limit applies at once.",
    "text": "以千字节/秒为单位设置<g1>最大下载速度</g1>。新限制会立即生效。"
@@ -1838,6 +1922,10 @@
    "source": "Right-click any text box for <g1>Undo</g1>, <g2>Cut</g2>, <g3>Copy</g3>, <g4>Paste</g4>, <g5>Delete</g5> and <g6>Select all</g6>. A read-only value (an address, a path, a version) copies with <g7>Ctrl+C</g7> or its right-click menu.",
    "text": "右键点击任何文本框可进行<g1>撤消</g1>、<g2>剪切</g2>、<g3>复制</g3>、<g4>粘贴</g4>、<g5>删除</g5>和<g6>全选</g6>。只读值（地址、路径、版本）可通过<g7>Ctrl+C</g7>或右键菜单复制。"
   },
+  "2bb32fb9b3228a28": {
+   "source": "Once every file is here, MDM removes the torrent from the account's list. On Premiumize, only the transfer's record goes: its files stay in your cloud.",
+   "text": "一旦所有文件都下载完毕，MDM 会从帐户列表中移除该种子。在 Premiumize 上，只有传输记录会被移除：文件会保留在您的云端。"
+  },
   "2bb5ce85b72c4e23": {
    "source": "For developers",
    "text": "致开发者"
@@ -1889,6 +1977,10 @@
   "2c7b167e7036f519": {
    "source": "<g1><x2/> Star it on GitHub</g1><g3>Report a bug</g3><g4>Contribute</g4><g5>Translate</g5>",
    "text": "<g1><x2/> 在 GitHub 上点赞</g1><g3>报告错误</g3><g4>贡献</g4><g5>翻译</g5>"
+  },
+  "2c8960ad3757fc4f": {
+   "source": "The video window listing a video's qualities with their sizes",
+   "text": "视频窗口，列出视频画质及其大小"
   },
   "2c8a809f2055d36d": {
    "source": "86, built in",
@@ -1981,10 +2073,6 @@
   "2da0ca29fb1349d1": {
    "source": "Linux",
    "text": "Linux"
-  },
-  "2da8521a51622a70": {
-   "source": "A torrent's progress window, on its Files tab",
-   "text": "种子进度窗口，在其“文件”选项卡上"
   },
   "2dc02541cd79bcaa": {
    "source": "<g1>Options → File types → Don't start downloading automatically from the following sites</g1> must not list the site. Names are separated by spaces, and <x2/> matches any part, as in <x3/>. <g4>Edit list ...</g4> below it lists whole addresses to leave alone, one per line (<x5/>).",
@@ -2094,6 +2182,10 @@
    "source": "Internet Download Manager is the long-established paid download manager for Windows, and the design we grew up with. Here is what can be checked. Where it's ahead, we say so.",
    "text": "Internet Download Manager 是 Windows 上历史悠久的付费下载管理器，也是我们从小用到大的设计。以下是可供检查的项目。如果它领先，我们会如实说明。"
   },
+  "2fcb7506d45a47ba": {
+   "source": "Options on its Accounts page: debrid service accounts",
+   "text": "“选项”的“帐户”页面：网盘服务帐户。"
+  },
   "2fd7c78a2f4da033": {
    "source": "\"What is MDM downloading right now, and how long is left?\"",
    "text": "“MDM 现在正在下载什么，还剩多长时间？”"
@@ -2101,6 +2193,10 @@
   "2fd956b15bc9c88d": {
    "source": "Back on the <g1>Schedule</g1> tab:",
    "text": "回到<g1>计划</g1>选项卡："
+  },
+  "2fe5fdd952f3a4cd": {
+   "source": "A file name that would land outside the torrent's folder (<x1/>) stops the download, and nothing is written.",
+   "text": "如果文件名会落在种子文件夹之外（<x1/>），则下载会停止，并且不会写入任何内容。"
   },
   "2ff7afa29d96da6b": {
    "source": "The selected download",
@@ -2182,6 +2278,10 @@
    "source": "Type part of the file's name.",
    "text": "输入文件名称的一部分。"
   },
+  "33cb6035f72e6370": {
+   "source": "Choose the subtitles; tick Put them into the video to keep them inside the file.",
+   "text": "选择字幕；勾选“将它们放入视频”以将字幕保存在文件内。"
+  },
   "33e932958a661bfe": {
    "source": "<g1>Category</g1> — choose a category to see and change its settings below.",
    "text": "<g1>类别</g1> — 选择一个类别以查看和更改其下方的设置。"
@@ -2222,6 +2322,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "适用于 Windows 的免费开源下载管理器，macOS 和 Linux 版本可供试用。您熟悉的 IDM 布局，在我们的基准测试中速度快 5 倍：所有连接同时进行，防崩溃恢复，支持种子下载，可从网页下载视频，浏览器集成，支持 86 种语言。"
   },
+  "35092e177f7efaa5": {
+   "source": "Download complete with Open and Open folder",
+   "text": "“下载完成”显示“打开”和“打开文件夹”"
+  },
   "3513f93cb0fa7d72": {
    "source": "<g1>Far</g1> (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.",
    "text": "<g1>远</g1>（红色）：超过 150 毫秒，通常是另一个大陆。远距离服务器通常较慢，增加连接数帮助最大。"
@@ -2233,6 +2337,10 @@
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "首次启动时选择语言"
+  },
+  "359e57bd1bf0613c": {
+   "source": "The main window's toolbar and categories in the Breeze theme",
+   "text": "主窗口的工具栏和类别采用 Breeze 主题"
   },
   "35a4c0860287599b": {
    "source": "Status",
@@ -2281,6 +2389,10 @@
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
    "text": "通过扩展程序支持 Firefox、Chrome、Edge、Brave、Opera 和 Vivaldi，可从<g1>Firefox 附加组件商店</g1>和<g2>Chrome 网上应用店</g2>获取。如果没有扩展程序，复制链接后 MDM 会打开下载窗口。<g3>更多</g3>"
+  },
+  "36fa729abf3d65b0": {
+   "source": "Regional: dates and times as the system writes them, or your own way.",
+   "text": "区域：日期和时间按系统格式显示，或按您自己的方式显示。"
   },
   "37018c365c78d873": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all…",
@@ -2450,6 +2562,10 @@
    "source": "MDM and IDM, side by side",
    "text": "MDM 与 IDM，并排比较"
   },
+  "3a67923adc7f1f4d": {
+   "source": "Find file: a name to look for, with where to look",
+   "text": "查找文件：要查找的名称，以及查找位置"
+  },
   "3aaf9872ed0f4888": {
    "source": "About 40, separate downloads",
    "text": "约 40，需单独下载"
@@ -2465,6 +2581,10 @@
   "3b1375cf2165155e": {
    "source": "The full guide is in the <g1>contributing guide</g1>, and <g2>Languages</g2> in the help explains the picker and right-to-left layouts.",
    "text": "完整指南请参阅<g1>贡献指南</g1>，帮助中的<g2>语言</g2>部分解释了语言选择器和从右到左的布局。"
+  },
+  "3b2a82d357778526": {
+   "source": "1 the queues, 2 Download limits, 3 the queue's schedule, 4 its files.",
+   "text": "1 队列，2 下载限制，3 队列的计划，4 队列中的文件。"
   },
   "3b32226a0e012424": {
    "source": "If existing file is complete, show download complete dialog; otherwise resume it.",
@@ -2702,6 +2822,10 @@
    "source": "In the Scheduler's time and date boxes, <g1>Up</g1> / <g2>Down</g2> and the number keys change the selected part, and <g3>Left</g3> / <g4>Right</g4> move between parts. In the calendar, the arrows move a day or a week, <g5>Page Up</g5> / <g6>Page Down</g6> a month, and <g7>Enter</g7> picks the day.",
    "text": "在计划程序的日期和时间框中，<g1>向上</g1> / <g2>向下</g2>键和数字键可更改选定部分，<g3>向左</g3> / <g4>向右</g4>键可在各部分之间移动。在日历中，箭头键可移动一天或一周，<g5>Page Up</g5> / <g6>Page Down</g6>键可移动一个月，<g7>Enter</g7>键可选择日期。"
   },
+  "40b46adc61bd2f95": {
+   "source": "Tick Also delete the file from disk only if you want the file gone too.",
+   "text": "仅当您也想删除文件时，才勾选同时从磁盘中删除文件。"
+  },
   "40c8dcda0be79537": {
    "source": "Download a file — Mister Download Manager help",
    "text": "下载文件 — Mister Download Manager 帮助"
@@ -2746,6 +2870,10 @@
    "source": "Then choose:",
    "text": "然后选择："
   },
+  "420fd4269607a080": {
+   "source": "Pick a quality, then Download Now.",
+   "text": "选择一个画质，然后点击“立即下载”。"
+  },
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "下载列表 →"
@@ -2766,6 +2894,10 @@
    "source": "gallery-dl itself",
    "text": "gallery-dl 本身"
   },
+  "42fd429771459bdb": {
+   "source": "A playlist: every video ticked, one quality for all.",
+   "text": "一个播放列表：所有视频都已勾选，所有视频都使用一个画质。"
+  },
   "432cbb1ffee89925": {
    "source": "<g1>Your downloads are yours to answer for.</g1> Respect copyright and the terms of the sites you download from. With torrents, remember that a torrent client also shares what it downloads.",
    "text": "<g1>您的下载由您负责。</g1> 请尊重版权和您下载网站的条款。对于种子文件，请记住种子客户端也会分享它下载的内容。"
@@ -2785,6 +2917,10 @@
   "439e42205d062684": {
    "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
    "text": "视频页面通过 yt-dlp 和 ffmpeg，图片画廊通过 gallery-dl（作为独立程序运行）；当选择网络适配器时，它们的连接通过 MDM 在 127.0.0.1 上的代理，将它们绑定到该适配器 (<x1/>)"
+  },
+  "43b468d3bb0d57bb": {
+   "source": "Sites Logins: a user name and password per site.",
+   "text": "站点登录：每个站点的用户名和密码。"
   },
   "43bb74214b2e4ee2": {
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
@@ -2934,6 +3070,10 @@
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "删除队列时会先询问；正在运行的队列在删除时会停止；工具栏的“开始/停止队列”箭头始终有效。"
   },
+  "478d7ed20f2fa436": {
+   "source": "Enter new address to download, with the Address box, Use authorization and OK",
+   "text": "输入要下载的新地址，包括地址框、使用授权和确定"
+  },
   "479315841001935e": {
    "source": "<g1><x2/></g1>, a separate command-line tool: download files, videos and torrents in a terminal, with progress, without the app.",
    "text": "<g1><x2/></g1>，一个单独的命令行工具：在终端中下载文件、视频和种子，显示进度，无需应用程序。"
@@ -3050,6 +3190,10 @@
    "source": "Connections and resuming in detail →",
    "text": "连接和恢复详情 →"
   },
+  "4aa48dc3c710de33": {
+   "source": "Torrent settings: sharing, limits and what others can see",
+   "text": "种子设置：共享、限制以及其他人可以看到的内容"
+  },
   "4ac401467a9a37d2": {
    "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
    "text": "下载会加入<g1>主下载队列</g1>，准备开始（<g2>开始</g2>也会启动它）。<g3>任务 → 导入 → 从 IDM 导出文件</g3>会读取<x4/>文件，其中包含每个下载的引用页和Cookie。"
@@ -3066,13 +3210,17 @@
    "source": "Browser integration",
    "text": "浏览器集成"
   },
-  "4b6527605342a06c": {
-   "source": "Confirm deletion of downloads",
-   "text": "确认删除下载"
+  "4b51fc3d56783820": {
+   "source": "When the queue is done: open a file, quit MDM, or turn the computer off.",
+   "text": "队列完成后：打开文件、退出 MDM 或关闭计算机。"
   },
   "4b6da766cbb50be6": {
    "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
    "text": "MDM 会打开<g1>下载图库</g1>，而不是将页面作为文件下载。首次使用时，点击<g2>安装 gallery-dl</g2>。"
+  },
+  "4b92d52aa9b80afe": {
+   "source": "The video window after Look up: the qualities with their sizes, Save to, File name and Subtitles",
+   "text": "点击“查找”后的视频窗口：显示画质及其大小、“保存到”、“文件名”和“字幕”"
   },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
@@ -3106,6 +3254,10 @@
    "source": "— plain FTP.",
    "text": "— 普通 FTP。"
   },
+  "4c9e560c0ba0c3aa": {
+   "source": "Options on its Connection page: connections per download, the network adapter and per-server exceptions",
+   "text": "“选项”的“连接”页面：每个下载的连接数、网络适配器和每个服务器的例外。"
+  },
   "4caffeedea3b4eb6": {
    "source": "<g1>Options → General → Capture downloads from the following browsers</g1> must have your browser ticked.",
    "text": "<g1>选项 → 常规 → 从以下浏览器捕获下载</g1>必须勾选您的浏览器。"
@@ -3133,6 +3285,10 @@
   "4d0868248400f576": {
    "source": "<g1>No video this can download on that page</g1> means yt-dlp found nothing on the page. Check that the address is the video's own page.",
    "text": "<g1>此页面上没有可下载的视频</g1>表示 yt-dlp 在该页面上没有找到任何内容。请检查地址是否是视频自己的页面。"
+  },
+  "4d13242235854bbc": {
+   "source": "The main window's toolbar and categories in the High contrast theme",
+   "text": "主窗口的工具栏和类别采用高对比度主题"
   },
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
@@ -3278,6 +3434,10 @@
    "source": "Download Mister Download Manager 0.2.4, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "下载 Mister Download Manager 0.2.4，免费开源的下载管理器：Windows 安装程序和便携式压缩包，macOS .dmg 和 Linux AppImage、.deb 和 .rpm，以及浏览器扩展。无广告，无捆绑软件。"
   },
+  "512f824da85ef410": {
+   "source": "Point each category's folder at the stick.",
+   "text": "将每个类别的文件夹指向U盘。"
+  },
   "513950a1b23ca382": {
    "source": "This needs nothing more from you: the extension already sees what the browser downloads in order to hand downloads over. What it notes stays in the browser's memory and is forgotten when the browser closes.",
    "text": "这不需要您做更多事情：扩展程序已经可以看到浏览器下载了什么，以便移交下载。它记录的内容保留在浏览器内存中，当浏览器关闭时会被遗忘。"
@@ -3330,6 +3490,10 @@
    "source": "Delivered",
    "text": "已送达"
   },
+  "521c77988a37435f": {
+   "source": "The main window's toolbar and categories in the Adwaita theme",
+   "text": "主窗口的工具栏和类别采用 Adwaita 主题"
+  },
   "522f96e0598b861e": {
    "source": "Select them (<g1>Ctrl+click</g1> for several).",
    "text": "选择它们（按住<g1>Ctrl</g1>键点击可选择多个）。"
@@ -3341,6 +3505,10 @@
   "524561570dcfa44c": {
    "source": "<g1>GitHub Pages</g1> hosts it. GitHub receives your IP address and browser details when you visit and may keep them in its server logs for security; see the <g2>GitHub Privacy Statement</g2>. Download links lead to GitHub Releases.",
    "text": "<g1>GitHub Pages</g1> 托管本网站。您访问时，GitHub 会收到您的 IP 地址和浏览器详细信息，并可能将其保存在服务器日志中以确保安全；请参阅 <g2>GitHub 隐私声明</g2>。下载链接指向 GitHub Releases。"
+  },
+  "52568481c8f45946": {
+   "source": "Classic",
+   "text": "经典"
   },
   "52e22e811026c469": {
    "source": "9.0.9<g1>1 Nov 2026</g1>",
@@ -3454,6 +3622,10 @@
    "source": "Click <g1>Yes</g1> to delete, or <g2>No</g2> to keep everything.",
    "text": "单击<g1>是</g1>删除，或<g2>否</g2>保留所有。"
   },
+  "557accf0aacea5ac": {
+   "source": "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online",
+   "text": "链接抓取器列出页面中的链接包，包括它们的名称、大小以及是否在线"
+  },
   "558bb1c07f16684f": {
    "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
    "text": "它会在该标签页的内存中记录页面播放器加载的视频流（HLS 和 DASH 播放列表）地址，以便<g1>下载视频</g1>按钮可以传递该流。其按钮只读取页面以查找视频和音频播放器并放置自身。点击它会将页面地址、视频地址、页面标题、网站 cookie、嵌入播放器的页面和您的浏览器 User-Agent 传递给 MDM。"
@@ -3481,10 +3653,6 @@
   "5672aa47684fc0f8": {
    "source": "Lines starting with <x1/> are notes for translators: where the text appears and what it means.",
    "text": "以<x1/>开头的行是给翻译人员的注释：文本出现的位置和含义。"
-  },
-  "569a2206af5da6b3": {
-   "source": "Options, General page",
-   "text": "选项，常规页面"
   },
   "569b5b4f390246d8": {
    "source": "Command line and automation",
@@ -3562,6 +3730,10 @@
    "source": "The report",
    "text": "报告"
   },
+  "587c035cfef7393d": {
+   "source": "Download complete: Open the file, or Open folder.",
+   "text": "下载完成：打开文件，或打开文件夹。"
+  },
   "5887d550311226da": {
    "source": "Open that menu (Windows and Linux)",
    "text": "打开该菜单（Windows和Linux）"
@@ -3638,6 +3810,10 @@
    "source": "<g1>Drag and drop on the main window</g1>: drop a link to add it, several links or a list (.txt, .ef2) to choose them in Import, a .torrent file to add it.",
    "text": "<g1>主窗口上的拖放</g1>：拖放链接以添加它，拖放多个链接或列表（.txt，.ef2）以在“导入”中选择它们，拖放 .torrent 文件以添加它。"
   },
+  "5a7146ca6411e2e2": {
+   "source": "Right-click a category → Properties: its name, file types and folder.",
+   "text": "右键点击一个类别 → 属性：查看其名称、文件类型和文件夹。"
+  },
   "5ab4860fe21cf34f": {
    "source": "<g1></g1>Up to 32, or 128 if you allow it; re-split as they go",
    "text": "<g1></g1>最多32个，如果允许可达128个；下载时重新分割"
@@ -3678,6 +3854,10 @@
    "source": "Unzip anywhere, a USB stick too; everything stays in its folder",
    "text": "解压到任意位置，包括 U 盘；所有文件都保留在各自文件夹中"
   },
+  "5bbe458adfedffc9": {
+   "source": "1 must be on, and 2 your browser ticked.",
+   "text": "1 必须开启，2 必须勾选您的浏览器。"
+  },
   "5bc4b6e9ef830d3c": {
    "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
    "text": "<g1>Linux 和 macOS</g1>：在 MDM 的设置中，位于只有您才能读取的数据文件夹（0700）中，尚未存储在系统密钥链中。计划将其存储在密钥链中。"
@@ -3685,6 +3865,10 @@
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
    "text": "从其他程序<g1>粘贴</g1>到任何文本框（Ctrl+V，⌘V）：MDM 曾有自己的剪贴板。"
+  },
+  "5bf587c2bc605e37": {
+   "source": "The Categories pane: All Downloads with a category per file type, Unfinished, Finished and Queues",
+   "text": "类别窗格：所有下载（按文件类型分类）、未完成、已完成和队列"
   },
   "5c048bb2fcbcc1ce": {
    "source": "Who makes Mister Download Manager? — Mister Download Manager",
@@ -3713,6 +3897,10 @@
   "5cf4f742d0a41f0e": {
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "将图库下载到以其命名的文件夹中。请参阅<g1>命令行和自动化</g1>。"
+  },
+  "5d335ae1978e28c3": {
+   "source": "A video's progress window while yt-dlp brings it in",
+   "text": "yt-dlp 正在下载视频时的视频进度窗口"
   },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
@@ -3821,10 +4009,6 @@
   "5f7f2cf66185bda1": {
    "source": "What Update now does",
    "text": "“立即更新”执行的操作"
-  },
-  "5f91bf43437c9761": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
-   "text": "<g1>视图</g1> — 显示或隐藏类别，对列表进行排序（<g2>整理文件</g2>），<g3>深色模式支持</g3>，<g4>始终为深色</g4>，<g5>主题</g5>，<g6>绘制方式</g6>（Windows：Direct3D 或 OpenGL）和<g7>语言</g7>。"
   },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
@@ -3982,6 +4166,10 @@
    "source": "The first / last item of an open menu",
    "text": "已打开菜单的第一个/最后一个项目"
   },
+  "6252af3e97f3ba17": {
+   "source": "A category's properties: its name, file types and folder",
+   "text": "类别属性：其名称、文件类型和文件夹"
+  },
   "6272eb3a6dd2005b": {
    "source": "The download list and settings are in <x1/> (<x2/>). A portable copy keeps them in its <x3/> folder instead. Downloaded files go to your <g4>Downloads</g4> folder, sorted into a folder per category; you can change that in <g5>Options → Save to</g5>.",
    "text": "下载列表和设置位于<x1/> (<x2/>)。便携式副本则将其保存在其<x3/>文件夹中。下载的文件会进入您的<g4>下载</g4>文件夹，按类别分类到子文件夹中；您可以在<g5>选项 → 保存到</g5>中更改此设置。"
@@ -4025,10 +4213,6 @@
   "63a9ff90215698fd": {
    "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
    "text": "MDM 的种子不使用<g1>加密</g1>（有时称为“协议加密”）。这种加密只能隐藏来自简单过滤器的流量。它永远不会隐藏您的身份，因此 MDM 不声称提供它。一些需要它的对等点将无法连接。"
-  },
-  "63ac412dcec0525a": {
-   "source": "The Scheduler",
-   "text": "计划程序"
   },
   "63ce30d5a4972748": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.",
@@ -4122,6 +4306,10 @@
    "source": "License",
    "text": "许可"
   },
+  "6685cbbaa02eceef": {
+   "source": "The progress window shows it coming in.",
+   "text": "进度窗口显示下载正在进行。"
+  },
   "66987ab567339aa6": {
    "source": "Free IDM alternative",
    "text": "免费的 IDM 替代品"
@@ -4133,6 +4321,10 @@
   "66b76acd18192191": {
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>属性</g1> — 更改其名称、文件类型和文件夹。“常规”和“种子”只更改其文件夹。已重命名的类别会保留其文件夹；内置类别会保留其语言的名称，直到您重命名它。"
+  },
+  "66c64617aa9effd4": {
+   "source": "1 the category, 2 where the file goes, 3 start now, 4 or put it in a queue.",
+   "text": "1是类别，2是文件保存位置，3是立即开始，4是加入队列。"
   },
   "66d91ca51ba2e6e6": {
    "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too. A theme in a folder of its own (<x4/>) can bring its icons in <x5/> and <x6/>, each named for what it shows (<x7/>, <x8/>…): SVG or PNG files keep their colours, and <x9/> ones, as GNOME and KDE name them, take the theme's text colour.",
@@ -4157,6 +4349,10 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "要将<g1>所有</g1>流量通过另一个网络路由，请为整台计算机使用VPN。"
+  },
+  "67b09013b9c7d05d": {
+   "source": "Yes downloads both helpers in the background, once.",
+   "text": "是会在后台一次性下载这两个辅助工具。"
   },
   "67b7e3e016904e39": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
@@ -4233,10 +4429,6 @@
   "6976d3a5455f9216": {
    "source": "Typing the start of a name while the list has the focus jumps to the first download whose name starts with it.",
    "text": "当列表获得焦点时，输入名称的开头会跳转到名称以此开头的第一个下载。"
-  },
-  "69ae5ffd3be508d8": {
-   "source": "Add torrent",
-   "text": "添加种子"
   },
   "69cc300453b87a26": {
    "source": "Yes, with no trial, no paid edition, no ads and no sign-up. It is free software under the GNU GPL, version 3.",
@@ -4322,6 +4514,10 @@
    "source": "MDM isn't installed, or browser integration isn't set up",
    "text": "MDM 未安装，或浏览器集成未设置"
   },
+  "6b05e78186187bf5": {
+   "source": "Ctrl+F, type part of the name, then Find.",
+   "text": "按 Ctrl+F 键，输入名称的一部分，然后点击“查找”。"
+  },
   "6b0911ac05d6e883": {
    "source": "Linux, the AppImage or the .tar.gz",
    "text": "Linux，AppImage 或 .tar.gz"
@@ -4333,6 +4529,10 @@
   "6b1f32baf0de106c": {
    "source": "<g1><g2>Portable mode</g2></g1> — run MDM from a folder or a USB stick without installing it.",
    "text": "<g1><g2>便携模式</g2></g1> — 无需安装即可从文件夹或 U 盘运行 MDM。"
+  },
+  "6b4da849d7465ea3": {
+   "source": "Options, File types: the file types MDM takes from the browser, and the sites it leaves alone",
+   "text": "选项 → 文件类型：MDM 从浏览器接管的文件类型，以及它不处理的网站"
   },
   "6b6efc5ebc7172c7": {
    "source": "Run the highlighted item",
@@ -4430,6 +4630,10 @@
    "source": "<g1>What an archive holds goes</g1> — into a folder named after it when it holds several things (the default), always into such a folder, or straight into the archive's folder.",
    "text": "<g1>存档内容去向</g1>——当存档包含多个文件时，放入以其命名的文件夹中（默认）；始终放入此类文件夹中；或直接放入存档所在的文件夹中。"
   },
+  "6ddb957d293eb435": {
+   "source": "1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list.",
+   "text": "1 菜单栏，2 工具栏，3 类别，4 下载列表。"
+  },
   "6de1faa1813fee7e": {
    "source": "<g1>5</g1> of 10",
    "text": "10个中的<g1>5</g1>个"
@@ -4522,6 +4726,10 @@
    "source": "Untick the folders or files you don't want. <g1>Select all</g1> and <g2>Select none</g2> help with big torrents. <g3>Selected</g3> shows how many files and how much data you picked.",
    "text": "取消勾选您不想要的文件夹或文件。<g1>全选</g1>和<g2>不选</g2>有助于处理大型种子。<g3>已选</g3>显示您选择了多少文件和多少数据。"
   },
+  "6fd74c9a6e95ff7a": {
+   "source": "The service downloads the torrent on its own servers. The list shows how far it is, such as <g1>45% at Real-Debrid</g1>. A torrent the service already has is ready at once.",
+   "text": "服务会在其自己的服务器上下载种子。列表会显示下载进度，例如<g1>Real-Debrid 上 45%</g1>。服务已有的种子会立即准备就绪。"
+  },
   "6fd9e0f8a2505b9f": {
    "source": "Contributing",
    "text": "贡献"
@@ -4561,6 +4769,10 @@
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "保留在您电脑上的内容"
+  },
+  "70aaa86487419e0d": {
+   "source": "Link grabber: untick what you don't want, then Add to queue.",
+   "text": "链接抓取器：取消勾选不需要的，然后添加到队列。"
   },
   "70ae16056b2c6783": {
    "source": "Replaces the AppImage, or the programs in their folder.",
@@ -4605,10 +4817,6 @@
   "71fe7ca9a5b99066": {
    "source": "<g1>New</g1> — make your own category. <g2>Edit...</g2> changes the selected one: its folder, and for your own categories its name and file types.",
    "text": "<g1>新建</g1> — 创建您自己的类别。<g2>编辑...</g2>更改所选类别：其文件夹，以及对于您自己的类别，其名称和文件类型。"
-  },
-  "720b69230bc62f14": {
-   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
-   "text": "将图库的图片（维基共享资源类别、Flickr 相册等）下载到 <x1/> 中以其命名的文件夹内；<x2/> 最多下载这么多，即网站列出的前几个。再次启动时，它只会获取新的图片。"
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4682,6 +4890,10 @@
    "source": "2. Find the server",
    "text": "2. 查找服务器"
   },
+  "73691328dab713aa": {
+   "source": "Torrents through the service",
+   "text": "通过服务下载种子"
+  },
   "736ab3843233008b": {
    "source": "<g1>.deb</g1> · <g2>.rpm</g2>",
    "text": "<g1>.deb</g1> · <g2>.rpm</g2>"
@@ -4689,6 +4901,10 @@
   "7389126159a9a4d4": {
    "source": "MDM didn't answer in time",
    "text": "MDM 未及时响应"
+  },
+  "73bbfe3db01da3ea": {
+   "source": "Options, General with Test browser integration...",
+   "text": "选项，常规，带有“测试浏览器集成...”"
   },
   "73f13dca46cb9d2c": {
    "source": "<g1><g2>Yes</g2></g1><g3>via yt-dlp</g3>",
@@ -4737,6 +4953,10 @@
   "75072594c2f7adda": {
    "source": "Run <x1/> from there.",
    "text": "从那里运行 <x1/>。"
+  },
+  "7537997de54b70e3": {
+   "source": "Once it is set up, a download link goes like this:",
+   "text": "设置好后，下载链接会这样运行："
   },
   "755c9430c92ad5b4": {
    "source": "Save it in this folder (else the category's folder from <g1>Options → Save to</g1>).",
@@ -4950,6 +5170,10 @@
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "勾选<g1>将所有下载总计限制为</g1>，并输入速度（单位为千字节/秒）。一个好的开始是您连接速度的大约三分之二。（1 兆字节/秒大约是 1000 千字节/秒。）"
   },
+  "7ad7c17f54ce45b0": {
+   "source": "Add torrent with a torrent's files as a folder tree, the folder they go to, and Download Now",
+   "text": "添加种子，显示种子文件作为文件夹树，它们将保存到的文件夹，以及“立即下载”按钮"
+  },
   "7ae273da4ef67ce4": {
    "source": "Give the video's page address to <g1>Add URL</g1> (<g2>Ctrl+N</g2>). MDM recognises video pages and opens the video window, already looking the page up.",
    "text": "将视频页面地址提供给<g1>添加 URL</g1>（<g2>Ctrl+N</g2>）。MDM 会识别视频页面并打开视频窗口，同时已开始查找该页面。"
@@ -5022,6 +5246,10 @@
    "source": "Vivaldi",
    "text": "Vivaldi"
   },
+  "7ca97bd5e93217a8": {
+   "source": "Its progress window: each file and how much of it is here.",
+   "text": "其进度窗口：显示每个文件及其已下载的百分比。"
+  },
   "7caa819cbb46080c": {
    "source": "MDM doesn't accept this copy of the extension",
    "text": "MDM 不接受此扩展程序副本"
@@ -5061,6 +5289,10 @@
   "7d32e887febf85b0": {
    "source": "Right-click the download and choose <g1>Refresh download address</g1>.",
    "text": "右键点击下载并选择<g1>刷新下载地址</g1>。"
+  },
+  "7d3af2ef0e680bca": {
+   "source": "The progress window of a download coming in over several connections",
+   "text": "通过多个连接下载文件时的进度窗口"
   },
   "7d3f9b3b48edb259": {
    "source": "<g1>Show queue selection panel on closing batch download dialogs</g1> — the same for batch downloads.",
@@ -5169,6 +5401,10 @@
   "7f12a262bf26f1cd": {
    "source": "Description",
    "text": "描述"
+  },
+  "7f2b3156563a771b": {
+   "source": "Stopped, or after a restart, the download continues where it was: the service isn't sent the torrent again, and files already downloaded aren't downloaded again.",
+   "text": "停止后或重启后，下载会从中断处继续：服务不会再次发送种子，已下载的文件也不会再次下载。"
   },
   "7f50cb9ccd546bfc": {
    "source": "Sponsor the creator on GitHub",
@@ -5390,6 +5626,10 @@
    "source": "Torrents and your security",
    "text": "种子和您的安全"
   },
+  "847919d6970d2f79": {
+   "source": "View → Draw with: the other way of drawing.",
+   "text": "视图 → 绘制方式：另一种绘制方式。"
+  },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
    "text": "5. 应用并让 MDM 保持运行"
@@ -5413,6 +5653,10 @@
   "84a8b37a9cdcaee5": {
    "source": "Translations",
    "text": "翻译"
+  },
+  "84b4301bea02e666": {
+   "source": "Download complete, with Open, Open with..., Open folder and Close",
+   "text": "下载完成，带有“打开”、“打开方式...”、“打开文件夹”和“关闭”"
   },
   "84ca82a68f7ffa9e": {
    "source": "<g1>Sort:</g1> click a column title. Click again to reverse the order, and a third time to go back to the order of addition. <g2>View → Arrange files</g2> does the same from the menu.",
@@ -5441,6 +5685,10 @@
   "853ac467ba7801e6": {
    "source": "Put downloads in a queue →",
    "text": "将下载放入队列 →"
+  },
+  "8581b3f6f6759cc7": {
+   "source": "Proxy / Socks: no proxy, the system's, or your own.",
+   "text": "代理/Socks：不使用代理，使用系统代理，或使用您自己的代理。"
   },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
@@ -5517,6 +5765,14 @@
   "880dcd6570293c2e": {
    "source": "Downloading may be against some sites' terms. Checking that is up to you.",
    "text": "下载可能违反某些网站的条款。检查这一点由您自己决定。"
+  },
+  "883db0149fcc4d63": {
+   "source": "Options on its General page: start with the system, the clipboard, browser integration and the browsers MDM takes downloads from",
+   "text": "“选项”的“常规”页面：随系统启动、剪贴板、浏览器集成以及 MDM 从哪些浏览器获取下载。"
+  },
+  "8854151459f022ea": {
+   "source": "The Scheduler: the queues on the left with Download limits, the selected queue's Schedule tab on the right",
+   "text": "计划程序：左侧是队列和下载限制，右侧是所选队列的“计划”选项卡"
   },
   "887417a3d46d42f9": {
    "source": "The same list is in MDM under <g1>Help → Keyboard shortcuts</g1>, and the menus show each command's keys beside it. On a Mac, <g2>⌘</g2> (Command) takes the place of <g3>Ctrl</g3>: <g4>⌘N</g4> adds a download.",
@@ -5674,6 +5930,14 @@
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
    "text": "其权限及原因：<g1>downloads</g1> 用于查看和移交下载；<g2>cookies</g2> 用于使已登录的下载在 MDM 中正常工作；<g3>nativeMessaging</g3> 用于与 MDM 通信；<g4>contextMenus</g4> 用于右键菜单项；<g5>storage</g5> 用于其设置；<g6>webRequest</g6> 用于查看提交的表单和加载的视频流（它不改变任何内容）；<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge 和其他 Chromium 浏览器）用于将浏览器会打开的文件（如 PDF）下载下来，适用于 MDM 支持的类型；在 Firefox 中，<g8>webRequestBlocking</g8> 实现此功能；<g9>scripting</g9> 用于在您请求时读取页面链接，并在安装扩展后将视频按钮添加到已打开的页面；<g10>proxy</g10>（Firefox，可选：仅当您在弹出窗口中开启时才请求）用于读取浏览器使用的代理，以便通过 VPN 或代理扩展下载的文件也能通过它（它从不改变浏览器的代理）；访问所有网站，因为下载和视频可能来自任何网站。"
   },
+  "8bdde34517b27efd": {
+   "source": "Options on its Archives page: extracting archives when they are downloaded, and Link grabber's look-ups",
+   "text": "“选项”的“存档”页面：下载后解压存档，以及“链接抓取器”的查找。"
+  },
+  "8bdfaff0af16d86a": {
+   "source": "MDM lists the qualities: pick one.",
+   "text": "MDM 列出视频画质：选择一个。"
+  },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
    "text": "此页面上的媒体"
@@ -5725,6 +5989,10 @@
   "8d5482092a09013b": {
    "source": "Some pages play a video without a link to it, and some players hide it from the download button too. The toolbar button lists what the page has loaded, so you can still save it:",
    "text": "有些页面播放视频时没有提供链接，有些播放器也会隐藏下载按钮。工具栏按钮会列出页面已加载的内容，因此您仍然可以保存它："
+  },
+  "8d682522748bdfae": {
+   "source": "Adwaita",
+   "text": "Adwaita"
   },
   "8d6911b8ed8eb4d4": {
    "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
@@ -5802,10 +6070,6 @@
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
    "text": "<g1><g2>通宵下载</g2></g1> — 将文件排队，让“计划程序”在夜间启动它们。"
   },
-  "8f81a67ecf66f6f4": {
-   "source": "Batch download",
-   "text": "批量下载"
-  },
   "8f843b10d98aa225": {
    "source": "<g1>BitTorrent</g1><g2>DHT and trackers</g2>",
    "text": "<g1>BitTorrent</g1><g2>DHT 和 Tracker</g2>"
@@ -5817,10 +6081,6 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB 1.0 秒</g1> <g2>IDM: 5.5 秒</g2>"
-  },
-  "8fcae1435dddb9aa": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>网络适配器</g1> — 默认是<g2>任何（系统选择）</g2>。选择一个适配器，通常是您的VPN适配器，MDM打开的所有连接都将通过它发出，否则不发出。这包括下载、FTP、种子、您选择的DNS、MDM自己的下载和更新检查。它充当一个终止开关：当适配器断开连接或VPN关闭时，任何数据都不会通过您的正常连接发出。正在进行的下载会停止并显示“……未连接”，并在适配器恢复后重新开始。列表下方的行显示适配器的地址，或者显示它未连接。"
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -5881,10 +6141,6 @@
   "91ebb9f0dfb7f3d7": {
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid、AllDebrid 或 Premiumize 等网盘服务是一种付费帐户，它从文件主机下载文件到自己的服务器。它会返回一个..."
-  },
-  "91f65bb0d07ece23": {
-   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
-   "text": "如果 Direct3D 无法在您的计算机上启动（没有 Direct3D 12 驱动程序，某些虚拟机），或者其第一个窗口在 10 秒内没有显示，MDM 会使用 OpenGL 绘制，并且<g1>视图 → 绘制方式</g1>会显示这一点。再次选择<g2>Direct3D</g2>会在下次启动时再次尝试。"
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -5986,10 +6242,6 @@
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1>选择所有。"
   },
-  "94c4559a957526ad": {
-   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
-   "text": "尚未绑定到适配器，因此在选择适配器时它们不会启动："
-  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>当大文件下载正在写入时，窗口会冻结数秒</g1>：MDM 在窗口线程上保存其列表，并且保存操作等待磁盘。现在它在自己的线程上保存（新的崩溃报告捕获了这个问题）。"
@@ -6046,9 +6298,17 @@
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — 可从文件夹或 U 盘运行"
   },
+  "961eaa849deedf28": {
+   "source": "Download File Info for a ZIP file: its address, the Compressed category, the folder it goes to, its size, and the Download Later, Start Download and Cancel buttons",
+   "text": "ZIP文件的下载文件信息：其地址、压缩文件类别、保存文件夹、大小，以及稍后下载、开始下载和取消按钮"
+  },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
    "text": "支持 FTP 吗？— Mister Download Manager"
+  },
+  "963552ab075ccbdb": {
+   "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
+   "text": "MDM 在首次启动时提供 yt-dlp 和 ffmpeg，并带有“是，下载它们（推荐）”和“暂不”选项"
   },
   "964baafe2e54e20e": {
    "source": "For a Mac with Apple Silicon (M1 or later: <g1>Apple menu → About This Mac</g1> shows a <g2>Chip</g2>). Open it and drag Mister Download Manager to Applications. macOS asks before its first start, because the app isn't notarized by Apple: right-click it and choose <g3>Open</g3> (on macOS 15 and later: <g4>System Settings → Privacy &amp; Security → Open Anyway</g4>).",
@@ -6098,6 +6358,10 @@
    "source": "Web",
    "text": "Web"
   },
+  "97408a3a460ac468": {
+   "source": "Untick what you don't want, then Download Now.",
+   "text": "取消勾选不想要的文件，然后点击“立即下载”。"
+  },
   "974c25dc825af253": {
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
    "text": "使用安装程序安装 MDM 时，请勾选 <g1>设置浏览器集成（Chrome, Edge, Brave, Firefox）</g1>。这将注册辅助程序。（便携版无法执行此操作；请参阅<g2>便携模式</g2>。）"
@@ -6137,6 +6401,10 @@
   "9808fa9b8d4c51e1": {
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g3>Media on this page</g3> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "将鼠标指向网页上的视频，视频边缘会出现一个小的<g1>下载视频</g1>按钮。点击它，MDM的<g2>从页面下载视频</g2>窗口会打开并查找它可以下载的质量。它会获取您点击的视频：如果播放的是文件，则为文件本身；否则为播放器加载的流（HLS或DASH），再否则为页面。当按钮无法判断您指的是哪一个时，工具栏按钮的<g3>此页面上的媒体</g3>会列出所有这些。嵌入式播放器也适用，您在该网站的登录信息、嵌入播放器的页面以及您的浏览器User-Agent都会随之发送，因此会员视频或仅在嵌入它们的网站上播放的视频也可以下载。音频播放器也会显示此按钮。"
+  },
+  "981faeae41148137": {
+   "source": "Check the folder, then Start Download.",
+   "text": "检查文件夹，然后点击“开始下载”。"
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -6202,6 +6470,10 @@
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>视频下载</g2></g1> — 使用 yt-dlp 从视频页面（YouTube、Vimeo 等）下载视频。"
   },
+  "99e97ad515986dce": {
+   "source": "Options on its Sites Logins page: a list of sites with their user names",
+   "text": "“选项”的“站点登录”页面：带有用户名的网站列表。"
+  },
   "9a26fd6f740cf884": {
    "source": "<g1>Show details &gt;&gt;</g1> (open by default) adds the connection view:",
    "text": "<g1>显示详情 &gt;&gt;</g1>（默认打开）会添加连接视图："
@@ -6265,6 +6537,10 @@
   "9b9f71ce7672692d": {
    "source": "<g1>A status strip</g1> under the list: how many downloads it shows and how many are selected, how many are running and how fast in all. The tray icon's tip says the same.",
    "text": "列表下方<g1>状态栏</g1>：显示多少个下载，选中了多少个，有多少个正在运行以及总速度。托盘图标的提示也显示相同信息。"
+  },
+  "9bb035da4696ddfc": {
+   "source": "A <x1/> file is sent as its magnet link (its hash, its name and its trackers). Every file of the torrent is downloaded; the service fetches the whole torrent.",
+   "text": "<x1/>文件会以其磁力链接（其哈希值、名称和跟踪器）发送。种子的每个文件都会被下载；服务会获取整个种子。"
   },
   "9bb90abfa6162f11": {
    "source": "1. Who we are",
@@ -6346,6 +6622,10 @@
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "无界面下载，带进度（<x1/>、<x2/>）、视频、种子和自动化API命令：应用程序运行的库（<x3/>），以及<x4/>，一个小型启动器，以相同的参数、终端和退出代码启动它"
   },
+  "9e0e5a0d4f9234b3": {
+   "source": "Downloads → Find (Ctrl+F).",
+   "text": "下载 → 查找 (Ctrl+F)。"
+  },
   "9e0f0149f9728f26": {
    "source": "Download in order",
    "text": "按顺序下载"
@@ -6398,6 +6678,10 @@
    "source": "Select part of a page and right-click it for <g1>Download selected links with Mister Download Manager</g1>, or right-click the page for <g2>Download all links with Mister Download Manager</g2>: the links open in <g3><g4>Link grabber</g4></g3>, sorted into packages, where you tick the ones you want.",
    "text": "选择页面的一部分，右键单击以选择<g1>使用 Mister Download Manager 下载选定链接</g1>，或右键单击页面以选择<g2>使用 Mister Download Manager 下载所有链接</g2>：链接将在<g3><g4>链接抓取器</g4></g3>中打开，并按包分类，您可以在其中勾选所需的链接。"
   },
+  "9efdcb6a62e4c3f8": {
+   "source": "File Properties with the download's address",
+   "text": "显示下载地址的“文件属性”"
+  },
   "9f1b18ba278b131b": {
    "source": "<g1>The app's own command line</g1>, the same switches as IDM's: hand a download to the running app from a script, a batch file or another program.",
    "text": "<g1>应用程序自己的命令行</g1>，与 IDM 的开关相同：从脚本、批处理文件或另一个程序将下载任务交给正在运行的应用程序。"
@@ -6421,10 +6705,6 @@
   "9fe363ab929197a2": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded.",
    "text": "受 DRM 保护的视频（大多数付费流媒体服务）无法下载。"
-  },
-  "a012e724fe1c9a46": {
-   "source": "Options, Save to page",
-   "text": "选项，保存到页面"
   },
   "a015c3ccc9319dfa": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built…",
@@ -6566,6 +6846,10 @@
    "source": "Torrents and your security — Mister Download Manager help",
    "text": "种子和您的安全 — Mister Download Manager 帮助"
   },
+  "a410e1f12c6dc5bd": {
+   "source": "Options, General: Use advanced browser integration and the list of browsers MDM takes downloads from",
+   "text": "选项，常规：使用高级浏览器集成和 MDM 从中获取下载的浏览器列表"
+  },
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "在 MDM 运行时运行<x1/>。"
@@ -6577,6 +6861,10 @@
   "a43f559b321cf278": {
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "种子会指定 MDM 请求对等点的跟踪器。MDM 不会联系您自己计算机或本地网络上的跟踪器（<x1/>、<x2/>、<x3/> 等），因此种子无法让 MDM 向其所在的网络发送请求。<g4>添加跟踪器...</g4> 遵循相同的规则：它会拒绝此类地址并告知您原因，而不是保留一个永远不会被请求的地址。"
+  },
+  "a44d436e19996493": {
+   "source": "It downloads like any other file.",
+   "text": "它像其他文件一样下载。"
   },
   "a45f25e5b3e6d530": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
@@ -6722,6 +7010,10 @@
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
    "text": "<g1>下载列表的文件图标</g1>在列表横向滚动时会绘制在“类别”窗格上方（“类别”树和“计划程序”也有同样的问题）。"
   },
+  "a7c07115ddb8e577": {
+   "source": "One asterisk in the address, then numbers or letters from–to.",
+   "text": "地址中一个星号，然后是数字或字母的范围。"
+  },
   "a801181e521c3efe": {
    "source": "Start and stop a queue",
    "text": "启动和停止队列"
@@ -6753,6 +7045,10 @@
   "a8e296926efbf0e1": {
    "source": "<g1>Main download queue</g1> — where <g2>Download Later</g2>, batch downloads and imported lists go. A download leaves it when it is finished.",
    "text": "<g1>主下载队列</g1> — <g2>稍后下载</g2>、批量下载和导入列表的去向。下载完成后会离开此队列。"
+  },
+  "a90ae03353c0b71c": {
+   "source": "The Scheduler's Schedule tab: Start download at, Once at or Daily, and Stop download at",
+   "text": "“计划程序”的“计划”选项卡：在以下时间开始下载、一次在或每日，以及在以下时间停止下载"
   },
   "a92aab543157b440": {
    "source": "Select the previous / next download",
@@ -6978,6 +7274,10 @@
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>“选项”中的“确定”撤消了同时进行的更改</g1>（工具栏的“速度限制器”、“种子设置”……），“计划程序”中的“关闭”撤消了添加到或从队列中移除的下载。"
   },
+  "ae340036beffb1d6": {
+   "source": "Options on its Regional page: the system's way of writing dates and times, or your own",
+   "text": "“选项”的“区域”页面：系统显示日期和时间的方式，或您自己的方式。"
+  },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
    "text": "Windows、macOS、Linux、Android"
@@ -7070,6 +7370,14 @@
    "source": "Queues",
    "text": "队列"
   },
+  "b04b3bc32e03686a": {
+   "source": "Download File Info in MDM for a file clicked in the browser",
+   "text": "在浏览器中点击文件后，MDM 中的“下载文件信息”"
+  },
+  "b05f1388075b4b26": {
+   "source": "The Scheduler's choices for when the queue is done, Turn off computer when done among them",
+   "text": "“计划程序”中队列完成后的选项，其中包括“完成后关闭计算机”"
+  },
   "b0c0ef4ee0008226": {
    "source": "— FTP secured with TLS from the start of the session (explicit FTPS, <x1/>, usually port 21). Use it when the server says it supports TLS.",
    "text": "— 会话开始时通过 TLS 加密的 FTP（显式 FTPS，<x1/>，通常使用端口 21）。当服务器声明支持 TLS 时使用。"
@@ -7122,6 +7430,10 @@
    "source": "Up to 32, re-split as they go",
    "text": "最多 32 个，随下载进度重新分配"
   },
+  "b1627f2f79cc28d7": {
+   "source": "The View menu open, with Dark Mode support and Always dark",
+   "text": "“视图”菜单已打开，带有“深色模式支持”和“始终为深色”选项"
+  },
   "b176d8e72c00581c": {
    "source": "Price",
    "text": "价格"
@@ -7154,6 +7466,10 @@
    "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
    "text": "浏览器集成在每个浏览器中都需要多一步：添加扩展。在 Firefox 中，点击 <g2>addons.mozilla.org 上的页面</g2>中的<g1>添加到 Firefox</g1>；在 Chrome、Edge、Brave、Opera 和 Vivaldi 中，点击 <g4>Chrome 网上应用店中的页面</g4>中的<g3>添加到 Chrome</g3>。<g5>浏览器集成</g5>会展示具体操作。"
   },
+  "b260dbdaf5dd80a2": {
+   "source": "Add Mister Download Manager to your browser: each browser found, with a button to its store page",
+   "text": "将 Mister Download Manager 添加到您的浏览器：找到的每个浏览器，带有一个指向其商店页面的按钮"
+  },
   "b2679b7b14f46791": {
    "source": "The video then downloads like any other file, with its own row in the list and its progress window. yt-dlp brings it in over one stream of its own, so the window's connections table stays empty.",
    "text": "然后视频会像其他文件一样下载，在列表中有自己的行和进度窗口。yt-dlp 通过自己的一个流进行传输，因此窗口的连接表保持为空。"
@@ -7169,6 +7485,10 @@
   "b27190934c8836f3": {
    "source": "<g1><g2>Torrents</g2></g1> — magnet links and .torrent files, choosing files, and sharing.",
    "text": "<g1><g2>种子</g2></g1> — 磁力链接和 .torrent 文件，选择文件和共享。"
+  },
+  "b27695aee6ec8848": {
+   "source": "Find file: a name to look for",
+   "text": "查找文件：要查找的名称"
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -7214,10 +7534,6 @@
    "source": "<g1>Exceptions</g1> — a different number for some servers. <g2>New</g2> adds one (the server's name and the number of connections); <g3>Edit</g3> and <g4>Delete</g4> change or remove the selected one. Rows marked <g5>(auto)</g5> are limits MDM learned by itself from servers that refused more connections. They can't be edited and fade away by themselves.",
    "text": "<g1>例外</g1> — 针对某些服务器设置不同的连接数。<g2>新建</g2>用于添加（服务器名称和连接数）；<g3>编辑</g3>和<g4>删除</g4>用于修改或移除选定的条目。标有<g5>(auto)</g5>的行是MDM从拒绝更多连接的服务器那里自动学习到的限制。它们无法编辑，并会自行消失。"
   },
-  "b32ef7002c1dde78": {
-   "source": "The main window in dark mode",
-   "text": "深色模式主窗口"
-  },
   "b34461e3c513158b": {
    "source": "The extension is newer than MDM",
    "text": "扩展程序比 MDM 新"
@@ -7233,6 +7549,10 @@
   "b3a72c4b8c2a9746": {
    "source": "Press <g1>Ctrl+F</g1> (or <g2>Downloads → Find</g2>), type part of the name and click <g3>Find</g3>. <g4>F3</g4> jumps to the next match. You can also search descriptions and addresses. Step by step in <g5>Find a download in a long list</g5>.",
    "text": "按<g1>Ctrl+F</g1>（或<g2>下载 → 查找</g2>），输入名称的一部分，然后单击<g3>查找</g3>。<g4>F3</g4>跳转到下一个匹配项。您还可以搜索描述和地址。分步说明请参阅<g5>在长列表中查找下载</g5>。"
+  },
+  "b3ca971adc7126d9": {
+   "source": "View → Theme switches at once, keeping the layout.",
+   "text": "视图 → 主题会立即切换，并保持布局不变。"
   },
   "b40e59277aab9ad5": {
    "source": "Imports an IDM list",
@@ -7286,9 +7606,21 @@
    "source": "Languages",
    "text": "语言"
   },
+  "b52a39cec850241e": {
+   "source": "File types: what the browser hands over, and the sites left alone.",
+   "text": "文件类型：浏览器移交的文件类型，以及不受 MDM 处理的网站。"
+  },
   "b52e4bb8abebdaa1": {
    "source": "256 KiB file",
    "text": "256 KiB 文件"
+  },
+  "b53503e9d42a4135": {
+   "source": "Options → General → Edit...: turn the button off, or list sites it never shows on.",
+   "text": "选项 → 常规 → 编辑...：关闭按钮，或列出它从不显示的网站。"
+  },
+  "b5377276e996b945": {
+   "source": "The button over a video. Drag it where you like; it stays there.",
+   "text": "视频上方的按钮。您可以随意拖动它；它会停留在那里。"
   },
   "b585eac57a3ace26": {
    "source": "On another computer",
@@ -7421,6 +7753,10 @@
   "b8face0bc8562340": {
    "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, install it from addons.mozilla.org: a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
    "text": "扩展程序是否已加载并开启？在浏览器的扩展程序页面上查找<g1>Mister Download Manager</g1>。在 Firefox 中，请从 addons.mozilla.org 安装：临时附加组件在重启后会消失。请参阅<g2>浏览器集成</g2>。"
+  },
+  "b9213ed6a8b3c240": {
+   "source": "Your computer never connects to the torrent's peers.",
+   "text": "您的计算机绝不会连接到种子的对等点。"
   },
   "b921c33f58e520a8": {
    "source": "<g1>5.4×</g1><g2>faster</g2>",
@@ -7642,6 +7978,10 @@
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "打开第一个菜单（<g1>任务</g1>）；在Mac上是<g2>Ctrl+F2</g2>"
   },
+  "bf727e1120314cd9": {
+   "source": "The main window's toolbar and categories in the Classic theme",
+   "text": "主窗口的工具栏和类别采用经典主题"
+  },
   "bf8eed08aa80a086": {
    "source": "<g1>86 languages, right to left too</g1> It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.",
    "text": "<g1>86 种语言，也支持从右到左</g1> 它会说您电脑的语言。阿拉伯语、希伯来语、波斯语和乌尔都语都支持从右到左排版。"
@@ -7662,6 +8002,10 @@
    "source": "<g1>Free download managers</g1><g2>Checked November 2026 · each name links to its official site</g2>",
    "text": "<g1>免费下载管理器</g1><g2>2026 年 11 月核查 · 每个名称都链接到其官方网站</g2>"
   },
+  "bff471a9ca1ca134": {
+   "source": "MDM's own window opens each browser's store page for you.",
+   "text": "MDM 自己的窗口会为您打开每个浏览器的商店页面。"
+  },
   "bffdc103f06c4113": {
    "source": "In the download's progress window, open the <g1>Speed Limiter</g1> tab:",
    "text": "在下载的进度窗口中，打开<g1>速度限制器</g1>选项卡："
@@ -7677,6 +8021,10 @@
   "c01576558166d25e": {
    "source": "How is MDM different from IDM? — Mister Download Manager",
    "text": "MDM 与 IDM 有何不同？— Mister Download Manager"
+  },
+  "c0588cff3fa8dcb7": {
+   "source": "Batch download: an address with an asterisk, what replaces it, and the first, second and last file",
+   "text": "批量下载：带星号的地址、替换内容，以及第一个、第二个和最后一个文件"
   },
   "c08d6a11df84016a": {
    "source": "<g1><g2>Carry MDM on a USB stick</g2></g1> — the portable copy, with downloads saved to the stick.",
@@ -7698,6 +8046,10 @@
    "source": "<g1>Downloads still go to the computer's Downloads folder</g1> unless you change it. To keep them with MDM, set each category's folder in <g2>Options → Save to</g2>. <g3>Carry MDM on a USB stick</g3> shows how.",
    "text": "除非您更改，否则<g1>下载仍会进入计算机的“下载”文件夹</g1>。要将它们与 MDM 一起保存，请在<g2>选项 → 保存到</g2>中设置每个类别的文件夹。<g3>在 U盘上携带 MDM</g3> 展示了如何操作。"
   },
+  "c149996bb80b8d95": {
+   "source": "Pieces: the torrent's map, filling in.",
+   "text": "分块：种子的地图，正在填充中。"
+  },
   "c15931e3d969d63f": {
    "source": "Download overnight",
    "text": "通宵下载"
@@ -7713,6 +8065,10 @@
   "c19775344147036b": {
    "source": "<g1>Open</g1> — open the file.",
    "text": "<g1>打开</g1> — 打开文件。"
+  },
+  "c19e7b5dcccb7c52": {
+   "source": "Save to: each category's file types and folder.",
+   "text": "保存到：每个类别的文件类型和文件夹。"
   },
   "c1a12a7fb17ad7d1": {
    "source": "<g1>Fix a translation</g1><g2>Five minutes on GitHub, no programming.</g2>",
@@ -7737,10 +8093,6 @@
   "c1e9d98b58a0e53b": {
    "source": "From the clipboard",
    "text": "从剪贴板"
-  },
-  "c1efc95d5de8c996": {
-   "source": "torrents on Windows;",
-   "text": "Windows 上的种子下载；"
   },
   "c20a850dfc745632": {
    "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
@@ -7790,6 +8142,14 @@
    "source": "A connection that is far slower than the others is dropped and opened again.",
    "text": "比其他连接慢得多的连接会被断开并重新打开。"
   },
+  "c3bbc73f092cecb9": {
+   "source": "Options on its Sounds page: a sound for each event",
+   "text": "“选项”的“声音”页面：每个事件的声音。"
+  },
+  "c3d39f291e3ad7b6": {
+   "source": "View → Draw with open: OpenGL and Direct3D",
+   "text": "视图 → 绘制方式 打开：OpenGL 和 Direct3D"
+  },
   "c3da286564016a74": {
    "source": "Which addresses open the gallery window",
    "text": "哪些地址会打开图库窗口"
@@ -7798,13 +8158,13 @@
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "<g1>添加种子</g1>窗口打开。将磁力链接粘贴到<g2>种子</g2>中，或点击<g3>...</g3>选择一个 <x4/> 文件，然后点击<g5>查找</g5>。"
   },
-  "c3f79c61d6c29240": {
-   "source": "The video helpers offered on first start",
-   "text": "首次启动时提供的视频助手"
-  },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
    "text": "50 MiB，每隔一个连接在 2 MiB 后中断，4 MB/秒"
+  },
+  "c48962c07ea187bc": {
+   "source": "The video helpers window: yt-dlp and ffmpeg, each with its version and Use another program...",
+   "text": "视频帮助程序窗口：yt-dlp 和 ffmpeg，每个都显示其版本和“使用其他程序...”"
   },
   "c493cf1e8ba7e4c3": {
    "source": "Ctrl+N",
@@ -8150,9 +8510,17 @@
    "source": "<g1><g2>AI assistants (MCP)</g2></g1> — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.",
    "text": "<g1><g2>AI 助手 (MCP)</g2></g1> — 让 Claude、Cursor、VS Code 或其他 MCP 助手列出、添加、暂停和删除您的下载。"
   },
+  "cde4bac9e610fb2e": {
+   "source": "Confirm deletion of downloads, with Also delete the file from disk",
+   "text": "确认删除下载，并带有同时从磁盘中删除文件选项"
+  },
   "ce31d32b225369aa": {
    "source": "Dependencies point inward: <x1/>, <x2/>, <x3/> and <x4/> use <x5/> and <x6/>; the engine knows nothing of the UI. The app sees the engine only through its events (progress, segment table snapshots, finished, failed).",
    "text": "依赖关系指向内部：<x1/>、<x2/>、<x3/> 和 <x4/> 使用 <x5/> 和 <x6/>；引擎对 UI 一无所知。应用仅通过其事件（进度、分段表快照、完成、失败）查看引擎。"
+  },
+  "ce3d5af083f413b7": {
+   "source": "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right",
+   "text": "主窗口：菜单栏、工具栏、左侧的类别和右侧的下载列表"
   },
   "ce3fd49165d30cfd": {
    "source": "Type a name",
@@ -8278,10 +8646,6 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "每个正在进行的下载都有自己的进度窗口。它在下载开始时打开；要再次打开它，请双击列表中的下载。"
   },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "上次更新日期：2026-11-06"
-  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "来自种子的文件被标记为<g1>从互联网下载</g1>，就像浏览器的下载一样。Windows SmartScreen 在程序首次运行前检查它，Office 在受保护视图中打开文档。在 Mac 上，Gatekeeper 检查应用程序。"
@@ -8314,6 +8678,10 @@
    "source": "<g1>Double-click</g1> or press <g2>Enter</g2> on an unfinished download to see its progress window.",
    "text": "<g1>双击</g1>或按下<g2>Enter</g2>键可查看未完成下载的进度窗口。"
   },
+  "d219d352d27ccb2e": {
+   "source": "Click a column title to sort; its funnel filters.",
+   "text": "点击列标题可排序；漏斗图标用于筛选。"
+  },
   "d2271f55bc0c25a7": {
    "source": "Silent: no <g1>Download File Info</g1> window, the download starts (or is queued, with <x2/>) at once.",
    "text": "静默：不显示<g1>下载文件信息</g1>窗口，下载立即开始（或排队，带<x2/>）。"
@@ -8345,6 +8713,10 @@
   "d2ef5107c69b686f": {
    "source": "Maturity",
    "text": "成熟度"
+  },
+  "d319d72c656458a2": {
+   "source": "1 the start time, 2 once or daily, 3 a stop time if you want one.",
+   "text": "1 开始时间，2 一次或每日，3 如果需要，可设置停止时间。"
   },
   "d325a1b1c8ab0caa": {
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
@@ -8417,6 +8789,10 @@
   "d4d5842bd505f598": {
    "source": "Choose the quality",
    "text": "选择质量"
+  },
+  "d4d7c61fea5acca1": {
+   "source": "View → Theme open: Classic, Native, High contrast, Metro, Adwaita and Breeze",
+   "text": "“视图 → 主题”已打开：经典、本机、高对比度、现代、Adwaita 和 Breeze"
   },
   "d4ea6092b5c9f6be": {
    "source": "<g1>Helpers are verified before they run.</g1> yt-dlp is checked against its developers' signing key, and ffmpeg against its published checksums.",
@@ -8498,6 +8874,10 @@
    "source": "Files from a torrent",
    "text": "来自种子的文件"
   },
+  "d69665ba65ca0ca6": {
+   "source": "Download Later puts it in a queue instead of starting it.",
+   "text": "“稍后下载”会将其放入队列，而不是立即开始下载。"
+  },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
    "text": "下载 Mister Download Manager 0.2.4"
@@ -8557,6 +8937,10 @@
   "d82903fa7d227c82": {
    "source": "Benchmark scenario",
    "text": "基准测试场景"
+  },
+  "d82bc40d598cdc1d": {
+   "source": "Downloads: which windows show, and what a duplicate link does.",
+   "text": "下载：显示哪些窗口，以及重复链接的作用。"
   },
   "d835a1659f05d750": {
    "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them. A stream whose address doesn't end in <x5/> or <x6/>, served as plain text, is found too: when you open the list (or press the download button over its player) and the player plays a stream, the extension reads the first few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.",
@@ -8626,6 +9010,10 @@
    "source": "<g1>Through a proxy</g1>, MDM only sees the proxy, so it says <g2>through a proxy</g2> (with the proxy's country when it knows it) instead of guessing the server's. A VPN that works at the system level can't be seen: the country is then the server's, but the time includes the VPN's detour.",
    "text": "<g1>通过代理</g1>，MDM 只能看到代理，因此会显示<g2>通过代理</g2>（如果知道代理的国家，则会显示代理的国家），而不是猜测服务器的位置。系统级别的 VPN 无法被看到：此时国家是服务器的国家，但时间包括了 VPN 的绕行。"
   },
+  "d9dde89e1b709127": {
+   "source": "Add URL: the copied address is already there. Click OK.",
+   "text": "添加 URL：复制的地址已在其中。点击“确定”。"
+  },
   "da12a252ee14babe": {
    "source": "To stop in the morning whatever is left, tick <g1>Stop download at</g1> and set a time, for example 7:00:00 AM.",
    "text": "要在早上停止所有剩余的下载，请勾选<g1>在以下时间停止下载</g1>并设置一个时间，例如早上 7:00:00。"
@@ -8637,6 +9025,10 @@
   "da5804cb7ae48112": {
    "source": "Some servers report a new date for the same file every time. Tick <g1>Options → Downloads → Ignore file modification time changes when resuming a download</g1>.",
    "text": "有些服务器每次都报告相同文件的新日期。勾选<g1>选项 → 下载 → 恢复下载时忽略文件修改时间更改</g1>。"
+  },
+  "da6586417d8dd463": {
+   "source": "Done: Open the file, or Open folder.",
+   "text": "完成：打开文件，或打开文件夹。"
   },
   "da6e8c125b6f0d96": {
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
@@ -8714,6 +9106,10 @@
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",
    "text": "打开<g1>下载 → 选项</g1>，然后选择<g2>保存到</g2>选项卡。"
   },
+  "dcabc8a97e80dd97": {
+   "source": "Downloads → Speed Limiter → Settings...: one speed for all of MDM.",
+   "text": "下载 → 速度限制器 → 速度限制器设置...：MDM 的所有下载共享一个速度。"
+  },
   "dce175995531cf3a": {
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. <x2/> covers every part of a site. <g3>Default</g3> puts the original list back.",
    "text": "<g1>不自动从以下网站下载</g1> — 下载保留在浏览器中的网站，用空格分隔。<x2/>涵盖网站的每个部分。<g3>默认</g3>会恢复原始列表。"
@@ -8790,6 +9186,10 @@
    "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
    "text": "<g1>从不接管来自</g1> 当前网站的下载：将其添加到 MDM 的排除网站列表。"
   },
+  "dee4ab42b514acda": {
+   "source": "The language list on first start: every language with its flag, its own name and its English name",
+   "text": "首次启动时的语言列表：每种语言都带有其旗帜、其本国名称和英文名称"
+  },
   "dee52466980c445e": {
    "source": "<g1>Sites to leave alone:</g1> <g2>Options → File types → Don't start downloading automatically from the following sites</g2>. Add the site's name, for example <x3/> or <x4/>.",
    "text": "<g1>要忽略的站点：</g1><g2>选项 → 文件类型 → 不自动从以下站点开始下载</g2>。添加站点名称，例如<x3/>或<x4/>。"
@@ -8846,14 +9246,6 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>旧版 MDM？</g1> 更新 MDM：较新的扩展程序可能具有旧版辅助程序不知道的 ID。"
   },
-  "e06846d728e8b2d9": {
-   "source": "Options: Archives",
-   "text": "选项：存档"
-  },
-  "e0e426203d8a6245": {
-   "source": "(implicit TLS; <x1/> with TLS is fine).",
-   "text": "（隐式 TLS；<x1/> 与 TLS 正常）。"
-  },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
    "text": "正在运行的队列会按列表顺序启动下载，每次启动几个（默认四个）。当一个下载失败时，它会移到队列末尾，并在30秒后再次尝试。当没有可下载的内容时，队列停止。"
@@ -8861,6 +9253,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "恢复中断的下载"
+  },
+  "e10bdd13fc258ac7": {
+   "source": "Options on its Proxy / Socks page",
+   "text": "“选项”的“代理/Socks”页面。"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8878,6 +9274,10 @@
    "source": "<g1>Help → Check for updates...</g1> tells you whether a newer version is out, and what is new in it. <g2>Check for updates at every start</g2> in that window lets MDM look by itself: a few seconds after it starts, and once a day while it stays open. When there's a new version, its window opens in front.",
    "text": "<g1>帮助 → 检查更新...</g1>会告诉你是否有新版本发布，以及新版本有什么新功能。<g2>每次启动时检查更新</g2>在该窗口中，MDM 会自行检查：启动几秒钟后，以及保持打开状态时每天检查一次。当有新版本时，其窗口会显示在前台。"
   },
+  "e15d599e6927add3": {
+   "source": "Options on its Save to page: a category, its file types and its folder",
+   "text": "“选项”的“保存到”页面：一个类别、其文件类型和其文件夹。"
+  },
   "e1713d442d1eea6d": {
    "source": "Yes. Put downloads in a queue and let the Scheduler start it at a set time, stop it at another, and even shut down or put the computer to sleep when the…",
    "text": "是。将下载任务放入队列，让计划程序在设定的时间开始下载，在另一个时间停止下载，甚至在队列完成后关闭计算机或使其进入睡眠状态。"
@@ -8889,6 +9289,10 @@
   "e1846d6a94dee510": {
    "source": "misterdownloadmanager-cli",
    "text": "misterdownloadmanager-cli"
+  },
+  "e1cb5a9a23d26236": {
+   "source": "The video window listing a playlist's videos, each with its length and a box to tick, and one quality for all",
+   "text": "视频窗口列出播放列表中的视频，每个视频都显示其长度和勾选框，所有视频都使用一个画质"
   },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
@@ -8917,6 +9321,10 @@
   "e255969933938cdb": {
    "source": "Where MDM keeps its data",
    "text": "MDM 存储数据的位置"
+  },
+  "e260c4204233b0f7": {
+   "source": "1 Dark Mode support follows the system; 2 Always dark keeps MDM dark.",
+   "text": "1 深色模式支持跟随系统；2 始终为深色保持 MDM 为深色。"
   },
   "e2e30d683ce66b3d": {
    "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",
@@ -8974,6 +9382,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "显示整个文件的进度条，显示每个连接的起始位置和已完成的进度（<g1>连接的起始位置和下载进度</g1>）。"
   },
+  "e4068d69914b5fb5": {
+   "source": "Paste the page's address and click Look up.",
+   "text": "粘贴页面地址，然后点击“查找”。"
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "自动化 API"
@@ -8997,6 +9409,10 @@
   "e4770c93a995f627": {
    "source": "The right-click menu has everything you can do with a download: <g1>Open</g1>, <g2>Open with...</g2>, <g3>Open folder</g3>, <g4>Move/Rename</g4>, <g5>Redownload</g5>, <g6>Resume Download</g6>, <g7>Stop Download</g7>, <g8>Refresh download address</g8>, <g9>Verify checksum...</g9>, <g10>Remove</g10>, <g11>Add to queue</g11> and <g12>Properties</g12>.",
    "text": "右键菜单包含您可以对下载执行的所有操作：<g1>打开</g1>、<g2>打开方式...</g2>、<g3>打开文件夹</g3>、<g4>移动/重命名</g4>、<g5>重新下载</g5>、<g6>恢复下载</g6>、<g7>停止下载</g7>、<g8>刷新下载地址</g8>、<g9>验证校验和...</g9>、<g10>删除</g10>、<g11>添加到队列</g11>和<g12>属性</g12>。"
+  },
+  "e49c7399c2758861": {
+   "source": "Pick your language. View → Language changes it later.",
+   "text": "选择您的语言。之后可以通过视图 → 语言更改。"
   },
   "e4ada2c56399759e": {
    "source": "Where can I get help?",
@@ -9029,6 +9445,10 @@
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
    "text": "本软件<g1>不提供任何担保</g1>：使用风险自负。"
+  },
+  "e568fd104b5e2ebf": {
+   "source": "About Mister Download Manager: its version, licence and links",
+   "text": "关于 Mister Download Manager：其版本、许可证和链接"
   },
   "e571a12e9be69853": {
    "source": "Move through an open menu",
@@ -9077,6 +9497,10 @@
   "e655ba486d16b2e5": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red <g1>!</g1>. Click it to see what's wrong, then <g2>How to fix it</g2> brings you to the matching section below.",
    "text": "当浏览器无法将下载任务交给 MDM 时，它会自行处理下载，因此不会丢失任何内容。此时，扩展程序的工具栏按钮会显示一个红色的 <g1>!</g1>。点击它可查看问题所在，然后点击<g2>如何修复</g2>会带您到下面的相应部分。"
+  },
+  "e676e5ae98f9e413": {
+   "source": "MDM then downloads its files from the service over HTTP, as any download, into the <g1>Torrents</g1> folder. A torrent of several files gets a folder of its own there.",
+   "text": "然后，MDM 会像任何下载一样，通过 HTTP 从服务下载文件到<g1>种子</g1>文件夹。包含多个文件的种子会在该文件夹中拥有自己的子文件夹。"
   },
   "e67bd34b79057e7a": {
    "source": "<g1>source</g1> is the English text; leave it as it is. Change only <g2>translation</g2>.",
@@ -9154,10 +9578,6 @@
    "source": "<g1>Options → File types → Automatically start downloading the following file types</g1> must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF and many more.",
    "text": "<g1>选项 → 文件类型 → 自动开始下载以下文件类型</g1>必须列出该文件的类型。列表以常用类型开头：ZIP、RAR、7Z、EXE、MSI、ISO、MP3、MP4、MKV、PDF 等等。"
   },
-  "e8106b0dea9e8b3a": {
-   "source": "Options, Connection page",
-   "text": "选项，连接页面"
-  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "Internet Download Manager 的免费替代品"
@@ -9206,6 +9626,10 @@
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "浏览器集成详情（Firefox、隐私窗口、发送内容）→"
   },
+  "e90381936acd9332": {
+   "source": "Download video from a page, with the Page address box and Look up",
+   "text": "从页面下载视频，带有“页面地址”框和“查找”按钮"
+  },
   "e931037e5c0b1a7d": {
    "source": "2. The software's licence",
    "text": "2. 软件许可"
@@ -9242,6 +9666,10 @@
    "source": "MDM itself extracts zip archives (AES-encrypted and Deflate64 ones too), tar, tar.gz and tar.xz archives, and single <x1/> and <x2/> files.",
    "text": "MDM 自身可以解压 zip 压缩包（包括 AES 加密和 Deflate64 格式的）、tar、tar.gz 和 tar.xz 压缩包，以及单个 <x1/> 和 <x2/> 文件。"
   },
+  "eabe68f4e81c09a6": {
+   "source": "Breeze",
+   "text": "Breeze"
+  },
   "eac1d064497401fd": {
    "source": "It comes with every download of MDM, next to the app (the installer puts it in MDM's folder). It works on its own: the app needn't run, except for <x1/> and <x2/>.",
    "text": "它随 MDM 的每次下载一起提供，位于应用程序旁边（安装程序将其放在 MDM 的文件夹中）。它可以独立工作：应用程序无需运行，除了 <x1/> 和 <x2/>。"
@@ -9274,6 +9702,10 @@
    "source": "Note",
    "text": "注意"
   },
+  "ebb02e1568d6f55f": {
+   "source": "Speed Limiter settings: the maximum speed for all downloads",
+   "text": "速度限制器设置：所有下载的最大速度"
+  },
   "ebcf280686ba7509": {
    "source": "Good at",
    "text": "擅长"
@@ -9301,6 +9733,10 @@
   "ec9fc85159e7d49f": {
    "source": "Download a file",
    "text": "下载文件"
+  },
+  "eca543b2b3233fe8": {
+   "source": "The numbers are the steps above: 3 the address, 4 a login if the server needs one, 5 OK.",
+   "text": "数字是上面的步骤：3是地址，4是服务器需要时的登录信息，5是确定。"
   },
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
@@ -9409,6 +9845,10 @@
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",
    "text": "<g1>macOS 上的应用图标</g1>：MDM 运行时，Dock 上显示一个小而模糊的图标；现在它会保留应用本身的图标。在其他地方，窗口图标取自大尺寸（在任何缩放比例下都清晰）。"
+  },
+  "ef078e7bf8101d03": {
+   "source": "1 the file types MDM takes, 2 the sites it leaves to the browser.",
+   "text": "1 MDM 接管的文件类型，2 MDM 留给浏览器处理的网站。"
   },
   "ef0fe27d24f63c0a": {
    "source": "<g1>Timing.</g1> End to end: from issuing the command to the finished file under its final name, polled every millisecond on a monotonic clock. MDM renames its finished file into place; IDM creates the final file early and fills it, so for IDM the moment it reaches full size counts. Transfer: the server's first request to its last byte, read on the same clock through a calibration request before each run.",
@@ -9526,17 +9966,9 @@
    "source": "Installer",
    "text": "安装程序"
   },
-  "f208414e0c06341b": {
-   "source": "video pages (yt-dlp can't be held to an adapter);",
-   "text": "视频页面（yt-dlp 无法绑定到适配器）；"
-  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "如果视频无法下载，请参阅<g1>视频下载</g1>。"
-  },
-  "f250025808108785": {
-   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
-   "text": "下载视频；<x1/> 从 <x2/> 获取质量选择器（<x3/> = 最佳单文件；<x4/> = 网站上原有的音频，未转换；<x5/>、<x6/>、<x7/> 或 <x8/> = 该比特率的 MP3 音频，<x9/> 为最佳可变比特率；<x10/> = Opus 格式；<x11/> = FLAC 格式，无损但不会比网站音频更好；转换需要 ffmpeg）。<x12/> 将字幕保存到旁边：语言代码来自 <x13/>（<x14/>），或 <x15/> 表示上传者提供的所有字幕；<x16/> 改为获取网站的自动字幕；<x17/> 将字幕嵌入视频（需要 ffmpeg，MP4 或 MKV）。"
   },
   "f25612dbbaabbb5b": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's <g1>Media on this page</g1> shows such a stream as <g2>Protected</g2> and doesn't send it.",
@@ -9690,10 +10122,6 @@
    "source": "Download the installer",
    "text": "下载安装程序"
   },
-  "f72ae9448e3d6366": {
-   "source": "Video pages through yt-dlp and ffmpeg (run as separate programs)",
-   "text": "通过 yt-dlp 和 ffmpeg 处理视频页面（作为单独程序运行）"
-  },
   "f763bb66cf2403ec": {
    "source": "<g1>Numbers</g1> are typed in one kind of box everywhere: arrows step them, a value out of range is outlined in red and set right when you leave the box (some were changed silently before).",
    "text": "<g1>数字</g1>在所有地方都以一种类型的框输入：箭头可步进它们，超出范围的值会以红色轮廓显示并在您离开框时自动更正（有些以前是静默更改的）。"
@@ -9774,10 +10202,6 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "在左侧选择<g1>主下载队列</g1>。<g2>计划</g2>选项卡将打开。"
   },
-  "f9536693258dfe06": {
-   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
-   "text": "在 Windows 上，MDM 使用 Direct3D 12 绘制窗口；在 Linux 和 macOS 上，使用 OpenGL。显卡驱动程序仍然可能出现异常：窗口卡住几秒、闪烁或显示错误的颜色或色块。在 Windows 上，请尝试另一种方式：选择<g1>视图 → 绘制方式 → OpenGL</g1>，然后退出 MDM（<g2>任务 → 退出</g2>）并重新启动。通过<g3>视图 → 绘制方式 → Direct3D</g3>可以以同样的方式切换回来。"
-  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "在<g1>“常规”类别的默认下载目录</g1>中，点击<g2>浏览</g2>并选择 U 盘上的一个文件夹，例如<x3/>。"
@@ -9822,9 +10246,9 @@
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "默认情况下，每个下载使用八个连接。如果您在选项 → 连接中选择，最多可达32个；勾选允许超过32个连接后，可达128个。当服务器允许的连接数较少时，MDM会使用较少的连接…"
   },
-  "fa50579a78c9b2ef": {
-   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
-   "text": "如果两者都无法启动，MDM 会使用 Microsoft 的软件渲染器绘制，因此窗口仍然会打开（远程桌面，没有显卡驱动程序的虚拟机）。它能工作，但会使处理器更繁忙。"
+  "fa3e7e0e783830a9": {
+   "source": "A torrent's progress window on its Files tab",
+   "text": "种子进度窗口的“文件”选项卡"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
@@ -9950,6 +10374,10 @@
    "source": "Options →",
    "text": "选项 →"
   },
+  "fcac3d319058fc98": {
+   "source": "Options on its File types page: the file types the browser hands to MDM and the sites it leaves alone",
+   "text": "“选项”的“文件类型”页面：浏览器移交给 MDM 的文件类型以及不受 MDM 处理的网站。"
+  },
   "fcc5ef8ee172d45e": {
    "source": "Proxies",
    "text": "代理"
@@ -10010,6 +10438,10 @@
    "source": "Browser extension",
    "text": "浏览器扩展"
   },
+  "fe1e9bfa950043a0": {
+   "source": "File Properties: change the address or the folder of a download.",
+   "text": "文件属性：更改下载的地址或文件夹。"
+  },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>所有连接，实时显示</g3> <g4>每个连接的进度、速度和剩余时间都会实时显示。防崩溃续传功能可从中断处继续下载。</g4>"
@@ -10037,6 +10469,10 @@
   "fea945c5c18cacc1": {
    "source": "Why is MDM faster than a browser?",
    "text": "为什么MDM比浏览器更快？"
+  },
+  "feaa1885a7fdd962": {
+   "source": "Connection: how many connections, through which network adapter.",
+   "text": "连接：通过哪个网络适配器进行多少个连接。"
   },
   "fec39583e98965c8": {
    "source": "What's new in version 0.2.0 <g1>2026-10-31</g1>",
@@ -10074,6 +10510,10 @@
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",
    "text": "<g1>您的 AI 助手，仅当您连接了一个时。</g1> MDM 的 MCP 服务器（<x2/>）只与您电脑上的 MDM 通信。但是，如果您将其添加到 AI 助手（Claude、Cursor、VS Code 等）并打开自动化 API，助手可以读取您的下载列表，它读取的内容（文件名、地址、文件夹）会根据该助手的隐私条款发送到其 AI 服务。除非您进行设置，否则不会发生这种情况；请参阅<g3>AI 助手</g3>。"
   },
+  "ff91da638125787d": {
+   "source": "The download list with its columns: Source, File Name, Q, Size, Status, Time left, Transfer rate and more",
+   "text": "下载列表及其列：源、文件名、队列、大小、状态、剩余时间、传输速率等"
+  },
   "ffa04c1a8eba0f68": {
    "source": "Report a vulnerability",
    "text": "报告漏洞"
@@ -10085,6 +10525,10 @@
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",
    "text": "将浏览器中的链接拖到该方框上。MDM 会像您使用了<g1>添加 URL</g1>一样添加它。"
+  },
+  "ffde1525f0903fb6": {
+   "source": "General: how MDM starts, and what it takes from the clipboard and the browsers.",
+   "text": "常规：MDM 如何启动，以及它从剪贴板和浏览器中获取什么。"
   },
   "ffeedec50b9a371f": {
    "source": "For a download already in the list, <g1>File Properties</g1> has the same choice beside the login: <g2>Through Real-Debrid</g2>. It can be changed while the download isn't running. The next start goes the new way, and continues from what is already downloaded when the file is the same.",

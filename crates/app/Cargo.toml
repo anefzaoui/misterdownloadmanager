@@ -96,6 +96,9 @@ objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std"
 eframe = { workspace = true, features = ["wgpu_no_default_features"] }
 wgpu = { version = "30.0", default-features = false, features = ["metal", "wgsl"] }
 egui-wgpu = { version = "0.37.0", default-features = false, features = ["macos-window-resize-jitter-fix"] }
+# Sign-in secrets in the login keychain (unix.rs, #44); already in the tree through rustls's
+# platform verifier.
+security-framework = "3.7.0"
 
 # Crash reports on Linux and macOS: thread and process ids, signals (unix.rs).
 [target.'cfg(unix)'.dependencies]
@@ -111,6 +114,8 @@ winresource = "0.1"
 
 [dev-dependencies]
 tempfile.workspace = true
+# secrets.rs's test that no secret reaches the log.
+tracing-subscriber.workspace = true
 # The command line's tests (tests/cli_*.rs) download from it.
 mdm-labserver.workspace = true
 

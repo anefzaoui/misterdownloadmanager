@@ -3,7 +3,8 @@
 # programs someone installed. Run by hand (Actions → Docs screenshots → Run workflow) or by a
 # push to a docs-shots/** branch. Never on other pushes or pull requests. The PNGs come back as
 # the "docs-shots" artifact, with what the runner had (screen, DPI, fonts, file associations);
-# a person puts them in docs/images and runs tools/website/screens.py.
+# a person puts them in docs/images and runs tools/website/screens.py. The help pages' pictures
+# come back raw in help-raw/: into target/shots/raw, then `python tools/shots/make.py build`.
 name: Docs screenshots
 
 on:
@@ -23,6 +24,11 @@ jobs:
         shell: powershell
     steps:
       - uses: actions/checkout@v4
+
+      # tools/shots/make.py (the help pages' pictures) reads its list with tomllib.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
       - name: Toolchain
         run: rustup show active-toolchain; if (-not $?) { rustup toolchain install }
@@ -110,6 +116,11 @@ jobs:
           tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Work $work -At $at @net -OutDir "$out\docs" -Only main-dark
           tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Work $work -At $at @net -OutDir "$out\docs" -Lang ar -Only arabic-main
           tools\lab\docs-shots.ps1 -Exe $exe -Server $srv -Torrent $torrent -Work $work -At $at @net -Dark -OutDir "$out\site-dark" -Only main-dark, add-torrent, progress
+          # The help pages' pictures (tools/shots/shots.toml), light and dark, raw: a person runs
+          # `python tools/shots/make.py build` on them (crop, annotate, WebP) and commits that.
+          python tools\shots\make.py shoot --bin target\debug --work $work --at $at --url-host downloads.example --port $port
+          if ($LASTEXITCODE) { throw "make.py shoot $LASTEXITCODE" }
+          Copy-Item -Recurse target\shots\raw "$out\help-raw"
 
       - uses: actions/upload-artifact@v4
         if: always()
