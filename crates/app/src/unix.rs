@@ -1,4 +1,4 @@
-//! Linux and macOS counterparts of what `win32` does through Windows (experimental builds):
+//! Linux and macOS counterparts of what `win32` does through Windows (macOS's build experimental):
 //! starting with the session, the browsers' host registration, sounds, showing a file in its
 //! folder, and the torrent link handler. Each runs the system's own tool, so nothing here needs
 //! a library; the exceptions are the desktop's dark mode on Linux (D-Bus through zbus, the
