@@ -573,6 +573,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: menus open under their title on tiling compositors**
+  ([#267](https://github.com/anefzaoui/misterdownloadmanager/issues/267)): under sway (through
+  XWayland, MDM's default in a Wayland session), the menu bar's menus, their submenus, the
+  right-click menus and the drop-down lists opened in the middle of the screen, as the compositor
+  placed them like windows. They are now menu windows no window manager places, as X11 menus are,
+  so they open where MDM puts them, on every window manager.
 - **The Linux .deb and .rpm bring what MDM's window needs** (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
   libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start
