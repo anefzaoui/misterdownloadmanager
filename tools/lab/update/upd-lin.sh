@@ -38,10 +38,12 @@ T0=$(now)
 log() { echo "[$(awk -v a="$T0" -v b="$(now)" 'BEGIN {printf "%6.1f", b - a}')s] $*" | tee -a "$work/log.txt"; }
 xvfb=""; dbus=""; wm=""
 cleanup() {
+  local rc=$?
   pkill -f "$work/run-" 2>/dev/null
   [ -n "$wm" ] && kill "$wm" 2>/dev/null
   [ -n "$dbus" ] && kill "$dbus" 2>/dev/null
   [ -n "$xvfb" ] && kill "$xvfb" 2>/dev/null
+  exit $rc
 }
 trap cleanup EXIT
 Xvfb :96 -screen 0 1280x800x24 -nolisten tcp -dpi 96 >"$work/xvfb.log" 2>&1 </dev/null & xvfb=$!
@@ -69,7 +71,8 @@ release appimage-other-key file $APP --signer other
 
 mine() { wmctrl -lp 2>/dev/null | awk -v p="$1" '$3 == p {print $1}'; }
 run() { # run <name> <targz|appimage> <release> <hold> <close: -|download|install>; sets STARTED ENDED REPLACED
-  local name=$1 kind=$2 rel=$3 hold=$4 close=$5 w=$work/run-$name prog srv slow="" pid upd before new
+  local name=$1 kind=$2 rel=$3 hold=$4 close=$5
+  local w=$work/run-$1 prog srv slow="" pid upd before new
   mkdir -p "$w/copy" "$w/data" "$w/Downloads"
   if [ "$kind" = appimage ]; then prog=$w/copy/MisterDownloadManager.AppImage; else prog=$w/copy/misterdownloadmanager; fi
   cp "$bin/misterdownloadmanager" "$prog"
