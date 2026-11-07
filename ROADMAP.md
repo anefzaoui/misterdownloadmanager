@@ -96,6 +96,9 @@ Everything below ships together, in the next release.
   that decided, and the extension's button shows the last one. The extension from the Chrome Web
   Store needs this release (0.2.x serves only the copy in MDM's folder)
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
+- ✅ Waterfox, and Firefox set to ask what to do with each file: MDM takes the download before
+  the browser's *What should … do with this file?* dialog, which no longer shows for the files
+  MDM takes ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ More file types taken from the browser by default: DMG, PKG, DEB, RPM, APPIMAGE, MSIX, APPX,
   CAB, JAR, XZ, ZST, WEBM, FLAC, OPUS and others; a list never edited gains them
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
