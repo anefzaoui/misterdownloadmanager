@@ -240,9 +240,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Bugs being looked into
 
-- 🔍 Menus with a black band across their top on a Windows 11 Insider build
-  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are now plain
-  pop-up windows, as Windows' own are; a test build is with the reporter
+- 🔍 Menus and the drop target with a black band across their top on a Windows 11 Insider build
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are plain pop-up
+  windows now, as Windows' own are, and the reporter confirmed them fixed; the drop target is one
+  too, its test build is with the reporter
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   most likely a computer busy just after start; freeze reports now measure it, so the next one says
 - 🔍 A crash on Linux as Download File Info opens

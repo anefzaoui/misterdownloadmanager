@@ -1668,6 +1668,13 @@ impl App {
             "about" => self.run(Cmd::About, None, ctx),
             // The main window into the tray, as closing it does (tests and #72's measurements).
             "tray" => self.hide_to_tray(ctx),
+            // Off-screen test copies: the drop target's menu, as a right-click on it opens it
+            // (#208's checks; a posted click has no pointer position by the time it is seen).
+            "drop-target-menu" if crate::offscreen() => {
+                if let Some(at) = self.drop_target.as_ref().map(|d| d.center()) {
+                    self.drop_target_menu(at, ctx);
+                }
+            }
             // The main window minimized, not to the tray (tests of #162).
             "minimized" => ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true)),
             // Off-screen test copies: the interface zoomed (`zoom:1.5`) while running, as a
@@ -6015,19 +6022,22 @@ impl App {
             match ev {
                 Event::Drop(s) => self.dropped(vec![s], ctx),
                 Event::ShowMain => self.show_window(ctx),
-                Event::Context(screen) => {
-                    // Popups take a point in the main window.
-                    let origin = ctx
-                        .input(|i| i.viewport().inner_rect)
-                        .map_or(Pos2::ZERO, |r| r.min);
-                    self.open_popup(Popup::DropTarget, screen - origin.to_vec2());
-                }
+                Event::Context(screen) => self.drop_target_menu(screen, ctx),
                 Event::Moved(p) => {
                     self.settings.drop_target_pos = Some((p.x.round() as i32, p.y.round() as i32));
                     self.dirty = true;
                 }
             }
         }
+    }
+
+    /// The drop target's menu at `screen` (a point on the screen, logical points).
+    fn drop_target_menu(&mut self, screen: Pos2, ctx: &egui::Context) {
+        // Popups take a point in the main window.
+        let origin = ctx
+            .input(|i| i.viewport().inner_rect)
+            .map_or(Pos2::ZERO, |r| r.min);
+        self.open_popup(Popup::DropTarget, screen - origin.to_vec2());
     }
 
     /// Tasks → Export: every download's address, as an IDM export file or plain text.

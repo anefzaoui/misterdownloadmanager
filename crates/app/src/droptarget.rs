@@ -8,7 +8,7 @@
 use std::sync::mpsc::{Receiver, Sender, channel};
 use std::sync::{Arc, atomic::AtomicBool, atomic::Ordering};
 
-use egui::{Pos2, ViewportBuilder, ViewportCommand, ViewportId, pos2, vec2};
+use egui::{Pos2, ViewportCommand, ViewportId, pos2, vec2};
 
 /// The window's title (its OLE target is found by it).
 const TITLE: &str = "Mister Download Manager drop target"; // not translated: an id
@@ -81,6 +81,9 @@ impl Drops {
 pub struct DropTarget {
     drops: Drops,
     pos: Pos2,
+    /// MDM_TEST_DROP's link was dropped (once).
+    #[cfg(windows)]
+    test_dropped: bool,
 }
 
 impl DropTarget {
@@ -88,6 +91,8 @@ impl DropTarget {
         DropTarget {
             drops: Drops::default(),
             pos: pos.unwrap_or(pos2(200.0, 200.0)),
+            #[cfg(windows)]
+            test_dropped: false,
         }
     }
 
@@ -98,19 +103,31 @@ impl DropTarget {
             .into_iter()
             .map(Event::Drop)
             .collect();
-        let builder = ViewportBuilder::default()
-            .with_title(TITLE)
-            .with_decorations(false)
-            .with_resizable(false)
-            .with_taskbar(false)
-            .with_always_on_top()
+        // Off-screen test copies: MDM_TEST_DROP=<link> is dropped on the box once, through its
+        // OLE drop target, as a browser drops one (#208's checks: it still takes links as a
+        // popup window). Taken at the next poll, as a real drop is.
+        #[cfg(windows)]
+        if !self.test_dropped
+            && let Some(ole) = &self.drops.ole
+            && crate::offscreen()
+            && let Ok(link) = std::env::var("MDM_TEST_DROP")
+        {
+            self.test_dropped = true;
+            ole.test_drop(&link);
+        }
+        // A borderless window as menus are (a plain popup on Windows, #208).
+        let builder = crate::chrome::popup_viewport(TITLE)
             // Windows: our own OLE target takes links and files; elsewhere winit's own
             // (files only: macOS and Linux hand links over no other way here).
             .with_drag_and_drop(!cfg!(windows))
             .with_position(self.pos)
             .with_inner_size(vec2(SIZE, SIZE));
         let over = self.drops.over();
-        ctx.show_viewport_immediate(ViewportId::from_hash_of("drop-target"), builder, |ui, _| {
+        let vid = ViewportId::from_hash_of("drop-target");
+        let mut styled = false;
+        ctx.show_viewport_immediate(vid, builder, |ui, _| {
+            // Styled in its own pass, before anything is drawn in it.
+            styled = crate::chrome::style_popup(TITLE, crate::chrome::PopupLook::Floating);
             let rect = ui.max_rect();
             let p = ui.painter();
             let (fill, edge) = if over {
@@ -175,6 +192,15 @@ impl DropTarget {
                 events.push(Event::Moved(r.min));
             }
         });
+        if styled {
+            crate::chrome::show_popup(ctx, vid);
+        }
         events
+    }
+
+    /// The middle of the box (screen, logical points): where a right-click opens its menu in
+    /// the off-screen checks (`/show drop-target-menu`).
+    pub fn center(&self) -> Pos2 {
+        self.pos + vec2(SIZE, SIZE) / 2.0
     }
 }

@@ -453,13 +453,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   on its own, with the file still open, and renaming the finished file failed. The connections are
   now told to stop and waited for, when a download completes and when it is stopped or fails, so
   none of them outlives it. A stopped download's last writes are also in its saved progress now.
-- **Menus without a black band across their top**
+- **Menus and the drop target without a black band across their top**
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
   Insider build (22635), every menu and submenu showed a black band a title bar tall across its
   top and a thin one down its left side, its items moved down by as much and its last ones cut
-  off. A menu's window had a title bar's style, hidden by MDM, and something on that build placed
-  the menu's picture where the title bar would have ended. Menus are now plain pop-up windows, as
-  Windows' own menus are, with nothing above their items to take for a title bar.
+  off; so did the drop target (Tasks → Show drop target), its icon moved down. Each of these
+  windows had a title bar's style, hidden by MDM, and something on that build placed the window's
+  picture where the title bar would have ended. Menus and the drop target are now plain pop-up
+  windows, as Windows' own menus are, with nothing above their contents to take for a title bar;
+  every window of MDM without a title bar is made one the same way.
 - **A window closed with its title bar's × no longer turns black first**
   ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
   progress window turned black for a moment when closed with the × or Alt+F4, rather than with
