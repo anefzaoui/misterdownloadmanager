@@ -13,6 +13,15 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Open folder in Download complete no longer freezes the window on Linux when the file
+  manager is slow to answer or never does: MDM asks in the background and opens the folder after
+  5 seconds without an answer; every other program a window starts (Set it up, the Trash, an
+  update being put in place, pages and folders) no longer holds the window either
+  ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222))
+- ✅ A download too big for its drive is refused on a very busy computer too: the free-space
+  check's 5 seconds count from when it runs, not from when it was asked, and it asks only the
+  folder's own drive (shared network folders too) instead of listing every drive; and the host
+  connection limit test tells a reconnect from a connection too many ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224))
 - ✅ The crash report window in every language: the report keeps its lines (German and Arabic
   ran them together) and reads left to right in Arabic and Persian; **End and restart MDM** fits
   its text ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204))

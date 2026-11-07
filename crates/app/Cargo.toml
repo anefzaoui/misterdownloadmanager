@@ -12,6 +12,13 @@ publish.workspace = true
 name = "misterdownloadmanager"
 path = "src/main.rs"
 
+[features]
+# Update now's end-to-end tests only, never in a release (see mdm-tools): a test key for a fake
+# release (MDM_TEST_UPDATE_KEY), `/show update-now` (Update now in the window `/show updates`
+# opens), and MDM_TEST_UPDATE_HOLD (seconds the update waits before it's put in place, to see and
+# close the window meanwhile). tools/lab/update runs them.
+test-update = ["mdm-tools/test-update"]
+
 [dependencies]
 arboard.workspace = true
 base64.workspace = true

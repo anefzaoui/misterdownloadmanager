@@ -88,7 +88,18 @@ pub fn signed_by_ytdlp(sums: &[u8], sig: &[u8]) -> bool {
 /// Whether `sums` (a release's SHA256SUMS.txt) carries a valid signature `sig` by Mister
 /// Download Manager's release key.
 pub fn signed_by_mdm(sums: &[u8], sig: &[u8]) -> bool {
-    signed_by(MDM_KEY, sums, sig)
+    if signed_by(MDM_KEY, sums, sig) {
+        return true;
+    }
+    // Update now's end-to-end tests (feature `test-update`, never in a release): a fake
+    // release on a lab server, signed with a test key of their own.
+    #[cfg(feature = "test-update")]
+    if let Some(key) =
+        std::env::var_os("MDM_TEST_UPDATE_KEY").and_then(|p| std::fs::read_to_string(p).ok())
+    {
+        return signed_by(&key, sums, sig);
+    }
+    false
 }
 
 /// Whether `data` carries a valid detached signature `sig` (binary OpenPGP) by the armored

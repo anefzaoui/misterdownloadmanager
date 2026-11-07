@@ -587,7 +587,7 @@ impl ReportWindow {
         if send {
             if let Some(f) = &found {
                 crate::copy_text(ui.ctx(), full.clone());
-                let _ = open::that_detached(&f.html_url);
+                crate::launch::open(&f.html_url);
                 // i18n: crash report window: after opening the existing issue
                 self.told = Some(
                     crate::i18n::t(
@@ -606,7 +606,7 @@ impl ReportWindow {
                     &made.text,
                     "(The report was cut to fit here. The whole of it is in the .txt file in the folder that just opened: please drag it into this box.)",
                 );
-                let _ = open::that_detached(url);
+                crate::launch::open(url);
                 crate::dialogs::show_in_folder(&made.path);
                 // i18n: crash report window: after Send opened the browser
                 self.told = Some(crate::i18n::t("The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.").to_owned());

@@ -102,14 +102,11 @@ pub fn register_browsers() {
     }
 }
 
-/// `register_browsers`, waiting for it to finish (Test browser integration's Set it up).
-pub fn register_browsers_now() {
+/// `register_browsers`, waiting for it to finish, up to `limit` (Test browser integration's Set
+/// it up, on a thread of its own: extension::set_up).
+pub fn register_browsers_now(limit: std::time::Duration) {
     if let Some(mut cmd) = register_command() {
-        let _ = cmd
-            .stdin(Stdio::null())
-            .stdout(Stdio::null())
-            .stderr(Stdio::null())
-            .status();
+        crate::launch::run_within(&mut cmd, limit);
     }
 }
 
@@ -179,12 +176,12 @@ pub fn play_sound(file: &str) {
 /// distribution's name from /etc/os-release ("Ubuntu 24.04.1 LTS").
 pub fn os_version() -> String {
     if cfg!(target_os = "macos") {
-        let v = Command::new("sw_vers")
-            .arg("-productVersion")
-            .output()
-            .ok()
-            .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_owned())
-            .unwrap_or_default();
+        let v = crate::launch::output_within(
+            Command::new("sw_vers").arg("-productVersion"),
+            std::time::Duration::from_secs(2),
+        )
+        .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_owned())
+        .unwrap_or_default();
         return format!("macOS {v}").trim_end().to_owned();
     }
     std::fs::read_to_string("/etc/os-release")
@@ -197,12 +194,24 @@ pub fn os_version() -> String {
         .unwrap_or_else(|| "Linux".into())
 }
 
+/// How long the file manager has to answer ShowItems before its folder is opened instead: one
+/// started for it (D-Bus activation) answers in a second or two.
+const SHOW_ITEMS_LIMIT: std::time::Duration = std::time::Duration::from_secs(5);
+
 /// Show the file selected in the file manager (macOS: Finder; Linux: the desktop's file
-/// manager through D-Bus, else its folder opened).
+/// manager through D-Bus, else its folder opened). Returns at once: the file manager is asked
+/// on a thread of its own (crate::launch), as one slow to start, or that never answers, froze
+/// the window for as long as `gdbus` waited (#222); when it doesn't answer within
+/// [`SHOW_ITEMS_LIMIT`], the folder is opened instead.
+///
+/// `gdbus` rather than a zbus call: the same tool and call the desktops answered before, ended
+/// at the limit by crate::launch (zbus's blocking calls have no time limit of their own, and a
+/// connection to the session bus would be made for this one call).
 pub fn show_in_folder(path: &Path) {
+    let dir = path.parent().map(Path::to_path_buf);
     if !path.exists() {
-        if let Some(dir) = path.parent().filter(|d| d.is_dir()) {
-            let _ = open::that_detached(dir);
+        if let Some(dir) = dir.filter(|d| d.is_dir()) {
+            crate::launch::open(dir);
         }
         return;
     }
@@ -213,26 +222,24 @@ pub fn show_in_folder(path: &Path) {
     let Ok(url) = url::Url::from_file_path(path) else {
         return;
     };
-    let shown = Command::new("gdbus")
-        .args([
-            "call",
-            "--session",
-            "--dest",
-            "org.freedesktop.FileManager1",
-            "--object-path",
-            "/org/freedesktop/FileManager1",
-            "--method",
-            "org.freedesktop.FileManager1.ShowItems",
-            &format!("['{}']", url.as_str().replace('\'', "%27")),
-            "",
-        ])
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .status()
-        .is_ok_and(|s| s.success());
-    if !shown && let Some(dir) = path.parent() {
-        let _ = open::that_detached(dir);
-    }
+    let mut gdbus = Command::new("gdbus");
+    gdbus.args([
+        "call",
+        "--session",
+        "--dest",
+        "org.freedesktop.FileManager1",
+        "--object-path",
+        "/org/freedesktop/FileManager1",
+        "--method",
+        "org.freedesktop.FileManager1.ShowItems",
+        &format!("['{}']", url.as_str().replace('\'', "%27")),
+        "",
+    ]);
+    crate::launch::run_detached_with_fallback(gdbus, SHOW_ITEMS_LIMIT, move || {
+        if let Some(dir) = dir {
+            let _ = open::that_detached(dir);
+        }
+    });
 }
 
 /// Options → Downloads → open magnet links and .torrent files with Mister Download Manager:
@@ -441,18 +448,51 @@ fn accent_parts(parts: &[f64]) -> Option<egui::Color32> {
 /// macOS's accent colour (System Settings → Appearance), from `defaults read -g
 /// AppleAccentColor`: -1 graphite, 0 red, 1 orange, 2 yellow, 3 green, 4 blue, 5 purple, 6 pink;
 /// no value is the default (multicolour: blue). Mapped to Apple's published system colours.
+///
+/// The Native theme asks every 2 s, from the window's thread, so `defaults` runs on a thread of
+/// its own (#222) and this answers what it said last, one check late; only the first answer is
+/// waited for, at most half a second, so Native starts in the right colour.
 #[cfg(target_os = "macos")]
 pub fn mac_accent() -> Option<egui::Color32> {
-    let out = Command::new("defaults")
-        .args(["read", "-g", "AppleAccentColor"])
-        .stderr(Stdio::null())
-        .output()
-        .ok()?;
-    let n = String::from_utf8_lossy(&out.stdout)
-        .trim()
-        .parse::<i32>()
-        .ok();
-    Some(mac_accent_color(n))
+    use std::sync::Mutex;
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::time::{Duration, Instant};
+    /// What `defaults` said last (None: not yet; Some(None): it couldn't be asked).
+    static SAID: Mutex<Option<Option<egui::Color32>>> = Mutex::new(None);
+    static ASKING: AtomicBool = AtomicBool::new(false);
+    let said = || *SAID.lock().unwrap_or_else(|e| e.into_inner());
+    if !ASKING.swap(true, Ordering::AcqRel) {
+        let asked = std::thread::Builder::new()
+            .name("mac-accent".into())
+            .spawn(|| {
+                let out = crate::launch::output_within(
+                    Command::new("defaults").args(["read", "-g", "AppleAccentColor"]),
+                    Duration::from_secs(2),
+                );
+                let color = out.map(|out| {
+                    let n = String::from_utf8_lossy(&out.stdout)
+                        .trim()
+                        .parse::<i32>()
+                        .ok();
+                    mac_accent_color(n)
+                });
+                *SAID.lock().unwrap_or_else(|e| e.into_inner()) = Some(color);
+                ASKING.store(false, Ordering::Release);
+            });
+        if asked.is_err() {
+            ASKING.store(false, Ordering::Release);
+        }
+    }
+    let start = Instant::now();
+    loop {
+        if let Some(color) = said() {
+            return color;
+        }
+        if start.elapsed() > Duration::from_millis(500) {
+            return None;
+        }
+        std::thread::sleep(Duration::from_millis(10));
+    }
 }
 
 /// AppleAccentColor's number (None: not set) as the colour it stands for.
@@ -539,9 +579,27 @@ pub fn on_a_screen(_x: i32, _y: i32) -> bool {
 #[cfg(target_os = "linux")]
 pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileicons::Native> {
     use crate::fileicons::{Native, What};
+    let (mime, icons) = icon_lookup();
+    let names = match what {
+        What::Folder => vec!["folder".to_string()],
+        What::FolderOpen => vec!["folder-open".to_string(), "folder".to_string()],
+        What::File(ext) => {
+            let found = ext
+                .as_ref()
+                .and_then(|e| mime.mime_for(&format!("file.{e}")));
+            mime.icon_names(found.unwrap_or("application/octet-stream"))
+        }
+    };
+    icons.find(&names, px).map(Native::File)
+}
+
+/// The MIME database and the desktop's icon themes, read once: started at start-up by
+/// [`prepare_file_icons`], off the window's thread (it asks `gsettings`, #222).
+#[cfg(target_os = "linux")]
+fn icon_lookup() -> &'static (crate::xdgicons::MimeDb, crate::xdgicons::Icons) {
     use crate::xdgicons::{Dirs, Icons, MimeDb};
     static LOOKUP: std::sync::OnceLock<(MimeDb, Icons)> = std::sync::OnceLock::new();
-    let (mime, icons) = LOOKUP.get_or_init(|| {
+    LOOKUP.get_or_init(|| {
         let var = |n: &str| std::env::var(n).ok();
         let dirs = Dirs::new(
             var("HOME").as_deref(),
@@ -554,18 +612,18 @@ pub fn file_icon(what: &crate::fileicons::What, px: u32) -> Option<crate::fileic
         let default = if kde { "breeze" } else { "Adwaita" };
         let themes = [theme.as_deref().unwrap_or(default), "Adwaita", "breeze"];
         (MimeDb::load(&dirs.data), Icons::new(&dirs.icons, &themes))
-    });
-    let names = match what {
-        What::Folder => vec!["folder".to_string()],
-        What::FolderOpen => vec!["folder-open".to_string(), "folder".to_string()],
-        What::File(ext) => {
-            let found = ext
-                .as_ref()
-                .and_then(|e| mime.mime_for(&format!("file.{e}")));
-            mime.icon_names(found.unwrap_or("application/octet-stream"))
-        }
-    };
-    icons.find(&names, px).map(Native::File)
+    })
+}
+
+/// Read the file icons' themes while the window opens ([`icon_lookup`]); the list's first
+/// icons only wait for what is still being read.
+#[cfg(target_os = "linux")]
+pub fn prepare_file_icons() {
+    let _ = std::thread::Builder::new()
+        .name("file-icons".into())
+        .spawn(|| {
+            icon_lookup();
+        });
 }
 
 /// The desktop's icon theme name: KDE's (`kdeglobals` [Icons] Theme) first on KDE, else GNOME's
@@ -580,12 +638,10 @@ fn icon_theme(kde: bool) -> Option<String> {
     let read = |rel: &str| std::fs::read_to_string(config.join(rel)).ok();
     let kdeglobals = || ini_value(&read("kdeglobals")?, "Icons", "Theme");
     let gnome = || {
-        let out = Command::new("gsettings")
-            .args(["get", "org.gnome.desktop.interface", "icon-theme"])
-            .stdin(Stdio::null())
-            .stderr(Stdio::null())
-            .output()
-            .ok()?;
+        let out = crate::launch::output_within(
+            Command::new("gsettings").args(["get", "org.gnome.desktop.interface", "icon-theme"]),
+            std::time::Duration::from_secs(2),
+        )?;
         let name = String::from_utf8_lossy(&out.stdout)
             .trim()
             .trim_matches('\'')
@@ -959,6 +1015,85 @@ mod tests {
             Some(2)
         );
         assert_eq!(super::color_scheme(&Value::Str("dark".into())), None);
+    }
+
+    /// The child of [`show_in_folder_never_waits_for_the_file_manager`]: the file it shows.
+    const SHOW_CHILD: &str = "MDM_TEST_SHOW_IN_FOLDER_CHILD";
+
+    /// #222: a file manager that never answers ShowItems (here a `gdbus` that hangs for 30 s)
+    /// leaves `show_in_folder` returning at once, and the folder is opened instead after
+    /// SHOW_ITEMS_LIMIT (here an `xdg-open` that notes what it was given). PATH is the test's
+    /// own, so the test runs itself again as a child with it (no `set_var` in a test).
+    #[test]
+    fn show_in_folder_never_waits_for_the_file_manager() {
+        use std::os::unix::fs::PermissionsExt;
+        use std::time::{Duration, Instant};
+        if let Some(file) = std::env::var_os(SHOW_CHILD) {
+            let file = std::path::PathBuf::from(file);
+            let start = Instant::now();
+            super::show_in_folder(&file);
+            println!(
+                "show_in_folder returned after {} ms",
+                start.elapsed().as_millis()
+            );
+            // The fallback runs on its thread: wait for it before the child ends.
+            let opened = file.with_file_name("opened.txt");
+            let until = Instant::now() + Duration::from_secs(15);
+            while !opened.exists() && Instant::now() < until {
+                std::thread::sleep(Duration::from_millis(50));
+            }
+            return;
+        }
+        let root = std::env::temp_dir().join(format!("mdm-show-222-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        let (bin, folder) = (root.join("bin"), root.join("Downloads"));
+        std::fs::create_dir_all(&bin).unwrap();
+        std::fs::create_dir_all(&folder).unwrap();
+        let file = folder.join("done.zip");
+        std::fs::write(&file, b"test").unwrap();
+        let opened = folder.join("opened.txt");
+        let tool = |name: &str, body: String| {
+            let p = bin.join(name);
+            std::fs::write(&p, format!("#!/bin/sh\n{body}\n")).unwrap();
+            std::fs::set_permissions(&p, std::fs::Permissions::from_mode(0o755)).unwrap();
+        };
+        tool("gdbus", "exec sleep 30".into());
+        tool("xdg-open", format!("echo \"$1\" > '{}'", opened.display()));
+        // Only these tools and the system's (no Windows programs under WSL, no real opener).
+        let path = format!("{}:/usr/bin:/bin", bin.display());
+        let start = Instant::now();
+        let out = std::process::Command::new(std::env::current_exe().unwrap())
+            .args([
+                "unix::tests::show_in_folder_never_waits_for_the_file_manager",
+                "--exact",
+                "--nocapture",
+                "--test-threads=1",
+            ])
+            .env(SHOW_CHILD, &file)
+            .env("PATH", path)
+            .output()
+            .unwrap();
+        let took = start.elapsed();
+        let text = String::from_utf8_lossy(&out.stdout);
+        // libtest prints the test's name on the same line, before it.
+        let returned = text
+            .split("show_in_folder returned after ")
+            .nth(1)
+            .and_then(|l| l.split(" ms").next()?.parse::<u64>().ok())
+            .unwrap_or_else(|| panic!("the child said nothing: {text}"));
+        assert!(
+            returned < 500,
+            "show_in_folder waited {returned} ms for gdbus"
+        );
+        let shown = std::fs::read_to_string(&opened).unwrap_or_default();
+        assert_eq!(
+            shown.trim(),
+            folder.display().to_string(),
+            "the folder wasn't opened"
+        );
+        // The folder opened after the limit, not after gdbus's 30 s.
+        assert!(took < Duration::from_secs(20), "took {took:?}");
+        let _ = std::fs::remove_dir_all(&root);
     }
 }
 

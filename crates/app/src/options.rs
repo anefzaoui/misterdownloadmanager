@@ -181,6 +181,8 @@ pub struct OptionsDialog {
     seven_zip: Option<std::path::PathBuf>,
     /// Proxy / Socks → Network adapter (#35): the computer's adapters, read again every 2 s.
     adapters: Option<(std::time::Instant, Vec<mdm_engine::net::Adapter>)>,
+    /// Test browser integration → Set it up's runs seen finished (crate::extension).
+    set_up_seen: u64,
 }
 
 impl OptionsDialog {
@@ -233,6 +235,7 @@ impl OptionsDialog {
             account_rows: Default::default(),
             sound_rows: Default::default(),
             sub: None,
+            set_up_seen: 0,
             cat_edit: None,
             restore_ask: None,
             learned,
@@ -2725,8 +2728,11 @@ impl OptionsDialog {
                         }
                     },
                 );
+                // Set it up runs on a thread of its own; the checks are read again once it's done.
                 if set_up {
-                    crate::extension::set_up();
+                    crate::extension::set_up(ctx);
+                }
+                if crate::extension::set_up_finished(&mut self.set_up_seen) {
                     checks = crate::extension::checks(&self.s);
                 }
                 if matches!(out, Outcome::Open) {
@@ -3208,7 +3214,7 @@ fn account_dialog(ui: &mut Ui, o: Pos2, e: &mut AccountEdit) -> Outcome<settings
 /// whose clicks come from scripts, not from a person at the browser.
 fn open_page(url: &str) {
     if !crate::offscreen() {
-        let _ = open::that_detached(url);
+        crate::launch::open(url);
     }
 }
 

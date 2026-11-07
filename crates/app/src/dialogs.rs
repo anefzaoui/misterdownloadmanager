@@ -2188,7 +2188,9 @@ pub fn told() -> Vec<(&'static str, String)> {
 }
 
 /// Open a downloaded file with its program, or say why not (moved or deleted since, no
-/// program for it): it did nothing at all. True when it was handed to the system.
+/// program for it): it did nothing at all. True when it was handed to the system. Waited for
+/// (the `open` crate's launcher, at most 250 ms each on Windows and Linux), unlike
+/// crate::launch's: whether it failed decides whether Download complete stays open.
 pub fn open_file(path: &Path) -> bool {
     let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
     let failed = if !path.exists() {
@@ -2217,7 +2219,7 @@ pub fn show_in_folder(path: &Path) {
         use std::os::windows::process::CommandExt;
         if !path.exists() {
             if let Some(dir) = path.parent().filter(|d| d.is_dir()) {
-                let _ = open::that_detached(dir);
+                crate::launch::open(dir);
             }
             return;
         }
@@ -2244,7 +2246,7 @@ pub fn open_with(path: &Path) {
     }
     #[cfg(not(windows))]
     {
-        let _ = open::that_detached(path);
+        crate::launch::open(path);
     }
 }
 

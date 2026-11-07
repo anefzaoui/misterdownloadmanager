@@ -24,6 +24,7 @@ mod helpers;
 mod i18n;
 mod icons;
 mod langpick;
+mod launch;
 mod list;
 mod model;
 mod native;
@@ -237,6 +238,9 @@ fn app() -> eframe::Result {
     // This launch is MDM: its fonts are looked up while the rest starts (only the instance pays
     // for them, not a launch that hands its command over).
     theme::prepare_fonts();
+    // And the file icons' themes (Linux: gsettings), off the window's thread.
+    #[cfg(target_os = "linux")]
+    unix::prepare_file_icons();
     // What an earlier update set aside (old programs, a Mac's old app, downloaded files).
     update::tidy();
     // The command channel opens now, before the window: the browser's host that started MDM
