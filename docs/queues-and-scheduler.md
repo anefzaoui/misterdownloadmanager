@@ -33,7 +33,8 @@ A running queue starts its downloads in list order, a few at a time (four by def
 
 Open it with **Scheduler** on the toolbar or **Downloads → Scheduler**. Right-clicking a queue and choosing **Schedule** or **Edit queue** opens it on that queue.
 
-![The Scheduler](images/scheduler.png)
+![The Scheduler: the queues on the left with Download limits, the selected queue's Schedule tab on the right](images/help/scheduler.webp)
+*1 the queues, 2 Download limits, 3 the queue's schedule, 4 its files.*
 
 The queues are on the left, with **Download limits** below them. The right side shows the selected queue on two tabs, **Schedule** and **Files in the queue**.
 

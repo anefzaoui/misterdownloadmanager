@@ -15,6 +15,9 @@ Browser integration has two parts: a small helper program that the browser talks
 1. Install MDM with the setup and keep **Set up browser integration (Chrome, Edge, Brave, Firefox)** ticked. This registers the helper. (The portable copy can't do this; see [Portable mode](portable.md).)
 2. Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.
 
+![Add Mister Download Manager to your browser: each browser found, with a button to its store page](images/help/browser-offer.webp)
+*MDM's own window opens each browser's store page for you.*
+
 ### Firefox
 
 Firefox 140 or later is needed. Install the add-on from its page on addons.mozilla.org, [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/): click **Add to Firefox**. Firefox keeps it updated. Zen and LibreWolf install it from the same page. (MDM's **Add Mister Download Manager to your browser** window opens that page for you.)
@@ -52,11 +55,23 @@ When you click a download, the extension checks MDM's Options:
 - **Options → File types → Don't take files smaller than** leaves small files (a receipt, an icon) to the browser. 0 takes any size.
 - The extension must be allowed to read the site. When you limit it to some sites (or **On click**), it can't pass your sign-in on, so it leaves those sites' downloads to the browser.
 
+![Options, General: Use advanced browser integration and the list of browsers MDM takes downloads from](images/help/options-integration.webp)
+*1 must be on, and 2 your browser ticked.*
+
 Both the address you clicked and the one its redirects led to are checked, so a site you excluded stays excluded even when it sends you to another server. Everything else stays with the browser. Changes in Options reach the browser within a minute; you don't need to restart it.
 
 When MDM takes a download, it gets the browser's file name, size and type with it, so **Download File Info** shows them at once without asking the server again. A download from a form (a button that posts and gets a file back) is posted again by MDM with the form's data; a form that sends a file stays with the browser.
 
 When MDM takes a download, the browser's own copy is cancelled and removed from the browser's download list. **Download File Info** opens in MDM (unless you turned it off in **Options → Downloads**). Cancelling there doesn't hand the download back to the browser.
+
+<!-- steps -->
+
+1. ![Download File Info in MDM for a file clicked in the browser](images/help/catch-file-info.webp)
+   *Click a download link in the browser: Download File Info opens in MDM.*
+2. ![The progress window of a download coming in over several connections](images/help/catch-progress.webp)
+   *Start Download: the progress window shows it coming in.*
+3. ![Download complete, with Open, Open with..., Open folder and Close](images/help/catch-complete.webp)
+   *Download complete: Open the file, or Open folder.*
 
 Downloads from a private window use that window's cookies, never the normal ones, and aren't kept in MDM's list after it closes.
 
@@ -123,7 +138,8 @@ If MDM can't be reached when you choose one of these, the help page opens at the
 
 ## The download button over videos
 
-![The Download video button over a YouTube video in Chrome](images/video-button-youtube.png)
+![The Download video button over a YouTube video in Chrome](images/help/video-button.webp)
+*The button over a video. Drag it where you like; it stays there.*
 
 Point at a video on a web page and a small **Download video** button appears at its edge. Click it and MDM's **Download video from a page** window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's [Media on this page](#media-on-this-page) lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.
 
@@ -133,7 +149,8 @@ It stays out of the way: it shows only while you point at a video (or the player
 - **Its menu** (the arrow next to it): **Hide on this video**, **Never on** the site (MDM remembers the site), and **Button settings...**, which opens MDM's Options.
 - **Turn it off, or see the sites it stays off**: **Options → General → Customize MDM Download panels in browsers → Edit...**.
 
-![The Download panels settings: the button on or off, and the sites it never shows on](images/options-panels.png)
+![The Download panels settings: the button on or off, and the sites it never shows on](images/help/download-panels.webp)
+*Options → General → Edit...: turn the button off, or list sites it never shows on.*
 
 The button follows the rest of the integration: it doesn't show when **Use advanced browser integration** is off or the browser is unticked.
 
@@ -149,7 +166,8 @@ You don't need to start MDM first. When the browser hands over a download and MD
 
 If MDM can't be reached at all (it was uninstalled, or the helper isn't registered), the download stays with the browser, so nothing is lost, and the toolbar button shows a red **!**. See [The browser and MDM aren't connected](browser-help.md), or run **Options → General → Test browser integration...**.
 
-![Options, General page](images/options-general.png)
+![Options, General with Test browser integration...](images/help/test-integration.webp)
+*Test browser integration... says whether the browser reaches MDM.*
 
 ## Next steps
 

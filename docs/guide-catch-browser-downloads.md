@@ -8,6 +8,17 @@ Set up the extension once, and every download link you click in Firefox, Chrome,
 
 MDM must be installed with the setup, with **Set up browser integration (Chrome, Edge, Brave, Firefox)** ticked. It is ticked by default. If you're not sure, run the setup again. A portable copy can't do this.
 
+Once it is set up, a download link goes like this:
+
+<!-- steps -->
+
+1. ![Download File Info in MDM for a file clicked in the browser](images/help/catch-file-info.webp)
+   *Click a download link in the browser: Download File Info opens in MDM.*
+2. ![The progress window of a download coming in over several connections](images/help/catch-progress.webp)
+   *Start Download: the progress window shows it coming in.*
+3. ![Download complete, with Open, Open with..., Open folder and Close](images/help/catch-complete.webp)
+   *Download complete: Open the file, or Open folder.*
+
 ## In Firefox
 
 1. Open the add-on's page on addons.mozilla.org, [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/), and click **Add to Firefox**. Zen and LibreWolf use the same page.
@@ -40,13 +51,14 @@ You don't need to start MDM first: if it isn't running, it starts by itself.
 - **Sites to leave alone:** **Options → File types → Don't start downloading automatically from the following sites**. Add the site's name, for example `downloads.example.com` or `*.example.com`.
 - **One browser only:** **Options → General → Capture downloads from the following browsers**. Untick the ones MDM should leave alone.
 
+![Options, File types: the file types MDM takes from the browser, and the sites it leaves alone](images/help/catch-file-types.webp)
+*1 the file types MDM takes, 2 the sites it leaves to the browser.*
+
 Everything MDM doesn't take stays with the browser.
 
 ## Download a link the browser would open
 
 Links to a PDF or a video file, which the browser would open itself, go to MDM too when their type is listed. To leave one to the browser, hold **Alt** while clicking it (Firefox opens it; Chrome and Edge download it themselves). Any other link: right-click it and choose **Download with Mister Download Manager**, which takes any type.
-
-![Options, General page](images/options-general.png)
 
 ## Next steps
 

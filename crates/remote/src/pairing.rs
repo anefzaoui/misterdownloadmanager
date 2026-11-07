@@ -1,27 +1,36 @@
 //! Pairing codes. Options → Remote → Pair a device shows an 8-digit code, valid for ten minutes
-//! and for one device; closing that window ends it. A code takes five wrong tries, then it is
-//! void (a new one must be shown), and tries come one a second at most, whoever sends them: a
-//! guesser gets five chances in a hundred million per code shown.
+//! and for one device; closing that window ends it. Each device (by its address) gets five wrong
+//! tries, one a second at most; after twenty wrong tries in all the code is void (a new one must
+//! be shown). A guesser gets at most twenty chances in a hundred million per code shown, and a
+//! device that keeps guessing can't use up the tries of the phone being paired.
 
+use std::collections::HashMap;
+use std::net::IpAddr;
 use std::time::{Duration, Instant};
 
 /// How long a code shown stays valid.
 pub const VALID: Duration = Duration::from_secs(10 * 60);
-/// Wrong tries a code takes before it is void.
+/// Wrong tries one device (address) gets for a code.
 pub const TRIES: u8 = 5;
-/// The least time between two tries.
+/// Wrong tries in all, from every device, before the code is void.
+pub const TOTAL: u8 = 20;
+/// The least time between two tries from one device.
 pub const PACE: Duration = Duration::from_secs(1);
+/// Addresses remembered for pacing (more are forgotten once they're past their pace).
+const PEERS: usize = 256;
 
 struct Active {
     code: String,
     until: Instant,
-    left: u8,
+    /// Wrong tries so far, in all and by address.
+    wrong: u8,
+    wrong_by: HashMap<IpAddr, u8>,
 }
 
 #[derive(Default)]
 pub struct Pairing {
     active: Option<Active>,
-    last_try: Option<Instant>,
+    last_try: HashMap<IpAddr, Instant>,
     /// The device the code shown paired (the window says so and closes).
     paired: Option<String>,
 }
@@ -30,13 +39,13 @@ pub struct Pairing {
 #[derive(Debug, PartialEq, Eq)]
 pub enum Check {
     Right,
-    /// Wrong; `left` tries remain for this code (0: it is void now).
+    /// Wrong; `left` tries remain for this device (0: it can't try this code again).
     Wrong {
         left: u8,
     },
     /// No code is shown (none asked for, timed out, or used up).
     NoCode,
-    /// Too soon after the last try.
+    /// Too soon after this device's last try.
     TooSoon,
 }
 
@@ -49,7 +58,8 @@ impl Pairing {
         self.active = Some(Active {
             code: code.clone(),
             until: Instant::now() + VALID,
-            left: TRIES,
+            wrong: 0,
+            wrong_by: HashMap::new(),
         });
         self.paired = None;
         code
@@ -73,17 +83,36 @@ impl Pairing {
         self.paired.clone()
     }
 
-    /// A device tries `given` (spaces and dashes ignored).
-    pub fn check(&mut self, given: &str) -> Check {
+    /// The device at `peer` tries `given` (spaces and dashes ignored).
+    pub fn check(&mut self, given: &str, peer: IpAddr) -> Check {
         let now = Instant::now();
-        if self.last_try.is_some_and(|t| now.duration_since(t) < PACE) {
+        if self
+            .last_try
+            .get(&peer)
+            .is_some_and(|t| now.duration_since(*t) < PACE)
+        {
             return Check::TooSoon;
         }
-        self.last_try = Some(now);
-        let Some(a) = self.active.as_mut().filter(|a| a.until > now && a.left > 0) else {
+        if self.last_try.len() >= PEERS {
+            self.last_try.retain(|_, t| now.duration_since(*t) < PACE);
+            if self.last_try.len() >= PEERS {
+                // Hundreds of addresses trying within one second: none more until they slow.
+                return Check::TooSoon;
+            }
+        }
+        self.last_try.insert(peer, now);
+        let Some(a) = self
+            .active
+            .as_mut()
+            .filter(|a| a.until > now && a.wrong < TOTAL)
+        else {
             self.active = None;
             return Check::NoCode;
         };
+        let spent = a.wrong_by.get(&peer).copied().unwrap_or(0);
+        if spent >= TRIES {
+            return Check::Wrong { left: 0 };
+        }
         let given: String = given.chars().filter(char::is_ascii_digit).collect();
         let right = given.len() == a.code.len()
             && given
@@ -96,12 +125,15 @@ impl Pairing {
             self.active = None;
             return Check::Right;
         }
-        a.left -= 1;
-        let left = a.left;
-        if left == 0 {
+        a.wrong += 1;
+        let spent = spent + 1;
+        a.wrong_by.insert(peer, spent);
+        if a.wrong >= TOTAL {
             self.active = None;
         }
-        Check::Wrong { left }
+        Check::Wrong {
+            left: TRIES - spent,
+        }
     }
 
     /// The code shown paired `name`.
@@ -118,35 +150,83 @@ mod tests {
         std::thread::sleep(PACE + Duration::from_millis(20));
     }
 
+    fn ip(last: u8) -> IpAddr {
+        IpAddr::from([192, 168, 1, last])
+    }
+
+    fn wrong_for(code: &str) -> &'static str {
+        if code == "00000000" {
+            "11111111"
+        } else {
+            "00000000"
+        }
+    }
+
     #[test]
     fn a_code_pairs_once() {
         let mut p = Pairing::default();
-        assert_eq!(p.check("12345678"), Check::NoCode, "none shown");
+        assert_eq!(p.check("12345678", ip(2)), Check::NoCode, "none shown");
         let code = p.start();
         assert_eq!(code.len(), 8);
         wait();
         let spaced = format!("{} {}", &code[..4], &code[4..]);
-        assert_eq!(p.check(&spaced), Check::Right);
+        assert_eq!(p.check(&spaced, ip(2)), Check::Right);
         wait();
-        assert_eq!(p.check(&code), Check::NoCode, "used");
+        assert_eq!(p.check(&code, ip(2)), Check::NoCode, "used");
     }
 
     #[test]
-    fn wrong_tries_void_the_code_and_are_paced() {
+    fn one_device_gets_five_paced_tries() {
         let mut p = Pairing::default();
         let code = p.start();
-        let wrong = if code == "00000000" {
-            "11111111"
-        } else {
-            "00000000"
-        };
-        assert_eq!(p.check(wrong), Check::Wrong { left: TRIES - 1 });
-        assert_eq!(p.check(&code), Check::TooSoon, "one try a second");
+        let wrong = wrong_for(&code);
+        assert_eq!(p.check(wrong, ip(9)), Check::Wrong { left: TRIES - 1 });
+        assert_eq!(p.check(&code, ip(9)), Check::TooSoon, "one try a second");
         for left in (0..TRIES - 1).rev() {
             wait();
-            assert_eq!(p.check(wrong), Check::Wrong { left });
+            assert_eq!(p.check(wrong, ip(9)), Check::Wrong { left });
         }
         wait();
-        assert_eq!(p.check(&code), Check::NoCode, "void after five wrong tries");
+        assert_eq!(
+            p.check(&code, ip(9)),
+            Check::Wrong { left: 0 },
+            "this device is out of tries, even with the right code"
+        );
+    }
+
+    /// A device guessing on the network neither slows the phone being paired nor uses up its
+    /// tries: the phone pairs with the code.
+    #[test]
+    fn a_guessing_device_does_not_block_the_phone() {
+        let mut p = Pairing::default();
+        let code = p.start();
+        let wrong = wrong_for(&code);
+        for _ in 0..TRIES {
+            assert!(matches!(p.check(wrong, ip(66)), Check::Wrong { .. }));
+            wait();
+        }
+        assert_eq!(p.check(wrong, ip(66)), Check::Wrong { left: 0 });
+        // Right after the guesser's try: the phone isn't paced by it.
+        assert_eq!(p.check(&code, ip(2)), Check::Right);
+    }
+
+    #[test]
+    fn twenty_wrong_tries_in_all_void_the_code() {
+        let mut p = Pairing::default();
+        let code = p.start();
+        let wrong = wrong_for(&code);
+        // Four devices, five tries each, at the same moments (each paced on its own).
+        for round in 0..TRIES {
+            for d in 0..(TOTAL / TRIES) {
+                let got = p.check(wrong, ip(100 + d));
+                assert!(matches!(got, Check::Wrong { .. }), "round {round}: {got:?}");
+            }
+            wait();
+        }
+        assert_eq!(
+            p.check(&code, ip(2)),
+            Check::NoCode,
+            "void after {TOTAL} wrong tries"
+        );
     }
 }

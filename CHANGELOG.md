@@ -37,6 +37,34 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   [Guide](docs/remote-control.md).
 - The automation API's list also gives the queues, the categories and the free space; it starts
   and stops a queue by name, and an added address can choose its category and queue.
+- **Cookies for video sites**
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): Options → Sites Logins
+  can let yt-dlp read a browser's cookies on this computer (Firefox, Chrome, Edge, Brave, Opera,
+  Vivaldi, Chromium, Whale; Safari on macOS), with a profile by name or folder, so a pasted link
+  to a video that needs you signed in (YouTube's "Sign in to confirm you're not a bot") works.
+  Off by default. When the browser's extension passes the page's own cookies, those are used
+  instead. When the browser's cookies can't be read (Chrome, Edge and Brave lock them on
+  Windows; a locked keyring on Linux), the Download video window says so in plain words.
+- **Started with the computer, MDM waits in the notification area**
+  ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226)): with **Options →
+  General → Launch Mister Download Manager on startup**, MDM no longer opens its window in front
+  at every sign-in. It starts hidden, its icon in the notification area, with its downloads,
+  queues, Scheduler and browser hand-overs running; its icon, or starting MDM again, shows the
+  window as before. The same on Linux and macOS; where no notification area shows MDM's icon
+  (some Linux desktops), it starts minimized, and the option's tooltip says so (it waits for
+  one up to 30 seconds after its icon is made, its window hidden: a desktop's can come up after
+  MDM at sign-in). The startup entry now passes `/startup` (new on the [command line](docs/command-line.md)); an entry written by
+  an earlier version or its installer is written again at the next start, and the installer
+  writes the new one.
+- **Sign-ins in the system's keychain**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): debrid accounts, Sites
+  Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the
+  system keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) and in the
+  macOS keychain, and the settings keep only a reference. Those already saved move there on
+  the next start. A locked keyring is never unlocked and no keyring is ever asked for a
+  password: without one, they stay in MDM's settings as before. **Options → Accounts** says
+  where they are. A portable copy keeps them in its own folder, and uninstalling with **remove
+  the download list and settings** removes them from Credential Manager too.
 - **The Scheduler wakes the computer to run a queue**
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142)): tick **Wake the
   computer to run this queue** under the start time, and a sleeping computer is woken a minute
@@ -123,6 +151,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
   README and the browser extension's popup link to it too. Only when asked: MDM stays free, with
   no reminders, and nothing changes or unlocks.
+- **Video pages and image galleries through the chosen network adapter**
+  ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35)): with **Options → Proxy /
+  Socks → Network adapter** set, video downloads (yt-dlp and the ffmpeg it starts) and galleries
+  (gallery-dl) now start, on Windows, Linux and macOS, instead of being refused. They go through a
+  proxy MDM runs on this computer, which opens their connections through the adapter as MDM opens
+  its own, with the DNS you chose, IPv4 and IPv6. The same kill switch: when the adapter
+  disconnects, their connections close at once and the downloads stop, then start again when it
+  is back. Formats over RTMP, RTSP, MMS or FTP, which can't go through it, are refused. The
+  command line's `video-get` and `gallery-get` take `--adapter`.
 - **Torrents through the chosen network adapter on Windows**
   ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
   Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.
@@ -369,6 +406,21 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: the host connection limit test tells a reconnect from a connection too many**
+  ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)). A server sees that a
+  client dropped an answer only when it next writes to it, so on a busy computer a connection
+  that reconnects can be refused once while the server still counts its old answer. The lab
+  server now logs, with each refusal, how far the answers holding the client's slots had been
+  sent; the test fails only for a refusal none of them explains.
+- **The help shows what it describes** ([#228](https://github.com/anefzaoui/misterdownloadmanager/issues/228)):
+  every guide and the main help pages now have pictures of the windows they explain, cropped to
+  what matters, numbered where a step points at one control, and step strips for the usual flows
+  (a download from the browser, a first download, a video, a torrent, a queue overnight). On the
+  website they follow its light or dark theme, keep their place while they load, and open larger
+  with a click; their descriptions and captions are translated with the page. The pictures are
+  made by a script from one list (`tools/shots/`), so they can all be taken again in one go.
+- **Developers: `/show menu:<n>` opens the menu bar's menu even with downloads in the list**; it
+  opened the first download's right-click menu instead.
 - **Developers: the rest of the engine tests no longer fail on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)). Nine tests checked a
   time, a speed or a byte count that a starved CPU or a busy CI runner can't keep. Each now
@@ -492,6 +544,89 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Three more controls fit their translated text**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
+  and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**
+  and the Scheduler's drop-down after **Turn off computer when done** still ended in "...".
+  Download File Info grows by what Preview's label needs (Russian, Ukrainian, Telugu, Belarusian
+  and a few more), the Proxy page's title moves left to give Get System its room, and the
+  Scheduler's drop-down widens towards its caption. English is unchanged.
+- **A menu shut with Escape opens again at the first click on its title**: a menu opened from
+  the menu bar and shut with Escape, the pointer still on its title, was left marked open. On
+  Linux the next click on that title only "shut" it, and a second click was needed; on Windows
+  Escape seemed to do nothing (the menu came back at once). Escape, or MDM losing the focus, now
+  shuts the menu whatever the pointer rests on; a press on a title still shuts its own menu or
+  opens another.
+- **A video that needs a sign-in downloads from the button over it**
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): the button's cookies
+  reached the Download video window's look-up but not the download's own, which then failed with
+  "Sign in to confirm you're not a bot".
+- **The window no longer freezes when the system's sleep or keychain service is slow**
+  (follows [#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): a queue set to
+  **Wake the computer to run this queue** asks the system to keep the computer awake while it
+  runs. On Linux that is logind, which can be slow to answer just after the computer wakes,
+  exactly when such a queue starts, and MDM waited for it on the window's own thread (asking
+  again every 5 seconds while it refused). It is now asked in the background, on every system;
+  the queue's downloads, retries and log lines are the same. A keyring that doesn't answer at
+  start (a stopped GNOME Keyring) is now waited for once, at most 5 seconds, instead of once per
+  saved password, and saving the list no longer asks it at all. On Linux the check for a tray to
+  hide windows in, and in Download File Info the check that **Save As** isn't a folder (slow on a
+  network share that doesn't answer), no longer run on the window's thread on every frame.
+- **Linux: Dark Mode support follows XFCE, MATE and other desktops too**
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156)): MDM followed the
+  desktop's light or dark setting only where the freedesktop portal answers (GNOME, KDE,
+  Cinnamon). Where it doesn't, as on XFCE, MDM stayed light under a dark theme. It now reads the
+  theme the desktop gives its programs (a name such as Adwaita-dark, Mint-Y-Dark or Greybird-dark
+  is dark), GNOME's own dark style setting when there is no portal, and GTK's settings with no
+  desktop at all, and it follows changes as they happen. The portal still comes first. A change
+  now shows at once too: the window waited for its next theme check, up to 20 s on a busy
+  machine, on every desktop.
+- **Open folder no longer freezes the window on Linux**
+  ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
+  **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited
+  for its answer on the window's own thread. A file manager slow to start, or one that never
+  answered (seen on Pop!_OS), froze the window until the freeze report caught it. MDM now asks in
+  the background and, when the file manager hasn't answered within 5 seconds, opens the folder
+  instead. Every other program MDM starts from a window goes the same way: Test browser
+  integration's **Set it up**, moving an extracted archive to the Trash (on a Mac the Finder may
+  ask first), putting an update in place (**Installing the update...**, with Cancel greyed while
+  it runs), opening pages and folders, reading the icon theme on Linux and, on a Mac, the accent
+  colour (every 2 seconds with the Native theme) and the system's version for a bug report.
+- **A download too big for the drive is refused on a busy computer too**
+  ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)): before a download
+  starts, MDM checks the drive has room for it. It gave up checking after 5 seconds (a network
+  drive that no longer answers can hang), counted from when it asked; on a very busy computer
+  the check could wait longer than that just to start, and a download too big for its drive
+  started anyway. The 5 seconds now count from when the check runs, and it asks only the
+  folder's own drive instead of listing every drive, which takes well under a millisecond. A
+  shared network folder (`\\server\share`) is checked too, which it wasn't before, and a
+  folder that doesn't exist yet is checked on the drive it will be made on.
+- **The crash report window in other languages**
+  ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204)): in any language but
+  English, the report in its box ran together on a few long lines, as its line breaks were taken
+  for a translation's and flowed again. The report now keeps its own lines in every language, and
+  in Arabic and Persian it reads left to right, from the box's left edge, as the English data it
+  is (the window around it stays right to left). The release notes in **Check for updates** keep
+  their lines the same way. **End and restart MDM** showed cut in German, French, Russian and
+  Arabic: the buttons are now as wide as their text, the others giving back room they don't need.
+- **Buttons fit their text in every language, in every window**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192)): many windows gave
+  their buttons a width made for English, so a longer translation was cut with "..." (German
+  **Später herunterla...** in Download File Info, **Hilfsprogramme...** in Download a gallery,
+  Russian **Открыть с помощью...** in Download complete, French **Nouvelle file d’attente** in the
+  Scheduler). Each button is now as wide as its translated text, and the buttons beside it move
+  along with the same gaps, the row keeping its end; a box or caption beside a widened button
+  ends before it. Where a window has no room left, the buttons wider than their text give some
+  back first. English is unchanged, and in Arabic and the other right-to-left languages the
+  buttons widen the mirrored way.
+- **Help opens the website's help pages, in your language**
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227)): **Help contents**,
+  **Tutorials**, **Scheduler and queues**, **Video downloads**, the **Help** buttons of Options and
+  the Scheduler, and the browser extension window's tutorial and help links opened the docs on
+  GitHub (the Options and Scheduler buttons a page that wasn't there). They open
+  misterdownloadmanager.com now, at the same section, in the interface language when the website
+  has it (else English), and **Home Page** opens the website too. The command line's and the MCP
+  server's help name the website's guide. Problem reports, releases and the source stay on GitHub.
 - **A finished download no longer fails with "part file still in use" on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)): when the last bytes
   came in, the connections still running were cut off. One cut off while it read or wrote the
@@ -499,13 +634,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   on its own, with the file still open, and renaming the finished file failed. The connections are
   now told to stop and waited for, when a download completes and when it is stopped or fails, so
   none of them outlives it. A stopped download's last writes are also in its saved progress now.
-- **Menus without a black band across their top**
+- **Menus and the drop target without a black band across their top**
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
   Insider build (22635), every menu and submenu showed a black band a title bar tall across its
   top and a thin one down its left side, its items moved down by as much and its last ones cut
-  off. A menu's window had a title bar's style, hidden by MDM, and something on that build placed
-  the menu's picture where the title bar would have ended. Menus are now plain pop-up windows, as
-  Windows' own menus are, with nothing above their items to take for a title bar.
+  off; so did the drop target (Tasks → Show drop target), its icon moved down. Each of these
+  windows had a title bar's style, hidden by MDM, and something on that build placed the window's
+  picture where the title bar would have ended. Menus and the drop target are now plain pop-up
+  windows, as Windows' own menus are, with nothing above their contents to take for a title bar;
+  every window of MDM without a title bar is made one the same way.
 - **A window closed with its title bar's × no longer turns black first**
   ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207)): every dialog and the
   progress window turned black for a moment when closed with the × or Alt+F4, rather than with

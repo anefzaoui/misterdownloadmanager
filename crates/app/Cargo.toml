@@ -12,6 +12,13 @@ publish.workspace = true
 name = "misterdownloadmanager"
 path = "src/main.rs"
 
+[features]
+# Update now's end-to-end tests only, never in a release (see mdm-tools): a test key for a fake
+# release (MDM_TEST_UPDATE_KEY), `/show update-now` (Update now in the window `/show updates`
+# opens), and MDM_TEST_UPDATE_HOLD (seconds the update waits before it's put in place, to see and
+# close the window meanwhile). tools/lab/update runs them.
+test-update = ["mdm-tools/test-update"]
+
 [dependencies]
 arboard.workspace = true
 base64.workspace = true
@@ -88,6 +95,9 @@ tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] 
 # The desktop's light or dark preference from the freedesktop portal (unix.rs); already in the
 # tree through the tray (ksni) and AccessKit, with the same features.
 zbus = { version = "5.19.0", default-features = false, features = ["async-io", "blocking-api"] }
+# The settings daemon's theme name (XSETTINGS) when the portal can't say dark or light (unix.rs,
+# #156); already in the tree through winit. Its pure-Rust connection, no extension.
+x11rb = { version = "0.13.2", default-features = false }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 # Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.
@@ -100,6 +110,9 @@ objc2-app-kit = { version = "0.3.2", default-features = false, features = ["std"
 eframe = { workspace = true, features = ["wgpu_no_default_features"] }
 wgpu = { version = "30.0", default-features = false, features = ["metal", "wgsl"] }
 egui-wgpu = { version = "0.37.0", default-features = false, features = ["macos-window-resize-jitter-fix"] }
+# Sign-in secrets in the login keychain (unix.rs, #44); already in the tree through rustls's
+# platform verifier.
+security-framework = "3.7.0"
 
 # Crash reports on Linux and macOS: thread and process ids, signals (unix.rs).
 [target.'cfg(unix)'.dependencies]
@@ -115,6 +128,8 @@ winresource = "0.1"
 
 [dev-dependencies]
 tempfile.workspace = true
+# secrets.rs's test that no secret reaches the log.
+tracing-subscriber.workspace = true
 # The command line's tests (tests/cli_*.rs) download from it.
 mdm-labserver.workspace = true
 

@@ -676,6 +676,9 @@ pub struct FileInfo {
     /// "Download through …" unticked: downloaded directly instead (`Item::direct`). Unticked
     /// from the start when the browser had already started the download.
     pub direct: bool,
+    /// Whether Save As names a folder, looked at off the window's thread: it is asked every
+    /// frame, and a folder on a network share that doesn't answer would freeze the window.
+    dest_dir: crate::launch::Asked<PathBuf, bool>,
 }
 
 pub enum Start {
@@ -730,6 +733,7 @@ impl FileInfo {
             None => (start_probe(rt, ctx, &new.url, &request), None),
         };
         FileInfo {
+            dest_dir: Default::default(),
             url_text: new.url.to_string(),
             url_bad: false,
             focused: false,
@@ -933,11 +937,22 @@ impl FileInfo {
         // The "Download through" line (#44) takes a row of its own while an account takes the
         // address: the window grows by it.
         let dy = if self.through.is_some() { 26.0 } else { 0.0 };
+        // Preview has 92 px for its label in this language (#192), from 8 px after the group box
+        // (it ends at 462) to the window's edge (562): where it needs more, the window grows by it
+        // and the right column (icon, size, Preview) widens, its centre moving by half of it.
+        let preview_w = winui::button_fit_width(
+            &ctx.layer_painter(egui::LayerId::background()),
+            "Preview",
+            73.0,
+            f32::INFINITY,
+        );
+        let wide = (preview_w - 92.0).max(0.0);
+        let cx = (wide / 2.0).floor();
         window(
             ctx,
             "file-info",
             "Download File Info",
-            [570.0, 234.0 + dy],
+            [570.0 + wide, 234.0 + dy],
             true,
             winui::BG(),
             |ui, o| {
@@ -1166,10 +1181,23 @@ impl FileInfo {
                 let name_bad = {
                     let typed = self.save_as.trim();
                     let dest = self.dest();
+                    // A local disk answers within the wait; a share that doesn't reads as no
+                    // folder meanwhile (the download says so if it can't write there).
+                    let folder = || {
+                        self.dest_dir
+                            .get(
+                                &dest,
+                                std::time::Duration::from_secs(1),
+                                std::time::Duration::from_millis(50),
+                                Some(ui.ctx()),
+                                |d| d.is_dir(),
+                            )
+                            .unwrap_or(false)
+                    };
                     typed.is_empty()
                         || typed.ends_with(['\\', '/'])
                         || dest.file_name().is_none()
-                        || dest.is_dir()
+                        || folder()
                 };
                 let blocked = if self.url_bad {
                     Some("Invalid address")
@@ -1184,9 +1212,24 @@ impl FileInfo {
                 } else {
                     (ButtonKind::Normal, ButtonKind::Default)
                 };
+                // The row as wide as its labels in this language need (#192), ending where it
+                // ends in English.
+                let [later_at, start_at, cancel_at] = winui::button_row(
+                    &p,
+                    &[
+                        ("Download Later", 97.0, 109.0),
+                        ("Start Download", 225.0, 109.0),
+                        ("Cancel", 352.0, 109.0),
+                    ],
+                    19.0,
+                    11.0,
+                    200.0,
+                )[..] else {
+                    unreachable!("three buttons")
+                };
                 let later = winui::button(
                     ui,
-                    r(o, 97.0, 206.0 + dy, 109.0, 21.0),
+                    r(o, later_at.0, 206.0 + dy, later_at.1, 21.0),
                     "Download Later",
                     later_kind,
                     false,
@@ -1195,7 +1238,7 @@ impl FileInfo {
                 let later = winui::why_disabled(later, blocked.is_some(), blocked.unwrap_or(""));
                 let start = winui::button(
                     ui,
-                    r(o, 225.0, 206.0 + dy, 109.0, 21.0),
+                    r(o, start_at.0, 206.0 + dy, start_at.1, 21.0),
                     "Start Download",
                     start_kind,
                     true,
@@ -1204,14 +1247,14 @@ impl FileInfo {
                 let start = winui::why_disabled(start, blocked.is_some(), blocked.unwrap_or(""));
                 let cancel = winui::button(
                     ui,
-                    r(o, 352.0, 206.0 + dy, 109.0, 21.0),
+                    r(o, cancel_at.0, 206.0 + dy, cancel_at.1, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,
                     Some(0),
                 );
 
-                // Right column, centred on x ≈ 516: file icon, size, Preview.
+                // Right column, centred on x ≈ 516 (+ cx): file icon, size, Preview.
                 // The shell's own 32 px icon for this file type, as IDM shows.
                 let ext = Path::new(&self.save_as)
                     .extension()
@@ -1220,7 +1263,7 @@ impl FileInfo {
                 icons.paint(
                     ui,
                     crate::chrome::IconKey::ExtLarge(ext),
-                    o + vec2(500.0, 45.0),
+                    o + vec2(500.0 + cx, 45.0),
                 );
                 let (size, reason) = match &self.info {
                     None => ("...".to_owned(), None),
@@ -1234,14 +1277,24 @@ impl FileInfo {
                     Some(Err(e)) => (crate::i18n::t("Error").to_owned(), Some(e.clone())),
                 };
                 let w = winui::text_width(&p, &size);
-                let at = winui::text(&p, o.x + 515.0 - w / 2.0, o.y + 103.0, &size, winui::TEXT());
+                let at = winui::text(
+                    &p,
+                    o.x + 515.0 + cx - w / 2.0,
+                    o.y + 103.0,
+                    &size,
+                    winui::TEXT(),
+                );
                 // Why the address didn't answer (not found, sign-in needed…): on hover, copyable.
                 if let Some(reason) = reason {
                     winui::copyable(ui, at, "file-info-error", &reason, true);
                 }
+                // As wide as its label in this language (#192), around the column's centre, from
+                // 8 px after the group box (it ends at 462) to the window's edge.
+                let (px, pw) =
+                    winui::button_around(&p, "Preview", 480.0 + cx, 73.0, 470.0, 562.0 + wide);
                 winui::button(
                     ui,
-                    r(o, 480.0, 128.0, 73.0, 21.0),
+                    r(o, px, 128.0, pw, 21.0),
                     // i18n: verb: open the part already downloaded
                     "Preview",
                     ButtonKind::Disabled,
@@ -1415,15 +1468,31 @@ impl Complete {
                     "complete-saved",
                 );
 
-                let btn = |ui: &mut Ui, x: f32, label: &str, kind| {
-                    winui::button(ui, r(o, x, 157.0, 90.0, 21.0), label, kind, false, None)
+                let btn = |ui: &mut Ui, (x, w): (f32, f32), label: &str, kind| {
+                    winui::button(ui, r(o, x, 157.0, w, 21.0), label, kind, false, None)
+                };
+                // As wide as their labels in this language (#192): a longer one pushes those
+                // after it right, Close last at the window's edge.
+                let [open_at, with_at, folder_at, close_at] = winui::button_row_from_left(
+                    &p,
+                    &[
+                        ("Open", 12.0, 90.0),
+                        ("Open with...", 115.0, 90.0),
+                        ("Open folder", 219.0, 90.0),
+                        ("Close", 354.0, 90.0),
+                    ],
+                    13.0,
+                    444.0,
+                    200.0,
+                )[..] else {
+                    unreachable!("four buttons")
                 };
                 // i18n: verb: opens the downloaded file
-                let open = btn(ui, 12.0, "Open", ButtonKind::Default);
-                let with = btn(ui, 115.0, "Open with...", ButtonKind::Normal);
-                let folder = btn(ui, 219.0, "Open folder", ButtonKind::Normal);
+                let open = btn(ui, open_at, "Open", ButtonKind::Default);
+                let with = btn(ui, with_at, "Open with...", ButtonKind::Normal);
+                let folder = btn(ui, folder_at, "Open folder", ButtonKind::Normal);
                 // i18n: verb: closes this window
-                let close = btn(ui, 354.0, "Close", ButtonKind::Normal);
+                let close = btn(ui, close_at, "Close", ButtonKind::Normal);
                 winui::checkbox(
                     ui,
                     o + vec2(24.0, 191.0),
@@ -1870,9 +1939,20 @@ impl TurnOffCountdown {
                     )],
                 );
                 winui::text(&p, o.x + 11.0, o.y + 34.0, &line, black);
+                // As wide as their labels in this language (#192): a longer one pushes Cancel
+                // right.
+                let [now_at, cancel_at] = winui::button_row_from_left(
+                    &p,
+                    &[("Turn off now", 94.0, 90.0), ("Cancel", 194.0, 73.0)],
+                    10.0,
+                    363.0,
+                    200.0,
+                )[..] else {
+                    unreachable!("two buttons")
+                };
                 let now = winui::button_light(
                     ui,
-                    r(o, 94.0, 63.0, 90.0, 21.0),
+                    r(o, now_at.0, 63.0, now_at.1, 21.0),
                     "Turn off now",
                     ButtonKind::Normal,
                     false,
@@ -1880,7 +1960,7 @@ impl TurnOffCountdown {
                 .clicked();
                 let cancel = winui::button_light(
                     ui,
-                    r(o, 194.0, 63.0, 73.0, 21.0),
+                    r(o, cancel_at.0, 63.0, cancel_at.1, 21.0),
                     "Cancel",
                     ButtonKind::Default,
                     false,
@@ -2143,7 +2223,9 @@ pub fn told() -> Vec<(&'static str, String)> {
 }
 
 /// Open a downloaded file with its program, or say why not (moved or deleted since, no
-/// program for it): it did nothing at all. True when it was handed to the system.
+/// program for it): it did nothing at all. True when it was handed to the system. Waited for
+/// (the `open` crate's launcher, at most 250 ms each on Windows and Linux), unlike
+/// crate::launch's: whether it failed decides whether Download complete stays open.
 pub fn open_file(path: &Path) -> bool {
     let name = crate::i18n::isolate(&path.file_name().unwrap_or_default().to_string_lossy());
     let failed = if !path.exists() {
@@ -2172,7 +2254,7 @@ pub fn show_in_folder(path: &Path) {
         use std::os::windows::process::CommandExt;
         if !path.exists() {
             if let Some(dir) = path.parent().filter(|d| d.is_dir()) {
-                let _ = open::that_detached(dir);
+                crate::launch::open(dir);
             }
             return;
         }
@@ -2199,7 +2281,7 @@ pub fn open_with(path: &Path) {
     }
     #[cfg(not(windows))]
     {
-        let _ = open::that_detached(path);
+        crate::launch::open(path);
     }
 }
 
@@ -2494,10 +2576,20 @@ impl DeleteCategory {
                 {
                     self.remove = true;
                 }
+                // As wide as their labels in this language (#192).
+                let [delete_at, cancel_at] = winui::buttons_to_right(
+                    &p,
+                    488.0,
+                    8.0,
+                    &[("Delete", 73.0), ("Cancel", 73.0)],
+                    140.0,
+                )[..] else {
+                    unreachable!("two buttons")
+                };
                 // i18n: button: deletes the category
                 let delete = winui::button_light(
                     ui,
-                    r(o, 334.0, 118.0, 73.0, 21.0),
+                    r(o, delete_at.0, 118.0, delete_at.1, 21.0),
                     "Delete",
                     ButtonKind::Default,
                     false,
@@ -2505,7 +2597,7 @@ impl DeleteCategory {
                 .clicked();
                 let cancel = winui::button_light(
                     ui,
-                    r(o, 415.0, 118.0, 73.0, 21.0),
+                    r(o, cancel_at.0, 118.0, cancel_at.1, 21.0),
                     "Cancel",
                     ButtonKind::Normal,
                     false,

@@ -27,6 +27,8 @@ tracing.workspace = true
 
 [dev-dependencies]
 reqwest = { workspace = true, features = ["json"] }
+# Paused time for the idle-connection test (tls.rs).
+tokio = { workspace = true, features = ["test-util"] }
 tempfile.workspace = true
 
 [lints]

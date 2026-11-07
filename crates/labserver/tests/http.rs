@@ -137,6 +137,53 @@ async fn drop_after() {
 }
 
 #[tokio::test]
+async fn a_refusal_shows_how_far_the_slots_responses_were_sent() {
+    // #224: the engine's test tells a reconnect the server refused because it still counted the
+    // response it replaces (sent up to where another connection's part begins) from a
+    // connection too many.
+    let s = server("max_conns=2&rate=200K").await;
+    let c = reqwest::Client::new();
+    let mut first = c
+        .get(s.url("/gen/1M"))
+        .header("range", "bytes=4096-")
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(first.status(), 206);
+    let mut got = 0;
+    while got < 20_000 {
+        got += first.chunk().await.unwrap().unwrap().len() as u64;
+    }
+    let ip = "127.0.0.1".parse().unwrap();
+    let hold = s.hold_slot(ip);
+    let refused = c.get(s.url("/gen/1M")).send().await.unwrap();
+    assert_eq!(refused.status(), 503);
+    drop(hold);
+    drop(first);
+    let log = wait_log(&s, 2).await;
+    let r = log.iter().find(|e| e.outcome == "fault:max_conns").unwrap();
+    assert_eq!(r.held.len(), 2, "{:?}", r.held);
+    let response = r
+        .held
+        .iter()
+        .find(|h| h.from == 4096)
+        .expect("the response");
+    assert!(
+        (4096 + got..=1 << 20).contains(&response.sent_to),
+        "{response:?}, {got} bytes received"
+    );
+    assert!(
+        r.held.contains(&mdm_labserver::Held::default()),
+        "the test's slot"
+    );
+    // Other entries have none.
+    assert!(
+        log.iter()
+            .all(|e| e.outcome == "fault:max_conns" || e.held.is_empty())
+    );
+}
+
+#[tokio::test]
 async fn max_conns_and_fail_every() {
     let s = server("max_conns=1&rate=20K").await;
     let c = reqwest::Client::new();

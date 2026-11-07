@@ -99,10 +99,24 @@ pub struct LogEntry {
     pub outcome: String,
     pub rate: Option<u64>,
     pub drop_at: Option<u64>,
+    /// For a `fault:max_conns` refusal: the client's slots as the server counted them then.
+    /// The server only sees that a client dropped a response when it next writes to it, so a
+    /// response the client is done with can still hold a slot (#224).
+    #[serde(default)]
+    pub held: Vec<Held>,
     /// Counts the request as in flight until its entry is logged ([`LabServer::settled`]).
     #[serde(skip)]
     #[doc(hidden)]
     pub in_flight: InFlight,
+}
+
+/// One of a client's `max_conns` slots at a refusal ([`LogEntry::held`]): the response holding
+/// it began at file offset `from` and had been sent up to `sent_to` (exclusive). A slot held by a
+/// test ([`LabServer::hold_slot`]), or a response not begun yet, shows as `0..0`.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Held {
+    pub from: u64,
+    pub sent_to: u64,
 }
 
 /// A request begun and not logged yet: one of the server's in-flight count while it lives (a
@@ -187,7 +201,8 @@ pub(crate) struct Shared {
     /// Requests each signed link with `uses` has served (path and query).
     link_uses: Mutex<HashMap<String, u64>>,
     conn_reqs: Mutex<HashMap<SocketAddr, u64>>,
-    active: Mutex<HashMap<IpAddr, u32>>,
+    /// Each client's `max_conns` slots in use.
+    active: Mutex<HashMap<IpAddr, Vec<Arc<SlotUse>>>>,
     log: Mutex<Vec<LogEntry>>,
     on_log: Option<LogSink>,
     /// The fake Drive's virus-scan pages' `uuid`s handed out (`drive`).
@@ -263,6 +278,7 @@ impl Shared {
             outcome: String::new(),
             rate: None,
             drop_at: None,
+            held: Vec::new(),
             in_flight: InFlight(Some(self.pending.clone())),
         }
     }
@@ -464,12 +480,8 @@ impl LabServer {
     /// Take one of `ip`'s `max_conns` slots, as another client's response would, until the
     /// guard is dropped: a test holds a slot for exactly as long as it needs.
     pub fn hold_slot(&self, ip: IpAddr) -> SlotHold {
-        *self.shared.active.lock().unwrap().entry(ip).or_insert(0) += 1;
         SlotHold {
-            _slot: ActiveSlot {
-                shared: self.shared.clone(),
-                ip,
-            },
+            _slot: ActiveSlot::take(&self.shared, ip),
         }
     }
 
@@ -729,17 +741,58 @@ pub struct SlotHold {
     _slot: ActiveSlot,
 }
 
+/// What holds a slot: how far its response has been sent ([`Held`]).
+#[derive(Default)]
+struct SlotUse {
+    from: AtomicU64,
+    sent_to: AtomicU64,
+}
+
+impl SlotUse {
+    fn held(&self) -> Held {
+        Held {
+            from: self.from.load(Ordering::SeqCst),
+            sent_to: self.sent_to.load(Ordering::SeqCst),
+        }
+    }
+}
+
 /// Releases a client's concurrent-response slot (for `max_conns`) when dropped.
 struct ActiveSlot {
     shared: Arc<Shared>,
     ip: IpAddr,
+    used: Arc<SlotUse>,
+}
+
+impl ActiveSlot {
+    /// Take one of `ip`'s slots, however many it has.
+    fn take(shared: &Arc<Shared>, ip: IpAddr) -> Self {
+        let mut active = shared.active.lock().unwrap();
+        Self::take_locked(shared, active.entry(ip).or_default(), ip)
+    }
+
+    fn take_locked(shared: &Arc<Shared>, slots: &mut Vec<Arc<SlotUse>>, ip: IpAddr) -> Self {
+        let used = Arc::new(SlotUse::default());
+        slots.push(used.clone());
+        ActiveSlot {
+            shared: shared.clone(),
+            ip,
+            used,
+        }
+    }
+
+    /// The response holding the slot begins at file offset `at`.
+    fn begins(&self, at: u64) {
+        self.used.from.store(at, Ordering::SeqCst);
+        self.used.sent_to.store(at, Ordering::SeqCst);
+    }
 }
 
 impl Drop for ActiveSlot {
     fn drop(&mut self) {
         let mut active = self.shared.active.lock().unwrap();
-        if let Some(n) = active.get_mut(&self.ip) {
-            *n = n.saturating_sub(1);
+        if let Some(slots) = active.get_mut(&self.ip) {
+            slots.retain(|u| !Arc::ptr_eq(u, &self.used));
         }
     }
 }
@@ -1035,17 +1088,14 @@ pub(crate) async fn serve(
     }
     let slot = {
         let mut active = shared.active.lock().unwrap();
-        let cur = active.entry(entry.peer.ip()).or_insert(0);
-        if f.max_conns.is_some_and(|max| *cur >= max) {
+        let slots = active.entry(entry.peer.ip()).or_default();
+        if f.max_conns.is_some_and(|max| slots.len() >= max as usize) {
+            entry.held = slots.iter().map(|u| u.held()).collect();
             drop(active);
             shared.record(entry, 503, "fault:max_conns");
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         }
-        *cur += 1;
-        ActiveSlot {
-            shared: shared.clone(),
-            ip: entry.peer.ip(),
-        }
+        ActiveSlot::take_locked(&shared, slots, entry.peer.ip())
     };
     if f.once == Some(true) {
         let key = format!("{}?{query}", entry.path);
@@ -1146,6 +1196,7 @@ pub(crate) async fn serve(
     entry.rate = rate;
     entry.drop_at = drop_at;
     entry.status = status.as_u16();
+    slot.begins(start);
 
     let transfer = Transfer {
         shared: shared.clone(),
@@ -1338,6 +1389,9 @@ impl Transfer {
             content::fill(t.seed, t.pos, &mut buf);
             t.pos += n;
             t.sent += n;
+            if let Some(slot) = &t.slot {
+                slot.used.sent_to.store(t.pos, Ordering::SeqCst);
+            }
             Some((Ok(Bytes::from(buf)), t))
         })
     }

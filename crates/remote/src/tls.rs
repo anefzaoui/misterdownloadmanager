@@ -26,6 +26,9 @@ const RENEW_DAYS: i64 = 30;
 const MAX_CONNECTIONS: usize = 64;
 /// Time a client gets for the TLS handshake (or a plain HTTP request's head).
 const HANDSHAKE: Duration = Duration::from_secs(10);
+/// A connection that sends and receives nothing this long is closed, so connections held open
+/// doing nothing can't take every place (`MAX_CONNECTIONS`) from the devices using the page.
+const IDLE: Duration = Duration::from_secs(60);
 
 /// The certificate in use: the server's TLS settings and the fingerprint people compare.
 #[derive(Clone)]
@@ -137,9 +140,10 @@ fn make(names: &[String]) -> Result<(Vec<u8>, Vec<u8>), String> {
     Ok((cert.der().to_vec(), key.serialize_der()))
 }
 
-/// One accepted connection: TLS, and its place among the listener's `MAX_CONNECTIONS`.
+/// One accepted connection: TLS, closed once idle for [`IDLE`], and its place among the
+/// listener's `MAX_CONNECTIONS`.
 pub struct Conn {
-    io: TlsStream<TcpStream>,
+    io: Idle<TlsStream<TcpStream>>,
     _slot: OwnedSemaphorePermit,
 }
 
@@ -160,6 +164,80 @@ impl AsyncWrite for Conn {
         buf: &[u8],
     ) -> Poll<io::Result<usize>> {
         Pin::new(&mut self.io).poll_write(cx, buf)
+    }
+    fn poll_flush(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        Pin::new(&mut self.io).poll_flush(cx)
+    }
+    fn poll_shutdown(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        Pin::new(&mut self.io).poll_shutdown(cx)
+    }
+}
+
+/// `io`, which fails with `TimedOut` once nothing was read or written for `limit` while the
+/// server waits on it (hyper then closes the connection).
+pub struct Idle<T> {
+    io: T,
+    limit: Duration,
+    timer: Pin<Box<tokio::time::Sleep>>,
+}
+
+impl<T> Idle<T> {
+    pub fn new(io: T, limit: Duration) -> Idle<T> {
+        Idle {
+            io,
+            limit,
+            timer: Box::pin(tokio::time::sleep(limit)),
+        }
+    }
+
+    fn active(&mut self) {
+        let next = tokio::time::Instant::now() + self.limit;
+        self.timer.as_mut().reset(next);
+    }
+
+    /// Waiting on the other end: its time is up?
+    fn expired(&mut self, cx: &mut Context<'_>) -> bool {
+        self.timer.as_mut().poll(cx).is_ready()
+    }
+}
+
+fn idle_error() -> io::Error {
+    io::Error::new(io::ErrorKind::TimedOut, "the connection was idle too long")
+}
+
+impl<T: AsyncRead + Unpin> AsyncRead for Idle<T> {
+    fn poll_read(
+        mut self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut ReadBuf<'_>,
+    ) -> Poll<io::Result<()>> {
+        let this = &mut *self;
+        match Pin::new(&mut this.io).poll_read(cx, buf) {
+            Poll::Ready(r) => {
+                this.active();
+                Poll::Ready(r)
+            }
+            Poll::Pending if this.expired(cx) => Poll::Ready(Err(idle_error())),
+            Poll::Pending => Poll::Pending,
+        }
+    }
+}
+
+impl<T: AsyncWrite + Unpin> AsyncWrite for Idle<T> {
+    fn poll_write(
+        mut self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &[u8],
+    ) -> Poll<io::Result<usize>> {
+        let this = &mut *self;
+        match Pin::new(&mut this.io).poll_write(cx, buf) {
+            Poll::Ready(r) => {
+                this.active();
+                Poll::Ready(r)
+            }
+            Poll::Pending if this.expired(cx) => Poll::Ready(Err(idle_error())),
+            Poll::Pending => Poll::Pending,
+        }
     }
     fn poll_flush(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
         Pin::new(&mut self.io).poll_flush(cx)
@@ -225,6 +303,7 @@ impl Listener {
                     }
                     if let Ok(Ok(io)) = tokio::time::timeout(HANDSHAKE, acceptor.accept(tcp)).await
                     {
+                        let io = Idle::new(io, IDLE);
                         let _ = tx.send((Conn { io, _slot: slot }, peer)).await;
                     }
                 });
@@ -299,6 +378,26 @@ mod tests {
         assert_eq!(civil(0), (1970, 1, 1));
         assert_eq!(civil(19_723), (2024, 1, 1));
         assert_eq!(civil(20_398), (2025, 11, 6));
+    }
+
+    /// A connection quiet for the limit fails its read (the server closes it); one that keeps
+    /// talking doesn't.
+    #[tokio::test(start_paused = true)]
+    async fn an_idle_connection_is_closed() {
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        let limit = Duration::from_secs(60);
+        let (server, mut client) = tokio::io::duplex(64);
+        let mut server = Idle::new(server, limit);
+        let mut buf = [0u8; 8];
+        // Talking every 50 s: never idle for the limit.
+        for _ in 0..3 {
+            tokio::time::sleep(Duration::from_secs(50)).await;
+            client.write_all(b"x").await.unwrap();
+            assert_eq!(server.read(&mut buf).await.unwrap(), 1);
+        }
+        // Then nothing: the read fails once the limit has passed.
+        let err = server.read(&mut buf).await.unwrap_err();
+        assert_eq!(err.kind(), io::ErrorKind::TimedOut);
     }
 
     #[test]

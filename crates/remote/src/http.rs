@@ -256,7 +256,7 @@ async fn pair(
     ConnectInfo(peer): ConnectInfo<Peer>,
     axum::Json(b): axum::Json<PairBody>,
 ) -> Response {
-    let check = s.inner.pairing.lock().unwrap().check(&b.code);
+    let check = s.inner.pairing.lock().unwrap().check(&b.code, peer.0.ip());
     match check {
         Check::Right => {
             let (device, token) = s.inner.devices.lock().unwrap().add(&b.name);
