@@ -959,16 +959,20 @@ async function siteAccess(url) {
 // - `proxyLogin`: that proxy asked the browser for a login. The extension that set it answers
 //   with its own, which no other program can have: the app says so rather than going without.
 // Firefox tells each request's proxy (`proxyInfo`), what proxy extensions set per request
-// (`proxy.onRequest`) included; Chromium only the proxy settings.
+// (`proxy.onRequest`) included; Chromium has no such event, only its proxy settings
+// (`proxy.settings.get`: a fixed server per scheme with its bypass list, or a PAC script).
 const proxyLogins = new Set();
 const proxyUsed = new Map();
 const PAC_MAX = 256 * 1024;
 
-// Reading the browser's proxy is the user's choice: the optional "proxy" permission, asked for by
-// the popup's switch (Firefox). Chromium can't make "proxy" optional, so the extension there
-// doesn't have it yet, and none of this runs: downloads go as they did before #42, with no
-// permission call at all. `proxyAllowed` follows the permission as it is granted or removed.
+// Reading the browser's proxy is the user's choice, the popup's switch (off as installed):
+// - Firefox: the optional "proxy" permission, asked for by the switch and taken back by it.
+// - Chromium can't make "proxy" optional (chrome.permissions), so its manifest has it from the
+//   install, and the switch is the extension's own setting (`proxyOn` in storage.local). While it
+//   is off, nothing of the browser's proxy is read or sent.
+// `proxyAllowed` follows the permission or the setting as it changes.
 const PROXY_PERMISSION = { permissions: ["proxy"] };
+const PROXY_SWITCH = "proxyOn";
 const [PROXY_DECLARED, PROXY_REQUIRED] = (() => {
   try {
     const m = ext.runtime.getManifest();
@@ -978,11 +982,13 @@ const [PROXY_DECLARED, PROXY_REQUIRED] = (() => {
     return [false, false];
   }
 })();
-// A required permission is there from the start; an optional one once checked.
-let proxyAllowed = PROXY_REQUIRED;
+// Off until checked.
+let proxyAllowed = false;
 async function checkProxy() {
   try {
-    proxyAllowed = PROXY_DECLARED && Boolean(await ext.permissions.contains(PROXY_PERMISSION));
+    proxyAllowed = PROXY_REQUIRED
+      ? Boolean((await ext.storage.local.get({ [PROXY_SWITCH]: false }))[PROXY_SWITCH])
+      : PROXY_DECLARED && Boolean(await ext.permissions.contains(PROXY_PERMISSION));
   } catch {
     proxyAllowed = false;
   }
@@ -993,7 +999,11 @@ async function checkProxy() {
   }
 }
 const proxyChecked = PROXY_DECLARED ? checkProxy() : Promise.resolve();
-if (PROXY_DECLARED && ext.permissions && ext.permissions.onAdded) {
+if (PROXY_REQUIRED && ext.storage.onChanged) {
+  ext.storage.onChanged.addListener((changes, area) => {
+    if (area === "local" && PROXY_SWITCH in changes) checkProxy();
+  });
+} else if (PROXY_DECLARED && ext.permissions && ext.permissions.onAdded) {
   ext.permissions.onAdded.addListener(checkProxy);
   ext.permissions.onRemoved.addListener(checkProxy);
 }
@@ -1045,6 +1055,44 @@ function bypassed(pattern, u) {
   return host === bare;
 }
 
+// Chromium's bypass list (its proxy rules' `bypassList`) for `u`, as Chromium reads one: "<local>"
+// (a name without a dot), "[scheme://]host-pattern[:port]" with "*" anywhere (".example.com" is
+// "*.example.com"), an IPv4 range "10.0.0.0/8"; and, unless "<-loopback>" is listed, the names
+// Chromium never sends to a proxy (localhost, 127.x, ::1, link-local). IPv6 ranges aren't read
+// (the proxy is then used).
+function chromiumBypassed(list, u) {
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  const scheme = u.protocol.replace(/:$/, "");
+  const port = u.port || (scheme === "https" ? "443" : "80");
+  const v4 = /^\d{1,3}(\.\d{1,3}){3}$/.test(host) ? host.split(".").reduce((n, b) => n * 256 + Number(b), 0) : null;
+  const ip = v4 !== null || host.includes(":");
+  const rules = (list || []).map((r) => String(r).trim().toLowerCase()).filter(Boolean);
+  if (!rules.includes("<-loopback>")) {
+    if (host === "localhost" || host.endsWith(".localhost") || host === "::1" || (host.includes(":") && /^fe[89ab]/.test(host))) return true;
+    if (v4 !== null && (host.startsWith("127.") || host.startsWith("169.254."))) return true;
+  }
+  return rules.some((r) => {
+    if (r === "<-loopback>") return false;
+    if (r === "<local>") return !ip && !host.includes(".");
+    const range = /^(\d{1,3}(?:\.\d{1,3}){3})\/(\d{1,2})$/.exec(r);
+    if (range) {
+      if (v4 === null) return false;
+      const base = range[1].split(".").reduce((n, b) => n * 256 + Number(b), 0);
+      const bits = Number(range[2]);
+      const size = 2 ** (32 - Math.min(bits, 32));
+      return Math.floor(v4 / size) === Math.floor(base / size);
+    }
+    const m = /^(?:([a-z][a-z0-9+.-]*):\/\/)?(\[[^\]]+\]|[^:/]+)(?::(\d+))?\/?$/.exec(r);
+    if (!m || (m[1] && m[1] !== scheme) || (m[3] && m[3] !== port)) return false;
+    const pattern = m[2].replace(/^\[|\]$/g, "").replace(/^\./, "*.");
+    const glob = pattern.replace(/[.+?^$|\\()[\]{}]/g, "\\$&").replace(/\*/g, ".*");
+    return new RegExp("^" + glob + "$").test(host);
+  });
+}
+
+// The port Chromium takes for a proxy given without one.
+const chromiumPort = (scheme) => ({ https: 443, quic: 443, socks: 1080, socks4: 1080, socks5: 1080 })[String(scheme || "http").toLowerCase()] || 80;
+
 async function pacText(url) {
   try {
     const r = await withTimeout(fetch(url, { credentials: "omit" }), 10000);
@@ -1059,7 +1107,8 @@ async function pacText(url) {
 // What the app needs to download `url` through the browser's proxy: {} when it uses none (or
 // the system's, which the app reads itself), and {} unless the user switched it on (above).
 async function browserProxy(url, incognito) {
-  await proxyChecked;
+  // Chromium's switch is read again for each download: the popup may have just changed it.
+  await (PROXY_REQUIRED ? checkProxy() : proxyChecked);
   if (!proxyAllowed) return {};
   let u;
   try {
@@ -1083,17 +1132,23 @@ async function browserProxy(url, incognito) {
   } catch {
     return {};
   }
-  // Chromium: {mode, rules, pacScript}.
+  // Chromium: {mode, rules, pacScript}, the browser's effective proxy whoever set it (its
+  // levelOfControl): a VPN or proxy extension ("controlled_by_other_extensions", the case this
+  // is for), a policy or the command line ("not_controllable"), or nobody ({mode: "system"}).
+  // "direct", "system" and "auto_detect" send nothing: the app then goes by its own Options
+  // (which read the system's proxy). The proxy's login is never in it, on Chromium either.
   if (v.mode === "fixed_servers" && v.rules) {
     const r = v.rules;
-    if ((r.bypassList || []).some((b) => bypassed(b, u))) return {};
+    if (chromiumBypassed(r.bypassList, u)) return {};
     const s = r.singleProxy || (u.protocol === "https:" ? r.proxyForHttps : r.proxyForHttp) || r.fallbackProxy;
-    const proxy = s && proxyUrl(s.scheme, s.host, s.port || (s.scheme === "https" ? 443 : 80));
+    const port = s && (s.port || chromiumPort(s.scheme));
+    const proxy = s && proxyUrl(s.scheme, s.host, port);
     if (!proxy) return {};
-    return { proxy, ...(login(s.host, s.port) ? { proxyLogin: true } : {}) };
+    return { proxy, ...(login(s.host, port) ? { proxyLogin: true } : {}) };
   }
   if (v.mode === "pac_script" && v.pacScript) {
-    const text = v.pacScript.data || (v.pacScript.url ? await pacText(v.pacScript.url) : null);
+    const data = v.pacScript.data && v.pacScript.data.length <= PAC_MAX ? v.pacScript.data : null;
+    const text = data || (v.pacScript.url ? await pacText(v.pacScript.url) : null);
     return text ? { proxyPac: text } : {};
   }
   // Firefox: {proxyType, http, ssl, socks, socksVersion, proxyDNS, autoConfigUrl, passthrough}.

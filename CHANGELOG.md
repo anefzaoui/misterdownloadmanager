@@ -365,11 +365,13 @@ choose. And Linux, checked on a real desktop with every change.
   or auto-config script) with it. MDM downloads through the same proxy while **Options → Proxy /
   Socks → Use proxy/socks from a browser's request** is on, which is the default. A proxy that
   needs the VPN extension's own login can't be shared: the download says so rather than going
-  without it. In Firefox it is an opt-in: **Send downloads through this browser's proxy or VPN
-  extension** in the extension's popup asks for the browser's *proxy* permission (to read the
-  browser's proxy, never to change it), so the extension's update asks for no new permission.
-  Chrome and the other Chromium browsers can't make that permission optional, so their extension
-  doesn't hand the proxy over yet: set the same proxy in **Options → Proxy / Socks** there.
+  without it. It is an opt-in, off as installed: **Send downloads through this browser's proxy or
+  VPN extension** in the extension's popup. In Firefox the switch asks for the browser's *proxy*
+  permission (to read the browser's proxy, never to change it). Chrome, Edge, Brave, Opera and
+  Vivaldi can't make that permission optional, so their extension has it from the install; Chrome
+  counts it under the access to every site the extension already has, so the update asks for
+  nothing new. There the extension reads the browser's proxy settings: the server for the
+  download's scheme (honouring their bypass list), or their auto-config script.
 - **Zen, Helium and other browsers built on Firefox or Chromium** ([#41](https://github.com/anefzaoui/misterdownloadmanager/issues/41)):
   the extension reaches MDM in them, also when one is the only browser on Linux or macOS (Zen
   reads Firefox's folder, which MDM now creates; Helium its own). **Add Mister Download Manager

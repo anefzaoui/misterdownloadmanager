@@ -94,13 +94,27 @@ The extension's button shows whether the browser reaches MDM. A red **!** means 
 
 ## A VPN or proxy extension
 
-A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on **Send downloads
-through this browser's proxy or VPN extension** in the extension's toolbar popup: Firefox asks you
-once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from
-the browser through the same proxy (with **Options → Proxy / Socks → Use proxy/socks from a
-browser's request**, on by default; see [Options](options.md#proxy--socks)). Switch it off to take
-that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the
-same proxy in MDM's **Options → Proxy / Socks**.
+A VPN or proxy extension is a proxy for the browser only. Switch on **Send downloads through this
+browser's proxy or VPN extension** in the extension's toolbar popup (it's off as installed), and
+MDM downloads what it takes from the browser through the same proxy (with **Options → Proxy /
+Socks → Use proxy/socks from a browser's request**, on by default; see
+[Options](options.md#proxy--socks)). Switched off, the extension reads nothing of the browser's
+proxy.
+
+- **Firefox** asks you once, at the switch, to allow the extension to read the browser's proxy;
+  switching it off takes that permission back. MDM gets the proxy the browser's own request for
+  the file took, including the ones a VPN extension picks for each request.
+- **Chrome, Edge, Brave, Opera and Vivaldi** can't ask for that permission at the switch, so the
+  extension has it from the install (Chrome counts it under the access to every site the extension
+  already asks for, so it adds no line to the install prompt and the update asks for nothing new).
+  The switch asks nothing. MDM gets the browser's effective proxy, whoever set it (a VPN or proxy
+  extension, a policy, the command line): a fixed server for the download's scheme (`http`,
+  `https`, `socks4`, `socks5`), unless the address is on its bypass list, or its proxy auto-config
+  script (by its address or inline). With no proxy, or the system's, nothing is sent and MDM goes
+  by its own Options. A QUIC proxy can't be shared.
+
+In both, the proxy's login is never read: a proxy that asks for the VPN extension's own login
+can't be shared, and the download says so rather than going without it.
 
 ## Media on this page
 
