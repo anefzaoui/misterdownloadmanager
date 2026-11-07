@@ -528,6 +528,26 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Download File Info grows by what Preview's label needs (Russian, Ukrainian, Telugu, Belarusian
   and a few more), the Proxy page's title moves left to give Get System its room, and the
   Scheduler's drop-down widens towards its caption. English is unchanged.
+- **The window no longer freezes when the system's sleep or keychain service is slow**
+  (follows [#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): a queue set to
+  **Wake the computer to run this queue** asks the system to keep the computer awake while it
+  runs. On Linux that is logind, which can be slow to answer just after the computer wakes,
+  exactly when such a queue starts, and MDM waited for it on the window's own thread (asking
+  again every 5 seconds while it refused). It is now asked in the background, on every system;
+  the queue's downloads, retries and log lines are the same. A keyring that doesn't answer at
+  start (a stopped GNOME Keyring) is now waited for once, at most 5 seconds, instead of once per
+  saved password, and saving the list no longer asks it at all. On Linux the check for a tray to
+  hide windows in, and in Download File Info the check that **Save As** isn't a folder (slow on a
+  network share that doesn't answer), no longer run on the window's thread on every frame.
+- **Linux: Dark Mode support follows XFCE, MATE and other desktops too**
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156)): MDM followed the
+  desktop's light or dark setting only where the freedesktop portal answers (GNOME, KDE,
+  Cinnamon). Where it doesn't, as on XFCE, MDM stayed light under a dark theme. It now reads the
+  theme the desktop gives its programs (a name such as Adwaita-dark, Mint-Y-Dark or Greybird-dark
+  is dark), GNOME's own dark style setting when there is no portal, and GTK's settings with no
+  desktop at all, and it follows changes as they happen. The portal still comes first. A change
+  now shows at once too: the window waited for its next theme check, up to 20 s on a busy
+  machine, on every desktop.
 - **Open folder no longer freezes the window on Linux**
   ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
   **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited

@@ -91,6 +91,9 @@ tray-icon = { version = "0.26.1", default-features = false, features = ["ksni"] 
 # The desktop's light or dark preference from the freedesktop portal (unix.rs); already in the
 # tree through the tray (ksni) and AccessKit, with the same features.
 zbus = { version = "5.19.0", default-features = false, features = ["async-io", "blocking-api"] }
+# The settings daemon's theme name (XSETTINGS) when the portal can't say dark or light (unix.rs,
+# #156); already in the tree through winit. Its pure-Rust connection, no extension.
+x11rb = { version = "0.13.2", default-features = false }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 # Finder's file icons (unix.rs file_icon); already in the tree through winit and rfd.

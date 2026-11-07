@@ -199,13 +199,23 @@ impl Vault {
     }
 
     /// A reference read from the settings: its secret, or "" when it can't be read now (the
-    /// reference is then kept for the next save).
+    /// reference is then kept for the next save). The list is read before the window opens:
+    /// once the keychain didn't answer (none, or none within the Secret Service's 5 s), the
+    /// other references aren't asked this session, so MDM waits for it once, not once each.
     pub fn open(&self, stored: &str) -> String {
         let Some(target) = Target::parse(stored) else {
             tracing::warn!("sign-ins: a keychain reference that doesn't read");
             return String::new();
         };
-        match self.store.read(&target.service, &target.account) {
+        let outcome = if self.lock().kept == Some(Kept::Missing) {
+            Err(Fault::Missing)
+        } else {
+            self.store.read(&target.service, &target.account)
+        };
+        if outcome == Err(Fault::Missing) {
+            self.lock().kept.get_or_insert(Kept::Missing);
+        }
+        match outcome {
             Ok(Some(secret)) => {
                 let mut s = self.lock();
                 s.unread.remove(target.key());
@@ -550,7 +560,8 @@ thread_local! {
 
 /// Serialize settings made ready for the disk ([`crate::settings::Settings::for_disk`]): their
 /// secret fields already hold what is written (a reference or a sealed secret) and go as they
-/// are.
+/// are. Settings read inside it are read as the disk has them, the same way: nothing is opened
+/// nor asked of the keychain (a check that a list reads).
 pub fn prepared<R>(f: impl FnOnce() -> R) -> R {
     struct Reset;
     impl Drop for Reset {
@@ -598,6 +609,47 @@ pub struct Memory {
 impl Memory {
     fn check(&self) -> Result<(), Fault> {
         self.fault.lock().unwrap().clone().map_or(Ok(()), Err)
+    }
+}
+
+/// A keychain that takes `delay` to answer each call, and answers as `inner` does: one that
+/// hangs (a stopped gnome-keyring) until the Secret Service's timeout, for tests.
+#[cfg(test)]
+pub struct Slow {
+    pub inner: Arc<Memory>,
+    pub delay: std::time::Duration,
+    pub calls: std::sync::atomic::AtomicU32,
+}
+
+#[cfg(test)]
+impl Slow {
+    fn call(&self) {
+        self.calls.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+        std::thread::sleep(self.delay);
+    }
+}
+
+#[cfg(test)]
+impl Store for Arc<Slow> {
+    fn probe(&self, service: &str) -> Result<(), Fault> {
+        self.call();
+        self.inner.probe(service)
+    }
+    fn read(&self, service: &str, account: &str) -> Result<Option<String>, Fault> {
+        self.call();
+        self.inner.read(service, account)
+    }
+    fn write(&self, service: &str, account: &str, label: &str, secret: &str) -> Result<(), Fault> {
+        self.call();
+        self.inner.write(service, account, label, secret)
+    }
+    fn delete(&self, service: &str, account: &str) -> Result<(), Fault> {
+        self.call();
+        self.inner.delete(service, account)
+    }
+    fn list(&self, service: &str) -> Result<Vec<String>, Fault> {
+        self.call();
+        self.inner.list(service)
     }
 }
 
@@ -911,6 +963,83 @@ mod tests {
                 assert_eq!(read(&on_disk(&s)).proxy_pass, odd);
                 assert_eq!(read(&serde_json::to_string(&s).unwrap()).proxy_pass, odd);
             }
+        });
+    }
+
+    /// The keychain hangs at start (a stopped gnome-keyring: each call ends at the Secret
+    /// Service's timeout): the list's references wait for it once, not once each, and the
+    /// secrets come back once it answers again.
+    #[test]
+    fn a_keychain_that_doesnt_answer_is_waited_for_once() {
+        use std::sync::atomic::Ordering;
+        let mem = Arc::new(Memory::default());
+        let first = vault_on(&mem, "aaaa0011");
+        let saved = with_vault(&first, || {
+            let _ = on_disk(&sample());
+            first.run_once();
+            on_disk(&sample())
+        });
+        assert_eq!(saved.matches(REF).count(), 3);
+        *mem.fault.lock().unwrap() = Some(Fault::Missing);
+        let slow = Arc::new(Slow {
+            inner: mem.clone(),
+            delay: std::time::Duration::from_millis(400),
+            calls: Default::default(),
+        });
+        let next = Arc::new(Vault::new(
+            Box::new(slow.clone()),
+            "MDM-test-unit",
+            "aaaa0011",
+            true,
+            false,
+        ));
+        let start = std::time::Instant::now();
+        let loaded = with_vault(&next, || read(&saved));
+        let took = start.elapsed();
+        assert_eq!(slow.calls.load(Ordering::SeqCst), 1, "asked once");
+        assert!(took < std::time::Duration::from_millis(1000), "{took:?}");
+        assert!(loaded.proxy_pass.is_empty());
+        assert_eq!(next.kept(), Kept::Missing);
+        // Saved meanwhile: the references as they were, nothing asked of the keychain.
+        assert_eq!(with_vault(&next, || on_disk(&loaded)), saved);
+        next.run_once();
+        assert_eq!(slow.calls.load(Ordering::SeqCst), 1);
+        // The next start, with a keychain that answers: back.
+        *mem.fault.lock().unwrap() = None;
+        assert_eq!(
+            with_vault(&vault_on(&mem, "aaaa0011"), || read(&saved)),
+            sample()
+        );
+    }
+
+    /// Checking that the list on the disk reads (before a save keeps it as a generation) opens
+    /// none of its secrets: no keychain call on every save, nor on the window's last save.
+    #[test]
+    fn checking_a_list_asks_no_keychain() {
+        use std::sync::atomic::Ordering;
+        let mem = Arc::new(Memory::default());
+        let slow = Arc::new(Slow {
+            inner: mem.clone(),
+            delay: std::time::Duration::ZERO,
+            calls: Default::default(),
+        });
+        let v = Arc::new(Vault::new(
+            Box::new(slow.clone()),
+            "MDM-test-unit",
+            "aaaa0012",
+            true,
+            false,
+        ));
+        with_vault(&v, || {
+            let _ = on_disk(&sample());
+            v.run_once();
+            let saved = on_disk(&sample());
+            assert!(saved.contains(REF));
+            let before = slow.calls.load(Ordering::SeqCst);
+            let checked: Settings = prepared(|| serde_json::from_str(&saved).unwrap());
+            assert_eq!(slow.calls.load(Ordering::SeqCst), before);
+            // As on the disk: the references themselves.
+            assert!(checked.proxy_pass.starts_with(REF));
         });
     }
 
