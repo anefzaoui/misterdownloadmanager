@@ -316,7 +316,8 @@ fn run_register(host: &Path, limit: std::time::Duration) -> Result<String, Strin
 
 /// Where browser integration stands (Options → General → Test browser integration): the
 /// manifests in the folders the browsers here read (mdm_ipc::browsers), for this user, or for
-/// everyone when no browser is there for this user, and the helper each names.
+/// everyone when no browser is there for this user, and the helper each names. A browser that
+/// reads the package's manifest for everyone naming this helper (#266) needs none of its own.
 pub fn host_registration() -> crate::extension::Registration {
     let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
     let config = std::env::var_os("XDG_CONFIG_HOME")
@@ -324,15 +325,25 @@ pub fn host_registration() -> crate::extension::Registration {
         .filter(|p| p.is_absolute())
         .unwrap_or_else(|| home.join(".config"));
     let mac = cfg!(target_os = "macos");
-    let user = mdm_ipc::browsers::host_dirs(&home, &config, mac, false);
+    let host = registered_host();
+    let user = mdm_ipc::browsers::host_dirs(&home, &config, mac, false, host.as_deref());
     if user.is_empty() {
         registration_in(
-            mdm_ipc::browsers::host_dirs(&home, &config, mac, true),
+            mdm_ipc::browsers::host_dirs(&home, &config, mac, true, None),
             true,
         )
     } else {
         registration_in(user, false)
     }
+}
+
+/// The helper `register_browsers` registers, without copying anything: beside this program, or
+/// from an AppImage its copy in the data folder.
+fn registered_host() -> Option<PathBuf> {
+    if std::env::var_os("APPIMAGE").is_some_and(|i| !i.is_empty()) {
+        return mdm_ipc::data_dir().map(|d| d.join("browser-host").join(HOST));
+    }
+    std::env::current_exe().ok().map(|e| e.with_file_name(HOST))
 }
 
 /// `host_registration` for the host folders `dirs`, everyone's (`all_users`) or one user's.

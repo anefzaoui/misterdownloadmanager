@@ -8,6 +8,18 @@
 //! `brave_main_delegate.cc`, `chrome_paths_linux.cc` and `chromium_install_modes.h`); folders
 //! marked "unverified" in issue #41 come from other projects' installers and cost nothing when
 //! absent.
+//!
+//! Everyone's folders on Linux (`LINUX_SYSTEM_HOST_DIRS`), which the .deb and .rpm ship a manifest
+//! in (#266), each browser's documented one: Chrome's and Chromium's from Chrome's "Native
+//! messaging" guide (developer.chrome.com/docs/extensions/develop/concepts/native-messaging,
+//! "Native messaging host location") and `chrome_paths.cc` (`DIR_NATIVE_MESSAGING`: Chrome's
+//! branding reads `/etc/opt/chrome`, every other build `/etc/chromium`); Edge's from Microsoft's
+//! (learn.microsoft.com/microsoft-edge/extensions/developer-guide/native-messaging, Linux);
+//! Brave's from `brave_main_delegate.cc` (Linux: Chrome's, `/etc/opt/chrome`); Vivaldi, built
+//! without Chrome's branding, reads Chromium's (as Vivaldi's forum confirms); Firefox's from
+//! MDN's "Native manifests" (Linux, global: `/usr/lib/mozilla` or `/usr/lib64/mozilla`). Opera,
+//! Helium, Thorium and Firefox's forks document none: they keep their manifest in the home
+//! folder.
 
 use std::path::{Path, PathBuf};
 
@@ -36,6 +48,9 @@ pub struct Browser {
     pub linux_config: &'static [&'static str],
     /// Linux: Gecko data folders under $HOME (`.zen`).
     pub linux_home: &'static [&'static str],
+    /// Linux: the folders for everyone it reads host manifests from as well, after its user
+    /// folder (`LINUX_SYSTEM_HOST_DIRS`); none known for some.
+    pub linux_system: &'static [&'static str],
     /// macOS: the folder under ~/Library/Application Support whose `NativeMessagingHosts` a
     /// Chromium browser reads when it isn't its own data folder (Brave reads Chrome's).
     pub mac_hosts: Option<&'static str>,
@@ -56,6 +71,7 @@ const fn chromium(
         mac_data,
         linux_config,
         linux_home: &[],
+        linux_system: &[],
         mac_hosts: None,
     }
 }
@@ -66,7 +82,36 @@ impl Browser {
         self.mac_hosts = Some(folder);
         self
     }
+
+    /// On Linux it reads the manifests for everyone in `folders` too.
+    const fn linux_system_in(mut self, folders: &'static [&'static str]) -> Browser {
+        self.linux_system = folders;
+        self
+    }
 }
+
+/// Linux: Chrome's folder for everyone (Google's builds of Chrome, every channel; Brave).
+const ETC_CHROME: &str = "/etc/opt/chrome/native-messaging-hosts";
+/// Linux: Chromium's (every build without Chrome's branding that keeps Chromium's: Vivaldi).
+const ETC_CHROMIUM: &str = "/etc/chromium/native-messaging-hosts";
+/// Linux: Edge's.
+const ETC_EDGE: &str = "/etc/opt/edge/native-messaging-hosts";
+/// Linux: Firefox's, `lib64`'s on 64-bit Fedora and openSUSE (MDN, "Native manifests").
+const MOZILLA: [&str; 2] = [
+    "/usr/lib/mozilla/native-messaging-hosts",
+    "/usr/lib64/mozilla/native-messaging-hosts",
+];
+
+/// Linux: every folder for everyone a browser reads host manifests from, with the family whose
+/// manifest goes there: where the .deb and .rpm put theirs (`misterdownloadmanager-nmhost
+/// --package-manifests`), and `--register --all-users` too.
+pub const LINUX_SYSTEM_HOST_DIRS: &[(&str, Family)] = &[
+    (ETC_CHROME, Family::Chromium),
+    (ETC_CHROMIUM, Family::Chromium),
+    (ETC_EDGE, Family::Chromium),
+    (MOZILLA[0], Family::Gecko),
+    (MOZILLA[1], Family::Gecko),
+];
 
 const fn gecko(
     name: &'static str,
@@ -84,6 +129,7 @@ const fn gecko(
         mac_data,
         linux_config,
         linux_home,
+        linux_system: &[],
         mac_hosts: None,
     }
 }
@@ -118,14 +164,16 @@ pub const BROWSERS: &[Browser] = &[
             "google-chrome-unstable",
             "google-chrome-canary",
         ],
-    ),
+    )
+    .linux_system_in(&[ETC_CHROME]),
     chromium(
         "Chromium",
         &["Chromium.app"],
         &["chromium", "chromium-browser"],
         &["Chromium"],
         &["chromium"],
-    ),
+    )
+    .linux_system_in(&[ETC_CHROMIUM]),
     chromium(
         "Microsoft Edge",
         &[
@@ -151,7 +199,8 @@ pub const BROWSERS: &[Browser] = &[
             "microsoft-edge-beta",
             "microsoft-edge-dev",
         ],
-    ),
+    )
+    .linux_system_in(&[ETC_EDGE]),
     // Brave and Brave Origin (#253), each channel in its own folder (`-Beta`, `-Dev`, `-Nightly`),
     // all named "Brave" to the extension. On Linux each reads its own folder; on macOS all read
     // Chrome's (brave_main_delegate.cc); on Windows, Chromium's and Chrome's keys.
@@ -193,14 +242,16 @@ pub const BROWSERS: &[Browser] = &[
             "BraveSoftware/Brave-Origin-Nightly",
         ],
     )
-    .mac_hosts_in("Google/Chrome"),
+    .mac_hosts_in("Google/Chrome")
+    .linux_system_in(&[ETC_CHROME]),
     chromium(
         "Vivaldi",
         &["Vivaldi.app"],
         &["vivaldi", "vivaldi-stable", "vivaldi-snapshot"],
         &["Vivaldi"],
         &["vivaldi", "vivaldi-snapshot"],
-    ),
+    )
+    .linux_system_in(&[ETC_CHROMIUM]),
     // Opera's folders: unverified.
     chromium(
         "Opera",
@@ -234,9 +285,11 @@ pub const BROWSERS: &[Browser] = &[
         &["Mozilla", "Firefox"],
         &["mozilla"],
         // The Snap (Ubuntu's own Firefox) keeps its profile in its snap folder and never makes
-        // ~/.mozilla; it reaches the host through the desktop portal, which reads ~/.mozilla's.
+        // ~/.mozilla; it reaches the host through the desktop portal, which reads ~/.mozilla's,
+        // then Mozilla's folders for everyone (xdg-desktop-portal's WebExtensions portal).
         &[".mozilla", "snap/firefox/common/.mozilla"],
-    ),
+    )
+    .linux_system_in(&MOZILLA),
     gecko(
         "Zen Browser",
         &["Zen.app", "Zen Browser.app"],
@@ -325,6 +378,9 @@ pub fn windows_can_run_extension(program: &str) -> bool {
     !program.to_lowercase().ends_with("iexplore.exe")
 }
 
+/// The host manifest's file name, in every folder.
+pub const HOST_MANIFEST: &str = "com.misterdownloadmanager.host.json";
+
 /// Linux and macOS (`mac`): the folders to write the host manifest into, each with the family
 /// whose manifest goes there, for this user (`home`, `config` = $XDG_CONFIG_HOME) or for
 /// everyone. A user's folder is given only for a browser that is there.
@@ -334,42 +390,62 @@ pub fn windows_can_run_extension(program: &str) -> bool {
 /// NativeMessagingHosts`, even when they keep their data elsewhere (Firefox's newer
 /// `~/.config/mozilla`, Zen's `~/.zen`, the Snap's `~/snap/firefox`): it is given, to be created,
 /// when any of them is there.
-pub fn host_dirs(home: &Path, config: &Path, mac: bool, all_users: bool) -> Vec<(PathBuf, Family)> {
+///
+/// `host` (Linux, for one user): the helper being registered. A browser that already reads a
+/// manifest for everyone naming it (the .deb's or .rpm's, #266) gets no user folder: the package
+/// manager removes that one with the package, and nothing is left in the home folder. Mozilla's
+/// user folder is given while one Gecko browser there doesn't read such a manifest.
+pub fn host_dirs(
+    home: &Path,
+    config: &Path,
+    mac: bool,
+    all_users: bool,
+    host: Option<&Path>,
+) -> Vec<(PathBuf, Family)> {
+    host_dirs_in(Path::new("/"), home, config, mac, all_users, host)
+}
+
+/// `host_dirs`, with everyone's folders under `root` (`/`; a test's own folder).
+fn host_dirs_in(
+    root: &Path,
+    home: &Path,
+    config: &Path,
+    mac: bool,
+    all_users: bool,
+    host: Option<&Path>,
+) -> Vec<(PathBuf, Family)> {
+    let system = |d: &str| root.join(d.trim_start_matches('/'));
     let mut dirs: Vec<(PathBuf, Family)> = Vec::new();
     if all_users {
-        let (chromium, gecko): (&[&str], &[&str]) = if mac {
-            (
-                &[
+        if mac {
+            dirs.extend(
+                [
                     "/Library/Google/Chrome/NativeMessagingHosts",
                     "/Library/Application Support/Chromium/NativeMessagingHosts",
                     "/Library/Microsoft/Edge/NativeMessagingHosts",
-                ],
-                &["/Library/Application Support/Mozilla/NativeMessagingHosts"],
-            )
-        } else {
-            (
-                &[
-                    "/etc/opt/chrome/native-messaging-hosts",
-                    "/etc/chromium/native-messaging-hosts",
-                    "/etc/opt/edge/native-messaging-hosts",
-                ],
-                // Firefox reads lib64's on 64-bit Fedora and openSUSE (MDN, "Native manifests").
-                &[
-                    "/usr/lib/mozilla/native-messaging-hosts",
-                    "/usr/lib64/mozilla/native-messaging-hosts",
-                ],
-            )
-        };
-        dirs.extend(
-            chromium
+                ]
                 .iter()
-                .map(|d| (PathBuf::from(d), Family::Chromium)),
-        );
-        dirs.extend(gecko.iter().map(|d| (PathBuf::from(d), Family::Gecko)));
+                .map(|d| (system(d), Family::Chromium)),
+            );
+            dirs.push((
+                system("/Library/Application Support/Mozilla/NativeMessagingHosts"),
+                Family::Gecko,
+            ));
+        } else {
+            dirs.extend(LINUX_SYSTEM_HOST_DIRS.iter().map(|(d, f)| (system(d), *f)));
+        }
         // Everyone's: only where the browser's folder is.
         dirs.retain(|(d, _)| d.parent().is_some_and(Path::is_dir));
         return dirs;
     }
+    // A browser that reads a manifest for everyone naming this helper.
+    let covered = |b: &Browser| {
+        !mac && host.is_some_and(|host| {
+            b.linux_system
+                .iter()
+                .any(|d| names_program(&system(d).join(HOST_MANIFEST), host))
+        })
+    };
     let support = home.join("Library/Application Support");
     let data = |b: &Browser| -> Vec<PathBuf> {
         if mac {
@@ -390,20 +466,23 @@ pub fn host_dirs(home: &Path, config: &Path, mac: bool, all_users: bool) -> Vec<
     let mut gecko_there = false;
     for b in BROWSERS {
         let there: Vec<PathBuf> = data(b).into_iter().filter(|d| d.is_dir()).collect();
+        if there.is_empty() || covered(b) {
+            continue;
+        }
         match (b.family, b.mac_hosts.filter(|_| mac)) {
             // Brave on macOS: Chrome's folder, made if need be, whichever channel is there.
-            (Family::Chromium, Some(hosts)) if !there.is_empty() => {
+            (Family::Chromium, Some(hosts)) => {
                 push(
                     support.join(hosts).join("NativeMessagingHosts"),
                     Family::Chromium,
                 );
             }
-            (Family::Chromium, _) => {
+            (Family::Chromium, None) => {
                 for d in there {
                     push(d.join("NativeMessagingHosts"), Family::Chromium);
                 }
             }
-            (Family::Gecko, _) => gecko_there |= !there.is_empty(),
+            (Family::Gecko, _) => gecko_there = true,
         }
     }
     if gecko_there {
@@ -429,6 +508,36 @@ pub fn host_dirs(home: &Path, config: &Path, mac: bool, all_users: bool) -> Vec<
     dirs
 }
 
+/// Whether the host manifest at `manifest` starts `program` (the same file), and it runs.
+pub fn names_program(manifest: &Path, program: &Path) -> bool {
+    let Some(named) = manifest_program(manifest) else {
+        return false;
+    };
+    let same = match (
+        std::fs::canonicalize(&named),
+        std::fs::canonicalize(program),
+    ) {
+        (Ok(a), Ok(b)) => a == b,
+        _ => false,
+    };
+    same && runs(&named)
+}
+
+/// A program file that can be run.
+fn runs(path: &Path) -> bool {
+    let Ok(meta) = std::fs::metadata(path) else {
+        return false;
+    };
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        meta.is_file() && meta.permissions().mode() & 0o111 != 0
+    }
+    // Windows reads its manifests through the registry, not these folders.
+    #[cfg(not(unix))]
+    meta.is_file()
+}
+
 /// The program the host manifest at `manifest` starts (its `path`; a relative one, which
 /// Windows allows, is beside the manifest), when the manifest can be read.
 pub fn manifest_program(manifest: &Path) -> Option<PathBuf> {
@@ -449,7 +558,7 @@ mod tests {
     use super::*;
 
     fn user(home: &Path, mac: bool) -> Vec<(PathBuf, Family)> {
-        host_dirs(home, &home.join(".config"), mac, false)
+        host_dirs(home, &home.join(".config"), mac, false, None)
     }
 
     #[test]
@@ -699,6 +808,85 @@ mod tests {
                         b.name
                     );
                 }
+            }
+        }
+    }
+
+    /// #266: a browser that reads the package's manifest for everyone, naming this helper, gets
+    /// no user folder; a manifest naming another program, or one that doesn't run, doesn't count.
+    /// Mozilla's user folder stays while a fork that reads only it is there.
+    #[cfg(unix)]
+    #[test]
+    fn a_manifest_for_everyone_covers_its_browsers() {
+        use std::os::unix::fs::PermissionsExt;
+        let t = tempfile::tempdir().unwrap();
+        let (root, home) = (t.path().join("root"), t.path().join("home"));
+        for d in [
+            ".config/google-chrome",
+            ".config/BraveSoftware/Brave-Browser",
+            ".config/opera",
+            ".mozilla",
+        ] {
+            std::fs::create_dir_all(home.join(d)).unwrap();
+        }
+        let helper = root.join("usr/bin/misterdownloadmanager-nmhost");
+        std::fs::create_dir_all(helper.parent().unwrap()).unwrap();
+        std::fs::write(&helper, "#!/bin/sh\n").unwrap();
+        std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o755)).unwrap();
+        let system = |d: &str, program: &Path| {
+            let dir = root.join(d.trim_start_matches('/'));
+            std::fs::create_dir_all(&dir).unwrap();
+            let json = serde_json::json!({ "name": "x", "path": program, "type": "stdio" });
+            std::fs::write(dir.join(HOST_MANIFEST), json.to_string()).unwrap();
+        };
+        let dirs = |host: Option<&Path>| -> Vec<PathBuf> {
+            host_dirs_in(&root, &home, &home.join(".config"), false, false, host)
+                .into_iter()
+                .map(|(d, _)| d.strip_prefix(&home).unwrap().to_owned())
+                .collect()
+        };
+        let all = |names: &[&str]| -> Vec<PathBuf> { names.iter().map(PathBuf::from).collect() };
+        let chrome = ".config/google-chrome/NativeMessagingHosts";
+        let brave = ".config/BraveSoftware/Brave-Browser/NativeMessagingHosts";
+        let opera = ".config/opera/NativeMessagingHosts";
+        let mozilla = ".mozilla/native-messaging-hosts";
+        assert_eq!(dirs(Some(&helper)), all(&[chrome, brave, opera, mozilla]));
+
+        // Chrome's for everyone: Chrome and Brave read it, Opera doesn't.
+        system(ETC_CHROME, &helper);
+        assert_eq!(dirs(Some(&helper)), all(&[opera, mozilla]));
+        // Unregistering (no helper given) still sees every user folder.
+        assert_eq!(dirs(None), all(&[chrome, brave, opera, mozilla]));
+        // Firefox's, in lib64 (Fedora's).
+        system(MOZILLA[1], &helper);
+        assert_eq!(dirs(Some(&helper)), all(&[opera]));
+        // Zen reads only Mozilla's user folder: it stays.
+        std::fs::create_dir_all(home.join(".zen")).unwrap();
+        assert_eq!(dirs(Some(&helper)), all(&[opera, mozilla]));
+        std::fs::remove_dir(home.join(".zen")).unwrap();
+
+        // Another helper (an AppImage's copy) isn't covered by the package's.
+        let other = t.path().join("copy/misterdownloadmanager-nmhost");
+        std::fs::create_dir_all(other.parent().unwrap()).unwrap();
+        std::fs::copy(&helper, &other).unwrap();
+        assert_eq!(dirs(Some(&other)), all(&[chrome, brave, opera, mozilla]));
+        // A manifest naming a helper that can't run covers nothing.
+        std::fs::set_permissions(&helper, std::fs::Permissions::from_mode(0o644)).unwrap();
+        assert_eq!(dirs(Some(&helper)), all(&[chrome, brave, opera, mozilla]));
+    }
+
+    /// The folders for everyone each browser reads are in the list the packages ship.
+    #[test]
+    fn every_browsers_system_folder_is_shipped() {
+        for b in BROWSERS {
+            for d in b.linux_system {
+                assert!(
+                    LINUX_SYSTEM_HOST_DIRS
+                        .iter()
+                        .any(|(x, f)| x == d && *f == b.family),
+                    "{} reads {d}",
+                    b.name
+                );
             }
         }
     }
