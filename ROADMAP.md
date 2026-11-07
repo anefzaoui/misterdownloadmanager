@@ -13,6 +13,16 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ The extension's popup shows **Open Mister Download Manager** whole: it was cut to "Open Mister
+  Do…" on Linux and in longer languages; Options moves below it when both don't fit on one line
+  (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- ✅ The crash report window's status line (such as "The symbols couldn't be fetched: …") stays
+  inside the window: cut with "…" at its margin and shown whole under the pointer; its title is
+  in MDM's language, and its title bar in MDM's light or dark (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- ✅ Control MDM from a phone or another computer on the local network: **Options → Remote**, off
+  by default; a paired device adds links, magnets and torrents, sees the list and pauses, starts
+  and removes downloads ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
 - ✅ Download File Info's Preview, Options → Proxy's Get System and the Scheduler's "when done"
   drop-down fit their translated text (Russian and others), after #212
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
@@ -320,8 +330,6 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Network
 
-- 📋 Control MDM from a phone or another computer on the local network, off by default
-  ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141))
 - 📋 Run MDM headless on a server (Docker, Unraid) and send it downloads from the browser
   ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
 

@@ -22,6 +22,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Control MDM from your phone** ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141)):
+  **Options → Remote**, off by default. A phone or another computer on the local network, paired
+  with a code (or a QR code) MDM shows, opens a page MDM serves over HTTPS: it adds links, magnet
+  links and `.torrent` files, shows the list with its progress, pauses, starts and removes
+  downloads, and starts and stops the queues, in the phone's language. Only paired devices are
+  answered, each removable in Options, and only on the computer's private network addresses.
+  [Guide](docs/remote-control.md).
+- The automation API's list also gives the queues, the categories and the free space; it starts
+  and stops a queue by name, and an added address can choose its category and queue.
 - **Cookies for video sites**
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): Options → Sites Logins
   can let yt-dlp read a browser's cookies on this computer (Firefox, Chrome, Edge, Brave, Opera,
@@ -529,6 +538,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **The extension's popup: Open Mister Download Manager shows whole**
+  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on Linux, whose fonts
+  are wider, and in longer languages, the button was cut to "Open Mister Do…". Each button is now
+  as wide as its text, and Options moves below it when both don't fit on one line.
+- **The crash report window's status line stays inside the window**
+  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): the line above the
+  check box ("The symbols couldn't be fetched: …", an issue's title, a translation) ran past the
+  window's right edge, or its left edge in Persian. It is now cut with "…" at the margin and shown
+  whole under the pointer. Its title ("Mister Download Manager crash report") is now in MDM's
+  language too; it was always in the system's. On Windows that also gives its title bar MDM's
+  light or dark again in every language: outside English it kept Windows' own mode.
 - **Three more controls fit their translated text**
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
   and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**

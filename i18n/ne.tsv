@@ -6015,3 +6015,272 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/सेकेन्ड
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent फाइल
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	थप्नुहोस्
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	थपियो।
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	थपियो। MDM ले टोरेन्ट पढिरहेको छ: यो एक क्षणमा सूचीमा सामेल हुन्छ।
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	ठेगाना वा म्याग्नेट लिङ्क
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	सबै
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	स्वचालित (फाइल प्रकार अनुसार)
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	प्रमाणपत्र (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	.torrent फाइल छान्नुहोस्
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	कोड
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	कोड:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	फाइल पनि मेटाउनुहोस्
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	यन्त्र
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	प्रत्येक स्थानीय नेटवर्क ठेगाना
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	यो यन्त्र बिर्सनुहोस्
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	यो यन्त्र बिर्सनुहोस्? यसलाई फेरि जडान गर्न नयाँ कोड चाहिन्छ।
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	जोडिएको यन्त्रबाट
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	यो सुरु हुन सकेन: {error}
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	अन्तिम पटक देखिएको
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	स्थानीय नेटवर्कमा रहेका फोन र कम्प्युटरहरूलाई MDM नियन्त्रण गर्न दिनुहोस्
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	यसमा सुन्नुहोस्:
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	MDM अहिले नेटवर्कमा पुग्न सकिँदैन: विकल्पहरू → रिमोटले किन भन्छ।
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM ले यो ठेगाना डाउनलोड गर्न सक्दैन।
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM ले यसलाई थप्न सकेन।
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM ले यो गर्न सकेन।
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM ले जवाफ दिँदैन। यो चलिरहेको छ र उही नेटवर्कमा छ भनी जाँच गर्नुहोस्।
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM ले जवाफ दिँदैन। फेरि प्रयास गर्दै...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM ले अहिले कुनै कोड देखाउँदैन। पहिले त्यहाँ यन्त्र जोड्नुहोस् क्लिक गर्नुहोस्।
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	थप
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	नयाँ कोड
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	यहाँ कुनै डाउनलोड छैन।
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	अहिले कुनै स्थानीय नेटवर्क छैन: कम्प्युटर एकमा सामेल हुँदा यो सुरु हुन्छ।
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	बन्द: नेटवर्कमा कुनै पनि कुराले MDM मा पुग्न सक्दैन।
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	कम्प्युटरमा, विकल्पहरू खोल्नुहोस्, त्यसपछि रिमोट, र यन्त्र जोड्नुहोस् क्लिक गर्नुहोस्। यसले देखाउने कोड प्रविष्ट गर्नुहोस्।
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	फोनमा, क्यामेराले यो कोड स्क्यान गर्नुहोस्, वा ठेगाना खोल्नुहोस् र कोड प्रविष्ट गर्नुहोस्।
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	चालु छ। फोनमा, यो ठेगाना खोल्नुहोस्:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	जोडिएका यन्त्रहरूले मात्र केही देख्न वा परिवर्तन गर्न सक्छन्। पहिलो पटक, फोनको ब्राउजरले MDM को आफ्नै प्रमाणपत्रको बारेमा चेतावनी दिन्छ: यसको फिंगरप्रिन्ट माथिको जस्तै हो।
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	जोड्नुहोस्
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	यन्त्र जोड्नुहोस्
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	यन्त्र जोड्नुहोस्...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager सँग जोडा बनाउनुहोस्
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	जोडा बनाइएको
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	जोडा बनाइएका यन्त्रहरू:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	पोर्ट {port} अर्को कार्यक्रमद्वारा प्रयोग भइरहेको छ: अर्को छान्नुहोस्।
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	पङ्क्तिबद्ध
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	रिमोट
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	रिमोट नियन्त्रण
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	सूचीबाट {name} हटाउने?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	अहिले सुरु गर्नुहोस्
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	तपाईंले ठीक क्लिक गर्दा परिवर्तनहरू लागू हुन्छन्।
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	यो कोड अब प्रयोग गर्न सकिँदैन।
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	यो कम्प्युटर मात्र (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	यो यन्त्रको नाम
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	यो फाइल टोरेन्ट हुनको लागि धेरै ठूलो छ।
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	यो टोरेन्ट फाइल होइन।
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	पहिले रिमोट नियन्त्रण अन गर्नुहोस्।
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	एक क्षण पर्खनुहोस्, त्यसपछि फेरि प्रयास गर्नुहोस्।
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue} मा पर्खनुहोस्
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	यन्त्रको लागि पर्खँदै। कोड {time} को लागि काम गर्छ।
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	कहिले
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	गलत कोड। MDM मा नयाँ कोड देखाउनुहोस् र फेरि प्रयास गर्नुहोस्।
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	गलत कोड। बाँकी प्रयासहरू: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} जोडा बनाइएको छ। यसले अब MDM नियन्त्रण गर्न सक्छ।
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size} को {done}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} खाली
