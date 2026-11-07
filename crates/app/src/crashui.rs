@@ -77,8 +77,11 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     };
     tracing::warn!("crash monitor: {} report", kind.word());
 
-    // The window speaks MDM's language and follows its theme.
+    // The window speaks MDM's language and follows its theme. The language first: the title
+    // below is translated before the window exists, and Windows' caption is found by it
+    // (`win32::caption_dark` in `update`).
     let settings = crate::store::load().settings;
+    crate::i18n::set_lang(settings.language.as_deref());
     let builder = crate::quiet(
         ViewportBuilder::default()
             .with_title(crate::i18n::t("Mister Download Manager crash report"))
@@ -109,7 +112,6 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     crate::renderer::run("misterdownloadmanager-crash", &plan, options, move |cc| {
         crate::theme::select(&crate::theme::startup_id(&settings.theme), &cc.egui_ctx);
         crate::theme::apply(&cc.egui_ctx);
-        crate::i18n::set_lang(settings.language.as_deref());
         crate::theme::language_fonts(&cc.egui_ctx);
         crate::theme::update(
             settings.dark_mode_support,

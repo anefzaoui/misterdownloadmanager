@@ -14,7 +14,8 @@ Everything below ships together, in one release, as version 0.3.0.
 ### Done
 
 - ✅ The crash report window's status line (such as "The symbols couldn't be fetched: …") stays
-  inside the window: cut with "…" at its margin and shown whole under the pointer (part of
+  inside the window: cut with "…" at its margin and shown whole under the pointer; its title is
+  in MDM's language, and its title bar in MDM's light or dark (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Download File Info's Preview, Options → Proxy's Get System and the Scheduler's "when done"
   drop-down fit their translated text (Russian and others), after #212
