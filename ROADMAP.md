@@ -13,6 +13,11 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Cookies for video sites: yt-dlp can read a browser's cookies on this computer (Firefox,
+  Chrome, Edge, Brave, Opera, Vivaldi, Chromium, Whale; Safari on macOS), so a pasted YouTube
+  link that asks to "confirm you're not a bot" works when you're signed in there; and the button
+  over videos now passes the page's cookies to the download as well as to the look-up
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))
 - ✅ Open folder in Download complete no longer freezes the window on Linux when the file
   manager is slow to answer or never does: MDM asks in the background and opens the folder after
   5 seconds without an answer; every other program a window starts (Set it up, the Trash, an

@@ -22,6 +22,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Cookies for video sites**
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): Options → Sites Logins
+  can let yt-dlp read a browser's cookies on this computer (Firefox, Chrome, Edge, Brave, Opera,
+  Vivaldi, Chromium, Whale; Safari on macOS), with a profile by name or folder, so a pasted link
+  to a video that needs you signed in (YouTube's "Sign in to confirm you're not a bot") works.
+  Off by default. When the browser's extension passes the page's own cookies, those are used
+  instead. When the browser's cookies can't be read (Chrome, Edge and Brave lock them on
+  Windows; a locked keyring on Linux), the Download video window says so in plain words.
 - **Sign-ins in the system's keychain**
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): debrid accounts, Sites
   Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the
@@ -510,6 +518,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A video that needs a sign-in downloads from the button over it**
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): the button's cookies
+  reached the Download video window's look-up but not the download's own, which then failed with
+  "Sign in to confirm you're not a bot".
 - **Open folder no longer freezes the window on Linux**
   ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
   **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited

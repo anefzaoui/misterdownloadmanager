@@ -43,7 +43,10 @@ param(
   # ("theme:metro+@main").
   [string[]]$Show = @(),
   # Beside each picture, <name>.ui.json: its controls' names and places (ui-rects.ps1).
-  [switch]$Ui
+  [switch]$Ui,
+  # More settings for the run, as JSON members added to downloads.json's settings
+  # ('"video_cookies":"firefox"': Options, Sites Logins, with a browser chosen).
+  [string]$Settings = ""
 )
 $ErrorActionPreference = "Stop"
 # With -Show, its list instead of the built-in one (unless -Only names some of those too). From
@@ -166,7 +169,7 @@ try {
     ',"language_asked":true,"helpers_asked":true,"extension_never_ask":true,"dark_mode_support":' + $dark.ToString().ToLower() +
     ',"always_dark":' + $dark.ToString().ToLower() +
     ',"update_check":false,"torrent_incoming":false,"torrent_upnp":false,"torrent_dht":false,"torrent_lsd":false,"torrent_stop_idle":true' +
-    ',"category_dirs":[' + ($dirs -join ",") + ']}}')
+    ',"category_dirs":[' + ($dirs -join ",") + ']' + $(if ($Settings) { ",$Settings" } else { "" }) + '}}')
 
   $srv = Start-Process -PassThru -WindowStyle Hidden $Server -ArgumentList "--bind 127.0.0.1:$Port"
   $base = if ($Port -eq 80) { "http://$UrlHost" } else { "http://${UrlHost}:$Port" }
