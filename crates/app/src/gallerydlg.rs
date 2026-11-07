@@ -186,8 +186,13 @@ impl GalleryDialog {
                     "Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.",
                 )
             };
-            if can_install {
-                status_right = 390.0;
+            // The Install button, as wide as its label in this language (#192), and the line
+            // up to 9 px before it.
+            let install_at = can_install.then(|| {
+                winui::buttons_to_right(&p, 489.0, 8.0, &[("Install gallery-dl", 90.0)], 200.0)[0]
+            });
+            if let Some((x, _)) = install_at {
+                status_right = x - 9.0;
             }
             let rc = winui::fit(
                 ui,
@@ -200,10 +205,10 @@ impl GalleryDialog {
                 "gallery-offer",
             );
             winui::readable(ui, rc, "gallery-status", msg);
-            if can_install
+            if let Some((x, w)) = install_at
                 && winui::button(
                     ui,
-                    r(o, 399.0, 57.0, 90.0, 21.0),
+                    r(o, x, 57.0, w, 21.0),
                     // i18n: button: download and install the gallery-dl program
                     "Install gallery-dl",
                     ButtonKind::Normal,
@@ -340,9 +345,27 @@ impl GalleryDialog {
             "gallery-limit-hint",
         );
 
+        // The bottom row, each button as wide as its label in this language (#192): Helpers at the
+        // left, as wide as the room before Download Now allows.
+        let [now_at, later_at, cancel_at] = winui::buttons_to_right(
+            &p,
+            489.0,
+            8.0,
+            &[("Download Now", 105.0), ("Later", 73.0), ("Cancel", 73.0)],
+            160.0,
+        )[..] else {
+            unreachable!("three buttons")
+        };
+        let helpers_at = winui::buttons_from_left(
+            &p,
+            11.0,
+            8.0,
+            &[("Helpers...", 90.0)],
+            now_at.0 - 8.0 - 11.0,
+        )[0];
         if winui::button(
             ui,
-            r(o, 11.0, 182.0, 90.0, 21.0),
+            r(o, helpers_at.0, 182.0, helpers_at.1, 21.0),
             "Helpers...",
             ButtonKind::Normal,
             false,
@@ -361,7 +384,7 @@ impl GalleryDialog {
         };
         let now = winui::button(
             ui,
-            r(o, 222.0, 182.0, 105.0, 21.0),
+            r(o, now_at.0, 182.0, now_at.1, 21.0),
             "Download Now",
             kind(true),
             false,
@@ -371,7 +394,7 @@ impl GalleryDialog {
             || (ready && winui::enter_pressed(ui));
         let later = winui::button(
             ui,
-            r(o, 335.0, 182.0, 73.0, 21.0),
+            r(o, later_at.0, 182.0, later_at.1, 21.0),
             "Later",
             kind(false),
             false,
@@ -380,7 +403,7 @@ impl GalleryDialog {
         .clicked();
         let cancel = winui::button(
             ui,
-            r(o, 416.0, 182.0, 73.0, 21.0),
+            r(o, cancel_at.0, 182.0, cancel_at.1, 21.0),
             "Cancel",
             ButtonKind::Normal,
             false,

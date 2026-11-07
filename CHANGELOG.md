@@ -515,6 +515,24 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   ask first), putting an update in place (**Installing the update...**, with Cancel greyed while
   it runs), opening pages and folders, reading the icon theme on Linux and, on a Mac, the accent
   colour (every 2 seconds with the Native theme) and the system's version for a bug report.
+- **The crash report window in other languages**
+  ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204)): in any language but
+  English, the report in its box ran together on a few long lines, as its line breaks were taken
+  for a translation's and flowed again. The report now keeps its own lines in every language, and
+  in Arabic and Persian it reads left to right, from the box's left edge, as the English data it
+  is (the window around it stays right to left). The release notes in **Check for updates** keep
+  their lines the same way. **End and restart MDM** showed cut in German, French, Russian and
+  Arabic: the buttons are now as wide as their text, the others giving back room they don't need.
+- **Buttons fit their text in every language, in every window**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192)): many windows gave
+  their buttons a width made for English, so a longer translation was cut with "..." (German
+  **Später herunterla...** in Download File Info, **Hilfsprogramme...** in Download a gallery,
+  Russian **Открыть с помощью...** in Download complete, French **Nouvelle file d’attente** in the
+  Scheduler). Each button is now as wide as its translated text, and the buttons beside it move
+  along with the same gaps, the row keeping its end; a box or caption beside a widened button
+  ends before it. Where a window has no room left, the buttons wider than their text give some
+  back first. English is unchanged, and in Arabic and the other right-to-left languages the
+  buttons widen the mirrored way.
 - **Help opens the website's help pages, in your language**
   ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227)): **Help contents**,
   **Tutorials**, **Scheduler and queues**, **Video downloads**, the **Help** buttons of Options and

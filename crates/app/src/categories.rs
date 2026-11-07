@@ -121,16 +121,19 @@ impl CategoryDialog {
                     "category-types-hint",
                 );
                 label(112.0, crate::i18n::mark("Folder:"));
+                // Browse as wide as its label in this language (#192); the box ends 8 px before.
+                let (browse_x, browse_w) =
+                    winui::buttons_to_right(&p, 408.0, 8.0, &[("Browse...", 73.0)], 160.0)[0];
                 winui::edit_light(
                     ui,
-                    r(o, 98.0, 98.0, 229.0, 23.0),
+                    r(o, 98.0, 98.0, browse_x - 8.0 - 98.0, 23.0),
                     &mut self.folder,
                     true,
                     false,
                 );
                 if winui::button_light(
                     ui,
-                    r(o, 335.0, 99.0, 73.0, 21.0),
+                    r(o, browse_x, 99.0, browse_w, 21.0),
                     "Browse...",
                     ButtonKind::Normal,
                     false,

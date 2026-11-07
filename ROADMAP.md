@@ -18,6 +18,14 @@ Everything below ships together, in one release, as version 0.3.0.
   5 seconds without an answer; every other program a window starts (Set it up, the Trash, an
   update being put in place, pages and folders) no longer holds the window either
   ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222))
+- ✅ The crash report window in every language: the report keeps its lines (German and Arabic
+  ran them together) and reads left to right in Arabic and Persian; **End and restart MDM** fits
+  its text ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204))
+- ✅ Every window's buttons fit their text in every language: Download File Info (German
+  **Später herunterladen** was cut), Download complete, Add torrent, Download a gallery, the
+  progress window, the Scheduler, Options, the Help menu's windows, RSS feeds, the video helpers
+  and the browser window; English is unchanged, right to left too
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
 - ✅ Linux builds and window shots in minutes: a WSL2 machine builds any branch in about 5
   minutes (under one after a change) and shoots every window in any language in about a second
   each, never showing on the screen; the Linux desktops still check what needs them (part of
