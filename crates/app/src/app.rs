@@ -1666,6 +1666,16 @@ impl App {
             "find" => self.run(Cmd::Find, None, ctx),
             "scheduler" => self.run(Cmd::Scheduler, None, ctx),
             "about" => self.run(Cmd::About, None, ctx),
+            // Update now's end-to-end tests (feature `test-update`, never in a release): Check
+            // for updates against MDM_UPDATE_FEED, then Update now pressed.
+            #[cfg(feature = "test-update")]
+            "updates" => self.run(Cmd::CheckUpdates, None, ctx),
+            #[cfg(feature = "test-update")]
+            "update-now" => {
+                if let Some(u) = &mut self.updates {
+                    u.press_update_now();
+                }
+            }
             // The main window into the tray, as closing it does (tests and #72's measurements).
             "tray" => self.hide_to_tray(ctx),
             // The main window minimized, not to the tray (tests of #162).

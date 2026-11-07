@@ -119,6 +119,14 @@ impl Job {
 /// Put `file` (checked) in place of this `install`. Long (unpacking, copying, programs waited
 /// for): never on the window's thread ([`Job`] runs it).
 fn apply(install: Install, file: &Path) -> Result<Next, String> {
+    // Tests only (feature `test-update`): "Installing the update..." held this many seconds.
+    #[cfg(feature = "test-update")]
+    if let Some(secs) = std::env::var("MDM_TEST_UPDATE_HOLD")
+        .ok()
+        .and_then(|s| s.parse::<u64>().ok())
+    {
+        std::thread::sleep(Duration::from_secs(secs));
+    }
     let exe = std::env::current_exe().map_err(|e| e.to_string())?;
     let dir = exe.parent().ok_or("no program folder")?.to_owned();
     let unpack_dir = || -> Result<PathBuf, String> {

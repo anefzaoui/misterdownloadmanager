@@ -226,6 +226,8 @@ pub struct Updates {
     job: Option<crate::update::Job>,
     /// What Update now came to, when it didn't close MDM.
     status: Option<UpdateStatus>,
+    /// Update now pressed by a test (`/show update-now`, feature `test-update`).
+    press: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -236,12 +238,19 @@ enum UpdateStatus {
 }
 
 impl Updates {
+    /// Update now, as if pressed (`/show update-now`: Update now's end-to-end tests).
+    #[cfg(feature = "test-update")]
+    pub fn press_update_now(&mut self) {
+        self.press = true;
+    }
+
     pub fn check(rt: &tokio::runtime::Handle, ctx: &egui::Context) -> Self {
         Updates {
             slot: Some(check(rt, ctx)),
             result: None,
             job: None,
             status: None,
+            press: false,
         }
     }
 
@@ -252,6 +261,7 @@ impl Updates {
             result: Some(Ok(Found::Newer(release))),
             job: None,
             status: None,
+            press: false,
         }
     }
 
@@ -490,7 +500,10 @@ impl Updates {
                         };
                         // i18n: button: download and install the new version, then restart
                         let update = winui::button(ui, at, "Update now", kind, false, None);
-                        if update.clicked() || (enter && idle) {
+                        if update.clicked()
+                            || (enter && idle)
+                            || (idle && std::mem::take(&mut self.press))
+                        {
                             self.status = None;
                             self.job = Some(crate::update::Job::start(
                                 rt,
