@@ -18,6 +18,13 @@ Everything below ships together, in one release, as version 0.3.0.
   asked in the background, a keyring that doesn't answer at start is waited for once instead of
   once per saved password, and the tray check and Download File Info's Save As check no longer
   wait on every frame (follows [#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222))
+- ✅ Linux: Dark Mode support follows the desktop's dark or light theme on XFCE, MATE and others
+  without the portal's setting, and on GNOME without the portal, live
+  ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
+- ✅ Started with the computer, MDM waits in the notification area instead of opening its window
+  in front, on Windows, Linux and macOS (minimized where no notification area shows its icon);
+  startup entries written before are updated, and the installer writes the new one
+  ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226))
 - ✅ Open folder in Download complete no longer freezes the window on Linux when the file
   manager is slow to answer or never does: MDM asks in the background and opens the folder after
   5 seconds without an answer; every other program a window starts (Set it up, the Trash, an
@@ -286,9 +293,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Bugs being looked into
 
-- 🔍 Menus with a black band across their top on a Windows 11 Insider build
-  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are now plain
-  pop-up windows, as Windows' own are; a test build is with the reporter
+- 🔍 Menus and the drop target with a black band across their top on a Windows 11 Insider build
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are plain pop-up
+  windows now, as Windows' own are, and the reporter confirmed them fixed; the drop target is one
+  too, its test build is with the reporter
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   most likely a computer busy just after start; freeze reports now measure it, so the next one says
 - 🔍 A crash on Linux as Download File Info opens
@@ -321,6 +329,5 @@ Everything below ships together, in one release, as version 0.3.0.
 - 📋 Vulkan the default on Linux and Metal on macOS, once real graphics cards have tried them (AMD,
   Intel and NVIDIA, X11 and Wayland, older cards without Vulkan)
   ([#206](https://github.com/anefzaoui/misterdownloadmanager/issues/206))
-- 📋 Linux: follow the desktop's dark or light setting ([#156](https://github.com/anefzaoui/misterdownloadmanager/issues/156))
 - 📋 Benchmarks against other download managers
   ([#71](https://github.com/anefzaoui/misterdownloadmanager/issues/71))
