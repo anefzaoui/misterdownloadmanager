@@ -63,6 +63,9 @@ struct Message {
     url: String,
     referrer: Option<String>,
     cookies: Option<String>,
+    /// The same cookies with their domains and flags (`mdm_ipc::Command::cookie_jar`); an older
+    /// extension sends none.
+    cookie_jar: Vec<mdm_ipc::BrowserCookie>,
     user_agent: Option<String>,
     /// `navigator.userAgentData` brands: Brave and Opera name themselves there, not in the
     /// User-Agent; Firefox's forks add the name `runtime.getBrowserInfo` gives ("Zen").
@@ -416,6 +419,7 @@ fn video_command(
         video_page: Some(src.unwrap_or_else(|| m.url.clone())),
         referer,
         cookies: m.cookies.clone().filter(|c| !c.is_empty()),
+        cookie_jar: m.cookie_jar.clone(),
         user_agent: m.user_agent.clone(),
         private: m.private,
         ..Default::default()
@@ -496,6 +500,7 @@ fn to_command(m: Message) -> mdm_ipc::Command {
         name,
         referer: some(m.referrer),
         cookies: some(m.cookies),
+        cookie_jar: m.cookie_jar,
         user_agent: m.user_agent,
         size: m.size.filter(|s| *s > 0),
         mime: some(m.mime),
@@ -1079,6 +1084,13 @@ mod tests {
             url: "https://www.quiet.test/watch".into(),
             src: Some("https://cdn.test/v/master.m3u8?t=1".into()),
             cookies: Some("cdn=1".into()),
+            cookie_jar: vec![mdm_ipc::BrowserCookie {
+                name: "cdn".into(),
+                value: "1".into(),
+                domain: ".cdn.test".into(),
+                path: "/".into(),
+                ..Default::default()
+            }],
             user_agent: Some(ua.into()),
             ..Default::default()
         };
@@ -1089,6 +1101,10 @@ mod tests {
         );
         assert_eq!(cmd.referer.as_deref(), Some("https://www.quiet.test/watch"));
         assert_eq!(cmd.cookies.as_deref(), Some("cdn=1"));
+        assert_eq!(
+            cmd.cookie_jar, listed.cookie_jar,
+            "each cookie with its domain"
+        );
         assert_eq!(cmd.user_agent.as_deref(), Some(ua));
         // Never a page that isn't on the web.
         let local = Message {
@@ -1314,6 +1330,52 @@ mod tests {
             matches!(read_message(&mut r).unwrap(), Some(Ok(_))),
             "the next one reads"
         );
+    }
+
+    /// The extension's cookies with their domains, as `cookies.getAll` names them (its other
+    /// fields ignored), reach the app; an older extension's message has none.
+    #[test]
+    fn cookies_keep_their_domains() {
+        let m: Message = serde_json::from_str(
+            r#"{"url":"https://music.youtube.com/watch?v=x","cookies":"SID=1; pref=2","userAgent":"UA",
+              "cookieJar":[{"name":"SID","value":"1","domain":".youtube.com","hostOnly":false,"path":"/","secure":true,"httpOnly":true,"sameSite":"lax","session":false,"expirationDate":1893456000.5,"storeId":"0"},
+                           {"name":"pref","value":"2","domain":"music.youtube.com","hostOnly":true,"path":"/","secure":false,"session":true}]}"#,
+        )
+        .unwrap();
+        let c = to_command(m);
+        assert_eq!(c.cookies.as_deref(), Some("SID=1; pref=2"));
+        assert_eq!(
+            c.cookie_jar,
+            [
+                mdm_ipc::BrowserCookie {
+                    name: "SID".into(),
+                    value: "1".into(),
+                    domain: ".youtube.com".into(),
+                    host_only: false,
+                    path: "/".into(),
+                    secure: true,
+                    expires: Some(1893456000.5),
+                },
+                mdm_ipc::BrowserCookie {
+                    name: "pref".into(),
+                    value: "2".into(),
+                    domain: "music.youtube.com".into(),
+                    host_only: true,
+                    path: "/".into(),
+                    secure: false,
+                    expires: None,
+                },
+            ]
+        );
+        // To the app and back (its command line): the same.
+        let line = serde_json::to_string(&c).unwrap();
+        let back: mdm_ipc::Command = serde_json::from_str(&line).unwrap();
+        assert_eq!(back.cookie_jar, c.cookie_jar);
+        let old: Message =
+            serde_json::from_str(r#"{"url":"https://x/a.zip","cookies":"a=1"}"#).unwrap();
+        let c = to_command(old);
+        assert!(c.cookie_jar.is_empty());
+        assert!(!serde_json::to_string(&c).unwrap().contains("cookie_jar"));
     }
 
     #[test]

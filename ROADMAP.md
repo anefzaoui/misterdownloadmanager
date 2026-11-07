@@ -64,6 +64,9 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
 - ✅ A menu of the menu bar shut with Escape opens again at the first click on its title (on
   Linux it took two; on Windows, Escape with the pointer on the title left the menu open)
+- ✅ Signed-in videos from YouTube Music and YouTube's mobile site: the browser's cookies reach
+  the YouTube host yt-dlp asks, each for the domain the browser keeps it for
+  ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))
 - ✅ Cookies for video sites: yt-dlp can read a browser's cookies on this computer (Firefox,
   Chrome, Edge, Brave, Opera, Vivaldi, Chromium, Whale; Safari on macOS), so a pasted YouTube
   link that asks to "confirm you're not a bot" works when you're signed in there; and the button

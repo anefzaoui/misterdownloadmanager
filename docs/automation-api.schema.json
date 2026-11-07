@@ -54,6 +54,48 @@
       ],
       "type": "object"
     },
+    "BrowserCookie": {
+      "description": "One cookie as the browser keeps it (`cookies.getAll`'s fields, under the extension's names\ntoo: `hostOnly`, `expirationDate`).",
+      "properties": {
+        "domain": {
+          "default": "",
+          "description": "`.youtube.com` (sent to its subdomains too) or a host name.",
+          "type": "string"
+        },
+        "expires": {
+          "default": null,
+          "description": "When it expires, in seconds since 1970; none: when the browser closes.",
+          "format": "double",
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "host_only": {
+          "default": false,
+          "description": "Sent to `domain` itself only, never its subdomains.",
+          "type": "boolean"
+        },
+        "name": {
+          "default": "",
+          "type": "string"
+        },
+        "path": {
+          "default": "",
+          "type": "string"
+        },
+        "secure": {
+          "default": false,
+          "description": "Sent over HTTPS only.",
+          "type": "boolean"
+        },
+        "value": {
+          "default": "",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "CategoryInfo": {
       "description": "One category of the list.",
       "properties": {
@@ -303,6 +345,13 @@
             "string",
             "null"
           ]
+        },
+        "cookie_jar": {
+          "description": "From the browser: the same cookies, each with the domain, path and flags the browser\nkeeps for it, for yt-dlp's cookie file. yt-dlp may ask another host than the page's (a\nYouTube Music page is looked up on www.youtube.com), and a cookie of `.youtube.com` goes\nthere too. An older extension sends `cookies` only.",
+          "items": {
+            "$ref": "#/$defs/BrowserCookie"
+          },
+          "type": "array"
         },
         "cookies": {
           "default": null,
