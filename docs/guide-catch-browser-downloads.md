@@ -6,7 +6,9 @@ Set up the extension once, and every download link you click in Firefox, Chrome,
 
 ## Before you start
 
-MDM must be installed with the setup, with **Set up browser integration (Chrome, Edge, Brave, Firefox)** ticked. It is ticked by default. If you're not sure, run the setup again. A portable copy can't do this.
+On Windows, MDM must be installed with the setup, with **Set up browser integration (Chrome, Edge, Brave, Firefox)** ticked. It is ticked by default. If you're not sure, run the setup again. A portable copy can't do this. On Linux and macOS, start MDM once: it sets browser integration up itself.
+
+MDM's **Add Mister Download Manager to your browser** window, which opens at each start until a browser's extension has reached MDM, does the steps below for you: **Add the extension** opens the store's page in that browser.
 
 Once it is set up, a download link goes like this:
 

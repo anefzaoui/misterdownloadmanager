@@ -10,6 +10,8 @@ Narrator and NVDA on Windows): its windows, dialogs and menus tell them what eac
 and its state, and the download list reads each download's name, status and size. The
 **Categories** pane reads as a tree (each category with its count, open or shut, selected or
 not), and the menu bar and every right-click menu as menus whose items can be run from there.
+On Linux, screen readers (Orca) don't read MDM's windows yet; the keyboard works there as
+everywhere.
 
 ## Adding and finding
 
@@ -65,6 +67,10 @@ a branch, and **Home** / **End** go to the first / last node.
 | **Tab** | Move between the **Categories** pane and the download list |
 | **Up** / **Down**, **Left** / **Right** | In the **Categories** pane: the next category; close or open a branch |
 | **Shift+F10** or the **Menu** key | In the **Categories** pane: the selected category's menu (**Properties**, **Add category**, **Delete**) |
+| **Ctrl++** / **Ctrl+−** | Make everything larger / smaller, in every window (**View → Interface size**, 100 % to 200 %) |
+| **Ctrl+0** | Everything at its normal size (100 %) |
+
+A window larger than the screen at a big interface size scrolls.
 
 ## In dialogs
 

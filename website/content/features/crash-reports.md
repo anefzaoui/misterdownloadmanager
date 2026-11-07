@@ -8,7 +8,7 @@ description: Mister Download Manager's crash and freeze reports: readable, free 
 group: app
 order: 320
 since: 0.2.3
-shot: images/crash-report.png
+shot: images/crash-report.webp
 shot_alt: The crash report window after MDM stopped responding
 where: Opens by itself when MDM crashes or stops responding
 help: crash-reports.md

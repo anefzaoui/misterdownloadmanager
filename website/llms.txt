@@ -1,22 +1,25 @@
 # Mister Download Manager
 
-> Mister Download Manager (MDM) is a free, open-source (GPL-3.0) download manager for Windows 10 and 11, with experimental builds for macOS and Linux. It is laid out like Internet Download Manager (IDM) — toolbar, categories, download list, progress window with every connection, queues and scheduler — and is not affiliated with Tonec Inc. In its published benchmark against IDM 6.42 on the same computer and server it was faster in all seven scenarios (5.4× on a 1 GiB file, 106× on a 256 KiB file).
+> Mister Download Manager (MDM) is a free, open-source (GPL-3.0) download manager for Windows 10 and 11, with builds for Linux and macOS (today's marked experimental; Linux is no longer experimental from the next release, macOS still is). It is laid out like Internet Download Manager (IDM) — toolbar, categories, download list, progress window with every connection, queues and scheduler — and is not affiliated with Tonec Inc. In its published benchmark against IDM 6.42 on the same computer and server it was faster in all seven scenarios (5.4× on a 1 GiB file, 106× on a 256 KiB file).
 
 Key facts:
 - Price: free, no ads, no trial, no paid edition. Licence: GNU GPL 3.0. Source: https://github.com/anefzaoui/misterdownloadmanager
 - Downloads: HTTP, HTTPS, FTP, FTPS (explicit and implicit TLS), BitTorrent and magnet links, and videos from web pages via yt-dlp. Proxies, SOCKS and PAC scripts.
 - Engine: up to 32 connections per file (8 by default; 128 once allowed in Options), dynamic re-splitting, crash-safe resume, checksum verification, refresh of expired download links, per-server connection limits learned automatically.
-- Browser extension for Chrome, Edge, Brave, Opera and Vivaldi (Firefox in testing): hands downloads over with cookies and referrer, right-click "Download with Mister Download Manager", a draggable "Download video" button over videos. Without the extension, copying a link to a file opens the download window.
+- Browser extension for Firefox (from addons.mozilla.org) and Chrome, Edge, Brave, Opera and Vivaldi (from the Chrome Web Store): hands downloads over with cookies and referrer, right-click "Download with Mister Download Manager", a draggable "Download video" button over videos. Without the extension, copying a link to a file opens the download window.
 - 86 interface languages (every Windows 11 display language), right-to-left layouts for Arabic, Hebrew, Persian, Urdu and Uyghur.
 - Imports IDM's export files (.ef2). Accepts IDM's command-line switches (/d /p /f /a /n /s). Has a CLI (misterdownloadmanager-cli, with --json output for scripts and agents) and a local token-protected automation API, described by a JSON Schema.
 - AI assistants: an MCP server (misterdownloadmanager-mcp) lets Claude, Cursor, VS Code and other MCP clients list, add, pause, resume and remove downloads in the running app.
-- Privacy: the app has no accounts, no analytics, no telemetry; a weekly update check against GitHub that can be turned off.
+- Privacy: the app has no accounts, no analytics, no telemetry; an update check against GitHub at each start (and once a day while it runs) that can be turned off.
+- In the source now, coming with the next release: themes (Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero, Aqua), View → Interface size, a link grabber with archive extraction, image galleries via gallery-dl, RSS feeds for torrents, debrid accounts (Real-Debrid, AllDebrid, Premiumize), downloads held to one network adapter with a kill switch, a chosen DNS, the server's country and round trip, a phone remote control on the local network, a headless server mode (Docker, Unraid), and sign-ins in the system's keychain. Each has a page under https://misterdownloadmanager.com/features/.
 - Written in Rust with egui. Made by Ahmed Nefzaoui and contributors.
 
 ## Pages
 
 - [Download](https://misterdownloadmanager.com/download.html): Windows installer and portable zip, macOS .dmg, Linux AppImage/.deb/.rpm/.tar.gz, browser extension, checksums
 - [Free IDM alternative](https://misterdownloadmanager.com/idm-alternative.html): Mister Download Manager as a free, open-source alternative to Internet Download Manager, compared side by side with IDM and with nine other free download managers (Free Download Manager, AB Download Manager, Motrix, Neat Download Manager, Prism, JDownloader 2, Xtreme Download Manager, Gopeed, DOWNitUP)
+- [Features](https://misterdownloadmanager.com/features/): a page for each feature, with its window, where it is in the app and what it can't do yet
+- [Themes](https://misterdownloadmanager.com/themes.html): every built-in theme, light and dark, and how to make your own
 - [Questions and answers](https://misterdownloadmanager.com/faq/)
 - [Help and tutorials](https://misterdownloadmanager.com/help/)
 - [What's new](https://misterdownloadmanager.com/news.html)

@@ -971,16 +971,15 @@ pub fn show_popup(ctx: &egui::Context, vid: egui::ViewportId) {
 /// Place a menu of `size` at screen point `at`, flipped to stay inside the monitor's work area:
 /// up (or left) of the point, or for a submenu (`parent`: the parent menu's screen rect) to the
 /// parent's left side. In a right-to-left interface `at` is the menu's top-right: it opens to
-/// the left, and flips to the right (a submenu to the parent's right side).
-fn place_menu(at: Pos2, size: egui::Vec2, parent: Option<Rect>) -> Pos2 {
+/// the left, and flips to the right (a submenu to the parent's right side). All in points: the
+/// work area too (it was taken in pixels, which differ at a display or interface scale other
+/// than 100 %, #262).
+fn place_menu(ctx: &egui::Context, at: Pos2, size: egui::Vec2, parent: Option<Rect>) -> Pos2 {
     // An off-screen test copy (MDM_OFFSCREEN) keeps its menus beside its window, off the
-    // screens too: the nearest monitor's work area brought them onto the screen, over the
-    // user's work.
-    #[cfg(windows)]
-    if !crate::offscreen()
-        && let Some([l, t, r, b]) = crate::win32::work_area(at.x as i32, at.y as i32)
-    {
-        let (l, t, r, b) = (l as f32, t as f32, r as f32, b as f32);
+    // screens too (scale::work_area has none there): the nearest monitor's work area brought
+    // them onto the screen, over the user's work.
+    if let Some(area) = crate::scale::work_area(ctx, at) {
+        let (l, t, r, b) = (area.min.x, area.min.y, area.max.x, area.max.y);
         let mut p = at;
         if crate::i18n::rtl() {
             p.x = at.x - size.x;
@@ -1031,7 +1030,7 @@ fn popup_level<C: Clone>(
     let kb: Option<usize> = ctx
         .data(|d| d.get_temp::<(Option<usize>, Option<usize>)>(kb_key))
         .and_then(|(a, b)| if depth == 0 { a } else { b });
-    let screen = Rect::from_min_size(place_menu(at, size, parent), size);
+    let screen = Rect::from_min_size(place_menu(ctx, at, size, parent), size);
     let title = format!("misterdownloadmanager menu {depth}"); // not translated: an id
     let builder = popup_viewport(&title)
         .with_active(false)

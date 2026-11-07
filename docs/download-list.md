@@ -20,7 +20,7 @@ branches and the category or queue you were looking at.
 | Column | What it shows |
 |---|---|
 | **Source** | **Web** (a web server) or **Torrent**. |
-| **File Name** | The file's name, with its icon. |
+| **File Name** | The file's name, after its type's icon: your system's own (Windows Explorer's, macOS Finder's, your Linux desktop's icon theme), or MDM's where the system has none. |
 | **Q** | A queue icon when the download is in a queue. |
 | **Size** | The file's size, when the server told it. |
 | **Status** | How far it is, or **Complete**, **Error** and so on. |

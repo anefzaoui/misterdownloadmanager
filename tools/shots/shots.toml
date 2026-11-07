@@ -62,7 +62,7 @@ id = "view-dark-mode"
 page = "getting-started.md"
 under = "Dark mode"
 take = "@menu:menu:3"
-crop = [145, 28, 230, 280]
+crop = [145, 28, 230, 300]
 marks = [{ at = "Dark Mode support", side = "right" }, { at = "Always dark", side = "right" }]
 alt = "The View menu open, with Dark Mode support and Always dark"
 caption = "1 Dark Mode support follows the system; 2 Always dark keeps MDM dark."
@@ -72,8 +72,8 @@ id = "view-theme"
 page = "getting-started.md"
 under = "Themes"
 take = "@menu:menu:3:theme"
-crop = [145, 28, 366, 356]
-alt = "View → Theme open: Classic, Native, High contrast, Metro, Adwaita and Breeze"
+crop = [145, 28, 366, 424]
+alt = "View → Theme open: Classic, Native, High contrast, Metro, Adwaita, Breeze, Luna, Aero and Aqua, and Open themes folder"
 caption = "View → Theme switches at once, keeping the layout."
 
 [[shot]]
@@ -199,7 +199,7 @@ caption = "1 must be on, and 2 your browser ticked."
 id = "video-button"
 page = "browser-integration.md"
 under = "The download button over videos"
-from = "docs/images/video-button-youtube.png"
+from = "docs/images/video-button-youtube.webp"
 crop = [400, 0, 720, 405]
 lossy = 90
 alt = "The Download video button over a YouTube video in Chrome"
@@ -237,7 +237,7 @@ caption = "Pick a quality, then Download Now."
 id = "video-progress"
 page = "video.md"
 under = "Start a video download"
-from = "docs/images/progress-video.png"
+from = "docs/images/progress-video.webp"
 alt = "A video's progress window while yt-dlp brings it in"
 caption = "It downloads like any other file, in its own row and window."
 
@@ -283,7 +283,7 @@ caption = "Untick what you don't want, then Download Now."
 id = "torrent-files"
 page = "torrents.md"
 under = "Add a torrent"
-from = "docs/images/progress-torrent.png"
+from = "docs/images/progress-torrent.webp"
 alt = "A torrent's progress window on its Files tab"
 caption = "Its progress window: each file and how much of it is here."
 
@@ -291,7 +291,7 @@ caption = "Its progress window: each file and how much of it is here."
 id = "torrent-pieces"
 page = "torrents.md"
 under = "Add a torrent"
-from = "docs/images/progress-torrent-pieces.png"
+from = "docs/images/progress-torrent-pieces.webp"
 alt = "The Pieces tab: a square for each piece, filled once it's here"
 caption = "Pieces: the torrent's map, filling in."
 
@@ -383,7 +383,7 @@ page = "troubleshooting.md"
 under = "The window freezes or draws wrongly"
 take = "@menu:menu:3:draw"
 # Down to Font: a computer without Direct3D (GitHub's runner) adds why under the choices.
-crop = [145, 28, 306, 246]
+crop = [145, 28, 306, 274]
 alt = "View → Draw with open: OpenGL and Direct3D"
 caption = "View → Draw with: the other way of drawing."
 
@@ -609,7 +609,7 @@ caption = "MDM lists the qualities: pick one."
 id = "vfp-progress"
 page = "guide-video-from-page.md"
 under = "Steps"
-from = "docs/images/progress-video.png"
+from = "docs/images/progress-video.webp"
 alt = "A video's progress window"
 caption = "It downloads like any other file."
 

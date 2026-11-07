@@ -15,7 +15,7 @@ The browser can't find the small helper program it talks to. It is registered wh
 3. The portable copy can't be connected: it writes nothing outside its own folder. Use the installed copy for browser integration. See [Portable mode](portable.md).
 4. On Linux and macOS, MDM sets browser integration up itself each time it starts: start MDM once. **Test browser integration** says what went wrong if it couldn't, such as **The helper program the browsers start is missing**: **Set it up** puts it back.
 5. Restart the browser after setting it up.
-6. **Zen, Helium, Brave Origin or another browser built on Firefox or Chromium, as your only browser on Linux or macOS?** Older versions of MDM set browser integration up only for the browsers they knew (Brave Origin, and the Beta, Dev and Nightly versions of Brave, Chrome and Edge, since 0.3.0). Update MDM and start it once.
+6. **Zen, Helium, Brave Origin or another browser built on Firefox or Chromium, as your only browser on Linux or macOS?** Older versions of MDM set browser integration up only for the browsers they knew; the current one also knows Brave Origin and the Beta, Dev and Nightly versions of Brave, Chrome and Edge. Update MDM and start it once.
 7. **The AppImage on Linux:** the AppImage's files are gone once it quits, so MDM keeps a copy of its helper program in its data folder (`~/.local/share/misterdownloadmanager/browser-host`) and points the browsers there. Start MDM once after moving or renaming the AppImage, or after an AppImage manager (Gear Lever, AppImageLauncher and the like) moved it, so the helper knows where to start it from.
 8. **Zen on Windows:** Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program ([zen-browser/desktop#15432](https://github.com/zen-browser/desktop/issues/15432)), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.
 
@@ -35,14 +35,15 @@ The browser started MDM's helper, but it stopped before answering. Security soft
 - Allow `misterdownloadmanager-nmhost.exe` (in MDM's folder) in your antivirus or anti-malware program.
 - Reinstall MDM to restore its files.
 - On Linux, with Firefox or Chromium installed as a Snap, see [Flatpak and Snap browsers](#linux-sandbox).
-- Uninstalled MDM on Linux? Its browser files stay in your home folder: [remove them](getting-started.md#uninstall-linux), and the extension too.
+- Uninstalled MDM on Linux? The .deb and .rpm take their browser files with them; the AppImage's and the tar.gz's stay in your home folder: [remove them](getting-started.md#uninstall-linux), and the extension too.
 
 ## MDM doesn't accept this copy of the extension {#forbidden}
 
 MDM's helper serves only its own extension. The browser says this copy isn't one it knows.
 
-- **MDM 0.2.x with the extension from the Chrome Web Store?** The store's copy needs MDM 0.3.0
-  or later. Update MDM with **Help → Check for updates...**. Until then, remove the store's copy
+- **MDM 0.2.x with the extension from the Chrome Web Store?** The store's copy needs a newer MDM:
+  0.2.x knows only the copy in its own folder. Update MDM with **Help → Check for updates...**.
+  Until then, remove the store's copy
   and load the one in MDM's folder instead (`extension\chromium`, see
   [Browser integration](browser-integration.md#chrome-edge-brave-opera-and-vivaldi)).
 - **Two copies installed?** Open the browser's extensions page (`chrome://extensions`, `edge://extensions`, `brave://extensions`) and keep only one **Mister Download Manager**.
@@ -84,7 +85,7 @@ An add-on loaded with **Load Temporary Add-on** (from `about:debugging`) is remo
 
 Browsers installed as a Flatpak or a Snap run in a sandbox, which decides whether they can reach MDM.
 
-- **Firefox as a Snap** (Ubuntu's own Firefox) reaches MDM through the desktop. The first time the extension calls MDM, the desktop asks **Allow Firefox to start WebExtension backend?** for Mister Download Manager: choose **Allow**. After **Don't allow**, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:
+- **Firefox as a Snap** (Ubuntu's own Firefox) reaches MDM through the desktop, which reads the browser files in your home folder and those the .deb or .rpm installs for everyone. The first time the extension calls MDM, the desktop asks **Allow Firefox to start WebExtension backend?** for Mister Download Manager: choose **Allow**. After **Don't allow**, the extension says the connection failed and the desktop doesn't ask again; to be asked again, run this in a terminal, then use the extension again:
 
   `gdbus call --session --dest org.freedesktop.impl.portal.PermissionStore --object-path /org/freedesktop/impl/portal/PermissionStore --method org.freedesktop.impl.portal.PermissionStore.Delete webextensions com.misterdownloadmanager.host`
 - **Chromium as a Snap** (Ubuntu's Chromium) starts MDM's helper inside its sandbox, where it can't reach MDM, so MDM doesn't list it in **Add Mister Download Manager to your browser**. Use Firefox, or Google Chrome from its own `.deb`.

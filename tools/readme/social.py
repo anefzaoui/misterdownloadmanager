@@ -25,7 +25,7 @@ def main():
     draw = ImageDraw.Draw(card)
 
     # The main window, large, lower right, with a soft shadow and rounded corners.
-    shot = Image.open(ROOT / "docs/images/main-light.png").convert("RGB")
+    shot = Image.open(ROOT / "docs/images/main-light.webp").convert("RGB")
     shot = shot.resize((900, round(900 * shot.height / shot.width)), Image.LANCZOS)
     x0, y0 = W - shot.width + 120, 250
     shadow = Image.new("L", (shot.width + 60, shot.height + 60), 0)

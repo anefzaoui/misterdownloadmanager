@@ -12,8 +12,8 @@ Browsers built on them work too: Chromium and Helium take the extension as Chrom
 
 Browser integration has two parts: a small helper program that the browser talks to, and the extension itself.
 
-1. Install MDM with the setup and keep **Set up browser integration (Chrome, Edge, Brave, Firefox)** ticked. This registers the helper. (The portable copy can't do this; see [Portable mode](portable.md).)
-2. Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.
+1. Install MDM with the setup and keep **Set up browser integration (Chrome, Edge, Brave, Firefox)** ticked. This registers the helper. (The portable copy can't do this; see [Portable mode](portable.md).) On Linux and macOS MDM registers it itself, each time it starts, for the browsers installed then.
+2. Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store. Until a browser's extension has reached MDM, MDM's **Add Mister Download Manager to your browser** window opens at each start: it lists the browsers it found, and **Add the extension** opens the store's page in that browser. **Install it by hand** opens the steps for loading it without the store; **Don't ask again** stops the window.
 
 ![Add Mister Download Manager to your browser: each browser found, with a button to its store page](images/help/browser-offer.webp)
 *MDM's own window opens each browser's store page for you.*

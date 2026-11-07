@@ -35,6 +35,36 @@ Pillow's lossless WebP otherwise), at 1x, `<id>.webp` and `<id>-dark.webp`. `mak
 when a page lacks one of its pictures, an alt text or caption differs from the list, a file is
 left over, or a picture is over 300 KB (#186's budget).
 
+## Every picture for a release, from GitHub's runner
+
+The published pictures are taken on a stock Windows, so the file icons in them are Windows' own
+and not those of programs someone installed: push the branch to `docs-shots/<name>` (or run
+**Actions → Docs screenshots**). The workflow takes the README's and the docs' windows light and
+dark (`tools/lab/docs-shots.ps1`), a video's and a torrent's progress window
+(`tools/lab/progress-shots.ps1`, its own yt-dlp and a swarm on the runner) and this list's raw
+pictures, and returns them as the `docs-shots` artifact. Then, from the repository's root:
+
+```powershell
+gh run download <run id> -n docs-shots -D target\docs-shots-run
+python tools/shots/make.py docs target\docs-shots-run                  # docs/images/*.webp
+python -I tools/website/screens.py target\docs-shots-run\site-dark --light target\docs-shots-run\docs
+Copy-Item -Recurse -Force target\docs-shots-run\help-raw\* target\shots\raw\
+python tools/shots/make.py build                                        # docs/images/help/*.webp
+python tools/shots/make.py check
+```
+
+`make.py docs` also takes single PNGs, each as `docs/images/<its name>.webp`: the browser's
+pictures (`node tools/readme/browser-shots.mjs`, a real Chrome window, so not on the runner) and
+the phone's (`tools/lab/remote-page.mjs`), with `--png <file>` once for each.
+
+`make.py check` keeps every picture in `docs/images` and the site's `website/assets/screens`,
+`browser` and `win` within the budget too: none over 300 KB, no PNG where lossless WebP belongs
+(only the social card, the logo and the README's icons stay PNG), and none that nothing shows. CI
+runs it (`help-pictures.yml`).
+
+The main window's title shows the version: take the pictures again once the version is the
+release's.
+
 ## Adding a picture
 
 1. Add a `[[shot]]` to `shots.toml` (its header says what each key does).
@@ -73,6 +103,9 @@ after a page's first picture, and the night version beside it, shown with the si
 ## Linux
 
 The list's pictures are Windows'. Linux differs where the desktop takes part (the tray, the
-file chooser, desktop integration), and those can't be taken on a virtual screen: the WSL2 lab's
-Xvfb has no tray host and no desktop portal (`tools/lab/wsl/README.md`). They wait for a desktop
-that can take them unattended (#186).
+file chooser, the window frames), and those can't be taken on a virtual screen: the WSL2 lab's
+Xvfb has no tray host and no desktop portal (`tools/lab/wsl/README.md`). The Linux pictures
+(`docs/images/*-linux.webp`, the site's `website/assets/screens/*-linux-*.webp`) are taken on a
+real desktop in the lab's virtual machines instead: `tools/lab/linux-vm/docs-shots-host.ps1`
+(its header says how), GNOME for the whole list, KDE Plasma, Cinnamon and Xfce for their main
+window.

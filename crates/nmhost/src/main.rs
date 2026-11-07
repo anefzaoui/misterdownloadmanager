@@ -17,7 +17,12 @@
 //!   this exe, with the per-user (HKCU) registry entries the browsers look up; with `--all-users`
 //!   (the installer, installing for everyone, elevated) under HKLM instead. Linux and macOS: in
 //!   each installed browser's own host folder (the app does it at every start, as there is no
-//!   installer step), or the system-wide ones with `--all-users`. Nothing else.
+//!   installer step), or the system-wide ones with `--all-users`. A browser that reads a
+//!   system-wide manifest naming this same program (the .deb's or .rpm's) gets none in the home
+//!   folder: the package manager removes the package's with it (#266).
+//! - `misterdownloadmanager-nmhost --package-manifests <root>` (Linux, the .deb and .rpm build):
+//!   writes the system-wide manifests under `<root>`, naming the packaged helper
+//!   (`/usr/bin/misterdownloadmanager-nmhost`). Nothing else.
 
 use std::io::{self, Read, Write};
 use std::path::PathBuf;
@@ -680,26 +685,32 @@ fn serve() -> io::Result<()> {
     Ok(())
 }
 
-/// The manifest Chromium browsers read: the host may serve our extension's origin only.
-fn chromium_manifest() -> Result<serde_json::Value, String> {
-    Ok(serde_json::json!({
+/// This program, which the manifests name.
+fn this_program() -> Result<PathBuf, String> {
+    std::env::current_exe().map_err(|e| e.to_string())
+}
+
+/// The manifest Chromium browsers read: the host (`program`) may serve our extension's origin
+/// only.
+fn chromium_manifest(program: &std::path::Path) -> serde_json::Value {
+    serde_json::json!({
         "name": HOST_NAME,
         "description": "Mister Download Manager",
-        "path": std::env::current_exe().map_err(|e| e.to_string())?,
+        "path": program,
         "type": "stdio",
         "allowed_origins": chromium_ids().into_iter().map(origin).collect::<Vec<_>>(),
-    }))
+    })
 }
 
 /// Firefox's manifest: the same host, allowed for our add-on ID instead of an origin.
-fn firefox_manifest() -> Result<serde_json::Value, String> {
-    Ok(serde_json::json!({
+fn firefox_manifest(program: &std::path::Path) -> serde_json::Value {
+    serde_json::json!({
         "name": HOST_NAME,
         "description": "Mister Download Manager",
-        "path": std::env::current_exe().map_err(|e| e.to_string())?,
+        "path": program,
         "type": "stdio",
         "allowed_extensions": [FIREFOX_ID],
-    }))
+    })
 }
 
 fn write_json(path: &std::path::Path, value: &serde_json::Value) -> Result<(), String> {
@@ -741,7 +752,7 @@ fn register(all_users: bool) -> Result<(), String> {
     portable_refused()?;
     let root = if all_users { "HKLM" } else { "HKCU" };
     let path = exe_dir()?.join(format!("{HOST_NAME}.json"));
-    write_json(&path, &chromium_manifest()?)?;
+    write_json(&path, &chromium_manifest(&this_program()?))?;
     for key in REGISTRY_KEYS {
         reg(&[
             "add",
@@ -755,7 +766,7 @@ fn register(all_users: bool) -> Result<(), String> {
         ])?;
     }
     let ff_path = exe_dir()?.join(format!("{HOST_NAME}.firefox.json"));
-    write_json(&ff_path, &firefox_manifest()?)?;
+    write_json(&ff_path, &firefox_manifest(&this_program()?))?;
     reg(&[
         "add",
         &format!(r"{root}\{FIREFOX_KEY}\{HOST_NAME}"),
@@ -823,14 +834,16 @@ fn reg(args: &[&str]) -> Result<(), String> {
 
 /// Linux and macOS: the folders the browsers there read host manifests from, for one user (in
 /// the home folder) or for everyone, each with whether it is Firefox's (`mdm_ipc::browsers`).
+/// With `host`, a user's folder is left out for a browser that reads a manifest for everyone
+/// naming it (the package's, #266).
 #[cfg(not(windows))]
-fn host_dirs(all_users: bool) -> Vec<(PathBuf, bool)> {
+fn host_dirs(all_users: bool, host: Option<&std::path::Path>) -> Vec<(PathBuf, bool)> {
     let home = PathBuf::from(std::env::var_os("HOME").unwrap_or_default());
     let config = std::env::var_os("XDG_CONFIG_HOME")
         .map(PathBuf::from)
         .filter(|p| p.is_absolute())
         .unwrap_or_else(|| home.join(".config"));
-    mdm_ipc::browsers::host_dirs(&home, &config, cfg!(target_os = "macos"), all_users)
+    mdm_ipc::browsers::host_dirs(&home, &config, cfg!(target_os = "macos"), all_users, host)
         .into_iter()
         .map(|(d, f)| (d, f == mdm_ipc::browsers::Family::Gecko))
         .collect()
@@ -884,8 +897,36 @@ fn mount_refused() -> Result<(), String> {
 fn register(all_users: bool) -> Result<(), String> {
     portable_refused()?;
     mount_refused()?;
-    let (chromium, firefox) = (chromium_manifest()?, firefox_manifest()?);
-    let dirs = host_dirs(all_users);
+    let program = this_program()?;
+    let (chromium, firefox) = (chromium_manifest(&program), firefox_manifest(&program));
+    let dirs = host_dirs(all_users, Some(&program));
+    // A browser that reads the package's manifest for everyone, naming this program, needs none
+    // in the home folder: one written there before is taken away, so uninstalling the package
+    // leaves nothing behind (#266). The browser reads a user's manifest first, so one naming
+    // another program (an earlier MDM, an AppImage's copy) would win over the package's: the MDM
+    // registered last is the one the browsers start, as when each wrote its own.
+    let mut covered = 0;
+    if !all_users {
+        for (dir, _) in host_dirs(false, None) {
+            if dirs.iter().any(|(d, _)| *d == dir) {
+                continue;
+            }
+            covered += 1;
+            let manifest = dir.join(format!("{HOST_NAME}.json"));
+            if std::fs::remove_file(&manifest).is_ok() {
+                println!(
+                    "removed {} (the browser reads the one for everyone)",
+                    manifest.display()
+                );
+            }
+        }
+    }
+    if covered > 0 {
+        println!(
+            "registered {HOST_NAME} for everyone by the package: {covered} of this user's \
+             browser folders need nothing"
+        );
+    }
     // One browser's folder that can't be written doesn't keep the others from theirs.
     let mut failed = Vec::new();
     for (dir, is_firefox) in &dirs {
@@ -898,7 +939,7 @@ fn register(all_users: bool) -> Result<(), String> {
             Err(e) => failed.push(e),
         }
     }
-    if dirs.is_empty() {
+    if dirs.is_empty() && covered == 0 {
         println!("registered {HOST_NAME} for no browser: none found");
     }
     if !failed.is_empty() {
@@ -917,7 +958,7 @@ fn register(all_users: bool) -> Result<(), String> {
 
 #[cfg(not(windows))]
 fn unregister(all_users: bool) -> Result<(), String> {
-    for (dir, _) in host_dirs(all_users) {
+    for (dir, _) in host_dirs(all_users, None) {
         let _ = std::fs::remove_file(dir.join(format!("{HOST_NAME}.json")));
     }
     if let Some(dir) = chrome_external_dir(all_users) {
@@ -927,12 +968,46 @@ fn unregister(all_users: bool) -> Result<(), String> {
     Ok(())
 }
 
+/// Linux: where the .deb and .rpm install this program, which their manifests name.
+#[cfg(target_os = "linux")]
+const PACKAGED_HOST: &str = "/usr/bin/misterdownloadmanager-nmhost";
+
+/// Linux (the .deb and .rpm build, tools/installer/build-linux.sh): the manifests for everyone,
+/// in each folder the browsers read them from (`mdm_ipc::browsers::LINUX_SYSTEM_HOST_DIRS`),
+/// under `root`, naming the packaged helper. The package owns them, so the package manager
+/// removes them with it (#266).
+#[cfg(target_os = "linux")]
+fn package_manifests(root: Option<&str>) -> Result<(), String> {
+    let root = std::path::Path::new(root.ok_or("--package-manifests needs a folder")?);
+    let program = std::path::Path::new(PACKAGED_HOST);
+    for (dir, family) in mdm_ipc::browsers::LINUX_SYSTEM_HOST_DIRS {
+        let dir = root.join(dir.trim_start_matches('/'));
+        std::fs::create_dir_all(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
+        let manifest = match family {
+            mdm_ipc::browsers::Family::Chromium => chromium_manifest(program),
+            mdm_ipc::browsers::Family::Gecko => firefox_manifest(program),
+        };
+        let path = dir.join(format!("{HOST_NAME}.json"));
+        write_json(&path, &manifest)?;
+        println!("{}", path.display());
+    }
+    Ok(())
+}
+
+/// The system-wide manifests are packaged for Linux only (macOS's and Windows' installers
+/// register with `--register --all-users`).
+#[cfg(not(target_os = "linux"))]
+fn package_manifests(_: Option<&str>) -> Result<(), String> {
+    Err("--package-manifests: the .deb and .rpm are Linux's".into())
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
     let all_users = args.iter().any(|a| a == "--all-users");
     let result = match args.first().map(String::as_str).unwrap_or_default() {
         "--register" => register(all_users),
         "--unregister" => unregister(all_users),
+        "--package-manifests" => package_manifests(args.get(1).map(String::as_str)),
         // Browsers start the host naming the caller: serve only our own extension (the
         // manifests' allowed_origins / allowed_extensions say the same; this is a second check).
         _ if our_caller(&args) => serve().map_err(|e| e.to_string()),
@@ -963,7 +1038,7 @@ mod tests {
     /// served: the manifest's allowed_origins and the host's own caller check agree.
     #[test]
     fn store_and_unpacked_extensions_both_allowed() {
-        let manifest = chromium_manifest().unwrap();
+        let manifest = chromium_manifest(&this_program().unwrap());
         for id in [
             "ejoleppdfgjdndddcjoehopknmlglojp",
             "oogbclbbninliongijffeeggalppliok",

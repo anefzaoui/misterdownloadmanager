@@ -111,6 +111,8 @@ enum Cmd {
     /// View → Draw with → OpenGL / Direct3D, Vulkan or Metal (#89, #206), from the next start.
     #[cfg(gpu)]
     DrawWith(crate::renderer::Api),
+    /// View → Interface size → a size in percent (#262).
+    InterfaceSize(u16),
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
     /// View → Language...: the language picker.
@@ -239,6 +241,7 @@ impl Cmd {
             Cmd::Open => "Enter",
             Cmd::SelectAll => "Ctrl+A",
             Cmd::Properties => "Alt+Enter",
+            Cmd::InterfaceSize(100) => "Ctrl+0",
             _ => return None,
         })
     }
@@ -532,6 +535,11 @@ pub struct App {
     saver: store::Saver,
     /// When the light/dark mode was last checked against Windows' app mode.
     theme_checked: Option<Instant>,
+    /// The zoom (View → Interface size, #262) the windows were last drawn at: a change is saved,
+    /// and the windows that don't follow by themselves are made to (`follow_zoom`).
+    zoom: f32,
+    /// The main window was brought inside the screen after the start (scale::fit_window).
+    fitted: bool,
     /// View → Theme's choices (#45), and when the themes folder last changed (read again then).
     theme_list: Vec<crate::themefile::Entry>,
     themes_changed: Option<std::time::SystemTime>,
@@ -773,6 +781,8 @@ impl App {
         // The look (#45): the chosen theme before anything is drawn.
         crate::theme::select(&crate::theme::startup_id(&loaded.settings.theme), ctx);
         crate::theme::apply(ctx);
+        // The zoom main.rs started at (View → Interface size, #262).
+        let zoom = crate::scale::startup(loaded.settings.interface_size);
         let mut settings = loaded.settings;
         if settings.limiter_on_startup {
             settings.speed_limit_on = true;
@@ -997,6 +1007,8 @@ impl App {
             last_save: Instant::now(),
             saver: store::Saver::new(),
             theme_checked: None,
+            zoom,
+            fitted: false,
             theme_list: crate::themefile::list(),
             themes_changed: crate::themefile::changed(),
             ticked: None,
@@ -1922,10 +1934,11 @@ impl App {
                 let (index, sub) = tab.split_once(':').unwrap_or((tab, ""));
                 let index = index.parse().unwrap_or(0);
                 self.open_menu = Some(index);
-                // menu:3:theme opens View → Theme (#45).
+                // menu:3:theme opens View → Theme (#45), menu:3:size View → Interface size (#262).
                 let wanted = match sub {
                     "draw" => "Draw with",
                     "theme" => "Theme",
+                    "size" => "&Interface size",
                     _ => "",
                 };
                 let at = self
@@ -4752,6 +4765,8 @@ impl App {
                     crate::launch::open(dir);
                 }
             }
+            // Every window at once (the frames after this one); saved by `follow_zoom`.
+            Cmd::InterfaceSize(percent) => crate::scale::set(ctx, percent),
             #[cfg(gpu)]
             Cmd::DrawWith(api) => {
                 // Chosen again after it failed here: its next start is tried.
@@ -5400,8 +5415,9 @@ impl App {
             .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
         {
             menu.insert(at + 1, self.theme_menu());
+            menu.insert(at + 2, self.interface_size_menu());
             #[cfg(gpu)]
-            menu.insert(at + 2, self.draw_with_menu());
+            menu.insert(at + 3, self.draw_with_menu());
         }
         menu
     }
@@ -5452,6 +5468,22 @@ impl App {
         items.push(I("Open themes folder", Cmd::OpenThemesFolder, true, false));
         // i18n: View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
         Sub("Theme", true, items)
+    }
+
+    /// View → Interface size (#262): every window larger, as a browser zooms (Ctrl + / Ctrl − /
+    /// Ctrl 0 too). The size shown is the zoom drawn now, a test run's MDM_ZOOM too.
+    fn interface_size_menu(&self) -> MenuEntry<Cmd> {
+        let now = crate::scale::of_zoom(self.zoom);
+        let items = crate::scale::STEPS
+            .into_iter()
+            .map(|p| {
+                // As the interface language writes a percentage: 125%, 125 %, %125.
+                let label = crate::chrome::label(&crate::i18n::percent(f64::from(p) / 100.0, 0));
+                MenuEntry::Radio(label, Cmd::InterfaceSize(p), true, p == now)
+            })
+            .collect();
+        // i18n: View menu: submenu choosing how large MDM draws its windows and text (100 % to 200 %), as a browser's zoom
+        MenuEntry::Sub("&Interface size", true, items)
     }
 
     /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
@@ -6805,10 +6837,13 @@ impl App {
             (s.show_categories, s.branches, s.view) = pane;
             self.dirty = true;
         }
-        // Not a test instance's off-screen window, nor a zoomed one (screenshots).
-        if crate::offscreen() || ctx.zoom_factor() != 1.0 {
+        // Not a test instance's off-screen window, nor one zoomed for screenshots (MDM_ZOOM).
+        if crate::offscreen() || crate::scale::test_zoom().is_some() {
             return;
         }
+        // Kept at 100 % interface size (the system's logical pixels), as the window is made
+        // before the zoom applies (main.rs).
+        let zoom = ctx.zoom_factor();
         let (outer, inner, maximized, minimized) = ctx.input(|i| {
             let v = i.viewport();
             (v.outer_rect, v.inner_rect, v.maximized, v.minimized)
@@ -6827,16 +6862,56 @@ impl App {
             && let (Some(outer), Some(inner)) = (outer, inner)
         {
             let rect = [
-                outer.min.x.round() as i32,
-                outer.min.y.round() as i32,
-                inner.width().round() as i32,
-                inner.height().round() as i32,
+                (outer.min.x * zoom).round() as i32,
+                (outer.min.y * zoom).round() as i32,
+                (inner.width() * zoom).round() as i32,
+                (inner.height() * zoom).round() as i32,
             ];
             if s.window != Some(rect) {
                 s.window = Some(rect);
                 self.dirty = true;
             }
         }
+    }
+
+    /// View → Interface size (#262): its keys in the main window (the dialogs take them too), and
+    /// a new size, from the menu or the keys in any window, saved; the windows that don't follow
+    /// it by themselves are made to: the main window's minimum size, the drop target (kept where
+    /// it is on the screen). The main window is brought inside the screen once after the start
+    /// and after each change (a large size on a small screen), in the frame after it: egui
+    /// measures the window at the old size in the frame a new one applies. False in that frame.
+    fn follow_zoom(&mut self, ctx: &egui::Context) -> bool {
+        const MIN: egui::Vec2 = egui::vec2(600.0, 300.0);
+        crate::scale::keys(ctx);
+        let zoom = ctx.zoom_factor();
+        let settled = zoom == self.zoom;
+        if settled && !self.fitted && ctx.input(|i| i.viewport().outer_rect).is_some() {
+            self.fitted = true;
+            crate::scale::fit_window(ctx, MIN, None);
+        }
+        // Saved whatever changed it, and kept when Options, opened before, hands back its copy
+        // of the settings.
+        let percent = crate::scale::of_zoom(zoom);
+        if crate::scale::test_zoom().is_none() && self.settings.interface_size != percent {
+            self.settings.interface_size = percent;
+            self.dirty = true;
+        }
+        if settled {
+            return true;
+        }
+        let ratio = self.zoom / zoom;
+        self.zoom = zoom;
+        self.fitted = false;
+        tracing::info!("interface size {percent}%");
+        ctx.send_viewport_cmd(egui::ViewportCommand::MinInnerSize(MIN));
+        if let Some((x, y)) = self.settings.drop_target_pos {
+            let at = |v: i32| (v as f32 * ratio).round() as i32;
+            self.settings.drop_target_pos = Some((at(x), at(y)));
+        }
+        if let Some(d) = &mut self.drop_target {
+            d.rescale(ctx, ratio);
+        }
+        false
     }
 
     /// What was dropped on the main window (its OLE target on Windows; winit's dropped files on
@@ -8090,7 +8165,11 @@ impl App {
         }
         crate::crash::window("main");
         let ctx = ui.ctx().clone();
-        dialogs::publish_main_rect(&ctx);
+        // Not in the frame the interface size changed in: the window's rect is measured at the
+        // old one then.
+        if self.follow_zoom(&ctx) {
+            dialogs::publish_main_rect(&ctx);
+        }
         // Incoming commands and the clock (downloads, queues, Scheduler, saving…): `logic`, just
         // before, which runs minimized too.
         self.poll_picks(&ctx);

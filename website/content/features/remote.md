@@ -8,7 +8,7 @@ description: Control Mister Download Manager from your phone on your home networ
 group: network
 order: 230
 since: 0.5
-shot: images/remote-phone.png
+shot: images/remote-phone.webp
 shot_alt: MDM's page on a phone: an address box with Category and When, the queues with Start, and the downloads with their progress
 where: Options → Remote
 help: remote-control.md
@@ -31,7 +31,7 @@ has it, and follows its light or dark mode.
 Turn it on in **Options → Remote**, then click **Pair a device...**. Scan the QR code with the
 phone's camera, or type the address and the 8-digit code. A code works once, for ten minutes.
 
-![Options: Remote, with the address to open, the certificate's fingerprint and the paired devices](images/options-remote.png)
+![Options: Remote, with the address to open, the certificate's fingerprint and the paired devices](images/options-remote.webp)
 *Options → Remote: the address, the certificate's fingerprint and the paired devices.*
 
 The first time, the phone's browser warns about the certificate. That is expected: MDM made it on

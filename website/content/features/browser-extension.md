@@ -56,7 +56,9 @@ store's policy forbids; **Tasks → Download video from a page** still takes any
 <!--@coming 0.5-->
 
 - **The toolbar button** says whether the browser reaches MDM, and **How to fix it** opens the
-  help for the reason.
+  help for the reason. When a setting leaves a download to the browser (its type isn't in
+  **File types**, its site is excluded, it's under the minimum size), the button names the
+  setting and the file, and MDM's log keeps a line for each.
 - **Media on this page** lists the video streams and the video and sound files a page has
   loaded, so a video with no link can still be saved. Copy-protected streams are listed as
   **Protected** and never sent.

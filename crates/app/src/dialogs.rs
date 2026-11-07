@@ -20,31 +20,93 @@ pub enum Outcome<T> {
 
 const MAIN_RECT: &str = "mdm-main-rect";
 
-/// The main window publishes its outer rect each frame so dialogs can centre on it.
+/// The main window publishes its outer rect each frame so dialogs can centre on it, with the
+/// zoom it is measured at (not in the frame the interface size changes: its rect is still
+/// measured at the old one then, scale::settled).
 pub fn publish_main_rect(ctx: &egui::Context) {
     if let Some(rc) = ctx.input(|i| i.viewport().outer_rect) {
-        ctx.data_mut(|d| d.insert_temp(egui::Id::unique(MAIN_RECT), rc));
+        let zoom = ctx.zoom_factor();
+        ctx.data_mut(|d| d.insert_temp(egui::Id::unique(MAIN_RECT), (rc, zoom)));
     }
 }
 
-/// Where a dialog opens: centred over the main window (as IDM's are), decided once when the
-/// dialog first shows and kept until `forget_place` — so the user can still move it.
+/// The main window's outer rect as last published, in points at the zoom drawn now (#262: the
+/// same place on the screen is fewer points at a larger interface size).
+fn main_rect(ctx: &egui::Context) -> Option<egui::Rect> {
+    let (rc, zoom) = ctx.data(|d| d.get_temp::<(egui::Rect, f32)>(egui::Id::unique(MAIN_RECT)))?;
+    let k = zoom / ctx.zoom_factor();
+    Some(egui::Rect::from_min_max(
+        (rc.min.to_vec2() * k).to_pos2(),
+        (rc.max.to_vec2() * k).to_pos2(),
+    ))
+}
+
+/// Where a dialog opens: centred over the main window (as IDM's are), inside the screen's work
+/// area (its title bar first, for one larger than the screen), decided once when the dialog
+/// first shows and kept until `forget_place` — so the user can still move it. Placed again when
+/// the interface size changes (#262): the place is in points, which that changes.
 pub fn place(ctx: &egui::Context, key: egui::Id, client: [f32; 2]) -> Option<Pos2> {
-    ctx.data_mut(|d| {
-        if let Some(p) = d.get_temp::<Pos2>(key) {
-            return Some(p);
-        }
-        let main = d.get_temp::<egui::Rect>(egui::Id::unique(MAIN_RECT))?;
-        // A fixed-frame dialog's outer size is client + (6, 29) (spec "Conventions").
-        let outer = vec2(client[0] + 6.0, client[1] + 29.0);
-        let p = (main.center() - outer / 2.0).round();
-        d.insert_temp(key, p);
-        Some(p)
-    })
+    let zoom = ctx.zoom_factor();
+    if let Some((p, z)) = ctx.data(|d| d.get_temp::<(Pos2, f32)>(key))
+        && z == zoom
+    {
+        return Some(p);
+    }
+    let main = main_rect(ctx)?;
+    // A fixed-frame dialog's outer size is client + (6, 29) (spec "Conventions").
+    let outer = vec2(client[0] + 6.0, client[1] + 29.0);
+    let mut p = (main.center() - outer / 2.0).round();
+    if let Some(area) = crate::scale::work_area(ctx, main.center()) {
+        let whole = vec2(client[0], client[1]) + crate::scale::frame(ctx);
+        p = crate::scale::keep_inside(p, whole, area).round();
+    }
+    ctx.data_mut(|d| d.insert_temp(key, (p, zoom)));
+    Some(p)
 }
 
 pub fn forget_place(ctx: &egui::Context, key: egui::Id) {
-    ctx.data_mut(|d| d.remove::<Pos2>(key));
+    ctx.data_mut(|d| d.remove::<(Pos2, f32)>(key));
+}
+
+/// A fixed-size window's client of `size` points as it can be shown on the screen around the
+/// main window: no larger than the work area at the interface size (#262), [`scroll`]ed where
+/// it is smaller.
+pub fn shown_size(ctx: &egui::Context, size: [f32; 2]) -> [f32; 2] {
+    let at = main_rect(ctx).map_or(Pos2::ZERO, |m| m.center());
+    let fit = crate::scale::shown(vec2(size[0], size[1]), crate::scale::room(ctx, at));
+    [fit.x, fit.y]
+}
+
+/// A window's whole client, `size` points laid out from the origin `body` gets, drawn in what
+/// the window has: scrolled when that is smaller ([`shown_size`]; scale::pane). Interface size
+/// keys (Ctrl + / Ctrl − / Ctrl 0) pressed in the window are taken here too.
+pub fn scroll<R>(
+    ui: &mut Ui,
+    id: egui::Id,
+    size: [f32; 2],
+    body: impl FnOnce(&mut Ui, Pos2) -> R,
+) -> R {
+    crate::scale::keys(ui.ctx());
+    crate::scale::pane(ui, id, vec2(size[0], size[1]), body)
+}
+
+/// The interface size changed while window `vid` is open (#262): its size, `shown` points, at
+/// the new scale. Windows' fixed frames are sized again by their owner from the new scale
+/// (`dialog_frame`, `thin_frame`); elsewhere the window manager is asked. True when it changed
+/// since the last call (the caller frames it again).
+pub fn follow_scale(ctx: &egui::Context, vid: ViewportId, key: egui::Id, shown: [f32; 2]) -> bool {
+    let scale = ctx.input_for(vid, |i| i.pixels_per_point);
+    let k = key.with("scale-seen");
+    let seen = ctx.data(|d| d.get_temp::<f32>(k));
+    ctx.data_mut(|d| d.insert_temp(k, scale));
+    let changed = seen.is_some_and(|s| s != scale);
+    if changed && !cfg!(windows) {
+        ctx.send_viewport_cmd_to(
+            vid,
+            egui::ViewportCommand::InnerSize(vec2(shown[0], shown[1])),
+        );
+    }
+    changed
 }
 
 /// Window chrome shared by every dialog and the progress window: the caption's theme, and when
@@ -189,11 +251,14 @@ fn dialog_window<T>(
         0.0
     };
     let outer = [client[0], client[1] + caption_h];
+    // As large as the screen allows at the interface size (#262): the rest scrolls.
+    let shown = shown_size(ctx, outer);
+    let vid = ViewportId::from_hash_of(id);
     // Hidden until `keep_theme` has given it its theme (see there).
     let mut builder = ViewportBuilder::default()
         .with_visible(false)
         .with_title(title)
-        .with_inner_size(outer)
+        .with_inner_size(shown)
         // The thin frame trims the sizing borders and keeps the size fixed.
         .with_resizable(drawn)
         .with_minimize_button(minimize)
@@ -212,19 +277,20 @@ fn dialog_window<T>(
             egui::WindowLevel::Normal
         });
     }
-    if let Some(p) = place(ctx, key, outer) {
+    if let Some(p) = place(ctx, key, shown) {
         builder = builder.with_position(p);
     }
     crate::crash::window(id);
-    let out = ctx.show_viewport_immediate(ViewportId::from_hash_of(id), builder, |ui, _| {
+    let out = ctx.show_viewport_immediate(vid, builder, |ui, _| {
         // Painted in the pass that closes it too (see close_requested).
         let close = close_requested(ui);
         let out = egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(bg))
             .show(ui, |ui| {
                 let origin = ui.max_rect().min;
-                // The client area, laid out from the right in a right-to-left interface.
-                let _surface = winui::Surface::enter(origin.x, origin.x + client[0]);
+                // The window's width, laid out from the right in a right-to-left interface (the
+                // title bar; the layout under it has its own, scrolled with it).
+                let _surface = winui::Surface::enter(origin.x, origin.x + shown[0]);
                 // Our title bar's ×: like the window manager's, the window is painted in its
                 // closing pass too (#207), then closes.
                 let mut caption_close = false;
@@ -235,7 +301,7 @@ fn dialog_window<T>(
                         buttons.push((CaptionButton::Minimize, true));
                     }
                     let hwnd = ui.ctx().data(|d| d.get_temp::<isize>(key.with("hwnd")));
-                    match drawn_title(ui, origin, client[0], title, &buttons, hwnd) {
+                    match drawn_title(ui, origin, shown[0], title, &buttons, hwnd) {
                         Some(CaptionButton::Close) => caption_close = true,
                         Some(CaptionButton::Minimize) => {
                             ui.ctx()
@@ -244,34 +310,44 @@ fn dialog_window<T>(
                         _ => {}
                     }
                 }
-                let out = body(ui, origin + egui::vec2(0.0, caption_h));
+                // The layout under the title bar, scrolled when the window is smaller.
+                let below = egui::Rect::from_min_max(
+                    origin + egui::vec2(0.0, caption_h),
+                    ui.max_rect().max,
+                );
+                let mut rest = ui.new_child(egui::UiBuilder::new().max_rect(below));
+                let out = scroll(&mut rest, key, client, |ui, o| {
+                    let _surface = winui::Surface::enter(o.x, o.x + client[0]);
+                    body(ui, o)
+                });
                 if caption_close { Outcome::Closed } else { out }
             })
             .inner;
         if close { Outcome::Closed } else { out }
     });
+    let rescaled = follow_scale(ctx, vid, key, shown);
+    // Elsewhere follow_scale asked the window manager itself.
+    #[cfg(not(windows))]
+    let _ = rescaled;
     // Give the window IDM's modal-dialog frame (3 px borders, 26 px caption) once it exists,
     // and again at a new size (a dialog that grows: the frame is sized from the client).
     #[cfg(windows)]
     {
         let framed = key.with("framed");
-        let scale = ctx.input_for(ViewportId::from_hash_of(id), |i| i.pixels_per_point);
-        // The size and whose title bar it is: either changing frames it again.
-        let want = [outer[0], outer[1] + if drawn { 1e6 } else { 0.0 }];
-        if ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(want) {
+        let scale = ctx.input_for(vid, |i| i.pixels_per_point);
+        // The size and whose title bar it is: either changing frames it again, as does a new
+        // scale (the interface size, #262; another monitor's).
+        let want = [shown[0], shown[1] + if drawn { 1e6 } else { 0.0 }];
+        if rescaled || ctx.data(|d| d.get_temp::<[f32; 2]>(framed)) != Some(want) {
             if drawn {
-                if let Some(h) = crate::win32::thin_frame(title, outer, scale, None) {
+                if let Some(h) = crate::win32::thin_frame(title, shown, scale, None) {
                     ctx.data_mut(|d| {
                         d.insert_temp(framed, want);
                         d.insert_temp(key.with("hwnd"), h);
                     });
                 }
-            } else if crate::win32::dialog_frame(
-                title,
-                client,
-                !crate::theme::dark_surface(),
-                scale,
-            ) {
+            } else if crate::win32::dialog_frame(title, shown, !crate::theme::dark_surface(), scale)
+            {
                 ctx.data_mut(|d| d.insert_temp(framed, want));
             }
         }

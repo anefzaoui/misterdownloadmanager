@@ -84,8 +84,18 @@ tar -C "$stage" -czf "$dist/$name.tar.gz" "$name"
 # libxkbcommon-x11 (winit's keyboard under X11, and XWayland, MDM's default in a Wayland session)
 # the window panics at start; EGL draws Wayland windows; without the CA certificates no download
 # starts, HTTP ones too ("No CA certificates were loaded from the system"). GTK pulls in the rest.
+# The browsers' host manifests for everyone (#266), in the .deb and .rpm only: each folder the
+# browsers read them from (/etc/opt/chrome, /etc/chromium, /etc/opt/edge, /usr/lib/mozilla and
+# /usr/lib64/mozilla), naming /usr/bin/misterdownloadmanager-nmhost. The package owns them, so
+# uninstalling it removes them (not conffiles: `apt remove` takes them too), and MDM writes none
+# in the home folder for a browser that reads them. The AppImage and the tar.gz register per user.
+system="$stage/system"
+"$tree/usr/bin/misterdownloadmanager-nmhost" --package-manifests "$system"
 deb="$stage/deb"
 cp -r "$tree" "$deb"
+# Debian and Ubuntu's Firefox reads /usr/lib/mozilla; lib64's is Fedora's and openSUSE's.
+cp -r "$system/." "$deb/"
+rm -rf "$deb/usr/lib64"
 mkdir -p "$deb/DEBIAN"
 cat > "$deb/DEBIAN/control" <<EOF
 Package: misterdownloadmanager
@@ -121,6 +131,7 @@ browser, and downloads videos and torrents.
 
 %install
 cp -a "$tree/." %{buildroot}/
+cp -a "$system/." %{buildroot}/
 
 %files
 /usr/bin/misterdownloadmanager
@@ -131,6 +142,8 @@ cp -a "$tree/." %{buildroot}/
 /usr/share/icons/hicolor/256x256/apps/misterdownloadmanager.png
 /usr/share/misterdownloadmanager
 /usr/share/doc/misterdownloadmanager
+$(cd "$system" && find . -mindepth 1 -type d | sed 's|^\.||' | grep -Ev '^/(etc|etc/opt|usr|usr/lib|usr/lib64)$' | sort | sed 's|^|%dir |')
+$(cd "$system" && find . -type f | sed 's|^\.||' | sort)
 EOF
 rpmbuild --define "_topdir $rpm" --define "_build_id_links none" -bb "$rpm/SPECS/mdm.spec"
 cp "$rpm"/RPMS/x86_64/*.rpm "$dist/$name.rpm"

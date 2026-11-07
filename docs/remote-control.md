@@ -9,7 +9,7 @@ The remote control is **off until you turn it on**, it answers **only phones and
 paired** with a code MDM shows, and it listens **only on your local network** (your Wi-Fi or your
 cable), never on an address the internet can reach.
 
-![Options, Remote](images/options-remote.png)
+![Options, Remote](images/options-remote.webp)
 
 ## Turn it on
 
@@ -39,7 +39,7 @@ A code works once, for ten minutes, and not after five wrong tries: click **New 
 another. To keep the page one tap away, add it to the phone's home screen (the browser's menu:
 **Add to Home screen**).
 
-![The page on a phone](images/remote-phone.png)
+![The page on a phone](images/remote-phone.webp)
 
 ## What the page does
 

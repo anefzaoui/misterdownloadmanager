@@ -1,4 +1,5 @@
-# Screenshots for the README and docs/ (docs/images/<name>.png). The published ones are taken on
+# Screenshots for the README and docs/ (raw PNGs; `python tools/shots/make.py docs <run>` makes
+# docs/images/<name>.webp of them, tools/website/screens.py the site's). The published ones are taken on
 # GitHub's Windows runner (.github/workflows/docs-shots.yml), a stock Windows whose file icons are
 # Windows' own; a run here shows this PC's. At 1x: MDM_ZOOM=2 draws the content
 # twice as large but Windows keeps the title bar at the display's scale, out of proportion. Runs its
@@ -176,7 +177,8 @@ try {
   # /show crash-test:freeze for the crash report window's shot.
   $env:MDM_CRASH_TEST = "1"
   $env:MDM_DATA_DIR = "$work\data"
-  $env:MDM_ZOOM = "$Zoom"
+  # Only when asked: MDM_ZOOM overrides View → Interface size (-Settings '"interface_size":150').
+  if ($Zoom -ne 1) { $env:MDM_ZOOM = "$Zoom" } else { Remove-Item Env:MDM_ZOOM -ErrorAction SilentlyContinue }
   $env:MDM_OFFSCREEN = "1"
   if ($At) { $env:MDM_OFFSCREEN_AT = $At }
   $app = Start-Process -PassThru $Exe

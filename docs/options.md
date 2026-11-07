@@ -35,7 +35,8 @@ See [Browser integration](browser-integration.md).
 *Save to: each category's file types and folder.*
 
 - **Category** — choose a category to see and change its settings below.
-- **New** — make your own category. **Edit...** changes the selected one: its folder, and for your own categories its name and file types.
+- **New** — make your own category. **Edit...** changes the selected one: its name, file types and folder. The built-in categories (Compressed, Documents, Music, Programs, Video) can be renamed, given other file types and deleted like your own; a renamed one keeps its folder. General and Torrents change only their folder.
+- **Restore the built-in categories** — brings the built-in categories back as they came, after you renamed, retyped or deleted them.
 - **Automatically put in "…" category the following file types** — the file types that go to this category.
 - **Default download directory for "…" category** — the category's folder. Type a path or click **Browse**.
 - **Change folder for "…" category on last selected** — when you pick another folder in **Download File Info**, it becomes the category's folder from then on. On by default. (It sets the first state of **Remember this path** in that window.)
@@ -73,7 +74,7 @@ MDM doesn't use a temporary folder: every connection writes straight into the fi
   - **If it can't be reached, use the system's DNS**: off by default, so a DNS that doesn't answer stops the download with a message naming it rather than quietly showing your lookups to the system's DNS. A name the DNS says doesn't exist never falls back (that would undo a filtering DNS).
   - **Test** asks it for github.com and shows how long it took.
 
-  The names in your hosts file, and local names (single words, `.local`, `.lan`, `.home.arpa`, `.internal`, `localhost`), stay with the system's DNS. Video pages (yt-dlp) and torrent trackers still use the system's DNS. With a proxy, the proxy looks up the names of the sites it reaches for you.
+  The names in your hosts file, and local names (single words, `.local`, `.lan`, `.home.arpa`, `.internal`, `localhost`), stay with the system's DNS. Video pages (yt-dlp) and image galleries (gallery-dl) use the DNS you chose only while a [network adapter](#proxy--socks) is chosen; otherwise, like torrent trackers, they use the system's. With a proxy, the proxy looks up the names of the sites it reaches for you.
 
 More in [Connections and speed](connections-and-speed.md).
 
@@ -83,10 +84,10 @@ More in [Connections and speed](connections-and-speed.md).
 *Proxy / Socks: no proxy, the system's, or your own.*
 
 - **No proxy/socks** — connect directly. This is the default.
-- **Use system settings** — use the proxy set in Windows.
+- **Use system settings** — use the system's proxy: Windows' or macOS' settings, or on Linux the `https_proxy`, `http_proxy` and `all_proxy` variables of your session.
 - **Use automatic configuration script** — the proxy auto-config (PAC) script your network gives: type its address (`http://…/proxy.pac`, or a file). MDM fetches it and asks it which proxy each download goes through (`PROXY`, `SOCKS` or `DIRECT`), as browsers do. Until it has been fetched, or if it can't be, MDM uses the system's settings.
 - **Manual proxy/socks configuration** — type the proxy's address, **Port**, and a **UserName** and **Password** if it needs them, then tick the protocols it is for (**http**, **https**). For a SOCKS proxy, write the address as `socks5://host`.
-- **Get System** — fill in the manual fields from Windows' proxy settings.
+- **Get System** — fill in the manual fields from Windows' proxy settings (on Windows).
 - **Use proxy/socks from a browser's request…** — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on **Send downloads through this browser's proxy or VPN extension** in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in **Options → Proxy / Socks**.
   - A proxy that asks for a login the VPN extension gives itself can't be shared: no other program has that login. The download then stops and says so, rather than going without the proxy. Use the VPN's own app, or choose its adapter under **Network adapter**.
   - In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.
@@ -106,6 +107,8 @@ More in [Connections and speed](connections-and-speed.md).
 *Sites Logins: a user name and password per site.*
 
 User names and passwords for sites that ask for them. **New** adds a row: the site (with a path if the login is only for part of it), the user name and the password. **Edit** and **Remove** change or delete the selected row. MDM uses the login for every download from that site. A login typed in **Add URL** (**Use authorization**) takes priority for that one download.
+
+The passwords (these, the proxy's and the debrid accounts') are kept in the system's keychain: Windows Credential Manager, the keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) or the macOS keychain; MDM's settings keep only a reference. A locked keyring is never unlocked for MDM: without one, they stay in MDM's settings, sealed for your Windows account on Windows. **Options → Accounts** says where they are. A [portable copy](portable.md) keeps them in its own folder.
 
 **Cookies for video sites** — for videos that play only when you're signed in (YouTube's "Sign in to confirm you're not a bot"):
 
@@ -152,7 +155,7 @@ Archives (zip, 7z, rar, tar, gz, xz), and [Link grabber](link-grabber.md).
 
 ## Remote
 
-![Options: Remote](images/options-remote.png)
+![Options: Remote](images/options-remote.webp)
 
 Control MDM from your phone or another computer on the local network: see
 [Control MDM from your phone](remote-control.md).
@@ -171,7 +174,7 @@ A few settings live outside this window:
 
 - **Downloads → Speed Limiter → Settings...** — speed limits. See [Connections and speed](connections-and-speed.md#speed-limiter).
 - **Tasks → Torrent settings...** — sharing and file associations. See [Torrents](torrents.md#torrent-settings).
-- **View → Dark Mode support** and **View → Language**.
+- **View → Dark Mode support**, **Always dark**, **Theme**, **Draw with**, **Interface size** and **Language**. See [Getting started](getting-started.md#themes) and [Troubleshooting](troubleshooting.md).
 - **Help → Check for updates...** — **Check for updates at every start** is in that window.
 
 ## Next steps

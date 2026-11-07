@@ -564,8 +564,26 @@ fn fonts(ctx: &egui::Context, code: &str, all: bool) {
             }
         }
     }
+    #[cfg(windows)]
+    sharp_text(&mut defs);
     ctx.set_fonts(defs);
     text_styles(ctx);
+}
+
+/// Windows' fonts drawn as sharp as Windows draws them (#262): each glyph grid-fitted across too
+/// (the fonts' own hinting, as Windows runs it for its grey text), and started on a whole pixel.
+/// egui hints only up and down by default and places glyphs at quarter pixels, which left the
+/// upright strokes of Segoe UI and Tahoma two pixels wide and grey at 9 pt: text read as blurred,
+/// most at 100 % and 125 %. Letters keep their unhinted advances, so a word can show a pixel more
+/// or less between two letters. Linux's and macOS's fonts keep egui's default (often unhinted
+/// fonts; a Mac's screen is dense enough).
+#[cfg(windows)]
+fn sharp_text(defs: &mut egui::FontDefinitions) {
+    for data in defs.font_data.values_mut() {
+        let data = std::sync::Arc::make_mut(data);
+        data.tweak.hinting_target = egui::epaint::text::HintingTarget::Mono;
+        data.tweak.subpixel_binning = Some(false);
+    }
 }
 
 /// egui's text sizes from the theme (tooltips, multi-line boxes).
@@ -588,7 +606,12 @@ pub fn apply(ctx: &egui::Context) {
     load_fonts(ctx, false);
     // A press held for a while is still a click when let go over the control, as in Windows
     // (egui gives it up after 0.8 s).
-    ctx.options_mut(|o| o.input_options.max_click_duration = f64::INFINITY);
+    ctx.options_mut(|o| {
+        o.input_options.max_click_duration = f64::INFINITY;
+        // Ctrl + / Ctrl − / Ctrl 0 step through View → Interface size and are saved (scale.rs),
+        // not egui's own 10 % steps.
+        o.zoom_with_keyboard = false;
+    });
     egui_extras::install_image_loaders(ctx);
     apply_theme(ctx);
 }
