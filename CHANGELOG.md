@@ -510,6 +510,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **The crash report window's status line stays inside the window**
+  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): the line above the
+  check box ("The symbols couldn't be fetched: …", an issue's title, a translation) ran past the
+  window's right edge, or its left edge in Persian. It is now cut with "…" at the margin and shown
+  whole under the pointer.
 - **Open folder no longer freezes the window on Linux**
   ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
   **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited
