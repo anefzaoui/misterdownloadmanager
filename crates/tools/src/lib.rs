@@ -48,6 +48,13 @@ pub enum Error {
     /// A program chosen as yt-dlp or ffmpeg (`chosen`) didn't answer as one.
     #[error("this program isn't {0}")]
     NotTheProgram(&'static str),
+    /// A program chosen as a helper is a release MDM can't drive (#236: gallery-dl before 1.20).
+    #[error("{name} {version} is too old: it needs {oldest} or newer")]
+    TooOld {
+        name: &'static str,
+        version: String,
+        oldest: &'static str,
+    },
     /// MDM's engine could not download it (its own words).
     #[error("{0}")]
     Download(String),

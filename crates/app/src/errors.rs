@@ -263,6 +263,15 @@ pub fn tools(e: &mdm_tools::Error) -> String {
         E::Adapter(e) => adapter(e),
         // i18n: error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
         E::NotTheProgram(name) => fmt(t("this program isn't {name}"), &[("name", name)]),
+        E::TooOld {
+            name,
+            version,
+            oldest,
+        } => fmt(
+            // i18n: error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+            t("{name} {version} is too old: MDM needs {oldest} or newer"),
+            &[("name", name), ("version", version), ("oldest", oldest)],
+        ),
     }
 }
 

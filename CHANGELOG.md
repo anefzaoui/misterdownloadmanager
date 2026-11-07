@@ -567,6 +567,24 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Get System and the Scheduler's "when done" drop-down fit in every language**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #247): Options →
+  Proxy's title takes two lines where one leaves Get System too little room (Bulgarian,
+  Armenian, Tamil), and where it ran over the page's icon or past the window's left edge
+  (Greek, Finnish, Catalan, Estonian, Latvian, Lithuanian, Malayalam, Serbian, Afrikaans). In
+  Greek and Malayalam, the Scheduler's "Turn off computer when done" and its choices have
+  shorter machine translations, so the drop-down fits beside the caption; in Belarusian, Welsh,
+  French, Russian, Tamil and Ukrainian, the longer ones the translation review brought (such as
+  Russian's Hibernate) are back to their earlier, shorter wording. English is unchanged.
+- **Galleries work with the gallery-dl a Linux distribution ships**
+  ([#236](https://github.com/anefzaoui/misterdownloadmanager/issues/236)): with Ubuntu 24.04's
+  gallery-dl 1.26.9 chosen in Helpers, every gallery failed at once ("unrecognized arguments:
+  --no-input"): MDM passed options that only newer releases know. MDM now reads the chosen
+  gallery-dl's version and passes only what that release accepts, from 1.20 (Ubuntu 22.04) to
+  today's; checked against every release from 1.17 to 1.32. An older one (Debian 11's 1.17) is
+  refused when chosen, saying it is too old and which version MDM needs, and one chosen before is
+  passed over for MDM's own copy, which Helpers says. gallery-dl 1.30.0, whose version starts
+  with an empty line, is no longer taken for another program.
 - **Brave Origin connects on Linux, and the AppImage's helper is always there**
   ([#253](https://github.com/anefzaoui/misterdownloadmanager/issues/253)): Brave Origin keeps
   its settings in a folder of its own (`~/.config/BraveSoftware/Brave-Origin`), which MDM didn't

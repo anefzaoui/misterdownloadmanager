@@ -246,15 +246,23 @@ const FFMPEG_PROTOCOLS: &str = "file,crypto,data,http,https,tls,tcp,httpproxy";
 /// `gallery-dl` (#58) with arguments in the same layers as [`ytdlp`]: `ours`, then the fixed
 /// ones (no configuration file of the person's, never a question on the console), then `--` and
 /// the address. Its output is read as UTF-8, as yt-dlp's is (#79). With an adapter chosen it goes
-/// through the relay (#35, [`through_adapter`]).
-pub fn gallery_dl(exe: &Path, ours: &[String], url: &str) -> Result<Command, ProcError> {
-    let mut cmd = Command::new(exe);
+/// through the relay (#35, [`through_adapter`]). Only options `tool`'s version accepts
+/// (`gallery::Accepts`, #236: a distribution's may be older than MDM's own copy).
+pub fn gallery_dl(
+    tool: &crate::Installed,
+    ours: &[String],
+    url: &str,
+) -> Result<Command, ProcError> {
+    let mut cmd = Command::new(&tool.exe);
     let route = through_adapter(&mut cmd, Helper::GalleryDl)?;
     cmd.env("PYTHONIOENCODING", "utf-8");
     for a in ours {
         cmd.arg(safe(a)?);
     }
-    cmd.args(["--ignore-config", "--no-input"]);
+    cmd.arg("--ignore-config");
+    if crate::gallery::Accepts::of(&tool.version).no_input {
+        cmd.arg("--no-input");
+    }
     cmd.args(route);
     cmd.arg("--");
     cmd.arg(safe(url)?);
