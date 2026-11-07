@@ -153,6 +153,10 @@
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
 	(the Torrents category's folder)	(ang folder ng kategoryang Torrents)
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent file
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -239,6 +243,10 @@
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
 	Accounts	Mga Account
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	Idagdag
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Magdagdag ng download (Magdagdag ng URL)
@@ -320,6 +328,14 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Added {source}	Idinagdag {source}
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	Naidagdag.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	Naidagdag. Binabasa ng MDM ang torrent: sasama ito sa listahan sa ilang sandali.
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -329,6 +345,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	Ang address ay binago sa {host}
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	Address o magnet link
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -365,6 +385,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Algeria	Algeria
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	Lahat
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	Lahat ng Download
@@ -539,6 +563,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	Austria
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	Awtomatiko (ayon sa uri ng file)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -691,7 +719,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	Canada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	Kanselahin
@@ -726,7 +754,8 @@
 #. page title in the Options window
 #, machine
 	Categories, file types, folders	Mga Kategorya, uri ng file, folder
-#. text in a dialog box; text in the Options window
+#. text in a dialog box; text in the Options window; text in remote.rs
+#. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	Kategorya
 #. text in categories.rs
@@ -744,6 +773,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Central African Republic	Central African Republic
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	Certificate (SHA-256): {fingerprint}
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
@@ -823,6 +856,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	China	China
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	Pumili ng .torrent file
 #. text in langpick.rs
 #, machine
 	Choose a language	Pumili ng wika
@@ -867,6 +904,14 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cocos (Keeling) Islands	Cocos (Keeling) Islands
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	Code
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	Code:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -875,7 +920,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	Comoros
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
@@ -1051,6 +1096,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its files stay where they are.	Sigurado ka bang gusto mong tanggalin ang kategoryang “{category}”? Mananatili ang mga file nito sa kinalalagyan ng mga ito.
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	Burahin din ang file
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1075,6 +1124,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	Paglalarawan:
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	Device
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
@@ -1139,7 +1192,8 @@
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	Huwag kumuha ng mga file na mas maliit sa (KB, 0 = anumang laki):
-#. text in a download's progress window
+#. text in the Options window; text in a download's progress window
+#. button: close the window (the device is paired)
 #, machine
 	Done	Tapos na
 #. button in the Options window
@@ -1236,7 +1290,7 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	Na-download ang {size} ({bytes} Bytes)
-#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	Nagda-download
@@ -1380,7 +1434,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	Eritrea
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1410,6 +1464,13 @@
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
 	Every connection goes through it, from {ip}.	Bawat koneksyon ay dumadaan dito, mula sa {ip}.
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	Bawat address ng lokal na network
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Everything at its normal size (100%)	Lahat sa normal na laki (100%)
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1577,8 +1638,9 @@
 #. text in the Find window
 #, machine
 	Find:	Hanapin:
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
+#. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	Tapos na
 #. text in countries.rs
@@ -1612,6 +1674,14 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	Piliting tapusin ang mga proseso
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	Kalimutan ang device na ito
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	Kalimutan ang device na ito? Kakailanganin nito ng bagong code para makakonekta muli.
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1653,6 +1723,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	mula sa isang page (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	mula sa ipinares na device
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
@@ -1984,6 +2058,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Israel	Israel
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	Hindi ito makapagsimula: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2120,6 +2199,10 @@
 #. text in the Batch download window
 #, machine
 	Last file:	Huling file:
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	Huling nakita
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 #, machine
@@ -2144,6 +2227,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Lesotho	Lesotho
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	Hayaan ang mga telepono at computer sa lokal na network na kontrolin ang MDM
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2191,6 +2278,10 @@
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
 	List the rest	Ilista ang natitira
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	Makinig sa:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2354,6 +2445,35 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mayotte	Mayotte
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	Hindi maabot ang MDM sa network ngayon: Sinasabi ng Mga Opsyon → Remote kung bakit.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	Hindi mada-download ng MDM ang address na ito.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	Hindi ito maidagdag ng MDM.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	Hindi ito magawa ng MDM.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	Hindi sumasagot ang MDM. Suriin kung tumatakbo ito at nasa parehong network.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	Hindi sumasagot ang MDM. Sinusubukan ulit...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	Walang code na ipinapakita ang MDM ngayon. I-click muna ang Ipares ang device doon.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2464,6 +2584,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Montserrat	Montserrat
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	Higit pa
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2591,6 +2715,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Caledonia	New Caledonia
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	Bagong code
 #. text in the Options window
 #, machine
 	New exception	Bagong exception
@@ -2652,6 +2780,10 @@
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
 	No downloads here	Walang mga download dito
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	Walang mga download dito.
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
@@ -2673,6 +2805,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	Walang wikang tumutugma.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	Walang lokal na network ngayon: magsisimula ito kapag sumali ang computer sa isa.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2822,6 +2958,10 @@
 #, machine
 	Off: a finished torrent stops, like any download.	Naka-off: humihinto ang natapos na torrent, tulad ng anumang download.
 #. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	Naka-off: walang sinuman sa network ang makakaabot sa MDM.
+#. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Mag-alok na i-download ang mga link na kinopya sa clipboard
 #. text in the Link grabber window
@@ -2846,10 +2986,22 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	Sa macOS, tanging administrator lang ang makakapag-iskedyul ng paggising
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Sa computer, buksan ang Mga Opsyon, pagkatapos ay Remote, at i-click ang Ipares ang device. Ilagay ang code na ipinapakita nito.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	Sa telepono, i-scan ang code na ito gamit ang camera, o buksan ang address at ilagay ang code.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
 #, machine
 	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Sa Windows, maaaring i-lock ng Chrome, Edge at Brave ang kanilang mga cookie. Gumagana ang Firefox.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	Naka-on. Sa telepono, buksan ang address na ito:
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Minsan sa
@@ -2881,6 +3033,10 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	Ang mga MP4 at MKV na video lang ang puwedeng maglaman ng mga subtitle
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Tanging ang mga ipinares na device ang makakakita o makakapagbago ng anuman. Sa unang pagkakataon, magbibigay ng babala ang browser ng telepono tungkol sa sariling certificate ng MDM: ang fingerprint nito ay ang nasa itaas.
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -2951,6 +3107,31 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	Address ng pahina
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	Ipares
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	Ipares ang device
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	Ipares ang device...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Ipares sa Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	Naipares
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	Mga naipares na device:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3001,8 +3182,9 @@
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
 	Pasted	Idinikit
-#. text in a download's progress window
+#. text in a download's progress window; text in remote.rs
 #. verb: pause the download
+#. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	I-pause
 #. text in a download's Properties window
@@ -3059,7 +3241,12 @@
 #. label in the Options window
 #, machine
 	Port	Port
-#. text in the Add torrent window
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	Ginagamit ang Port {port} ng isa pang program: pumili ng iba.
+#. text in the Options window; text in the Add torrent window
+#. Options → Remote: label before the port number box
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	Port:
@@ -3143,6 +3330,10 @@
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	Huminto/natapos ang pagproseso ng queue
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	Naka-queue
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3214,8 +3405,17 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	Tandaan ang path na ito para sa kategoryang "{category}"
-#. button in the Options window; button in rssdlg.rs
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	Remote
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	Remote control
+#. button in the Options window; text in remote.rs; button in rssdlg.rs
 #. verb: remove the item
+#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	Alisin
@@ -3226,6 +3426,11 @@
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
 	Remove its downloads from the list (running ones move to General)	Alisin ang mga download nito mula sa listahan (ang mga tumatakbo ay ililipat sa Pangkalahatan)
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	Alisin ang {name} sa listahan?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3713,8 +3918,9 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sri Lanka	Sri Lanka
-#. text in the Link grabber window
+#. text in the Link grabber window; text in remote.rs
 #. Link grabber button: download the ticked links now
+#. remote control page (on a phone): button: start a download or a queue
 #, machine
 	Start	Simulan
 #. button in a dialog box
@@ -3732,6 +3938,10 @@
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Simulan ang pangunahing queue ng download
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	Simulan ngayon
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	Mga panimulang posisyon at progreso ng download ayon sa mga koneksyon
@@ -3771,7 +3981,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	Estado
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -3780,7 +3990,8 @@
 #. label before the download's state
 #, machine
 	Status:	Status:
-#. text in the Add torrent window
+#. text in remote.rs; text in the Add torrent window
+#. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	Ihinto
 #. text in the Scheduler window; checkbox in the Scheduler window
@@ -3809,7 +4020,7 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	Ihinto ang {queue}
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
@@ -3965,6 +4176,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	Mahahanap ng mga browser ang Mister Download Manager
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	Maaaplay ang mga pagbabago kapag nag-click ka ng OK.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4245,6 +4460,10 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Wala pang mga download ang kategorya o pila na ito.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	Hindi na magagamit ang code na ito.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
@@ -4257,6 +4476,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
 	This computer has no wake alarm that programs can set	Walang wake alarm ang computer na ito na maaaring itakda ng mga program
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	Ang computer na ito lang (127.0.0.1)
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4265,6 +4488,14 @@
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
 	This date has passed: the queue will not start	Lumipas na ang petsang ito: hindi magsisimula ang pila
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	Pangalan ng device na ito
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	Masyadong malaki ang file na ito para maging torrent.
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Hindi umiiral ang folder na ito:
@@ -4279,6 +4510,10 @@
 #. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	hindi ito magnet link o .torrent file
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	Hindi ito torrent file.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4473,6 +4708,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	I-on
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	I-on muna ang remote control.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4540,8 +4779,9 @@
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	Alisin sa pagkakapili ang lahat
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are not complete yet
+#. remote control page (on a phone): tab: downloads not finished yet
 #, machine
 	Unfinished	Hindi Tapos
 #. text in countries.rs
@@ -4733,16 +4973,30 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	volume {n} of it is missing	nawawala ang volume {n} nito
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	Maghintay sandali, pagkatapos ay subukang muli.
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
 	Wait for the list, or stop listing	Hintayin ang listahan, o ihinto ang paglilista
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	Maghintay sa {queue}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	Naghihintay
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	Naghihintay para sa device. Gumagana ang code sa loob ng {time}.
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Naghihintay: naabot na ang limitasyon sa pag-download (Scheduler)
@@ -4780,6 +5034,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	Ano ang bago:
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	Kailan
 #. text in the Batch download window
 #, machine
 	Wildcard size	Laki ng wildcard
@@ -4819,6 +5077,15 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	Isulat ang mga petsa at oras
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	Maling code. Magpakita ng bagong code sa MDM at subukang muli.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	Maling code. Natitirang pagsubok: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4846,6 +5113,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	You have the latest version of Mister Download Manager ({version}).	Mayroon ka ng pinakabagong bersyon ng Mister Download Manager ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, under the new version's line, when MDM was installed by the Linux system's package manager (pacman, ...), which MDM can't update itself
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}, from your system's package manager: update it there.	Mayroon kang bersyon {version}, mula sa package manager ng iyong system: i-update ito doon.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -4958,6 +5230,15 @@
 #. {count} = a number (keep the braces as they are)
 #, machine
 	{count}, {speed}	{count}, {speed}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	Naipares na ang {device}. Makokontrol na nito ang MDM.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} ng {size}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -5130,6 +5411,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} libre
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5205,6 +5491,14 @@ column	Time left	Natitirang oras
 #, machine
 column	Transfer rate	Rate ng paglipat
 #. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Isa pang Mister Download Manager (isang server)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	Extension ng browser
+#. text in the browser extension
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -5244,9 +5538,17 @@ extension	Download with Mister Download Manager	I-download gamit ang Mister Down
 #, machine
 extension	Downloads from {site} stay with the browser	Mananatili sa browser ang mga download mula sa {site}
 #. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	Napupunta ang mga download sa {address}
+#. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
 extension	Drag to move it along the video's edge	I-drag para ilipat ito sa gilid ng video
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	Ilagay ang https:// address nito.
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5267,6 +5569,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	Pinduti
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	Paano ito ayusin
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	Hindi ito gumana. Subukang muli.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	Wala itong ipinapakitang code ngayon: i-click muna ang Ipares ang device doon.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -5339,6 +5649,18 @@ extension	Never take downloads from {site}	Huwag kailanman kumuha ng mga downloa
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	Walang video o tunog na nakita sa pahinang ito. I-play ito, pagkatapos ay buksan muli ito.
 #. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Hindi naabot. Buksan ang address nito nang isang beses sa browser na ito at tanggapin ang certificate nito, pagkatapos ay subukang muli.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	Buksan ito
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Buksan ang address nito nang isang beses at tanggapin ang certificate nito, pagkatapos ay maglagay ng code mula sa Options, Remote, Ipares ang device nito (o misterdownloadmanager-cli pair).
+#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Buksan ang Mister Download Manager
@@ -5347,6 +5669,14 @@ extension	Open Mister Download Manager	Buksan ang Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	Mga Opsyon...
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	Ipares
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	Code ng pagpapares
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
@@ -5363,6 +5693,10 @@ extension	Protected video: it can't be saved	Protektadong video: hindi ito mase-
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
 extension	Send downloads through this browser's proxy or VPN extension	Ipadala ang mga download sa pamamagitan ng proxy o VPN extension ng browser na ito
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	Ipadala ang mga download sa
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5396,6 +5730,10 @@ extension	The last download was left to the browser.	Ang huling download ay iniw
 #, machine
 extension	This browser isn't ticked in Options → General.	Hindi naka-tick ang browser na ito sa Mga Opsyon → Pangkalahatan.
 #. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	Ang computer na ito
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Masyadong malaki ang mga detalye ng download na ito para maibigay
@@ -5407,6 +5745,14 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	Naka-off ang Gumamit ng advanced na integrasyon ng browser sa Mga Opsyon → Pangkalahatan.
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	Maghintay sandali, pagkatapos ay subukang muli.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	Maling code.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6123,335 +6469,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/seg
-#. text in remote.rs
-#. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
-	.torrent file	.torrent file
-#. text in remote.rs
-#. remote control page (on a phone): button: add the download
-#, machine
-	Add	Idagdag
-#. text in remote.rs
-#. remote control page (on a phone): a download was added
-#, machine
-	Added.	Naidagdag.
-#. text in remote.rs
-#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	Naidagdag. Binabasa ng MDM ang torrent: sasama ito sa listahan sa ilang sandali.
-#. text in remote.rs
-#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
-	Address or magnet link	Address o magnet link
-#. text in remote.rs
-#. remote control page (on a phone): tab: every download
-#, machine
-	All	Lahat
-#. text in remote.rs
-#. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
-	Automatic (by file type)	Awtomatiko (ayon sa uri ng file)
-#. text in the Options window
-#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
-	Certificate (SHA-256): {fingerprint}	Certificate (SHA-256): {fingerprint}
-#. text in remote.rs
-#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
-	Choose a .torrent file	Pumili ng .torrent file
-#. text in remote.rs
-#. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
-	Code	Code
-#. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
-#, machine
-	Code:	Code:
-#. text in remote.rs
-#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
-#, machine
-	Delete the file too	Burahin din ang file
-#. text in the Options window
-#. column title: a paired phone's or computer's name
-#, machine
-	Device	Device
-#. text in the Options window
-#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
-#, machine
-	Every local network address	Bawat address ng lokal na network
-#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
-	Everything at its normal size (100%)	Lahat sa normal na laki (100%)
-#. text in remote.rs
-#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
-#, machine
-	Forget this device	Kalimutan ang device na ito
-#. text in remote.rs
-#. remote control page (on a phone): question before unpairing this phone
-#, machine
-	Forget this device? It needs a new code to connect again.	Kalimutan ang device na ito? Kakailanganin nito ng bagong code para makakonekta muli.
-#. message or event log entry in the main window
-#. where a download came from (its Properties): a phone or computer paired in Options → Remote
-#, machine
-	from a paired device	mula sa ipinares na device
-#. text in the Options window
-#. Options → Remote → Status: it could not start; {error} = the system's reason
-#. {error} = an error message (keep the braces as they are)
-#, machine
-	It could not start: {error}	Hindi ito makapagsimula: {error}
-#. text in the Options window
-#. column title: when the device last reached MDM
-#, machine
-	Last seen	Huling nakita
-#. checkbox in the Options window
-#. Options → Remote check box (off by default)
-#, machine
-	Let phones and computers on the local network control MDM	Hayaan ang mga telepono at computer sa lokal na network na kontrolin ang MDM
-#. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
-#, machine
-	Listen on:	Makinig sa:
-#. text in the Options window
-#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
-#, machine
-	MDM can't be reached on the network now: Options → Remote says why.	Hindi maabot ang MDM sa network ngayon: Sinasabi ng Mga Opsyon → Remote kung bakit.
-#. text in remote.rs
-#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
-#, machine
-	MDM cannot download this address.	Hindi mada-download ng MDM ang address na ito.
-#. text in remote.rs
-#. remote control page (on a phone): adding a download failed
-#, machine
-	MDM could not add it.	Hindi ito maidagdag ng MDM.
-#. text in remote.rs
-#. remote control page (on a phone): an action failed
-#, machine
-	MDM could not do it.	Hindi ito magawa ng MDM.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached while pairing
-#, machine
-	MDM does not answer. Check that it is running and on the same network.	Hindi sumasagot ang MDM. Suriin kung tumatakbo ito at nasa parehong network.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
-#. the trailing ... means it is still going on: keep it
-#, machine
-	MDM does not answer. Trying again...	Hindi sumasagot ang MDM. Sinusubukan ulit...
-#. text in remote.rs
-#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
-#, machine
-	MDM shows no code now. Click Pair a device there first.	Walang code na ipinapakita ang MDM ngayon. I-click muna ang Ipares ang device doon.
-#. text in remote.rs
-#. remote control page (on a phone): its menu's button
-#, machine
-	More	Higit pa
-#. button in the Options window
-#. Options → Remote → Pair a device: button: show a new code
-#, machine
-	New code	Bagong code
-#. text in remote.rs
-#. remote control page (on a phone): the list shown is empty
-#, machine
-	No downloads here.	Walang mga download dito.
-#. text in the Options window
-#. Options → Remote → Status: on, but the computer has no local network address now
-#, machine
-	No local network now: it starts when the computer joins one.	Walang lokal na network ngayon: magsisimula ito kapag sumali ang computer sa isa.
-#. text in the Options window
-#. Options → Remote → Status: the remote control is off
-#, machine
-	Off: nothing on the network can reach MDM.	Naka-off: walang sinuman sa network ang makakaabot sa MDM.
-#. text in remote.rs
-#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
-#, machine
-	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	Sa computer, buksan ang Mga Opsyon, pagkatapos ay Remote, at i-click ang Ipares ang device. Ilagay ang code na ipinapakita nito.
-#. text in the Options window
-#. Options → Remote → Pair a device: how to pair
-#, machine
-	On the phone, scan this code with the camera, or open the address and enter the code.	Sa telepono, i-scan ang code na ito gamit ang camera, o buksan ang address at ilagay ang code.
-#. text in the Options window
-#. Options → Remote → Status: on; the address follows in a box below
-#, machine
-	On. On the phone, open this address:	Naka-on. Sa telepono, buksan ang address na ito:
-#. text in the Options window
-#. Options → Remote, at the bottom of the page
-#, machine
-	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Tanging ang mga ipinares na device ang makakakita o makakapagbago ng anuman. Sa unang pagkakataon, magbibigay ng babala ang browser ng telepono tungkol sa sariling certificate ng MDM: ang fingerprint nito ay ang nasa itaas.
-#. text in remote.rs
-#. remote control page (on a phone): button: pair this phone with MDM
-#, machine
-	Pair	Ipares
-#. window title in the Options window
-#. window title: Options → Remote → Pair a device...
-#, machine
-	Pair a device	Ipares ang device
-#. button in the Options window
-#. Options → Remote button: shows a code (and a QR code) that pairs a phone
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Pair a device...	Ipares ang device...
-#. text in remote.rs
-#. remote control page (on a phone): title of the pairing screen
-#, machine
-	Pair with Mister Download Manager	Ipares sa Mister Download Manager
-#. text in the Options window
-#. column title: when the device was paired
-#, machine
-	Paired	Naipares
-#. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
-#, machine
-	Paired devices:	Mga naipares na device:
-#. text in the Options window
-#. Options → Remote → Status: another program uses the port; {port} = its number
-#, machine
-	Port {port} is used by another program: choose another.	Ginagamit ang Port {port} ng isa pang program: pumili ng iba.
-#. text in remote.rs
-#. remote control page (on a phone): a download's state: added, waiting to start
-#, machine
-	Queued	Naka-queue
-#. text in the Options window
-#. tab title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote	Remote
-#. text in the Options window
-#. Options page title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote control	Remote control
-#. text in remote.rs
-#. remote control page (on a phone): question before removing a download; {name} its file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Remove {name} from the list?	Alisin ang {name} sa listahan?
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: start the download at once
-#, machine
-	Start now	Simulan ngayon
-#. text in the Options window
-#. Options → Remote → Status: the settings were changed; they apply on OK
-#, machine
-	The changes apply when you click OK.	Maaaplay ang mga pagbabago kapag nag-click ka ng OK.
-#. text in the Options window
-#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
-#, machine
-	This code can't be used any more.	Hindi na magagamit ang code na ito.
-#. text in the Options window
-#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
-#, machine
-	This computer only (127.0.0.1)	Ang computer na ito lang (127.0.0.1)
-#. text in remote.rs
-#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
-#, machine
-	This device's name	Pangalan ng device na ito
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen is too large for a .torrent file
-#, machine
-	This file is too large to be a torrent.	Masyadong malaki ang file na ito para maging torrent.
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen isn't a .torrent file
-#, machine
-	This is not a torrent file.	Hindi ito torrent file.
-#. tooltip (why a control is greyed) in the Options window
-#. why Options → Remote → Pair a device... is greyed
-#, machine
-	Turn on the remote control first.	I-on muna ang remote control.
-#. text in remote.rs
-#. remote control page (on a phone): codes were tried too fast
-#, machine
-	Wait a moment, then try again.	Maghintay sandali, pagkatapos ay subukang muli.
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
-#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
-	Wait in {queue}	Maghintay sa {queue}
-#. text in the Options window
-#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
-#. {time} = a time of day (keep the braces as they are)
-#, machine
-	Waiting for the device. The code works for {time}.	Naghihintay para sa device. Gumagana ang code sa loob ng {time}.
-#. text in remote.rs
-#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
-#, machine
-	When	Kailan
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed and the code is void now
-#, machine
-	Wrong code. Show a new code in MDM and try again.	Maling code. Magpakita ng bagong code sa MDM at subukang muli.
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
-#. {n} = a number (keep the braces as they are)
-#, machine
-	Wrong code. Tries left: {n}	Maling code. Natitirang pagsubok: {n}
-#. text in the Options window
-#. Options → Remote → Pair a device: done; {device} = the name it was given
-#, machine
-	{device} is paired. It can control MDM now.	Naipares na ang {device}. Makokontrol na nito ang MDM.
-#. text in remote.rs
-#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{done} of {size}	{done} ng {size}
-#. text in remote.rs
-#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{size} free	{size} libre
-#. text in the browser extension
-#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
-#, machine
-extension	Another Mister Download Manager (a server)	Isa pang Mister Download Manager (isang server)
-#. text in the browser extension
-#. the name this browser gets in the other MDM's list of paired devices
-#, machine
-extension	Browser extension	Extension ng browser
-#. text in the browser extension
-#. the toolbar button's status while downloads go to another MDM
-#, machine
-extension	Downloads go to {address}	Napupunta ang mga download sa {address}
-#. text in the browser extension
-#. the address typed isn't an https:// address
-#, machine
-extension	Enter its https:// address.	Ilagay ang https:// address nito.
-#. text in the browser extension
-#. pairing failed for another reason
-#, machine
-extension	It didn't work. Try again.	Hindi ito gumana. Subukang muli.
-#. text in the browser extension
-#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
-#, machine
-extension	It shows no code now: click Pair a device there first.	Wala itong ipinapakitang code ngayon: i-click muna ang Ipares ang device doon.
-#. text in the browser extension
-#. pairing failed: the other MDM didn't answer
-#, machine
-extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	Hindi naabot. Buksan ang address nito nang isang beses sa browser na ito at tanggapin ang certificate nito, pagkatapos ay subukang muli.
-#. text in the browser extension
-#. button: open the other MDM's address in a tab (to accept its certificate once)
-#, machine
-extension	Open it	Buksan ito
-#. text in the browser extension
-#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
-#, machine
-extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	Buksan ang address nito nang isang beses at tanggapin ang certificate nito, pagkatapos ay maglagay ng code mula sa Options, Remote, Ipares ang device nito (o misterdownloadmanager-cli pair).
-#. text in the browser extension
-#. button: pair this browser with the other MDM using the code
-#, machine
-extension	Pair	Ipares
-#. text in the browser extension
-#. placeholder of the box for the 8-digit code the other MDM shows
-#, machine
-extension	Pairing code	Code ng pagpapares
-#. text in the browser extension
-#. heading in the toolbar button's popup, above the choice of where downloads go
-#, machine
-extension	Send downloads to	Ipadala ang mga download sa
-#. text in the browser extension
-#. choice under Send downloads to: the Mister Download Manager on this computer
-#, machine
-extension	This computer	Ang computer na ito
-#. text in the browser extension
-#. pairing failed: codes tried too fast
-#, machine
-extension	Wait a moment, then try again.	Maghintay sandali, pagkatapos ay subukang muli.
-#. text in the browser extension
-#. pairing failed: the code was wrong
-#, machine
-extension	Wrong code.	Maling code.

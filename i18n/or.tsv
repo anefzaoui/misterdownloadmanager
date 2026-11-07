@@ -153,6 +153,10 @@
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
 	(the Torrents category's folder)	(ଟୋରେଣ୍ଟ ବର୍ଗର ଫୋଲ୍ଡର)
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent ଫାଇଲ୍
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -239,6 +243,10 @@
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
 	Accounts	ଆକାଉଣ୍ଟ୍
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	ଯୋଗ କରନ୍ତୁ
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	ଡାଉନଲୋଡ୍ ଯୋଡ଼ନ୍ତୁ (URL ଯୋଡ଼ନ୍ତୁ)
@@ -320,6 +328,14 @@
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
 	Added {source}	{source} ରୁ ଯୋଡ଼ାଗଲା
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	ଯୋଗ କରାଗଲା।
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	ଯୋଗ କରାଗଲା। MDM ଟରେଣ୍ଟ୍ ପଢୁଛି: ଏହା କିଛି ସମୟ ମଧ୍ୟରେ ତାଲିକାରେ ଯୋଗ ଦେବ।
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -329,6 +345,10 @@
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
 	Address changed to {host}	ଠିକଣା {host} କୁ ବଦଳାଗଲା
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	ଠିକଣା କିମ୍ବା ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -365,6 +385,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Algeria	ଆଲଜେରିଆ
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	ସମସ୍ତ
 #. item in the Categories tree in the main window
 #, machine
 	All Downloads	ସମସ୍ତ ଡାଉନଲୋଡ୍
@@ -539,6 +563,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Austria	ଅଷ୍ଟ୍ରିଆ
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	ସ୍ୱୟଂଚାଳିତ (ଫାଇଲ୍ ପ୍ରକାର ଅନୁଯାୟୀ)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -691,7 +719,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Canada	କାନାଡା
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
 	Cancel	ବାତିଲ୍‍ କରନ୍ତୁ
@@ -726,7 +754,8 @@
 #. page title in the Options window
 #, machine
 	Categories, file types, folders	ବର୍ଗଗୁଡ଼ିକ, ଫାଇଲ୍‍ ପ୍ରକାରଗୁଡ଼ିକ, ଫୋଲ୍ଡର୍‍ଗୁଡ଼ିକ
-#. text in a dialog box; text in the Options window
+#. text in a dialog box; text in the Options window; text in remote.rs
+#. remote control page (on a phone): label of the category choice for a new download
 #, machine
 	Category	ବର୍ଗ
 #. text in categories.rs
@@ -744,6 +773,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Central African Republic	ମଧ୍ୟ ଆଫ୍ରିକୀୟ ଗଣରାଜ୍ୟ
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	ପ୍ରମାଣପତ୍ର (SHA-256): {fingerprint}
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
@@ -823,6 +856,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	China	ଚୀନ
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	ଏକ .torrent ଫାଇଲ୍ ବାଛନ୍ତୁ
 #. text in langpick.rs
 #, machine
 	Choose a language	ଏକ ଭାଷା ବାଛନ୍ତୁ
@@ -867,6 +904,14 @@
 #. a country's name (where a download's server is)
 #, machine
 	Cocos (Keeling) Islands	କୋକୋସ୍ (କିଲିଙ୍ଗ୍) ଦ୍ୱୀପପୁଞ୍ଜ
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	କୋଡ୍
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	କୋଡ୍:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -875,7 +920,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Comoros	କୋମୋରସ୍
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
@@ -1051,6 +1096,10 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Delete the category "{category}"? Its files stay where they are.	"{category}" ଶ୍ରେଣୀକୁ ଡିଲିଟ୍ କରିବେ କି? ଏହାର ଫାଇଲଗୁଡ଼ିକ ଯେଉଁଠାରେ ଅଛନ୍ତି ସେହିଠାରେ ରହିବେ।
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	ଫାଇଲ୍ ମଧ୍ୟ ଡିଲିଟ୍ କରନ୍ତୁ
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1075,6 +1124,10 @@
 #. text in a download's Properties window
 #, machine
 	Description:	ବର୍ଣ୍ଣନା:
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	ଡିଭାଇସ୍
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
@@ -1139,7 +1192,8 @@
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	ଏହାଠାରୁ ଛୋଟ ଫାଇଲ୍ ନିଅନ୍ତୁ ନାହିଁ (KB, 0 = ଯେକୌଣସି ଆକାର):
-#. text in a download's progress window
+#. text in the Options window; text in a download's progress window
+#. button: close the window (the device is paired)
 #, machine
 	Done	ସରିଛି
 #. button in the Options window
@@ -1236,7 +1290,7 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	Downloaded {size} ({bytes} Bytes)	ଡାଉନଲୋଡ୍ ହୋଇଛି {size} ({bytes} ବାଇଟ୍‌ସ)
-#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	ଡାଉନଲୋଡ୍ ହେଉଛି
@@ -1380,7 +1434,7 @@
 #. a country's name (where a download's server is)
 #, machine
 	Eritrea	ଇରିଟ୍ରିଆ
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1410,6 +1464,13 @@
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
 	Every connection goes through it, from {ip}.	ପ୍ରତ୍ୟେକ ସଂଯୋଗ ଏହା ମାଧ୍ୟମରେ {ip} ରୁ ଯାଇଥାଏ।
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	ପ୍ରତ୍ୟେକ ସ୍ଥାନୀୟ ନେଟୱର୍କ ଠିକଣା
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Everything at its normal size (100%)	ସବୁକିଛି ସାଧାରଣ ଆକାରରେ (100%)
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1577,8 +1638,9 @@
 #. text in the Find window
 #, machine
 	Find:	ଖୋଜନ୍ତୁ:
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
+#. remote control page (on a phone): tab: downloads finished
 #, machine
 	Finished	ସମାପ୍ତ
 #. text in countries.rs
@@ -1612,6 +1674,14 @@
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	ପ୍ରକ୍ରିୟାଗୁଡ଼ିକୁ ବଳପୂର୍ବକ ସମାପ୍ତ କରନ୍ତୁ
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	ଏହି ଡିଭାଇସକୁ ଭୁଲିଯାଆନ୍ତୁ
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	ଏହି ଡିଭାଇସକୁ ଭୁଲିଯିବେ କି? ପୁନର୍ବାର ସଂଯୋଗ କରିବାକୁ ଏହାକୁ ଏକ ନୂତନ କୋଡ୍ ଆବଶ୍ୟକ।
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1653,6 +1723,10 @@
 #. message or event log entry in the main window
 #, machine
 	from a page (yt-dlp)	ଏକ ପୃଷ୍ଠାରୁ (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	ଏକ ଯୋଡ଼ା ହୋଇଥିବା ଡିଭାଇସରୁ
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 #, machine
@@ -1984,6 +2058,11 @@
 #. a country's name (where a download's server is)
 #, machine
 	Israel	ଇସ୍ରାଏଲ୍
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	ଏହା ଆରମ୍ଭ ହୋଇପାରିଲା ନାହିଁ: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2120,6 +2199,10 @@
 #. text in the Batch download window
 #, machine
 	Last file:	ଶେଷ ଫାଇଲ୍:
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	ଶେଷ ଥର ଦେଖାଯାଇଥିଲା
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 #, machine
@@ -2144,6 +2227,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Lesotho	ଲେସୋଥୋ
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	ସ୍ଥାନୀୟ ନେଟୱର୍କରେ ଥିବା ଫୋନ୍ ଏବଂ କମ୍ପ୍ୟୁଟରଗୁଡ଼ିକୁ MDM ନିୟନ୍ତ୍ରଣ କରିବାକୁ ଦିଅନ୍ତୁ
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
@@ -2191,6 +2278,10 @@
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
 	List the rest	ବାକି ତାଲିକାଭୁକ୍ତ କରନ୍ତୁ
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	ଏଥିରେ ଶୁଣନ୍ତୁ:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2354,6 +2445,35 @@
 #. a country's name (where a download's server is)
 #, machine
 	Mayotte	ମାୟୋଟ୍
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	MDM ବର୍ତ୍ତମାନ ନେଟୱର୍କରେ ପହଞ୍ଚିପାରିବ ନାହିଁ: ବିକଳ୍ପ → ରିମୋଟ୍ କାହିଁକି କହୁଛି।
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM ଏହି ଠିକଣା ଡାଉନଲୋଡ୍ କରିପାରିବ ନାହିଁ।
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM ଏହାକୁ ଯୋଗ କରିପାରିଲା ନାହିଁ।
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM ଏହା କରିପାରିଲା ନାହିଁ।
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM ଉତ୍ତର ଦେଉନାହିଁ। ଏହା ଚାଲୁଛି ଏବଂ ସମାନ ନେଟୱର୍କରେ ଅଛି କି ନାହିଁ ଯାଞ୍ଚ କରନ୍ତୁ।
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM ଉତ୍ତର ଦେଉନାହିଁ। ପୁନର୍ବାର ଚେଷ୍ଟା କରୁଛି...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM ବର୍ତ୍ତମାନ କୌଣସି କୋଡ୍ ଦେଖାଉ ନାହିଁ। ପ୍ରଥମେ ସେଠାରେ ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ କ୍ଲିକ୍ କରନ୍ତୁ।
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 #, machine
@@ -2464,6 +2584,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Montserrat	ମୋଣ୍ଟସେରାଟ୍
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	ଅଧିକ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2591,6 +2715,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	New Caledonia	ନ୍ୟୁ କାଲେଡୋନିଆ
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	ନୂତନ କୋଡ୍
 #. text in the Options window
 #, machine
 	New exception	ନୂଆ ବ୍ୟତିକ୍ରମ
@@ -2652,6 +2780,10 @@
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
 	No downloads here	ଏଠାରେ କୌଣସି ଡାଉନଲୋଡ୍ ନାହିଁ
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	ଏଠାରେ କୌଣସି ଡାଉନଲୋଡ୍ ନାହିଁ।
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
@@ -2673,6 +2805,10 @@
 #. text in langpick.rs
 #, machine
 	No language matches.	କୌଣସି ଭାଷା ମିଳୁନାହିଁ।
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	ବର୍ତ୍ତମାନ କୌଣସି ସ୍ଥାନୀୟ ନେଟୱର୍କ ନାହିଁ: କମ୍ପ୍ୟୁଟର ଏକ ନେଟୱର୍କରେ ଯୋଗ ଦେବା ପରେ ଏହା ଆରମ୍ଭ ହୁଏ।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2822,6 +2958,10 @@
 #, machine
 	Off: a finished torrent stops, like any download.	ବନ୍ଦ: ଏକ ସମାପ୍ତ ଟରେଣ୍ଟ ଅନ୍ୟ କୌଣସି ଡାଉନଲୋଡ୍ ପରି ବନ୍ଦ ହୋଇଯାଏ।
 #. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	ବନ୍ଦ: ନେଟୱର୍କରେ କିଛି ବି MDM ପର୍ଯ୍ୟନ୍ତ ପହଞ୍ଚିପାରିବ ନାହିଁ।
+#. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	କ୍ଲିପବୋର୍ଡକୁ କପି ହୋଇଥିବା ଲିଙ୍କ୍‌ଗୁଡ଼ିକୁ ଡାଉନଲୋଡ୍ କରିବାକୁ ପ୍ରସ୍ତାବ ଦିଅନ୍ତୁ
 #. text in the Link grabber window
@@ -2846,10 +2986,22 @@
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
 	On macOS, only an administrator can schedule a wake	macOSରେ, କେବଳ ଜଣେ ପ୍ରଶାସକ ୱେକ୍ ସିଡ୍ୟୁଲ୍ କରିପାରିବେ
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	କମ୍ପ୍ୟୁଟରରେ, ବିକଳ୍ପ ଖୋଲନ୍ତୁ, ତାପରେ ରିମୋଟ୍, ଏବଂ ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ କ୍ଲିକ୍ କରନ୍ତୁ। ଏହା ଦେଖାଉଥିବା କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ।
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	ଫୋନରେ, କ୍ୟାମେରା ସହିତ ଏହି କୋଡ୍ ସ୍କାନ୍ କରନ୍ତୁ, କିମ୍ବା ଠିକଣା ଖୋଲନ୍ତୁ ଏବଂ କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ।
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
 #, machine
 	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windowsରେ, Chrome, Edge ଏବଂ Brave ସେମାନଙ୍କ କୁକିଜ୍ ଲକ୍ କରିପାରନ୍ତି। Firefox କାମ କରେ।
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	ଚାଲୁ ଅଛି। ଫୋନରେ, ଏହି ଠିକଣା ଖୋଲନ୍ତୁ:
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	ଥରେ
@@ -2881,6 +3033,10 @@
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
 	Only MP4 and MKV videos can hold subtitles	କେବଳ MP4 ଏବଂ MKV ଭିଡିଓରେ ଉପଶୀର୍ଷକ ରହିପାରେ
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	କେବଳ ଯୋଡ଼ା ହୋଇଥିବା ଡିଭାଇସ୍ କିଛି ଦେଖିପାରିବେ କିମ୍ବା ପରିବର୍ତ୍ତନ କରିପାରିବେ। ପ୍ରଥମ ଥର ପାଇଁ, ଫୋନର ବ୍ରାଉଜର୍ MDM ର ନିଜସ୍ୱ ପ୍ରମାଣପତ୍ର ବିଷୟରେ ଚେତାବନୀ ଦେବ: ଏହାର ଫିଙ୍ଗରପ୍ରିଣ୍ଟ୍ ଉପରୋକ୍ତ ଅଟେ।
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -2951,6 +3107,31 @@
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
 	Page address	ପୃଷ୍ଠା ଠିକଣା
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	ଯୋଡ଼ନ୍ତୁ
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager ସହିତ ଯୋଡ଼ନ୍ତୁ
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	ଯୋଡ଼ାଯାଇଛି
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	ଯୋଡ଼ାଯାଇଥିବା ଡିଭାଇସ୍‌ଗୁଡ଼ିକ:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3001,8 +3182,9 @@
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
 	Pasted	ପେଷ୍ଟ କରାଯାଇଛି
-#. text in a download's progress window
+#. text in a download's progress window; text in remote.rs
 #. verb: pause the download
+#. remote control page (on a phone): button: pause a download
 #, machine
 	Pause	ବିରତ କରନ୍ତୁ
 #. text in a download's Properties window
@@ -3059,7 +3241,12 @@
 #. label in the Options window
 #, machine
 	Port	ପୋର୍ଟ
-#. text in the Add torrent window
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	ପୋର୍ଟ {port} ଅନ୍ୟ ଏକ ପ୍ରୋଗ୍ରାମ୍ ଦ୍ୱାରା ବ୍ୟବହୃତ ହେଉଛି: ଅନ୍ୟ ଏକ ପୋର୍ଟ ବାଛନ୍ତୁ।
+#. text in the Options window; text in the Add torrent window
+#. Options → Remote: label before the port number box
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
 	Port:	ପୋର୍ଟ:
@@ -3143,6 +3330,10 @@
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	ଧାଡ଼ି ପ୍ରକ୍ରିୟାକରଣ ବନ୍ଦ/ସମାପ୍ତ ହେଲା
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	ଧାଡ଼ିରେ ଅଛି
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3214,8 +3405,17 @@
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
 	Remember this path for "{category}" category	{category} ଶ୍ରେଣୀ ପାଇଁ ଏହି ପଥ ମନେରଖନ୍ତୁ
-#. button in the Options window; button in rssdlg.rs
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	ରିମୋଟ୍‌
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	ରିମୋଟ୍ ନିୟନ୍ତ୍ରଣ
+#. button in the Options window; text in remote.rs; button in rssdlg.rs
 #. verb: remove the item
+#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
 	Remove	ଅପସାରଣ କରନ୍ତୁ
@@ -3226,6 +3426,11 @@
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
 	Remove its downloads from the list (running ones move to General)	ଏହାର ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକୁ ତାଲିକାରୁ ବାହାର କରନ୍ତୁ (ଚାଲୁଥିବା ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକ ସାଧାରଣକୁ ସ୍ଥାନାନ୍ତରିତ ହେବ)
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	ତାଲିକାରୁ {name} କୁ ବାହାର କରିବେ କି?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3713,8 +3918,9 @@
 #. a country's name (where a download's server is)
 #, machine
 	Sri Lanka	ଶ୍ରୀଲଙ୍କା
-#. text in the Link grabber window
+#. text in the Link grabber window; text in remote.rs
 #. Link grabber button: download the ticked links now
+#. remote control page (on a phone): button: start a download or a queue
 #, machine
 	Start	ଆରମ୍ଭ କରନ୍ତୁ
 #. button in a dialog box
@@ -3732,6 +3938,10 @@
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	ମୁଖ୍ୟ ଡାଉନଲୋଡ୍ କ୍ୟୁ ଆରମ୍ଭ କରନ୍ତୁ
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	ବର୍ତ୍ତମାନ ଆରମ୍ଭ କରନ୍ତୁ
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	ସଂଯୋଗଗୁଡ଼ିକ ଦ୍ୱାରା ଆରମ୍ଭ ସ୍ଥିତି ଏବଂ ଡାଉନଲୋଡ୍ ପ୍ରଗତି
@@ -3771,7 +3981,7 @@
 #. column title: the account's state (premium, days left)
 #, machine
 	State	ସ୍ଥିତି
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 #, machine
@@ -3780,7 +3990,8 @@
 #. label before the download's state
 #, machine
 	Status:	ସ୍ଥିତି:
-#. text in the Add torrent window
+#. text in remote.rs; text in the Add torrent window
+#. remote control page (on a phone): button: stop a queue
 #, machine
 	Stop	ବନ୍ଦ କରନ୍ତୁ
 #. text in the Scheduler window; checkbox in the Scheduler window
@@ -3809,7 +4020,7 @@
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
 	Stop {queue}	{queue} ବନ୍ଦ ହେଲା
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 #, machine
@@ -3965,6 +4176,10 @@
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
 	The browsers can find Mister Download Manager	ବ୍ରାଉଜର୍‌ଗୁଡ଼ିକ Mister Download Manager ଖୋଜିପାରୁଛନ୍ତି
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	ଆପଣ OK କ୍ଲିକ୍ କଲେ ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ପ୍ରଯୁଜ୍ୟ ହେବ।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -4245,6 +4460,10 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	ଏହି ଶ୍ରେଣୀ କିମ୍ବା ଧାଡ଼ିରେ ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଡାଉନଲୋଡ୍ ନାହିଁ।
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	ଏହି କୋଡ୍ ଆଉ ବ୍ୟବହାର କରାଯାଇପାରିବ ନାହିଁ।
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
@@ -4257,6 +4476,10 @@
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
 	This computer has no wake alarm that programs can set	ଏହି କମ୍ପ୍ୟୁଟରରେ କୌଣସି ୱେକ୍ ଆଲାର୍ମ ନାହିଁ ଯାହାକୁ ପ୍ରୋଗ୍ରାମଗୁଡ଼ିକ ସେଟ୍ କରିପାରିବେ
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	କେବଳ ଏହି କମ୍ପ୍ୟୁଟର (127.0.0.1)
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4265,6 +4488,14 @@
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
 	This date has passed: the queue will not start	ଏହି ତାରିଖ ଅତିକ୍ରାନ୍ତ ହୋଇଛି: ଧାଡ଼ି ଆରମ୍ଭ ହେବ ନାହିଁ
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	ଏହି ଡିଭାଇସ୍‌ର ନାମ
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	ଏହି ଫାଇଲ୍ ଏକ ଟୋରେଣ୍ଟ୍ ହେବା ପାଇଁ ବହୁତ ବଡ଼।
 #. text in a dialog box
 #, machine
 	This folder does not exist:	ଏହି ଫୋଲ୍ଡର୍‌ ବିଦ୍ୟମାନ ନାହିଁ:
@@ -4279,6 +4510,10 @@
 #. text in errors.rs
 #, machine
 	this is not a magnet link or a .torrent file	ଏହା ଏକ ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍ କିମ୍ବା ଏକ .torrent ଫାଇଲ୍ ନୁହେଁ
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	ଏହା ଏକ ଟୋରେଣ୍ଟ୍ ଫାଇଲ୍ ନୁହେଁ।
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4473,6 +4708,10 @@
 #. verb: turn the Speed Limiter on
 #, machine
 	Turn on	ଚାଲୁ କରନ୍ତୁ
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	ପ୍ରଥମେ ରିମୋଟ୍ ନିୟନ୍ତ୍ରଣ ଚାଲୁ କରନ୍ତୁ।
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4540,8 +4779,9 @@
 #. Link grabber button (IDM's): untick every link
 #, machine
 	Uncheck all	ସମସ୍ତ ଅନଚେକ୍ କରନ୍ତୁ
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are not complete yet
+#. remote control page (on a phone): tab: downloads not finished yet
 #, machine
 	Unfinished	ଅସମାପ୍ତ
 #. text in countries.rs
@@ -4733,16 +4973,30 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	volume {n} of it is missing	ଏହାର ଭଲ୍ୟୁମ୍ {n} ହଜିଯାଇଛି
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	କିଛି ସମୟ ଅପେକ୍ଷା କରନ୍ତୁ, ତା’ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
 	Wait for the list, or stop listing	ତାଲିକା ପାଇଁ ଅପେକ୍ଷା କରନ୍ତୁ, କିମ୍ବା ତାଲିକାଭୁକ୍ତ କରିବା ବନ୍ଦ କରନ୍ତୁ
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue} ରେ ଅପେକ୍ଷା କରନ୍ତୁ
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
 	Waiting	ଅପେକ୍ଷା କରୁଛି
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	ଡିଭାଇସ୍‌ ପାଇଁ ଅପେକ୍ଷା କରାଯାଉଛି। କୋଡ୍ {time} ପାଇଁ କାର୍ଯ୍ୟ କରେ।
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	ଅପେକ୍ଷା କରୁଛି: ଡାଉନଲୋଡ୍ ସୀମା ପହଞ୍ଚିଛି (ସିଡ୍ୟୁଲର୍)
@@ -4780,6 +5034,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	ନୂଆ କ’ଣ ଅଛି:
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	କେବେ
 #. text in the Batch download window
 #, machine
 	Wildcard size	ୱାଇଲ୍ଡକାର୍ଡ ଆକାର
@@ -4819,6 +5077,15 @@
 #. group box title in the Options window
 #, machine
 	Write dates and times	ତାରିଖ ଏବଂ ସମୟ ଲେଖନ୍ତୁ
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	ଭୁଲ୍ କୋଡ୍। MDM ରେ ଏକ ନୂଆ କୋଡ୍ ଦେଖାନ୍ତୁ ଏବଂ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	ଭୁଲ୍ କୋଡ୍। ବାକି ଥିବା ଚେଷ୍ଟା: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4846,6 +5113,11 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	You have the latest version of Mister Download Manager ({version}).	ଆପଣଙ୍କ ପାଖରେ Mister Download Manager ({version}) ର ସର୍ବଶେଷ ସଂସ୍କରଣ ଅଛି।
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, under the new version's line, when MDM was installed by the Linux system's package manager (pacman, ...), which MDM can't update itself
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}, from your system's package manager: update it there.	ଆପଣଙ୍କ ସିଷ୍ଟମର ପ୍ୟାକେଜ୍ ମ୍ୟାନେଜର୍‌ରୁ ଆପଣଙ୍କ ପାଖରେ {version} ସଂସ୍କରଣ ଅଛି: ସେଠାରେ ଏହାକୁ ଅପଡେଟ୍ କରନ୍ତୁ।
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -4958,6 +5230,15 @@
 #. {count} = a number (keep the braces as they are)
 #, machine
 	{count}, {speed}	{count}, {speed}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} ଯୋଡ଼ାଯାଇଛି। ଏହା ବର୍ତ୍ତମାନ MDM କୁ ନିୟନ୍ତ୍ରଣ କରିପାରିବ।
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size} ରୁ {done}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
@@ -5130,6 +5411,11 @@
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
 	{size} ({bytes} Bytes)	{size} ({bytes} ବାଇଟ୍)
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} ଖାଲି
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5205,6 +5491,14 @@ column	Time left	ବାକି ସମୟ
 #, machine
 column	Transfer rate	ସ୍ଥାନାନ୍ତର ହାର
 #. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	ଅନ୍ୟ ଏକ Mister Download Manager (ଏକ ସର୍ଭର)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	ବ୍ରାଉଜର୍ ଏକ୍ସଟେନ୍ସନ୍
+#. text in the browser extension
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -5244,9 +5538,17 @@ extension	Download with Mister Download Manager	Mister Download Manager ସହ�
 #, machine
 extension	Downloads from {site} stay with the browser	{site} ରୁ ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକ ବ୍ରାଉଜର୍ ସହିତ ରହିବ
 #. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକ {address} କୁ ଯାଉଛି
+#. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
 extension	Drag to move it along the video's edge	ଭିଡିଓର ଧାରରେ ଏହାକୁ ଘୁଞ୍ଚାଇବା ପାଇଁ ଟାଣନ୍ତୁ
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	ଏହାର https:// ଠିକଣା ପ୍ରବେଶ କରନ୍ତୁ।
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5267,6 +5569,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	ବ୍�
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
 extension	How to fix it	ଏହାକୁ କିପରି ଠିକ୍ କରିବେ
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	ଏହା କାମ କଲାନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	ଏହା ବର୍ତ୍ତମାନ କୌଣସି କୋଡ୍ ଦେଖାଉ ନାହିଁ: ପ୍ରଥମେ ସେଠାରେ ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ କ୍ଲିକ୍ କରନ୍ତୁ।
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -5339,6 +5649,18 @@ extension	Never take downloads from {site}	{site}ରୁ ଆଉ ଡାଉନଲ�
 #, machine
 extension	No video or sound found on this page yet. Play it, then open this again.	ଏହି ପୃଷ୍ଠାରେ ଏଯାଏଁ କୌଣସି ଭିଡିଓ କିମ୍ବା ଶବ୍ଦ ମିଳିଲା ନାହିଁ। ଏହାକୁ ଚଲାନ୍ତୁ, ତା’ପରେ ଏହାକୁ ପୁଣି ଖୋଲନ୍ତୁ।
 #. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	ପହଞ୍ଚିଲା ନାହିଁ। ଏହି ବ୍ରାଉଜର୍‌ରେ ଥରେ ଏହାର ଠିକଣା ଖୋଲନ୍ତୁ ଏବଂ ଏହାର ସାର୍ଟିଫିକେଟ୍ ଗ୍ରହଣ କରନ୍ତୁ, ତା’ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	ଏହାକୁ ଖୋଲନ୍ତୁ
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	ଏହାର ଠିକଣା ଥରେ ଖୋଲନ୍ତୁ ଏବଂ ଏହାର ସାର୍ଟିଫିକେଟ୍ ଗ୍ରହଣ କରନ୍ତୁ, ତା’ପରେ ଏହାର Options, Remote, Pair a device (କିମ୍ବା misterdownloadmanager-cli pair) ରୁ ଏକ କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ।
+#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
 extension	Open Mister Download Manager	Mister Download Manager ଖୋଲନ୍ତୁ
@@ -5347,6 +5669,14 @@ extension	Open Mister Download Manager	Mister Download Manager ଖୋଲନ୍�
 #. the trailing ... means it is still going on: keep it
 #, machine
 extension	Options...	ବିକଳ୍ପ...
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	ଯୋଡ଼ନ୍ତୁ
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	ଯୋଡ଼ିବା କୋଡ୍
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
@@ -5363,6 +5693,10 @@ extension	Protected video: it can't be saved	ସୁରକ୍ଷିତ ଭିଡ�
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
 extension	Send downloads through this browser's proxy or VPN extension	ଏହି ବ୍ରାଉଜର୍‌ର ପ୍ରକ୍ସି କିମ୍ବା VPN ଏକ୍ସଟେନ୍ସନ୍ ମାଧ୍ୟମରେ ଡାଉନଲୋଡ୍ ପଠାନ୍ତୁ
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକୁ ଏଠାକୁ ପଠାନ୍ତୁ
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5396,6 +5730,10 @@ extension	The last download was left to the browser.	ଶେଷ ଡାଉନଲ�
 #, machine
 extension	This browser isn't ticked in Options → General.	ଏହି ବ୍ରାଉଜର ବିକଳ୍ପ → ସାଧାରଣରେ ଟିକ୍ ହୋଇନାହିଁ।
 #. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	ଏହି କମ୍ପ୍ୟୁଟର
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	ଏହି ଡାଉନଲୋଡ୍‌ର ବିବରଣୀ ହସ୍ତାନ୍ତର କରିବା ପାଇଁ ବହୁତ ବଡ଼ ଥିଲା
@@ -5407,6 +5745,14 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	ବିକଳ୍ପ → ସାଧାରଣରେ ଉନ୍ନତ ବ୍ରାଉଜର ଏକୀକରଣ ବ୍ୟବହାର କରନ୍ତୁ ବନ୍ଦ ଅଛି।
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	କିଛି ସମୟ ଅପେକ୍ଷା କରନ୍ତୁ, ତା’ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	ଭୁଲ୍ କୋଡ୍।
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -6123,335 +6469,3 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/ସେକେଣ୍ଡ
-#. text in remote.rs
-#. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
-	.torrent file	.torrent ଫାଇଲ୍
-#. text in remote.rs
-#. remote control page (on a phone): button: add the download
-#, machine
-	Add	ଯୋଗ କରନ୍ତୁ
-#. text in remote.rs
-#. remote control page (on a phone): a download was added
-#, machine
-	Added.	ଯୋଗ କରାଗଲା।
-#. text in remote.rs
-#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	ଯୋଗ କରାଗଲା। MDM ଟରେଣ୍ଟ୍ ପଢୁଛି: ଏହା କିଛି ସମୟ ମଧ୍ୟରେ ତାଲିକାରେ ଯୋଗ ଦେବ।
-#. text in remote.rs
-#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
-	Address or magnet link	ଠିକଣା କିମ୍ବା ମ୍ୟାଗ୍ନେଟ୍ ଲିଙ୍କ୍
-#. text in remote.rs
-#. remote control page (on a phone): tab: every download
-#, machine
-	All	ସମସ୍ତ
-#. text in remote.rs
-#. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
-	Automatic (by file type)	ସ୍ୱୟଂଚାଳିତ (ଫାଇଲ୍ ପ୍ରକାର ଅନୁଯାୟୀ)
-#. text in the Options window
-#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
-	Certificate (SHA-256): {fingerprint}	ପ୍ରମାଣପତ୍ର (SHA-256): {fingerprint}
-#. text in remote.rs
-#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
-	Choose a .torrent file	ଏକ .torrent ଫାଇଲ୍ ବାଛନ୍ତୁ
-#. text in remote.rs
-#. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
-	Code	କୋଡ୍
-#. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
-#, machine
-	Code:	କୋଡ୍:
-#. text in remote.rs
-#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
-#, machine
-	Delete the file too	ଫାଇଲ୍ ମଧ୍ୟ ଡିଲିଟ୍ କରନ୍ତୁ
-#. text in the Options window
-#. column title: a paired phone's or computer's name
-#, machine
-	Device	ଡିଭାଇସ୍
-#. text in the Options window
-#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
-#, machine
-	Every local network address	ପ୍ରତ୍ୟେକ ସ୍ଥାନୀୟ ନେଟୱର୍କ ଠିକଣା
-#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
-	Everything at its normal size (100%)	ସବୁକିଛି ସାଧାରଣ ଆକାରରେ (100%)
-#. text in remote.rs
-#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
-#, machine
-	Forget this device	ଏହି ଡିଭାଇସକୁ ଭୁଲିଯାଆନ୍ତୁ
-#. text in remote.rs
-#. remote control page (on a phone): question before unpairing this phone
-#, machine
-	Forget this device? It needs a new code to connect again.	ଏହି ଡିଭାଇସକୁ ଭୁଲିଯିବେ କି? ପୁନର୍ବାର ସଂଯୋଗ କରିବାକୁ ଏହାକୁ ଏକ ନୂତନ କୋଡ୍ ଆବଶ୍ୟକ।
-#. message or event log entry in the main window
-#. where a download came from (its Properties): a phone or computer paired in Options → Remote
-#, machine
-	from a paired device	ଏକ ଯୋଡ଼ା ହୋଇଥିବା ଡିଭାଇସରୁ
-#. text in the Options window
-#. Options → Remote → Status: it could not start; {error} = the system's reason
-#. {error} = an error message (keep the braces as they are)
-#, machine
-	It could not start: {error}	ଏହା ଆରମ୍ଭ ହୋଇପାରିଲା ନାହିଁ: {error}
-#. text in the Options window
-#. column title: when the device last reached MDM
-#, machine
-	Last seen	ଶେଷ ଥର ଦେଖାଯାଇଥିଲା
-#. checkbox in the Options window
-#. Options → Remote check box (off by default)
-#, machine
-	Let phones and computers on the local network control MDM	ସ୍ଥାନୀୟ ନେଟୱର୍କରେ ଥିବା ଫୋନ୍ ଏବଂ କମ୍ପ୍ୟୁଟରଗୁଡ଼ିକୁ MDM ନିୟନ୍ତ୍ରଣ କରିବାକୁ ଦିଅନ୍ତୁ
-#. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
-#, machine
-	Listen on:	ଏଥିରେ ଶୁଣନ୍ତୁ:
-#. text in the Options window
-#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
-#, machine
-	MDM can't be reached on the network now: Options → Remote says why.	MDM ବର୍ତ୍ତମାନ ନେଟୱର୍କରେ ପହଞ୍ଚିପାରିବ ନାହିଁ: ବିକଳ୍ପ → ରିମୋଟ୍ କାହିଁକି କହୁଛି।
-#. text in remote.rs
-#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
-#, machine
-	MDM cannot download this address.	MDM ଏହି ଠିକଣା ଡାଉନଲୋଡ୍ କରିପାରିବ ନାହିଁ।
-#. text in remote.rs
-#. remote control page (on a phone): adding a download failed
-#, machine
-	MDM could not add it.	MDM ଏହାକୁ ଯୋଗ କରିପାରିଲା ନାହିଁ।
-#. text in remote.rs
-#. remote control page (on a phone): an action failed
-#, machine
-	MDM could not do it.	MDM ଏହା କରିପାରିଲା ନାହିଁ।
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached while pairing
-#, machine
-	MDM does not answer. Check that it is running and on the same network.	MDM ଉତ୍ତର ଦେଉନାହିଁ। ଏହା ଚାଲୁଛି ଏବଂ ସମାନ ନେଟୱର୍କରେ ଅଛି କି ନାହିଁ ଯାଞ୍ଚ କରନ୍ତୁ।
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
-#. the trailing ... means it is still going on: keep it
-#, machine
-	MDM does not answer. Trying again...	MDM ଉତ୍ତର ଦେଉନାହିଁ। ପୁନର୍ବାର ଚେଷ୍ଟା କରୁଛି...
-#. text in remote.rs
-#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
-#, machine
-	MDM shows no code now. Click Pair a device there first.	MDM ବର୍ତ୍ତମାନ କୌଣସି କୋଡ୍ ଦେଖାଉ ନାହିଁ। ପ୍ରଥମେ ସେଠାରେ ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ କ୍ଲିକ୍ କରନ୍ତୁ।
-#. text in remote.rs
-#. remote control page (on a phone): its menu's button
-#, machine
-	More	ଅଧିକ
-#. button in the Options window
-#. Options → Remote → Pair a device: button: show a new code
-#, machine
-	New code	ନୂତନ କୋଡ୍
-#. text in remote.rs
-#. remote control page (on a phone): the list shown is empty
-#, machine
-	No downloads here.	ଏଠାରେ କୌଣସି ଡାଉନଲୋଡ୍ ନାହିଁ।
-#. text in the Options window
-#. Options → Remote → Status: on, but the computer has no local network address now
-#, machine
-	No local network now: it starts when the computer joins one.	ବର୍ତ୍ତମାନ କୌଣସି ସ୍ଥାନୀୟ ନେଟୱର୍କ ନାହିଁ: କମ୍ପ୍ୟୁଟର ଏକ ନେଟୱର୍କରେ ଯୋଗ ଦେବା ପରେ ଏହା ଆରମ୍ଭ ହୁଏ।
-#. text in the Options window
-#. Options → Remote → Status: the remote control is off
-#, machine
-	Off: nothing on the network can reach MDM.	ବନ୍ଦ: ନେଟୱର୍କରେ କିଛି ବି MDM ପର୍ଯ୍ୟନ୍ତ ପହଞ୍ଚିପାରିବ ନାହିଁ।
-#. text in remote.rs
-#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
-#, machine
-	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	କମ୍ପ୍ୟୁଟରରେ, ବିକଳ୍ପ ଖୋଲନ୍ତୁ, ତାପରେ ରିମୋଟ୍, ଏବଂ ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ କ୍ଲିକ୍ କରନ୍ତୁ। ଏହା ଦେଖାଉଥିବା କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ।
-#. text in the Options window
-#. Options → Remote → Pair a device: how to pair
-#, machine
-	On the phone, scan this code with the camera, or open the address and enter the code.	ଫୋନରେ, କ୍ୟାମେରା ସହିତ ଏହି କୋଡ୍ ସ୍କାନ୍ କରନ୍ତୁ, କିମ୍ବା ଠିକଣା ଖୋଲନ୍ତୁ ଏବଂ କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ।
-#. text in the Options window
-#. Options → Remote → Status: on; the address follows in a box below
-#, machine
-	On. On the phone, open this address:	ଚାଲୁ ଅଛି। ଫୋନରେ, ଏହି ଠିକଣା ଖୋଲନ୍ତୁ:
-#. text in the Options window
-#. Options → Remote, at the bottom of the page
-#, machine
-	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	କେବଳ ଯୋଡ଼ା ହୋଇଥିବା ଡିଭାଇସ୍ କିଛି ଦେଖିପାରିବେ କିମ୍ବା ପରିବର୍ତ୍ତନ କରିପାରିବେ। ପ୍ରଥମ ଥର ପାଇଁ, ଫୋନର ବ୍ରାଉଜର୍ MDM ର ନିଜସ୍ୱ ପ୍ରମାଣପତ୍ର ବିଷୟରେ ଚେତାବନୀ ଦେବ: ଏହାର ଫିଙ୍ଗରପ୍ରିଣ୍ଟ୍ ଉପରୋକ୍ତ ଅଟେ।
-#. text in remote.rs
-#. remote control page (on a phone): button: pair this phone with MDM
-#, machine
-	Pair	ଯୋଡ଼ନ୍ତୁ
-#. window title in the Options window
-#. window title: Options → Remote → Pair a device...
-#, machine
-	Pair a device	ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ
-#. button in the Options window
-#. Options → Remote button: shows a code (and a QR code) that pairs a phone
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Pair a device...	ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ...
-#. text in remote.rs
-#. remote control page (on a phone): title of the pairing screen
-#, machine
-	Pair with Mister Download Manager	Mister Download Manager ସହିତ ଯୋଡ଼ନ୍ତୁ
-#. text in the Options window
-#. column title: when the device was paired
-#, machine
-	Paired	ଯୋଡ଼ାଯାଇଛି
-#. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
-#, machine
-	Paired devices:	ଯୋଡ଼ାଯାଇଥିବା ଡିଭାଇସ୍‌ଗୁଡ଼ିକ:
-#. text in the Options window
-#. Options → Remote → Status: another program uses the port; {port} = its number
-#, machine
-	Port {port} is used by another program: choose another.	ପୋର୍ଟ {port} ଅନ୍ୟ ଏକ ପ୍ରୋଗ୍ରାମ୍ ଦ୍ୱାରା ବ୍ୟବହୃତ ହେଉଛି: ଅନ୍ୟ ଏକ ପୋର୍ଟ ବାଛନ୍ତୁ।
-#. text in remote.rs
-#. remote control page (on a phone): a download's state: added, waiting to start
-#, machine
-	Queued	ଧାଡ଼ିରେ ଅଛି
-#. text in the Options window
-#. tab title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote	ରିମୋଟ୍‌
-#. text in the Options window
-#. Options page title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote control	ରିମୋଟ୍ ନିୟନ୍ତ୍ରଣ
-#. text in remote.rs
-#. remote control page (on a phone): question before removing a download; {name} its file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Remove {name} from the list?	ତାଲିକାରୁ {name} କୁ ବାହାର କରିବେ କି?
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: start the download at once
-#, machine
-	Start now	ବର୍ତ୍ତମାନ ଆରମ୍ଭ କରନ୍ତୁ
-#. text in the Options window
-#. Options → Remote → Status: the settings were changed; they apply on OK
-#, machine
-	The changes apply when you click OK.	ଆପଣ OK କ୍ଲିକ୍ କଲେ ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ପ୍ରଯୁଜ୍ୟ ହେବ।
-#. text in the Options window
-#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
-#, machine
-	This code can't be used any more.	ଏହି କୋଡ୍ ଆଉ ବ୍ୟବହାର କରାଯାଇପାରିବ ନାହିଁ।
-#. text in the Options window
-#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
-#, machine
-	This computer only (127.0.0.1)	କେବଳ ଏହି କମ୍ପ୍ୟୁଟର (127.0.0.1)
-#. text in remote.rs
-#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
-#, machine
-	This device's name	ଏହି ଡିଭାଇସ୍‌ର ନାମ
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen is too large for a .torrent file
-#, machine
-	This file is too large to be a torrent.	ଏହି ଫାଇଲ୍ ଏକ ଟୋରେଣ୍ଟ୍ ହେବା ପାଇଁ ବହୁତ ବଡ଼।
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen isn't a .torrent file
-#, machine
-	This is not a torrent file.	ଏହା ଏକ ଟୋରେଣ୍ଟ୍ ଫାଇଲ୍ ନୁହେଁ।
-#. tooltip (why a control is greyed) in the Options window
-#. why Options → Remote → Pair a device... is greyed
-#, machine
-	Turn on the remote control first.	ପ୍ରଥମେ ରିମୋଟ୍ ନିୟନ୍ତ୍ରଣ ଚାଲୁ କରନ୍ତୁ।
-#. text in remote.rs
-#. remote control page (on a phone): codes were tried too fast
-#, machine
-	Wait a moment, then try again.	କିଛି ସମୟ ଅପେକ୍ଷା କରନ୍ତୁ, ତା’ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
-#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
-	Wait in {queue}	{queue} ରେ ଅପେକ୍ଷା କରନ୍ତୁ
-#. text in the Options window
-#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
-#. {time} = a time of day (keep the braces as they are)
-#, machine
-	Waiting for the device. The code works for {time}.	ଡିଭାଇସ୍‌ ପାଇଁ ଅପେକ୍ଷା କରାଯାଉଛି। କୋଡ୍ {time} ପାଇଁ କାର୍ଯ୍ୟ କରେ।
-#. text in remote.rs
-#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
-#, machine
-	When	କେବେ
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed and the code is void now
-#, machine
-	Wrong code. Show a new code in MDM and try again.	ଭୁଲ୍ କୋଡ୍। MDM ରେ ଏକ ନୂଆ କୋଡ୍ ଦେଖାନ୍ତୁ ଏବଂ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
-#. {n} = a number (keep the braces as they are)
-#, machine
-	Wrong code. Tries left: {n}	ଭୁଲ୍ କୋଡ୍। ବାକି ଥିବା ଚେଷ୍ଟା: {n}
-#. text in the Options window
-#. Options → Remote → Pair a device: done; {device} = the name it was given
-#, machine
-	{device} is paired. It can control MDM now.	{device} ଯୋଡ଼ାଯାଇଛି। ଏହା ବର୍ତ୍ତମାନ MDM କୁ ନିୟନ୍ତ୍ରଣ କରିପାରିବ।
-#. text in remote.rs
-#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{done} of {size}	{size} ରୁ {done}
-#. text in remote.rs
-#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{size} free	{size} ଖାଲି
-#. text in the browser extension
-#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
-#, machine
-extension	Another Mister Download Manager (a server)	ଅନ୍ୟ ଏକ Mister Download Manager (ଏକ ସର୍ଭର)
-#. text in the browser extension
-#. the name this browser gets in the other MDM's list of paired devices
-#, machine
-extension	Browser extension	ବ୍ରାଉଜର୍ ଏକ୍ସଟେନ୍ସନ୍
-#. text in the browser extension
-#. the toolbar button's status while downloads go to another MDM
-#, machine
-extension	Downloads go to {address}	ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକ {address} କୁ ଯାଉଛି
-#. text in the browser extension
-#. the address typed isn't an https:// address
-#, machine
-extension	Enter its https:// address.	ଏହାର https:// ଠିକଣା ପ୍ରବେଶ କରନ୍ତୁ।
-#. text in the browser extension
-#. pairing failed for another reason
-#, machine
-extension	It didn't work. Try again.	ଏହା କାମ କଲାନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
-#. text in the browser extension
-#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
-#, machine
-extension	It shows no code now: click Pair a device there first.	ଏହା ବର୍ତ୍ତମାନ କୌଣସି କୋଡ୍ ଦେଖାଉ ନାହିଁ: ପ୍ରଥମେ ସେଠାରେ ଏକ ଡିଭାଇସ୍ ଯୋଡ଼ନ୍ତୁ କ୍ଲିକ୍ କରନ୍ତୁ।
-#. text in the browser extension
-#. pairing failed: the other MDM didn't answer
-#, machine
-extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	ପହଞ୍ଚିଲା ନାହିଁ। ଏହି ବ୍ରାଉଜର୍‌ରେ ଥରେ ଏହାର ଠିକଣା ଖୋଲନ୍ତୁ ଏବଂ ଏହାର ସାର୍ଟିଫିକେଟ୍ ଗ୍ରହଣ କରନ୍ତୁ, ତା’ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
-#. text in the browser extension
-#. button: open the other MDM's address in a tab (to accept its certificate once)
-#, machine
-extension	Open it	ଏହାକୁ ଖୋଲନ୍ତୁ
-#. text in the browser extension
-#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
-#, machine
-extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	ଏହାର ଠିକଣା ଥରେ ଖୋଲନ୍ତୁ ଏବଂ ଏହାର ସାର୍ଟିଫିକେଟ୍ ଗ୍ରହଣ କରନ୍ତୁ, ତା’ପରେ ଏହାର Options, Remote, Pair a device (କିମ୍ବା misterdownloadmanager-cli pair) ରୁ ଏକ କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ।
-#. text in the browser extension
-#. button: pair this browser with the other MDM using the code
-#, machine
-extension	Pair	ଯୋଡ଼ନ୍ତୁ
-#. text in the browser extension
-#. placeholder of the box for the 8-digit code the other MDM shows
-#, machine
-extension	Pairing code	ଯୋଡ଼ିବା କୋଡ୍
-#. text in the browser extension
-#. heading in the toolbar button's popup, above the choice of where downloads go
-#, machine
-extension	Send downloads to	ଡାଉନଲୋଡ୍‌ଗୁଡ଼ିକୁ ଏଠାକୁ ପଠାନ୍ତୁ
-#. text in the browser extension
-#. choice under Send downloads to: the Mister Download Manager on this computer
-#, machine
-extension	This computer	ଏହି କମ୍ପ୍ୟୁଟର
-#. text in the browser extension
-#. pairing failed: codes tried too fast
-#, machine
-extension	Wait a moment, then try again.	କିଛି ସମୟ ଅପେକ୍ଷା କରନ୍ତୁ, ତା’ପରେ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।
-#. text in the browser extension
-#. pairing failed: the code was wrong
-#, machine
-extension	Wrong code.	ଭୁଲ୍ କୋଡ୍।
