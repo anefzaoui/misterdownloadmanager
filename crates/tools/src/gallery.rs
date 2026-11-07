@@ -53,9 +53,65 @@ pub fn signed_by_gallery_dl(sums: &[u8], sig: &[u8]) -> bool {
     crate::signed_by(KEY, sums, sig)
 }
 
-/// The gallery-dl to use: the person's own (`chosen`), else MDM's install in `dir`.
+/// The oldest gallery-dl MDM can drive: `--directory` (the files right in the gallery's own
+/// folder) came in 1.20.0. Debian 11's 1.17 lacks it; Ubuntu 22.04's 1.20.5 and every later
+/// distribution's has it (#236).
+pub const OLDEST: &str = "1.20.0";
+
+/// What a gallery-dl release accepts of the options MDM passes, past those every release from
+/// [`OLDEST`] has (`--extractor-info`, `--sleep`, `--range`, `--limit-rate`, `--cookies`,
+/// `--proxy`, `--ignore-config`). Each release from 1.17 to 1.30 was asked in mdm-lab (#236):
+/// argparse refuses an option it doesn't know, so one too many fails the whole download, as
+/// `--no-input` did with Ubuntu 24.04's 1.26.9.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Accepts {
+    /// `--no-input` (1.27.1): never a question on the console. Without it the same holds, as
+    /// MDM gives it no input to read (`proc::spawn`): a question ends it instead of waiting.
+    pub no_input: bool,
+    /// `--user-agent` (1.24.0); before it, the same setting as `-o user-agent=…`.
+    pub user_agent: bool,
+}
+
+impl Accepts {
+    /// For `version` as gallery-dl prints it (`1.26.9`, `1.31.0-dev`). A version that can't be
+    /// read is taken as a recent one, as before #236.
+    pub fn of(version: &str) -> Accepts {
+        let at_least = |v: &str| release(version).is_none_or(|have| Some(have) >= release(v));
+        Accepts {
+            no_input: at_least("1.27.1"),
+            user_agent: at_least("1.24.0"),
+        }
+    }
+}
+
+/// `1.26.9` as (1, 26, 9): the leading digits of its first three parts (`0-dev` is 0).
+fn release(version: &str) -> Option<(u32, u32, u32)> {
+    let mut parts = version.trim().trim_start_matches('v').split('.').map(|p| {
+        let digits: String = p.chars().take_while(char::is_ascii_digit).collect();
+        digits.parse::<u32>().ok()
+    });
+    let major = parts.next()??;
+    let minor = parts.next()??;
+    Some((major, minor, parts.next().flatten().unwrap_or(0)))
+}
+
+/// Whether a gallery-dl of `version` is older than [`OLDEST`] (one that can't be read isn't).
+pub fn too_old(version: &str) -> bool {
+    release(version).is_some_and(|have| Some(have) < release(OLDEST))
+}
+
+/// The gallery-dl to use: the person's own (`chosen`), else MDM's install in `dir`. A chosen
+/// one too old for MDM ([`too_old`], chosen before #236 checked) is passed over for MDM's own
+/// copy; [`chosen_too_old`] names it, for the Helpers window to say so.
 pub fn installed(dir: &Path) -> Option<Installed> {
-    chosen::chosen(dir, chosen::Helper::GalleryDl).or_else(|| own(dir))
+    chosen::chosen(dir, chosen::Helper::GalleryDl)
+        .filter(|mine| !too_old(&mine.version))
+        .or_else(|| own(dir))
+}
+
+/// The person's own gallery-dl when it is too old for MDM, so passed over.
+pub fn chosen_too_old(dir: &Path) -> Option<Installed> {
+    chosen::chosen(dir, chosen::Helper::GalleryDl).filter(|mine| too_old(&mine.version))
 }
 
 fn own(dir: &Path) -> Option<Installed> {
@@ -140,11 +196,17 @@ pub async fn install_latest(
 /// Whether gallery-dl has a way to read `url` (a gallery, a user's page, a post…). Asked
 /// offline: its extractors are matched against the address, nothing is fetched (`-E`, about a
 /// second, most of it the program starting).
-pub fn handles(exe: &Path, url: &str) -> Result<bool, ProcError> {
-    let cmd = proc::gallery_dl(exe, &["--extractor-info".into()], url)?;
+pub fn handles(tool: &Installed, url: &str) -> Result<bool, ProcError> {
+    let cmd = proc::gallery_dl(tool, &["--extractor-info".into()], url)?;
     match proc::output(cmd, "gallery-dl", Duration::from_secs(30)) {
         Ok(_) => Ok(true),
-        Err(ProcError::Failed { message, .. }) if message.contains("Unsupported URL") => Ok(false),
+        // Its words since 1.24, and before (#236: a distribution's may be that old).
+        Err(ProcError::Failed { message, .. })
+            if message.contains("Unsupported URL")
+                || message.contains("No suitable extractor found") =>
+        {
+            Ok(false)
+        }
         Err(e) => Err(e),
     }
 }
@@ -217,7 +279,7 @@ pub struct GalleryJob {
 impl GalleryJob {
     /// Download `url`'s files into `folder`, the gallery's own.
     pub fn start(
-        exe: &Path,
+        tool: &Installed,
         url: &str,
         folder: &Path,
         ask: &Ask,
@@ -240,26 +302,9 @@ impl GalleryJob {
         }
         // The browser's cookies and User-Agent (gallery-dl has no Referer option: left out).
         let (theirs, cookies) = browser.args(url)?;
-        let mut theirs = theirs.into_iter();
-        let mut agent = false;
-        while let Some(a) = theirs.next() {
-            match a.as_str() {
-                "--referer" => {
-                    theirs.next();
-                }
-                "--user-agent" | "--cookies" => {
-                    agent |= a == "--user-agent";
-                    ours.push(a);
-                    ours.extend(theirs.next());
-                }
-                _ => ours.push(a),
-            }
-        }
-        if !agent {
-            ours.extend(["--user-agent".into(), USER_AGENT.into()]);
-        }
+        ours.extend(browser_args(theirs, Accepts::of(&tool.version)));
         std::fs::create_dir_all(folder).map_err(|e| ProcError::Start("gallery-dl".into(), e))?;
-        let cmd = proc::gallery_dl(exe, &ours, url)?;
+        let cmd = proc::gallery_dl(tool, &ours, url)?;
         let mut spawned = proc::spawn(cmd, "gallery-dl")?;
         let stdout = spawned.child.stdout.take().expect("piped");
         let shared = Arc::new(Mutex::new(Shared::default()));
@@ -298,6 +343,35 @@ impl Drop for GalleryJob {
     fn drop(&mut self) {
         self.stop();
     }
+}
+
+/// The browser's context (`FromBrowser::args`, made for yt-dlp) as gallery-dl takes it: its
+/// cookies, and its User-Agent or MDM's (`--user-agent`, or `-o user-agent=…` before 1.24); no
+/// Referer, which gallery-dl has no option for.
+fn browser_args(theirs: Vec<String>, accepts: Accepts) -> Vec<String> {
+    let mut out = Vec::new();
+    let mut agent = None;
+    let mut theirs = theirs.into_iter();
+    while let Some(a) = theirs.next() {
+        match a.as_str() {
+            "--referer" => {
+                theirs.next();
+            }
+            "--user-agent" => agent = theirs.next(),
+            "--cookies" => {
+                out.push(a);
+                out.extend(theirs.next());
+            }
+            _ => out.push(a),
+        }
+    }
+    let agent = agent.unwrap_or_else(|| USER_AGENT.to_owned());
+    if accepts.user_agent {
+        out.extend(["--user-agent".into(), agent]);
+    } else {
+        out.extend(["-o".into(), format!("user-agent={agent}")]);
+    }
+    out
 }
 
 /// What one line of gallery-dl's says: a file saved, or one already there.
@@ -410,6 +484,113 @@ mod tests {
             hex::encode(crate::sum_for(&sums, "gallery-dl.exe").unwrap()),
             "4dda3f14efbc8a8e616af1fc7e1e88d795995326b47692453e620117254dec18"
         );
+    }
+
+    /// #236: each release gets only the options it accepts, as found by asking every release
+    /// from 1.17 to 1.30 (Ubuntu 24.04's 1.26.9 refused `--no-input`).
+    #[test]
+    fn each_release_gets_only_the_options_it_accepts() {
+        let accepts = |v: &str| {
+            let a = Accepts::of(v);
+            (a.no_input, a.user_agent)
+        };
+        assert_eq!(accepts("1.20.0"), (false, false));
+        assert_eq!(accepts("1.23.5"), (false, false));
+        assert_eq!(accepts("1.24.0"), (false, true));
+        assert_eq!(accepts("1.26.9"), (false, true));
+        assert_eq!(accepts("1.27.0"), (false, true));
+        assert_eq!(accepts("1.27.1"), (true, true));
+        assert_eq!(accepts("1.32.19"), (true, true));
+        assert_eq!(accepts("1.31.0-dev"), (true, true));
+        assert_eq!(accepts("2.0"), (true, true));
+        // One that can't be read: as recent as MDM's own.
+        assert_eq!(accepts("unknown"), (true, true));
+        assert!(too_old("1.17.0") && too_old("1.19.3") && too_old("0.9"));
+        assert!(!too_old("1.20.0") && !too_old("1.26.9") && !too_old("unknown"));
+
+        let args = |v: &str| -> Vec<String> {
+            let tool = Installed {
+                version: v.into(),
+                exe: "gallery-dl".into(),
+            };
+            proc::gallery_dl(&tool, &["--sleep".into(), "1".into()], "https://x.test/g")
+                .unwrap()
+                .get_args()
+                .map(|a| a.to_string_lossy().into_owned())
+                .collect()
+        };
+        assert_eq!(
+            args("1.26.9"),
+            ["--sleep", "1", "--ignore-config", "--", "https://x.test/g"]
+        );
+        assert_eq!(
+            args("1.27.1"),
+            [
+                "--sleep",
+                "1",
+                "--ignore-config",
+                "--no-input",
+                "--",
+                "https://x.test/g"
+            ]
+        );
+    }
+
+    /// The browser's User-Agent (else MDM's) and cookies, as each release takes them.
+    #[test]
+    fn the_browsers_context_as_each_release_takes_it() {
+        let theirs = || -> Vec<String> {
+            [
+                "--referer",
+                "https://x.test/",
+                "--user-agent",
+                "Firefox/150",
+                "--cookies",
+                "/c.txt",
+            ]
+            .map(String::from)
+            .to_vec()
+        };
+        let new = Accepts::of("1.30.0");
+        let old = Accepts::of("1.20.5");
+        assert_eq!(
+            browser_args(theirs(), new),
+            ["--cookies", "/c.txt", "--user-agent", "Firefox/150"]
+        );
+        assert_eq!(
+            browser_args(theirs(), old),
+            ["--cookies", "/c.txt", "-o", "user-agent=Firefox/150"]
+        );
+        assert_eq!(browser_args(Vec::new(), new), ["--user-agent", USER_AGENT]);
+        assert_eq!(
+            browser_args(Vec::new(), old),
+            ["-o".to_owned(), format!("user-agent={USER_AGENT}")]
+        );
+    }
+
+    /// A gallery-dl chosen before #236 checked, too old for MDM: MDM's own copy instead.
+    #[test]
+    fn a_chosen_release_too_old_gives_way_to_mdms_own() {
+        let dir = tempfile::tempdir().unwrap();
+        let exe = dir.path().join("old-gallery-dl");
+        std::fs::write(&exe, b"x").unwrap();
+        let json = serde_json::json!({ "gallery-dl": { "version": "1.17.0", "exe": exe } });
+        std::fs::write(dir.path().join("programs.json"), json.to_string()).unwrap();
+        assert_eq!(installed(dir.path()), None, "not the old one");
+        assert_eq!(
+            chosen_too_old(dir.path()).map(|i| i.version).as_deref(),
+            Some("1.17.0")
+        );
+        let own = crate::put(
+            dir.path(),
+            "gallery-dl",
+            "1.32.19",
+            asset().unwrap_or("gallery-dl"),
+            b"x",
+            "https://x/",
+        )
+        .unwrap();
+        assert_eq!(installed(dir.path()), Some(own));
     }
 
     #[test]

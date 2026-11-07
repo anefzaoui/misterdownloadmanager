@@ -43,6 +43,13 @@ for p in "${programs[@]}"; do install -m 755 "$bin/$p" "$tree/usr/bin/$p"; done
 # and the unwind tables, stay).
 python3 "$root/tools/installer/symbols.py" linux-x86_64 "$version" "$dist" "${programs[@]/#/$bin/}"
 for p in "${programs[@]}"; do strip --strip-all "$tree/usr/bin/$p"; done
+# The oldest glibc the programs run on: the newest GLIBC_x.y symbol version they ask for. The
+# .deb and .rpm require it, so a system too old refuses the package instead of installing
+# programs that can't start ("GLIBC_2.38 not found" on Debian 12 from a build on Ubuntu 24.04).
+glibc=$(for p in "${programs[@]}"; do objdump -T "$tree/usr/bin/$p"; done \
+  | grep -o 'GLIBC_[0-9][0-9.]*' | sed 's/GLIBC_//' | sort -V | tail -1)
+[ -n "$glibc" ] || { echo "no glibc version found in the programs" >&2; exit 1; }
+echo "the programs need glibc $glibc or newer"
 cp -r "$root/target/extension/chromium" "$tree/usr/share/misterdownloadmanager/extension-chromium"
 cp "$root/target/extension/mdm-firefox.xpi" "$tree/usr/share/misterdownloadmanager/"
 cp "$root/LICENSE" "$root/ATTRIBUTION.md" "$tree/usr/share/doc/misterdownloadmanager/"
@@ -73,7 +80,10 @@ cp "$tree/usr/share/misterdownloadmanager/mdm-firefox.xpi" "$plain/"
 cp "$root/LICENSE" "$root/ATTRIBUTION.md" "$plain/"
 tar -C "$stage" -czf "$dist/$name.tar.gz" "$name"
 
-# .deb
+# .deb. Its dependencies, and the .rpm's: the libraries the window loads at run time. Without
+# libxkbcommon-x11 (winit's keyboard under X11, and XWayland, MDM's default in a Wayland session)
+# the window panics at start; EGL draws Wayland windows; without the CA certificates no download
+# starts, HTTP ones too ("No CA certificates were loaded from the system"). GTK pulls in the rest.
 deb="$stage/deb"
 cp -r "$tree" "$deb"
 mkdir -p "$deb/DEBIAN"
@@ -82,7 +92,7 @@ Package: misterdownloadmanager
 Version: $version
 Architecture: amd64
 Maintainer: Mister Download Manager <https://github.com/anefzaoui/misterdownloadmanager>
-Depends: libc6 (>= 2.35), libgtk-3-0, libgl1, libxkbcommon0
+Depends: libc6 (>= $glibc), libgtk-3-0, libgl1, libegl1, libxkbcommon0, libxkbcommon-x11-0, ca-certificates
 Section: net
 Priority: optional
 Homepage: https://github.com/anefzaoui/misterdownloadmanager
@@ -102,7 +112,7 @@ Release: 1
 Summary: Download manager (experimental Linux build)
 License: GPL-3.0-or-later
 URL: https://github.com/anefzaoui/misterdownloadmanager
-Requires: gtk3, mesa-libGL, libxkbcommon
+Requires: glibc >= $glibc, gtk3, mesa-libGL, mesa-libEGL, libxkbcommon, libxkbcommon-x11, ca-certificates
 AutoReqProv: no
 
 %description

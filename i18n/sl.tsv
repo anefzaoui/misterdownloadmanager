@@ -4840,6 +4840,11 @@
 #, machine
 	your Google account has no access to this file, or its owner turned off downloading	vaš račun Google nima dostopa do te datoteke ali pa je njen lastnik izklopil prenašanje
 #. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	Vaš program ({version}) je prestar: MDM potrebuje {oldest} ali novejšo različico
+#. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -5015,6 +5020,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} ni na voljo kot {how}.
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} je prestar: MDM potrebuje {oldest} ali novejšo različico
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5604,9 +5614,17 @@ menu	Add trackers...	Dodaj sledilnike...
 #, machine
 menu	Adwaita	Adwaita
 #. menu command in the main window
+#. View → Theme: a style theme's name (Windows 7's glassy look), a name: keep "Aero" as written
+#, machine
+menu	Aero	Aero
+#. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
 menu	Applies the next time MDM starts	Uveljavi se ob naslednjem zagonu programa MDM
+#. menu command in the main window
+#. View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
+#, machine
+menu	Aqua	Aqua
 #. menu command in the main window
 #, machine
 menu	Arrange files	Razporedi datoteke
@@ -5785,6 +5803,10 @@ menu	Its first frame didn't show within 10 seconds	Njegov prvi okvir se ni prika
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
 menu	Its last start ended before its first frame	Njegov zadnji zagon se je končal pred prvim okvirjem
+#. menu command in the main window
+#. View → Theme: a style theme's name (Windows XP's look), a name: keep "Luna" as written
+#, machine
+menu	Luna	Luna
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine

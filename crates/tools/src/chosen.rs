@@ -80,13 +80,17 @@ pub fn chosen(dir: &Path, h: Helper) -> Option<Installed> {
     slot(&mut read(dir), h).take().filter(|i| i.exe.is_file())
 }
 
-/// Use `exe` for `h` from now on, once it has answered as that program (`--version`).
+/// Use `exe` for `h` from now on, once it has answered as that program (`--version`) in a
+/// release MDM can drive (gallery-dl: `gallery::OLDEST` or newer, #236).
 pub fn choose(dir: &Path, h: Helper, exe: &Path) -> Result<Installed, Error> {
-    let version = version_of(h, exe)?;
-    let installed = Installed {
-        version,
-        exe: exe.to_owned(),
-    };
+    let installed = ask(h, exe)?;
+    if h == Helper::GalleryDl && crate::gallery::too_old(&installed.version) {
+        return Err(Error::TooOld {
+            name: h.name(),
+            version: installed.version,
+            oldest: crate::gallery::OLDEST,
+        });
+    }
     let mut p = read(dir);
     *slot(&mut p, h) = Some(installed.clone());
     write(dir, &p)?;
@@ -102,6 +106,14 @@ pub fn forget(dir: &Path, h: Helper) -> Result<(), Error> {
     Ok(())
 }
 
+/// `exe` as `h`, with the version it says (`--version`), not chosen: for a check or a test.
+pub fn ask(h: Helper, exe: &Path) -> Result<Installed, Error> {
+    Ok(Installed {
+        version: version_of(h, exe)?,
+        exe: exe.to_owned(),
+    })
+}
+
 /// What `exe` says its version is, asked as `h` asks it; not `h` if it doesn't answer as `h`.
 fn version_of(h: Helper, exe: &Path) -> Result<String, Error> {
     let mut cmd = Command::new(exe);
@@ -114,10 +126,10 @@ fn version_of(h: Helper, exe: &Path) -> Result<String, Error> {
     parse_version(h, &String::from_utf8_lossy(&out)).ok_or(Error::NotTheProgram(h.name()))
 }
 
-/// yt-dlp and gallery-dl print their version alone (`2026.10.26`, `1.32.19`); ffmpeg starts
-/// with `ffmpeg version 8.0 …`.
+/// yt-dlp and gallery-dl print their version alone (`2026.10.26`, `1.32.19`; gallery-dl 1.30.0
+/// after an empty line, #236); ffmpeg starts with `ffmpeg version 8.0 …`.
 fn parse_version(h: Helper, out: &str) -> Option<String> {
-    let first = out.lines().next()?.trim();
+    let first = out.lines().map(str::trim).find(|l| !l.is_empty())?;
     let v = match h {
         Helper::YtDlp | Helper::GalleryDl => first,
         Helper::Ffmpeg => first
@@ -166,6 +178,10 @@ mod tests {
             None
         );
         assert_eq!(parse_version(Helper::YtDlp, ""), None);
+        assert_eq!(
+            parse_version(Helper::GalleryDl, "\n1.30.0\n\n").as_deref(),
+            Some("1.30.0")
+        );
     }
 
     /// A chosen program is used first, and MDM's updates leave it alone: no download, no
