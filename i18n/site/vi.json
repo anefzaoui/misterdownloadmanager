@@ -458,6 +458,10 @@
    "source": "Paid licence after a 30-day trial",
    "text": "Giấy phép trả phí sau 30 ngày dùng thử"
   },
+  "0a3351c9af1c4067": {
+   "source": "Through a VPN's adapter",
+   "text": "Qua bộ điều hợp của VPN"
+  },
   "0a3e889d13ad3d19": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as…",
    "text": "Mở Cài đặt Windows → Ứng dụng, tìm Mister Download Manager và chọn Gỡ cài đặt. Trình gỡ cài đặt sẽ hỏi bạn có muốn xóa danh sách tải xuống và cài đặt của bạn không…"
@@ -2646,6 +2650,10 @@
    "source": "The app",
    "text": "Ứng dụng"
   },
+  "3f86fde89f3656cf": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen: <x1/> (implicit TLS; <x2/> with TLS is fine).",
+   "text": "Chưa được giữ vào bộ điều hợp, vì vậy chúng không bắt đầu khi một bộ điều hợp được chọn: <x1/> (TLS ngầm; <x2/> với TLS thì được)."
+  },
   "3fa8036373b9b833": {
    "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added.",
    "text": "Trình cài đặt Windows chưa được ký mã, vì vậy Windows SmartScreen có thể cảnh báo trước khi khởi động lần đầu. Ký mã sẽ được thêm vào."
@@ -2774,6 +2782,10 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "Tích hợp trình duyệt — Trợ giúp Mister Download Manager"
   },
+  "439e42205d062684": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
+   "text": "Các trang video qua yt-dlp và ffmpeg, thư viện hình ảnh qua gallery-dl (chạy dưới dạng các chương trình riêng biệt); khi một bộ điều hợp mạng được chọn, các kết nối của chúng đi qua một proxy của MDM trên 127.0.0.1 liên kết chúng với nó (<x1/>)"
+  },
   "43bb74214b2e4ee2": {
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
    "text": "Bản phát hành đầu tiên: một trình quản lý tải xuống miễn phí cho Windows, được bố trí theo cách mà người dùng Internet Download Manager mong đợi, với các bản dựng thử nghiệm cho macOS và Linux."
@@ -2861,6 +2873,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "Video từ các trang"
+  },
+  "45a51693491a43ec": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV). <x18/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x19/>; when it isn't connected, nothing starts.",
+   "text": "Tải xuống một video; <x1/> chọn chất lượng từ <x2/> (<x3/> = tệp đơn tốt nhất; <x4/> = chỉ âm thanh như trang web có, không chuyển đổi; <x5/>, <x6/>, <x7/> hoặc <x8/> = âm thanh dưới dạng MP3 ở tốc độ bit đó, <x9/> ở tốc độ biến đổi tốt nhất; <x10/> = dưới dạng Opus; <x11/> = dưới dạng FLAC, không mất dữ liệu nhưng không tốt hơn âm thanh của trang web; chuyển đổi cần ffmpeg). <x12/> lưu phụ đề bên cạnh: mã ngôn ngữ từ <x13/> (<x14/>), hoặc <x15/> cho mọi ngôn ngữ người tải lên đã cung cấp; <x16/> thay vào đó lấy phụ đề tự động của trang web; <x17/> đặt chúng vào video (cần ffmpeg, MP4 hoặc MKV). <x18/> gửi các kết nối của yt-dlp (và ffmpeg) qua một bộ điều hợp mạng, giống như đối với <x19/>; khi nó không được kết nối, không có gì bắt đầu."
   },
   "45bc5ceaa76685a9": {
    "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
@@ -3353,6 +3369,10 @@
   "53518b0cbaa1f9fd": {
    "source": "in its folder",
    "text": "trong thư mục của nó"
+  },
+  "538610c6a0cb9bfd": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones. <x3/> sends gallery-dl's connections through one network adapter, as for <x4/>.",
+   "text": "Tải xuống các ảnh của một thư viện (một danh mục Wikimedia Commons, một album Flickr,...) vào một thư mục được đặt tên theo thư viện đó bên trong <x1/>; <x2/> lấy tối đa số lượng đó, là những ảnh đầu tiên trang web liệt kê. Nếu khởi động lại, nó chỉ tải những ảnh mới. <x3/> gửi các kết nối của gallery-dl qua một bộ điều hợp mạng, giống như đối với <x4/>."
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6534,6 +6554,10 @@
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp và ffmpeg"
   },
+  "a3df8367f292fb9b": {
+   "source": "Video pages and image galleries: yt-dlp, gallery-dl and the ffmpeg yt-dlp starts can't be held to an adapter themselves, so while one is chosen MDM gives them a proxy of its own on this computer (<x1/>, with a password only they get). MDM opens their connections through the adapter, as it opens its own, and looks the names up with the DNS you chose. When the adapter disconnects, their connections close and the downloads stop with the others. Video formats that can't go through a proxy (RTMP, RTSP, MMS, FTP) are refused rather than sent around it.",
+   "text": "Các trang video và thư viện hình ảnh: yt-dlp, gallery-dl và ffmpeg mà yt-dlp khởi động không thể tự giữ vào một bộ điều hợp, vì vậy khi một bộ điều hợp được chọn, MDM sẽ cung cấp cho chúng một proxy riêng trên máy tính này (<x1/>, với mật khẩu chỉ chúng mới có). MDM mở các kết nối của chúng thông qua bộ điều hợp, giống như nó mở các kết nối của riêng mình, và tra cứu tên bằng DNS bạn đã chọn. Khi bộ điều hợp ngắt kết nối, các kết nối của chúng đóng lại và các bản tải xuống dừng cùng với các bản khác. Các định dạng video không thể đi qua proxy (RTMP, RTSP, MMS, FTP) bị từ chối thay vì được gửi vòng quanh nó."
+  },
   "a3f154dfacda2d5a": {
    "source": "<g1>Name</g1>: the package's name, kept with its downloads.",
    "text": "<g1>Tên</g1>: tên của gói, được giữ cùng với các lượt tải xuống của nó."
@@ -9298,6 +9322,10 @@
    "source": "Download a video from a page",
    "text": "Tải xuống video từ một trang"
   },
+  "ecf062c77f1d087d": {
+   "source": "With <g1>Options → Proxy / Socks → <g2>Network adapter</g2></g1> set, video downloads go through that adapter too, with the same kill switch as other downloads: MDM hands yt-dlp (and the ffmpeg it starts) a proxy of its own on this computer, and opens every connection through the adapter. When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.",
+   "text": "Khi <g1>Tùy chọn → Proxy / Socks → <g2>Bộ điều hợp mạng</g2></g1> được đặt, các video tải xuống cũng sẽ đi qua bộ điều hợp đó, với cùng một công tắc ngắt kết nối như các lượt tải xuống khác: MDM cung cấp cho yt-dlp (và ffmpeg mà nó khởi động) một proxy riêng trên máy tính này, và mở mọi kết nối thông qua bộ điều hợp. Khi bộ điều hợp bị ngắt kết nối, lượt tải video sẽ dừng, và sẽ bắt đầu lại khi bộ điều hợp hoạt động trở lại. Các định dạng được gửi qua RTMP, RTSP, MMS hoặc FTP không thể đi qua bộ điều hợp này và sẽ bị từ chối."
+  },
   "ed008009aef1888e": {
    "source": "portable.zip",
    "text": "portable.zip"
@@ -9689,6 +9717,10 @@
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",
    "text": "Nó có tiếp tục tải lên sau khi torrent hoàn tất không?"
+  },
+  "f7bddb8310ecc7ae": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, video pages and image galleries, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Bộ điều hợp mạng</g1> — <g2>Bất kỳ (hệ thống tự chọn)</g2> là mặc định. Chọn một bộ điều hợp, thường là của VPN của bạn, và mọi kết nối mà MDM mở sẽ đi qua nó, hoặc không đi qua. Điều đó bao gồm các bản tải xuống, FTP, torrent, trang video và thư viện hình ảnh, DNS bạn đã chọn, các bản tải xuống của MDM và kiểm tra cập nhật. Nó hoạt động như một công tắc ngắt mạch: khi bộ điều hợp ngắt kết nối hoặc VPN bị tắt, không có gì đi qua kết nối bình thường của bạn. Các bản tải xuống đang chạy dừng với \"… không được kết nối\" và bắt đầu lại khi bộ điều hợp trở lại. Dòng bên dưới danh sách hiển thị địa chỉ của bộ điều hợp hoặc cho biết nó không được kết nối."
   },
   "f7e4f412acae6b3f": {
    "source": "<g1>6</g1> of 10",

@@ -458,6 +458,10 @@
    "source": "Paid licence after a 30-day trial",
    "text": "Платная лицензия после 30-дневной пробной версии"
   },
+  "0a3351c9af1c4067": {
+   "source": "Through a VPN's adapter",
+   "text": "Через адаптер VPN"
+  },
   "0a3e889d13ad3d19": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as…",
    "text": "Откройте «Настройки» Windows → «Приложения», найдите Mister Download Manager и выберите «Удалить». Программа удаления спросит, нужно ли также удалить список загрузок и настройки. Загруженные вами файлы никогда не затрагиваются. Для портативной версии просто удалите её папку."
@@ -2646,6 +2650,10 @@
    "source": "The app",
    "text": "Приложение"
   },
+  "3f86fde89f3656cf": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen: <x1/> (implicit TLS; <x2/> with TLS is fine).",
+   "text": "Пока не привязаны к адаптеру, поэтому они не запускаются, пока выбран один: <x1/> (неявный TLS; <x2/> с TLS работает нормально)."
+  },
   "3fa8036373b9b833": {
    "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added.",
    "text": "Установщик для Windows пока не подписан кодом, поэтому Windows SmartScreen может выдать предупреждение перед первым запуском. Подписание кода будет добавлено."
@@ -2774,6 +2782,10 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "Интеграция с браузером — справка Mister Download Manager"
   },
+  "439e42205d062684": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
+   "text": "Видеостраницы через yt-dlp и ffmpeg, галереи изображений через gallery-dl (запускаются как отдельные программы); при выборе сетевого адаптера их соединения проходят через прокси MDM на 127.0.0.1, который привязывает их к нему (<x1/>)."
+  },
   "43bb74214b2e4ee2": {
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
    "text": "Первый выпуск: бесплатный менеджер загрузок для Windows, разработанный так, как ожидают пользователи Internet Download Manager, с экспериментальными сборками для macOS и Linux."
@@ -2861,6 +2873,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "Видео со страниц"
+  },
+  "45a51693491a43ec": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV). <x18/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x19/>; when it isn't connected, nothing starts.",
+   "text": "Загружает видео; <x1/> принимает селектор качества из <x2/> (<x3/> = лучший отдельный файл; <x4/> = только звук в том виде, в каком он есть на сайте, без конвертации; <x5/>, <x6/>, <x7/> или <x8/> = звук в формате MP3 с указанным битрейтом, <x9/> с лучшим переменным битрейтом; <x10/> = в формате Opus; <x11/> = в формате FLAC, без потерь, но не лучше звука сайта; для конвертации нужен ffmpeg). <x12/> сохраняет субтитры рядом: коды языков из <x13/> (<x14/>) или <x15/> для всех, предоставленных загрузчиком; <x16/> вместо этого использует автоматические субтитры сайта; <x17/> встраивает их в видео (требуется ffmpeg, MP4 или MKV). <x18/> отправляет соединения yt-dlp (и ffmpeg) через один сетевой адаптер, как для <x19/>; если он не подключен, ничего не запускается."
   },
   "45bc5ceaa76685a9": {
    "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
@@ -3353,6 +3369,10 @@
   "53518b0cbaa1f9fd": {
    "source": "in its folder",
    "text": "в своей папке"
+  },
+  "538610c6a0cb9bfd": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones. <x3/> sends gallery-dl's connections through one network adapter, as for <x4/>.",
+   "text": "Загружает изображения из галереи (категории Wikimedia Commons, альбома Flickr и т. д.) в папку с её названием внутри <x1/>; <x2/> принимает не более указанного количества, первые из списка сайта. При повторном запуске загружаются только новые. <x3/> отправляет соединения gallery-dl через один сетевой адаптер, как для <x4/>."
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6534,6 +6554,10 @@
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp и ffmpeg"
   },
+  "a3df8367f292fb9b": {
+   "source": "Video pages and image galleries: yt-dlp, gallery-dl and the ffmpeg yt-dlp starts can't be held to an adapter themselves, so while one is chosen MDM gives them a proxy of its own on this computer (<x1/>, with a password only they get). MDM opens their connections through the adapter, as it opens its own, and looks the names up with the DNS you chose. When the adapter disconnects, their connections close and the downloads stop with the others. Video formats that can't go through a proxy (RTMP, RTSP, MMS, FTP) are refused rather than sent around it.",
+   "text": "Видеостраницы и галереи изображений: yt-dlp, gallery-dl и ffmpeg, который запускает yt-dlp, не могут быть привязаны к адаптеру сами по себе, поэтому, пока выбран один, MDM предоставляет им собственный прокси на этом компьютере (<x1/>, с паролем, который получают только они). MDM открывает их соединения через адаптер, как и свои собственные, и ищет имена с помощью выбранного вами DNS. Когда адаптер отключается, их соединения закрываются, и загрузки останавливаются вместе с остальными. Видеоформаты, которые не могут проходить через прокси (RTMP, RTSP, MMS, FTP), отклоняются, а не отправляются в обход."
+  },
   "a3f154dfacda2d5a": {
    "source": "<g1>Name</g1>: the package's name, kept with its downloads.",
    "text": "<g1>Имя</g1>: имя пакета, сохраняемое вместе с его загрузками."
@@ -9298,6 +9322,10 @@
    "source": "Download a video from a page",
    "text": "Загрузить видео со страницы"
   },
+  "ecf062c77f1d087d": {
+   "source": "With <g1>Options → Proxy / Socks → <g2>Network adapter</g2></g1> set, video downloads go through that adapter too, with the same kill switch as other downloads: MDM hands yt-dlp (and the ffmpeg it starts) a proxy of its own on this computer, and opens every connection through the adapter. When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.",
+   "text": "Если в <g1>Параметры → Прокси / Socks → <g2>Сетевой адаптер</g2></g1> выбран адаптер, загрузка видео также будет осуществляться через него, с тем же механизмом аварийного отключения, что и для других загрузок: MDM предоставляет yt-dlp (и запускаемому им ffmpeg) собственный прокси на этом компьютере и открывает каждое соединение через указанный адаптер. При отключении адаптера загрузка видео останавливается и возобновляется при его восстановлении. Форматы, передаваемые по RTMP, RTSP, MMS или FTP, не могут быть использованы и отклоняются."
+  },
   "ed008009aef1888e": {
    "source": "portable.zip",
    "text": "portable.zip"
@@ -9689,6 +9717,10 @@
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",
    "text": "Продолжает ли он раздачу после завершения торрента?"
+  },
+  "f7bddb8310ecc7ae": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, video pages and image galleries, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Сетевой адаптер</g1> — <g2>Любой (система выбирает)</g2> по умолчанию. Выберите адаптер, обычно ваш VPN, и каждое соединение, которое открывает MDM, будет проходить через него, или не будет проходить вообще. Это охватывает загрузки, FTP, торренты, видеостраницы и галереи изображений, выбранный вами DNS, собственные загрузки MDM и проверку обновлений. Это работает как аварийный выключатель: когда адаптер отключается или VPN выключается, ничего не выходит через ваше обычное соединение. Запущенные загрузки останавливаются с сообщением «… не подключен» и возобновляются, когда адаптер снова подключается. Строка под списком показывает адрес адаптера или то, что он не подключен."
   },
   "f7e4f412acae6b3f": {
    "source": "<g1>6</g1> of 10",

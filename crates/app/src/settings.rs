@@ -846,11 +846,14 @@ pub fn share_proxy(proxy: mdm_engine::Proxy) {
     }
 }
 
-/// Keep [`own_net`] on the settings' DNS (cheap when it didn't change).
+/// Keep [`own_net`] on the settings' DNS (cheap when it didn't change), and the helpers' relay
+/// (#35: the servers of video pages and galleries are looked up with it while an adapter is
+/// chosen).
 pub fn share_dns(dns: mdm_engine::DnsChoice) {
     if OWN_DNS.read().unwrap().as_ref() != Some(&dns) {
-        *OWN_DNS.write().unwrap() = Some(dns);
+        *OWN_DNS.write().unwrap() = Some(dns.clone());
     }
+    mdm_tools::proc::set_dns(dns);
 }
 
 static OWN_ROUTE: std::sync::RwLock<mdm_engine::Route> =

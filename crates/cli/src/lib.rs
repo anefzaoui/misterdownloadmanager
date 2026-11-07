@@ -90,6 +90,9 @@ enum Cmd {
         /// At most this many files (the first the site lists).
         #[arg(long)]
         limit: Option<u64>,
+        /// The network adapter gallery-dl goes through (#35), as `get --adapter`.
+        #[arg(long)]
+        adapter: Option<String>,
     },
     /// What video a page holds, and the choices to download (needs `install-ytdlp`).
     VideoInfo {
@@ -120,8 +123,8 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
-        /// The network adapter yt-dlp goes through (#35), as `get --adapter`: Windows only
-        /// (elsewhere video pages are refused while an adapter is chosen).
+        /// The network adapter yt-dlp (and the ffmpeg it starts) goes through (#35), as
+        /// `get --adapter`.
         #[arg(long)]
         adapter: Option<String>,
     },
@@ -473,8 +476,19 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             }
             Ok(())
         }
-        Cmd::GalleryGet { url, output, limit } => {
+        Cmd::GalleryGet {
+            url,
+            output,
+            limit,
+            adapter,
+        } => {
             use mdm_tools::video::State;
+            if let Some(a) = adapter {
+                mdm_tools::proc::set_route(mdm_engine::net::route_for(
+                    &a,
+                    &mdm_engine::net::adapters(),
+                ));
+            }
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::gallery::installed(&dir).ok_or_else(|| {
                 anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl")

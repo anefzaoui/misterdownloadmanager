@@ -458,6 +458,10 @@
    "source": "Paid licence after a 30-day trial",
    "text": "Lisensi berbayar setelah uji coba 30 hari"
   },
+  "0a3351c9af1c4067": {
+   "source": "Through a VPN's adapter",
+   "text": "Melalui adaptor VPN"
+  },
   "0a3e889d13ad3d19": {
    "source": "Open Windows Settings → Apps, find Mister Download Manager and choose Uninstall. The uninstaller asks whether to delete your download list and settings as…",
    "text": "Buka Pengaturan Windows → Aplikasi, cari Mister Download Manager dan pilih Hapus Instalasi. Penghapus instalasi akan menanyakan apakah Anda ingin menghapus daftar unduhan dan pengaturan Anda juga…"
@@ -2646,6 +2650,10 @@
    "source": "The app",
    "text": "Aplikasi"
   },
+  "3f86fde89f3656cf": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen: <x1/> (implicit TLS; <x2/> with TLS is fine).",
+   "text": "Belum terhubung ke adaptor, jadi tidak dimulai saat salah satu dipilih: <x1/> (TLS implisit; <x2/> dengan TLS baik-baik saja)."
+  },
   "3fa8036373b9b833": {
    "source": "The Windows installer isn't code-signed yet, so Windows SmartScreen may warn before the first start. Code signing will be added.",
    "text": "Pemasang Windows belum ditandatangani kode, jadi Windows SmartScreen mungkin akan memperingatkan sebelum dimulai pertama kali. Penandatanganan kode akan ditambahkan."
@@ -2774,6 +2782,10 @@
    "source": "Browser integration — Mister Download Manager help",
    "text": "Integrasi browser — Bantuan Mister Download Manager"
   },
+  "439e42205d062684": {
+   "source": "Video pages through yt-dlp and ffmpeg, image galleries through gallery-dl (run as separate programs); while a network adapter is chosen, their connections go through a proxy of MDM's on 127.0.0.1 that binds them to it (<x1/>)",
+   "text": "Halaman video melalui yt-dlp dan ffmpeg, galeri gambar melalui gallery-dl (berjalan sebagai program terpisah); saat adaptor jaringan dipilih, koneksi mereka melewati proxy MDM di 127.0.0.1 yang mengikatnya (<x1/>)"
+  },
   "43bb74214b2e4ee2": {
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
    "text": "Rilis pertama: pengelola unduhan gratis untuk Windows, ditata seperti yang diharapkan pengguna Internet Download Manager, dengan versi eksperimental untuk macOS dan Linux."
@@ -2861,6 +2873,10 @@
   "456dbce8946dcc20": {
    "source": "Video from pages",
    "text": "Video dari halaman"
+  },
+  "45a51693491a43ec": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV). <x18/> sends yt-dlp's connections (and ffmpeg's) through one network adapter, as for <x19/>; when it isn't connected, nothing starts.",
+   "text": "Unduh video; <x1/> mengambil pemilih kualitas dari <x2/> (<x3/> = file tunggal terbaik; <x4/> = hanya suara seperti yang ada di situs, tidak dikonversi; <x5/>, <x6/>, <x7/> atau <x8/> = suara sebagai MP3 pada bitrate tersebut, <x9/> pada bitrate variabel terbaiknya; <x10/> = sebagai Opus; <x11/> = sebagai FLAC, lossless tetapi tidak lebih baik dari suara situs; konversi memerlukan ffmpeg). <x12/> menyimpan subtitle di sampingnya: kode bahasa dari <x13/> (<x14/>), atau <x15/> untuk setiap subtitle yang diberikan pengunggah; <x16/> mengambil teks otomatis situs sebagai gantinya; <x17/> menempatkannya ke dalam video (memerlukan ffmpeg, MP4 atau MKV). <x18/> mengirim koneksi yt-dlp (dan ffmpeg) melalui satu adaptor jaringan, seperti untuk <x19/>; jika tidak terhubung, tidak ada yang dimulai."
   },
   "45bc5ceaa76685a9": {
    "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
@@ -3353,6 +3369,10 @@
   "53518b0cbaa1f9fd": {
    "source": "in its folder",
    "text": "di foldernya"
+  },
+  "538610c6a0cb9bfd": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones. <x3/> sends gallery-dl's connections through one network adapter, as for <x4/>.",
+   "text": "Unduh gambar-gambar galeri (kategori Wikimedia Commons, album Flickr, ...) ke dalam folder yang dinamai sesuai galeri tersebut di dalam <x1/>; <x2/> mengambil paling banyak sejumlah itu, yang pertama dicantumkan situs. Jika dimulai lagi, hanya mengambil yang baru. <x3/> mengirim koneksi gallery-dl melalui satu adaptor jaringan, seperti untuk <x4/>."
   },
   "539160f92bae4422": {
    "source": "Being re-measured",
@@ -6534,6 +6554,10 @@
    "source": "yt-dlp and ffmpeg",
    "text": "yt-dlp dan ffmpeg"
   },
+  "a3df8367f292fb9b": {
+   "source": "Video pages and image galleries: yt-dlp, gallery-dl and the ffmpeg yt-dlp starts can't be held to an adapter themselves, so while one is chosen MDM gives them a proxy of its own on this computer (<x1/>, with a password only they get). MDM opens their connections through the adapter, as it opens its own, and looks the names up with the DNS you chose. When the adapter disconnects, their connections close and the downloads stop with the others. Video formats that can't go through a proxy (RTMP, RTSP, MMS, FTP) are refused rather than sent around it.",
+   "text": "Halaman video dan galeri gambar: yt-dlp, gallery-dl, dan ffmpeg yang dimulai yt-dlp tidak dapat dipegang pada adaptor itu sendiri, jadi saat salah satu dipilih, MDM memberi mereka proxy sendiri di komputer ini (<x1/>, dengan kata sandi yang hanya mereka dapatkan). MDM membuka koneksi mereka melalui adaptor, seperti halnya membuka koneksinya sendiri, dan mencari nama dengan DNS yang Anda pilih. Ketika adaptor terputus, koneksi mereka tertutup dan unduhan berhenti bersama yang lain. Format video yang tidak dapat melalui proxy (RTMP, RTSP, MMS, FTP) ditolak daripada dikirim melaluinya."
+  },
   "a3f154dfacda2d5a": {
    "source": "<g1>Name</g1>: the package's name, kept with its downloads.",
    "text": "<g1>Nama</g1>: nama paket, disimpan bersama unduhannya."
@@ -9298,6 +9322,10 @@
    "source": "Download a video from a page",
    "text": "Mengunduh video dari halaman"
   },
+  "ecf062c77f1d087d": {
+   "source": "With <g1>Options → Proxy / Socks → <g2>Network adapter</g2></g1> set, video downloads go through that adapter too, with the same kill switch as other downloads: MDM hands yt-dlp (and the ffmpeg it starts) a proxy of its own on this computer, and opens every connection through the adapter. When the adapter disconnects, the video download stops, and it starts again when the adapter is back. Formats sent over RTMP, RTSP, MMS or FTP can't go through it and are refused.",
+   "text": "Dengan setelan <g1>Opsi → Proksi / Socks → <g2>Adaptor jaringan</g2></g1>, unduhan video juga akan melalui adaptor tersebut, dengan sakelar pemutus yang sama seperti unduhan lainnya: MDM memberikan yt-dlp (dan ffmpeg yang dimulainya) proksi miliknya sendiri di komputer ini, dan membuka setiap koneksi melalui adaptor. Ketika adaptor terputus, unduhan video berhenti, dan akan dimulai lagi ketika adaptor kembali. Format yang dikirim melalui RTMP, RTSP, MMS, atau FTP tidak dapat melaluinya dan akan ditolak."
+  },
   "ed008009aef1888e": {
    "source": "portable.zip",
    "text": "portable.zip"
@@ -9689,6 +9717,10 @@
   "f7b804b244f90c19": {
    "source": "Does it keep uploading after a torrent finishes?",
    "text": "Apakah akan terus mengunggah setelah torrent selesai?"
+  },
+  "f7bddb8310ecc7ae": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, video pages and image galleries, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Adaptor jaringan</g1> — <g2>Apa pun (sistem memilih)</g2> adalah default. Pilih adaptor, biasanya adaptor VPN Anda, dan setiap koneksi yang dibuka MDM akan keluar melaluinya, atau tidak sama sekali. Ini mencakup unduhan, FTP, torrent, halaman video dan galeri gambar, DNS yang Anda pilih, unduhan MDM sendiri, dan pemeriksaan pembaruan. Ini berfungsi sebagai sakelar pemutus: ketika adaptor terputus, atau VPN dimatikan, tidak ada yang keluar melalui koneksi normal Anda. Unduhan yang sedang berjalan berhenti dengan \"… tidak terhubung\" dan mulai lagi ketika adaptor kembali. Garis di bawah daftar menunjukkan alamat adaptor, atau bahwa adaptor tidak terhubung."
   },
   "f7e4f412acae6b3f": {
    "source": "<g1>6</g1> of 10",
