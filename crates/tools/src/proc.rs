@@ -280,13 +280,15 @@ pub fn safe(s: &str) -> Result<&str, ProcError> {
 }
 
 /// What the browser's request for a page carried, so yt-dlp asks as the browser did: the page
-/// that embeds a player (Referer), the browser's User-Agent, and the page's cookies (a Cookie
-/// header's `name=value; …`), which sign a member's or a site's own videos in.
+/// that embeds a player (Referer), the browser's User-Agent, and the page's cookies, which sign a
+/// member's or a site's own videos in: each with its domain and flags (`jar`), or, from an older
+/// extension, a Cookie header's `name=value; …` (`cookies`).
 #[derive(Clone, Debug, Default)]
 pub struct FromBrowser {
     pub referer: Option<String>,
     pub user_agent: Option<String>,
     pub cookies: Option<String>,
+    pub jar: Vec<mdm_ipc::BrowserCookie>,
 }
 
 /// A private cookie file in the Netscape format yt-dlp's `--cookies` reads, removed when
@@ -316,10 +318,14 @@ impl FromBrowser {
         let host = url::Url::parse(url)
             .ok()
             .and_then(|u| u.host_str().map(str::to_owned));
-        let file = match (given(&self.cookies), host) {
-            (Some(cookies), Some(host)) => {
-                let file = cookie_file(&host, cookies)
-                    .map_err(|e| ProcError::Start("yt-dlp".into(), e))?;
+        let text = match (given(&self.cookies), host) {
+            _ if !self.jar.is_empty() => Some(jar_cookies(&self.jar)),
+            (Some(cookies), Some(host)) => Some(header_cookies(&host, cookies)),
+            _ => None,
+        };
+        let file = match text {
+            Some(text) => {
+                let file = cookie_file(&text).map_err(|e| ProcError::Start("yt-dlp".into(), e))?;
                 args.extend([
                     "--cookies".to_owned(),
                     file.0.to_string_lossy().into_owned(),
@@ -332,9 +338,99 @@ impl FromBrowser {
     }
 }
 
-/// `cookies` (`a=1; b=2`) for `host` and its subdomains, as session cookies, in a file only this
-/// user can read.
-fn cookie_file(host: &str, cookies: &str) -> std::io::Result<CookieFile> {
+/// The first line of a cookie file in the Netscape format (yt-dlp's `--cookies`). Each cookie is
+/// a line: domain, sent to its subdomains too (TRUE, FALSE), path, HTTPS only (TRUE, FALSE),
+/// expiry (seconds since 1970; 0: a session cookie), name, value, separated by tabs.
+const NETSCAPE: &str = "# Netscape HTTP Cookie File\n";
+
+/// Can `s` go in a cookie file's field (no tab or line break to shift the others)?
+fn field(s: &str) -> bool {
+    !s.contains(['\t', '\r', '\n', '\0'])
+}
+
+/// The browser's cookies (`cookies.getAll`'s), each for its own domain, path and flags: yt-dlp
+/// sends a cookie of `.youtube.com` to www.youtube.com when the page was music.youtube.com, and
+/// one of the page's host alone to that host only.
+fn jar_cookies(jar: &[mdm_ipc::BrowserCookie]) -> String {
+    let flag = |b: bool| if b { "TRUE" } else { "FALSE" };
+    let mut text = String::from(NETSCAPE);
+    for c in jar {
+        let host = c.domain.trim_start_matches('.');
+        let usable = !c.name.is_empty()
+            && !host.is_empty()
+            && !host.contains([' ', '/'])
+            && [&c.name, &c.value, &c.domain, &c.path]
+                .iter()
+                .all(|s| field(s));
+        if !usable {
+            continue;
+        }
+        let domain = if c.host_only {
+            host.to_owned()
+        } else {
+            format!(".{host}")
+        };
+        let path = if c.path.starts_with('/') {
+            c.path.as_str()
+        } else {
+            "/"
+        };
+        let expires = c
+            .expires
+            .filter(|e| e.is_finite() && *e >= 1.0)
+            .map_or(0, |e| e as u64);
+        text.push_str(&format!(
+            "{domain}\t{}\t{path}\t{}\t{expires}\t{}\t{}\n",
+            flag(!c.host_only),
+            flag(c.secure),
+            c.name,
+            c.value
+        ));
+    }
+    text
+}
+
+/// An older extension's Cookie header (`a=1; b=2`, the page's cookies without their domains),
+/// for the site's domain and its subdomains ([`header_domain`]), as session cookies.
+fn header_cookies(host: &str, cookies: &str) -> String {
+    let domain = header_domain(host);
+    let mut text = String::from(NETSCAPE);
+    for pair in cookies.split(';') {
+        let Some((name, value)) = pair.trim().split_once('=') else {
+            continue;
+        };
+        if ![domain, name, value].iter().all(|s| field(s)) {
+            continue;
+        }
+        text.push_str(&format!(".{domain}\tTRUE\t/\tFALSE\t0\t{name}\t{value}\n"));
+    }
+    text
+}
+
+/// Where a page's cookies without their domains go: its host, or the site's own domain where
+/// yt-dlp asks another of its hosts. Every YouTube host (music., m., www.: yt-dlp looks videos
+/// up on www.youtube.com, and the sign-in cookies are `.youtube.com`'s), and a site's mobile
+/// pages (m., mobile.), whose sign-in is the site's.
+fn header_domain(host: &str) -> &str {
+    let host = host.trim_end_matches('.');
+    let youtube = "youtube.com";
+    let lower = host.to_ascii_lowercase();
+    if lower == youtube || lower.ends_with(".youtube.com") {
+        return &host[host.len() - youtube.len()..];
+    }
+    for mobile in ["m.", "mobile."] {
+        if let Some(site) = host.strip_prefix(mobile)
+            && site.contains('.')
+        {
+            return site;
+        }
+    }
+    host
+}
+
+/// A cookie file's `text` ([`jar_cookies`], [`header_cookies`]) in a file only this user can
+/// read.
+fn cookie_file(text: &str) -> std::io::Result<CookieFile> {
     use std::io::Write;
     use std::sync::atomic::{AtomicU64, Ordering};
     static N: AtomicU64 = AtomicU64::new(0);
@@ -343,19 +439,6 @@ fn cookie_file(host: &str, cookies: &str) -> std::io::Result<CookieFile> {
         std::process::id(),
         N.fetch_add(1, Ordering::Relaxed)
     ));
-    let mut text = String::from("# Netscape HTTP Cookie File\n");
-    for pair in cookies.split(';') {
-        let Some((name, value)) = pair.trim().split_once('=') else {
-            continue;
-        };
-        if [host, name, value]
-            .iter()
-            .any(|s| s.contains(['\t', '\r', '\n', '\0']))
-        {
-            continue;
-        }
-        text.push_str(&format!(".{host}\tTRUE\t/\tFALSE\t0\t{name}\t{value}\n"));
-    }
     let mut open = std::fs::OpenOptions::new();
     open.write(true).create_new(true);
     // The temporary folder is the user's own on Windows; elsewhere it may be shared.
@@ -637,6 +720,7 @@ mod tests {
             referer: Some("https://course.test/lesson".into()),
             user_agent: Some("UA/1".into()),
             cookies: Some("sid=abc; theme=dark".into()),
+            ..Default::default()
         };
         let (args, file) = b.args("https://player.test/video/1").unwrap();
         assert_eq!(
@@ -666,9 +750,11 @@ mod tests {
 
     /// #229: the button over a YouTube video sends the watch page (its player plays a blob:, and
     /// a video's own requests aren't a manifest) with the cookies the browser has for that page:
-    /// youtube.com's sign-in, `__Secure-` ones included. They are filed for www.youtube.com and
-    /// its subdomains, the host yt-dlp's YouTube extractor asks (and checks the sign-in on), as
-    /// session cookies (expiry 0, which yt-dlp's loader keeps) sent over HTTP and HTTPS.
+    /// youtube.com's sign-in, `__Secure-` ones included. An older extension sends them as a
+    /// header, without their domains: they are filed for youtube.com and its subdomains, so they
+    /// reach www.youtube.com, the host yt-dlp's YouTube extractor asks (and checks the sign-in
+    /// on), from a YouTube Music or mobile page too; as session cookies (expiry 0, which
+    /// yt-dlp's loader keeps) sent over HTTP and HTTPS.
     #[test]
     fn a_youtube_pages_cookies_reach_the_host_ytdlp_asks() {
         let b = FromBrowser {
@@ -693,10 +779,110 @@ mod tests {
             ("LOGIN_INFO", "AFmmF2s:QUQ3"),
             ("__Host-GAPS", "1:g"),
         ] {
-            let line = format!(".www.youtube.com\tTRUE\t/\tFALSE\t0\t{name}\t{value}\n");
+            let line = format!(".youtube.com\tTRUE\t/\tFALSE\t0\t{name}\t{value}\n");
             assert!(text.contains(&line), "{line:?} in {text}");
         }
         assert_eq!(text.lines().count(), 7, "the header and six cookies");
+        for page in [
+            "https://music.youtube.com/watch?v=A1WG3x-Ebpk",
+            "https://m.youtube.com/watch?v=A1WG3x-Ebpk",
+            "https://youtube.com/shorts/A1WG3x-Ebpk",
+        ] {
+            let (_, file) = b.args(page).unwrap();
+            let text = std::fs::read_to_string(&file.unwrap().0).unwrap();
+            assert!(
+                text.contains(".youtube.com\tTRUE\t/\tFALSE\t0\tSAPISID\ts/1\n"),
+                "{page}: {text}"
+            );
+        }
+    }
+
+    /// The domain an older extension's header is filed under: the page's host, or its site's
+    /// where yt-dlp asks another of the site's hosts.
+    #[test]
+    fn a_header_goes_to_the_sites_own_domain() {
+        for (host, domain) in [
+            ("www.youtube.com", "youtube.com"),
+            ("music.youtube.com", "youtube.com"),
+            ("m.youtube.com", "youtube.com"),
+            ("youtube.com", "youtube.com"),
+            ("Music.YouTube.com.", "YouTube.com"),
+            ("m.facebook.com", "facebook.com"),
+            ("mobile.twitter.com", "twitter.com"),
+            ("m.vk.com", "vk.com"),
+            ("player.test", "player.test"),
+            ("www.example.org", "www.example.org"),
+            ("notyoutube.com", "notyoutube.com"),
+            ("youtube.com.evil.test", "youtube.com.evil.test"),
+            ("m.org", "m.org"),
+            ("127.0.0.1", "127.0.0.1"),
+        ] {
+            assert_eq!(header_domain(host), domain, "{host}");
+        }
+    }
+
+    fn cookie(name: &str, domain: &str, host_only: bool) -> mdm_ipc::BrowserCookie {
+        mdm_ipc::BrowserCookie {
+            name: name.into(),
+            value: format!("{name}-v"),
+            domain: domain.into(),
+            host_only,
+            path: "/".into(),
+            ..Default::default()
+        }
+    }
+
+    /// A newer extension sends each cookie with the domain, path and flags the browser keeps: the
+    /// file has each as it is (a host's own cookie for that host alone, a site's for its
+    /// subdomains too), and the header, sent for older apps, is left out.
+    #[test]
+    fn each_cookie_keeps_its_domain_and_flags() {
+        let b = FromBrowser {
+            cookies: Some("SID=SID-v; pref=pref-v".into()),
+            jar: vec![
+                mdm_ipc::BrowserCookie {
+                    secure: true,
+                    expires: Some(1893456000.75),
+                    path: "/".into(),
+                    ..cookie("SID", ".youtube.com", false)
+                },
+                cookie("pref", "music.youtube.com", true),
+                // Without a leading dot, as Firefox may name a domain cookie.
+                mdm_ipc::BrowserCookie {
+                    path: "/account".into(),
+                    ..cookie("acct", "youtube.com", false)
+                },
+                // A path that isn't one: the whole site.
+                mdm_ipc::BrowserCookie {
+                    path: "account".into(),
+                    ..cookie("odd", "youtube.com", true)
+                },
+                // Never a field that would shift the others, an empty name or domain.
+                cookie("tab\tname", ".youtube.com", false),
+                mdm_ipc::BrowserCookie {
+                    value: "a\nb".into(),
+                    ..cookie("line", ".youtube.com", false)
+                },
+                cookie("", ".youtube.com", false),
+                cookie("nodomain", "", false),
+                cookie("dots", "...", false),
+                cookie("slash", "youtube.com/x", false),
+            ],
+            ..Default::default()
+        };
+        let (args, file) = b.args("https://music.youtube.com/watch?v=x").unwrap();
+        assert_eq!(args[0], "--cookies");
+        let text = std::fs::read_to_string(&file.unwrap().0).unwrap();
+        assert_eq!(
+            text,
+            "# Netscape HTTP Cookie File\n\
+             .youtube.com\tTRUE\t/\tTRUE\t1893456000\tSID\tSID-v\n\
+             music.youtube.com\tFALSE\t/\tFALSE\t0\tpref\tpref-v\n\
+             .youtube.com\tTRUE\t/account\tFALSE\t0\tacct\tacct-v\n\
+             youtube.com\tFALSE\t/\tFALSE\t0\todd\todd-v\n"
+        );
+        // A page with no address of its own (none parsed) still gets the jar's.
+        assert!(b.args("not a url").unwrap().1.is_some());
     }
 
     fn yt(chosen: Option<&BrowserCookies>, ours: &[&str]) -> Vec<String> {

@@ -3,6 +3,10 @@
 //! computer, and no real browser profile is read: Firefox's cookies come from a throwaway
 //! profile folder made for the test.
 //!
+//! The cookies of a page on one host of a site reach yt-dlp's request to another host of it
+//! (music.youtube.com's page, www.youtube.com's request): yt-dlp then goes through the lab as its
+//! HTTP proxy, which answers for every host name, so those names never reach the network.
+//!
 //! Ignored: it needs yt-dlp's program, and for the browser part a Firefox profile folder whose
 //! `cookies.sqlite` has the cookie `ff=from-firefox` for 127.0.0.1:
 //!
@@ -10,6 +14,7 @@
 
 use std::time::{Duration, Instant};
 
+use mdm_ipc::BrowserCookie;
 use mdm_labserver::{Config, LabServer};
 use mdm_tools::proc::{BrowserCookies, FromBrowser, set_browser_cookies};
 use mdm_tools::video::{State, Subs, VideoJob};
@@ -21,6 +26,39 @@ fn cookies_seen(lab: &LabServer, path: &str, from: usize) -> Vec<String> {
         .skip(from)
         .filter(|e| e.path == path)
         .map(|e| e.cookie.unwrap_or_default())
+        .collect()
+}
+
+/// yt-dlp's look-up (`-J`) of `url` with `browser`'s cookies as the app gives them, through the
+/// lab as its HTTP proxy (any host name is the lab's: nothing leaves this computer), its generic
+/// extractor forced (YouTube's would take a youtube.com address as a channel's); then the host
+/// and cookies of each request for the lab's clip.
+fn hosts_and_cookies(
+    exe: &std::path::Path,
+    lab: &LabServer,
+    url: &str,
+    browser: &FromBrowser,
+) -> Vec<(String, String)> {
+    let proxy = lab.url("");
+    let extras = ["--proxy".to_owned(), proxy.trim_end_matches('/').to_owned()];
+    let mut ours: Vec<String> = ["-J", "--no-playlist", "--force-generic-extractor"]
+        .map(String::from)
+        .to_vec();
+    let (theirs, _file) = browser.args(url).unwrap();
+    ours.extend(theirs);
+    let at = lab.log().len();
+    let cmd = mdm_tools::proc::ytdlp(exe, &extras, &ours, url).unwrap();
+    let out = mdm_tools::proc::output(cmd, "yt-dlp", Duration::from_secs(90));
+    assert!(out.is_ok(), "{url}: {:?}", out.err());
+    lab.log()
+        .into_iter()
+        .skip(at)
+        .filter(|e| e.path == "/gen/1M/clip.mp4")
+        .map(|e| {
+            let host = e.host.unwrap_or_default();
+            let host = host.split(':').next().unwrap_or_default().to_owned();
+            (host, e.cookie.unwrap_or_default())
+        })
         .collect()
 }
 
@@ -89,22 +127,87 @@ fn whose_cookies_ytdlp_sends() {
     println!("2. look-up, nothing: {seen:?}");
     assert!(seen.iter().all(String::is_empty));
 
+    // 3. A YouTube Music page's cookies, the look-up asking www.youtube.com (the lab's redirect
+    //    stands in for yt-dlp going there): a newer extension's, each with its domain: the
+    //    site's sign-in (`.youtube.com`) goes there, the page host's own cookie doesn't.
+    let port = lab
+        .url("")
+        .trim_end_matches('/')
+        .rsplit(':')
+        .next()
+        .unwrap()
+        .to_owned();
+    let via = |from: &str, to: &str| {
+        format!("http://{from}:{port}/redirect?to=http://{to}:{port}/gen/1M/clip.mp4")
+    };
+    let music = via("music.youtube.com", "www.youtube.com");
+    let jar = FromBrowser {
+        cookies: Some("SID=signed-in; pref=music-only".into()),
+        jar: vec![
+            BrowserCookie {
+                name: "SID".into(),
+                value: "signed-in".into(),
+                domain: ".youtube.com".into(),
+                path: "/".into(),
+                ..Default::default()
+            },
+            BrowserCookie {
+                name: "pref".into(),
+                value: "music-only".into(),
+                domain: "music.youtube.com".into(),
+                host_only: true,
+                path: "/".into(),
+                ..Default::default()
+            },
+        ],
+        ..Default::default()
+    };
+    let seen = hosts_and_cookies(&exe, &lab, &music, &jar);
+    println!("3. music.youtube.com's page, each cookie's domain: {seen:?}");
+    assert!(!seen.is_empty(), "the clip asked for");
+    for (host, cookie) in &seen {
+        assert_eq!(host, "www.youtube.com");
+        assert!(cookie.contains("SID=signed-in"), "{cookie:?}");
+        assert!(!cookie.contains("pref="), "{cookie:?}");
+    }
+    //    An older extension's header (no domains): filed for youtube.com, it goes there too.
+    let header = FromBrowser {
+        cookies: Some("SID=signed-in".into()),
+        ..Default::default()
+    };
+    let seen = hosts_and_cookies(&exe, &lab, &music, &header);
+    println!("3. music.youtube.com's page, a header: {seen:?}");
+    assert!(!seen.is_empty());
+    for (host, cookie) in &seen {
+        assert_eq!(host, "www.youtube.com");
+        assert!(cookie.contains("SID=signed-in"), "{cookie:?}");
+    }
+    //    Another site's header stays with the page's host: none for its other host.
+    let other = via("music.lab.test", "www.lab.test");
+    let seen = hosts_and_cookies(&exe, &lab, &other, &header);
+    println!("3. music.lab.test's page, a header: {seen:?}");
+    assert!(!seen.is_empty());
+    for (host, cookie) in &seen {
+        assert_eq!(host, "www.lab.test");
+        assert!(!cookie.contains("SID="), "{cookie:?}");
+    }
+
     let Ok(profile) = std::env::var("MDM_TEST_FIREFOX_PROFILE") else {
         println!("MDM_TEST_FIREFOX_PROFILE not set: the browser's part not run");
         return;
     };
-    // 3. Options → Cookies for video sites: Firefox's (the throwaway profile) when the extension
+    // 4. Options → Cookies for video sites: Firefox's (the throwaway profile) when the extension
     //    sent none: a pasted address, the look-up and the download.
     set_browser_cookies(BrowserCookies::new("firefox", &profile));
     let at = lab.log().len();
     mdm_tools::resolve::look_up(&exe, &url, &FromBrowser::default()).unwrap();
     let seen = cookies_seen(&lab, path, at);
-    println!("3. look-up, Firefox's: {seen:?}");
+    println!("4. look-up, Firefox's: {seen:?}");
     assert!(!seen.is_empty() && seen.iter().all(|c| c.contains("ff=from-firefox")));
     let at = lab.log().len();
     let (state, events) = download(&exe, &url, &FromBrowser::default());
     let seen = cookies_seen(&lab, path, at);
-    println!("3. download, Firefox's: {state:?} {seen:?} {events:?}");
+    println!("4. download, Firefox's: {state:?} {seen:?} {events:?}");
     assert!(matches!(state, State::Done(_)), "{state:?}");
     assert!(
         seen.iter().all(|c| c.contains("ff=from-firefox")),
@@ -123,11 +226,11 @@ fn whose_cookies_ytdlp_sends() {
         "the log names the browser only"
     );
 
-    // 4. Both: the extension's alone (that page's, that session's).
+    // 5. Both: the extension's alone (that page's, that session's).
     let at = lab.log().len();
     let (state, events) = download(&exe, &url, &ext);
     let seen = cookies_seen(&lab, path, at);
-    println!("4. download, both: {state:?} {seen:?} {events:?}");
+    println!("5. download, both: {state:?} {seen:?} {events:?}");
     assert!(matches!(state, State::Done(_)), "{state:?}");
     assert!(
         seen.iter()
@@ -135,14 +238,14 @@ fn whose_cookies_ytdlp_sends() {
         "{seen:?}"
     );
 
-    // 5. A profile folder with no cookies: yt-dlp's refusal, kept on the error.
+    // 6. A profile folder with no cookies: yt-dlp's refusal, kept on the error.
     let empty = tempfile::tempdir().unwrap();
     set_browser_cookies(BrowserCookies::new(
         "firefox",
         &empty.path().display().to_string(),
     ));
     let err = mdm_tools::resolve::look_up(&exe, &url, &FromBrowser::default()).unwrap_err();
-    println!("5. look-up, empty profile: {err}");
+    println!("6. look-up, empty profile: {err}");
     assert!(
         err.to_string()
             .contains("could not find firefox cookies database"),
