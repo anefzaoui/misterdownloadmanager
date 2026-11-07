@@ -529,6 +529,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Galleries work with the gallery-dl a Linux distribution ships**
+  ([#236](https://github.com/anefzaoui/misterdownloadmanager/issues/236)): with Ubuntu 24.04's
+  gallery-dl 1.26.9 chosen in Helpers, every gallery failed at once ("unrecognized arguments:
+  --no-input"): MDM passed options that only newer releases know. MDM now reads the chosen
+  gallery-dl's version and passes only what that release accepts, from 1.20 (Ubuntu 22.04) to
+  today's; checked against every release from 1.17 to 1.32. An older one (Debian 11's 1.17) is
+  refused when chosen, saying it is too old and which version MDM needs, and one chosen before is
+  passed over for MDM's own copy, which Helpers says. gallery-dl 1.30.0, whose version starts
+  with an empty line, is no longer taken for another program.
 - **Three more controls fit their translated text**
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
   and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**

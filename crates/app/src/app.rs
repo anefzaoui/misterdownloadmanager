@@ -3191,7 +3191,7 @@ impl App {
             rate,
         };
         let started = mdm_tools::gallery::GalleryJob::start(
-            &tool.exe,
+            &tool,
             item.url.as_str(),
             &item.dest,
             &ask,

@@ -13,6 +13,11 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Linux: galleries work with the gallery-dl the distribution ships (Ubuntu 24.04's 1.26.9
+  failed at once): MDM passes only the options that release accepts, from 1.20 on, and an older
+  one gives way to MDM's own copy, saying why; the lab's test streams are real ones, which ffmpeg
+  6.1 and 8 download to the end
+  ([#236](https://github.com/anefzaoui/misterdownloadmanager/issues/236))
 - ✅ Download File Info's Preview, Options → Proxy's Get System and the Scheduler's "when done"
   drop-down fit their translated text (Russian and others), after #212
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))

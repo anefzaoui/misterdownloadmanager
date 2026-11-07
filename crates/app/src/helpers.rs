@@ -518,17 +518,32 @@ impl Programs {
                 winui::TEXT(),
             );
             let found = self.found[k].as_ref();
-            let mine = self
+            let chosen = self
                 .dir
                 .as_deref()
-                .and_then(|d| mdm_tools::chosen::chosen(d, h))
-                .is_some();
-            let status = match found {
-                _ if self.checking.as_ref().is_some_and(|(c, _)| *c == h) => {
+                .and_then(|d| mdm_tools::chosen::chosen(d, h));
+            // One of the person's, maybe passed over (a gallery-dl too old, #236).
+            let mine = chosen.is_some();
+            let too_old = chosen
+                .as_ref()
+                .filter(|c| h == Helper::GalleryDl && mdm_tools::gallery::too_old(&c.version));
+            let checking = self.checking.as_ref().is_some_and(|(c, _)| *c == h);
+            let status = match (too_old, found) {
+                _ if checking => {
                     // i18n: Video helpers: a program just chosen is being checked
                     crate::i18n::t("Checking the program...").to_owned()
                 }
-                Some(i) if mine => crate::i18n::fmt(
+                (Some(old), _) => crate::i18n::fmt(
+                    // i18n: Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+                    crate::i18n::t(
+                        "Your own program ({version}) is too old: MDM needs {oldest} or newer",
+                    ),
+                    &[
+                        ("version", &old.version),
+                        ("oldest", mdm_tools::gallery::OLDEST),
+                    ],
+                ),
+                (None, Some(i)) if mine => crate::i18n::fmt(
                     // i18n: Video helpers: {path} = the program the person chose, {version} = its version
                     crate::i18n::t("Your own program: {path} ({version})"),
                     &[
@@ -536,18 +551,18 @@ impl Programs {
                         ("version", &i.version),
                     ],
                 ),
-                Some(i) if i.version == "system" => crate::i18n::fmt(
+                (None, Some(i)) if i.version == "system" => crate::i18n::fmt(
                     // i18n: Video helpers (macOS, Linux): {path} = the system's ffmpeg
                     crate::i18n::t("Your system's: {path}"),
                     &[("path", &crate::i18n::ltr(&i.exe.display().to_string()))],
                 ),
-                Some(i) => crate::i18n::fmt(
+                (None, Some(i)) => crate::i18n::fmt(
                     // i18n: Video helpers: {version} = the version of MDM's own copy
                     crate::i18n::t("Mister Download Manager's own copy, version {version}"),
                     &[("version", &i.version)],
                 ),
                 // i18n: Video helpers: no copy of this helper yet
-                None => crate::i18n::t("Not installed yet").to_owned(),
+                (None, None) => crate::i18n::t("Not installed yet").to_owned(),
             };
             winui::fit(
                 ui,
