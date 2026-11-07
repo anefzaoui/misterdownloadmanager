@@ -237,6 +237,11 @@ Everything below ships together, in the next release.
 - ✅ Windows: MDM draws with Direct3D 12 by default; **View → Draw with** goes back to OpenGL, and
   either one falls back to the other when it can't start
   ([#89](https://github.com/anefzaoui/misterdownloadmanager/issues/89))
+- ✅ A slow start no longer turns Direct3D off for good: its 10 seconds for the first frame count
+  only Direct3D's own time, not MDM's loading (on one computer that sent MDM to OpenGL, where
+  Intel's driver froze it); crash and freeze reports say near the top what drew, on which card
+  and driver, and why
+  ([#280](https://github.com/anefzaoui/misterdownloadmanager/issues/280))
 - ✅ Linux and macOS: **View → Draw with → Vulkan** (Linux) and **Metal** (macOS), with the same
   fallback to OpenGL as Direct3D on Windows; OpenGL stays their default for now, and the menu
   says why when one can't start here
@@ -409,35 +414,24 @@ Everything below ships together, in the next release.
 
 - 🔍 Menus and the drop target with a black band across their top on a Windows 11 Insider build
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): menus are plain pop-up
-  windows now, as Windows' own are, and the reporter confirmed them fixed; the drop target is one
-  too, its test build is with the reporter
-- 🔍 A freeze inside a graphics card's OpenGL driver on Windows
-  ([#280](https://github.com/anefzaoui/misterdownloadmanager/issues/280)): a slow start no longer
-  turns Direct3D off (its first-frame limit counted MDM's own loading), and reports now say what
-  drew, on which card and driver, and why; waiting to hear which one drew there
+  windows now, as Windows' own are, and the reporter confirmed them fixed; the band on windows
+  with a drawn title bar (the download's progress window) is being fixed
 - 🔍 Menus opening as the pointer crosses the menu bar on a tiling window manager
   ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277)): after a command the
   bar waits for a click, as before the first one (now tested on Windows and Linux); once a menu is
   open, the pointer moves it from title to title, as Windows' menu bars do. Whether a tiling
   desktop should behave otherwise is being discussed with the reporter
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
-  most likely a computer busy just after start; freeze reports now measure it, so the next one says
+  the first window took over a minute while the graphics driver set up OpenGL; MDM now draws
+  with Direct3D 12 by default and keeps it through a slow start, so the next version should
+  not do this
 - 🔍 A crash on Linux as Download File Info opens
   ([#48](https://github.com/anefzaoui/misterdownloadmanager/issues/48)), likely fixed with #22
-- 🔍 Linux display issues ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
+- 🔍 Linux on GNOME Wayland: a right-click menu opening in the middle of the window, and buttons
+  cut off until the window is made larger
+  ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
 
 ## Planned
-
-### Downloads and windows
-
-
-### Network
-
-
-### Browser extension
-
-- ✅ On Firefox Add-ons: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/)
-- ✅ On the Chrome Web Store: [Mister Download Manager](https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp)
 
 ### Look and performance
 
