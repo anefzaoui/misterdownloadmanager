@@ -15,6 +15,7 @@ pub mod server;
 pub mod sites;
 mod sparse;
 pub mod state;
+pub mod tls;
 pub mod unlock;
 pub mod verify;
 

@@ -1037,6 +1037,15 @@ fn popup_level<C: Clone>(
         .with_active(false)
         .with_position(screen.min)
         .with_inner_size(size);
+    // Linux, X11 and XWayland (MDM's default): a menu window the window manager doesn't manage
+    // (override-redirect), as X11 menus are, so it opens exactly where it's placed. A tiling
+    // compositor (sway) placed a managed one as it likes, centred on the screen (#267). Never
+    // activated either way (the main window keeps the keyboard); its type says it's a menu.
+    // Ignored on Wayland, which has no such window.
+    #[cfg(target_os = "linux")]
+    let builder = builder
+        .with_override_redirect(true)
+        .with_window_type(egui::X11WindowType::PopupMenu);
     let open_sub = if depth == 0 {
         ctx.data(|d| d.get_temp::<usize>(sub_key))
     } else {
