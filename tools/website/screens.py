@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """Regenerates the site's screenshots (website/assets/screens/*.webp, website/assets/win/*.webp)
 from the app's own PNG shots, so the site never shows a window the app no longer draws and nobody
-converts or crops one by hand. The day versions come from docs/images/ (the README's and the help
-pages' shots, tools/lab/docs-shots.ps1); the night versions from a folder of the same shots taken
-with -Dark (default target/site-shots/dark/):
+converts or crops one by hand. The day versions come from a folder of tools/lab/docs-shots.ps1's
+shots (--light: a Docs screenshots run's docs/ folder, .github/workflows/docs-shots.yml), the night
+versions from the same shots taken with -Dark (its site-dark/ folder):
 
-    tools\\lab\\docs-shots.ps1 -Exe ... -Server ... -Dark -OutDir target\\site-shots\\dark
-    python -I tools/website/screens.py                      # docs/images + target/site-shots/dark
-    python -I tools/website/screens.py D:\\shots\\dark --density 2
+    python -I tools/website/screens.py <run>\\site-dark --light <run>\\docs
+    python -I tools/website/screens.py D:\\shots\\dark --light D:\\shots\\light --density 2
 
 A shot that isn't there is skipped and its WebP kept: the video quality window, for one, needs a
 real video page and can't be shot offline, so screens/video-*.webp stay as they are. Each WebP is
-written lossy at quality 90 or lossless, whichever is smaller, and only when its bytes change.
+lossless (#186: text and one-pixel lines stay sharp), written only when its bytes change.
 
 Every <img> in website/*.html that shows a WebP written here gets its width and height set to the
 picture's size in CSS pixels (its pixels / --density: docs-shots.ps1 shoots at 1x, so 1 unless the
@@ -60,13 +59,9 @@ def encode(png: Path) -> tuple[bytes, str, tuple[int, int]]:
             im = im.convert("RGB")
     elif im.mode != "RGB":
         im = im.convert("RGB")
-    best = None
-    for kind, opts in (("q90", {"quality": 90, "method": 6}), ("lossless", {"lossless": True, "quality": 100, "method": 6})):
-        buf = io.BytesIO()
-        im.save(buf, "WEBP", **opts)
-        if best is None or buf.tell() < len(best[0]):
-            best = (buf.getvalue(), kind)
-    return best[0], best[1], im.size
+    buf = io.BytesIO()
+    im.save(buf, "WEBP", lossless=True, quality=100, method=6)
+    return buf.getvalue(), "lossless", im.size
 
 
 def write(src: Path, out: str, density: float, sizes: dict[str, tuple[int, int]]) -> None:
@@ -129,7 +124,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("dark", nargs="?", default=str(ROOT / "target" / "site-shots" / "dark"),
                     help="the -Dark shots (default target/site-shots/dark)")
-    ap.add_argument("--light", default=str(ROOT / "docs" / "images"), help="the day shots (default docs/images)")
+    ap.add_argument("--light", default=str(ROOT / "target" / "site-shots" / "light"),
+                    help="the day shots (default target/site-shots/light)")
     ap.add_argument("--density", type=float, default=1.0,
                     help="the shots' pixels per CSS pixel: 1 for docs-shots.ps1's 1x, 2 with -Zoom 2")
     a = ap.parse_args()

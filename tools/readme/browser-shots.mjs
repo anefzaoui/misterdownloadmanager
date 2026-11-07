@@ -6,7 +6,9 @@
 // for the button to ask (MDM_DATA_DIR, MDM_OFFSCREEN). Windows only.
 //
 //   cargo build --release -p mdm-app -p mdm-nmhost; tools\extension\pack.ps1
-//   node tools/readme/browser-shots.mjs        -> docs/images/video-button-*.png
+//   node tools/readme/browser-shots.mjs        -> target/browser-shots/video-button-*.png
+//   python tools/shots/make.py docs --png target/browser-shots/video-button-youtube.png ...
+//                                              -> docs/images/video-button-*.webp
 import { spawn, spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -236,8 +238,8 @@ async function one(cdp, browser, shot) {
   } finally {
     clearInterval(keep);
   }
-  crop(whole, at, path.join(root, "docs", "images", `${shot.name}.png`));
-  console.log(`docs/images/${shot.name}.png`);
+  crop(whole, at, path.join(work, `${shot.name}.png`));
+  console.log(path.join(work, `${shot.name}.png`));
   await cdp.send("Target.closeTarget", { targetId });
 }
 

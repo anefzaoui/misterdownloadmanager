@@ -1,5 +1,5 @@
-# The progress window of a video and of a torrent, for the docs (docs/images/progress-video.png,
-# progress-torrent.png), at 1x and off the screens, as docs-shots.ps1 takes the others. Each
+# The progress window of a video and of a torrent, for the docs (progress-video.png,
+# progress-torrent.png: docs/images/*.webp through `tools/shots/make.py docs`), at 1x and off the screens, as docs-shots.ps1 takes the others. Each
 # runs in a Mister Download Manager instance of its own (MDM_DATA_DIR, MDM_OFFSCREEN) whose list
 # holds that one download; the automation API starts it and /show progress opens its window,
 # so nothing is clicked or typed. The video comes from the labserver through yt-dlp (copied

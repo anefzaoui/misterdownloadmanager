@@ -722,7 +722,7 @@ def image_size(path: Path) -> tuple[int, int] | None:
 
 def dark_of(name: str) -> str | None:
     """The night version of docs/images/<name>, when there is one: x-dark.webp beside x.webp
-    (the help pictures, tools/shots/make.py), or main-dark.png beside main-light.png."""
+    (the help pictures, tools/shots/make.py), or main-dark.webp beside main-light.webp."""
     p = Path(name)
     stem = p.stem[: -len("-light")] if p.stem.endswith("-light") else p.stem
     dark = p.with_name(f"{stem}-dark{p.suffix}").as_posix()

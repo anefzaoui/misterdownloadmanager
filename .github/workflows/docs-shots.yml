@@ -2,9 +2,11 @@
 # Windows runner: a stock Windows, so the file icons in them are Windows' own, not those of
 # programs someone installed. Run by hand (Actions → Docs screenshots → Run workflow) or by a
 # push to a docs-shots/** branch. Never on other pushes or pull requests. The PNGs come back as
-# the "docs-shots" artifact, with what the runner had (screen, DPI, fonts, file associations);
-# a person puts them in docs/images and runs tools/website/screens.py. The help pages' pictures
-# come back raw in help-raw/: into target/shots/raw, then `python tools/shots/make.py build`.
+# the "docs-shots" artifact, with what the runner had (screen, DPI, fonts, file associations).
+# A person makes the pictures of them (tools/shots/README.md): `python tools/shots/make.py docs
+# <artifact>` (docs/images/*.webp), `python tools/website/screens.py <artifact>/site-dark --light
+# <artifact>/docs` (the site's), and the help pages' from help-raw/ (into target/shots/raw, then
+# `python tools/shots/make.py build`).
 name: Docs screenshots
 
 on:
