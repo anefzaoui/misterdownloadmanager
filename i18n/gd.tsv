@@ -1940,6 +1940,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	Stàlaich le làimh e
+#. text in unix.rs
+#. Linux, after a missing library's name, on a distribution MDM doesn't know
+#, machine
+	Install what's missing from your distribution's packages.	Stàlaich na tha a dhìth bho phacaidean an sgaoilidh agad.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2379,6 +2383,10 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in unix.rs
+#. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
+#, machine
+	Mister Download Manager can't open its window: this system lacks {libraries}.	Chan urrainn do Mister Download Manager an uinneag aige fhosgladh: tha {libraries} a dhìth air an t-siostam seo.
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 #, machine
@@ -2418,6 +2426,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager's own copy, version {version}	Leth-bhreac Mister Download Manager fhèin, tionndadh {version}
+#. text in unix.rs
+#. Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
+#, machine
+	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	Feumaidh uinneag X11 Mister Download Manager {libraries}, nach eil aig an t-siostam seo: fosglaidh i air Wayland na àite, far am faod na clàran-bìdh fosgladh air falbh bho na tiotalan aca.
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4340,6 +4352,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Timor-Leste	Timor-Leste
+#. text in unix.rs
+#. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
+#, machine
+	To install what's missing: {command}	Gus na tha a dhìth a stàladh: {command}
 #. text in the Batch download window
 #, machine
 	To:	Gu:

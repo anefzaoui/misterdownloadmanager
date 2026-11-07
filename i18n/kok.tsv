@@ -1940,6 +1940,10 @@
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
 	Install it by hand	हातान इन्स्टॉल करा
+#. text in unix.rs
+#. Linux, after a missing library's name, on a distribution MDM doesn't know
+#, machine
+	Install what's missing from your distribution's packages.	तुमच्या वितरणाच्या पॅकेजांतल्यान उणी आशिल्ली लायब्ररी इन्स्टॉल करात.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -2379,6 +2383,10 @@
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
+#. text in unix.rs
+#. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
+#, machine
+	Mister Download Manager can't open its window: this system lacks {libraries}.	Mister Download Manager आपली विंडो उगडपाक शकना: ह्या सिस्टमांत {libraries} उपलब्ध नात.
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 #, machine
@@ -2418,6 +2426,10 @@
 #. {version} = a version number (keep the braces as they are)
 #, machine
 	Mister Download Manager's own copy, version {version}	Mister Download Manager ची स्वताची प्रत, आवृत्ती {version}
+#. text in unix.rs
+#. Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
+#, machine
+	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	Mister Download Manager च्या X11 विंडोखातीर {libraries} जाय, पूण ह्या सिस्टमांत तीं नात: ताचे बदला ती वेयलँडाचेर उगडटा, जंय मेनू तांच्या शीर्षकांपासून पयस उगडूं येतात.
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4340,6 +4352,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Timor-Leste	तिमोर-लेस्ते
+#. text in unix.rs
+#. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
+#, machine
+	To install what's missing: {command}	उणें आशिल्लें स्थापीत करपाक: {command}
 #. text in the Batch download window
 #, machine
 	To:	हाका:

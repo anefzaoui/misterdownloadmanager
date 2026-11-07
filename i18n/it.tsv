@@ -1415,6 +1415,10 @@
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 	Install it by hand	Installala manualmente
+#. text in unix.rs
+#. Linux, after a missing library's name, on a distribution MDM doesn't know
+#, machine
+	Install what's missing from your distribution's packages.	Installa ciò che manca dai pacchetti della tua distribuzione.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	Installa yt-dlp
@@ -1737,6 +1741,10 @@
 	Missing	Mancanti
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Mister Download Manager	Mister Download Manager
+#. text in unix.rs
+#. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
+#, machine
+	Mister Download Manager can't open its window: this system lacks {libraries}.	Impossibile aprire la finestra di Mister Download Manager: a questo sistema mancano {libraries}.
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 	Mister Download Manager closed unexpectedly	Mister Download Manager si è chiuso in modo imprevisto
@@ -1766,6 +1774,10 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 	Mister Download Manager's own copy, version {version}	Copia di Mister Download Manager, versione {version}
+#. text in unix.rs
+#. Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
+#, machine
+	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	Per la finestra X11 di Mister Download Manager servono {libraries}, che mancano in questo sistema: si apre invece su Wayland, dove i menu potrebbero aprirsi lontano dai loro titoli.
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	Lu
@@ -3128,6 +3140,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Timor-Leste	Timor Est
+#. text in unix.rs
+#. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
+#, machine
+	To install what's missing: {command}	Per installare ciò che manca: {command}
 #. text in the Batch download window
 	To:	A:
 #. text in the Scheduler window

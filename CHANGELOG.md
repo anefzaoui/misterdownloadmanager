@@ -573,6 +573,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Linux: a missing window library is named, with how to install it**
+  ([#265](https://github.com/anefzaoui/misterdownloadmanager/issues/265)): from the tar.gz or the
+  AppImage, on a system without libxkbcommon-x11 (or another library X11 windows need), MDM
+  stopped at start with a crash. It now says which library is missing and the command that
+  installs it (apt, dnf, zypper, pacman or apk, by the distribution), on the terminal and in a
+  message box (zenity or kdialog, when there is one). In a Wayland session it opens its window
+  on Wayland instead, saying so.
 - **The Linux .deb and .rpm bring what MDM's window needs** (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
   libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start

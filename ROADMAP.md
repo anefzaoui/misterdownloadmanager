@@ -13,6 +13,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Linux: a library the window needs that the system lacks (libxkbcommon-x11 and the other X11
+  ones, from the tar.gz and the AppImage) is named at start, on the terminal and in a message box,
+  with the command that installs it, instead of a crash; in a Wayland session the window opens
+  on Wayland instead ([#265](https://github.com/anefzaoui/misterdownloadmanager/issues/265))
 - ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the
   command line, the window, the desktop entry and icon, browser integration and uninstall; the
   .deb and .rpm now bring the keyboard library MDM's window needs under X11 and the CA

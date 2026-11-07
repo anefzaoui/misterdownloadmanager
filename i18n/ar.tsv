@@ -1434,6 +1434,10 @@
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 	Install it by hand	تثبيته يدويا
+#. text in unix.rs
+#. Linux, after a missing library's name, on a distribution MDM doesn't know
+#, machine
+	Install what's missing from your distribution's packages.	ثبت ما هو مفقود من حزم توزيعك.
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 	Install yt-dlp	تثبيت yt-dlp
@@ -1760,6 +1764,10 @@
 	Missing	مفقود
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Mister Download Manager	Mister Download Manager
+#. text in unix.rs
+#. Linux, at start, on the terminal and in a message box: a library the window needs isn't installed; {libraries} = its file names (libxkbcommon-x11.so.0…), left as they are
+#, machine
+	Mister Download Manager can't open its window: this system lacks {libraries}.	لا يمكن لـ Mister Download Manager فتح نافذته: يفتقر هذا النظام إلى {libraries}.
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 	Mister Download Manager closed unexpectedly	توقف Mister Download Manager بشكل غير متوقع
@@ -1789,6 +1797,10 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 	Mister Download Manager's own copy, version {version}	نسخة Mister Download Manager الخاصة، الإصدار {version}
+#. text in unix.rs
+#. Linux, at start, on the terminal: the libraries an X11 window needs aren't installed, so the window opens through Wayland instead, where menus can't be placed under what was clicked; {libraries} = their file names, left as they are
+#, machine
+	Mister Download Manager's X11 window needs {libraries}, which this system lacks: it opens on Wayland instead, where its menus may open away from their titles.	تحتاج نافذة X11 لـMister Download Manager إلى {libraries}، وهي غير متوفرة على هذا النظام، لذا تفتح على Wayland بدلا من ذلك، حيث قد تفتح قوائمها بعيدا عن عناوينها.
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 	Mo	الاثنين
@@ -3198,6 +3210,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Timor-Leste	تيمور الشرقية
+#. text in unix.rs
+#. Linux, after a missing library's name: {command} = the terminal command that installs it ("sudo apt install libxkbcommon-x11-0"), left as it is
+#, machine
+	To install what's missing: {command}	لتثبيت ما هو مفقود: {command}
 #. text in the Batch download window
 	To:	إلى:
 #. text in the Scheduler window
