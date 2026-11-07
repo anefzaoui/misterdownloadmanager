@@ -60,8 +60,8 @@ release() { # release <name> <kind targz|file> <asset> [mkrel args]
     --kind "$kind" --program "$bin/misterdownloadmanager" --program-name misterdownloadmanager "$@" |
     sed 's/^/  /' | tee -a "$work/log.txt"
 }
-TGZ=MisterDownloadManager-9.9.9-linux-x86_64-experimental.tar.gz
-APP=MisterDownloadManager-9.9.9-linux-x86_64-experimental.AppImage
+TGZ=MisterDownloadManager-9.9.9-linux-x86_64.tar.gz
+APP=MisterDownloadManager-9.9.9-linux-x86_64.AppImage
 log "making the fake releases (throwaway keys in $keys)"
 release targz-good targz $TGZ
 release targz-bad-hash targz $TGZ --sums bad

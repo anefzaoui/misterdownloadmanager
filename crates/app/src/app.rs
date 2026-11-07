@@ -6173,10 +6173,8 @@ impl App {
         }
 
         // Menu bar and its popups: which menu is open is chrome::menubar_next's to say.
-        if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
-            let released = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
-            self.open_menu =
-                chrome::menubar_next(self.open_menu, MenuBarEvent::Title { i, released });
+        if let Some(event) = chrome::menu_bar(ui, o, w, self.open_menu) {
+            self.open_menu = chrome::menubar_next(self.open_menu, event);
         }
         if let Some(i) = self.open_menu {
             let x = chrome::menus(ui.painter())[i].1;

@@ -117,6 +117,16 @@ def mac_file(arch: str) -> str:
     return f"{RELEASE}-macos-{arch}-experimental.dmg"
 
 
+def linux_file(ext: str) -> str:
+    """The Linux file ending in `ext` (.AppImage, .deb, .rpm, .tar.gz): named without
+    "-experimental" from the release after 0.2.4 (tools/installer/build-linux.sh), with it in a
+    release from before."""
+    old = f"MisterDownloadManager-{VERSION}-linux-x86_64-experimental{ext}"
+    if any(a.get("name") == old for a in LATEST.get("assets", [])):
+        return f"{RELEASE}-linux-x86_64-experimental{ext}"
+    return f"{RELEASE}-linux-x86_64{ext}"
+
+
 VERSION = published_version()
 SETUP_SIZE = setup_size()
 TODAY = datetime.date.today().isoformat()
@@ -127,10 +137,10 @@ FILES = {
     "zip": f"{RELEASE}-x64.zip",
     "dmg_arm64": mac_file("arm64"),
     "dmg_intel": mac_file("x86_64"),
-    "appimage": f"{RELEASE}-linux-x86_64-experimental.AppImage",
-    "deb": f"{RELEASE}-linux-x86_64-experimental.deb",
-    "rpm": f"{RELEASE}-linux-x86_64-experimental.rpm",
-    "tar": f"{RELEASE}-linux-x86_64-experimental.tar.gz",
+    "appimage": linux_file(".AppImage"),
+    "deb": linux_file(".deb"),
+    "rpm": linux_file(".rpm"),
+    "tar": linux_file(".tar.gz"),
     "chromium": f"{RELEASE}-extension-chromium.zip",
     "firefox": f"{RELEASE}-extension-firefox.xpi",
     "sums": f"{REPO}/releases/download/v{VERSION}/SHA256SUMS.txt",

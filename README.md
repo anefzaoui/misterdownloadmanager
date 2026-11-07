@@ -55,7 +55,6 @@
   <a href="https://github.com/anefzaoui/misterdownloadmanager/stargazers"><img src="https://img.shields.io/github/stars/anefzaoui/misterdownloadmanager?logo=github" alt="GitHub stars"></a>
   <a href="https://addons.mozilla.org/firefox/addon/mister-download-manager/"><img src="https://img.shields.io/amo/v/mister-download-manager?logo=firefoxbrowser&label=Firefox%20add-on" alt="Firefox add-on"></a>
   <a href="https://chromewebstore.google.com/detail/mister-download-manager/ejoleppdfgjdndddcjoehopknmlglojp"><img src="https://img.shields.io/chrome-web-store/v/ejoleppdfgjdndddcjoehopknmlglojp?logo=googlechrome&label=Chrome%20Web%20Store" alt="Chrome Web Store"></a>
-  <a href="https://github.com/sponsors/anefzaoui"><img src="https://img.shields.io/github/sponsors/anefzaoui?logo=githubsponsors&label=Sponsors" alt="GitHub Sponsors"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/anefzaoui/misterdownloadmanager" alt="GPL-3.0 license"></a>
 </p>
 
@@ -116,15 +115,15 @@ one:
 MDM runs on Linux too, tested on Ubuntu 24.04, Debian 12 and Fedora with GNOME, KDE Plasma, Xfce
 and Cinnamon, on X11 and in Wayland sessions: the tray, dark mode, browser integration (Ubuntu's
 Snap Firefox included) and the packages' installs. Not there yet: screen readers (Orca) don't
-read its windows, and Flatpak browsers can't reach it. The files still carry `-experimental` in
-their names ([more](docs/getting-started.md#on-linux)).
+read its windows, and Flatpak browsers can't reach it ([more](docs/getting-started.md#on-linux)).
+Up to version 0.2.4, the files' names end in `-experimental`.
 
 | File | For |
 | --- | --- |
-| `...-linux-x86_64-experimental.deb` | Ubuntu, Debian, Mint, Pop!_OS: `sudo apt install ./<file>.deb`. |
-| `...-linux-x86_64-experimental.rpm` | Fedora, openSUSE, RHEL: `sudo dnf install ./<file>.rpm`. |
-| `...-linux-x86_64-experimental.AppImage` | Any Linux. Make it executable and run it. |
-| `...-linux-x86_64-experimental.tar.gz` | The plain programs, for any distribution. |
+| `...-linux-x86_64.deb` | Ubuntu, Debian, Mint, Pop!_OS: `sudo apt install ./<file>.deb`. |
+| `...-linux-x86_64.rpm` | Fedora, openSUSE, RHEL: `sudo dnf install ./<file>.rpm`. |
+| `...-linux-x86_64.AppImage` | Any Linux. Make it executable and run it. |
+| `...-linux-x86_64.tar.gz` | The plain programs, for any distribution. |
 
 <p align="center">
   <picture>

@@ -4781,3 +4781,18 @@ extension	Wait a moment, then try again.	Attendi un momento, poi riprova.
 #. text in the browser extension
 #. pairing failed: the code was wrong
 extension	Wrong code.	Codice errato.
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, under the new version's line, when MDM was installed by the Linux system's package manager (pacman, ...), which MDM can't update itself
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}, from your system's package manager: update it there.	Hai la versione {version}, dal gestore di pacchetti del sistema: aggiornala da lì.
+#. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	Il tuo programma ({version}) è troppo vecchio: MDM richiede la versione {oldest} o successiva
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} è troppo vecchio: MDM richiede la versione {oldest} o successiva

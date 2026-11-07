@@ -36,6 +36,8 @@ Everything below ships together, in the next release.
   [#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264)
 - ✅ Update now finds the Linux and macOS release files whether or not their names end in
   "-experimental"
+- ✅ The Linux release files are named without "-experimental" (`…-linux-x86_64.deb` and the
+  others), in the packages' descriptions too; the macOS ones keep it
 - ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the
   command line, the window, the desktop entry and icon, browser integration and uninstall; the
   .deb and .rpm now bring the keyboard library MDM's window needs under X11 and the CA
@@ -381,8 +383,8 @@ Everything below ships together, in the next release.
   titles on sway too); the .deb and .rpm installed in clean Ubuntu, Debian and Fedora systems, the
   AppImage and the tar.gz; the tray, Dark Mode support and Launch on startup on all four desktops;
   the Snap Firefox, Google Chrome and Brave reaching MDM
-  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)). The release files keep
-  "-experimental" in their names for now
+  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)), and its release files
+  named without "-experimental"
 - ✅ Every screenshot taken again on Windows and Linux (smaller files, WebP), and every page of the
   docs, the README and the website brought up to date
   ([#186](https://github.com/anefzaoui/misterdownloadmanager/issues/186))
@@ -407,6 +409,11 @@ Everything below ships together, in the next release.
   ([#280](https://github.com/anefzaoui/misterdownloadmanager/issues/280)): a slow start no longer
   turns Direct3D off (its first-frame limit counted MDM's own loading), and reports now say what
   drew, on which card and driver, and why; waiting to hear which one drew there
+- 🔍 Menus opening as the pointer crosses the menu bar on a tiling window manager
+  ([#277](https://github.com/anefzaoui/misterdownloadmanager/issues/277)): after a command the
+  bar waits for a click, as before the first one (now tested on Windows and Linux); once a menu is
+  open, the pointer moves it from title to title, as Windows' menu bars do. Whether a tiling
+  desktop should behave otherwise is being discussed with the reporter
 - 🔍 A freeze of the window on start ([#57](https://github.com/anefzaoui/misterdownloadmanager/issues/57)):
   most likely a computer busy just after start; freeze reports now measure it, so the next one says
 - 🔍 A crash on Linux as Download File Info opens

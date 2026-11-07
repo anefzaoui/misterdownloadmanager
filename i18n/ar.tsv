@@ -121,6 +121,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
 	(the Torrents category's folder)	(مجلد فئة التورنت)
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	ملف .torrent
 #. text in the Options window
 #. a 12-hour clock, with an example
 	12-hour (9:41 PM)	نظام 12 ساعة (9:41 م)
@@ -185,6 +189,10 @@
 #. text in the Options window
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 	Accounts	الحسابات
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	إضافة
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Add a download (Add URL)	إضافة تنزيل (إضافة URL)
 #. window title in the Options window
@@ -244,6 +252,14 @@
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 	Added {source}	أضيف {source}
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	تمت الإضافة.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	تمت الإضافة. يقرأ MDM التورنت: سينضم إلى القائمة بعد لحظة.
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -251,6 +267,10 @@
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 	Address changed to {host}	تم تغيير العنوان إلى {host}
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	عنوان أو رابط مغناطيسي
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 	Address:	العنوان:
@@ -278,6 +298,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Algeria	الجزائر
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	الكل
 #. item in the Categories tree in the main window
 	All Downloads	جميع التنزيلات
 #. message or event log entry in the main window
@@ -407,6 +431,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Austria	النمسا
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	تلقائي (حسب نوع الملف)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Automatically put in "{category}" category the following file types:	وضع أنواع الملفات التالية تلقائيا في فئة "{category}":
@@ -519,7 +547,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	كندا
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 	Cancel	إلغاء
 #. text in errors.rs
@@ -544,7 +572,8 @@
 	Categories	الفئات
 #. page title in the Options window
 	Categories, file types, folders	الفئات وأنواع الملفات والمجلدات
-#. text in a dialog box; text in the Options window
+#. text in a dialog box; text in the Options window; text in remote.rs
+#. remote control page (on a phone): label of the category choice for a new download
 	Category	الفئة
 #. text in categories.rs
 #. title of the folder picker of the category dialog
@@ -557,6 +586,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Central African Republic	جمهورية إفريقيا الوسطى
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	الشهادة (SHA-256): {fingerprint}
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 	Certificate name:	اسم الشهادة:
@@ -617,6 +650,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	China	الصين
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	اختر ملف .torrent
 #. text in langpick.rs
 	Choose a language	اختيار لغة
 #. text in langpick.rs
@@ -650,13 +687,21 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cocos (Keeling) Islands	جزر كوكوس (كيلينغ)
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	الرمز
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	الرمز:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Colombia	كولومبيا
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	جزر القمر
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 	Complete	مكتمل
@@ -784,6 +829,10 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Delete the category "{category}"? Its files stay where they are.	حذف الفئة "{category}"؟ تبقى ملفاتها في مكانها.
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	حذف الملف أيضا
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -801,6 +850,10 @@
 	Description or part of the description	الوصف أو جزء من الوصف
 #. text in a download's Properties window
 	Description:	الوصف:
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	الجهاز
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 	DHT off	DHT متوقف
@@ -847,7 +900,8 @@
 	Don't start downloading automatically from the following sites:	عدم بدء التنزيل تلقائيا من المواقع التالية:
 #. text in the Options window
 	Don't take files smaller than (KB, 0 = any size):	تجاهل الملفات الأصغر من (كيلوبايت، 0 = أي حجم):
-#. text in a download's progress window
+#. text in the Options window; text in a download's progress window
+#. button: close the window (the device is paired)
 	Done	تم
 #. button in the Options window
 #. button (short): move the account down the list
@@ -918,7 +972,7 @@
 #. text in a dialog box
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	Downloaded {size} ({bytes} Bytes)	تم تنزيل {size} ({bytes} بايت)
-#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 	Downloading	قيد التنزيل
 #. message or event log entry in the main window
@@ -1024,7 +1078,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Eritrea	إريتريا
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1047,6 +1101,13 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 	Every connection goes through it, from {ip}.	يمر كل اتصال عبره، من {ip}.
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	كل عناوين الشبكة المحلية
+#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#, machine
+	Everything at its normal size (100%)	كل شيء بحجمه الطبيعي (100%)
 #. text in the Options window
 #. label before an example date and time written the chosen way
 	Example:	مثال:
@@ -1168,8 +1229,9 @@
 	Find the next match	البحث عن النتيجة التالية
 #. text in the Find window
 	Find:	بحث:
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
+#. remote control page (on a phone): tab: downloads finished
 	Finished	مكتمل
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -1193,6 +1255,14 @@
 	For your Windows account only. Another app chosen in "Open with" stays first.	لحساب Windows الخاص بك فقط. يظل تطبيق آخر تم اختياره في "فتح باستخدام" هو الأول.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Force processes to terminate	فرض إنهاء العمليات
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	نسيان هذا الجهاز
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	هل تريد نسيان هذا الجهاز؟ سيحتاج إلى رمز جديد للاتصال مرة أخرى.
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 	Fr	الجمعة
@@ -1223,6 +1293,10 @@
 	from a magnet link	من رابط مغناطيسي
 #. message or event log entry in the main window
 	from a page (yt-dlp)	من صفحة (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	من جهاز مقترن
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 	from a playlist (yt-dlp)	من قائمة تشغيل (yt-dlp)
@@ -1468,6 +1542,11 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Israel	إسرائيل
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	تعذر بدء التشغيل: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	it holds too many files or folders	يحتوي على عدد كبير جدا من الملفات أو المجلدات
@@ -1568,6 +1647,10 @@
 	larger than a feed can be	أكبر مما يمكن أن يكون عليه الموجز
 #. text in the Batch download window
 	Last file:	الملف الأخير:
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	آخر ظهور
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 	Last try  {last}	المحاولة الأخيرة {last}
@@ -1586,6 +1669,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Lesotho	ليسوتو
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	السماح للهواتف وأجهزة الكمبيوتر على الشبكة المحلية بالتحكم في MDM
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 	Letters	أحرف
@@ -1621,6 +1708,10 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 	List the rest	عرض البقية
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	الاستماع على:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -1743,6 +1834,35 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mayotte	مايوت
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	لا يمكن الوصول إلى MDM على الشبكة الآن: تشرح الخيارات ← عن بعد السبب.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	لا يمكن لـ MDM تنزيل هذا العنوان.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	تعذر على MDM إضافته.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	تعذر على MDM القيام بذلك.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM لا يستجيب. تحقق من أنه قيد التشغيل وعلى نفس الشبكة.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM لا يستجيب. تتم المحاولة مرة أخرى...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	لا يعرض MDM أي رمز الآن. انقر فوق إقران جهاز هناك أولا.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 	medium	متوسط
@@ -1827,6 +1947,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Montserrat	مونتسيرات
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	المزيد
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Morocco	المغرب
@@ -1919,6 +2043,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Caledonia	كاليدونيا الجديدة
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	رمز جديد
 #. text in the Options window
 	New exception	استثناء جديد
 #. text in the Options window
@@ -1965,6 +2093,10 @@
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 	No downloads here	لا توجد تنزيلات هنا
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	لا توجد تنزيلات هنا.
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 	No downloads match the filters	لا توجد تنزيلات مطابقة للفلاتر
@@ -1980,6 +2112,10 @@
 	No language matches the search	لا توجد لغة تطابق البحث
 #. text in langpick.rs
 	No language matches.	لا توجد لغة مطابقة.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	لا توجد شبكة محلية الآن: سيبدأ عند انضمام الكمبيوتر إلى واحدة.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 	No mail app opened.	لم يتم فتح أي تطبيق بريد.
@@ -2087,6 +2223,10 @@
 #. text in the Add torrent window
 	Off: a finished torrent stops, like any download.	إيقاف: يتوقف التورنت المكتمل، مثل أي تنزيل.
 #. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	إيقاف التشغيل: لا يمكن لأي شيء على الشبكة الوصول إلى MDM.
+#. text in the Options window
 	Offer to download links copied to the clipboard	اقتراح تنزيل الروابط المنسوخة إلى الحافظة
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
@@ -2104,9 +2244,21 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 	On macOS, only an administrator can schedule a wake	على macOS، يمكن للمسؤول فقط جدولة الإيقاظ
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	على الكمبيوتر، افتح الخيارات، ثم عن بعد، وانقر فوق إقران جهاز. أدخل الرمز الذي يظهر.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	على الهاتف، امسح هذا الرمز بالكاميرا، أو افتح العنوان وأدخل الرمز.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
 	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	على Windows، قد تقفل Chrome وEdge وBrave ملفات تعريف الارتباط الخاصة بها. Firefox يعمل.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	قيد التشغيل. على الهاتف، افتح هذا العنوان:
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 	Once at	مرة واحدة في
 #. text in extension.rs
@@ -2129,6 +2281,10 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 	Only MP4 and MKV videos can hold subtitles	يمكن لفيديوهات MP4 وMKV فقط أن تحتوي على ترجمات
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	الأجهزة المقترنة فقط هي التي يمكنها رؤية أو تغيير أي شيء. في المرة الأولى، يحذر متصفح الهاتف بشأن شهادة MDM الخاصة به: بصمتها هي المذكورة أعلاه.
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -2180,6 +2336,31 @@
 	Package	الحزمة
 #. text in gallerydlg.rs; text in the Download video window
 	Page address	عنوان الصفحة
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	إقران
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	إقران جهاز
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	إقران جهاز...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	إقران مع Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	مقترن
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	الأجهزة المقترنة:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Pakistan	باكستان
@@ -2217,8 +2398,9 @@
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 	Pasted	تم اللصق
-#. text in a download's progress window
+#. text in a download's progress window; text in remote.rs
 #. verb: pause the download
+#. remote control page (on a phone): button: pause a download
 	Pause	إيقاف مؤقت
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
@@ -2260,7 +2442,12 @@
 	Poland	بولندا
 #. label in the Options window
 	Port	المنفذ
-#. text in the Add torrent window
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	المنفذ {port} مستخدم بواسطة برنامج آخر: اختر منفذا آخر.
+#. text in the Options window; text in the Add torrent window
+#. Options → Remote: label before the port number box
 #. Torrent settings: the port to listen on (empty: any)
 	Port:	المنفذ:
 #. text in countries.rs
@@ -2322,6 +2509,10 @@
 	Queue processing started	بدأ معالجة قائمة الانتظار
 #. text in the Options window
 	Queue processing stopped/finished	تم إيقاف/إنهاء معالجة قائمة الانتظار
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	في قائمة الانتظار
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 	Queues	قوائم الانتظار
@@ -2375,8 +2566,17 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Remember this path for "{category}" category	تذكر هذا المسار لفئة "{category}"
-#. button in the Options window; button in rssdlg.rs
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	التحكم عن بعد
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	التحكم عن بعد
+#. button in the Options window; text in remote.rs; button in rssdlg.rs
 #. verb: remove the item
+#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 	Remove	إزالة
 #. text in the Scheduler window
@@ -2384,6 +2584,11 @@
 #. text in a dialog box
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 	Remove its downloads from the list (running ones move to General)	إزالة تنزيلاته من القائمة (تنتقل التنزيلات الجارية إلى الفئة العامة)
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	إزالة {name} من القائمة؟
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	استبدال النجمة بـ
@@ -2743,8 +2948,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	سريلانكا
-#. text in the Link grabber window
+#. text in the Link grabber window; text in remote.rs
 #. Link grabber button: download the ticked links now
+#. remote control page (on a phone): button: start a download or a queue
 	Start	بدء
 #. button in a dialog box
 	Start Download	بدء التنزيل
@@ -2756,6 +2962,10 @@
 	Start downloading immediately while displaying "Download File Info" dialog	بدء التنزيل فورا أثناء عرض مربع حوار "معلومات ملف التنزيل"
 #. text in the tray icon's menu
 	Start main download queue	بدء قائمة انتظار التنزيل الرئيسية
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	البدء الآن
 #. text in a download's progress window
 	Start positions and download progress by connections	مواضع البدء وتقدم التنزيل حسب الاتصالات
 #. checkbox in a dialog box
@@ -2785,14 +2995,15 @@
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 	State	الحالة
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 	Status	الحالة
 #. text in a download's Properties window
 #. label before the download's state
 	Status:	الحالة:
-#. text in the Add torrent window
+#. text in remote.rs; text in the Add torrent window
+#. remote control page (on a phone): button: stop a queue
 	Stop	إيقاف
 #. text in the Scheduler window; checkbox in the Scheduler window
 	Stop download at	إيقاف التنزيل عند
@@ -2813,7 +3024,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Stop {queue}	إيقاف {queue}
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 	Stopped	متوقف
@@ -2928,6 +3139,10 @@
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 	The browsers can find Mister Download Manager	يمكن للمستعرضات العثور على Mister Download Manager
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	سيتم تطبيق التغييرات عند النقر فوق موافق.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 	The clipboard is busy: try again.	الحافظة مشغولة: حاول مرة أخرى.
@@ -3132,6 +3347,10 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	This category or queue holds no downloads yet.	هذه الفئة أو قائمة الانتظار لا تحتوي على تنزيلات بعد.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	لا يمكن استخدام هذا الرمز بعد الآن.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 	This computer can't be woken by a timer	لا يمكن إيقاظ هذا الكمبيوتر بواسطة مؤقت
@@ -3142,12 +3361,24 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 	This computer has no wake alarm that programs can set	لا يحتوي هذا الكمبيوتر على منبه إيقاظ يمكن للبرامج ضبطه
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	هذا الكمبيوتر فقط (127.0.0.1)
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 	this computer or the local network	هذا الكمبيوتر أو الشبكة المحلية
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 	This date has passed: the queue will not start	فات هذا التاريخ: لن تبدأ قائمة الانتظار
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	اسم هذا الجهاز
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	هذا الملف كبير جدا ليكون ملف تورنت.
 #. text in a dialog box
 	This folder does not exist:	هذا المجلد غير موجود:
 #. text in errors.rs
@@ -3158,6 +3389,10 @@
 	this is a Google Drive folder, not a file	هذا مجلد Google Drive، وليس ملفا
 #. text in errors.rs
 	this is not a magnet link or a .torrent file	هذا ليس رابط مغناطيسي أو ملف .torrent
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	هذا ليس ملف تورنت.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	هذه هي النسخة المثبتة، وليست نسخة محمولة
@@ -3302,6 +3537,10 @@
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter on
 	Turn on	تشغيل
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	قم بتشغيل التحكم عن بعد أولا.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	توفالو
@@ -3352,8 +3591,9 @@
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 	Uncheck all	إلغاء تحديد الكل
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are not complete yet
+#. remote control page (on a phone): tab: downloads not finished yet
 	Unfinished	غير مكتمل
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -3493,14 +3733,28 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
 	volume {n} of it is missing	المجلد {n} منه مفقود
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	انتظر لحظة، ثم حاول مرة أخرى.
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 	Wait for the list, or stop listing	انتظر القائمة، أو أوقف العرض
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	انتظر في {queue}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 	Waiting	في الانتظار
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	في انتظار الجهاز. الرمز يعمل لمدة {time}.
 #. message or event log entry in the main window
 	Waiting: the download limit is reached (Scheduler)	في الانتظار: تم الوصول إلى حد التنزيل (المجدول)
 #. text in the Scheduler window
@@ -3528,6 +3782,10 @@
 	What were you doing when it happened? (optional)	ماذا كنت تفعل عندما حدث ذلك؟ (اختياري)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	What's new:	ما الجديد:
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	متى
 #. text in the Batch download window
 	Wildcard size	عدد أحرف البدل
 #. text in the Scheduler window
@@ -3556,6 +3814,15 @@
 	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	الكلمات: كلها; | بين البدائل; * و?. الحلقات: 1x2;1x5-8;2x1-. كل حلقة مرة واحدة.
 #. group box title in the Options window
 	Write dates and times	كتابة التواريخ والأوقات
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	رمز خاطئ. اعرض رمزا جديدا في MDM وحاول مرة أخرى.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	رمز خاطئ. المحاولات المتبقية: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -3576,6 +3843,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	You have the latest version of Mister Download Manager ({version}).	لديك أحدث إصدار من Mister Download Manager ({version}).
+#. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
+#. Check for updates, under the new version's line, when MDM was installed by the Linux system's package manager (pacman, ...), which MDM can't update itself
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	You have version {version}, from your system's package manager: update it there.	لديك الإصدار {version}، من مدير حزم نظامك: حدثه من هناك.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 	You have version {version}.	لديك الإصدار {version}.
@@ -3662,6 +3934,15 @@
 #. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
 #. {count} = a number (keep the braces as they are)
 	{count}, {speed}	{count}، {speed}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	تم إقران {device}. يمكنه التحكم في MDM الآن.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{done} من {size}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	ملف {ext}
@@ -3793,6 +4074,11 @@
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	{size} ({bytes} Bytes)	{size} ({bytes} بايت)
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} مجانا
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} كبير جدا للقرص {file_system} هذا (الملفات حتى 4 غيغابايت)
@@ -3849,6 +4135,14 @@ column	Time left	الوقت المتبقي
 #. column title in the download list in the download list
 column	Transfer rate	معدل النقل
 #. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Mister Download Manager آخر (خادم)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	ملحق المتصفح
+#. text in the browser extension
 #. menu command of the download button over a video: opens its settings in Mister Download Manager
 #. the trailing ... means it is still going on: keep it
 extension	Button settings...	إعدادات الزر...
@@ -3879,8 +4173,16 @@ extension	Download with Mister Download Manager	تنزيل باستخدام Mist
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 extension	Downloads from {site} stay with the browser	تبقى التنزيلات من {site} مع المستعرض
 #. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	تنتقل التنزيلات إلى {address}
+#. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 extension	Drag to move it along the video's edge	اسحب لتحريكه على طول حافة الفيديو
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	أدخل عنوان https:// الخاص به.
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 extension	Hands downloads from the browser to Mister Download Manager.	يسلم التنزيلات من المستعرض إلى Mister Download Manager.
@@ -3896,6 +4198,14 @@ extension	Hold Alt while clicking a link to let the browser download it.	اضغ�
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 extension	How to fix it	كيفية إصلاحها
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	لم ينجح الأمر. حاول مرة أخرى.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	لا يعرض أي رمز الآن: انقر فوق "إقران جهاز" هناك أولا.
 #. text in the browser extension
 #. why a download stayed with the browser: the file is smaller than the app's minimum size setting
 #, machine
@@ -3956,12 +4266,32 @@ extension	Never take downloads from {site}	عدم التقاط التنزيلا�
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 extension	No video or sound found on this page yet. Play it, then open this again.	لم يتم العثور على أي فيديو أو صوت في هذه الصفحة بعد. ابدأ تشغيله، ثم افتح هذا مرة أخرى.
 #. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	لم يتم الوصول إليه. افتح عنوانه مرة واحدة في هذا المتصفح واقبل شهادته، ثم حاول مرة أخرى.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	افتحه
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	افتح عنوانه مرة واحدة واقبل شهادته، ثم أدخل رمزا من خياراته، عن بعد، إقران جهاز (أو misterdownloadmanager-cli pair).
+#. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 extension	Open Mister Download Manager	فتح Mister Download Manager
 #. text in the browser extension
 #. button in the toolbar button's popup: open the app's Options
 #. the trailing ... means it is still going on: keep it
 extension	Options...	خيارات...
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	إقران
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	رمز الإقران
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 extension	Paused: downloads stay with the browser	متوقف مؤقتا: تبقى التنزيلات مع المستعرض
@@ -3974,6 +4304,10 @@ extension	Protected video: it can't be saved	فيديو محمي: لا يمكن 
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 extension	Send downloads through this browser's proxy or VPN extension	إرسال التنزيلات عبر وكيل هذا المستعرض أو ملحق VPN
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	إرسال التنزيلات إلى
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 extension	Sent to Mister Download Manager	تم الإرسال إلى Mister Download Manager
@@ -4002,6 +4336,10 @@ extension	The last download was left to the browser.	تم ترك آخر تنزي
 #, machine
 extension	This browser isn't ticked in Options → General.	لم يتم تحديد هذا المتصفح في خيارات ← عام.
 #. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	هذا الكمبيوتر
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 extension	This download's details were too large to hand over	كانت تفاصيل هذا التنزيل كبيرة جدا بحيث لا يمكن تسليمها
 #. text in the browser extension
@@ -4011,6 +4349,14 @@ extension	Update Mister Download Manager to use everything this extension offers
 #. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
 #, machine
 extension	Use advanced browser integration is off in Options → General.	استخدام تكامل المتصفح المتقدم معطل في خيارات ← عام.
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	انتظر لحظة، ثم حاول مرة أخرى.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	رمز خاطئ.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 key	Alt+Enter	Alt+Enter
@@ -4555,335 +4901,3 @@ unit	{n} MB	{n} ميغابايت
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 unit	{n} MB/sec	{n} ميغابايت/ثانية
-#. text in remote.rs
-#. remote control page (on a phone): button that picks a .torrent file on the phone
-#, machine
-	.torrent file	ملف .torrent
-#. text in remote.rs
-#. remote control page (on a phone): button: add the download
-#, machine
-	Add	إضافة
-#. text in remote.rs
-#. remote control page (on a phone): a download was added
-#, machine
-	Added.	تمت الإضافة.
-#. text in remote.rs
-#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
-#, machine
-	Added. MDM is reading the torrent: it joins the list in a moment.	تمت الإضافة. يقرأ MDM التورنت: سينضم إلى القائمة بعد لحظة.
-#. text in remote.rs
-#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
-#, machine
-	Address or magnet link	عنوان أو رابط مغناطيسي
-#. text in remote.rs
-#. remote control page (on a phone): tab: every download
-#, machine
-	All	الكل
-#. text in remote.rs
-#. remote control page (on a phone): category choice: the category follows the file's type
-#, machine
-	Automatic (by file type)	تلقائي (حسب نوع الملف)
-#. text in the Options window
-#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
-#, machine
-	Certificate (SHA-256): {fingerprint}	الشهادة (SHA-256): {fingerprint}
-#. text in remote.rs
-#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
-#, machine
-	Choose a .torrent file	اختر ملف .torrent
-#. text in remote.rs
-#. remote control page (on a phone): label of the pairing code's box (8 digits)
-#, machine
-	Code	الرمز
-#. text in the Options window
-#. Options → Remote → Pair a device: label before the 8-digit code
-#, machine
-	Code:	الرمز:
-#. text in remote.rs
-#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
-#, machine
-	Delete the file too	حذف الملف أيضا
-#. text in the Options window
-#. column title: a paired phone's or computer's name
-#, machine
-	Device	الجهاز
-#. text in the Options window
-#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
-#, machine
-	Every local network address	كل عناوين الشبكة المحلية
-#. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
-#, machine
-	Everything at its normal size (100%)	كل شيء بحجمه الطبيعي (100%)
-#. text in remote.rs
-#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
-#, machine
-	Forget this device	نسيان هذا الجهاز
-#. text in remote.rs
-#. remote control page (on a phone): question before unpairing this phone
-#, machine
-	Forget this device? It needs a new code to connect again.	هل تريد نسيان هذا الجهاز؟ سيحتاج إلى رمز جديد للاتصال مرة أخرى.
-#. message or event log entry in the main window
-#. where a download came from (its Properties): a phone or computer paired in Options → Remote
-#, machine
-	from a paired device	من جهاز مقترن
-#. text in the Options window
-#. Options → Remote → Status: it could not start; {error} = the system's reason
-#. {error} = an error message (keep the braces as they are)
-#, machine
-	It could not start: {error}	تعذر بدء التشغيل: {error}
-#. text in the Options window
-#. column title: when the device last reached MDM
-#, machine
-	Last seen	آخر ظهور
-#. checkbox in the Options window
-#. Options → Remote check box (off by default)
-#, machine
-	Let phones and computers on the local network control MDM	السماح للهواتف وأجهزة الكمبيوتر على الشبكة المحلية بالتحكم في MDM
-#. text in the Options window
-#. Options → Remote: label before the choice of the address MDM listens on
-#, machine
-	Listen on:	الاستماع على:
-#. text in the Options window
-#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
-#, machine
-	MDM can't be reached on the network now: Options → Remote says why.	لا يمكن الوصول إلى MDM على الشبكة الآن: تشرح الخيارات ← عن بعد السبب.
-#. text in remote.rs
-#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
-#, machine
-	MDM cannot download this address.	لا يمكن لـ MDM تنزيل هذا العنوان.
-#. text in remote.rs
-#. remote control page (on a phone): adding a download failed
-#, machine
-	MDM could not add it.	تعذر على MDM إضافته.
-#. text in remote.rs
-#. remote control page (on a phone): an action failed
-#, machine
-	MDM could not do it.	تعذر على MDM القيام بذلك.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached while pairing
-#, machine
-	MDM does not answer. Check that it is running and on the same network.	MDM لا يستجيب. تحقق من أنه قيد التشغيل وعلى نفس الشبكة.
-#. text in remote.rs
-#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
-#. the trailing ... means it is still going on: keep it
-#, machine
-	MDM does not answer. Trying again...	MDM لا يستجيب. تتم المحاولة مرة أخرى...
-#. text in remote.rs
-#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
-#, machine
-	MDM shows no code now. Click Pair a device there first.	لا يعرض MDM أي رمز الآن. انقر فوق إقران جهاز هناك أولا.
-#. text in remote.rs
-#. remote control page (on a phone): its menu's button
-#, machine
-	More	المزيد
-#. button in the Options window
-#. Options → Remote → Pair a device: button: show a new code
-#, machine
-	New code	رمز جديد
-#. text in remote.rs
-#. remote control page (on a phone): the list shown is empty
-#, machine
-	No downloads here.	لا توجد تنزيلات هنا.
-#. text in the Options window
-#. Options → Remote → Status: on, but the computer has no local network address now
-#, machine
-	No local network now: it starts when the computer joins one.	لا توجد شبكة محلية الآن: سيبدأ عند انضمام الكمبيوتر إلى واحدة.
-#. text in the Options window
-#. Options → Remote → Status: the remote control is off
-#, machine
-	Off: nothing on the network can reach MDM.	إيقاف التشغيل: لا يمكن لأي شيء على الشبكة الوصول إلى MDM.
-#. text in remote.rs
-#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
-#, machine
-	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	على الكمبيوتر، افتح الخيارات، ثم عن بعد، وانقر فوق إقران جهاز. أدخل الرمز الذي يظهر.
-#. text in the Options window
-#. Options → Remote → Pair a device: how to pair
-#, machine
-	On the phone, scan this code with the camera, or open the address and enter the code.	على الهاتف، امسح هذا الرمز بالكاميرا، أو افتح العنوان وأدخل الرمز.
-#. text in the Options window
-#. Options → Remote → Status: on; the address follows in a box below
-#, machine
-	On. On the phone, open this address:	قيد التشغيل. على الهاتف، افتح هذا العنوان:
-#. text in the Options window
-#. Options → Remote, at the bottom of the page
-#, machine
-	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	الأجهزة المقترنة فقط هي التي يمكنها رؤية أو تغيير أي شيء. في المرة الأولى، يحذر متصفح الهاتف بشأن شهادة MDM الخاصة به: بصمتها هي المذكورة أعلاه.
-#. text in remote.rs
-#. remote control page (on a phone): button: pair this phone with MDM
-#, machine
-	Pair	إقران
-#. window title in the Options window
-#. window title: Options → Remote → Pair a device...
-#, machine
-	Pair a device	إقران جهاز
-#. button in the Options window
-#. Options → Remote button: shows a code (and a QR code) that pairs a phone
-#. the trailing ... means it opens a window: keep it
-#, machine
-	Pair a device...	إقران جهاز...
-#. text in remote.rs
-#. remote control page (on a phone): title of the pairing screen
-#, machine
-	Pair with Mister Download Manager	إقران مع Mister Download Manager
-#. text in the Options window
-#. column title: when the device was paired
-#, machine
-	Paired	مقترن
-#. text in the Options window
-#. Options → Remote: label above the list of paired phones and computers
-#, machine
-	Paired devices:	الأجهزة المقترنة:
-#. text in the Options window
-#. Options → Remote → Status: another program uses the port; {port} = its number
-#, machine
-	Port {port} is used by another program: choose another.	المنفذ {port} مستخدم بواسطة برنامج آخر: اختر منفذا آخر.
-#. text in remote.rs
-#. remote control page (on a phone): a download's state: added, waiting to start
-#, machine
-	Queued	في قائمة الانتظار
-#. text in the Options window
-#. tab title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote	التحكم عن بعد
-#. text in the Options window
-#. Options page title: control MDM from a phone or another computer on the local network
-#, machine
-	Remote control	التحكم عن بعد
-#. text in remote.rs
-#. remote control page (on a phone): question before removing a download; {name} its file name
-#. {name} = a file name (keep the braces as they are)
-#, machine
-	Remove {name} from the list?	إزالة {name} من القائمة؟
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: start the download at once
-#, machine
-	Start now	البدء الآن
-#. text in the Options window
-#. Options → Remote → Status: the settings were changed; they apply on OK
-#, machine
-	The changes apply when you click OK.	سيتم تطبيق التغييرات عند النقر فوق موافق.
-#. text in the Options window
-#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
-#, machine
-	This code can't be used any more.	لا يمكن استخدام هذا الرمز بعد الآن.
-#. text in the Options window
-#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
-#, machine
-	This computer only (127.0.0.1)	هذا الكمبيوتر فقط (127.0.0.1)
-#. text in remote.rs
-#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
-#, machine
-	This device's name	اسم هذا الجهاز
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen is too large for a .torrent file
-#, machine
-	This file is too large to be a torrent.	هذا الملف كبير جدا ليكون ملف تورنت.
-#. text in remote.rs
-#. remote control page (on a phone): the file chosen isn't a .torrent file
-#, machine
-	This is not a torrent file.	هذا ليس ملف تورنت.
-#. tooltip (why a control is greyed) in the Options window
-#. why Options → Remote → Pair a device... is greyed
-#, machine
-	Turn on the remote control first.	قم بتشغيل التحكم عن بعد أولا.
-#. text in remote.rs
-#. remote control page (on a phone): codes were tried too fast
-#, machine
-	Wait a moment, then try again.	انتظر لحظة، ثم حاول مرة أخرى.
-#. text in remote.rs
-#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
-#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
-#, machine
-	Wait in {queue}	انتظر في {queue}
-#. text in the Options window
-#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
-#. {time} = a time of day (keep the braces as they are)
-#, machine
-	Waiting for the device. The code works for {time}.	في انتظار الجهاز. الرمز يعمل لمدة {time}.
-#. text in remote.rs
-#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
-#, machine
-	When	متى
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed and the code is void now
-#, machine
-	Wrong code. Show a new code in MDM and try again.	رمز خاطئ. اعرض رمزا جديدا في MDM وحاول مرة أخرى.
-#. text in remote.rs
-#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
-#. {n} = a number (keep the braces as they are)
-#, machine
-	Wrong code. Tries left: {n}	رمز خاطئ. المحاولات المتبقية: {n}
-#. text in the Options window
-#. Options → Remote → Pair a device: done; {device} = the name it was given
-#, machine
-	{device} is paired. It can control MDM now.	تم إقران {device}. يمكنه التحكم في MDM الآن.
-#. text in remote.rs
-#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{done} of {size}	{done} من {size}
-#. text in remote.rs
-#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
-#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
-#, machine
-	{size} free	{size} مجانا
-#. text in the browser extension
-#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
-#, machine
-extension	Another Mister Download Manager (a server)	Mister Download Manager آخر (خادم)
-#. text in the browser extension
-#. the name this browser gets in the other MDM's list of paired devices
-#, machine
-extension	Browser extension	ملحق المتصفح
-#. text in the browser extension
-#. the toolbar button's status while downloads go to another MDM
-#, machine
-extension	Downloads go to {address}	تنتقل التنزيلات إلى {address}
-#. text in the browser extension
-#. the address typed isn't an https:// address
-#, machine
-extension	Enter its https:// address.	أدخل عنوان https:// الخاص به.
-#. text in the browser extension
-#. pairing failed for another reason
-#, machine
-extension	It didn't work. Try again.	لم ينجح الأمر. حاول مرة أخرى.
-#. text in the browser extension
-#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
-#, machine
-extension	It shows no code now: click Pair a device there first.	لا يعرض أي رمز الآن: انقر فوق "إقران جهاز" هناك أولا.
-#. text in the browser extension
-#. pairing failed: the other MDM didn't answer
-#, machine
-extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	لم يتم الوصول إليه. افتح عنوانه مرة واحدة في هذا المتصفح واقبل شهادته، ثم حاول مرة أخرى.
-#. text in the browser extension
-#. button: open the other MDM's address in a tab (to accept its certificate once)
-#, machine
-extension	Open it	افتحه
-#. text in the browser extension
-#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
-#, machine
-extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	افتح عنوانه مرة واحدة واقبل شهادته، ثم أدخل رمزا من خياراته، عن بعد، إقران جهاز (أو misterdownloadmanager-cli pair).
-#. text in the browser extension
-#. button: pair this browser with the other MDM using the code
-#, machine
-extension	Pair	إقران
-#. text in the browser extension
-#. placeholder of the box for the 8-digit code the other MDM shows
-#, machine
-extension	Pairing code	رمز الإقران
-#. text in the browser extension
-#. heading in the toolbar button's popup, above the choice of where downloads go
-#, machine
-extension	Send downloads to	إرسال التنزيلات إلى
-#. text in the browser extension
-#. choice under Send downloads to: the Mister Download Manager on this computer
-#, machine
-extension	This computer	هذا الكمبيوتر
-#. text in the browser extension
-#. pairing failed: codes tried too fast
-#, machine
-extension	Wait a moment, then try again.	انتظر لحظة، ثم حاول مرة أخرى.
-#. text in the browser extension
-#. pairing failed: the code was wrong
-#, machine
-extension	Wrong code.	رمز خاطئ.

@@ -1,5 +1,5 @@
-# Build, lint and test main and every pull request: Windows, and the experimental Linux and
-# macOS builds (their failures are reported but don't fail the run).
+# Build, lint and test main and every pull request: Windows and Linux, which must pass, and the
+# experimental macOS build (its failures are reported but don't fail the run).
 name: CI
 
 # Pushes to main only: a pull request's branch is tested once as the pull request (a bare push:
@@ -43,7 +43,6 @@ jobs:
         include:
           - os: windows-latest
           - os: ubuntu-latest
-            experimental: true
           - os: macos-latest
             experimental: true
     runs-on: ${{ matrix.os }}
