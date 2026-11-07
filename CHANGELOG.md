@@ -357,6 +357,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   sockets, and the bytes a sparse file takes on the drive. The slow-connection test now fails
   without shedding (it passed without it before). The lab server can hand out such links
   (`/redirect?uses=N`) and pace answers to range requests on their own (`range_rate`).
+- **Developers: Linux builds and window shots in minutes, on WSL2** (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): `tools/lab/wsl/` sets up
+  `mdm-lab`, an Ubuntu 24.04 WSL2 distribution of its own, which builds any branch or pull request
+  for Linux at the computer's full speed (`build.sh`: about 5 minutes from scratch, under a minute
+  after a change, against 15 to 60 in the VirtualBox machine), shoots MDM's windows in any language
+  and mode on a virtual screen that never shows on Windows (`shots.sh`: about a second a window,
+  against 40), compares OpenGL and Vulkan pixel by pixel (`renderers.sh`), and hands a build to a
+  VirtualBox machine for what needs a real desktop (`deploy.ps1`).
 - **Developers: a Linux test machine, scripted** (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
   `tools/lab/linux-vm/` sets up an Ubuntu 24.04 desktop in VirtualBox from a Windows host
   (`vm.ps1`: hardware, headless start, linked clones; `setup.sh`: packages, Rust, Node, the
