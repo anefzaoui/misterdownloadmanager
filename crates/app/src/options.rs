@@ -1332,9 +1332,9 @@ impl OptionsDialog {
             .image(true)
             .paint_at(ui, r(o, 21.0, 50.0, 32.0, 32.0));
         // Get System as wide as its label in this language (#192), its right end kept. A
-        // translated title ends where the English one does, unless the button needs that room:
-        // then the title moves left (no further than 8 px after the icon) and ends 8 px before it,
-        // in two lines where one doesn't fit there.
+        // translated title ends where the English one does, unless the button needs that room or
+        // it would start less than 8 px after the icon: then it ends 8 px before the button, in
+        // two lines where one doesn't fit there.
         let font = winui::tahoma_bold();
         let english_end =
             112.0 + winui::text_width_font(&p, font.clone(), "Proxy / socks configuration");
@@ -1347,7 +1347,7 @@ impl OptionsDialog {
         let from = (start + title_w + 8.0).min(307.0);
         let (get_x, get_w) =
             winui::button_row(&p, &[("Get System", 307.0, 93.0)], 0.0, from, max_w)[0];
-        if lines.len() == 1 && get_x - 8.0 >= english_end {
+        if lines.len() == 1 && get_x - 8.0 >= english_end && english_end - title_w >= start {
             page_title(
                 &p,
                 font,
