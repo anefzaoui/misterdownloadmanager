@@ -3524,13 +3524,13 @@ fn kept_text(kept: crate::secrets::Kept) -> Option<&'static str> {
     Some(match kept {
         Kept::Looking => return None,
         #[cfg(windows)]
-        // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
         Kept::Keychain => {
+            // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
             crate::i18n::mark("Sign-ins and passwords are kept in Windows Credential Manager.")
         }
         #[cfg(target_os = "macos")]
-        // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
         Kept::Keychain => {
+            // i18n: Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
             crate::i18n::mark("Sign-ins and passwords are kept in the macOS keychain.")
         }
         #[cfg(target_os = "linux")]
