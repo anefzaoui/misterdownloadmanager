@@ -1832,7 +1832,7 @@ impl OptionsDialog {
         let (dbl, del_key) = report(
             ui,
             o,
-            r(o, 21.0, 93.0, 383.0, 150.0),
+            r(o, 21.0, 93.0, 383.0, 140.0),
             &[
                 // i18n: column title: the site (and path) a login is for
                 (crate::i18n::mark("Site/path"), 262.0),
@@ -1862,7 +1862,7 @@ impl OptionsDialog {
         };
         let new = winui::button_light(
             ui,
-            r(o, new_at.0, 251.0, new_at.1, 21.0),
+            r(o, new_at.0, 241.0, new_at.1, 21.0),
             // i18n: button: create a new item
             "New",
             ButtonKind::Normal,
@@ -1876,11 +1876,11 @@ impl OptionsDialog {
         };
         let edit =
             // i18n: verb: edit the item
-            winui::button_light(ui, r(o, edit_at.0, 251.0, edit_at.1, 21.0), "Edit", kind, false).clicked();
+            winui::button_light(ui, r(o, edit_at.0, 241.0, edit_at.1, 21.0), "Edit", kind, false).clicked();
         // i18n: verb: remove the item
         let remove = winui::button_light(
             ui,
-            r(o, remove_at.0, 251.0, remove_at.1, 21.0),
+            r(o, remove_at.0, 241.0, remove_at.1, 21.0),
             "Remove",
             kind,
             false,
@@ -1913,7 +1913,7 @@ impl OptionsDialog {
     fn video_cookies(&mut self, ui: &mut Ui, o: Pos2) {
         let p = ui.painter().clone();
         // i18n: Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
-        group(ui, o, 16.0, 282.0, 392.0, 118.0, "Cookies for video sites");
+        group(ui, o, 16.0, 270.0, 392.0, 130.0, "Cookies for video sites");
         let browsers = mdm_tools::proc::cookie_browsers();
         let at = self.cookie_browser.min(browsers.len() - 1);
         let on = !self.s.video_cookies.is_empty();
@@ -1923,10 +1923,10 @@ impl OptionsDialog {
         );
         // i18n: Options → Sites Logins → Cookies for video sites: don't read any browser's cookies (the default)
         let off =
-            winui::radio_light(ui, o + vec2(30.0, 300.0), !on, "Off", true).on_hover_text(tip);
+            winui::radio_light(ui, o + vec2(30.0, 288.0), !on, "Off", true).on_hover_text(tip);
         let from = winui::radio_light_until(
             ui,
-            o + vec2(30.0, 327.0),
+            o + vec2(30.0, 314.0),
             on,
             // i18n: Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
             "From browser:",
@@ -1949,7 +1949,7 @@ impl OptionsDialog {
             .collect();
         if let Some(i) = winui::combo_light(
             ui,
-            r(o, 200.0, 324.0, 192.0, 21.0),
+            r(o, 200.0, 311.0, 192.0, 21.0),
             &names,
             at,
             on,
@@ -1963,13 +1963,13 @@ impl OptionsDialog {
         // i18n: Options → Sites Logins → Cookies for video sites: label before the browser profile's name or folder (may stay empty)
         let label = crate::i18n::t("Profile (optional):");
         let (rect, cut) =
-            winui::text_right_within(&p, o.x + 194.0, o.y + 367.0, label, ink, o.x + 30.0);
+            winui::text_right_within(&p, o.x + 194.0, o.y + 354.0, label, ink, o.x + 30.0);
         if cut {
             winui::full_on_hover(ui, rect, "cookie-profile", label);
         }
         winui::edit_light_on(
             ui,
-            r(o, 200.0, 351.0, 160.0, 23.0),
+            r(o, 200.0, 338.0, 160.0, 23.0),
             &mut self.s.video_cookies_profile,
             on,
             false,
@@ -1986,7 +1986,7 @@ impl OptionsDialog {
         } else {
             ButtonKind::Disabled
         };
-        if winui::button_light(ui, r(o, 365.0, 352.0, 27.0, 21.0), "...", kind, false)
+        if winui::button_light(ui, r(o, 365.0, 339.0, 27.0, 21.0), "...", kind, false)
             .on_hover_text(pick_title)
             .clicked()
         {
@@ -2016,16 +2016,8 @@ impl OptionsDialog {
                 LIGHT_DISABLED(),
             )
         };
-        winui::fit(
-            ui,
-            &p,
-            o.x + 30.0,
-            o.y + 392.0,
-            note,
-            ink,
-            o.x + 400.0,
-            "opt-cookie-note",
-        );
+        // Two lines at most: a longer language wraps rather than being cut.
+        winui::paragraph(&p, o.x + 30.0, o.y + 380.0, note, ink, o.x + 400.0, 13.0);
     }
 
     /// Archives (ours, #37): extracting archives when their download completes, what becomes
