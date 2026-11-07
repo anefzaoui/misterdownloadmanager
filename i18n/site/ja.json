@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "Firefoxでは、ポップアップで<g1>このブラウザーのプロキシまたは VPN 拡張機能経由でダウンロードを送信する</g1>をオンにすると（Firefoxが最初に尋ねます）、ブラウザーがダウンロードにプロキシを使用している場合（VPNまたはプロキシ拡張機能、またはその設定で設定されている場合）、拡張機能は<g2>プロキシのアドレス</g2>、またはその<g3>プロキシ自動設定スクリプト</g3>を渡し、MDMは同じプロキシ経由でダウンロードします。プロキシのログイン情報を読み取ったり渡したりすることはありません。プロキシがログイン情報を要求したことのみを記録し、MDMがそのプロキシを使用できないことを通知できるようにします。オフになっている場合（インストール時）、ブラウザーのプロキシに関する情報は何も読み取りません。Chromeおよびその他のChromiumブラウザー用の拡張機能は、まだこの機能を持っていません。"
+   "text": "Firefox では、ポップアップで<g1>このブラウザーのプロキシまたは VPN 拡張機能経由でダウンロードを送信する</g1>をオンにすると（Firefox が最初に尋ねます）、ブラウザーがダウンロードにプロキシを使用している場合（VPN またはプロキシ拡張機能、またはその設定で設定されている場合）、拡張機能は<g2>プロキシのアドレス</g2>、またはその<g3>プロキシ自動設定スクリプト</g3>を渡し、MDM は同じプロキシ経由でダウンロードします。プロキシのログイン情報を読み取ったり渡したりすることはありません。プロキシが要求したことのみを記録し、MDM がそのプロキシを使用できないことを伝えることができます。オフ（インストール時）の場合、ブラウザーのプロキシに関する情報は何も読み取りません。Chrome およびその他の Chromium ブラウザー用の拡張機能は、まだこれを行いません。"
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -366,6 +366,10 @@
    "source": "Right-click a category for:",
    "text": "カテゴリを右クリックすると、次の操作ができます。"
   },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>表示</g1> — カテゴリの表示/非表示、リストの並べ替え（<g2>ファイルを整理</g2>）、<g3>ダーク モードのサポート</g3>、<g4>常にダーク</g4>、<g5>テーマ</g5>、<g6>描画方法</g6>（Windows では OpenGL または Direct3D、Linux では Vulkan、macOS では Metal）、および<g7>言語</g7>。"
+  },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "いいえ、ご希望でない限り続きません。トレントのダウンロード中は、他のトレントクライアントと同様に、他のユーザーとピースを交換します。完了すると、他のダウンロードと同様に停止します。"
@@ -608,7 +612,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "VPN またはプロキシ拡張機能は、ブラウザー専用のプロキシです。Firefox では、拡張機能のツールバーポップアップで<g1>このブラウザーのプロキシまたは VPN 拡張機能経由でダウンロードを送信する</g1>をオンにします。Firefox は、拡張機能がブラウザーのプロキシを読み取ることを一度許可するように求め、MDM はブラウザーから取得したものを同じプロキシ経由でダウンロードします（<g2>オプション → プロキシ / SOCKS → ブラウザーのリクエストからプロキシ/SOCKSを使用する</g2>、デフォルトでオン。詳細は<g3>オプション</g3>を参照）。この許可を取り消すには、オフにしてください。Chrome、Edge、Brave、Opera、Vivaldi はまだこの機能を提供していません。今のところ、MDM の<g4>オプション → プロキシ / SOCKS</g4>で同じプロキシを設定してください。"
+   "text": "VPNまたはプロキシ拡張機能は、ブラウザー専用のプロキシです。Firefoxでは、拡張機能のツールバーポップアップで<g1>このブラウザーのプロキシまたは VPN 拡張機能経由でダウンロードを送信する</g1>をオンにします。Firefoxは、拡張機能がブラウザーのプロキシを読み取ることを一度許可するように求め、MDMはブラウザーから取得したものを同じプロキシ経由でダウンロードします（<g2>オプション → プロキシ / SOCKS → ブラウザーのリクエストからプロキシ/SOCKSを使用</g2>、デフォルトでオン。詳細は<g3>オプション</g3>を参照）。この許可を取り消すにはオフにします。Chrome、Edge、Brave、Opera、Vivaldiではまだこの機能が提供されていません。今のところ、MDMの<g4>オプション → プロキシ / SOCKS</g4>で同じプロキシを設定してください。"
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1578,6 +1582,10 @@
    "source": "The current speed.",
    "text": "現在の速度。"
   },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Direct3D、Vulkan、またはMetalがコンピューターで起動できない場合 (ドライバーがない、一部の仮想マシンなど)、または最初のウィンドウが10秒以内に表示されない場合、MDMはOpenGLで描画し、<g1>表示 → 描画方法</g1>でその旨と理由が表示されます。再度選択すると、次回の起動時に再試行されます。"
+  },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
    "text": "<g1>ダウンロード ファイル情報</g1>、進捗ウィンドウ、および<g2>プロパティ</g2>には、ダウンロード元のサーバーの場所が表示されます。国旗と国名、そして往復にかかる時間（例: <g3>約 24 ミリ秒 (近い)</g3>）です。"
@@ -1902,6 +1910,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>国</g1>は、MDM に付属するアドレス範囲のテーブル（<g2>DB-IP による IP to Country Lite</g2>、CC BY 4.0）から、お使いのコンピューター上で検索されます。MDM は、アドレスの場所を問い合わせるためにどこにも送信しません。テーブルはリリースごとに更新されます。移動したアドレスは、古い国を表示する場合があります。"
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "最終更新日 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>参照</g1> — エクスプローラーでそのフォルダーを開きます。"
@@ -1948,7 +1960,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "コントロールが描画されるすべての色とサイズは、アクティブなテーマ（#45）から取得されます。<x1/>は、クラシックな外観の値でその役割（<x2/>、<x3/>…）を宣言し、共有ペインター（<x4/>、<x5/>、<x6/>、<x7/>）は<x8/>と<x9/>を介してそれらを読み取り、それらから各コントロールの状態を決定し、<x10/>はそれらのいずれかを変更するテーマファイル（データフォルダの<x11/>にあるTOMLまたはJSON）を読み取ります。ウィンドウがコントロールを配置する場所は、そのレイアウトのままです。ファイル名の前のアイコンも同様です（<x12/>）。Windowsシェルのシステムイメージリスト、macOS Finderの（NSWorkspace）、Linuxデスクトップのアイコンテーマ（<x13/>、shared-mime-info、Icon Theme Specification）。各タイプは、ピクセルサイズごとに1回、バックグラウンドスレッドで検索されます。Tangoのアイコン（バンドルされている）は、システムのアイコンが準備できるまで、およびシステムにアイコンがない場所で使用されます。"
+   "text": "コントロールのすべての色とサイズは、アクティブなテーマ（#45）から取得されます。<x1/>は、クラシックな外観の値でその役割（<x2/>、<x3/>…）を宣言し、共有ペインター（<x4/>、<x5/>、<x6/>、<x7/>）は<x8/>と<x9/>を介してそれらを読み取り、各コントロールの状態を決定します。<x10/>は、それらのいずれかを変更するテーマファイル（データフォルダの<x11/>にあるTOMLまたはJSON）を読み取ります。ウィンドウがコントロールを配置する方法は、そのレイアウトのままです。ファイル名の前のアイコンも同様です（<x12/>）。Windowsシェルのシステムイメージリスト、macOS Finder（NSWorkspace）、Linuxデスクトップのアイコンテーマ（<x13/>、shared-mime-info、Icon Theme Specification）です。各タイプは、ピクセルサイズごとにバックグラウンドスレッドで一度検索されます。Tangoのアイコン（バンドルされている）は、システムのアイコンが準備できるまで、またシステムにアイコンがない場所で使用されます。"
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2256,7 +2268,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>ブラウザーのリクエストからのプロキシ/SOCKSを使用…</g1> — デフォルトでオン。MDMがブラウザーから取得するダウンロードは、ブラウザーがそれに使用したプロキシを経由します。これは、VPNまたはプロキシ拡張機能が設定したもの、ブラウザー独自の手動プロキシ、またはそのプロキシ自動構成スクリプトです。これがないと、ダウンロードはあなた自身のIPアドレスから行われ、VPNの国またはそのIPアドレスに限定されたコンテンツは失敗します。ブラウザー拡張機能は、あなたが許可すると、そのプロキシを読み取り、各ダウンロードとともにMDMに渡します。Firefoxでは、拡張機能のツールバーポップアップで<g2>このブラウザーのプロキシまたは VPN 拡張機能経由でダウンロードを送信する</g2>をオンにします（Firefoxは一度だけ尋ねます）。Chrome、Edge、Brave、Opera、Vivaldiはまだプロキシを渡しません。そこでは、<g3>オプション → プロキシ / SOCKS</g3>で同じプロキシを設定してください。"
+   "text": "<g1>ブラウザーのリクエストからプロキシ/SOCKSを使用…</g1> — デフォルトでオン。MDMがブラウザーから取得するダウンロードは、ブラウザーがそのために使用したプロキシを経由します。これは、VPNまたはプロキシ拡張機能が設定したもの、ブラウザー自身の手動プロキシ、またはそのプロキシ自動設定スクリプトです。これがないと、ダウンロードはユーザー自身のIPアドレスから行われ、VPNの国やそのIPアドレスに限定されたコンテンツは失敗します。ブラウザー拡張機能は、ユーザーが許可すると、そのプロキシを読み取り、各ダウンロードとともにMDMに渡します。Firefoxでは、拡張機能のツールバーポップアップで<g2>このブラウザーのプロキシまたは VPN 拡張機能経由でダウンロードを送信する</g2>をオンにします（Firefoxは一度だけ尋ねます）。Chrome、Edge、Brave、Opera、Vivaldiはまだプロキシを渡しません。そこでは、<g3>オプション → プロキシ / SOCKS</g3>で同じプロキシを設定してください。"
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3322,6 +3334,10 @@
    "source": "JSON for scripts and programs",
    "text": "スクリプトとプログラムのためのJSON"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "Windowsでは、MDMはDirect3D 12でウィンドウを描画します。LinuxとmacOSでは、OpenGL、または選択した場合にVulkan (Linux) やMetal (macOS) で描画します。グラフィックドライバーが誤動作することがあります。ウィンドウが数秒間静止したり、ちらついたり、間違った色やブロックを表示したりする場合です。別の方法を試してください。<g1>表示 → 描画方法 → OpenGL</g1> (または<g2>Direct3D</g2>、<g3>Vulkan</g3>、<g4>Metal</g4>) を選択し、MDMを終了 (<g5>タスク → 終了</g5>) してから再起動してください。最初の選択肢に戻る場合も同じ方法です。"
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "<g1>オプション → アーカイブ → ダウンロード完了時にアーカイブを展開する</g1>がオンになっている場合（デフォルトではオフ）、その他のダウンロードの場合。"
@@ -4340,7 +4356,7 @@
   },
   "6c93571eac4f03c3": {
    "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
-   "text": "Firefoxでは、MDMは、VPN拡張機能が各リクエストに選択したものを含め、ブラウザー自身のファイルリクエストが使用したプロキシを認識します。"
+   "text": "Firefoxでは、MDMは、VPN拡張機能が各リクエストに対して選択したものを含め、ブラウザー自身のファイルリクエストが使用したプロキシを認識します。"
   },
   "6cfaa56a34e8372a": {
    "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
@@ -4732,7 +4748,7 @@
   },
   "766e2dfcd1a477ea": {
    "source": "A VPN or proxy extension",
-   "text": "VPN またはプロキシ拡張機能"
+   "text": "VPNまたはプロキシ拡張機能"
   },
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
@@ -5612,7 +5628,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "その権限と理由：ダウンロードを表示して引き渡すための<g1>downloads</g1>。MDMでサインインしたダウンロードが機能するための<g2>cookies</g2>。MDMと通信するための<g3>nativeMessaging</g3>。右クリック項目用の<g4>contextMenus</g4>。設定用の<g5>storage</g5>。送信されたフォームと読み込まれたビデオストリームを見るための<g6>webRequest</g6>（何も変更しません）。ブラウザーが開くファイル（PDF）を代わりにダウンロードさせるための<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他のChromiumブラウザー、MDMが対応するタイプの場合）。Firefoxでは、<g8>webRequestBlocking</g8>がそれを行います。要求されたときにページのリンクを読み取り、拡張機能がインストールされたときにすでに開いているページにビデオボタンを追加するための<g9>scripting</g9>。ブラウザーが使用するプロキシを読み取るための<g10>proxy</g10>（Firefox、オプション：ポップアップでオンにしたときにのみ要求されます）。これにより、VPNまたはプロキシ拡張機能の背後にあるブラウザーから取得されたダウンロードもそれらを経由します（ブラウザーのプロキシを変更することはありません）。ダウンロードとビデオはどのサイトからでも来る可能性があるため、すべてのサイトへのアクセスが必要です。"
+   "text": "その権限と理由：ダウンロードを表示して引き渡すための<g1>downloads</g1>。MDM でサインインしたダウンロードが機能するための<g2>cookies</g2>。MDM と通信するための<g3>nativeMessaging</g3>。右クリック項目用の<g4>contextMenus</g4>。設定用の<g5>storage</g5>。送信されたフォームと読み込まれたビデオストリームを表示するための<g6>webRequest</g6>（何も変更しません）。ブラウザーが開くファイル（PDF）を代わりにダウンロードさせるための<g7>declarativeNetRequestWithHostAccess</g7>（Chrome、Edge、その他の Chromium ブラウザー）、MDM が取得するタイプの場合。Firefox では、<g8>webRequestBlocking</g8>がそれを行います。要求されたときにページのリンクを読み取り、拡張機能がインストールされたときにすでに開いているページにビデオボタンを追加するための<g9>scripting</g9>。ブラウザーが使用するプロキシを読み取るための<g10>proxy</g10>（Firefox、オプション：ポップアップでオンにしたときにのみ要求されます）。これにより、VPN またはプロキシ拡張機能の背後にあるブラウザーから取得されたダウンロードもそれらを経由します（ブラウザーのプロキシを変更することはありません）。ダウンロードとビデオはどのサイトからでも取得できるため、すべてのサイトへのアクセスが許可されます。"
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5970,6 +5986,10 @@
    "source": "Downloads",
    "text": "ダウンロード"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最終更新日 2026-11-07 · アプリ、ブラウザー拡張機能、misterdownloadmanager.com に適用されます"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>説明または説明の一部</g1> — あなたのメモ。"
@@ -5980,7 +6000,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>問題の捕捉。</g1> MDMがクラッシュ（Windowsの例外、Linuxのシグナル、macOSのMach例外）、パニック、またはフリーズした場合、モニターにダンプを要求します。フリーズとは、ウィンドウのフレームが8秒以上実行されることで、スリープ時間を無視するウォッチドッグスレッドによって検出されます。フレームの2つの部分の時間を計測します。MDMが処理する部分（受信コマンド、ダウンロードのクロック、キュー、スケジューラ）は最小化されていても実行され、描画も含まれます。フレーム間の待機時間は計測されません。ウォッチドッグは、その間にウィンドウのスレッドがどれだけのプロセッサ時間を得たかも測定し、その意味をレポートに示します。それは、ずっと実行されていた（ループ）、ロックまたはI/Oで待機していた（デッドロック）、または通常のコードではほとんど実行されなかった（これは、MDMを実行するにはコンピューターが忙しすぎるか、ディスクからの読み込みが遅いことを意味し、MDMのバグである可能性は低い）ことを意味します（これらは1つのシグネチャ<x2/>を共有します）。macOSではまだ測定されていません。その後、モニターは<x4/>と<x5/>を介して、外部からすべてのスレッドの<g3>ミニダンプ</g3>を書き込みます。クラッシュしたプロセスは自身のダンプを書き込むことはありません。これはFirefox、Crashpad、Sentryも同様に行っています。"
+   "text": "<g1>問題の捕捉。</g1> MDMがクラッシュ（Windowsの例外、Linuxのシグナル、macOSのMach例外）、パニック、またはフリーズした場合、モニターにダンプを要求します。フリーズとは、ウィンドウのフレームが8秒以上実行された状態を指し、スリープ時間を無視するウォッチドッグスレッドによって検出されます。フレームの2つの部分の時間を計測します。MDMが処理する部分（受信コマンド、ダウンロードのクロック、キュー、スケジューラ）は最小化されていても実行され、描画も計測されます。フレーム間の待機は計測されません。ウォッチドッグは、その間にウィンドウのスレッドがどれだけのプロセッサ時間を得たかも測定し、その意味をレポートで示します。つまり、ずっと実行されていた（ループ）、ロックまたはI/Oで待機していた（デッドロック）、または通常のコードではほとんど実行されていなかった（コンピューターがMDMを実行するには忙しすぎるか、ディスクからの読み込みが遅い、MDMのバグである可能性は低い）ことを意味します（これらは1つのシグネチャ<x2/>を共有します）。macOSではまだ測定されていません。その後、モニターは<x4/>と<x5/>を介して、外部からすべてのスレッドの<g3>ミニダンプ</g3>を書き込みます。クラッシュしたプロセスは自身のダンプを書き込むことはありません。これはFirefox、Crashpad、Sentryも同様に行っています。"
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6376,7 +6396,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "eguiのウィンドウは固定ピクセル座標に描画され、ダイアログごとに1つの即時ビューポートがあります。<x1/>は状態（ダウンロード、キュー、設定、リストの選択）を保持し、メニュー、ツールバー、キー、IPCコマンドをアクションに変換します。各ダイアログは独自のモジュールであり、<x2/>（開いている、閉じている、値で完了）を返します。Windows専用の呼び出しは<x3/>に限定され、LinuxおよびmacOSの対応する呼び出しは<x4/>に限定されます（セッションの開始、ブラウザのホスト、サウンド、フォルダに表示、クラッシュハンドラ）。その他のファイルはすべて安全でポータブルなRustです。フォントはシステムから取得されます。WindowsのFontsフォルダ、macOSのシステムフォント、Linuxのfontconfig（<x5/>）。"
+   "text": "eguiのウィンドウは固定されたピクセル座標に描画され、ダイアログごとに1つの即時ビューポートがあります。<x1/>は状態（ダウンロード、キュー、設定、リストの選択）を保持し、メニュー、ツールバー、キー、IPCコマンドをアクションに変換します。各ダイアログは独自のモジュールであり、<x2/>（開いている、閉じている、値で完了）を返します。Windows専用の呼び出しは<x3/>に限定され、LinuxおよびmacOSの対応する呼び出しは<x4/>に限定されます（セッションの開始、ブラウザのホスト、サウンド、フォルダで表示、クラッシュハンドラ）。その他のファイルはすべて安全でポータブルなRustです。フォントはシステムから取得されます。WindowsのFontsフォルダ、macOSのシステムフォント、Linuxのfontconfig（<x5/>）です。"
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6656,7 +6676,7 @@
   },
   "a796d15297b81a60": {
    "source": "<g1>High contrast</g1>: black and white, a bright accent, every edge drawn, text at 7:1 or more.",
-   "text": "<g1>ハイ コントラスト</g1>: 白黒、明るいアクセント、すべてのエッジが描画され、テキストは 7:1 以上。"
+   "text": "<g1>ハイ コントラスト</g1>: 白黒、明るいアクセント、すべてのエッジが描画され、テキストは7:1以上の比率。"
   },
   "a7a3f7c6b7a38022": {
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
@@ -7186,6 +7206,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Managerは、IDMユーザーが慣れ親しんだレイアウトを維持し、IDMのリストを引き継ぎ、費用はかかりません。無料のオープンソースで、試用期間、広告、サインアップもありません。以下に、IDMの代わりに人々が使用する他の9つの無料ダウンロードマネージャーを正直に比較します。"
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "Linuxでは、VulkanにはグラフィックカードのVulkanドライバーが必要です。AMDとIntelにはMesaのドライバー (<x1/> UbuntuとDebianの場合、<x2/>または<x3/> Archの場合)、NVIDIAにはNVIDIA独自のドライバーが必要です。"
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage は AppImage ツール (AppImageLauncher、Gear Lever、AppImageUpdate) を使って更新することもできます。更新のアドレスが含まれており、各リリースには <x1/> ファイルがあるため、これらのツールは変更された部分のみをダウンロードします。これはバージョン 0.2.4 以降の AppImage から始まります。"
@@ -7678,6 +7702,10 @@
    "source": "torrents on Windows;",
    "text": "Windows上のトレント。"
   },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "どちらも起動できない場合、MDMはソフトウェアレンダラー (WindowsではMicrosoft、LinuxではMesa) で描画するため、ウィンドウは開きます (リモートデスクトップ、グラフィックドライバーのない仮想マシンなど)。動作はしますが、プロセッサーの負荷が高くなります。"
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8052,7 +8080,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>テスト。</g1> <x2/>は実際のフリーズ、パニック、クラッシュ（<x3/>）を実行し、各レポートのシグネチャをチェックします。アプリで試すには、<x4/>でMDMを起動し、次に<x5/>（デッドロック。または<x6/>、ビジーなウィンドウのスレッドの12秒間、<x7/>、<x8/>、<x9/>）を実行します。<x10/>は、画面外のアプリのコピーで、ウィンドウは表示され最小化された状態でこれを行います。"
+   "text": "<g1>テスト。</g1> <x2/>は実際のフリーズ、パニック、クラッシュ（<x3/>）を実行し、各レポートのシグネチャをチェックします。アプリで試すには、<x4/>でMDMを起動し、次に<x5/>（デッドロック、または<x6/>、ビジーなウィンドウのスレッドの12秒間、<x7/>、<x8/>、<x9/>）を実行します。<x10/>は、画面外のアプリのコピーで、ウィンドウは表示され最小化された状態でこれを行います。"
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8068,7 +8096,7 @@
   },
   "cda67136f4731916": {
    "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too.",
-   "text": "それぞれにライトとダークの側面があります。<g1>ダーク モードのサポート</g1> と <g2>常にダーク</g2> で、これまでと同様にどちらかを選択します。テーマ フォルダー（<g3>表示 → テーマ → テーマ フォルダーを開く</g3>）に入れたテーマ ファイルもここに表示されます。"
+   "text": "それぞれにライトとダークの側面があります。<g1>ダーク モードのサポート</g1>と<g2>常にダーク</g2>で、これまでと同様にそれらを選択します。テーマ フォルダー（<g3>表示 → テーマ → テーマ フォルダーを開く</g3>）に入れたテーマ ファイルもそこに表示されます。"
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -8772,7 +8800,7 @@
   },
   "e04f69d547a21d71": {
    "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
-   "text": "<g1>ネイティブ</g1>: システムの色を使用します。Windows のアクセント カラー（設定 → 個人用設定 → 色）と、有効な場合はそのコントラスト テーマ。Linux（GNOME 47 以降、KDE Plasma）のデスクトップのアクセント カラーと高コントラスト設定。macOS のアクセント カラー。これらは変更すると追従します。"
+   "text": "<g1>ネイティブ</g1>: システムの色を使用します。Windows のアクセント カラー（設定 → 個人用設定 → 色）と、有効になっている場合はそのコントラスト テーマ。Linux のデスクトップのアクセント カラーと高コントラスト設定（GNOME 47 以降、KDE Plasma）。macOS のアクセント カラー。これらは変更すると追従します。"
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -9200,7 +9228,7 @@
   },
   "eb2157973bc61b4f": {
    "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
-   "text": "<g1>表示 → テーマ</g1> で、MDM のレイアウトを維持したまま外観をすぐに変更できます。"
+   "text": "<g1>表示 → テーマ</g1>で、MDM のレイアウトを維持したまま、MDM の外観をすぐに変更できます。"
   },
   "eb54002890a30cf8": {
    "source": "<g1>Ctrl+M</g1> or <g2>F2</g2>",
@@ -9766,6 +9794,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "<g1>保存先</g1>と<g2>ファイル名</g2>を確認します。ファイル名はビデオのタイトルから取得されます。必要に応じて変更してください。"
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>メトロ</g1>: Windows 8 のフラットな外観。角が四角く、フラットなボタンとボックス、タイトルが中央に配置された色付きのタイトル バー（MDM が描画する Windows 上）、単色のアイコン（Microsoft の Fluent UI System Icons）。"
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "IDMができてMDMがまだできないこと"
@@ -9797,6 +9829,10 @@
   "fb1900915c99672a": {
    "source": "After a cut connection",
    "text": "接続が切断された後"
+  },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "ウィンドウは、OpenGL（eframeのglow）またはeframeのwgpuを介してシステムの独自のグラフィックAPIで描画されます。そのバックエンドは1つだけです。WindowsではDirect3D 12（デフォルト）、LinuxではVulkan、macOSではMetal（選択肢があります。OpenGLはそれらのデフォルトのままです）。表示 → 描画方法で1つを選択します。1つのコードパスがすべてのシステムでそれを実行します（<x1/>）。選択したものが起動できない場合、別のものが試行されるため、ウィンドウは常に開きます。最初のフレームが表示されない起動、またはグラフィックカードが2回失われた場合は、その理由が記憶され、メニューに表示されます。"
   },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",

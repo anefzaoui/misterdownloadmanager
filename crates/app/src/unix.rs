@@ -10,7 +10,7 @@ use std::process::{Command, Stdio};
 
 /// The program to start again later: the AppImage file itself when running from one (its
 /// programs sit in a temporary mount), else this executable.
-fn program() -> Option<PathBuf> {
+pub fn program() -> Option<PathBuf> {
     std::env::var_os("APPIMAGE")
         .map(PathBuf::from)
         .or_else(|| std::env::current_exe().ok())

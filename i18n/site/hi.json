@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "Firefox में, एक बार जब आप इसके पॉपअप में <g1>इस ब्राउज़र के प्रॉक्सी या VPN एक्सटेंशन के ज़रिए डाउनलोड भेजें</g1> को चालू करते हैं (Firefox आपसे पहले पूछता है), जब ब्राउज़र किसी डाउनलोड के लिए प्रॉक्सी का उपयोग करता है (जो किसी VPN या प्रॉक्सी एक्सटेंशन द्वारा, या इसकी सेटिंग्स में सेट किया गया हो), तो एक्सटेंशन <g2>प्रॉक्सी का पता</g2>, या इसकी <g3>प्रॉक्सी ऑटो-कॉन्फ़िग स्क्रिप्ट</g3> पास करता है, ताकि MDM उसी प्रॉक्सी के ज़रिए डाउनलोड करे। यह प्रॉक्सी के लॉगिन को कभी नहीं पढ़ता या पास नहीं करता। यह केवल यह नोट करता है कि एक प्रॉक्सी ने एक के लिए पूछा था, ताकि MDM आपको बता सके कि वह उस प्रॉक्सी का उपयोग नहीं कर सकता। बंद होने पर (जैसा कि इंस्टॉल किया गया है), यह ब्राउज़र के प्रॉक्सी के बारे में कुछ भी नहीं पढ़ता। Chrome और अन्य Chromium ब्राउज़रों के लिए एक्सटेंशन अभी तक ऐसा नहीं करता है।"
+   "text": "Firefox में, एक बार जब आप इसके पॉपअप में <g1>इस ब्राउज़र के प्रॉक्सी या VPN एक्सटेंशन के ज़रिए डाउनलोड भेजें</g1> चालू करते हैं (Firefox आपसे पहले पूछता है), जब ब्राउज़र किसी डाउनलोड के लिए प्रॉक्सी का उपयोग करता है (जो किसी VPN या प्रॉक्सी एक्सटेंशन द्वारा, या इसकी सेटिंग्स में सेट किया गया हो), तो एक्सटेंशन <g2>प्रॉक्सी का पता</g2>, या इसकी <g3>प्रॉक्सी ऑटो-कॉन्फ़िग स्क्रिप्ट</g3> पास करता है, ताकि MDM उसी प्रॉक्सी के ज़रिए डाउनलोड करे। यह प्रॉक्सी के लॉगिन को कभी नहीं पढ़ता या पास नहीं करता। यह केवल यह नोट करता है कि एक प्रॉक्सी ने एक के लिए पूछा था, ताकि MDM आपको बता सके कि वह उस प्रॉक्सी का उपयोग नहीं कर सकता। बंद होने पर (जैसा कि इंस्टॉल किया गया है), यह ब्राउज़र के प्रॉक्सी के बारे में कुछ भी नहीं पढ़ता। Chrome और अन्य Chromium ब्राउज़रों के लिए एक्सटेंशन अभी तक ऐसा नहीं करता है।"
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -366,6 +366,10 @@
    "source": "Right-click a category for:",
    "text": "एक श्रेणी पर राइट-क्लिक करें:"
   },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>देखें</g1> — श्रेणियों को दिखाएँ या छिपाएँ, सूची को क्रमबद्ध करें (<g2>फ़ाइलें व्यवस्थित करें</g2>), <g3>डार्क मोड समर्थन</g3>, <g4>हमेशा गहरा</g4>, <g5>थीम</g5>, <g6>इसके साथ ड्रा करें</g6> (OpenGL, या Windows पर Direct3D, Linux पर Vulkan, macOS पर Metal) और <g7>भाषा</g7>।"
+  },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "नहीं, जब तक आप ऐसा न चाहें। जब कोई टॉरेंट डाउनलोड होता है, तो वह अन्य लोगों के साथ टुकड़े साझा करता है, जैसा कि हर टॉरेंट क्लाइंट करता है। जब यह खत्म हो जाता है, तो यह रुक जाता है, जैसे कोई भी..."
@@ -608,7 +612,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "एक VPN या प्रॉक्सी एक्सटेंशन केवल ब्राउज़र के लिए एक प्रॉक्सी है। Firefox में, एक्सटेंशन के टूलबार पॉपअप में <g1>इस ब्राउज़र के प्रॉक्सी या VPN एक्सटेंशन के ज़रिए डाउनलोड भेजें</g1> चालू करें: Firefox आपसे एक बार एक्सटेंशन को ब्राउज़र का प्रॉक्सी पढ़ने की अनुमति देने के लिए कहेगा, और MDM फिर ब्राउज़र से जो कुछ भी लेता है उसे उसी प्रॉक्सी के ज़रिए डाउनलोड करेगा (डिफ़ॉल्ट रूप से चालू <g2>विकल्प → प्रॉक्सी / SOCKS → ब्राउज़र के अनुरोध से प्रॉक्सी/SOCKS का उपयोग करें</g2> के साथ; <g3>विकल्प</g3> देखें)। उस अनुमति को वापस लेने के लिए इसे बंद कर दें। Chrome, Edge, Brave, Opera और Vivaldi अभी तक यह सुविधा नहीं देते हैं: अभी के लिए, MDM के <g4>विकल्प → प्रॉक्सी / SOCKS</g4> में वही प्रॉक्सी सेट करें।"
+   "text": "एक VPN या प्रॉक्सी एक्सटेंशन केवल ब्राउज़र के लिए एक प्रॉक्सी है। Firefox में, एक्सटेंशन के टूलबार पॉपअप में <g1>इस ब्राउज़र के प्रॉक्सी या VPN एक्सटेंशन के ज़रिए डाउनलोड भेजें</g1> चालू करें: Firefox आपसे एक बार एक्सटेंशन को ब्राउज़र का प्रॉक्सी पढ़ने की अनुमति देने के लिए कहेगा, और MDM फिर ब्राउज़र से जो कुछ भी लेता है उसे उसी प्रॉक्सी के माध्यम से डाउनलोड करेगा (जो <g2>विकल्प → प्रॉक्सी / SOCKS → ब्राउज़र के अनुरोध से प्रॉक्सी/SOCKS का उपयोग करें</g2> के साथ, डिफ़ॉल्ट रूप से चालू है; <g3>विकल्प</g3> देखें)। उस अनुमति को वापस लेने के लिए इसे बंद कर दें। Chrome, Edge, Brave, Opera और Vivaldi अभी तक यह सुविधा नहीं देते हैं: अभी के लिए, MDM के <g4>विकल्प → प्रॉक्सी / SOCKS</g4> में वही प्रॉक्सी सेट करें।"
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1578,6 +1582,10 @@
    "source": "The current speed.",
    "text": "वर्तमान गति।"
   },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "यदि आपके कंप्यूटर पर Direct3D, Vulkan या Metal शुरू नहीं हो सकता है (इसके लिए कोई ड्राइवर नहीं है, कुछ वर्चुअल मशीनें), या इसकी पहली विंडो 10 सेकंड के भीतर नहीं दिखती है, तो MDM OpenGL के साथ ड्रा करता है, और <g1>देखें → इसके साथ ड्रा करें</g1> ऐसा कहता है और क्यों। इसे फिर से चुनने से अगली बार शुरू होने पर यह फिर से कोशिश करता है।"
+  },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
    "text": "<g1>फ़ाइल जानकारी डाउनलोड करें</g1>, प्रगति विंडो और <g2>गुण</g2> दिखाते हैं कि डाउनलोड का सर्वर कहाँ है: उसके देश का झंडा और नाम, फिर वहाँ तक जाने-आने में लगने वाला समय, जैसे <g3>लगभग 24 ms (पास)</g3>।"
@@ -1902,6 +1910,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>देश</g1> MDM के साथ आने वाली पता श्रेणियों की एक तालिका से आता है (<g2>DB-IP द्वारा IP to Country Lite</g2>, CC BY 4.0), जिसे आपके कंप्यूटर पर देखा जाता है। MDM कभी भी पता कहीं नहीं भेजता है यह पूछने के लिए कि वह कहाँ है। तालिका हर रिलीज़ के साथ अपडेट की जाती है; एक पता जो तब से बदल गया है, वह अपना पुराना देश दिखा सकता है।"
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "पिछला अपडेट 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>ब्राउज़ करें</g1> — एक्सप्लोरर में उसका फ़ोल्डर खोलें।"
@@ -1948,7 +1960,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "प्रत्येक रंग और आकार जिसके साथ एक नियंत्रण खींचा जाता है, सक्रिय थीम (#45) से आता है: <x1/> अपनी भूमिकाओं (<x2/>, <x3/>…) को क्लासिक लुक के मानों के साथ घोषित करता है, साझा पेंटर (<x4/>, <x5/>, <x6/>, <x7/>) उन्हें <x8/> और <x9/> के माध्यम से पढ़ते हैं और उनसे प्रत्येक नियंत्रण की स्थिति तय करते हैं, और <x10/> थीम फ़ाइलों (डेटा फ़ोल्डर के <x11/> में TOML या JSON) को पढ़ता है जो उनमें से किसी को भी बदल देती हैं। जहाँ एक विंडो अपने नियंत्रण रखती है, वह उसका लेआउट रहता है। फ़ाइल नामों से पहले के आइकन भी (<x12/>): Windows शेल की सिस्टम इमेज सूचियाँ, macOS Finder की (NSWorkspace), Linux डेस्कटॉप की आइकन थीम (<x13/>, shared-mime-info और Icon Theme Specification)। प्रत्येक प्रकार को प्रति पिक्सेल आकार में एक बार, एक पृष्ठभूमि थ्रेड पर देखा जाता है। Tango के आइकन (बंडल किए गए) तब तक खड़े रहते हैं जब तक सिस्टम का आइकन तैयार नहीं हो जाता, और जहाँ सिस्टम में कोई नहीं होता।"
+   "text": "एक नियंत्रण जिस भी रंग और आकार से खींचा जाता है, वह सक्रिय थीम (#45) से आता है: <x1/> अपनी भूमिकाओं (<x2/>, <x3/>…) को क्लासिक लुक के मानों के साथ घोषित करता है, साझा पेंटर (<x4/>, <x5/>, <x6/>, <x7/>) उन्हें <x8/> और <x9/> के माध्यम से पढ़ते हैं और उनसे प्रत्येक नियंत्रण की स्थिति तय करते हैं, और <x10/> थीम फ़ाइलों (डेटा फ़ोल्डर के <x11/> में TOML या JSON) को पढ़ता है जो उनमें से किसी को भी बदल देती हैं। एक विंडो अपने नियंत्रणों को कहाँ रखती है, वह उसका लेआउट रहता है। फ़ाइल नामों से पहले के आइकन भी (<x12/>): Windows शेल की सिस्टम इमेज सूचियाँ, macOS फाइंडर की (NSWorkspace), Linux डेस्कटॉप की आइकन थीम (<x13/>, shared-mime-info और आइकन थीम स्पेसिफिकेशन)। प्रत्येक प्रकार को प्रति पिक्सेल आकार एक बार, एक पृष्ठभूमि थ्रेड पर देखा जाता है। टैंगो के आइकन (बंडल किए गए) तब तक रहते हैं जब तक सिस्टम का आइकन तैयार नहीं हो जाता, और जहाँ भी सिस्टम में कोई नहीं होता।"
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2256,7 +2268,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>ब्राउज़र के अनुरोध से प्रॉक्सी/SOCKS का उपयोग करें…</g1> — डिफ़ॉल्ट रूप से चालू। MDM ब्राउज़र से जो डाउनलोड लेता है, वह उसी प्रॉक्सी से होकर जाता है जिसका उपयोग ब्राउज़र ने उसके लिए किया था। यह वह प्रॉक्सी है जिसे VPN या प्रॉक्सी एक्सटेंशन ने सेट किया है, ब्राउज़र का अपना मैन्युअल प्रॉक्सी, या उसकी प्रॉक्सी ऑटो-कॉन्फ़िग स्क्रिप्ट। इसके बिना, डाउनलोड आपके अपने पते से शुरू होगा, और VPN के देश या उसके पते तक सीमित सामग्री विफल हो जाएगी। ब्राउज़र एक्सटेंशन उस प्रॉक्सी को पढ़ता है और प्रत्येक डाउनलोड के साथ MDM को सौंपता है, एक बार जब आप इसकी अनुमति देते हैं: Firefox में, एक्सटेंशन के टूलबार पॉपअप में <g2>इस ब्राउज़र के प्रॉक्सी या VPN एक्सटेंशन के ज़रिए डाउनलोड भेजें</g2> चालू करें (Firefox आपसे एक बार पूछता है)। Chrome, Edge, Brave, Opera और Vivaldi अभी तक प्रॉक्सी नहीं सौंपते हैं: वहाँ, <g3>विकल्प → प्रॉक्सी / SOCKS</g3> में वही प्रॉक्सी सेट करें।"
+   "text": "<g1>ब्राउज़र के अनुरोध से प्रॉक्सी/SOCKS का उपयोग करें…</g1> — डिफ़ॉल्ट रूप से चालू। MDM ब्राउज़र से जो डाउनलोड लेता है, वह उसी प्रॉक्सी से होकर जाता है जिसका उपयोग ब्राउज़र ने उसके लिए किया था। यह वह प्रॉक्सी है जिसे VPN या प्रॉक्सी एक्सटेंशन ने सेट किया है, ब्राउज़र का अपना मैनुअल प्रॉक्सी, या उसकी प्रॉक्सी ऑटो-कॉन्फ़िग स्क्रिप्ट। इसके बिना, डाउनलोड आपके अपने पते से शुरू होगा, और VPN के देश या उसके पते तक सीमित सामग्री विफल हो जाएगी। ब्राउज़र एक्सटेंशन उस प्रॉक्सी को पढ़ता है और प्रत्येक डाउनलोड के साथ MDM को सौंपता है, एक बार जब आप इसकी अनुमति देते हैं: Firefox में, एक्सटेंशन के टूलबार पॉपअप में <g2>इस ब्राउज़र के प्रॉक्सी या VPN एक्सटेंशन के ज़रिए डाउनलोड भेजें</g2> को चालू करें (Firefox आपसे एक बार पूछता है)। Chrome, Edge, Brave, Opera और Vivaldi अभी तक प्रॉक्सी नहीं सौंपते हैं: वहाँ, <g3>विकल्प → प्रॉक्सी / SOCKS</g3> में वही प्रॉक्सी सेट करें।"
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3321,6 +3333,10 @@
   "531dcc0b52cbdb34": {
    "source": "JSON for scripts and programs",
    "text": "स्क्रिप्ट और प्रोग्राम के लिए JSON"
+  },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "Windows पर, MDM अपनी विंडो को Direct3D 12 के साथ बनाता है; Linux और macOS पर, OpenGL के साथ, या जब आप Vulkan (Linux) या Metal (macOS) चुनते हैं तो उनके साथ। एक ग्राफ़िक्स ड्राइवर अभी भी गलत व्यवहार कर सकता है: एक विंडो जो सेकंडों तक स्थिर रहती है, झिलमिलाती है, या गलत रंग या ब्लॉक दिखाती है। दूसरा आज़माएँ: <g1>देखें → इसके साथ ड्रा करें → OpenGL</g1> (या <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>) चुनें, फिर MDM से बाहर निकलें (<g5>कार्य → बाहर निकलें</g5>) और इसे फिर से शुरू करें। पहला वाला चुनने से उसी तरह वापस आ जाता है।"
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -5612,7 +5628,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "इसकी अनुमतियाँ, और क्यों: डाउनलोड देखने और सौंपने के लिए <g1>downloads</g1>; MDM में साइन-इन किए गए डाउनलोड काम करें, इसके लिए <g2>cookies</g2>; MDM से बात करने के लिए <g3>nativeMessaging</g3>; राइट-क्लिक आइटम के लिए <g4>contextMenus</g4>; इसकी सेटिंग्स के लिए <g5>storage</g5>; सबमिट किए गए फ़ॉर्म और लोड किए गए वीडियो स्ट्रीम देखने के लिए <g6>webRequest</g6> (यह कुछ भी नहीं बदलता); ब्राउज़र जिन फ़ाइलों को खोलेगा (एक PDF) उन्हें MDM द्वारा लिए जाने वाले प्रकारों के लिए डाउनलोड करने के बजाय डाउनलोड करने के लिए <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge और अन्य Chromium ब्राउज़र); Firefox में, <g8>webRequestBlocking</g8> ऐसा करता है; जब आप पूछते हैं तो किसी पेज के लिंक पढ़ने के लिए <g9>scripting</g9>, और एक्सटेंशन इंस्टॉल होने पर पहले से खुले पेजों में वीडियो बटन जोड़ने के लिए; <g10>proxy</g10> (Firefox, वैकल्पिक: केवल तभी पूछा जाता है जब आप इसे पॉपअप में चालू करते हैं) यह पढ़ने के लिए कि ब्राउज़र किस प्रॉक्सी का उपयोग करता है, ताकि VPN या प्रॉक्सी एक्सटेंशन के पीछे के ब्राउज़र से लिए गए डाउनलोड भी उसके माध्यम से जाएँ (यह ब्राउज़र के प्रॉक्सी को कभी नहीं बदलता); सभी साइटों तक पहुँच क्योंकि डाउनलोड और वीडियो किसी भी साइट से आ सकते हैं।"
+   "text": "इसकी अनुमतियाँ, और क्यों: डाउनलोड देखने और सौंपने के लिए <g1>downloads</g1>; MDM में साइन-इन किए गए डाउनलोड काम करें, इसके लिए <g2>cookies</g2>; MDM से बात करने के लिए <g3>nativeMessaging</g3>; राइट-क्लिक आइटम के लिए <g4>contextMenus</g4>; इसकी सेटिंग्स के लिए <g5>storage</g5>; सबमिट किए गए फ़ॉर्म और लोड किए गए वीडियो स्ट्रीम देखने के लिए <g6>webRequest</g6> (यह कुछ भी नहीं बदलता); ब्राउज़र जिन फ़ाइलों को खोलेगा (एक PDF) उन्हें MDM द्वारा लिए गए प्रकारों के लिए डाउनलोड करने के बजाय <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge और अन्य Chromium ब्राउज़र); Firefox में, <g8>webRequestBlocking</g8> ऐसा करता है; जब आप पूछते हैं तो किसी पेज के लिंक पढ़ने के लिए <g9>scripting</g9>, और एक्सटेंशन इंस्टॉल होने पर पहले से खुले पेजों में वीडियो बटन जोड़ने के लिए; <g10>proxy</g10> (Firefox, वैकल्पिक: केवल तभी पूछा जाता है जब आप इसे पॉपअप में चालू करते हैं) यह पढ़ने के लिए कि ब्राउज़र किस प्रॉक्सी का उपयोग करता है, ताकि VPN या प्रॉक्सी एक्सटेंशन के पीछे के ब्राउज़र से लिए गए डाउनलोड भी उसके माध्यम से जाएं (यह ब्राउज़र के प्रॉक्सी को कभी नहीं बदलता); सभी साइटों तक पहुंच क्योंकि डाउनलोड और वीडियो किसी भी साइट से आ सकते हैं।"
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5970,6 +5986,10 @@
    "source": "Downloads",
    "text": "डाउनलोड"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "पिछली बार अपडेट किया गया 2026-11-07 · ऐप, ब्राउज़र एक्सटेंशन और misterdownloadmanager.com पर लागू होता है"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>विवरण या विवरण का भाग</g1> — आपके नोट्स।"
@@ -5980,7 +6000,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>समस्याओं को पकड़ना।</g1> जब MDM क्रैश होता है (Windows पर एक अपवाद, Linux पर एक सिग्नल, macOS पर एक Mach अपवाद), पैनिक करता है, या फ्रीज होता है, तो यह मॉनिटर से डंप मांगता है। फ्रीज का मतलब है कि विंडो का एक फ्रेम 8 सेकंड से अधिक समय तक चल रहा है, जिसे एक वॉचडॉग थ्रेड देखता है जो निष्क्रिय समय को अनदेखा करता है। यह एक फ्रेम के दोनों हिस्सों का समय मापता है: MDM क्या संभालता है (आने वाले कमांड, डाउनलोड की घड़ी, कतारें और शेड्यूलर), जो मिनिमाइज्ड होने पर भी चलता है, और ड्राइंग; फ्रेम के बीच के इंतजार को कभी नहीं। वॉचडॉग यह भी मापता है कि इस बीच विंडो थ्रेड को कितना प्रोसेसर समय मिला, और रिपोर्ट बताती है कि इसका क्या मतलब है: यह लगातार चला (एक लूप), यह एक लॉक में या I/O पर इंतजार कर रहा था (एक डेडलॉक), या यह सामान्य कोड में मुश्किल से चला, जिसका मतलब है कि कंप्यूटर MDM चलाने के लिए बहुत व्यस्त है या डिस्क से इसे लोड करने में धीमा है, सबसे अधिक संभावना MDM का बग नहीं है (वे एक ही हस्ताक्षर साझा करते हैं, <x2/>)। macOS अभी इसे नहीं मापता है। मॉनिटर फिर <x4/> और <x5/> के माध्यम से, बाहर से हर थ्रेड का एक <g3>मिनीडंप</g3> लिखता है। एक क्रैश हुई प्रक्रिया कभी भी अपना डंप नहीं लिखती है, जैसा कि Firefox, Crashpad और Sentry भी करते हैं।"
+   "text": "<g1>समस्याओं को पकड़ना।</g1> जब MDM क्रैश होता है (Windows पर एक अपवाद, Linux पर एक सिग्नल, macOS पर एक Mach अपवाद), पैनिक होता है, या फ्रीज़ होता है, तो यह मॉनिटर से डंप मांगता है। फ्रीज़ का मतलब है कि विंडो का एक फ्रेम 8 सेकंड से अधिक समय तक चल रहा है, जिसे एक वॉचडॉग थ्रेड देखता है जो स्लीप में बिताए गए समय को अनदेखा करता है। यह एक फ्रेम के दोनों हिस्सों का समय मापता है: MDM क्या संभालता है (आने वाले कमांड, डाउनलोड की घड़ी, कतारें और शेड्यूलर), जो मिनिमाइज्ड होने पर भी चलता है, और ड्राइंग; फ्रेम के बीच के इंतजार को कभी नहीं। वॉचडॉग यह भी मापता है कि इस बीच विंडो थ्रेड को कितना प्रोसेसर समय मिला, और रिपोर्ट बताती है कि इसका क्या मतलब है: यह लगातार चलता रहा (एक लूप), यह एक लॉक में या I/O पर इंतजार कर रहा था (एक डेडलॉक), या यह सामान्य कोड में मुश्किल से चला, जिसका मतलब है कि कंप्यूटर MDM चलाने के लिए बहुत व्यस्त है या डिस्क से इसे लोड करने में धीमा है, सबसे अधिक संभावना MDM का बग नहीं है (वे एक ही सिग्नेचर साझा करते हैं, <x2/>)। macOS अभी इसे नहीं मापता है। मॉनिटर फिर <x4/> और <x5/> के माध्यम से, बाहर से हर थ्रेड का एक <g3>मिनीडंप</g3> लिखता है। एक क्रैश हुई प्रक्रिया कभी भी अपना डंप नहीं लिखती है, जैसा कि Firefox, Crashpad और Sentry भी करते हैं।"
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6376,7 +6396,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "एक egui विंडो निश्चित पिक्सेल निर्देशांक पर पेंट की गई है, साथ ही प्रति संवाद एक तत्काल व्यूपोर्ट। <x1/> स्थिति (डाउनलोड, कतारें, सेटिंग्स, सूची का चयन) रखता है और मेनू, टूलबार, कुंजी और IPC कमांड को क्रियाओं में बदलता है। प्रत्येक संवाद अपना मॉड्यूल है और एक <x2/> (खुला, बंद, एक मान के साथ किया गया) लौटाता है। केवल Windows-कॉल <x3/> तक सीमित हैं और उनके Linux और macOS समकक्ष <x4/> तक (सत्र से शुरू होकर, ब्राउज़र का होस्ट, ध्वनियाँ, फ़ोल्डर में दिखाएँ, क्रैश हैंडलर); हर दूसरी फ़ाइल सुरक्षित, पोर्टेबल Rust है। फ़ॉन्ट सिस्टम से आते हैं: Windows का फ़ॉन्ट फ़ोल्डर, macOS के सिस्टम फ़ॉन्ट, Linux पर fontconfig (<x5/>)।"
+   "text": "एक egui विंडो जो निश्चित पिक्सेल निर्देशांक पर चित्रित है, साथ ही प्रत्येक डायलॉग के लिए एक तात्कालिक व्यूपोर्ट। <x1/> स्थिति (डाउनलोड, कतारें, सेटिंग्स, सूची का चयन) रखता है और मेनू, टूलबार, कुंजी और IPC कमांड को क्रियाओं में बदलता है। प्रत्येक डायलॉग अपना मॉड्यूल है और एक <x2/> (खुला, बंद, एक मान के साथ पूरा) लौटाता है। केवल Windows-विशिष्ट कॉल <x3/> तक सीमित हैं और उनके Linux और macOS समकक्ष <x4/> तक सीमित हैं (सत्र से शुरू होकर, ब्राउज़र का होस्ट, ध्वनियाँ, फ़ोल्डर में दिखाएँ, क्रैश हैंडलर); हर दूसरी फ़ाइल सुरक्षित, पोर्टेबल Rust है। फ़ॉन्ट सिस्टम से आते हैं: Windows का फ़ॉन्ट फ़ोल्डर, macOS के सिस्टम फ़ॉन्ट, Linux पर fontconfig (<x5/>)।"
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -7186,6 +7206,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Manager में IDM उपयोगकर्ताओं को परिचित लेआउट मिलता है, आपकी IDM सूची को इसमें लाया जा सकता है, और यह मुफ्त है: मुफ्त और ओपन-सोर्स, बिना किसी ट्रायल, विज्ञापन या साइन-अप के। इसके नीचे, IDM के बजाय लोग जिन नौ अन्य मुफ्त डाउनलोड मैनेजर का उपयोग करते हैं, उनकी ईमानदारी से तुलना की गई है।"
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "Linux पर, Vulkan को आपके ग्राफ़िक्स कार्ड के Vulkan ड्राइवर की आवश्यकता होती है: AMD और Intel के लिए Mesa का (<x1/> Ubuntu और Debian पर, <x2/> या <x3/> Arch पर), NVIDIA के लिए NVIDIA का अपना ड्राइवर।"
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage को AppImage टूल्स (AppImageLauncher, Gear Lever, AppImageUpdate) द्वारा भी अपडेट किया जा सकता है: इसमें अपने अपडेट का पता होता है, और हर रिलीज़ में उसकी <x1/> फ़ाइल होती है, इसलिए वे टूल्स केवल बदले हुए हिस्सों को डाउनलोड करते हैं। यह 0.2.4 के बाद वाले वर्ज़न के AppImage से शुरू होता है।"
@@ -7678,6 +7702,10 @@
    "source": "torrents on Windows;",
    "text": "Windows पर टोरेंट;"
   },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "यदि कोई भी शुरू नहीं हो सकता है, तो MDM एक सॉफ़्टवेयर रेंडरर (Windows पर Microsoft का, Linux पर Mesa का) के साथ ड्रा करता है, इसलिए विंडो अभी भी खुलती है (रिमोट डेस्कटॉप, ग्राफ़िक्स ड्राइवर के बिना एक वर्चुअल मशीन)। यह काम करता है, लेकिन प्रोसेसर को अधिक व्यस्त रखता है।"
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8052,7 +8080,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>इसका परीक्षण करना।</g1> <x2/> एक वास्तविक फ्रीज, पैनिक और क्रैश (<x3/>) चलाता है और प्रत्येक रिपोर्ट के हस्ताक्षर की जांच करता है। ऐप में इसे आज़माने के लिए, MDM को <x4/> के साथ शुरू करें, फिर <x5/> (एक डेडलॉक; या <x6/>, एक व्यस्त विंडो थ्रेड के 12 सेकंड, <x7/>, <x8/>, <x9/>) चलाएं। <x10/> ऐप की एक कॉपी में, स्क्रीन से दूर, उसकी विंडो दिखाई देने वाली और मिनिमाइज्ड होने पर ऐसा करता है।"
+   "text": "<g1>इसका परीक्षण करना।</g1> <x2/> एक वास्तविक फ्रीज, पैनिक और क्रैश (<x3/>) चलाता है और प्रत्येक रिपोर्ट के सिग्नेचर की जांच करता है। ऐप में इसे आज़माने के लिए, MDM को <x4/> के साथ शुरू करें, फिर <x5/> (एक डेडलॉक; या <x6/>, एक व्यस्त विंडो थ्रेड के 12 सेकंड, <x7/>, <x8/>, <x9/>) चलाएं। <x10/> ऐप की एक कॉपी में, स्क्रीन से दूर, उसकी विंडो दिखाई देने वाली और मिनिमाइज की हुई स्थिति में ऐसा करता है।"
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8068,7 +8096,7 @@
   },
   "cda67136f4731916": {
    "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too.",
-   "text": "प्रत्येक का एक हल्का और एक गहरा पक्ष होता है: <g1>डार्क मोड समर्थन</g1> और <g2>हमेशा गहरा</g2> पहले की तरह उनके बीच चयन करते हैं। थीम फ़ोल्डर में आपके द्वारा डाली गई थीम फ़ाइलें (<g3>देखें → थीम → थीम फ़ोल्डर खोलें</g3>) भी वहाँ सूचीबद्ध होती हैं।"
+   "text": "प्रत्येक का एक हल्का और एक गहरा पक्ष होता है: <g1>डार्क मोड समर्थन</g1> और <g2>हमेशा गहरा</g2> पहले की तरह उनके बीच चयन करते हैं। थीम फ़ाइलें जिन्हें आप थीम फ़ोल्डर में रखते हैं (<g3>देखें → थीम → थीम फ़ोल्डर खोलें</g3>) वे भी वहाँ सूचीबद्ध होती हैं।"
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -8772,7 +8800,7 @@
   },
   "e04f69d547a21d71": {
    "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
-   "text": "<g1>नेटिव</g1>: आपके सिस्टम के रंग। Windows का एक्सेंट रंग (सेटिंग्स → वैयक्तिकरण → रंग) और, जब यह चालू हो, तो उसकी कंट्रास्ट थीम; Linux पर डेस्कटॉप का एक्सेंट रंग और उसकी उच्च कंट्रास्ट सेटिंग (GNOME 47 और बाद के संस्करण, KDE Plasma); macOS पर एक्सेंट रंग। जब आप उन्हें बदलते हैं तो यह उनका अनुसरण करता है।"
+   "text": "<g1>नेटिव</g1>: आपके सिस्टम के रंग। Windows का एक्सेंट रंग (सेटिंग्स → पर्सनलाइज़ेशन → रंग) और, जब यह चालू हो, तो उसकी कंट्रास्ट थीम; Linux पर डेस्कटॉप का एक्सेंट रंग और उसकी उच्च कंट्रास्ट सेटिंग (GNOME 47 और बाद के संस्करण, KDE Plasma); macOS पर एक्सेंट रंग। जब आप उन्हें बदलते हैं तो यह उनका अनुसरण करता है।"
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -9766,6 +9794,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "<g1>इसमें सहेजें</g1> और <g2>फ़ाइल का नाम</g2> जाँचें। नाम वीडियो के शीर्षक से आता है; यदि आप चाहें तो इसे बदल दें।"
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>मेट्रो</g1>: Windows 8 का सपाट स्वरूप: चौकोर कोने, सपाट बटन और बॉक्स, एक रंगीन शीर्षक बार जिसमें शीर्षक केंद्रित होता है (Windows पर, जहाँ MDM इसे खींचता है), और एक-रंग के आइकन (Microsoft के Fluent UI System Icons)।"
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "IDM अभी भी क्या करता है जो MDM नहीं करता"
@@ -9797,6 +9829,10 @@
   "fb1900915c99672a": {
    "source": "After a cut connection",
    "text": "कनेक्शन कटने के बाद"
+  },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "विंडोज़ को OpenGL (eframe का glow) या eframe के wgpu के माध्यम से सिस्टम के अपने ग्राफ़िक्स API के साथ, केवल एक ही बैकएंड के साथ ड्रा किया जाता है: Windows पर Direct3D 12 (वहाँ डिफ़ॉल्ट), Linux पर Vulkan, macOS पर Metal (वहाँ विकल्प; OpenGL उनका डिफ़ॉल्ट रहता है)। देखें → इसके साथ ड्रा करें एक को चुनता है। एक कोड पाथ इसे हर सिस्टम पर करता है (<x1/>): जब चुना गया एक शुरू नहीं हो पाता है, तो दूसरे को आज़माया जाता है, ताकि विंडोज़ हमेशा खुलें; एक शुरुआत जिसका पहला फ्रेम नहीं आता है, या एक ग्राफ़िक्स कार्ड दो बार खो जाता है, उसे उसके कारण के साथ याद रखा जाता है, जिसे मेनू दिखाता है।"
   },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",

@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "In Firefox, wanneer u <g1>Downloads verzenden via de proxy- of VPN-extensie van deze browser</g1> inschakelt in de pop-up (Firefox vraagt u eerst), en de browser een proxy gebruikt voor een download (ingesteld door een VPN- of proxy-extensie, of in de instellingen), geeft de extensie <g2>het adres van de proxy</g2> of het <g3>proxy auto-config script</g3> door, zodat MDM via dezelfde proxy downloadt. Het leest of geeft nooit de inloggegevens van de proxy door. Het merkt alleen op dat een proxy erom vroeg, zodat MDM u kan vertellen dat het die proxy niet kan gebruiken. Uitgeschakeld (zoals geïnstalleerd) leest het niets van de proxy van de browser. De extensie voor Chrome en de andere Chromium-browsers doet dit nog niet."
+   "text": "In Firefox, zodra u <g1>Downloads verzenden via de proxy- of VPN-extensie van deze browser</g1> inschakelt in de pop-up (Firefox vraagt u dit eerst), en de browser een proxy gebruikt voor een download (ingesteld door een VPN- of proxy-extensie, of in de instellingen), geeft de extensie <g2>het adres van de proxy</g2> of het <g3>proxy auto-config script</g3> door, zodat MDM via dezelfde proxy downloadt. Het leest of geeft nooit de inloggegevens van de proxy door. Het merkt alleen op dat een proxy erom vroeg, zodat MDM u kan vertellen dat het die proxy niet kan gebruiken. Uitgeschakeld (zoals geïnstalleerd) leest het niets van de proxy van de browser. De extensie voor Chrome en de andere Chromium-browsers doet dit nog niet."
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -366,6 +366,10 @@
    "source": "Right-click a category for:",
    "text": "Klik met de rechtermuisknop op een categorie voor:"
   },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>Beeld</g1> — toont of verbergt de categorieën, sorteert de lijst (<g2>Bestanden rangschikken</g2>), <g3>Ondersteuning voor donkere modus</g3>, <g4>Altijd donker</g4>, <g5>Thema</g5>, <g6>Tekenen met</g6> (OpenGL, of Direct3D op Windows, Vulkan op Linux, Metal op macOS) en <g7>Taal</g7>."
+  },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "Nee, tenzij u dat wilt. Terwijl een torrent downloadt, wisselt het stukjes uit met andere mensen, zoals elke torrentclient doet. Wanneer het voltooid is, stopt het, zoals elke…"
@@ -608,7 +612,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "Een VPN- of proxy-extensie is alleen een proxy voor de browser. Schakel in Firefox <g1>Downloads verzenden via de proxy- of VPN-extensie van deze browser</g1> in de werkbalkpop-up van de extensie in: Firefox vraagt u eenmalig om de extensie toe te staan de proxy van de browser te lezen, en MDM downloadt vervolgens wat het van de browser haalt via dezelfde proxy (met <g2>Opties → Proxy/Socks → Proxy/Socks van een browserverzoek gebruiken</g2>, standaard ingeschakeld; zie <g3>Opties</g3>). Schakel het uit om die toestemming in te trekken. Chrome, Edge, Brave, Opera en Vivaldi bieden dit nog niet: stel voorlopig dezelfde proxy in via MDM's <g4>Opties → Proxy/Socks</g4>."
+   "text": "Een VPN- of proxy-extensie is alleen een proxy voor de browser. Schakel in Firefox <g1>Downloads verzenden via de proxy- of VPN-extensie van deze browser</g1> in de werkbalkpop-up van de extensie in: Firefox vraagt u eenmalig om de extensie toe te staan de proxy van de browser te lezen, en MDM downloadt vervolgens wat het van de browser haalt via dezelfde proxy (met <g2>Opties → Proxy/Socks → Proxy/Socks gebruiken van een browserverzoek</g2>, standaard ingeschakeld; zie <g3>Opties</g3>). Schakel het uit om die toestemming in te trekken. Chrome, Edge, Brave, Opera en Vivaldi bieden dit nog niet: stel voorlopig dezelfde proxy in via MDM's <g4>Opties → Proxy/Socks</g4>."
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1578,6 +1582,10 @@
    "source": "The current speed.",
    "text": "De huidige snelheid."
   },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Als Direct3D, Vulkan of Metal niet kan starten op uw computer (geen stuurprogramma ervoor, sommige virtuele machines), of het eerste venster verschijnt niet binnen 10 seconden, dan tekent MDM met OpenGL, en <g1>Beeld → Tekenen met</g1> vermeldt dit en de reden. Als u het opnieuw kiest, wordt het bij de volgende start opnieuw geprobeerd."
+  },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
    "text": "<g1>Bestandsinfo downloaden</g1>, het voortgangsvenster en <g2>Eigenschappen</g2> tonen waar de server van een download staat: de vlag en naam van het land, en dan de tijd die een retourtje ernaartoe kost, zoals <g3>ongeveer 24 ms (dichtbij)</g3>."
@@ -1902,6 +1910,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Het land</g1> komt uit een tabel met adresbereiken die bij MDM wordt geleverd (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), opgezocht op uw computer. MDM stuurt het adres nooit ergens naartoe om te vragen waar het is. De tabel wordt bij elke release bijgewerkt; een adres dat sindsdien is verplaatst, kan het oude land tonen."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Laatst bijgewerkt op 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Bladeren</g1> — open de map in Verkenner."
@@ -1948,7 +1960,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "Elke kleur en grootte waarmee een besturingselement wordt getekend, komt van het actieve thema (#45): <x1/> declareert zijn rollen (<x2/>, <x3/>…) met de waarden van de klassieke look, de gedeelde painters (<x4/>, <x5/>, <x6/>, <x7/>) lezen deze via <x8/> en <x9/> en bepalen daaruit de statussen van elk besturingselement, en <x10/> leest themabestanden (TOML of JSON in de map <x11/> van de datafolder) die een van deze wijzigen. Waar een venster zijn besturingselementen plaatst, blijft de lay-out. Zo ook de pictogrammen vóór bestandsnamen (<x12/>): de systeemafbeeldingslijsten van de Windows-shell, die van macOS Finder (NSWorkspace), het pictogramthema van de Linux-desktop (<x13/>, shared-mime-info en de Icon Theme Specification). Elk type wordt één keer per pixelgrootte opgezocht, op een achtergrondthread. De pictogrammen van Tango (meegeleverd) worden gebruikt totdat het systeempictogram gereed is, en overal waar het systeem er geen heeft."
+   "text": "Elke kleur en grootte waarmee een besturingselement wordt getekend, komt van het actieve thema (#45): <x1/> declareert zijn rollen (<x2/>, <x3/>…) met de waarden van de klassieke look, de gedeelde tekenaars (<x4/>, <x5/>, <x6/>, <x7/>) lezen deze via <x8/> en <x9/> en bepalen daaruit de statussen van elk besturingselement, en <x10/> leest themabestanden (TOML of JSON in de <x11/> van de datafolder) die een van deze wijzigen. Waar een venster zijn besturingselementen plaatst, blijft de lay-out. Zo ook de pictogrammen vóór bestandsnamen (<x12/>): de systeemafbeeldingslijsten van de Windows-shell, die van macOS Finder (NSWorkspace), het pictogramthema van de Linux-desktop (<x13/>, shared-mime-info en de Icon Theme Specification). Elk type wordt één keer per pixelgrootte opgezocht, op een achtergrondthread. Tango's pictogrammen (meegeleverd) dienen als tijdelijke oplossing totdat het systeempictogram gereed is, en overal waar het systeem er geen heeft."
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2256,7 +2268,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>Proxy/Socks van een browserverzoek gebruiken…</g1> — standaard ingeschakeld. Een download die MDM van de browser overneemt, gaat via de proxy die de browser ervoor gebruikte. Dat is degene die een VPN- of proxy-extensie heeft ingesteld, de handmatige proxy van de browser zelf, of het proxy auto-config script. Zonder dit zou de download vanaf uw eigen adres vertrekken, en inhoud die beperkt is tot het land van de VPN, of tot het adres ervan, zou mislukken. De browserextensie leest die proxy en geeft deze bij elke download door aan MDM, zodra u dit toestaat: schakel in Firefox <g2>Downloads verzenden via de proxy- of VPN-extensie van deze browser</g2> in via de werkbalkpop-up van de extensie (Firefox vraagt u dit eenmalig). Chrome, Edge, Brave, Opera en Vivaldi geven de proxy nog niet door: stel daar dezelfde proxy in via <g3>Opties → Proxy/Socks</g3>."
+   "text": "<g1>Proxy/Socks van een browserverzoek gebruiken…</g1> — standaard ingeschakeld. Een download die MDM van de browser overneemt, gaat via de proxy die de browser ervoor gebruikte. Dat is degene die een VPN- of proxy-extensie heeft ingesteld, de handmatige proxy van de browser zelf, of het proxy auto-config script. Zonder dit zou de download vanaf uw eigen adres vertrekken, en inhoud die beperkt is tot het land van de VPN, of tot het adres ervan, zou mislukken. De browserextensie leest die proxy en geeft deze door aan MDM bij elke download, zodra u dit toestaat: schakel in Firefox <g2>Downloads verzenden via de proxy- of VPN-extensie van deze browser</g2> in via de werkbalkpop-up van de extensie (Firefox vraagt u dit eenmalig). Chrome, Edge, Brave, Opera en Vivaldi geven de proxy nog niet door: stel daar dezelfde proxy in via <g3>Opties → Proxy/Socks</g3>."
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3321,6 +3333,10 @@
   "531dcc0b52cbdb34": {
    "source": "JSON for scripts and programs",
    "text": "JSON voor scripts en programma's"
+  },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "Op Windows tekent MDM zijn vensters met Direct3D 12; op Linux en macOS met OpenGL, of met Vulkan (Linux) of Metal (macOS) als u die kiest. Een grafisch stuurprogramma kan nog steeds problemen geven: een venster dat secondenlang stilstaat, flikkert, of verkeerde kleuren of blokken toont. Probeer de andere: kies <g1>Beeld → Tekenen met → OpenGL</g1> (of <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), sluit MDM dan af (<g5>Taken → Afsluiten</g5>) en start het opnieuw. De eerste kiezen gaat op dezelfde manier terug."
   },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
@@ -5612,7 +5628,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "De machtigingen en waarom: <g1>downloads</g1> om downloads te zien en over te dragen; <g2>cookies</g2> zodat downloads van ingelogde gebruikers werken in MDM; <g3>nativeMessaging</g3> om met MDM te communiceren; <g4>contextMenus</g4> voor de rechtermuisklik-items; <g5>storage</g5> voor de instellingen; <g6>webRequest</g6> om ingediende formulieren en geladen videostreams te zien (het verandert niets); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge en andere Chromium-browsers) om bestanden die de browser zou openen (een PDF) in plaats daarvan te laten downloaden, voor de typen die MDM accepteert; in Firefox doet <g8>webRequestBlocking</g8> dat; <g9>scripting</g9> om de links van een pagina te lezen wanneer u daarom vraagt, en om de videoknop toe te voegen aan pagina's die al open zijn wanneer de extensie wordt geïnstalleerd; <g10>proxy</g10> (Firefox, optioneel: wordt alleen gevraagd wanneer u het inschakelt in de pop-up) om te lezen welke proxy de browser gebruikt, zodat downloads die van een browser achter een VPN- of proxy-extensie komen, er ook doorheen gaan (het verandert nooit de proxy van de browser); toegang tot alle sites omdat downloads en video's van elke site kunnen komen."
+   "text": "De machtigingen en waarom: <g1>downloads</g1> om downloads te zien en over te dragen; <g2>cookies</g2> zodat ingelogde downloads werken in MDM; <g3>nativeMessaging</g3> om met MDM te communiceren; <g4>contextMenus</g4> voor de rechtermuisknopopties; <g5>storage</g5> voor de instellingen; <g6>webRequest</g6> om ingediende formulieren en geladen videostreams te zien (het verandert niets); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge en andere Chromium-browsers) om de bestanden die de browser zou openen (een PDF) in plaats daarvan te laten downloaden, voor de typen die MDM ondersteunt; in Firefox doet <g8>webRequestBlocking</g8> dit; <g9>scripting</g9> om de links van een pagina te lezen wanneer u daarom vraagt, en om de videoknop toe te voegen aan reeds geopende pagina's wanneer de extensie is geïnstalleerd; <g10>proxy</g10> (Firefox, optioneel: wordt alleen gevraagd wanneer u het inschakelt in de pop-up) om te lezen welke proxy de browser gebruikt, zodat downloads die via een browser achter een VPN- of proxy-extensie worden gestart, er ook doorheen gaan (het verandert nooit de proxy van de browser); toegang tot alle sites omdat downloads en video's van elke site kunnen komen."
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5970,6 +5986,10 @@
    "source": "Downloads",
    "text": "Downloads"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Laatst bijgewerkt op 2026-11-07 · geldt voor de app, de browserextensie en misterdownloadmanager.com"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>Beschrijving of deel van de beschrijving</g1> — uw notities."
@@ -5980,7 +6000,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Problemen opsporen.</g1> Wanneer MDM crasht (een Windows-uitzondering, een signaal op Linux, een Mach-uitzondering op macOS), panikeert of vastloopt, vraagt het de monitor om een dump. Een vastloper is een vensterframe dat langer dan 8 seconden draait, gezien door een watchdog-thread die de slaaptijd negeert. Het meet beide delen van een frame: wat MDM afhandelt (de binnenkomende commando's, de klok van downloads, wachtrijen en de Planner), wat ook geminimaliseerd draait, en het tekenen; nooit de wachttijd tussen frames. De watchdog meet ook hoeveel processortijd de vensterthread ondertussen heeft gekregen, en het rapport zegt wat dat betekent: het draaide de hele tijd (een lus), het wachtte in een lock of op I/O (een deadlock), of het draaide nauwelijks in gewone code, wat betekent dat een computer te druk is om MDM uit te voeren of te traag is om het van schijf te laden, hoogstwaarschijnlijk geen bug van MDM (deze delen één signatuur, <x2/>). macOS meet dit nog niet. De monitor schrijft dan een <g3>minidump</g3> van elke thread van buitenaf, via <x4/> en <x5/>. Een gecrasht proces schrijft nooit zijn eigen dump, wat ook de manier is waarop Firefox, Crashpad en Sentry het doen."
+   "text": "<g1>Problemen opsporen.</g1> Wanneer MDM crasht (een Windows-uitzondering, een signaal op Linux, een Mach-uitzondering op macOS), panikeert of vastloopt, vraagt het de monitor om een dump. Een vastloper is een vensterframe dat langer dan 8 seconden draait, waargenomen door een watchdog-thread die de tijd die in slaapstand wordt doorgebracht negeert. Het meet beide delen van een frame: wat MDM afhandelt (de binnenkomende commando's, de klok van downloads, wachtrijen en de Planner), wat ook geminimaliseerd draait, en het tekenen; nooit de wachttijd tussen frames. De watchdog meet ook hoeveel processortijd de vensterthread ondertussen heeft gekregen, en het rapport zegt wat dat betekent: het draaide de hele tijd (een lus), het wachtte in een lock of op I/O (een deadlock), of het draaide nauwelijks in gewone code, wat betekent dat een computer te druk is om MDM uit te voeren of te traag om het van schijf te laden, waarschijnlijk geen bug van MDM (deze delen één handtekening, <x2/>). macOS meet dit nog niet. De monitor schrijft dan een <g3>minidump</g3> van elke thread van buitenaf, via <x4/> en <x5/>. Een gecrasht proces schrijft nooit zijn eigen dump, wat ook de manier is waarop Firefox, Crashpad en Sentry het doen."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6376,7 +6396,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "Eén egui-venster wordt op vaste pixelcoördinaten getekend, plus één directe viewport per dialoogvenster. <x1/> beheert de status (downloads, wachtrijen, instellingen, de selectie van de lijst) en zet menu-, werkbalk-, toets- en IPC-opdrachten om in acties. Elk dialoogvenster is een eigen module en retourneert een <x2/> (open, gesloten, voltooid met een waarde). Windows-specifieke aanroepen zijn beperkt tot <x3/> en hun Linux- en macOS-tegenhangers tot <x4/> (beginnend met de sessie, de browserhost, geluiden, tonen in map, de crashhandler); elk ander bestand is veilige, draagbare Rust. Lettertypen komen van het systeem: de map Fonts van Windows, de systeemlettertypen van macOS, fontconfig op Linux (<x5/>)."
+   "text": "Eén egui-venster getekend op vaste pixelcoördinaten, plus één directe viewport per dialoogvenster. <x1/> beheert de status (downloads, wachtrijen, instellingen, de selectie van de lijst) en zet menu-, werkbalk-, toets- en IPC-opdrachten om in acties. Elk dialoogvenster is een eigen module en retourneert een <x2/> (open, gesloten, voltooid met een waarde). Windows-specifieke aanroepen zijn beperkt tot <x3/> en hun Linux- en macOS-tegenhangers tot <x4/> (beginnend met de sessie, de host van de browsers, geluiden, tonen in map, de crashhandler); elk ander bestand is veilige, draagbare Rust. Lettertypen komen van het systeem: de map Lettertypen van Windows, de systeemlettertypen van macOS, fontconfig op Linux (<x5/>)."
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6656,7 +6676,7 @@
   },
   "a796d15297b81a60": {
    "source": "<g1>High contrast</g1>: black and white, a bright accent, every edge drawn, text at 7:1 or more.",
-   "text": "<g1>Hoog contrast</g1>: zwart-wit, een helder accent, elke rand getekend, tekst met een verhouding van 7:1 of meer."
+   "text": "<g1>Hoog contrast</g1>: zwart-wit, een helder accent, elke rand getekend, tekst met een contrastverhouding van 7:1 of meer."
   },
   "a7a3f7c6b7a38022": {
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
@@ -7186,6 +7206,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Manager behoudt de lay-out die IDM-gebruikers kennen, neemt uw IDM-lijst over en kost niets: gratis en open source, zonder proefversie, advertenties of aanmelding. Hieronder worden negen andere gratis downloadmanagers, die mensen gebruiken in plaats van IDM, eerlijk vergeleken."
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "Op Linux heeft Vulkan het Vulkan-stuurprogramma van uw grafische kaart nodig: Mesa's (<x1/> op Ubuntu en Debian, <x2/> of <x3/> op Arch) voor AMD en Intel, NVIDIA's eigen stuurprogramma voor NVIDIA."
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "De AppImage kan ook worden bijgewerkt met AppImage-tools (AppImageLauncher, Gear Lever, AppImageUpdate): het bevat het adres van zijn updates, en elke release heeft zijn <x1/> bestand, dus die tools downloaden alleen de onderdelen die zijn gewijzigd. Dit begint met de AppImage van de versie na 0.2.4."
@@ -7678,6 +7702,10 @@
    "source": "torrents on Windows;",
    "text": "torrents op Windows;"
   },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Als geen van beide kan starten, tekent MDM met een software-renderer (Microsoft's op Windows, Mesa's op Linux), zodat het venster toch opent (Remote Desktop, een virtuele machine zonder grafisch stuurprogramma). Het werkt, maar houdt de processor drukker bezig."
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8052,7 +8080,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>Testen.</g1> <x2/> simuleert een echte vastloper, paniek en crash (<x3/>) en controleert de signatuur van elk rapport. Om het in de app te proberen, start MDM met <x4/> en voer vervolgens <x5/> uit (een deadlock; of <x6/>, 12 seconden van een drukke vensterthread, <x7/>, <x8/>, <x9/>). <x10/> doet dat in een kopie van de app buiten beeld, met het venster zichtbaar en geminimaliseerd."
+   "text": "<g1>Testen.</g1> <x2/> voert een echte vastloper, paniek en crash (<x3/>) uit en controleert de handtekening van elk rapport. Om het in de app te proberen, start u MDM met <x4/> en voert u vervolgens <x5/> uit (een deadlock; of <x6/>, 12 seconden van een drukke vensterthread, <x7/>, <x8/>, <x9/>). <x10/> doet dat in een kopie van de app buiten beeld, met het venster zichtbaar en geminimaliseerd."
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8288,7 +8316,7 @@
   },
   "d351cad9276045ed": {
    "source": "<g1>Classic</g1>: MDM's own look, the default.",
-   "text": "<g1>Klassiek</g1>: MDM's eigen uiterlijk, de standaardinstelling."
+   "text": "<g1>Klassiek</g1>: MDM's eigen uiterlijk, de standaard."
   },
   "d354d0b6bb0bfffe": {
    "source": "Subtitles",
@@ -9766,6 +9794,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "Controleer <g1>Opslaan in</g1> en <g2>Bestandsnaam</g2>. De naam komt van de videotitel; wijzig deze als u wilt."
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>Metro</g1>: de platte look van Windows 8: vierkante hoeken, platte knoppen en vakken, een gekleurde titelbalk met de titel gecentreerd (op Windows, waar MDM deze tekent), en eenkleurige pictogrammen (Microsoft's Fluent UI System Icons)."
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "Wat IDM nog wel kan en MDM niet"
@@ -9797,6 +9829,10 @@
   "fb1900915c99672a": {
    "source": "After a cut connection",
    "text": "Na een verbroken verbinding"
+  },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "De vensters worden getekend met OpenGL (eframe's glow) of met de eigen grafische API van het systeem via eframe's wgpu, met slechts één backend: Direct3D 12 op Windows (de standaard daar), Vulkan op Linux, Metal op macOS (keuzes daar; OpenGL blijft hun standaard). Beeld → Tekenen met kiest er één. Eén codepad doet het op elk systeem (<x1/>): wanneer de gekozen niet kan starten, wordt de andere geprobeerd, zodat de vensters altijd openen; een start waarvan het eerste frame niet komt, of een grafische kaart die twee keer verloren is gegaan, wordt onthouden met de reden, die het menu toont."
   },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",

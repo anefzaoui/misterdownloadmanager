@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "Di Firefox, setelah Anda mengaktifkan <g1>Kirim unduhan melalui proxy atau ekstensi VPN browser ini</g1> di pop-up-nya (Firefox akan bertanya terlebih dahulu), ketika browser menggunakan proxy untuk unduhan (diatur oleh ekstensi VPN atau proxy, atau di pengaturannya), ekstensi akan meneruskan <g2>alamat proxy</g2>, atau <g3>skrip konfigurasi otomatis proxy</g3>, sehingga MDM mengunduh melalui proxy yang sama. Ekstensi tidak pernah membaca atau meneruskan login proxy. Ekstensi hanya mencatat bahwa proxy meminta satu, sehingga MDM dapat memberi tahu Anda bahwa ia tidak dapat menggunakan proxy tersebut. Jika dimatikan (seperti saat diinstal), ekstensi tidak membaca apa pun dari proxy browser. Ekstensi untuk Chrome dan browser Chromium lainnya belum melakukan ini."
+   "text": "Di Firefox, setelah Anda mengaktifkan <g1>Kirim unduhan melalui proxy atau ekstensi VPN browser ini</g1> di pop-up-nya (Firefox akan bertanya terlebih dahulu), ketika browser menggunakan proxy untuk unduhan (diatur oleh VPN atau ekstensi proxy, atau di pengaturannya), ekstensi akan meneruskan <g2>alamat proxy</g2>, atau <g3>skrip konfigurasi otomatis proxy</g3>-nya, sehingga MDM mengunduh melalui proxy yang sama. Ekstensi ini tidak pernah membaca atau meneruskan login proxy. Ekstensi ini hanya mencatat bahwa proxy meminta satu, sehingga MDM dapat memberi tahu Anda bahwa ia tidak dapat menggunakan proxy tersebut. Saat dinonaktifkan (seperti saat diinstal), ekstensi ini tidak membaca apa pun dari proxy browser. Ekstensi untuk Chrome dan browser Chromium lainnya belum melakukan ini."
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -366,6 +366,10 @@
    "source": "Right-click a category for:",
    "text": "Klik kanan kategori untuk:"
   },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>Tampilan</g1> — menampilkan atau menyembunyikan kategori, mengurutkan daftar (<g2>Atur file</g2>), <g3>Dukungan Mode Gelap</g3>, <g4>Selalu gelap</g4>, <g5>Tema</g5>, <g6>Gambar dengan</g6> (OpenGL, atau Direct3D di Windows, Vulkan di Linux, Metal di macOS) dan <g7>Bahasa</g7>."
+  },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "Tidak, kecuali Anda menginginkannya. Saat torrent diunduh, ia bertukar bagian dengan orang lain, seperti yang dilakukan setiap klien torrent. Ketika selesai, ia berhenti, seperti unduhan lainnya…"
@@ -608,7 +612,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "Ekstensi VPN atau proksi hanya berfungsi sebagai proksi untuk browser. Di Firefox, aktifkan <g1>Kirim unduhan melalui proxy atau ekstensi VPN browser ini</g1> di pop-up bilah alat ekstensi: Firefox akan meminta Anda sekali untuk mengizinkan ekstensi membaca proksi browser, dan MDM kemudian mengunduh apa yang diambilnya dari browser melalui proksi yang sama (dengan <g2>Opsi → Proksi / Socks → Gunakan proksi/socks dari permintaan browser</g2>, aktif secara default; lihat <g3>Opsi</g3>). Matikan untuk mencabut izin tersebut. Chrome, Edge, Brave, Opera, dan Vivaldi belum menawarkan ini: untuk saat ini, atur proksi yang sama di <g4>Opsi → Proksi / Socks</g4> MDM."
+   "text": "Ekstensi VPN atau proksi hanya berfungsi sebagai proksi untuk browser. Di Firefox, aktifkan <g1>Kirim unduhan melalui proxy atau ekstensi VPN browser ini</g1> di pop-up bilah alat ekstensi: Firefox akan meminta Anda sekali untuk mengizinkan ekstensi membaca proksi browser, dan MDM kemudian akan mengunduh apa yang diambilnya dari browser melalui proksi yang sama (dengan <g2>Opsi → Proksi / Socks → Gunakan proksi/socks dari permintaan browser</g2>, aktif secara default; lihat <g3>Opsi</g3>). Nonaktifkan untuk mencabut izin tersebut. Chrome, Edge, Brave, Opera, dan Vivaldi belum menawarkan ini: untuk saat ini, atur proksi yang sama di <g4>Opsi → Proksi / Socks</g4> MDM."
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1578,6 +1582,10 @@
    "source": "The current speed.",
    "text": "Kecepatan saat ini."
   },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Jika Direct3D, Vulkan, atau Metal tidak dapat dimulai di komputer Anda (tidak ada driver untuk itu, beberapa mesin virtual), atau jendela pertamanya tidak muncul dalam 10 detik, MDM menggambar dengan OpenGL, dan <g1>Tampilan → Gambar dengan</g1> menyatakan demikian dan alasannya. Memilihnya lagi akan mencobanya lagi pada saat startup berikutnya."
+  },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
    "text": "<g1>Info File Unduhan</g1>, jendela progres, dan <g2>Properti</g2> menunjukkan lokasi server unduhan: bendera dan nama negaranya, lalu waktu yang dibutuhkan untuk perjalanan pulang-pergi ke sana, seperti <g3>sekitar 24 ms (dekat)</g3>."
@@ -1902,6 +1910,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Negara</g1> berasal dari tabel rentang alamat yang disertakan dengan MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), yang dicari di komputer Anda. MDM tidak pernah mengirim alamat ke mana pun untuk menanyakan lokasinya. Tabel diperbarui dengan setiap rilis; alamat yang telah berpindah sejak saat itu mungkin menunjukkan negara lamanya."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Terakhir diperbarui 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Telusuri</g1> — buka foldernya di Explorer."
@@ -1948,7 +1960,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "Setiap warna dan ukuran kontrol digambar dengan berasal dari tema aktif (#45): <x1/> mendeklarasikan perannya (<x2/>, <x3/>…) dengan nilai tampilan klasik, pelukis bersama (<x4/>, <x5/>, <x6/>, <x7/>) membacanya melalui <x8/> dan <x9/> dan memutuskan status setiap kontrol darinya, dan <x10/> membaca file tema (TOML atau JSON di <x11/> folder data) yang mengubah salah satunya. Di mana jendela menempatkan kontrolnya tetap menjadi tata letaknya. Begitu juga ikon sebelum nama file (<x12/>): daftar gambar sistem shell Windows, Finder macOS (NSWorkspace), tema ikon desktop Linux (<x13/>, shared-mime-info dan Spesifikasi Tema Ikon). Setiap jenis dicari sekali per ukuran piksel, pada utas latar belakang. Ikon Tango (dibundel) menggantikan sampai ikon sistem siap, dan di mana pun sistem tidak memilikinya."
+   "text": "Setiap warna dan ukuran kontrol digambar berasal dari tema aktif (#45): <x1/> mendeklarasikan perannya (<x2/>, <x3/>…) dengan nilai tampilan klasik, pelukis bersama (<x4/>, <x5/>, <x6/>, <x7/>) membacanya melalui <x8/> dan <x9/> dan memutuskan status setiap kontrol darinya, dan <x10/> membaca berkas tema (TOML atau JSON di <x11/> folder data) yang mengubah salah satunya. Di mana jendela menempatkan kontrolnya tetap menjadi tata letaknya. Begitu juga ikon sebelum nama berkas (<x12/>): daftar gambar sistem shell Windows, Finder macOS (NSWorkspace), tema ikon desktop Linux (<x13/>, shared-mime-info dan Spesifikasi Tema Ikon). Setiap jenis dicari sekali per ukuran piksel, pada utas latar belakang. Ikon Tango (dibundel) menggantikan sampai ikon sistem siap, dan di mana pun sistem tidak memilikinya."
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2256,7 +2268,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>Gunakan proxy/socks dari permintaan browser…</g1> — aktif secara default. Unduhan yang diambil MDM dari browser akan melalui proxy yang digunakan browser untuk unduhan tersebut. Itu adalah proxy yang diatur oleh ekstensi VPN atau proxy, proxy manual browser itu sendiri, atau skrip konfigurasi otomatis proxy-nya. Tanpa itu, unduhan akan berasal dari alamat Anda sendiri, dan konten yang terbatas pada negara VPN, atau alamatnya, akan gagal. Ekstensi browser membaca proxy tersebut dan menyerahkannya ke MDM dengan setiap unduhan, setelah Anda mengizinkannya: di Firefox, aktifkan <g2>Kirim unduhan melalui proxy atau ekstensi VPN browser ini</g2> di pop-up bilah alat ekstensi (Firefox akan menanyakan Anda sekali). Chrome, Edge, Brave, Opera, dan Vivaldi belum menyerahkan proxy: di sana, atur proxy yang sama di <g3>Opsi → Proksi / Socks</g3>."
+   "text": "<g1>Gunakan proksi/socks dari permintaan browser…</g1> — aktif secara default. Unduhan yang diambil MDM dari browser akan melalui proksi yang digunakan browser untuk itu. Itu adalah proksi yang diatur oleh ekstensi VPN atau proksi, proksi manual browser itu sendiri, atau skrip konfigurasi otomatis proksi. Tanpa itu, unduhan akan berasal dari alamat Anda sendiri, dan konten yang terbatas pada negara VPN, atau alamatnya, akan gagal. Ekstensi browser membaca proksi tersebut dan menyerahkannya ke MDM dengan setiap unduhan, setelah Anda mengizinkannya: di Firefox, aktifkan <g2>Kirim unduhan melalui proxy atau ekstensi VPN browser ini</g2> di pop-up bilah alat ekstensi (Firefox akan menanyakan Anda sekali). Chrome, Edge, Brave, Opera, dan Vivaldi belum menyerahkan proksi: di sana, atur proksi yang sama di <g3>Opsi → Proksi / Socks</g3>."
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3322,6 +3334,10 @@
    "source": "JSON for scripts and programs",
    "text": "JSON untuk skrip dan program"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "Di Windows, MDM menggambar jendelanya dengan Direct3D 12; di Linux dan macOS, dengan OpenGL, atau dengan Vulkan (Linux) atau Metal (macOS) jika Anda memilihnya. Driver grafis masih bisa bermasalah: jendela yang diam selama beberapa detik, berkedip, atau menampilkan warna atau blok yang salah. Coba yang lain: pilih <g1>Tampilan → Gambar dengan → OpenGL</g1> (atau <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), lalu keluar dari MDM (<g5>Tugas → Keluar</g5>) dan mulai lagi. Memilih yang pertama akan kembali dengan cara yang sama."
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "saat <g1>Opsi → Arsip → Ekstrak arsip saat unduhan selesai</g1> diaktifkan (nonaktif secara default), untuk unduhan lainnya,"
@@ -4340,7 +4356,7 @@
   },
   "6c93571eac4f03c3": {
    "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
-   "text": "Di Firefox, MDM melihat proxy yang digunakan oleh permintaan browser itu sendiri untuk file tersebut, termasuk proxy yang dipilih oleh ekstensi VPN untuk setiap permintaan."
+   "text": "Di Firefox, MDM melihat proksi yang digunakan permintaan browser sendiri untuk file, termasuk yang dipilih ekstensi VPN untuk setiap permintaan."
   },
   "6cfaa56a34e8372a": {
    "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
@@ -5612,7 +5628,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "Izinnya, dan alasannya: <g1>downloads</g1> untuk melihat dan menyerahkan unduhan; <g2>cookies</g2> agar unduhan yang masuk berfungsi di MDM; <g3>nativeMessaging</g3> untuk berkomunikasi dengan MDM; <g4>contextMenus</g4> untuk item klik kanan; <g5>storage</g5> untuk pengaturannya; <g6>webRequest</g6> untuk melihat formulir yang dikirimkan dan aliran video yang dimuat (tidak mengubah apa pun); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge, dan browser Chromium lainnya) agar file yang akan dibuka browser (PDF) diunduh sebagai gantinya, untuk jenis yang diambil MDM; di Firefox, <g8>webRequestBlocking</g8> melakukan itu; <g9>scripting</g9> untuk membaca tautan halaman saat Anda meminta, dan untuk menambahkan tombol video ke halaman yang sudah terbuka saat ekstensi diinstal; <g10>proxy</g10> (Firefox, opsional: hanya diminta saat Anda mengaktifkannya di pop-up) untuk membaca proxy mana yang digunakan browser, sehingga unduhan yang diambil dari browser di belakang VPN atau ekstensi proxy juga melalui proxy tersebut (tidak pernah mengubah proxy browser); akses ke semua situs karena unduhan dan video dapat berasal dari situs mana pun."
+   "text": "Izinnya, dan alasannya: <g1>downloads</g1> untuk melihat dan menyerahkan unduhan; <g2>cookies</g2> agar unduhan yang masuk berfungsi di MDM; <g3>nativeMessaging</g3> untuk berkomunikasi dengan MDM; <g4>contextMenus</g4> untuk item klik kanan; <g5>storage</g5> untuk pengaturannya; <g6>webRequest</g6> untuk melihat formulir yang dikirimkan dan aliran video yang dimuat (tidak mengubah apa pun); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge, dan browser Chromium lainnya) agar file yang akan dibuka browser (PDF) diunduh sebagai gantinya, untuk jenis yang diambil MDM; di Firefox, <g8>webRequestBlocking</g8> melakukan itu; <g9>scripting</g9> untuk membaca tautan halaman saat Anda meminta, dan untuk menambahkan tombol video ke halaman yang sudah terbuka saat ekstensi diinstal; <g10>proxy</g10> (Firefox, opsional: hanya diminta saat Anda mengaktifkannya di pop-up) untuk membaca proxy mana yang digunakan browser, sehingga unduhan yang diambil dari browser di belakang VPN atau ekstensi proxy juga melewatinya (tidak pernah mengubah proxy browser); akses ke semua situs karena unduhan dan video dapat berasal dari situs mana pun."
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5970,6 +5986,10 @@
    "source": "Downloads",
    "text": "Unduhan"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Terakhir diperbarui 2026-11-07 · berlaku untuk aplikasi, ekstensi browser, dan misterdownloadmanager.com"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>Deskripsi atau bagian dari deskripsi</g1> — catatan Anda."
@@ -5980,7 +6000,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Mendeteksi masalah.</g1> Ketika MDM mengalami <i>crash</i> (pengecualian Windows, sinyal di Linux, pengecualian Mach di macOS), panik, atau membeku, MDM meminta monitor untuk membuat <i>dump</i>. Pembekuan adalah bingkai jendela yang berjalan lebih dari 8 detik, dilihat oleh <i>thread watchdog</i> yang mengabaikan waktu tidur. Ini mengukur kedua bagian bingkai: apa yang ditangani MDM (perintah yang masuk, jam unduhan, antrean, dan Penjadwal), yang juga berjalan dalam keadaan diminimalkan, dan penggambaran; tidak pernah menunggu di antara bingkai. <i>Watchdog</i> juga mengukur berapa banyak waktu prosesor yang didapatkan <i>thread</i> jendela sementara itu, dan laporan tersebut menyatakan artinya: MDM berjalan terus-menerus (sebuah <i>loop</i>), MDM menunggu dalam kunci atau pada I/O (<i>deadlock</i>), atau MDM hampir tidak berjalan dalam kode biasa, yang berarti komputer terlalu sibuk untuk menjalankan MDM atau lambat memuatnya dari disk, kemungkinan besar bukan <i>bug</i> MDM (ini berbagi satu tanda tangan, <x2/>). macOS belum mengukurnya. Monitor kemudian menulis <g3>minidump</g3> setiap <i>thread</i> dari luar, melalui <x4/> dan <x5/>. Proses yang <i>crash</i> tidak pernah menulis <i>dump</i>-nya sendiri, seperti yang dilakukan Firefox, Crashpad, dan Sentry."
+   "text": "<g1>Mendeteksi masalah.</g1> Ketika MDM mengalami crash (pengecualian Windows, sinyal di Linux, pengecualian Mach di macOS), panik, atau macet, MDM meminta monitor untuk membuat dump. Macet adalah bingkai jendela yang berjalan lebih dari 8 detik, yang dilihat oleh thread pengawas yang mengabaikan waktu tidur. Ini menghitung waktu kedua bagian dari bingkai: apa yang ditangani MDM (perintah yang masuk, jam unduhan, antrean, dan Penjadwal), yang juga berjalan dalam mode minimal, dan penggambaran; tidak pernah menunggu di antara bingkai. Pengawas juga mengukur berapa banyak waktu prosesor yang didapatkan thread jendela sementara itu, dan laporan tersebut mengatakan apa artinya: MDM berjalan terus-menerus (loop), MDM menunggu dalam kunci atau pada I/O (deadlock), atau MDM hampir tidak berjalan dalam kode biasa, yang berarti komputer terlalu sibuk untuk menjalankan MDM atau lambat memuatnya dari disk, kemungkinan besar bukan bug MDM (ini berbagi satu tanda tangan, <x2/>). macOS belum mengukurnya. Monitor kemudian menulis <g3>minidump</g3> dari setiap thread dari luar, melalui <x4/> dan <x5/>. Proses yang crash tidak pernah menulis dump-nya sendiri, seperti yang dilakukan Firefox, Crashpad, dan Sentry."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6376,7 +6396,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "Satu jendela egui digambar ke koordinat piksel tetap, ditambah satu viewport langsung per dialog. <x1/> menyimpan status (unduhan, antrean, pengaturan, pilihan daftar) dan mengubah perintah menu, bilah alat, kunci, dan IPC menjadi tindakan. Setiap dialog adalah modulnya sendiri dan mengembalikan <x2/> (terbuka, tertutup, selesai dengan nilai). Panggilan khusus Windows terbatas pada <x3/> dan padanan Linux serta macOS-nya pada <x4/> (dimulai dengan sesi, host browser, suara, tampilkan di folder, penangan crash); setiap file lain adalah Rust yang aman dan portabel. Font berasal dari sistem: folder Fonts Windows, font sistem macOS, fontconfig di Linux (<x5/>)."
+   "text": "Satu jendela egui digambar ke koordinat piksel tetap, ditambah satu viewport langsung per dialog. <x1/> menyimpan status (unduhan, antrean, pengaturan, pilihan daftar) dan mengubah perintah menu, bilah alat, kunci, dan IPC menjadi tindakan. Setiap dialog adalah modulnya sendiri dan mengembalikan <x2/> (terbuka, tertutup, selesai dengan nilai). Panggilan khusus Windows terbatas pada <x3/> dan padanannya di Linux dan macOS pada <x4/> (dimulai dengan sesi, host peramban, suara, tampilkan di folder, penangan crash); setiap berkas lainnya aman, Rust portabel. Font berasal dari sistem: folder Font Windows, font sistem macOS, fontconfig di Linux (<x5/>)."
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -7186,6 +7206,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Manager mempertahankan tata letak yang dikenal pengguna IDM, membawa daftar IDM Anda, dan tidak berbayar: gratis dan sumber terbuka, tanpa uji coba, tanpa iklan, dan tanpa pendaftaran. Di bawahnya, sembilan pengelola unduhan gratis lainnya yang digunakan orang sebagai pengganti IDM, dibandingkan secara jujur."
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "Di Linux, Vulkan membutuhkan driver Vulkan kartu grafis Anda: Mesa's (<x1/> di Ubuntu dan Debian, <x2/> atau <x3/> di Arch) untuk AMD dan Intel, driver NVIDIA sendiri untuk NVIDIA."
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage juga bisa diperbarui dengan alat AppImage (AppImageLauncher, Gear Lever, AppImageUpdate): ia membawa alamat pembaruannya, dan setiap rilis memiliki berkas <x1/>, jadi alat-alat itu hanya mengunduh bagian yang berubah. Ini dimulai dengan AppImage versi setelah 0.2.4."
@@ -7678,6 +7702,10 @@
    "source": "torrents on Windows;",
    "text": "torrent di Windows;"
   },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Jika keduanya tidak dapat dimulai, MDM menggambar dengan perender perangkat lunak (Microsoft di Windows, Mesa di Linux), sehingga jendela tetap terbuka (Remote Desktop, mesin virtual tanpa driver grafis). Ini berfungsi, tetapi membuat prosesor lebih sibuk."
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8052,7 +8080,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>Mengujinya.</g1> <x2/> menjalankan pembekuan, kepanikan, dan <i>crash</i> yang nyata (<x3/>) dan memeriksa tanda tangan setiap laporan. Untuk mencobanya di aplikasi, mulai MDM dengan <x4/>, lalu jalankan <x5/> (<i>deadlock</i>; atau <x6/>, 12 detik dari <i>thread</i> jendela yang sibuk, <x7/>, <x8/>, <x9/>). <x10/> melakukannya dalam salinan aplikasi di luar layar, jendelanya terlihat dan diminimalkan."
+   "text": "<g1>Mengujinya.</g1> <x2/> menjalankan pembekuan, kepanikan, dan crash nyata (<x3/>) dan memeriksa tanda tangan setiap laporan. Untuk mencobanya di aplikasi, mulai MDM dengan <x4/>, lalu jalankan <x5/> (deadlock; atau <x6/>, 12 detik dari thread jendela yang sibuk, <x7/>, <x8/>, <x9/>). <x10/> melakukannya dalam salinan aplikasi di luar layar, jendelanya terlihat dan diminimalkan."
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8288,7 +8316,7 @@
   },
   "d351cad9276045ed": {
    "source": "<g1>Classic</g1>: MDM's own look, the default.",
-   "text": "<g1>Klasik</g1>: tampilan MDM sendiri, bawaan."
+   "text": "<g1>Klasik</g1>: tampilan MDM sendiri, yang merupakan bawaan."
   },
   "d354d0b6bb0bfffe": {
    "source": "Subtitles",
@@ -8772,7 +8800,7 @@
   },
   "e04f69d547a21d71": {
    "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
-   "text": "<g1>Asli</g1>: warna sistem Anda. Warna aksen Windows (Pengaturan → Personalisasi → Warna) dan, jika diaktifkan, tema kontrasnya; warna aksen desktop dan pengaturan kontras yang lebih tinggi di Linux (GNOME 47 dan yang lebih baru, KDE Plasma); warna aksen di macOS. Ini mengikutinya saat Anda mengubahnya."
+   "text": "<g1>Asli</g1>: warna sistem Anda. Warna aksen Windows (Pengaturan → Personalisasi → Warna) dan, saat aktif, tema kontrasnya; warna aksen desktop dan pengaturan kontras yang lebih tinggi di Linux (GNOME 47 dan yang lebih baru, KDE Plasma); warna aksen di macOS. Ini mengikutinya saat Anda mengubahnya."
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -9200,7 +9228,7 @@
   },
   "eb2157973bc61b4f": {
    "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
-   "text": "<g1>Tampilan → Tema</g1> mengubah tampilan MDM sekaligus, dengan tetap mempertahankan tata letaknya:"
+   "text": "<g1>Tampilan → Tema</g1> mengubah tampilan MDM sekaligus, mempertahankan tata letaknya:"
   },
   "eb54002890a30cf8": {
    "source": "<g1>Ctrl+M</g1> or <g2>F2</g2>",
@@ -9766,6 +9794,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "Periksa <g1>Simpan ke</g1> dan <g2>Nama file</g2>. Nama tersebut berasal dari judul video; ubah jika Anda suka."
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>Metro</g1>: tampilan datar Windows 8: sudut persegi, tombol dan kotak datar, bilah judul berwarna dengan judul di tengah (di Windows, tempat MDM menggambarnya), dan ikon satu warna (Microsoft's Fluent UI System Icons)."
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "Apa yang masih dilakukan IDM yang tidak dilakukan MDM"
@@ -9797,6 +9829,10 @@
   "fb1900915c99672a": {
    "source": "After a cut connection",
    "text": "Setelah koneksi terputus"
+  },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "Jendela digambar dengan OpenGL (glow eframe) atau dengan API grafis sistem sendiri melalui wgpu eframe, hanya dengan satu backend itu: Direct3D 12 di Windows (default di sana), Vulkan di Linux, Metal di macOS (pilihan di sana; OpenGL tetap default mereka). Tampilan → Gambar dengan memilih salah satu. Satu jalur kode melakukannya di setiap sistem (<x1/>): ketika yang dipilih tidak dapat dimulai, yang lain dicoba, sehingga jendela selalu terbuka; permulaan yang bingkai pertamanya tidak muncul, atau kartu grafis hilang dua kali, diingat dengan alasannya, yang ditampilkan menu."
   },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",

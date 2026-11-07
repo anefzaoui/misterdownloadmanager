@@ -5544,7 +5544,7 @@ menu	Download &video from a page...	Tikiake &ataata mai i tētahi whārangi...
 #, machine
 menu	Download in order	Tikiake kia raupapa
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Tuhi ki
 #. menu command in the main window
@@ -5595,6 +5595,26 @@ menu	Hide drop target	Huna i te ūnga maturuturu
 #, machine
 menu	High contrast	Whakataurite teitei
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Kāore i tīmata: kei te rākau te take
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Kāore i puta tana anga tuatahi i roto i te 10 hēkona
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	I mutu tana tīmatanga whakamutunga i mua i tana anga tuatahi
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Kāore a Metal i tīmata i konei: kei te tuhi a OpenGL
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5609,6 +5629,10 @@ menu	Move/Rename (Ctrl-M)	Nuku/Whakaingoa Anō (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Taketake
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Kāore he kāri whakairoiro i konei he atekōkiri mōna
 #. menu command in the main window
 #, machine
 menu	On Double click	I te pāwhiri rua
@@ -5734,6 +5758,10 @@ menu	Support &MDM	Tautoko &MDM
 #, machine
 menu	Tell a &friend	Kōrero ki tētahi &hoa
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	E rua ngā wā i ngaro ai te kāri whakairoiro i roto i te 10 meneti
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Kaupapa
@@ -5772,6 +5800,14 @@ menu	Turn of&f	Whakaweto&hia
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Manatoko rārangi arowhai...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Kāore a Vulkan i tīmata i konei: kei te tuhi a OpenGL
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

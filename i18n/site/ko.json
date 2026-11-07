@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "Firefox에서는 팝업에서 <g1>이 브라우저의 프록시 또는 VPN 확장을 통해 다운로드 보내기</g1>를 켜면 (Firefox가 먼저 물어봅니다), 브라우저가 다운로드에 프록시를 사용할 때 (VPN 또는 프록시 확장 프로그램으로 설정되거나 브라우저 설정에서 설정된 경우), 확장 프로그램이 <g2>프록시 주소</g2> 또는 <g3>프록시 자동 구성 스크립트</g3>를 전달하여 MDM이 동일한 프록시를 통해 다운로드하도록 합니다. 프록시 로그인 정보를 읽거나 전달하지 않습니다. 프록시가 요청했다는 사실만 기록하므로 MDM은 해당 프록시를 사용할 수 없다고 알려줄 수 있습니다. (설치 시) 꺼져 있으면 브라우저의 프록시에 대해 아무것도 읽지 않습니다. Chrome 및 다른 Chromium 브라우저용 확장 프로그램은 아직 이 기능을 지원하지 않습니다."
+   "text": "Firefox에서 팝업에서 <g1>이 브라우저의 프록시 또는 VPN 확장을 통해 다운로드 보내기</g1>를 켜면 (Firefox가 먼저 묻습니다), 브라우저가 다운로드에 프록시를 사용할 때 (VPN 또는 프록시 확장 프로그램으로 설정되거나 브라우저 설정에서 설정된 경우), 확장 프로그램은 <g2>프록시 주소</g2> 또는 <g3>프록시 자동 구성 스크립트</g3>를 전달하여 MDM이 동일한 프록시를 통해 다운로드하도록 합니다. 프록시 로그인 정보를 읽거나 전달하지 않습니다. 프록시가 요청했다는 사실만 기록하여 MDM이 해당 프록시를 사용할 수 없다고 알려줄 수 있도록 합니다. (설치 시) 꺼져 있으면 브라우저의 프록시에 대한 정보를 전혀 읽지 않습니다. Chrome 및 기타 Chromium 브라우저용 확장 프로그램은 아직 이 기능을 지원하지 않습니다."
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -366,6 +366,10 @@
    "source": "Right-click a category for:",
    "text": "범주를 마우스 오른쪽 버튼으로 클릭하면 다음을 할 수 있습니다."
   },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>보기</g1> — 카테고리 표시/숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4>, <g5>테마</g5>, <g6>다음으로 그리기</g6>(Windows에서는 OpenGL 또는 Direct3D, Linux에서는 Vulkan, macOS에서는 Metal) 및 <g7>언어</g7>를 설정합니다."
+  },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "아니요, 원하지 않는 한 그렇지 않습니다. 토렌트가 다운로드되는 동안 다른 사람들과 조각을 주고받는 것은 모든 토렌트 클라이언트와 같습니다. 완료되면 다른 다운로드와 마찬가지로 중지됩니다."
@@ -608,7 +612,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "VPN 또는 프록시 확장 프로그램은 브라우저 전용 프록시입니다. Firefox에서는 확장 프로그램 도구 모음 팝업에서 <g1>이 브라우저의 프록시 또는 VPN 확장을 통해 다운로드 보내기</g1>를 켜세요. Firefox는 확장 프로그램이 브라우저의 프록시를 읽는 것을 허용할지 한 번 묻고, MDM은 브라우저에서 가져온 것을 동일한 프록시를 통해 다운로드합니다(기본적으로 켜져 있는 <g2>옵션 → 프록시/Socks → 브라우저 요청에서 프록시/Socks 사용</g2> 참조; <g3>옵션</g3> 참조). 이 권한을 취소하려면 끄세요. Chrome, Edge, Brave, Opera 및 Vivaldi는 아직 이 기능을 제공하지 않습니다. 현재는 MDM의 <g4>옵션 → 프록시/Socks</g4>에서 동일한 프록시를 설정하세요."
+   "text": "VPN 또는 프록시 확장 프로그램은 브라우저 전용 프록시입니다. Firefox에서는 확장 프로그램 도구 모음 팝업에서 <g1>이 브라우저의 프록시 또는 VPN 확장을 통해 다운로드 보내기</g1>를 켜세요. Firefox는 확장 프로그램이 브라우저의 프록시를 읽는 것을 한 번 허용할지 묻고, MDM은 브라우저에서 가져온 것을 동일한 프록시를 통해 다운로드합니다(기본적으로 켜져 있는 <g2>옵션 → 프록시/Socks → 브라우저 요청의 프록시/Socks 사용</g2> 참조; <g3>옵션</g3> 참조). 권한을 취소하려면 끄세요. Chrome, Edge, Brave, Opera 및 Vivaldi는 아직 이 기능을 제공하지 않습니다. 현재로서는 MDM의 <g4>옵션 → 프록시/Socks</g4>에서 동일한 프록시를 설정하세요."
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1578,6 +1582,10 @@
    "source": "The current speed.",
    "text": "현재 속도입니다."
   },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Direct3D, Vulkan 또는 Metal이 컴퓨터에서 시작할 수 없거나(해당 드라이버 없음, 일부 가상 머신) 첫 번째 창이 10초 이내에 표시되지 않으면 MDM은 OpenGL로 그리며, <g1>보기 → 다음으로 그리기</g1>에서 그 이유를 알려줍니다. 다시 선택하면 다음 시작 시 다시 시도합니다."
+  },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
    "text": "<g1>파일 정보 다운로드</g1>, 진행 창 및 <g2>속성</g2>은 다운로드 서버의 위치를 보여줍니다. 서버 국가의 국기와 이름, 그리고 왕복 시간(예: <g3>약 24ms (가까움)</g3>)이 표시됩니다."
@@ -1902,6 +1910,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>국가</g1>는 MDM에 포함된 주소 범위 테이블(<g2>DB-IP의 IP to Country Lite</g2>, CC BY 4.0)에서 가져오며, 사용자 컴퓨터에서 조회됩니다. MDM은 주소의 위치를 묻기 위해 어디로도 보내지 않습니다. 테이블은 각 릴리스마다 업데이트됩니다. 그 이후로 이동한 주소는 이전 국가를 표시할 수 있습니다."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "최종 업데이트: 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>찾아보기</g1> — 탐색기에서 해당 폴더를 엽니다."
@@ -1948,7 +1960,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "컨트롤이 그려지는 모든 색상과 크기는 활성 테마(#45)에서 가져옵니다. <x1/>는 클래식 모양의 값으로 역할(<x2/>, <x3/>…)을 선언하고, 공유 페인터(<x4/>, <x5/>, <x6/>, <x7/>)는 <x8/> 및 <x9/>를 통해 이를 읽고 각 컨트롤의 상태를 결정하며, <x10/>는 이들 중 어느 것이든 변경하는 테마 파일(데이터 폴더의 <x11/>에 있는 TOML 또는 JSON)을 읽습니다. 창이 컨트롤을 배치하는 방식은 레이아웃으로 유지됩니다. 파일 이름 앞의 아이콘(<x12/>)도 마찬가지입니다: Windows 셸의 시스템 이미지 목록, macOS Finder(NSWorkspace), Linux 데스크톱의 아이콘 테마(<x13/>, shared-mime-info 및 Icon Theme Specification). 각 유형은 픽셀 크기당 한 번, 백그라운드 스레드에서 조회됩니다. Tango의 아이콘(번들로 제공)은 시스템 아이콘이 준비될 때까지, 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
+   "text": "컨트롤이 그려지는 모든 색상과 크기는 활성 테마(#45)에서 가져옵니다. <x1/>는 클래식 모양의 값으로 역할(<x2/>, <x3/>…)을 선언하고, 공유 페인터(<x4/>, <x5/>, <x6/>, <x7/>)는 <x8/> 및 <x9/>를 통해 이를 읽고 각 컨트롤의 상태를 결정하며, <x10/>는 이들 중 어느 것이든 변경하는 테마 파일(데이터 폴더의 <x11/>에 있는 TOML 또는 JSON)을 읽습니다. 창이 컨트롤을 배치하는 방식은 레이아웃으로 유지됩니다. 파일 이름 앞의 아이콘(<x12/>)도 마찬가지입니다: Windows 셸의 시스템 이미지 목록, macOS Finder의 (NSWorkspace), Linux 데스크톱의 아이콘 테마(<x13/>, shared-mime-info 및 아이콘 테마 사양). 각 유형은 백그라운드 스레드에서 픽셀 크기당 한 번 조회됩니다. Tango 아이콘(번들)은 시스템 아이콘이 준비될 때까지, 그리고 시스템에 아이콘이 없는 모든 곳에서 사용됩니다."
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2256,7 +2268,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>브라우저 요청의 프록시/Socks 사용…</g1> — 기본적으로 켜져 있습니다. MDM이 브라우저에서 가져오는 다운로드는 브라우저가 사용한 프록시를 통해 이루어집니다. 이는 VPN 또는 프록시 확장이 설정한 프록시, 브라우저 자체의 수동 프록시 또는 프록시 자동 구성 스크립트입니다. 이것이 없으면 다운로드는 사용자 자신의 주소에서 시작되며, VPN 국가 또는 해당 주소로 제한된 콘텐츠는 실패합니다. 브라우저 확장은 해당 프록시를 읽고 다운로드할 때마다 MDM에 전달합니다. 허용하려면 Firefox에서 확장 프로그램 도구 모음 팝업에서 <g2>이 브라우저의 프록시 또는 VPN 확장을 통해 다운로드 보내기</g2>를 켜십시오(Firefox는 한 번만 요청합니다). Chrome, Edge, Brave, Opera 및 Vivaldi는 아직 프록시를 넘겨주지 않습니다. 이 경우 <g3>옵션 → 프록시/Socks</g3>에서 동일한 프록시를 설정하십시오."
+   "text": "<g1>브라우저 요청의 프록시/Socks 사용…</g1> — 기본적으로 켜져 있습니다. MDM이 브라우저에서 가져온 다운로드는 브라우저가 해당 다운로드에 사용한 프록시를 통해 이루어집니다. 이는 VPN 또는 프록시 확장 프로그램이 설정한 프록시, 브라우저 자체의 수동 프록시 또는 프록시 자동 구성 스크립트입니다. 이 기능이 없으면 다운로드는 사용자 자신의 주소에서 시작되며, VPN 국가 또는 해당 주소로 제한된 콘텐츠는 실패합니다. 브라우저 확장 프로그램은 해당 프록시를 읽고 다운로드할 때마다 MDM에 전달합니다. 허용하려면 Firefox에서 확장 프로그램 도구 모음 팝업에서 <g2>이 브라우저의 프록시 또는 VPN 확장을 통해 다운로드 보내기</g2>를 켜십시오(Firefox는 한 번만 묻습니다). Chrome, Edge, Brave, Opera 및 Vivaldi는 아직 프록시를 전달하지 않습니다. 이 경우 <g3>옵션 → 프록시/Socks</g3>에서 동일한 프록시를 설정하십시오."
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3322,6 +3334,10 @@
    "source": "JSON for scripts and programs",
    "text": "스크립트 및 프로그램을 위한 JSON"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "Windows에서 MDM은 Direct3D 12로 창을 그립니다. Linux 및 macOS에서는 OpenGL 또는 선택한 경우 Vulkan(Linux) 또는 Metal(macOS)로 그립니다. 그래픽 드라이버가 오작동할 수 있습니다. 창이 몇 초 동안 멈추거나 깜박이거나 잘못된 색상이나 블록을 표시할 수 있습니다. 다른 것을 시도해 보세요. <g1>보기 → 다음으로 그리기 → OpenGL</g1>(또는 <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>)을 선택한 다음 MDM을 종료(<g5>작업 → 끝내기</g5>)하고 다시 시작하세요. 첫 번째 것을 다시 선택하면 같은 방식으로 돌아갑니다."
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "다른 모든 다운로드의 경우 <g1>옵션 → 압축 파일 → 다운로드 완료 시 압축 파일 추출</g1>이 켜져 있을 때(기본값은 꺼짐),"
@@ -4340,7 +4356,7 @@
   },
   "6c93571eac4f03c3": {
    "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
-   "text": "Firefox에서 MDM은 VPN 확장이 각 요청에 대해 선택하는 프록시를 포함하여 브라우저 자체의 파일 요청이 사용한 프록시를 확인합니다."
+   "text": "Firefox에서 MDM은 VPN 확장 프로그램이 각 요청에 대해 선택하는 프록시를 포함하여 브라우저 자체의 파일 요청이 사용한 프록시를 확인합니다."
   },
   "6cfaa56a34e8372a": {
    "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
@@ -5612,7 +5628,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "확장 프로그램의 권한 및 이유: 다운로드를 보고 전달하기 위한 <g1>downloads</g1>; MDM에서 로그인된 다운로드가 작동하도록 하는 <g2>cookies</g2>; MDM과 통신하기 위한 <g3>nativeMessaging</g3>; 마우스 오른쪽 버튼 클릭 항목을 위한 <g4>contextMenus</g4>; 설정 저장을 위한 <g5>storage</g5>; 제출된 양식과 로드된 비디오 스트림을 보기 위한 <g6>webRequest</g6> (아무것도 변경하지 않음); 브라우저가 열 파일(PDF)을 MDM이 처리하는 유형으로 대신 다운로드하도록 하는 <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge 및 기타 Chromium 브라우저); Firefox에서는 <g8>webRequestBlocking</g8>이 이 역할을 수행합니다; 요청 시 페이지 링크를 읽고, 확장 프로그램 설치 시 이미 열려 있는 페이지에 비디오 버튼을 추가하기 위한 <g9>scripting</g9>; <g10>proxy</g10> (Firefox, 선택 사항: 팝업에서 켤 때만 요청됨) 브라우저가 사용하는 프록시를 읽어 VPN 또는 프록시 확장 프로그램 뒤에 있는 브라우저에서 가져온 다운로드도 해당 프록시를 통해 이루어지도록 합니다 (브라우저의 프록시를 변경하지 않음); 다운로드 및 비디오는 모든 사이트에서 올 수 있으므로 모든 사이트에 대한 액세스 권한이 필요합니다."
+   "text": "권한 및 이유: 다운로드를 보고 전달하기 위한 <g1>downloads</g1>; 로그인된 다운로드가 MDM에서 작동하도록 하기 위한 <g2>cookies</g2>; MDM과 통신하기 위한 <g3>nativeMessaging</g3>; 마우스 오른쪽 버튼 클릭 항목을 위한 <g4>contextMenus</g4>; 설정 저장을 위한 <g5>storage</g5>; 제출된 양식과 로드된 비디오 스트림을 보기 위한 <g6>webRequest</g6> (아무것도 변경하지 않음); 브라우저가 열었을 파일(PDF)을 대신 다운로드하도록 하기 위한 <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge 및 기타 Chromium 브라우저), MDM이 지원하는 유형에 한함; Firefox에서는 <g8>webRequestBlocking</g8>이 이 역할을 수행함; 요청 시 페이지 링크를 읽고, 확장 프로그램 설치 시 이미 열려 있는 페이지에 비디오 버튼을 추가하기 위한 <g9>scripting</g9>; <g10>proxy</g10> (Firefox, 선택 사항: 팝업에서 켤 때만 요청됨) 브라우저가 사용하는 프록시를 읽어 VPN 또는 프록시 확장 프로그램 뒤에 있는 브라우저에서 가져온 다운로드도 해당 프록시를 통해 이루어지도록 함 (브라우저의 프록시를 변경하지 않음); 다운로드 및 비디오는 모든 사이트에서 올 수 있으므로 모든 사이트에 대한 액세스."
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5970,6 +5986,10 @@
    "source": "Downloads",
    "text": "다운로드"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "최종 업데이트: 2026년 11월 7일 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>설명 또는 설명의 일부</g1> — 사용자 메모입니다."
@@ -5980,7 +6000,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>문제 포착.</g1> MDM이 충돌(Windows 예외, Linux 신호, macOS Mach 예외), 패닉 또는 멈춤 현상이 발생하면 모니터에 덤프를 요청합니다. 멈춤 현상은 창이 8초 이상 실행되는 프레임으로, 절전 시간을 무시하는 워치독 스레드에 의해 감지됩니다. 이는 프레임의 두 부분을 모두 측정합니다. MDM이 처리하는 부분(들어오는 명령, 다운로드, 대기열 및 예약 관리자의 클록)은 최소화된 상태에서도 실행되며, 그리기 부분도 측정합니다. 프레임 사이의 대기 시간은 측정하지 않습니다. 워치독은 또한 그동안 창 스레드가 얻은 프로세서 시간을 측정하며, 보고서는 그 의미를 알려줍니다. 즉, 계속 실행되었는지(루프), 잠금 또는 I/O에서 대기했는지(교착 상태), 아니면 일반 코드에서 거의 실행되지 않았는지(MDM을 실행하기에 컴퓨터가 너무 바쁘거나 디스크에서 로드하는 데 느린 경우, MDM 버그가 아닐 가능성이 높음)를 알려줍니다(이들은 하나의 서명, <x2/>를 공유합니다). macOS는 아직 이를 측정하지 않습니다. 그런 다음 모니터는 <x4/> 및 <x5/>를 통해 외부에서 모든 스레드의 <g3>미니덤프</g3>를 작성합니다. 충돌한 프로세스는 자체 덤프를 작성하지 않으며, 이는 Firefox, Crashpad 및 Sentry도 마찬가지입니다."
+   "text": "<g1>문제 포착.</g1> MDM이 충돌(Windows 예외, Linux 신호, macOS Mach 예외)하거나, 패닉 상태가 되거나, 멈출 때 모니터에 덤프를 요청합니다. 멈춤은 창이 8초 이상 실행되는 프레임으로, 절전 시간을 무시하는 감시 스레드에 의해 감지됩니다. 이는 프레임의 두 부분을 측정합니다. MDM이 처리하는 부분(들어오는 명령, 다운로드 시계, 대기열 및 예약 관리자), 이는 최소화된 상태에서도 실행되며, 그리기 부분도 포함됩니다. 프레임 사이의 대기 시간은 측정하지 않습니다. 감시 스레드는 또한 창 스레드가 그동안 얼마나 많은 프로세서 시간을 얻었는지 측정하며, 보고서는 그 의미를 알려줍니다. 즉, 계속 실행되었는지(루프), 잠금 또는 I/O에서 대기했는지(교착 상태), 또는 일반 코드에서 거의 실행되지 않았는지, 이는 컴퓨터가 MDM을 실행하기에 너무 바쁘거나 디스크에서 로드하는 데 느려서 MDM 버그가 아닐 가능성이 높습니다(이들은 하나의 서명, <x2/>를 공유합니다). macOS는 아직 이를 측정하지 않습니다. 그런 다음 모니터는 <x4/> 및 <x5/>를 통해 외부에서 모든 스레드의 <g3>미니덤프</g3>를 작성합니다. 충돌한 프로세스는 자체 덤프를 작성하지 않으며, 이는 Firefox, Crashpad 및 Sentry도 마찬가지입니다."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6376,7 +6396,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "고정된 픽셀 좌표에 그려진 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트가 있습니다. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료됨)를 반환합니다. Windows 전용 호출은 <x3/>로 제한되며, Linux 및 macOS의 해당 호출은 <x4/>로 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다: Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)."
+   "text": "고정된 픽셀 좌표에 그려지는 하나의 egui 창과 대화 상자당 하나의 즉시 뷰포트가 있습니다. <x1/>는 상태(다운로드, 대기열, 설정, 목록 선택)를 유지하고 메뉴, 도구 모음, 키 및 IPC 명령을 작업으로 전환합니다. 각 대화 상자는 자체 모듈이며 <x2/>(열림, 닫힘, 값으로 완료됨)를 반환합니다. Windows 전용 호출은 <x3/>로 제한되며, Linux 및 macOS의 해당 호출은 <x4/>로 제한됩니다(세션 시작, 브라우저 호스트, 소리, 폴더에 표시, 충돌 처리기). 다른 모든 파일은 안전하고 이식 가능한 Rust입니다. 글꼴은 시스템에서 가져옵니다: Windows의 글꼴 폴더, macOS의 시스템 글꼴, Linux의 fontconfig(<x5/>)."
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -7186,6 +7206,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Manager는 IDM 사용자들이 익숙한 레이아웃을 유지하고, IDM 목록을 가져오며, 무료 오픈 소스입니다. 평가판, 광고, 가입이 없습니다. 아래에서는 IDM 대신 사람들이 사용하는 다른 9가지 무료 다운로드 관리자를 솔직하게 비교합니다."
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "Linux에서 Vulkan은 그래픽 카드의 Vulkan 드라이버가 필요합니다. AMD 및 Intel의 경우 Mesa(<x1/> Ubuntu 및 Debian, <x2/> 또는 <x3/> Arch) 드라이버, NVIDIA의 경우 NVIDIA 자체 드라이버가 필요합니다."
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage는 AppImage 도구(AppImageLauncher, Gear Lever, AppImageUpdate)를 통해 업데이트할 수도 있습니다. 업데이트 주소를 가지고 있으며, 각 릴리스에는 <x1/> 파일이 있어 해당 도구는 변경된 부분만 다운로드합니다. 이 기능은 버전 0.2.4 이후의 AppImage부터 시작됩니다."
@@ -7678,6 +7702,10 @@
    "source": "torrents on Windows;",
    "text": "Windows의 토렌트;"
   },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "둘 다 시작할 수 없으면 MDM은 소프트웨어 렌더러(Windows에서는 Microsoft, Linux에서는 Mesa)로 그리므로 창이 여전히 열립니다(원격 데스크톱, 그래픽 드라이버가 없는 가상 머신). 작동하지만 프로세서가 더 바빠집니다."
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8068,7 +8096,7 @@
   },
   "cda67136f4731916": {
    "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too.",
-   "text": "각 테마에는 밝은 면과 어두운 면이 있습니다. <g1>다크 모드 지원</g1> 및 <g2>항상 어둡게</g2>는 이전과 같이 이 둘 중 하나를 선택합니다. 테마 폴더(<g3>보기 → 테마 → 테마 폴더 열기</g3>)에 넣은 테마 파일도 여기에 나열됩니다."
+   "text": "각 테마에는 밝은 면과 어두운 면이 있습니다. <g1>다크 모드 지원</g1> 및 <g2>항상 어둡게</g2>는 이전과 같이 이들 중에서 선택합니다. 테마 폴더(<g3>보기 → 테마 → 테마 폴더 열기</g3>)에 넣은 테마 파일도 여기에 나열됩니다."
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -8288,7 +8316,7 @@
   },
   "d351cad9276045ed": {
    "source": "<g1>Classic</g1>: MDM's own look, the default.",
-   "text": "<g1>클래식</g1>: MDM 자체의 기본 모양입니다."
+   "text": "<g1>클래식</g1>: MDM 고유의 모양으로 기본값입니다."
   },
   "d354d0b6bb0bfffe": {
    "source": "Subtitles",
@@ -8772,7 +8800,7 @@
   },
   "e04f69d547a21d71": {
    "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
-   "text": "<g1>기본</g1>: 시스템 색상을 사용합니다. Windows의 강조 색상(설정 → 개인 설정 → 색) 및 활성화된 경우 대비 테마; Linux의 데스크톱 강조 색상 및 고대비 설정(GNOME 47 이상, KDE Plasma); macOS의 강조 색상. 변경 시 이를 따릅니다."
+   "text": "<g1>기본</g1>: 시스템 색상을 따릅니다. Windows의 강조 색상(설정 → 개인 설정 → 색) 및 활성화된 경우 대비 테마; Linux의 데스크톱 강조 색상 및 고대비 설정(GNOME 47 이상, KDE Plasma); macOS의 강조 색상. 변경 시 이를 따릅니다."
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -9766,6 +9794,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "<g1>저장 위치</g1>와 <g2>파일 이름</g2>을 확인하세요. 이름은 비디오 제목에서 가져옵니다. 원하시면 변경하세요."
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>메트로</g1>: Windows 8의 평면적인 모양: 사각형 모서리, 평면 버튼 및 상자, 제목이 중앙에 있는 색상 제목 표시줄(MDM이 그리는 Windows에서), 단색 아이콘(Microsoft의 Fluent UI System Icons)입니다."
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "IDM은 되지만 MDM은 아직 안 되는 기능"
@@ -9797,6 +9829,10 @@
   "fb1900915c99672a": {
    "source": "After a cut connection",
    "text": "연결이 끊긴 후"
+  },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "창은 OpenGL(eframe의 glow) 또는 eframe의 wgpu를 통해 시스템 자체 그래픽 API로 그려지며, 해당 백엔드만 사용합니다: Windows에서는 Direct3D 12(기본값), Linux에서는 Vulkan, macOS에서는 Metal(선택 사항; OpenGL은 기본값으로 유지). 보기 → 다음으로 그리기에서 하나를 선택합니다. 하나의 코드 경로가 모든 시스템에서 이를 수행합니다(<x1/>): 선택한 것이 시작되지 않으면 다른 것이 시도되므로 창은 항상 열립니다. 첫 프레임이 오지 않는 시작 또는 그래픽 카드가 두 번 손실된 경우는 그 이유와 함께 기억되며, 메뉴에 표시됩니다."
   },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",

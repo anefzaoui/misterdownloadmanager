@@ -1,23 +1,29 @@
-//! What draws the windows (#89). On Windows, Direct3D 12 (eframe's wgpu with wgpu's Direct3D 12
-//! backend only) by default, or OpenGL (eframe's glow) when chosen in View → Draw with, from the
-//! next start. Linux and macOS draw with OpenGL only: wgpu isn't built there (its Vulkan and
-//! Metal backends would add size for windows OpenGL already draws well).
+//! What draws the windows (#89, #206): OpenGL (eframe's glow), or the system's own graphics API
+//! through eframe's wgpu with that one backend only ([`GPU`]): Direct3D 12 on Windows, Vulkan on
+//! Linux (Wayland and X11 windows alike), Metal on macOS. View → Draw with picks one, from the
+//! next start. Windows draws with Direct3D by default (#89); Linux and macOS keep OpenGL by
+//! default until Vulkan and Metal have clean reports from real graphics cards (#206), as
+//! Direct3D had before it became Windows' default.
 //!
-//! The windows always open: when the chosen way can't start (no Direct3D 12 driver, a virtual
-//! machine, Remote Desktop), the other is tried, and the reason is logged. A start with Direct3D
-//! that ends before its first frame (a crash or a kill inside the driver) is remembered, and so
-//! is one whose first frame doesn't come within [`FIRST_FRAME_WITHIN`] (MDM starts again, with
-//! OpenGL): the next starts draw with OpenGL until Direct3D is chosen again. A graphics card
-//! lost while MDM runs (a driver update or reset) starts MDM again; a second loss soon after
-//! counts as Direct3D failing.
+//! The windows always open: when the chosen way can't start (no driver for it, a virtual
+//! machine, Remote Desktop), the other is tried, and the reason is logged. A start with the
+//! system's API that ends before its first frame (a crash or a kill inside the driver) is
+//! remembered, and so is one whose first frame doesn't come within [`FIRST_FRAME_WITHIN`] (MDM
+//! starts again, with OpenGL): the next starts draw with OpenGL until that API is chosen again,
+//! and View → Draw with says why. A graphics card lost while MDM runs (a driver update or reset)
+//! starts MDM again; a second loss soon after counts as the API failing. The same code does all
+//! of this on every system: only [`GPU`] and the backend in `gpu::options` differ.
 //!
 //! Testing overrides, in this order: `/renderer <name>` on the command line, then
-//! `MDM_RENDERER=<name>`. Names: `opengl` (`gl`), `direct3d` (`d3d`), `warp` (Direct3D drawn by
-//! Microsoft's software renderer, as on a machine without a graphics driver).
+//! `MDM_RENDERER=<name>`. Names: `opengl` (`gl`); `direct3d` (`d3d`) on Windows, `vulkan` (`vk`)
+//! on Linux, `metal` on macOS, or `gpu` for whichever this system has; `warp` (Windows),
+//! `vulkan-software` (`lavapipe`, Linux) or `software`: the system's API drawn by a software
+//! renderer (Microsoft's WARP, Mesa's lavapipe), as on a computer without a graphics driver.
+//! Another system's name is ignored.
 
 use std::path::PathBuf;
-use std::sync::OnceLock;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Mutex, OnceLock};
 
 use serde::{Deserialize, Serialize};
 
@@ -28,33 +34,80 @@ pub enum Api {
     OpenGl,
     #[serde(rename = "direct3d")]
     Direct3D,
+    #[serde(rename = "vulkan")]
+    Vulkan,
+    #[serde(rename = "metal")]
+    Metal,
 }
 
+impl Api {
+    /// Its name in the log and the crash reports (the menu's are translated texts, app.rs).
+    pub fn name(self) -> &'static str {
+        match self {
+            Api::OpenGl => "OpenGL",
+            Api::Direct3D => "Direct3D 12",
+            Api::Vulkan => "Vulkan",
+            Api::Metal => "Metal",
+        }
+    }
+
+    /// The first part of its files' names in the data folder (`direct3d-failed.txt`…).
+    fn key(self) -> &'static str {
+        match self {
+            Api::OpenGl => "opengl",
+            Api::Direct3D => "direct3d",
+            Api::Vulkan => "vulkan",
+            Api::Metal => "metal",
+        }
+    }
+}
+
+/// The system's own graphics API, through wgpu (build.rs sets `gpu` where wgpu is built):
+/// Direct3D 12 on Windows, Vulkan on Linux, Metal on macOS. None elsewhere (the BSDs: OpenGL
+/// only).
+pub const GPU: Option<Api> = if !cfg!(gpu) {
+    None
+} else if cfg!(windows) {
+    Some(Api::Direct3D)
+} else if cfg!(target_os = "macos") {
+    Some(Api::Metal)
+} else {
+    Some(Api::Vulkan)
+};
+
 /// What draws when the user chose nothing (the settings' `renderer: None`): Direct3D on Windows
-/// (#89), OpenGL elsewhere (the only one built there).
+/// (#89), OpenGL elsewhere (#206: Vulkan and Metal are choices until real cards have tried them).
 pub const DEFAULT: Api = if cfg!(windows) {
     Api::Direct3D
 } else {
     Api::OpenGl
 };
 
-/// How long a watched Direct3D start may take to its first frame before MDM starts again with
-/// OpenGL (a driver stuck in its first present, a window that never shows). Generous: a slow
-/// computer just after it starts (#57) can take seconds.
-#[cfg(windows)]
+/// What the setting means here: OpenGL, or this system's API; [`DEFAULT`] when nothing was
+/// chosen, or another system's API was (a settings file brought from another computer).
+pub fn chosen(setting: Option<Api>) -> Api {
+    setting
+        .filter(|&a| a == Api::OpenGl || Some(a) == GPU)
+        .unwrap_or(DEFAULT)
+}
+
+/// How long a watched start with the system's API may take to its first frame before MDM starts
+/// again with OpenGL (a driver stuck in its first present, a window that never shows). Generous:
+/// a slow computer just after it starts (#57) can take seconds.
+#[cfg(gpu)]
 const FIRST_FRAME_WITHIN: std::time::Duration = std::time::Duration::from_secs(10);
 
-/// Which graphics adapters a Direct3D start may use.
+/// Which graphics adapters a start with the system's API may use.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Adapters {
     /// A graphics card's driver only.
     Hardware,
-    /// Microsoft's software renderer (WARP) only.
+    /// A software renderer only (Microsoft's WARP, Mesa's lavapipe).
     Software,
-    /// A card first, else WARP: the last way to open the windows at all.
+    /// A card first, else a software renderer: the last way to open the windows at all.
     Any,
-    /// None at all: Direct3D fails to start (`MDM_RENDERER=direct3d-none` in off-screen test
-    /// copies, to check the way back to OpenGL).
+    /// None at all: the API fails to start (`MDM_RENDERER=gpu-none`, or `direct3d-none`…, in
+    /// off-screen test copies, to check the way back to OpenGL).
     Nothing,
 }
 
@@ -62,79 +115,95 @@ pub enum Adapters {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Attempt {
     OpenGl,
-    Direct3D(Adapters),
+    /// The system's API ([`GPU`]).
+    Gpu(Adapters),
 }
 
 impl Attempt {
     pub fn api(self) -> Api {
         match self {
             Attempt::OpenGl => Api::OpenGl,
-            Attempt::Direct3D(_) => Api::Direct3D,
+            Attempt::Gpu(_) => GPU.unwrap_or(Api::OpenGl),
         }
     }
 
     fn name(self) -> &'static str {
-        match self {
-            Attempt::OpenGl => "OpenGL",
-            Attempt::Direct3D(Adapters::Software) => "Direct3D 12 (WARP)",
-            Attempt::Direct3D(_) => "Direct3D 12",
+        match (self, GPU) {
+            (Attempt::OpenGl, _) | (_, None) => "OpenGL",
+            (Attempt::Gpu(Adapters::Software), Some(Api::Direct3D)) => "Direct3D 12 (WARP)",
+            (Attempt::Gpu(Adapters::Software), Some(Api::Vulkan)) => "Vulkan (software)",
+            (Attempt::Gpu(Adapters::Software), Some(Api::Metal)) => "Metal (software)",
+            (Attempt::Gpu(_), Some(api)) => api.name(),
         }
     }
 }
 
-/// A testing override's name.
+/// A testing override's name. Another system's API isn't built here: no attempt.
 fn parse(name: &str) -> Option<Attempt> {
-    match name.trim().to_ascii_lowercase().as_str() {
-        "opengl" | "gl" | "glow" => Some(Attempt::OpenGl),
-        "direct3d" | "d3d" | "d3d12" | "dx12" | "wgpu" => {
-            Some(Attempt::Direct3D(Adapters::Hardware))
-        }
-        "warp" => Some(Attempt::Direct3D(Adapters::Software)),
-        "direct3d-none" if crate::offscreen() => Some(Attempt::Direct3D(Adapters::Nothing)),
-        _ => None,
+    let name = name.trim().to_ascii_lowercase();
+    // `<name>-none` (off-screen test copies): that API, with no adapter at all.
+    if let Some(base) = name.strip_suffix("-none") {
+        return match parse(base) {
+            Some(Attempt::Gpu(_)) if crate::offscreen() => Some(Attempt::Gpu(Adapters::Nothing)),
+            _ => None,
+        };
     }
+    let (api, adapters) = match name.as_str() {
+        "opengl" | "gl" | "glow" => return Some(Attempt::OpenGl),
+        "direct3d" | "d3d" | "d3d12" | "dx12" => (Some(Api::Direct3D), Adapters::Hardware),
+        "warp" => (Some(Api::Direct3D), Adapters::Software),
+        "vulkan" | "vk" => (Some(Api::Vulkan), Adapters::Hardware),
+        "vulkan-software" | "lavapipe" => (Some(Api::Vulkan), Adapters::Software),
+        "metal" => (Some(Api::Metal), Adapters::Hardware),
+        "gpu" | "wgpu" => (GPU, Adapters::Hardware),
+        "software" => (GPU, Adapters::Software),
+        _ => return None,
+    };
+    (api.is_some() && api == GPU).then_some(Attempt::Gpu(adapters))
 }
 
-/// The ways to try, in order, and whether the first is the user's Direct3D (whose start is
-/// watched: see [`begin`]).
+/// The ways to try, in order, and whether the first is the user's choice of the system's API
+/// (whose start is watched: see [`run`]).
 #[derive(Debug, PartialEq, Eq)]
 pub struct Plan {
     pub attempts: Vec<Attempt>,
     pub watched: bool,
 }
 
-/// What to try: the override if any, else the setting (or [`DEFAULT`]) unless Direct3D failed
-/// here before; then the other way. A graphics card's Direct3D falls back to OpenGL, then to
-/// Direct3D on Microsoft's software renderer (Remote Desktop, a virtual machine: no card's
-/// driver, and Windows' own OpenGL 1.1 can't draw MDM). Only OpenGL where Direct3D isn't built.
+/// What to try: the override if any, else the setting (or [`DEFAULT`]) unless the system's API
+/// failed here before; then the other way. A graphics card's API falls back to OpenGL, then to
+/// the API on a software renderer (Remote Desktop, a virtual machine: no card's driver, and
+/// Windows' own OpenGL 1.1 can't draw MDM). Only OpenGL where wgpu isn't built.
 pub fn plan(setting: Option<Api>, overridden: Option<&str>, failed_before: bool) -> Plan {
     let forced = overridden.and_then(|o| {
         let a = parse(o);
         if a.is_none() {
-            tracing::warn!("unknown renderer {o:?} (opengl, direct3d, warp): not used");
+            tracing::warn!(
+                "unknown renderer {o:?} (here: opengl{}): not used",
+                GPU.map(|g| format!(", {}, software", g.key()))
+                    .unwrap_or_default()
+            );
         }
         a
     });
-    let chosen = setting.unwrap_or(DEFAULT);
     let first = match forced {
         Some(a) => a,
-        None if chosen == Api::Direct3D && !failed_before => Attempt::Direct3D(Adapters::Hardware),
+        None if Some(chosen(setting)) == GPU && !failed_before => Attempt::Gpu(Adapters::Hardware),
         None => Attempt::OpenGl,
     };
     let then: &[Attempt] = match first {
-        Attempt::OpenGl => &[Attempt::Direct3D(Adapters::Any)],
-        Attempt::Direct3D(Adapters::Hardware) if forced.is_none() => {
-            &[Attempt::OpenGl, Attempt::Direct3D(Adapters::Software)]
+        Attempt::OpenGl => &[Attempt::Gpu(Adapters::Any)],
+        Attempt::Gpu(Adapters::Hardware) if forced.is_none() => {
+            &[Attempt::OpenGl, Attempt::Gpu(Adapters::Software)]
         }
-        Attempt::Direct3D(_) => &[Attempt::OpenGl],
+        Attempt::Gpu(_) => &[Attempt::OpenGl],
     };
     let attempts: Vec<Attempt> = std::iter::once(first)
         .chain(then.iter().copied())
-        .filter(|a| cfg!(windows) || *a == Attempt::OpenGl)
+        .filter(|a| GPU.is_some() || *a == Attempt::OpenGl)
         .collect();
     Plan {
-        watched: forced.is_none()
-            && attempts.first() == Some(&Attempt::Direct3D(Adapters::Hardware)),
+        watched: forced.is_none() && attempts.first() == Some(&Attempt::Gpu(Adapters::Hardware)),
         attempts,
     }
 }
@@ -152,48 +221,103 @@ pub fn overridden(args: &[String]) -> Option<String> {
         .filter(|s| !s.trim().is_empty())
 }
 
-// ---- Remembering a Direct3D start that never drew ------------------------------------------
+// ---- Remembering a start that never drew --------------------------------------------------
 
-/// Written before a watched Direct3D start, removed once its first frame is drawn.
-const STARTING: &str = "direct3d-starting";
-/// Why Direct3D couldn't draw here; while it is there, OpenGL draws.
-const FAILED: &str = "direct3d-failed.txt";
+/// Written before a watched start with the system's API, removed once its first frame is drawn.
+const STARTING: &str = "starting";
+/// Why the system's API couldn't draw here; while it is there, OpenGL draws.
+const FAILED: &str = "failed.txt";
 
-/// Direct3D failed here (before this start, or in it) and wasn't chosen again since.
-static DIRECT3D_FAILED: AtomicBool = AtomicBool::new(false);
-
-/// For View → Draw with's note (Windows: the menu is there only).
-#[cfg(windows)]
-pub fn direct3d_failed() -> bool {
-    DIRECT3D_FAILED.load(Ordering::Relaxed)
+/// Why the system's API couldn't draw here, for View → Draw with's note.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Why {
+    /// No adapter for it (no driver; only a software renderer when a card was wanted), or no
+    /// way to draw to the window with it.
+    NoAdapter,
+    /// Its first frame didn't come within [`FIRST_FRAME_WITHIN`].
+    NoFirstFrame,
+    /// A start with it ended before its first frame (a crash or a kill in the driver).
+    EndedEarly,
+    /// The graphics card was lost twice within 10 minutes.
+    LostTwice,
+    /// Anything else (the log has eframe's error).
+    Other,
 }
 
+impl Why {
+    const ALL: [Why; 5] = [
+        Why::NoAdapter,
+        Why::NoFirstFrame,
+        Why::EndedEarly,
+        Why::LostTwice,
+        Why::Other,
+    ];
+
+    /// Its first line in the failure file.
+    fn key(self) -> &'static str {
+        match self {
+            Why::NoAdapter => "no-adapter",
+            Why::NoFirstFrame => "no-first-frame",
+            Why::EndedEarly => "ended-early",
+            Why::LostTwice => "lost-twice",
+            Why::Other => "other",
+        }
+    }
+
+    /// A failure file's text: its reason's key, then the details on the next line. An older
+    /// one (one line of details, from MDM 0.3 on Windows) is `Other`.
+    fn read(text: &str) -> (Why, &str) {
+        let (first, rest) = text.trim().split_once('\n').unwrap_or((text.trim(), ""));
+        match Why::ALL.into_iter().find(|w| w.key() == first.trim()) {
+            Some(w) => (w, rest.trim()),
+            None => (Why::Other, text.trim()),
+        }
+    }
+}
+
+/// The system's API failed here (before this start, or in it) and wasn't chosen again since:
+/// why.
+static GPU_FAILED: Mutex<Option<Why>> = Mutex::new(None);
+
+fn set_failed(why: Option<Why>) {
+    if let Ok(mut f) = GPU_FAILED.lock() {
+        *f = why;
+    }
+}
+
+/// For View → Draw with's note: why the system's API doesn't draw here, if it failed.
+#[cfg(gpu)]
+pub fn gpu_failed() -> Option<Why> {
+    GPU_FAILED.lock().ok().and_then(|f| *f)
+}
+
+/// The system's API's file `name` in the data folder (`direct3d-failed.txt`,
+/// `vulkan-starting`…). None where there is no such API.
 fn file(name: &str) -> Option<PathBuf> {
-    mdm_ipc::data_dir().map(|d| d.join(name))
+    let key = GPU?.key();
+    mdm_ipc::data_dir().map(|d| d.join(format!("{key}-{name}")))
 }
 
-/// Why Direct3D failed here before, if it did. A start that left its marker behind ended before
-/// its first frame: that becomes the reason.
+/// Why the system's API failed here before, if it did. A start that left its marker behind
+/// ended before its first frame: that becomes the reason.
 pub fn failed_before() -> Option<String> {
     let (starting, failed) = (file(STARTING)?, file(FAILED)?);
+    let api = GPU?.name();
     if starting.exists() {
-        let why = "the last start with Direct3D ended before its first frame";
-        tracing::warn!("Direct3D: {why}; drawing with OpenGL until it is chosen again");
-        let _ = std::fs::write(&failed, why);
+        let why = format!("the last start with {api} ended before its first frame");
+        tracing::warn!("{api}: {why}; drawing with OpenGL until it is chosen again");
+        remember_failure(Why::EndedEarly, &why);
         let _ = std::fs::remove_file(&starting);
     }
-    let why = std::fs::read_to_string(&failed)
-        .ok()
-        .map(|s| s.trim().to_owned());
-    if let Some(why) = &why {
-        tracing::info!("Direct3D failed here before ({why})");
-        DIRECT3D_FAILED.store(true, Ordering::Relaxed);
-    }
-    why
+    let text = std::fs::read_to_string(&failed).ok()?;
+    let (why, details) = Why::read(&text);
+    tracing::info!("{api} failed here before ({why:?}: {details})");
+    set_failed(Some(why));
+    Some(details.to_owned())
 }
 
-/// Has Direct3D failed here, or is a start with it not yet drawn? Only looks (the crash monitor:
-/// its report may be about that start).
+/// Has the system's API failed here, or is a start with it not yet drawn? Only looks (the crash
+/// monitor: its report may be about that start).
 pub fn suspect() -> bool {
     [STARTING, FAILED]
         .into_iter()
@@ -201,17 +325,17 @@ pub fn suspect() -> bool {
         .any(|f| f.exists())
 }
 
-/// Direct3D could not start: remembered with its reason.
-fn remember_failure(why: &str) {
+/// The system's API could not start: remembered with its reason.
+fn remember_failure(why: Why, details: &str) {
     if let Some(f) = file(FAILED) {
-        let _ = std::fs::write(f, why);
+        let _ = std::fs::write(f, format!("{}\n{details}", why.key()));
     }
 }
 
-/// Direct3D chosen again (View → Draw with): its next start is tried.
-#[cfg(windows)]
+/// The system's API chosen again (View → Draw with): its next start is tried.
+#[cfg(gpu)]
 pub fn forget_failure() {
-    DIRECT3D_FAILED.store(false, Ordering::Relaxed);
+    set_failed(None);
     for name in [FAILED, STARTING] {
         if let Some(f) = file(name) {
             let _ = std::fs::remove_file(f);
@@ -224,10 +348,10 @@ fn testing(name: &str) -> bool {
     crate::offscreen() && std::env::var_os(name).is_some_and(|v| v == "1")
 }
 
-/// The start of every main-window pass: Direct3D's device checked (see `direct3d::poll`).
+/// The start of every main-window pass: the system's API's device checked (see `gpu::poll`).
 pub fn frame_begin() {
-    #[cfg(windows)]
-    direct3d::poll();
+    #[cfg(gpu)]
+    gpu::poll();
 }
 
 /// The first frame was drawn (presented).
@@ -235,7 +359,7 @@ static DRAWN: AtomicBool = AtomicBool::new(false);
 
 /// The end of every main-window pass. Once a frame has been completed before this one (egui's
 /// frame count, not its passes: a first frame can run two), the first was drawn: a watched
-/// Direct3D start made it.
+/// start made it.
 pub fn frame_done(ctx: &egui::Context) {
     if DRAWN.load(Ordering::Relaxed) || ctx.cumulative_frame_nr() == 0 {
         return;
@@ -268,9 +392,29 @@ fn since_start() -> u128 {
 /// What draws now (set once the window started), for View → Draw with.
 static ACTIVE: OnceLock<Api> = OnceLock::new();
 
-#[cfg(windows)]
+#[cfg(gpu)]
 pub fn active() -> Option<Api> {
     ACTIVE.get().copied()
+}
+
+/// Why a start with the system's API failed, from eframe's error: no adapter or surface for it
+/// (no driver, `VK_ICD_FILENAMES` pointing at nothing, only a software renderer when a card was
+/// wanted), or something else.
+fn why_failed(e: &eframe::Error) -> Why {
+    #[cfg(gpu)]
+    {
+        use eframe::egui_wgpu::WgpuError;
+        if let eframe::Error::Wgpu(
+            WgpuError::CustomNativeAdapterSelectionError(_)
+            | WgpuError::RequestAdapterError(_)
+            | WgpuError::CreateSurfaceError(_),
+        ) = e
+        {
+            return Why::NoAdapter;
+        }
+    }
+    let _ = e;
+    Why::Other
 }
 
 /// Run eframe's window with each way of the plan until one starts. `options` makes the window's
@@ -292,13 +436,13 @@ pub fn run<A: eframe::App + 'static>(
         {
             let _ = std::fs::write(f, "");
         }
-        // A watched Direct3D start must show its first frame in time, or MDM starts again.
-        #[cfg(windows)]
+        // A watched start must show its first frame in time, or MDM starts again.
+        #[cfg(gpu)]
         if n == 0 && plan.watched {
-            direct3d::watch_first_frame();
+            gpu::watch_first_frame();
         }
-        #[cfg(windows)]
-        direct3d::TRYING.store(attempt.api() == Api::Direct3D, Ordering::Relaxed);
+        #[cfg(gpu)]
+        gpu::TRYING.store(attempt != Attempt::OpenGl, Ordering::Relaxed);
         let mut opts = options();
         configure(&mut opts, attempt);
         tracing::info!("drawing with {}", attempt.name());
@@ -320,13 +464,14 @@ pub fn run<A: eframe::App + 'static>(
         }
         let why = format!("{} didn't start: {e}", attempt.name());
         tracing::warn!("{why}");
-        if attempt.api() == Api::Direct3D {
-            DIRECT3D_FAILED.store(true, Ordering::Relaxed);
-        }
-        if attempt.api() == Api::Direct3D && n == 0 && plan.watched {
-            remember_failure(&format!("{e}"));
-            if let Some(f) = file(STARTING) {
-                let _ = std::fs::remove_file(f);
+        if attempt != Attempt::OpenGl {
+            let reason = why_failed(e);
+            set_failed(Some(reason));
+            if n == 0 && plan.watched {
+                remember_failure(reason, &format!("{e}"));
+                if let Some(f) = file(STARTING) {
+                    let _ = std::fs::remove_file(f);
+                }
             }
         }
         instead = Some(why);
@@ -347,25 +492,25 @@ fn configure(opts: &mut eframe::NativeOptions, attempt: Attempt) {
                 opts.stencil_buffer = 255;
             }
         }
-        #[cfg(windows)]
-        Attempt::Direct3D(adapters) => {
+        #[cfg(gpu)]
+        Attempt::Gpu(adapters) => {
             opts.renderer = eframe::Renderer::Wgpu;
-            opts.wgpu_options = direct3d::options(adapters);
+            opts.wgpu_options = gpu::options(adapters);
         }
         // Not built here (plan() never asks for it).
-        #[cfg(not(windows))]
-        Attempt::Direct3D(_) => opts.renderer = eframe::Renderer::Glow,
+        #[cfg(not(gpu))]
+        Attempt::Gpu(_) => opts.renderer = eframe::Renderer::Glow,
     }
 }
 
 /// The app is being made: what draws is known.
 fn started(cc: &eframe::CreationContext<'_>, attempt: Attempt, instead: Option<String>) {
-    #[cfg(windows)]
+    #[cfg(gpu)]
     let detail = match &cc.wgpu_render_state {
-        Some(rs) => direct3d::describe(&rs.adapter.get_info()),
+        Some(rs) => gpu::describe(&rs.adapter.get_info()),
         None => attempt.name().to_owned(),
     };
-    #[cfg(not(windows))]
+    #[cfg(not(gpu))]
     let detail = {
         let _ = cc;
         attempt.name().to_owned()
@@ -381,36 +526,42 @@ fn started(cc: &eframe::CreationContext<'_>, attempt: Attempt, instead: Option<S
     // The crash reports say it ("Direct3D 12 on Intel(R) UHD Graphics 620 (driver …)").
     crate::crash::renderer(&detail);
     // Errors are logged, not panics, and a lost graphics card starts MDM again.
-    #[cfg(windows)]
+    #[cfg(gpu)]
     if let Some(rs) = &cc.wgpu_render_state {
-        direct3d::watch_device(&rs.device);
+        gpu::watch_device(&rs.device);
     }
     let _ = ACTIVE.set(attempt.api());
 }
 
-/// `/show renderer-lost` (off-screen test copies): Direct3D's device lost on purpose (MDM starts
-/// again).
-#[cfg(windows)]
+/// `/show renderer-lost` (off-screen test copies): the system's API's device lost on purpose
+/// (MDM starts again).
+#[cfg(gpu)]
 pub fn test_device_lost() {
-    direct3d::lose_device();
+    gpu::lose_device();
 }
 
-/// eframe's wgpu set up for Direct3D 12 only.
-#[cfg(windows)]
-mod direct3d {
-    use super::{Adapters, DRAWN, FIRST_FRAME_WITHIN, file, remember_failure};
+/// eframe's wgpu set up for the system's API only: Direct3D 12, Vulkan or Metal.
+#[cfg(gpu)]
+mod gpu {
+    use super::{Adapters, DRAWN, FIRST_FRAME_WITHIN, GPU, Why, file, remember_failure, testing};
     use eframe::egui_wgpu::{WgpuConfiguration, WgpuSetup, WgpuSetupCreateNew};
     use eframe::wgpu;
     use std::sync::Arc;
     use std::sync::atomic::{AtomicBool, Ordering};
     use std::time::{Duration, Instant, SystemTime};
 
-    /// The try under way is Direct3D's (a failed one goes on to OpenGL in the same process).
+    /// The API's name in the log and the crash reports.
+    fn api() -> &'static str {
+        GPU.map_or("wgpu", |g| g.name())
+    }
+
+    /// The try under way is the system's API's (a failed one goes on to OpenGL in the same
+    /// process).
     pub static TRYING: AtomicBool = AtomicBool::new(false);
 
-    /// The first frame of this Direct3D start must come within [`FIRST_FRAME_WITHIN`]; if it
-    /// doesn't (a driver stuck in its first present, a window left black), Direct3D is
-    /// remembered as failed and MDM starts again, drawing with OpenGL.
+    /// The first frame of this start must come within [`FIRST_FRAME_WITHIN`]; if it doesn't (a
+    /// driver stuck in its first present, a window left black), the API is remembered as failed
+    /// and MDM starts again, drawing with OpenGL.
     pub fn watch_first_frame() {
         let _ = std::thread::Builder::new()
             .name("first frame watch".into())
@@ -426,10 +577,11 @@ mod direct3d {
                     return;
                 }
                 let why = format!(
-                    "Direct3D drew no first frame within {} s",
+                    "{} drew no first frame within {} s",
+                    api(),
                     FIRST_FRAME_WITHIN.as_secs()
                 );
-                remember_failure(&why);
+                remember_failure(Why::NoFirstFrame, &why);
                 // Remembered as this reason, not as a start that ended before its first frame.
                 if let Some(f) = file(super::STARTING) {
                     let _ = std::fs::remove_file(f);
@@ -438,17 +590,18 @@ mod direct3d {
             });
     }
 
-    /// When the graphics card is lost twice this close together, Direct3D counts as failing.
+    /// When the graphics card is lost twice this close together, the API counts as failing.
     const LOST_AGAIN_WITHIN: Duration = Duration::from_secs(600);
     /// When the card was last lost (its time inside).
-    const LOST: &str = "direct3d-lost";
+    const LOST: &str = "lost";
 
     /// wgpu's errors go to the log instead of ending MDM (its default handler panics), and a
-    /// device lost while MDM runs (a driver update or reset: Direct3D 12 doesn't recover) starts
-    /// MDM again, with Direct3D, or with OpenGL after a second loss within 10 minutes.
+    /// device lost while MDM runs (a driver update or reset: none of the three APIs recovers
+    /// by itself) starts MDM again, with the same API, or with OpenGL after a second loss
+    /// within 10 minutes.
     pub fn watch_device(device: &wgpu::Device) {
         device.on_uncaptured_error(Arc::new(|e| {
-            tracing::error!("Direct3D: {e}");
+            tracing::error!("{}: {e}", api());
         }));
         device.set_device_lost_callback(|reason, message| {
             let testing = TEST_LOSS.load(Ordering::Relaxed);
@@ -463,7 +616,7 @@ mod direct3d {
                 .and_then(|f| std::fs::read_to_string(f).ok())
                 .and_then(|t| t.trim().parse::<u64>().ok());
             if last.is_some_and(|t| now.saturating_sub(t) < LOST_AGAIN_WITHIN.as_secs()) {
-                remember_failure(&format!("{why}, twice within 10 minutes"));
+                remember_failure(Why::LostTwice, &format!("{why}, twice within 10 minutes"));
             } else if let Some(f) = file(LOST) {
                 let _ = std::fs::write(f, now.to_string());
             }
@@ -496,7 +649,12 @@ mod direct3d {
     /// an update), and draws as the failure markers now say.
     fn start_again(why: &str) {
         tracing::warn!("{why}: starting MDM again");
-        let started = std::env::current_exe().ok().and_then(|exe| {
+        // The AppImage file itself on Linux (this program sits in its temporary mount).
+        #[cfg(windows)]
+        let program = std::env::current_exe().ok();
+        #[cfg(unix)]
+        let program = crate::unix::program();
+        let started = program.and_then(|exe| {
             std::process::Command::new(exe)
                 .arg(crate::update::UPDATED)
                 // An override would bring the same failure back.
@@ -509,25 +667,41 @@ mod direct3d {
         }
         crate::crash::clean_exit();
         // The window thread may be stuck in the driver: end at once, without unwinding.
+        #[cfg(windows)]
         crate::win32::end_process(std::process::id());
+        #[cfg(unix)]
+        crate::unix::end_process(std::process::id());
         std::process::exit(1);
     }
 
     pub fn options(adapters: Adapters) -> WgpuConfiguration {
         let mut setup = WgpuSetupCreateNew::without_display_handle();
         let desc = &mut setup.instance_descriptor;
-        // Direct3D 12 only, and nothing from WGPU_* variables: what draws is MDM's choice.
-        desc.backends = wgpu::Backends::DX12;
+        // The system's API only, and nothing from WGPU_* variables: what draws is MDM's choice.
         desc.flags = wgpu::InstanceFlags::from_build_config();
-        desc.backend_options = wgpu::BackendOptions {
-            dx12: wgpu::Dx12BackendOptions {
-                // Windows' own compiler (d3dcompiler_47.dll): no dxcompiler.dll looked for on
-                // the PATH, where any program could have put one.
-                shader_compiler: wgpu::Dx12Compiler::Fxc,
+        #[cfg(windows)]
+        {
+            desc.backends = wgpu::Backends::DX12;
+            desc.backend_options = wgpu::BackendOptions {
+                dx12: wgpu::Dx12BackendOptions {
+                    // Windows' own compiler (d3dcompiler_47.dll): no dxcompiler.dll looked for
+                    // on the PATH, where any program could have put one.
+                    shader_compiler: wgpu::Dx12Compiler::Fxc,
+                    ..Default::default()
+                },
                 ..Default::default()
-            },
-            ..Default::default()
-        };
+            };
+        }
+        // Vulkan's loader still reads its own variables (VK_ICD_FILENAMES, VK_LOADER_*): the
+        // system's way to pick a driver, and the lab's to take it away (#206).
+        #[cfg(target_os = "linux")]
+        {
+            desc.backends = wgpu::Backends::VULKAN;
+        }
+        #[cfg(target_os = "macos")]
+        {
+            desc.backends = wgpu::Backends::METAL;
+        }
         setup.power_preference = wgpu::PowerPreference::LowPower;
         setup.native_adapter_selector = Some(Arc::new(move |list, surface| {
             let kinds: Vec<(wgpu::DeviceType, bool)> = list
@@ -537,16 +711,17 @@ mod direct3d {
                     (a.get_info().device_type, fits)
                 })
                 .collect();
-            match super::choose(&kinds, adapters) {
+            match super::choose(&kinds, adapters, cfg!(target_os = "macos")) {
                 Some(i) => Ok(list[i].clone()),
                 None => Err(format!(
-                    "no {} Direct3D 12 adapter among [{}]",
+                    "no {} {} adapter among [{}]",
                     match adapters {
                         Adapters::Hardware => "hardware",
-                        Adapters::Software => "software (WARP)",
+                        Adapters::Software => "software",
                         Adapters::Any => "usable",
                         Adapters::Nothing => "(none wanted)",
                     },
+                    api(),
                     list.iter()
                         .map(|a| describe(&a.get_info()))
                         .collect::<Vec<_>>()
@@ -561,7 +736,8 @@ mod direct3d {
                 max_texture_dimension_2d: 8192,
                 // Direct3D 12 keeps one descriptor heap this large, in the graphics card's memory
                 // and a copy in MDM's: wgpu's default (a million, 32 MB each) is for games. egui
-                // uses one per texture (icons, fonts, file icons): a few hundred.
+                // uses one per texture (icons, fonts, file icons): a few hundred. (Vulkan and
+                // Metal size their pools by use; the cap costs them nothing.)
                 max_non_sampler_bindings: 65_536,
                 ..wgpu::Limits::default()
             },
@@ -570,6 +746,10 @@ mod direct3d {
             memory_hints: wgpu::MemoryHints::MemoryUsage,
             ..Default::default()
         });
+        // A software renderer as a card (MDM_TEST_SOFTWARE_CARD=1) is said in the log.
+        if testing("MDM_TEST_SOFTWARE_CARD") {
+            tracing::info!("testing: a software renderer counts as a graphics card");
+        }
         WgpuConfiguration {
             wgpu_setup: WgpuSetup::CreateNew(setup),
             ..Default::default()
@@ -577,7 +757,7 @@ mod direct3d {
     }
 
     pub fn describe(info: &wgpu::AdapterInfo) -> String {
-        let mut s = format!("Direct3D 12 on {}", info.name);
+        let mut s = format!("{} on {}", api(), info.name);
         let driver = [&info.driver, &info.driver_info]
             .into_iter()
             .filter(|d| !d.is_empty())
@@ -595,21 +775,39 @@ mod direct3d {
 }
 
 /// The adapter to draw with, among (kind, can draw to the window) in the system's order (the
-/// one showing the main screen first): the first fitting one of the kinds `adapters` allows.
-#[cfg(windows)]
-fn choose(list: &[(eframe::wgpu::DeviceType, bool)], adapters: Adapters) -> Option<usize> {
+/// one showing the main screen first on Windows; Mesa's device-select layer puts the default
+/// one, or `DRI_PRIME`'s, first on Linux): the first fitting one of the kinds `adapters`
+/// allows. `integrated_first` (macOS, whose order puts no card first): of the cards, a built-in
+/// one before a separate one, as macOS itself picks for a program that asks for little, so a
+/// Mac's separate card can sleep.
+#[cfg(gpu)]
+fn choose(
+    list: &[(eframe::wgpu::DeviceType, bool)],
+    adapters: Adapters,
+    integrated_first: bool,
+) -> Option<usize> {
     use eframe::wgpu::DeviceType;
-    // MDM_TEST_NO_HARDWARE=1 (off-screen test copies): no graphics card's Direct3D 12, only
-    // Microsoft's software renderer, as over Remote Desktop.
+    // MDM_TEST_NO_HARDWARE=1 (off-screen test copies): no graphics card's driver, only a
+    // software renderer, as over Remote Desktop. MDM_TEST_SOFTWARE_CARD=1: the other way, a
+    // software renderer taken for a card (lavapipe in the lab's virtual machines, which have no
+    // graphics card, to check what a card's start does).
     let no_card = testing("MDM_TEST_NO_HARDWARE");
-    let hardware = |t: DeviceType| t != DeviceType::Cpu && !no_card;
+    let soft_card = testing("MDM_TEST_SOFTWARE_CARD");
+    let hardware = |t: DeviceType| (t != DeviceType::Cpu || soft_card) && !no_card;
+    let integrated = |t: DeviceType| t == DeviceType::IntegratedGpu && !no_card;
     let software = |t: DeviceType| t == DeviceType::Cpu;
     let first =
         |want: &dyn Fn(DeviceType) -> bool| list.iter().position(|&(t, fits)| fits && want(t));
+    let card = || {
+        integrated_first
+            .then(|| first(&integrated))
+            .flatten()
+            .or_else(|| first(&hardware))
+    };
     match adapters {
-        Adapters::Hardware => first(&hardware),
+        Adapters::Hardware => card(),
         Adapters::Software => first(&software),
-        Adapters::Any => first(&hardware).or_else(|| first(&software)),
+        Adapters::Any => card().or_else(|| first(&software)),
         Adapters::Nothing => None,
     }
 }
@@ -620,52 +818,109 @@ mod tests {
 
     #[test]
     fn the_setting_or_an_override_then_the_other_way() {
-        let d3d = Attempt::Direct3D(Adapters::Hardware);
-        let any = Attempt::Direct3D(Adapters::Any);
-        if cfg!(windows) {
-            // Nothing chosen: Direct3D (#89), its start watched; OpenGL behind it, then WARP.
-            let warp = Attempt::Direct3D(Adapters::Software);
-            let p = plan(None, None, false);
-            assert_eq!(p.attempts, [d3d, Attempt::OpenGl, warp]);
-            assert!(p.watched);
-            // Direct3D chosen: the same.
-            let p = plan(Some(Api::Direct3D), None, false);
-            assert_eq!(p.attempts, [d3d, Attempt::OpenGl, warp]);
-            assert!(p.watched);
-            // ... unless it failed here before, chosen or by default.
-            for setting in [None, Some(Api::Direct3D)] {
-                let p = plan(setting, None, true);
-                assert_eq!(p.attempts, [Attempt::OpenGl, any]);
-                assert!(!p.watched);
-            }
-            // OpenGL chosen: kept, Direct3D only if OpenGL can't start.
-            let p = plan(Some(Api::OpenGl), None, false);
-            assert_eq!(p.attempts, [Attempt::OpenGl, any]);
-            assert!(!p.watched);
-            // Overrides win, failure or not, and aren't watched.
-            let p = plan(Some(Api::OpenGl), Some("D3D"), true);
-            assert_eq!(p.attempts, [d3d, Attempt::OpenGl]);
-            assert!(!p.watched);
-            let p = plan(Some(Api::Direct3D), Some("gl"), false);
-            assert_eq!(p.attempts, [Attempt::OpenGl, any]);
-            let p = plan(None, Some("warp"), false);
-            assert_eq!(
-                p.attempts,
-                [Attempt::Direct3D(Adapters::Software), Attempt::OpenGl]
-            );
-            // An unknown name is ignored.
-            assert_eq!(plan(None, Some("vulkan"), false).attempts[0], d3d);
-        } else {
-            // Direct3D isn't built: OpenGL whatever was asked.
+        let gpu = Attempt::Gpu(Adapters::Hardware);
+        let any = Attempt::Gpu(Adapters::Any);
+        let soft = Attempt::Gpu(Adapters::Software);
+        let Some(api) = GPU else {
+            // No wgpu here: OpenGL whatever was asked.
             for p in [
                 plan(None, None, false),
-                plan(Some(Api::Direct3D), None, false),
-                plan(None, Some("d3d"), false),
+                plan(Some(Api::Vulkan), None, false),
+                plan(None, Some("gpu"), false),
             ] {
                 assert_eq!(p.attempts, [Attempt::OpenGl]);
                 assert!(!p.watched);
             }
+            return;
+        };
+        // The system's API chosen: it, watched; OpenGL behind it, then a software renderer.
+        let p = plan(Some(api), None, false);
+        assert_eq!(p.attempts, [gpu, Attempt::OpenGl, soft]);
+        assert!(p.watched);
+        // ... unless it failed here before.
+        let p = plan(Some(api), None, true);
+        assert_eq!(p.attempts, [Attempt::OpenGl, any]);
+        assert!(!p.watched);
+        // Nothing chosen: Direct3D on Windows (#89), OpenGL on Linux and macOS (#206).
+        let p = plan(None, None, false);
+        if cfg!(windows) {
+            assert_eq!(p.attempts, [gpu, Attempt::OpenGl, soft]);
+            assert!(p.watched);
+            assert_eq!(plan(None, None, true).attempts, [Attempt::OpenGl, any]);
+        } else {
+            assert_eq!(p.attempts, [Attempt::OpenGl, any]);
+            assert!(!p.watched);
         }
+        // OpenGL chosen: kept, the system's API only if OpenGL can't start.
+        let p = plan(Some(Api::OpenGl), None, false);
+        assert_eq!(p.attempts, [Attempt::OpenGl, any]);
+        assert!(!p.watched);
+        // Another system's API chosen (a settings file from another computer): the default.
+        for other in [Api::Direct3D, Api::Vulkan, Api::Metal]
+            .into_iter()
+            .filter(|&a| a != api)
+        {
+            assert_eq!(plan(Some(other), None, false), plan(None, None, false));
+            assert_eq!(chosen(Some(other)), DEFAULT);
+        }
+        // Overrides win, failure or not, and aren't watched: by the API's own name or `gpu`.
+        for name in [api.key(), "gpu", "GPU"] {
+            let p = plan(Some(Api::OpenGl), Some(name), true);
+            assert_eq!(p.attempts, [gpu, Attempt::OpenGl]);
+            assert!(!p.watched);
+        }
+        let p = plan(Some(api), Some("gl"), false);
+        assert_eq!(p.attempts, [Attempt::OpenGl, any]);
+        let p = plan(None, Some("software"), false);
+        assert_eq!(p.attempts, [soft, Attempt::OpenGl]);
+        // An unknown name, or another system's API, is ignored.
+        let default = plan(None, None, false).attempts[0];
+        assert_eq!(plan(None, Some("glide"), false).attempts[0], default);
+        for other in ["direct3d", "vulkan", "metal"]
+            .into_iter()
+            .filter(|&n| n != api.key())
+        {
+            assert_eq!(plan(None, Some(other), false).attempts[0], default);
+        }
+        // Each system's own names.
+        let names: &[(&str, Attempt)] = match api {
+            Api::Direct3D => &[("d3d", gpu), ("dx12", gpu), ("warp", soft)],
+            Api::Vulkan => &[("vk", gpu), ("lavapipe", soft), ("vulkan-software", soft)],
+            _ => &[("metal", gpu)],
+        };
+        for &(name, want) in names {
+            assert_eq!(plan(None, Some(name), false).attempts[0], want, "{name}");
+        }
+    }
+
+    /// Windows' plans are what they were before Vulkan and Metal (#206): the same attempts for
+    /// every setting, failure and override.
+    #[cfg(windows)]
+    #[test]
+    fn windows_plans_unchanged() {
+        let d3d = Attempt::Gpu(Adapters::Hardware);
+        let any = Attempt::Gpu(Adapters::Any);
+        let warp = Attempt::Gpu(Adapters::Software);
+        let gl = Attempt::OpenGl;
+        for setting in [None, Some(Api::Direct3D)] {
+            assert_eq!(plan(setting, None, false).attempts, [d3d, gl, warp]);
+            assert_eq!(plan(setting, None, true).attempts, [gl, any]);
+        }
+        assert_eq!(plan(Some(Api::OpenGl), None, false).attempts, [gl, any]);
+        assert_eq!(
+            plan(Some(Api::OpenGl), Some("D3D"), true).attempts,
+            [d3d, gl]
+        );
+        assert_eq!(plan(None, Some("warp"), false).attempts, [warp, gl]);
+        assert_eq!(plan(None, Some("vulkan"), false).attempts[0], d3d);
+        // Its files keep their names.
+        if let Some(f) = file(FAILED) {
+            assert!(f.ends_with("direct3d-failed.txt"));
+        }
+        assert_eq!(
+            Attempt::Gpu(Adapters::Software).name(),
+            "Direct3D 12 (WARP)"
+        );
     }
 
     #[test]
@@ -680,29 +935,50 @@ mod tests {
 
     #[test]
     fn settings_names() {
-        assert_eq!(
-            serde_json::to_string(&Api::Direct3D).unwrap(),
-            "\"direct3d\""
-        );
-        assert_eq!(
-            serde_json::from_str::<Api>("\"opengl\"").unwrap(),
-            Api::OpenGl
-        );
+        for (api, name) in [
+            (Api::OpenGl, "opengl"),
+            (Api::Direct3D, "direct3d"),
+            (Api::Vulkan, "vulkan"),
+            (Api::Metal, "metal"),
+        ] {
+            let json = format!("\"{name}\"");
+            assert_eq!(serde_json::to_string(&api).unwrap(), json);
+            assert_eq!(serde_json::from_str::<Api>(&json).unwrap(), api);
+        }
     }
 
-    #[cfg(windows)]
+    #[test]
+    fn failure_reasons_in_their_file() {
+        for why in Why::ALL {
+            let text = format!("{}\nsome details", why.key());
+            assert_eq!(Why::read(&text), (why, "some details"));
+        }
+        // MDM 0.3's files on Windows: one line of details.
+        let old = "Direct3D drew no first frame within 10 s";
+        assert_eq!(Why::read(old), (Why::Other, old));
+        assert_eq!(Why::read("  \n"), (Why::Other, ""));
+    }
+
+    #[cfg(gpu)]
     #[test]
     fn adapters_in_the_systems_order() {
         use eframe::wgpu::DeviceType::*;
         // The main screen's card first; one that can't draw to the window is passed over.
         let l = [(IntegratedGpu, false), (DiscreteGpu, true), (Cpu, true)];
-        assert_eq!(choose(&l, Adapters::Hardware), Some(1));
-        assert_eq!(choose(&l, Adapters::Software), Some(2));
-        assert_eq!(choose(&l, Adapters::Any), Some(1));
-        // No card: WARP only when allowed.
+        assert_eq!(choose(&l, Adapters::Hardware, false), Some(1));
+        assert_eq!(choose(&l, Adapters::Software, false), Some(2));
+        assert_eq!(choose(&l, Adapters::Any, false), Some(1));
+        // No card: a software renderer only when allowed.
         let warp = [(Cpu, true)];
-        assert_eq!(choose(&warp, Adapters::Hardware), None);
-        assert_eq!(choose(&warp, Adapters::Any), Some(0));
-        assert_eq!(choose(&l, Adapters::Nothing), None);
+        assert_eq!(choose(&warp, Adapters::Hardware, false), None);
+        assert_eq!(choose(&warp, Adapters::Any, false), Some(0));
+        assert_eq!(choose(&l, Adapters::Nothing, false), None);
+        // macOS: the built-in card before a separate one, whatever the order; the separate one
+        // when it is the only one that fits.
+        let mac = [(DiscreteGpu, true), (IntegratedGpu, true)];
+        assert_eq!(choose(&mac, Adapters::Hardware, true), Some(1));
+        assert_eq!(choose(&mac, Adapters::Hardware, false), Some(0));
+        assert_eq!(choose(&l, Adapters::Hardware, true), Some(1));
+        assert_eq!(choose(&[(VirtualGpu, true)], Adapters::Any, true), Some(0));
     }
 }

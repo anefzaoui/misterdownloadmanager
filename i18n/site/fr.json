@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "Dans Firefox, une fois que vous activez <g1>Envoyer les téléchargements via le proxy ou l’extension VPN de ce navigateur</g1> dans sa fenêtre contextuelle (Firefox vous le demande d’abord), lorsque le navigateur utilise un proxy pour un téléchargement (défini par une extension VPN ou proxy, ou dans ses paramètres), l’extension transmet <g2>l’adresse du proxy</g2>, ou son <g3>script de configuration automatique de proxy</g3>, afin que MDM télécharge via le même proxy. Il ne lit ni ne transmet jamais l’identifiant du proxy. Il note seulement qu’un proxy en a demandé un, afin que MDM puisse vous informer qu’il ne peut pas utiliser ce proxy. Désactivé (tel qu’installé), il ne lit rien du proxy du navigateur. L’extension pour Chrome et les autres navigateurs Chromium ne le fait pas encore."
+   "text": "Dans Firefox, une fois que vous activez <g1>Envoyer les téléchargements via le proxy ou l’extension VPN de ce navigateur</g1> dans sa fenêtre contextuelle (Firefox vous le demande d’abord), lorsque le navigateur utilise un proxy pour un téléchargement (défini par une extension VPN ou proxy, ou dans ses paramètres), l’extension transmet <g2>l’adresse du proxy</g2>, ou son <g3>script de configuration automatique de proxy</g3>, afin que MDM télécharge via le même proxy. Elle ne lit ni ne transmet jamais l’identifiant du proxy. Elle note seulement qu’un proxy en a demandé un, afin que MDM puisse vous informer qu’il ne peut pas utiliser ce proxy. Désactivée (telle qu’installée), elle ne lit rien du proxy du navigateur. L’extension pour Chrome et les autres navigateurs Chromium ne le fait pas encore."
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -366,6 +366,10 @@
    "source": "Right-click a category for:",
    "text": "Faites un clic droit sur une catégorie pour :"
   },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>Affichage</g1> — afficher ou masquer les catégories, trier la liste (<g2>Organiser les fichiers</g2>), <g3>Prise en charge du mode sombre</g3>, <g4>Toujours sombre</g4>, <g5>Thème</g5>, <g6>Dessiner avec</g6> (OpenGL, ou Direct3D sous Windows, Vulkan sous Linux, Metal sous macOS) et <g7>Langue</g7>."
+  },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "Non, sauf si vous le souhaitez. Pendant le téléchargement d'un torrent, il échange des morceaux avec d'autres personnes, comme le fait tout client torrent. Une fois terminé, il s'arrête, comme n'importe quel…"
@@ -608,7 +612,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "Une extension VPN ou proxy est un proxy pour le navigateur uniquement. Dans Firefox, activez <g1>Envoyer les téléchargements via le proxy ou l’extension VPN de ce navigateur</g1> dans la fenêtre contextuelle de la barre d’outils de l’extension : Firefox vous demande une fois d’autoriser l’extension à lire le proxy du navigateur, et MDM télécharge alors ce qu’il prend du navigateur via le même proxy (avec <g2>Options → Proxy / Socks → Utiliser le proxy/socks d’une requête de navigateur</g2>, activé par défaut ; voir <g3>Options</g3>). Désactivez-le pour retirer cette permission. Chrome, Edge, Brave, Opera et Vivaldi ne proposent pas encore cette option : pour l’instant, définissez le même proxy dans <g4>Options → Proxy / Socks</g4> de MDM."
+   "text": "Une extension VPN ou proxy est un proxy pour le navigateur uniquement. Dans Firefox, activez <g1>Envoyer les téléchargements via le proxy ou l’extension VPN de ce navigateur</g1> dans la fenêtre contextuelle de la barre d’outils de l’extension : Firefox vous demandera une fois d’autoriser l’extension à lire le proxy du navigateur, et MDM téléchargera alors ce qu’il prend du navigateur via le même proxy (avec <g2>Options → Proxy / Socks → Utiliser le proxy/socks d’une requête de navigateur</g2>, activé par défaut ; voir <g3>Options</g3>). Désactivez-le pour retirer cette autorisation. Chrome, Edge, Brave, Opera et Vivaldi ne proposent pas encore cette option : pour l’instant, configurez le même proxy dans <g4>Options → Proxy / Socks</g4> de MDM."
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1578,6 +1582,10 @@
    "source": "The current speed.",
    "text": "La vitesse actuelle."
   },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Si Direct3D, Vulkan ou Metal ne peut pas démarrer sur votre ordinateur (pas de pilote pour cela, certaines machines virtuelles), ou si sa première fenêtre ne s'affiche pas dans les 10 secondes, MDM dessine avec OpenGL, et <g1>Affichage → Dessiner avec</g1> l'indique et en explique la raison. Le choisir à nouveau le réessaie au prochain démarrage."
+  },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
    "text": "La fenêtre <g1>Informations sur le fichier à télécharger</g1>, la fenêtre de progression et les <g2>Propriétés</g2> indiquent l'emplacement du serveur d'un téléchargement : le drapeau et le nom de son pays, puis le temps qu'un aller-retour prend, par exemple <g3>environ 24 ms (proche)</g3>."
@@ -1902,6 +1910,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Le pays</g1> provient d'une table de plages d'adresses fournie avec MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), consultée sur votre ordinateur. MDM n'envoie jamais l'adresse nulle part pour demander où elle se trouve. La table est mise à jour à chaque version ; une adresse qui a changé depuis peut afficher son ancien pays."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Dernière mise à jour le 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Parcourir</g1> — ouvrir son dossier dans l’Explorateur."
@@ -1948,7 +1960,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "Chaque couleur et taille avec lesquelles un contrôle est dessiné provient du thème actif (#45) : <x1/> déclare ses rôles (<x2/>, <x3/>…) avec les valeurs de l'apparence classique, les peintres partagés (<x4/>, <x5/>, <x6/>, <x7/>) les lisent via <x8/> et <x9/> et décident des états de chaque contrôle à partir de ceux-ci, et <x10/> lit les fichiers de thème (TOML ou JSON dans le dossier <x11/> du dossier de données) qui modifient l'un d'entre eux. L'emplacement des contrôles d'une fenêtre reste sa disposition. Il en va de même pour les icônes devant les noms de fichiers (<x12/>) : les listes d'images système de l'explorateur Windows, celles du Finder de macOS (NSWorkspace), le thème d'icônes du bureau Linux (<x13/>, shared-mime-info et la spécification de thème d'icônes). Chaque type est recherché une fois par taille de pixel, sur un thread d'arrière-plan. Les icônes de Tango (fournies) sont utilisées en attendant que l'icône du système soit prête, et partout où le système n'en a pas."
+   "text": "Chaque couleur et taille avec laquelle un contrôle est dessiné provient du thème actif (#45) : <x1/> déclare ses rôles (<x2/>, <x3/>…) avec les valeurs de l'apparence classique, les peintres partagés (<x4/>, <x5/>, <x6/>, <x7/>) les lisent via <x8/> et <x9/> et décident des états de chaque contrôle à partir de ceux-ci, et <x10/> lit les fichiers de thème (TOML ou JSON dans le dossier <x11/> des données) qui modifient l'un d'entre eux. L'emplacement des contrôles dans une fenêtre reste sa disposition. Il en va de même pour les icônes devant les noms de fichiers (<x12/>) : les listes d'images système du shell Windows, celles du Finder de macOS (NSWorkspace), le thème d'icônes du bureau Linux (<x13/>, shared-mime-info et la spécification de thème d'icônes). Chaque type est recherché une fois par taille de pixel, sur un thread d'arrière-plan. Les icônes de Tango (fournies) sont utilisées jusqu'à ce que l'icône du système soit prête, et partout où le système n'en a pas."
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2256,7 +2268,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>Utiliser le proxy/Socks d'une requête du navigateur…</g1> — activé par défaut. Un téléchargement que MDM prend du navigateur passe par le proxy que le navigateur a utilisé pour celui-ci. C'est celui qu'une extension VPN ou proxy a défini, le proxy manuel du navigateur, ou son script de configuration automatique de proxy. Sans cela, le téléchargement partirait de votre propre adresse, et le contenu limité au pays du VPN, ou à son adresse, échouerait. L'extension de navigateur lit ce proxy et le transmet à MDM avec chaque téléchargement, une fois que vous l'autorisez : dans Firefox, activez <g2>Envoyer les téléchargements via le proxy ou l’extension VPN de ce navigateur</g2> dans la fenêtre contextuelle de la barre d'outils de l'extension (Firefox vous le demande une fois). Chrome, Edge, Brave, Opera et Vivaldi ne transmettent pas encore le proxy : là, définissez le même proxy dans <g3>Options → Proxy / Socks</g3>."
+   "text": "<g1>Utiliser le proxy/socks d’une requête du navigateur…</g1> — activé par défaut. Un téléchargement que MDM prend du navigateur passe par le proxy que le navigateur a utilisé pour celui-ci. C’est celui qu’une extension VPN ou proxy a défini, le proxy manuel du navigateur, ou son script de configuration automatique de proxy. Sans cela, le téléchargement partirait de votre propre adresse, et le contenu limité au pays du VPN, ou à son adresse, échouerait. L’extension de navigateur lit ce proxy et le transmet à MDM avec chaque téléchargement, une fois que vous l’autorisez : dans Firefox, activez <g2>Envoyer les téléchargements via le proxy ou l’extension VPN de ce navigateur</g2> dans la fenêtre contextuelle de la barre d’outils de l’extension (Firefox vous le demande une fois). Chrome, Edge, Brave, Opera et Vivaldi ne transmettent pas encore le proxy : là, définissez le même proxy dans <g3>Options → Proxy / Socks</g3>."
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3322,6 +3334,10 @@
    "source": "JSON for scripts and programs",
    "text": "JSON pour les scripts et les programmes"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "Sous Windows, MDM dessine ses fenêtres avec Direct3D 12 ; sous Linux et macOS, avec OpenGL, ou avec Vulkan (Linux) ou Metal (macOS) si vous les choisissez. Un pilote graphique peut toujours mal se comporter : une fenêtre qui reste figée pendant des secondes, scintille, ou affiche des couleurs ou des blocs incorrects. Essayez l'autre : choisissez <g1>Affichage → Dessiner avec → OpenGL</g1> (ou <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), puis quittez MDM (<g5>Tâches → Quitter</g5>) et redémarrez-le. Choisir le premier revient au même."
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "lorsque <g1>Options → Archives → Extraire les archives une fois leur téléchargement terminé</g1> est activé (désactivé par défaut), pour tout autre téléchargement,"
@@ -4340,7 +4356,7 @@
   },
   "6c93571eac4f03c3": {
    "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
-   "text": "Dans Firefox, MDM voit le proxy que la requête du navigateur a utilisé pour le fichier, y compris ceux qu'une extension VPN choisit pour chaque requête."
+   "text": "Dans Firefox, MDM voit le proxy que la propre requête du navigateur pour le fichier a pris, y compris ceux qu’une extension VPN choisit pour chaque requête."
   },
   "6cfaa56a34e8372a": {
    "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
@@ -5612,7 +5628,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "Ses autorisations, et pourquoi : <g1>downloads</g1> pour voir et transférer les téléchargements ; <g2>cookies</g2> pour que les téléchargements connectés fonctionnent dans MDM ; <g3>nativeMessaging</g3> pour communiquer avec MDM ; <g4>contextMenus</g4> pour les éléments du clic droit ; <g5>storage</g5> pour ses paramètres ; <g6>webRequest</g6> pour voir les formulaires soumis et les flux vidéo chargés (il ne change rien) ; <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge et les autres navigateurs Chromium) pour que les fichiers que le navigateur ouvrirait (un PDF) soient téléchargés à la place, pour les types que MDM prend en charge ; dans Firefox, <g8>webRequestBlocking</g8> fait cela ; <g9>scripting</g9> pour lire les liens d’une page lorsque vous le demandez, et pour ajouter le bouton vidéo aux pages déjà ouvertes lors de l’installation de l’extension ; <g10>proxy</g10> (Firefox, facultatif : demandé uniquement lorsque vous l’activez dans la fenêtre contextuelle) pour lire le proxy utilisé par le navigateur, afin que les téléchargements effectués à partir d’un navigateur derrière un VPN ou une extension proxy passent également par celui-ci (il ne modifie jamais le proxy du navigateur) ; accès à tous les sites car les téléchargements et les vidéos peuvent provenir de n’importe quel site."
+   "text": "Ses autorisations, et pourquoi : <g1>downloads</g1> pour voir et transférer les téléchargements ; <g2>cookies</g2> pour que les téléchargements connectés fonctionnent dans MDM ; <g3>nativeMessaging</g3> pour communiquer avec MDM ; <g4>contextMenus</g4> pour les éléments du clic droit ; <g5>storage</g5> pour ses paramètres ; <g6>webRequest</g6> pour voir les formulaires soumis et les flux vidéo chargés (elle ne change rien) ; <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge et autres navigateurs Chromium) pour que les fichiers que le navigateur ouvrirait (un PDF) soient téléchargés à la place, pour les types que MDM prend en charge ; dans Firefox, <g8>webRequestBlocking</g8> fait cela ; <g9>scripting</g9> pour lire les liens d’une page lorsque vous le demandez, et pour ajouter le bouton vidéo aux pages déjà ouvertes lorsque l’extension est installée ; <g10>proxy</g10> (Firefox, facultatif : demandé uniquement lorsque vous l’activez dans la fenêtre contextuelle) pour lire le proxy utilisé par le navigateur, afin que les téléchargements effectués à partir d’un navigateur derrière un VPN ou une extension proxy passent également par celui-ci (elle ne modifie jamais le proxy du navigateur) ; accès à tous les sites car les téléchargements et les vidéos peuvent provenir de n’importe quel site."
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5970,6 +5986,10 @@
    "source": "Downloads",
    "text": "Téléchargements"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Dernière mise à jour le 2026-11-07 · s’applique à l’application, à l’extension de navigateur et à misterdownloadmanager.com"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>Description ou partie de la description</g1> — vos notes."
@@ -5980,7 +6000,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Détection des problèmes.</g1> Quand MDM plante (une exception Windows, un signal sous Linux, une exception Mach sous macOS), panique ou se fige, il demande au moniteur un dump. Un blocage est une image de la fenêtre qui s'exécute pendant plus de 8 secondes, détectée par un thread de surveillance qui ignore le temps passé en veille. Il chronomètre les deux parties d'une image : ce que MDM gère (les commandes entrantes, l'horloge des téléchargements, des files d'attente et du Planificateur), qui s'exécute aussi en mode minimisé, et le dessin ; jamais l'attente entre les images. Le thread de surveillance mesure également le temps processeur que le thread de la fenêtre a obtenu pendant ce temps, et le rapport indique ce que cela signifie : il a fonctionné tout le temps (une boucle), il a attendu dans un verrou ou sur une E/S (un interblocage), ou il a à peine fonctionné dans le code ordinaire, ce qui signifie qu'un ordinateur est trop occupé pour exécuter MDM ou lent à le charger depuis le disque, ce n'est très probablement pas un bug de MDM (ceux-ci partagent une seule signature, <x2/>). macOS ne le mesure pas encore. Le moniteur écrit alors un <g3>minidump</g3> de chaque thread depuis l'extérieur, via <x4/> et <x5/>. Un processus planté n'écrit jamais son propre dump, c'est ainsi que Firefox, Crashpad et Sentry le font aussi."
+   "text": "<g1>Détection des problèmes.</g1> Quand MDM plante (une exception Windows, un signal sous Linux, une exception Mach sous macOS), panique ou se fige, il demande au moniteur un dump. Un blocage est une image de la fenêtre qui s'exécute pendant plus de 8 secondes, détectée par un thread de surveillance qui ignore le temps passé en veille. Il chronomètre les deux parties d'une image : ce que MDM gère (les commandes entrantes, l'horloge des téléchargements, les files d'attente et le Planificateur), qui s'exécute aussi en mode minimisé, et le dessin ; jamais l'attente entre les images. Le thread de surveillance mesure également le temps processeur que le thread de la fenêtre a obtenu pendant ce temps, et le rapport indique ce que cela signifie : il a fonctionné tout le temps (une boucle), il a attendu un verrou ou une E/S (un interblocage), ou il a à peine fonctionné dans le code ordinaire, ce qui signifie que l'ordinateur est trop occupé pour exécuter MDM ou lent à le charger depuis le disque, ce n'est très probablement pas un bug de MDM (ceux-ci partagent une signature, <x2/>). macOS ne le mesure pas encore. Le moniteur écrit ensuite un <g3>minidump</g3> de chaque thread depuis l'extérieur, via <x4/> et <x5/>. Un processus planté n'écrit jamais son propre dump, c'est ainsi que Firefox, Crashpad et Sentry le font aussi."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6376,7 +6396,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "Une fenêtre egui peinte à des coordonnées fixes en pixels, plus une fenêtre d'affichage immédiate par boîte de dialogue. <x1/> contient l'état (téléchargements, files d'attente, paramètres, sélection de la liste) et transforme les commandes de menu, de barre d'outils, de clavier et d'IPC en actions. Chaque boîte de dialogue est son propre module et renvoie un <x2/> (ouvert, fermé, terminé avec une valeur). Les appels spécifiques à Windows sont confinés à <x3/> et leurs équivalents Linux et macOS à <x4/> (démarrage de la session, hôte des navigateurs, sons, afficher dans le dossier, gestionnaire de crash) ; tous les autres fichiers sont du Rust sûr et portable. Les polices proviennent du système : dossier Polices de Windows, polices système de macOS, fontconfig sur Linux (<x5/>)."
+   "text": "Une fenêtre egui peinte à des coordonnées de pixels fixes, plus une fenêtre d'affichage immédiate par boîte de dialogue. <x1/> contient l'état (téléchargements, files d'attente, paramètres, sélection de la liste) et transforme les commandes de menu, de barre d'outils, de clavier et IPC en actions. Chaque boîte de dialogue est son propre module et renvoie un <x2/> (ouverte, fermée, terminée avec une valeur). Les appels spécifiques à Windows sont confinés à <x3/> et leurs équivalents Linux et macOS à <x4/> (démarrage de la session, hôte des navigateurs, sons, afficher dans le dossier, gestionnaire de crash) ; tout autre fichier est du Rust sûr et portable. Les polices proviennent du système : le dossier Polices de Windows, les polices système de macOS, fontconfig sur Linux (<x5/>)."
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -7186,6 +7206,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Manager conserve la présentation que les utilisateurs d'IDM connaissent, récupère votre liste IDM et ne coûte rien : il est gratuit et open source, sans essai, sans publicité et sans inscription. Ci-dessous, neuf autres gestionnaires de téléchargement gratuits que les gens utilisent à la place d'IDM, comparés honnêtement."
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "Sous Linux, Vulkan nécessite le pilote Vulkan de votre carte graphique : celui de Mesa (<x1/> sur Ubuntu et Debian, <x2/> ou <x3/> sur Arch) pour AMD et Intel, le pilote propriétaire de NVIDIA pour NVIDIA."
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "L'AppImage peut aussi être mise à jour par des outils AppImage (AppImageLauncher, Gear Lever, AppImageUpdate) : elle contient l'adresse de ses mises à jour, et chaque version a son fichier <x1/>, donc ces outils ne téléchargent que les parties modifiées. Cela commence avec l'AppImage de la version après la 0.2.4."
@@ -7678,6 +7702,10 @@
    "source": "torrents on Windows;",
    "text": "torrents sous Windows ;"
   },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Si aucun ne peut démarrer, MDM dessine avec un moteur de rendu logiciel (celui de Microsoft sous Windows, celui de Mesa sous Linux), de sorte que la fenêtre s'ouvre toujours (Bureau à distance, une machine virtuelle sans pilote graphique). Cela fonctionne, mais sollicite davantage le processeur."
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8052,7 +8080,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>Test.</g1> <x2/> exécute un vrai blocage, une panique et un crash (<x3/>) et vérifie la signature de chaque rapport. Pour l'essayer dans l'application, démarrez MDM avec <x4/>, puis exécutez <x5/> (un interblocage ; ou <x6/>, 12 secondes d'un thread de fenêtre occupé, <x7/>, <x8/>, <x9/>). <x10/> fait cela dans une copie de l'application hors écran, sa fenêtre étant visible et minimisée."
+   "text": "<g1>Test.</g1> <x2/> exécute un vrai blocage, une panique et un crash (<x3/>) et vérifie la signature de chaque rapport. Pour l'essayer dans l'application, démarrez MDM avec <x4/>, puis exécutez <x5/> (un interblocage ; ou <x6/>, 12 secondes d'un thread de fenêtre occupé, <x7/>, <x8/>, <x9/>). <x10/> le fait dans une copie de l'application hors écran, sa fenêtre visible et minimisée."
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8772,7 +8800,7 @@
   },
   "e04f69d547a21d71": {
    "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
-   "text": "<g1>Natif</g1> : les couleurs de votre système. La couleur d'accentuation de Windows (Paramètres → Personnalisation → Couleurs) et, lorsqu'il est activé, son thème de contraste ; la couleur d'accentuation du bureau et son paramètre de contraste plus élevé sur Linux (GNOME 47 et versions ultérieures, KDE Plasma) ; la couleur d'accentuation sur macOS. Il les suit lorsque vous les modifiez."
+   "text": "<g1>Natif</g1> : les couleurs de votre système. La couleur d'accentuation de Windows (Paramètres → Personnalisation → Couleurs) et, lorsqu'il est activé, son thème de contraste ; la couleur d'accentuation du bureau et son réglage de contraste plus élevé sous Linux (GNOME 47 et versions ultérieures, KDE Plasma) ; la couleur d'accentuation sous macOS. Il les suit lorsque vous les modifiez."
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -9200,7 +9228,7 @@
   },
   "eb2157973bc61b4f": {
    "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
-   "text": "<g1>Affichage → Thème</g1> modifie l'apparence de MDM instantanément, en conservant sa disposition :"
+   "text": "<g1>Affichage → Thème</g1> change l'apparence de MDM d'un coup, en gardant sa disposition :"
   },
   "eb54002890a30cf8": {
    "source": "<g1>Ctrl+M</g1> or <g2>F2</g2>",
@@ -9766,6 +9794,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "Vérifiez <g1>Enregistrer dans</g1> et <g2>Nom du fichier</g2>. Le nom provient du titre de la vidéo ; changez-le si vous le souhaitez."
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>Metro</g1> : l'apparence plate de Windows 8 : coins carrés, boutons et boîtes plats, une barre de titre colorée avec le titre centré (sous Windows, où MDM la dessine), et des icônes unicolores (Fluent UI System Icons de Microsoft)."
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "Ce qu’IDM fait et MDM ne fait pas encore"
@@ -9797,6 +9829,10 @@
   "fb1900915c99672a": {
    "source": "After a cut connection",
    "text": "Après une coupure de connexion"
+  },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "Les fenêtres sont dessinées avec OpenGL (glow d'eframe) ou avec l'API graphique du système via wgpu d'eframe, avec un seul backend : Direct3D 12 sur Windows (celui par défaut), Vulkan sur Linux, Metal sur macOS (choix possibles ; OpenGL reste leur défaut). Affichage → Dessiner avec en sélectionne un. Un seul chemin de code le fait sur chaque système <x1/> : si celui choisi ne peut pas démarrer, l'autre est essayé, de sorte que les fenêtres s'ouvrent toujours ; un démarrage dont la première image n'arrive pas, ou une carte graphique perdue deux fois, est mémorisé avec sa raison, que le menu affiche."
   },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",

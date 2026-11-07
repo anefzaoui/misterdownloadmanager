@@ -107,8 +107,8 @@ enum Cmd {
     Theme(&'static str),
     /// View → Theme → Open themes folder.
     OpenThemesFolder,
-    /// View → Draw with → OpenGL / Direct3D (#89), from the next start.
-    #[cfg(windows)]
+    /// View → Draw with → OpenGL / Direct3D, Vulkan or Metal (#89, #206), from the next start.
+    #[cfg(gpu)]
     DrawWith(crate::renderer::Api),
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
@@ -1682,8 +1682,9 @@ impl App {
                     ctx.set_zoom_factor(z);
                 }
             }
-            // Direct3D's device lost on purpose; MDM starts again (renderer.rs).
-            #[cfg(windows)]
+            // The system's graphics API's device lost on purpose (Direct3D, Vulkan, Metal); MDM
+            // starts again (renderer.rs).
+            #[cfg(gpu)]
             "renderer-lost" if crate::offscreen() => crate::renderer::test_device_lost(),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
@@ -4120,10 +4121,10 @@ impl App {
                     let _ = open::that_detached(dir);
                 }
             }
-            #[cfg(windows)]
+            #[cfg(gpu)]
             Cmd::DrawWith(api) => {
                 // Chosen again after it failed here: its next start is tried.
-                if api == crate::renderer::Api::Direct3D {
+                if Some(api) == crate::renderer::GPU {
                     crate::renderer::forget_failure();
                 }
                 tracing::info!("draw with {api:?} from the next start");
@@ -4748,14 +4749,14 @@ impl App {
                 I("Support &MDM", Cmd::Support, true, false),
             ],
         };
-        // View → Theme (MDM's, #45), after Always dark; then Draw with (#89), Windows only:
-        // Linux and macOS draw with OpenGL only (renderer.rs).
+        // View → Theme (MDM's, #45), after Always dark; then Draw with (#89, #206), where wgpu is
+        // built (Windows, Linux, macOS: renderer.rs).
         if let Some(at) = menu
             .iter()
             .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
         {
             menu.insert(at + 1, self.theme_menu());
-            #[cfg(windows)]
+            #[cfg(gpu)]
             menu.insert(at + 2, self.draw_with_menu());
         }
         menu
@@ -4803,32 +4804,76 @@ impl App {
         Sub("Theme", true, items)
     }
 
-    /// View → Draw with (#89): OpenGL or Direct3D, used from the next start; a greyed line says
-    /// when what draws now isn't the choice.
-    #[cfg(windows)]
+    /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
+    /// Windows, Vulkan on Linux, Metal on macOS), used from the next start. Greyed lines say when
+    /// what draws now isn't the choice: the system's API failed here (and why), or the choice
+    /// waits for the next start.
+    #[cfg(gpu)]
     fn draw_with_menu(&self) -> MenuEntry<Cmd> {
-        use crate::renderer::{self, Api};
+        use crate::renderer::{self, Api, Why};
         use MenuEntry::{Item as I, Radio, Sep, Sub};
         let off = |label| I(label, Cmd::None, false, false);
-        let chosen = self.settings.renderer.unwrap_or(renderer::DEFAULT);
-        let (gl, d3d) = (chosen == Api::OpenGl, chosen == Api::Direct3D);
+        let chosen = renderer::chosen(self.settings.renderer);
+        let gpu = renderer::GPU.unwrap_or(Api::OpenGl);
+        let on = chosen == gpu;
+        let draw = Cmd::DrawWith(gpu);
+        // Its choice, and the note when it failed here.
+        let (choice, failed_note) = match gpu {
+            Api::Direct3D => (
+                // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+                Radio("Direct3D", draw, true, on),
+                // i18n: View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+                off("Direct3D didn't start here: OpenGL draws"),
+            ),
+            Api::Vulkan => (
+                // i18n: View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+                Radio("Vulkan", draw, true, on),
+                // i18n: View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+                off("Vulkan didn't start here: OpenGL draws"),
+            ),
+            _ => (
+                // i18n: View → Draw with: a graphics system's name (Apple's), usually kept as is
+                Radio("Metal", draw, true, on),
+                // i18n: View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+                off("Metal didn't start here: OpenGL draws"),
+            ),
+        };
         let mut items = vec![
             // i18n: View → Draw with: a graphics system's name, usually kept as is
-            Radio("OpenGL", Cmd::DrawWith(Api::OpenGl), true, gl),
-            // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
-            Radio("Direct3D", Cmd::DrawWith(Api::Direct3D), true, d3d),
+            Radio(
+                "OpenGL",
+                Cmd::DrawWith(Api::OpenGl),
+                true,
+                chosen == Api::OpenGl,
+            ),
+            choice,
         ];
+        let failed = renderer::gpu_failed().filter(|_| on);
         if renderer::active().is_some_and(|a| a != chosen) {
             items.push(Sep);
-            items.push(if chosen == Api::Direct3D && renderer::direct3d_failed() {
-                // i18n: View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
-                off("Direct3D didn't start here: OpenGL draws")
-            } else {
+            let last = match failed {
+                Some(why) => {
+                    items.push(failed_note);
+                    // Why, under it ("it": Direct3D, Vulkan or Metal).
+                    match why {
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+                        Why::NoAdapter => off("No graphics card here has a driver for it"),
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+                        Why::NoFirstFrame => off("Its first frame didn't show within 10 seconds"),
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+                        Why::EndedEarly => off("Its last start ended before its first frame"),
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+                        Why::LostTwice => off("The graphics card was lost twice in 10 minutes"),
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+                        Why::Other => off("It couldn't start: the log says why"),
+                    }
+                }
                 // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
-                off("Applies the next time MDM starts")
-            });
+                None => off("Applies the next time MDM starts"),
+            };
+            items.push(last);
         }
-        // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+        // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
     }
 

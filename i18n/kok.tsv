@@ -5544,7 +5544,7 @@ menu	Download &video from a page...	एका पानांतल्यान 
 #, machine
 menu	Download in order	क्रमानुक्रमानें डाउनलोड करा
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	हाचे वांगडा काडचें
 #. menu command in the main window
@@ -5595,6 +5595,26 @@ menu	Hide drop target	ड्रॉप लक्ष्य लिपयात
 #, machine
 menu	High contrast	उच्च कॉन्ट्रास्ट
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	तें सुरू जावंक शकलें ना: लॉग सांगता कित्याक
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	ताची पयली फ्रेम 10 सेकंदां भितर दिसली ना
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	ताची निमाणी सुरवात ताचे पयले फ्रेम पयलीं सोंपली
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	हांगा Metal सुरू जालो ना: OpenGL काडटा
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	मेट्रो
@@ -5609,6 +5629,10 @@ menu	Move/Rename (Ctrl-M)	हलयात/परत नांव दिवया
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	नेटिव्ह
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	हांगा खंयच्याच ग्राफिक्स कार्डाक ताचो ड्रायव्हर ना
 #. menu command in the main window
 #, machine
 menu	On Double click	दोनदा क्लिक केल्यार
@@ -5734,6 +5758,10 @@ menu	Support &MDM	&MDM क समर्थन करा
 #, machine
 menu	Tell a &friend	एका इश्टाक सांग (&F)
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	ग्राफिक्स कार्ड 10 मिनटां भितर दोन फावटीं वगडायलां
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	थीम
@@ -5772,6 +5800,14 @@ menu	Turn of&f	बंद क&र
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	चेकसम पडताळणी कर...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	हांगा Vulkan सुरू जालो ना: OpenGL काडटा
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
