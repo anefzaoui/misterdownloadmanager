@@ -90,6 +90,9 @@ function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$pre
     settings = [ordered]@{
       language = "en"; language_asked = $true; helpers_asked = $true; extension_never_ask = $true
       dark_mode_support = [bool]$Dark; always_dark = [bool]$Dark; update_check = $false; category_dirs = $dirs
+      # The torrent engine reaches the swarm on 127.0.0.1 and listens nowhere else (no firewall
+      # prompt), as docs-shots.ps1 sets it.
+      torrent_incoming = $false; torrent_upnp = $false; torrent_dht = $false; torrent_lsd = $false
     }
   }
   if ($prepare) { & $prepare $dir }
@@ -131,7 +134,7 @@ function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$pre
     }
   } finally {
     Stop-Process -Id $app.Id -ErrorAction SilentlyContinue
-    Remove-Item Env:MDM_DATA_DIR, Env:MDM_OFFSCREEN, Env:MDM_OFFSCREEN_AT -ErrorAction SilentlyContinue
+    Remove-Item Env:MDM_DATA_DIR, Env:MDM_OFFSCREEN, Env:MDM_OFFSCREEN_AT, Env:MDM_LAB_PEERS -ErrorAction SilentlyContinue
   }
 }
 
@@ -178,17 +181,20 @@ try {
     $log = Join-Path $work "swarm.txt"
     $swarm = Start-Process -PassThru -WindowStyle Hidden (Join-Path $bin "examples\swarm.exe") `
       -ArgumentList "`"$work\swarm`" 600 4 $TrackerPort" -RedirectStandardOutput $log
-    # Ready when it prints the torrent's path and its info hash (after making the files and
-    # checking them in every seeder).
+    # Ready when it prints the torrent's path, its info hash and its seeders' addresses (after
+    # making the files and checking them in every seeder).
     for ($i = 0; $i -lt 300; $i++) {
       Start-Sleep 1
       $lines = @(Get-Content $log -ErrorAction SilentlyContinue)
-      if ($lines.Count -ge 2) { break }
+      if ($lines.Count -ge 3) { break }
       if ($swarm.HasExited) { throw "the swarm stopped" }
     }
-    if ($lines.Count -lt 2) { throw "the swarm never got ready" }
+    if ($lines.Count -lt 3) { throw "the swarm never got ready" }
     $torrent = $lines[0]
     $hash = ([regex]::Match($lines[1], '[0-9a-f]{40}')).Value
+    # MDM leaves out trackers on this computer (#40): an off-screen copy is handed the seeders
+    # instead (MDM_LAB_PEERS, torrents.rs).
+    $env:MDM_LAB_PEERS = $lines[2] -replace '^peers ', ''
     $name = "Open Movie Night"
     $folder = "$work\torrent\Downloads\Torrents\$name"
     $item = @{
