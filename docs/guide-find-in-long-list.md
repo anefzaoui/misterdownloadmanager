@@ -11,7 +11,8 @@ After a few months the list can hold hundreds of downloads. Here are four ways t
 3. Click **Find**. The first match is selected.
 4. Press **F3** to jump to the next match. The search wraps round to the top.
 
-![Find file](images/find.png)
+![Find file: a name to look for](images/help/find-file.webp)
+*Ctrl+F, type part of the name, then Find.*
 
 ## Find by description or address
 

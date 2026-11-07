@@ -177,8 +177,23 @@ impl ChecksumDialog {
                 } else {
                     (crate::i18n::mark("OK"), crate::i18n::mark("Cancel"))
                 };
-                let go =
-                    winui::button_light(ui, r(o, 265.0, 87.0, 73.0, 21.0), primary, kind, false);
+                // As wide as their labels in this language (#192).
+                let [go_at, close_at] = winui::buttons_to_right(
+                    &p,
+                    419.0,
+                    8.0,
+                    &[(primary, 73.0), (secondary, 73.0)],
+                    160.0,
+                )[..] else {
+                    unreachable!("two buttons")
+                };
+                let go = winui::button_light(
+                    ui,
+                    r(o, go_at.0, 87.0, go_at.1, 21.0),
+                    primary,
+                    kind,
+                    false,
+                );
                 let go = winui::why_disabled(
                     go,
                     !valid,
@@ -193,7 +208,7 @@ impl ChecksumDialog {
                 .clicked();
                 let close = winui::button_light(
                     ui,
-                    r(o, 346.0, 87.0, 73.0, 21.0),
+                    r(o, close_at.0, 87.0, close_at.1, 21.0),
                     secondary,
                     ButtonKind::Normal,
                     false,

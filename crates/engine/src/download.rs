@@ -1648,8 +1648,7 @@ async fn open_destination(
     // Will it fit? Refuse now rather than fail half-way (a drive we can't identify is skipped).
     if let Some(size) = size {
         // Off the async threads, and bounded: a stale network drive can hang the volume probe.
-        let probe = tokio::task::spawn_blocking(move || disk::volume_of(&folder));
-        if let Ok(Ok(Some(volume))) = tokio::time::timeout(disk::PROBE_TIMEOUT, probe).await {
+        if let Some(volume) = disk::probe(folder).await {
             disk::check(&volume, size)?;
         }
     }
@@ -1844,7 +1843,9 @@ async fn run_resume(
     let as_get = AsGet::default();
     let seen = shared.seen.get_or_init(Default::default).clone();
     let client = client(&opts, &saved.url, &as_get, &seen)?;
-    let refreshed = if saved.url != saved.final_url {
+    // Through a service account (#44), the service is asked for today's link even when the
+    // state holds none of its links (the download went directly until now).
+    let refreshed = if saved.url != saved.final_url || opts.unlocker.is_some() {
         let post = opts.post.as_ref();
         let agent = &opts.user_agent;
         refresh_final_url(

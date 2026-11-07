@@ -699,14 +699,33 @@ pub fn main_minimize_to_tray(ctx: &egui::Context, enabled: bool) -> bool {
     })
 }
 
-/// A menu window's style: a plain popup, as Win32's own menus are, without the caption, frame
-/// and caption buttons winit gives every borderless window (it keeps WS_CAPTION and hides the
-/// frame in WM_NCCALCSIZE). With a caption style, whatever lays the window out by its styles
-/// rather than by our WM_NCCALCSIZE puts the client a caption lower and a frame to the right:
-/// on a Windows 11 Insider build (22635) each menu showed a black band a caption tall across
-/// its top and its items moved down by as much (#208). Without one, every reading agrees: the
-/// client is the whole window.
-pub(crate) fn menu_style(style: u32) -> u32 {
+/// What a borderless window of ours is, for [`popup_window`]: every one is a plain popup
+/// ([`popup_style`], #208); they differ in how they take the pointer and how they look.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum Popup {
+    /// A menu (chrome.rs): never activated, so the main window keeps the focus and the
+    /// keyboard; Windows 11's small rounded corners and a 1 px border in this colour
+    /// (0x00BBGGRR); no window-open animation (menus just appear).
+    Menu { border: u32 },
+    /// A small floating window (the drop target, droptarget.rs): activated when clicked, as
+    /// any window; Windows 11's rounded corners, border and shadow, as it had with its caption
+    /// style.
+    Floating,
+}
+
+/// The subclass of every borderless window of ours ([`popup_proc`]): its id, and its data's
+/// flag for a window never activated (a menu).
+const POPUP_SUBCLASS: usize = 0x3e1;
+const POPUP_NO_ACTIVATE: usize = 1;
+
+/// A borderless window's style: a plain popup, as Win32's own menus are, without the caption,
+/// frame and caption buttons winit gives every borderless window (it keeps WS_CAPTION and hides
+/// the frame in WM_NCCALCSIZE). With a caption style, whatever lays the window out by its
+/// styles rather than by our WM_NCCALCSIZE puts the client a caption lower and a frame to the
+/// right: on a Windows 11 Insider build (22635) each menu, and the drop target, showed a black
+/// band a caption tall across its top and its picture moved down by as much (#208). Without
+/// one, every reading agrees: the client is the whole window.
+pub(crate) fn popup_style(style: u32) -> u32 {
     use windows_sys::Win32::UI::WindowsAndMessaging::{
         WS_CAPTION, WS_MAXIMIZEBOX, WS_MINIMIZEBOX, WS_POPUP, WS_SYSMENU,
     };
@@ -714,83 +733,200 @@ pub(crate) fn menu_style(style: u32) -> u32 {
         | WS_POPUP
 }
 
+/// The extended styles a borderless window keeps: no taskbar button or Alt+Tab entry (a tool
+/// window, without the app window style winit gives every window, which asks for a button),
+/// and a menu is never activated.
+fn popup_ex_style(ex: u32, no_activate: bool) -> u32 {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        WS_EX_APPWINDOW, WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW,
+    };
+    (ex & !WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW | if no_activate { WS_EX_NOACTIVATE } else { 0 }
+}
+
 #[cfg(test)]
-mod menu_style_tests {
+mod popup_style_tests {
     use super::*;
     use windows_sys::Win32::Foundation::RECT;
     use windows_sys::Win32::UI::WindowsAndMessaging::{
-        AdjustWindowRectEx, WS_CLIPCHILDREN, WS_CLIPSIBLINGS, WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW,
-        WS_EX_TOPMOST, WS_POPUP, WS_VISIBLE,
+        AdjustWindowRectEx, WS_CLIPCHILDREN, WS_CLIPSIBLINGS, WS_EX_APPWINDOW, WS_EX_NOACTIVATE,
+        WS_EX_TOOLWINDOW, WS_EX_TOPMOST, WS_POPUP, WS_VISIBLE,
     };
 
-    /// winit's borderless window as it creates a menu (style 0x16CB0000: a caption, system
-    /// menu, minimize and maximize boxes) and the extended styles menu_window gives it.
-    const WINIT_MENU: u32 = 0x16CB_0000;
+    /// winit's borderless window as it creates a menu or the drop target (style 0x16CB0000: a
+    /// caption, system menu, minimize and maximize boxes), and the extended styles
+    /// popup_window gives a menu and the drop target (always on top, a window edge).
+    const WINIT_BORDERLESS: u32 = 0x16CB_0000;
     const MENU_EX: u32 = 0x0804_0198;
+    const DROP_TARGET_EX: u32 = 0x0000_0198;
 
-    fn frame(style: u32, ex: u32) -> [i32; 4] {
+    /// The frame (left, top, right, bottom) the styles alone put round a `w` × `h` client: what
+    /// a reader of the styles, rather than of our WM_NCCALCSIZE, takes for it.
+    fn frame(style: u32, ex: u32, w: i32, h: i32) -> [i32; 4] {
         let mut rc = RECT {
             left: 0,
             top: 0,
-            right: 279,
-            bottom: 275,
+            right: w,
+            bottom: h,
         };
         // SAFETY: plain computation on a local rectangle.
         unsafe { AdjustWindowRectEx(&mut rc, style, 0, ex) };
-        [-rc.left, -rc.top, rc.right - 279, rc.bottom - 275]
+        [-rc.left, -rc.top, rc.right - w, rc.bottom - h]
     }
 
     #[test]
     fn a_menu_window_is_a_popup_whose_client_is_all_of_it() {
         // As created, the styles alone give it a caption and a frame: what a reader of the
         // styles (rather than of our WM_NCCALCSIZE) took for its client on build 22635 (#208).
-        assert_ne!(frame(WINIT_MENU, MENU_EX), [0, 0, 0, 0]);
-        let style = menu_style(WINIT_MENU);
+        assert_ne!(frame(WINIT_BORDERLESS, MENU_EX, 279, 275), [0, 0, 0, 0]);
+        let style = popup_style(WINIT_BORDERLESS);
         assert_eq!(
             style,
             WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN
         );
         // As a popup, no reading of its styles finds a frame (at any scale: none to scale).
-        assert_eq!(frame(style, MENU_EX), [0, 0, 0, 0]);
+        assert_eq!(frame(style, MENU_EX, 279, 275), [0, 0, 0, 0]);
         // Applied again (winit setting its styles once more), nothing changes.
-        assert_eq!(menu_style(style), style);
+        assert_eq!(popup_style(style), style);
     }
 
     #[test]
-    fn a_menu_window_keeps_its_extended_styles() {
-        // winit's own extended styles for it, without ours: they come back.
-        let winit_ex = WS_EX_TOPMOST | 0x0000_0100 | 0x0000_0010;
-        let ex = menu_ex_style(winit_ex);
-        assert_eq!(ex & WS_EX_NOACTIVATE, WS_EX_NOACTIVATE);
-        assert_eq!(ex & WS_EX_TOOLWINDOW, WS_EX_TOOLWINDOW);
-        assert_eq!(ex & WS_EX_TOPMOST, WS_EX_TOPMOST);
+    fn the_drop_target_is_a_popup_whose_client_is_all_of_it() {
+        // The black band left on build 22635 once menus were fixed (#208): a caption about
+        // 26 px tall over the 56 px box, its picture moved down by as much.
+        let [_, top, _, _] = frame(WINIT_BORDERLESS, 0x0004_0118, 56, 56);
+        assert!(top > 20, "a caption's height above its client: {top}");
+        let style = popup_style(WINIT_BORDERLESS);
+        assert_eq!(
+            style,
+            WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN
+        );
+        // As winit makes it (always on top, a window edge, files accepted, an app window).
+        let ex = popup_ex_style(0x0004_0118, false);
+        assert_eq!(ex, DROP_TARGET_EX);
+        assert_eq!(frame(style, ex, 56, 56), [0, 0, 0, 0]);
+        assert_eq!(popup_style(style), style);
+    }
+
+    #[test]
+    fn a_popup_keeps_its_extended_styles() {
+        // winit's own extended styles for it (always on top, a window edge, files accepted,
+        // an app window), without ours: they come back, but for the app window's.
+        let winit_ex = WS_EX_TOPMOST | 0x0000_0100 | 0x0000_0010 | WS_EX_APPWINDOW;
+        let menu = popup_ex_style(winit_ex, true);
+        assert_eq!(menu & WS_EX_APPWINDOW, 0);
+        assert_eq!(menu & WS_EX_NOACTIVATE, WS_EX_NOACTIVATE);
+        assert_eq!(menu & WS_EX_TOOLWINDOW, WS_EX_TOOLWINDOW);
+        assert_eq!(menu & WS_EX_TOPMOST, WS_EX_TOPMOST);
+        // The drop target is activated as any window (a click on it, a drag), but has no
+        // taskbar button either; an off-screen test copy's never-activate stays.
+        let floating = popup_ex_style(winit_ex, false);
+        assert_eq!(floating & WS_EX_NOACTIVATE, 0);
+        assert_eq!(floating & WS_EX_TOOLWINDOW, WS_EX_TOOLWINDOW);
+        assert_eq!(floating & WS_EX_TOPMOST, WS_EX_TOPMOST);
+        assert_eq!(
+            popup_ex_style(winit_ex | WS_EX_NOACTIVATE, false) & WS_EX_NOACTIVATE,
+            WS_EX_NOACTIVATE
+        );
+    }
+
+    /// A real (hidden, off-screen) window with winit's borderless styles, made a popup by
+    /// popup_window: plain popup styles, its client the whole window, and both kept when its
+    /// styles are set again (winit does on every change of its flags).
+    #[test]
+    fn popup_window_makes_a_real_window_a_popup_and_keeps_it_one() {
+        use windows_sys::Win32::UI::WindowsAndMessaging::{
+            CreateWindowExW, DestroyWindow, GetClientRect, GetWindowRect, WS_CAPTION,
+        };
+        for (n, kind) in [
+            Popup::Floating,
+            Popup::Menu {
+                border: 0x00ff_0000,
+            },
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            let title = format!("mdm popup test {n} {}", std::process::id());
+            let wide: Vec<u16> = title.encode_utf16().chain(Some(0)).collect();
+            let class: Vec<u16> = "STATIC\0".encode_utf16().collect();
+            // SAFETY: a hidden window of the system's STATIC class on this thread, destroyed
+            // below; the strings are NUL-terminated.
+            let hwnd = unsafe {
+                CreateWindowExW(
+                    0x0000_0108,
+                    class.as_ptr(),
+                    wide.as_ptr(),
+                    WINIT_BORDERLESS & !WS_VISIBLE,
+                    -20000,
+                    -20000,
+                    56,
+                    56,
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null_mut(),
+                    std::ptr::null(),
+                )
+            };
+            assert!(!hwnd.is_null());
+            assert!(popup_window(&title, kind), "applied once");
+            assert!(!popup_window(&title, kind), "only once");
+            // SAFETY: our own window; plain queries and style changes, as winit's.
+            unsafe {
+                let style = GetWindowLongPtrW(hwnd, GWL_STYLE) as u32;
+                assert_eq!(style & WS_CAPTION, 0);
+                assert_ne!(style & WS_POPUP, 0);
+                // winit setting its caption style again: the subclass keeps the popup's.
+                SetWindowLongPtrW(hwnd, GWL_STYLE, (style | WS_CAPTION) as isize);
+                assert_eq!(GetWindowLongPtrW(hwnd, GWL_STYLE) as u32, style);
+                let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
+                SetWindowLongPtrW(hwnd, GWL_EXSTYLE, 0x0000_0108);
+                assert_eq!(GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32, ex);
+                assert_eq!(
+                    ex & WS_EX_NOACTIVATE != 0,
+                    matches!(kind, Popup::Menu { .. })
+                );
+                // Its size as the drop target's (a window with a caption style can't be made
+                // that narrow: a popup can), then its client is the whole window.
+                SetWindowPos(
+                    hwnd,
+                    std::ptr::null_mut(),
+                    0,
+                    0,
+                    56,
+                    56,
+                    SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE,
+                );
+                let (mut w, mut c): (RECT, RECT) = (zeroed(), zeroed());
+                GetWindowRect(hwnd, &mut w);
+                GetClientRect(hwnd, &mut c);
+                assert_eq!([w.right - w.left, w.bottom - w.top], [56, 56]);
+                assert_eq!([c.left, c.top, c.right, c.bottom], [0, 0, 56, 56]);
+                DestroyWindow(hwnd);
+            }
+        }
     }
 }
 
-/// The extended styles a menu window keeps: never activated, no taskbar button or Alt+Tab entry.
-fn menu_ex_style(ex: u32) -> u32 {
-    use windows_sys::Win32::UI::WindowsAndMessaging::{WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW};
-    ex | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW
-}
-
-/// Menu windows answer mouse-activation with "don't activate": clicking an item must not take
-/// focus from the main window (which would close the menu before the click completes). They
-/// keep their popup styles when winit sets the styles again (it does on every change of its
-/// window flags, showing the window included), and their client is the whole window, with no
-/// frame (winit's borderless frame moves the client a pixel down, for a shadow drawn round a
-/// caption style, which a popup has no need of).
-unsafe extern "system" fn menu_proc(
+/// Every borderless window of ours: it keeps its popup styles when winit sets the styles again
+/// (it does on every change of its window flags, showing the window included), and its client
+/// is the whole window, with no frame (winit's borderless frame moves the client a pixel down,
+/// for a shadow drawn round a caption style, which a popup has no need of). A menu's (`data`
+/// has [`POPUP_NO_ACTIVATE`]) answers mouse-activation with "don't activate": clicking an item
+/// must not take focus from the main window (which would close the menu before the click
+/// completes).
+unsafe extern "system" fn popup_proc(
     hwnd: HWND,
     msg: u32,
     wparam: WPARAM,
     lparam: LPARAM,
     _id: usize,
-    _data: usize,
+    data: usize,
 ) -> LRESULT {
     use windows_sys::Win32::UI::WindowsAndMessaging::{STYLESTRUCT, WM_STYLECHANGING};
     const WM_MOUSEACTIVATE: u32 = 0x0021;
     const MA_NOACTIVATE: LRESULT = 3;
-    if msg == WM_MOUSEACTIVATE {
+    let no_activate = data & POPUP_NO_ACTIVATE != 0;
+    if msg == WM_MOUSEACTIVATE && no_activate {
         return MA_NOACTIVATE;
     }
     if msg == WM_STYLECHANGING && lparam != 0 {
@@ -798,8 +934,8 @@ unsafe extern "system" fn menu_proc(
         // styleNew the window may alter (Win32 contract).
         let s = unsafe { &mut *(lparam as *mut STYLESTRUCT) };
         match wparam as i32 {
-            GWL_STYLE => s.styleNew = menu_style(s.styleNew),
-            GWL_EXSTYLE => s.styleNew = menu_ex_style(s.styleNew),
+            GWL_STYLE => s.styleNew = popup_style(s.styleNew),
+            GWL_EXSTYLE => s.styleNew = popup_ex_style(s.styleNew, no_activate),
             _ => {}
         }
         return 0;
@@ -812,38 +948,48 @@ unsafe extern "system" fn menu_proc(
     unsafe { DefSubclassProc(hwnd, msg, wparam, lparam) }
 }
 
-/// Make our borderless window titled `title` behave and look like a Win32 menu popup: never
-/// activated (the main window keeps focus and keyboard), no taskbar entry, Windows 11's small
-/// rounded corners, shadow and a 1 px border in `border` (0x00BBGGRR), and no window-open
-/// animation (menus just appear); a plain popup window whose client is all of it
-/// ([`menu_style`], #208). Cheap to call every frame: returns true only on the call that applied
-/// it — the window is created hidden and should be shown then.
-pub fn menu_window(title: &str, border: u32) -> bool {
+/// Make our borderless window titled `title` a plain popup window whose client is all of it
+/// ([`popup_style`], #208), with no taskbar entry, and the rest of what `kind` says. Every
+/// borderless window of ours comes here (chrome.rs's `popup_viewport` and `style_popup`). Call
+/// it in the window's own pass, before anything is drawn in it: its frame changes, and a
+/// picture drawn before that is lost with the old frame (black until something makes it draw
+/// again). Cheap to call every frame: returns true only on the call that applied it; the window
+/// is created hidden and should be shown then.
+pub fn popup_window(title: &str, kind: Popup) -> bool {
     use windows_sys::Win32::Graphics::Dwm::{
         DWMWA_BORDER_COLOR, DWMWA_TRANSITIONS_FORCEDISABLED, DWMWA_WINDOW_CORNER_PREFERENCE,
-        DWMWCP_ROUNDSMALL, DwmSetWindowAttribute,
+        DWMWCP_ROUND, DWMWCP_ROUNDSMALL, DwmSetWindowAttribute,
     };
-    use windows_sys::Win32::UI::WindowsAndMessaging::{SWP_NOSIZE, WS_EX_NOACTIVATE};
+    use windows_sys::Win32::UI::WindowsAndMessaging::{GetPropW, SWP_NOSIZE, SetPropW};
     let Some(hwnd) = find_own_window(title) else {
         return false;
     };
+    let no_activate = matches!(kind, Popup::Menu { .. });
+    // SAFETY: our own window, on its thread; the subclass proc lives as long as the program;
+    // the DWM attributes are read from locals during the calls.
     unsafe {
-        let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
-        if ex & WS_EX_NOACTIVATE != 0 {
+        // Done once (comctl32 5.8, which MDM links, has no GetWindowSubclass to ask by).
+        let done: Vec<u16> = "MDM.popup\0".encode_utf16().collect();
+        if !GetPropW(hwnd, done.as_ptr()).is_null() {
             return false;
         }
-        let off: i32 = 1;
-        DwmSetWindowAttribute(
-            hwnd,
-            DWMWA_TRANSITIONS_FORCEDISABLED as u32,
-            &off as *const i32 as *const c_void,
-            size_of::<i32>() as u32,
-        );
+        SetPropW(hwnd, done.as_ptr(), 1usize as _);
+        if let Popup::Menu { .. } = kind {
+            let off: i32 = 1;
+            DwmSetWindowAttribute(
+                hwnd,
+                DWMWA_TRANSITIONS_FORCEDISABLED as u32,
+                &off as *const i32 as *const c_void,
+                size_of::<i32>() as u32,
+            );
+        }
         // The subclass first: it keeps the styles below when winit sets its own again.
-        SetWindowSubclass(hwnd, Some(menu_proc), 0x3e1, 0);
-        SetWindowLongPtrW(hwnd, GWL_EXSTYLE, menu_ex_style(ex) as isize);
+        let data = if no_activate { POPUP_NO_ACTIVATE } else { 0 };
+        SetWindowSubclass(hwnd, Some(popup_proc), POPUP_SUBCLASS, data);
+        let ex = GetWindowLongPtrW(hwnd, GWL_EXSTYLE) as u32;
+        SetWindowLongPtrW(hwnd, GWL_EXSTYLE, popup_ex_style(ex, no_activate) as isize);
         let style = GetWindowLongPtrW(hwnd, GWL_STYLE) as u32;
-        SetWindowLongPtrW(hwnd, GWL_STYLE, menu_style(style) as isize);
+        SetWindowLongPtrW(hwnd, GWL_STYLE, popup_style(style) as isize);
         // The frame measured again (WM_NCCALCSIZE): no caption, the client the whole window.
         SetWindowPos(
             hwnd,
@@ -854,19 +1000,25 @@ pub fn menu_window(title: &str, border: u32) -> bool {
             0,
             SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
         );
-        let corner = DWMWCP_ROUNDSMALL;
+        // Windows 11 rounds a window with a caption style by itself, not a popup: asked for.
+        let corner = match kind {
+            Popup::Menu { .. } => DWMWCP_ROUNDSMALL,
+            Popup::Floating => DWMWCP_ROUND,
+        };
         DwmSetWindowAttribute(
             hwnd,
             DWMWA_WINDOW_CORNER_PREFERENCE as u32,
             &corner as *const _ as *const c_void,
             size_of::<i32>() as u32,
         );
-        DwmSetWindowAttribute(
-            hwnd,
-            DWMWA_BORDER_COLOR as u32,
-            &border as *const u32 as *const c_void,
-            size_of::<u32>() as u32,
-        );
+        if let Popup::Menu { border } = kind {
+            DwmSetWindowAttribute(
+                hwnd,
+                DWMWA_BORDER_COLOR as u32,
+                &border as *const u32 as *const c_void,
+                size_of::<u32>() as u32,
+            );
+        }
     }
     true
 }
@@ -1564,30 +1716,98 @@ pub fn set_torrent_handlers(on: bool) {
     }
 }
 
+/// The Run key's value MDM keeps its startup entry in (Options → "Launch on startup", the
+/// installer's "Start when Windows starts"). An off-screen test copy never touches the user's:
+/// it uses `MDM_TEST_RUN_VALUE`'s name when given one, else none at all (#226's checks).
+fn run_value() -> Option<String> {
+    if crate::offscreen() {
+        return std::env::var("MDM_TEST_RUN_VALUE")
+            .ok()
+            .filter(|v| v.starts_with("MisterDownloadManagerTest"));
+    }
+    Some("MisterDownloadManager".to_owned())
+}
+
+const RUN_KEY: &str = r"Software\Microsoft\Windows\CurrentVersion\Run";
+
+/// The startup entry's command for the program `exe`: started with the session, MDM waits in
+/// the notification area (`/startup`, #226).
+fn startup_command(exe: &std::path::Path) -> String {
+    format!("\"{}\" {}", exe.display(), mdm_ipc::STARTUP)
+}
+
+/// A startup entry `value` (a command line) written before #226 for the program `exe`: the same
+/// program, without the argument. Another program's entry (a copy of MDM elsewhere) is not this
+/// one's to rewrite.
+fn startup_outdated(value: &str, exe: &std::path::Path) -> bool {
+    // The program compared as Windows compares paths: in any case, either slash.
+    let norm = |s: &str| s.replace('/', "\\").to_lowercase();
+    let exe = norm(&exe.display().to_string());
+    let value = value.trim();
+    let args = match value.strip_prefix('"') {
+        Some(rest) => match rest.split_once('"') {
+            Some((program, args)) if norm(program) == exe => args,
+            _ => return false,
+        },
+        // Unquoted (written by hand): the program's path, spaces and all, then its arguments.
+        None => match value.get(..exe.len()).zip(value.get(exe.len()..)) {
+            Some((program, args))
+                if norm(program) == exe && (args.is_empty() || args.starts_with(' ')) =>
+            {
+                args
+            }
+            _ => return false,
+        },
+    };
+    !args
+        .split_whitespace()
+        .any(|a| a.eq_ignore_ascii_case(mdm_ipc::STARTUP))
+}
+
 /// Is Mister Download Manager in the user's Run key (set by Options or by the installer's
 /// "Start when Windows starts")? The registry is the truth for Options → "Launch on startup".
 pub fn run_at_startup() -> bool {
-    reg_string_in(
+    run_value().is_some_and(|name| {
+        reg_string_in(
+            windows_sys::Win32::System::Registry::HKEY_CURRENT_USER,
+            RUN_KEY,
+            &name,
+        )
+        .is_some()
+    })
+}
+
+/// The startup entry rewritten with its argument when it was written without (by 0.3.0 or
+/// earlier, or by their installer) for this very program (#226).
+pub fn update_run_at_startup() {
+    let (Some(name), Ok(exe)) = (run_value(), std::env::current_exe()) else {
+        return;
+    };
+    let value = reg_string_in(
         windows_sys::Win32::System::Registry::HKEY_CURRENT_USER,
-        r"Software\Microsoft\Windows\CurrentVersion\Run",
-        "MisterDownloadManager",
-    )
-    .is_some()
+        RUN_KEY,
+        &name,
+    );
+    if value.is_some_and(|v| startup_outdated(&v, &exe)) {
+        tracing::info!("startup entry written again, to start in the notification area");
+        set_run_at_startup(true);
+    }
 }
 
 pub fn set_run_at_startup(on: bool) {
     use windows_sys::Win32::System::Registry::{
         HKEY_CURRENT_USER, REG_SZ, RegDeleteKeyValueW, RegSetKeyValueW,
     };
-    let key: Vec<u16> = "Software\\Microsoft\\Windows\\CurrentVersion\\Run\0"
-        .encode_utf16()
-        .collect();
-    let name: Vec<u16> = "MisterDownloadManager\0".encode_utf16().collect();
+    let Some(name) = run_value() else {
+        return;
+    };
+    let key: Vec<u16> = RUN_KEY.encode_utf16().chain(Some(0)).collect();
+    let name: Vec<u16> = name.encode_utf16().chain(Some(0)).collect();
     if on {
         let Ok(exe) = std::env::current_exe() else {
             return;
         };
-        let value: Vec<u16> = format!("\"{}\"", exe.display())
+        let value: Vec<u16> = startup_command(&exe)
             .encode_utf16()
             .chain(Some(0))
             .collect();
@@ -1607,6 +1827,65 @@ pub fn set_run_at_startup(on: bool) {
         unsafe {
             RegDeleteKeyValueW(HKEY_CURRENT_USER, key.as_ptr(), name.as_ptr());
         }
+    }
+}
+
+#[cfg(test)]
+mod startup_tests {
+    use super::{startup_command, startup_outdated};
+    use std::path::Path;
+
+    const EXE: &str = r"C:\Program Files\Mister Download Manager\misterdownloadmanager.exe";
+
+    /// The entry Options and the installer write (#226): the program, quoted, then `/startup`.
+    #[test]
+    fn the_startup_entry_starts_mdm_in_the_tray() {
+        let cmd = startup_command(Path::new(EXE));
+        assert_eq!(
+            cmd,
+            format!("\"{EXE}\" /startup"),
+            "as tools/installer/mdm.iss writes it too"
+        );
+        let args = mdm_ipc::parse_args(&["/startup".to_owned()]).unwrap();
+        assert!(args.startup);
+        assert!(!startup_outdated(&cmd, Path::new(EXE)));
+    }
+
+    /// An entry of 0.3.0 and earlier, or of their installer, is written again; one for another
+    /// copy of MDM, or one already up to date, is left alone.
+    #[test]
+    fn old_startup_entries_are_rewritten() {
+        let exe = Path::new(EXE);
+        // Options in 0.3.0 and earlier, and the installer's: the program alone, quoted.
+        assert!(startup_outdated(&format!("\"{EXE}\""), exe));
+        // Written by hand: unquoted, in another case, with other slashes.
+        assert!(startup_outdated(
+            r"c:\program files\mister download manager\MISTERDOWNLOADMANAGER.EXE",
+            exe
+        ));
+        assert!(startup_outdated(
+            &format!("\"{}\"", EXE.replace('\\', "/").to_uppercase()),
+            exe
+        ));
+        assert!(!startup_outdated(&format!("{EXE}2"), exe));
+        // Already with it (any case).
+        assert!(!startup_outdated(&format!("\"{EXE}\" /startup"), exe));
+        assert!(!startup_outdated(&format!("\"{EXE}\" /STARTUP"), exe));
+        // Another copy's (a portable one, a build elsewhere).
+        assert!(!startup_outdated(
+            r#""D:\mdm\misterdownloadmanager.exe""#,
+            exe
+        ));
+        assert!(!startup_outdated("", exe));
+    }
+
+    /// The installer's "Start when Windows starts" writes the entry Options writes.
+    #[test]
+    fn the_installer_writes_the_same_entry() {
+        let iss = include_str!("../../../tools/installer/mdm.iss");
+        assert!(iss.contains(
+            r#"ValueName: "MisterDownloadManager"; ValueData: """{app}\{#AppExe}"" /startup""#
+        ));
     }
 }
 
@@ -2228,6 +2507,118 @@ pub mod ole {
             }
             Some(Registration { hwnd, target })
         }
+
+        /// Off-screen test copies only (MDM_TEST_DROP, droptarget.rs): `text` dropped on the
+        /// window as a browser drops a link, without a mouse: a data object holding it as
+        /// "UniformResourceLocatorW" goes to the drop target OLE has registered for the window
+        /// (DragEnter, then Drop), as OLE's drag loop hands it. False when the window holds no
+        /// registration of ours.
+        pub fn test_drop(&self, text: &str) -> bool {
+            use windows_sys::Win32::UI::WindowsAndMessaging::GetPropW;
+            // OLE keeps the target registered for a window in this property of it (in the
+            // process that registered it: the target itself).
+            let prop: Vec<u16> = "OleDropTargetInterface\0".encode_utf16().collect();
+            // SAFETY: a property read on our own window.
+            let registered = unsafe { GetPropW(self.hwnd, prop.as_ptr()) };
+            if registered != self.target.cast() {
+                tracing::warn!("test drop: the window holds no drop target of ours");
+                return false;
+            }
+            let data = Box::into_raw(Box::new(TestData {
+                vtbl: &TEST_DATA_VTBL,
+                text: text.encode_utf16().chain(Some(0)).collect(),
+            }));
+            let target = registered as *mut Target;
+            let mut effect = DROPEFFECT_COPY;
+            // SAFETY: our live target, called through its vtable as OLE does, with a data
+            // object that lives until both calls return.
+            unsafe {
+                let pt = PointL { x: 0, y: 0 };
+                ((*target).vtbl.drag_enter)(target, data.cast(), 0, pt, &mut effect);
+                let pt = PointL { x: 0, y: 0 };
+                ((*target).vtbl.drop)(target, data.cast(), 0, pt, &mut effect);
+                std::mem::drop(Box::from_raw(data));
+            }
+            tracing::info!("test drop: {text} (effect {effect})");
+            effect == DROPEFFECT_COPY
+        }
+    }
+
+    /// The data object of [`Registration::test_drop`]: its text as a link (or plain text), in
+    /// memory the receiver frees (ReleaseStgMedium).
+    #[repr(C)]
+    struct TestData {
+        vtbl: &'static TestDataVtbl,
+        text: Vec<u16>,
+    }
+
+    /// IDataObject's vtable up to GetData, all the receiver calls.
+    #[repr(C)]
+    struct TestDataVtbl {
+        query_interface:
+            unsafe extern "system" fn(*mut c_void, *const Guid, *mut *mut c_void) -> HResult,
+        add_ref: unsafe extern "system" fn(*mut c_void) -> u32,
+        release: unsafe extern "system" fn(*mut c_void) -> u32,
+        get_data:
+            unsafe extern "system" fn(*mut TestData, *const FormatEtc, *mut StgMedium) -> HResult,
+    }
+
+    static TEST_DATA_VTBL: TestDataVtbl = TestDataVtbl {
+        query_interface: test_data_query,
+        add_ref: test_data_ref,
+        release: test_data_ref,
+        get_data: test_data_get,
+    };
+
+    unsafe extern "system" fn test_data_query(
+        _this: *mut c_void,
+        _iid: *const Guid,
+        out: *mut *mut c_void,
+    ) -> HResult {
+        // SAFETY: `out` is the caller's.
+        unsafe { *out = std::ptr::null_mut() };
+        E_NOINTERFACE
+    }
+
+    /// Owned by test_drop for the calls: no counting.
+    unsafe extern "system" fn test_data_ref(_this: *mut c_void) -> u32 {
+        1
+    }
+
+    unsafe extern "system" fn test_data_get(
+        this: *mut TestData,
+        fmt: *const FormatEtc,
+        out: *mut StgMedium,
+    ) -> HResult {
+        const DV_E_FORMATETC: HResult = 0x8004_0064_u32 as i32;
+        const GMEM_MOVEABLE: u32 = 2;
+        #[link(name = "kernel32")]
+        unsafe extern "system" {
+            fn GlobalAlloc(flags: u32, bytes: usize) -> *mut c_void;
+        }
+        // SAFETY: valid pointers for the call; the memory is filled within its size and handed
+        // to the caller, who releases it.
+        unsafe {
+            let name: Vec<u16> = "UniformResourceLocatorW\0".encode_utf16().collect();
+            let url_format = RegisterClipboardFormatW(name.as_ptr()) as u16;
+            if (*fmt).cf != url_format && (*fmt).cf != CF_UNICODETEXT {
+                return DV_E_FORMATETC;
+            }
+            let text = &(*this).text;
+            let h = GlobalAlloc(GMEM_MOVEABLE, text.len() * 2);
+            let p = GlobalLock(h) as *mut u16;
+            if p.is_null() {
+                return DV_E_FORMATETC;
+            }
+            std::ptr::copy_nonoverlapping(text.as_ptr(), p, text.len());
+            GlobalUnlock(h);
+            *out = StgMedium {
+                tymed: TYMED_HGLOBAL,
+                handle: h,
+                unk_for_release: std::ptr::null_mut(),
+            };
+        }
+        S_OK
     }
 
     impl Drop for Registration {
@@ -2682,4 +3073,386 @@ fn blob_bytes(
     // SAFETY: the buffer came from DPAPI, which allocates with LocalAlloc.
     unsafe { windows_sys::Win32::Foundation::LocalFree(blob.pbData.cast()) };
     Some(bytes)
+}
+
+// Sign-in secrets in Windows Credential Manager (#44, secrets.rs): generic credentials named
+// `<service>/<account>`, for this Windows user, roaming with the profile as MDM's data folder
+// (%APPDATA%) does. Credential Manager (Control Panel → Credential Manager → Windows
+// Credentials) shows them, the label as their user name, and can remove them.
+
+fn cred_target(service: &str, account: &str) -> Vec<u16> {
+    format!("{service}/{account}")
+        .encode_utf16()
+        .chain(Some(0))
+        .collect()
+}
+
+/// The last error as a fault: no logon session (a service account) means no keychain.
+#[allow(unsafe_code)]
+fn cred_fault(what: &str) -> crate::secrets::Fault {
+    use crate::secrets::Fault;
+    use windows_sys::Win32::Foundation::{ERROR_NO_SUCH_LOGON_SESSION, GetLastError};
+    // SAFETY: no arguments; reads this thread's last error.
+    let code = unsafe { GetLastError() };
+    if code == ERROR_NO_SUCH_LOGON_SESSION {
+        Fault::Missing
+    } else {
+        Fault::Failed(format!("{what}: Windows error {code}"))
+    }
+}
+
+#[allow(unsafe_code)]
+fn cred_not_found() -> bool {
+    use windows_sys::Win32::Foundation::{ERROR_NOT_FOUND, GetLastError};
+    // SAFETY: no arguments.
+    unsafe { GetLastError() == ERROR_NOT_FOUND }
+}
+
+/// Whether Credential Manager answers (listing MDM's own entries).
+pub fn keychain_probe(service: &str) -> Result<(), crate::secrets::Fault> {
+    keychain_list(service).map(|_| ())
+}
+
+#[allow(unsafe_code)]
+pub fn keychain_read(
+    service: &str,
+    account: &str,
+) -> Result<Option<String>, crate::secrets::Fault> {
+    use windows_sys::Win32::Security::Credentials::{
+        CRED_TYPE_GENERIC, CREDENTIALW, CredFree, CredReadW,
+    };
+    let target = cred_target(service, account);
+    let mut cred: *mut CREDENTIALW = std::ptr::null_mut();
+    // SAFETY: `target` is a NUL-terminated UTF-16 string alive for the call; `cred` receives a
+    // buffer the system allocated, freed below with CredFree.
+    let ok = unsafe { CredReadW(target.as_ptr(), CRED_TYPE_GENERIC, 0, &mut cred) };
+    if ok == 0 {
+        return if cred_not_found() {
+            Ok(None)
+        } else {
+            Err(cred_fault("CredReadW"))
+        };
+    }
+    // SAFETY: on success `cred` points at a CREDENTIALW whose blob holds `CredentialBlobSize`
+    // bytes; both are ours until CredFree.
+    let bytes = unsafe {
+        let c = &*cred;
+        let bytes = if c.CredentialBlob.is_null() {
+            Vec::new()
+        } else {
+            std::slice::from_raw_parts(c.CredentialBlob, c.CredentialBlobSize as usize).to_vec()
+        };
+        CredFree(cred.cast());
+        bytes
+    };
+    String::from_utf8(bytes)
+        .map(Some)
+        .map_err(|_| crate::secrets::Fault::Failed("not UTF-8".into()))
+}
+
+/// Stored as UTF-8. Credential Manager takes at most 2560 bytes: a longer secret stays in the
+/// settings, sealed with DPAPI.
+#[allow(unsafe_code)]
+pub fn keychain_write(
+    service: &str,
+    account: &str,
+    label: &str,
+    secret: &str,
+) -> Result<(), crate::secrets::Fault> {
+    use windows_sys::Win32::Security::Credentials::{
+        CRED_MAX_CREDENTIAL_BLOB_SIZE, CRED_PERSIST_ENTERPRISE, CRED_TYPE_GENERIC, CREDENTIALW,
+        CredWriteW,
+    };
+    if secret.len() > CRED_MAX_CREDENTIAL_BLOB_SIZE as usize {
+        return Err(crate::secrets::Fault::Failed(
+            "longer than Credential Manager takes".into(),
+        ));
+    }
+    let mut target = cred_target(service, account);
+    let mut user: Vec<u16> = label.encode_utf16().chain(Some(0)).collect();
+    let mut blob = secret.as_bytes().to_vec();
+    // SAFETY: all-zero is a valid CREDENTIALW (null pointers, zero sizes).
+    let mut cred: CREDENTIALW = unsafe { std::mem::zeroed() };
+    cred.Type = CRED_TYPE_GENERIC;
+    cred.TargetName = target.as_mut_ptr();
+    cred.UserName = user.as_mut_ptr();
+    cred.CredentialBlobSize = blob.len() as u32;
+    cred.CredentialBlob = blob.as_mut_ptr();
+    cred.Persist = CRED_PERSIST_ENTERPRISE;
+    // SAFETY: every pointer in `cred` points at a buffer alive for the call (only read).
+    let ok = unsafe { CredWriteW(&cred, 0) };
+    let fault = (ok == 0).then(|| cred_fault("CredWriteW"));
+    // The plain copy doesn't linger in this buffer.
+    blob.iter_mut().for_each(|b| *b = 0);
+    fault.map_or(Ok(()), Err)
+}
+
+#[allow(unsafe_code)]
+pub fn keychain_delete(service: &str, account: &str) -> Result<(), crate::secrets::Fault> {
+    use windows_sys::Win32::Security::Credentials::{CRED_TYPE_GENERIC, CredDeleteW};
+    let target = cred_target(service, account);
+    // SAFETY: `target` is NUL-terminated and alive for the call.
+    let ok = unsafe { CredDeleteW(target.as_ptr(), CRED_TYPE_GENERIC, 0) };
+    if ok == 0 && !cred_not_found() {
+        return Err(cred_fault("CredDeleteW"));
+    }
+    Ok(())
+}
+
+/// The accounts of `service`'s generic credentials (the filter `<service>/*`: only MDM's; the
+/// others' blobs are never read).
+#[allow(unsafe_code)]
+pub fn keychain_list(service: &str) -> Result<Vec<String>, crate::secrets::Fault> {
+    use windows_sys::Win32::Security::Credentials::{
+        CRED_TYPE_GENERIC, CREDENTIALW, CredEnumerateW, CredFree,
+    };
+    let filter: Vec<u16> = format!("{service}/*")
+        .encode_utf16()
+        .chain(Some(0))
+        .collect();
+    let mut count = 0u32;
+    let mut creds: *mut *mut CREDENTIALW = std::ptr::null_mut();
+    // SAFETY: `filter` is NUL-terminated; `creds` receives an array of `count` pointers the
+    // system allocated, freed below with CredFree.
+    let ok = unsafe { CredEnumerateW(filter.as_ptr(), 0, &mut count, &mut creds) };
+    if ok == 0 {
+        return if cred_not_found() {
+            Ok(Vec::new())
+        } else {
+            Err(cred_fault("CredEnumerateW"))
+        };
+    }
+    let prefix = format!("{service}/");
+    let mut accounts = Vec::new();
+    // SAFETY: on success `creds` holds `count` valid CREDENTIALW pointers, ours until CredFree;
+    // each TargetName is a NUL-terminated UTF-16 string.
+    unsafe {
+        for i in 0..count as usize {
+            let c = &**creds.add(i);
+            if c.Type != CRED_TYPE_GENERIC || c.TargetName.is_null() {
+                continue;
+            }
+            let mut n = 0;
+            while *c.TargetName.add(n) != 0 {
+                n += 1;
+            }
+            let name = String::from_utf16_lossy(std::slice::from_raw_parts(c.TargetName, n));
+            if let Some(account) = name.strip_prefix(&prefix) {
+                accounts.push(account.to_owned());
+            }
+        }
+        CredFree(creds.cast());
+    }
+    Ok(accounts)
+}
+
+// ---- waking the computer for a queue (#142) -----------------------------------------------
+
+/// Windows' "Allow wake timers" power option for the active plan (0 off, 1 on, 2 important
+/// wake timers only), on mains power (`ac`) and on battery (`dc`), and the power source now.
+pub struct WakeTimers {
+    pub ac: u32,
+    pub dc: u32,
+    pub on_battery: bool,
+    pub has_battery: bool,
+}
+
+/// Power Options → Sleep → Allow wake timers, as `powercfg /q SCHEME_CURRENT SUB_SLEEP
+/// RTCWAKE` shows it. Read only; a setting that can't be read counts as on (nothing to warn of).
+pub fn wake_timers() -> WakeTimers {
+    use windows_sys::Win32::Foundation::LocalFree;
+    use windows_sys::Win32::System::Power::{
+        GetSystemPowerStatus, PowerGetActiveScheme, PowerReadACValueIndex, PowerReadDCValueIndex,
+        SYSTEM_POWER_STATUS,
+    };
+    use windows_sys::core::GUID;
+    const SUB_SLEEP: GUID = GUID::from_u128(0x238c9fa8_0aad_41ed_83f4_97be242c8f20);
+    const RTCWAKE: GUID = GUID::from_u128(0xbd3b718a_0680_4d9d_8ab2_e1d2b4ac806d);
+    let (mut ac, mut dc) = (1u32, 1u32);
+    let mut scheme: *mut GUID = std::ptr::null_mut();
+    // SAFETY: PowerGetActiveScheme allocates the GUID it returns (freed with LocalFree below);
+    // the reads only write the u32 given.
+    unsafe {
+        if PowerGetActiveScheme(std::ptr::null_mut(), &mut scheme) == 0 && !scheme.is_null() {
+            let mut v = 0u32;
+            if PowerReadACValueIndex(std::ptr::null_mut(), scheme, &SUB_SLEEP, &RTCWAKE, &mut v)
+                == 0
+            {
+                ac = v;
+            }
+            if PowerReadDCValueIndex(std::ptr::null_mut(), scheme, &SUB_SLEEP, &RTCWAKE, &mut v)
+                == 0
+            {
+                dc = v;
+            }
+            LocalFree(scheme.cast());
+        }
+    }
+    // SAFETY: plain data, zero is valid; a plain query into it.
+    let mut st: SYSTEM_POWER_STATUS = unsafe { zeroed() };
+    let ok = unsafe { GetSystemPowerStatus(&mut st) } != 0;
+    WakeTimers {
+        ac,
+        dc,
+        // ACLineStatus 0: on battery; BatteryFlag 128: no system battery, 255: unknown.
+        on_battery: ok && st.ACLineStatus == 0,
+        has_battery: ok && st.BatteryFlag != 128 && st.BatteryFlag != 255,
+    }
+}
+
+/// Power Options' advanced settings, where "Allow wake timers" is (under Sleep). Never from an
+/// off-screen test run: its windows belong to the person at the computer.
+pub fn open_power_options() {
+    if crate::offscreen() {
+        return;
+    }
+    use std::os::windows::process::CommandExt;
+    let _ = std::process::Command::new("control.exe")
+        .arg("powercfg.cpl,,3")
+        .creation_flags(0x0800_0000)
+        .spawn();
+}
+
+/// A change to the wake timer, and where its result goes.
+struct WakeCmd {
+    /// When (seconds since 1970, UTC) and for which queue; None cancels.
+    at: Option<(i64, String)>,
+    reply: std::sync::mpsc::Sender<Result<(), String>>,
+}
+
+/// Wake the computer at `at` (seconds since 1970, UTC; for the queue named), or cancel the wake
+/// (None). A waitable timer set to resume the computer (SetWaitableTimer, fResume): it lives in
+/// MDM's process (Windows cancels it if the thread that set it ends, so one thread of its own
+/// keeps it), lists in `powercfg /waketimers`, and goes with MDM: nothing is left behind when
+/// MDM quits or is uninstalled.
+pub fn wake_at(at: Option<(i64, &str)>) -> Result<(), String> {
+    use std::sync::{Mutex, OnceLock, mpsc};
+    static THREAD: OnceLock<Mutex<mpsc::Sender<WakeCmd>>> = OnceLock::new();
+    let tx = THREAD.get_or_init(|| {
+        let (tx, rx) = mpsc::channel();
+        let _ = std::thread::Builder::new()
+            .name("mdm-wake".into())
+            .spawn(move || wake_thread(rx));
+        Mutex::new(tx)
+    });
+    let (reply, answer) = mpsc::channel();
+    let cmd = WakeCmd {
+        at: at.map(|(t, q)| (t, q.to_owned())),
+        reply,
+    };
+    let sent = tx.lock().map(|tx| tx.send(cmd).is_ok()).unwrap_or(false);
+    let lost = || "the wake timer's thread is gone".to_owned();
+    if !sent {
+        return Err(lost());
+    }
+    answer
+        .recv_timeout(std::time::Duration::from_secs(5))
+        .unwrap_or_else(|_| Err(lost()))
+}
+
+fn wake_thread(rx: std::sync::mpsc::Receiver<WakeCmd>) {
+    use std::sync::mpsc::RecvTimeoutError;
+    use windows_sys::Win32::Foundation::{ERROR_NOT_SUPPORTED, GetLastError, WAIT_OBJECT_0};
+    use windows_sys::Win32::System::Threading::{
+        CancelWaitableTimer, CreateWaitableTimerExW, SetWaitableTimer, TIMER_ALL_ACCESS,
+        WaitForSingleObject,
+    };
+    // A synchronization timer (auto-reset): the check below sees each firing once.
+    // SAFETY: no name, default security; the handle is this thread's for the process's life.
+    let timer =
+        unsafe { CreateWaitableTimerExW(std::ptr::null(), std::ptr::null(), 0, TIMER_ALL_ACCESS) };
+    let mut queue = String::new();
+    loop {
+        match rx.recv_timeout(std::time::Duration::from_secs(1)) {
+            Ok(cmd) => {
+                let result = if timer.is_null() {
+                    // SAFETY: a plain query.
+                    Err(format!("CreateWaitableTimerExW failed ({})", unsafe {
+                        GetLastError()
+                    }))
+                } else if let Some((unix, q)) = cmd.at {
+                    // FILETIME: 100 ns steps since 1601, UTC (positive: an absolute time).
+                    let due: i64 = (unix + 11_644_473_600) * 10_000_000;
+                    // SAFETY: our timer; no completion routine; fResume = TRUE. GetLastError
+                    // right after, as the call's documentation asks.
+                    let (ok, err) = unsafe {
+                        let ok = SetWaitableTimer(timer, &due, 0, None, std::ptr::null(), 1) != 0;
+                        (ok, GetLastError())
+                    };
+                    queue = q;
+                    if !ok {
+                        Err(format!("SetWaitableTimer failed ({err})"))
+                    } else if err == ERROR_NOT_SUPPORTED {
+                        // Set, but this computer can't be woken by it.
+                        Err(crate::i18n::t(
+                            // i18n: the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+                            "This computer can't be woken by a timer",
+                        )
+                        .to_owned())
+                    } else {
+                        Ok(())
+                    }
+                } else {
+                    // SAFETY: our timer.
+                    unsafe { CancelWaitableTimer(timer) };
+                    Ok(())
+                };
+                let _ = cmd.reply.send(result);
+            }
+            Err(RecvTimeoutError::Timeout) => {
+                // SAFETY: our timer; a zero wait only looks.
+                if !timer.is_null() && unsafe { WaitForSingleObject(timer, 0) } == WAIT_OBJECT_0 {
+                    tracing::info!("wake: the wake timer went off (queue {queue:?})");
+                }
+            }
+            Err(RecvTimeoutError::Disconnected) => return,
+        }
+    }
+}
+
+/// Keep the computer from sleeping while `reason` is given (a power request, listed with its
+/// reason in `powercfg /requests`); None lets it sleep again as its power plan says. False when
+/// Windows refused.
+pub fn keep_awake(reason: Option<&str>) -> bool {
+    use std::sync::Mutex;
+    use windows_sys::Win32::Foundation::CloseHandle;
+    use windows_sys::Win32::System::Power::{
+        PowerClearRequest, PowerCreateRequest, PowerRequestSystemRequired, PowerSetRequest,
+    };
+    use windows_sys::Win32::System::Threading::{
+        POWER_REQUEST_CONTEXT_SIMPLE_STRING, REASON_CONTEXT,
+    };
+    static REQUEST: Mutex<Option<isize>> = Mutex::new(None);
+    let mut held = REQUEST.lock().unwrap_or_else(|e| e.into_inner());
+    if let Some(h) = held.take() {
+        // SAFETY: the request made below, cleared and closed once.
+        unsafe {
+            PowerClearRequest(h as _, PowerRequestSystemRequired);
+            CloseHandle(h as _);
+        }
+    }
+    let Some(reason) = reason else {
+        return true;
+    };
+    let mut text: Vec<u16> = reason.encode_utf16().chain(Some(0)).collect();
+    // SAFETY: plain data, zero is valid.
+    let mut ctx: REASON_CONTEXT = unsafe { zeroed() };
+    // POWER_REQUEST_CONTEXT_VERSION is 0.
+    ctx.Version = 0;
+    ctx.Flags = POWER_REQUEST_CONTEXT_SIMPLE_STRING;
+    ctx.Reason.SimpleReasonString = text.as_mut_ptr();
+    // SAFETY: `ctx` and the string it points to live through the call (Windows copies it).
+    let h = unsafe { PowerCreateRequest(&ctx) };
+    if h.is_null() || h as isize == -1 {
+        tracing::warn!("wake: PowerCreateRequest failed");
+        return false;
+    }
+    // SAFETY: the request just made; closed if it can't be set.
+    if unsafe { PowerSetRequest(h, PowerRequestSystemRequired) } == 0 {
+        tracing::warn!("wake: PowerSetRequest failed");
+        unsafe { CloseHandle(h) };
+        return false;
+    }
+    *held = Some(h as isize);
+    true
 }

@@ -321,14 +321,34 @@ async fn a_host_connection_limit_is_learned_and_reused() {
         .expect("every request ends");
     assert!(s.log().iter().any(|e| e.outcome == "fault:max_conns"));
     assert_eq!(limits.cap("127.0.0.1"), Some(2), "{:?}", limits.learned());
-    // The next download from the host opens only what it allows: nothing is refused.
+    // The next download from the host opens only what it allows: nothing is refused for a
+    // connection too many. A connection that reconnects (its part done, it takes over or
+    // splits another) can still be refused once: the server sees that the client dropped its
+    // previous response only when it next writes to it, and on a starved CPU the new request
+    // can come first (#224). That refusal is told by the server's count at the time: one of
+    // the responses holding the slots had been sent up to where another part begins, so the
+    // client had all it needed of it and had dropped it, or was about to.
     s.clear_log();
     let (second, size) = fetch(&s, "/gen/4M/b.bin?seed=31", 31, opts).await;
     assert_eq!(size, 4 << 20);
+    let starts: Vec<u64> = second
+        .iter()
+        .filter(|e| matches!(e.status, 200 | 206))
+        .map(|e| e.body_start)
+        .collect();
+    let done = |h: &mdm_labserver::Held| starts.iter().any(|&s| h.from < s && s <= h.sent_to);
+    let too_many: Vec<_> = second
+        .iter()
+        .filter(|e| e.outcome == "fault:max_conns" && !e.held.iter().any(done))
+        .collect();
     assert!(
-        !second.iter().any(|e| e.outcome == "fault:max_conns"),
-        "{:?}",
-        second.iter().map(|e| &e.outcome).collect::<Vec<_>>()
+        too_many.is_empty(),
+        "refused: {:?}; requests: {:?}",
+        too_many.iter().map(|e| &e.held).collect::<Vec<_>>(),
+        second
+            .iter()
+            .map(|e| (e.body_start, e.bytes_sent, &e.outcome))
+            .collect::<Vec<_>>()
     );
 }
 

@@ -791,6 +791,70 @@ fn menu_size<C>(
     vec2(38.0 + widest + if has_sub { 48.0 } else { 30.0 }, h + 6.0)
 }
 
+/// How a borderless window of ours looks and takes the pointer ([`style_popup`]).
+#[derive(Clone, Copy, PartialEq, Debug)]
+pub enum PopupLook {
+    /// A menu: never activated (the main window keeps the focus), small rounded corners and
+    /// the menu's border, no open animation.
+    Menu,
+    /// A small floating window (the drop target): activated as any window, rounded corners.
+    Floating,
+}
+
+/// The builder of every borderless window of ours (a menu, the drop target): no title bar, not
+/// resizable, no taskbar button, always on top. On Windows it is created hidden: its first pass
+/// makes it a plain popup ([`style_popup`]) and [`show_popup`] shows it then.
+pub fn popup_viewport(title: &str) -> egui::ViewportBuilder {
+    egui::ViewportBuilder::default()
+        .with_title(title)
+        .with_decorations(false)
+        .with_resizable(false)
+        .with_taskbar(false)
+        .with_always_on_top()
+        // Hidden until styled, then shown (show_popup).
+        .with_visible(!cfg!(windows))
+}
+
+/// Call first in the pass of a borderless window titled `title` (made with [`popup_viewport`]),
+/// before anything is drawn in it. On Windows it becomes a plain popup window, its client the
+/// whole window (win32::popup_window): winit's borderless windows keep a caption style, which
+/// on a Windows 11 Insider build (22635) put a black band a title bar tall across the top of
+/// every menu and of the drop target, their picture moved down by as much (#208). Styled in
+/// the window's own pass: its frame changes, and a picture drawn before that was lost with the
+/// old frame (black until something made it draw again). True on the pass that styled it: show
+/// it then ([`show_popup`]). Elsewhere nothing to do (false).
+#[cfg_attr(not(windows), allow(unused_variables))]
+pub fn style_popup(title: &str, look: PopupLook) -> bool {
+    #[cfg(windows)]
+    {
+        use crate::win32::Popup;
+        let kind = match look {
+            PopupLook::Menu => Popup::Menu {
+                border: u32::from_le_bytes([
+                    POPUP_BORDER().r(),
+                    POPUP_BORDER().g(),
+                    POPUP_BORDER().b(),
+                    0,
+                ]),
+            },
+            PopupLook::Floating => Popup::Floating,
+        };
+        crate::win32::popup_window(title, kind)
+    }
+    #[cfg(not(windows))]
+    false
+}
+
+/// Show the borderless window `vid` [`style_popup`] just styled (from its parent's pass).
+pub fn show_popup(ctx: &egui::Context, vid: egui::ViewportId) {
+    ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
+    // The command is carried out on the window's next frame: a menu opened from the keyboard
+    // (Shift+F10, the Menu key) or a screen reader moves no pointer to bring one, and stayed
+    // hidden (#113).
+    ctx.request_repaint_of(vid);
+    ctx.request_repaint();
+}
+
 /// Place a menu of `size` at screen point `at`, flipped to stay inside the monitor's work area:
 /// up (or left) of the point, or for a submenu (`parent`: the parent menu's screen rect) to the
 /// parent's left side. In a right-to-left interface `at` is the menu's top-right: it opens to
@@ -856,15 +920,8 @@ fn popup_level<C: Clone>(
         .and_then(|(a, b)| if depth == 0 { a } else { b });
     let screen = Rect::from_min_size(place_menu(at, size, parent), size);
     let title = format!("misterdownloadmanager menu {depth}"); // not translated: an id
-    let builder = egui::ViewportBuilder::default()
-        .with_title(title.clone())
-        .with_decorations(false)
-        .with_resizable(false)
-        .with_taskbar(false)
-        .with_always_on_top()
+    let builder = popup_viewport(&title)
         .with_active(false)
-        // Hidden until styled (no open animation, no activation), then shown below.
-        .with_visible(!cfg!(windows))
         .with_position(screen.min)
         .with_inner_size(size);
     let open_sub = if depth == 0 {
@@ -878,24 +935,10 @@ fn popup_level<C: Clone>(
     let parent_vid = ctx.viewport_id();
     // Set when this pass made the new (hidden) window a menu window: shown below. (Elsewhere a
     // menu's window is created visible.)
-    #[cfg_attr(not(windows), allow(unused_mut))]
     let mut styled = false;
     ctx.show_viewport_immediate(vid, builder, |ui, _| {
-        // Made a menu window (win32::menu_window) in its own pass, before anything is drawn in
-        // it: its frame changes (#208), and a picture drawn before that was lost with the old
-        // frame, so the menu showed black until something made it draw again.
-        #[cfg(windows)]
-        {
-            styled = crate::win32::menu_window(
-                &title,
-                u32::from_le_bytes([
-                    POPUP_BORDER().r(),
-                    POPUP_BORDER().g(),
-                    POPUP_BORDER().b(),
-                    0,
-                ]),
-            );
-        }
+        // Made a menu window in its own pass, before anything is drawn in it (style_popup).
+        styled = style_popup(&title, PopupLook::Menu);
         // What happens in this window, for popup() and keyboard(), which run in the parent's
         // pass: they must not ask egui about a menu window by its id, which creates one when it
         // isn't open (a submenu, mostly): an untitled copy of the main window, opened and closed
@@ -921,7 +964,7 @@ fn popup_level<C: Clone>(
         // arrow on the left pointing left.
         let _surface = winui::Surface::enter(o.x, o.x + w);
         let rtl = winui::rtl();
-        // Body; Windows 11 rounds the window and draws the border and shadow (menu_window).
+        // Body; Windows 11 rounds the window and draws the border and shadow (style_popup).
         fill(
             &painter,
             o.x,
@@ -1161,12 +1204,7 @@ fn popup_level<C: Clone>(
         }
     });
     if styled {
-        ctx.send_viewport_cmd_to(vid, egui::ViewportCommand::Visible(true));
-        // The command is carried out on the menu's next frame: a menu opened from the keyboard
-        // (Shift+F10, the Menu key) or a screen reader moves no pointer to bring one, and stayed
-        // hidden (#113).
-        ctx.request_repaint_of(vid);
-        ctx.request_repaint();
+        show_popup(ctx, vid);
     }
     if let Some((i, slot_y)) = sub_at
         && let MenuEntry::Sub(_, _, children) = &entries[i]

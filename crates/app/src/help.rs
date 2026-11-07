@@ -1,6 +1,7 @@
-//! The Help menu (D-020): the user guide in the repository's docs/, the home page, problem reports on GitHub
-//! (pre-filled), update checks against GitHub Releases (on demand, and at every start and once
-//! a day while running), About, Keyboard shortcuts and Tell a friend.
+//! The Help menu (D-020): the user guide and the home page on the website (docs/ made into
+//! pages, in the interface language), problem reports on GitHub (pre-filled), update checks
+//! against GitHub Releases (on demand, and at every start and once a day while running), About,
+//! Keyboard shortcuts and Tell a friend.
 
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
@@ -10,7 +11,7 @@ use egui::{pos2, vec2};
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
 
-/// The repository: home page, user guide (`docs/`), problem reports, source, licences.
+/// The repository: problem reports, releases, source, licences.
 pub const REPO: &str = "https://github.com/anefzaoui/misterdownloadmanager";
 /// The creator's GitHub Sponsors page: Help → Support MDM, About's last line. The website, the
 /// extension's popup and the repository's Sponsor button (.github/FUNDING.yml) point there too.
@@ -23,15 +24,56 @@ pub const CHECK_EVERY: i64 = 24 * 3600;
 /// The check at start waits this long (the window, the list and the downloads first).
 pub const CHECK_AFTER_START: std::time::Duration = std::time::Duration::from_secs(5);
 
-/// Open a page of the user guide (`"README.md"`, `"video.md"`, `"README.md#tutorials"`…, in
-/// the repository's docs/) in the browser; `""` is the home page (the repository).
-pub fn open_page(path: &str) {
-    let url = if path.is_empty() {
-        REPO.to_owned()
-    } else {
-        format!("{REPO}/blob/main/docs/{path}")
+/// The official website: the home page and the user guide, docs/*.md made into pages by
+/// tools/website/build.py. GitHub (REPO) keeps what is GitHub's: issues, releases, the source.
+pub const SITE: &str = "https://misterdownloadmanager.com";
+
+/// The website's languages besides English, its folders (`/de/help/`): tools/website/sitei18n.py's
+/// LANGS, which a test keeps this list equal to. English is at the root.
+const SITE_LANGS: &[&str] = &[
+    "es", "pt-br", "pt", "fr", "de", "ru", "ar", "zh-hans", "ja", "ko", "tr", "it", "id", "vi",
+    "hi", "fa", "pl", "uk", "nl", "th", "bn",
+];
+
+/// The website's folder for the interface language `code` (a catalog's code: `de`, `pt-br`,
+/// `es-mx`…): the language itself, else its base language (`es-mx` reads `/es/`, `fr-ca`
+/// `/fr/`), else none, English. `zh-hant` stays English: the site has Simplified Chinese only.
+fn site_lang(code: &str) -> Option<&'static str> {
+    let code = code.to_ascii_lowercase();
+    let base = code.split(['-', '_']).next().unwrap_or_default();
+    SITE_LANGS
+        .iter()
+        .find(|l| **l == code)
+        .or_else(|| SITE_LANGS.iter().find(|l| **l == base))
+        .copied()
+}
+
+/// The website's address of a user guide page in the language `lang` (an interface language
+/// code): `doc` is the page's file in docs/ with an optional section (`"video.md"`,
+/// `"README.md#tutorials"`; the guide's contents are README.md), `""` the home page. The mapping
+/// is build.py's: docs/README.md is /help/, docs/<page>.md /help/<page>.html.
+pub fn page_url(doc: &str, lang: &str) -> String {
+    let (file, anchor) = match doc.split_once('#') {
+        Some((file, anchor)) => (file, format!("#{anchor}")),
+        None => (doc, String::new()),
     };
-    let _ = open::that_detached(url);
+    let path = match file {
+        "" => "/".to_owned(),
+        "README.md" => "/help/".to_owned(),
+        page => format!("/help/{}.html", page.strip_suffix(".md").unwrap_or(page)),
+    };
+    let folder = site_lang(lang).map(|l| format!("/{l}")).unwrap_or_default();
+    format!("{SITE}{folder}{path}{anchor}")
+}
+
+/// Open a page of the user guide on the website, in the interface language when the site has
+/// it (`doc` as page_url takes it: `"video.md"`, `"README.md#tutorials"`, `""` the home page).
+/// Never in an off-screen test run (MDM_OFFSCREEN), whose clicks come from scripts, not from a
+/// person at the browser.
+pub fn open_page(doc: &str) {
+    if !crate::offscreen() {
+        crate::launch::open(page_url(doc, crate::i18n::code()));
+    }
 }
 
 /// Help → Support MDM and About's link: the Sponsors page in the browser. Asked for only: MDM
@@ -39,7 +81,7 @@ pub fn open_page(path: &str) {
 /// clicks come from scripts, not from a person at the browser.
 pub fn support() {
     if !crate::offscreen() {
-        let _ = open::that_detached(SPONSORS);
+        crate::launch::open(SPONSORS);
     }
 }
 
@@ -48,12 +90,19 @@ pub fn support() {
 /// language. The parameters are the form's field ids (all text fields: GitHub's page drops a
 /// dropdown's value from the address).
 pub fn report_problem() {
-    let enc = |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
-    let url = report_fields().iter().fold(
-        format!("{REPO}/issues/new?template=bug.yml"),
-        |url, (k, v)| format!("{url}&{k}={}", enc(v)),
-    );
-    let _ = open::that_detached(url);
+    // On a thread of its own: the fields ask the system (macOS: `sw_vers`), which the window's
+    // thread doesn't wait for (#222).
+    let _ = std::thread::Builder::new()
+        .name("report-problem".into())
+        .spawn(|| {
+            let enc =
+                |s: &str| url::form_urlencoded::byte_serialize(s.as_bytes()).collect::<String>();
+            let url = report_fields().iter().fold(
+                format!("{REPO}/issues/new?template=bug.yml"),
+                |url, (k, v)| format!("{url}&{k}={}", enc(v)),
+            );
+            let _ = open::that_detached(url);
+        });
 }
 
 /// The Bug report form's fields MDM fills in: (field id, value).
@@ -219,6 +268,8 @@ pub struct Updates {
     job: Option<crate::update::Job>,
     /// What Update now came to, when it didn't close MDM.
     status: Option<UpdateStatus>,
+    /// Update now pressed by a test (`/show update-now`, feature `test-update`).
+    press: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -229,12 +280,19 @@ enum UpdateStatus {
 }
 
 impl Updates {
+    /// Update now, as if pressed (`/show update-now`: Update now's end-to-end tests).
+    #[cfg(feature = "test-update")]
+    pub fn press_update_now(&mut self) {
+        self.press = true;
+    }
+
     pub fn check(rt: &tokio::runtime::Handle, ctx: &egui::Context) -> Self {
         Updates {
             slot: Some(check(rt, ctx)),
             result: None,
             job: None,
             status: None,
+            press: false,
         }
     }
 
@@ -245,6 +303,7 @@ impl Updates {
             result: Some(Ok(Found::Newer(release))),
             job: None,
             status: None,
+            press: false,
         }
     }
 
@@ -261,11 +320,19 @@ impl Updates {
             self.slot = None;
         }
         let install = mdm_tools::update::Install::detect();
-        // The release file arrived (checked): put it in place.
+        // The release file arrived (checked) and is in place (on the job's thread): MDM closes
+        // once the new copy (or the installer) has started.
         if let Some(res) = self.job.as_ref().and_then(crate::update::Job::result) {
             self.job = None;
-            match res.and_then(|file| crate::update::apply(install, &file)) {
-                Ok(crate::update::Next::Restart) => return Outcome::Done(true),
+            let started = res.and_then(|next| match next {
+                crate::update::Next::Restart(mut cmd) => cmd
+                    .spawn()
+                    .map(|_| crate::update::Next::Restart(cmd))
+                    .map_err(|e| e.to_string()),
+                opened => Ok(opened),
+            });
+            match started {
+                Ok(crate::update::Next::Restart(_)) => return Outcome::Done(true),
                 Ok(crate::update::Next::Opened) => self.status = Some(UpdateStatus::Opened),
                 Err(e) => self.status = Some(UpdateStatus::Failed(e)),
             }
@@ -370,22 +437,71 @@ impl Updates {
                         download = Some(rel.clone());
                     }
                 }
-                // Under the answer: how Update now is going, else the automatic check's switch.
-                // In English, as the text pens take it (a right-to-left window placed the status
-                // over its buttons when given the mirrored rect).
-                let status_rc =
-                    egui::Rect::from_min_size(o + vec2(11.0, bottom), vec2(255.0, 21.0));
+                // Update now when this copy's file is in the signed release (and it hasn't just
+                // failed); else Download opens the release's page.
+                let asset = download.as_ref().and_then(|rel| {
+                    crate::update::asset_for(install, &rel.version, &rel.assets)
+                        .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))))
+                });
+                let close_label = if self.job.is_some() {
+                    // i18n: button: stop downloading the update
+                    crate::i18n::mark("Cancel")
+                } else if download.is_some() {
+                    // i18n: button: not now (download the update later)
+                    crate::i18n::mark("Later")
+                } else {
+                    crate::i18n::mark("OK")
+                };
+                // The first button: Retry after a failed check, Update now or Download for a new
+                // version.
+                let first = if matches!(result, Some(Err(_))) {
+                    Some("Retry")
+                } else if download.is_some() {
+                    Some(if asset.is_some() {
+                        "Update now"
+                    } else {
+                        "Download"
+                    })
+                } else {
+                    None
+                };
+                // The buttons as wide as their labels in this language (#192), the row ending
+                // where it ends in English.
+                let row: Vec<(&str, f32)> = first
+                    .into_iter()
+                    .chain([close_label])
+                    .map(|l| (l, 73.0))
+                    .collect();
+                let placed = winui::buttons_to_right(&p, 429.0, 9.0, &row, 150.0);
+                let (first_at, close_at) = (placed[0], placed[placed.len() - 1]);
+                // Under the answer: how Update now is going, else the automatic check's switch,
+                // up to 8 px before the buttons (as in English with two). In English, as the text
+                // pens take it (a right-to-left window placed the status over its buttons when
+                // given the mirrored rect).
+                let status_right = (first_at.0 - 8.0).min(266.0);
+                let status_rc = egui::Rect::from_min_size(
+                    o + vec2(11.0, bottom),
+                    vec2(status_right - 11.0, 21.0),
+                );
                 if let Some(job) = &self.job {
-                    let fraction = job.progress.fraction();
-                    let line = crate::i18n::fmt(
-                        // i18n: Check for updates, while Update now downloads; {percent} like "42%"
-                        crate::i18n::t("Downloading the update... {percent}"),
-                        &[(
-                            "percent",
-                            &fraction
-                                .map_or(String::new(), |f| crate::i18n::percent(f64::from(f), 0)),
-                        )],
-                    );
+                    let installing = job.installing();
+                    // Put in place: a bar that moves, no percent.
+                    let fraction = job.progress.fraction().filter(|_| !installing);
+                    let line = if installing {
+                        // i18n: Check for updates, after Update now downloaded it: unpacking and putting the new version in place
+                        crate::i18n::t("Installing the update...").to_owned()
+                    } else {
+                        crate::i18n::fmt(
+                            // i18n: Check for updates, while Update now downloads; {percent} like "42%"
+                            crate::i18n::t("Downloading the update... {percent}"),
+                            &[(
+                                "percent",
+                                &fraction.map_or(String::new(), |f| {
+                                    crate::i18n::percent(f64::from(f), 0)
+                                }),
+                            )],
+                        )
+                    };
                     winui::text(&p, status_rc.left(), status_rc.top() + 9.0, &line, ink);
                     winui::progress_bar(
                         &p,
@@ -427,23 +543,14 @@ impl Updates {
                         // i18n: check box in the update window: look for a new version every time MDM starts
                         "Check for updates at every start",
                         true,
-                        Some(o.x + 266.0),
+                        Some(o.x + status_right),
                     );
                 }
-                let close_label = if self.job.is_some() {
-                    // i18n: button: stop downloading the update
-                    crate::i18n::mark("Cancel")
-                } else if download.is_some() {
-                    // i18n: button: not now (download the update later)
-                    crate::i18n::mark("Later")
-                } else {
-                    crate::i18n::mark("OK")
-                };
                 // Enter presses the default button, as in the other dialogs.
                 let mut enter = winui::enter_pressed(ui);
                 // A check that failed can be tried again.
+                let at = r(o, first_at.0, bottom, first_at.1, 21.0);
                 if matches!(result, Some(Err(_))) {
-                    let at = r(o, 274.0, bottom, 73.0, 21.0);
                     // i18n: button: check for updates again
                     let retry = winui::button(ui, at, "Retry", ButtonKind::Default, false, None);
                     if retry.clicked() || enter {
@@ -453,11 +560,6 @@ impl Updates {
                     }
                 }
                 if let Some(rel) = &download {
-                    // Update now when this copy's file is in the signed release (and it
-                    // hasn't just failed); else Download opens the release's page.
-                    let asset = crate::update::asset_for(install, &rel.version, &rel.assets)
-                        .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))));
-                    let at = r(o, 274.0, bottom, 73.0, 21.0);
                     if let Some(asset) = asset {
                         let idle = self.job.is_none();
                         let kind = if idle {
@@ -467,11 +569,15 @@ impl Updates {
                         };
                         // i18n: button: download and install the new version, then restart
                         let update = winui::button(ui, at, "Update now", kind, false, None);
-                        if update.clicked() || (enter && idle) {
+                        if update.clicked()
+                            || (enter && idle)
+                            || (idle && std::mem::take(&mut self.press))
+                        {
                             self.status = None;
                             self.job = Some(crate::update::Job::start(
                                 rt,
                                 ui.ctx(),
+                                install,
                                 rel.assets.clone(),
                                 asset,
                             ));
@@ -480,25 +586,34 @@ impl Updates {
                         .clicked()
                         || enter
                     {
-                        let _ = open::that_detached(&rel.page);
+                        crate::launch::open(&rel.page);
                         return Outcome::Done(false);
                     }
                 }
-                let kind = if download.is_some() || matches!(result, Some(Err(_))) {
+                // Being put in place: nothing can stop that, so no Cancel (nor Esc) meanwhile.
+                let installing = self
+                    .job
+                    .as_ref()
+                    .is_some_and(crate::update::Job::installing);
+                let kind = if installing {
+                    ButtonKind::Disabled
+                } else if download.is_some() || matches!(result, Some(Err(_))) {
                     ButtonKind::Normal
                 } else {
                     ButtonKind::Default
                 };
                 let close = winui::button(
                     ui,
-                    r(o, 356.0, bottom, 73.0, 21.0),
+                    r(o, close_at.0, bottom, close_at.1, 21.0),
                     close_label,
                     kind,
                     false,
                     None,
                 )
                 .clicked();
-                if close && self.job.is_some() {
+                if installing {
+                    Outcome::Open
+                } else if close && self.job.is_some() {
                     // Cancel: the download stops, the window stays (Update now again, Later).
                     self.job = None;
                     Outcome::Open
@@ -634,7 +749,7 @@ impl About {
                     open_page("");
                 }
                 if winui::link(ui, &p, source.0, source.1, "Source code", "source") {
-                    let _ = open::that_detached(REPO);
+                    crate::launch::open(REPO);
                 }
                 if winui::link(
                     ui,
@@ -644,7 +759,7 @@ impl About {
                     "Licenses and credits",
                     "credits",
                 ) {
-                    let _ = open::that_detached(format!("{REPO}/blob/main/ATTRIBUTION.md"));
+                    crate::launch::open(format!("{REPO}/blob/main/ATTRIBUTION.md"));
                 }
                 // Its own row under them: the creator's Sponsors page (Help → Support MDM).
                 y += 22.0;
@@ -807,7 +922,7 @@ impl TellFriend {
             crate::i18n::t(
                 "I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}",
             ),
-            &[("link", REPO)],
+            &[("link", SITE)],
         )
     }
 
@@ -850,6 +965,17 @@ impl TellFriend {
                 );
                 crate::dialogs::grow_to(ui.ctx(), "tell-a-friend", lines, 5);
                 let o = o + vec2(0.0, extra);
+                // The buttons as wide as their labels in this language (#192), the row ending
+                // where it ends in English.
+                let [copy_at, email_at, close_at] = winui::buttons_to_right(
+                    &p,
+                    409.0,
+                    9.0,
+                    &[("Copy", 73.0), ("Email", 73.0), ("Close", 73.0)],
+                    130.0,
+                )[..] else {
+                    unreachable!("three buttons")
+                };
                 if let Some((said, failed)) = self.said {
                     // Short of the buttons beside it (a long translation: "...", whole on hover).
                     let c = if failed {
@@ -864,13 +990,13 @@ impl TellFriend {
                         o.y + 150.0,
                         crate::i18n::t(said),
                         c,
-                        o.x + 166.0,
+                        o.x + copy_at.0 - 6.0,
                         "copied",
                     );
                 }
                 let copy = winui::button(
                     ui,
-                    r(o, 172.0, 136.0, 73.0, 21.0),
+                    r(o, copy_at.0, 136.0, copy_at.1, 21.0),
                     "Copy",
                     ButtonKind::Default,
                     false,
@@ -880,7 +1006,7 @@ impl TellFriend {
                     || winui::enter_pressed(ui);
                 let email = winui::button(
                     ui,
-                    r(o, 254.0, 136.0, 73.0, 21.0),
+                    r(o, email_at.0, 136.0, email_at.1, 21.0),
                     "Email",
                     ButtonKind::Normal,
                     false,
@@ -889,7 +1015,7 @@ impl TellFriend {
                 .clicked();
                 let close = winui::button(
                     ui,
-                    r(o, 336.0, 136.0, 73.0, 21.0),
+                    r(o, close_at.0, 136.0, close_at.1, 21.0),
                     "Close",
                     ButtonKind::Normal,
                     false,
@@ -1043,6 +1169,181 @@ mod tests {
             "Other",
         ] {
             assert!(named(option), "{option}");
+        }
+    }
+
+    #[test]
+    fn help_pages_are_the_websites_in_the_interface_language() {
+        let at = |doc, lang| page_url(doc, lang);
+        assert_eq!(
+            at("README.md", "en"),
+            "https://misterdownloadmanager.com/help/"
+        );
+        assert_eq!(
+            at("README.md#tutorials", "en"),
+            "https://misterdownloadmanager.com/help/#tutorials"
+        );
+        assert_eq!(
+            at("video.md", "de"),
+            "https://misterdownloadmanager.com/de/help/video.html"
+        );
+        assert_eq!(
+            at("queues-and-scheduler.md#the-scheduler-window", "ar"),
+            "https://misterdownloadmanager.com/ar/help/queues-and-scheduler.html#the-scheduler-window"
+        );
+        assert_eq!(at("", "fr"), "https://misterdownloadmanager.com/fr/");
+        assert_eq!(at("", "en"), "https://misterdownloadmanager.com/");
+        // The site's folders: its own codes, a region read as its language, else English.
+        for (lang, folder) in [
+            ("pt-br", "/pt-br"),
+            ("pt", "/pt"),
+            ("zh-hans", "/zh-hans"),
+            ("es-mx", "/es"),
+            ("fr-ca", "/fr"),
+            ("zh-hant", ""),
+            ("sv", ""),
+            ("ca-es-valencia", ""),
+            ("he", ""),
+            ("", ""),
+        ] {
+            assert_eq!(
+                at("options.md", lang),
+                format!("https://misterdownloadmanager.com{folder}/help/options.html"),
+                "{lang}"
+            );
+        }
+    }
+
+    /// The repository's root.
+    fn root() -> std::path::PathBuf {
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
+    }
+
+    #[test]
+    fn the_site_languages_are_the_websites() {
+        // tools/website/sitei18n.py: `LANGS = [` then one `("code", …),` per language.
+        let py = std::fs::read_to_string(root().join("tools/website/sitei18n.py")).unwrap();
+        let list = py.split("\nLANGS = [").nth(1).unwrap();
+        let codes: Vec<&str> = list
+            .split("\n]")
+            .next()
+            .unwrap()
+            .lines()
+            .filter_map(|l| l.trim().strip_prefix("(\"")?.split('"').next())
+            .collect();
+        assert_eq!(codes, SITE_LANGS);
+    }
+
+    /// Every user guide page the program links to (`doc` as page_url takes it): the literal
+    /// pages given to open_page and the Help menu (`Cmd::HelpPage`) in the app's source, the
+    /// extension window's tutorial and help sections, and every website help address written in
+    /// a crate or in the browser extension.
+    fn linked_docs() -> Vec<String> {
+        let mut docs = vec![mdm_ipc::extension::GUIDE_DOC.to_owned()];
+        // The sections Options' Test browser integration opens (extension::checks' reasons).
+        for why in ["options", "not-installed"] {
+            docs.push(mdm_ipc::extension::help_doc(why));
+        }
+        let calls = regex::Regex::new(r#"(?:open_page|HelpPage)\(\s*"([^"]+)""#).unwrap();
+        let site =
+            regex::Regex::new(r"https://misterdownloadmanager\.com/help/([\w.-]*)(#[\w-]+)?")
+                .unwrap();
+        let mut files = vec![];
+        let mut dirs = vec![root().join("crates"), root().join("extension")];
+        while let Some(dir) = dirs.pop() {
+            for e in std::fs::read_dir(dir).unwrap().flatten() {
+                let path = e.path();
+                if path.is_dir() {
+                    dirs.push(path);
+                } else if path.extension().is_some_and(|x| x == "rs" || x == "js") {
+                    files.push(path);
+                }
+            }
+        }
+        let app = root().join("crates").join("app");
+        for f in files {
+            let text = std::fs::read_to_string(&f).unwrap();
+            if f.starts_with(&app) {
+                docs.extend(calls.captures_iter(&text).map(|c| c[1].to_owned()));
+            }
+            for c in site.captures_iter(&text) {
+                let page = match &c[1] {
+                    "" => "README.md".to_owned(),
+                    p => format!("{}.md", p.strip_suffix(".html").unwrap_or(p)),
+                };
+                docs.push(format!("{page}{}", c.get(2).map_or("", |a| a.as_str())));
+            }
+        }
+        docs.sort();
+        docs.dedup();
+        docs
+    }
+
+    /// A heading's section id as the website's Markdown (Python-Markdown's toc) makes it: its
+    /// own `{#id}`, else its text in lower case, letters, digits, `_` and `-` kept, spaces `-`.
+    fn heading_id(line: &str) -> Option<String> {
+        let text = line.trim_start_matches('#');
+        if text.len() == line.len() || !text.starts_with(' ') {
+            return None;
+        }
+        if let Some((_, id)) = text.split_once("{#") {
+            return Some(id.trim_end().trim_end_matches('}').to_owned());
+        }
+        let link = regex::Regex::new(r"\[([^\]]*)\]\([^)]*\)").unwrap();
+        let kept: String = link
+            .replace_all(text, "$1")
+            .chars()
+            .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | ' '))
+            .collect::<String>()
+            .trim()
+            .to_lowercase();
+        let dashes = regex::Regex::new(r"[-\s]+").unwrap();
+        Some(dashes.replace_all(&kept, "-").into())
+    }
+
+    #[test]
+    fn every_linked_help_page_and_section_is_in_the_guide() {
+        let docs = linked_docs();
+        assert!(docs.len() >= 8, "{docs:?}");
+        for doc in &docs {
+            let (file, anchor) = doc.split_once('#').unwrap_or((doc, ""));
+            let Ok(text) = std::fs::read_to_string(root().join("docs").join(file)) else {
+                panic!("{doc}: docs/{file} isn't there: the website has no such page");
+            };
+            if !anchor.is_empty() {
+                let ids: Vec<String> = text.lines().filter_map(heading_id).collect();
+                assert!(
+                    ids.iter().any(|id| id == anchor),
+                    "{doc}: no section #{anchor} in docs/{file} ({ids:?})"
+                );
+            }
+        }
+    }
+
+    /// The same pages on a built website: `python tools/website/build.py` (MDM_SITE_PREVIEW=1
+    /// is enough, English), then `MDM_SITE_DIR=target/site cargo test -p mdm-app --
+    /// --ignored linked_help_pages_are_on_the_built_site`: each page is a file there, with its
+    /// section's id.
+    #[test]
+    #[ignore = "needs the website built, in MDM_SITE_DIR"]
+    fn linked_help_pages_are_on_the_built_site() {
+        let out = std::path::PathBuf::from(std::env::var("MDM_SITE_DIR").expect("MDM_SITE_DIR"));
+        for doc in linked_docs() {
+            let url = page_url(&doc, "en");
+            let path = url.strip_prefix(SITE).unwrap();
+            let (path, anchor) = path.split_once('#').unwrap_or((path, ""));
+            let mut file = out.join(path.trim_start_matches('/'));
+            if path.ends_with('/') {
+                file.push("index.html");
+            }
+            let Ok(html) = std::fs::read_to_string(&file) else {
+                panic!("{doc}: {url} isn't built ({})", file.display());
+            };
+            if !anchor.is_empty() {
+                let id = format!("id=\"{anchor}\"");
+                assert!(html.contains(&id), "{doc}: {url} has no #{anchor}");
+            }
+            println!("{doc} -> {url}: ok");
         }
     }
 }
