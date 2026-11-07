@@ -138,6 +138,9 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Tests and test tools stay on 127.0.0.1: no Windows Firewall questions while developing
 - ✅ Debrid accounts (experimental): Real-Debrid, AllDebrid and Premiumize; file-host links downloaded through your own account (Options → Accounts)
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
+- ✅ Debrid accounts: a per-download "directly instead" choice, "through the service" in Download
+  File Info, and the command line using the accounts
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 - ✅ Downloads through one network adapter (a VPN's), with a kill switch: nothing goes out
   another way when it disconnects ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35))
 - ✅ Torrents on Windows through the chosen network adapter, with the same kill switch
@@ -254,9 +257,8 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Downloads and windows
 
-- 📋 Debrid services, the rest: a per-download "directly instead" choice, "through the service" in
-  File Info, the command line using the accounts, torrents through the service, the system
-  keychains for the sign-ins
+- 📋 Debrid services, the rest: torrents through the service, the system keychains for the
+  sign-ins
   ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44))
 
 ### Network

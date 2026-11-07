@@ -4485,6 +4485,7 @@ dependencies = [
  "serde_json",
  "tempfile",
  "tokio",
+ "tokio-util",
  "url",
 ]
 
@@ -4524,8 +4525,11 @@ dependencies = [
  "reqwest 0.13.5",
  "serde",
  "serde_json",
+ "tempfile",
  "tokio",
  "tokio-util",
+ "tracing",
+ "tracing-subscriber",
  "url",
 ]
 
