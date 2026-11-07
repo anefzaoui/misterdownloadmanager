@@ -17,6 +17,10 @@ Everything below ships together, in one release, as version 0.3.0.
   in front, on Windows, Linux and macOS (minimized where no notification area shows its icon);
   startup entries written before are updated, and the installer writes the new one
   ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226))
+- ✅ A download too big for its drive is refused on a very busy computer too: the free-space
+  check's 5 seconds count from when it runs, not from when it was asked, and it asks only the
+  folder's own drive (shared network folders too) instead of listing every drive; and the host
+  connection limit test tells a reconnect from a connection too many ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224))
 - ✅ The crash report window in every language: the report keeps its lines (German and Arabic
   ran them together) and reads left to right in Arabic and Persian; **End and restart MDM** fits
   its text ([#204](https://github.com/anefzaoui/misterdownloadmanager/issues/204))

@@ -21,7 +21,6 @@ tokio.workspace = true
 tokio-util.workspace = true
 url.workspace = true
 httpdate.workspace = true
-sysinfo.workspace = true
 sha2.workspace = true
 md-5.workspace = true
 sha1.workspace = true
@@ -46,10 +45,22 @@ rustls-platform-verifier.workspace = true
 tokio-rustls.workspace = true
 
 [target.'cfg(windows)'.dependencies]
-# Sparse part files only (src/sparse.rs, D-008 amendment).
+# Sparse part files (src/sparse.rs, D-008 amendment) and the free-space probe (src/disk.rs).
 windows-sys.workspace = true
 
+[target.'cfg(unix)'.dependencies]
+# The free-space probe (src/disk.rs): statvfs and statfs, safely (already in the tree).
+rustix = { version = "1.1.6", features = ["fs"] }
+
+[target.'cfg(target_vendor = "apple")'.dependencies]
+# The free-space probe (src/disk.rs) asks for the space Finder shows, purgeable space included
+# (already in the tree through security-framework).
+core-foundation = "0.10.1"
+core-foundation-sys = "0.8.7"
+
 [dev-dependencies]
+# The free-space probe's test compares it with the volume list it replaced (#224).
+sysinfo.workspace = true
 mdm-labserver.workspace = true
 proptest.workspace = true
 serde_json.workspace = true

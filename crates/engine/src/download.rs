@@ -1648,8 +1648,7 @@ async fn open_destination(
     // Will it fit? Refuse now rather than fail half-way (a drive we can't identify is skipped).
     if let Some(size) = size {
         // Off the async threads, and bounded: a stale network drive can hang the volume probe.
-        let probe = tokio::task::spawn_blocking(move || disk::volume_of(&folder));
-        if let Ok(Ok(Some(volume))) = tokio::time::timeout(disk::PROBE_TIMEOUT, probe).await {
+        if let Some(volume) = disk::probe(folder).await {
             disk::check(&volume, size)?;
         }
     }
