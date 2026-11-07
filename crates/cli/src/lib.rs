@@ -21,7 +21,7 @@ use serde_json::json;
     about = "Mister Download Manager command line",
     long_about = "Mister Download Manager command line: downloads, videos and torrents without the \
                   window, and the running app's automation API. Guide: \
-                  https://github.com/anefzaoui/misterdownloadmanager/blob/main/docs/command-line.md"
+                  https://misterdownloadmanager.com/help/command-line.html"
 )]
 struct Cli {
     /// Print JSON for programs: one object per line (`progress` events, then `done`, `paused`
@@ -90,6 +90,9 @@ enum Cmd {
         /// At most this many files (the first the site lists).
         #[arg(long)]
         limit: Option<u64>,
+        /// The network adapter gallery-dl goes through (#35), as `get --adapter`.
+        #[arg(long)]
+        adapter: Option<String>,
     },
     /// What video a page holds, and the choices to download (needs `install-ytdlp`).
     VideoInfo {
@@ -120,8 +123,8 @@ enum Cmd {
         /// Put the subtitles into the video file instead of beside it (needs ffmpeg; MP4/MKV).
         #[arg(long)]
         embed_subs: bool,
-        /// The network adapter yt-dlp goes through (#35), as `get --adapter`: Windows only
-        /// (elsewhere video pages are refused while an adapter is chosen).
+        /// The network adapter yt-dlp (and the ffmpeg it starts) goes through (#35), as
+        /// `get --adapter`.
         #[arg(long)]
         adapter: Option<String>,
     },
@@ -243,7 +246,7 @@ pub type Unlocking<'a> = std::pin::Pin<
 >;
 
 /// The debrid accounts the command line downloads through (#44): the ones in the app's Options
-/// → Accounts. They are kept sealed in the app's settings, which this library doesn't read: the
+/// → Accounts. The app keeps them in the system's keychain, which this library doesn't read: the
 /// app's program hands them over ([`main_with`]).
 pub trait Accounts: Send + Sync {
     /// The unlocker for `url`: the first account, in the user's order, whose service takes its
@@ -473,8 +476,19 @@ async fn run(cmd: Cmd, json: bool, accounts: Option<&dyn Accounts>) -> anyhow::R
             }
             Ok(())
         }
-        Cmd::GalleryGet { url, output, limit } => {
+        Cmd::GalleryGet {
+            url,
+            output,
+            limit,
+            adapter,
+        } => {
             use mdm_tools::video::State;
+            if let Some(a) = adapter {
+                mdm_tools::proc::set_route(mdm_engine::net::route_for(
+                    &a,
+                    &mdm_engine::net::adapters(),
+                ));
+            }
             let dir = mdm_tools::tools_dir().ok_or_else(|| anyhow::anyhow!("no data folder"))?;
             let tool = mdm_tools::gallery::installed(&dir).ok_or_else(|| {
                 anyhow::anyhow!("gallery-dl is not installed: run install-gallery-dl")

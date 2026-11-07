@@ -5906,3 +5906,43 @@ unit	{n} MB	{n} Mo
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} Mo/s
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	dans le trousseau verrouillé
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Aucun trousseau système n’a répondu, les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, que vous seul pouvez lire.
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	serveur proxy
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Les identifiants et mots de passe sont conservés dans le trousseau d’accès macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Les identifiants et mots de passe sont conservés dans le trousseau système (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Les identifiants et mots de passe sont conservés dans le Gestionnaire d’informations d’identification Windows.
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Le trousseau système est verrouillé et MDM ne le déverrouille pas, les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, que vous seul pouvez lire.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Cette copie portable conserve les identifiants et mots de passe dans ses propres paramètres, chiffrés pour votre compte Windows.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Cette copie portable conserve les identifiants et mots de passe dans ses propres paramètres, que vous seul pouvez lire.
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Le Gestionnaire d’informations d’identification Windows n’a pas répondu, les identifiants et mots de passe sont donc conservés dans les paramètres de MDM, chiffrés pour votre compte Windows.

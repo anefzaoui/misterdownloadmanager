@@ -962,6 +962,308 @@ mod tests {
     }
 }
 
+// Sign-in secrets in the system's keychain (#44, secrets.rs). Linux: the Secret Service
+// (GNOME Keyring, KeePassXC, KDE's wallet in its Secret Service mode) over D-Bus, its default
+// collection only, and only while it is unlocked: MDM never unlocks it nor answers a prompt
+// (desktops that log in on their own often have a locked keyring, #164), so a locked or missing
+// keyring leaves the secrets in the owner-only settings. macOS: the login keychain's generic
+// passwords (SecItemAdd / SecItemCopyMatching, through security-framework).
+
+#[cfg(target_os = "linux")]
+pub use secret_service::{
+    delete as keychain_delete, list as keychain_list, probe as keychain_probe,
+    read as keychain_read, write as keychain_write,
+};
+
+#[cfg(target_os = "macos")]
+pub use mac_keychain::{
+    delete as keychain_delete, list as keychain_list, probe as keychain_probe,
+    read as keychain_read, write as keychain_write,
+};
+
+#[cfg(target_os = "linux")]
+mod secret_service {
+    use std::collections::HashMap;
+    use std::sync::Mutex;
+
+    use zbus::blocking::{Connection, Proxy};
+    use zbus::zvariant::{ObjectPath, OwnedObjectPath, OwnedValue, Value};
+
+    use crate::secrets::Fault;
+
+    const BUS: &str = "org.freedesktop.secrets";
+    const ROOT: &str = "/org/freedesktop/secrets";
+    const SERVICE: &str = "org.freedesktop.Secret.Service";
+    const COLLECTION: &str = "org.freedesktop.Secret.Collection";
+    const ITEM: &str = "org.freedesktop.Secret.Item";
+    const SESSION: &str = "org.freedesktop.Secret.Session";
+    /// Groups MDM's entries in Seahorse and the like.
+    const SCHEMA: &str = "io.github.anefzaoui.misterdownloadmanager.Secret";
+
+    /// The D-Bus error's kind; its text (the service's own words) is never kept.
+    fn fault(e: zbus::Error) -> Fault {
+        let name = match &e {
+            zbus::Error::MethodError(name, _, _) => name.as_str().to_owned(),
+            zbus::Error::FDO(f) => zbus::DBusError::name(&**f).as_str().to_owned(),
+            zbus::Error::InputOutput(_)
+            | zbus::Error::Address(_)
+            | zbus::Error::Connection(..)
+            | zbus::Error::Handshake(_) => return Fault::Missing,
+            _ => return Fault::Failed("D-Bus call failed".into()),
+        };
+        if name == "org.freedesktop.Secret.Error.IsLocked" {
+            Fault::Locked
+        } else if name.starts_with("org.freedesktop.DBus.Error.") {
+            // No such service, none to start, no such object or method: no keyring.
+            Fault::Missing
+        } else {
+            Fault::Failed(name)
+        }
+    }
+
+    /// The session bus, once (a call answers within 5 s or is taken as no keyring).
+    fn connection() -> Result<Connection, Fault> {
+        static CONN: Mutex<Option<Connection>> = Mutex::new(None);
+        let mut held = CONN.lock().unwrap_or_else(|e| e.into_inner());
+        if let Some(c) = &*held {
+            return Ok(c.clone());
+        }
+        let conn = zbus::blocking::connection::Builder::session()
+            .and_then(|b| b.method_timeout(std::time::Duration::from_secs(5)).build())
+            .map_err(|_| Fault::Missing)?;
+        *held = Some(conn.clone());
+        Ok(conn)
+    }
+
+    fn proxy<'a>(conn: &Connection, path: &'a str, iface: &'a str) -> Result<Proxy<'a>, Fault> {
+        zbus::blocking::proxy::Builder::<Proxy<'a>>::new(conn)
+            .destination(BUS)
+            .and_then(|b| b.path(path))
+            .and_then(|b| b.interface(iface))
+            .map(|b| b.cache_properties(zbus::proxy::CacheProperties::No))
+            .and_then(|b| b.build())
+            .map_err(fault)
+    }
+
+    /// A session with the service ("plain": the secret crosses only the user's own session bus),
+    /// closed when dropped.
+    struct Session {
+        conn: Connection,
+        path: OwnedObjectPath,
+    }
+
+    impl Session {
+        fn open() -> Result<Session, Fault> {
+            let conn = connection()?;
+            let (_, path): (OwnedValue, OwnedObjectPath) = proxy(&conn, ROOT, SERVICE)?
+                .call("OpenSession", &("plain", Value::from("")))
+                .map_err(fault)?;
+            Ok(Session { conn, path })
+        }
+
+        fn path(&self) -> ObjectPath<'_> {
+            self.path.as_ref()
+        }
+
+        /// The default collection, only while it is unlocked (never unlocked from here).
+        fn collection(&self) -> Result<OwnedObjectPath, Fault> {
+            let path: OwnedObjectPath = proxy(&self.conn, ROOT, SERVICE)?
+                .call("ReadAlias", &("default",))
+                .map_err(fault)?;
+            if path.as_str() == "/" {
+                return Err(Fault::Missing);
+            }
+            let locked: bool = proxy(&self.conn, path.as_str(), COLLECTION)?
+                .get_property("Locked")
+                .map_err(fault)?;
+            if locked {
+                return Err(Fault::Locked);
+            }
+            Ok(path)
+        }
+
+        /// MDM's items of `service` (one account's, or all): (unlocked, locked).
+        fn find(
+            &self,
+            service: &str,
+            account: Option<&str>,
+        ) -> Result<(Vec<OwnedObjectPath>, Vec<OwnedObjectPath>), Fault> {
+            let mut attrs = HashMap::from([("service", service)]);
+            if let Some(account) = account {
+                attrs.insert("account", account);
+            }
+            proxy(&self.conn, ROOT, SERVICE)?
+                .call("SearchItems", &(attrs,))
+                .map_err(fault)
+        }
+    }
+
+    impl Drop for Session {
+        fn drop(&mut self) {
+            if let Ok(p) = proxy(&self.conn, self.path.as_str(), SESSION) {
+                let _ = p.call::<_, _, ()>("Close", &());
+            }
+        }
+    }
+
+    pub fn probe(_service: &str) -> Result<(), Fault> {
+        Session::open()?.collection().map(|_| ())
+    }
+
+    pub fn read(service: &str, account: &str) -> Result<Option<String>, Fault> {
+        let s = Session::open()?;
+        let (unlocked, locked) = s.find(service, Some(account))?;
+        let Some(item) = unlocked.first() else {
+            return if locked.is_empty() {
+                Ok(None)
+            } else {
+                Err(Fault::Locked)
+            };
+        };
+        let (_, _, value, _): (OwnedObjectPath, Vec<u8>, Vec<u8>, String) =
+            proxy(&s.conn, item.as_str(), ITEM)?
+                .call("GetSecret", &(s.path(),))
+                .map_err(fault)?;
+        String::from_utf8(value)
+            .map(Some)
+            .map_err(|_| Fault::Failed("not UTF-8".into()))
+    }
+
+    pub fn write(service: &str, account: &str, label: &str, secret: &str) -> Result<(), Fault> {
+        let s = Session::open()?;
+        let collection = s.collection()?;
+        let attrs = HashMap::from([
+            ("service", service),
+            ("account", account),
+            ("xdg:schema", SCHEMA),
+        ]);
+        let props = HashMap::from([
+            ("org.freedesktop.Secret.Item.Label", Value::from(label)),
+            ("org.freedesktop.Secret.Item.Attributes", Value::from(attrs)),
+        ]);
+        let value = (
+            s.path(),
+            Vec::<u8>::new(),
+            secret.as_bytes(),
+            "text/plain; charset=utf8",
+        );
+        let (_, prompt): (OwnedObjectPath, OwnedObjectPath) =
+            proxy(&s.conn, collection.as_str(), COLLECTION)?
+                .call("CreateItem", &(props, value, true))
+                .map_err(fault)?;
+        // It wants to ask the user (to unlock): never done from here.
+        if prompt.as_str() != "/" {
+            return Err(Fault::Locked);
+        }
+        Ok(())
+    }
+
+    pub fn delete(service: &str, account: &str) -> Result<(), Fault> {
+        let s = Session::open()?;
+        let (unlocked, locked) = s.find(service, Some(account))?;
+        if unlocked.is_empty() && !locked.is_empty() {
+            return Err(Fault::Locked);
+        }
+        for item in unlocked {
+            let prompt: OwnedObjectPath = proxy(&s.conn, item.as_str(), ITEM)?
+                .call("Delete", &())
+                .map_err(fault)?;
+            if prompt.as_str() != "/" {
+                return Err(Fault::Locked);
+            }
+        }
+        Ok(())
+    }
+
+    /// The accounts of `service`'s unlocked items.
+    pub fn list(service: &str) -> Result<Vec<String>, Fault> {
+        let s = Session::open()?;
+        let (unlocked, _) = s.find(service, None)?;
+        let mut accounts = Vec::new();
+        for item in unlocked {
+            let attrs: OwnedValue = proxy(&s.conn, item.as_str(), ITEM)?
+                .get_property("Attributes")
+                .map_err(fault)?;
+            let attrs = HashMap::<String, String>::try_from(attrs)
+                .map_err(|_| Fault::Failed("attributes".into()))?;
+            if attrs.get("service").is_some_and(|s| s == service)
+                && let Some(account) = attrs.get("account")
+            {
+                accounts.push(account.clone());
+            }
+        }
+        Ok(accounts)
+    }
+}
+
+#[cfg(target_os = "macos")]
+mod mac_keychain {
+    use security_framework::item::{ItemClass, ItemSearchOptions, Limit};
+    use security_framework::passwords::{
+        PasswordOptions, delete_generic_password, generic_password, set_generic_password_options,
+    };
+
+    use crate::secrets::Fault;
+
+    const ITEM_NOT_FOUND: i32 = -25300;
+    const INTERACTION_NOT_ALLOWED: i32 = -25308;
+    const NO_SUCH_KEYCHAIN: i32 = -25294;
+    const NOT_AVAILABLE: i32 = -25291;
+
+    fn fault(e: security_framework::base::Error) -> Fault {
+        match e.code() {
+            INTERACTION_NOT_ALLOWED => Fault::Locked,
+            NO_SUCH_KEYCHAIN | NOT_AVAILABLE => Fault::Missing,
+            code => Fault::Failed(format!("Security error {code}")),
+        }
+    }
+
+    pub fn probe(service: &str) -> Result<(), Fault> {
+        list(service).map(|_| ())
+    }
+
+    pub fn read(service: &str, account: &str) -> Result<Option<String>, Fault> {
+        match generic_password(PasswordOptions::new_generic_password(service, account)) {
+            Ok(bytes) => String::from_utf8(bytes)
+                .map(Some)
+                .map_err(|_| Fault::Failed("not UTF-8".into())),
+            Err(e) if e.code() == ITEM_NOT_FOUND => Ok(None),
+            Err(e) => Err(fault(e)),
+        }
+    }
+
+    pub fn write(service: &str, account: &str, label: &str, secret: &str) -> Result<(), Fault> {
+        let mut options = PasswordOptions::new_generic_password(service, account);
+        options.set_label(label);
+        set_generic_password_options(secret.as_bytes(), options).map_err(fault)
+    }
+
+    pub fn delete(service: &str, account: &str) -> Result<(), Fault> {
+        match delete_generic_password(service, account) {
+            Err(e) if e.code() != ITEM_NOT_FOUND => Err(fault(e)),
+            _ => Ok(()),
+        }
+    }
+
+    /// The accounts of `service`'s generic passwords (their attributes only, not their data).
+    pub fn list(service: &str) -> Result<Vec<String>, Fault> {
+        let found = ItemSearchOptions::new()
+            .class(ItemClass::generic_password())
+            .service(service)
+            .load_attributes(true)
+            .limit(Limit::All)
+            .search();
+        match found {
+            Ok(items) => Ok(items
+                .iter()
+                .filter_map(|i| i.simplify_dict()?.get("acct").cloned())
+                .collect()),
+            Err(e) if e.code() == ITEM_NOT_FOUND => Ok(Vec::new()),
+            Err(e) => Err(fault(e)),
+        }
+    }
+}
+
 // ---- waking the computer for a queue (#142) -----------------------------------------------
 
 /// Linux: the clock chip's wake alarm, in seconds since 1970. Root's alone unless an

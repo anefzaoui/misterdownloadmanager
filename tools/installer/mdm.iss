@@ -5,7 +5,8 @@
 ; everyone (Program Files); the wizard asks. Tasks: browser integration (native messaging host
 ; for Chrome, Edge, Brave and Firefox), .torrent files and magnet links, start with Windows, a
 ; desktop shortcut. A running MDM is asked to save and quit first (/exit). Uninstalling asks
-; whether to keep the download list and settings.
+; whether to keep the download list and settings; removing them also removes MDM's sign-ins from
+; Windows Credential Manager (misterdownloadmanager --forget-sign-ins).
 
 #ifndef AppVersion
   #define AppVersion "0.3.0"
@@ -179,21 +180,29 @@ begin
     RegDeleteKeyIncludingSubkeys(HKA, Key);
 end;
 
+{ Asked before the files go (the sign-ins are removed by MDM itself), the list and settings
+  removed after. A silent uninstall keeps both. }
+var
+  RemoveData: Boolean;
+
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
   Value, Data: String;
+  Code: Integer;
 begin
+  Data := ExpandConstant('{userappdata}\misterdownloadmanager');
   if CurUninstallStep = usUninstall then
   begin
     ForgetIfOurs('Software\Classes\magnet', ExpandConstant('{app}\{#AppExe}'));
     if RegQueryStringValue(HKA, 'Software\Classes\.torrent', '', Value) and (Value = 'MisterDownloadManager.torrent') then
       RegDeleteValue(HKA, 'Software\Classes\.torrent', '');
-  end;
-  if CurUninstallStep = usPostUninstall then
-  begin
-    Data := ExpandConstant('{userappdata}\misterdownloadmanager');
+    RemoveData := False;
     if DirExists(Data) and not UninstallSilent() then
-      if MsgBox(CustomMessage('KeepData'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES then
-        DelTree(Data, True, True, True);
+      RemoveData := MsgBox(CustomMessage('KeepData'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES;
+    { The sign-ins MDM keeps in Windows Credential Manager (only MDM's own entries). }
+    if RemoveData then
+      Exec(ExpandConstant('{app}\{#AppExe}'), '--forget-sign-ins', '', SW_HIDE, ewWaitUntilTerminated, Code);
   end;
+  if (CurUninstallStep = usPostUninstall) and RemoveData then
+    DelTree(Data, True, True, True);
 end;

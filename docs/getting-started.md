@@ -68,7 +68,8 @@ The zips hold the same programs as the setup: the app, `misterdownloadmanager-cl
 
 You can change it at any time in **View → Language**. More in [Languages](languages.md).
 
-![Choosing a language on first start](images/language-picker.png)
+![The language list on first start: every language with its flag, its own name and its English name](images/help/first-language.webp)
+*Pick your language. View → Language changes it later.*
 
 ## The video helpers
 
@@ -77,11 +78,13 @@ Next, MDM offers its two free video helpers: **yt-dlp**, which finds the video o
 download in the background, about 100 MB, once. **Not now** leaves them for later: the video
 window offers them when you first need them. More in [Videos](video.md).
 
-![The video helpers offered on first start](images/helpers.png)
+![MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now](images/help/first-helpers.webp)
+*Yes downloads both helpers in the background, once.*
 
 ## The main window
 
-![The main window](images/main-light.png)
+![The main window: the menu bar, the toolbar, the categories on the left and the download list on the right](images/help/main-window.webp)
+*1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list.*
 
 From top to bottom:
 
@@ -90,7 +93,7 @@ From top to bottom:
   - **File** — the selected download: **Stop Download**, **Remove**, **Download Now**, **Redownload**.
   - **Downloads** — **Pause All**, **Stop All**, **Delete All Completed**, **Find**, the **Scheduler**, queues, the **Speed Limiter** and **Options**.
   - **View** — show or hide the categories, sort the list (**Arrange files**), **Dark Mode support**, **Always dark**, **Theme**, **Draw with** (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and **Language**.
-  - **Help** — help pages, tutorials, **Keyboard shortcuts**, **Report a problem**, **Check for updates** and **About**.
+  - **Help** — help pages and tutorials (on the website, in your language when it has it), **Keyboard shortcuts**, **Report a problem**, **Check for updates** and **About**.
 - **Toolbar.** **Add URL**, **Add Torrent**, **Resume**, **Stop**, **Stop All**, **Delete**, **Delete Completed**, **Options**, **Scheduler**, **Start Queue**, **Stop Queue**. The small arrow next to **Add Torrent**, **Start Queue** and **Stop Queue** opens more choices.
 - **Categories** (left). Choose what the list shows: **All Downloads**, **Unfinished**, **Finished** and **Queues**, each with its categories. Drag the gap between the pane and the list to make it wider.
 - **Download list** (right). One row per download. See [The download list](download-list.md).
@@ -99,7 +102,8 @@ From top to bottom:
 
 MDM follows your system: when Windows (or your desktop's light/dark preference on Linux and macOS) is set to dark mode, so is MDM. To keep MDM light whatever the system does, turn off **View → Dark Mode support**. To keep it dark whatever the system does, for example on a desktop that reports no preference, turn on **View → Always dark**.
 
-![The main window in dark mode](images/main-dark.png)
+![The View menu open, with Dark Mode support and Always dark](images/help/view-dark-mode.webp)
+*1 Dark Mode support follows the system; 2 Always dark keeps MDM dark.*
 
 ## Themes
 
@@ -121,6 +125,20 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
 - **Breeze**: KDE Plasma's look: rounded corners, buttons and boxes that take the accent's edge
   under the pointer or when focused, KDE's check boxes and focus frame, KDE's title bar with the
   title centred and round buttons (on Windows, where MDM draws it), and KDE's Breeze icons.
+
+![View → Theme open: Classic, Native, High contrast, Metro, Adwaita and Breeze](images/help/view-theme.webp)
+*View → Theme switches at once, keeping the layout.*
+
+<!-- pictures -->
+
+- ![The main window's toolbar and categories in the Classic theme](images/help/theme-classic.webp)
+  *Classic*
+- ![The main window's toolbar and categories in the High contrast theme](images/help/theme-high-contrast.webp)
+  *High contrast*
+- ![The main window's toolbar and categories in the Adwaita theme](images/help/theme-adwaita.webp)
+  *Adwaita*
+- ![The main window's toolbar and categories in the Breeze theme](images/help/theme-breeze.webp)
+  *Breeze*
 
 Each has a light and a dark side: **Dark Mode support** and **Always dark** choose between
 them as before. Theme files you put in the themes folder (**View → Theme → Open themes folder**)

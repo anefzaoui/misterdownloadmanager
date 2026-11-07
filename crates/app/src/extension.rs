@@ -200,7 +200,11 @@ impl Extension {
                 None,
             );
             if add.clicked() {
-                let url = page.as_deref().unwrap_or(mdm_ipc::extension::GUIDE_PAGE);
+                // No store page: the tutorial on the website, in the interface language.
+                let url = page.clone().unwrap_or_else(|| {
+                    crate::help::page_url(mdm_ipc::extension::GUIDE_DOC, crate::i18n::code())
+                });
+                let url = url.as_str();
                 match program {
                     #[cfg(windows)]
                     Some(program) => crate::win32::open_in(program, url),
@@ -279,7 +283,7 @@ impl Extension {
                 "by-hand",
             )
         {
-            let _ = open::that_detached(mdm_ipc::extension::GUIDE_PAGE);
+            crate::help::open_page(mdm_ipc::extension::GUIDE_DOC);
         }
         // As wide as their labels in this language (#192), Don't ask again only while no
         // extension has reached MDM.

@@ -5906,3 +5906,43 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/സെക്കൻഡ്
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	ലോക്ക് ചെയ്ത കീറിംഗിൽ
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	സിസ്റ്റം കീറിംഗ് പ്രതികരിച്ചില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	പ്രോക്സി സെർവർ
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും macOS കീചെയിനിൽ സൂക്ഷിച്ചിരിക്കുന്നു.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും സിസ്റ്റം കീറിംഗിൽ (സീക്രട്ട് സർവീസ്) സൂക്ഷിച്ചിരിക്കുന്നു.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും Windows ക്രെഡൻഷ്യൽ മാനേജറിൽ സൂക്ഷിച്ചിരിക്കുന്നു.
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	സിസ്റ്റം കീറിംഗ് ലോക്ക് ചെയ്തിരിക്കുന്നു, MDM അത് അൺലോക്ക് ചെയ്യുന്നില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ഈ പോർട്ടബിൾ കോപ്പി സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും അതിൻ്റെ സ്വന്തം ക്രമീകരണങ്ങളിൽ സൂക്ഷിക്കുന്നു, നിങ്ങളുടെ Windows അക്കൗണ്ടിനായി എൻക്രിപ്റ്റ് ചെയ്ത നിലയിൽ.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ഈ പോർട്ടബിൾ കോപ്പി സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും അതിൻ്റെ സ്വന്തം ക്രമീകരണങ്ങളിൽ സൂക്ഷിക്കുന്നു, അത് നിങ്ങൾക്ക് മാത്രമേ വായിക്കാൻ കഴിയൂ.
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows ക്രെഡൻഷ്യൽ മാനേജർ പ്രതികരിച്ചില്ല, അതിനാൽ സൈൻ-ഇന്നുകളും പാസ്‌വേഡുകളും MDM-ന്റെ ക്രമീകരണങ്ങളിൽ സൂക്ഷിച്ചിരിക്കുന്നു, നിങ്ങളുടെ Windows അക്കൗണ്ടിനായി എൻക്രിപ്റ്റ് ചെയ്ത നിലയിൽ.

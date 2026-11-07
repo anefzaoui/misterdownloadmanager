@@ -5906,3 +5906,43 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/giây
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	trong chuỗi khóa bị khóa
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Không có chuỗi khóa hệ thống nào phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	máy chủ proxy
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa hệ thống (Dịch vụ Bí mật).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Thông tin đăng nhập và mật khẩu được giữ trong Trình quản lý Thông tin xác thực của Windows.
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Chuỗi khóa hệ thống bị khóa và MDM không mở khóa, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, được mã hóa cho tài khoản Windows của bạn.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, chỉ bạn mới có thể đọc.
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Trình quản lý Thông tin xác thực của Windows không phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, được mã hóa cho tài khoản Windows của bạn.

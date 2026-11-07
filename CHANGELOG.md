@@ -22,6 +22,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Sign-ins in the system's keychain**
+  ([#44](https://github.com/anefzaoui/misterdownloadmanager/issues/44)): debrid accounts, Sites
+  Logins' passwords and the proxy's password are kept in Windows Credential Manager, in the
+  system keyring on Linux (Secret Service: GNOME Keyring, KeePassXC and others) and in the
+  macOS keychain, and the settings keep only a reference. Those already saved move there on
+  the next start. A locked keyring is never unlocked and no keyring is ever asked for a
+  password: without one, they stay in MDM's settings as before. **Options → Accounts** says
+  where they are. A portable copy keeps them in its own folder, and uninstalling with **remove
+  the download list and settings** removes them from Credential Manager too.
 - **The Scheduler wakes the computer to run a queue**
   ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142)): tick **Wake the
   computer to run this queue** under the start time, and a sleeping computer is woken a minute
@@ -108,6 +117,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   [GitHub Sponsors](https://github.com/sponsors/anefzaoui) page in the browser; the website, the
   README and the browser extension's popup link to it too. Only when asked: MDM stays free, with
   no reminders, and nothing changes or unlocks.
+- **Video pages and image galleries through the chosen network adapter**
+  ([#35](https://github.com/anefzaoui/misterdownloadmanager/issues/35)): with **Options → Proxy /
+  Socks → Network adapter** set, video downloads (yt-dlp and the ffmpeg it starts) and galleries
+  (gallery-dl) now start, on Windows, Linux and macOS, instead of being refused. They go through a
+  proxy MDM runs on this computer, which opens their connections through the adapter as MDM opens
+  its own, with the DNS you chose, IPv4 and IPv6. The same kill switch: when the adapter
+  disconnects, their connections close at once and the downloads stop, then start again when it
+  is back. Formats over RTMP, RTSP, MMS or FTP, which can't go through it, are refused. The
+  command line's `video-get` and `gallery-get` take `--adapter`.
 - **Torrents through the chosen network adapter on Windows**
   ([#143](https://github.com/anefzaoui/misterdownloadmanager/issues/143)): with **Options → Proxy /
   Socks → Network adapter** set, torrents now start on Windows too, instead of being refused.
@@ -354,6 +372,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **The help shows what it describes** ([#228](https://github.com/anefzaoui/misterdownloadmanager/issues/228)):
+  every guide and the main help pages now have pictures of the windows they explain, cropped to
+  what matters, numbered where a step points at one control, and step strips for the usual flows
+  (a download from the browser, a first download, a video, a torrent, a queue overnight). On the
+  website they follow its light or dark theme, keep their place while they load, and open larger
+  with a click; their descriptions and captions are translated with the page. The pictures are
+  made by a script from one list (`tools/shots/`), so they can all be taken again in one go.
+- **Developers: `/show menu:<n>` opens the menu bar's menu even with downloads in the list**; it
+  opened the first download's right-click menu instead.
 - **Developers: the rest of the engine tests no longer fail on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)). Nine tests checked a
   time, a speed or a byte count that a starved CPU or a busy CI runner can't keep. Each now
@@ -487,6 +514,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   ends before it. Where a window has no room left, the buttons wider than their text give some
   back first. English is unchanged, and in Arabic and the other right-to-left languages the
   buttons widen the mirrored way.
+- **Help opens the website's help pages, in your language**
+  ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227)): **Help contents**,
+  **Tutorials**, **Scheduler and queues**, **Video downloads**, the **Help** buttons of Options and
+  the Scheduler, and the browser extension window's tutorial and help links opened the docs on
+  GitHub (the Options and Scheduler buttons a page that wasn't there). They open
+  misterdownloadmanager.com now, at the same section, in the interface language when the website
+  has it (else English), and **Home Page** opens the website too. The command line's and the MCP
+  server's help name the website's guide. Problem reports, releases and the source stay on GitHub.
 - **A finished download no longer fails with "part file still in use" on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)): when the last bytes
   came in, the connections still running were cut off. One cut off while it read or wrote the
