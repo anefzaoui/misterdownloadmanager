@@ -323,6 +323,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Developers: the host connection limit test tells a reconnect from a connection too many**
+  ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)). A server sees that a
+  client dropped an answer only when it next writes to it, so on a busy computer a connection
+  that reconnects can be refused once while the server still counts its old answer. The lab
+  server now logs, with each refusal, how far the answers holding the client's slots had been
+  sent; the test fails only for a refusal none of them explains.
 - **Developers: the rest of the engine tests no longer fail on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)). Nine tests checked a
   time, a speed or a byte count that a starved CPU or a busy CI runner can't keep. Each now
@@ -438,6 +444,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A download too big for the drive is refused on a busy computer too**
+  ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)): before a download
+  starts, MDM checks the drive has room for it. It gave up checking after 5 seconds (a network
+  drive that no longer answers can hang), counted from when it asked; on a very busy computer
+  the check could wait longer than that just to start, and a download too big for its drive
+  started anyway. The 5 seconds now count from when the check runs, and it asks only the
+  folder's own drive instead of listing every drive, which takes well under a millisecond. A
+  shared network folder (`\\server\share`) is checked too, which it wasn't before, and a
+  folder that doesn't exist yet is checked on the drive it will be made on.
 - **A finished download no longer fails with "part file still in use" on a busy computer**
   ([#201](https://github.com/anefzaoui/misterdownloadmanager/issues/201)): when the last bytes
   came in, the connections still running were cut off. One cut off while it read or wrote the

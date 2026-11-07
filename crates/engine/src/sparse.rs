@@ -6,8 +6,8 @@
 //! first second, so every large download paid it. A sparse file has no such fill. Elsewhere
 //! (`ftruncate` already makes sparse files) this is a no-op.
 //!
-//! The engine's only unsafe code: one `DeviceIoControl` call (and, in its test, one
-//! `GetCompressedFileSizeW`).
+//! The engine's unsafe code: one `DeviceIoControl` call here (and, in its test, one
+//! `GetCompressedFileSizeW`), and the free-space probe's two calls in `crate::disk`.
 #![allow(unsafe_code)]
 
 use std::fs::File;

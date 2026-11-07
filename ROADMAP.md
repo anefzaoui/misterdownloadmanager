@@ -13,6 +13,10 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ A download too big for its drive is refused on a very busy computer too: the free-space
+  check's 5 seconds count from when it runs, not from when it was asked, and it asks only the
+  folder's own drive (shared network folders too) instead of listing every drive; and the host
+  connection limit test tells a reconnect from a connection too many ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224))
 - ✅ A finished download no longer fails with "part file still in use" on a busy computer, and
   the rest of the engine tests that failed now and then there (slow connections, a prompt stop,
   speed limits, links that expire, sparse files and a few more) wait for what they check, not for
