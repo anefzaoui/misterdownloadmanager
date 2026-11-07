@@ -128,6 +128,24 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and,
   on Windows, a title bar MDM draws in KDE's style: the title centred, round buttons that fill
   under the pointer (Close in red).
+- **Themes: Luna, Aero and Aqua** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)),
+  after Windows XP, Windows 7 and Mac OS X (Leopard), the layout kept, each with a light and a
+  dark side and icons drawn for MDM in its era's manner. **Luna**: buttons shaded from white with
+  a dark blue edge and an orange glow under the pointer, green ticks, square text boxes,
+  progress in green blocks and, on Windows, a deep blue title bar with the title in bold and
+  square buttons (Close red). **Aero**: glossy buttons in two halves that turn light blue under
+  the pointer, quiet check boxes, a glossy green progress bar and a glassy title bar, the title
+  on a soft glow, its buttons hung from the top (Close wider and red). **Aqua**: gel buttons round
+  at the ends (the default one blue), glossy check boxes, a blue focus ring, a blue gel progress
+  bar and a grey title bar with the title centred and small round graphite buttons whose glyphs
+  show under the pointer. Every glyph and shade is MDM's own drawing; none of Microsoft's or
+  Apple's pictures or fonts are used.
+- **Metro, Adwaita and Breeze: MDM's own icons where theirs had none**: Metro's Add torrent,
+  Torrents, torrent file and Hide to the notification area, Adwaita's PDF, torrent file and Hide
+  to the notification area, and Breeze's PDF and Hide to the notification area, drawn for MDM in
+  each one's style (the one-colour ones in the theme's text colour). An icon set can now hold
+  one-colour pictures (`-symbolic.png`), drawn in the theme's text colour as its one-colour
+  drawings are.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the

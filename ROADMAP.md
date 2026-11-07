@@ -111,6 +111,10 @@ Everything below ships together, in one release, as version 0.3.0.
 - ✅ Themes: Breeze, KDE Plasma's look (its focus frame, check boxes, buttons and title bar on
   Windows, KDE's Breeze icons)
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Luna, Aero and Aqua, the looks of Windows XP, Windows 7 and Mac OS X (shaded and
+  glossy buttons, their check boxes and progress bars, their title bars on Windows, icons drawn
+  for MDM); Metro, Adwaita and Breeze get MDM's own icons where theirs had none
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ A minimized MDM keeps working: queues, the Scheduler, download limits, the kill switch and
@@ -292,9 +296,9 @@ Everything below ships together, in one release, as version 0.3.0.
 - 🔄 Themes ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): today's look stays the default. Every colour, size and spacing now
   comes from the chosen theme (the classic look pixel for pixel the same); **View → Theme** with
   Classic, Native (follows the system's accent and contrast on Windows, Linux and macOS) and High
-  contrast; then style themes with their own control shapes, a drawn title bar on Windows and their
-  own icons: Metro first, then Adwaita and Breeze, then Luna, Aero and Aqua with icons drawn for
-  MDM. Theme files can be added by anyone, and Base16 and pywal schemes imported
+  contrast; style themes with their own control shapes, a drawn title bar on Windows and their own
+  icons: Metro, Adwaita, Breeze, Luna, Aero and Aqua (all six in). Next: theme files can be added
+  by anyone, and Base16 and pywal schemes imported
 - 🔄 Linux supported like Windows, no longer experimental: every change is now checked on Ubuntu
   (GNOME) as well as Windows, then on KDE, Cinnamon and Xfce ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - 🔄 Before the release: every screenshot taken again on Windows and Linux (smaller files, WebP),

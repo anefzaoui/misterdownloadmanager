@@ -5089,6 +5089,12 @@ impl App {
         items.push(Radio("Adwaita", Cmd::Theme("adwaita"), true, on("adwaita")));
         // i18n: View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
         items.push(Radio("Breeze", Cmd::Theme("breeze"), true, on("breeze")));
+        // i18n: View → Theme: a style theme's name (Windows XP's look), a name: keep "Luna" as written
+        items.push(Radio("Luna", Cmd::Theme("luna"), true, on("luna")));
+        // i18n: View → Theme: a style theme's name (Windows 7's glassy look), a name: keep "Aero" as written
+        items.push(Radio("Aero", Cmd::Theme("aero"), true, on("aero")));
+        // i18n: View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
+        items.push(Radio("Aqua", Cmd::Theme("aqua"), true, on("aqua")));
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
                 items.push(Sep);
