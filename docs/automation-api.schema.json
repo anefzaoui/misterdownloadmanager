@@ -24,6 +24,24 @@
       ],
       "type": "object"
     },
+    "AddAnswer": {
+      "description": "An address added (`url`): the download's id, or `pending` while a torrent's files are looked\nup (it joins the list once they are known).",
+      "properties": {
+        "id": {
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "pending": {
+          "default": false,
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
     "ApiAnswer": {
       "description": "`{\"api\": true}` / `{\"api\": false}`: the API's new state.",
       "properties": {
@@ -36,6 +54,24 @@
       ],
       "type": "object"
     },
+    "CategoryInfo": {
+      "description": "One category of the list.",
+      "properties": {
+        "key": {
+          "description": "What `category` takes and a download's `category` says (a built-in category's English\nname, as shipped).",
+          "type": "string"
+        },
+        "name": {
+          "description": "Its name as the user sees it: a built-in one's English name (translated where it is\nshown) unless the user renamed it.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "name"
+      ],
+      "type": "object"
+    },
     "DownloadInfo": {
       "description": "One download of the list.",
       "properties": {
@@ -45,6 +81,11 @@
             "string",
             "null"
           ]
+        },
+        "category": {
+          "default": "",
+          "description": "Its category's `key` (see [`CategoryInfo`]).",
+          "type": "string"
         },
         "downloaded": {
           "description": "Bytes downloaded so far.",
@@ -131,9 +172,35 @@
     "ListAnswer": {
       "description": "`{\"query\": \"list\"}`: every download, and the total speed.",
       "properties": {
+        "categories": {
+          "default": [],
+          "description": "The categories a new download can go to (General first).",
+          "items": {
+            "$ref": "#/$defs/CategoryInfo"
+          },
+          "type": "array"
+        },
         "downloads": {
           "items": {
             "$ref": "#/$defs/DownloadInfo"
+          },
+          "type": "array"
+        },
+        "free": {
+          "default": null,
+          "description": "Free space where downloads go (the General category's folder), bytes; null when unknown.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "queues": {
+          "default": [],
+          "description": "The queues, in the Scheduler's order (the first is the main queue).",
+          "items": {
+            "$ref": "#/$defs/QueueInfo"
           },
           "type": "array"
         },
@@ -150,12 +217,40 @@
       ],
       "type": "object"
     },
+    "QueueInfo": {
+      "description": "One queue of the list.",
+      "properties": {
+        "ids": {
+          "description": "Its downloads' ids, in its order.",
+          "items": {
+            "format": "uint64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "Its name: what `queue` takes (a built-in queue's in English, as shipped).",
+          "type": "string"
+        },
+        "running": {
+          "description": "Is it running?",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "running",
+        "ids"
+      ],
+      "type": "object"
+    },
     "Request": {
       "description": "One request line: the token from ipc.json and the command's fields.",
       "properties": {
         "action": {
           "default": null,
-          "description": "Automation API: `\"pause\"`, `\"start\"`, `\"remove\"` (off the list, its file kept) or\n`\"delete\"` (with its file) the downloads `ids`; answered with what was done and skipped.",
+          "description": "Automation API: `\"pause\"`, `\"start\"`, `\"remove\"` (off the list, its file kept) or\n`\"delete\"` (with its file) the downloads `ids`; answered with what was done and skipped.\n`\"start_queue\"` / `\"stop_queue\"` start or stop the queue named `queue`.",
           "type": [
             "string",
             "null"
@@ -166,6 +261,14 @@
           "description": "Automation API: turn it on or off.",
           "type": [
             "boolean",
+            "null"
+          ]
+        },
+        "category": {
+          "default": null,
+          "description": "A category for `url` (its `key` in the list's `categories`); none: by the file's type.",
+          "type": [
+            "string",
             "null"
           ]
         },
@@ -292,6 +395,14 @@
         "query": {
           "default": null,
           "description": "Automation API (off by default, beyond IDM): `\"list\"` asks for every download as JSON.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "queue": {
+          "default": null,
+          "description": "A queue by name: where `url` waits (with `later`), or the one `action` starts or stops.",
           "type": [
             "string",
             "null"
