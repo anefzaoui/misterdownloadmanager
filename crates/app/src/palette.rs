@@ -213,6 +213,8 @@ palette! {
     button_accent_bottom: "button.accent.bottom", "An accent button's bottom edge" = rgb(0x4f, 0xb5, 0xe4), rgb(0x00, 0x5a, 0x9e);
     button_accent_text: "button.accent.text", "An accent button's text" = grey(0x00), grey(0xff);
     button_accent_text_pressed: "button.accent.text.pressed", "An accent button's text pressed" = grey(0x1a), rgb(0xe6, 0xf0, 0xfa);
+    button_glow: "button.glow", "The glow inside a button under the pointer, where the style draws one (Luna; transparent: none)" = Color32::TRANSPARENT, Color32::TRANSPARENT;
+    gloss: "gloss", "The shine glossy parts blend toward at their top: buttons, boxes, bars and title bars (Luna, Aero, Aqua)" = grey(0xff), grey(0xff);
     // ---- check boxes and radios ----
     check: "check", "An unchecked box's or radio's inside" = grey(0x2b), grey(0xf3);
     check_hot: "check.hot", "Its inside under the pointer" = grey(0x3a), grey(0xea);
@@ -306,6 +308,7 @@ palette! {
     caption_button: "caption.button", "A caption button at rest, where the style shows one (a tint over the bar; transparent: none)" = Color32::TRANSPARENT, Color32::TRANSPARENT;
     caption_close: "caption.close", "Close under the pointer" = rgb(0xc4, 0x2b, 0x1c), rgb(0xc4, 0x2b, 0x1c);
     caption_close_text: "caption.close.text", "Close's glyph under the pointer" = grey(0xff), grey(0xff);
+    caption_inactive: "caption.inactive", "A title bar MDM draws, while its window isn't the active one (transparent: as when active)" = Color32::TRANSPARENT, Color32::TRANSPARENT;
     // ---- other ----
     drop_edge: "drop-target.edge", "The drop target's edge at rest" = grey(0x8d), grey(0x8d);
     // ---- egui's own widgets (tooltips, multi-line boxes' scroll bars) ----
@@ -359,6 +362,7 @@ macro_rules! metrics {
 
 metrics! {
     control_radius: "radius", "Corner radius of buttons, text boxes and drop-downs" = 3.0;
+    button_radius: "radius.button", "Corner radius of a glossy push button (Luna, Aero; Aqua's are round at the ends)" = 3.0;
     part_radius: "radius.part", "Corner radius of a tinted part (an arrow zone, a spin button)" = 2.0;
     check_radius: "radius.check", "Corner radius of a check box" = 2.0;
     flyout_radius: "radius.flyout", "Corner radius of a popup in a window (a calendar, a filter box)" = 6.0;
@@ -450,6 +454,14 @@ pub enum CheckLook {
     /// KDE: the edge in the accent under the pointer; checked, the accent's edge, its inside
     /// tinted with it, a tick in the text's colour.
     Breeze,
+    /// Windows XP: a box shaded from its top, a glow inside under the pointer, a thick tick in
+    /// the checked colour; round radios with a shaded dot.
+    Luna,
+    /// Windows 7: a quiet box with a shaded square inside, its edge in the accent under the
+    /// pointer, the tick in the check mark's colour.
+    Aero,
+    /// Mac OS X: a glossy box with round corners, filled with the accent's gel when checked.
+    Aqua,
 }
 
 /// How a push button shows the pointer and a press.
@@ -459,6 +471,14 @@ pub enum ButtonLook {
     Fluent,
     /// KDE: its edge in the accent under the pointer and pressed, its face tinted pressed.
     Breeze,
+    /// Windows XP: a face shaded from white at its top, a dark edge, a glow inside under the
+    /// pointer (`button.glow`) and on the default button (its border's colour).
+    Luna,
+    /// Windows 7: a glossy face, its top half lighter than the bottom, the edge in the accent
+    /// under the pointer and pressed.
+    Aero,
+    /// Mac OS X: a gel face, round at the ends, the default button in the accent's gel.
+    Aqua,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -471,6 +491,10 @@ pub enum ScrollLook {
 pub enum ProgressLook {
     Line,
     Bar,
+    /// Windows XP: blocks in the bar's colour, shaded across, on a bordered track.
+    Blocks,
+    /// Windows 7 and Mac OS X: a glossy fill on a shaded, bordered track.
+    Gloss,
 }
 
 /// A drawn title bar's look: its buttons and where the title sits.
@@ -485,6 +509,15 @@ pub enum CaptionLook {
     /// KDE's title bar: the icon, the title centred, round buttons that fill with the title's
     /// colour under the pointer (Close red), their glyph then the bar's.
     Breeze,
+    /// Windows XP: a shaded bar, the title in bold with a shadow, square buttons with a light
+    /// edge (Close always red).
+    Luna,
+    /// Windows 7: a glassy bar, the title on a soft glow, glossy buttons hung from the bar's
+    /// top (Close wider and red).
+    Aero,
+    /// Mac OS X: a shaded grey bar, the title centred, small round gel buttons whose glyphs
+    /// show under the pointer.
+    Aqua,
 }
 
 /// How the keyboard focus is drawn around a control.
@@ -519,16 +552,27 @@ impl Controls {
             ("check", "square") => self.check = CheckLook::Square,
             ("check", "adwaita") => self.check = CheckLook::Adwaita,
             ("check", "breeze") => self.check = CheckLook::Breeze,
+            ("check", "luna") => self.check = CheckLook::Luna,
+            ("check", "aero") => self.check = CheckLook::Aero,
+            ("check", "aqua") => self.check = CheckLook::Aqua,
             ("button", "fluent") => self.button = ButtonLook::Fluent,
             ("button", "breeze") => self.button = ButtonLook::Breeze,
+            ("button", "luna") => self.button = ButtonLook::Luna,
+            ("button", "aero") => self.button = ButtonLook::Aero,
+            ("button", "aqua") => self.button = ButtonLook::Aqua,
             ("progress", "line") => self.progress = ProgressLook::Line,
             ("progress", "bar") => self.progress = ProgressLook::Bar,
+            ("progress", "blocks") => self.progress = ProgressLook::Blocks,
+            ("progress", "gloss") => self.progress = ProgressLook::Gloss,
             ("scroll", "overlay") => self.scroll = ScrollLook::Overlay,
             ("scroll", "classic") => self.scroll = ScrollLook::Classic,
             ("caption", "system") => self.caption = CaptionLook::System,
             ("caption", "metro") => self.caption = CaptionLook::Metro,
             ("caption", "adwaita") => self.caption = CaptionLook::Adwaita,
             ("caption", "breeze") => self.caption = CaptionLook::Breeze,
+            ("caption", "luna") => self.caption = CaptionLook::Luna,
+            ("caption", "aero") => self.caption = CaptionLook::Aero,
+            ("caption", "aqua") => self.caption = CaptionLook::Aqua,
             ("focus", "dotted") => self.focus = FocusLook::Dotted,
             ("focus", "ring") => self.focus = FocusLook::Ring,
             ("focus", "frame") => self.focus = FocusLook::Frame,
@@ -578,7 +622,7 @@ pub static CLASSIC: Theme = Theme {
 /// (written out above), then the ones shipped as theme files (`assets/themes/`, in the format
 /// users write, so they double as examples). Native follows the system and is made when chosen
 /// (`crate::native`).
-pub fn builtins() -> [&'static Theme; 5] {
+pub fn builtins() -> [&'static Theme; 8] {
     static HIGH_CONTRAST: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
         crate::themefile::builtin(
             "high-contrast",
@@ -595,7 +639,25 @@ pub fn builtins() -> [&'static Theme; 5] {
     static BREEZE: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
         crate::themefile::builtin("breeze", include_str!("../assets/themes/breeze.toml"))
     });
-    [&CLASSIC, &HIGH_CONTRAST, &METRO, &ADWAITA, &BREEZE]
+    static LUNA: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin("luna", include_str!("../assets/themes/luna.toml"))
+    });
+    static AERO: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin("aero", include_str!("../assets/themes/aero.toml"))
+    });
+    static AQUA: std::sync::LazyLock<Theme> = std::sync::LazyLock::new(|| {
+        crate::themefile::builtin("aqua", include_str!("../assets/themes/aqua.toml"))
+    });
+    [
+        &CLASSIC,
+        &HIGH_CONTRAST,
+        &METRO,
+        &ADWAITA,
+        &BREEZE,
+        &LUNA,
+        &AERO,
+        &AQUA,
+    ]
 }
 
 /// `#rrggbb` or `#rrggbbaa` (the `#` optional, as Base16 writes them) as a colour.
@@ -794,6 +856,9 @@ mod tests {
                 "Breeze",
                 include_str!("../assets/themes/breeze.toml"),
             ),
+            ("luna", "Luna", include_str!("../assets/themes/luna.toml")),
+            ("aero", "Aero", include_str!("../assets/themes/aero.toml")),
+            ("aqua", "Aqua", include_str!("../assets/themes/aqua.toml")),
         ] {
             let v: serde_json::Value = toml::from_str(text).unwrap();
             let l = crate::themefile::parse(id, &v, |_| {
@@ -824,6 +889,50 @@ mod tests {
         assert_eq!(breeze.controls.check, CheckLook::Breeze);
         assert_eq!(breeze.controls.button, ButtonLook::Breeze);
         assert_eq!(breeze.controls.field_focus, FieldFocus::Border);
+        // The era themes: their own buttons, boxes, bars and title bars, and icon sets.
+        for (i, id, button, check, progress, caption) in [
+            (
+                5,
+                "luna",
+                ButtonLook::Luna,
+                CheckLook::Luna,
+                ProgressLook::Blocks,
+                CaptionLook::Luna,
+            ),
+            (
+                6,
+                "aero",
+                ButtonLook::Aero,
+                CheckLook::Aero,
+                ProgressLook::Gloss,
+                CaptionLook::Aero,
+            ),
+            (
+                7,
+                "aqua",
+                ButtonLook::Aqua,
+                CheckLook::Aqua,
+                ProgressLook::Gloss,
+                CaptionLook::Aqua,
+            ),
+        ] {
+            let t = builtins()[i];
+            assert_eq!(t.id, id);
+            assert_eq!(t.icon_set.as_deref(), Some(id));
+            assert_eq!(t.controls.button, button, "{id}");
+            assert_eq!(t.controls.check, check, "{id}");
+            assert_eq!(t.controls.progress, progress, "{id}");
+            assert_eq!(t.controls.caption, caption, "{id}");
+            // Their buttons shine: the gloss isn't the face.
+            for p in [&t.light, &t.dark] {
+                assert_ne!(p.gloss, p.button, "{id} {}", p.dark);
+            }
+        }
+        // Aqua's keyboard focus is a ring, as Mac OS X draws it; Luna's and Aero's Windows'
+        // dotted rectangle.
+        assert_eq!(builtins()[7].controls.focus, FocusLook::Ring);
+        assert_eq!(builtins()[5].controls.focus, FocusLook::Dotted);
+        assert_eq!(builtins()[6].controls.focus, FocusLook::Dotted);
     }
 
     /// The classic look's dark secondary and error texts read on every dark surface they sit on

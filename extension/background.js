@@ -56,6 +56,11 @@ function hostProblem(error) {
 // browser's status, and the rules depend on the browser). Never throws: failures come back as
 // `{ok: false, why}`.
 async function native(message, ms = HOST_WAIT) {
+  // A download for another MDM (a server, #157): sent there, not to this computer's.
+  if (typeof message.url === "string" && message.url) {
+    const target = await remoteTarget();
+    if (target) return remoteSend(target, message);
+  }
   const app = await APP_NAME;
   const brands = app ? [...BRANDS, app] : BRANDS;
   const sent = { ...message, userAgent: navigator.userAgent, brands, v: VERSION };
@@ -67,9 +72,91 @@ async function native(message, ms = HOST_WAIT) {
     return reply;
   } catch (e) {
     const why = hostProblem(e);
-    await noteStatus(why);
+    // With another MDM chosen, this computer's needn't be there.
+    if (!(await remoteTarget())) await noteStatus(why);
     return { ok: false, why, error: String((e && e.message) || e) };
   }
+}
+
+// ---- another MDM (#157): a server's, through its remote control ------------------------------
+
+// {url, token} while downloads go to another MDM instead of this computer's, else null.
+async function remoteTarget() {
+  const { remote } = await ext.storage.local.get({ remote: null });
+  return remote && remote.url && remote.token ? remote : null;
+}
+
+// One request to the remote control's API at `base` (https://server:8463/). Never throws:
+// {status, body}, status 0 when it isn't reached (not running, or its certificate not accepted
+// in this browser yet). The browser's cookies never go with it.
+async function remoteCall(base, path, body, token) {
+  try {
+    const r = await withTimeout(
+      fetch(new URL(path, base), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify(body),
+        credentials: "omit",
+        cache: "no-store",
+        redirect: "error",
+      }),
+      15000,
+    );
+    let json = null;
+    try {
+      json = await r.json();
+    } catch {
+      json = null;
+    }
+    return { status: r.status, body: json };
+  } catch {
+    return { status: 0, body: null };
+  }
+}
+
+// A download handed to the other MDM: its address only (a site's sign-in stays in this browser).
+async function remoteSend(target, message) {
+  const r = await remoteCall(target.url, "api/add", { url: message.url, start: true }, target.token);
+  if (r.status === 200 && r.body && !r.body.error) return { ok: true };
+  if (r.status === 401) await ext.storage.local.set({ remote: null }); // unpaired there
+  return { ok: false, why: "refused" };
+}
+
+// The file types the app takes by default (mdm_ipc::capture::DEFAULT_AUTO_TYPES; a test keeps
+// them the same): what is caught for another MDM when this computer has none to ask.
+const DEFAULT_TYPES =
+  "3GP 7Z AAC ACE AIF APK ARJ ASF AVI BIN BZ2 EXE GZ GZIP IMG ISO LZH M4A M4V MKV MOV MP3 MP4 MPA MPE MPEG MPG MSI MSU OGG OGV PDF PLJ PPS PPT QT R0* R1* RA RAR RM RMVB SEA SIT SITX TAR TIF TIFF TORRENT WAV WMA WMV Z ZIP";
+
+// Pair with the MDM at `address` with a code it shows; {ok} or {ok: false, why, left}.
+async function remotePair(address, code) {
+  let base;
+  try {
+    base = new URL(String(address).trim());
+  } catch {
+    return { ok: false, why: "address" };
+  }
+  if (base.protocol !== "https:") return { ok: false, why: "address" };
+  base = `${base.origin}/`;
+  const name = ext.i18n.getMessage("remote_device_name") || "Browser";
+  const r = await remoteCall(base, "api/pair", { code: String(code), name }, null);
+  if (r.status === 200 && r.body && typeof r.body.token === "string") {
+    await ext.storage.local.set({ remote: { url: base, token: r.body.token } });
+    await refreshRules();
+    await showStatus();
+    return { ok: true };
+  }
+  const why = { 0: "unreachable", 403: "wrong-code", 410: "no-code", 429: "too-soon" }[r.status] || "failed";
+  return { ok: false, why, left: r.body && r.body.left };
+}
+
+// Back to this computer: unpaired there too (when it answers).
+async function remoteOff() {
+  const target = await remoteTarget();
+  if (target) await remoteCall(target.url, "api/forget", {}, target.token);
+  await ext.storage.local.set({ remote: null });
+  await refreshRules();
+  await showStatus();
+  return { ok: true };
 }
 
 // a < b, both "x.y.z".
@@ -104,7 +191,7 @@ async function noteStatus(why, app) {
 }
 
 async function showStatus() {
-  const { why } = await readStatus();
+  const why = (await remoteTarget()) ? null : (await readStatus()).why;
   const { paused } = await ext.storage.local.get({ paused: false });
   try {
     await action.setBadgeBackgroundColor({ color: why ? "#C42B1C" : "#6B6B6B" });
@@ -146,6 +233,12 @@ async function askRules() {
     };
     await ext.storage.local.set({ rules });
     await syncOpenedRule();
+    return rules;
+  }
+  // No MDM on this computer, another one chosen: the app's default file types (the browser
+  // keeps the files it would open).
+  if (await remoteTarget()) {
+    rules = { types: DEFAULT_TYPES, capture: true, excludedSites: "", excludedAddresses: [], opened: false, minKb: 0, at: Date.now() };
     return rules;
   }
   return null;
@@ -1429,8 +1522,12 @@ async function popupMessage(m) {
     const r = await refreshRules();
     const { paused } = await ext.storage.local.get({ paused: false });
     const s = await readStatus();
+    const remote = await remoteTarget();
+    if (remote) return { connected: true, why: null, remote: remote.url, version: VERSION, paused };
     return { connected: Boolean(r) && (!s.why || s.why === "update-app"), why: s.why, app: s.app, version: VERSION, paused };
   }
+  if (m.type === "remote-pair" && typeof m.url === "string" && typeof m.code === "string") return remotePair(m.url, m.code);
+  if (m.type === "remote-off") return remoteOff();
   if (m.type === "pause") {
     await ext.storage.local.set({ paused: Boolean(m.paused) });
     await syncOpenedRule();

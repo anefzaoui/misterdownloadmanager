@@ -14,6 +14,7 @@ const lang = ext.i18n.getUILanguage();
 document.documentElement.lang = lang;
 document.documentElement.dir = t("@@bidi_dir") === "rtl" ? "rtl" : "ltr";
 for (const el of document.querySelectorAll("[data-i18n]")) el.textContent = t(el.dataset.i18n);
+for (const el of document.querySelectorAll("[data-i18n-placeholder]")) el.placeholder = t(el.dataset.i18nPlaceholder);
 $("help").href = HELP;
 $("support").href = SPONSORS;
 
@@ -34,6 +35,9 @@ async function show() {
   if (s.connected && s.why === "update-app") {
     box.classList.add("warn");
     text.textContent = t("status_update_app");
+  } else if (s.connected && s.remote) {
+    box.classList.add(s.paused ? "warn" : "ok");
+    text.textContent = s.paused ? t("status_paused") : t("status_remote", s.remote);
   } else if (s.connected) {
     box.classList.add(s.paused ? "warn" : "ok");
     text.textContent = s.paused ? t("status_paused") : s.app ? t("status_connected_version", s.app) : t("status_connected");
@@ -48,6 +52,11 @@ async function show() {
   $("take").disabled = !s.connected;
   $("open").disabled = $("options").disabled = !s.connected;
   $("version").textContent = s.version ? `v${s.version}` : "";
+  // Send downloads to: this computer, or another MDM (#157).
+  $("to-here").checked = !s.remote && $("remote-form").hidden;
+  $("to-remote").checked = Boolean(s.remote) || !$("remote-form").hidden;
+  $("open").disabled = $("open").disabled || Boolean(s.remote);
+  $("options").disabled = $("options").disabled || Boolean(s.remote);
   const tab = await currentTab();
   let site = "";
   try {
@@ -222,6 +231,39 @@ $("open").addEventListener("click", async () => {
 $("options").addEventListener("click", async () => {
   await ask({ type: "open-options" });
   window.close();
+});
+
+// Send downloads to (#157): another MDM is paired here with its address and a code it shows.
+$("to-remote").addEventListener("change", () => {
+  $("remote-form").hidden = false;
+  $("remote-url").focus();
+});
+$("to-here").addEventListener("change", async () => {
+  $("remote-form").hidden = true;
+  await ask({ type: "remote-off" });
+  show();
+});
+$("remote-open").addEventListener("click", () => {
+  try {
+    const u = new URL($("remote-url").value.trim());
+    if (u.protocol === "https:") ext.tabs.create({ url: u.origin + "/" });
+  } catch {
+    $("remote-said").textContent = t("remote_address");
+    $("remote-said").hidden = false;
+  }
+});
+$("remote-pair").addEventListener("click", async () => {
+  const said = $("remote-said");
+  said.hidden = true;
+  const r = await ask({ type: "remote-pair", url: $("remote-url").value, code: $("remote-code").value });
+  if (r.ok) {
+    $("remote-form").hidden = true;
+    $("remote-code").value = "";
+    show();
+    return;
+  }
+  said.textContent = t(`remote_${String(r.why || "failed").replace(/-/g, "_")}`);
+  said.hidden = false;
 });
 
 show();

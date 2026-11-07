@@ -200,7 +200,7 @@ pub fn output_within(cmd: &mut Command, limit: Duration) -> Option<Output> {
 
 /// Wait for `child` at most `limit`: its exit status, or None when it ran out of time (it is
 /// ended and reaped) or couldn't be waited for.
-fn wait_within(child: &mut Child, limit: Duration) -> Option<ExitStatus> {
+pub(crate) fn wait_within(child: &mut Child, limit: Duration) -> Option<ExitStatus> {
     let start = Instant::now();
     loop {
         match child.try_wait() {

@@ -103,6 +103,10 @@ it.
 phone ──HTTPS (paired token)──► mdm-remote ──ipc::Sink──► app (answer, remote_add)
 ```
 
+`--headless` (`headless.rs`, #157) runs the same `App` without eframe: a loop calls its
+`tick` (what `logic` runs at every frame) on a bare `egui::Context`, woken by the command
+channel, and never its `ui`; commands are added as the remote control adds them (no window).
+
 The server runs on the app's Tokio runtime, one listener per local network address. Each request
 is checked (`Host`, `Origin`, token), turned into an `mdm_ipc::Command` marked `remote` (a field
 no request line can set) and handed to the app through the same channel as the command line's;

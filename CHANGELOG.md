@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Run MDM on a server** ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157)):
+  `misterdownloadmanager --headless` runs MDM without a window (a home server, a NAS, Docker,
+  Unraid), its folders and port set by flags or the environment; a `Dockerfile`, a Compose file
+  and an Unraid template come with it. Phones pair with the code it prints (or
+  `misterdownloadmanager-cli pair`), and the browser extension can **send downloads to another
+  MDM**. [Guide](docs/server.md).
 - **Control MDM from your phone** ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141)):
   **Options → Remote**, off by default. A phone or another computer on the local network, paired
   with a code (or a QR code) MDM shows, opens a page MDM serves over HTTPS: it adds links, magnet
@@ -137,6 +143,24 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and,
   on Windows, a title bar MDM draws in KDE's style: the title centred, round buttons that fill
   under the pointer (Close in red).
+- **Themes: Luna, Aero and Aqua** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)),
+  after Windows XP, Windows 7 and Mac OS X (Leopard), the layout kept, each with a light and a
+  dark side and icons drawn for MDM in its era's manner. **Luna**: buttons shaded from white with
+  a dark blue edge and an orange glow under the pointer, green ticks, square text boxes,
+  progress in green blocks and, on Windows, a deep blue title bar with the title in bold and
+  square buttons (Close red). **Aero**: glossy buttons in two halves that turn light blue under
+  the pointer, quiet check boxes, a glossy green progress bar and a glassy title bar, the title
+  on a soft glow, its buttons hung from the top (Close wider and red). **Aqua**: gel buttons round
+  at the ends (the default one blue), glossy check boxes, a blue focus ring, a blue gel progress
+  bar and a grey title bar with the title centred and small round graphite buttons whose glyphs
+  show under the pointer. Every glyph and shade is MDM's own drawing; none of Microsoft's or
+  Apple's pictures or fonts are used.
+- **Metro, Adwaita and Breeze: MDM's own icons where theirs had none**: Metro's Hide to the
+  notification area, Adwaita's PDF, torrent file and Hide to the notification area, and Breeze's
+  PDF and Hide to the notification area, drawn for MDM in each one's style (the one-colour ones
+  in the theme's text colour). An icon set can now hold one-colour pictures (`-symbolic.png`),
+  drawn in the theme's text colour as its one-colour drawings are, and pictures at 32 and 48
+  pixels, used on a screen scaled to 150 % and more: the style themes' pictures stay sharp there.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
@@ -400,6 +424,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Better translations in every language.** Every machine-translated text of the program and
+  of the website was read again against the English, with a style guide for each language (how
+  it writes commands, questions and labels) and the terms native reviewers settled, and fixed
+  where it was wrong or unnatural. Texts a person reviewed (all of Italian and Arabic) were left
+  as they are. New texts are translated the same way from now on.
 - **Developers: the host connection limit test tells a reconnect from a connection too many**
   ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)). A server sees that a
   client dropped an answer only when it next writes to it, so on a busy computer a connection
@@ -542,10 +571,38 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
   libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start
   under X11 and XWayland, and without the CA certificates (Debian's minimal install) no download
-  started. They now require both, and EGL for Wayland windows. They also require the
-  glibc the programs were built against, read from the programs themselves, instead of a fixed
-  version: a package built on a newer system no longer installs on an older one where it can't
-  start.
+  started. They now require both, and EGL for Wayland windows. They also require the glibc the
+  programs were built against, read from the programs themselves, instead of a fixed version: a
+  package built on a newer system no longer installs on an older one where it can't start.
+- **Get System and the Scheduler's "when done" drop-down fit in every language**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #247): Options →
+  Proxy's title takes two lines where one leaves Get System too little room (Bulgarian,
+  Armenian, Tamil), and where it ran over the page's icon or past the window's left edge
+  (Greek, Finnish, Catalan, Estonian, Latvian, Lithuanian, Malayalam, Serbian, Afrikaans). In
+  Greek and Malayalam, the Scheduler's "Turn off computer when done" and its choices have
+  shorter machine translations, so the drop-down fits beside the caption; in Belarusian, Welsh,
+  French, Russian, Tamil and Ukrainian, the longer ones the translation review brought (such as
+  Russian's Hibernate) are back to their earlier, shorter wording. English is unchanged.
+- **Galleries work with the gallery-dl a Linux distribution ships**
+  ([#236](https://github.com/anefzaoui/misterdownloadmanager/issues/236)): with Ubuntu 24.04's
+  gallery-dl 1.26.9 chosen in Helpers, every gallery failed at once ("unrecognized arguments:
+  --no-input"): MDM passed options that only newer releases know. MDM now reads the chosen
+  gallery-dl's version and passes only what that release accepts, from 1.20 (Ubuntu 22.04) to
+  today's; checked against every release from 1.17 to 1.32. An older one (Debian 11's 1.17) is
+  refused when chosen, saying it is too old and which version MDM needs, and one chosen before is
+  passed over for MDM's own copy, which Helpers says. gallery-dl 1.30.0, whose version starts
+  with an empty line, is no longer taken for another program.
+- **Brave Origin connects on Linux, and the AppImage's helper is always there**
+  ([#253](https://github.com/anefzaoui/misterdownloadmanager/issues/253)): Brave Origin keeps
+  its settings in a folder of its own (`~/.config/BraveSoftware/Brave-Origin`), which MDM didn't
+  know, so its extension said MDM wasn't installed. MDM now sets up Brave Origin, the Beta, Dev
+  and Nightly versions of Brave, Chrome and Edge, and Vivaldi's snapshot; on macOS, Brave reads
+  Chrome's folder, which MDM now writes for it. From the AppImage, MDM copies the helper program
+  the browsers start out of the AppImage under a new name and swaps it in, so a browser still
+  running the old copy no longer keeps the new one out, and puts it back at each start if it went
+  missing. A copy or setup that fails is written to MDM's log, and **Test browser integration**
+  says when the helper program is missing, when no browser was found, or why setting it up
+  failed.
 - **The extension's popup: Open Mister Download Manager shows whole**
   ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on Linux, whose fonts
   are wider, and in longer languages, the button was cut to "Open Mister Do…". Each button is now
@@ -557,6 +614,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   whole under the pointer. Its title ("Mister Download Manager crash report") is now in MDM's
   language too; it was always in the system's. On Windows that also gives its title bar MDM's
   light or dark again in every language: outside English it kept Windows' own mode.
+- **Leaving a submenu no longer closes the whole menu**
+  ([#250](https://github.com/anefzaoui/misterdownloadmanager/issues/250)): on Linux, with a
+  submenu open (Tasks → Import, Downloads → Speed Limiter), moving the pointer back onto its menu,
+  to another item, closed the menu itself as well. Some window managers (KWin, sway) give a
+  submenu's window the focus; when the submenu closed, its window handed the focus on, and for a
+  moment no window of MDM had it, which counted as MDM losing the focus. A menu now closes for
+  that only when the focus stays away (a click in another program). A submenu also closes when
+  the pointer rests on another item without moving, instead of waiting for the next move.
 - **Three more controls fit their translated text**
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
   and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**

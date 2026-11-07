@@ -353,6 +353,10 @@ fn real_helpers_go_through_the_relay() {
         log.iter().any(|e| e.path.starts_with("/hls/360p/")),
         "ffmpeg fetched segments"
     );
+    // The lab's HLS segments are real MPEG-TS (#236): ffmpeg remuxes them to the end, any
+    // version (6.1, Ubuntu 24.04's, as 8.0).
+    assert!(ok2, "{why2}");
+    assert!(dir.path().join("hls.mp4").is_file(), "the stream saved");
     if cfg!(windows) {
         assert!(
             log.iter().all(|e| e.peer.ip() == TWO),
@@ -377,11 +381,12 @@ fn real_helpers_go_through_the_relay() {
     if let Ok(gdl) = std::env::var("MDM_TEST_GALLERYDL") {
         lab.clear_log();
         let ours = vec!["-D".into(), dir.path().to_string_lossy().into_owned()];
-        let cmd = mdm_tools::proc::gallery_dl(
+        let tool = mdm_tools::chosen::ask(
+            mdm_tools::chosen::Helper::GalleryDl,
             std::path::Path::new(&gdl),
-            &ours,
-            &lab.url("/gen/64K/picture.jpg"),
-        );
+        )
+        .expect("gallery-dl answers its version");
+        let cmd = mdm_tools::proc::gallery_dl(&tool, &ours, &lab.url("/gen/64K/picture.jpg"));
         let (ok, why) = finish("gallery-dl", cmd);
         println!("gallery-dl: ok={ok} {why}");
         let log = print_log("gallery-dl bound to 127.0.0.2");

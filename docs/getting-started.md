@@ -125,6 +125,15 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
 - **Breeze**: KDE Plasma's look: rounded corners, buttons and boxes that take the accent's edge
   under the pointer or when focused, KDE's check boxes and focus frame, KDE's title bar with the
   title centred and round buttons (on Windows, where MDM draws it), and KDE's Breeze icons.
+- **Luna**: Windows XP's look: buttons shaded from white with an orange glow under the pointer,
+  green ticks, square text boxes, progress in green blocks, a deep blue title bar with the title
+  in bold (on Windows, where MDM draws it), and colourful icons drawn for MDM in that manner.
+- **Aero**: Windows 7's look: glossy buttons that turn light blue under the pointer, quiet check
+  boxes, a glossy green progress bar, a glassy title bar with the title on a soft glow (on
+  Windows), and glossy icons drawn for MDM in that manner.
+- **Aqua**: Mac OS X's look: gel buttons round at the ends (the default one blue), glossy check
+  boxes, a blue focus ring, a blue gel progress bar, a grey title bar with small round buttons
+  (on Windows), and icons drawn for MDM in that manner.
 
 ![View → Theme open: Classic, Native, High contrast, Metro, Adwaita and Breeze](images/help/view-theme.webp)
 *View → Theme switches at once, keeping the layout.*
@@ -143,9 +152,10 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
 Each has a light and a dark side: **Dark Mode support** and **Always dark** choose between
 them as before. Theme files you put in the themes folder (**View → Theme → Open themes folder**)
 are listed there too. A theme in a folder of its own (`<name>/theme.toml`) can bring its icons in
-`icons/16` and `icons/24`, each named for what it shows (`tb-add-url.svg`, `cat-music.png`…):
-SVG or PNG files keep their colours, and `-symbolic.svg` ones, as GNOME and KDE name them, take
-the theme's text colour.
+`icons/16` and `icons/24` (and, for PNG pictures, `icons/32` and `icons/48`, used on a screen
+scaled to 150 % and more), each named for what it shows (`tb-add-url.svg`, `cat-music.png`…):
+SVG or PNG files keep their colours, and `-symbolic.svg` or `-symbolic.png` ones, as GNOME and
+KDE name them, take the theme's text colour.
 
 ## The tray icon
 

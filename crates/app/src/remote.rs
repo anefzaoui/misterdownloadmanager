@@ -21,10 +21,31 @@ pub fn start(
     Some(remote)
 }
 
+/// The page's address as people open it (`MDM_REMOTE_URL`, #157): a container's own address
+/// isn't the server's.
+pub fn public_url() -> Option<String> {
+    let url = std::env::var("MDM_REMOTE_URL").ok()?;
+    let url = url.trim();
+    url.starts_with("https://").then(|| url.to_owned())
+}
+
+/// The names `--hosts` gave a headless run (#157), over `MDM_REMOTE_HOSTS`.
+static HOSTS: std::sync::OnceLock<String> = std::sync::OnceLock::new();
+
+/// Use `hosts` (names separated by commas) as [`config`]'s extra names.
+pub fn set_hosts(hosts: Option<&str>) {
+    if let Some(h) = hosts {
+        let _ = HOSTS.set(h.to_owned());
+    }
+}
+
 /// Where and whether to listen, from `settings`; `MDM_REMOTE_HOSTS` (names separated by commas)
 /// adds the names a request may use besides the addresses (a server's, a reverse proxy's).
 pub fn config(settings: &Settings) -> mdm_remote::Config {
-    let hosts = std::env::var("MDM_REMOTE_HOSTS")
+    let hosts = HOSTS
+        .get()
+        .cloned()
+        .or_else(|| std::env::var("MDM_REMOTE_HOSTS").ok())
         .unwrap_or_default()
         .split(',')
         .map(|h| h.trim().to_ascii_lowercase())
@@ -205,6 +226,32 @@ pub fn paint_qr(p: &egui::Painter, rect: egui::Rect, text: &str) {
             }
         }
     }
+}
+
+/// A QR code of `text` for a terminal: two rows of modules per line, with half blocks. Light
+/// modules are drawn (full blocks) and dark ones left as the terminal's background, so it reads
+/// on a dark terminal, the usual one; its quiet zone is light.
+pub fn qr_text(text: &str) -> String {
+    let Ok(qr) = qrcodegen::QrCode::encode_text(text, qrcodegen::QrCodeEcc::Low) else {
+        return String::new();
+    };
+    let (n, quiet) = (qr.size(), 2);
+    let dark = |x: i32, y: i32| x >= 0 && y >= 0 && x < n && y < n && qr.get_module(x, y);
+    let mut out = String::new();
+    let mut y = -quiet;
+    while y < n + quiet {
+        for x in -quiet..n + quiet {
+            out.push(match (dark(x, y), dark(x, y + 1)) {
+                (false, false) => '\u{2588}',
+                (false, true) => '\u{2580}',
+                (true, false) => '\u{2584}',
+                (true, true) => ' ',
+            });
+        }
+        out.push('\n');
+        y += 2;
+    }
+    out
 }
 
 /// A torrent's files being looked up: filled in on the runtime when they are known.

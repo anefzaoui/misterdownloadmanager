@@ -1111,6 +1111,20 @@ const MPD = (protect) => `<?xml version="1.0"?>
   assert.ok(/permissions\.request\(PROXY\)/.test(popup) && /permissions\.remove\(PROXY\)/.test(popup), "asked for and taken back on the switch");
   ok("manifests: proxy optional in Firefox, absent in Chrome; the popup's switch");
 }
+// Another MDM (#157): the file types caught for it are the app's defaults, and every message
+// the pairing can end with is there.
+{
+  const capture = readFileSync(new URL("../../crates/ipc/src/capture.rs", import.meta.url), "utf8");
+  const app = /pub const DEFAULT_AUTO_TYPES: &str = "([^"]+)"/.exec(capture)[1];
+  const ours = /const DEFAULT_TYPES =\s*"([^"]+)"/.exec(code)[1];
+  assert.equal(ours, app, "DEFAULT_TYPES is the app's DEFAULT_AUTO_TYPES");
+  const english = JSON.parse(readFileSync(new URL("../../extension/_locales/en/messages.json", import.meta.url), "utf8"));
+  for (const why of ["address", "unreachable", "wrong_code", "no_code", "too_soon", "failed", "device_name"]) {
+    assert.ok(english[`remote_${why}`], `remote_${why}`);
+  }
+  assert.ok(english.status_remote, "status_remote");
+  ok("another MDM: the app's file types, every pairing message");
+}
 assert.deepEqual(complaints, [], "nothing written to the console as an error or warning");
 
 console.log(`extension: ${passed} checks passed`);
