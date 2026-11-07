@@ -1381,6 +1381,34 @@ const ask = (listeners) => (m, sender) => new Promise((r) => listeners.message(m
   assert.deepEqual(steps(calls), []);
   ok("#208 Firefox: a download caught from its answer, before the browser's dialog");
 }
+// A download taken from its answer (#208) is cancelled, so its response never starts: the proxy a
+// VPN add-on chose for it (proxy.onRequest, in the answer's proxyInfo) still goes with it.
+{
+  const { api, calls, listeners } = fakeApi({ firefox: true, proxyGranted: true });
+  load(api, true);
+  await settle();
+  const res = await held(
+    listeners,
+    answer("https://dl.test/vpn.zip", { "Content-Type": "application/zip", "Content-Disposition": "attachment" }, { proxyInfo: { type: "socks", host: "10.8.0.1", port: 1080, proxyDNS: true } }),
+  );
+  assert.deepEqual(res, { cancel: true });
+  assert.deepEqual([natives(calls)[0].proxy, natives(calls)[0].proxyLogin], ["socks5h://10.8.0.1:1080", undefined]);
+  ok("#208 Firefox: a download taken from its answer keeps its request's proxy (a VPN add-on's)");
+}
+// Firefox's own proxy settings never cover loopback addresses (allow_hijacking_localhost is off):
+// nothing is sent for them, the proxy for anything else.
+{
+  const settings = { proxyType: "manual", http: "10.0.0.9:3128", httpProxyAll: true, passthrough: "" };
+  const { api, calls, listeners } = fakeApi({ firefox: true, proxyGranted: true, proxy: settings });
+  api.proxy.settings.get = async () => ({ value: settings });
+  load(api, true);
+  await settle();
+  const urls = ["http://127.0.0.1:8231/a.zip", "http://localhost/b.zip", "http://[::1]/c.zip", "http://127.9.9.9/d.zip", "https://x.test/e.zip"];
+  urls.forEach((url, i) => listeners.created({ id: 60 + i, url, filename: `C:\dl\f${i}.zip` }));
+  await settle();
+  assert.deepEqual(natives(calls).map((m) => m.proxy), [undefined, undefined, undefined, undefined, "http://10.0.0.9:3128"]);
+  ok("Firefox: loopback addresses skip its proxy settings' proxy, as Firefox itself does");
+}
 // A type the app doesn't take: the browser goes on (its dialog shows), MDM's log hears why once,
 // and the download after the dialog isn't paused or asked again.
 {

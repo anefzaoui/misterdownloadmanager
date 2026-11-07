@@ -1025,15 +1025,16 @@ if (PROXY_DECLARED && ext.webRequest && ext.webRequest.onAuthRequired) {
     // Not offered here: no login is noticed.
   }
 }
+// Firefox: the proxy a request went through, kept for its hand-over. Noted as its response
+// starts, and from its answer's headers when the extension takes the download there (#208): that
+// request is cancelled, so it never starts.
+function noteProxy(d) {
+  if (!proxyAllowed || !d.proxyInfo || d.proxyInfo.type === "direct") return;
+  forget(proxyUsed, 120000);
+  proxyUsed.set(d.url, { info: d.proxyInfo, at: Date.now() });
+}
 if (PROXY_DECLARED && FIREFOX && ext.webRequest && ext.webRequest.onResponseStarted) {
-  ext.webRequest.onResponseStarted.addListener(
-    (d) => {
-      if (!proxyAllowed || !d.proxyInfo || d.proxyInfo.type === "direct") return;
-      forget(proxyUsed, 120000);
-      proxyUsed.set(d.url, { info: d.proxyInfo, at: Date.now() });
-    },
-    { urls: ["<all_urls>"] },
-  );
+  ext.webRequest.onResponseStarted.addListener(noteProxy, { urls: ["<all_urls>"] });
 }
 
 const hostPort = (host, port) => `${String(host).includes(":") ? `[${host}]` : host}:${port}`;
@@ -1109,6 +1110,13 @@ async function pacText(url) {
   }
 }
 
+// Firefox never sends loopback addresses through its proxy settings' proxy
+// (network.proxy.allow_hijacking_localhost, off by default): localhost and its names, 127.0.0.0/8, ::1.
+function firefoxLoopback(u) {
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  return host === "localhost" || host.endsWith(".localhost") || host === "::1" || /^127(\.\d{1,3}){3}$/.test(host);
+}
+
 // What the app needs to download `url` through the browser's proxy: {} when it uses none (or
 // the system's, which the app reads itself), and {} unless the user switched it on (above).
 async function browserProxy(url, incognito) {
@@ -1158,6 +1166,7 @@ async function browserProxy(url, incognito) {
   }
   // Firefox: {proxyType, http, ssl, socks, socksVersion, proxyDNS, autoConfigUrl, passthrough}.
   if (v.proxyType === "manual") {
+    if (firefoxLoopback(u)) return {};
     if (String(v.passthrough || "").split(/[,\s]+/).some((b) => bypassed(b, u))) return {};
     const pick = (hp) => {
       const m = /^\[?([^\]]+?)\]?:(\d+)$/.exec(String(hp || "").trim());
@@ -1534,6 +1543,10 @@ async function headersReceived(d) {
     incognito: Boolean(d.incognito),
     cookieStoreId: d.cookieStoreId,
   };
+  if (PROXY_DECLARED) {
+    await proxyChecked;
+    noteProxy(d);
+  }
   const first = firstUrl(item);
   forget(decided, 120000);
   decided.set(d.url, { at: Date.now() });

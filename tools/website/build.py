@@ -1454,6 +1454,9 @@ def build_themes() -> None:
             <div><dt>Portable copy</dt><dd><code translate="no">data\\themes</code> beside the program</dd></div>
           </dl>
           <p>Within two seconds it shows in <b>View → Theme</b>, under the built-in themes, by the <code>name</code> it gives itself. Pick it and the whole window changes at once. After you edit the file, pick it again in <b>View → Theme</b> to see the change. <b>View → Dark Mode support</b> and <b>Always dark</b> switch between its light and dark side.</p>
+          <p><b>View → Theme → Add a theme file…</b> does it for you: pick the file anywhere, and MDM copies it into the themes folder and uses it at once.</p>
+          <h4 id="schemes">Already have a Base16 or pywal scheme?</h4>
+          <p>It's a theme already. A <a href="https://github.com/tinted-theming/schemes">Base16 or Base24 scheme</a> (<code>.yaml</code>) or pywal's <code>colors.json</code>, added the same way, changes MDM's colours and nothing else: the scheme's backgrounds behind the list and the windows, its text kept readable (4.5:1 or more), its blue on the focus, the selection and the progress bar. Once <code>wal</code> has run, <b>View → Theme</b> lists <b>pywal</b>, read from <code>~/.cache/wal/colors.json</code> (<code translate="no">%USERPROFILE%\\.cache\\wal\\colors.json</code> on Windows), and MDM follows each new wallpaper's colours within two seconds. <a href="{REPO}/blob/main/docs/themes.md#base16-and-pywal-colour-schemes">The guide</a> shows which colour goes where.</p>
         </li>
         <li id="share-it"><h3>Share it</h3>
           <p>Made something others would like? Open a <a href="{REPO}/pulls">pull request on GitHub</a> that adds it to <a href="{themes_dir}"><code>crates/app/assets/themes</code></a>, with:</p>
