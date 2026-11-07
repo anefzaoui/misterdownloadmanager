@@ -2848,6 +2848,22 @@ pub fn cli_console(launcher: Option<u32>) {
     }
 }
 
+/// The OpenGL driver in its own words, for the log and the crash reports (#280): its renderer
+/// (the graphics card) and version, which on Windows carries the driver's build (Intel's
+/// "4.6.0 - Build 31.0.101.…", NVIDIA's "4.6.0 NVIDIA 5xx.xx"). Linux and macOS: unix.rs.
+pub fn gl_driver(gl: &eframe::glow::Context) -> String {
+    use eframe::glow::{self, HasContext as _};
+    // SAFETY: called while eframe makes the app, with its context current on this thread;
+    // glGetString only reads the driver's strings.
+    let (renderer, version) = unsafe {
+        (
+            gl.get_parameter_string(glow::RENDERER),
+            gl.get_parameter_string(glow::VERSION),
+        )
+    };
+    format!("{renderer} ({version})")
+}
+
 /// End process `pid` (a frozen MDM the user chose to close from the crash report).
 pub fn end_process(pid: u32) -> bool {
     use windows_sys::Win32::Foundation::CloseHandle;

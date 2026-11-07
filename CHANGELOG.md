@@ -610,6 +610,14 @@ choose. And Linux, checked on a real desktop with every change.
 
 ### Fixed
 
+- **Windows: a slow start no longer turns Direct3D off** (part of
+  [#280](https://github.com/anefzaoui/misterdownloadmanager/issues/280)): MDM gives Direct3D 10
+  seconds to show its first frame, and goes back to OpenGL when it doesn't. Those 10 seconds
+  counted MDM's own loading too (the list, the fonts, the icons), which can take that long by
+  itself on a busy computer just after it starts, so Direct3D was taken for failing and OpenGL drew
+  from then on. Only Direct3D's own time counts now. Crash and freeze reports say what drew, on
+  which graphics card and driver (OpenGL's too), and why, near their top, where a report cut to fit
+  still has it.
 - **Linux: torrents work on a system without CA certificates too** (part of
   [#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264)): the torrent engine built
   its own connection for the trackers, which can't be made without them, so no torrent or magnet
