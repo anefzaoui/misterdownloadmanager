@@ -521,6 +521,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Open folder no longer freezes the window on Linux**
+  ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
+  **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited
+  for its answer on the window's own thread. A file manager slow to start, or one that never
+  answered (seen on Pop!_OS), froze the window until the freeze report caught it. MDM now asks in
+  the background and, when the file manager hasn't answered within 5 seconds, opens the folder
+  instead. Every other program MDM starts from a window goes the same way: Test browser
+  integration's **Set it up**, moving an extracted archive to the Trash (on a Mac the Finder may
+  ask first), putting an update in place (**Installing the update...**, with Cancel greyed while
+  it runs), opening pages and folders, reading the icon theme on Linux and, on a Mac, the accent
+  colour (every 2 seconds with the Native theme) and the system's version for a bug report.
 - **A download too big for the drive is refused on a busy computer too**
   ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)): before a download
   starts, MDM checks the drive has room for it. It gave up checking after 5 seconds (a network

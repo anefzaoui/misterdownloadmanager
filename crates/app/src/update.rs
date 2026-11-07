@@ -1,10 +1,12 @@
 //! Updating in place (Help → Check for updates → Update now): this copy's release file, fetched
 //! and checked in the background (`mdm_tools::update`: the release's signed checksum list), then
-//! put where this copy is. MDM closes for it; the new copy starts with `/updated`, waits for the
-//! old one to be gone, and removes what the update set aside.
+//! put where this copy is, on a thread of its own too (unpacking, `tar`, `hdiutil`, `ditto`: the
+//! window's thread waits for none of them, #222). MDM closes for it; the new copy starts with
+//! `/updated`, waits for the old one to be gone, and removes what the update set aside.
 
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 
@@ -14,10 +16,12 @@ use mdm_tools::update::{Install, Progress};
 pub const UPDATED: &str = "/updated";
 
 /// What follows once the file is in place.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Debug)]
 pub enum Next {
-    /// MDM closes; the new copy is starting (or the installer is running and starts it).
-    Restart,
+    /// MDM closes once this has started: the new copy (or the installer, which starts it).
+    /// Started by the window when it takes the result, so an update cancelled meanwhile starts
+    /// nothing.
+    Restart(Command),
     /// Handed to the system's package installer (a .deb or .rpm): MDM stays open.
     Opened,
 }
@@ -35,11 +39,13 @@ fn folder() -> Option<PathBuf> {
     mdm_ipc::data_dir().map(|d| d.join("updates"))
 }
 
-/// A release file on its way: its progress, then the checked file or why not. Dropped
-/// (Cancel, the window closed), it stops.
+/// A release file on its way: its progress, then the checked file put in place ([`apply`]), or
+/// why not. Dropped (Cancel, the window closed), it stops.
 pub struct Job {
     pub progress: Arc<Progress>,
-    slot: Arc<Mutex<Option<Result<PathBuf, String>>>>,
+    slot: Arc<Mutex<Option<Result<Next, String>>>>,
+    /// The file is downloaded and being put in place (Cancel can't stop that).
+    installing: Arc<AtomicBool>,
     task: tokio::task::JoinHandle<()>,
 }
 
@@ -53,21 +59,39 @@ impl Job {
     pub fn start(
         rt: &tokio::runtime::Handle,
         ctx: &egui::Context,
+        install: Install,
         assets: Vec<(String, String)>,
         name: String,
     ) -> Job {
         let progress = Arc::new(Progress::default());
         let slot = Arc::new(Mutex::new(None));
-        let (p, out, ctx) = (progress.clone(), slot.clone(), ctx.clone());
+        let installing = Arc::new(AtomicBool::new(false));
+        let (p, out, busy, ctx) = (
+            progress.clone(),
+            slot.clone(),
+            installing.clone(),
+            ctx.clone(),
+        );
         // Repaint while it runs, for the progress bar.
         let ticker = ctx.clone();
         let net = crate::settings::own_net();
         let task = rt.spawn(async move {
-            let res = match folder() {
+            let fetched = match folder() {
                 Some(dir) => mdm_tools::update::fetch(&assets, &name, &dir, &net, &p)
                     .await
                     .map_err(|e| e.to_string()),
                 None => Err("no data folder".into()),
+            };
+            let res = match fetched {
+                Ok(file) => {
+                    busy.store(true, Ordering::Release);
+                    ctx.request_repaint();
+                    tokio::task::spawn_blocking(move || apply(install, &file))
+                        .await
+                        .map_err(|e| e.to_string())
+                        .and_then(|r| r)
+                }
+                Err(e) => Err(e),
             };
             *out.lock().unwrap() = Some(res);
             ctx.request_repaint();
@@ -76,18 +100,33 @@ impl Job {
         Job {
             progress,
             slot,
+            installing,
             task,
         }
     }
 
-    /// The checked file, or why not, once the download ended.
-    pub fn result(&self) -> Option<Result<PathBuf, String>> {
+    /// The update put in place (what follows), or why not, once it ended.
+    pub fn result(&self) -> Option<Result<Next, String>> {
         self.slot.lock().unwrap().take()
+    }
+
+    /// The file is downloaded and being put in place.
+    pub fn installing(&self) -> bool {
+        self.installing.load(Ordering::Acquire)
     }
 }
 
-/// Put `file` (checked) in place of this `install`.
-pub fn apply(install: Install, file: &Path) -> Result<Next, String> {
+/// Put `file` (checked) in place of this `install`. Long (unpacking, copying, programs waited
+/// for): never on the window's thread ([`Job`] runs it).
+fn apply(install: Install, file: &Path) -> Result<Next, String> {
+    // Tests only (feature `test-update`): "Installing the update..." held this many seconds.
+    #[cfg(feature = "test-update")]
+    if let Some(secs) = std::env::var("MDM_TEST_UPDATE_HOLD")
+        .ok()
+        .and_then(|s| s.parse::<u64>().ok())
+    {
+        std::thread::sleep(Duration::from_secs(secs));
+    }
     let exe = std::env::current_exe().map_err(|e| e.to_string())?;
     let dir = exe.parent().ok_or("no program folder")?.to_owned();
     let unpack_dir = || -> Result<PathBuf, String> {
@@ -97,26 +136,22 @@ pub fn apply(install: Install, file: &Path) -> Result<Next, String> {
         Ok(d)
     };
     let restart = |program: &Path| -> Result<Next, String> {
-        Command::new(program)
-            .arg(UPDATED)
-            .spawn()
-            .map_err(|e| e.to_string())?;
-        Ok(Next::Restart)
+        let mut cmd = Command::new(program);
+        cmd.arg(UPDATED);
+        Ok(Next::Restart(cmd))
     };
     match install {
         // The installer closes MDM itself (/exit), installs where it was (the same install
         // mode), and starts it again (/relaunch, tools/installer/mdm.iss).
         Install::Installer => {
-            Command::new(file)
-                .args([
-                    "/VERYSILENT",
-                    "/SUPPRESSMSGBOXES",
-                    "/NORESTART",
-                    "/relaunch=1",
-                ])
-                .spawn()
-                .map_err(|e| e.to_string())?;
-            Ok(Next::Restart)
+            let mut cmd = Command::new(file);
+            cmd.args([
+                "/VERYSILENT",
+                "/SUPPRESSMSGBOXES",
+                "/NORESTART",
+                "/relaunch=1",
+            ]);
+            Ok(Next::Restart(cmd))
         }
         Install::PortableZip | Install::PlainZip => {
             let out = unpack_dir()?;
@@ -183,13 +218,9 @@ pub fn apply(install: Install, file: &Path) -> Result<Next, String> {
             let _ = std::fs::remove_dir_all(&old);
             std::fs::rename(&bundle, &old).map_err(|e| e.to_string())?;
             std::fs::rename(&staged, &bundle).map_err(|e| e.to_string())?;
-            Command::new("open")
-                .arg("-n")
-                .arg(&bundle)
-                .args(["--args", UPDATED])
-                .spawn()
-                .map_err(|e| e.to_string())?;
-            Ok(Next::Restart)
+            let mut cmd = Command::new("open");
+            cmd.arg("-n").arg(&bundle).args(["--args", UPDATED]);
+            Ok(Next::Restart(cmd))
         }
         // Installing a package needs the administrator: the system's installer asks.
         Install::Deb | Install::Rpm => {

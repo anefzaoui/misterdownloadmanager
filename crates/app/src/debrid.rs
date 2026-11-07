@@ -185,7 +185,7 @@ impl SignIn {
                 // The page opens in the browser, except in off-screen test runs and against the
                 // lab's fake service (whose page is the real one's address).
                 if !crate::offscreen() && std::env::var_os("MDM_DEBRID_LAB").is_none() {
-                    let _ = open::that_detached(&code.page);
+                    crate::launch::open(&code.page);
                 }
                 loop {
                     if me.stop.load(std::sync::atomic::Ordering::Relaxed) {

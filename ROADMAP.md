@@ -17,6 +17,11 @@ Everything below ships together, in one release, as version 0.3.0.
   in front, on Windows, Linux and macOS (minimized where no notification area shows its icon);
   startup entries written before are updated, and the installer writes the new one
   ([#226](https://github.com/anefzaoui/misterdownloadmanager/issues/226))
+- ✅ Open folder in Download complete no longer freezes the window on Linux when the file
+  manager is slow to answer or never does: MDM asks in the background and opens the folder after
+  5 seconds without an answer; every other program a window starts (Set it up, the Trash, an
+  update being put in place, pages and folders) no longer holds the window either
+  ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222))
 - ✅ A download too big for its drive is refused on a very busy computer too: the free-space
   check's 5 seconds count from when it runs, not from when it was asked, and it asks only the
   folder's own drive (shared network folders too) instead of listing every drive; and the host
