@@ -17,7 +17,7 @@
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	ピア {n} 台に接続中、ファイル リストを取得しています...
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	ピア {n} 台に接続しました。ファイル リストを取得しています...
 #. count in the Add torrent window
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -109,7 +109,7 @@
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
 #, machine
-@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} 個の動画
+@plural	{title}: {count} video|{title}: {count} videos	{title}: {count} 本の動画
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" は IP アドレスではありません。
+	"{what}" isn't an IP address.	「{what}」は IP アドレスではありません。
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -191,7 +191,7 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 構成 ID は、6 文字の英数字 (0-9、a-f) です。
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS の構成 ID は、6 文字の英数字 (0-9、a-f) です。
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -211,7 +211,7 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	このコンピューター上のサーバーがダウンロードを別の場所に送信しました。これは {adapter} を通過しません。
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	このコンピューター上のサーバーがダウンロードを別の場所に送信しましたが、{adapter} を経由しない場所です
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -377,12 +377,12 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	アップロード者によるすべての字幕
+	All the uploader's	アップロード者が提供したすべての字幕
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Allow more than {n} connections	{n} を超える接続を許可する
+	Allow more than {n} connections	{n} 件を超える接続を許可する
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	既にダウンロード中です: {path}
@@ -505,7 +505,7 @@
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	トラッカーにピアを再要求しました
+	Asked the trackers for peers again	トラッカーにピアを再通知しました
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -519,15 +519,15 @@
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
-	Audio only {type}	オーディオのみ {type}
+	Audio only {type}	音声のみ {type}
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
-	Audio only, original	音声のみ、オリジナル
+	Audio only, original	音声のみ（オリジナル）
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
-	Audio only, original {type}	音声のみ、オリジナル {type}
+	Audio only, original {type}	音声のみ（オリジナル） {type}
 #. text in the Scheduler window
 #, machine
 	August	8 月
@@ -545,7 +545,7 @@
 	Automatically put in "{category}" category the following file types:	次のファイルの種類を自動的に「{category}」カテゴリに入れる:
 #. text in the Options window
 #, machine
-	Automatically start downloading the following file types:	次のファイルの種類を自動的にダウンロードし始める:
+	Automatically start downloading the following file types:	次のファイルの種類を自動的にダウンロードする:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -671,7 +671,7 @@
 	Busy, try later	ビジー状態です。後で再試行してください
 #. message or event log entry in the main window
 #, machine
-	by batch download	バッチ ダウンロードによる
+	by batch download	一括ダウンロードによる
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	リンク グラバーによる
@@ -704,7 +704,7 @@
 #. message or event log entry in the main window
 #. {text} = text the user searched for (keep the braces as they are)
 #, machine
-	Cannot find "{text}"	"{text}" が見つかりません
+	Cannot find "{text}"	「{text}」が見つかりません
 #. text in the Checksum window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -954,7 +954,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	{name} を抽出できませんでした: {why}
+	Couldn't extract {name}: {why}	{name} を展開できませんでした: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	フォルダーの作成
@@ -1301,7 +1301,7 @@
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
-	Each connection takes the system's route.	各接続はシステムのルートを使用します。
+	Each connection takes the system's route.	各接続でシステムのルートを使用します。
 #. text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
@@ -1431,7 +1431,7 @@
 #. event log entry: the user gave the checksum the file must have
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	Expected checksum set ({algorithm})	予期されるチェックサムが設定されました ({algorithm})
+	Expected checksum set ({algorithm})	期待するチェックサムを設定しました ({algorithm})
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
@@ -1802,7 +1802,7 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	所有
+	Have	取得済み
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	休止状態
+	Hibernate	休止状態にする
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1883,7 +1883,7 @@
 	If a duplicate download link is added:	重複するダウンロードリンクが追加された場合:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	既存のファイルが完全な場合は、ダウンロード完了ダイアログを表示します。それ以外の場合は再開します。
+	If existing file is complete, show download complete dialog; otherwise resume it.	既存のファイルが完了している場合は、ダウンロード完了ダイアログを表示します。それ以外の場合は再開します。
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -2084,7 +2084,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Kiribati	キリバチ
+	Kiribati	キリバス
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
 #, machine
@@ -2143,7 +2143,7 @@
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 #, machine
-	Letters	文字
+	Letters	英字
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2186,22 +2186,22 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	残りをリスト
+	List the rest	残りを一覧表示
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	{n} 個の動画をリストした後に停止しました: {error}
+	Listing stopped after {n} videos: {error}	{n} 本の動画を一覧表示した後に停止しました: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	動画をリスト中: {n}
+	Listing the videos: {n}	動画を一覧表示中: {n} 本
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	動画をリスト中: {total} 個中 {n} 個
+	Listing the videos: {n} of {total}	動画を一覧表示中: 全 {total} 本中 {n} 本
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -2226,7 +2226,7 @@
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
-	Look links up when they arrive (name, size, online)	リンクが到着したら検索する (名前、サイズ、オンライン)
+	Look links up when they arrive (name, size, online)	リンクの到着時に情報を検索する (名前、サイズ、オンライン)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	検索
@@ -2261,14 +2261,14 @@
 	Madagascar	マダガスカル
 #. message or event log entry in the main window
 #, machine
-	Main download queue	メインダウンロードキュー
+	Main download queue	メインのダウンロード キュー
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	選択範囲を長くまたは短くする
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
-	Making the report readable: fetching the symbols ({done} of {total} MB)…	レポートを読みやすくしています: シンボルをフェッチ中 ({total} MB 中 {done} MB)…
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	レポートを読みやすくしています: シンボルを取得中 ({done} / {total} MB)…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2291,7 +2291,7 @@
 	Malta	マルタ
 #. text in the Options window
 #, machine
-	Manual proxy/socks configuration	手動プロキシ/SOCKS 構成
+	Manual proxy/socks configuration	プロキシ/SOCKS の手動設定
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2375,7 +2375,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
-	Missing	不足
+	Missing	未取得
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
@@ -2404,7 +2404,7 @@
 	Mister Download Manager stopped responding	Mister Download Manager が応答を停止しました
 #. text in crashui.rs
 #, machine
-	Mister Download Manager stopped responding for a while	Mister Download Manager がしばらく応答を停止しました
+	Mister Download Manager stopped responding for a while	Mister Download Manager がしばらく応答しなくなりました
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2417,7 +2417,7 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Mister Download Manager's own copy, version {version}	Mister Download Manager のコピー、バージョン {version}
+	Mister Download Manager's own copy, version {version}	Mister Download Manager 自身のコピー、バージョン {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2534,7 +2534,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	ホスト ファイル内の名前とローカル名 (単一の単語、.local、.lan) はシステムの DNS に残ります。ビデオ ページとトレント トラッカーは、現時点ではシステムの DNS を使用します。
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	ホスト ファイル内の名前とローカル名 (単一の単語、.local、.lan) はシステムの DNS を使用します。ビデオ ページとトレント トラッカーも、現時点ではシステムの DNS を使用します。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2546,7 +2546,7 @@
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (under 60 ms)
 #, machine
-	near	近
+	near	近い
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
@@ -2661,7 +2661,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	メール アプリが開かれていません。
+	No mail app opened.	メール アプリが開きませんでした。
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	メール アプリがありません: メッセージがコピーされました。メールに貼り付けてください。
@@ -2696,7 +2696,7 @@
 	No video this can download on that page	このページにはダウンロードできる動画がありません
 #. message or event log entry in the main window
 #, machine
-	No web addresses were found in {file}.	{file} で Web アドレスが見つかりませんでした。
+	No web addresses were found in {file}.	{file} に Web アドレスが見つかりませんでした。
 #. text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -2708,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	何もチェックされていない場合: すべてのフィード。
+	None ticked: every feed.	何も選択されていません: すべてのフィードが対象です。
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	なし: ピアは DHT および他のピアから取得されます
@@ -2773,7 +2773,7 @@
 	not supported by this service	このサービスではサポートされていません
 #. text in the Options window
 #, machine
-	Not used: file parts are written next to the file	未使用: ファイルのパーツはファイルの隣に書き込まれます
+	Not used: file parts are written next to the file	未使用: ファイルのパーツはファイルと同じフォルダーに書き込まれます
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2997,7 +2997,7 @@
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
-	Paused	一時停止
+	Paused	一時停止中
 #. text in a download's progress window
 #. tab title: the other computers sharing the torrent
 #, machine
@@ -3116,7 +3116,7 @@
 #. what a screen reader calls the list of a video's formats (1080p, 720p, audio only…)
 #. label before the quality chosen for all of a playlist's videos
 #, machine
-	Quality	品質
+	Quality	画質
 #. text in the Scheduler window
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
@@ -3198,7 +3198,7 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Remember this path for "{category}" category	「{category}」カテゴリのこのパスを記憶する
+	Remember this path for "{category}" category	「{category}」カテゴリにこのパスを記憶する
 #. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
 #. RSS feeds window: unsubscribe from the selected feed
@@ -3214,7 +3214,7 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	アスタリスクを置き換える
+	Replace asterisk to	アスタリスクを置き換える文字
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -3602,10 +3602,10 @@
 	Sites Logins	サイトのログイン
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	サイトは最高の品質を個別の映像と音声として送信し、ffmpeg がそれらを結合します。このシステムでは MDM はあなたのものを使用します: パッケージマネージャーで ffmpeg をインストールしてください。
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	サイトは最高品質の映像と音声を個別に送信し、ffmpeg がそれらを結合します。このシステムでは MDM はお使いの ffmpeg を使用します: パッケージマネージャーで ffmpeg をインストールしてください。
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	サイトは最高の品質を個別の映像と音声として送信します。ffmpeg はそれらを結合して、どこでも再生できる 1 つのファイルにします。
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	サイトは最高品質の映像と音声を個別に送信します。ffmpeg はそれらを結合して、どこでも再生できる 1 つのファイルにします。
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -3730,7 +3730,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	開始済み
+	Started	開始しました
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
@@ -3747,7 +3747,7 @@
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) で開始
+	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) で開始しました
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3917,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	保存されている .torrent ファイルがありません
+	the .torrent file kept for it is gone	.torrent ファイルの保存されたコピーが見つかりません
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	アドレスは http(s) または ftp(s) である必要があります
@@ -3996,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT は誰も検出できませんでした。ファイアウォール、VPN、またはネットワークが、DHT とほとんどのトラッカーが使用する UDP をブロックしている可能性があります。
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT から応答がありませんでした。ファイアウォール、VPN、またはネットワークによって、DHT やほとんどのトラッカーが使用する UDP がブロックされている可能性があります。
 #. text in errors.rs
 #, machine
 	the disk is full	ディスクがいっぱいです
@@ -4055,7 +4055,7 @@
 	The file matches ({algorithm})	ファイルが一致します ({algorithm})
 #. text in a dialog box
 #, machine
-	The file saved as	ファイルは次として保存されました
+	The file saved as	ファイルの保存先
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	他のどのカテゴリにもリストされていないファイルの種類
@@ -4279,11 +4279,11 @@
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	このポータブルコピーは、サインインとパスワードを独自の設定に保存し、Windowsアカウント用に暗号化します。
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	このポータブル版は、サインイン情報とパスワードを独自の設定に保存し、この Windows アカウントだけが読み取れるように暗号化します。
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	このポータブルコピーは、サインインとパスワードを独自の設定に保存します。これはあなただけが読み取ることができます。
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	このポータブル版は、サインイン情報とパスワードを独自の設定に保存します。この設定はこのアカウントだけが読み取れます。
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4576,7 +4576,7 @@
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Use another program...	別のプログラムを使用...
+	Use another program...	別のプログラムを選択...
 #. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 #, machine
 	Use authorization	認証を使用する
@@ -4753,7 +4753,7 @@
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
-	What were you doing when it happened? (optional)	発生時に何をされていましたか? (省略可能)
+	What were you doing when it happened? (optional)	発生時に何をしていましたか? (省略可能)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	新機能:
@@ -4920,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} がこのファイルを配信しています。場所はサーバーのもので、多くの場合ユーザーの近くにあり、サイト所有者のものではありません。
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	このファイルは {cdn} から配信されています。表示される場所はサーバーの所在地で、多くの場合ユーザーの近くにあります。サイト所有者の所在地ではありません。
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	{file} を読み取って確認できませんでした
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} は保存場所になくなっています (移動または削除されました)。右クリック メニューの「再ダウンロード」で再度取得できます。
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} は保存先にありません (移動または削除されています)。右クリック メニューの「再ダウンロード」で再ダウンロードできます。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5065,7 +5065,7 @@
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}: もう一度サインインしてください (オプション → アカウント)
+	{service}: sign in again (Options → Accounts)	{service}: 再度サインインしてください (オプション → アカウント)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
@@ -5125,7 +5125,7 @@
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
-	{what} can't go through a chosen network adapter ({adapter}) yet	{what} は、選択したネットワーク アダプター ({adapter}) をまだ通過できません
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} は、選択したネットワーク アダプター ({adapter}) 経由ではまだ送信できません
 #. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
@@ -5428,7 +5428,7 @@ key	Type a name	名前を入力
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Up / Down	上 / 下
+key	Up / Down	↑ / ↓
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5498,7 +5498,7 @@ menu	&Pause All	すべて一時停止(&P)
 #. verb: removes the selected download from the list
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Remove	削除(&R)
+menu	&Remove	リストから削除(&R)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5507,7 +5507,7 @@ menu	&Report a problem	問題の報告(&R)
 #. header menu: put the columns back as they first were (order, widths, all shown)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Reset columns	列をリセット(&R)
+menu	&Reset columns	列を初期状態に戻す(&R)
 #. menu command in the main window
 #. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5529,7 +5529,7 @@ menu	&Stop Download	ダウンロードを停止(&S)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Tray icon	タスク バー アイコン(&T)
+menu	&Tray icon	通知領域アイコン(&T)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	参照
+menu	Browse	フォルダーを開く
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5747,7 +5747,7 @@ menu	Its first frame didn't show within 10 seconds	最初のフレームが10秒
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	最初のフレームが表示される前に前回の起動が終了しました
+menu	Its last start ended before its first frame	前回の起動は最初のフレームが表示される前に終了しました
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5755,7 +5755,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal はここでは起動しませんでした: OpenGL が描画します
+menu	Metal didn't start here: OpenGL draws	Metal はこの環境で起動できませんでした: OpenGL で描画します
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5774,7 +5774,7 @@ menu	Native	ネイティブ
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	このグラフィック カードには、それ用のドライバーがありません
+menu	No graphics card here has a driver for it	この環境には、それに対応するドライバーを備えたグラフィック カードがありません
 #. menu command in the main window
 #, machine
 menu	On Double click	ダブルクリック時
@@ -5821,7 +5821,7 @@ menu	Reannounce	再アナウンス
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
-menu	Recheck files	ファイルの再チェック
+menu	Recheck files	ファイルを再チェック
 #. menu command in the main window
 #. verb: download the file again from the start
 #, machine
@@ -5844,7 +5844,7 @@ menu	Remove with &files	ファイルと共に削除(&F)
 menu	Remove with files	ファイルと共に削除
 #. menu command in the main window
 #, machine
-menu	Resume Download	ダウンロードの再開
+menu	Resume Download	ダウンロードを再開
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5890,11 +5890,11 @@ menu	Start now	今すぐ開始
 menu	Stop	停止
 #. menu command in the main window
 #, machine
-menu	Stop Download	ダウンロードの停止
+menu	Stop Download	ダウンロードを停止
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Support &MDM	MDM のサポート(&M)
+menu	Support &MDM	MDM をサポート(&M)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	友達に教える(&F)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	グラフィック カードが10分間に2回失われました
+menu	The graphics card was lost twice in 10 minutes	グラフィック カードが10分間に2回応答しなくなりました
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5929,7 +5929,7 @@ menu	Torrent	トレント
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Torrent setti&ngs...	Torrent 設定(&N)...
+menu	Torrent setti&ngs...	トレントの設定(&N)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5941,7 +5941,7 @@ menu	Turn of&f	オフにする(&F)
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Verify checksum...	チェックサムの確認...
+menu	Verify checksum...	チェックサムを確認...
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
 #, machine
@@ -5949,7 +5949,7 @@ menu	Vulkan	Vulkan
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Vulkan didn't start here: OpenGL draws	Vulkan はここでは起動しませんでした: OpenGL が描画します
+menu	Vulkan didn't start here: OpenGL draws	Vulkan はここでは起動しませんでした: OpenGL で描画します
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5997,7 +5997,7 @@ toolbar	Resume	再開
 toolbar	Scheduler	スケジューラ
 #. toolbar button in the main window
 #, machine
-toolbar	Start Queue	キューの開始
+toolbar	Start Queue	キューを開始
 #. toolbar button in the main window
 #. verb: stop the selected downloads
 #, machine
@@ -6007,7 +6007,7 @@ toolbar	Stop	停止
 toolbar	Stop All	すべて停止
 #. toolbar button in the main window
 #, machine
-toolbar	Stop Queue	キューの停止
+toolbar	Stop Queue	キューを停止
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine

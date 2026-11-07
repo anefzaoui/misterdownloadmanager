@@ -187,11 +187,11 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Файл этого торрента не может быть безопасно сохранен: {name}
+	A file of this torrent can't be saved safely: {name}	Не удалось безопасно сохранить файл этого торрента: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Идентификатор конфигурации NextDNS состоит из шести букв и цифр (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Идентификатор конфигурации NextDNS состоит из шести букв и цифр (0–9, a–f).
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -207,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Правило добавляет новые статьи, заголовки которых ему соответствуют, по мере их поступления.
+	A rule adds the new articles whose titles it matches, as they come.	Правило добавляет новые статьи по мере их поступления, если их заголовки ему соответствуют.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -222,7 +222,7 @@
 	a volume of it is missing	отсутствует один из томов
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	About Mister Download Manager	О Mister Download Manager
+	About Mister Download Manager	О программе Mister Download Manager
 #. text in whereis.rs
 #. a download's server's round trip: {ms} a number of milliseconds, {reach} near, medium or far
 #, machine
@@ -315,7 +315,7 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	Добавлено правилом RSS {rule} из {feed}
+	Added by the RSS rule {rule} from {feed}	Добавлен правилом RSS {rule} из ленты {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -373,7 +373,7 @@
 	All files	Все файлы
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	Все готово: на странице с видео используйте Задачи → Загрузить видео со страницы.
+	All set: on a page with a video, use Tasks → Download video from a page.	Всё готово: на странице с видео выберите Задачи → Загрузить видео со страницы.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -418,7 +418,7 @@
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
-	AM	ДП
+	AM	AM
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1435,13 +1435,13 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Экспериментально: создано на основе общедоступной документации API служб, еще не подтверждено реальными учетными записями.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Экспериментальная функция: создана на основе общедоступной документации API служб, еще не проверена на реальных учетных записях.
 #. message or event log entry in the main window
 #, machine
 	Export	Экспорт
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Расширить доступность расширений Chrome Manifest 2
+	Extend the availability of Manifest 2 Chrome extensions	Продлить срок поддержки расширений Chrome Manifest 2
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Расширения, разделенные пробелами, например MP4 MKV R0*
@@ -1798,7 +1798,7 @@
 	Haiti	Гаити
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Отключить модем по завершении
+	Hang up modem when done	Отключать модем по завершении
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -1806,7 +1806,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Heard Island and McDonald Islands	Острова Херд и Макдоналд
+	Heard Island and McDonald Islands	Острова Херд и Макдональд
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Гибернация
+	Hibernate	Перевести компьютер в спящий режим
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -2865,7 +2865,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
-	Only MP4 and MKV videos can hold subtitles	Субтитры могут содержать только видео MP4 и MKV
+	Only MP4 and MKV videos can hold subtitles	Только видео MP4 и MKV могут содержать субтитры
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -3176,7 +3176,7 @@
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
-	Redownload	Перезагрузить
+	Redownload	Скачать заново
 #. text in a download's Properties window
 #, machine
 	Referer:	Реферер:
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Время — это время приема-передачи, измеряемое как собственные открытые соединения этой загрузки.
+	The time is a round trip, measured as this download's own connections opened.	Время — это время кругового прохождения сигнала, измеренное по числу открытых соединений этой загрузки.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4685,7 +4685,7 @@
 	Video	Видео
 #. text in the Download video window
 #, machine
-	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Поиск видео использует yt-dlp (около 23 МБ, проверено по подписи).
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Для поиска видео используется yt-dlp (около 23 МБ, проверено по подписи).
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ и XZ; разделенный архив (.part1.rar, .7z.001) после\nтого, как все тома будут на месте. Уже существующий файл сохраняется: новый нумеруется.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ и XZ; многотомный архив (.part1.rar, .7z.001) после\nзагрузки всех томов. Уже существующий файл сохраняется: новому присваивается номер.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4907,7 +4907,7 @@
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} хранит свои файлы cookie заблокированными для себя в Windows, поэтому yt-dlp не может их прочитать. Выберите Firefox в меню «Параметры» → «Входы на сайты» или используйте кнопку «Загрузить видео» над видео в {browser}.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	В Windows файлы cookie в {browser} доступны только этому браузеру, поэтому yt-dlp не может их прочитать. Выберите Firefox в разделе «Параметры» → «Входы на сайты» или нажмите кнопку «Загрузить видео» над видео в {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4920,11 +4920,11 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} обслуживает этот файл: местоположение его сервера, часто рядом с вами, а не владельца сайта.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	Этот файл обслуживает сеть {cdn}: показано местоположение её сервера, которое часто находится рядом с вами, а не с владельцем сайта.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
-	{column} contains	{column} содержит
+	{column} contains	Содержимое столбца «{column}»
 #. message or event log entry in the main window
 #. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
 #. {count} = a number (keep the braces as they are)
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	Не удалось прочитать файл {file} для проверки
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Файл {file} больше не находится там, где он был сохранен (перемещен или удален). Выберите «Перезагрузить» в контекстном меню, чтобы получить его снова.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Файла {file} больше нет в сохранённом месте (он перемещён или удалён). Выберите «Скачать заново» в контекстном меню, чтобы скачать его снова.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4977,11 +4977,11 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, автоматически
+	{language}, automatic	{language}, автоматически созданные
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} подключено, {known} известно
+	{live} connected, {known} known	Подключено: {live}, известно: {known}
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -5004,12 +5004,12 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — это архив 7z или RAR. MDM извлекает их с помощью 7-Zip, который не установлен.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — это архив 7z или RAR. MDM извлекает такие архивы с помощью 7-Zip, который не установлен.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name} защищен паролем:
+	{name} is protected by a password:	{name} защищён паролем:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -5084,7 +5084,7 @@
 	{service}: this needs a premium account	{service}: для этого требуется премиум-аккаунт
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: слишком много загрузок одновременно через вашу учетную запись; MDM повторит попытку
+	{service}: too many downloads at once through your account; MDM will try again	{service}: слишком много одновременных загрузок через вашу учетную запись; MDM повторит попытку
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
@@ -5466,7 +5466,7 @@ menu	&Exit	&Выход
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Import	&Импорт
+menu	&Import	&Импортировать
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	Обзор
+menu	Browse	Открыть папку
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5731,11 +5731,11 @@ menu	From &text file...	Из &текстового файла...
 menu	H&elp contents	&Содержание справки
 #. menu command in the main window
 #, machine
-menu	Hide drop target	Скрыть цель перетаскивания
+menu	Hide drop target	Скрыть панель перетаскивания
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
-menu	High contrast	Высокий контраст
+menu	High contrast	Высокая контрастность
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
@@ -5747,7 +5747,7 @@ menu	Its first frame didn't show within 10 seconds	Первый кадр не о
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Последний запуск завершился до первого кадра
+menu	Its last start ended before its first frame	Последний запуск завершился до появления первого кадра
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5755,7 +5755,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal здесь не запустился: рисует OpenGL
+menu	Metal didn't start here: OpenGL draws	Не удалось запустить Metal: отрисовка выполняется с помощью OpenGL
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5766,7 +5766,7 @@ menu	Metro	Метро
 menu	Mister Download Manager &Home Page	&Домашняя страница Mister Download Manager
 #. menu command in the main window
 #, machine
-menu	Move/Rename (Ctrl-M)	Переместить/Переименовать (Ctrl+M)
+menu	Move/Rename (Ctrl-M)	Переместить/переименовать (Ctrl+M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
@@ -5774,10 +5774,10 @@ menu	Native	Системная
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Ни одна видеокарта не имеет для него драйвера
+menu	No graphics card here has a driver for it	Для этой графической системы нет драйвера ни у одной видеокарты
 #. menu command in the main window
 #, machine
-menu	On Double click	По двойному щелчку
+menu	On Double click	При двойном щелчке
 #. menu command in the main window
 #. verb: opens the downloaded file
 #. what double-clicking a download does — verb: open the file
@@ -5817,11 +5817,11 @@ menu	R&edownload	П&ерезагрузить
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	Повторный анонс
+menu	Reannounce	Повторно сообщить трекерам
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
-menu	Recheck files	Повторная проверка файлов
+menu	Recheck files	Повторно проверить файлы
 #. menu command in the main window
 #. verb: download the file again from the start
 #, machine
@@ -5869,7 +5869,7 @@ menu	Select &all	Выбрать &все
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Show &drop target	Показать &цель перетаскивания
+menu	Show &drop target	Показать &панель перетаскивания
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Показать Mister Download Manager
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	Рассказать &другу
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Видеокарта была потеряна дважды за 10 минут
+menu	The graphics card was lost twice in 10 minutes	Видеокарта дважды отключалась за 10 минут
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine

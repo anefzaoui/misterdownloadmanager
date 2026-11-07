@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	តើអ្នកពិតជាចង់លុបការទាញយក {n} ទាំងនេះចេញពីបញ្ជីទាញយករបស់ Mister Download Manager មែនទេ?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	តើអ្នកចង់លុបការទាញយកចំនួន {n} នេះចេញពីបញ្ជីទាញយករបស់ Mister Download Manager ឬទេ?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -22,7 +22,7 @@
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} ណូត: {peers}
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, ថ្នាំង {n}: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
@@ -219,7 +219,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	បរិមាណរបស់វាបាត់
+	a volume of it is missing	បាត់ផ្នែកមួយនៃបណ្ណសារ
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	អំពី Mister Download Manager
@@ -292,10 +292,10 @@
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
-	Add to queue	បន្ថែមទៅជួរ
+	Add to queue	បន្ថែមទៅជួរទាញយក
 #. text in a dialog box
 #, machine
-	Add to queue:	បន្ថែមទៅជួរ៖
+	Add to queue:	បន្ថែមទៅជួរទាញយក៖
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	បន្ថែម Torrent
@@ -306,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	បន្ថែមការទាញយក {n} ទៅក្នុងបញ្ជី? វីដេអូនីមួយៗទទួលបានជួរដេកផ្ទាល់ខ្លួន។
+	Add {n} downloads to the list? Each video gets its own row.	តើអ្នកចង់បន្ថែមការទាញយកចំនួន {n} ទៅក្នុងបញ្ជីឬទេ? វីដេអូនីមួយៗនឹងមានជួរដេកផ្ទាល់ខ្លួន។
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -348,7 +348,7 @@
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
-	Advanced browser integration is on	ការរួមបញ្ចូលកម្មវិធីរុករកកម្រិតខ្ពស់ត្រូវបានបើក
+	Advanced browser integration is on	ការរួមបញ្ចូលកម្មវិធីរុករកកម្រិតខ្ពស់បានបើក
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -377,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	ទាំងអស់របស់អ្នកបង្ហោះ
+	All the uploader's	ទាំងអស់ដែលអ្នកបង្ហោះបានផ្ដល់
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -634,7 +634,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	British Indian Ocean Territory	ដែនដីមហាសមុទ្រឥណ្ឌាប៊្រុយណេ
+	British Indian Ocean Territory	ដែនដីអង់គ្លេសនៅមហាសមុទ្រឥណ្ឌា
 #. text in the Link grabber window; button in the Link grabber window; button in the Options window
 #. verb: choose a folder
 #, machine
@@ -671,10 +671,10 @@
 	Busy, try later	រវល់ សូមព្យាយាមនៅពេលក្រោយ
 #. message or event log entry in the main window
 #, machine
-	by batch download	ដោយការទាញយកជាបាច់
+	by batch download	តាមរយៈការទាញយកជាបាច់
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	ដោយ Link grabber
+	by Link grabber	តាមរយៈ Link grabber
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1078,7 +1078,7 @@
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
-	DHT off	DHT បិទ
+	DHT off	DHT ត្រូវបានបិទ
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1107,10 +1107,10 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	កុំចាប់ផ្តើមទាញយក គ្រាន់តែបន្ថែមឯកសារទៅក្នុងជួរ
+	Do not start downloading, only add files to the queue	បន្ថែមឯកសារទៅក្នុងជួរប៉ុណ្ណោះ
 #. text in a dialog box
 #, machine
-	Do you want to create it?	តើអ្នកចង់បង្កើតវាទេ?
+	Do you want to create it?	តើអ្នកចង់បង្កើតវាឬទេ?
 #. text in the download list (sizes, speeds, status)
 #. category name: documents (pdf, doc…)
 #, machine
@@ -1138,7 +1138,7 @@
 	Don't start downloading automatically from the following sites:	កុំចាប់ផ្ដើមទាញយកដោយស្វ័យប្រវត្តិពីគេហទំព័រខាងក្រោម៖
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	កុំយកឯកសារតូចជាង (គីឡូបៃ, 0 = ទំហំណាមួយ)៖
+	Don't take files smaller than (KB, 0 = any size):	កុំទាញយកឯកសារដែលតូចជាង (គីឡូបៃ, 0 = ទំហំណាមួយ)៖
 #. text in a download's progress window
 #, machine
 	Done	រួចរាល់
@@ -1162,7 +1162,7 @@
 	Download complete	ការទាញយករួចរាល់
 #. text in the Options window
 #, machine
-	Download failed	ការទាញយកបរាជ័យ
+	Download failed	ការទាញយកបានបរាជ័យ
 #. window title in a dialog box
 #, machine
 	Download File Info	ព័ត៌មានឯកសារទាញយក
@@ -1203,7 +1203,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	ទាញយក​តំណ​ម៉ាស៊ីន​ឯកសារ​ដែល​បាន​គាំទ្រ​តាមរយៈ​គណនី​ទាំងនេះ
+	Download supported file-host links through these accounts	ទាញយកតំណទៅកាន់សេវាបង្ហោះឯកសារដែលគាំទ្រតាមរយៈគណនីទាំងនេះ
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1435,7 +1435,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	ពិសោធន៍៖ បង្កើតឡើងពីឯកសារ API សាធារណៈរបស់សេវាកម្ម មិនទាន់បានបញ្ជាក់ជាមួយគណនីពិតនៅឡើយទេ។
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	សាកល្បង៖ បង្កើតឡើងតាមឯកសារ API សាធារណៈរបស់សេវាកម្ម ហើយមិនទាន់បានបញ្ជាក់ជាមួយគណនីពិតនៅឡើយទេ។
 #. message or event log entry in the main window
 #, machine
 	Export	នាំចេញ
@@ -1887,7 +1887,7 @@
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	ប្រសិនបើមិនអាចទៅដល់បាន សូមប្រើ DNS របស់ប្រព័ន្ធ
+	If it can't be reached, use the system's DNS	ប្រសិនបើមិនអាចចូលប្រើ DNS នេះបានទេ សូមប្រើ DNS របស់ប្រព័ន្ធ
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	មិនអើពើការផ្លាស់ប្តូរពេលវេលាកែប្រែឯកសារនៅពេលបន្តការទាញយក
@@ -2008,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	វានឹងសរសេរ {size} ច្រើនជាង {limit} ដែលមានកន្លែង ឬហេតុផលសម្រាប់
+	it would write {size}, more than the {limit} there is room or reason for	វានឹងសរសេរទំហំ {size} ដែលលើសពី {limit} ដែលមានកន្លែងទំនេរ ឬចាំបាច់
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2048,7 +2048,7 @@
 	July	កក្កដា
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	លោតទៅការទាញយកដែលឈ្មោះរបស់វាចាប់ផ្តើមដោយវា
+	Jump to the download whose name starts with it	ទៅកាន់ការទាញយកដែលឈ្មោះចាប់ផ្តើមដោយអក្សរនេះ
 #. text in the Scheduler window
 #, machine
 	June	មិថុនា
@@ -2112,7 +2112,7 @@
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
-	larger than a feed can be	ធំជាងមតិព័ត៌មានអាចមាន
+	larger than a feed can be	ធំជាងទំហំអតិបរមារបស់មតិព័ត៌មាន
 #. text in the Batch download window
 #, machine
 	Last file:	ឯកសារចុងក្រោយ:
@@ -2131,7 +2131,7 @@
 	Latvia	ឡាតវីយ៉ា
 #. text in the Options window
 #, machine
-	Launch Mister Download Manager on startup	ចាប់ផ្ដើម Mister Download Manager នៅពេលចាប់ផ្ដើម
+	Launch Mister Download Manager on startup	ចាប់ផ្តើម Mister Download Manager នៅពេលចាប់ផ្តើម Windows
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2161,7 +2161,7 @@
 	Liechtenstein	លីចតេនស្តាញ
 #. checkbox in a dialog box
 #, machine
-	Limit all downloads together to	កំណត់ការទាញយកទាំងអស់រួមគ្នាទៅ
+	Limit all downloads together to	កំណត់ការទាញយកទាំងអស់រួមគ្នាត្រឹម
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
@@ -2169,7 +2169,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	កំណត់ការបង្ហោះសម្រាប់ torrent ទាំងអស់ទៅ
+	Limit uploading for all torrents to	កំណត់ការផ្ទុកឡើងសម្រាប់ torrent ទាំងអស់ត្រឹម
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2628,7 +2628,7 @@
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 #, machine
-	no data folder for torrents	គ្មានថតឯកសារទិន្នន័យសម្រាប់ torrent
+	no data folder for torrents	គ្មានថតទិន្នន័យសម្រាប់ torrent
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	មិនទាន់មានថតឯកសារនៅឡើយទេ
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	ទេ ត្រឡប់ទៅវិញ ដើម្បីជ្រើសរើសថតឯកសារផ្សេងទៀត។
+	No goes back, to choose another folder.	ចុច ទេ ដើម្បីត្រឡប់ទៅវិញ និងជ្រើសរើសថតឯកសារផ្សេងទៀត។
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2664,21 +2664,21 @@
 	No mail app opened.	គ្មានកម្មវិធីអ៊ីមែលបានបើកទេ។
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	No mail app: the message is copied, paste it in your mail.	គ្មានកម្មវិធីអ៊ីមែលទេ៖ សារត្រូវបានចម្លង សូមបិទភ្ជាប់វានៅក្នុងអ៊ីមែលរបស់អ្នក។
+	No mail app: the message is copied, paste it in your mail.	មិនមានកម្មវិធីអ៊ីមែលទេ៖ សារត្រូវបានចម្លង សូមបិទភ្ជាប់វាក្នុងកម្មវិធីអ៊ីមែលរបស់អ្នក។
 #. text in errors.rs
 #, machine
-	no peer sent the torrent's file list in time	គ្មានភៀរណាបានផ្ញើបញ្ជីឯកសាររបស់តូរ៉ិនទាន់ពេលទេ
+	no peer sent the torrent's file list in time	គ្មានភៀរណាមួយបានផ្ញើបញ្ជីឯកសាររបស់ torrent ទាន់ពេលទេ
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	មិនទាន់មានភីអ៊ែរនៅឡើយទេ។ មនុស្សតិចតួចអាចចែករំលែក torrent នេះ ឬជញ្ជាំងភ្លើង VPN ឬបណ្ដាញអាចនឹងរារាំង BitTorrent។
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	មិនទាន់មានភៀរទេ។ ប្រហែលជាមានមនុស្សតិចតួចចែករំលែក torrent នេះ ឬជញ្ជាំងភ្លើង VPN ឬបណ្ដាញកំពុងរារាំង BitTorrent។
 #. text in the Options window
 #, machine
 	No proxy/socks	គ្មានប្រូកស៊ី/SOCKS
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	គ្មានកូនសោប្រព័ន្ធណាមួយឆ្លើយតបទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	គ្មាន keyring ប្រព័ន្ធណាមួយឆ្លើយតបទេ ដូច្នេះព័ត៌មានចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះអាចអានបាន។
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2686,17 +2686,17 @@
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
-	No trackers	គ្មានត្រេគឃ័រ
+	No trackers	គ្មានឧបករណ៍តាមដាន
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
 	No video found on this page. Play the video, then use the Download video button over it.	រកមិនឃើញវីដេអូនៅលើទំព័រនេះទេ។ សូមចាក់វីដេអូ បន្ទាប់មកប្រើប៊ូតុងទាញយកវីដេអូនៅពីលើវា។
 #. text in the Download video window
 #, machine
-	No video this can download on that page	គ្មានវីដេអូដែលនេះអាចទាញយកបាននៅលើទំព័រនោះទេ
+	No video this can download on that page	គ្មានវីដេអូណាដែលអាចទាញយកបាននៅលើទំព័រនោះទេ
 #. message or event log entry in the main window
 #, machine
-	No web addresses were found in {file}.	មិនមានអាសយដ្ឋានគេហទំព័រត្រូវបានរកឃើញនៅក្នុង {file}។
+	No web addresses were found in {file}.	មិនមានអាសយដ្ឋានគេហទំព័រណាមួយត្រូវបានរកឃើញនៅក្នុង {file}។
 #. text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -2708,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	គ្មានការធីក៖ រាល់មតិព័ត៌មានទាំងអស់។
+	None ticked: every feed.	គ្មានព័ត៌មានមតិព័ត៌មានណាមួយត្រូវបានធីកទេ៖ គ្រប់មតិព័ត៌មានទាំងអស់។
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	គ្មាន៖ ភៀរមកពី DHT និងភៀរផ្សេងទៀត
@@ -2734,7 +2734,7 @@
 	Norway	ន័រវែស
 #. text in the Checksum window
 #, machine
-	Not a checksum this can read	មិនមែនជា Checksum ដែលនេះអាចអានបានទេ
+	Not a checksum this can read	មិនអាចអាន checksum នេះបានទេ
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
@@ -2746,24 +2746,24 @@
 	Not a tracker address: {line}	មិនមែន​ជា​អាសយដ្ឋាន​របស់​ឧបករណ៍​តាមដាន​ទេ៖ {line}
 #. text in errors.rs
 #, machine
-	not enough disk space: {needed} needed, {free} free	ទំហំថាសមិនគ្រប់គ្រាន់៖ ត្រូវការ {needed}, នៅសល់ {free}
+	not enough disk space: {needed} needed, {free} free	ទំហំថាសមិនគ្រប់គ្រាន់ទេ៖ ត្រូវការ {needed} នៅសល់ {free}
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
 	Not fetched yet	មិនទាន់បានទាញយកនៅឡើយ
 #. value in a column's filter list in the download list
 #, machine
-	Not in a queue	មិននៅក្នុងជួរ
+	Not in a queue	មិនស្ថិតក្នុងជួរទាញយក
 #. text in helpers.rs
 #. Video helpers: no copy of this helper yet
 #, machine
 	Not installed yet	មិនទាន់បានដំឡើងនៅឡើយ
 #. button in helpers.rs
 #, machine
-	Not now	មិនមែនឥឡូវនេះទេ។
+	Not now	មិនមែនឥឡូវនេះ
 #. text in helpers.rs
 #, machine
-	Not now? Get them later from Tasks → Download video from a page.	មិនមែនឥឡូវនេះទេ? ទទួលបានពួកវាពេលក្រោយពី កិច្ចការ → ទាញយកវីដេអូពីទំព័រ។
+	Not now? Get them later from Tasks → Download video from a page.	មិនមែនឥឡូវនេះទេ? ទាញយកពួកវាពេលក្រោយពី កិច្ចការ → ទាញយកវីដេអូពីទំព័រ។
 #. text in a download's Properties window
 #, machine
 	not one server (peers, or a helper's)	មិនមែនម៉ាស៊ីនមេមួយទេ (មិត្តភក្ដិ ឬជំនួយការ)
@@ -2909,7 +2909,7 @@
 	Open the selected download	បើកការទាញយកដែលបានជ្រើសរើស
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Open the selected download's menu	បើកម៉ឺនុយនៃការទាញយកដែលបានជ្រើសរើស
+	Open the selected download's menu	បើកម៉ឺនុយរបស់ការទាញយកដែលបានជ្រើសរើស
 #. message or event log entry in the main window; text in the Add torrent window
 #, machine
 	Open torrent file	បើកឯកសារ torrent
@@ -3001,11 +3001,11 @@
 #. text in a download's progress window
 #. tab title: the other computers sharing the torrent
 #, machine
-	Peers	មិត្តភក្តិ
+	Peers	អ្នកចែករំលែក
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: peers are known but none answered
 #, machine
-	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	បានរកឃើញភីអ៊ែរ ប៉ុន្តែមិនទាន់មាននរណាម្នាក់ឆ្លើយតបនៅឡើយទេ។ ជញ្ជាំងភ្លើង ឬ VPN អាចនឹងរារាំងការតភ្ជាប់។
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	បានរកឃើញអ្នកចែករំលែក ប៉ុន្តែមិនទាន់មាននរណាម្នាក់ឆ្លើយតបនៅឡើយទេ។ ជញ្ជាំងភ្លើង ឬ VPN អាចនឹងរារាំងការតភ្ជាប់។
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	ការធ្វើសមកាលកម្មតាមកាលកំណត់
@@ -3047,7 +3047,7 @@
 #. text in the Add torrent window
 #. Torrent settings: the port to listen on (empty: any)
 #, machine
-	Port:	ផត:
+	Port:	ច្រក៖
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3107,7 +3107,7 @@
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
-	Put them into the video	ដាក់ពួកវាចូលក្នុងវីដេអូ
+	Put them into the video	ដាក់ចំណងជើងរងចូលក្នុងវីដេអូ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3549,7 +3549,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
-	Shut down	បិទម៉ាស៊ីន
+	Shut down	បិទកុំព្យូទ័រ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3557,7 +3557,7 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
-	Sign in in the browser	ចូល​ក្នុង​កម្មវិធី​រុករក
+	Sign in in the browser	ចូលគណនីក្នុងកម្មវិធីរុករក
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
@@ -3573,11 +3573,11 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	បាន​ចូល​ជា {user} ({state})
+	Signed in as {user} ({state})	បានចូលគណនីជា {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	បាន​ចេញ៖ សូម​ចូល​ម្ដង​ទៀត
+	signed out: sign in again	បានចេញពីគណនី៖ ចូលគណនីម្ដងទៀត
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3588,7 +3588,7 @@
 	Sint Maarten	ស៊ីនម៉ាថេន
 #. checkbox in the Find window
 #, machine
-	Site name/Download link/Parent web page/Referer	ឈ្មោះគេហទំព័រ/តំណទាញយក/ទំព័របណ្ដាញមេ/អ្នកបញ្ជូន
+	Site name/Download link/Parent web page/Referer	ឈ្មោះគេហទំព័រ/តំណទាញយក/ទំព័របណ្ដាញមេ/ទំព័រយោង
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -3620,11 +3620,11 @@
 #. text in a download's progress window
 #. a torrent file the user chose not to download
 #, machine
-	Skipped	រំលង
+	Skipped	បានរំលង
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	គេង
+	Sleep	ចូលស្ថានភាពដំណេក
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3726,7 +3726,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Start {queue}	ចាប់ផ្ដើម {queue}
+	Start {queue}	បានចាប់ផ្ដើម {queue}
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
@@ -3793,7 +3793,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Stop {queue}	បញ្ឈប់ {queue}
+	Stop {queue}	បានបញ្ឈប់ {queue}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
@@ -3974,7 +3974,7 @@
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	The computer will be woken on {date} at {time}	កុំព្យូទ័រនឹងត្រូវបានដាស់នៅថ្ងៃទី {date} វេលាម៉ោង {time}
+	The computer will be woken on {date} at {time}	កុំព្យូទ័រនឹងភ្ញាក់នៅថ្ងៃទី {date} វេលាម៉ោង {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3996,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT មិនបានទៅដល់នរណាម្នាក់ទេ។ ជញ្ជាំងភ្លើង VPN ឬបណ្ដាញអាចនឹងរារាំង UDP ដែល DHT និងត្រេគឃ័រភាគច្រើនប្រើ។
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT មិនអាចភ្ជាប់ទៅកាន់នរណាម្នាក់បានទេ។ ជញ្ជាំងភ្លើង VPN ឬបណ្ដាញអាចរារាំង UDP ដែល DHT និងកម្មវិធីតាមដានភាគច្រើនប្រើ។
 #. text in errors.rs
 #, machine
 	the disk is full	ថាសពេញ
@@ -4007,17 +4007,17 @@
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	The download limit ({mb} MBytes every {hours} hours) has been reached.	ដែនកំណត់ទាញយក ({mb} MBytes រៀងរាល់ {hours} ម៉ោង) ត្រូវបានឈានដល់។
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	បានឈានដល់ដែនកំណត់ការទាញយក ({mb} MBytes រៀងរាល់ {hours} ម៉ោង)។
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	តំណទាញយកបានផុតកំណត់ (ធ្វើឱ្យអាសយដ្ឋានទាញយកស្រស់)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The download list could not be saved: {error}. Changes are kept while MDM runs.	បញ្ជីទាញយកមិនអាចរក្សាទុកបានទេ៖ {error}។ ការផ្លាស់ប្តូរត្រូវបានរក្សាទុកខណៈពេលដែល MDM កំពុងដំណើរការ។
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	មិនអាចរក្សាទុកបញ្ជីទាញយកបានទេ៖ {error}។ ការផ្លាស់ប្តូរនឹងត្រូវបានរក្សាទុកខណៈពេល MDM កំពុងដំណើរការ។
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	កម្មវិធីគ្រប់គ្រងការទាញយកដែលអ្នកស្គាល់រួចហើយ ត្រូវបានបង្កើតឡើងវិញដើម្បីឱ្យលឿនជាងមុន។ ឥតគិតថ្លៃ និងប្រភពបើកចំហក្រោម GNU GPL, កំណែ 3 ឬក្រោយ។ វីដេអូត្រូវបានរកឃើញដោយ yt-dlp; torrents ដំណើរការលើ librqbit។
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	កម្មវិធីគ្រប់គ្រងការទាញយកដែលអ្នកស្គាល់ស្រាប់ ត្រូវបានបង្កើតឡើងវិញឱ្យលឿនជាងមុន។ ឥតគិតថ្លៃ និងប្រភពបើកចំហក្រោមអាជ្ញាបណ្ណ GNU GPL កំណែ 3 ឬខ្ពស់ជាងនេះ។ វីដេអូត្រូវបានស្វែងរកដោយ yt-dlp; torrent ដំណើរការលើ librqbit។
 #. text in a dialog box
 #, machine
 	The download queue is done.	ជួរទាញយកបានបញ្ចប់។
@@ -4033,18 +4033,18 @@
 	the drive or network share is no longer available	ដ្រាយ ឬការចែករំលែកបណ្តាញលែងមានទៀតហើយ
 #. text in errors.rs
 #, machine
-	the file changed on the server	ឯកសារបានផ្លាស់ប្តូរនៅលើម៉ាស៊ីនមេ
+	the file changed on the server	ឯកសារនៅលើម៉ាស៊ីនមេបានផ្លាស់ប្តូរ
 #. message or event log entry in the main window
 #, machine
-	The file could not be moved	ឯកសារមិនអាចផ្លាស់ទីបាន
-#. message or event log entry in the main window
-#. {error} = an error message (keep the braces as they are)
-#, machine
-	The file could not be moved: {error}	ឯកសារមិនអាចផ្លាស់ទីបានទេ៖ {error}
+	The file could not be moved	មិនអាចផ្លាស់ទីឯកសារបានទេ
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The file could not be read: {error}	ឯកសារមិនអាចអានបាន៖ {error}
+	The file could not be moved: {error}	មិនអាចផ្លាស់ទីឯកសារបានទេ៖ {error}
+#. message or event log entry in the main window
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	The file could not be read: {error}	មិនអាចអានឯកសារបានទេ៖ {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4055,10 +4055,10 @@
 	The file matches ({algorithm})	ឯកសារត្រូវគ្នា ({algorithm})
 #. text in a dialog box
 #, machine
-	The file saved as	ឯកសារបានរក្សាទុកជា
+	The file saved as	ឯកសារដែលបានរក្សាទុកជា
 #. text in the download list (sizes, speeds, status)
 #, machine
-	The file types that are not listed in any other category	ប្រភេទឯកសារដែលមិនត្រូវបានរាយក្នុងប្រភេទផ្សេងទៀត
+	The file types that are not listed in any other category	ប្រភេទឯកសារដែលមិនស្ថិតក្នុងប្រភេទផ្សេងទៀត
 #. text in the Checksum window
 #. tooltip of the box showing the checksum the file really has
 #, machine
@@ -4070,18 +4070,18 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The files could not be chosen: {error}	មិន​អាច​ជ្រើសរើស​ឯកសារ​បាន​ទេ៖ {error}
+	The files could not be chosen: {error}	មិនអាចជ្រើសរើសឯកសារបានទេ៖ {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The folder could not be created: {error}	ថតឯកសារមិនអាចបង្កើតបានទេ៖ {error}
+	The folder could not be created: {error}	មិនអាចបង្កើតថតបានទេ៖ {error}
 #. text in errors.rs
 #, machine
-	the folder {path} is not available (drive removed or network share offline?)	ថត {path} មិនមានទេ (ដ្រាយត្រូវបានដកចេញ ឬការចែករំលែកបណ្តាញក្រៅបណ្តាញ?)
+	the folder {path} is not available (drive removed or network share offline?)	ថត {path} មិនអាចប្រើបានទេ (ដ្រាយត្រូវបានដកចេញ ឬការចែករំលែកបណ្ដាញមិនដំណើរការ?)
 #. text in crashui.rs
 #. crash report window: after Send opened the browser
 #, machine
-	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	ទម្រង់បានបើកនៅក្នុងកម្មវិធីរុករករបស់អ្នក។ អូសឯកសាររបាយការណ៍ (និង .dmp ប្រសិនបើអ្នកជ្រើសរើស) ចូលទៅក្នុងវា បន្ទាប់មកដាក់ស្នើ។
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	ទម្រង់បានបើកនៅក្នុងកម្មវិធីរុករករបស់អ្នក។ អូសឯកសាររបាយការណ៍ (និងឯកសារ .dmp ប្រសិនបើអ្នកបានជ្រើសរើស) ចូលទៅក្នុងទម្រង់ បន្ទាប់មកដាក់ស្នើ។
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -4093,11 +4093,11 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The list could not be saved: {error}	បញ្ជីមិនអាចរក្សាទុកបានទេ៖ {error}
+	The list could not be saved: {error}	មិនអាចរក្សាទុកបញ្ជីបានទេ៖ {error}
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
-	the network adapter {adapter} is not connected	អាដាប់ទ័របណ្ដាញ {adapter} មិនបានភ្ជាប់
+	the network adapter {adapter} is not connected	អាដាប់ទ័របណ្ដាញ {adapter} មិនបានភ្ជាប់ទេ
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4108,7 +4108,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
-	the release has no version	ការចេញផ្សាយមិនមានកំណែ
+	the release has no version	ការចេញផ្សាយមិនមានលេខកំណែទេ
 #. text in errors.rs
 #. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
 #, machine
@@ -4271,11 +4271,11 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	តំណម៉ាញេទិកនេះមិនមានឈ្មោះកម្មវិធីតាមដានទេ ហើយ DHT ក៏បិទ ដូច្នេះមិនអាចរកឃើញភីអ៊ែរណាមួយបានទេ។
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	តំណម៉ាញេទិកនេះមិនមានកម្មវិធីតាមដានទេ ហើយ DHT ក៏បិទ ដូច្នេះមិនអាចរកឃើញភីអ៊ែរណាមួយបានទេ។
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
-	This needs ffmpeg	នេះត្រូវការ ffmpeg
+	This needs ffmpeg	ត្រូវការ ffmpeg
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4332,7 +4332,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	ធីក «ចាប់ផ្ដើមទាញយកនៅ» ជាមុនសិន៖ កុំព្យូទ័រត្រូវបានដាស់សម្រាប់ពេលចាប់ផ្ដើម
+	Tick "Start download at" first: the computer is woken for the start time	ធីក «ចាប់ផ្តើមទាញយកនៅ» ជាមុនសិន៖ កុំព្យូទ័រនឹងត្រូវបានដាស់នៅពេលចាប់ផ្តើម
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	ពេលវេលាដែលនៅសល់
@@ -4366,7 +4366,7 @@
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #. noun: label before the torrent file or magnet link
 #, machine
-	Torrent	ថរិន
+	Torrent	តូរ៉ង់
 #. text in the download list (sizes, speeds, status)
 #, machine
 	Torrent downloads (magnet links and .torrent files)	ការទាញយក Torrent (តំណ magnet និងឯកសារ .torrent)
@@ -4384,7 +4384,7 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
-	Torrents	ថរិន
+	Torrents	តូរ៉ង់
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -4397,12 +4397,12 @@
 #. text in a download's progress window
 #. tab title: the servers that list the peers
 #, machine
-	Trackers	កម្មវិធីតាមដាន
+	Trackers	ត្រាកឃ័រ
 #. text in the Add torrent window
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Trackers to add to {name}, one address a line:	ឧបករណ៍​តាមដាន​ដែល​ត្រូវ​បន្ថែម​ទៅ {name} មួយ​អាសយដ្ឋាន​មួយ​បន្ទាត់៖
+	Trackers to add to {name}, one address a line:	ត្រាកឃ័រដែលត្រូវបន្ថែមទៅ {name} បញ្ចូលអាសយដ្ឋានមួយក្នុងមួយបន្ទាត់៖
 #. text in a download's progress window
 #, machine
 	Transfer rate	អត្រាផ្ទេរ
@@ -4792,7 +4792,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
-	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	ពាក្យ៖ ទាំងអស់; | រវាងជម្រើស; * និង ?។ វគ្គ៖ 1x2;1x5-8;2x1-។ វគ្គនីមួយៗម្ដង។
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	ពាក្យ៖ ពាក្យទាំងអស់; | បំបែកជម្រើស; * និង ?។ ភាគ៖ 1x2;1x5-8;2x1-។ ភាគនីមួយៗម្តង។
 #. group box title in the Options window
 #, machine
 	Write dates and times	សរសេរកាលបរិច្ឆេទ និងពេលវេលា
@@ -4800,7 +4800,7 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Wrong password for {name}. Type it again:	ពាក្យសម្ងាត់ខុសសម្រាប់ {name}។ វាយម្តងទៀត៖
+	Wrong password for {name}. Type it again:	ពាក្យសម្ងាត់មិនត្រឹមត្រូវសម្រាប់ {name}។ សូមវាយម្តងទៀត៖
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ និង XZ; បណ្ណសារដែលបំបែក (.part1.rar, .7z.001) នៅពេល\nដែលវ៉ុលនីមួយៗចូល។ ឯកសារដែលមានស្រាប់ត្រូវបានរក្សាទុក៖ ឯកសារថ្មីត្រូវបានដាក់លេខ។
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ និង XZ; បណ្ណសារដែលបំបែក (.part1.rar, .7z.001) នៅពេល\nដែលមានគ្រប់វ៉ុល។ ឯកសារដែលមានស្រាប់ត្រូវបានរក្សាទុក៖ ឯកសារថ្មីត្រូវបានដាក់លេខ។
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} មិនបានភ្ជាប់៖ គ្មានអ្វីត្រូវបានទាញយកទេ រហូតដល់វាត្រឡប់មកវិញ។
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} មិនបានភ្ជាប់៖ គ្មានអ្វីត្រូវបានទាញយកទេ រហូតដល់វាភ្ជាប់ឡើងវិញ។
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4907,7 +4907,7 @@
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} រក្សាខូគីរបស់វាចាក់សោរសម្រាប់ខ្លួនវានៅលើ Windows ដូច្នេះ yt-dlp មិនអាចអានវាបានទេ។ ជ្រើសរើស Firefox នៅក្នុងជម្រើស → ការចូលគេហទំព័រ ឬប្រើប៊ូតុងទាញយកវីដេអូនៅពីលើវីដេអូនៅក្នុង {browser}។
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	នៅលើ Windows {browser} ចាក់សោខូគីរបស់វា ដើម្បីឱ្យមានតែវាប៉ុណ្ណោះដែលអាចអានបាន ដូច្នេះ yt-dlp មិនអាចអានខូគីទាំងនោះបានទេ។ ជ្រើសរើស Firefox នៅក្នុង ជម្រើស → ការចូលគេហទំព័រ ឬប្រើប៊ូតុងទាញយកវីដេអូនៅលើវីដេអូក្នុង {browser}។
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4920,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} បម្រើឯកសារនេះ៖ ទីតាំងគឺជារបស់ម៉ាស៊ីនមេរបស់វា ដែលជារឿយៗនៅជិតអ្នក មិនមែនជារបស់ម្ចាស់គេហទំព័រនោះទេ។
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} បម្រើឯកសារនេះ៖ ទីតាំងនោះជាទីតាំងរបស់ម៉ាស៊ីនមេ ដែលជារឿយៗនៅជិតអ្នក មិនមែនជាទីតាំងរបស់ម្ចាស់គេហទំព័រទេ។
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4947,15 +4947,15 @@
 	{file} could not be read to check it	មិនអាចអាន {file} ដើម្បីពិនិត្យមើលបានទេ
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} លែងនៅកន្លែងដែលវាត្រូវបានរក្សាទុកទៀតហើយ (បានផ្លាស់ទី ឬលុប)។ ការទាញយកឡើងវិញ នៅក្នុងម៉ឺនុយចុចខាងស្តាំរបស់វា នឹងទទួលបានវាម្តងទៀត។
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} លែងនៅទីតាំងដែលបានរក្សាទុកទៀតហើយ (បានផ្លាស់ទី ឬលុប)។ ពាក្យបញ្ជាទាញយកឡើងវិញក្នុងម៉ឺនុយចុចខាងស្តាំរបស់វានឹងទាញយកវាម្តងទៀត។
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}៖ ឯកសារមិនត្រូវគ្នានឹងលេខត្រួតពិនិត្យរបស់វាទេ ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}៖ ឯកសារមិនត្រូវគ្នានឹងតម្លៃត្រួតពិនិត្យរបស់វាទេ ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}៖ ឯកសារត្រូវគ្នានឹងលេខត្រួតពិនិត្យរបស់វា ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}៖ ឯកសារត្រូវគ្នានឹងតម្លៃត្រួតពិនិត្យរបស់វា ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4973,7 +4973,7 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} មិនអាចទៅដល់បានតាមរយៈ {adapter} ទេ៖ វាមិនមានអាសយដ្ឋានប្រភេទនោះទេ (IPv4 ឬ IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	មិនអាចទៅដល់ {ip} តាមរយៈ {adapter} បានទេ៖ វាមិនមានអាសយដ្ឋានប្រភេទនោះទេ (IPv4 ឬ IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -5004,7 +5004,7 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} គឺ​ជា​បណ្ណសារ 7z ឬ RAR។ MDM ពន្លា​ឯកសារ​ទាំង​នោះ​ដោយ 7-Zip ដែល​មិន​បាន​ដំឡើង។
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} គឺជាបណ្ណសារ 7z ឬ RAR។ MDM ប្រើ 7-Zip ដើម្បីពន្លាបណ្ណសារទាំងនោះ ប៉ុន្តែ 7-Zip មិនបានដំឡើងទេ។
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5014,7 +5014,7 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} មិនត្រូវបានផ្តល់ជូនជា {how} ទេ។
+	{name} isn't offered as {how}.	មិនមាន {name} ជា {how} ទេ។
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5024,7 +5024,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} ក្នុងចំណោម {total} បានជ្រើសរើស
+	{n} of {total} chosen	{n} ក្នុងចំណោម {total} ដែលបានជ្រើសរើស
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -5032,28 +5032,28 @@
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{percent} នៅ {service}
+	{percent} at {service}	{percent} នៅលើ {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} សុំ​ឱ្យ​បន្ថយ​ល្បឿន; MDM នឹង​ព្យាយាម​ម្ដង​ទៀត​ក្នុង​មួយ​នាទី
+	{service} asks to slow down; MDM will try again in a minute	{service} ស្នើឱ្យបន្ថយល្បឿន៖ MDM នឹងព្យាយាមម្ដងទៀតក្នុងមួយនាទី
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} សុំ​ឱ្យ​អ្នក​អនុញ្ញាត​កុំព្យូទ័រ​នេះ​ជាមុន​សិន៖ សូម​មើល​អ៊ីមែល​របស់​វា
+	{service} asks you to allow this computer first: see its email	{service} ស្នើឱ្យអ្នកអនុញ្ញាតកុំព្យូទ័រនេះជាមុន៖ សូមពិនិត្យអ៊ីមែលរបស់វា
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} មិន​អាច​ទទួល​ថត​នេះ​បាន​ទេ៖ គ្មាន​អ្នក​ណា​ចែករំលែក​វា​ទេ ឬ​តំណ​របស់​វា​មិន​អាច​អាន​បាន
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} មិនអាចទាញយក torrent នេះបានទេ៖ គ្មានអ្នកណាចែករំលែកវាទេ ឬមិនអាចអានតំណរបស់វាបាន
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} មិន​អាច​ទៅ​ដល់​ម៉ាស៊ីន​ឯកសារ​នេះ​បាន​ទេ​ឥឡូវ​នេះ; MDM នឹង​ព្យាយាម​ម្ដង​ទៀត​នៅ​ពេល​ក្រោយ
+	{service} can't reach this file host right now; MDM will try again later	{service} មិនអាចភ្ជាប់ទៅម៉ាស៊ីនបម្រើឯកសារនេះបានទេនៅពេលនេះ៖ MDM នឹងព្យាយាមម្ដងទៀតនៅពេលក្រោយ
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	{service} មិន​ឆ្លើយតប​ទេ; សូម​ព្យាយាម​ម្ដង​ទៀត​នៅ​ពេល​ក្រោយ
+	{service} is not responding; try again later	{service} មិនឆ្លើយតបទេ៖ សូមព្យាយាមម្ដងទៀតនៅពេលក្រោយ
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
@@ -5432,7 +5432,7 @@ key	Up / Down	ឡើងលើ / ចុះក្រោម
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&About Mister Download Manager	អំពីកម្មវិធីគ្រប់គ្រងការទាញយក Mister Download Manager(&A)
+menu	&About Mister Download Manager	អំពី Mister Download Manager(&A)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5441,15 +5441,15 @@ menu	&Add new download	បន្ថែមការទាញយកថ្មី(&A
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Add new download...	បន្ថ&មការទាញយកថ្មី...
+menu	&Add new download...	បន្ថែមការទាញយកថ្មី(&A)...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Copy	ចម្ល&ង
+menu	&Copy	ចម្លង(&C)
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Delete	&លុប
+menu	&Delete	លុប(&D)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5481,7 +5481,7 @@ menu	&Language...	ភាសា(&L)...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Link grabber...	កម្មវិធីចាប់យក&តំណ...
+menu	&Link grabber...	ឧបករណ៍ចាប់តំណ(&L)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5489,7 +5489,7 @@ menu	&Options	ជម្រើស(&O)
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Paste	&បិទភ្ជាប់
+menu	&Paste	បិទភ្ជាប់(&P)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5507,13 +5507,13 @@ menu	&Report a problem	រាយការណ៍បញ្ហា(&R)
 #. header menu: put the columns back as they first were (order, widths, all shown)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Reset columns	កំណត់ជួរឈ&រឡើងវិញ
+menu	&Reset columns	កំណត់ជួរឈរឡើងវិញ(&R)
 #. menu command in the main window
 #. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&RSS feeds...	មតិព័ត៌មាន &RSS...
+menu	&RSS feeds...	មតិព័ត៌មាន RSS(&R)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5537,7 +5537,7 @@ menu	&Tutorials	មេរៀន(&T)
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Undo	&មិនធ្វើវិញ
+menu	&Undo	មិនធ្វើវិញ(&U)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5550,11 +5550,11 @@ menu	Add &batch download	បន្ថែមការទាញយកជាបា�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &magnet link...	បន្ថែ&មតំណ magnet...
+menu	Add &magnet link...	បន្ថែមតំណ magnet(&M)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Add batch download from &clipboard	បន្ថែមការទាញយកជាបាច់ពី &ក្ដារតម្បៀតខ្ទាស់
+menu	Add batch download from &clipboard	បន្ថែមការទាញយកជាបាច់ពីក្ដារតម្បៀតខ្ទាស់(&C)
 #. menu command in the main window
 #, machine
 menu	Add category	បន្ថែមប្រភេទ
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	រកមើល
+menu	Browse	បើកថត
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5739,7 +5739,7 @@ menu	High contrast	កម្រិតពណ៌ខ្ពស់
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	វាមិនអាចចាប់ផ្ដើមបានទេ៖ កំណត់ហេតុប្រាប់ពីមូលហេតុ
+menu	It couldn't start: the log says why	មិនអាចចាប់ផ្ដើមបានទេ៖ កំណត់ហេតុប្រាប់ពីមូលហេតុ
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
@@ -5774,7 +5774,7 @@ menu	Native	ដើម
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	គ្មានកាតក្រាហ្វិកនៅទីនេះមានកម្មវិធីបញ្ជាសម្រាប់វាទេ
+menu	No graphics card here has a driver for it	គ្មានកាតក្រាហ្វិកណាមួយនៅទីនេះមានកម្មវិធីបញ្ជាសម្រាប់វាទេ
 #. menu command in the main window
 #, machine
 menu	On Double click	នៅពេលចុចពីរដង

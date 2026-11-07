@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Opravdu chcete odstranit {n} stahování ze seznamu stahování Mister Download Manager?|Opravdu chcete odstranit tato {n} stahování ze seznamu stahování Mister Download Manager?|Opravdu chcete odstranit těchto {n} stahování ze seznamu stahování Mister Download Manager?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Opravdu chcete odstranit {n} stahování ze seznamu stahování aplikace Mister Download Manager?|Opravdu chcete odstranit tato {n} stahování ze seznamu stahování aplikace Mister Download Manager?|Opravdu chcete odstranit těchto {n} stahování ze seznamu stahování aplikace Mister Download Manager? [sic]
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -33,12 +33,12 @@
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Nalezen {n} peer, připojování...|Nalezeny {n} peery, připojování...|Nalezeno {n} peerů, připojování...
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Nalezen {n} peer, připojuje se...|Nalezeni {n} peeři, připojuje se...|Nalezeno {n} peerů, připojuje se...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Nyní odpovídá {n} článku (přidává pouze nové):|Nyní odpovídá {n} článkům (přidává pouze nové):|Nyní odpovídá {n} článkům (přidává pouze nové):
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Nyní odpovídá {n} článku (přidávají se pouze nové):|Nyní odpovídají {n} články (přidávají se pouze nové):|Nyní odpovídá {n} článků (přidávají se pouze nové):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" není IP adresa.
+	"{what}" isn't an IP address.	„{what}“ není IP adresa.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -199,7 +199,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Tento soubor stahuje proxy server: místo a čas jsou proxy serveru, nikoli serveru.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Toto stahování probíhá přes proxy server: místo a čas se vztahují k proxy serveru, nikoli k serveru.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -377,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Všechny od nahrávajícího
+	All the uploader's	Všechny jazyky od autora
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -407,7 +407,7 @@
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	Vždy tmavý
+	Always dark	Vždy tmavý režim
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -542,7 +542,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Automatically put in "{category}" category the following file types:	Automaticky zařadit do kategorie „{category}“ následující typy souborů:
+	Automatically put in "{category}" category the following file types:	Automaticky zařazovat do kategorie „{category}“ následující typy souborů:
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	Automaticky spustit stahování následujících typů souborů:
@@ -630,7 +630,7 @@
 	Brazil	Brazílie
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Obnovit {names} do původního stavu: jejich názvy, typy souborů a složky? Vaše vlastní kategorie, Obecné a Torrenty zůstanou beze změny. Stahování již přesunuté do kategorie Obecné tam zůstane.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Vrátit {names} do původního stavu, v jakém byly dodány: jejich názvy, typy souborů a složky? Vaše vlastní kategorie, Obecné a Torrenty zůstanou beze změny. Stahování již přesunutá do kategorie Obecné tam zůstanou.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -648,7 +648,7 @@
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Integrace prohlížeče není v tomto počítači nastavena, takže žádný prohlížeč zatím nemůže dosáhnout Mister Download Manager.
 #. page title in the Options window
 #, machine
-	Browser/System Integration	Integrace s prohlížečem/systémem
+	Browser/System Integration	Integrace s prohlížečem a systémem
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -862,7 +862,7 @@
 	Close	Zavřít
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Close a menu or dialog	Zavřít nabídku nebo dialog
+	Close a menu or dialog	Zavřít nabídku nebo dialogové okno
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -890,10 +890,10 @@
 	Configuration ID:	ID konfigurace:
 #. text in the Options window
 #, machine
-	Confirm before deleting downloads	Potvrdit před odstraněním stahování
+	Confirm before deleting downloads	Potvrzovat před odstraněním stahování
 #. window title in a dialog box
 #, machine
-	Confirm deletion of downloads	Potvrdit odstranění stahování
+	Confirm deletion of downloads	Potvrzení odstranění stahování
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -904,7 +904,7 @@
 	Connected	Připojeno
 #. text in extension.rs
 #, machine
-	Connected: downloads from your browser now come here.	Připojeno: stahování z vašeho prohlížeče nyní přichází sem.
+	Connected: downloads from your browser now come here.	Připojeno: stahování z vašeho prohlížeče nyní přicházejí sem.
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -949,7 +949,7 @@
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Could not be read: {error}	Nelze přečíst: {error}
+	Could not be read: {error}	Nepodařilo se přečíst: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -1107,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	Nespouštět stahování, pouze přidat soubory do fronty
+	Do not start downloading, only add files to the queue	Nespouštět stahování, pouze přidávat soubory do fronty
 #. text in a dialog box
 #, machine
 	Do you want to create it?	Chcete jej vytvořit?
@@ -1138,7 +1138,7 @@
 	Don't start downloading automatically from the following sites:	Nespouštět stahování automaticky z následujících webů:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	Nepřevzít soubory menší než (KB, 0 = libovolná velikost):
+	Don't take files smaller than (KB, 0 = any size):	Nestahovat soubory menší než (KB, 0 = libovolná velikost):
 #. text in a download's progress window
 #, machine
 	Done	Hotovo
@@ -1184,7 +1184,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	Nestahovat více než {mb} MB\nkaždých {hours} hodin
+	Download no more than {mb} MBytes\nevery {hours} hours	Nestahovat více než {mb} MB\nevery {hours} hodin
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Stáhnout nyní
@@ -1203,7 +1203,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Stahovat podporované odkazy hostitelů souborů prostřednictvím těchto účtů
+	Download supported file-host links through these accounts	Stahovat odkazy na podporované služby pro hostování souborů prostřednictvím těchto účtů
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1242,7 +1242,7 @@
 	Downloading	Stahování
 #. message or event log entry in the main window
 #, machine
-	Downloading again from the start	Stahování znovu od začátku
+	Downloading again from the start	Opětovné stahování od začátku
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1263,7 +1263,7 @@
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
-	Downloading {name} ({n} of {total})... {percent}	Stahuji {name} ({n} z {total})... {percent}
+	Downloading {name} ({n} of {total})... {percent}	Stahuje se {name} ({n} z {total})... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Každé připojení prochází přes něj, z {ip}.
+	Every connection goes through it, from {ip}.	Každé připojení prochází přes něj z adresy {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1441,7 +1441,7 @@
 	Export	Exportovat
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Rozšířit dostupnost rozšíření Manifest 2 Chrome
+	Extend the availability of Manifest 2 Chrome extensions	Rozšířit dostupnost rozšíření Chrome Manifest 2
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Přípony oddělené mezerami, například MP4 MKV R0*
@@ -1570,7 +1570,7 @@
 #. text in the Add torrent window
 #. Torrent settings: the DHT, the network peers use to find each other
 #, machine
-	Find peers through the DHT	Najít peery přes DHT
+	Find peers through the DHT	Vyhledávat peery přes DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Najít další shodu
@@ -1701,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl není nainstalován (Přidat URL s adresou galerie jej nainstaluje)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl není nainstalován (nainstaluje se po přidání URL s adresou galerie)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1730,7 +1730,7 @@
 	Get ready for video downloads	Připravte se na stahování videí
 #. button in the Options window
 #, machine
-	Get System	Získat systém
+	Get System	Získat ze systému
 #. text in the Add torrent window
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
@@ -1802,7 +1802,7 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	Mám
+	Have	Staženo
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1883,7 +1883,7 @@
 	If a duplicate download link is added:	Pokud je přidán duplicitní odkaz ke stažení:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Pokud je existující soubor kompletní, zobrazit dialog dokončení stahování; jinak jej obnovit.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Pokud je stahování souboru dokončeno, zobrazit dialog dokončení stahování; jinak stahování obnovit.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -2008,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	zapsalo by {size}, což je více, než je k dispozici {limit} místa nebo důvodu
+	it would write {size}, more than the {limit} there is room or reason for	zapsalo by {size}, což je více, než kolik místa je k dispozici nebo kolik je povoleno ({limit})
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2069,7 +2069,7 @@
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
-	Kept with the torrent, after the trackers it has.	Uloženo s torrentem, za trackery, které má.
+	Kept with the torrent, after the trackers it has.	Uloženo s torrentem za jeho trackery.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Klávesové zkratky
@@ -2131,7 +2131,7 @@
 	Latvia	Lotyšsko
 #. text in the Options window
 #, machine
-	Launch Mister Download Manager on startup	Spustit Mister Download Manager při spuštění systému
+	Launch Mister Download Manager on startup	Spouštět Mister Download Manager při spuštění systému
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2196,12 +2196,12 @@
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Výpis videí: {n}
+	Listing the videos: {n}	Vypisují se videa: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Výpis videí: {n} z {total}
+	Listing the videos: {n} of {total}	Vypisují se videa: {n} z {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -2238,15 +2238,15 @@
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking for peers...	Hledám peery...
+	Looking for peers...	Hledají se peery...
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
-	Looking for this problem on GitHub…	Hledám tento problém na GitHubu…
+	Looking for this problem on GitHub…	Hledá se tento problém na GitHubu…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking the page up...	Vyhledávám stránku...
+	Looking the page up...	Vyhledává se stránka...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2268,7 +2268,7 @@
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
-	Making the report readable: fetching the symbols ({done} of {total} MB)…	Zpřístupňuji zprávu: načítám symboly ({done} z {total} MB)…
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	Zpřístupňuje se zpráva: načítají se symboly ({done} z {total} MB)…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2291,14 +2291,14 @@
 	Malta	Malta
 #. text in the Options window
 #, machine
-	Manual proxy/socks configuration	Ruční konfigurace proxy/socks
+	Manual proxy/socks configuration	Ruční konfigurace proxy/SOCKS
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
 	Map the port on the router (UPnP)	Mapovat port na routeru (UPnP)
 #. text in the Scheduler window
 #, machine
-	March	Březen
+	March	březen
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2342,7 +2342,7 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
-	May	Květen
+	May	květen
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2432,7 +2432,7 @@
 	Monaco	Monako
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Pondělí
+	Monday	pondělí
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2498,7 +2498,7 @@
 	Mozambique	Mosambik
 #. text in errors.rs
 #, machine
-	much slower than the other connections; reconnecting	mnohem pomalejší než ostatní připojení; znovu se připojuji
+	much slower than the other connections; reconnecting	mnohem pomalejší než ostatní připojení; znovu se připojuje
 #. text in the download list (sizes, speeds, status)
 #. category name: audio files
 #, machine
@@ -2636,15 +2636,15 @@
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
-	No downloads here	Žádné stahování zde
+	No downloads here	Žádná stahování zde
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
-	No downloads match the filters	Žádné stahování neodpovídá filtrům
+	No downloads match the filters	Žádná stahování neodpovídají filtrům
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 #, machine
-	No downloads yet	Zatím žádné stahování
+	No downloads yet	Zatím žádná stahování
 #. text in a dialog box
 #, machine
 	No folders yet	Zatím žádné složky
@@ -2657,7 +2657,7 @@
 	No language matches the search	Žádný jazyk neodpovídá hledání
 #. text in langpick.rs
 #, machine
-	No language matches.	Žádný jazyk neodpovídá.
+	No language matches.	Žádné jazyky neodpovídají.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
@@ -2671,7 +2671,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Zatím žádné peery. Tento torrent možná sdílí málo lidí, nebo BitTorrent blokuje brána firewall, VPN či síť.
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Zatím žádní peeri. Tento torrent možná sdílí málo lidí, nebo BitTorrent blokuje brána firewall, VPN či síť.
 #. text in the Options window
 #, machine
 	No proxy/socks	Bez proxy/SOCKS
@@ -2690,7 +2690,7 @@
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
-	No video found on this page. Play the video, then use the Download video button over it.	Na této stránce nebylo nalezeno žádné video. Přehrávejte video a poté použijte tlačítko Stáhnout video nad ním.
+	No video found on this page. Play the video, then use the Download video button over it.	Na této stránce nebylo nalezeno žádné video. Přehrajte video a poté použijte tlačítko Stáhnout video nad ním.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	Na této stránce není žádné video, které by bylo možné stáhnout
@@ -2715,7 +2715,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Norfolk Island	Norfolk
+	Norfolk Island	Ostrov Norfolk
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2743,7 +2743,7 @@
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 #, machine
-	Not a tracker address: {line}	Není adresa trackeru: {line}
+	Not a tracker address: {line}	Nejde o adresu trackeru: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	nedostatek místa na disku: potřeba {needed}, volno {free}
@@ -2763,27 +2763,27 @@
 	Not now	Ne teď
 #. text in helpers.rs
 #, machine
-	Not now? Get them later from Tasks → Download video from a page.	Ne teď? Získejte je později z Úlohy → Stáhnout video ze stránky.
+	Not now? Get them later from Tasks → Download video from a page.	Ne teď? Stáhněte je později z Úlohy → Stáhnout video ze stránky.
 #. text in a download's Properties window
 #, machine
 	not one server (peers, or a helper's)	není jeden server (peery nebo pomocný)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	touto službou není podporováno
+	not supported by this service	Tato služba nepodporuje
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Nepoužito: části souboru se zapisují vedle souboru
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Poznámka: Internetové servery mohou přerušit připojení, když je rychlost příliš omezena! Proto se nedoporučuje používat omezovač rychlosti ke stahování ze serverů, které nepodporují funkci „pokračovat“.
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Poznámka: Internetové servery mohou přerušit připojení, pokud je rychlost příliš nízká! Proto se nedoporučuje používat omezovač rychlosti ke stahování ze serverů, které nepodporují funkci „obnovení stahování“.
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Poznámka: Tato nastavení se netýkají zpracování fronty
 #. message or event log entry in the main window
 #, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Nic ke stažení v {item}: přetáhněte odkazy, soubor .torrent nebo seznam adres (.txt, .ef2).
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	V {item} není co stahovat: přetáhněte sem odkazy, soubor .torrent nebo seznam adres (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	Listopad
@@ -2792,7 +2792,7 @@
 	Number	Číslo
 #. checkbox in the Scheduler window
 #, machine
-	Number of retries for each file if downloading failed :	Počet opakování pro každý soubor, pokud stahování selhalo:
+	Number of retries for each file if downloading failed :	Počet opakování pro každý soubor, pokud se stahování nezdaří:
 #. option (radio button) in the Batch download window
 #. the * in the address runs through numbers
 #, machine
@@ -2823,7 +2823,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
 #, machine
-	On battery, Windows' power options don't allow wake timers	Při napájení z baterie možnosti napájení Windows nepovolují časovače probuzení
+	On battery, Windows' power options don't allow wake timers	Při napájení z baterie možnosti napájení systému Windows nepovolují časovače probuzení
 #. text in a download's progress window
 #, machine
 	on download stop/resume	při zastavení/obnovení stahování
@@ -2840,7 +2840,7 @@
 	Once at	Jednou v
 #. text in extension.rs
 #, machine
-	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Jakmile je přidáno, toto okno to oznámí. Chrome se také může zeptat sám při dalším spuštění.
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Po přidání se to zobrazí v tomto okně. Chrome se také může zeptat sám při příštím spuštění.
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	Jedna adresa na řádek; * zastupuje libovolný text: example.com/private/*
@@ -2886,7 +2886,7 @@
 	Open folder	Otevřít složku
 #. checkbox in the Add torrent window
 #, machine
-	Open magnet links and .torrent files with Mister Download Manager	Otevřít magnet odkazy a soubory .torrent pomocí Mister Download Manager
+	Open magnet links and .torrent files with Mister Download Manager	Otevírat magnetické odkazy a soubory .torrent pomocí Mister Download Manager
 #. text in the tray icon's menu
 #, machine
 	Open Mister Download Manager	Otevřít Mister Download Manager
@@ -3005,7 +3005,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: peers are known but none answered
 #, machine
-	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Peery byly nalezeny, ale zatím žádný neodpověděl. Připojení může blokovat brána firewall nebo VPN.
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	Byli nalezeni další klienti, ale zatím žádný neodpověděl. Připojení může blokovat brána firewall nebo VPN.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	Pravidelná synchronizace
@@ -3028,7 +3028,7 @@
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
-	plain DNS	prostý DNS
+	plain DNS	nešifrované DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -3059,7 +3059,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	prémiový, zbývá {days} dní
+	premium, {days} days left	premium, zbývá {days} dní
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3150,7 +3150,7 @@
 	Reading the torrent...	Čtení torrentu...
 #. text in helpers.rs
 #, machine
-	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Přečte stránku a vypíše všechny kvality, které stránka nabízí, až do 4K, z YouTube, Vimeo a více než tisíce dalších stránek.
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Načte stránku a vypíše všechny kvality nabízené weby až do 4K na YouTube, Vimeu a více než tisíci dalších webech.
 #. text in helpers.rs
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
@@ -3159,7 +3159,7 @@
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Reannounce failed: {error}	Znovu oznámení selhalo: {error}
+	Reannounce failed: {error}	Opětovné oznámení se nezdařilo: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -3172,7 +3172,7 @@
 #. event log entry: Recheck failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Recheck failed: {error}	Znovu kontrola selhala: {error}
+	Recheck failed: {error}	Opětovná kontrola se nezdařila: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -3386,7 +3386,7 @@
 	Select or unselect the download with the dotted outline	Vybrat nebo zrušit výběr stahování s tečkovaným obrysem
 #. group box title in the Options window
 #, machine
-	Select sounds for Mister Download Manager events	Vybrat zvuky pro události Mister Download Manager
+	Select sounds for Mister Download Manager events	Vybrat zvuky pro události aplikace Mister Download Manager
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select the downloads in the box	Vybrat stahování v poli
@@ -3461,11 +3461,11 @@
 #. message or event log entry in the main window
 #. event log: File Properties: the download no longer goes through the debrid account
 #, machine
-	Set to download directly, not through the debrid account	Nastaveno ke stažení přímo, nikoli přes účet debrid
+	Set to download directly, not through the debrid account	Bylo nastaveno přímé stahování, nikoli přes účet debrid.
 #. message or event log entry in the main window
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
-	Set to download through the debrid account	Nastaveno ke stažení přes účet debrid
+	Set to download through the debrid account	Bylo nastaveno stahování přes účet debrid.
 #. text in extension.rs
 #. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3500,7 +3500,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
-	Sharing stopped: the share ratio reached {ratio}	Sdílení zastaveno: poměr sdílení dosáhl {ratio}
+	Sharing stopped: the share ratio reached {ratio}	Sdílení bylo zastaveno: poměr sdílení dosáhl hodnoty {ratio}.
 #. text in the download list
 #, machine
 	Show	Zobrazit
@@ -3533,19 +3533,19 @@
 	Show me how	Ukázat mi jak
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on closing batch download dialogs	Zobrazit panel výběru fronty při zavírání dialogů dávkového stahování
+	Show queue selection panel on closing batch download dialogs	Zobrazovat panel výběru fronty při zavírání dialogových oken hromadného stahování
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on pressing "Download Later" button	Zobrazit panel výběru fronty po stisknutí tlačítka „Stáhnout později“
+	Show queue selection panel on pressing "Download Later" button	Zobrazovat panel výběru fronty po stisknutí tlačítka „Stáhnout později“
 #. checkbox in the Options window
 #, machine
-	Show start download dialog	Zobrazit dialog zahájení stahování
+	Show start download dialog	Zobrazovat dialogové okno pro zahájení stahování
 #. checkbox in the Options window; checkbox in the Scheduler window
 #, machine
-	Show warning before stopping downloads	Zobrazit upozornění před zastavením stahování
+	Show warning before stopping downloads	Zobrazovat upozornění před zastavením stahování
 #. text in a download's progress window
 #, machine
-	Shown while the torrent is downloading.	Zobrazeno, zatímco se torrent stahuje.
+	Shown while the torrent is downloading.	Zobrazuje se během stahování torrentu.
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
@@ -3624,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Režim spánku
+	Sleep	Uspat
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3739,11 +3739,11 @@
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
-	Started with the computer, it starts minimized: no notification area shows its icon here	Spustí se se spuštěním počítače, ale minimalizovaný: ikona se zde nezobrazí v oznamovací oblasti
+	Started with the computer, it starts minimized: no notification area shows its icon here	Spouští se při spuštění počítače a je minimalizované: jeho ikona se zde nezobrazuje v oznamovací oblasti
 #. text in the Options window
 #. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
 #, machine
-	Started with the computer, it waits in the notification area	Spustí se se spuštěním počítače a čeká v oznamovací oblasti
+	Started with the computer, it waits in the notification area	Spouští se při spuštění počítače a čeká v oznamovací oblasti
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -3996,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT nikoho nezastihlo. Brána firewall, VPN nebo síť může blokovat UDP, které DHT a většina trackerů používá.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT nikoho nenašlo. Brána firewall, VPN nebo síť může blokovat UDP, které používá DHT a většina trackerů.
 #. text in errors.rs
 #, machine
 	the disk is full	disk je plný
@@ -4007,7 +4007,7 @@
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	The download limit ({mb} MBytes every {hours} hours) has been reached.	Limit stahování ({mb} MB každých {hours} hodin) byl dosažen.
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Limit stahování ({mb} MB každých {hours} hodin) byl překročen.
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	odkaz ke stažení vypršel (obnovte adresu ke stažení)
@@ -4134,13 +4134,13 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Vybrané stahování není dokončeno. Opravdu jej chcete odstranit\nze seznamu stahování Mister Download Manager?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Vybrané stahování není dokončeno. Opravdu jej chcete odstranit\nze seznamu stahování aplikace Mister Download Manager?
 #. text in errors.rs
 #, machine
 	the server answered {status}	server odpověděl {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	server nemůže odesílat části souboru, takže jej nelze obnovit
+	the server can't send parts of the file, so it can't be resumed	server nemůže odesílat části souboru, takže stahování nelze obnovit
 #. text in errors.rs
 #, machine
 	the server did not answer in time	server neodpověděl včas
@@ -4159,15 +4159,15 @@
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Web vyžaduje, abyste byli přihlášeni, a to i s cookies vašeho prohlížeče pro tuto stránku. Přihlaste se k němu ve svém prohlížeči a zkuste to znovu.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Web vyžaduje přihlášení, i když má váš prohlížeč pro tuto stránku uložené cookies. Přihlaste se na něm v prohlížeči a zkuste to znovu.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Web vyžaduje, abyste byli přihlášeni, a to i s cookies prohlížeče {browser}. Přihlaste se k němu v prohlížeči {browser} a poté stránku znovu vyhledejte.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Web vyžaduje přihlášení, i když jsou k dispozici cookies prohlížeče {browser}. Přihlaste se na něm v prohlížeči {browser} a poté stránku znovu vyhledejte.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Symboly se nepodařilo načíst: některé řádky zprávy ukazují adresy místo názvů (vývojáři je stále mohou přečíst).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Symboly se nepodařilo načíst: některé řádky zprávy zobrazují adresy místo názvů (vývojáři je přesto dokážou přečíst).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Čas je doba odezvy, měřená jako otevřená vlastní připojení tohoto stahování.
+	The time is a round trip, measured as this download's own connections opened.	Čas udává dobu odezvy, měřenou podle počtu otevřených připojení tohoto stahování.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4198,7 +4198,7 @@
 	The update couldn't be installed: {error}	Aktualizaci se nepodařilo nainstalovat: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The update is open in your system's package installer.	Aktualizace je otevřena v instalačním programu balíčků vašeho systému.
+	The update is open in your system's package installer.	Aktualizace je otevřená v instalačním programu balíčků systému.
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Webová stránka, ze které byl tento soubor získán:
@@ -4219,7 +4219,7 @@
 	There is already a queue with this name	Fronta s tímto názvem již existuje
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Tato nastavení nejsou dostupná, když je zapnuta možnost „Zobrazit dialog dokončení stahování“
+	These settings are unavailable when "Show download complete dialog" is turned on	Tato nastavení nejsou dostupná, když je zapnuta možnost „Zobrazit dialogové okno po dokončení stahování“
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	Pokud toto okno zavřete, budou se stahovat dál.
@@ -4229,7 +4229,7 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	Tato kategorie nebo fronta zatím neobsahuje žádné stahování.
+	This category or queue holds no downloads yet.	Tato kategorie nebo fronta zatím neobsahuje žádná stahování.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
@@ -4237,7 +4237,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer has no wake alarm that programs can set	Tento počítač nemá budík probuzení, který by programy mohly nastavit
+	This computer has no wake alarm that programs can set	Tento počítač nemá budík probuzení, který by mohly programy nastavit
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4252,7 +4252,7 @@
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	tento soubor na Disku Google vyžaduje přihlášení: přihlaste se k účtu Google ve svém prohlížeči a poté si jej stáhněte
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	tento soubor na Disku Google vyžaduje přihlášení: přihlaste se ke svému účtu Google v prohlížeči a poté si jej odtud stáhněte
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -4288,10 +4288,10 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this program isn't {name}	tento program není {name}
+	this program isn't {name}	nejde o {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Tento systém nemá žádná vytáčená připojení k zavěšení
+	This system has no dial-up connections to hang up	Tento systém nemá žádná vytáčená připojení k odpojení
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4342,7 +4342,7 @@
 	Timor-Leste	Východní Timor
 #. text in the Batch download window
 #, machine
-	To:	Komu:
+	To:	Do:
 #. text in the Scheduler window
 #. link under the calendar: {date} = today's date
 #, machine
@@ -4456,7 +4456,7 @@
 	Tuvalu	Tuvalu
 #. text in helpers.rs
 #, machine
-	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Dva bezplatní pomocníci to umožňují. Získejte je nyní a uložení videa bude na jedno kliknutí, až nějaké najdete.
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	Dva bezplatné nástroje to umožňují. Získejte je nyní a uložení videa bude na jedno kliknutí, až nějaké najdete.
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -4597,7 +4597,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Použít proxy/socks z požadavku prohlížeče, pokud dojde k chybám stahování /\npro stahování zachycená z prohlížeče
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Použít proxy/SOCKS z požadavku prohlížeče, pokud dojde k chybám při stahování /\npro stahování zachycená z prohlížeče
 #. checkbox in a download's progress window
 #, machine
 	Use Speed Limiter	Použít omezovač rychlosti
@@ -4614,7 +4614,7 @@
 	Use the token	Použít token
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	Použít je pro tento torrent? Co se shoduje, zůstane, zbytek se nahradí.
+	Use them for this torrent? What matches it is kept, the rest replaced.	Použít je pro tento torrent? Shodující se položky zůstanou, ostatní budou nahrazeny.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Použít tento proxy pro následující protokoly:
@@ -4781,7 +4781,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
 #, machine
-	Windows' power options don't allow wake timers	Možnosti napájení Windows nepovolují časovače probuzení
+	Windows' power options don't allow wake timers	Možnosti napájení systému Windows nepovolují časovače probuzení
 #. message or event log entry in the main window
 #, machine
 	with Add URL	s přidáním URL
@@ -4891,11 +4891,11 @@
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
-	{adapter} (not connected)	{adapter} (nepřipojeno)
+	{adapter} (not connected)	{adapter} (nepřipojený)
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} není připojen: nic se nestahuje, dokud nebude zpět.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} není připojen: nic se nestahuje, dokud se znovu nepřipojí.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4903,24 +4903,24 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: zkontrolováno po dokončení stahování
+	{algorithm}: checked when the download finishes	{algorithm}: zkontroluje se po dokončení stahování
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} uchovává své soubory cookie uzamčené pro sebe ve Windows, takže yt-dlp je nemůže číst. Zvolte Firefox v Možnosti → Přihlášení k webům, nebo použijte tlačítko Stáhnout video nad videem v prohlížeči {browser}.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} uchovává své soubory cookie ve Windows uzamčené, takže je yt-dlp nemůže číst. Zvolte Firefox v Možnosti → Přihlášení k webům, nebo použijte tlačítko Stáhnout video nad videem v prohlížeči {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: rozšíření připojeno
+	{browser}: the extension connected	{browser}: rozšíření je připojeno
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: rozšíření {version} připojeno
+	{browser}: the extension {version} connected	{browser}: rozšíření {version} je připojeno
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	Tento soubor obsluhuje {cdn}: místo je serveru, často blízko vás, nikoli vlastníka webu.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	Tento soubor poskytuje {cdn}: nachází se na jeho serveru, často blízko vás, nikoli na serveru vlastníka webu.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4937,25 +4937,25 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	{file} nelze odstranit z disku: {error}
+	{file} could not be deleted from the disk: {error}	{file} se nepodařilo odstranit z disku: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be opened: {error}	{file} nelze otevřít: {error}
+	{file} could not be opened: {error}	{file} se nepodařilo otevřít: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} nelze přečíst pro kontrolu
+	{file} could not be read to check it	Soubor {file} se nepodařilo přečíst pro kontrolu
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} již není tam, kde byl uložen (přesunut nebo odstraněn). Znovu stáhnout v jeho místní nabídce jej získá znovu.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Soubor {file} už není na místě, kam byl uložen (byl přesunut nebo odstraněn). Znovu ho stáhněte pomocí položky Znovu stáhnout v jeho místní nabídce.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: soubor se NESHODUJE s jeho kontrolním součtem ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: kontrolní součet souboru ({algorithm}) SE NESHODUJE
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: soubor se shoduje s jeho kontrolním součtem ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: kontrolní součet souboru ({algorithm}) se shoduje
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4973,15 +4973,15 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} nelze dosáhnout přes {adapter}: nemá adresu tohoto typu (IPv4 nebo IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	K adrese {ip} nelze přistupovat přes {adapter}: nemá adresu tohoto typu (IPv4 nebo IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, automatické
+	{language}, automatic	{language}, automaticky vytvořené
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} připojeno, {known} známo
+	{live} connected, {known} known	{live} připojených, {known} známých
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -4999,12 +4999,12 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	{name} nelze stáhnout: {error}
+	{name} could not be downloaded: {error}	Nepodařilo se stáhnout {name}: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} je archiv 7z nebo RAR. MDM je extrahuje pomocí 7-Zip, který není nainstalován.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} je archiv 7z nebo RAR. MDM je rozbaluje pomocí programu 7-Zip, který není nainstalován.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5014,25 +5014,25 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} není nabízen jako {how}.
+	{name} isn't offered as {how}.	{name} není k dispozici jako {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} (auto)	{n} (auto)
+	{n} (auto)	{n} (automaticky)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} z {total} vybráno
+	{n} of {total} chosen	Vybráno {n} z {total}
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} selected	{n} z {total} vybráno
+	{n} of {total} selected	Vybráno {n} z {total}
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{percent} na {service}
+	{percent} at {service}	{percent} u služby {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -5043,7 +5043,7 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} vás nejprve žádá o povolení tohoto počítače: zkontrolujte svůj e-mail
+	{service} asks you to allow this computer first: see its email	{service} žádá, abyste nejprve povolili tento počítač: podívejte se do e-mailu
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} nemůže získat tento torrent: nikdo jej nesdílí, nebo jeho odkaz nelze přečíst
@@ -5069,11 +5069,11 @@
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}: účet je uzamčen nebo neaktivován
+	{service}: the account is locked or not activated	{service}: účet je uzamčen nebo není aktivovaný
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: soubor je pryč nebo nedostupný na hostiteli souborů
+	{service}: the file is gone or unavailable on the file host	{service}: soubor na serveru pro sdílení souborů už není dostupný
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -5088,7 +5088,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: váš limit pro tohoto hostitele souborů je prozatím vyčerpán
+	{service}: your limit for this file host is used up for now	{service}: váš limit pro tento server pro sdílení souborů je prozatím vyčerpán
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -5130,7 +5130,7 @@
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{what} could not be installed: {error}	{what} nelze nainstalovat: {error}
+	{what} could not be installed: {error}	{what} se nepodařilo nainstalovat: {error}
 #. column title in the download list in the download list
 #. past participle: when the download was added
 #, machine
@@ -5225,11 +5225,11 @@ extension	Help	Nápověda
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Skrýt na tomto videu
+extension	Hide on this video	Skrýt u tohoto videa
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Podržte Alt a klikněte na odkaz, aby jej stáhl prohlížeč.
+extension	Hold Alt while clicking a link to let the browser download it.	Při kliknutí na odkaz podržte Alt, aby ho stáhl prohlížeč.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5253,19 +5253,19 @@ extension	Mister Download Manager didn't start in time	Mister Download Manager s
 #. text in the browser extension
 #. status when the app refuses this copy of the extension (another copy is installed, or it came from another store); keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager doesn't accept this copy of the extension	Mister Download Manager nepřijímá tuto kopii rozšíření
+extension	Mister Download Manager doesn't accept this copy of the extension	Aplikace Mister Download Manager tuto kopii rozšíření nepřijímá
 #. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager není nainstalován nebo se nespustil
+extension	Mister Download Manager isn't installed or didn't start	Aplikace Mister Download Manager není nainstalovaná nebo se nespustila
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager není nainstalován nebo jeho integrace prohlížeče není nastavena
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Aplikace Mister Download Manager není nainstalovaná nebo není nastavená její integrace s prohlížečem
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Aplikace Mister Download Manager pak stahuje přes stejný proxy server jako tento prohlížeč. Prohlížeč vás jednou požádá o povolení; vypnutím této možnosti to zrušíte.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Aplikace Mister Download Manager pak stahuje přes stejný proxy server jako tento prohlížeč. Prohlížeč vás jednou požádá o povolení; vypnutím této možnosti toto povolení zrušíte.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5274,16 +5274,16 @@ extension	More options	Další možnosti
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never on {site}	Nikdy na {site}
+extension	Never on {site}	Nikdy na webu {site}
 #. text in the browser extension
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	Nikdy nepřevzít stahování z {site}
+extension	Never take downloads from {site}	Nikdy nepřebírat stahování z webu {site}
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Na této stránce zatím nebylo nalezeno žádné video ani zvuk. Přehrávejte jej a poté toto znovu otevřete.
+extension	No video or sound found on this page yet. Play it, then open this again.	Na této stránce zatím nebylo nalezeno žádné video ani zvuk. Spusťte přehrávání a poté toto znovu otevřete.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5308,7 +5308,7 @@ extension	Protected video: it can't be saved	Chráněné video: nelze uložit
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
-extension	Send downloads through this browser's proxy or VPN extension	Odesílat stahování přes proxy nebo VPN rozšíření tohoto prohlížeče
+extension	Send downloads through this browser's proxy or VPN extension	Předávat stahování přes proxy server nebo rozšíření VPN tohoto prohlížeče
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5320,7 +5320,7 @@ extension	Support MDM	Podpořte MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Převzít stahování z tohoto prohlížeče
+extension	Take downloads from this browser	Přebírat stahování z tohoto prohlížeče
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
@@ -5368,7 +5368,7 @@ key	Ctrl+Space	Ctrl+Mezerník
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Ctrl+Up / Ctrl+Down	Ctrl+Nahoru / Ctrl+Dolů
+key	Ctrl+Up / Ctrl+Down	Ctrl+šipka nahoru / Ctrl+šipka dolů
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5656,7 +5656,7 @@ menu	Create new queue	Vytvořit novou frontu
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Cu&t	Vyjá&dřit
+menu	Cu&t	Vy&jmout
 #. menu command in the main window
 #, machine
 menu	Dark Mode support	Podpora tmavého režimu
@@ -5747,7 +5747,7 @@ menu	Its first frame didn't show within 10 seconds	První snímek se nezobrazil 
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Poslední spuštění skončilo před prvním snímkem
+menu	Its last start ended before its first frame	Poslední spuštění skončilo před zobrazením prvního snímku
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	Říct &příteli
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Grafická karta byla ztracena dvakrát za 10 minut
+menu	The graphics card was lost twice in 10 minutes	Grafická karta dvakrát selhala během 10 minut
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine

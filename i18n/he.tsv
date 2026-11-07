@@ -6,7 +6,7 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	מחק גם את הקובץ {n} מהדיסק|מחק גם את הקבצים {n} מהדיסק|מחק גם את הקבצים {n} מהדיסק
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	מחק גם מהדיסק את {n} הקבצים|מחק גם מהדיסק את {n} הקבצים|מחק גם מהדיסק את {n} הקבצים
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -38,7 +38,7 @@
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	נמצא מאמר תואם {n} כעת (נוספים פריטים חדשים בלבד):|נמצאו {n} מאמרים תואמים כעת (נוספים פריטים חדשים בלבד):|נמצאו {n} מאמרים תואמים כעת (נוספים פריטים חדשים בלבד):
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	נמצא מאמר תואם אחד ({n}) כעת (נוספים פריטים חדשים בלבד):|נמצאו {n} מאמרים תואמים כעת (נוספים פריטים חדשים בלבד):|נמצאו {n} מאמרים תואמים כעת (נוספים פריטים חדשים בלבד):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -64,7 +64,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} בהורדה|{n} בהורדה|{n} בהורדה
+@plural	{n} downloading|{n} downloading	{n} הורדות פעילות|{n} הורדות פעילות|{n} הורדות פעילות
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
@@ -152,7 +152,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
-	(the Torrents category's folder)	(התיקיה של קטגוריית הטורנטים)
+	(the Torrents category's folder)	(התיקייה של קטגוריית הטורנטים)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -187,7 +187,7 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	לא ניתן לשמור קובץ זה של טורנט באופן בטוח: {name}
+	A file of this torrent can't be saved safely: {name}	לא ניתן לשמור בבטחה קובץ מהטורנט הזה: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -199,7 +199,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	שרת proxy מבצע הורדה זו: המיקום והזמן הם של ה-proxy, לא של השרת.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	ההורדה הזו עוברת דרך שרת proxy: המיקום והזמן הם של ה-proxy, לא של השרת.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -219,7 +219,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	חסר כרך שלו
+	a volume of it is missing	חסר אמצעי אחסון בארכיון
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	אודות Mister Download Manager
@@ -340,7 +340,7 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
-	Addresses left to the browser	כתובות שהושארו לדפדפן
+	Addresses left to the browser	כתובות שהושארו לטיפול הדפדפן
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -377,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	כל הכתוביות של המעלה
+	All the uploader's	כל הכתוביות שסיפק מעלה הסרטון
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -385,7 +385,7 @@
 	Allow more than {n} connections	אפשר יותר מ-{n} חיבורים
 #. text in errors.rs
 #, machine
-	already being downloaded: {path}	כבר מורד: {path}
+	already being downloaded: {path}	כבר מתבצעת הורדה של {path}
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
 #, machine
@@ -397,28 +397,28 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	צרף גם את נתוני הקריסה (.dmp): הם עשויים להכיל כתובות, קבצי Cookie וסיסמאות
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	צירוף נתוני קריסה (.dmp): הם עשויים להכיל כתובות, קובצי Cookie וסיסמאות
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	מחק גם את הקובץ מהדיסק
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	קח גם קבצים שהדפדפן יפתח (PDF, מוזיקה, וידאו)
+	Also take files the browser would open (PDF, music, video)	קבלת גם קבצים שהדפדפן יפתח (PDF, מוזיקה, וידאו)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	תמיד כהה
+	Always dark	מצב כהה תמיד
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Always into a folder named after it	תמיד לתוך תיקיה שנקראת על שמו
+	Always into a folder named after it	תמיד לתוך תיקייה שנקראת על שם הארכיון
 #. checkbox in a dialog box
 #, machine
-	Always turn on Speed Limiter on Mister Download Manager startup	הפעל תמיד את מגביל המהירות בעת הפעלת Mister Download Manager
+	Always turn on Speed Limiter on Mister Download Manager startup	הפעלה אוטומטית של מגביל המהירות בעת הפעלת Mister Download Manager
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
-	AM	AM
+	AM	לפנה״צ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -447,7 +447,7 @@
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
-	Answered in {ms} ms: {ip}	נענה תוך {ms} אלפיות שנייה: {ip}
+	Answered in {ms} ms: {ip}	התקבלה תשובה תוך {ms} אלפיות שנייה: {ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -501,11 +501,11 @@
 	As the system's region writes them	כפי שהאזור של המערכת כותב אותם
 #. text in the Options window
 #, machine
-	Ask it with:	שאל אותו עם:
+	Ask it with:	שאל באמצעות:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	הגששים נשאלו שוב לגבי עמיתים
+	Asked the trackers for peers again	נשלחה שוב בקשה לעוקבים לקבלת עמיתים
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -648,7 +648,7 @@
 	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	שילוב הדפדפן אינו מוגדר במחשב זה, כך שאף דפדפן עדיין אינו יכול להגיע אל Mister Download Manager.
 #. page title in the Options window
 #, machine
-	Browser/System Integration	שילוב דפדפן/מערכת
+	Browser/System Integration	שילוב עם דפדפנים ומערכת
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -668,13 +668,13 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
-	Busy, try later	תפוס, נסה שוב מאוחר יותר
+	Busy, try later	השרת עסוק, נסה שוב מאוחר יותר
 #. message or event log entry in the main window
 #, machine
 	by batch download	לפי הורדת אצווה
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	על ידי לוכד קישורים
+	by Link grabber	באמצעות לוכד הקישורים
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -732,10 +732,10 @@
 #. text in categories.rs
 #. title of the folder picker of the category dialog
 #, machine
-	Category folder	תיקיית קטגוריה
+	Category folder	תיקיית הקטגוריה
 #. text in categories.rs
 #, machine
-	Category properties	מאפייני קטגוריה
+	Category properties	מאפייני הקטגוריה
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -747,7 +747,7 @@
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
-	Certificate name:	שם אישור:
+	Certificate name:	שם האישור:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -763,7 +763,7 @@
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
-	Check all	סמן הכל
+	Check all	סמן הכול
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
@@ -879,7 +879,7 @@
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
-	Complete	הושלם
+	Complete	הושלמה
 #. text in the download list (sizes, speeds, status)
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
@@ -957,7 +957,7 @@
 	Couldn't extract {name}: {why}	לא ניתן לחלץ את {name}: {why}
 #. window title in a dialog box
 #, machine
-	Create folder	צור תיקיה
+	Create folder	צור תיקייה
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -972,13 +972,13 @@
 	Curaçao	קוראסאו
 #. text in the Options window
 #, machine
-	Customize "Download progress" dialog	התאמה אישית של תיבת הדו-שיח "התקדמות הורדה"
+	Customize "Download progress" dialog	התאמה אישית של תיבת הדו־שיח "התקדמות ההורדה"
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	התאמה אישית של מקשים למניעה או לאכיפת הורדה באמצעות MDM
+	Customize keys to prevent or force downloading with MDM	התאמה אישית של המקשים למניעה או לאילוץ של הורדה באמצעות MDM
 #. text in the Options window
 #, machine
-	Customize MDM Download panels in browsers	התאמה אישית של לוחות הורדה של MDM בדפדפנים
+	Customize MDM Download panels in browsers	התאמה אישית של לוחות ההורדה של MDM בדפדפנים
 #. text in the Options window
 #, machine
 	Customize MDM menu items in context menu of browsers	התאמה אישית של פריטי תפריט MDM בתפריט ההקשר של הדפדפנים
@@ -1000,7 +1000,7 @@
 	Daily	יומי
 #. text in the Options window
 #, machine
-	Date order:	סדר תאריכים:
+	Date order:	סדר התאריכים:
 #. page title in the Options window
 #, machine
 	Dates and times	תאריכים ושעות
@@ -1010,7 +1010,7 @@
 	Day, month, year	יום, חודש, שנה
 #. page title in the Options window
 #, machine
-	Debrid service accounts	חשבונות שירות Debrid
+	Debrid service accounts	חשבונות בשירותי Debrid
 #. text in the Scheduler window
 #, machine
 	December	דצמבר
@@ -1025,13 +1025,13 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	תיקיית הורדות ברירת מחדל עבור קטגוריה "{category}"
+	Default download directory for "{category}" category	תיקיית ברירת המחדל להורדות של הקטגוריה "{category}"
 #. page title in the Options window
 #, machine
 	Default download settings	הגדרות הורדה המוגדרות כברירת מחדל
 #. text in the Options window
 #, machine
-	Default max. conn. number	מספר חיבורים מרבי המוגדר כברירת מחדל
+	Default max. conn. number	מספר חיבורים מרבי כברירת מחדל
 #. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
@@ -1040,7 +1040,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	מחק ארכיונים לאחר חילוץ
+	Delete archives after extracting	מחיקת ארכיונים לאחר חילוץ
 #. window title in a dialog box
 #, machine
 	Delete category	מחיקת קטגוריה
@@ -1058,10 +1058,10 @@
 	Delete the queue "{queue}"? Its downloads stay in the list.	למחוק את התור "{queue}"? ההורדות שלו יישארו ברשימה.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads (asks first)	מחיקת ההורדות הנבחרות (שואל קודם)
+	Delete the selected downloads (asks first)	מחיקת ההורדות שנבחרו (נדרש אישור)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads and their files (asks first)	מחיקת ההורדות הנבחרות והקבצים שלהן (שואל קודם)
+	Delete the selected downloads and their files (asks first)	מחיקת ההורדות שנבחרו והקבצים שלהן (נדרש אישור)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1132,13 +1132,13 @@
 	Don't show this dialog again	אל תציג דו-שיח זה שוב
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	אל תתחיל להוריד באופן אוטומטי מהכתובות הבאות:
+	Don't start downloading automatically from the following addresses:	אי־התחלת הורדה אוטומטית מהכתובות הבאות:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	אל תתחיל להוריד באופן אוטומטי מהאתרים הבאים:
+	Don't start downloading automatically from the following sites:	אי־התחלת הורדה אוטומטית מהאתרים הבאים:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	אל תיקח קבצים קטנים מ־ (ק"ב, 0 = כל גודל):
+	Don't take files smaller than (KB, 0 = any size):	אין להוריד קבצים שקטנים מ־ (ק"ב, 0 = כל גודל):
 #. text in a download's progress window
 #, machine
 	Done	בוצע
@@ -1165,7 +1165,7 @@
 	Download failed	ההורדה נכשלה
 #. window title in a dialog box
 #, machine
-	Download File Info	פרטי קובץ הורדה
+	Download File Info	פרטי קובץ ההורדה
 #. text in the Add torrent window
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
@@ -1271,11 +1271,11 @@
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
-	Downloads in progress	הורדות בתהליך
+	Downloads in progress	הורדות פעילות
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Downloads stopped and will resume automatically at {time}.	ההורדות הופסקו ויחודשו אוטומטית בשעה {time}.
+	Downloads stopped and will resume automatically at {time}.	ההורדות הופסקו ויתחדשו אוטומטית בשעה {time}.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1545,7 +1545,7 @@
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	הקבצים עוברים אל: {folder}
+	Files go to: {folder}	הקבצים נשמרים ב: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	קבצים בתור
@@ -1566,7 +1566,7 @@
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
-	Find peers on the local network	מצא עמיתים ברשת המקומית
+	Find peers on the local network	איתור עמיתים ברשת המקומית
 #. text in the Add torrent window
 #. Torrent settings: the DHT, the network peers use to find each other
 #, machine
@@ -1597,7 +1597,7 @@
 	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC שומר על הצליל בדיוק, אך אינו יכול להוסיף איכות שאין לצליל המקורי באתר: הקובץ יהיה גדול יותר בלבד.
 #. text in categories.rs
 #, machine
-	Folder:	תיקיה:
+	Folder:	תיקייה:
 #. text in the Batch download window
 #. {address} = an example web address with a * in the file name
 #, machine
@@ -1611,7 +1611,7 @@
 	For your Windows account only. Another app chosen in "Open with" stays first.	עבור חשבון Windows שלך בלבד. אפליקציה אחרת שנבחרה ב"פתח באמצעות" נשארת ראשונה.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Force processes to terminate	כפה על תהליכים להסתיים
+	Force processes to terminate	כפיית סיום תהליכים
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1627,7 +1627,7 @@
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
-	Free, official and checked	חינם, רשמי ונבדק
+	Free, official and checked	חינמיים, רשמיים ונבדקים
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1806,7 +1806,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Heard Island and McDonald Islands	איי הרד ומקדונלד
+	Heard Island and McDonald Islands	איי הרד ואיי מקדונלד
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1883,14 +1883,14 @@
 	If a duplicate download link is added:	אם נוסף קישור הורדה כפול:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	אם הקובץ הקיים הושלם, הצג תיבת דו-שיח של השלמת הורדה; אחרת המשך אותו.
+	If existing file is complete, show download complete dialog; otherwise resume it.	אם ההורדה של הקובץ הקיים הושלמה, הצג תיבת דו-שיח של השלמת הורדה; אחרת, המשך את ההורדה.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	אם לא ניתן להגיע אליו, השתמש ב-DNS של המערכת
 #. checkbox in the Options window
 #, machine
-	Ignore file modification time changes when resuming a download	התעלם משינויים בזמן שינוי קובץ בעת חידוש הורדה
+	Ignore file modification time changes when resuming a download	התעלם משינויים בזמן שינוי הקובץ בעת חידוש הורדה
 #. message or event log entry in the main window
 #, machine
 	Import	ייבוא
@@ -1899,7 +1899,7 @@
 	In a queue	בתור
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	In the categories: the selected category's menu	בקטגוריות: תפריט הקטגוריה הנבחרת
+	In the categories: the selected category's menu	בקטגוריות: התפריט של הקטגוריה שנבחרה
 #. text in the Options window
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
@@ -2003,12 +2003,12 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it was stopped	הוא נעצר
+	it was stopped	הוא הופסק
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	הוא יכתוב {size}, יותר מה- {limit} שיש מקום או סיבה עבורו
+	it would write {size}, more than the {limit} there is room or reason for	הוא יכתוב {size}, יותר מ-{limit} שיש מקום או סיבה עבורו
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2154,7 +2154,7 @@
 	Libya	לוב
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Licenses and credits	רישיונות וקרדיטים
+	Licenses and credits	רישיונות ותודות
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2186,7 +2186,7 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	רשום את השאר
+	List the rest	המשך לרשום
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2222,7 +2222,7 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
-	Login	כניסה
+	Login	פרטי כניסה
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
@@ -2261,7 +2261,7 @@
 	Madagascar	מדגסקר
 #. message or event log entry in the main window
 #, machine
-	Main download queue	תור הורדות ראשי
+	Main download queue	תור ההורדות הראשי
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	הארך או קצר את הבחירה
@@ -2366,7 +2366,7 @@
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
-	Minimize to the notification area	מזער לאזור ההודעות
+	Minimize to the notification area	מזעור לאזור ההודעות
 #. text in rssdlg.rs; text in the Add torrent window
 #. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
@@ -2375,7 +2375,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
-	Missing	חסר
+	Missing	חסרים
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
@@ -2417,11 +2417,11 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Mister Download Manager's own copy, version {version}	עותק עצמי של Mister Download Manager, גירסה {version}
+	Mister Download Manager's own copy, version {version}	העותק של Mister Download Manager עצמו, גרסה {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
-	Mo	ב'
+	Mo	ב׳
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2475,7 +2475,7 @@
 	Move or rename the selected download	הזז או שנה שם של הורדה נבחרת
 #. text in a download's Properties window
 #, machine
-	Move to folder	העבר לתיקיה
+	Move to folder	העבר לתיקייה
 #. message or event log entry in the main window
 #, machine
 	Move to queue	העבר לתור
@@ -2693,7 +2693,7 @@
 	No video found on this page. Play the video, then use the Download video button over it.	לא נמצא סרטון בדף זה. הפעל את הסרטון, ולאחר מכן השתמש בלחצן הורדת סרטון מעליו.
 #. text in the Download video window
 #, machine
-	No video this can download on that page	אין סרטון שניתן להוריד בדף זה
+	No video this can download on that page	אין בדף זה סרטון שניתן להוריד
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	לא נמצאו כתובות אינטרנט ב-{file}.
@@ -2704,11 +2704,11 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
-	None on this page	אין בדף זה
+	None on this page	אין כתוביות בדף זה
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	אף אחד לא מסומן: כל פיד.
+	None ticked: every feed.	אף פיד לא מסומן: כל הפידים.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ללא: עמיתים מגיעים מ-DHT ומעמיתים אחרים
@@ -2773,14 +2773,14 @@
 	not supported by this service	לא נתמך על ידי שירות זה
 #. text in the Options window
 #, machine
-	Not used: file parts are written next to the file	לא בשימוש: חלקי קובץ נכתבים ליד הקובץ
+	Not used: file parts are written next to the file	לא בשימוש: חלקי הקובץ נכתבים ליד הקובץ
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	הערה: שרתי אינטרנט עלולים לנתק חיבור כאשר המהירות מוגבלת מדי! לכן לא מומלץ\nלהשתמש במגביל מהירות כדי להוריד משרתים שאינם תומכים בתכונת "המשך".
 #. text in the Options window
 #, machine
-	Note: These settings don't relate to queue processing	הערה: הגדרות אלו אינן קשורות לעיבוד תורים
+	Note: These settings don't relate to queue processing	הערה: הגדרות אלו אינן קשורות לעיבוד התורים
 #. message or event log entry in the main window
 #, machine
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	אין מה להוריד ב- {item}: גרור קישורים, קובץ .torrent או רשימת כתובות (.txt, .ef2).
@@ -2883,7 +2883,7 @@
 #. button in crashui.rs; button in a dialog box
 #. crash report window button: show the report's file in its folder
 #, machine
-	Open folder	פתח תיקיה
+	Open folder	פתח תיקייה
 #. checkbox in the Add torrent window
 #, machine
 	Open magnet links and .torrent files with Mister Download Manager	פתח קישורי מגנט וקבצי .torrent באמצעות Mister Download Manager
@@ -2997,7 +2997,7 @@
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
-	Paused	מושהה
+	Paused	מושהית
 #. text in a download's progress window
 #. tab title: the other computers sharing the torrent
 #, machine
@@ -3075,7 +3075,7 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: programs and installers (exe, msi)
 #, machine
-	Programs	תוכניות
+	Programs	תוכנות
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Properties of the selected download	מאפייני ההורדה הנבחרת
@@ -3237,7 +3237,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
-	Resumed	הורדה חודשה
+	Resumed	ההורדה חודשה
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
@@ -3363,7 +3363,7 @@
 #. text in a dialog box
 #. title of the folder picker
 #, machine
-	Select a folder	בחר תיקיה
+	Select a folder	בחר תיקייה
 #. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: tick every video
 #, machine
@@ -3620,7 +3620,7 @@
 #. text in a download's progress window
 #. a torrent file the user chose not to download
 #, machine
-	Skipped	דלג
+	Skipped	דולג
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
@@ -3647,7 +3647,7 @@
 	Some	חלקית
 #. text in a dialog box
 #, machine
-	Some of the torrent's files are already in this folder:	חלק מקבצי הטורנט כבר נמצאים בתיקיה זו:
+	Some of the torrent's files are already in this folder:	חלק מקובצי הטורנט כבר נמצאים בתיקייה זו:
 #. text in the Options window
 #, machine
 	Sound file	קובץ צליל
@@ -3710,7 +3710,7 @@
 	Start download at	התחל הורדה ב-
 #. checkbox in the Scheduler window
 #, machine
-	Start download on Mister Download Manager startup	התחל הורדה בעת הפעלת Mister Download Manager
+	Start download on Mister Download Manager startup	הפעלה אוטומטית של הורדה בעת הפעלת Mister Download Manager
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	התחל הורדה מיד תוך כדי הצגת תיבת הדו-שיח "פרטי קובץ הורדה"
@@ -3719,7 +3719,7 @@
 	Start main download queue	התחל תור הורדות ראשי
 #. text in a download's progress window
 #, machine
-	Start positions and download progress by connections	מיקומי התחלה והתקדמות הורדה לפי חיבורים
+	Start positions and download progress by connections	מיקומי התחלה והתקדמות ההורדה לפי חיבורים
 #. checkbox in a dialog box
 #, machine
 	Start the queue now	התחל את התור עכשיו
@@ -3730,12 +3730,12 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	התחיל
+	Started	ההורדה התחילה
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Started with gallery-dl {version}	הופעל עם gallery-dl {version}
+	Started with gallery-dl {version}	ההורדה התחילה עם gallery-dl {version}
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
@@ -3747,7 +3747,7 @@
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	התחיל עם yt-dlp {version} ({format})
+	Started with yt-dlp {version} ({format})	ההורדה התחילה עם yt-dlp {version} ({format})
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3774,7 +3774,7 @@
 #. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	הפסק רישום
+	Stop listing	הפסק את הצגת הרשימה
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	הפסק תור הורדות ראשי
@@ -3825,16 +3825,16 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	כתוביות ב{language} הגיעו בניסיון שני: הן לצד הסרטון, לא בתוכו.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	כתוביות בשפה {language} הגיעו בניסיון שני: הן לצד הסרטון, לא בתוכו.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	לא ניתן היה להוריד כתוביות ב{language}: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	לא ניתן היה להוריד כתוביות בשפה {language}: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	לא ניתן היה להוריד כתוביות ב{language}: {site} סירב (יותר מדי בקשות).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	לא ניתן היה להוריד כתוביות בשפה {language}: {site} סירב (יותר מדי בקשות).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3893,7 +3893,7 @@
 #. button in the Options window
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
-	Test	בדיקה
+	Test	בדוק
 #. window title in the Options window
 #. window title: Options → General → Test browser integration
 #, machine
@@ -3901,7 +3901,7 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Test browser integration...	בדיקת שילוב דפדפן...
+	Test browser integration...	בדוק שילוב בדפדפן...
 #. text in the Scheduler window
 #. Thursday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3913,7 +3913,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	That is more than 100,000 files: make the range smaller	זה יותר מ-100,000 קבצים: צמצם את הטווח
+	That is more than 100,000 files: make the range smaller	זה יותר מ-100,000 קבצים: הקטן את הטווח
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
@@ -3957,7 +3957,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	הקוד פג תוקף: התחבר שוב
+	the code expired: sign in again	הקוד פג תוקף: היכנס שוב
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -3996,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	ה-DHT לא הגיע לאף אחד. ייתכן שחומת אש, VPN או הרשת חוסמים את UDP, שבו משתמשים ה-DHT ורוב הגששים.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	ה-DHT לא הצליח להגיע לאף אחד. ייתכן שחומת אש, VPN או הרשת חוסמים את UDP, שבו משתמשים ה-DHT ורוב שרתי המעקב.
 #. text in errors.rs
 #, machine
 	the disk is full	הדיסק מלא
@@ -4017,7 +4017,7 @@
 	The download list could not be saved: {error}. Changes are kept while MDM runs.	לא ניתן לשמור את רשימת ההורדות: {error}. שינויים נשמרים בזמן ש-MDM פועל.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	מנהל ההורדות שאתה כבר מכיר, נבנה מחדש כדי להיות מהיר יותר. חינם וקוד פתוח תחת רישיון GNU GPL, גרסה 3 ואילך. סרטונים נמצאים על ידי yt-dlp; טורנטים פועלים על librqbit.
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	מנהל ההורדות שכבר מוכר לך, נבנה מחדש כדי להיות מהיר יותר. חינמי וקוד פתוח תחת רישיון GNU GPL, גרסה 3 ואילך. סרטונים מאתרים באמצעות yt-dlp; טורנטים פועלים באמצעות librqbit.
 #. text in a dialog box
 #, machine
 	The download queue is done.	תור ההורדות הסתיים.
@@ -4036,7 +4036,7 @@
 	the file changed on the server	הקובץ השתנה בשרת
 #. message or event log entry in the main window
 #, machine
-	The file could not be moved	הקובץ לא ניתן להעברה
+	The file could not be moved	לא ניתן להעביר את הקובץ
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4044,7 +4044,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The file could not be read: {error}	הקובץ לא ניתן לקריאה: {error}
+	The file could not be read: {error}	לא ניתן לקרוא את הקובץ: {error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4062,19 +4062,19 @@
 #. text in the Checksum window
 #. tooltip of the box showing the checksum the file really has
 #, machine
-	The file's own checksum	בדיקת תקינות הקובץ עצמו
+	The file's own checksum	סכום הביקורת של הקובץ עצמו
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	בדיקת היתרה {algorithm} של הקובץ אינה תואמת (הנתונים נשמרים; הורד אותם מחדש)
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	סכום הביקורת {algorithm} של הקובץ אינו תואם (הנתונים נשמרים; הורד אותם מחדש)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The files could not be chosen: {error}	לא ניתן היה לבחור את הקבצים: {error}
+	The files could not be chosen: {error}	לא ניתן לבחור את הקבצים: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The folder could not be created: {error}	התיקייה לא ניתנה ליצירה: {error}
+	The folder could not be created: {error}	לא ניתן ליצור את התיקייה: {error}
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	התיקיה {path} אינה זמינה (הכונן הוסר או שיתוף הרשת אינו מקוון?)
@@ -4093,7 +4093,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The list could not be saved: {error}	הרשימה לא ניתנה לשמירה: {error}
+	The list could not be saved: {error}	לא ניתן לשמור את הרשימה: {error}
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
@@ -4108,11 +4108,11 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
-	the release has no version	למהדורה אין גרסה
+	the release has no version	למהדורה אין מספר גרסה
 #. text in errors.rs
 #. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
 #, machine
-	the release has no {what}	למהדורה אין {what}
+	the release has no {what}	למהדורה חסר {what}
 #. text in errors.rs
 #, machine
 	the release's checksum list is not signed by its publisher's key	רשימת סכומי הבדיקה של המהדורה אינה חתומה על ידי המפתח של המפרסם שלה
@@ -4134,13 +4134,13 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	ההורדה שנבחרה אינה הושלמה. האם אתה בטוח שברצונך למחוק\nאותה מרשימת ההורדות של Mister Download Manager?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	ההורדה שנבחרה לא הושלמה. למחוק\nאותה מרשימת ההורדות של Mister Download Manager?
 #. text in errors.rs
 #, machine
 	the server answered {status}	השרת השיב {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	השרת אינו יכול לשלוח חלקי קובץ, ולכן לא ניתן לחדש אותו
+	the server can't send parts of the file, so it can't be resumed	השרת אינו יכול לשלוח חלקים מהקובץ, ולכן לא ניתן לחדש את ההורדה
 #. text in errors.rs
 #, machine
 	the server did not answer in time	השרת לא השיב בזמן
@@ -4187,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	הטורנט אינו קיים עוד
+	the torrent is no longer there	הטורנט כבר לא שם
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4229,7 +4229,7 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	קטגוריה או תור זה אינם מכילים הורדות עדיין.
+	This category or queue holds no downloads yet.	עדיין אין הורדות בקטגוריה או בתור הזה.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
@@ -4263,7 +4263,7 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
-	This is the installed copy, not a portable one	זוהי העותק המותקן, לא עותק נייד
+	This is the installed copy, not a portable one	זהו העותק המותקן, לא עותק נייד
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -4271,11 +4271,11 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	קישור מגנט זה אינו מציין גששים וה-DHT כבוי, כך שלא ניתן למצוא עמיתים.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	קישור מגנט זה אינו מציין שרתי מעקב וה-DHT כבוי, ולכן לא ניתן למצוא עמיתים.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
-	This needs ffmpeg	זה דורש ffmpeg
+	This needs ffmpeg	נדרשת תוכנת ffmpeg
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4393,11 +4393,11 @@
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
-	Tracker	גשש
+	Tracker	שרת מעקב
 #. text in a download's progress window
 #. tab title: the servers that list the peers
 #, machine
-	Trackers	גששים
+	Trackers	שרתי מעקב
 #. text in the Add torrent window
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
@@ -4484,7 +4484,7 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
-	Type the name the server's certificate shows.	הקלד את השם שמופיע באישור השרת.
+	Type the name the server's certificate shows.	הקלד את השם כפי שהוא מופיע בתעודת השרת.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4520,7 +4520,7 @@
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
-	Unfinished	לא גמור
+	Unfinished	לא הושלמו
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4597,13 +4597,13 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	השתמש ב-proxy/socks מבקשת דפדפן אם יש שגיאות הורדה /\nעבור ההורדות שייורטו מהדפדפן
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	שימוש ב-proxy וב-SOCKS מהבקשה של הדפדפן אם יש שגיאות הורדה /\nעבור ההורדות שיורטו מהדפדפן
 #. checkbox in a download's progress window
 #, machine
 	Use Speed Limiter	השתמש במגביל מהירות
 #. text in the Options window
 #, machine
-	Use system settings	השתמש בהגדרות מערכת
+	Use system settings	שימוש בהגדרות המערכת
 #. checkbox in the Add torrent window
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
@@ -4621,7 +4621,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the rule is on
 #, machine
-	Use this rule	השתמש בכלל זה
+	Use this rule	שימוש בכלל זה
 #. text in the Options window
 #, machine
 	Used by the list of downloads and the Scheduler.	בשימוש על ידי רשימת ההורדות והמתזמן.
@@ -4631,7 +4631,7 @@
 	User	משתמש
 #. page title in the Options window
 #, machine
-	User names and passwords for servers/sites	שמות משתמש וסיסמאות עבור שרתים/אתרים
+	User names and passwords for servers/sites	שמות משתמש וסיסמאות עבור שרתים ואתרים
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	User-Agent עבור הורדות שנוספו ידנית:
@@ -4678,14 +4678,14 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Version {version} ({commit})	גירסה {version} ({commit})
+	Version {version} ({commit})	גרסה {version} ({commit})
 #. text in the download list (sizes, speeds, status)
 #. category name: video files
 #, machine
 	Video	וידאו
 #. text in the Download video window
 #, machine
-	Video lookups use yt-dlp (about 23 MB, checked against its signature).	בדיקות וידאו משתמשות ב-yt-dlp (כ-23 מגה-בייט, נבדק מול החתימה שלו).
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	בדיקת פרטי הווידאו נעשית באמצעות yt-dlp (כ-23 מגה-בייט, נבדק מול החתימה שלו).
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4713,7 +4713,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	המתן לרשימה, או הפסק רישום
+	Wait for the list, or stop listing	המתן לרשימה, או הפסק את הצגתה
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -4749,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	תוכן ארכיון עובר:
+	What an archive holds goes:	תוכן הארכיון עובר אל:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4759,7 +4759,7 @@
 	What's new:	מה חדש:
 #. text in the Batch download window
 #, machine
-	Wildcard size	גודל תו כללי
+	Wildcard size	גודל התו הכללי
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
@@ -4788,7 +4788,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Use the proxy"
 #, machine
-	With it, incoming connections, the DHT and local peers are off.	איתו, חיבורים נכנסים, ה-DHT ועמיתים מקומיים כבויים.
+	With it, incoming connections, the DHT and local peers are off.	כשמשתמשים בו, חיבורים נכנסים, DHT ועמיתים מקומיים מושבתים.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
@@ -4826,7 +4826,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	You have version {version}.	יש לך גירסה {version}.
+	You have version {version}.	יש לך גרסה {version}.
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ו-XZ; ארכיון מפוצל (part1.rar, .7z.001) לאחר שכל הכרכים נמצאים. קובץ שכבר קיים נשמר: החדש ממוספר.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ ו-XZ; ארכיון מפוצל (.part1.rar, .7z.001) לאחר שכל הכרכים זמינים. קובץ קיים נשמר: הקובץ החדש מקבל מספר.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} אינו מחובר: דבר לא יורד עד שיחזור.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} אינו מחובר: לא יוריד דבר עד שיתחבר מחדש.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4907,7 +4907,7 @@
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} שומר את קובצי ה-Cookie שלו נעולים לעצמו ב-Windows, כך ש-yt-dlp אינו יכול לקרוא אותם. בחר Firefox באפשרויות ← כניסות לאתרים, או השתמש בלחצן 'הורד וידאו' שמעל הווידאו ב-{browser}.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} שומר את קובצי העוגיות שלו נעולים כך שרק הוא יכול לקרוא אותם ב-Windows, ולכן yt-dlp אינו יכול לקרוא אותם. בחר ב-Firefox באפשרויות ← פרטי כניסה לאתרים, או השתמש בלחצן הורד וידאו שמעל הסרטון ב-{browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4920,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} משרת קובץ זה: המיקום הוא של השרת שלו, לרוב קרוב אליך, לא של בעל האתר.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} מגיש את הקובץ הזה: המיקום הוא של השרת שלו, לרוב קרוב אליך, ולא של בעל האתר.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4937,7 +4937,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	לא ניתן היה למחוק את {file} מהדיסק: {error}
+	{file} could not be deleted from the disk: {error}	לא ניתן למחוק את {file} מהדיסק: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4947,15 +4947,15 @@
 	{file} could not be read to check it	לא ניתן היה לקרוא את {file} כדי לבדוק אותו
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} אינו עוד במקום שבו נשמר (הועבר או נמחק). 'הורד מחדש' בתפריט לחיצה ימנית משיג אותו שוב.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} כבר לא נמצא במקום שבו נשמר (הועבר או נמחק). האפשרות ״הורד מחדש״ בתפריט לחיצה ימנית מורידה אותו שוב.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: הקובץ אינו תואם את סכום הבדיקה שלו ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: הקובץ אינו תואם לסכום הביקורת שלו ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: הקובץ תואם את סכום הבדיקה שלו ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: הקובץ תואם לסכום הביקורת שלו ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4969,15 +4969,15 @@
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
-	{h} hour(s) {m} min	{h} שעה(ות) {m} דק'
+	{h} hour(s) {m} min	{h} שעות {m} דקות
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	לא ניתן להגיע ל־{ip} דרך {adapter}: אין לו כתובת מסוג זה (IPv4 או IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	לא ניתן להגיע ל-{ip} דרך {adapter}: למתאם אין כתובת מסוג זה (IPv4 או IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, אוטומטי
+	{language}, automatic	{language}, אוטומניות
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -4989,7 +4989,7 @@
 #. text in the download list (sizes, speeds, status)
 #. {m} = minutes; {s} = seconds (keep the braces as they are)
 #, machine
-	{m} min {s} sec	{m} דק' {s} שנ'
+	{m} min {s} sec	{m} דקות {s} שניות
 #. text in the Add torrent window
 #. the torrent's name, then {files} = "3 files" and {size} = its total size
 #. {name} = a file name; {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -5004,7 +5004,7 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} הוא ארכיון 7z או RAR. MDM מחלץ אותם באמצעות 7-Zip, שאינו מותקן.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} הוא ארכיון 7z או RAR. MDM מחלץ ארכיונים כאלה באמצעות 7-Zip, שאינו מותקן.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5014,7 +5014,7 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} אינו מוצע כ-{how}.
+	{name} isn't offered as {how}.	{name} אינו מוצע בתור {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5043,13 +5043,13 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} מבקש שתאשר מחשב זה תחילה: ראה את הדוא"ל שלו
+	{service} asks you to allow this computer first: see its email	{service} מבקש שתאשר תחילה את המחשב הזה: בדוק את הודעת הדוא״ל ממנו
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} לא יכול לקבל טורנט זה: אף אחד לא משתף אותו, או שהקישור שלו לא ניתן לקריאה
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} לא יכול לקבל את הטורנט הזה: אף אחד לא משתף אותו, או שאי אפשר לקרוא את הקישור שלו
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} לא יכול להגיע למארח קבצים זה כרגע; MDM ינסה שוב מאוחר יותר
+	{service} can't reach this file host right now; MDM will try again later	{service} לא יכול לגשת לאתר אירוח הקבצים הזה כרגע; MDM ינסה שוב מאוחר יותר
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -5061,7 +5061,7 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} לא יספק קובץ זה
+	{service} won't give this file	{service} לא יספק את הקובץ הזה
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -5088,7 +5088,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: המגבלה שלך עבור מארח קבצים זה נוצלה לעת עתה
+	{service}: your limit for this file host is used up for now	{service}: מכסת התעבורה שלך עבור שרת קבצים זה נוצלה לעת עתה
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -5116,7 +5116,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
-	{title}: not added: files of its names are already in {folder}	{title}: לא נוסף: קבצים בשמותיו כבר נמצאים בתיקיה {folder}
+	{title}: not added: files of its names are already in {folder}	{title}: לא נוסף: קבצים בעלי שמות זהים כבר נמצאים בתיקייה {folder}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
@@ -5125,7 +5125,7 @@
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
-	{what} can't go through a chosen network adapter ({adapter}) yet	{what} עדיין לא יכול לעבור דרך מתאם רשת נבחר ({adapter})
+	{what} can't go through a chosen network adapter ({adapter}) yet	לא ניתן להעביר את {what} דרך מתאם הרשת שנבחר ({adapter}) בשלב זה
 #. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
@@ -5196,7 +5196,7 @@ extension	Download all links with Mister Download Manager	הורד את כל ה�
 #. text in the browser extension
 #. command in the browser's right-click menu on selected text: download the links in the selection; keep the name Mister Download Manager as it is
 #, machine
-extension	Download selected links with Mister Download Manager	הורד קישורים נבחרים באמצעות Mister Download Manager
+extension	Download selected links with Mister Download Manager	הורד את הקישורים שנבחרו באמצעות Mister Download Manager
 #. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
@@ -5233,7 +5233,7 @@ extension	Hold Alt while clicking a link to let the browser download it.	החז�
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
-extension	How to fix it	כיצד לתקן זאת
+extension	How to fix it	איך לתקן זאת
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -5332,7 +5332,7 @@ extension	The download button is off on this site	לחצן ההורדה כבוי
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	פרטי הורדה זו היו גדולים מדי מכדי למסור אותם
+extension	This download's details were too large to hand over	פרטי ההורדה הזו היו גדולים מדי למסירה
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5466,7 +5466,7 @@ menu	&Exit	&יציאה
 #. verb: load downloads from a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Import	&ייבוא
+menu	&Import	&ייבא
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5572,7 +5572,7 @@ menu	Adwaita	Adwaita
 menu	Applies the next time MDM starts	חל על הפעם הבאה ש-MDM יופעל
 #. menu command in the main window
 #, machine
-menu	Arrange files	סדר קבצים
+menu	Arrange files	סדר את הקבצים
 #. menu command in the main window
 #. View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
 #, machine
@@ -5731,7 +5731,7 @@ menu	From &text file...	מ&קובץ טקסט...
 menu	H&elp contents	תוכן &עזרה
 #. menu command in the main window
 #, machine
-menu	Hide drop target	הסתר יעד שחרור
+menu	Hide drop target	הסתר את יעד השחרור
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
@@ -5747,7 +5747,7 @@ menu	Its first frame didn't show within 10 seconds	הפריים הראשון ש�
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	ההפעלה האחרונה שלו הסתיימה לפני הפריים הראשון שלו
+menu	Its last start ended before its first frame	ההפעלה האחרונה שלו הסתיימה לפני שהפריים הראשון שלו הוצג
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5774,7 +5774,7 @@ menu	Native	מערכת
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	אין כאן כרטיס גרפי עם מנהל התקן עבורו
+menu	No graphics card here has a driver for it	אין כאן כרטיס גרפי עם מנהל התקן עבור מערכת הגרפיקה הזו
 #. menu command in the main window
 #, machine
 menu	On Double click	בלחיצה כפולה
@@ -5787,14 +5787,14 @@ menu	Open	פתח
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Open &torrent file...	פתיחת קובץ &torrent...
+menu	Open &torrent file...	פתח קובץ &torrent...
 #. menu command in the main window
 #, machine
-menu	Open folder	פתח תיקיה
+menu	Open folder	פתח תיקייה
 #. menu command in the main window
 #. View → Theme: opens the folder where theme files go (TOML or JSON)
 #, machine
-menu	Open themes folder	פתח תיקיית ערכות נושא
+menu	Open themes folder	פתח את תיקיית ערכות הנושא
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5828,7 +5828,7 @@ menu	Recheck files	בדוק קבצים מחדש
 menu	Redownload	הורד מחדש
 #. menu command in the main window
 #, machine
-menu	Refresh download address	רענן כתובת הורדה
+menu	Refresh download address	רענן את כתובת ההורדה
 #. menu command in the main window
 #. verb: removes the download from the list
 #, machine
@@ -5837,18 +5837,18 @@ menu	Remove	הסר
 #. verb: removes the selected download from the list and its file from the disk
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Remove with &files	הסר עם ק&בצים
+menu	Remove with &files	הסר את הק&בצים
 #. menu command in the main window
 #. verb: removes the download from the list and its file from the disk
 #, machine
-menu	Remove with files	הסר עם קבצים
+menu	Remove with files	הסר את הקבצים
 #. menu command in the main window
 #, machine
 menu	Resume Download	המשך הורדה
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	S&cheduler	&מתזמן
+menu	S&cheduler	ה&מתזמן
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5857,7 +5857,7 @@ menu	S&ettings...	ה&גדרות...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	S&top queue	ע&צור תור
+menu	S&top queue	ע&צור את התור
 #. menu command in the main window
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
@@ -5869,18 +5869,18 @@ menu	Select &all	&בחר הכל
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Show &drop target	הצג יעד &שחרור
+menu	Show &drop target	הצג את יעד ה&שחרור
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	הצג את Mister Download Manager
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Speed &Limiter	מגביל &מהירות
+menu	Speed &Limiter	מגביל &המהירות
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Start &queue	התחל &תור
+menu	Start &queue	התחל את ה&תור
 #. menu command in the main window
 #, machine
 menu	Start now	התחל עכשיו
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	ספר ל&חבר
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	כרטיס המסך אבד פעמיים ב-10 דקות
+menu	The graphics card was lost twice in 10 minutes	כרטיס המסך הפסיק לפעול פעמיים בתוך 10 דקות
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5997,7 +5997,7 @@ toolbar	Resume	המשך
 toolbar	Scheduler	מתזמן
 #. toolbar button in the main window
 #, machine
-toolbar	Start Queue	התחל תור
+toolbar	Start Queue	התחל את התור
 #. toolbar button in the main window
 #. verb: stop the selected downloads
 #, machine
@@ -6007,7 +6007,7 @@ toolbar	Stop	עצור
 toolbar	Stop All	עצור הכל
 #. toolbar button in the main window
 #, machine
-toolbar	Stop Queue	עצור תור
+toolbar	Stop Queue	עצור את התור
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine

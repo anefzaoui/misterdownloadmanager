@@ -156,7 +156,7 @@
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
-	12-hour (9:41 PM)	12-tunnine (21:41 PM)
+	12-hour (9:41 PM)	12-tunnine (9:41 PM)
 #. text in the Options window
 #. a 24-hour clock, with an example
 #, machine
@@ -187,7 +187,7 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Selle torrendi faili ei saa turvaliselt salvestada: {name}
+	A file of this torrent can't be saved safely: {name}	Selle torrendi faili ei saa ohutult salvestada: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -199,19 +199,19 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Selle allalaadimise teostab puhverserver: asukoht ja aeg on puhverserveri, mitte serveri omad.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Allalaadimine toimub puhverserveri kaudu: asukoht ja aeg on puhverserveri, mitte serveri omad.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
-	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Aruanne salvestati. Selle saatmine GitHubi arendajatele aitab neil seda parandada; saate kõigepealt lugeda kõike, mida see allpool sisaldab. Midagi ei saadeta iseenesest: nupp Saada avab teie brauseris aruandevormi, mis on täidetud, et saaksite seda kontrollida ja esitada.
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Aruanne salvestati. Selle saatmine GitHubi arendajatele aitab neil probleemi lahendada; saate kõigepealt lugeda alt kõike, mida aruanne sisaldab. Midagi ei saadeta automaatselt: nupp Saada avab teie brauseris täidetud aruandevormi, mille saate üle vaadata ja esitada.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Reegel lisab uued artiklid, mille pealkirjadega see sobib, niipea kui need saabuvad.
+	A rule adds the new articles whose titles it matches, as they come.	Reegel lisab saabudes uued artiklid, mille pealkiri reegliga sobib.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	selle arvuti server saatis allalaadimise mujale, mis ei läheks läbi {adapter}
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	selle arvuti server suunas allalaadimise mujale, mistõttu seda ei suunataks läbi {adapter}
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -219,7 +219,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	selle maht on puudu
+	a volume of it is missing	arhiivi köide puudub
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Teave Mister Download Manageri kohta
@@ -267,7 +267,7 @@
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
-	Add Mister Download Manager to your browser	Lisage Mister Download Manager oma brauserisse
+	Add Mister Download Manager to your browser	Lisa Mister Download Manager brauserisse
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
@@ -284,7 +284,7 @@
 	Add the extension	Lisa laiend
 #. text in extension.rs
 #, machine
-	Add the free extension: files you download in your browser come here, and videos get a Download button.	Lisage tasuta laiend: brauserist allalaaditud failid tulevad siia ja videod saavad nupu „Laadi alla“.
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	Lisa tasuta laiend: brauserist allalaaditud failid tulevad siia ja videotele ilmub nupp „Laadi alla“.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -306,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Kas lisada loendisse {n} allalaadimist? Iga video saab oma rea.
+	Add {n} downloads to the list? Each video gets its own row.	Kas soovite loendisse lisada {n} allalaadimist? Iga video saab oma rea.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -315,7 +315,7 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	Lisatud RSS-reegli {rule} kaudu voost {feed}
+	Added by the RSS rule {rule} from {feed}	Lisatud RSS-reegliga {rule} voost {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -373,7 +373,7 @@
 	All files	Kõik failid
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	Kõik valmis: videoga lehel kasutage valikut Ülesanded → Laadi video lehelt alla.
+	All set: on a page with a video, use Tasks → Download video from a page.	Kõik valmis: videoga lehel valige Ülesanded → Laadi video lehelt alla.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -462,7 +462,7 @@
 	Any (the system chooses)	Suvaline (süsteem valib)
 #. text in the Scheduler window
 #, machine
-	April	Aprill
+	April	aprill
 #. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
@@ -501,7 +501,7 @@
 	As the system's region writes them	Nagu süsteemi piirkond need kirjutab
 #. text in the Options window
 #, machine
-	Ask it with:	Küsi seda koos:
+	Ask it with:	Küsi seda järgmiselt:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
@@ -510,12 +510,12 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Teenuselt küsimine...
+	Asking the service...	Teenuselt pärimine...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking...	Küsimine...
+	Asking...	Pärimine...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -523,14 +523,14 @@
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
-	Audio only, original	Ainult heli, algne
+	Audio only, original	Ainult heli, algvormingus
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
-	Audio only, original {type}	Ainult heli, algne {type}
+	Audio only, original {type}	Ainult heli, algvormingus {type}
 #. text in the Scheduler window
 #, machine
-	August	August
+	August	august
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -542,7 +542,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Automatically put in "{category}" category the following file types:	Paiguta failitüübid automaatselt kategooriasse „{category}“:
+	Automatically put in "{category}" category the following file types:	Paiguta järgmised failitüübid automaatselt kategooriasse „{category}“:
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	Alusta automaatselt järgmiste failitüüpide allalaadimist:
@@ -630,7 +630,7 @@
 	Brazil	Brasiilia
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Kas taastada {names} algne olek: nende nimed, failitüübid ja kaustad? Teie enda kategooriad, Üldine ja Torrents jäävad muutmata. Juba kausta Üldine teisaldatud allalaadimised jäävad sinna.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Kas soovite taastada {names} algse oleku: nimed, failitüübid ja kaustad? Teie enda kategooriad, Üldine ja Torrents jäävad muutmata. Juba kategooriasse Üldine teisaldatud allalaadimised jäävad sinna.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -694,7 +694,7 @@
 #. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 #, machine
-	Cancel	Loobu
+	Cancel	Tühista
 #. text in errors.rs
 #, machine
 	cancelled	tühistatud
@@ -810,7 +810,7 @@
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking {name} ({n} of {total})...	Kontrollin {name} ({n} kokku {total}st)...
+	Checking {name} ({n} of {total})...	Kontrollitakse {name} ({n}/{total})...
 #. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -954,7 +954,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	Ei saanud {name} ekstraktida: {why}
+	Couldn't extract {name}: {why}	Ei saanud arhiivi {name} lahti pakkida: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Loo kaust
@@ -975,7 +975,7 @@
 	Customize "Download progress" dialog	Kohanda dialoogi „Allalaadimise edenemine”
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Kohanda klahve allalaadimise vältimiseks või sundimiseks MDM-iga
+	Customize keys to prevent or force downloading with MDM	Kohanda klahve, et MDM-iga allalaadimist vältida või sundida
 #. text in the Options window
 #, machine
 	Customize MDM Download panels in browsers	Kohanda MDM-i allalaadimispaneele brauserites
@@ -1040,7 +1040,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Kustuta arhiivid pärast ekstraktimist
+	Delete archives after extracting	Kustuta arhiivid pärast lahtipakkimist
 #. window title in a dialog box
 #, machine
 	Delete category	Kustuta kategooria
@@ -1078,7 +1078,7 @@
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
-	DHT off	DHT väljas
+	DHT off	DHT on välja lülitatud
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1279,7 +1279,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	DR Congo	Kongo DV
+	DR Congo	Kongo Demokraatlik Vabariik
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1290,7 +1290,7 @@
 #. text in a dialog box
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 #, machine
-	Drag the file into a folder or an app	Lohistage fail kausta või rakendusse
+	Drag the file into a folder or an app	Lohista fail kausta või rakendusse
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1320,7 +1320,7 @@
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Edit list ...	Redigeeri loendit...
+	Edit list ...	Redigeeri loendit ...
 #. text in the Options window
 #, machine
 	Edit login	Redigeeri sisselogimist
@@ -1350,20 +1350,20 @@
 	End and restart MDM	Lõpeta ja taaskäivita MDM
 #. text in the Add torrent window
 #, machine
-	Enter a magnet link or choose a .torrent file	Sisestage magnetlink või valige .torrent-fail
+	Enter a magnet link or choose a .torrent file	Sisesta magnetlink või vali .torrent-fail
 #. text in the Scheduler window
 #, machine
-	Enter a name for the new queue that will be	Sisestage uue järjekorra nimi, mis on
+	Enter a name for the new queue that will be	Sisesta uue järjekorra nimi, mis on
 #. text in the Add torrent window
 #. Add trackers: OK with an empty box
 #, machine
 	Enter a tracker's address, one a line	Sisesta jälgija aadress, üks rida korraga
 #. window title in a dialog box
 #, machine
-	Enter new address to download	Sisestage uus allalaadimisaadress
+	Enter new address to download	Sisesta uus allalaadimisaadress
 #. window title in the Scheduler window
 #, machine
-	Enter queue name	Sisestage järjekorra nimi
+	Enter queue name	Sisesta järjekorra nimi
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: which episodes to take (season x episode)
 #, machine
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Iga ühendus läbib selle, alates {ip}.
+	Every connection goes through it, from {ip}.	Iga ühendus käib selle kaudu, aadressilt {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1611,7 +1611,7 @@
 	For your Windows account only. Another app chosen in "Open with" stays first.	Ainult teie Windowsi konto jaoks. Teine rakendus, mis on valitud jaotises „Ava koos”, jääb esimeseks.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Force processes to terminate	Sunni protsessid lõppema
+	Force processes to terminate	Sundlõpeta protsessid
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1697,7 +1697,7 @@
 	gallery-dl can download this gallery's files.	gallery-dl saab selle galerii failid alla laadida.
 #. text in gallerydlg.rs
 #, machine
-	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ei saa seda aadressi lugeda. Lisage see failina (Lisa URL).
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl ei saa seda aadressi lugeda. Lisa see failina (Lisa URL).
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
@@ -1723,11 +1723,11 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. button: opens 7-Zip's website (7-Zip is a program's name)
 #, machine
-	Get 7-Zip	Hangi 7-Zip
+	Get 7-Zip	Laadi alla 7-Zip
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
-	Get ready for video downloads	Valmistuge video allalaadimiseks
+	Get ready for video downloads	Valmistu videote allalaadimiseks
 #. button in the Options window
 #, machine
 	Get System	Hangi süsteem
@@ -1751,7 +1751,7 @@
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
-	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive ei anna seda faili praegu: {message} (sageli aitab brauseris Google'isse sisselogimine; vastasel juhul proovige hiljem uuesti)
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive ei anna seda faili praegu: {message} (sageli aitab brauseris Google'isse sisselogimine; muul juhul proovi hiljem uuesti)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1802,7 +1802,7 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	On
+	Have	Olemas
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1814,7 +1814,7 @@
 #. window title in helpers.rs
 #. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
 #, machine
-	Helpers	Abivahendid
+	Helpers	Abiprogrammid
 #. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Talveunne
+	Hibernate	Talveuni
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1841,7 +1841,7 @@
 	Hide web pages	Peida veebilehed
 #. text in the Options window
 #, machine
-	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Hoidke Alt-klahvi all, klõpsates lingil, et brauser selle alla laadiks Mister Download Manager asemel.
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Lingil klõpsates hoia all Alt-klahvi, et brauser laadiks selle alla Mister Download Manager asemel.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Koduleht
@@ -1873,7 +1873,7 @@
 	Hungary	Ungari
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Laadin alla Mister Download Manageriga: kiire, tasuta ja näeb välja nagu allalaadimishaldur, mida juba tunnete. {link}
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Laadin alla Mister Download Manager-iga: see on kiire, tasuta ja näeb välja nagu allalaadimishaldur, mida juba tunnete. {link}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1883,7 +1883,7 @@
 	If a duplicate download link is added:	Kui lisatakse duplikaat allalaadimislink:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Kui olemasolev fail on täielik, näita allalaadimise lõpetamise dialoogi; vastasel juhul jätka seda.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Kui olemasolev fail on täielik, näita allalaadimise lõpetamise dialoogi; muul juhul jätka allalaadimist.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -1893,7 +1893,7 @@
 	Ignore file modification time changes when resuming a download	Ignoreeri faili muutmise aja muutusi allalaadimise jätkamisel
 #. message or event log entry in the main window
 #, machine
-	Import	Impordi
+	Import	Importimine
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Järjekorras
@@ -1927,7 +1927,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window, under why
 #, machine
-	Install 7-Zip (free), then right-click the download and choose Extract.	Installige 7-Zip (tasuta), seejärel paremklõpsake allalaadimist ja valige „Paki lahti“.
+	Install 7-Zip (free), then right-click the download and choose Extract.	Installi 7-Zip (tasuta), seejärel tee allalaadimisel paremklõps ja vali „Paki lahti”.
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1955,7 +1955,7 @@
 	Into a folder named after it, when it holds several things	Selle järgi nimetatud kausta, kui see sisaldab mitut asja
 #. text in a dialog box
 #, machine
-	Invalid address	Sobivatu aadress
+	Invalid address	Sobimatu aadress
 #. text in the Options window
 #. Options → DNS over HTTPS: label before the server's IP addresses, which may be left empty
 #, machine
@@ -1987,11 +1987,11 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is damaged, or not the archive its name says	see on kahjustatud või pole arhiiv, mida selle nimi ütleb
+	it is damaged, or not the archive its name says	see on kahjustatud või pole arhiiv, millele selle nimi viitab
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	see pole arhiiv, mida MDM ekstraktib
+	it is not an archive MDM extracts	see pole arhiiv, mida MDM lahti pakib
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1999,7 +1999,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
-	It tells the computers on your network which torrents you have.	See annab teie võrgus olevatele arvutitele teada, millised torrendid teil on.
+	It tells the computers on your network which torrents you have.	See annab teie võrgus olevatele arvutitele teada, millised torrentid teil on.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2008,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	see kirjutaks {size}, rohkem kui {limit} on ruumi või põhjust
+	it would write {size}, more than the {limit} there is room or reason for	see kirjutaks {size}, mis ületab saadaoleva ruumi või mõistliku {limit}
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2161,7 +2161,7 @@
 	Liechtenstein	Liechtenstein
 #. checkbox in a dialog box
 #, machine
-	Limit all downloads together to	Piira kõiki allalaadimisi kokku
+	Limit all downloads together to	Piira kõigi allalaadimiste kogukiirust väärtuseni
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
@@ -2169,7 +2169,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	Piira kõigi torrentite üleslaadimist
+	Limit uploading for all torrents to	Piira kõigi torrentite üleslaadimiskiirust väärtuseni
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2186,12 +2186,12 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	Loetle ülejäänud
+	List the rest	Loetle ülejäänud videod
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Loetlemine peatati pärast {n} videot: {error}
+	Listing stopped after {n} videos: {error}	Videote loetlemine peatati pärast {n} videot: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -2201,7 +2201,7 @@
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Videote loetlemine: {n} kokku {total}-st
+	Listing the videos: {n} of {total}	Videote loetlemine: {n} videot {total}-st
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -2226,14 +2226,14 @@
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
-	Look links up when they arrive (name, size, online)	Otsi linke, kui need saabuvad (nimi, suurus, võrgus)
+	Look links up when they arrive (name, size, online)	Kontrolli linke nende saabumisel (nimi, suurus, võrgus)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Otsi
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: the page address was changed after the look-up
 #, machine
-	Look up the new address first	Otsige kõigepealt uus aadress
+	Look up the new address first	Otsi kõigepealt uus aadress
 #. text in the Add torrent window
 #. while a magnet link's file list is fetched, before any peer is found
 #. the trailing ... means it is still going on: keep it
@@ -2309,7 +2309,7 @@
 	Martinique	Martinique
 #. checkbox in the Find window
 #, machine
-	Match case	Erista suurt ja väikest tähte
+	Match case	Erista suur- ja väiketähti
 #. checkbox in the Find window
 #, machine
 	Match whole string only	Vasta ainult tervele stringile
@@ -2342,7 +2342,7 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
-	May	Mai
+	May	mai
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2392,7 +2392,7 @@
 #. text in crashui.rs
 #. crash report window heading: an internal error, MDM still running
 #, machine
-	Mister Download Manager hit an internal error	Mister Download Manager tabas sisemine viga
+	Mister Download Manager hit an internal error	Mister Download Manageril ilmnes sisemine viga
 #. text in wake.rs
 #. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -2432,7 +2432,7 @@
 	Monaco	Monaco
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Esmaspäev
+	Monday	esmaspäev
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	Teisalda selle allalaadimised kausta Üldine
+	Move its downloads to General	Teisalda selle allalaadimised kategooriasse Üldine
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Teisalda või nimeta valitud allalaadimine ümber
@@ -2534,7 +2534,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Hostifailis olevad nimed ja kohalikud nimed (üksikud sõnad, .local, .lan) jäävad süsteemi DNS-i. Videolehed ja torrenti jälgijad kasutavad praegu süsteemi DNS-i.
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Hosts-failis olevad nimed ja kohalikud nimed (üksikud sõnad, .local, .lan) jäävad süsteemi DNS-i. Videolehed ja torrentijälgijad kasutavad praegu süsteemi DNS-i.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2558,7 +2558,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Netherlands	Holland
+	Netherlands	Madalmaad
 #. text in the Options window
 #, machine
 	Network adapter:	Võrguadapter:
@@ -2624,11 +2624,11 @@
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
-	no data folder	andmekausta pole
+	no data folder	Andmekaust puudub
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 #, machine
-	no data folder for torrents	torrentide jaoks andmekausta pole
+	no data folder for torrents	Torrentide andmekaust puudub
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	Kaustu pole veel
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	Ei läheb tagasi, et valida teine kaust.
+	No goes back, to choose another folder.	Valides „Ei”, saate tagasi minna ja valida teise kausta.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2664,21 +2664,21 @@
 	No mail app opened.	Meilirakendust ei avatud.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	No mail app: the message is copied, paste it in your mail.	Meilirakendust pole: sõnum on kopeeritud, kleepige see oma meili.
+	No mail app: the message is copied, paste it in your mail.	Meilirakendust pole: sõnum on kopeeritud, kleepige see oma meilisõnumisse.
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	ükski kaaslane ei saatnud torrenti faililoendit õigel ajal
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Kaaslasi pole veel. Seda torrentit jagavad vähesed inimesed või tulemüür, VPN või võrk blokeerib BitTorrenti.
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Kaaslasi pole veel. Seda torrentit jagab vähe inimesi või BitTorrenti ühendust blokeerib tulemüür, VPN või võrk.
 #. text in the Options window
 #, machine
 	No proxy/socks	Proxyt/SOCKS-i pole
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Süsteemi võtmehoidja ei vastanud, seega hoitakse sisselogimisi ja paroole MDM-i seadetes, mida saate lugeda ainult teie.
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Süsteemi võtmehoidja ei vastanud, seega hoitakse sisselogimisandmeid ja paroole MDM-i seadetes, millele pääsete juurde ainult teie.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2704,14 +2704,14 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
-	None on this page	Sellel lehel puudub
+	None on this page	Sellel lehel puuduvad
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
 	None ticked: every feed.	Ühtegi pole märgitud: iga voog.
 #. text in a download's progress window
 #, machine
-	None: peers come from the DHT and other peers	Puudub: kaaslased tulevad DHT-st ja teistelt kaaslastelt
+	None: peers come from the DHT and other peers	Ühtegi pole: kaaslased tulevad DHT-st ja teistelt kaaslastelt
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2746,7 +2746,7 @@
 	Not a tracker address: {line}	Pole jälgija aadress: {line}
 #. text in errors.rs
 #, machine
-	not enough disk space: {needed} needed, {free} free	ebapiisavalt kettaruumi: vaja {needed}, vaba {free}
+	not enough disk space: {needed} needed, {free} free	Kettaruumi pole piisavalt: vaja {needed}, vaba {free}
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
@@ -2786,20 +2786,20 @@
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Midagi pole allalaadimiseks üksuses {item}: lohistage linke, .torrent-faili või aadressiloendit (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
-	November	November
+	November	november
 #. text in the Options window
 #, machine
 	Number	Number
 #. checkbox in the Scheduler window
 #, machine
-	Number of retries for each file if downloading failed :	Iga faili uuesti proovimiste arv, kui allalaadimine ebaõnnestus:
+	Number of retries for each file if downloading failed :	Ebaõnnestunud allalaadimise korduskatsete arv:
 #. option (radio button) in the Batch download window
 #. the * in the address runs through numbers
 #, machine
 	Numbers	Numbrid
 #. text in the Scheduler window
 #, machine
-	October	Oktoober
+	October	oktoober
 #. option (radio button) in the Options window
 #, machine
 	Off	Väljas
@@ -3127,7 +3127,7 @@
 	Queue processing started	Järjekorra töötlemine algas
 #. text in the Options window
 #, machine
-	Queue processing stopped/finished	Järjekorra töötlemine peatatud/lõpetatud
+	Queue processing stopped/finished	Järjekorra töötlemine peatati/lõpetati
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3218,7 +3218,7 @@
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
-	Restart MDM	Taaskäivita MDM
+	Restart MDM	Käivita MDM uuesti
 #. button in the Options window; text in the Options window
 #, machine
 	Restore the built-in categories	Taasta sisseehitatud kategooriad
@@ -3344,7 +3344,7 @@
 #. text in a download's progress window
 #. label before the folder the torrent is saved in
 #, machine
-	Saved in	Salvestatud asukohta
+	Saved in	Salvestatud kausta
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
@@ -3380,10 +3380,10 @@
 	Select none	Ära vali ühtegi
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Select or unselect one more download	Vali või tühista ühe allalaadimise valik
+	Select or unselect one more download	Vali või tühista veel ühe allalaadimise valik
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Select or unselect the download with the dotted outline	Vali või tühista punktjoonega allalaadimise valik
+	Select or unselect the download with the dotted outline	Vali või tühista punktiirjoonega ümbritsetud allalaadimise valik
 #. group box title in the Options window
 #, machine
 	Select sounds for Mister Download Manager events	Vali helid Mister Download Manageri sündmuste jaoks
@@ -3423,7 +3423,7 @@
 	Sent	Saadetud
 #. text in the Scheduler window
 #, machine
-	September	September
+	September	september
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3526,23 +3526,23 @@
 	Show details >>	Näita üksikasju >>
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
-	Show download complete dialog	Kuva allalaadimise lõpetamise dialoog
+	Show download complete dialog	Näita allalaadimise lõpetamise dialoogi
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
 	Show me how	Näita, kuidas
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on closing batch download dialogs	Kuva järjekorra valikupaneel pakettallalaadimise dialoogide sulgemisel
+	Show queue selection panel on closing batch download dialogs	Näita järjekorra valikupaneeli pakettallalaadimise dialoogide sulgemisel
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on pressing "Download Later" button	Kuva järjekorra valikupaneel nupu „Laadi hiljem alla” vajutamisel
+	Show queue selection panel on pressing "Download Later" button	Näita järjekorra valikupaneeli nupu „Laadi hiljem alla” vajutamisel
 #. checkbox in the Options window
 #, machine
-	Show start download dialog	Kuva allalaadimise alustamise dialoog
+	Show start download dialog	Näita allalaadimise alustamise dialoogi
 #. checkbox in the Options window; checkbox in the Scheduler window
 #, machine
-	Show warning before stopping downloads	Kuva hoiatus enne allalaadimiste peatamist
+	Show warning before stopping downloads	Näita hoiatust enne allalaadimiste peatamist
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	Kuvatakse torrenti allalaadimise ajal.
@@ -3573,7 +3573,7 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	Sisse logitud kui {user} ({state})
+	Signed in as {user} ({state})	Sisse logitud kasutajana {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
@@ -3710,10 +3710,10 @@
 	Start download at	Alusta allalaadimist kell
 #. checkbox in the Scheduler window
 #, machine
-	Start download on Mister Download Manager startup	Alusta allalaadimist Mister Download Manageri käivitamisel
+	Start download on Mister Download Manager startup	Alusta allalaadimist rakenduse Mister Download Manager käivitamisel
 #. checkbox in the Options window
 #, machine
-	Start downloading immediately while displaying "Download File Info" dialog	Alusta allalaadimist kohe, kuvades samal ajal dialoogi „Allalaadimise failiteave”
+	Start downloading immediately while displaying "Download File Info" dialog	Alusta allalaadimist kohe, kuvades samal ajal dialoogi „Allalaadimise faili teave”
 #. text in the tray icon's menu
 #, machine
 	Start main download queue	Käivita peamine allalaadimisjärjekord
@@ -3730,7 +3730,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	Käivitatud
+	Started	Käivitati
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
@@ -3739,11 +3739,11 @@
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
-	Started with the computer, it starts minimized: no notification area shows its icon here	Käivitatakse arvutiga, see käivitub minimeeritult: siin ei näita selle ikooni teavitusalal
+	Started with the computer, it starts minimized: no notification area shows its icon here	Arvutiga käivitamisel käivitub minimeeritult: siin ei kuvata selle ikooni teavitusalal
 #. text in the Options window
 #. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
 #, machine
-	Started with the computer, it waits in the notification area	Käivitatakse arvutiga, see ootab teavitusalal
+	Started with the computer, it waits in the notification area	Arvutiga käivitamisel ootab see teavitusalal
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
@@ -3996,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT ei jõudnud kellegini. Tulemüür, VPN või võrk võib blokeerida UDP-d, mida DHT ja enamik jälgijaid kasutavad.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT ei saanud kelleltki vastust. Tulemüür, VPN või võrk võib blokeerida UDP-liiklust, mida kasutavad DHT ja enamik jälgijaid.
 #. text in errors.rs
 #, machine
 	the disk is full	ketas on täis
@@ -4066,7 +4066,7 @@
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	faili {algorithm} kontrollsumma ei ühti (andmed on alles; laadige uuesti alla)
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	faili {algorithm} kontrollsumma ei ühti (andmed on alles; laadige fail uuesti alla)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4108,7 +4108,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
-	the release has no version	väljaandel pole versiooni
+	the release has no version	väljaandel pole versiooninumbrit
 #. text in errors.rs
 #. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
 #, machine
@@ -4143,7 +4143,7 @@
 	the server can't send parts of the file, so it can't be resumed	server ei saa faili osi saata, seega ei saa seda jätkata
 #. text in errors.rs
 #, machine
-	the server did not answer in time	server ei vastanud õigeaegselt
+	the server did not answer in time	server ei vastanud õigel ajal
 #. text in errors.rs
 #, machine
 	the server did not send the requested part	server ei saatnud soovitud osa
@@ -4167,7 +4167,7 @@
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Sümboleid ei õnnestunud tuua: mõned aruande read näitavad nimede asemel aadresse (arendajad saavad neid siiski lugeda).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Sümboleid ei õnnestunud alla laadida: mõnel aruande real on nimede asemel aadressid (arendajad saavad neid siiski lugeda).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
@@ -4248,7 +4248,7 @@
 	This date has passed: the queue will not start	See kuupäev on möödas: järjekord ei käivitu
 #. text in a dialog box
 #, machine
-	This folder does not exist:	Seda kausta ei eksisteeri:
+	This folder does not exist:	Seda kausta pole olemas:
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4275,7 +4275,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
-	This needs ffmpeg	See vajab ffmpeg-i
+	This needs ffmpeg	Selleks on vaja ffmpeg-i
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4288,14 +4288,14 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this program isn't {name}	see programm pole {name}
+	this program isn't {name}	see pole {name}
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Selles süsteemis pole sissehelistamisühendusi, mida katkestada
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	sellel torrentil on failinimi, mida ei ole ohutu kirjutada, seega seda ei lisatud: {name}
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	selle torrenti failinime pole ohutu salvestada, seega seda ei lisatud: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	See torrent on juba allalaadimiste loendis
@@ -4309,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	See video vajab sisselogimist. Kasutage brauseris selle kohal olevat nuppu „Laadi video alla”, mis edastab teie sisselogimise, või valige oma brauser valikutes „Valikud → Saidilogimised → Küpsised videolehtede jaoks”.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Selle video vaatamiseks peate olema sisse logitud. Kasutage brauseris video kohal olevat nuppu „Laadi video alla”, mis edastab teie sisselogimisandmed, või valige oma brauser jaotises Valikud → Saidilogimised → Küpsised videolehtede jaoks.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4325,7 +4325,7 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Läbi teenuse {service}: teenus laadib torrendi alla, seejärel MDM selle failid
+	Through {service}: the service downloads the torrent, then MDM its files	Teenuse {service} kaudu: teenus laadib torrenti alla, seejärel laadib MDM selle failid alla
 #. text in the Scheduler window
 #, machine
 	Thursday	Neljapäev
@@ -4380,7 +4380,7 @@
 #. text in torrent downloads
 #. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
 #, machine
-	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrenti seaded käskivad kasutada puhverserverit, kuid Puhverserver / Socks ei sisalda SOCKS5 puhverserverit
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrenti sätted nõuavad puhverserveri kasutamist, kuid jaotises Puhverserver / Socks pole ühtegi SOCKS5-puhverserverit
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -4389,7 +4389,7 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	torrente ei saanud käivituda: {error}
+	torrents could not start: {error}	Torrenteid ei saanud käivitada: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -4402,7 +4402,7 @@
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Trackers to add to {name}, one address a line:	Jälgijad, mis lisatakse failile {name}, üks aadress rea kohta:
+	Trackers to add to {name}, one address a line:	Failile {name} lisatavad jälgijad, üks aadress rea kohta:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Edastuskiirus
@@ -4593,7 +4593,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Use one * only	Kasutage ainult ühte *
+	Use one * only	Kasuta ainult ühte *
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4614,7 +4614,7 @@
 	Use the token	Kasuta tunnust
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	Kasutada neid selle torrenti jaoks? Sobivad säilitatakse, ülejäänud asendatakse.
+	Use them for this torrent? What matches it is kept, the rest replaced.	Kas kasutada neid selle torrenti jaoks? Sobivad säilitatakse, ülejäänud asendatakse.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Kasuta seda puhverserverit järgmiste protokollide jaoks:
@@ -4792,7 +4792,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
-	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Sõnad: kõik; | alternatiivide vahel; * ja ?. Episoodid: 1x2;1x5-8;2x1-. Iga episood üks kord.
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Sõnad: kõik sõnad; | alternatiivide vahel; * ja ?. Episoodid: 1x2;1x5-8;2x1-. Iga episood üks kord.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Kuupäevade ja kellaaegade kirjutamine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} pole ühendatud: midagi ei laadita alla enne, kui see tagasi on.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} pole ühendatud: midagi ei laadita alla enne, kui see taas ühendatud on.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4911,12 +4911,12 @@
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: laiendus ühendatud
+	{browser}: the extension connected	{browser}: laiendus on ühendatud
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: laiendus {version} ühendatud
+	{browser}: the extension {version} connected	{browser}: laiendus {version} on ühendatud
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
@@ -5073,7 +5073,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: fail on failimajutajalt kadunud või pole saadaval
+	{service}: the file is gone or unavailable on the file host	{service}: fail on failimajutajast kadunud või pole seal saadaval
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -5130,7 +5130,7 @@
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{what} could not be installed: {error}	{what}i ei saanud installida: {error}
+	{what} could not be installed: {error}	{what} ei saanud installida: {error}
 #. column title in the download list in the download list
 #. past participle: when the download was added
 #, machine
@@ -5213,7 +5213,7 @@ extension	Downloads from {site} stay with the browser	Allalaadimised saidilt {si
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
-extension	Drag to move it along the video's edge	Liigutamiseks lohistage video serva mööda
+extension	Drag to move it along the video's edge	Lohista video serva mööda, et seda liigutada
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5225,11 +5225,11 @@ extension	Help	Abi
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Peida sellel videol
+extension	Hide on this video	Peida ainult selle video puhul
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Hoidke Alt-klahvi all, klõpsates lingil, et brauser selle alla laadiks.
+extension	Hold Alt while clicking a link to let the browser download it.	Hoia all Alt-klahvi ja klõpsa lingil, et brauser selle alla laadiks.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5237,7 +5237,7 @@ extension	How to fix it	Kuidas seda parandada
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
-extension	Live	Otse
+extension	Live	Otseülekanne
 #. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
@@ -5265,7 +5265,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager laadib seejärel alla sama puhverserveri kaudu, mida see brauser kasutab. Brauser küsib teilt selleks üks kord luba; selle väljalülitamine tühistab selle.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager laadib seejärel alla sama puhverserveri kaudu, mida see brauser kasutab. Brauser küsib teilt selleks ühe korra luba; selle väljalülitamisel luba tühistatakse.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5279,11 +5279,11 @@ extension	Never on {site}	Mitte kunagi saidil {site}
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	Ära kunagi võta allalaadimisi saidilt {site}
+extension	Never take downloads from {site}	Ära võta enam allalaadimisi saidilt {site}
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Sellelt lehelt pole veel videot ega heli leitud. Esitage see ja avage seejärel uuesti.
+extension	No video or sound found on this page yet. Play it, then open this again.	Sellelt lehelt pole veel videot ega heli leitud. Esitage seda ja avage seejärel see uuesti.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5304,11 +5304,11 @@ extension	Protected	Kaitstud
 #. text in the browser extension
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
-extension	Protected video: it can't be saved	Kaitstud video: seda ei saa salvestada
+extension	Protected video: it can't be saved	Kaitstud videot ei saa salvestada
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
-extension	Send downloads through this browser's proxy or VPN extension	Saada allalaadimised selle brauseri puhverserveri või VPN-i laienduse kaudu
+extension	Send downloads through this browser's proxy or VPN extension	Suuna allalaadimised selle brauseri puhverserveri või VPN-laienduse kaudu
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5320,11 +5320,11 @@ extension	Support MDM	Toeta MDM-i
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Võta allalaadimised sellest brauserist
+extension	Take downloads from this browser	Suuna allalaadimised sellest brauserist rakendusse
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
-extension	The connection to Mister Download Manager failed	Ühendus rakendusega Mister Download Manager nurjus
+extension	The connection to Mister Download Manager failed	Ühenduse loomine rakendusega Mister Download Manager nurjus
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
@@ -5336,7 +5336,7 @@ extension	This download's details were too large to hand over	Selle allalaadimis
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	Värskendage rakendust Mister Download Manager, et kasutada kõike, mida see laiendus pakub
+extension	Update Mister Download Manager to use everything this extension offers	Värskendage rakendust Mister Download Manager, et kasutada kõiki laienduse võimalusi
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5376,7 +5376,7 @@ key	Delete	Kustuta
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Drag on blank space	Lohista tühjale kohale
+key	Drag on blank space	Lohista tühjale alale
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5481,7 +5481,7 @@ menu	&Language...	&Keel...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Link grabber...	&Lingihaaraja...
+menu	&Link grabber...	&Linkide püüdja...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5561,7 +5561,7 @@ menu	Add category	Lisa kategooria
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add trackers...	Lisa jälgijad...
+menu	Add trackers...	Lisa jälgijaid...
 #. menu command in the main window
 #. View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
 #, machine
@@ -5739,11 +5739,11 @@ menu	High contrast	Kõrge kontrastsus
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	Ei saanud käivituda: logi ütleb miks
+menu	It couldn't start: the log says why	Ei saanud käivituda: logis on kirjas põhjus
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
-menu	Its first frame didn't show within 10 seconds	Selle esimene kaader ei ilmunud 10 sekundi jooksul
+menu	Its first frame didn't show within 10 seconds	Esimest kaadrit ei ilmunud 10 sekundi jooksul
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
@@ -5777,7 +5777,7 @@ menu	Native	Süsteemne
 menu	No graphics card here has a driver for it	Ühelgi graafikakaardil siin pole selle jaoks draiverit
 #. menu command in the main window
 #, machine
-menu	On Double click	Topeltklõpsul
+menu	On Double click	Topeltklõpsamisel
 #. menu command in the main window
 #. verb: opens the downloaded file
 #. what double-clicking a download does — verb: open the file
@@ -5916,7 +5916,7 @@ menu	To &IDM export file...	Ekspordi &IDM-i faili...
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	To &text file...	&Tekstifaili...
+menu	To &text file...	Ekspordi &tekstifaili...
 #. menu command in the main window
 #. noun: the toolbar (submenu of View with its settings)
 #, machine

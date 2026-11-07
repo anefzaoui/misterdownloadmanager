@@ -6,7 +6,7 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ջնջել նաև {n} ֆայլը սկավառակից|Ջնջել նաև {n} ֆայլերը սկավառակից
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ջնջել նաև {n} ֆայլը սկավառակից|Ջնջել նաև {n} ֆայլը սկավառակից
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -187,15 +187,15 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Այս թորենթի ֆայլը հնարավոր չէ անվտանգ պահել՝ {name}
+	A file of this torrent can't be saved safely: {name}	Այս տորենտի ֆայլը հնարավոր չէ անվտանգ պահել՝ {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS-ի կոնֆիգուրացիայի ID-ն վեց տառ և թիվ է (0-9, a-f):
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS-ի կոնֆիգուրացիայի ID-ն վեց տառից և թվերից է բաղկացած (0-9, a-f):
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
-	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Պրոֆիլի անունը կամ դրա թղթապանակը։ Դատարկ՝ վերջին անգամ օգտագործված պրոֆիլը։ Chromium-ի վրա հիմնված բրաուզերի համար, որը նշված չէ (Helium, Thorium...), ընտրեք Chromium-ը և դրա պրոֆիլի թղթապանակը։
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Պրոֆիլի անունը կամ դրա թղթապանակը։ Դատարկ՝ վերջին անգամ օգտագործված պրոֆիլը։ Chromium-ի վրա հիմնված, բայց ցանկում նշված չլինող բրաուզերի համար (Helium, Thorium...), ընտրեք Chromium-ը և դրա պրոֆիլի թղթապանակը։
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -207,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Կանոնն ավելացնում է նոր հոդվածները, որոնց վերնագրերին համապատասխանում է, երբ դրանք հայտնվում են։
+	A rule adds the new articles whose titles it matches, as they come.	Կանոնն ավելացնում է նոր հոդվածները, որոնց վերնագրերը համապատասխանում են դրան, երբ դրանք հայտնվում են։
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -306,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Ավելացնե՞լ {n} ներբեռնում ցուցակին: Յուրաքանչյուր տեսանյութ կունենա իր առանձին տողը։
+	Add {n} downloads to the list? Each video gets its own row.	Ավելացնե՞լ {n} ներբեռնում ցուցակին։ Յուրաքանչյուր տեսանյութ կունենա իր առանձին տողը։
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -377,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Բեռնողի բոլորը
+	All the uploader's	Բոլոր վերբեռնողի
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -403,7 +403,7 @@
 	Also delete the file from disk	Ջնջել նաև ֆայլը սկավառակից
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	Նաև վերցնել այն ֆայլերը, որոնք զննարկիչը կբացեր (PDF, երաժշտություն, տեսանյութ)
+	Also take files the browser would open (PDF, music, video)	Նաև ներբեռնել այն ֆայլերը, որոնք զննարկիչը կբացեր (PDF, երաժշտություն, տեսանյութ)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -668,7 +668,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
-	Busy, try later	Զբաղված է, փորձեք ավելի ուշ
+	Busy, try later	Ծանրաբեռնված է, փորձեք ավելի ուշ
 #. message or event log entry in the main window
 #, machine
 	by batch download	ըստ խմբաքանակային ներբեռնման
@@ -725,7 +725,7 @@
 	Categories	Կատեգորիաներ
 #. page title in the Options window
 #, machine
-	Categories, file types, folders	Կատեգորիաներ, ֆայլի տեսակներ, թղթապանակներ
+	Categories, file types, folders	Կատեգորիաներ, ֆայլերի տեսակներ, պանակներ
 #. text in a dialog box; text in the Options window
 #, machine
 	Category	Կատեգորիա
@@ -981,7 +981,7 @@
 	Customize MDM Download panels in browsers	Անհատականացնել MDM ներբեռնման վահանակները դիտարկիչներում
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	Անհատականացնել MDM մենյուի տարրերը դիտարկիչների համատեքստային մենյուում
+	Customize MDM menu items in context menu of browsers	Անհատականացնել MDM ընտրացանկի տարրերը դիտարկիչների համատեքստային ընտրացանկում
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1078,7 +1078,7 @@
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
-	DHT off	DHT անջատված է
+	DHT off	DHT-ն անջատված է
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1093,11 +1093,11 @@
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
-	DNS over HTTPS	DNS HTTPS-ի միջոցով
+	DNS over HTTPS	DNS-ը HTTPS-ի միջոցով
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
 #, machine
-	DNS over TLS	DNS TLS-ի միջոցով
+	DNS over TLS	DNS-ը TLS-ի միջոցով
 #. window title in the Options window
 #. window title: the settings of the DNS chosen in Options → Connection
 #, machine
@@ -1110,7 +1110,7 @@
 	Do not start downloading, only add files to the queue	Մի սկսել ներբեռնումը, միայն ֆայլեր ավելացնել հերթին
 #. text in a dialog box
 #, machine
-	Do you want to create it?	Ցանկանո՞ւմ եք ստեղծել այն:
+	Do you want to create it?	Ցանկանո՞ւմ եք ստեղծել այն։
 #. text in the download list (sizes, speeds, status)
 #. category name: documents (pdf, doc…)
 #, machine
@@ -1156,7 +1156,7 @@
 #. window title in gallerydlg.rs
 #. window title: download an image gallery's files (gallery-dl)
 #, machine
-	Download a gallery	Ներբեռնել պատկերասրահ
+	Download a gallery	Ներբեռնել պատկերասրահի ֆայլերը
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
 	Download complete	Ներբեռնումն ավարտված է
@@ -1263,7 +1263,7 @@
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #, machine
-	Downloading {name} ({n} of {total})... {percent}	{name}-ի ներբեռնում ({n}-ը {total}-ից)... {percent}
+	Downloading {name} ({n} of {total})... {percent}	Ներբեռնվում է {name} ({n}-ը՝ {total}-ից)... {percent}
 #. text in the download list; text in the Options window
 #. tab title: download settings
 #, machine
@@ -1336,7 +1336,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	El Salvador	Սալվադոր
+	El Salvador	Էլ Սալվադոր
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	Էլ. փոստ
@@ -1420,7 +1420,7 @@
 #. text in the tray icon's menu
 #. verb: quit the app
 #, machine
-	Exit	Ելք
+	Exit	Դուրս գալ
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Exit Mister Download Manager when done	Ելք Mister Download Manager-ից ավարտելուց հետո
@@ -1431,7 +1431,7 @@
 #. event log entry: the user gave the checksum the file must have
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	Expected checksum set ({algorithm})	Սահմանված է ակնկալվող ստուգիչ գումարը ({algorithm})
+	Expected checksum set ({algorithm})	Սահմանվել է ակնկալվող ստուգիչ գումարը ({algorithm})։
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
@@ -1441,7 +1441,7 @@
 	Export	Արտահանել
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Ընդլայնել Manifest 2 Chrome ընդլայնումների հասանելիությունը
+	Extend the availability of Manifest 2 Chrome extensions	Երկարացնել Manifest 2 Chrome ընդլայնումների հասանելիությունը
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Ընդլայնումները բաժանված են բացատներով, օրինակ՝ MP4 MKV R0*
@@ -1465,7 +1465,7 @@
 #. a download's status: its archive is being extracted (#37)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Extracting...	Արխիվացվում է...
+	Extracting...	Արխիվը հանվում է...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1496,7 +1496,7 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
-	Fetched again every 7 days. Changes apply when no torrent is running.	Նորից բեռնվում է յուրաքանչյուր 7 օրը մեկ։ Փոփոխությունները կիրառվում են, երբ տորենտ չի աշխատում։
+	Fetched again every 7 days. Changes apply when no torrent is running.	Նորից ներբեռնվում է յուրաքանչյուր 7 օրը մեկ։ Փոփոխությունները կիրառվում են, երբ ոչ մի տորենտ չի աշխատում։
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1541,14 +1541,14 @@
 #. text in gallerydlg.rs
 #. label before the box for how many of a gallery's files to download at most
 #, machine
-	Files at most	Առավելագույնը ֆայլեր
+	Files at most	Ֆայլերի առավելագույն քանակը
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	Ֆայլերը գնում են՝ {folder}
+	Files go to: {folder}	Ֆայլերը պահվում են՝ {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
-	Files in the queue	Ֆայլերը հերթում
+	Files in the queue	Հերթում գտնվող ֆայլեր
 #. button in the Find window
 #. verb: button that starts the search
 #, machine
@@ -1594,7 +1594,7 @@
 #. text in the Download video window
 #. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
 #, machine
-	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC-ը պահպանում է ձայնը ճշգրիտ, բայց չի կարող ավելացնել որակ, որը կայքի ձայնը չունի. ֆայլը միայն ավելի մեծ է։
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC-ը ճշգրտորեն պահպանում է ձայնը, բայց չի կարող բարելավել կայքի ձայնի որակը․ ֆայլը պարզապես ավելի մեծ է։
 #. text in categories.rs
 #, machine
 	Folder:	Թղթապանակը:
@@ -1605,17 +1605,17 @@
 #. text in the Add torrent window
 #. Torrent settings, under the switch that makes MDM open magnet links and .torrent files (macOS, Linux)
 #, machine
-	For your account only. Another app set as the default stays first.	Միայն ձեր հաշվի համար։ Մեկ այլ հավելված, որը սահմանված է որպես լռելյայն, մնում է առաջինը։
+	For your account only. Another app set as the default stays first.	Միայն Ձեր հաշվի համար։ Մեկ այլ՝ որպես լռելյայն ընտրված հավելվածը մնում է առաջնային։
 #. text in the Add torrent window
 #, machine
-	For your Windows account only. Another app chosen in "Open with" stays first.	Միայն ձեր Windows հաշվի համար։ «Բացել այլ ծրագրով»-ում ընտրված մեկ այլ ծրագիրը մնում է առաջինը։
+	For your Windows account only. Another app chosen in "Open with" stays first.	Միայն Ձեր Windows հաշվի համար։ «Բացել այլ ծրագրով» բաժնում ընտրված մեկ այլ ծրագիրը մնում է առաջնային։
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Force processes to terminate	Ստիպել գործընթացներին ավարտվել
+	Force processes to terminate	Ստիպել գործընթացների ավարտը
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
-	Fr	Ուր
+	Fr	Ուրբ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1623,7 +1623,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	անվճար հաշիվ. հղումներին անհրաժեշտ է պրեմիում
+	free account: links need premium	անվճար հաշիվ․ հղումներն ապակողպելու համար անհրաժեշտ է պրեմիում հաշիվ
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1669,13 +1669,13 @@
 	from the browser	դիտարկիչից
 #. message or event log entry in the main window
 #, machine
-	from the command line	հրամանատարի տողից
+	from the command line	հրամանի տողից
 #. text in the Batch download window
 #, machine
 	From:	Սկսած:
 #. checkbox in the Options window
 #, machine
-	ftp	ftp
+	ftp	FTP
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1687,7 +1687,7 @@
 #. text in gallerydlg.rs
 #. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
 #, machine
-	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Պատկերասրահներն օգտագործում են gallery-dl. տեղադրեք այն ձեր համակարգի փաթեթներով (Homebrew, pip), ապա ընտրեք այն Օգնականներում։
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Պատկերասրահները ներբեռնելու համար օգտագործվում է gallery-dl․ տեղադրեք այն համակարգի փաթեթների միջոցով (Homebrew, pip), ապա ընտրեք այն «Օգնականներ» բաժնում։
 #. text in gallerydlg.rs
 #, machine
 	gallery-dl can download this gallery's files.	gallery-dl-ը կարող է ներբեռնել այս պատկերասրահի ֆայլերը։
@@ -1775,7 +1775,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Guernsey	Ջերսի
+	Guernsey	Գերնսի
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1798,7 +1798,7 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	Ունի
+	Have	Ներբեռնված է
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1879,7 +1879,7 @@
 	If a duplicate download link is added:	Եթե կրկնօրինակ ներբեռնման հղում է ավելացվել:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Եթե առկա ֆայլը ամբողջական է, ցուցադրել ներբեռնումն ավարտված երկխոսության պատուհանը. հակառակ դեպքում՝ վերսկսել այն։
+	If existing file is complete, show download complete dialog; otherwise resume it.	Եթե առկա ֆայլն ամբողջական է, ցուցադրել ներբեռնումն ավարտված լինելու երկխոսության պատուհանը, հակառակ դեպքում՝ վերսկսել այն։
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -1923,7 +1923,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window, under why
 #, machine
-	Install 7-Zip (free), then right-click the download and choose Extract.	Տեղադրեք 7-Zip-ը (անվճար), այնուհետև աջ սեղմեք ներբեռնման վրա և ընտրեք «Արխիվացնել»։
+	Install 7-Zip (free), then right-click the download and choose Extract.	Տեղադրեք 7-Zip-ը (անվճար), այնուհետև աջ սեղմեք ներբեռնման վրա և ընտրեք «Արտածել»։
 #. text in the Download video window
 #. button: download and install the ffmpeg program
 #, machine
@@ -1948,7 +1948,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	Դրա անունով թղթապանակում, երբ այն պարունակում է մի քանի բան
+	Into a folder named after it, when it holds several things	Իր անունով թղթապանակում, եթե այն պարունակում է մի քանի տարր
 #. text in a dialog box
 #, machine
 	Invalid address	Անվավեր հասցե
@@ -1987,7 +1987,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	այն արխիվ չէ, որը MDM-ը հանում է
+	it is not an archive MDM extracts	այն արխիվ չէ, որը MDM-ը կարող է արտածել
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2019,7 +2019,7 @@
 	its files could not be written: {error}	դրա ֆայլերը հնարավոր չէր գրել՝ {error}
 #. text in errors.rs
 #, machine
-	its release information is not as expected: {detail}	դրա թողարկման տեղեկատվությունը սպասվածին չի համապատասխանում՝ {detail}
+	its release information is not as expected: {detail}	դրա թողարկման մասին տեղեկությունները չեն համապատասխանում ակնկալիքներին՝ {detail}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2044,7 +2044,7 @@
 	July	Հուլիս
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Անցնել այն ներբեռնմանը, որի անունը սկսվում է դրանով
+	Jump to the download whose name starts with it	Անցնել այն ներբեռնմանը, որի անունը սկսվում է այդ նիշով
 #. text in the Scheduler window
 #, machine
 	June	Հունիս
@@ -2057,7 +2057,7 @@
 	KBytes/sec	ԿԲ/վրկ
 #. checkbox in the Add torrent window
 #, machine
-	Keep sharing torrents after they finish	Շարունակել թորենտների փոխանակումը դրանց ավարտից հետո
+	Keep sharing torrents after they finish	Շարունակել տորենտների փոխանակումը դրանց ավարտից հետո
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2065,7 +2065,7 @@
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
-	Kept with the torrent, after the trackers it has.	Պահպանվում է թորենթի հետ՝ դրանում առկա թրեքերներից հետո։
+	Kept with the torrent, after the trackers it has.	Պահպանվում է տորենտի հետ՝ դրանում առկա թրեքերներից հետո։
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Ստեղնաշարի դյուրանցումներ
@@ -2127,7 +2127,7 @@
 	Latvia	Լատվիա
 #. text in the Options window
 #, machine
-	Launch Mister Download Manager on startup	Գործարկել Mister Download Manager-ը գործարկման ժամանակ
+	Launch Mister Download Manager on startup	Գործարկել Mister Download Manager-ը համակարգը գործարկելիս
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2287,7 +2287,7 @@
 	Malta	Մալթա
 #. text in the Options window
 #, machine
-	Manual proxy/socks configuration	Ձեռքով прокси/SOCKS կոնֆիգուրացիա
+	Manual proxy/socks configuration	Ձեռքով պրոքսի/SOCKS կարգավորում
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2308,7 +2308,7 @@
 	Match case	Համընկնել ռեգիստրը
 #. checkbox in the Find window
 #, machine
-	Match whole string only	Համընկնել միայն ամբողջ տողը
+	Match whole string only	Համընկնել միայն ամբողջ տողի հետ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2494,7 +2494,7 @@
 	Mozambique	Մոզամբիկ
 #. text in errors.rs
 #, machine
-	much slower than the other connections; reconnecting	շատ ավելի դանդաղ է, քան մյուս կապերը. վերամիացում
+	much slower than the other connections; reconnecting	մյուս կապերից շատ ավելի դանդաղ է. վերամիացվում է
 #. text in the download list (sizes, speeds, status)
 #. category name: audio files
 #, machine
@@ -2530,7 +2530,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Ձեր հոսթ ֆայլի անունները և տեղական անունները (միակ բառեր, .local, .lan) մնում են համակարգի DNS-ի հետ։ Տեսանյութերի էջերը և տորենտ թրեքերները առայժմ օգտագործում են համակարգի DNS-ը։
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Ձեր hosts ֆայլի անունները և տեղական անունները (միաբառ, .local, .lan) մնում են համակարգի DNS-ի միջոցով մշակվել։ Տեսանյութերի էջերն ու տորենտ թրեքերներն առայժմ օգտագործում են համակարգի DNS-ը։
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2542,7 +2542,7 @@
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (under 60 ms)
 #, machine
-	near	մոտակա
+	near	մոտ
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
@@ -2636,7 +2636,7 @@
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
-	No downloads match the filters	Ներբեռնումները չեն համընկնում զտիչներին
+	No downloads match the filters	Ոչ մի ներբեռնում չի համապատասխանում զտիչներին
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 #, machine
@@ -2646,7 +2646,7 @@
 	No folders yet	Դեռևս թղթապանակներ չկան
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	«Ոչ»-ը հետ է գնում՝ այլ թղթապանակ ընտրելու համար։
+	No goes back, to choose another folder.	«Ոչ»-ը վերադառնում է նախորդ քայլին՝ մեկ այլ պանակ ընտրելու համար։
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2711,7 +2711,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Norfolk Island	Նորֆոլք կղզի
+	Norfolk Island	Նորֆոլկ կղզի
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2965,7 +2965,7 @@
 	Password:	Գաղտնաբառ:
 #. text in the Add torrent window
 #, machine
-	Paste a magnet link or choose a .torrent file, then Look up.	Տեղադրեք մագնիսական հղում կամ ընտրեք .torrent ֆայլ, ապա Փնտրել։
+	Paste a magnet link or choose a .torrent file, then Look up.	Տեղադրեք մագնիսական հղումը կամ ընտրեք .torrent ֆայլը, ապա սեղմեք «Փնտրել»։
 #. text in the Link grabber window
 #. Link grabber, while it is empty
 #, machine
@@ -3084,7 +3084,7 @@
 #. text in the settings
 #. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
 #, machine
-	proxy server	փոխանորդ սերվեր
+	proxy server	պրոքսի սերվեր
 #. label in the Options window
 #, machine
 	Proxy server address	Պրոքսի սերվերի հասցե
@@ -3206,7 +3206,7 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	Փոխարինել աստղանիշը
+	Replace asterisk to	Փոխարինել աստղանիշը հետևյալով
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -3229,7 +3229,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
-	Resumed	Վերսկսվել է
+	Resumed	Ներբեռնումը վերսկսվեց։
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
@@ -3238,7 +3238,7 @@
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Retrying: {error}	Կրկին փորձել. {error}
+	Retrying: {error}	Կրկին փորձ է արվում՝ {error}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3415,7 +3415,7 @@
 	Sent	Ուղարկված
 #. text in the Scheduler window
 #, machine
-	September	Սեպտեմբեր
+	September	սեպտեմբեր
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3457,7 +3457,7 @@
 #. message or event log entry in the main window
 #. event log: File Properties: the download goes through the debrid account again
 #, machine
-	Set to download through the debrid account	Սահմանվել է ներբեռնում դեբրիդ հաշվի միջո0վ
+	Set to download through the debrid account	Ներբեռնումը սահմանվել է դեբրիդ հաշվի միջոցով
 #. text in extension.rs
 #. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
 #. {error} = an error message (keep the braces as they are)
@@ -3488,11 +3488,11 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Sharing stopped after sharing for {time}	Համօգտագործումը դադարեցվել է {time} համօգտագործելուց հետո
+	Sharing stopped after sharing for {time}	Համօգտագործումը դադարեցվեց {time} համօգտագործելուց հետո։
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
-	Sharing stopped: the share ratio reached {ratio}	Համօգտագործումը դադարեցվել է. համօգտագործման հարաբերակցությունը հասել է {ratio}-ի
+	Sharing stopped: the share ratio reached {ratio}	Համօգտագործումը դադարեցվեց. համօգտագործման հարաբերակցությունը հասավ {ratio}-ի։
 #. text in the download list
 #, machine
 	Show	Ցուցադրել
@@ -3561,7 +3561,7 @@
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Մուտքանուններն ու գաղտնաբառերը պահվում են Windows-ի հավատարմագրերի կառավարչում։
+	Sign-ins and passwords are kept in Windows Credential Manager.	Մուտքանուններն ու գաղտնաբառերը պահվում են Windows-ի հավատարմագրերի կառավարիչում։
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -3616,7 +3616,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Քուն
+	Sleep	Քնեցնել
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3867,7 +3867,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Tajikistan	Տաջիկիստան
+	Tajikistan	Տաջիկստան
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4009,7 +4009,7 @@
 	The download list could not be saved: {error}. Changes are kept while MDM runs.	Ներբեռնումների ցուցակը չհաջողվեց պահպանել՝ {error}։ Փոփոխությունները պահպանվում են, քանի դեռ MDM-ն աշխատում է։
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Ներբեռնումների կառավարիչը, որն արդեն գիտեք, վերակառուցվել է ավելի արագ լինելու համար։ Ազատ և բաց կոդով՝ GNU GPL, տարբերակ 3 կամ ավելի ուշ։ Տեսանյութերը գտնվում են yt-dlp-ի միջոցով, տորենտները աշխատում են librqbit-ի վրա։
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Ներբեռնումների կառավարիչը, որն արդեն գիտեք, վերակառուցվել է ավելի արագ լինելու համար։ Ազատ և բաց կոդով՝ GNU GPL, տարբերակ 3 կամ ավելի ուշ։ Տեսանյութերը հայտնաբերվում են yt-dlp-ի միջոցով, տորենտներն աշխատում են librqbit-ի վրա։
 #. text in a dialog box
 #, machine
 	The download queue is done.	Ներբեռնման հերթն ավարտված է։
@@ -4122,7 +4122,7 @@
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	Անվտանգ միացումը ձախողվեց
+	the secure connection failed	Անվտանգ կապը չհաջողվեց հաստատել
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4159,7 +4159,7 @@
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Սիմվոլները հնարավոր չեղավ ստանալ. հաշվետվության որոշ տողերում անունների փոխարեն հասցեներ են (մշակողները դեռ կարող են դրանք կարդալ)։
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Չհաջողվեց ստանալ սիմվոլները. հաշվետվության որոշ տողերում անունների փոխարեն հասցեներ են (մշակողները դեռ կարող են դրանք կարդալ)։
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
@@ -4167,11 +4167,11 @@
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
-	The system's DNS	Համակարգի DNS
+	The system's DNS	Համակարգի DNS-ը
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Ժամանակը շրջանաձև է՝ չափված այս ներբեռնման սեփական բացված կապերով։
+	The time is a round trip, measured as this download's own connections opened.	Ժամանակը մեկ ուղղությամբ և հակառակ ուղղությամբ կատարվող ուղևորության տևողությունն է՝ չափված այս ներբեռնման համար բացված կապերով։
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4179,18 +4179,18 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	տորենտը այլևս այնտեղ չկա
+	the torrent is no longer there	տորենտն այլևս չկա
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The trackers could not be added: {error}	Թրեքերները հնարավոր չէր ավելացնել՝ {error}
+	The trackers could not be added: {error}	Թրեքերները չհաջողվեց ավելացնել՝ {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The update couldn't be installed: {error}	Թարմացումը հնարավոր չեղավ տեղադրել՝ {error}
+	The update couldn't be installed: {error}	Չհաջողվեց տեղադրել թարմացումը՝ {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The update is open in your system's package installer.	Թարմացումը բաց է ձեր համակարգի փաթեթի տեղադրիչում։
+	The update is open in your system's package installer.	Թարմացումը բաց է ձեր համակարգի փաթեթների տեղադրիչում։
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Վեբ էջը, որտեղից ստացվել է այս ֆայլը:
@@ -4204,7 +4204,7 @@
 	Then move the archives to the Trash	Այնուհետև արխիվները տեղափոխել Աղբարկղ
 #. text in categories.rs
 #, machine
-	There is already a category with this name	Արդեն կա այս անունով կատեգորիա
+	There is already a category with this name	Այս անունով կատեգորիա արդեն կա
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4221,11 +4221,11 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	Այս կատեգորիան կամ հերթը դեռ ներբեռնումներ չի պարունակում։
+	This category or queue holds no downloads yet.	Այս կատեգորիայում կամ հերթում դեռ ներբեռնումներ չկան։
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	Այս համակարգիչը չի կարող արթնանալ ժամաչափով
+	This computer can't be woken by a timer	Այս համակարգիչը չի կարող արթնանալ ժամաչափի միջոցով
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
@@ -4244,7 +4244,7 @@
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	այս Google Drive ֆայլը պահանջում է մուտք գործել. մուտք գործեք Google ձեր դիտարկիչում, ապա ներբեռնեք այնտեղից
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	այս Google Drive ֆայլը ներբեռնելու համար պետք է մուտք գործել. մուտք գործեք Google ձեր դիտարկիչում, ապա ներբեռնեք ֆայլը այնտեղից
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -4255,15 +4255,15 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
-	This is the installed copy, not a portable one	Սա տեղադրված պատճենն է, ոչ թե շարժականը
+	This is the installed copy, not a portable one	Սա տեղադրված տարբերակն է, ոչ թե շարժականը
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
-	This list has no videos	Այս ցուցակը տեսանյութեր չունի
+	This list has no videos	Այս ցուցակում տեսանյութեր չկան
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Այս մագնիսական հղումը չի նշում որևէ թրեքեր, իսկ DHT-ն անջատված է, ուստի ոչ մի փիր չի կարող գտնվել։
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Այս մագնիսական հղումը թրեքերներ չի պարունակում, իսկ DHT-ն անջատված է, ուստի հնարավոր չէ գտնել որևէ փիր։
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -4271,7 +4271,7 @@
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Այս շարժական պատճենը մուտքանուններն ու գաղտնաբառերը պահում է իր սեփական կարգավորումներում՝ գաղտնագրված ձեր Windows հաշվի համար։
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Այս շարժական պատճենը մուտքանուններն ու գաղտնաբառերը պահում է իր կարգավորումներում՝ գաղտնագրված, որպեսզի դրանք կարդալ կարողանա միայն ձեր Windows հաշիվը։
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
 #, machine
@@ -4280,17 +4280,17 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this program isn't {name}	այս ծրագիրը {name} չէ
+	this program isn't {name}	այս ծրագիրը {name}-ը չէ
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Այս համակարգը չունի հեռախոսային կապեր՝ անջատելու համար
+	This system has no dial-up connections to hang up	Այս համակարգում անջատելու համար հեռախոսային կապեր չկան
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	այս տորենտը ունի ֆայլի անուն, որը անվտանգ չէ գրել, ուստի այն չի ավելացվել՝ {name}
 #. text in the Add torrent window
 #, machine
-	This torrent is already in the download list	Այս տորենտը արդեն կա ներբեռնումների ցուցակում
+	This torrent is already in the download list	Այս տորենտն արդեն կա ներբեռնումների ցուցակում
 #. text in errors.rs
 #, machine
 	this torrent is not in the list	այս տորենտը ցուցակում չկա
@@ -4301,7 +4301,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Այս տեսանյութը պահանջում է, որ դուք մուտք գործած լինեք։ Օգտագործեք «Ներբեռնել տեսանյութը» կոճակը դրա վրա ձեր բրաուզերում, որը փոխանցում է ձեր մուտքը, կամ ընտրեք ձեր բրաուզերը Ընտրանքներ → Կայքերի մուտքեր → Թխուկներ տեսանյութերի կայքերի համար բաժնում։
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Այս տեսանյութը դիտելու համար պետք է մուտք գործած լինեք։ Օգտագործեք ձեր բրաուզերում տեսանյութի վրա գտնվող «Ներբեռնել տեսանյութը» կոճակը, որը փոխանցում է ձեր մուտքի տվյալները, կամ Ընտրանքներ → Կայքերի մուտքեր → Թխուկներ տեսանյութերի կայքերի համար բաժնում ընտրեք ձեր բրաուզերը։
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4309,7 +4309,7 @@
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
-	through a proxy in {country}	պրոքսիի միջոցով՝ {country}-ում
+	through a proxy in {country}	պրոքսիի միջոցով՝ {country}-ից
 #. text in a download's Properties window
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
@@ -4317,17 +4317,17 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	{service}-ի միջոցով. ծառայությունը ներբեռնում է թորենթը, ապա MDM-ը՝ դրա ֆայլերը
+	Through {service}: the service downloads the torrent, then MDM its files	{service}-ի միջոցով. ծառայությունը ներբեռնում է տորենտը, ապա MDM-ը՝ դրա ֆայլերը
 #. text in the Scheduler window
 #, machine
-	Thursday	Հինգշաբթի
+	Thursday	հինգշաբթի
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	Նախ նշեք «Սկսել ներբեռնումը»․ համակարգիչն արթնանում է սկզբի ժամի համար
+	Tick "Start download at" first: the computer is woken for the start time	Նախ նշեք «Սկսել ներբեռնումը»․ համակարգիչը կարթնանա նշված ժամին
 #. text in a download's progress window; text in the Scheduler window
 #, machine
-	Time left	Մնացել է ժամանակ
+	Time left	Մնացած ժամանակը
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4361,18 +4361,18 @@
 	Torrent	Տորենտ
 #. text in the download list (sizes, speeds, status)
 #, machine
-	Torrent downloads (magnet links and .torrent files)	Տորենտ ներբեռնումներ (մագնիսական հղումներ և .torrent ֆայլեր)
+	Torrent downloads (magnet links and .torrent files)	Տորենտի ներբեռնումներ (մագնիսական հղումներ և .torrent ֆայլեր)
 #. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
-	Torrent files	Տորենտ ֆայլեր
+	Torrent files	Տորենտի ֆայլեր
 #. window title in the Add torrent window
 #, machine
 	Torrent settings	Տորենտի կարգավորումներ
 #. text in torrent downloads
 #. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
 #, machine
-	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Տորենտի կարգավորումները պահանջում են օգտագործել պրոքսին, բայց Պրոքսի / Socks-ը SOCKS5 պրոքսի չունի
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Տորենտի կարգավորումներում նշված է օգտագործել պրոքսին, բայց Պրոքսի / Socks բաժնում SOCKS5 պրոքսի չկա
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -4381,7 +4381,7 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	տորենտները չհաջողվեց սկսել՝ {error}
+	torrents could not start: {error}	չհաջողվեց սկսել տորենտները՝ {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -4411,7 +4411,7 @@
 	Tu	Երք
 #. text in the Scheduler window
 #, machine
-	Tuesday	Երեքշաբթի
+	Tuesday	երեքշաբթի
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4626,10 +4626,10 @@
 	User names and passwords for servers/sites	Օգտվողի անուններ և գաղտնաբառեր սերվերների/կայքերի համար
 #. text in the Options window
 #, machine
-	User-Agent for manually added downloads:	Օգտատեր-գործակալ ձեռքով ավելացված ներբեռնումների համար:
+	User-Agent for manually added downloads:	User-Agent՝ ձեռքով ավելացված ներբեռնումների համար:
 #. text in the Options window
 #, machine
-	User:	Օգտատեր:
+	User:	Օգտվող:
 #. label in the Options window
 #, machine
 	UserName	Օգտվողի անուն
@@ -4711,7 +4711,7 @@
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
-	Waiting	Սպասում
+	Waiting	Հերթի մեջ է
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Սպասում՝ ներբեռնման սահմանաչափը հասել է (Ժամանակացույց)
@@ -4879,7 +4879,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ և XZ; բաժանված արխիվը (.part1.rar, .7z.001) այն բանից հետո, երբ բոլոր հատորները առկա են։ Արդեն առկա ֆայլը պահպանվում է․ նորը համարակալվում է։
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ և XZ ձևաչափերով արխիվները, ինչպես նաև բաժանված արխիվը (.part1.rar, .7z.001)՝ միայն բոլոր հատորների առկայության դեպքում։ Արդեն առկա ֆայլը պահպանվում է․ նորը համարակալվում է։
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter}-ը միացված չէ. ոչինչ չի ներբեռնվի, մինչև այն նորից միանա։
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter}-ը միացված չէ․ ոչինչ չի ներբեռնվի, մինչև այն նորից միանա։
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4899,20 +4899,20 @@
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser}-ը Windows-ում իր թխուկները պահում է արգելափակված, այնպես որ yt-dlp-ը չի կարող կարդալ դրանք։ Ընտրեք Firefox-ը Ընտրանքներ → Կայքերի մուտքեր բաժնում, կամ օգտագործեք «Ներբեռնել տեսանյութը» կոճակը տեսանյութի վրա {browser}-ում։
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser}-ը Windows-ում իր թխուկները պահում է այնպես, որ դրանք կարողանա կարդալ միայն ինքը, ուստի yt-dlp-ը չի կարող կարդալ դրանք։ Ընտրեք Firefox-ը «Ընտրանքներ» → «Կայքերի մուտքեր» բաժնում կամ օգտագործեք {browser}-ում տեսանյութի վրա գտնվող «Ներբեռնել տեսանյութը» կոճակը։
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}. ընդլայնումը միացված է
+	{browser}: the extension connected	{browser}․ ընդլայնումը միացված է
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}. ընդլայնումը {version} միացված է
+	{browser}: the extension {version} connected	{browser}․ {version} ընդլայնումը միացված է
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn}-ը սպասարկում է այս ֆայլը. տեղը նրա սերվերի տեղն է, հաճախ ձեզ մոտ, ոչ թե կայքի սեփականատիրոջը:
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn}-ը մատուցում է այս ֆայլը․ դրա սերվերի տեղադրությունն է ցուցադրվում, որը հաճախ ձեզ մոտ է, ոչ թե կայքի սեփականատիրոջ սերվերի տեղը:
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4929,25 +4929,25 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	{file}-ը հնարավոր չէր ջնջել սկավառակից՝ {error}
+	{file} could not be deleted from the disk: {error}	Չհաջողվեց {file}-ը ջնջել սկավառակից՝ {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be opened: {error}	{file}-ը հնարավոր չէր բացել՝ {error}
+	{file} could not be opened: {error}	Չհաջողվեց բացել {file}-ը՝ {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file}-ը հնարավոր չէր կարդալ՝ ստուգելու համար
+	{file} could not be read to check it	Չհաջողվեց կարդալ {file}-ը՝ այն ստուգելու համար
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file}-ն այլևս այնտեղ չէ, որտեղ պահպանվել էր (տեղափոխվել կամ ջնջվել է)։ Աջ սեղմման մենյուի «Նորից ներբեռնել» հրամանը նորից կբերի այն։
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file}-ն այլևս այն տեղում չէ, որտեղ պահպանվել էր (տեղափոխվել կամ ջնջվել է)։ Աջ սեղմման ընտրացանկում «Նորից ներբեռնել» հրամանը նորից կներբեռնի այն։
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}. ֆայլը ՉԻ համապատասխանում իր ստուգիչ գումարին ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}․ ֆայլը ՉԻ համապատասխանում իր ստուգիչ գումարին ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}. ֆայլը համապատասխանում է իր ստուգիչ գումարին ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}․ ֆայլը համապատասխանում է իր ստուգիչ գումարին ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4957,7 +4957,7 @@
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{total} մասերից {have} ({size} յուրաքանչյուրը)
+	{have} of {total} pieces ({size} each)	{total} մասից {have} ({size} յուրաքանչյուրը)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4965,7 +4965,7 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip}-ին հնարավոր չէ հասնել {adapter}-ի միջոցով. այն չունի այդ տեսակի հասցե (IPv4 կամ IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip}-ին հնարավոր չէ հասնել {adapter}-ի միջոցով․ այն չունի այդ տեսակի հասցե (IPv4 կամ IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -4991,12 +4991,12 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	{name}-ը հնարավոր չէր ներբեռնել՝ {error}
+	{name} could not be downloaded: {error}	Չհաջողվեց ներբեռնել {name}-ը՝ {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name}-ը 7z կամ RAR արխիվ է։ MDM-ն դրանք արխիվացնում է 7-Zip-ի միջոցով, որը տեղադրված չէ։
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name}-ը 7z կամ RAR արխիվ է։ MDM-ն այդ արխիվները հանում է 7-Zip-ի միջոցով, որը տեղադրված չէ։
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5006,7 +5006,7 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name}-ը չի առաջարկվում որպես {how}։
+	{name} isn't offered as {how}.	{name}-ը հասանելի չէ {how}-ի տեսքով։
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5016,11 +5016,11 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n}-ը {total}-ից ընտրված է
+	{n} of {total} chosen	Ընտրված է {n}-ը {total}-ից
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} selected	{total}-ից {n} ընտրված
+	{n} of {total} selected	Ընտրված է {n}-ը {total}-ից
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -5031,25 +5031,25 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service}-ը խնդրում է դանդաղեցնել. MDM-ը կփորձի մեկ րոպեից
+	{service} asks to slow down; MDM will try again in a minute	{service}-ը խնդրում է դանդաղեցնել հարցումները․ MDM-ը նորից կփորձի մեկ րոպեից
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service}-ը խնդրում է նախ թույլատրել այս համակարգիչը. տեսեք նրա էլ. նամակը
+	{service} asks you to allow this computer first: see its email	{service}-ը խնդրում է նախ թույլատրել այս համակարգիչը․ ստուգեք դրա էլ․ նամակը
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service}-ը չի կարող ստանալ այս թորենթը. ոչ ոք չի տարածում այն, կամ դրա հղումը հնարավոր չէ կարդալ
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service}-ը չի կարող ստանալ այս թորենթը․ ոչ ոք այն չի տարածում կամ դրա հղումը հնարավոր չէ կարդալ
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service}-ը չի կարող հասնել այս ֆայլի հոսթին հենց հիմա. MDM-ը կփորձի ավելի ուշ
+	{service} can't reach this file host right now; MDM will try again later	{service}-ը հիմա չի կարող հասնել այս ֆայլի հոսթին․ MDM-ը նորից կփորձի ավելի ուշ
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	{service}-ը չի պատասխանում. փորձեք նորից ավելի ուշ
+	{service} is not responding; try again later	{service}-ը չի արձագանքում․ փորձեք նորից ավելի ուշ
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service}-ը մերժում է այս կապը (VPN կամ սերվերի հասցե՞)
+	{service} refuses this connection (a VPN or server address?)	{service}-ը մերժում է այս կապը (VPN է, թե՞ սերվերի հասցե)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
@@ -5057,7 +5057,7 @@
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}. նորից մուտք գործել (Ընտրանքներ → Հաշիվներ)
+	{service}: sign in again (Options → Accounts)	{service}․ նորից մուտք գործել («Ընտրանքներ» → «Հաշիվներ»)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
@@ -5257,7 +5257,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager-ն այնուհետև ներբեռնում է նույն պրոքսիի միջոցով, ինչ այս զննարկիչը։ Զննարկիչը մեկ անգամ կխնդրի թույլատրել դա. անջատելով այս տարբերակը՝ դուք հետ եք վերցնում այդ թույլտվությունը։
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager-ն այնուհետև ներբեռնումները կատարում է այս դիտարկիչի օգտագործած նույն պրոքսիի միջոցով։ Դիտարկիչը մեկ անգամ կխնդրի թույլատրել դա, իսկ այս տարբերակն անջատելով՝ այդ թույլտվությունը կչեղարկվի։
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5275,7 +5275,7 @@ extension	Never take downloads from {site}	Երբեք մի՛ վերցրեք նե
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Այս էջում դեռևս տեսանյութ կամ ձայն չի գտնվել։ Նվագարկեք այն, ապա նորից բացեք սա։
+extension	No video or sound found on this page yet. Play it, then open this again.	Այս էջում դեռ տեսանյութ կամ ձայն չի հայտնաբերվել։ Նվագարկեք այն, ապա նորից բացեք այս պատուհանը։
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5312,7 +5312,7 @@ extension	Support MDM	Աջակցել MDM-ին
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Վերցնել ներբեռնումներ այս դիտարկիչից
+extension	Take downloads from this browser	Վերցնել ներբեռնումներն այս դիտարկիչից
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
@@ -5328,7 +5328,7 @@ extension	This download's details were too large to hand over	Այս ներբե�
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	Թարմացրեք Mister Download Manager-ը՝ այս ընդլայնման առաջարկած ամեն ինչն օգտագործելու համար
+extension	Update Mister Download Manager to use everything this extension offers	Թարմացրեք Mister Download Manager-ը՝ այս ընդլայնի առաջարկած բոլոր հնարավորություններից օգտվելու համար
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5445,7 +5445,7 @@ menu	&Delete	Ջնջել(&D)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Delete All Completed	&Ջնջել բոլոր ավարտվածները
+menu	&Delete All Completed	&Ջնջել բոլոր ավարտված ներբեռնումները
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5546,7 +5546,7 @@ menu	Add &magnet link...	Ավելացնել &մագնիսական հղում...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Add batch download from &clipboard	Խմբաքանակի ներբեռնում ավելացնել &clipboard-ից
+menu	Add batch download from &clipboard	Խմբաքանակի ներբեռնում ավելացնել &փոխանակման բուֆերից
 #. menu command in the main window
 #, machine
 menu	Add category	Ավելացնել կատեգորիա
@@ -5608,7 +5608,7 @@ menu	By Parent &Web Page	Ըստ ծնող &վեբ էջի
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	By R&eferer	Ըստ &հղողի
+menu	By R&eferer	Ըստ հղման &աղբյուրի
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5747,7 +5747,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal-ը չսկսվեց այստեղ. OpenGL-ն է նկարում
+menu	Metal didn't start here: OpenGL draws	Metal-ը չգործարկվեց այստեղ. OpenGL-ն է նկարում
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5762,7 +5762,7 @@ menu	Move/Rename (Ctrl-M)	Տեղափոխել/Անվանափոխել (Ctrl-M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
-menu	Native	Բնիկ
+menu	Native	Համակարգային
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
@@ -5894,7 +5894,7 @@ menu	Tell a &friend	Ասել &ընկերոջը
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Գրաֆիկական քարտը կորել է երկու անգամ 10 րոպեի ընթացքում
+menu	The graphics card was lost twice in 10 minutes	Գրաֆիկական քարտը կորցրել է կապը երկու անգամ՝ 10 րոպեի ընթացքում
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5916,7 +5916,7 @@ menu	Toolbar	Գործիքագոտի
 #. menu command in the main window
 #. right-click menu: the submenu of a torrent's own commands
 #, machine
-menu	Torrent	Թորենթ
+menu	Torrent	Տորենտ
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5964,7 +5964,7 @@ menubar	&Tasks	&Առաջադրանքներ
 menubar	&View	&Դիտել
 #. toolbar button in the main window
 #, machine
-toolbar	Add Torrent	Ավելացնել Torrent
+toolbar	Add Torrent	Ավելացնել տորենտ
 #. toolbar button in the main window
 #, machine
 toolbar	Add URL	Ավելացնել URL

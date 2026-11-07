@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Haluatko varmasti poistaa {n} latauksen Mister Download Managerin latausluettelosta?|Haluatko varmasti poistaa nämä {n} latausta Mister Download Managerin latausluettelosta?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Haluatko varmasti poistaa {n} latauksen Mister Download Manager-latausluettelosta?|Haluatko varmasti poistaa nämä {n} latausta Mister Download Manager-latausluettelosta?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -27,13 +27,13 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Puretti {n} tiedosto kansioon {folder}|Puretti {n} tiedostoa kansioon {folder}
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Purettiin {n} tiedosto kansioon {folder}|Purettiin {n} tiedostoa kansioon {folder}
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Löydetty {n} vertainen, yhdistetään...|Löydetty {n} vertaista, yhdistetään...
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Löydettiin {n} vertaiskone, muodostetaan yhteyttä...|Löydettiin {n} vertaiskonetta, muodostetaan yhteyttä...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
@@ -85,12 +85,12 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} tiedostolla oli jo olemassa olevan tiedoston nimi, ja se numeroitiin|{n} tiedostolla oli jo olemassa olevan tiedoston nimi, ja ne numeroitiin
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} tiedoston nimi oli jo käytössä, joten tiedosto nimettiin uudelleen numerolla|{n} tiedoston nimi oli jo käytössä, joten tiedostot nimettiin uudelleen numeroilla
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} peer|{n} peers	{n} vertainen|{n} vertaista
+@plural	{n} peer|{n} peers	{n} vertaiskone|{n} vertaiskonetta
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -99,12 +99,12 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added|{n} trackers added	{n} seuranta lisätty|{n} seurantaa lisätty
+@plural	{n} tracker added|{n} trackers added	{n} seurantaosoite lisätty|{n} seurantaosoitetta lisätty
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} seuranta: {peers}|{n} seurantaa: {peers}
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} seurantaosoite: {peers}|{n} seurantaosoitetta: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -172,10 +172,10 @@
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z- ja RAR-arkistot tarvitsevat 7-Zipin (7-zip.org), jota ei ole asennettu.
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z- ja RAR-arkistojen purkamiseen tarvitaan 7-Zip (7-zip.org), jota ei ole asennettu.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	7z and RAR archives need 7-Zip, which isn't installed	7z- ja RAR-arkistot tarvitsevat 7-Zipin, jota ei ole asennettu
+	7z and RAR archives need 7-Zip, which isn't installed	7z- ja RAR-arkistojen purkamiseen tarvitaan 7-Zip, jota ei ole asennettu
 #. text in a download's progress window
 #, machine
 	<< Hide details	<< Piilota tiedot
@@ -215,7 +215,7 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
-	A tracker on this computer or the local network is never contacted: {line}	Tällä tietokoneella tai paikallisessa verkossa olevaan seurantaan ei koskaan oteta yhteyttä: {line}
+	A tracker on this computer or the local network is never contacted: {line}	Tällä tietokoneella tai paikallisessa verkossa olevaan seurantapalvelimeen ei koskaan oteta yhteyttä: {line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -373,7 +373,7 @@
 	All files	Kaikki tiedostot
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	Valmista: kun olet videosivulla, käytä Tehtävät → Lataa video sivulta.
+	All set: on a page with a video, use Tasks → Download video from a page.	Valmista: kun olet videosivulla, valitse Tehtävät → Lataa video sivulta.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -393,7 +393,7 @@
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
-	Already reported as issue #{number}: {title}	Raportoitu jo ongelmana #{number}: {title}
+	Already reported as issue #{number}: {title}	Ilmoitettu jo ongelmana #{number}: {title}
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
@@ -451,7 +451,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Antarctica	Antarktis
+	Antarctica	Etelämanner
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -645,10 +645,10 @@
 	Browse...	Selaa...
 #. text in extension.rs
 #, machine
-	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Selainintegrointia ei ole määritetty tällä tietokoneella, joten mikään selain ei voi vielä tavoittaa sovellusta Mister Download Manager.
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Selaimen integrointia ei ole määritetty tällä tietokoneella, joten mikään selain ei voi vielä käyttää sovellusta Mister Download Manager.
 #. page title in the Options window
 #, machine
-	Browser/System Integration	Selaimen/järjestelmän integrointi
+	Browser/System Integration	Selaimen ja järjestelmän integrointi
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -732,7 +732,7 @@
 #. text in categories.rs
 #. title of the folder picker of the category dialog
 #, machine
-	Category folder	Luokkakansio
+	Category folder	Luokan kansio
 #. text in categories.rs
 #, machine
 	Category properties	Luokan ominaisuudet
@@ -759,7 +759,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	Vaihda kansion "{category}" luokka viimeksi valittuun
+	Change folder for "{category}" category on last selected	Vaihda luokan "{category}" kansio viimeksi valittuun
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -785,7 +785,7 @@
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
-	Checking every piece again	Tarkistetaan kaikki osat uudelleen
+	Checking every piece again	Tarkistettiin kaikki osat uudelleen
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -848,7 +848,7 @@
 #. text in a download's progress window
 #. column title: the peer's torrent program
 #, machine
-	Client	Asiakas
+	Client	Vertaisohjelma
 #. text in the Options window
 #, machine
 	Clock:	Kello:
@@ -972,16 +972,16 @@
 	Curaçao	Curaçao
 #. text in the Options window
 #, machine
-	Customize "Download progress" dialog	Mukauta "Latauksen edistyminen" -valintaikkunaa
+	Customize "Download progress" dialog	Mukauta ”Latauksen edistyminen” -valintaikkunaa
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Mukauta näppäimiä estämään tai pakottamaan latauksen MDM:llä
+	Customize keys to prevent or force downloading with MDM	Mukauta näppäimiä, joilla estetään MDM:llä lataaminen tai pakotetaan se
 #. text in the Options window
 #, machine
 	Customize MDM Download panels in browsers	Mukauta MDM-latauspaneeleja selaimissa
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	Mukauta MDM-valikkokohteita selaimien pikavalikossa
+	Customize MDM menu items in context menu of browsers	Mukauta MDM-valikkokohtia selainten pikavalikossa
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1025,13 +1025,13 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	Kategorian "{category}" oletushakemisto
+	Default download directory for "{category}" category	Kategorian ”{category}” oletushakemisto
 #. page title in the Options window
 #, machine
-	Default download settings	Oletuslatausasetukset
+	Default download settings	Latauksen oletusasetukset
 #. text in the Options window
 #, machine
-	Default max. conn. number	Oletusarvoinen yhteyksien enimmäismäärä
+	Default max. conn. number	Yhteyksien oletusarvoinen enimmäismäärä
 #. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
@@ -1050,12 +1050,12 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	Poistetaanko luokka ”{category}”? Sen tiedostot pysyvät nykyisessä sijainnissaan.
+	Delete the category "{category}"? Its files stay where they are.	Poistetaanko kategoria ”{category}”? Sen tiedostot pysyvät nykyisessä sijainnissaan.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Poistetaanko jono "{queue}"? Sen lataukset pysyvät luettelossa.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Poistetaanko jono ”{queue}”? Sen lataukset pysyvät luettelossa.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads (asks first)	Poista valitut lataukset (kysyy ensin)
@@ -1107,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	Älä aloita lataamista, lisää tiedostot vain jonoon
+	Do not start downloading, only add files to the queue	Lisää tiedostot jonoon aloittamatta lataamista
 #. text in a dialog box
 #, machine
 	Do you want to create it?	Haluatko luoda sen?
@@ -1286,7 +1286,7 @@
 	Drag .torrent files or lists of addresses here	Vedä .torrent-tiedostoja tai osoiteluetteloita tähän
 #. text in droptarget.rs
 #, machine
-	Drag links here to download them	Vedä linkit tähän ladataksesi ne
+	Drag links here to download them	Lataa linkit vetämällä ne tähän
 #. text in a dialog box
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 #, machine
@@ -1423,7 +1423,7 @@
 	Exit	Lopeta
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Exit Mister Download Manager when done	Sulje Mister Download Manager, kun valmis
+	Exit Mister Download Manager when done	Sulje Mister Download Manager, kun lataus on valmis
 #. text in the Checksum window
 #, machine
 	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Odotettu tarkistussumma (MD5, SHA-1, SHA-256, SHA-512 tai CRC32):
@@ -1456,7 +1456,7 @@
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
-	Extract when done	Pura valmiina
+	Extract when done	Pura latauksen valmistuttua
 #. text in extracting archives (a download's log, the Archive password window)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1623,11 +1623,11 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	ilmainen tili: linkit vaativat premium-jäsenyyden
+	free account: links need premium	ilmainen tili: linkkien avaaminen vaatii premium-tilauksen
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
-	Free, official and checked	Ilmainen, virallinen ja tarkistettu
+	Free, official and checked	Maksuttomia, virallisia ja tarkistettuja
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1701,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ei ole asennettu (Lisää URL gallerian osoitteella asentaa sen)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl-ohjelmaa ei ole asennettu (Lisää URL gallerian osoitteella asentaa sen)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1798,11 +1798,11 @@
 	Haiti	Haiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Katkaise modeemiyhteys valmiina
+	Hang up modem when done	Katkaise modeemiyhteys, kun lataus on valmis
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	On
+	Have	Ladattu
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Lepotilaan
+	Hibernate	Siirrä horrostilaan
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1856,11 +1856,11 @@
 #. text in the Scheduler window
 #. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
 #, machine
-	How to allow it	Miten se sallitaan
+	How to allow it	Näin sallit sen
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
-	How to fix it	Miten korjata
+	How to fix it	Näin korjaat sen
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -1887,13 +1887,13 @@
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	Jos sitä ei tavoiteta, käytä järjestelmän DNS:ää
+	If it can't be reached, use the system's DNS	Jos DNS-palvelimeen ei saada yhteyttä, käytä järjestelmän DNS-palvelinta
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Ohita tiedoston muokkausajan muutokset jatkettaessa latausta
 #. message or event log entry in the main window
 #, machine
-	Import	Tuo
+	Import	Tuonti
 #. value in a column's filter list in the download list
 #, machine
 	In a queue	Jonossa
@@ -1991,7 +1991,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	se ei ole arkisto, jonka MDM purkaa
+	it is not an archive MDM extracts	se ei ole arkistomuoto, jonka MDM purkaa
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2048,7 +2048,7 @@
 	July	Heinäkuu
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Siirry lataukseen, jonka nimi alkaa sillä
+	Jump to the download whose name starts with it	Siirry lataukseen, jonka nimi alkaa kyseisellä merkillä
 #. text in the Scheduler window
 #, machine
 	June	Kesäkuu
@@ -2061,7 +2061,7 @@
 	KBytes/sec	Ktavua/s
 #. checkbox in the Add torrent window
 #, machine
-	Keep sharing torrents after they finish	Jaa torrentteja niiden valmistuttua
+	Keep sharing torrents after they finish	Jatka torrenttien jakamista niiden valmistumisen jälkeen
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2264,7 +2264,7 @@
 	Main download queue	Pääasiallinen latausjono
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Make the selection longer or shorter	Pidenna tai lyhennä valintaa
+	Make the selection longer or shorter	Pidennä tai lyhennä valintaa
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
@@ -2338,7 +2338,7 @@
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: label above the upload speed box
 #, machine
-	Maximum upload speed:	Suurin lähetysnopeus:
+	Maximum upload speed:	Enimmäislähetysnopeus:
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
@@ -2385,7 +2385,7 @@
 	Mister Download Manager closed unexpectedly	Mister Download Manager sulkeutui odottamatta
 #. window title in the Options window
 #, machine
-	Mister Download Manager Configuration	Mister Download Managerin asetukset
+	Mister Download Manager Configuration	Mister Download Manager:n asetukset
 #. text in crashui.rs
 #, machine
 	Mister Download Manager crash report	Mister Download Manager-kaatumisraportti
@@ -2417,7 +2417,7 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Mister Download Manager's own copy, version {version}	Mister Download Manager-sovelluksen oma kopio, versio {version}
+	Mister Download Manager's own copy, version {version}	Mister Download Manager-ohjelman oma kopio, versio {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2459,7 +2459,7 @@
 	Move	Siirrä
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move a page up / down	Siirrä sivu ylös/alas
+	Move a page up / down	Siirrä sivua ylös/alas
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move between the categories and the download list	Siirry luokkien ja latausluettelon välillä
@@ -2620,15 +2620,15 @@
 #. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
-	No browser's extension has connected yet	Yksikään selaimen laajennus ei ole vielä yhdistänyt
+	No browser's extension has connected yet	Yksikään selaimen laajennus ei ole vielä muodostanut yhteyttä
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
-	no data folder	ei datakansiota
+	no data folder	Datakansio puuttuu
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 #, machine
-	no data folder for torrents	ei datakansiota torrenteille
+	no data folder for torrents	Torrenttien datakansio puuttuu
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	Ei kansioita vielä
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	Ei palaa takaisin, jotta voit valita toisen kansion.
+	No goes back, to choose another folder.	Valitsemalla Ei palaat takaisin, jotta voit valita toisen kansion.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2671,7 +2671,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Vertaisia ei vielä ole. Harvat saattavat jakaa tätä torrentia, tai palomuuri, VPN tai verkko saattaa estää BitTorrentia.
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Vertaisia ei vielä ole. Harvat saattavat jakaa tätä torrenttia, tai palomuuri, VPN tai verkko saattaa estää BitTorrentia.
 #. text in the Options window
 #, machine
 	No proxy/socks	Ei välityspalvelinta/SOCKS-palvelinta
@@ -2686,7 +2686,7 @@
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
-	No trackers	Ei seurantoja
+	No trackers	Ei seurantapalvelimia
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2708,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	Ei valittuna: kaikki syötteet.
+	None ticked: every feed.	Ei yhtään valittuna: kaikki syötteet.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Ei mitään: vertaiset tulevat DHT:stä ja muista vertaisista
@@ -2780,13 +2780,13 @@
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Huomaa: Internet-palvelimet voivat katkaista yhteyden, kun nopeus on liian rajoitettu! Siksi ei\nsuositella nopeudenrajoittimen käyttöä ladattaessa palvelimilta, jotka eivät tue\n”jatka”-ominaisuutta.
 #. text in the Options window
 #, machine
-	Note: These settings don't relate to queue processing	Huomaa: Nämä asetukset eivät liity jonon käsittelyyn
+	Note: These settings don't relate to queue processing	Huomaa: Nämä asetukset eivät liity jonon käsittelyyn.
 #. message or event log entry in the main window
 #, machine
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Ei ladattavaa kohteessa {item}: pudota linkkejä, .torrent-tiedosto tai osoiteluettelo (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
-	November	Marraskuu
+	November	marraskuu
 #. text in the Options window
 #, machine
 	Number	Numero
@@ -2799,7 +2799,7 @@
 	Numbers	Numerot
 #. text in the Scheduler window
 #, machine
-	October	Lokakuu
+	October	lokakuu
 #. option (radio button) in the Options window
 #, machine
 	Off	Pois käytöstä
@@ -2895,7 +2895,7 @@
 	Open the following file when done	Avaa seuraava tiedosto, kun valmis
 #. checkbox in the Scheduler window
 #, machine
-	Open the following file when done:	Avaa seuraava tiedosto, kun valmis:
+	Open the following file when done:	Avaa seuraava tiedosto, kun lataus on valmis:
 #. button in the Options window
 #. button: open the service's page where the code is typed
 #, machine
@@ -3107,7 +3107,7 @@
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
-	Put them into the video	Upota videoon
+	Put them into the video	Upota tekstitykset videoon
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3150,7 +3150,7 @@
 	Reading the torrent...	Luetaan torrentia...
 #. text in helpers.rs
 #, machine
-	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Lukee sivun ja luetteloi kaikki sivuston tarjoamat laadut, jopa 4K, YouTubesta, Vimeosta ja yli tuhannelta muulta sivustolta.
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Lukee sivun ja luettelee kaikkien YouTuben, Vimeon ja yli tuhannen muun sivuston tarjoamat laatutasot, jopa 4K-tarkkuuteen asti.
 #. text in helpers.rs
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
@@ -3198,7 +3198,7 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Remember this path for "{category}" category	Muista tämä polku luokalle ”{category}”
+	Remember this path for "{category}" category	Muista tämä polku ”{category}”-luokalle
 #. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
 #. RSS feeds window: unsubscribe from the selected feed
@@ -3237,7 +3237,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
-	Resumed	Jatkuu
+	Resumed	Jatkettiin
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
@@ -3246,7 +3246,7 @@
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Retrying: {error}	Uudelleenyritys: {error}
+	Retrying: {error}	Yritetään uudelleen: {error}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3317,7 +3317,7 @@
 	Sao Tome and Principe	São Tomé ja Príncipe
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Saturday	Lauantai
+	Saturday	lauantai
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3624,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Lepotila
+	Sleep	Laita lepotilaan
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3829,12 +3829,12 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	Tekstityksiä kielellä {language} ei voitu ladata: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	Kielen {language} tekstityksiä ei voitu ladata: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Tekstityksiä kielellä {language} ei voitu ladata: {site} kieltäytyi (liian monta pyyntöä).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Kielen {language} tekstityksiä ei voitu ladata: {site} kieltäytyi (liian monta pyyntöä).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3978,25 +3978,25 @@
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will go to sleep in {n} seconds.	Tietokone menee lepotilaan {n} sekunnin kuluttua.
+	The computer will go to sleep in {n} seconds.	Tietokone siirtyy lepotilaan {n} sekunnin kuluttua.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will hibernate in {n} seconds.	Tietokone menee horrostilaan {n} sekunnin kuluttua.
+	The computer will hibernate in {n} seconds.	Tietokone siirtyy horrostilaan {n} sekunnin kuluttua.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
 	The computer will shut down in {n} seconds.	Tietokone sammuu {n} sekunnin kuluttua.
 #. text in errors.rs
 #, machine
-	the connection closed before the part was complete	yhteys katkesi ennen osan valmistumista
+	the connection closed before the part was complete	yhteys katkesi ennen kuin osa valmistui
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	yhteys katkesi tietoja vastaanotettaessa
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT ei tavoittanut ketään. Palomuuri, VPN tai verkko saattaa estää UDP:n, jota DHT ja useimmat seurannat käyttävät.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT ei tavoittanut ketään. Palomuuri, VPN tai verkko saattaa estää UDP-liikenteen, jota DHT ja useimmat seurantaohjelmat käyttävät.
 #. text in errors.rs
 #, machine
 	the disk is full	levy on täynnä
@@ -4007,7 +4007,7 @@
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	The download limit ({mb} MBytes every {hours} hours) has been reached.	Latausraja ({mb} Mt joka {hours} tunti) on saavutettu.
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Latausraja ({mb} Mt {hours} tunnin aikana) on saavutettu.
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	latauslinkki on vanhentunut (päivitä latausosoite)
@@ -4017,13 +4017,13 @@
 	The download list could not be saved: {error}. Changes are kept while MDM runs.	Latausluetteloa ei voitu tallentaa: {error}. Muutokset säilyvät MDM:n ollessa käynnissä.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Tuttu latausten hallintaohjelma, joka on rakennettu uudelleen nopeammaksi. Ilmainen ja avoimen lähdekoodin ohjelma GNU GPL, versio 3 tai uudempi. Videot löytyvät yt-dlp:n avulla; torrentit toimivat librqbitillä.
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Tuttu lataustenhallintaohjelma, joka on rakennettu uudelleen nopeammaksi. Ilmainen ja avoimen lähdekoodin ohjelma, joka on lisensoitu GNU GPL -lisenssillä, versio 3 tai uudempi. Videot haetaan yt-dlp:llä; torrentit toimivat librqbitillä.
 #. text in a dialog box
 #, machine
 	The download queue is done.	Latausjono on valmis.
 #. text in errors.rs
 #, machine
-	the downloaded program doesn't match its signed checksum	ladattu ohjelma ei vastaa sen allekirjoitettua tarkistussummaa
+	the downloaded program doesn't match its signed checksum	ladattu ohjelma ei vastaa allekirjoitettua tarkistussummaansa
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -4048,17 +4048,17 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	The file does NOT match ({algorithm})	Tiedosto EI vastaa ({algorithm})
+	The file does NOT match ({algorithm})	Tiedosto EI vastaa tarkistussummaa ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	The file matches ({algorithm})	Tiedosto vastaa ({algorithm})
+	The file matches ({algorithm})	Tiedosto vastaa tarkistussummaa ({algorithm})
 #. text in a dialog box
 #, machine
 	The file saved as	Tiedosto tallennettu nimellä
 #. text in the download list (sizes, speeds, status)
 #, machine
-	The file types that are not listed in any other category	Tiedostotyypit, joita ei ole lueteltu missään muussa kategoriassa
+	The file types that are not listed in any other category	Tiedostotyypit, joita ei ole lueteltu missään muussa luokassa
 #. text in the Checksum window
 #. tooltip of the box showing the checksum the file really has
 #, machine
@@ -4066,7 +4066,7 @@
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	tiedoston {algorithm}-tarkistussumma ei täsmää (tiedot säilytetään; lataa uudelleen)
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	tiedoston {algorithm}-tarkistussumma ei täsmää (tiedot säilytetään; lataa tiedosto uudelleen)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4077,11 +4077,11 @@
 	The folder could not be created: {error}	Kansiota ei voitu luoda: {error}
 #. text in errors.rs
 #, machine
-	the folder {path} is not available (drive removed or network share offline?)	kansio {path} ei ole käytettävissä (asema poistettu tai verkkoresurssi offline-tilassa?)
+	the folder {path} is not available (drive removed or network share offline?)	kansio {path} ei ole käytettävissä (asema poistettu tai verkkoresurssi ei ole käytettävissä?)
 #. text in crashui.rs
 #. crash report window: after Send opened the browser
 #, machine
-	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Lomake avattiin selaimeesi. Vedä raporttitiedosto (ja .dmp, jos valitsit sen) siihen ja lähetä sitten.
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Lomake avattiin selaimeesi. Vedä raporttitiedosto (ja .dmp-tiedosto, jos valitsit sen) lomakkeeseen ja lähetä se sitten.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -4108,14 +4108,14 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
-	the release has no version	julkaisulla ei ole versiota
+	the release has no version	julkaisulta puuttuu versionumero
 #. text in errors.rs
 #. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
 #, machine
-	the release has no {what}	julkaisussa ei ole {what}
+	the release has no {what}	julkaisusta puuttuu {what}
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	julkaisun tarkistussummaluetteloa ei ole allekirjoittanut sen julkaisijan avain
+	the release's checksum list is not signed by its publisher's key	julkaisijan avain ei ole allekirjoittanut julkaisun tarkistussummaluetteloa
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4126,7 +4126,7 @@
 	The report is on your clipboard.	Raportti on leikepöydälläsi.
 #. text in crashui.rs
 #, machine
-	The report is on your clipboard: paste it in a comment on the issue.	Raportti on leikepöydälläsi: liitä se kommenttina ongelmaan.
+	The report is on your clipboard: paste it in a comment on the issue.	Raportti on leikepöydälläsi: liitä se ongelmaraportin kommenttiin.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -4140,7 +4140,7 @@
 	the server answered {status}	palvelin vastasi {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	palvelin ei voi lähettää tiedoston osia, joten sitä ei voi jatkaa
+	the server can't send parts of the file, so it can't be resumed	palvelin ei voi lähettää tiedoston osia, joten latausta ei voi jatkaa
 #. text in errors.rs
 #, machine
 	the server did not answer in time	palvelin ei vastannut ajoissa
@@ -4187,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	torrentia ei ole enää olemassa
+	the torrent is no longer there	torrenttia ei ole enää
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4295,7 +4295,7 @@
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	tämän torrentin tiedostonimi ei ole turvallinen kirjoittaa, joten sitä ei lisätty: {name}
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	tämän torrentin tiedostonimeä ei ole turvallista kirjoittaa, joten sitä ei lisätty: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Tämä torrent on jo latausluettelossa
@@ -4325,7 +4325,7 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Palvelun {service} kautta: palvelu lataa torrentin, sitten MDM sen tiedostot
+	Through {service}: the service downloads the torrent, then MDM its files	Palvelun {service} kautta: palvelu lataa torrentin, sitten MDM lataa sen tiedostot
 #. text in the Scheduler window
 #, machine
 	Thursday	Torstai
@@ -4402,7 +4402,7 @@
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Trackers to add to {name}, one address a line:	Seurantapalvelimet lisättävä kohteeseen {name}, yksi osoite riviä kohti:
+	Trackers to add to {name}, one address a line:	Lisättävät seurantapalvelimet kohteeseen {name}, yksi osoite riville:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Siirtonopeus
@@ -4472,7 +4472,7 @@
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
-	Type at least one server address.	Kirjoita vähintään yksi palvelimen osoite.
+	Type at least one server address.	Kirjoita vähintään yhden palvelimen osoite.
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
@@ -4614,7 +4614,7 @@
 	Use the token	Käytä tunnusta
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	Käytetäänkö niitä tähän torrentiin? Yhteensopivat säilytetään, loput korvataan.
+	Use them for this torrent? What matches it is kept, the rest replaced.	Käytetäänkö niitä tähän torrenttiin? Yhteensopivat säilytetään, loput korvataan.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Käytä tätä välityspalvelinta seuraaville protokollille:
@@ -4685,7 +4685,7 @@
 	Video	Video
 #. text in the Download video window
 #, machine
-	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videon haut käyttävät yt-dlp:tä (noin 23 Mt, tarkistettu allekirjoitusta vastaan).
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Videohauissa käytetään yt-dlp:tä (noin 23 Mt, allekirjoitus tarkistetaan).
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4726,7 +4726,7 @@
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
 #, machine
-	Wake the computer to run this queue	Herätä tietokone suorittamaan tämä jono
+	Wake the computer to run this queue	Tietokoneen herättäminen tämän jonon suorittamista varten
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4792,7 +4792,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
-	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Sanat: kaikki niistä; | vaihtoehtojen välissä; * ja ?. Jaksot: 1x2;1x5-8;2x1-. Jokainen jakso kerran.
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Sanat: kaikki sanat; | vaihtoehtojen välissä; * ja ?. Jaksot: 1x2;1x5-8;2x1-. Kukin jakso kerran.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Päivämäärien ja aikojen kirjoitusasu
@@ -4867,7 +4867,7 @@
 	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp ei löytänyt {browser}-selaimen evästeitä tältä tietokoneelta. Tarkista selain ja sen profiili kohdasta Asetukset → Sivustojen kirjautumiset.
 #. message or event log entry in the main window
 #, machine
-	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp ei ole asennettu (Tehtävät → Lataa video sivulta asentaa sen)
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp:tä ei ole asennettu (Tehtävät → Lataa video sivulta asentaa sen)
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
 #, machine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} ei ole yhdistetty: mitään ei ladata, ennen kuin yhteys palautuu.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} ei ole yhteydessä: mitään ei ladata, ennen kuin yhteys palautuu.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4903,7 +4903,7 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: tarkistettu latauksen päätyttyä
+	{algorithm}: checked when the download finishes	{algorithm}: tarkistetaan latauksen päätyttyä
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
@@ -4911,12 +4911,12 @@
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: laajennus yhdistetty
+	{browser}: the extension connected	{browser}: laajennus on yhdistetty
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: laajennus {version} yhdistetty
+	{browser}: the extension {version} connected	{browser}: laajennus {version} on yhdistetty
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	Tiedostoa {file} ei voitu lukea tarkistusta varten
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Tiedostoa {file} ei enää ole tallennuspaikassaan (siirretty tai poistettu). Lataa uudelleen sen pikavalikosta.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Tiedosto {file} ei ole enää tallennuspaikassaan (se on siirretty tai poistettu). Lataa se uudelleen sen pikavalikosta.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4999,7 +4999,7 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	Kohdetta {name} ei voitu ladata: {error}
+	{name} could not be downloaded: {error}	Tiedostoa {name} ei voitu ladata: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
@@ -5043,7 +5043,7 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} pyytää sinua sallimaan tämän tietokoneen ensin: katso sen sähköposti
+	{service} asks you to allow this computer first: see its email	{service} pyytää sallimaan tämän tietokoneen ensin: tarkista sähköpostisi.
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ei voi hakea tätä torrentia: kukaan ei jaa sitä tai sen linkkiä ei voi lukea
@@ -5108,7 +5108,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
-	{title}: added by {rule}	{title}: lisätty säännöllä {rule}
+	{title}: added by {rule}	{title}: lisättiin säännöllä {rule}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article is a torrent the list already has
 #, machine
@@ -5116,7 +5116,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
-	{title}: not added: files of its names are already in {folder}	{title}: ei lisätty: sen nimisiä tiedostoja on jo kansiossa {folder}
+	{title}: not added: files of its names are already in {folder}	{title}: ei lisätty: samannimisiä tiedostoja on jo kansiossa {folder}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
@@ -5225,7 +5225,7 @@ extension	Help	Ohje
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Piilota tältä videolta
+extension	Hide on this video	Piilota tässä videossa
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5257,7 +5257,7 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ei ole asennettu tai ei käynnistynyt
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager ei ole asennettu tai sitä ei käynnistetty
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
@@ -5265,7 +5265,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager lataa sitten saman välityspalvelimen kautta kuin tämä selain. Selain kysyy sinulta kerran lupaa; tämän poistaminen käytöstä peruuttaa sen.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Tällöin Mister Download Manager lataa saman välityspalvelimen kautta kuin tämä selain. Selain pyytää kerran lupaa; tämän poistaminen käytöstä peruuttaa luvan.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5283,7 +5283,7 @@ extension	Never take downloads from {site}	Älä koskaan ota latauksia sivustolt
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	Sivulta ei löytynyt videoita tai ääniä. Toista media ja avaa tämä uudelleen.
+extension	No video or sound found on this page yet. Play it, then open this again.	Sivulta ei ole vielä löytynyt videoita eikä ääntä. Toista videota tai ääntä ja avaa tämä uudelleen.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5296,7 +5296,7 @@ extension	Options...	Asetukset...
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
-extension	Paused: downloads stay with the browser	Keskeytetty: lataukset pysyvät selaimessa
+extension	Paused: downloads stay with the browser	Ei käytössä: lataukset jäävät selaimeen
 #. text in the browser extension
 #. shown instead of the Download button beside a copy-protected (DRM) stream in the toolbar button's popup: it can't be downloaded; short
 #, machine
@@ -5304,7 +5304,7 @@ extension	Protected	Suojattu
 #. text in the browser extension
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
-extension	Protected video: it can't be saved	Suojattu video: sitä ei voi tallentaa
+extension	Protected video: it can't be saved	Suojattua videota ei voi tallentaa
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
@@ -5312,7 +5312,7 @@ extension	Send downloads through this browser's proxy or VPN extension	Lähetä 
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
-extension	Sent to Mister Download Manager	Lähetetty kohteeseen Mister Download Manager
+extension	Sent to Mister Download Manager	Lähetetty Mister Download Manager:lle
 #. text in the browser extension
 #. link at the foot of the toolbar button's popup to the creator's GitHub Sponsors page (MDM is free; this is an optional donation)
 #, machine
@@ -5320,23 +5320,23 @@ extension	Support MDM	Tue MDM:ää
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Ota lataukset tästä selaimesta
+extension	Take downloads from this browser	Latausten siirtäminen tästä selaimesta
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
-extension	The connection to Mister Download Manager failed	Yhteys sovellukseen Mister Download Manager epäonnistui
+extension	The connection to Mister Download Manager failed	Yhteyden muodostaminen sovellukseen Mister Download Manager epäonnistui
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
-extension	The download button is off on this site	Latauspainike on pois käytöstä tällä sivustolla
+extension	The download button is off on this site	Latauspainike ei ole käytössä tällä sivustolla
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	Tämän latauksen tiedot olivat liian suuria siirrettäväksi
+extension	This download's details were too large to hand over	Tämän latauksen tiedot olivat liian suuria siirrettäviksi
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	Päivitä Mister Download Manager käyttääksesi kaikkia tämän laajennuksen tarjoamia ominaisuuksia
+extension	Update Mister Download Manager to use everything this extension offers	Päivitä Mister Download Manager, jotta voit käyttää kaikkia tämän laajennuksen tarjoamia ominaisuuksia
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	Selaa
+menu	Browse	Avaa kansio
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5633,12 +5633,12 @@ menu	By Transfer &Rate	Siirtonopeus(&R)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	C&ustomize URL List...	Mukauta URL-luetteloa...(&U)
+menu	C&ustomize URL List...	Mukauta URL-luetteloa(&U)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Check for &updates...	Tarkista päivitykset...(&U)
+menu	Check for &updates...	Tarkista päivitykset(&U)...
 #. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
@@ -5680,7 +5680,7 @@ menu	Direct3D didn't start here: OpenGL draws	Direct3D ei käynnistynyt tääll�
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Download &video from a page...	Lataa video sivulta...(&V)
+menu	Download &video from a page...	Lataa video sivulta(&V)...
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark: download the torrent's files from their start, to watch a video while it downloads
 #, machine
@@ -5688,7 +5688,7 @@ menu	Download in order	Lataa järjestyksessä
 #. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
-menu	Draw with	Piirrä käyttäen
+menu	Draw with	Piirtotapa
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5719,12 +5719,12 @@ menu	Font	Fontti
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &IDM export file...	IDM-vientitiedostosta...(&I)
+menu	From &IDM export file...	IDM-vientitiedostosta(&I)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &text file...	Tekstitiedostosta...(&T)
+menu	From &text file...	Tekstitiedostosta(&T)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5817,7 +5817,7 @@ menu	R&edownload	&Lataa uudelleen
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	Uudelleenilmoitus
+menu	Reannounce	Ilmoita uudelleen
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	Kerro &kaverille
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Näytönohjain katosi kahdesti 10 minuutissa
+menu	The graphics card was lost twice in 10 minutes	Näytönohjain lakkasi toimimasta kahdesti 10 minuutissa
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5949,7 +5949,7 @@ menu	Vulkan	Vulkan
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Vulkan didn't start here: OpenGL draws	Vulkan ei käynnistynyt täällä: OpenGL piirtää
+menu	Vulkan didn't start here: OpenGL draws	Vulkan ei käynnistynyt tällä tietokoneella: OpenGL piirtää
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

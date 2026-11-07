@@ -6,7 +6,7 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ta även bort den {n} filen från disken|Ta även bort de {n} filerna från disken
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Ta även bort {n} fil från disken|Ta även bort {n} filer från disken
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -38,7 +38,7 @@
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Matchar {n} artikel nu (lägger bara till nya):|Matchar {n} artiklar nu (lägger bara till nya):
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Matchar {n} artikel just nu (lägger bara till nya):|Matchar {n} artiklar just nu (lägger bara till nya):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -113,7 +113,7 @@
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
-@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} av {total} video listade|{title}: {listed} av {total} videor listade
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} av {total} video listad|{title}: {listed} av {total} videor listade
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -168,7 +168,7 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	7z- och RAR-arkiv extraheras av 7-Zip ({path}).
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z- och RAR-arkiv extraheras med 7-Zip ({path}).
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
@@ -182,7 +182,7 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	En debrid-tjänst laddar ned en filvärds länk med ditt eget betalda konto och ger MDM en direktlänk. Använd endast ditt eget konto: att dela ett konto eller dess länkar bryter mot tjänsternas villkor och kan leda till att det stängs av. Nedladdningar som webbläsaren redan har startat förblir oförändrade.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	En debrid-tjänst hämtar en filvärds länk med hjälp av ditt eget betalda konto och ger MDM en direktlänk. Använd bara ditt eget konto: att dela ett konto eller dess länkar bryter mot tjänsternas villkor och kan leda till att kontot stängs av. Hämtningar som webbläsaren redan har startat fortsätter som vanligt.
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -191,7 +191,7 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Ett NextDNS-konfigurations-ID består av sex bokstäver och siffror (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Ett NextDNS-konfigurations-ID består av sex tecken, bokstäverna a–f och siffrorna 0–9.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -207,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	En regel lägger till nya artiklar vars titlar den matchar, när de kommer.
+	A rule adds the new articles whose titles it matches, as they come.	En regel lägger till nya artiklar vars titlar matchar regeln, allt eftersom de kommer.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -241,14 +241,14 @@
 	Accounts	Konton
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Add a download (Add URL)	Lägg till en nedladdning (Lägg till URL)
+	Add a download (Add URL)	Lägg till en hämtning (Lägg till URL)
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
 	Add an account	Lägg till ett konto
 #. text in the tray icon's menu
 #, machine
-	Add batch download	Lägg till batchnedladdning
+	Add batch download	Lägg till batchhämtning
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -259,11 +259,11 @@
 #. button in rssdlg.rs
 #. RSS feeds window: button that subscribes to the feed whose address is typed
 #, machine
-	Add feed	Lägg till feed
+	Add feed	Lägg till RSS-flöde
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	Lägg till många nedladdningar
+	Add many downloads	Lägg till många hämtningar
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -271,7 +271,7 @@
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
-	Add new download	Lägg till ny nedladdning
+	Add new download	Lägg till ny hämtning
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	Lägg till dubbletten och skriv över den befintliga filen
@@ -292,10 +292,10 @@
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
-	Add to queue	Lägg till i kö
+	Add to queue	Lägg till i kön
 #. text in a dialog box
 #, machine
-	Add to queue:	Lägg till i kö:
+	Add to queue:	Lägg till i kön:
 #. message or event log entry in the main window; window title in the Add torrent window
 #, machine
 	Add torrent	Lägg till torrent
@@ -306,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Lägga till {n} nedladdningar i listan? Varje video får en egen rad.
+	Add {n} downloads to the list? Each video gets its own row.	Lägga till {n} hämtningar i listan? Varje video får en egen rad.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -328,7 +328,7 @@
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	Address changed to {host}	Adress ändrad till {host}
+	Address changed to {host}	Adressen ändrades till {host}
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -403,11 +403,11 @@
 	Also delete the file from disk	Ta även bort filen från disken
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	Ta även filer som webbläsaren skulle öppna (PDF, musik, video)
+	Also take files the browser would open (PDF, music, video)	Ta även med filer som webbläsaren skulle öppna (PDF, musik, video)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	Alltid mörk
+	Always dark	Alltid mörkt
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -447,7 +447,7 @@
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
-	Answered in {ms} ms: {ip}	Svarade på {ms} ms: {ip}
+	Answered in {ms} ms: {ip}	Svar inom {ms} ms: {ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -476,7 +476,7 @@
 #. text in the Options window
 #. Options page title: extracting downloaded archives, and Link grabber
 #, machine
-	Archives and Link grabber	Arkiv och länkgrabbare
+	Archives and Link grabber	Arkiv och länkinsamlare
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -498,14 +498,14 @@
 	Aruba	Aruba
 #. option (radio button) in the Options window
 #, machine
-	As the system's region writes them	Som systemets region skriver dem
+	As the system's region writes them	Enligt systemets region
 #. text in the Options window
 #, machine
 	Ask it with:	Fråga den med:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	Bad spårarna om peer-datorer igen
+	Asked the trackers for peers again	Trackerna ombads att hitta peers igen.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -568,7 +568,7 @@
 	Barbados	Barbados
 #. window title in the Batch download window
 #, machine
-	Batch download	Batchnedladdning
+	Batch download	Grupphämtning
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -630,7 +630,7 @@
 	Brazil	Brasilien
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Återställa {names} till ursprungligt skick: deras namn, filtyper och mappar? Dina egna kategorier, Allmänt och Torrents förblir som de är. Nedladdningar som redan har flyttats till Allmänt stannar där.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Återställa {names} till ursprungligt skick – deras namn, filtyper och mappar? Dina egna kategorier, Allmänt och Torrents förblir som de är. Hämtningar som redan har flyttats till Allmänt stannar där.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -645,10 +645,10 @@
 	Browse...	Bläddra...
 #. text in extension.rs
 #, machine
-	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Webbläsarintegrering är inte inställd på den här datorn, så ingen webbläsare kan nå Mister Download Manager ännu.
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Webbläsarintegreringen är inte konfigurerad på den här datorn, så ingen webbläsare kan nå Mister Download Manager ännu.
 #. page title in the Options window
 #, machine
-	Browser/System Integration	Webbläsar-/systemintegrering
+	Browser/System Integration	Webbläsar- och systemintegrering
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -759,7 +759,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	Ändra mapp för kategorin "{category}" till senast valda
+	Change folder for "{category}" category on last selected	Ändra mapp för kategorin ”{category}” till den senast valda
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -767,7 +767,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
-	Check feeds every	Sök efter feeds var
+	Check feeds every	Kontrollera flöden var
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	Sök efter uppdateringar
@@ -785,7 +785,7 @@
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
-	Checking every piece again	Kontrollerar varje del igen
+	Checking every piece again	Alla delar kontrollerades igen.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -972,7 +972,7 @@
 	Curaçao	Curaçao
 #. text in the Options window
 #, machine
-	Customize "Download progress" dialog	Anpassa dialogrutan "Nedladdningsförlopp"
+	Customize "Download progress" dialog	Anpassa dialogrutan "Hämtningsförlopp"
 #. text in the Options window
 #, machine
 	Customize keys to prevent or force downloading with MDM	Anpassa tangenter för att förhindra eller tvinga nedladdning med MDM
@@ -981,7 +981,7 @@
 	Customize MDM Download panels in browsers	Anpassa MDM-nedladdningspaneler i webbläsare
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	Anpassa MDM-menyobjekt i webbläsarnas snabbmeny
+	Customize MDM menu items in context menu of browsers	Anpassa MDM-menyalternativ i webbläsarnas snabbmenyer
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1025,13 +1025,13 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	Standardnedladdningskatalog för kategorin "{category}"
+	Default download directory for "{category}" category	Standardmapp för hämtning för kategorin "{category}"
 #. page title in the Options window
 #, machine
-	Default download settings	Standardinställningar för nedladdning
+	Default download settings	Standardinställningar för hämtning
 #. text in the Options window
 #, machine
-	Default max. conn. number	Standard max. antal anslutningar
+	Default max. conn. number	Standardvärde för max. antal anslutningar
 #. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
@@ -1040,7 +1040,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Ta bort arkiv efter extrahering
+	Delete archives after extracting	Ta bort arkiv efter uppackning
 #. window title in a dialog box
 #, machine
 	Delete category	Ta bort kategori
@@ -1058,10 +1058,10 @@
 	Delete the queue "{queue}"? Its downloads stay in the list.	Vill du ta bort kön "{queue}"? Dess nedladdningar stannar i listan.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads (asks first)	Ta bort de valda nedladdningarna (frågar först)
+	Delete the selected downloads (asks first)	Ta bort de valda hämtningarna (frågar först)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads and their files (asks first)	Ta bort de valda nedladdningarna och deras filer (frågar först)
+	Delete the selected downloads and their files (asks first)	Ta bort de valda hämtningarna och deras filer (frågar först)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1159,10 +1159,10 @@
 	Download a gallery	Ladda ned ett galleri
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
-	Download complete	Nedladdning klar
+	Download complete	Hämtningen är klar
 #. text in the Options window
 #, machine
-	Download failed	Nedladdning misslyckades
+	Download failed	Hämtningen misslyckades
 #. window title in a dialog box
 #, machine
 	Download File Info	Information om nedladdningsfil
@@ -1239,7 +1239,7 @@
 #. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
-	Downloading	Laddar ned
+	Downloading	Hämtas
 #. message or event log entry in the main window
 #, machine
 	Downloading again from the start	Laddar ned igen från början
@@ -1294,10 +1294,10 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
-	Dropped links	Släppta länkar
+	Dropped links	Länkar som släpptes
 #. window title in a dialog box
 #, machine
-	Duplicate download link	Dubblettlänk för nedladdning
+	Duplicate download link	Duplicerad nedladdningslänk
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
@@ -1480,7 +1480,7 @@
 	Faroe Islands	Färöarna
 #. text in the Scheduler window
 #, machine
-	February	Februari
+	February	februari
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
 #, machine
@@ -1594,7 +1594,7 @@
 #. text in the Download video window
 #. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
 #, machine
-	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC behåller ljudet exakt, men det kan inte lägga till kvalitet som webbplatsens ljud inte har: filen blir bara större.
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC bevarar ljudet exakt, men kan inte ge webbplatsens ljud bättre kvalitet än det har: filen blir bara större.
 #. text in categories.rs
 #, machine
 	Folder:	Mapp:
@@ -1608,7 +1608,7 @@
 	For your account only. Another app set as the default stays first.	Endast för ditt konto. En annan app som är inställd som standard förblir först.
 #. text in the Add torrent window
 #, machine
-	For your Windows account only. Another app chosen in "Open with" stays first.	Endast för ditt Windows-konto. En annan app som valts i "Öppna med" förblir först.
+	For your Windows account only. Another app chosen in "Open with" stays first.	Endast för ditt Windows-konto. En annan app som valts i ”Öppna med” förblir först.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Force processes to terminate	Tvinga processer att avslutas
@@ -1751,7 +1751,7 @@
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
-	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive ger inte den här filen nu: {message} (att logga in på Google i webbläsaren hjälper ofta; annars, försök igen senare)
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive tillhandahåller inte den här filen just nu: {message} (det hjälper ofta att logga in på Google i webbläsaren; annars kan du försöka igen senare)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1798,7 +1798,7 @@
 	Haiti	Haiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Lägg på modem när klart
+	Hang up modem when done	Koppla från modemet när det är klart
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -1841,7 +1841,7 @@
 	Hide web pages	Dölj webbsidor
 #. text in the Options window
 #, machine
-	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Håll Alt nedtryckt när du klickar på en länk för att låta webbläsaren ladda ner den istället för Mister Download Manager.
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Håll Alt nedtryckt när du klickar på en länk för att låta webbläsaren ladda ned den i stället för Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Hemsida
@@ -1883,14 +1883,14 @@
 	If a duplicate download link is added:	Om en dubblett av nedladdningslänken läggs till:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Om befintlig fil är komplett, visa dialogrutan för nedladdning klar; annars återuppta den.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Om den befintliga filen är färdig, visa dialogrutan för slutförd hämtning; annars återuppta hämtningen.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	Om den inte kan nås, använd systemets DNS
 #. checkbox in the Options window
 #, machine
-	Ignore file modification time changes when resuming a download	Ignorera ändringar av filens ändringstid när en nedladdning återupptas
+	Ignore file modification time changes when resuming a download	Ignorera ändringar av filens ändringstid när en hämtning återupptas
 #. message or event log entry in the main window
 #, machine
 	Import	Importera
@@ -1952,7 +1952,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	I en mapp med samma namn, när den innehåller flera saker
+	Into a folder named after it, when it holds several things	I en mapp med samma namn, om den innehåller flera saker
 #. text in a dialog box
 #, machine
 	Invalid address	Ogiltig adress
@@ -1991,7 +1991,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	det är inte ett arkiv som MDM extraherar
+	it is not an archive MDM extracts	det är inte ett arkiv som MDM kan extrahera
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2023,7 +2023,7 @@
 	its files could not be written: {error}	dess filer kunde inte skrivas: {error}
 #. text in errors.rs
 #, machine
-	its release information is not as expected: {detail}	dess versionsinformation är inte som förväntat: {detail}
+	its release information is not as expected: {detail}	dess versionsinformation är oväntad: {detail}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2048,7 +2048,7 @@
 	July	Juli
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Hoppa till nedladdningen vars namn börjar med det
+	Jump to the download whose name starts with it	Hoppa till nedladdningen vars namn börjar med tecknet
 #. text in the Scheduler window
 #, machine
 	June	Juni
@@ -2161,7 +2161,7 @@
 	Liechtenstein	Liechtenstein
 #. checkbox in a dialog box
 #, machine
-	Limit all downloads together to	Begränsa alla nedladdningar tillsammans till
+	Limit all downloads together to	Begränsa den sammanlagda hastigheten för alla hämtningar till
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
@@ -2169,7 +2169,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	Begränsa uppladdning för alla torrenter till
+	Limit uploading for all torrents to	Begränsa uppladdningshastigheten för alla torrenter till
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2226,7 +2226,7 @@
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
-	Look links up when they arrive (name, size, online)	Slå upp länkar när de anländer (namn, storlek, online)
+	Look links up when they arrive (name, size, online)	Slå upp länkar när de läggs till (namn, storlek, tillgänglighet)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Sök
@@ -2261,7 +2261,7 @@
 	Madagascar	Madagaskar
 #. message or event log entry in the main window
 #, machine
-	Main download queue	Huvudnedladdningskö
+	Main download queue	Huvudkö för hämtningar
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Make the selection longer or shorter	Gör markeringen längre eller kortare
@@ -2295,7 +2295,7 @@
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
-	Map the port on the router (UPnP)	Mappa porten på routern (UPnP)
+	Map the port on the router (UPnP)	Vidarebefordra porten på routern (UPnP)
 #. text in the Scheduler window
 #, machine
 	March	Mars
@@ -2388,7 +2388,7 @@
 	Mister Download Manager Configuration	Mister Download Manager-konfiguration
 #. text in crashui.rs
 #, machine
-	Mister Download Manager crash report	Mister Download Manager kraschrapport
+	Mister Download Manager crash report	Mister Download Manager:s kraschrapport
 #. text in crashui.rs
 #. crash report window heading: an internal error, MDM still running
 #, machine
@@ -2708,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	Ingen markerad: alla feeds.
+	None ticked: every feed.	Ingen markerad: alla flöden.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Inga: peer-datorer kommer från DHT och andra peer-datorer
@@ -2770,7 +2770,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	stöds inte av denna tjänst
+	not supported by this service	stöds inte av den här tjänsten
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Används inte: fildelar skrivs bredvid filen
@@ -2786,7 +2786,7 @@
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Inget att ladda ned i {item}: släpp länkar, en .torrent-fil eller en lista med adresser (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
-	November	November
+	November	november
 #. text in the Options window
 #, machine
 	Number	Antal
@@ -2799,13 +2799,13 @@
 	Numbers	Tal
 #. text in the Scheduler window
 #, machine
-	October	Oktober
+	October	oktober
 #. option (radio button) in the Options window
 #, machine
 	Off	Av
 #. text in the Add torrent window
 #, machine
-	Off: a finished torrent stops, like any download.	Av: en färdig torrent stoppas, som alla nedladdningar.
+	Off: a finished torrent stops, like any download.	Av: en färdig torrent stoppas, precis som alla andra hämtningar.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Erbjud att ladda ned länkar som kopierats till Urklipp
@@ -2823,14 +2823,14 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
 #, machine
-	On battery, Windows' power options don't allow wake timers	Vid batteridrift tillåter inte Windows strömalternativ väckningstimer
+	On battery, Windows' power options don't allow wake timers	På batteri tillåter Windows ströminställningar inte väckningstimer
 #. text in a download's progress window
 #, machine
-	on download stop/resume	vid nedladdningsstopp/återuppta
+	on download stop/resume	vid stopp/återupptagning av hämtning
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
-	On macOS, only an administrator can schedule a wake	På macOS kan endast en administratör schemalägga en väckning
+	On macOS, only an administrator can schedule a wake	På macOS kan endast en administratör schemalägga väckning
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
 #, machine
@@ -2846,7 +2846,7 @@
 	One address per line; * stands for any text: example.com/private/*	En adress per rad; * står för valfri text: example.com/private/*
 #. option (radio button) in the Scheduler window
 #, machine
-	One-time downloading	Engångsnedladdning
+	One-time downloading	Engångshämtning
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server has the file
 #, machine
@@ -2857,7 +2857,7 @@
 	Only a finished download, or one not started yet, can be moved	Endast en färdig nedladdning, eller en som inte har startats ännu, kan flyttas
 #. message or event log entry in the main window
 #, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Endast en färdig nedladdning, eller en som inte har startats ännu, kan flyttas. Stoppa den och slutför den först.
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Endast en färdig hämtning, eller en som inte har startats ännu, kan flyttas. Stoppa den och slutför den först.
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -2903,7 +2903,7 @@
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
-	Open the reported issue	Öppna det rapporterade problemet
+	Open the reported issue	Öppna det rapporterade ärendet
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Öppna den valda nedladdningen
@@ -3194,7 +3194,7 @@
 	Regular expressions	Reguljära uttryck
 #. text in a download's progress window
 #, machine
-	Remember Speed Limiter settings for this file	Kom ihåg inställningar för hastighetsbegränsare för den här filen
+	Remember Speed Limiter settings for this file	Kom ihåg inställningarna för hastighetsbegränsaren för den här filen
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -3233,7 +3233,7 @@
 #. text in a download's progress window
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
-	Resume capability	Återupptagningskapacitet
+	Resume capability	Stöd för återupptagning
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
@@ -3377,7 +3377,7 @@
 #. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: untick every video
 #, machine
-	Select none	Markera ingen
+	Select none	Avmarkera alla
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select or unselect one more download	Markera eller avmarkera ytterligare en nedladdning
@@ -3423,7 +3423,7 @@
 	Sent	Skickat
 #. text in the Scheduler window
 #, machine
-	September	September
+	September	september
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3545,7 +3545,7 @@
 	Show warning before stopping downloads	Visa varning innan nedladdningar stoppas
 #. text in a download's progress window
 #, machine
-	Shown while the torrent is downloading.	Visas medan torrenten laddas ned.
+	Shown while the torrent is downloading.	Visas medan torrenten hämtas.
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
@@ -3624,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Viloläge
+	Sleep	Försätt i viloläge
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3710,7 +3710,7 @@
 	Start download at	Starta nedladdning vid
 #. checkbox in the Scheduler window
 #, machine
-	Start download on Mister Download Manager startup	Starta nedladdning vid start av Mister Download Manager
+	Start download on Mister Download Manager startup	Starta hämtningen när Mister Download Manager startar
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Starta nedladdning omedelbart medan dialogrutan "Ladda ned filinformation" visas
@@ -3730,24 +3730,24 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	Startad
+	Started	Hämtningen startades.
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Started with gallery-dl {version}	Startade med gallery-dl {version}
+	Started with gallery-dl {version}	Startade med gallery-dl {version}.
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
-	Started with the computer, it starts minimized: no notification area shows its icon here	Startas med datorn, den startar minimerad: inget meddelandefält visar dess ikon här
+	Started with the computer, it starts minimized: no notification area shows its icon here	Startar med datorn och minimeras: inget meddelandefält visar dess ikon här
 #. text in the Options window
 #. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
 #, machine
-	Started with the computer, it waits in the notification area	Startas med datorn, den väntar i meddelandefältet
+	Started with the computer, it waits in the notification area	Startar med datorn och väntar i meddelandefältet
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	Startade med yt-dlp {version} ({format})
+	Started with yt-dlp {version} ({format})	Startade med yt-dlp {version} ({format}).
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3774,18 +3774,18 @@
 #. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	Sluta lista
+	Stop listing	Stoppa listningen
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Stoppa huvudnedladdningskön
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
-	Stop sharing after sharing for	Sluta dela efter delning i
+	Stop sharing after sharing for	Sluta dela efter att ha delat i
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
-	Stop sharing at a share ratio of	Sluta dela vid en delningskvot på
+	Stop sharing at a share ratio of	Sluta dela när delningskvoten når
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -3802,18 +3802,18 @@
 #. message or event log entry in the main window
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 #, machine
-	Stopped: the network adapter changed; starting again	Stoppad: nätverkskortet ändrades; startar igen
+	Stopped: the network adapter changed; starting again	Hämtningen stoppades: nätverkskortet ändrades; startar igen.
 #. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
-	Stopped: {adapter} is not connected; it goes on when it is back	Stoppad: {adapter} är inte ansluten; den fortsätter när den är tillbaka
+	Stopped: {adapter} is not connected; it goes on when it is back	Stoppad: {adapter} är inte ansluten; hämtningen fortsätter när den är tillbaka.
 #. text in a download's progress window
 #, machine
-	Stops when the download finishes	Stoppas när nedladdningen är klar
+	Stops when the download finishes	Stoppar när hämtningen är klar
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Straight into the archive's folder	Direkt till arkivets mapp
+	Straight into the archive's folder	Direkt i arkivets mapp
 #. text in the Scheduler window
 #. Sunday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3825,7 +3825,7 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	Undertexter på {language} kom vid andra försöket: de ligger bredvid videon, inte i den.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Undertexter på {language} kom först vid ett andra försök: de ligger bredvid videon, inte i den.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
@@ -3917,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	den sparade .torrent-filen för den är borta
+	the .torrent file kept for it is gone	.torrent-filen som sparats för den är borta
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Adressen måste vara en http(s)- eller ftp(s)-adress
@@ -3945,7 +3945,7 @@
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	webbläsarens proxy (ett VPN eller proxy-tillägg) begär en inloggning som endast tillägget har: använd VPN:ets egen app, eller välj dess nätverkskort i Alternativ → Proxy/Socks
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	webbläsarens proxy (ett VPN- eller proxy-tillägg) kräver en inloggning som bara tillägget har: använd VPN-tjänstens egen app, eller välj dess nätverkskort i Alternativ → Proxy/Socks
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3969,7 +3969,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Datorn väcks en minut före starttiden och hålls vaken medan kön körs. Mister Download Manager måste vara igång (det kan vänta i meddelandefältet).
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Datorn väcks en minut före starttiden och hålls vaken medan kön körs. Mister Download Manager måste vara igång (det kan vara minimerat till meddelandefältet).
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
@@ -3982,7 +3982,7 @@
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will hibernate in {n} seconds.	Datorn går i strömsparläge om {n} sekunder.
+	The computer will hibernate in {n} seconds.	Datorn försätts i viloläge om {n} sekunder.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3992,42 +3992,42 @@
 	the connection closed before the part was complete	anslutningen stängdes innan delen var klar
 #. text in errors.rs
 #, machine
-	the connection was lost while receiving data	anslutningen förlorades vid mottagning av data
+	the connection was lost while receiving data	anslutningen bröts medan data togs emot
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT nådde ingen. En brandvägg, en VPN eller nätverket kan blockera UDP, som DHT och de flesta spårare använder.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT fick inget svar från någon. En brandvägg, ett VPN eller nätverket kan blockera UDP, som DHT och de flesta spårare använder.
 #. text in errors.rs
 #, machine
 	the disk is full	disken är full
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
-	The download isn't complete yet	Nedladdningen är inte klar ännu
+	The download isn't complete yet	Hämtningen är inte klar ännu
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	The download limit ({mb} MBytes every {hours} hours) has been reached.	Nedladdningsgränsen ({mb} MB varje {hours} timmar) har uppnåtts.
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Nedladdningsgränsen ({mb} MB var {hours} timme) har nåtts.
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	nedladdningslänken har upphört att gälla (uppdatera nedladdningsadressen)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The download list could not be saved: {error}. Changes are kept while MDM runs.	Nedladdningslistan kunde inte sparas: {error}. Ändringar behålls medan MDM körs.
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	Nedladdningslistan kunde inte sparas: {error}. Ändringarna finns kvar medan MDM körs.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Nedladdningshanteraren du redan känner till, ombyggd för att vara snabbare. Gratis och öppen källkod under GNU GPL, version 3 eller senare. Videor hittas av yt-dlp; torrents körs på librqbit.
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Nedladdningshanteraren du redan känner till, ombyggd för att vara snabbare. Gratis och öppen källkod under GNU GPL, version 3 eller senare. Videor hittas av yt-dlp; torrenthämtningar hanteras av librqbit.
 #. text in a dialog box
 #, machine
 	The download queue is done.	Nedladdningskön är klar.
 #. text in errors.rs
 #, machine
-	the downloaded program doesn't match its signed checksum	det nedladdade programmet matchar inte dess signerade kontrollsumma
+	the downloaded program doesn't match its signed checksum	det nedladdade programmet matchar inte sin signerade kontrollsumma
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	The downloads you add, or drop on this window, show here.	Nedladdningarna du lägger till, eller släpper i det här fönstret, visas här.
+	The downloads you add, or drop on this window, show here.	Hämtningarna du lägger till eller släpper i det här fönstret visas här.
 #. text in errors.rs
 #, machine
 	the drive or network share is no longer available	enheten eller nätverksresursen är inte längre tillgänglig
@@ -4058,7 +4058,7 @@
 	The file saved as	Filen sparades som
 #. text in the download list (sizes, speeds, status)
 #, machine
-	The file types that are not listed in any other category	Filtyperna som inte finns med i någon annan kategori
+	The file types that are not listed in any other category	Filtyper som inte finns med i någon annan kategori
 #. text in the Checksum window
 #. tooltip of the box showing the checksum the file really has
 #, machine
@@ -4066,7 +4066,7 @@
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	filens {algorithm}-kontrollsumma matchar inte (data behålls; ladda ned igen)
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	filens kontrollsumma för {algorithm} matchar inte (data behålls; ladda ned igen)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4077,11 +4077,11 @@
 	The folder could not be created: {error}	Mappen kunde inte skapas: {error}
 #. text in errors.rs
 #, machine
-	the folder {path} is not available (drive removed or network share offline?)	mappen {path} är inte tillgänglig (enhet borttagen eller nätverksresurs offline?)
+	the folder {path} is not available (drive removed or network share offline?)	mappen {path} är inte tillgänglig (enheten kan ha tagits bort eller nätverksresursen vara frånkopplad)
 #. text in crashui.rs
 #. crash report window: after Send opened the browser
 #, machine
-	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Formuläret öppnades i din webbläsare. Dra rapportfilen (och .dmp-filen, om du valde det) till den och skicka sedan in.
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Formuläret öppnades i webbläsaren. Dra rapportfilen (och .dmp-filen, om du valde det) till formuläret och skicka sedan in det.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -4108,14 +4108,14 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
-	the release has no version	versionen har inget versionsnummer
+	the release has no version	versionen saknar versionsnummer
 #. text in errors.rs
 #. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
 #, machine
-	the release has no {what}	versionen har ingen {what}
+	the release has no {what}	versionen saknar {what}
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	versionens kontrollsummelista är inte signerad av utgivarens nyckel
+	the release's checksum list is not signed by its publisher's key	versionens kontrollsummelista är inte signerad med utgivarens nyckel
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4123,10 +4123,10 @@
 #. text in crashui.rs
 #. crash report window: after Copy report
 #, machine
-	The report is on your clipboard.	Rapporten finns i urklipp.
+	The report is on your clipboard.	Rapporten finns i urklippet.
 #. text in crashui.rs
 #, machine
-	The report is on your clipboard: paste it in a comment on the issue.	Rapporten finns i urklipp: klistra in den i en kommentar om ärendet.
+	The report is on your clipboard: paste it in a comment on the issue.	Rapporten finns i urklippet: klistra in den i en kommentar om ärendet.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -4134,7 +4134,7 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Den valda nedladdningen är inte klar. Är du säker på att du vill ta bort\nden från Mister Download Managers lista över nedladdningar?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Den valda hämtningen är inte klar. Är du säker på att du vill ta bort\nden från Mister Download Managers lista över hämtningar?
 #. text in errors.rs
 #, machine
 	the server answered {status}	servern svarade {status}
@@ -4159,19 +4159,19 @@
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Webbplatsen vill att du är inloggad, även med din webbläsares cookies för den här sidan. Logga in på den i din webbläsare och försök sedan igen.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Webbplatsen vill att du ska vara inloggad, även när din webbläsare har cookies för den här sidan. Logga in på webbplatsen i webbläsaren och försök sedan igen.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Webbplatsen vill att du är inloggad, även med {browser}s cookies. Logga in på den i {browser} och sök sedan upp sidan igen.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Webbplatsen vill att du ska vara inloggad, även med cookies från {browser}. Logga in på webbplatsen i {browser} och sök sedan upp sidan igen.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Symbolerna kunde inte hämtas: vissa rader i rapporten visar adresser istället för namn (utvecklarna kan fortfarande läsa dem).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Symbolerna kunde inte hämtas: vissa rader i rapporten visar adresser i stället för namn (utvecklarna kan fortfarande läsa dem).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systemnyckelringen är låst och MDM låser inte upp den, så inloggningar och lösenord sparas i MDM:s inställningar, som bara du kan läsa.
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systemnyckelringen är låst och MDM låser inte upp den, så inloggningar och lösenord sparas i MDM:s inställningsmapp, som bara du kan läsa.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Tiden är en tur och retur-resa, mätt som den här nedladdningens egna anslutningar öppnades.
+	The time is a round trip, measured as this download's own connections opened.	Tiden avser en tur och retur och mäts utifrån hur många anslutningar den här hämtningen har öppnat.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4191,7 +4191,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The trackers could not be added: {error}	Spårarna kunde inte läggas till: {error}
+	The trackers could not be added: {error}	Trackrarna kunde inte läggas till: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4201,7 +4201,7 @@
 	The update is open in your system's package installer.	Uppdateringen är öppen i systemets pakethanterare.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	Webbsidan från vilken den här filen hämtades:
+	The web page from which this file was obtained:	Webbsidan som den här filen hämtades från:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4219,17 +4219,17 @@
 	There is already a queue with this name	Det finns redan en kö med det här namnet
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Dessa inställningar är inte tillgängliga när "Visa dialogruta för slutförd nedladdning" är aktiverad
+	These settings are unavailable when "Show download complete dialog" is turned on	Dessa inställningar är inte tillgängliga när "Visa dialogruta för slutförd hämtning" är aktiverad
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	De fortsätter att laddas ned om du stänger det här fönstret.
 #. text in a dialog box
 #, machine
-	This address is already in the list of downloads:	Denna adress finns redan i nedladdningslistan:
+	This address is already in the list of downloads:	Den här adressen finns redan i listan över hämtningar:
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	Den här kategorin eller kön innehåller inga nedladdningar ännu.
+	This category or queue holds no downloads yet.	Den här kategorin eller kön innehåller inga hämtningar ännu.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
@@ -4248,7 +4248,7 @@
 	This date has passed: the queue will not start	Det här datumet har passerat: kön startar inte
 #. text in a dialog box
 #, machine
-	This folder does not exist:	Denna mapp finns inte:
+	This folder does not exist:	Den här mappen finns inte:
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
@@ -4259,11 +4259,11 @@
 	this is a Google Drive folder, not a file	det här är en Google Drive-mapp, inte en fil
 #. text in errors.rs
 #, machine
-	this is not a magnet link or a .torrent file	detta är inte en magnetlänk eller en .torrent-fil
+	this is not a magnet link or a .torrent file	det här är inte en magnetlänk eller en .torrent-fil
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
-	This is the installed copy, not a portable one	Detta är den installerade kopian, inte en portabel
+	This is the installed copy, not a portable one	Det här är den installerade kopian, inte en portabel version
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -4275,7 +4275,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
-	This needs ffmpeg	Detta kräver ffmpeg
+	This needs ffmpeg	Det här kräver ffmpeg
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4291,21 +4291,21 @@
 	this program isn't {name}	det här programmet är inte {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Detta system har inga uppringda anslutningar att koppla ned
+	This system has no dial-up connections to hang up	Det här systemet har inga uppringda anslutningar att koppla ned
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	denna torrent har ett filnamn som inte är säkert att skriva, så den lades inte till: {name}
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	den här torrenten har ett filnamn som inte är säkert att skriva, så den lades inte till: {name}
 #. text in the Add torrent window
 #, machine
-	This torrent is already in the download list	Denna torrent finns redan i nedladdningslistan
+	This torrent is already in the download list	Den här torrenten finns redan i nedladdningslistan
 #. text in errors.rs
 #, machine
-	this torrent is not in the list	denna torrent finns inte i listan
+	this torrent is not in the list	den här torrenten finns inte i listan
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
-	This video is protected (DRM): no tool can save it.	Denna video är skyddad (DRM): inget verktyg kan spara den.
+	This video is protected (DRM): no tool can save it.	Den här videon är skyddad (DRM): inget verktyg kan spara den.
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
@@ -4346,7 +4346,7 @@
 #. text in the Scheduler window
 #. link under the calendar: {date} = today's date
 #, machine
-	Today: {date}	Idag: {date}
+	Today: {date}	I dag: {date}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4384,12 +4384,12 @@
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
-	Torrents	Torrents
+	Torrents	Torrenter
 #. text in torrent downloads
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	Torrentar kunde inte startas: {error}
+	torrents could not start: {error}	Torrenterna kunde inte startas: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -4442,7 +4442,7 @@
 	Turn off computer	Stäng av datorn
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Turn off computer when done	Stäng av datorn när klar
+	Turn off computer when done	Stäng av datorn när hämtningen är klar
 #. button in a dialog box
 #, machine
 	Turn off now	Stäng av nu
@@ -4460,7 +4460,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
-	Type a feed's address above and click Add feed.	Skriv en feeds adress ovan och klicka på Lägg till feed.
+	Type a feed's address above and click Add feed.	Skriv adressen till ett flöde ovan och klicka på Lägg till flöde.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -4488,7 +4488,7 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
-	Type the queue's name	Skriv köns namn
+	Type the queue's name	Skriv namnet på kön
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -4549,7 +4549,7 @@
 #. button in the Options window
 #. button (short): move the account up the list (accounts are asked in the list's order)
 #, machine
-	Up	Upp
+	Up	Flytta upp
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: each video at this height or the nearest below; {height} is a number (1080)
 #, machine
@@ -4614,7 +4614,7 @@
 	Use the token	Använd token
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	Använda dem för denna torrent? Det som matchar behålls, resten ersätts.
+	Use them for this torrent? What matches it is kept, the rest replaced.	Ska de användas för den här torrenten? Det som matchar behålls, resten ersätts.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Använd denna proxy för följande protokoll:
@@ -4624,7 +4624,7 @@
 	Use this rule	Använd denna regel
 #. text in the Options window
 #, machine
-	Used by the list of downloads and the Scheduler.	Används av listan över nedladdningar och Schemaläggaren.
+	Used by the list of downloads and the Scheduler.	Används av hämtningslistan och schemaläggaren.
 #. text in the Options window
 #. column title: the user name
 #, machine
@@ -4634,7 +4634,7 @@
 	User names and passwords for servers/sites	Användarnamn och lösenord för servrar/webbplatser
 #. text in the Options window
 #, machine
-	User-Agent for manually added downloads:	User-Agent för manuellt tillagda nedladdningar:
+	User-Agent for manually added downloads:	User-Agent för manuellt tillagda hämtningar:
 #. text in the Options window
 #, machine
 	User:	Användare:
@@ -4713,7 +4713,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Vänta på listan, eller sluta lista
+	Wait for the list, or stop listing	Vänta på listan eller avbryt listningen
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -4722,11 +4722,11 @@
 	Waiting	Väntar
 #. message or event log entry in the main window
 #, machine
-	Waiting: the download limit is reached (Scheduler)	Väntar: nedladdningsgränsen har nåtts (Schemaläggaren)
+	Waiting: the download limit is reached (Scheduler)	Väntar: hämtningsgränsen har nåtts (Schemaläggaren)
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
 #, machine
-	Wake the computer to run this queue	Väck datorn för att köra den här kön
+	Wake the computer to run this queue	Väck datorn så att den kan köra den här kön
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ och XZ; ett delat arkiv (.part1.rar, .7z.001) när\nvarje volym är inne. En fil som redan finns behålls: den nya numreras.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ och XZ; ett delat arkiv (.part1.rar, .7z.001) när\nalla volymer har hämtats. En fil som redan finns behålls: den nya numreras.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4895,15 +4895,15 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} är inte ansluten: inget laddas ned förrän den är tillbaka.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} är inte ansluten: inget laddas ned förrän den är ansluten igen.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm} checksum	{algorithm} kontrollsumma
+	{algorithm} checksum	Kontrollsumma för {algorithm}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: kontrolleras när nedladdningen är klar
+	{algorithm}: checked when the download finishes	{algorithm}: kontrolleras när hämtningen är klar
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
@@ -4911,16 +4911,16 @@
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: tillägget anslutet
+	{browser}: the extension connected	{browser}: tillägget är anslutet
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: tillägget {version} anslutet
+	{browser}: the extension {version} connected	{browser}: tillägget {version} är anslutet
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} levererar den här filen: platsen är dess servers, ofta nära dig, inte webbplatsägarens.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} levererar den här filen: platsen är dess server, ofta nära dig, inte webbplatsägarens.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4933,7 +4933,7 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
-	{ext} File	{ext} fil
+	{ext} File	{ext}-fil
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4947,25 +4947,25 @@
 	{file} could not be read to check it	{file} kunde inte läsas för att kontrolleras
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} finns inte längre där den sparades (flyttad eller borttagen). Ladda ned igen, i dess högerklicksmeny, hämtar den igen.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} finns inte längre där den sparades (den har flyttats eller tagits bort). Välj Ladda ned igen i snabbmenyn för att hämta den på nytt.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: filen matchar INTE dess kontrollsumma ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: filen matchar INTE kontrollsumman ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: filen matchar dess kontrollsumma ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: filen matchar kontrollsumman ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{have} av {total} ({size} vardera)
+	{have} of {total} ({size} each)	{have} av {total} ({size} styck)
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{have} av {total} delar ({size} vardera)
+	{have} of {total} pieces ({size} each)	{have} av {total} delar ({size} styck)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -5004,12 +5004,12 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} är ett 7z- eller RAR-arkiv. MDM extraherar dessa med 7-Zip, som inte är installerat.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} är ett 7z- eller RAR-arkiv. MDM packar upp sådana arkiv med 7-Zip, som inte är installerat.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name} är skyddat med ett lösenord:
+	{name} is protected by a password:	{name} är lösenordsskyddat:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -5032,18 +5032,18 @@
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{percent} på {service}
+	{percent} at {service}	{percent} hos {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} ber att sakta ned; MDM försöker igen om en minut
+	{service} asks to slow down; MDM will try again in a minute	{service} ber om att få sänka takten; MDM försöker igen om en minut
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} ber dig att först tillåta den här datorn: se dess e-post
+	{service} asks you to allow this computer first: see its email	{service} ber dig att först tillåta den här datorn: kontrollera e-postmeddelandet
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} kan inte hämta den här torrenten: ingen delar den, eller så kan länken inte läsas
@@ -5116,7 +5116,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
-	{title}: not added: files of its names are already in {folder}	{title}: inte tillagd: filer med dess namn finns redan i {folder}
+	{title}: not added: files of its names are already in {folder}	{title}: inte tillagd: filer med samma namn finns redan i {folder}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
@@ -5225,7 +5225,7 @@ extension	Help	Hjälp
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Dölj på den här videon
+extension	Hide on this video	Dölj bara för den här videon
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5628,7 +5628,7 @@ menu	By St&atus	Efter status(&A)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	By Transfer &Rate	Efter överföringshastighet(&R)
+menu	By Transfer &Rate	Sortera efter överföringshastighete&t
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5739,7 +5739,7 @@ menu	High contrast	Hög kontrast
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	Det kunde inte starta: loggen anger varför
+menu	It couldn't start: the log says why	Det gick inte att starta: loggen anger varför
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	Berätta för en &vän
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Grafikkortet förlorades två gånger på 10 minuter
+menu	The graphics card was lost twice in 10 minutes	Grafikkortet slutade fungera två gånger på 10 minuter
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine

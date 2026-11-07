@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	დარწმუნებული ხართ, რომ გსურთ {n} ჩამოტვირთვის წაშლა Mister Download Manager-ის ჩამოტვირთვების სიიდან?|დარწმუნებული ხართ, რომ გსურთ ამ {n} ჩამოტვირთვის წაშლა Mister Download Manager-ის ჩამოტვირთვების სიიდან?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	გსურთ Mister Download Manager-ის ჩამოტვირთვების სიიდან {n} ჩამოტვირთვის წაშლა?|გსურთ Mister Download Manager-ის ჩამოტვირთვების სიიდან ამ {n} ჩამოტვირთვის წაშლა?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -191,15 +191,15 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS-ის კონფიგურაციის ID არის ექვსი ასო და ციფრი (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS-ის კონფიგურაციის ID ექვსი ასოსა და ციფრისგან შედგება (0-9, a-f).
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
-	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	პროფილის სახელი ან მისი საქაღალდე. ცარიელი: ბოლოს გამოყენებული პროფილი. Chromium-ზე დაფუძნებული ბრაუზერისთვის, რომელიც არ არის სიაში (Helium, Thorium...), აირჩიეთ Chromium და მისი პროფილის საქაღალდე.
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	პროფილის სახელი ან მისი საქაღალდე. ცარიელი: ბოლოს გამოყენებული პროფილი. Chromium-ზე დაფუძნებული ბრაუზერისთვის, რომელიც სიაში არ არის (Helium, Thorium...), აირჩიეთ Chromium და მისი პროფილის საქაღალდე.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	ამ ჩამოტვირთვას პროქსი ახორციელებს: ადგილი და დრო პროქსისია და არა სერვერის.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	ამ ჩამოტვირთვას პროქსი ატარებს: ადგილი და დრო პროქსისაა და არა სერვერის.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -219,7 +219,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	მისი ერთი ტომი აკლია
+	a volume of it is missing	მას ერთი ტომი აკლია
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Mister Download Manager-ის შესახებ
@@ -267,7 +267,7 @@
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
-	Add Mister Download Manager to your browser	დაამატეთ Mister Download Manager თქვენს ბრაუზერში
+	Add Mister Download Manager to your browser	Mister Download Manager-ის დამატება თქვენს ბრაუზერში
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
@@ -284,11 +284,11 @@
 	Add the extension	გაფართოების დამატება
 #. text in extension.rs
 #, machine
-	Add the free extension: files you download in your browser come here, and videos get a Download button.	დაამატეთ უფასო გაფართოება: ფაილები, რომლებსაც ჩამოტვირთავთ თქვენს ბრაუზერში, აქ მოხვდება, ხოლო ვიდეოებს ექნებათ ჩამოტვირთვის ღილაკი.
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	დაამატეთ უფასო გაფართოება: თქვენს ბრაუზერში ჩამოტვირთული ფაილები აქ მოხვდება, ხოლო ვიდეოებს ჩამოტვირთვის ღილაკი ექნებათ.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
-	Add them without starting them	დამატება გაშვების გარეშე
+	Add them without starting them	მათი დამატება დაწყების გარეშე
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -306,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	დავამატო {n} ჩამოტვირთვა სიაში? თითოეული ვიდეო ცალკე რიგში იქნება.
+	Add {n} downloads to the list? Each video gets its own row.	გსურთ სიაში {n} ჩამოტვირთვის დამატება? თითოეული ვიდეო ცალკე რიგში იქნება.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -315,7 +315,7 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	დამატებულია RSS წესით {rule} {feed}-დან
+	Added by the RSS rule {rule} from {feed}	დამატებულია RSS წესით {rule} წყაროდან {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -501,11 +501,11 @@
 	As the system's region writes them	როგორც სისტემის რეგიონი წერს
 #. text in the Options window
 #, machine
-	Ask it with:	ჰკითხეთ მას:
+	Ask it with:	ჰკითხეთ ასე:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	ტრეკერებს ხელახლა ვთხოვეთ პირები
+	Asked the trackers for peers again	ტრეკერებს ხელახლა ვთხოვეთ თანატოლები
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -759,7 +759,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	შეცვალეთ საქაღალდე „{category}“ კატეგორიისთვის ბოლოს არჩეულზე
+	Change folder for "{category}" category on last selected	„{category}“ კატეგორიის საქაღალდის შეცვლა ბოლო არჩეულზე
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -799,18 +799,18 @@
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the file...	ფაილის შემოწმება...
+	Checking the file...	ფაილი მოწმდება...
 #. text in helpers.rs
 #. Video helpers: a program just chosen is being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the program...	პროგრამის შემოწმება...
+	Checking the program...	პროგრამა მოწმდება...
 #. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking {name} ({n} of {total})...	{name}-ის შემოწმება ({n} / {total})...
+	Checking {name} ({n} of {total})...	მოწმდება {name} ({n} / {total})...
 #. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -836,7 +836,7 @@
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Choose {name}	{name} არჩევა
+	Choose {name}	{name}-ის არჩევა
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -866,7 +866,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Cocos (Keeling) Islands	ქოქოსის (კილინგის) კუნძულები
+	Cocos (Keeling) Islands	კოკოსის (კილინგის) კუნძულები
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -890,10 +890,10 @@
 	Configuration ID:	კონფიგურაციის ID:
 #. text in the Options window
 #, machine
-	Confirm before deleting downloads	წაშლამდე დადასტურება
+	Confirm before deleting downloads	ჩამოტვირთვების წაშლამდე დადასტურება
 #. window title in a dialog box
 #, machine
-	Confirm deletion of downloads	ჩამოტვირთვების წაშრის დადასტურება
+	Confirm deletion of downloads	ჩამოტვირთვების წაშლის დადასტურება
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -904,7 +904,7 @@
 	Connected	დაკავშირებულია
 #. text in extension.rs
 #, machine
-	Connected: downloads from your browser now come here.	დაკავშირებულია: ჩამოტვირთვები თქვენი ბრაუზერიდან ახლა აქ მოდის.
+	Connected: downloads from your browser now come here.	დაკავშირებულია: თქვენი ბრაუზერიდან ჩამოტვირთვები ახლა აქ მოდის.
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -929,7 +929,7 @@
 	Cookies for video sites	ქუქი-ფაილები ვიდეო საიტებისთვის
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Copied to the clipboard.	ბუფერში კოპირებულია.
+	Copied to the clipboard.	ბუფერში დაკოპირდა.
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copy	კოპირება
@@ -949,7 +949,7 @@
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Could not be read: {error}	ვერ წაიკითხა: {error}
+	Could not be read: {error}	წაკითხვა ვერ მოხერხდა: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -975,13 +975,13 @@
 	Customize "Download progress" dialog	„ჩამოტვირთვის პროგრესის“ დიალოგის მორგება
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	MDM-ით ჩამოტვირთვის თავიდან ასაცილებლად ან იძულებითი ჩამოტვირთვისთვის კლავიშების მორგება
+	Customize keys to prevent or force downloading with MDM	MDM-ით ჩამოტვირთვის თავიდან ასაცილებლად ან ჩამოტვირთვის იძულებისთვის კლავიშების მორგება
 #. text in the Options window
 #, machine
-	Customize MDM Download panels in browsers	MDM ჩამოტვირთვის პანელების მორგება ბრაუზერებში
+	Customize MDM Download panels in browsers	ბრაუზერებში MDM ჩამოტვირთვის პანელების მორგება
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	MDM მენიუს ელემენტების მორგება ბრაუზერების კონტექსტურ მენიუში
+	Customize MDM menu items in context menu of browsers	ბრაუზერების კონტექსტურ მენიუში MDM მენიუს ელემენტების მორგება
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1010,7 +1010,7 @@
 	Day, month, year	დღე, თვე, წელი
 #. page title in the Options window
 #, machine
-	Debrid service accounts	დეზაბრიდირების სერვისის ანგარიშები
+	Debrid service accounts	დებლიდის სერვისის ანგარიშები
 #. text in the Scheduler window
 #, machine
 	December	დეკემბერი
@@ -1093,11 +1093,11 @@
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
-	DNS over HTTPS	DNS HTTPS-ზე
+	DNS over HTTPS	DNS HTTPS-ით
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
 #, machine
-	DNS over TLS	DNS TLS-ზე
+	DNS over TLS	DNS TLS-ით
 #. window title in the Options window
 #. window title: the settings of the DNS chosen in Options → Connection
 #, machine
@@ -1138,7 +1138,7 @@
 	Don't start downloading automatically from the following sites:	არ დაიწყოთ ჩამოტვირთვა ავტომატურად შემდეგი საიტებიდან:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	არ მიიღოთ ფაილები, რომლებიც უფრო მცირეა ვიდრე (კბ, 0 = ნებისმიერი ზომა):
+	Don't take files smaller than (KB, 0 = any size):	მითითებულ ზომაზე მცირე ფაილების გამოტოვება (კბ, 0 = ნებისმიერი ზომა):
 #. text in a download's progress window
 #, machine
 	Done	დასრულებულია
@@ -1165,7 +1165,7 @@
 	Download failed	ჩამოტვირთვა ვერ მოხერხდა
 #. window title in a dialog box
 #, machine
-	Download File Info	ჩამოტვირთვის ფაილის ინფორმაცია
+	Download File Info	ჩამოტვირთული ფაილის ინფორმაცია
 #. text in the Add torrent window
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
@@ -1258,7 +1258,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
-	Downloading the update... {percent}	განახლების ჩამოტვირთვა... {percent}
+	Downloading the update... {percent}	განახლება იტვირთება... {percent}
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -1336,7 +1336,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	El Salvador	სალვადორი
+	El Salvador	ელ-სალვადორი
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Email	ელფოსტა
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	ყველა კავშირი გადის მის გავლით, {ip}-დან.
+	Every connection goes through it, from {ip}.	ყველა კავშირი ამ ადაპტერით, {ip} მისამართიდან გადის.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1441,7 +1441,7 @@
 	Export	ექსპორტი
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Manifest 2 Chrome გაფართოებების ხელმისაწვდომობის გაფართოება
+	Extend the availability of Manifest 2 Chrome extensions	Manifest 2-ის Chrome გაფართოებების ხელმისაწვდომობის გახანგრძლივება
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	გაფართოებები გამოყოფილია სივრცეებით, მაგალითად MP4 MKV R0*
@@ -1473,7 +1473,7 @@
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (over 150 ms)
 #, machine
-	far	შორი
+	far	შორს
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1615,7 +1615,7 @@
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
-	Fr	პა
+	Fr	პარ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1697,7 +1697,7 @@
 	gallery-dl can download this gallery's files.	gallery-dl-ს შეუძლია ამ გალერეის ფაილების ჩამოტვირთვა.
 #. text in gallerydlg.rs
 #, machine
-	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl-ს არ შეუძლია ამ მისამართის წაკითხვა. ამის ნაცვლად დაამატეთ ის როგორც ფაილი (URL-ის დამატება).
+	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl-ს არ შეუძლია ამ მისამართის წაკითხვა. ამის ნაცვლად, დაამატეთ ის ფაილად (URL-ის დამატება).
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
@@ -1779,7 +1779,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Guernsey	ჯერსი
+	Guernsey	გერნსი
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1798,11 +1798,11 @@
 	Haiti	ჰაიტი
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	მოდემის გათიშვა დასრულებისას
+	Hang up modem when done	მოდემის გათიშვა ჩამოტვირთვის დასრულებისას
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	გაქვთ
+	Have	მიღებულია
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1883,7 +1883,7 @@
 	If a duplicate download link is added:	თუ დამატებულია დუბლიკატი ჩამოტვირთვის ბმული:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	თუ არსებული ფაილი დასრულებულია, აჩვენე ჩამოტვირთვის დასრულების დიალოგი; წინააღმდეგ შემთხვევაში გააგრძელე.
+	If existing file is complete, show download complete dialog; otherwise resume it.	თუ არსებული ფაილი სრულადაა ჩამოტვირთული, გამოჩნდება ჩამოტვირთვის დასრულების ფანჯარა; წინააღმდეგ შემთხვევაში, ჩამოტვირთვა გაგრძელდება.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -2131,7 +2131,7 @@
 	Latvia	ლატვია
 #. text in the Options window
 #, machine
-	Launch Mister Download Manager on startup	Mister Download Manager-ის გაშვება გაშვებისას
+	Launch Mister Download Manager on startup	Mister Download Manager-ის გაშვება Windows-ის გაშვებისას
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2222,7 +2222,7 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
-	Login	შესვლა
+	Login	მომხმარებლის სახელი
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
@@ -2291,7 +2291,7 @@
 	Malta	მალტა
 #. text in the Options window
 #, machine
-	Manual proxy/socks configuration	მექანიკური პროქსი/SOCKS კონფიგურაცია
+	Manual proxy/socks configuration	პროქსის/SOCKS-ის ხელით კონფიგურაცია
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
@@ -2366,7 +2366,7 @@
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
-	Minimize to the notification area	შეტყობინებების ზონაში ჩახურვა
+	Minimize to the notification area	შეტყობინებების არეში მინიმიზაცია
 #. text in rssdlg.rs; text in the Add torrent window
 #. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
@@ -2375,7 +2375,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
-	Missing	დაკარგული
+	Missing	ჩამოუტვირთავი
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
@@ -2498,7 +2498,7 @@
 	Mozambique	მოზამბიკი
 #. text in errors.rs
 #, machine
-	much slower than the other connections; reconnecting	ბევრად ნელია, ვიდრე სხვა კავშირები; ხელახლა დაკავშირება
+	much slower than the other connections; reconnecting	სხვა კავშირებზე ბევრად ნელია; ხელახლა დაკავშირება მიმდინარეობს
 #. text in the download list (sizes, speeds, status)
 #. category name: audio files
 #, machine
@@ -2534,7 +2534,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	თქვენს hosts ფაილში არსებული სახელები და ლოკალური სახელები (ერთი სიტყვა, .local, .lan) რჩება სისტემის DNS-თან. ვიდეო გვერდები და ტორენტ ტრეკერები ამჟამად იყენებენ სისტემის DNS-ს.
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	hosts ფაილში არსებული სახელები და ლოკალური სახელები (ერთი სიტყვა, .local, .lan) სისტემის DNS-ს იყენებს. ვიდეოგვერდები და ტორენტების ტრეკერები ამჟამად სისტემის DNS-ს იყენებს.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2624,15 +2624,15 @@
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
-	no data folder	მონაცემთა ფოლდერი არ არის
+	no data folder	მონაცემების საქაღალდე არ არის
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 #, machine
-	no data folder for torrents	ტორენტებისთვის მონაცემთა ფოლდერი არ არის
+	no data folder for torrents	ტორენტების მონაცემების საქაღალდე არ არის
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
-	No day is ticked: the queue will not start	არც ერთი დღე არ არის მონიშნული: რიგი არ დაიწყება
+	No day is ticked: the queue will not start	არცერთი დღე არ არის მონიშნული: რიგი არ დაიწყება
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -2792,7 +2792,7 @@
 	Number	ნომერი
 #. checkbox in the Scheduler window
 #, machine
-	Number of retries for each file if downloading failed :	ყოველი ფაილის ხელახალი მცდელობების რაოდენობა, თუ ჩამოტვირთვა ვერ მოხერხდა:
+	Number of retries for each file if downloading failed :	ყოველი ფაილის ჩამოტვირთვის წარუმატებლობის შემთხვევაში ხელახალი მცდელობების რაოდენობა:
 #. option (radio button) in the Batch download window
 #. the * in the address runs through numbers
 #, machine
@@ -2924,7 +2924,7 @@
 #. text in a download's progress window
 #. tab title: what happens when the download finishes
 #, machine
-	Options on completion	პარამეტრები დასრულებისას
+	Options on completion	დასრულების პარამეტრები
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -2997,15 +2997,15 @@
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
-	Paused	დაპაუზებულია
+	Paused	შეჩერებულია
 #. text in a download's progress window
 #. tab title: the other computers sharing the torrent
 #, machine
-	Peers	პირები
+	Peers	თანატოლები
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: peers are known but none answered
 #, machine
-	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	პირები ნაპოვნია, მაგრამ ჯერ არავინ უპასუხა. შესაძლოა, ფაიერვოლი ან VPN ბლოკავს კავშირებს.
+	Peers were found, but none answered yet. A firewall or a VPN may be blocking the connections.	თანატოლები ნაპოვნია, მაგრამ ჯერ არავის უპასუხია. შესაძლოა, ფაიერვოლი ან VPN ბლოკავს კავშირებს.
 #. option (radio button) in the Scheduler window
 #, machine
 	Periodic synchronization	პერიოდული სინქრონიზაცია
@@ -3163,7 +3163,7 @@
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
-	Received	მიღებულია
+	Received	მიღებული
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3278,11 +3278,11 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Saint Barthélemy	სენ-ბართელმი
+	Saint Barthélemy	სენ-ბართელემი
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Saint Helena, Ascension and Tristan da Cunha	წმინდა ელენე, ამაღლება და ტრისტან და კუნია
+	Saint Helena, Ascension and Tristan da Cunha	წმინდა ელენე, ასენსიონი და ტრისტან-და-კუნია
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3487,7 +3487,7 @@
 #. text in a download's progress window
 #. a torrent's General tab: how long it has been shared once finished, in all
 #, machine
-	Shared for	გაზიარებულია
+	Shared for	გაზიარების ხანგრძლივობა
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -3573,7 +3573,7 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	შესული ხართ როგორც {user} ({state})
+	Signed in as {user} ({state})	შესულია როგორც {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
@@ -3726,7 +3726,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Start {queue}	{queue} დაწყება
+	Start {queue}	{queue}-ის დაწყება
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
@@ -3781,11 +3781,11 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
-	Stop sharing after sharing for	გაზიარების შეწყვეტა გაზიარებიდან
+	Stop sharing after sharing for	გაზიარების შეწყვეტა გაზიარების დაწყებიდან
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
-	Stop sharing at a share ratio of	გაზიარების შეწყვეტა გაზიარების კოეფიციენტით
+	Stop sharing at a share ratio of	გაზიარების შეწყვეტა გაზიარების კოეფიციენტის მიღწევისას
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -3793,7 +3793,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Stop {queue}	{queue} შეჩერება
+	Stop {queue}	{queue}-ის შეჩერება
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
@@ -3825,16 +3825,16 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	სუბტიტრები {language} ენაზე მეორე ცდაზე გადმოიწერა: ისინი ვიდეოს გვერდითაა და არა მასში.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} ენაზე სუბტიტრები მეორე ცდაზე ჩამოიტვირთა: ისინი ვიდეოს გვერდითაა და არა მასში.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	სუბტიტრები {language} ენაზე ვერ გადმოიწერა: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} ენაზე სუბტიტრების ჩამოტვირთვა ვერ მოხერხდა: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	სუბტიტრები {language} ენაზე ვერ გადმოიწერა: {site}-მა უარი თქვა (ძალიან ბევრი მოთხოვნა).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} ენაზე სუბტიტრების ჩამოტვირთვა ვერ მოხერხდა: {site}-მა უარი თქვა (ძალიან ბევრი მოთხოვნა).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3917,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	.torrent ფაილი, რომელიც ინახებოდა, გაქრა
+	the .torrent file kept for it is gone	მისთვის შენახული .torrent ფაილი აღარ არსებობს
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	მისამართი უნდა იყოს http(s) ან ftp(s) მისამართი
@@ -3930,26 +3930,26 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Recycle Bin	არქივი გადატანილია ნაგავში
+	The archive was moved to the Recycle Bin	არქივი Recycle Bin-ში გადაიტანა
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Trash	არქივი გადატანილია ნაგავში
+	The archive was moved to the Trash	არქივი ნაგავში გადაიტანა
 #. text in the Download video window
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	საუკეთესო ხარისხისთვის, MP3, Opus და FLAC საჭიროებს ffmpeg-ს (დაახლოებით 80 მბ).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	საუკეთესო ხარისხის ვარიანტებს, MP3-ს, Opus-სა და FLAC-ს ffmpeg სჭირდება (დაახლოებით 80 მბ).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	საუკეთესო ხარისხისთვის, MP3, Opus და FLAC საჭიროებს ffmpeg-ს: დააინსტალირეთ ის თქვენი სისტემის პაკეტის მენეჯერის (ან Homebrew) მეშვეობით.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	საუკეთესო ხარისხის ვარიანტებს, MP3-ს, Opus-სა და FLAC-ს ffmpeg სჭირდება: დააინსტალირეთ ის თქვენი სისტემის პაკეტების მენეჯერის (ან Homebrew-ის) მეშვეობით.
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ბრაუზერის პროქსი (VPN ან პროქსის გაფართოება) ითხოვს შესვლას, რომელიც მხოლოდ ამ გაფართოებას აქვს: გამოიყენეთ VPN-ის საკუთარი აპი, ან აირჩიეთ მისი ქსელის ადაპტერი ოფციებში → პროქსი / SOCKS
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	ბრაუზერის პროქსი (VPN ან პროქსის გაფართოება) შესვლას ითხოვს, რომლის მონაცემებიც მხოლოდ ამ გაფართოებას აქვს: გამოიყენეთ VPN-ის საკუთარი აპი ან აირჩიეთ მისი ქსელის ადაპტერი ოფციებში → პროქსი / SOCKS
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
-	The browsers can find Mister Download Manager	ბრაუზერებს შეუძლიათ Mister Download Manager-ის პოვნა
+	The browsers can find Mister Download Manager	ბრაუზერები Mister Download Manager-ს პოულობენ
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -3957,11 +3957,11 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	კოდი ვადაგასულია: ხელახლა შედით
+	the code expired: sign in again	კოდის ვადა ამოიწურა: ხელახლა შედით
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	The column filters hide every download in this view.	სვეტის ფილტრები მალავს ყველა ჩამოტვირთვას ამ ხედში.
+	The column filters hide every download in this view.	სვეტის ფილტრები ამ ხედში ყველა ჩამოტვირთვას მალავს.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3969,7 +3969,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	კომპიუტერი იღვიძებს დაწყების დრომდე ერთი წუთით ადრე და რჩება გაღვიძებული, სანამ რიგი მუშაობს. Mister Download Manager უნდა მუშაობდეს (მას შეუძლია დაელოდოს შეტყობინებების ზონაში).
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	კომპიუტერი გაღვიძდება დაწყების დრომდე ერთი წუთით ადრე და გაღვიძებული დარჩება, სანამ რიგი მუშაობს. Mister Download Manager უნდა მუშაობდეს (შესაძლებელია, ის შეტყობინებების არეში იყოს მინიმიზებული).
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
@@ -4126,11 +4126,11 @@
 	The report is on your clipboard.	ანგარიში თქვენს ბუფერშია.
 #. text in crashui.rs
 #, machine
-	The report is on your clipboard: paste it in a comment on the issue.	ანგარიში თქვენს ბუფერშია: ჩასვით ის კომენტარში საკითხზე.
+	The report is on your clipboard: paste it in a comment on the issue.	ანგარიში თქვენს ბუფერშია: ჩასვით ის საკითხის კომენტარში.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	უსაფრთხო კავშირი ვერ მოხერხდა
+	the secure connection failed	უსაფრთხო კავშირის დამყარება ვერ მოხერხდა
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4159,19 +4159,19 @@
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	საიტს სურს, რომ შესული იყოთ, მაშინაც კი, თუ თქვენი ბრაუზერის ქუქი-ფაილები ამ გვერდისთვის არის. შედით მასში თქვენს ბრაუზერში, შემდეგ სცადეთ ხელახლა.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	საიტზე შესვლაა საჭირო, მიუხედავად იმისა, რომ თქვენს ბრაუზერში ამ გვერდის ქუქი-ფაილებია. შედით საიტზე თქვენს ბრაუზერში, შემდეგ სცადეთ ხელახლა.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	საიტს სურს, რომ შესული იყოთ, მაშინაც კი, თუ {browser}-ის ქუქი-ფაილები გაქვთ. შედით მასში {browser}-ში, შემდეგ ხელახლა მოძებნეთ გვერდი.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	საიტზე შესვლაა საჭირო, მიუხედავად იმისა, რომ {browser}-ის ქუქი-ფაილები გაქვთ. შედით საიტზე {browser}-ში, შემდეგ ხელახლა მოძებნეთ გვერდი.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	სიმბოლოების მოძიება ვერ მოხერხდა: ანგარიშის ზოგიერთი ხაზი სახელების ნაცვლად მისამართებს აჩვენებს (დეველოპერებს მაინც შეუძლიათ მათი წაკითხვა).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	სიმბოლოების მოძიება ვერ მოხერხდა: ანგარიშის ზოგიერთ ხაზზე სახელების ნაცვლად მისამართებია ნაჩვენები (დეველოპერებს მათი წაკითხვა მაინც შეუძლიათ).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	სისტემის საკვანძო რგოლი დაბლოკილია და MDM არ ხსნის მას, ამიტომ შესვლის მონაცემები და პაროლები ინახება MDM-ის პარამეტრებში, რომელთა წაკითხვა მხოლოდ თქვენ შეგიძლიათ.
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	სისტემის საკვანძო რგოლი დაბლოკილია და MDM მას არ ხსნის, ამიტომ შესვლის მონაცემები და პაროლები MDM-ის პარამეტრების საქაღალდეში ინახება, რომლის წაკითხვაც მხოლოდ თქვენ შეგიძლიათ.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	დრო არის ორმხრივი მოგზაურობა, გაზომილი ამ ჩამოტვირთვის საკუთარი კავშირების გახსნისას.
+	The time is a round trip, measured as this download's own connections opened.	დრო მრგვალი ციკლის ხანგრძლივობაა და ამ ჩამოტვირთვის მიერ კავშირების გახსნის მიხედვით იზომება.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4198,7 +4198,7 @@
 	The update couldn't be installed: {error}	განახლების ინსტალაცია ვერ მოხერხდა: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The update is open in your system's package installer.	განახლება გახსნილია თქვენი სისტემის პაკეტის ინსტალერში.
+	The update is open in your system's package installer.	განახლება თქვენი სისტემის პაკეტების ინსტალერშია გახსნილი.
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	ვებ გვერდი, საიდანაც ეს ფაილი იქნა მიღებული:
@@ -4252,7 +4252,7 @@
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ამ Google Drive-ის ფაილს თქვენი შესვლა სჭირდება: შედით Google-ში თქვენს ბრაუზერში, შემდეგ გადმოწერეთ იქიდან
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ამ Google Drive-ის ფაილზე წვდომისთვის საჭიროა შესვლა: შედით Google-ში თქვენს ბრაუზერში, შემდეგ ჩამოტვირთეთ ფაილი იქიდან
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -4275,7 +4275,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
-	This needs ffmpeg	ამას სჭირდება ffmpeg
+	This needs ffmpeg	ამისთვის ffmpeg არის საჭირო
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4291,7 +4291,7 @@
 	this program isn't {name}	ეს პროგრამა არ არის {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	ამ სისტემას არ აქვს აკრეფითი კავშირები გასათიშად
+	This system has no dial-up connections to hang up	ამ სისტემას არ აქვს სატელეფონო კავშირები გასათიშად
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4339,7 +4339,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Timor-Leste	აღმოსავლეთ ტიმორი
+	Timor-Leste	ტიმორ-ლესტე
 #. text in the Batch download window
 #, machine
 	To:	მდე:
@@ -4456,7 +4456,7 @@
 	Tuvalu	ტუვალუ
 #. text in helpers.rs
 #, machine
-	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ორი უფასო დამხმარე აიძულებს მას იმუშაოს. მიიღეთ ისინი ახლა და ვიდეოს შენახვა ერთი დაწკაპუნებითაა, როდესაც იპოვით.
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ორი უფასო დამხმარე პროგრამა ამუშავებს მას. მიიღეთ ისინი ახლავე და ვიდეოს შენახვას მხოლოდ ერთი დაწკაპუნება გაშორებთ, როცა სასურველ ვიდეოს იპოვით.
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -4597,7 +4597,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	პროქსი/SOCKS-ის გამოყენება ბრაუზერის მოთხოვნიდან, თუ ჩამოტვირთვის შეცდომებია /\nბრაუზერიდან გადაჭერილი ჩამოტვირთვებისთვის
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	ბრაუზერის მოთხოვნიდან მიღებული პროქსი/SOCKS-ის გამოყენება, თუ ჩამოტვირთვის შეცდომებია /\nბრაუზერიდან გადაჭერილი ჩამოტვირთვებისთვის
 #. checkbox in a download's progress window
 #, machine
 	Use Speed Limiter	სიჩქარის შემზღუდველის გამოყენება
@@ -4614,7 +4614,7 @@
 	Use the token	ტოკენის გამოყენება
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	გამოვიყენოთ ისინი ამ ტორენტისთვის? რაც ემთხვევა, შენარჩუნდება, დანარჩენი შეიცვლება.
+	Use them for this torrent? What matches it is kept, the rest replaced.	გსურთ მათი გამოყენება ამ ტორენტისთვის? შესაბამისი პარამეტრები შენარჩუნდება, დანარჩენი კი ჩანაცვლდება.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	გამოიყენეთ ეს პროქსი შემდეგი პროტოკოლებისთვის:
@@ -4631,7 +4631,7 @@
 	User	მომხმარებელი
 #. page title in the Options window
 #, machine
-	User names and passwords for servers/sites	მომხმარებლის სახელები და პაროლები სერვერებისთვის/საიტებისთვის
+	User names and passwords for servers/sites	მომხმარებლის სახელები და პაროლები სერვერებისა და საიტებისთვის
 #. text in the Options window
 #, machine
 	User-Agent for manually added downloads:	User-Agent ხელით დამატებული ჩამოტვირთვებისთვის:
@@ -4685,7 +4685,7 @@
 	Video	ვიდეო
 #. text in the Download video window
 #, machine
-	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ვიდეოს ძიება იყენებს yt-dlp-ს (დაახლოებით 23 მბ, შემოწმებულია მის ხელმოწერასთან).
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	ვიდეოს მოძიება ხდება yt-dlp-ის გამოყენებით (დაახლოებით 23 მბ; მისი ხელმოწერა შემოწმებულია).
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4697,11 +4697,11 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Virgin Islands (British)	ვირჯინის კუნძულები (ბრიტანეთი)
+	Virgin Islands (British)	ბრიტანეთის ვირჯინის კუნძულები
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Virgin Islands (U.S.)	ვირჯინის კუნძულები (აშშ)
+	Virgin Islands (U.S.)	აშშ-ის ვირჯინის კუნძულები
 #. text in the Options window
 #, machine
 	Virus checking settings	ვირუსების შემოწმების პარამეტრები
@@ -4709,7 +4709,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
 #, machine
-	volume {n} of it is missing	მისი {n} ტომი აკლია
+	volume {n} of it is missing	მისი {n}-ე ტომი აკლია
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
@@ -4749,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	რასაც არქივი შეიცავს, მიდის:
+	What an archive holds goes:	არქივის შიგთავსი ინახება:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4763,7 +4763,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
-	Windows allows wake timers only while plugged in	Windows იძლევა გაღვიძების ტაიმერებს მხოლოდ ჩართვისას
+	Windows allows wake timers only while plugged in	Windows გაღვიძების ტაიმერებს მხოლოდ კვების წყაროსთან მიერთებისას უშვებს
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ და XZ; გაყოფილი არქივი (.part1.rar, .7z.001) მას შემდეგ,\nრაც ყველა ტომი იქნება. უკვე არსებული ფაილი შენარჩუნებულია: ახალს ნომერი ენიჭება.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ და XZ; გაყოფილი არქივი (.part1.rar, .7z.001) მხოლოდ\nყველა ტომის ჩამოტვირთვის შემდეგ. უკვე არსებული ფაილი შენარჩუნდება: ახალს ნომერი მიენიჭება.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} არ არის დაკავშირებული: არაფერი ჩამოიტვირთება, სანამ არ დაბრუნდება.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} არ არის დაკავშირებული: არაფერი ჩამოიტვირთება, სანამ კავშირი არ აღდგება.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4903,11 +4903,11 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: შემოწმებულია ჩამოტვირთვის დასრულებისას
+	{algorithm}: checked when the download finishes	{algorithm}: მოწმდება ჩამოტვირთვის დასრულებისას
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} ინახავს თავის ქუქი-ფაილებს Windows-ზე დაბლოკილს, ამიტომ yt-dlp-ს არ შეუძლია მათი წაკითხვა. აირჩიეთ Firefox „პარამეტრები → საიტების შესვლა“-ში, ან გამოიყენეთ „ვიდეოს ჩამოტვირთვა“ ღილაკი ვიდეოზე {browser}-ში.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} Windows-ში თავის ქუქი-ფაილებს ისე კეტავს, რომ მხოლოდ თავად შეუძლია მათი წაკითხვა, ამიტომ yt-dlp მათ ვერ კითხულობს. აირჩიეთ Firefox „პარამეტრები → საიტების შესვლა“-ში ან გამოიყენეთ ღილაკი „ვიდეოს ჩამოტვირთვა“ {browser}-ში ვიდეოს ზემოთ.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4947,25 +4947,25 @@
 	{file} could not be read to check it	{file} ვერ წაიკითხა შესამოწმებლად
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} აღარ არის იქ, სადაც ის იყო შენახული (გადატანილი ან წაშლილი). ხელახლა ჩამოტვირთვა, მისი მარჯვენა ღილაკის მენიუში, ისევ იღებს მას.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} უკვე აღარ არის შენახულ ადგილას (გადატანილია ან წაშლილია). მის ხელახლა ჩამოსატვირთად გამოიყენეთ მარჯვენა ღილაკის მენიუში „ხელახლა ჩამოტვირთვა“.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: ფაილი არ ემთხვევა მის საკონტროლო ჯამს ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: ფაილის საკონტროლო ჯამი არ ემთხვევა ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: ფაილი ემთხვევა მის საკონტროლო ჯამს ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: ფაილის საკონტროლო ჯამი ემთხვევა ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{have} {total}-დან ({size} თითო)
+	{have} of {total} ({size} each)	{have} / {total} ({size} თითოეული)
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{have} {total} ნაწილიდან ({size} თითო)
+	{have} of {total} pieces ({size} each)	{have} / {total} ნაწილი ({size} თითოეული)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4977,11 +4977,11 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, ავტომატური
+	{language}, automatic	{language}, ავტომატურად შექმნილი
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} დაკავშირებულია, {known} ცნობილია
+	{live} connected, {known} known	{live} დაკავშირებული, {known} ცნობილი
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -5024,7 +5024,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} {total}-დან არჩეულია
+	{n} of {total} chosen	{n} / {total} არჩეული
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -5039,17 +5039,17 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} ითხოვს შენელებას; MDM ერთ წუთში ისევ სცდის
+	{service} asks to slow down; MDM will try again in a minute	{service} სიჩქარის შემცირებას ითხოვს; MDM ერთ წუთში ისევ სცდის
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} გთხოვთ, ჯერ დაუშვათ ეს კომპიუტერი: იხილეთ მისი ელფოსტა
+	{service} asks you to allow this computer first: see its email	{service} გთხოვთ, ჯერ დაუშვათ ამ კომპიუტერის გამოყენება: შეამოწმეთ მისი ელფოსტა
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service}-ს არ შეუძლია ამ ტორენტის მიღება: არავინ აზიარებს მას, ან მისი ბმულის წაკითხვა შეუძლებელია
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} ამ ტორენტს ვერ იღებს: მას არავინ აზიარებს, ან მისი ბმულის წაკითხვა შეუძლებელია
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} ამჟამად ვერ უკავშირდება ამ ფაილის ჰოსტს; MDM მოგვიანებით ისევ სცდის
+	{service} can't reach this file host right now; MDM will try again later	{service} ამჟამად ამ ფაილჰოსტთან დაკავშირებას ვერ ახერხებს; MDM მოგვიანებით ისევ სცდის
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -5057,7 +5057,7 @@
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} უარს ამბობს ამ კავშირზე (VPN ან სერვერის მისამართი?)
+	{service} refuses this connection (a VPN or server address?)	{service} ამ კავშირს უარყოფს (VPN ან სერვერის მისამართი?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
@@ -5081,10 +5081,10 @@
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
-	{service}: this needs a premium account	{service}: ამას სჭირდება პრემიუმ ანგარიში
+	{service}: this needs a premium account	{service}: ამისთვის პრემიუმ ანგარიშია საჭირო
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: ძალიან ბევრი ჩამოტვირთვა ერთდროულად თქვენი ანგარიშის მეშვეობით; MDM ისევ სცდის
+	{service}: too many downloads at once through your account; MDM will try again	{service}: თქვენი ანგარიშით ერთდროულად ძალიან ბევრი ჩამოტვირთვა მიმდინარეობს; MDM ხელახლა სცდის
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
@@ -5108,7 +5108,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
-	{title}: added by {rule}	{title}: დამატებულია {rule}-ის მიერ
+	{title}: added by {rule}	{title}: დამატებულია წესით {rule}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article is a torrent the list already has
 #, machine
@@ -5116,7 +5116,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
-	{title}: not added: files of its names are already in {folder}	{title}: არ დაემატა: მისი სახელის ფაილები უკვე არის {folder}-ში
+	{title}: not added: files of its names are already in {folder}	{title}: არ დაემატა: ამ სახელის ფაილები უკვე არის {folder}-ში
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
@@ -5209,11 +5209,11 @@ extension	Download with Mister Download Manager	ჩამოტვირთვ�
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Downloads from {site} stay with the browser	{site}-დან ჩამოტვირთვები რჩება ბრაუზერთან
+extension	Downloads from {site} stay with the browser	{site}-დან ჩამოტვირთვები ბრაუზერში რჩება
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
-extension	Drag to move it along the video's edge	გადაათრიეთ ვიდეოს კიდეზე გადასაადგილებლად
+extension	Drag to move it along the video's edge	გადაათრიეთ, რომ ვიდეოს კიდეზე გადაადგილდეს
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5225,11 +5225,11 @@ extension	Help	დახმარება
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	დამალვა ამ ვიდეოზე
+extension	Hide on this video	ამ ვიდეოზე დამალვა
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	დააჭირეთ Alt-ს ბმულზე დაწკაპუნებისას, რათა ბრაუზერმა ჩამოტვირთოს ის.
+extension	Hold Alt while clicking a link to let the browser download it.	ბრაუზერში ბმულის ჩამოსატვირთად დაწკაპუნებისას Alt გეჭიროთ.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5739,7 +5739,7 @@ menu	High contrast	მაღალი კონტრასტი
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	ვერ დაიწყო: მიზეზი ჟურნალშია
+menu	It couldn't start: the log says why	ვერ გაეშვა: მიზეზი ჟურნალშია
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
@@ -5817,7 +5817,7 @@ menu	R&edownload	&ხელახლა ჩამოტვირთვა
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	ხელახლა გამოცხადება
+menu	Reannounce	ხელახლა დაკავშირების მოთხოვნა
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
@@ -5844,7 +5844,7 @@ menu	Remove with &files	წაშლა &ფაილებით
 menu	Remove with files	წაშლა ფაილებით
 #. menu command in the main window
 #, machine
-menu	Resume Download	ჩამოტვირთვის განახლება
+menu	Resume Download	ჩამოტვირთვის გაგრძელება
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	&მეგობრისთვის თქმა
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	გრაფიკული ბარათი 10 წუთში ორჯერ დაიკარგა
+menu	The graphics card was lost twice in 10 minutes	გრაფიკულმა ბარათმა 10 წუთში ორჯერ შეწყვიტა მუშაობა
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine

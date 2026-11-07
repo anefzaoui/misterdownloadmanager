@@ -64,7 +64,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} að hlaða niður|{n} að hlaða niður
+@plural	{n} downloading|{n} downloading	{n} niðurhal í gangi|{n} niðurhöl í gangi
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" er ekki IP-tala.
+	"{what}" isn't an IP address.	„{what}“ er ekki IP-tala.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -191,7 +191,7 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Auðkenni NextDNS stillingar er sex bókstafir og tölustafir (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Auðkenni NextDNS-stillingar samanstendur af sex stöfum (0-9, a-f).
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -199,7 +199,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Milligöngumaður sér um þetta niðurhal: staður og tími eru milligöngumannsins, ekki vefþjónsins.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Umboðsþjónn sér um þetta niðurhal: staður og tími eru umboðsþjónsins, ekki netþjónsins.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -211,7 +211,7 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	miðlari á þessari tölvu sendi niðurhalið annað, sem myndi ekki fara í gegnum {adapter}
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	Netþjónn á þessari tölvu sendi niðurhalið annað, sem myndi ekki fara í gegnum {adapter}
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -238,14 +238,14 @@
 #. text in the Options window
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
-	Accounts	Reikningar
+	Accounts	Aðgangar
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	Bæta við niðurhali (Bæta við URL)
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
-	Add an account	Bæta við reikningi
+	Add an account	Bæta við aðgangi
 #. text in the tray icon's menu
 #, machine
 	Add batch download	Bæta við lotuniðurhali
@@ -328,7 +328,7 @@
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	Address changed to {host}	Heimilisfangi breytt í {host}
+	Address changed to {host}	Heimilisfanginu breytt í {host}
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -336,7 +336,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: its IP address
 #, machine
-	Address: {address}	Heimilisfang: {address}
+	Address: {address}	IP-tala: {address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
@@ -348,7 +348,7 @@
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
-	Advanced browser integration is on	Ítarleg samþætting vafra er virk
+	Advanced browser integration is on	Ítarleg samþætting við vafra er virk
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -373,7 +373,7 @@
 	All files	Allar skrár
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	Allt tilbúið: á síðu með myndskeiði, notaðu Verkefni → Sækja myndskeið af síðu.
+	All set: on a page with a video, use Tasks → Download video from a page.	Allt tilbúið: á síðu með myndskeiði skaltu velja Verkefni → Sækja myndskeið af síðu.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -385,7 +385,7 @@
 	Allow more than {n} connections	Leyfa fleiri en {n} tengingar
 #. text in errors.rs
 #, machine
-	already being downloaded: {path}	er þegar í niðurhali: {path}
+	already being downloaded: {path}	er þegar verið að sækja: {path}
 #. text in the Link grabber window
 #. Link grabber: the package of links the download list has already
 #, machine
@@ -403,15 +403,15 @@
 	Also delete the file from disk	Eyða einnig skránni af diski
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	Taka einnig við skrám sem vafrinn myndi opna (PDF, tónlist, myndbönd)
+	Also take files the browser would open (PDF, music, video)	Sækja einnig skrár sem vafrinn myndi opna (PDF, tónlist, myndbönd)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	Alltaf dökkur
+	Always dark	Alltaf dökkt
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Always into a folder named after it	Alltaf í möppu sem er nefnd eftir því
+	Always into a folder named after it	Alltaf í möppu sem er nefnd eftir safnskránni
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Kveikja alltaf á hraðatakmarkara við ræsingu Mister Download Manager
@@ -443,11 +443,11 @@
 #. text in unix.rs
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
 #, machine
-	Another program has set the computer's wake alarm	Annað forrit hefur stillt vekjaraklukkuna fyrir tölvuna
+	Another program has set the computer's wake alarm	Annað forrit hefur stillt vekjarann fyrir tölvuna
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
-	Answered in {ms} ms: {ip}	Svarað í {ms} ms: {ip}
+	Answered in {ms} ms: {ip}	Svar kom eftir {ms} ms: {ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -510,7 +510,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Biðja þjónustuna...
+	Asking the service...	Skráir inn hjá þjónustunni...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -530,7 +530,7 @@
 	Audio only, original {type}	Aðeins hljóð, upprunalegt {type}
 #. text in the Scheduler window
 #, machine
-	August	Ágúst
+	August	ágúst
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -700,25 +700,25 @@
 	cancelled	hætt við
 #. text in errors.rs
 #, machine
-	cannot connect to the server	get ekki tengst netþjóninum
+	cannot connect to the server	Ekki tókst að tengjast netþjóninum
 #. message or event log entry in the main window
 #. {text} = text the user searched for (keep the braces as they are)
 #, machine
-	Cannot find "{text}"	Finn ekki „{text}“
+	Cannot find "{text}"	Ekki tókst að finna „{text}“
 #. text in the Checksum window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Cannot read the file: {error}	Get ekki lesið skrána: {error}
+	Cannot read the file: {error}	Ekki tókst að lesa skrána: {error}
 #. text in errors.rs
 #, machine
-	cannot resume: {detail}	get ekki haldið áfram: {detail}
+	cannot resume: {detail}	Ekki tókst að halda áfram: {detail}
 #. group box title in the Options window; text in the Options window
 #, machine
 	Capture downloads from the following browsers:	Grípa niðurhal úr eftirfarandi vöfrum:
 #. text in extension.rs
 #. the headline of the window that offers the browser extension
 #, machine
-	Catch downloads from your browser	Náðu niðurhölum úr vafranum þínum
+	Catch downloads from your browser	Grípa niðurhal úr vafranum
 #. text in the main window (menus, toolbar, Categories pane)
 #. title of the side pane that lists the categories
 #, machine
@@ -781,11 +781,11 @@
 #. message or event log entry in the main window
 #. event log entry after Recheck: {have} and {total} are sizes ("1.2 GB of 4 GB there")
 #, machine
-	Checked: {have} of {total} there	Athugað: {have} af {total} þar
+	Checked: {have} of {total} there	Athugað: {have} af {total} til staðar
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
-	Checking every piece again	Athugað hvern hluta aftur
+	Checking every piece again	Endurathuga alla hluta
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1152,7 +1152,7 @@
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Sækja „{name}“ aftur frá byrjun? Lokið skrá er skipt út þegar nýja niðurhalinu er lokið.
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Sækja „{name}“ aftur frá byrjun? Lokinni skrá er skipt út þegar nýju niðurhali er lokið.
 #. window title in gallerydlg.rs
 #. window title: download an image gallery's files (gallery-dl)
 #, machine
@@ -1203,7 +1203,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Sækja studda skráartengla í gegnum þessa reikninga
+	Download supported file-host links through these accounts	Sækja tengla á studdar skráahýsingarþjónustur í gegnum þessa reikninga
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1239,7 +1239,7 @@
 #. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
-	Downloading	Er að sækja
+	Downloading	Í niðurhali
 #. message or event log entry in the main window
 #, machine
 	Downloading again from the start	Er að sækja aftur frá byrjun
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Sérhver tenging fer í gegnum það, frá {ip}.
+	Every connection goes through it, from {ip}.	Allar tengingar fara um það, frá {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1426,7 +1426,7 @@
 	Exit Mister Download Manager when done	Hætta í Mister Download Manager þegar lokið
 #. text in the Checksum window
 #, machine
-	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Væntanlegur prófsumma (MD5, SHA-1, SHA-256, SHA-512 eða CRC32):
+	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Væntanleg prófsumma (MD5, SHA-1, SHA-256, SHA-512 eða CRC32):
 #. message or event log entry in the main window
 #. event log entry: the user gave the checksum the file must have
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
@@ -1435,7 +1435,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Tilraunakennt: byggt á opinberum API-skjölum þjónustunnar, ekki enn staðfest með raunverulegum reikningum.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Tilraunakennt: byggt á opinberum API-skjölum þjónustanna, ekki enn staðfest með raunverulegum reikningum.
 #. message or event log entry in the main window
 #, machine
 	Export	Flytja út
@@ -1444,19 +1444,19 @@
 	Extend the availability of Manifest 2 Chrome extensions	Framlengja framboð Manifest 2 Chrome viðbóta
 #. text in categories.rs
 #, machine
-	Extensions separated by spaces, for example MP4 MKV R0*	Viðbætur aðskildar með bilum, til dæmis MP4 MKV R0*
+	Extensions separated by spaces, for example MP4 MKV R0*	Skráarendingar aðskildar með bilum, til dæmis MP4 MKV R0*
 #. button in extracting archives (a download's log, the Archive password window)
 #. button: extract the archive with the password typed
 #, machine
-	Extract	Taka úr skjalasafni
+	Extract	Afþjappa
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
-	Extract archives when their download completes	Taka skrár úr skjalasöfnum þegar niðurhali er lokið
+	Extract archives when their download completes	Afþjappa skjalasöfn þegar niðurhali þeirra er lokið
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
-	Extract when done	Taka úr skjalasafni þegar lokið
+	Extract when done	Afþjappa þegar lokið
 #. text in extracting archives (a download's log, the Archive password window)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1480,7 +1480,7 @@
 	Faroe Islands	Færeyjar
 #. text in the Scheduler window
 #, machine
-	February	Febrúar
+	February	febrúar
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
 #, machine
@@ -1496,7 +1496,7 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
-	Fetched again every 7 days. Changes apply when no torrent is running.	Sótt aftur á 7 daga fresti. Breytingar taka gildi þegar engin torrent er í gangi.
+	Fetched again every 7 days. Changes apply when no torrent is running.	Sótt aftur á 7 daga fresti. Breytingar taka gildi þegar enginn straumur er í gangi.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1537,11 +1537,11 @@
 	Files	Skrár
 #. window title in a dialog box
 #, machine
-	Files already there	Skrár eru þegar til staðar
+	Files already there	Skrár sem eru þegar til staðar
 #. text in gallerydlg.rs
 #. label before the box for how many of a gallery's files to download at most
 #, machine
-	Files at most	Flestar skrár
+	Files at most	Hámarksfjöldi skráa
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
@@ -1798,11 +1798,11 @@
 	Haiti	Haítí
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Slíta mótaldssambandi þegar lokið
+	Hang up modem when done	Slíta mótaldssambandi þegar niðurhali er lokið
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	Hef
+	Have	Til staðar
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1814,7 +1814,7 @@
 #. window title in helpers.rs
 #. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
 #, machine
-	Helpers	Hjálpartæki
+	Helpers	Hjálparforrit
 #. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Dvala
+	Hibernate	Setja í dvala
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1873,21 +1873,21 @@
 	Hungary	Ungverjaland
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Ég sæki með Mister Download Manager: hratt, ókeypis og lítur út eins og niðurhalsstjórinn sem þú þekkir nú þegar. {link}
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	Ég sæki með Mister Download Manager: það er hratt, ókeypis og lítur út eins og niðurhalsstjórinn sem þú þekkir nú þegar. {link}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Iceland	Ísland
 #. text in the Options window
 #, machine
-	If a duplicate download link is added:	Ef tvítekin niðurhalstengill er bættur við:
+	If a duplicate download link is added:	Ef tvítekinni niðurhalstengli er bætt við:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Ef núverandi skrá er fullgerð, sýna niðurhali lokið glugga; annars halda áfram.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Ef núverandi skrá er fullgerð, birta gluggann „Niðurhali lokið“; annars halda niðurhalinu áfram.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	Ef ekki næst í það, notaðu DNS kerfisins
+	If it can't be reached, use the system's DNS	Ef ekki næst í DNS-þjóninn, nota DNS-þjón kerfisins
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Hunsa breytingar á breytingartíma skráar þegar haldið er áfram með niðurhal
@@ -1903,7 +1903,7 @@
 #. text in the Options window
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
-	in the locked keyring	í læstum lyklakippu
+	in the locked keyring	í læstri lyklakippu
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1939,7 +1939,7 @@
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
-	Install it by hand	Setja upp handvirkt
+	Install it by hand	Setja það upp handvirkt
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1948,11 +1948,11 @@
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Installing the update...	Set upp uppfærslu...
+	Installing the update...	Uppsetning uppfærslu...
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	Í möppu sem er nefnd eftir því, þegar hún inniheldur nokkra hluti
+	Into a folder named after it, when it holds several things	Í möppu með nafni skjalasafnsins, ef það inniheldur marga hluti
 #. text in a dialog box
 #, machine
 	Invalid address	Ógilt heimilisfang
@@ -1991,7 +1991,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	það er ekki skjalasafn sem MDM tekur úr
+	it is not an archive MDM extracts	það er ekki skjalasafn sem MDM getur afþjappað
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -1999,7 +1999,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Find peers on the local network"
 #, machine
-	It tells the computers on your network which torrents you have.	Það segir tölvunum á netinu þínu hvaða torrent skrár þú hefur.
+	It tells the computers on your network which torrents you have.	Það segir tölvunum á staðarnetinu þínu hvaða torrent-skrár þú ert með.
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2012,7 +2012,7 @@
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Hægt er að bæta við hópi af samliggjandi skráarnöfnum eins og img001.jpg, img002.jpg o.s.frv.,\nimg100.jpg í niðurhalssröð MDM. Notaðu stjörnu sem staðgengil fyrir skráarnafnamynstrið.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Hægt er að bæta við hópi af samliggjandi skráarnöfnum eins og img001.jpg, img002.jpg o.s.frv.,\nimg100.jpg í niðurhalsbiðröð MDM. Notaðu stjörnu sem algildisstaf í skráarnafnamynstrinu.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2165,7 +2165,7 @@
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
-	Limit uploading	Takmarka upphleðslu
+	Limit uploading	Takmarka upphleðsluhraða
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
@@ -2312,7 +2312,7 @@
 	Match case	Sama hástafi/lágstafi
 #. checkbox in the Find window
 #, machine
-	Match whole string only	Aðeins heill strengur
+	Match whole string only	Aðeins samsvara öllum strengnum
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2323,7 +2323,7 @@
 	Mauritius	Máritíus
 #. group box title in the Options window
 #, machine
-	Max. connections number	Hámarkstengingar
+	Max. connections number	Hámarksfjöldi tenginga
 #. text in standard windows
 #. a window's title-bar button: makes the window fill the screen
 #, machine
@@ -2362,11 +2362,11 @@
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
 #, machine
-	Minimize	Lágmarka
+	Minimize	Minnka
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
-	Minimize to the notification area	Lágmarka á tilkynningasvæði
+	Minimize to the notification area	Minnka á tilkynningasvæði
 #. text in rssdlg.rs; text in the Add torrent window
 #. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
@@ -2375,7 +2375,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
-	Missing	Vantar
+	Missing	Óniðurhalað
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
@@ -2401,10 +2401,10 @@
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
-	Mister Download Manager stopped responding	Mister Download Manager svaraði ekki
+	Mister Download Manager stopped responding	Mister Download Manager hætti að svara
 #. text in crashui.rs
 #, machine
-	Mister Download Manager stopped responding for a while	Mister Download Manager svaraði ekki um stund
+	Mister Download Manager stopped responding for a while	Mister Download Manager hætti að svara um stund
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2462,7 +2462,7 @@
 	Move a page up / down	Færa síðu upp/niður
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	Færa á milli flokka og niðurhalsskráningar
+	Move between the categories and the download list	Fara á milli flokkanna og niðurhalslistans
 #. text in the Scheduler window
 #, machine
 	Move down	Færa niður
@@ -2491,7 +2491,7 @@
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Moving the file...	Færi skrána...
+	Moving the file...	Skráin er að færast...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2534,7 +2534,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Nöfn í hosts-skránni þinni og staðbundin nöfn (einstök orð, .local, .lan) haldast hjá DNS kerfisins. Myndbandssíður og torrent-reklar nota DNS kerfisins í bili.
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Nöfn í hosts-skránni þinni og staðbundin nöfn (einstök orð, .local, .lan) nota DNS-þjón kerfisins. Myndbandssíður og torrent-sporarar nota DNS-þjón kerfisins í bili.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2567,7 +2567,7 @@
 	network error	netvilla
 #. text in the Options window
 #, machine
-	Never show it on these sites:	Aldrei sýna á þessum síðum:
+	Never show it on these sites:	Aldrei sýna það á þessum síðum:
 #. button in the Options window
 #. button: create a new item
 #, machine
@@ -2632,19 +2632,19 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
-	No day is ticked: the queue will not start	Enginn dagur er valinn: biðröðin mun ekki ræsa
+	No day is ticked: the queue will not start	Enginn dagur er valinn: biðröðin fer ekki í gang
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
-	No downloads here	Engin niðurhal hér
+	No downloads here	Ekkert niðurhal hér
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
-	No downloads match the filters	Engin niðurhal passa við síurnar
+	No downloads match the filters	Ekkert niðurhal passar við síurnar
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 #, machine
-	No downloads yet	Engin niðurhal ennþá
+	No downloads yet	Ekkert niðurhal ennþá
 #. text in a dialog box
 #, machine
 	No folders yet	Engar möppur ennþá
@@ -2671,10 +2671,10 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Engir jafningjar ennþá. Fáir deila þessu straumi, eða eldveggur, VPN eða netið gæti verið að loka fyrir BitTorrent.
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Engir jafningjar ennþá. Fáir gætu deilt þessum straumi, eða eldveggur, VPN eða netið gæti verið að loka fyrir BitTorrent.
 #. text in the Options window
 #, machine
-	No proxy/socks	Enginn proxy/socks
+	No proxy/socks	Enginn proxy/SOCKS
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
@@ -2682,7 +2682,7 @@
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
-	No tracker added: it has them already	Enginn rekjari bættur við: hann hefur þá nú þegar
+	No tracker added: it has them already	Engum rekjara bætt við: straumurinn hefur þá nú þegar
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
@@ -2690,21 +2690,21 @@
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
-	No video found on this page. Play the video, then use the Download video button over it.	Engin myndskeið fundust á þessari síðu. Spilaðu myndskeiðið og notaðu síðan „Hlaða niður myndskeiði“ hnappinn fyrir ofan það.
+	No video found on this page. Play the video, then use the Download video button over it.	Ekkert myndskeið fannst á þessari síðu. Spilaðu myndskeiðið og notaðu síðan hnappinn „Hlaða niður myndskeiði“ fyrir ofan það.
 #. text in the Download video window
 #, machine
-	No video this can download on that page	Ekkert myndband sem hægt er að hlaða niður á þessari síðu
+	No video this can download on that page	Ekkert myndskeið sem hægt er að hlaða niður á þessari síðu
 #. message or event log entry in the main window
 #, machine
 	No web addresses were found in {file}.	Engar vefslóðir fundust í {file}.
 #. text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
-	None	Engir
+	None	Engin
 #. text in the Download video window
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
-	None on this page	Engir á þessari síðu
+	None on this page	Engin á þessari síðu
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
@@ -2734,19 +2734,19 @@
 	Norway	Noregur
 #. text in the Checksum window
 #, machine
-	Not a checksum this can read	Ekki summupróf sem hægt er að lesa
+	Not a checksum this can read	Ekki læsileg gátsumma
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Not a regular expression: {error}	Ekki venjuleg tjáning: {error}
+	Not a regular expression: {error}	Ekki regluleg segð: {error}
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 #, machine
-	Not a tracker address: {line}	Ekki heimilisfang rekjara: {line}
+	Not a tracker address: {line}	Ekki vefslóð rekjara: {line}
 #. text in errors.rs
 #, machine
-	not enough disk space: {needed} needed, {free} free	ekki nægilegt diskpláss: {needed} þarf, {free} laust
+	not enough disk space: {needed} needed, {free} free	Ekki nóg diskpláss: þarf {needed}, {free} laust
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
@@ -2763,21 +2763,21 @@
 	Not now	Ekki núna
 #. text in helpers.rs
 #, machine
-	Not now? Get them later from Tasks → Download video from a page.	Ekki núna? Sæktu þau síðar úr Verkefni → Hlaða niður myndbandi af síðu.
+	Not now? Get them later from Tasks → Download video from a page.	Ekki núna? Sæktu þau síðar í Verkefni → Hlaða niður myndskeiði af síðu.
 #. text in a download's Properties window
 #, machine
-	not one server (peers, or a helper's)	ekki einn netþjónn (jafningjar eða hjálparþjónn)
+	not one server (peers, or a helper's)	ekki frá einum netþjóni (jafningjum eða hjálparþjóni)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	ekki studd af þessari þjónustu
+	not supported by this service	ekki stutt af þessari þjónustu
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Ekki notað: skráarhlutar eru skrifaðir við hlið skráarinnar
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Athugið: Netþjónar geta rofið tengingu þegar hraðinn er of takmarkaður! Því er ekki\nmælt með því að nota hraðatakmarkara til að hlaða niður frá netþjónum sem styðja ekki\n„halda áfram“ eiginleikann.
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Athugið: Netþjónar geta rofið tengingu þegar hraðinn er of takmarkaður! Því er ekki\nmælt með því að nota hraðatakmarkara til að hlaða niður frá netþjónum sem styðja ekki\neiginleikann „halda áfram niðurhali“.
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Athugið: Þessar stillingar tengjast ekki vinnslu biðraða
@@ -2786,10 +2786,10 @@
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Ekkert til að hlaða niður í {item}: dragðu tengla, .torrent skrá eða lista af vistföngum (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
-	November	Nóvember
+	November	nóvember
 #. text in the Options window
 #, machine
-	Number	Númer
+	Number	Fjöldi
 #. checkbox in the Scheduler window
 #, machine
 	Number of retries for each file if downloading failed :	Fjöldi endurtekninga fyrir hverja skrá ef niðurhal mistókst:
@@ -2799,7 +2799,7 @@
 	Numbers	Tölur
 #. text in the Scheduler window
 #, machine
-	October	Október
+	October	október
 #. option (radio button) in the Options window
 #, machine
 	Off	Slökkt
@@ -2826,7 +2826,7 @@
 	On battery, Windows' power options don't allow wake timers	Á rafhlöðu leyfa orkustillingar Windows ekki vekjaratíma
 #. text in a download's progress window
 #, machine
-	on download stop/resume	við stöðvun/áframhald niðurhals
+	on download stop/resume	við stöðvun/endurupptöku niðurhals
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
@@ -2840,7 +2840,7 @@
 	Once at	Einu sinni klukkan
 #. text in extension.rs
 #, machine
-	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Þegar henni hefur verið bætt við segir þessi gluggi það. Chrome gæti einnig spurt sjálfur við næstu ræsingu.
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Þegar henni hefur verið bætt við segir þessi gluggi það. Chrome gæti einnig spurt sjálft við næstu ræsingu.
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	Eitt vistfang á hverri línu; * stendur fyrir hvaða texta sem er: example.com/private/*
@@ -2857,7 +2857,7 @@
 	Only a finished download, or one not started yet, can be moved	Aðeins er hægt að færa niðurhal sem er lokið eða ekki hafið enn
 #. message or event log entry in the main window
 #, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Aðeins er hægt að færa niðurhal sem er lokið eða ekki hafið enn. Stöðvaðu það og kláraðu það fyrst.
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Aðeins er hægt að færa niðurhal sem er lokið eða ekki hafið enn. Stöðvaðu það og ljúktu því fyrst.
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -2977,7 +2977,7 @@
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
-	Paste the checksum the download's page gives	Líma gátupphæðina sem niðurhalssíðan gefur upp
+	Paste the checksum the download's page gives	Límdu inn gátsummuna sem niðurhalssíðan gefur upp
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
 #, machine
@@ -3095,7 +3095,7 @@
 	proxy server	proxy-þjónn
 #. label in the Options window
 #, machine
-	Proxy server address	Slóð millimiðlara
+	Proxy server address	Heimilisfang proxyþjóns
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3124,7 +3124,7 @@
 	Queue # {n}	Biðröð # {n}
 #. text in the Options window
 #, machine
-	Queue processing started	Vinnsla biðraðar hafin
+	Queue processing started	Vinnsla biðraðar hófst
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	Vinnsla biðraðar stöðvuð/lokið
@@ -3176,7 +3176,7 @@
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
-	Redownload	Endurhala
+	Redownload	Sækja aftur
 #. text in a download's Properties window
 #, machine
 	Referer:	Tilvísun:
@@ -3221,7 +3221,7 @@
 	Restart MDM	Endurræsa MDM
 #. button in the Options window; text in the Options window
 #, machine
-	Restore the built-in categories	Endurheimta innbyggða flokka
+	Restore the built-in categories	Endurheimta innbyggðu flokkana
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -3237,7 +3237,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
-	Resumed	Hélt áfram
+	Resumed	Haldið áfram
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
@@ -3270,7 +3270,7 @@
 #. verb: stop the queue
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	S&top	S&toppa
+	S&top	S&töðva
 #. text in the Scheduler window
 #. Saturday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -3411,7 +3411,7 @@
 #. text in the Options window
 #. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
 #, machine
-	Send torrents and magnet links to the first account instead of to peers	Senda strauma og segultengla á fyrsta reikninginn í stað jafningja
+	Send torrents and magnet links to the first account instead of to peers	Senda strauma og segultengla á fyrsta reikninginn í stað þess að senda þá til jafningja
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3624,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Svefn
+	Sleep	Svæfa
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3739,7 +3739,7 @@
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
-	Started with the computer, it starts minimized: no notification area shows its icon here	Ræst með tölvunni, ræsir það sig í lágmarki: ekkert tilkynningasvæði sýnir táknið hér
+	Started with the computer, it starts minimized: no notification area shows its icon here	Ræst með tölvunni, glugginn ræsist lágmarkaður: ekkert tilkynningasvæði sýnir táknið hér
 #. text in the Options window
 #. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
 #, machine
@@ -3770,7 +3770,7 @@
 	Stop	Stöðva
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
-	Stop download at	Hætta niðurhali klukkan
+	Stop download at	Stöðva niðurhal klukkan
 #. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
@@ -3781,7 +3781,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
-	Stop sharing after sharing for	Hætta deilingu eftir deilingu í
+	Stop sharing after sharing for	Hætta deilingu eftir að hafa deilt í
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
@@ -3825,16 +3825,16 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	Textun á {language} kom í annarri tilraun: hún er við hliðina á myndbandinu, ekki í því.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Textar á {language} komu í annarri tilraun: þeir eru við hliðina á myndbandinu, ekki í því.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	Ekki tókst að hlaða niður texta á {language}: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	Ekki tókst að hlaða niður textum á {language}: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Ekki tókst að hlaða niður texta á {language}: {site} hafnaði (of margar beiðnir).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Ekki tókst að hlaða niður textum á {language}: {site} hafnaði beiðninni (of margar beiðnir).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3883,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Verkefni → Tenglagripill, eða „Sækja allar tenglar“ vafrans: bindi skipts\nskjalasafns eru einn pakki, aðrar tenglar síðu annar.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Verkefni → Tenglagripill eða „Sækja alla tengla“ í vafranum: bindi skipt\nskjalasafns eru einn pakki, aðrir tenglar á síðunni annar.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Segðu vini frá
@@ -3913,14 +3913,14 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	That is more than 100,000 files: make the range smaller	Þetta eru fleiri en 100.000 skrár: minnkaðu sviðið
+	That is more than 100,000 files: make the range smaller	Þetta eru fleiri en 100.000 skrár: minnkaðu bilið
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	.torrent skráin sem geymd var fyrir hana er horfin
+	the .torrent file kept for it is gone	.torrent-skráin sem var geymd fyrir það er horfin
 #. text in a download's Properties window
 #, machine
-	The address must be an http(s) or ftp(s) address	Slóðin verður að vera http(s) eða ftp(s) slóð
+	The address must be an http(s) or ftp(s) address	Slóðin verður að vera http(s)- eða ftp(s)-slóð
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Recycle Bin: it was kept	Ekki tókst að færa skjalasafnið í ruslafötuna: það var geymt
@@ -3937,15 +3937,15 @@
 	The archive was moved to the Trash	Skjalasafnið var fært í ruslafötuna
 #. text in the Download video window
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Bestu gæðin, MP3, Opus og FLAC þurfa ffmpeg (um 80 MB).
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Bestu gæðin, MP3, Opus og FLAC krefjast ffmpeg (um 80 MB).
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Bestu gæðin, MP3, Opus og FLAC þurfa ffmpeg: settu það upp með pakkastjóra kerfisins (eða Homebrew).
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	Bestu gæðin, MP3, Opus og FLAC krefjast ffmpeg: settu það upp með pakkastjóra kerfisins (eða Homebrew).
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	proxy vafrans (VPN eða proxy viðbót) biður um innskráningu sem aðeins sú viðbót hefur: notaðu eigið forrit VPN, eða veldu netkort þess í Valkostir → Proxy / Socks
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	Proxy-miðlari vafrans (VPN- eða proxy-viðbót) biður um innskráningu sem aðeins viðbótin hefur: notaðu eigið forrit VPN-þjónustunnar eða veldu netkort hennar í Valkostir → Proxy / Socks
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3961,7 +3961,7 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	The column filters hide every download in this view.	Dálkasíurnar fela öll niðurhal í þessari sýn.
+	The column filters hide every download in this view.	Dálkasíurnar fela allt niðurhal í þessari sýn.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -3969,7 +3969,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Tölvan er vakin einni mínútu fyrir upphafstímann og henni haldið vakandi á meðan biðröðin keyrir. Mister Download Manager þarf að vera í gangi (það getur beðið á tilkynningasvæðinu).
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Tölvan er vakin einni mínútu fyrir upphafstímann og henni haldið vakandi á meðan biðröðin er í gangi. Mister Download Manager þarf að vera í gangi (það getur beðið á tilkynningasvæðinu).
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
@@ -3978,11 +3978,11 @@
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will go to sleep in {n} seconds.	Tölvan fer í svefn í {n} sekúndur.
+	The computer will go to sleep in {n} seconds.	Tölvan fer í svefn eftir {n} sekúndur.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will hibernate in {n} seconds.	Tölvan fer í dvala í {n} sekúndur.
+	The computer will hibernate in {n} seconds.	Tölvan fer í dvala eftir {n} sekúndur.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4017,13 +4017,13 @@
 	The download list could not be saved: {error}. Changes are kept while MDM runs.	Ekki tókst að vista niðurhalslistann: {error}. Breytingar eru varðveittar á meðan MDM keyrir.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Niðurhalsstjórinn sem þú þekkir nú þegar, endurbyggður til að vera hraðari. Ókeypis og opinn hugbúnaður undir GNU GPL, útgáfu 3 eða nýrri. Myndbönd finnast með yt-dlp; torrent keyra á librqbit.
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Niðurhalsstjórinn sem þú þekkir nú þegar, endurbyggður til að vera hraðari. Ókeypis og opinn hugbúnaður undir GNU GPL, útgáfu 3 eða nýrri. Myndbönd finnast með yt-dlp; straumskrár keyra á librqbit.
 #. text in a dialog box
 #, machine
 	The download queue is done.	Niðurhalsröðinni er lokið.
 #. text in errors.rs
 #, machine
-	the downloaded program doesn't match its signed checksum	niðurhalaða forritið passar ekki við undirritaða afgreiðslutölu þess
+	the downloaded program doesn't match its signed checksum	niðurhalaða forritið passar ekki við undirritaða gátsummu þess
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -4062,11 +4062,11 @@
 #. text in the Checksum window
 #. tooltip of the box showing the checksum the file really has
 #, machine
-	The file's own checksum	Eigin tékksumma skrárinnar
+	The file's own checksum	Eigin gátsumma skrárinnar
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	summa {algorithm} skráarinnar passar ekki (gögnin eru geymd; hlaða niður aftur)
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	gátsumma skrárinnar fyrir {algorithm} passar ekki (gögnin eru varðveitt; sæktu skrána aftur)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4081,7 +4081,7 @@
 #. text in crashui.rs
 #. crash report window: after Send opened the browser
 #, machine
-	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Formið opnaðist í vafranum þínum. Dragðu skýrsluskrána (og .dmp, ef þú valdir það) inn í það og sendu síðan.
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Formið opnaðist í vafranum þínum. Dragðu skýrsluskrána (og .dmp, ef þú valdir það) inn í formið og sendu síðan.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -4108,14 +4108,14 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. why updates could not be checked: the newest release on the site has no number
 #, machine
-	the release has no version	útgáfan hefur enga útgáfu
+	the release has no version	útgáfunúmer vantar
 #. text in errors.rs
 #. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
 #, machine
-	the release has no {what}	útgáfan er ekki með {what}
+	the release has no {what}	útgáfuna vantar {what}
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	afgreiðslutölulisti útgáfunnar er ekki undirritaður með lykli útgefanda
+	the release's checksum list is not signed by its publisher's key	gátsummulisti útgáfunnar er ekki undirritaður með lykli útgefandans
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4167,7 +4167,7 @@
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Ekki tókst að sækja táknin: sumar línur skýrslunnar sýna vistföng í stað nafna (þróunaraðilar geta samt lesið þau).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Ekki tókst að sækja táknin: sumar línur skýrslunnar sýna vistföng í stað nafna (þróunaraðilar geta samt lesið þær).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Tíminn er hringferð, mældur sem eigin tengingar þessa niðurhals opnaðar.
+	The time is a round trip, measured as this download's own connections opened.	Tíminn er hringferðartími, mældur út frá tengingum sem þetta niðurhal opnar.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4187,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	torrent er ekki lengur til staðar
+	the torrent is no longer there	torrentinn er ekki lengur til staðar
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4198,7 +4198,7 @@
 	The update couldn't be installed: {error}	Ekki tókst að setja upp uppfærsluna: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The update is open in your system's package installer.	Uppfærslan er opin í pakkauppsetningarforriti kerfisins þíns.
+	The update is open in your system's package installer.	Uppfærslan er opin í pakkastjóra kerfisins þíns.
 #. text in a download's Properties window
 #, machine
 	The web page from which this file was obtained:	Vefsíðan sem þessi skrá var fengin af:
@@ -4229,7 +4229,7 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	Þessi flokkur eða biðröð inniheldur engin niðurhal ennþá.
+	This category or queue holds no downloads yet.	Þessi flokkur eða biðröð inniheldur engin niðurhöl ennþá.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
@@ -4245,7 +4245,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
-	This date has passed: the queue will not start	Þessi dagsetning er liðin: biðröðin mun ekki ræsa
+	This date has passed: the queue will not start	Þessi dagsetning er liðin: biðröðin verður ekki ræst
 #. text in a dialog box
 #, machine
 	This folder does not exist:	Þessi mappa er ekki til:
@@ -4295,7 +4295,7 @@
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	þessi straumur er með skráarnafn sem er ekki öruggt að skrifa, svo honum var ekki bætt við: {name}
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	þessi straumskrá hefur skráarnafn sem ekki er óhætt að skrifa, svo henni var ekki bætt við: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Þetta torrent er nú þegar á niðurhalslistanum
@@ -4325,7 +4325,7 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Í gegnum {service}: þjónustan sækir strauminn, síðan MDM skrárnar
+	Through {service}: the service downloads the torrent, then MDM its files	Í gegnum {service}: þjónustan sækir strauminn og MDM sækir síðan skrárnar
 #. text in the Scheduler window
 #, machine
 	Thursday	Fimmtudagur
@@ -4389,15 +4389,15 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	Ekki tókst að ræsa strauma: {error}
+	torrents could not start: {error}	Ekki tókst að ræsa straumana: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
-	Tracker	Rekill
+	Tracker	Rekjari
 #. text in a download's progress window
 #. tab title: the servers that list the peers
 #, machine
-	Trackers	Reklar
+	Trackers	Rekjarar
 #. text in the Add torrent window
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
@@ -4442,7 +4442,7 @@
 	Turn off computer	Slökkva á tölvu
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Turn off computer when done	Slökkva á tölvu þegar lokið
+	Turn off computer when done	Slökkva á tölvunni þegar niðurhali er lokið
 #. button in a dialog box
 #, machine
 	Turn off now	Slökkva núna
@@ -4464,11 +4464,11 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a letter in From and in To	Sláðu inn staf í Frá og Í
+	Type a letter in From and in To	Sláðu inn staf í Frá og Til
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a number in From and in To	Sláðu inn tölu í Frá og Í
+	Type a number in From and in To	Sláðu inn tölu í Frá og Til
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -4582,7 +4582,7 @@
 	Use authorization	Nota heimild
 #. text in the Options window
 #, machine
-	Use automatic configuration script	Nota sjálfvirka stillingarskrifu
+	Use automatic configuration script	Nota sjálfvirka stillingarskrá
 #. checkbox in the Options window
 #, machine
 	Use FTP in PASV mode	Nota FTP í PASV-stillingu
@@ -4597,7 +4597,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Nota proxy/socks úr beiðni vafra ef niðurhalsvillur koma upp /\nfyrir niðurhal sem er stöðvað úr vafranum
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Nota proxy/SOCKS úr beiðni vafra ef niðurhalsvillur koma upp /\nfyrir niðurhal sem vafrinn grípur
 #. checkbox in a download's progress window
 #, machine
 	Use Speed Limiter	Nota hraðatakmarkara
@@ -4670,7 +4670,7 @@
 	Verify	Staðfesta
 #. window title in the Checksum window; text in the Checksum window
 #, machine
-	Verify checksum	Staðfesta afprófunarsummu
+	Verify checksum	Sannreyna gátsummu
 #. text in the download list (sizes, speeds, status)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -4749,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	Það sem skjalasafn geymir fer:
+	What an archive holds goes:	Hvar innihald skjalasafns fer:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4834,7 +4834,7 @@
 #. text in the settings
 #. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
 #, machine
-	your DNS ({how})	DNS þitt ({how})
+	your DNS ({how})	DNS-þitt ({how})
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
@@ -4899,7 +4899,7 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm} checksum	{algorithm} afprófunarsumma
+	{algorithm} checksum	{algorithm}-gátsumma
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4907,20 +4907,20 @@
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} heldur vafrakökum sínum læstum fyrir sjálfum sér í Windows, svo yt-dlp getur ekki lesið þær. Veldu Firefox í Valkostir → Innskráningar á síður, eða notaðu „Hlaða niður myndbandi“ hnappinn fyrir ofan myndbandið í {browser}.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} læsir vafrakökum sínum þannig að aðeins vafrinn geti lesið þær í Windows, svo yt-dlp getur ekki lesið þær. Veldu Firefox í Valkostir → Innskráningar á síður, eða notaðu hnappinn „Hlaða niður myndbandi“ yfir myndbandinu í {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: viðbótin tengd
+	{browser}: the extension connected	{browser}: viðbótin tengdist
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: viðbótin {version} tengd
+	{browser}: the extension {version} connected	{browser}: viðbótin {version} tengdist
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} þjónar þessari skrá: staðsetningin er netþjónsins, oft nálægt þér, ekki eiganda vefsíðunnar.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} þjónar þessari skrá: staðsetning netþjónsins, oft nálægt þér, ekki eiganda vefsíðunnar.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4933,11 +4933,11 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
-	{ext} File	{ext} skrá
+	{ext} File	{ext}-skrá
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	Ekki tókst að eyða {file} af diski: {error}
+	{file} could not be deleted from the disk: {error}	Ekki tókst að eyða {file} af disknum: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	Ekki tókst að lesa {file} til að athuga hana
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} er ekki lengur þar sem hún var vistuð (færð eða eytt). Hægri smelltu og veldu „Endurhlaða“ til að sækja hana aftur.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} er ekki lengur þar sem hún var vistuð (hefur verið færð eða eytt). Veldu Endurhlaða í hægrismellsvalmyndinni til að sækja hana aftur.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4973,15 +4973,15 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} er ekki hægt að ná í gegnum {adapter}: það hefur enga slíka vistfangstegund (IPv4 eða IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	Ekki er hægt að ná í {ip} í gegnum {adapter}: það hefur ekkert vistfang af þeirri gerð (IPv4 eða IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, sjálfvirkur
+	{language}, automatic	{language}, sjálfvirkt
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} tengd, {known} þekkt
+	{live} connected, {known} known	{live} tengdir, {known} þekktir
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -5004,7 +5004,7 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} er 7z- eða RAR-skjalasafn. MDM dregur þau út með 7-Zip, sem er ekki uppsett.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} er 7z- eða RAR-skjalasafn. MDM afþjappar slíkar skrár með 7-Zip, sem er ekki uppsett.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5024,7 +5024,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} af {total} valið
+	{n} of {total} chosen	{n} af {total} valin
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -5039,17 +5039,17 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} biður um að hægja á; MDM mun reyna aftur eftir eina mínútu
+	{service} asks to slow down; MDM will try again in a minute	{service} biður um að hægt sé á beiðnum; MDM reynir aftur eftir eina mínútu
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} biður þig um að leyfa þessa tölvu fyrst: sjáðu tölvupóstinn þeirra
+	{service} asks you to allow this computer first: see its email	{service} biður þig um að leyfa þessari tölvu fyrst: skoðaðu tölvupóstinn
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} getur ekki sótt þennan straum: enginn deilir honum eða ekki er hægt að lesa tengilinn
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} nær ekki til þessa skráarhýsingaraðila núna; MDM mun reyna aftur síðar
+	{service} can't reach this file host right now; MDM will try again later	{service} nær ekki til þessa skráahýsingaraðila núna; MDM reynir aftur síðar
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -5057,15 +5057,15 @@
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} neitar þessari tengingu (VPN eða netþjónaheimilisfang?)
+	{service} refuses this connection (a VPN or server address?)	{service} hafnar þessari tengingu (VPN- eða netþjónsvistfang?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} mun ekki gefa þessa skrá
+	{service} won't give this file	{service} mun ekki afhenda þessa skrá
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}: skráðu þig inn aftur (Valkostir → Reikningar)
+	{service}: sign in again (Options → Accounts)	{service}: skrá sig inn aftur (Valkostir → Reikningar)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
@@ -5077,7 +5077,7 @@
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
-	{service}: this file is password-protected	{service}: þessi skrá er lykilorðsvörð
+	{service}: this file is password-protected	{service}: þessi skrá er varin með lykilorði
 #. text in errors.rs
 #. a debrid service's error: the account has no premium (or it ended)
 #, machine
@@ -5100,7 +5100,7 @@
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} er of stórt fyrir þetta {file_system} drif (skrár allt að 4 GB)
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} er of stór fyrir þetta {file_system} drif (skrár allt að 4 GB)
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
 #, machine
@@ -5233,7 +5233,7 @@ extension	Hold Alt while clicking a link to let the browser download it.	Haltu A
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
-extension	How to fix it	Hvernig á að laga það
+extension	How to fix it	Hvernig á að laga þetta
 #. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
@@ -5300,7 +5300,7 @@ extension	Paused: downloads stay with the browser	Gert hlé: niðurhal helst í 
 #. text in the browser extension
 #. shown instead of the Download button beside a copy-protected (DRM) stream in the toolbar button's popup: it can't be downloaded; short
 #, machine
-extension	Protected	Verndað
+extension	Protected	Varið
 #. text in the browser extension
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
@@ -5453,7 +5453,7 @@ menu	&Delete	&Eyða
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Delete All Completed	&Eyða öllu loknu
+menu	&Delete All Completed	&Eyða öllu sem er lokið
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5569,7 +5569,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	Tekur gildi næst þegar MDM ræsir
+menu	Applies the next time MDM starts	Tekur gildi næst þegar MDM er ræst
 #. menu command in the main window
 #, machine
 menu	Arrange files	Raða skrám
@@ -5719,7 +5719,7 @@ menu	Font	Leturgerð
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &IDM export file...	Úr &IDM útflutningsskrá...
+menu	From &IDM export file...	Úr &IDM-útflutningsskrá...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5828,7 +5828,7 @@ menu	Recheck files	Endurathuga skrár
 menu	Redownload	Endurhlaða
 #. menu command in the main window
 #, machine
-menu	Refresh download address	Endurnýja niðurhalsfang
+menu	Refresh download address	Endurnýja niðurhalsslóð
 #. menu command in the main window
 #. verb: removes the download from the list
 #, machine
@@ -5982,7 +5982,7 @@ toolbar	Add URL	Bæta við URL
 toolbar	Delete	Eyða
 #. toolbar button in the main window
 #, machine
-toolbar	Delete Completed	Eyða lokið
+toolbar	Delete Completed	Eyða loknum niðurhölum
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 #, machine

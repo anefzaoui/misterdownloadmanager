@@ -11,13 +11,13 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Czy na pewno chcesz usunąć {n} pobieranie z listy pobierania Mister Download Manager?|Czy na pewno chcesz usunąć te {n} pobierania z listy pobierania Mister Download Manager?|Czy na pewno chcesz usunąć te {n} pobierania z listy pobierania Mister Download Manager?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Czy na pewno chcesz usunąć {n} pobieranie z listy pobierania w Mister Download Manager?|Czy na pewno chcesz usunąć te {n} pobrania z listy pobierania w Mister Download Manager?|Czy na pewno chcesz usunąć te {n} pobrań z listy pobierania w Mister Download Manager?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Połączono z {n} partnerem, pobieranie listy plików...|Połączono z {n} partnerami, pobieranie listy plików...|Połączono z {n} partnerami, pobieranie listy plików...
+@plural	Connected to {n} peer, getting the file list...|Connected to {n} peers, getting the file list...	Połączono z {n} węzłem, pobieranie listy plików...|Połączono z {n} węzłami, pobieranie listy plików...|Połączono z {n} węzłami, pobieranie listy plików...
 #. count in the Add torrent window
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -33,7 +33,7 @@
 #. {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Znaleziono {n} partnera, łączenie...|Znaleziono {n} partnerów, łączenie...|Znaleziono {n} partnerów, łączenie...
+@plural	Found {n} peer, connecting...|Found {n} peers, connecting...	Znaleziono {n} węzeł, łączenie...|Znaleziono {n} węzły, łączenie...|Znaleziono {n} węzłów, łączenie...
 #. count in rssdlg.rs
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
@@ -60,7 +60,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} download|{n} downloads	{n} pobieranie|{n} pobierania|{n} pobierań
+@plural	{n} download|{n} downloads	{n} pobieranie|{n} pobierania|{n} pobrań
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -90,11 +90,11 @@
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} peer|{n} peers	{n} partner|{n} partnerów|{n} partnerów
+@plural	{n} peer|{n} peers	{n} peer|{n} peery|{n} peerów
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} selected|{n} selected	{n} zaznaczone|{n} zaznaczone|{n} zaznaczonych
+@plural	{n} selected|{n} selected	Zaznaczono {n}|Zaznaczono {n}|Zaznaczono {n}
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -156,7 +156,7 @@
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
-	12-hour (9:41 PM)	12-godzinny (21:41)
+	12-hour (9:41 PM)	12-godzinny (9:41 PM)
 #. text in the Options window
 #. a 24-hour clock, with an example
 #, machine
@@ -182,12 +182,12 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Usługa debrid pobiera link hosta pliku za pomocą Twojego płatnego konta i udostępnia MDM bezpośredni link. Używaj tylko własnego konta: udostępnianie konta lub jego linków narusza warunki świadczenia usług i może skutkować jego zawieszeniem. Pobieranie już rozpoczęte w przeglądarce pozostaje bez zmian.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Usługa debrid pobiera plik z hostingu plików za pomocą Twojego płatnego konta i udostępnia MDM bezpośredni link. Używaj tylko własnego konta: udostępnianie konta lub linków narusza warunki świadczenia usług i może doprowadzić do jego zawieszenia. Pobrania rozpoczęte już w przeglądarce pozostają bez zmian.
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Nie można bezpiecznie zapisać pliku tego torrenta: {name}
+	A file of this torrent can't be saved safely: {name}	Nie można bezpiecznie zapisać pliku z tego torrenta: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -199,7 +199,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Ten plik jest pobierany przez serwer proxy: lokalizacja i czas dotyczą serwera proxy, a nie serwera docelowego.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	To pobieranie jest obsługiwane przez serwer proxy: lokalizacja i czas dotyczą serwera proxy, a nie serwera.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -211,7 +211,7 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	serwer na tym komputerze przekierował pobieranie gdzie indziej, co nie przeszłoby przez {adapter}
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	serwer na tym komputerze wysłał pobieranie gdzie indziej, przez co nie przeszłoby ono przez {adapter}
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -315,7 +315,7 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	Dodano przez regułę RSS {rule} z {feed}
+	Added by the RSS rule {rule} from {feed}	Dodano przez regułę RSS {rule} z kanału {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -403,7 +403,7 @@
 	Also delete the file from disk	Usuń również plik z dysku
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	Pobieraj również pliki, które przeglądarka otworzyłaby (PDF, muzyka, wideo)
+	Also take files the browser would open (PDF, music, video)	Pobieraj również pliki, które przeglądarka otwierałaby (PDF, muzyka, wideo)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -505,17 +505,17 @@
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	Ponownie zapytano trackery o elementy równorzędne
+	Asked the trackers for peers again	Ponownie poproszono trackery o listę peerów
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Pytanie usługi...
+	Asking the service...	Łączenie z usługą...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking...	Pytam...
+	Asking...	Wysyłanie zapytania...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -630,7 +630,7 @@
 	Brazil	Brazylia
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Przywrócić {names} do stanu początkowego: ich nazwy, typy plików i foldery? Twoje własne kategorie, Ogólne i Torrents pozostaną bez zmian. Pobrane pliki już przeniesione do Ogólne pozostaną tam.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Czy na pewno chcesz przywrócić {names} do stanu początkowego, w tym ich nazwy, typy plików i foldery? Twoje własne kategorie, Ogólne i Torrents pozostaną bez zmian. Pobrane pliki już przeniesione do kategorii Ogólne pozostaną tam.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -954,7 +954,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	Nie można wyodrębnić {name}: {why}
+	Couldn't extract {name}: {why}	Nie można rozpakować {name}: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Utwórz folder
@@ -975,7 +975,7 @@
 	Customize "Download progress" dialog	Dostosuj okno dialogowe „Postęp pobierania”
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Dostosuj klawisze, aby zapobiec lub wymusić pobieranie za pomocą MDM
+	Customize keys to prevent or force downloading with MDM	Dostosuj klawisze, aby zapobiec pobieraniu lub wymusić pobieranie za pomocą MDM
 #. text in the Options window
 #, machine
 	Customize MDM Download panels in browsers	Dostosuj panele pobierania MDM w przeglądarkach
@@ -1021,7 +1021,7 @@
 #. button in the Options window
 #. button: put back the default list
 #, machine
-	Default	Domyślne
+	Default	Przywróć domyślne
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1085,7 +1085,7 @@
 	disk error: {error}	błąd dysku: {error}
 #. text in the Scheduler window
 #, machine
-	displayed in the list of queues	wyświetlane na liście kolejek
+	displayed in the list of queues	wyświetlana na liście kolejek
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1184,7 +1184,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	Pobierz nie więcej niż {mb} MB\nco {hours} godzin
+	Download no more than {mb} MBytes\nevery {hours} hours	Pobieraj nie więcej niż {mb} MB\nco {hours} godzin
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Pobierz teraz
@@ -1441,7 +1441,7 @@
 	Export	Eksportuj
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Rozszerz dostępność rozszerzeń Chrome Manifest 2
+	Extend the availability of Manifest 2 Chrome extensions	Zwiększ dostępność rozszerzeń Chrome Manifest 2
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Rozszerzenia oddzielone spacjami, na przykład MP4 MKV R0*
@@ -1480,7 +1480,7 @@
 	Faroe Islands	Wyspy Owcze
 #. text in the Scheduler window
 #, machine
-	February	Luty
+	February	luty
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
 #, machine
@@ -1594,7 +1594,7 @@
 #. text in the Download video window
 #. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
 #, machine
-	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC zachowuje dźwięk dokładnie, ale nie może dodać jakości, której dźwięk witryny nie ma: plik jest tylko większy.
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	FLAC zachowuje dźwięk dokładnie, ale nie może poprawić jakości dźwięku ze strony: plik jest tylko większy.
 #. text in categories.rs
 #, machine
 	Folder:	Folder:
@@ -1623,7 +1623,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	konto bezpłatne: linki wymagają premium
+	free account: links need premium	konto bezpłatne: linki wymagają konta premium
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1691,7 +1691,7 @@
 #. text in gallerydlg.rs
 #. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
 #, machine
-	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galerie używają gallery-dl: zainstaluj je za pomocą pakietów systemowych (Homebrew, pip), a następnie wybierz w Pomocnikach.
+	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galerie używają gallery-dl: zainstaluj go za pomocą pakietów systemowych (Homebrew, pip), a następnie wybierz go w Pomocnikach.
 #. text in gallerydlg.rs
 #, machine
 	gallery-dl can download this gallery's files.	gallery-dl może pobrać pliki z tej galerii.
@@ -2008,11 +2008,11 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	zapisano by {size}, więcej niż {limit} dostępnego miejsca lub uzasadnienia
+	it would write {size}, more than the {limit} there is room or reason for	zapisano by {size}, więcej niż wynosi limit {limit} dostępnego miejsca lub uzasadnienia
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Można dodać grupę sekwencyjnych nazw plików, takich jak img001.jpg, img002.jpg itd.,\nimg100.jpg do kolejki pobierania MDM. Użyj symbolu wieloznacznego gwiazdki dla wzorca nazwy pliku.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Możesz dodać do kolejki pobierania MDM grupę plików o kolejnych nazwach, takich jak img001.jpg, img002.jpg itd.,\nimg100.jpg. Użyj gwiazdki jako symbolu wieloznacznego we wzorcu nazwy pliku.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2048,7 +2048,7 @@
 	July	Lipiec
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Przejdź do pobierania, którego nazwa zaczyna się od niego
+	Jump to the download whose name starts with it	Przejdź do pobierania, którego nazwa zaczyna się na tę literę
 #. text in the Scheduler window
 #, machine
 	June	Czerwiec
@@ -2069,7 +2069,7 @@
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
-	Kept with the torrent, after the trackers it has.	Zachowane z torrentem, po trackerach, które już ma.
+	Kept with the torrent, after the trackers it has.	Zachowywane razem z torrentem, za jego dotychczasowymi trackerami.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Skróty klawiaturowe
@@ -2161,7 +2161,7 @@
 	Liechtenstein	Liechtenstein
 #. checkbox in a dialog box
 #, machine
-	Limit all downloads together to	Ogranicz wszystkie pobierania razem do
+	Limit all downloads together to	Ogranicz łączną prędkość wszystkich pobierań do
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
@@ -2169,7 +2169,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	Ogranicz wysyłanie dla wszystkich torrentów do
+	Limit uploading for all torrents to	Ogranicz prędkość wysyłania wszystkich torrentów do
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2182,26 +2182,26 @@
 #. in Import, where the addresses came from: a page in the browser
 #. in Link grabber, where the addresses came from: a page in the browser
 #, machine
-	Links from the browser	Łącza z przeglądarki
+	Links from the browser	Linki z przeglądarki
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	Wypisz resztę
+	List the rest	Wyświetl resztę
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Wypisywanie zatrzymane po {n} filmach: {error}
+	Listing stopped after {n} videos: {error}	Wyświetlanie zatrzymano po {n} filmach: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Wypisywanie filmów: {n}
+	Listing the videos: {n}	Wyświetlanie filmów: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Wypisywanie filmów: {n} z {total}
+	Listing the videos: {n} of {total}	Wyświetlanie filmów: {n} z {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -2222,11 +2222,11 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
-	Login	Login
+	Login	Logowanie
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
-	Look links up when they arrive (name, size, online)	Wyszukaj linki po ich otrzymaniu (nazwa, rozmiar, online)
+	Look links up when they arrive (name, size, online)	Sprawdzaj linki po ich otrzymaniu (nazwa, rozmiar, dostępność)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Wyszukaj
@@ -2268,7 +2268,7 @@
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
-	Making the report readable: fetching the symbols ({done} of {total} MB)…	Ułatwiam czytanie raportu: pobieram symbole ({done} z {total} MB)…
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	Ułatwianie odczytu raportu: pobieranie symboli ({done} z {total} MB)…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2291,14 +2291,14 @@
 	Malta	Malta
 #. text in the Options window
 #, machine
-	Manual proxy/socks configuration	Ręczna konfiguracja proxy/socks
+	Manual proxy/socks configuration	Ręczna konfiguracja proxy/SOCKS
 #. checkbox in the Add torrent window
 #. Torrent settings: ask the router (UPnP) to forward the port
 #, machine
 	Map the port on the router (UPnP)	Mapuj port na routerze (UPnP)
 #. text in the Scheduler window
 #, machine
-	March	Marzec
+	March	marzec
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2432,7 +2432,7 @@
 	Monaco	Monako
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Poniedziałek
+	Monday	poniedziałek
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	Przenieś pobrane pliki do Ogólne
+	Move its downloads to General	Przenieś pobrane pliki do kategorii Ogólne
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Przenieś lub zmień nazwę wybranego pobierania
@@ -2478,7 +2478,7 @@
 	Move to folder	Przenieś do folderu
 #. message or event log entry in the main window
 #, machine
-	Move to queue	Przenieś do kolejki
+	Move to queue	Przeniesiono do kolejki
 #. text in the Scheduler window
 #, machine
 	Move up	Przenieś w górę
@@ -2521,7 +2521,7 @@
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
-	N.	L.p.
+	N.	Nr
 #. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
@@ -2558,7 +2558,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Netherlands	Holandia
+	Netherlands	Niderlandy
 #. text in the Options window
 #, machine
 	Network adapter:	Karta sieciowa:
@@ -2581,7 +2581,7 @@
 	New exception	Nowy wyjątek
 #. text in the Options window
 #, machine
-	New login	Nowe logowanie
+	New login	Nowe dane logowania
 #. text in rssdlg.rs
 #. RSS feeds window: the name a new download rule starts with
 #. RSS feeds window, Download rules: make a new rule
@@ -2620,7 +2620,7 @@
 #. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
-	No browser's extension has connected yet	Żadne rozszerzenie przeglądarki nie zostało jeszcze połączone
+	No browser's extension has connected yet	Nie nawiązano jeszcze połączenia z żadnym rozszerzeniem przeglądarki
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	Brak folderów
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	„Nie” cofa, aby wybrać inny folder.
+	No goes back, to choose another folder.	Wybranie „Nie” pozwala wrócić i wybrać inny folder.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2664,14 +2664,14 @@
 	No mail app opened.	Nie otwarto żadnej aplikacji pocztowej.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	No mail app: the message is copied, paste it in your mail.	Brak aplikacji pocztowej: wiadomość została skopiowana, wklej ją do swojej poczty.
+	No mail app: the message is copied, paste it in your mail.	Brak aplikacji pocztowej: wiadomość została skopiowana. Wklej ją do swojej aplikacji pocztowej.
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	żaden peer nie wysłał listy plików torrenta na czas
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Brak partnerów. Niewiele osób może udostępniać ten torrent, lub zapora sieciowa, VPN albo sieć mogą blokować BitTorrent.
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Brak peerów. Niewiele osób może udostępniać ten torrent albo zapora sieciowa, VPN lub sieć mogą blokować BitTorrent.
 #. text in the Options window
 #, machine
 	No proxy/socks	Brak proxy/SOCKS
@@ -2682,7 +2682,7 @@
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
-	No tracker added: it has them already	Nie dodano trackera: już je ma
+	No tracker added: it has them already	Nie dodano trackera: torrent ma już wszystkie
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
@@ -2711,7 +2711,7 @@
 	None ticked: every feed.	Brak zaznaczenia: każdy kanał.
 #. text in a download's progress window
 #, machine
-	None: peers come from the DHT and other peers	Brak: węzły pochodzą z DHT i innych węzłów
+	None: peers come from the DHT and other peers	Brak: peery pochodzą z DHT i od innych peerów
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2734,7 +2734,7 @@
 	Norway	Norwegia
 #. text in the Checksum window
 #, machine
-	Not a checksum this can read	Nie jest to suma kontrolna, którą można odczytać
+	Not a checksum this can read	To nie jest suma kontrolna w obsługiwanym formacie
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
@@ -2753,7 +2753,7 @@
 	Not fetched yet	Jeszcze nie pobrano
 #. value in a column's filter list in the download list
 #, machine
-	Not in a queue	Nie w kolejce
+	Not in a queue	Nie należy do żadnej kolejki
 #. text in helpers.rs
 #. Video helpers: no copy of this helper yet
 #, machine
@@ -2763,7 +2763,7 @@
 	Not now	Nie teraz
 #. text in helpers.rs
 #, machine
-	Not now? Get them later from Tasks → Download video from a page.	Nie teraz? Pobierz je później z zadań → Pobierz wideo ze strony.
+	Not now? Get them later from Tasks → Download video from a page.	Nie teraz? Pobierz je później z menu Zadania → Pobierz wideo ze strony.
 #. text in a download's Properties window
 #, machine
 	not one server (peers, or a helper's)	brak serwera (udostępniający lub pomocniczy)
@@ -3210,11 +3210,11 @@
 #. text in a dialog box
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
-	Remove its downloads from the list (running ones move to General)	Usuń pobrane pliki z listy (uruchomione zostaną przeniesione do Ogólne)
+	Remove its downloads from the list (running ones move to General)	Usuń pobierania z listy (trwające zostaną przeniesione do kategorii Ogólne)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	Zastąp gwiazdkę na
+	Replace asterisk to	Zastąp gwiazdkę znakami
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -4130,7 +4130,7 @@
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	bezpieczne połączenie nie powiodło się
+	the secure connection failed	nie udało się nawiązać bezpiecznego połączenia
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4191,7 +4191,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The trackers could not be added: {error}	Nie można było dodać trackerów: {error}
+	The trackers could not be added: {error}	Nie można dodać trackerów: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4271,7 +4271,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Ten link magnet nie zawiera żadnych trackerów, a DHT jest wyłączone, więc nie można znaleźć żadnych elementów równorzędnych.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Ten link magnet nie zawiera żadnych trackerów, a DHT jest wyłączone, więc nie można znaleźć żadnych peerów.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -4795,7 +4795,7 @@
 	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Słowa: wszystkie; | między alternatywami; * i ?. Odcinki: 1x2;1x5-8;2x1-. Każdy odcinek raz.
 #. group box title in the Options window
 #, machine
-	Write dates and times	Zapis dat i godzin
+	Write dates and times	Zapisywanie dat i godzin
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4847,7 +4847,7 @@
 #. text in helpers.rs
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
-	Your system's: {path}	Twój systemowy: {path}
+	Your system's: {path}	Program systemowy: {path}
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	Nie można odczytać pliku {file} w celu sprawdzenia
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Plik {file} nie znajduje się już w miejscu, w którym został zapisany (przeniesiony lub usunięty). Ponowne pobranie z menu kontekstowego pobierze go ponownie.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Plik {file} nie znajduje się już w miejscu, w którym został zapisany (przeniesiono go lub usunięto). Wybierz opcję Ponownie pobierz z menu kontekstowego, aby pobrać go jeszcze raz.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4973,7 +4973,7 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} nie może być osiągnięte przez {adapter}: nie ma adresu tego typu (IPv4 lub IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	Nie można połączyć się z {ip} przez {adapter}: brak adresu tego typu (IPv4 lub IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -5019,7 +5019,7 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} (auto)	{n} (auto)
+	{n} (auto)	{n} (automatycznie)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -5039,11 +5039,11 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} prosi o spowolnienie; MDM spróbuje ponownie za minutę
+	{service} asks to slow down; MDM will try again in a minute	{service} prosi o ograniczenie szybkości; MDM spróbuje ponownie za minutę
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} prosi o wcześniejsze zezwolenie na ten komputer: sprawdź e-mail
+	{service} asks you to allow this computer first: see its email	{service} prosi o wcześniejsze zezwolenie na korzystanie z tego komputera: sprawdź e-mail
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} nie może pobrać tego torrenta: nikt go nie udostępnia lub jego link jest nieczytelny
@@ -5088,7 +5088,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: Twój limit dla tego hosta plików został tymczasowo wykorzystany
+	{service}: your limit for this file host is used up for now	{service}: limit transferu dla tego hosta plików został tymczasowo wykorzystany
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -5104,7 +5104,7 @@
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
 #, machine
-	{s} sec	{s} sek
+	{s} sec	{s} s
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
@@ -5416,7 +5416,7 @@ key	Shift+F10 / Menu	Shift+F10 / Menu
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Shift+Up / Shift+Down	Shift+Góra / Shift+Dół
+key	Shift+Up / Shift+Down	Shift+strzałka w górę / Shift+strzałka w dół
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5428,7 +5428,7 @@ key	Type a name	Wpisz nazwę
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Up / Down	Góra / Dół
+key	Up / Down	Strzałka w górę / Strzałka w dół
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5507,7 +5507,7 @@ menu	&Report a problem	&Zgłoś problem
 #. header menu: put the columns back as they first were (order, widths, all shown)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Reset columns	&Resetuj kolumny
+menu	&Reset columns	&Przywróć kolumny
 #. menu command in the main window
 #. Tasks menu: the RSS feeds window (feeds of torrents, and rules that add them)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5529,7 +5529,7 @@ menu	&Stop Download	&Zatrzymaj pobieranie
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Tray icon	&Ikona na pasku zadań
+menu	&Tray icon	&Ikona w zasobniku systemowym
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5739,7 +5739,7 @@ menu	High contrast	Wysoki kontrast
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	Nie można było uruchomić: dziennik wyjaśnia dlaczego
+menu	It couldn't start: the log says why	Nie można uruchomić: przyczyna jest podana w dzienniku
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
@@ -5755,7 +5755,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal nie uruchomił się tutaj: rysuje OpenGL
+menu	Metal didn't start here: OpenGL draws	Nie można uruchomić Metal: rysuje OpenGL
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5774,7 +5774,7 @@ menu	Native	Natywny
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Żadna karta graficzna nie ma do tego sterownika
+menu	No graphics card here has a driver for it	Żadna karta graficzna nie ma sterownika dla tego systemu graficznego
 #. menu command in the main window
 #, machine
 menu	On Double click	Po dwukrotnym kliknięciu
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	Po&leć znajomemu
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Karta graficzna została utracona dwukrotnie w ciągu 10 minut
+menu	The graphics card was lost twice in 10 minutes	Karta graficzna przestała działać dwukrotnie w ciągu 10 minut
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine

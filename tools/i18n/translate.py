@@ -38,11 +38,31 @@ from pathlib import Path
 
 from babel import Locale
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import lingo  # noqa: E402
+
 ROOT = Path(__file__).resolve().parents[2]
 I18N = ROOT / "i18n"
 LOG = ROOT / "target" / "i18n"
 URL = "https://openrouter.ai/api/v1/chat/completions"
 MODEL = "google/gemini-2.5-flash"
+# Reads every draft as a native reviewer would and fixes what one would change (--review).
+REVIEW_MODEL = "openai/gpt-6-luna"
+# Another family's model accepts a reviewer's change only when it clearly fixes a real error and
+# adds none (--arbiter): a cheap reviewer also changes good rows, and two models rarely err alike.
+ARBITER_MODEL = "anthropic/claude-haiku-5.5"
+
+ARBITER = """You check proposed corrections to {english} ({native}) translations of Mister Download
+Manager, a Windows download manager, before they replace the current text. For each row: the
+English, where it is used ("context", "notes"), the "current" translation and the "proposed" one.
+
+Answer "proposed" only when the proposed text fixes a real error in the current one (a wrong
+meaning, wrong grammar or agreement, the wrong form for a command, label or question, the wrong
+register, an unnatural or wrong term) and adds no error of its own. When both are correct, or you
+are not sure, answer "current": a correct translation is never replaced by another wording.
+
+Output one JSON object mapping each row's "id" to "current" or "proposed". Nothing else.
+"""
 BATCH = 40
 # Thinking off (Flash: cheaper, as good here); `--reasoning low` for models that must think.
 REASONING = {"enabled": False}
@@ -78,9 +98,11 @@ RULES = """You translate the user interface of Mister Download Manager, a Window
 manager, from English into {english} ({native}, language code {code}). Write exactly what a
 professional Microsoft localizer would ship in Windows 11 in this language.
 
-Input: a JSON list of texts. "text" (or "one" and "other" for a plural row) is what you
-translate. "context" (menu, key, column, toolbar, unit...) and "notes" only say where and how the
-text is used: never translate them and never put them in your answer.
+Input: a JSON object. "texts" is the list of texts: "text" (or "one" and "other" for a plural
+row) is what you translate; "context" (menu, key, column, toolbar, unit...) and "notes" only say
+where and how the text is used: never translate them and never put them in your answer; "terms"
+gives this language's settled translation of terms the text contains: use them. "reviewed" (when
+present) are rows of this program a native speaker already reviewed: write like them.
 
 Output: one JSON object mapping each input "id" to its translation (a string; for a plural row,
 an array with one string per form asked for, in that order). Nothing else.
@@ -105,9 +127,12 @@ Rules:
 9. Use the register Windows uses in this language and address the user the same way
    everywhere (for example German "Sie", French "vous").
 10. Buttons and menu commands are short commands, written as Windows writes commands in this
-   language (German and French: infinitive). Column titles and labels are nouns. Follow each
-   text's note for its part of speech and meaning; the note wins over a guess from the English.
-11. Keep it about as short as the English: texts sit in fixed-size boxes. Of two correct
+   language (the style guide below says how, when there is one). Column titles and labels are
+   nouns. Follow each text's note for its part of speech and meaning; the note wins over a guess
+   from the English.
+11. Buttons, menu items, tabs and column titles stay about as short as the English: they sit in
+   fixed-size boxes. Everywhere else natural, complete grammar comes first (articles,
+   prepositions, agreement): never a telegraphic string of nouns. Of two equally natural
    wordings, take the shorter.
 12. Use Microsoft's established terminology for computer terms. Never transliterate an English
    word when the language has a standard term, but do use the loanwords Windows uses.
@@ -121,6 +146,33 @@ Rules:
    romanisation. Never leave English words except the names in rule 5.
 18. File sizes and speeds (KB, MB, GB, KB/sec): use the abbreviations Windows uses in this
    language (French Ko, Mo, Go; Russian КБ, МБ, ГБ).
+19. Keep the English's spacing: a double space stays double, " / " keeps its spaces.
+20. An example value in the text (a time, a date, a size, a sample name, often in parentheses)
+   shows a format: keep it exactly as written, never convert it ("12-hour (9:41 PM)" keeps
+   "9:41 PM").
+21. Read the text for what it means in this program before translating: a column "Have" is the
+   pieces already downloaded, "Hang up modem" is disconnecting, "the graphics card was lost" is
+   the card that stopped answering. Never translate an idiom or a short label word for word.
+"""
+
+# The second pass: a native reviewer reads every draft beside the English (--review).
+REVIEW = """You are a native {english} ({native}) software localizer reviewing machine translations
+of Mister Download Manager, a Windows download manager, before they ship. For each row you get the
+English, where it is used ("context", "notes"), this language's settled "terms", and the "draft".
+"reviewed" (when present) are rows a native speaker of this language already reviewed: they set
+the standard.
+
+Fix every draft that a careful native reviewer would change: a wrong meaning (read the English
+for what it means in this program), the wrong grammatical form for a command, button, label,
+question or status, register, missing articles or prepositions, agreement, unnatural word order,
+a term that isn't the settled one, capitalisation, Windows' own name for a Windows feature.
+Keep a draft that is already right exactly as it is: do not rewrite for taste.
+
+Keep every placeholder in braces, the single "&" before a letter (move it only if its word
+changed), a trailing "..." or ":", line breaks, spacing and example values as the draft has them.
+
+Output: one JSON object mapping every row's "id" to its final text (a string; for a plural row,
+an array with the same number of forms as the draft). Nothing else.
 """
 
 VARIANTS = {
@@ -390,17 +442,17 @@ def api_key():
     return key
 
 
-def call(key, model, system, items, spend):
+def call(key, model, system, items, spend, max_tokens=8192, reasoning=None):
     body = json.dumps({
         "model": model,
         "messages": [{"role": "system", "content": system},
                      {"role": "user", "content": json.dumps(items, ensure_ascii=False)}],
         "temperature": 0.2,
         "response_format": {"type": "json_object"},
-        "reasoning": REASONING,
+        "reasoning": REASONING if reasoning is None else reasoning,
         "usage": {"include": True},
         # A batch's answer is a few thousand tokens; a model stuck repeating itself is cut here.
-        "max_tokens": 8192,
+        "max_tokens": max_tokens,
     }).encode("utf-8")
     for attempt in range(8):
         req = urllib.request.Request(URL, data=body, headers={
@@ -444,7 +496,20 @@ def system_prompt(lang, forms):
     plural = ", ".join(f"{c} (e.g. {ex})" for c, ex in forms)
     text += (f"\nPlural rows: give {len(forms)} form(s) in this order: {plural}. Each form is the "
              "whole text for counts of that kind, with {n} kept.\n")
-    return text
+    return text + style_section(lang)
+
+
+def style_section(lang):
+    guide = lingo.style(lang["code"])
+    if not guide:
+        return ""
+    return (f"\nStyle guide for {lang['english']} (how this language writes this program: "
+            f"on wording and grammar it wins over the general rules above; the format rules, placeholders, "
+            f"'&', a trailing '...' or ':', spacing and example values, always hold):\n{guide}\n")
+
+
+def review_prompt(lang):
+    return REVIEW.format(english=lang["english"], native=lang["native"]) + style_section(lang)
 
 
 def glossary_terms():
@@ -474,13 +539,92 @@ def unhide(t):
     return t
 
 
-def item(i, row):
+def item(i, row, code=None, base=None):
     it = {"id": str(i), "context": row["context"] or None, "notes": row["notes"] or None}
     if row["plural"]:
         it["one"], it["other"] = hide(row["one"]), hide(row["other"])
     else:
         it["text"] = hide(row["source"])
+    if code:
+        it["terms"] = lingo.matching_terms(code, row["source"], base) or None
     return {k: v for k, v in it.items() if v is not None}
+
+
+def translate_batch(key, model, review_model, lang, forms, rows, batch, spend, pairs, reasons=None):
+    """Translate `batch` (indexes into `rows`) for `lang`, then (with `review_model`) have each
+    draft reviewed. Returns ({index: text}, {index: why it failed its checks})."""
+    code = lang["code"]
+    base = lingo.terms(code)
+    items = [item(i, rows[i], code, base) for i in batch]
+    if reasons:
+        for it in items:
+            it["previous_attempt_rejected_because"] = reasons[int(it["id"])]
+    shown = lingo.examples(pairs, [rows[i]["source"] for i in batch])
+    payload = {"texts": items}
+    if shown:
+        payload["reviewed"] = shown
+    out = call(key, model, system_prompt(lang, forms), payload, spend)
+    done, retry = {}, {}
+    for i in batch:
+        t = clean(code, unhide(out.get(str(i))))
+        why = check_row(code, rows[i], t, forms)
+        if why:
+            retry[i] = why
+        else:
+            done[i] = t
+    if review_model and done:
+        done = review_drafts(key, review_model, lang, forms, rows, done, spend, pairs)
+    for i, t in done.items():
+        if rows[i]["plural"] and isinstance(t, list):
+            done[i] = "|".join(t)
+    return done, retry
+
+
+def review_drafts(key, review_model, lang, forms, rows, drafts, spend, pairs):
+    """`drafts` ({index: text, or a list of forms for a plural row}) as a native reviewer would
+    ship them: each fixed where one would change it, kept where it is right. A fix that fails the
+    checks keeps the draft. Also how the catalogs' existing machine rows are reviewed again
+    (--rereview): one call per batch, nothing translated from scratch."""
+    code = lang["code"]
+    base = lingo.terms(code)
+    shown = lingo.examples(pairs, [rows[i]["source"] for i in drafts])
+    items = []
+    for i, t in drafts.items():
+        d = item(i, rows[i], code, base)
+        d["draft"] = hide(t) if isinstance(t, str) else [hide(f) for f in t]
+        items.append(d)
+    payload = {"rows": items}
+    if shown:
+        payload["reviewed"] = shown
+    try:
+        # A reviewer reads before it answers (some endpoints insist on it).
+        fixed = call(key, review_model, review_prompt(lang), payload, spend, max_tokens=32000,
+                     reasoning={"effort": "low"})
+    except RuntimeError as e:
+        print(f"{code}: review failed, drafts kept: {e}")
+        fixed = {}
+    out = dict(drafts)
+    proposed = {}
+    for i in drafts:
+        t = clean(code, unhide(fixed.get(str(i))))
+        if t is not None and t != drafts[i] and not check_row(code, rows[i], t, forms):
+            proposed[i] = t
+    if proposed and ARBITER_MODEL:
+        items = []
+        for i, t in proposed.items():
+            d = item(i, rows[i], code)
+            d["current"] = drafts[i]
+            d["proposed"] = t
+            items.append(d)
+        try:
+            verdict = call(key, ARBITER_MODEL, ARBITER.format(english=lang["english"], native=lang["native"]),
+                           {"rows": items}, spend, max_tokens=8192)
+        except RuntimeError as e:
+            print(f"{code}: arbiter failed, changes dropped: {e}")
+            verdict = {}
+        proposed = {i: t for i, t in proposed.items() if verdict.get(str(i)) == "proposed"}
+    out.update(proposed)
+    return out
 
 
 def write_catalog(lang, rows, done, machine):
@@ -509,11 +653,18 @@ def main():
     ap.add_argument("--langs", help="comma-separated codes from i18n/languages.tsv")
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--model", default=MODEL)
+    ap.add_argument("--review", default=REVIEW_MODEL,
+                    help="the model that reviews each draft ('' for none)")
+    ap.add_argument("--arbiter", default=ARBITER_MODEL,
+                    help="the model that accepts or refuses each review change ('' for none)")
     ap.add_argument("--budget", type=float, default=12.0, help="stop spending at this many dollars")
     ap.add_argument("--workers", type=int, default=96)
     ap.add_argument("--batch", type=int, default=BATCH)
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--redo", help="translate again the rows whose English matches this regex")
+    ap.add_argument("--rereview", action="store_true",
+                    help="have --review's model review every machine row the catalogs already have "
+                         "(a person's rows are never sent); with --langs or --all")
     ap.add_argument("--reasoning", choices=["off", "low", "medium"], default="off",
                     help="the model's thinking (Gemini 2.5 Pro can't turn it off)")
     args = ap.parse_args()
@@ -568,9 +719,17 @@ def main():
                 done[i], machine[i] = row["source"], True
             else:
                 todo.append(i)
-        state[code] = {"lang": lang, "forms": forms, "done": done, "machine": machine, "failed": {}}
+        state[code] = {"lang": lang, "forms": forms, "done": done, "machine": machine, "failed": {},
+                       "pairs": [] if args.dry_run else lingo.review_pairs(code), "changed": 0}
         for k in range(0, len(todo), args.batch):
             jobs.append((code, todo[k:k + args.batch], None))
+        if args.rereview:
+            # Every machine row already there, reviewed in place: rows just sent above are
+            # reviewed as they are translated.
+            again = [i for i in done if machine.get(i) and i not in todo
+                     and not (not rows[i]["plural"] and only_names(rows[i]["source"]))]
+            for k in range(0, len(again), args.batch):
+                jobs.append((code, again[k:k + args.batch], "rereview"))
 
     chars = sum(len(json.dumps([item(i, rows[i]) for i in b], ensure_ascii=False)) for _, b, _ in jobs)
     for flag in reviewed_flags:
@@ -585,23 +744,28 @@ def main():
     LOG.mkdir(parents=True, exist_ok=True)
     started = time.time()
 
+    if args.rereview and not args.review:
+        sys.exit("--rereview needs a --review model")
+    # review_drafts reads the module's arbiter (the eval sets it too).
+    globals()["ARBITER_MODEL"] = args.arbiter
+
     def run(job):
         code, batch, reasons = job
         st = state[code]
-        items = [item(i, rows[i]) for i in batch]
-        if reasons:
-            for it in items:
-                it["previous_attempt_rejected_because"] = reasons[int(it["id"])]
-        out = call(key, args.model, system_prompt(st["lang"], st["forms"]), items, spend)
-        retry = {}
-        for i in batch:
-            t = clean(code, unhide(out.get(str(i))))
-            why = check_row(code, rows[i], t, st["forms"])
-            if why:
-                retry[i] = why
-            else:
-                st["done"][i] = "|".join(t) if rows[i]["plural"] and isinstance(t, list) else t
-                st["machine"][i] = True
+        if reasons == "rereview":
+            drafts = {i: st["done"][i].split("|") if rows[i]["plural"] else st["done"][i] for i in batch}
+            fixed = review_drafts(key, args.review, st["lang"], st["forms"], rows, drafts, spend, st["pairs"])
+            for i, t in fixed.items():
+                t = "|".join(t) if isinstance(t, list) else t
+                if t != st["done"][i]:
+                    st["changed"] += 1
+                st["done"][i] = t
+            return code, {}, True
+        done, retry = translate_batch(key, args.model, args.review, st["lang"], st["forms"], rows,
+                                      batch, spend, st["pairs"], reasons)
+        for i, t in done.items():
+            st["done"][i] = t
+            st["machine"][i] = True
         return code, retry, reasons is not None
 
     pending = jobs
@@ -633,7 +797,8 @@ def main():
         missing = len(rows) - 1 - len(st["done"])
         report["languages"][code] = {"rows": len(st["done"]), "missing": missing,
                                      "failed": {rows[i]["source"]: why for i, why in st["failed"].items()}}
-        print(f"{code}: {len(st['done'])} rows, {missing} missing")
+        print(f"{code}: {len(st['done'])} rows, {missing} missing"
+              + (f", {st['changed']} changed by the review" if args.rereview else ""))
     stamp = time.strftime("%Y%m%d-%H%M%S")
     (LOG / f"translate-{stamp}.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"${spend.cost:.4f} over {spend.requests} requests, {spend.tokens_in:,} in / {spend.tokens_out:,} out, "

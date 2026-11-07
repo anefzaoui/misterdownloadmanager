@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Anda pasti ingin memadamkan {n} muat turun ini daripada senarai muat turun Mister Download Manager?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Adakah anda mahu memadamkan {n} muat turun daripada senarai muat turun Mister Download Manager?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -64,7 +64,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} memuat turun
+@plural	{n} downloading|{n} downloading	{n} sedang dimuat turun
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
@@ -182,12 +182,12 @@
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Perkhidmatan debrid memuat turun pautan hos fail dengan akaun berbayar anda sendiri dan memberikan MDM pautan terus. Gunakan akaun anda sendiri sahaja: berkongsi akaun atau pautannya melanggar terma perkhidmatan dan boleh menyebabkan ia digantung. Muat turun yang sudah dimulakan oleh pelayar kekal seperti sedia kala.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Perkhidmatan debrid memuat turun fail daripada pautan hos fail menggunakan akaun berbayar anda sendiri, kemudian memberikan pautan terus kepada MDM. Gunakan akaun anda sendiri sahaja: berkongsi akaun atau pautannya melanggar syarat perkhidmatan dan boleh menyebabkan akaun digantung. Muat turun yang telah dimulakan oleh pelayar kekal seperti sedia kala.
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Fail torrent ini tidak dapat disimpan dengan selamat: {name}
+	A file of this torrent can't be saved safely: {name}	Fail dalam torrent ini tidak dapat disimpan dengan selamat: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -274,7 +274,7 @@
 	Add new download	Tambah muat turun baharu
 #. text in the Options window
 #, machine
-	Add the duplicate and overwrite the existing file	Tambah pendua dan tindih fail sedia ada
+	Add the duplicate and overwrite the existing file	Tambah pendua dan timpa fail sedia ada
 #. text in the Options window
 #, machine
 	Add the duplicate with a numbered file name	Tambah pendua dengan nama fail bernombor
@@ -315,11 +315,11 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	Ditambah oleh peraturan RSS {rule} daripada {feed}
+	Added by the RSS rule {rule} from {feed}	Ditambahkan oleh peraturan RSS {rule} daripada {feed}
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
-	Added {source}	Ditambah {source}
+	Added {source}	Ditambahkan {source}
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -340,7 +340,7 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
-	Addresses left to the browser	Alamat yang ditinggalkan kepada penyemak imbas
+	Addresses left to the browser	Alamat yang diserahkan kepada penyemak imbas
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -367,7 +367,7 @@
 	Algeria	Algeria
 #. item in the Categories tree in the main window
 #, machine
-	All Downloads	Semua Muat Turun
+	All Downloads	Semua muat turun
 #. message or event log entry in the main window
 #, machine
 	All files	Semua fail
@@ -403,7 +403,7 @@
 	Also delete the file from disk	Padamkan juga fail daripada cakera
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	Ambil juga fail yang akan dibuka oleh penyemak imbas (PDF, muzik, video)
+	Also take files the browser would open (PDF, music, video)	Ambil alih juga fail yang akan dibuka oleh penyemak imbas (PDF, muzik, video)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -411,10 +411,10 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Always into a folder named after it	Sentiasa ke dalam folder yang dinamakan sempena namanya
+	Always into a folder named after it	Sentiasa dalam folder yang dinamakan sempena arkib
 #. checkbox in a dialog box
 #, machine
-	Always turn on Speed Limiter on Mister Download Manager startup	Sentiasa hidupkan Pengehad Kelajuan semasa permulaan Mister Download Manager
+	Always turn on Speed Limiter on Mister Download Manager startup	Sentiasa hidupkan Pengehad Kelajuan apabila Mister Download Manager dimulakan
 #. text in regional.rs; text in the Scheduler window
 #. before noon, after a time of day (12-hour clock). Its pair is "PM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
@@ -480,7 +480,7 @@
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Anda pasti ingin memadamkan "{name}" daripada senarai muat turun Mister Download Manager?
+	Are you sure you want to delete "{name}" from Mister Download Manager list of downloads?	Adakah anda pasti mahu memadamkan "{name}" daripada senarai muat turun Mister Download Manager?
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -501,7 +501,7 @@
 	As the system's region writes them	Seperti yang ditulis oleh rantau sistem
 #. text in the Options window
 #, machine
-	Ask it with:	Tanya dengan:
+	Ask it with:	Tanya menggunakan:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
@@ -630,7 +630,7 @@
 	Brazil	Brazil
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Pulihkan {names} seperti yang dihantar: nama, jenis fail dan foldernya? Kategori anda sendiri, Umum dan Torren kekal seperti sedia ada. Muat turun yang telah dialihkan ke Umum kekal di sana.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Adakah anda mahu memulihkan {names} seperti asalnya: nama, jenis fail dan foldernya? Kategori anda sendiri, Umum dan Torrent kekal seperti sedia ada. Muat turun yang telah dialihkan ke Umum kekal di sana.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -674,7 +674,7 @@
 	by batch download	mengikut muat turun kelompok
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	oleh Link grabber
+	by Link grabber	melalui Pengambil pautan
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -686,7 +686,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Cameroon	Cameroon
+	Cameroon	Kamerun
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -759,7 +759,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	Tukar folder untuk kategori "{category}" pada yang terakhir dipilih
+	Change folder for "{category}" category on last selected	Tukar folder kategori "{category}" kepada folder terakhir yang dipilih
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -799,22 +799,22 @@
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the file...	Menyemak fail...
+	Checking the file...	Sedang menyemak fail...
 #. text in helpers.rs
 #. Video helpers: a program just chosen is being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the program...	Menyemak program...
+	Checking the program...	Sedang menyemak program...
 #. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking {name} ({n} of {total})...	Menyemak {name} ({n} daripada {total})...
+	Checking {name} ({n} of {total})...	Sedang menyemak {name} ({n} daripada {total})...
 #. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking...	Menyemak...
+	Checking...	Sedang menyemak...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -893,7 +893,7 @@
 	Confirm before deleting downloads	Sahkan sebelum memadam muat turun
 #. window title in a dialog box
 #, machine
-	Confirm deletion of downloads	Sahkan pemadaman muat turun
+	Confirm deletion of downloads	Pengesahan pemadaman muat turun
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -908,14 +908,14 @@
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Connecting...	Menyambung...
+	Connecting...	Sedang menyambung...
 #. text in the Options window
 #. tab title: connection settings
 #, machine
 	Connection	Sambungan
 #. page title in the Options window
 #, machine
-	Connections and Limits	Sambungan dan Had
+	Connections and Limits	Sambungan dan had
 #. text in the Options window
 #, machine
 	Connections:	Sambungan:
@@ -1050,7 +1050,7 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	Padam kategori “{category}”? Failnya kekal di tempatnya.
+	Delete the category "{category}"? Its files stay where they are.	Adakah anda mahu memadam kategori “{category}”? Failnya kekal di tempatnya.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -1110,7 +1110,7 @@
 	Do not start downloading, only add files to the queue	Jangan mula memuat turun, hanya tambah fail ke baris gilir
 #. text in a dialog box
 #, machine
-	Do you want to create it?	Anda ingin menciptanya?
+	Do you want to create it?	Adakah anda mahu menciptanya?
 #. text in the download list (sizes, speeds, status)
 #. category name: documents (pdf, doc…)
 #, machine
@@ -1138,7 +1138,7 @@
 	Don't start downloading automatically from the following sites:	Jangan mula memuat turun secara automatik daripada tapak berikut:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	Jangan ambil fail yang lebih kecil daripada (KB, 0 = sebarang saiz):
+	Don't take files smaller than (KB, 0 = any size):	Jangan muat turun fail yang lebih kecil daripada (KB, 0 = sebarang saiz):
 #. text in a download's progress window
 #, machine
 	Done	Selesai
@@ -1184,7 +1184,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	Muat turun tidak lebih daripada {mb} MB\nsetiap {hours} jam
+	Download no more than {mb} MBytes\nevery {hours} hours	Muat turun tidak lebih daripada {mb} MB\ne setiap {hours} jam
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Muat Turun Sekarang
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Setiap sambungan melaluinya, dari {ip}.
+	Every connection goes through it, from {ip}.	Setiap sambungan melaluinya dari {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1423,7 +1423,7 @@
 	Exit	Keluar
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Exit Mister Download Manager when done	Keluar dari Mister Download Manager apabila selesai
+	Exit Mister Download Manager when done	Keluar daripada Mister Download Manager apabila selesai
 #. text in the Checksum window
 #, machine
 	Expected checksum (MD5, SHA-1, SHA-256, SHA-512 or CRC32):	Jumlah hasil semak yang dijangka (MD5, SHA-1, SHA-256, SHA-512 atau CRC32):
@@ -1435,16 +1435,16 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimen: dibina daripada dokumentasi API awam perkhidmatan, belum disahkan dengan akaun sebenar.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimental: dibina berdasarkan dokumentasi API awam perkhidmatan, belum disahkan dengan akaun sebenar.
 #. message or event log entry in the main window
 #, machine
 	Export	Eksport
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Lanjutkan ketersediaan sambungan Chrome Manifest 2
+	Extend the availability of Manifest 2 Chrome extensions	Panjangkan tempoh ketersediaan sambungan Chrome Manifest 2
 #. text in categories.rs
 #, machine
-	Extensions separated by spaces, for example MP4 MKV R0*	Sambungan dipisahkan oleh ruang, contohnya MP4 MKV R0*
+	Extensions separated by spaces, for example MP4 MKV R0*	Sambungan dipisahkan dengan ruang, contohnya MP4 MKV R0*
 #. button in extracting archives (a download's log, the Archive password window)
 #. button: extract the archive with the password typed
 #, machine
@@ -1452,7 +1452,7 @@
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
-	Extract archives when their download completes	Ekstrak arkib apabila muat turunnya selesai
+	Extract archives when their download completes	Ekstrak arkib apabila muat turun selesai
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1500,7 +1500,7 @@
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
-	ffmpeg: joins picture and sound	ffmpeg: menyertai gambar dan bunyi
+	ffmpeg: joins picture and sound	ffmpeg: menggabungkan video dan audio
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1537,7 +1537,7 @@
 	Files	Fail
 #. window title in a dialog box
 #, machine
-	Files already there	Fail sudah ada
+	Files already there	Fail sudah wujud
 #. text in gallerydlg.rs
 #. label before the box for how many of a gallery's files to download at most
 #, machine
@@ -1545,7 +1545,7 @@
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	Fail pergi ke: {folder}
+	Files go to: {folder}	Fail disimpan di: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Fail dalam baris gilir
@@ -1883,11 +1883,11 @@
 	If a duplicate download link is added:	Jika pautan muat turun pendua ditambahkan:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Jika fail sedia ada lengkap, tunjukkan dialog muat turun selesai; jika tidak, sambung semula.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Jika fail sedia ada lengkap, paparkan dialog muat turun selesai; jika tidak, sambung semula muat turun.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	Jika tidak dapat dicapai, gunakan DNS sistem
+	If it can't be reached, use the system's DNS	Jika DNS itu tidak dapat dicapai, gunakan DNS sistem
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Abaikan perubahan masa pengubahsuaian fail apabila menyambung semula muat turun
@@ -1903,7 +1903,7 @@
 #. text in the Options window
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
-	in the locked keyring	dalam rantai kunci yang dikunci
+	in the locked keyring	dalam rantai kunci yang terkunci
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -1923,7 +1923,7 @@
 #. text in a download's progress window
 #. the torrent's identifier
 #, machine
-	Info hash	Cincang maklumat
+	Info hash	Cincangan maklumat
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window, under why
 #, machine
@@ -1991,7 +1991,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	ia bukan arkib yang diekstrak MDM
+	it is not an archive MDM extracts	ia bukan jenis arkib yang boleh diekstrak oleh MDM
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2008,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	ia akan menulis {size}, lebih daripada {limit} ruang atau sebab yang ada
+	it would write {size}, more than the {limit} there is room or reason for	ia akan menulis {size}, melebihi {limit} yang dibenarkan
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2020,14 +2020,14 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	its files could not be written: {error}	fail untuk menulis failnya: {error}
+	its files could not be written: {error}	Fail-failnya tidak dapat ditulis: {error}
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	maklumat keluarannya tidak seperti yang dijangkakan: {detail}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Jamaica	Jamaica
+	Jamaica	Jamaika
 #. text in the Scheduler window
 #, machine
 	January	Januari
@@ -2375,7 +2375,7 @@
 #. text in a download's progress window
 #. legend: pieces not downloaded yet
 #, machine
-	Missing	Hilang
+	Missing	Belum dimuat turun
 #. message or event log entry in the main window; window title in a dialog box; text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Mister Download Manager	Mister Download Manager
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	Alihkan muat turunnya ke Umum
+	Move its downloads to General	Alihkan muat turun kategori ini ke Umum
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Alih atau namakan semula muat turun yang dipilih
@@ -2491,7 +2491,7 @@
 #. message or event log entry in the main window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Moving the file...	Mengalih fail...
+	Moving the file...	Sedang mengalih fail...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2510,7 +2510,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: words that make the rule skip an article
 #, machine
-	Must not contain:	Mesti tidak mengandungi:
+	Must not contain:	Tidak boleh mengandungi:
 #. option (radio button) in the Options window
 #, machine
 	My own way:	Cara saya sendiri:
@@ -2575,7 +2575,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	New Caledonia	New Caledonia
+	New Caledonia	Kaledonia Baru
 #. text in the Options window
 #, machine
 	New exception	Pengecualian baharu
@@ -2632,7 +2632,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
-	No day is ticked: the queue will not start	Tiada hari ditanda: baris gilir tidak akan bermula
+	No day is ticked: the queue will not start	Tiada hari ditandakan: baris gilir tidak akan bermula
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	Tiada folder lagi
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	Tidak kembali, untuk memilih folder lain.
+	No goes back, to choose another folder.	Tiada kembali untuk memilih folder lain.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2671,7 +2671,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Tiada rakan lagi. Mungkin sedikit orang berkongsi torrent ini, atau tembok api, VPN atau rangkaian mungkin menyekat BitTorrent.
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Tiada rakan sebaya lagi. Mungkin hanya sedikit orang berkongsi torrent ini, atau tembok api, VPN atau rangkaian mungkin menyekat BitTorrent.
 #. text in the Options window
 #, machine
 	No proxy/socks	Tiada proksi/socks
@@ -2682,7 +2682,7 @@
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
-	No tracker added: it has them already	Tiada penjejak ditambahkan: ia sudah memilikinya
+	No tracker added: it has them already	Tiada penjejak ditambahkan: torrent itu sudah mempunyai semuanya
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
@@ -2708,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	Tiada yang ditanda: setiap suapan.
+	None ticked: every feed.	Tiada yang ditandakan: semua suapan.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Tiada: rakan sebaya datang daripada DHT dan rakan sebaya lain
@@ -2763,7 +2763,7 @@
 	Not now	Bukan sekarang
 #. text in helpers.rs
 #, machine
-	Not now? Get them later from Tasks → Download video from a page.	Bukan sekarang? Dapatkan kemudian daripada Tugas → Muat turun video daripada halaman.
+	Not now? Get them later from Tasks → Download video from a page.	Bukan sekarang? Dapatkannya kemudian daripada Tugas → Muat turun video daripada halaman.
 #. text in a download's Properties window
 #, machine
 	not one server (peers, or a helper's)	bukan satu pelayan (rakan, atau pembantu)
@@ -2777,13 +2777,13 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Nota: Pelayan Internet mungkin memutuskan sambungan apabila kelajuan terlalu terhad! Oleh itu, tidak\ndisyor untuk menggunakan Pengehad Kelajuan untuk memuat turun daripada pelayan yang tidak menyokong\nciri "sambung semula".
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Nota: Pelayan Internet mungkin memutuskan sambungan apabila kelajuan terlalu terhad! Oleh itu, tidak\ndisyorkan menggunakan Pengehad Kelajuan untuk memuat turun daripada pelayan yang tidak menyokong\nciri "sambung semula".
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Nota: Tetapan ini tidak berkaitan dengan pemprosesan baris gilir
 #. message or event log entry in the main window
 #, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Tiada apa-apa untuk dimuat turun dalam {item}: gugurkan pautan, fail .torrent, atau senarai alamat (.txt, .ef2).
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Tiada apa-apa untuk dimuat turun dalam {item}: seret dan lepaskan pautan, fail .torrent, atau senarai alamat (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	November
@@ -2826,7 +2826,7 @@
 	On battery, Windows' power options don't allow wake timers	Pada bateri, pilihan kuasa Windows tidak membenarkan pemasa bangun
 #. text in a download's progress window
 #, machine
-	on download stop/resume	pada hentian/sambung semula muat turun
+	on download stop/resume	semasa menghentikan/menyambung semula muat turun
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
@@ -2840,7 +2840,7 @@
 	Once at	Sekali pada
 #. text in extension.rs
 #, machine
-	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Setelah ia ditambahkan, tetingkap ini akan menyatakan demikian. Chrome juga mungkin bertanya dengan sendirinya pada permulaan seterusnya.
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Selepas ditambahkan, tetingkap ini akan memaklumkan anda. Chrome juga mungkin memaparkan permintaan itu sendiri apabila dimulakan seterusnya.
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	Satu alamat setiap baris; * bermaksud sebarang teks: example.com/private/*
@@ -2973,7 +2973,7 @@
 #. text in the Link grabber window
 #. Link grabber, while it is empty
 #, machine
-	Paste links here (Ctrl+V), or send a page's links from the browser.	Tampal pautan di sini (Ctrl+V), atau hantar pautan halaman dari pelayar.
+	Paste links here (Ctrl+V), or send a page's links from the browser.	Tampal pautan di sini (Ctrl+V) atau hantar pautan halaman dari pelayar.
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
@@ -3085,10 +3085,10 @@
 #. text in the Options window
 #. tab title
 #, machine
-	Proxy / Socks	Proksi / Socks
+	Proxy / Socks	Proksi / SOCKS
 #. page title in the Options window
 #, machine
-	Proxy / socks configuration	Konfigurasi proksi / socks
+	Proxy / socks configuration	Konfigurasi proksi / SOCKS
 #. text in the settings
 #. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
 #, machine
@@ -3103,11 +3103,11 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Put a * in the address where the numbers or letters go	Letakkan * dalam alamat di mana nombor atau huruf pergi
+	Put a * in the address where the numbers or letters go	Letakkan * pada bahagian alamat yang mewakili nombor atau huruf
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
-	Put them into the video	Letakkan dalam video
+	Put them into the video	Letakkan sari kata dalam video
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3121,7 +3121,7 @@
 #. the name proposed for a new queue; {n} = its number
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Queue # {n}	Baris Gilir # {n}
+	Queue # {n}	Baris gilir # {n}
 #. text in the Options window
 #, machine
 	Queue processing started	Pemprosesan baris gilir dimulakan
@@ -3135,22 +3135,22 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
-	Read on this computer only, and sent only to the video's site.	Baca pada komputer ini sahaja, dan dihantar hanya ke tapak video.
+	Read on this computer only, and sent only to the video's site.	Dibaca pada komputer ini sahaja dan dihantar hanya ke tapak video.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
-	Reading the crash data…	Membaca data ranap…
+	Reading the crash data…	Sedang membaca data ranap…
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Reading the file list...	Membaca senarai fail...
+	Reading the file list...	Sedang membaca senarai fail...
 #. text in the Add torrent window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Reading the torrent...	Membaca torrent...
+	Reading the torrent...	Sedang membaca torrent...
 #. text in helpers.rs
 #, machine
-	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Membaca halaman dan menyenaraikan setiap kualiti yang ditawarkan oleh tapak, sehingga 4K, daripada YouTube, Vimeo dan lebih seribu tapak lain.
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Membaca halaman dan menyenaraikan semua kualiti yang ditawarkan oleh tapak, sehingga 4K, daripada YouTube, Vimeo dan lebih seribu tapak lain.
 #. text in helpers.rs
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
@@ -3167,7 +3167,7 @@
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Receiving data...	Menerima data...
+	Receiving data...	Sedang menerima data...
 #. message or event log entry in the main window
 #. event log entry: Recheck failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -3203,7 +3203,7 @@
 #. verb: remove the item
 #. RSS feeds window: unsubscribe from the selected feed
 #, machine
-	Remove	Alih Keluar
+	Remove	Alih keluar
 #. text in the Scheduler window
 #, machine
 	Remove from the queue	Alih keluar daripada baris gilir
@@ -3404,7 +3404,7 @@
 #. text in crashui.rs
 #. crash report window button: open GitHub's crash report form filled in
 #, machine
-	Send on GitHub	Hantar di GitHub
+	Send on GitHub	Hantar ke GitHub
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Hantar ini kepada rakan:
@@ -3491,32 +3491,32 @@
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
-	Sharing	Berkongsi
+	Sharing	Perkongsian
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Sharing stopped after sharing for {time}	Perkongsian dihentikan selepas berkongsi selama {time}
+	Sharing stopped after sharing for {time}	Perkongsian dihentikan selepas {time} perkongsian
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
 	Sharing stopped: the share ratio reached {ratio}	Perkongsian dihentikan: nisbah perkongsian mencapai {ratio}
 #. text in the download list
 #, machine
-	Show	Tunjuk
+	Show	Tunjukkan
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	Show &categories	Tunjuk &kategori
+	Show &categories	Tunjukkan &kategori
 #. text in the Options window
 #, machine
-	Show a dialog and ask what to do.	Tunjukkan dialog dan tanya apa yang perlu dilakukan.
+	Show a dialog and ask what to do.	Tunjukkan kotak dialog dan tanya apa yang perlu dilakukan.
 #. checkbox in the Options window
 #, machine
 	Show a download button over videos in browsers	Tunjukkan butang muat turun pada video dalam pelayar
 #. button in the download list
 #, machine
-	Show all	Tunjuk semua
+	Show all	Tunjukkan semua
 #. message or event log entry in the main window
 #. link in the empty download list: go to the All Downloads view
 #, machine
@@ -3533,10 +3533,10 @@
 	Show me how	Tunjukkan saya caranya
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on closing batch download dialogs	Tunjukkan panel pemilihan baris gilir apabila menutup dialog muat turun kelompok
+	Show queue selection panel on closing batch download dialogs	Tunjukkan panel pemilihan baris gilir apabila dialog muat turun kelompok ditutup
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on pressing "Download Later" button	Tunjukkan panel pemilihan baris gilir apabila menekan butang "Muat Turun Kemudian"
+	Show queue selection panel on pressing "Download Later" button	Tunjukkan panel pemilihan baris gilir apabila butang "Muat Turun Kemudian" ditekan
 #. checkbox in the Options window
 #, machine
 	Show start download dialog	Tunjukkan dialog mula muat turun
@@ -3707,30 +3707,30 @@
 	Start Download	Mula Muat Turun
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
-	Start download at	Mula muat turun pada
+	Start download at	Mulakan muat turun pada
 #. checkbox in the Scheduler window
 #, machine
-	Start download on Mister Download Manager startup	Mula muat turun semasa permulaan Mister Download Manager
+	Start download on Mister Download Manager startup	Mulakan muat turun apabila Mister Download Manager bermula
 #. checkbox in the Options window
 #, machine
-	Start downloading immediately while displaying "Download File Info" dialog	Mula memuat turun serta-merta semasa memaparkan dialog "Maklumat Fail Muat Turun"
+	Start downloading immediately while displaying "Download File Info" dialog	Mulakan muat turun serta-merta sambil memaparkan dialog "Maklumat Fail Muat Turun"
 #. text in the tray icon's menu
 #, machine
-	Start main download queue	Mula baris gilir muat turun utama
+	Start main download queue	Mulakan baris gilir muat turun utama
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	Kedudukan mula dan kemajuan muat turun mengikut sambungan
 #. checkbox in a dialog box
 #, machine
-	Start the queue now	Mula baris gilir sekarang
+	Start the queue now	Mulakan baris gilir sekarang
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Start {queue}	Mula {queue}
+	Start {queue}	Mulakan {queue}
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	Bermula
+	Started	Dimulakan
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
@@ -3739,23 +3739,23 @@
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
-	Started with the computer, it starts minimized: no notification area shows its icon here	Dimulakan dengan komputer, ia bermula diminimumkan: tiada kawasan pemberitahuan menunjukkan ikonnya di sini
+	Started with the computer, it starts minimized: no notification area shows its icon here	Dimulakan bersama komputer, tetingkapnya bermula dalam keadaan diminimumkan: tiada kawasan pemberitahuan memaparkan ikonnya di sini
 #. text in the Options window
 #. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
 #, machine
-	Started with the computer, it waits in the notification area	Dimulakan dengan komputer, ia menunggu di kawasan pemberitahuan
+	Started with the computer, it waits in the notification area	Dimulakan bersama komputer, ia menunggu di kawasan pemberitahuan
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	Bermula dengan yt-dlp {version} ({format})
+	Started with yt-dlp {version} ({format})	Dimulakan dengan yt-dlp {version} ({format})
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Starting...	Memulakan...
+	Starting...	Sedang bermula...
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
-	State	Status
+	State	Keadaan
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -3781,11 +3781,11 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
-	Stop sharing after sharing for	Berhenti berkongsi selepas berkongsi selama
+	Stop sharing after sharing for	Hentikan perkongsian selepas berkongsi selama
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
-	Stop sharing at a share ratio of	Berhenti berkongsi pada nisbah perkongsian
+	Stop sharing at a share ratio of	Hentikan perkongsian apabila nisbah perkongsian mencapai
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -3802,11 +3802,11 @@
 #. message or event log entry in the main window
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 #, machine
-	Stopped: the network adapter changed; starting again	Berhenti: penyesuai rangkaian berubah; bermula semula
+	Stopped: the network adapter changed; starting again	Dihentikan: penyesuai rangkaian berubah; dimulakan semula
 #. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
-	Stopped: {adapter} is not connected; it goes on when it is back	Berhenti: {adapter} tidak disambungkan; ia akan diteruskan apabila ia kembali
+	Stopped: {adapter} is not connected; it goes on when it is back	Dihentikan: {adapter} tidak disambungkan; muat turun akan diteruskan apabila sambungan kembali
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	Berhenti apabila muat turun selesai
@@ -3825,7 +3825,7 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	Sarikata dalam {language} datang pada percubaan kedua: ia berada di sebelah video, bukan di dalamnya.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	Sari kata dalam {language} dimuat turun pada percubaan kedua: sari kata itu berada di sebelah video, bukan di dalamnya.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
@@ -3917,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	fail .torrent yang disimpan untuknya tiada
+	the .torrent file kept for it is gone	fail .torrent yang disimpan untuk muat turun ini tiada
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	Alamat mestilah alamat http(s) atau ftp(s)
@@ -3957,11 +3957,11 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	kod tamat tempoh: log masuk semula
+	the code expired: sign in again	Kod telah tamat tempoh: log masuk semula
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	The column filters hide every download in this view.	Penapis lajur menyembunyikan setiap muat turun dalam paparan ini.
+	The column filters hide every download in this view.	Penapis lajur menyembunyikan semua muat turun dalam paparan ini.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4003,11 +4003,11 @@
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
-	The download isn't complete yet	Muat turun belum lengkap
+	The download isn't complete yet	Muat turun belum selesai
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	The download limit ({mb} MBytes every {hours} hours) has been reached.	Had muat turun ({mb} MBait setiap {hours} jam) telah dicapai.
+	The download limit ({mb} MBytes every {hours} hours) has been reached.	Had muat turun ({mb} MB setiap {hours} jam) telah dicapai.
 #. text in errors.rs
 #, machine
 	the download link has expired (refresh the download address)	pautan muat turun telah tamat tempoh (segarkan alamat muat turun)
@@ -4020,7 +4020,7 @@
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Pengurus muat turun yang anda sudah tahu, dibina semula untuk menjadi lebih pantas. Percuma dan sumber terbuka di bawah GNU GPL, versi 3 atau lebih baru. Video ditemui oleh yt-dlp; torrent berjalan pada librqbit.
 #. text in a dialog box
 #, machine
-	The download queue is done.	Baris gilir muat turun selesai.
+	The download queue is done.	Baris gilir muat turun telah selesai.
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	program yang dimuat turun tidak sepadan dengan jumlah semak yang ditandatangani
@@ -4033,7 +4033,7 @@
 	the drive or network share is no longer available	pemacu atau perkongsian rangkaian tidak lagi tersedia
 #. text in errors.rs
 #, machine
-	the file changed on the server	fail berubah pada pelayan
+	the file changed on the server	fail telah berubah pada pelayan
 #. message or event log entry in the main window
 #, machine
 	The file could not be moved	Fail tidak dapat dialihkan
@@ -4062,7 +4062,7 @@
 #. text in the Checksum window
 #. tooltip of the box showing the checksum the file really has
 #, machine
-	The file's own checksum	Jumlah hasil tambah semak fail itu sendiri
+	The file's own checksum	Nilai semak fail itu sendiri
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4140,7 +4140,7 @@
 	the server answered {status}	pelayan menjawab {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	pelayan tidak dapat menghantar bahagian fail, jadi ia tidak dapat disambung semula
+	the server can't send parts of the file, so it can't be resumed	pelayan tidak dapat menghantar bahagian fail, jadi muat turun tidak dapat disambung semula
 #. text in errors.rs
 #, machine
 	the server did not answer in time	pelayan tidak menjawab tepat pada masanya
@@ -4159,7 +4159,7 @@
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Tapak tersebut mahu anda log masuk, walaupun dengan kuki pelayar anda untuk halaman ini. Log masuk ke dalamnya dalam pelayar anda, kemudian cuba lagi.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Tapak tersebut memerlukan anda log masuk walaupun pelayar anda mempunyai kuki untuk halaman ini. Log masuk ke tapak tersebut dalam pelayar anda, kemudian cuba lagi.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
@@ -4222,7 +4222,7 @@
 	These settings are unavailable when "Show download complete dialog" is turned on	Tetapan ini tidak tersedia apabila "Tunjukkan dialog muat turun selesai" dihidupkan
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	Ia terus memuat turun jika anda menutup tetingkap ini.
+	They keep downloading if you close this window.	Muat turun akan terus berjalan jika anda menutup tetingkap ini.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Alamat ini sudah ada dalam senarai muat turun:
@@ -4271,7 +4271,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Pautan magnet ini tidak menamakan penjejak dan DHT dimatikan, jadi tiada rakan sebaya dapat ditemui.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Pautan magnet ini tidak menyenaraikan penjejak dan DHT dimatikan, jadi tiada rakan sebaya dapat ditemui.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -4305,11 +4305,11 @@
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
-	This video is protected (DRM): no tool can save it.	Video ini dilindungi (DRM): tiada alat boleh menyimpannya.
+	This video is protected (DRM): no tool can save it.	Video ini dilindungi (DRM): tiada alat yang boleh menyimpannya.
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Video ini memerlukan anda untuk log masuk. Gunakan butang Muat turun video di atasnya dalam pelayar anda, yang akan menghantar log masuk anda, atau pilih pelayar anda dalam Pilihan → Log Masuk Tapak → Kuki untuk tapak video.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Video ini memerlukan anda log masuk. Gunakan butang Muat turun video yang tertera di atasnya dalam pelayar anda; butang itu akan menghantar maklumat log masuk anda, atau pilih pelayar anda dalam Pilihan → Log Masuk Tapak → Kuki untuk tapak video.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4484,7 +4484,7 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
-	Type the name the server's certificate shows.	Taip nama yang ditunjukkan oleh sijil pelayan.
+	Type the name the server's certificate shows.	Taip nama seperti yang tertera pada sijil pelayan.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4516,7 +4516,7 @@
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
-	Uncheck all	Nyahtanda semua
+	Uncheck all	Nyahpilih semua
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -4670,7 +4670,7 @@
 	Verify	Sahkan
 #. window title in the Checksum window; text in the Checksum window
 #, machine
-	Verify checksum	Sahkan jumlah hasil tambah
+	Verify checksum	Sahkan jumlah semak
 #. text in the download list (sizes, speeds, status)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -4753,7 +4753,7 @@
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
-	What were you doing when it happened? (optional)	Apakah yang anda lakukan apabila ia berlaku? (pilihan)
+	What were you doing when it happened? (optional)	Apakah yang anda lakukan apabila perkara itu berlaku? (pilihan)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	What's new:	Apa yang baharu:
@@ -4788,7 +4788,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Use the proxy"
 #, machine
-	With it, incoming connections, the DHT and local peers are off.	Dengan ini, sambungan masuk, DHT dan rakan kongsi tempatan dimatikan.
+	With it, incoming connections, the DHT and local peers are off.	Dengan pilihan ini, sambungan masuk, DHT dan rakan setempat dimatikan.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
@@ -4847,7 +4847,7 @@
 #. text in helpers.rs
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
-	Your system's: {path}	Sistem anda: {path}
+	Your system's: {path}	Pada sistem anda: {path}
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -4899,7 +4899,7 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm} checksum	Jumlah hasil tambah {algorithm}
+	{algorithm} checksum	Semak jumlah {algorithm}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4911,12 +4911,12 @@
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: sambungan disambungkan
+	{browser}: the extension connected	{browser}: sambungan telah disambungkan
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: sambungan {version} disambungkan
+	{browser}: the extension {version} connected	{browser}: sambungan {version} telah disambungkan
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	{file} tidak dapat dibaca untuk menyemaknya
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} tidak lagi berada di tempat ia disimpan (dialihkan atau dipadamkan). Muat turun semula, dalam menu klik kanan, mendapatkannya semula.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} tidak lagi berada di lokasi ia disimpan (dialihkan atau dipadamkan). Pilih Muat turun semula dalam menu klik kanan untuk mendapatkannya semula.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5009,7 +5009,7 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name} dilindungi oleh kata laluan:
+	{name} is protected by a password:	{name} dilindungi kata laluan:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
@@ -5043,7 +5043,7 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} meminta anda untuk membenarkan komputer ini dahulu: lihat e-melnya
+	{service} asks you to allow this computer first: see its email	{service} meminta anda membenarkan komputer ini dahulu: semak e-melnya
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} tidak dapat mendapatkan torrent ini: tiada siapa yang berkongsinya, atau pautannya tidak dapat dibaca
@@ -5061,7 +5061,7 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} tidak akan memberikan fail ini
+	{service} won't give this file	{service} tidak dapat memberikan fail ini
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -5453,7 +5453,7 @@ menu	&Delete	&Padam
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Delete All Completed	&Padam Semua yang Selesai
+menu	&Delete All Completed	&Padam semua yang selesai
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5493,7 +5493,7 @@ menu	&Paste	&Tampal
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Pause All	&Jeda Semua
+menu	&Pause All	&Jeda semua
 #. menu command in the main window
 #. verb: removes the selected download from the list
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5521,11 +5521,11 @@ menu	&Scheduler and queues	&Penjadual dan baris gilir
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Stop All	&Hentikan Semua
+menu	&Stop All	&Hentikan semua
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Stop Download	&Hentikan Muat Turun
+menu	&Stop Download	&Hentikan muat turun
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	Semak imbas
+menu	Browse	Buka folder
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5675,7 +5675,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	Direct3D tidak bermula di sini: OpenGL melukis
+menu	Direct3D didn't start here: OpenGL draws	Direct3D tidak dapat dimulakan pada komputer ini: OpenGL digunakan untuk melukis
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5710,7 +5710,7 @@ menu	Find Next (F3)	Cari Seterusnya (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
-menu	First and last pieces first	Bahagian pertama dan terakhir dahulu
+menu	First and last pieces first	Cebisan pertama dan terakhir dahulu
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine
@@ -5755,7 +5755,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal tidak bermula di sini: OpenGL melukis
+menu	Metal didn't start here: OpenGL draws	Metal tidak dapat dimulakan di sini: OpenGL digunakan untuk melukis
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5774,10 +5774,10 @@ menu	Native	Asli
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Tiada kad grafik di sini mempunyai pemacu untuknya
+menu	No graphics card here has a driver for it	Tiada kad grafik di sini mempunyai pemacu untuk sistem grafik itu
 #. menu command in the main window
 #, machine
-menu	On Double click	Pada Dwiklik
+menu	On Double click	Apabila dwiklik
 #. menu command in the main window
 #. verb: opens the downloaded file
 #. what double-clicking a download does — verb: open the file
@@ -5844,7 +5844,7 @@ menu	Remove with &files	Alih keluar dengan &fail
 menu	Remove with files	Alih keluar dengan fail
 #. menu command in the main window
 #, machine
-menu	Resume Download	Sambung Muat Turun
+menu	Resume Download	Sambung semula muat turun
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5887,10 +5887,10 @@ menu	Start now	Mula sekarang
 #. menu command in the main window
 #. verb: stops the queue
 #, machine
-menu	Stop	Henti
+menu	Stop	Hentikan
 #. menu command in the main window
 #, machine
-menu	Stop Download	Hentikan Muat Turun
+menu	Stop Download	Hentikan muat turun
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5949,7 +5949,7 @@ menu	Vulkan	Vulkan
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Vulkan didn't start here: OpenGL draws	Vulkan tidak bermula di sini: OpenGL melukis
+menu	Vulkan didn't start here: OpenGL draws	Vulkan tidak bermula di sini: OpenGL digunakan untuk melukis
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

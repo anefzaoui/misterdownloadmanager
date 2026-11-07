@@ -6,7 +6,7 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Також видалити {n} файл з диска|Також видалити {n} файли з диска|Також видалити {n} файлів з диска
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Також видалити з диска {n} файл|Також видалити з диска {n} файли|Також видалити з диска {n} файлів
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" не є IP-адресою.
+	"{what}" isn't an IP address.	«{what}» — не IP-адреса.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -199,7 +199,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Цей файл завантажується через проксі-сервер: місце та час належать проксі-серверу, а не серверу.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Цей файл завантажується через проксі-сервер: місце та час визначаються проксі-сервером, а не сервером.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -207,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Правило додає нові статті, заголовки яких відповідають, коли вони надходять.
+	A rule adds the new articles whose titles it matches, as they come.	Правило додає нові статті із заголовками, що відповідають йому, у міру їх появи.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -215,11 +215,11 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
-	A tracker on this computer or the local network is never contacted: {line}	Трекер на цьому комп’ютері або в локальній мережі ніколи не контактує: {line}
+	A tracker on this computer or the local network is never contacted: {line}	До трекера на цьому комп’ютері або в локальній мережі ніколи не підключаються: {line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	відсутній один з томів
+	a volume of it is missing	відсутній один із його томів
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Про Mister Download Manager
@@ -288,7 +288,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
-	Add them without starting them	Додати без запуску
+	Add them without starting them	Додати їх, не запускаючи
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -377,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Усі від завантажувача
+	All the uploader's	Усі субтитри від автора
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -407,7 +407,7 @@
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
-	Always dark	Завжди темний
+	Always dark	Завжди темна тема
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -501,11 +501,11 @@
 	As the system's region writes them	Як їх записує регіон системи
 #. text in the Options window
 #, machine
-	Ask it with:	Запитати за допомогою:
+	Ask it with:	Запитувати за допомогою:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	Знову запитано трекери про піри
+	Asked the trackers for peers again	Повторно надіслано запит трекерам на отримання пірів
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -542,7 +542,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Automatically put in "{category}" category the following file types:	Автоматично поміщати до категорії "{category}" такі типи файлів:
+	Automatically put in "{category}" category the following file types:	Автоматично поміщати до категорії «{category}» такі типи файлів:
 #. text in the Options window
 #, machine
 	Automatically start downloading the following file types:	Автоматично починати завантаження таких типів файлів:
@@ -674,7 +674,7 @@
 	by batch download	пакетним завантаженням
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	за допомогою Link grabber
+	by Link grabber	за допомогою засобу збирання посилань
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -739,7 +739,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Cayman Islands	Кайманові Острови
+	Cayman Islands	Кайманові острови
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -874,7 +874,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Comoros	Коморські Острови
+	Comoros	Коморські острови
 #. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
@@ -972,10 +972,10 @@
 	Curaçao	Кюрасао
 #. text in the Options window
 #, machine
-	Customize "Download progress" dialog	Налаштувати діалогове вікно "Прогрес завантаження"
+	Customize "Download progress" dialog	Налаштувати діалогове вікно «Прогрес завантаження»
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Налаштувати клавіші для запобігання або примусового завантаження за допомогою MDM
+	Customize keys to prevent or force downloading with MDM	Налаштувати клавіші для запобігання завантаженню за допомогою MDM або його примусового запуску
 #. text in the Options window
 #, machine
 	Customize MDM Download panels in browsers	Налаштувати панелі завантаження MDM у браузерах
@@ -989,7 +989,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Czech Republic	Чеська Республіка
+	Czech Republic	Чехія
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -997,7 +997,7 @@
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
-	Daily	Щоденно
+	Daily	Щодня
 #. text in the Options window
 #, machine
 	Date order:	Порядок дати:
@@ -1010,7 +1010,7 @@
 	Day, month, year	День, місяць, рік
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Облікові записи служби дебридування
+	Debrid service accounts	Облікові записи сервісів розблокування завантажень
 #. text in the Scheduler window
 #, machine
 	December	Грудень
@@ -1025,13 +1025,13 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	Типовий каталог завантажень для категорії "{category}"
+	Default download directory for "{category}" category	Типова папка для завантажень категорії «{category}»
 #. page title in the Options window
 #, machine
 	Default download settings	Типові параметри завантаження
 #. text in the Options window
 #, machine
-	Default max. conn. number	Типова макс. кількість з’єднань
+	Default max. conn. number	Типова максимальна кількість з’єднань
 #. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
@@ -1040,7 +1040,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Видалити архіви після видобування
+	Delete archives after extracting	Видаляти архіви після розпакування
 #. window title in a dialog box
 #, machine
 	Delete category	Видалити категорію
@@ -1055,7 +1055,7 @@
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Видалити чергу "{queue}"? Її завантаження залишаться у списку.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Видалити чергу «{queue}»? Її завантаження залишаться у списку.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads (asks first)	Видалити вибрані завантаження (запитує спочатку)
@@ -1152,7 +1152,7 @@
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Завантажити "{name}" знову з початку? Завершений файл буде замінено після завершення нового завантаження.
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Завантажити «{name}» знову з початку? Завершений файл буде замінено після завершення нового завантаження.
 #. window title in gallerydlg.rs
 #. window title: download an image gallery's files (gallery-dl)
 #, machine
@@ -1357,7 +1357,7 @@
 #. text in the Add torrent window
 #. Add trackers: OK with an empty box
 #, machine
-	Enter a tracker's address, one a line	Введіть адресу трекера, по одному на рядок
+	Enter a tracker's address, one a line	Введіть адресу трекера, по одній на рядок
 #. window title in a dialog box
 #, machine
 	Enter new address to download	Введіть нову адресу для завантаження
@@ -1701,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl не встановлено (Додати URL з адресою галереї встановлює його)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl не встановлено (Додавання адреси галереї через «Додати URL» встановлює його)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Гібернація
+	Hibernate	Перевести комп’ютер у режим гібернації
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1834,7 +1834,7 @@
 #. text in a download's progress window; text in standard windows
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
-	Hide to the notification area	Приховати в область сповіщень
+	Hide to the notification area	Приховати в області сповіщень
 #. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
@@ -2008,11 +2008,11 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	він записав би {size}, що перевищує {limit} доступного місця або причини
+	it would write {size}, more than the {limit} there is room or reason for	було б записано {size}, що перевищує {limit} доступного місця або допустимого обсягу
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Можна додати групу послідовних імен файлів, таких як img001.jpg, img002.jpg тощо,\nimg100.jpg до черги завантажень MDM. Використовуйте символ узагальнення (зірочку) для шаблону імені файлу.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Можна додати до черги завантажень MDM групу файлів із послідовними іменами, наприклад img001.jpg, img002.jpg тощо,\nimg100.jpg. Використовуйте зірочку як символ узагальнення в шаблоні імені файлу.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2112,7 +2112,7 @@
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
-	larger than a feed can be	більше, ніж може бути канал
+	larger than a feed can be	перевищує допустимий розмір каналу
 #. text in the Batch download window
 #, machine
 	Last file:	Останній файл:
@@ -2191,7 +2191,7 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Перелік зупинено після {n} відео: {error}
+	Listing stopped after {n} videos: {error}	Створення списку зупинено після {n} відео: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -2222,7 +2222,7 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
-	Login	Вхід
+	Login	Ім’я користувача
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
@@ -2342,7 +2342,7 @@
 #. text in the Scheduler window
 #. the month (the fifth of the year)
 #, machine
-	May	Травень
+	May	травень
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2432,7 +2432,7 @@
 	Monaco	Монако
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Понеділок
+	Monday	понеділок
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	Перемістити завантаження до категорії "Загальні"
+	Move its downloads to General	Перемістити завантаження до категорії «Загальні»
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Перемістити або перейменувати вибране завантаження
@@ -2661,7 +2661,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	Не відкрито жодної поштової програми.
+	No mail app opened.	Поштову програму не відкрито.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Немає поштової програми: повідомлення скопійовано, вставте його у свою пошту.
@@ -2823,7 +2823,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
 #, machine
-	On battery, Windows' power options don't allow wake timers	Від параметрів живлення Windows не дозволяють таймери пробудження під час роботи від акумулятора
+	On battery, Windows' power options don't allow wake timers	Параметри живлення Windows не дозволяють таймери пробудження під час роботи від акумулятора
 #. text in a download's progress window
 #, machine
 	on download stop/resume	при зупинці/відновленні завантаження
@@ -2895,7 +2895,7 @@
 	Open the following file when done	Відкрити наступний файл після завершення
 #. checkbox in the Scheduler window
 #, machine
-	Open the following file when done:	Відкрити файл після завершення:
+	Open the following file when done:	Відкривати файл після завершення:
 #. button in the Options window
 #. button: open the service's page where the code is typed
 #, machine
@@ -2903,7 +2903,7 @@
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
-	Open the reported issue	Відкрити повідомлену проблему
+	Open the reported issue	Відкрити створене повідомлення про проблему
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	Відкрити вибране завантаження
@@ -3135,7 +3135,7 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
-	Read on this computer only, and sent only to the video's site.	Читається лише на цьому комп’ютері та надсилається лише на сайт відео.
+	Read on this computer only, and sent only to the video's site.	Читаються лише на цьому комп’ютері та надсилаються лише на сайт відео.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3229,7 +3229,7 @@
 #. text in a download's progress window
 #. verb: continue the download
 #, machine
-	Resume	Продовжити
+	Resume	Відновити
 #. text in a download's progress window
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
@@ -3314,7 +3314,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Sao Tome and Principe	Сан-Томе і Принсіпі
+	Sao Tome and Principe	Сан-Томе і Принсипі
 #. text in the Options window; text in the Scheduler window
 #, machine
 	Saturday	Субота
@@ -3624,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Сплячий режим
+	Sleep	Приспати
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4115,7 +4115,7 @@
 	the release has no {what}	у випуску відсутній {what}
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	список контрольних сум випуску не підписаний ключем видавця
+	the release's checksum list is not signed by its publisher's key	список контрольних сум випуску не підписано ключем видавця
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4130,7 +4130,7 @@
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	Безпечне з’єднання не вдалося
+	the secure connection failed	Не вдалося встановити захищене з’єднання
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4167,7 +4167,7 @@
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Не вдалося отримати символи: деякі рядки звіту показують адреси замість імен (розробники все ще можуть їх прочитати).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Не вдалося отримати символи: в деяких рядках звіту замість імен відображаються адреси (розробники все одно зможуть їх прочитати).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
@@ -4175,11 +4175,11 @@
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
-	The system's DNS	Системний DNS
+	The system's DNS	Системна DNS
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Час – це час передачі даних в обидва боки, виміряний як відкриті з’єднання цього завантаження.
+	The time is a round trip, measured as this download's own connections opened.	Час вимірюється як тривалість проходження сигналу туди й назад через з’єднання, відкриті цим завантаженням.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4187,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	торрент більше не існує
+	the torrent is no longer there	торрента більше немає
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4195,13 +4195,13 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The update couldn't be installed: {error}	Не вдалося інсталювати оновлення: {error}
+	The update couldn't be installed: {error}	Не вдалося встановити оновлення: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	Оновлення відкрито в інсталяторі пакетів вашої системи.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	Веб-сторінка, з якої було отримано цей файл:
+	The web page from which this file was obtained:	Вебсторінка, з якої отримано цей файл:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4209,7 +4209,7 @@
 #. text in the Options window
 #. Options → Archives check box (Linux and macOS)
 #, machine
-	Then move the archives to the Trash	Потім перемістити архіви до Смітника
+	Then move the archives to the Trash	Потім перемістити архіви до кошика
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Категорія з такою назвою вже існує
@@ -4291,7 +4291,7 @@
 	this program isn't {name}	ця програма не {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Ця система не має комутованих з'єднань для роз'єднання
+	This system has no dial-up connections to hang up	У цій системі немає комутованих з’єднань, які можна роз’єднати
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4749,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	Вміст архіву переходить:
+	What an archive holds goes:	Куди переміщувати вміст архіву:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ та XZ; розділений архів (.part1.rar, .7z.001) після\nтого, як усі томи будуть на місці. Файл, який вже існує, зберігається: новий нумерується.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ та XZ; розділений архів (.part1.rar, .7z.001) після\nотримання всіх томів. Наявний файл зберігається, новому присвоюється номер.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4920,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} обслуговує цей файл: місцезнаходження його сервера, часто поблизу вас, а не власника сайту.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} обслуговує цей файл: показано місце розташування його сервера, часто поблизу вас, а не власника сайту.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	{file} не вдалося прочитати для перевірки
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} більше не знаходиться там, де його було збережено (переміщено або видалено). Повторне завантаження в його контекстному меню отримує його знову.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} більше немає в місці, де його було збережено (його перемістили або видалили). Команда «Завантажити знову» в контекстному меню завантажить його ще раз.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4973,7 +4973,7 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} недоступний через {adapter}: він не має адреси такого типу (IPv4 або IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} недоступна через {adapter}: цей адаптер не має адреси такого типу (IPv4 або IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -4981,7 +4981,7 @@
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} підключено, {known} відомо
+	{live} connected, {known} known	{live} підключених, {known} відомих
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -5004,7 +5004,7 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — це архів 7z або RAR. MDM розпаковує їх за допомогою 7-Zip, який не встановлено.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} — це архів 7z або RAR. MDM розпаковує такі архіви за допомогою 7-Zip, який не встановлено.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5014,7 +5014,7 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} не пропонується як {how}.
+	{name} isn't offered as {how}.	{name} не пропонується у форматі {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5043,7 +5043,7 @@
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} просить спочатку дозволити цей комп’ютер: перегляньте його електронний лист
+	{service} asks you to allow this computer first: see its email	{service} просить спочатку дозволити цей комп’ютер: перевірте електронний лист від сервісу
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} не може отримати цей торрент: його ніхто не роздає, або його посилання неможливо прочитати
@@ -5225,7 +5225,7 @@ extension	Help	Довідка
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Приховати на цьому відео
+extension	Hide on this video	Приховати для цього відео
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5269,12 +5269,12 @@ extension	Mister Download Manager then downloads through the same proxy as this 
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
-extension	More options	Більше опцій
+extension	More options	Інші параметри
 #. text in the browser extension
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never on {site}	Ніколи на {site}
+extension	Never on {site}	Ніколи не показувати на сайті {site}
 #. text in the browser extension
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5320,11 +5320,11 @@ extension	Support MDM	Підтримати MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Завантажувати файли з цього браузера
+extension	Take downloads from this browser	Перехоплювати завантаження з цього браузера
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
-extension	The connection to Mister Download Manager failed	З’єднання з Mister Download Manager не вдалося
+extension	The connection to Mister Download Manager failed	Не вдалося встановити з’єднання з Mister Download Manager
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
@@ -5604,7 +5604,7 @@ menu	By &Size	За &розміром
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	By &Time Left	За &залишковим часом
+menu	By &Time Left	За &часом до завершення
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5693,7 +5693,7 @@ menu	Draw with	Малювати за допомогою
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	E&xport	&Експорт
+menu	E&xport	&Експортувати
 #. menu command in the main window
 #, machine
 menu	Edit queue	Редагувати чергу

@@ -6,12 +6,12 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	{n} willkuq qillqata qillqaqta pichay
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Diskmanta {n} willañiqitapas pichay
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	¿Cheqachu kay {n} uraykuchiykunata Mister Download Manager uraykuchiykuna listamanta pichayta munanki?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	¿Mister Download Manager uraykachiykunapa listanmanta {n} uraykachiyta pichayta munankichu?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -22,7 +22,7 @@
 #. where a magnet's peers came from: the DHT; {n} = the computers it knows now; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} khipu: {peers}
+@plural	DHT, {n} node: {peers}|DHT, {n} nodes: {peers}	DHT, {n} nodo: {peers}
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
@@ -152,7 +152,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
-	(the Torrents category's folder)	(Torrents k'atmayuq qillqaq k'atmaynin)
+	(the Torrents category's folder)	(Torrents k'atma sutiyuq qillqaq k'atmaynin)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -187,11 +187,11 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Kay torrentpa huk willañiqin mana allinta waqaychakuyta atinchu: {name}
+	A file of this torrent can't be saved safely: {name}	Kay torrentpa huk willañiqinta mana allinta waqaychayta atikunchu: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Huk NextDNS configuración ID suqta letrakuna chaymanta numerokuna (0-9, a-f) kachkan.
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS configuración IDqa suqta qillqayuqmi, chaymanta yupaykunayuq (0-9, a-f).
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -203,15 +203,15 @@
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
-	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Huk willakuyta waqaychasqa. GitHubpi ruwaqkunaman kachayqa allichanankupaq yanapan; kay urapi tukuy imata qhawariyta atinki. Mana imapas kachasqa kanchu kikinmanta: Kachayqa willakuy p'anqata kicharichin wamp'uqniykipi, hunt'asqa, qhawarinaykipaq chaymanta kacharinaykipaq.
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	Huk willakuy waqaychasqa. GitHubpi ruwaqkunaman kachayqa kayta allichanankupaq yanapan; kay urapi tukuy imata ñawpaqta qhawariyta atinki. Mana imapas kikinmanta kachakun: Kachayqa wamp'uqniykipi willakuy p'anqata kicharin, hunt'asqata, qhawarinaykipaq chaymanta kacharinaykipaq.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Kay kamachiyqa musuq qillqakunata yapaykun, sutiyninkunata tupachispa, paykuna hamuptinku.
+	A rule adds the new articles whose titles it matches, as they come.	Kamachiyqa musuq qillqakunata yapaykun, sutin kamachiywan tupaqtinta, chaykuna hamuchkaptin.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	kay yachana antañiqiqpi huk sirwiqmi uraykachayta huk manyaman kachamurqa, chaytaq {adapter} nisqanmanta mana purinqachu
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	Kay antañiqiqpi huk sirwiqmi uraykachayta huk laduman kachamurqa, chaytaq {adapter} nisqawan mana purinqachu
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -241,14 +241,14 @@
 	Accounts	Willaykuna
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Add a download (Add URL)	Uraykuchiyta yapay (URL yapay)
+	Add a download (Add URL)	Uraykachiyta yapay (URL yapay)
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
 	Add an account	Huk willayta yapay
 #. text in the tray icon's menu
 #, machine
-	Add batch download	Batch uraykuchiyta yapay
+	Add batch download	Achka uraykachiyta yapay
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -267,11 +267,11 @@
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
-	Add Mister Download Manager to your browser	Mister Download Manager maskayniykipi yapay
+	Add Mister Download Manager to your browser	Mister Download Managerta wamp'uqniykiman yapay
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
-	Add new download	Musuq uraykuchiyta yapay
+	Add new download	Musuq uraykachiyta yapay
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	Iskaychasqata yapay hinaspa kaq willkuq qillqata qillqay
@@ -288,7 +288,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
-	Add them without starting them	Manaraq qallarispa yapay
+	Add them without starting them	Manaraq qallarispa paykunata yapay
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -315,11 +315,11 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	RSS kamachiy {rule} {feed}manta yapasqa
+	Added by the RSS rule {rule} from {feed}	RSS kamachiy {rule}wan {feed}manta yapasqa
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
-	Added {source}	{source} yapasqa
+	Added {source}	{source}manta yapasqa
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -367,7 +367,7 @@
 	Algeria	Argelia
 #. item in the Categories tree in the main window
 #, machine
-	All Downloads	Tukuy Uraykuchiykuna
+	All Downloads	Tukuy uraykachiykuna
 #. message or event log entry in the main window
 #, machine
 	All files	Tukuy willkuq qillqakuna
@@ -382,7 +382,7 @@
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Allow more than {n} connections	Astawan {n} t'inkinakuykunata saqiy
+	Allow more than {n} connections	Aswan {n} t'inkinakuykunata saqiy
 #. text in errors.rs
 #, machine
 	already being downloaded: {path}	ñawpaqmantapacha uraykachasqaña: {path}
@@ -498,7 +498,7 @@
 	Aruba	Aruba
 #. option (radio button) in the Options window
 #, machine
-	As the system's region writes them	Sistimapa suyunkama qillqasqa
+	As the system's region writes them	Sistemapa suyunkama qillqasqanman hina
 #. text in the Options window
 #, machine
 	Ask it with:	Kaywan tapuy:
@@ -804,13 +804,13 @@
 #. Video helpers: a program just chosen is being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the program...	Churayta qhawachkan...
+	Checking the program...	Programata qhawachkan...
 #. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking {name} ({n} of {total})...	{name} nisqata qhawachkan ({n} {total}manta)...
+	Checking {name} ({n} of {total})...	{name}ta qhawachkan ({n} {total}manta)...
 #. text in the Checksum window; text in the Link grabber window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -836,7 +836,7 @@
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Choose {name}	{name} akllay
+	Choose {name}	{name}ta akllay
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -862,7 +862,7 @@
 	Close	Wichq'ay
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Close a menu or dialog	Menu utaq rimanakuyta wichq'ay
+	Close a menu or dialog	Menuta utaq diálogota wichq'ay
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -904,7 +904,7 @@
 	Connected	T'inkisqa
 #. text in extension.rs
 #, machine
-	Connected: downloads from your browser now come here.	Tupachisqa: maskayniykipi uraykachiykuna kunan kayman hamunku.
+	Connected: downloads from your browser now come here.	Tupachisqa: navegadorniykimanta uraykachiykuna kunan kayman hamunku.
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -926,7 +926,7 @@
 #. group box title in the Options window
 #. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
 #, machine
-	Cookies for video sites	Videokunapaq kuki
+	Cookies for video sites	Videokunapaq kukikuna
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Copied to the clipboard.	Khipukamaqman k'askachisqa.
@@ -954,7 +954,7 @@
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	Mana atikunchu {name}ta hurquy: {why}
+	Couldn't extract {name}: {why}	Mana {name}ta hurquyta atirqanchu: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	K'atachata kamariy
@@ -1110,7 +1110,7 @@
 	Do not start downloading, only add files to the queue	Ama uraykuchiyta qallariyñachu, qillqakunata churanaman yapaylla
 #. text in a dialog box
 #, machine
-	Do you want to create it?	Kamayta munankichu?
+	Do you want to create it?	¿Chayta kamayta munankichu?
 #. text in the download list (sizes, speeds, status)
 #. category name: documents (pdf, doc…)
 #, machine
@@ -1239,22 +1239,22 @@
 #. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
-	Downloading	Uraykuchisqa
+	Downloading	Uraykachichkan
 #. message or event log entry in the main window
 #, machine
-	Downloading again from the start	Huktawan qallariymanta uraykuchisqa
+	Downloading again from the start	Qallariymantapacha huktawan uraykachichkan
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (80 MB hina) uraykachasqa chaymanta qhawasqa...
+	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg (80 MB hina) uraykachichkan chaymanta chiqaqchachkan...
 #. text in gallerydlg.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying gallery-dl...	gallery-dlta uraykachispa qhawaykuchkan...
+	Downloading and verifying gallery-dl...	gallery-dl-ta uraykachispa chiqaqchachkan...
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying yt-dlp...	yt-dlp uraykachasqa chaymanta qhawasqa...
+	Downloading and verifying yt-dlp...	yt-dlp-ta uraykachispa chiqaqchachkan...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
@@ -1290,7 +1290,7 @@
 #. text in a dialog box
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 #, machine
-	Drag the file into a folder or an app	Kay willkaqta huk willkaq q'ipiman icha huk ruwanaman aysay
+	Drag the file into a folder or an app	Willañiqita huk q'ipiman utaq ruwanaman aysay
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
@@ -1420,7 +1420,7 @@
 #. text in the tray icon's menu
 #. verb: quit the app
 #, machine
-	Exit	Lloqsiy
+	Exit	Lluqsiy
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
 	Exit Mister Download Manager when done	Mister Download Manager lloqsiy tukusqa kaqtin
@@ -1548,7 +1548,7 @@
 	Files go to: {folder}	Willañiqikuna kayman rin: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
-	Files in the queue	Llaqtapi willañiqikuna
+	Files in the queue	Waqaychasqapi willañiqikuna
 #. button in the Find window
 #. verb: button that starts the search
 #, machine
@@ -1694,7 +1694,7 @@
 	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Galleriakuna gallery-dlta llamk'achinku: sistemaykiq paketikunawan churay (Homebrew, pip), chaymanta Yanapaqkunapi akllay.
 #. text in gallerydlg.rs
 #, machine
-	gallery-dl can download this gallery's files.	gallery-dl kay galleryaq willañiqinkunata uraykachiyta atin.
+	gallery-dl can download this gallery's files.	gallery-dl kay gallerypa willañiqinkunata uraykachiyta atin.
 #. text in gallerydlg.rs
 #, machine
 	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl kay direccionta manan leeyta atinchu. Aswanpas huk willañiqihina yapay (URL yapay).
@@ -1747,7 +1747,7 @@
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
-	Goes on after the download finishes	Uraykuy tukusqanmanta qhipamanmi purin
+	Goes on after the download finishes	Uraykachiy tukuriptinpas purichkan
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
@@ -1798,7 +1798,7 @@
 	Haiti	Haiti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Tukusqa kaptin modemta warkuy
+	Hang up modem when done	Tukuspa modemta warkuy
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -2165,7 +2165,7 @@
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
-	Limit uploading	Wichq'ay kachayta
+	Limit uploading	Kachachiyta saywachay
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
@@ -2506,11 +2506,11 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: words the article's title must contain
 #, machine
-	Must contain:	Kaykunata churanan tiyan:
+	Must contain:	Kaykunata hap'inan tiyan:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: words that make the rule skip an article
 #, machine
-	Must not contain:	Manam kaykunata churananchu tiyan:
+	Must not contain:	Kaykunata mana hap'inan tiyan:
 #. option (radio button) in the Options window
 #, machine
 	My own way:	Kikinpa imaynan:
@@ -2550,7 +2550,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server wants a login (401, 403)
 #, machine
-	Needs a login	Yaykuna munan
+	Needs a login	Yaykunata mañan
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2770,23 +2770,23 @@
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	kay qhatu manan yanapanchu
+	not supported by this service	kay llamk'ayqa manan yanapanchu
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Mana llamk'achisqa: willay rakinakuna willaypaq qhipanpi qillqasqa kanku
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Kayta yuyariy: Internet sirwiqkuna utqay kay ancha pisichasqa kaptin t'inkiyta t'ipiyta atinku! Chayrayku mana allinchu utqay kay pisichaqta llamk'achiy "qatiy" llamk'ayta mana yanapaq sirwiqkunamanta urayk'uchinapaq.
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Yuyariy: Internet sirwiqkuna urayk'achiy utqay ancha pisilla kaptin t'inkiyta t'ipiyta atinku! Chayrayku "qatiy" nisqa rurayta mana yanapaq sirwiqkunamanta urayk'achinapaq utqay pisichaqta llamk'achiyqa mana allinchu.
 #. text in the Options window
 #, machine
-	Note: These settings don't relate to queue processing	Kayta yuyariy: Kay allichaykuna mana churanapaq llamk'aywan t'inkisqachu kanku
+	Note: These settings don't relate to queue processing	Yuyariy: Kay allichaykunaqa mana siq'i llamk'aywan t'inkisqachu kanku
 #. message or event log entry in the main window
 #, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Manam {item}pi uraykuna kanchu: chimpapuraykunata, .torrent willakuyta, utaq chimpapuraykunap listanta (.txt, .ef2) urmachiy.
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Manam {item}pi urayk'achina kanchu: t'inkikunata, .torrent willayta, utaq chimpapuraykunap listanta (.txt, .ef2) urmachiy.
 #. text in the Scheduler window
 #, machine
-	November	Kantaray killa
+	November	noviembre
 #. text in the Options window
 #, machine
 	Number	Yupay
@@ -2799,13 +2799,13 @@
 	Numbers	Yupaykuna
 #. text in the Scheduler window
 #, machine
-	October	Tuparay killa
+	October	octubre
 #. option (radio button) in the Options window
 #, machine
-	Off	Waqllichisqa
+	Off	Wañusqa
 #. text in the Add torrent window
 #, machine
-	Off: a finished torrent stops, like any download.	Wañuchisqa: huk tukusqa torrent sayan, imayna huk urayk'uchiy.
+	Off: a finished torrent stops, like any download.	Wañusqa: Huk tukusqa torrent sayan, imayna huk urayk'achiy.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Khipunapaq wakichisqa t'inkikunata uraykachinapaq kayta munay
@@ -2826,11 +2826,11 @@
 	On battery, Windows' power options don't allow wake timers	Bateriyapi kachkaptinqa, Windowspa kallpa akllanakunaqa mana rikch'arichiy pacha churanakunata saqinchu
 #. text in a download's progress window
 #, machine
-	on download stop/resume	urayk'uchiy sayaypi/qatiypi
+	on download stop/resume	urayk'achiy sayachiy/qatipaypi
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
-	On macOS, only an administrator can schedule a wake	macOSpiqa, huk kamachiqlla rikch'arichiyta wakichiyta atin
+	On macOS, only an administrator can schedule a wake	macOSpiqa, kamachiqlla rikch'arichiyta wakichiyta atin
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
 #, machine
@@ -2840,10 +2840,10 @@
 	Once at	Huk kutilla
 #. text in extension.rs
 #, machine
-	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Huk kutita yapasqa kaptinqa, kay ventana chayta ninqa. Chrome kikillanmanta tapuyninta qallarinqa qatiq qallariyninpi.
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	Yapasqa kaptin, kay ventana chayta ninqa. Chromeqa qatiq qallariyninpi kikillanmanta tapuyta atikun.
 #. text in the Options window
 #, machine
-	One address per line; * stands for any text: example.com/private/*	Sapa siq'i huk direccion; * mayqin qillqapaqpas kachkan: example.com/private/*
+	One address per line; * stands for any text: example.com/private/*	Sapa siq'ipi huk chimpapuray; * nisqaqa mayqin qillqapas kanman: example.com/private/*
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	Huk kutilla urayk'uchiy
@@ -2861,11 +2861,11 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
-	Only an administrator can allow this	Huk kamachiqlla kayta saqillanman
+	Only an administrator can allow this	Kamachiqlla kayta saqinman
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
-	Only MP4 and MKV videos can hold subtitles	MP4 chaymanta MKV videokunallam qillqakunata churanqaku
+	Only MP4 and MKV videos can hold subtitles	MP4 chaymanta MKV videokunallam qillqakunata chaskiyta atinku
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -2889,7 +2889,7 @@
 	Open magnet links and .torrent files with Mister Download Manager	Magnet t'inkikunata hinaspa .torrent willaykunata Mister Download Managerwan kichay
 #. text in the tray icon's menu
 #, machine
-	Open Mister Download Manager	Mister Download Manager nisqata kichay
+	Open Mister Download Manager	Mister Download Managerta kichay
 #. text in the Scheduler window
 #, machine
 	Open the following file when done	Tukusqa kaptin kay willayta kichay
@@ -2928,7 +2928,7 @@
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
-	Or paste your API token:	Utqaylla API tokenniykita k'askachiy:
+	Or paste your API token:	Ichaqa API tokenniykita k'askachiy:
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -3059,7 +3059,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account's state; {days} the days of premium left
 #, machine
-	premium, {days} days left	premium, {days} p'unchawkuna qhipan
+	premium, {days} days left	premium, {days} p'unchakuna puchun
 #. button in a dialog box
 #. verb: open the part already downloaded
 #, machine
@@ -3103,7 +3103,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Put a * in the address where the numbers or letters go	Chimpapuraypi huk * churay maypi yupaykuna utaq qillqakuna kanqa
+	Put a * in the address where the numbers or letters go	Yupaykuna utaq qillqakuna kananpi * churay
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -3135,7 +3135,7 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
-	Read on this computer only, and sent only to the video's site.	Kay yupana k'itillapi ñawinchasqa, chaymanta videopa k'itillanman kachasqa.
+	Read on this computer only, and sent only to the video's site.	Kay computadorallapim ñawinchasqa, videopa sitiunllamanmi kachasqa.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3150,7 +3150,7 @@
 	Reading the torrent...	Torrentta ñawinchaspa...
 #. text in helpers.rs
 #, machine
-	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Huk p'anqata leen hinaspa sapa k'umuykachayta listan, 4K nisqakama, YouTube, Vimeo hinaspa waranqa aswan webkuna nisqamanta.
+	Reads a page and lists every quality the site offers, up to 4K, from YouTube, Vimeo and over a thousand other sites.	Huk p'anqata ñawinchan, hinaspa YouTube, Vimeo, chaymanta waranqa aswan sitiokunapi 4K nisqakama sapa calidadta rikuchin.
 #. text in helpers.rs
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
@@ -3159,7 +3159,7 @@
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Reannounce failed: {error}	Watiqmanta willayqa pantasqa: {error}
+	Reannounce failed: {error}	Watiqmanta willayqa mana atirqan: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -3172,7 +3172,7 @@
 #. event log entry: Recheck failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Recheck failed: {error}	Watiqmanta tarkuyqa pantasqa: {error}
+	Recheck failed: {error}	Watiqmanta qhawayqa mana atirqan: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -3191,14 +3191,14 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the two boxes above hold regular expressions
 #, machine
-	Regular expressions	Sapsi rimaykuna
+	Regular expressions	Saphi rimaykuna
 #. text in a download's progress window
 #, machine
 	Remember Speed Limiter settings for this file	Kay willañiqipaq Usay Limitaq akllanakunata yuyariy
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Remember this path for "{category}" category	"{category}" patachapataq kay ñanta yuyariy
+	Remember this path for "{category}" category	Kay ñanta «{category}» patachapaq yuyariy
 #. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
 #. RSS feeds window: unsubscribe from the selected feed
@@ -3210,7 +3210,7 @@
 #. text in a dialog box
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 #, machine
-	Remove its downloads from the list (running ones move to General)	Kay pachaq uraykuchisqankunata listamanta qichuy (purichkaqkunata Sapsiman astay)
+	Remove its downloads from the list (running ones move to General)	Kay patachapa uraykachisqankunata listamanta qichuy (purichkaqkunata Generalman astay)
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
@@ -3549,7 +3549,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
-	Shut down	Wichq'ay
+	Shut down	Wañuchiy
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3755,7 +3755,7 @@
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
-	State	Kawsay
+	State	Kaqnin
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
@@ -3781,7 +3781,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
-	Stop sharing after sharing for	Rakiyta sayachiy rakinapaq kaymanta
+	Stop sharing after sharing for	Rakiyta sayachiy rakisqa kaymanta
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
@@ -3821,11 +3821,11 @@
 #. text in the Download video window
 #. label before the list of a video's subtitle languages
 #, machine
-	Subtitles	Qillqakuna
+	Subtitles	Qillqasqa willakuykuna
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} rimaypi qillqasqa willakuykuna iskay kutipi chayamurqan: chaykunaqa videop patanpi kachkan, manataq videop ukhunpichu.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} rimaypi qillqasqa willakuykuna iskay kutipi chayamurqan: chaykunaqa videopa waqtanpi kachkan, manataq videop ukhunpichu.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
@@ -3957,7 +3957,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	kudiguqa p'uchukapun: huktawan qillqay
+	the code expired: sign in again	Kudiguqa p'uchukapun: huktawan yaykuy
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -4123,18 +4123,18 @@
 #. text in crashui.rs
 #. crash report window: after Copy report
 #, machine
-	The report is on your clipboard.	Willakuy kopyasqa kachkan.
+	The report is on your clipboard.	Willakuy khipusqa kachkan.
 #. text in crashui.rs
 #, machine
-	The report is on your clipboard: paste it in a comment on the issue.	Willakuy kopyasqa kachkan: chayta huk willakuypi kachay.
+	The report is on your clipboard: paste it in a comment on the issue.	Willakuy khipusqa kachkan: chayta sasachakuy willakuypi kachay.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	Chakana mana takyachisqa kachkan
+	the secure connection failed	Allinchasqa t'inkiyqa pantarqan
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Akllasqa ura k'uchu mana hunt'asqachu. ¿Chiqapchu Mister Download Manager ura k'uchu siq'imanta chinkachiyta munanki?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Akllasqa uraykachiyqa manaraq hunt'asqachu. ¿Mister Download Manager uraykachiykunapa siq'imanta chayta chinkachiyta munankichu?
 #. text in errors.rs
 #, machine
 	the server answered {status}	sirwiq {status} nisqa kutichisqa
@@ -4143,35 +4143,35 @@
 	the server can't send parts of the file, so it can't be resumed	sirwiq mana atinqachu willañiqip rakinkunata kachayta, chayrayku mana atinqachu qatiyta
 #. text in errors.rs
 #, machine
-	the server did not answer in time	sirwiq mana pachapi kutichisqachu
+	the server did not answer in time	sirwiq mana pachallapichu kutichirqan
 #. text in errors.rs
 #, machine
-	the server did not send the requested part	sirwiq mana mañakusqa rakita kachasqachu
+	the server did not send the requested part	sirwiq mañakusqa rakita mana kachamurqanchu
 #. text in errors.rs
 #, machine
-	the server is busy ({status}); try again later	sirwiq llamk'achkan ({status}); qhipaman hukmanta yachay
+	the server is busy ({status}); try again later	sirwiq llamk'achkan ({status}); qhipaman huktawan kallpachay
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	sirwiq huk web p'anqata kachasqa willañiqip rantinpi (yaykuy munasqachu utaq t'inkiy pantaqñachu?)
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	sirwiq willañiqi rantinpi web p'anqata kachamurqan (yaykuyta munanchu utaq t'inkiy tukurqanchu?)
 #. text in errors.rs
 #, machine
-	the server sent an unexpected part of the file ({detail})	sirwiq willañiqip huk mana suyasqa rakita kachasqa ({detail})
+	the server sent an unexpected part of the file ({detail})	sirwiq willañiqip mana suyasqa rakita kachamurqan ({detail})
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	K'iti qillqayta munan, kay p'anqapa wamp'uqpa kukiyninwanpas. Qillqay wamp'uqniykipi, chaymanta huktawan yachayta munay.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	K'itiqa yaykusqa kayta munan, kay p'anqapa wamp'uqpa kukiyniyki kaptinpas. Wamp'uqniykipi yaykuy, chaymanta huktawan kallpachay.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	K'iti qillqayta munan, {browser}pa kukiyninwanpas. Qillqay {browser}pi, chaymanta p'anqata huktawan maskhay.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	K'itiqa yaykusqa kayta munan, {browser}pa kukiynin kaptinpas. {browser}pi yaykuy, chaymanta p'anqata huktawan maskhay.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Simbolokunata mana aysayta atikuranchu: willakuy qillqap huk siq'ikuna sutikunapaqqa direccionkunata rikuchin (ruwaqkunaqa chaykunata leeyta atillankuraqmi).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Simbolokunata mana aysayta atikuranchu: willakuy qillqap wakin siq'ikuna sutipa rantinpi direccionkunata rikuchinku (ruwaqkunaqa chaykunata leeyta atillankuraqmi).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistima llavero wichqasqa kachkan, hinaspa MDM mana kichanchu, chayrayku yaykuykuna hinaspa contraseñakuna MDMpa allinkayninpi waqaychasqa kanku, chayta qamlla ñawinchayta atinki.
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Sistimapa llaveroqa wichqasqa kachkan, MDMpas mana kichanchu, chayrayku yaykuykuna hinaspa pakallaykuna MDMpa wakichiykunapi waqaychasqa kanku, chaykunata qamllam ñawinchayta atinki.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Pachaqa huk muyu puriy, kay urayk'uchiy kikin t'inkikuna kicharisqa hina tupusqa.
+	The time is a round trip, measured as this download's own connections opened.	Pachaqa muyu puriy pachan, kay uraykachiy kikin t'inkikuna kicharisqa kasqanman hina tupusqa.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4201,69 +4201,69 @@
 	The update is open in your system's package installer.	Kunanchananqa kicharichkanña sistimaykipa pakiti churana ukhupi.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	Kay willañiqi qallarisqan web p'anqa:
+	The web page from which this file was obtained:	Kay willañiqi hurqusqa web p'anqa:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
-	Then move the archives to the Recycle Bin	Chaymanta qullqanakunata Churaqman apay
+	Then move the archives to the Recycle Bin	Chaymanta waqaychana khipukunata Chinkachisqa khipukuna waqaychanaman kuyuchiy
 #. text in the Options window
 #. Options → Archives check box (Linux and macOS)
 #, machine
-	Then move the archives to the Trash	Chaymanta qullqanakunata Q'upaman apay
+	Then move the archives to the Trash	Chaymanta waqaychana khipukunata Q'upaman kuyuchiy
 #. text in categories.rs
 #, machine
 	There is already a category with this name	Kay sutiyuq k'ataqa kachkanña
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
-	There is already a queue with this name	Kay sutiyuq churanakuyqa kashanñam
+	There is already a queue with this name	Kay sutiyuq siq'iyqa kachkanña
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Kay allinchaykuna mana kanchu "Ura k'uchu hunt'asqa k'atata rikuchiy" kachkaptin
+	These settings are unavailable when "Show download complete dialog" is turned on	Kay wakichiykunaqa «Uraykachiy tukusqa rikuchiyta rikuchiy» kaqta akllaspaqa manam hapirinakunchu
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	Kay ventanata wisq'aytaqmi uraykachachkanku.
+	They keep downloading if you close this window.	Kay ventanata wichqaspaqa uraykachiyta qatichkankum.
 #. text in a dialog box
 #, machine
-	This address is already in the list of downloads:	Kay chiqaqchayqa ura k'uchu siq'ipi kachkanña:
+	This address is already in the list of downloads:	Kay t'inkiyqa uraykachiykunapa siq'ipi kachkanña:
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	Kay t'aqapi utaq churanakuypiqa manan ima uraykuchiykunapas kanchu.
+	This category or queue holds no downloads yet.	Kay k'ata utaq siq'iyqa manaraq uraykachiykunayuqchu.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	Kay antañiqiqqa mana huk pacha churanawan rikch'arichisqa kayta atinchu
+	This computer can't be woken by a timer	Kay computadoraqa pachachuranaqwan mana rikch'arichiyta atikunchu
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer has no wake alarm that programs can set	Kay antañiqiqqa mana rikch'arichiy pacha churanayuqchu, mayqintachus wakichiykuna churayta atin
+	This computer has no wake alarm that programs can set	Kay computadoraqa manam wakichiykuna churayta atina rikch'arichiy pachachuranayuqchu
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
-	this computer or the local network	kay computadora utaq llaqta network
+	this computer or the local network	kay computadora utaq llika qaylla
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
-	This date has passed: the queue will not start	Kay p'unchawqa pasasqañam: churanakuy manan qallarinqachu
+	This date has passed: the queue will not start	Kay p'unchawqa pasasqañam: siq'iyqa manam qallarinqachu
 #. text in a dialog box
 #, machine
-	This folder does not exist:	Kay qillqaq mana kanchu:
+	This folder does not exist:	Kay waqaychanap wasiqa manam kanchu:
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	Kay Google Drive willaqa yaykuyta munan: Googleman maskaqniykipi yaykuy, chaymanta chaymanta uraykachiy
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	Kay Google Drive willañiqiqa yaykuyta munan: wamp'uqniykipi Googleman yaykuy, chaymanta chaypi uraykachiy
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
-	this is a Google Drive folder, not a file	Kayqa huk Google Drive qillqaqhatu, manam huk willaqachu
+	this is a Google Drive folder, not a file	Kayqa Google Drive waqaychanap wasi, manam willañiqichu
 #. text in errors.rs
 #, machine
-	this is not a magnet link or a .torrent file	kayqa manam huk magnet linkchu nitaq huk .torrent willañiqichu
+	this is not a magnet link or a .torrent file	kayqa manam magnet linkchu nitaq .torrent willañiqichu
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
-	This is the installed copy, not a portable one	Kayqa churasqa kachkan, manam apaykachana kanchu
+	This is the installed copy, not a portable one	Kayqa churakusqa kaqmi, manam apaykachana kaqchu
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -4647,7 +4647,7 @@
 	Uzbekistan	Uzbekistan
 #. text in a download's progress window
 #, machine
-	Value	Chanin
+	Value	Chani
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4719,10 +4719,10 @@
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
-	Waiting	Suyaspa
+	Waiting	Suyachkan
 #. message or event log entry in the main window
 #, machine
-	Waiting: the download limit is reached (Scheduler)	Suyaspa: uraykachiy sayayninman chayasqa (Wakichiy)
+	Waiting: the download limit is reached (Scheduler)	Suyachkan: uraykachiy sayayninman chayasqa (Wakichiy)
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ chaymanta XZ; huk rakisqa qullqana (.part1.rar, .7z.001) sapa\nvolumen kachkaptin. Ñawpaq willakaqa waqaychasqa kachkan: musuq willakaqa yupaychasqa kachkan.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ chaymanta XZ; rakisqa khipu (.part1.rar, .7z.001) sapa\nvolumen chayamuptin. Ñawpaq willañiqi waqaychasqa kachkan: musuqta yupaychanku.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4899,32 +4899,32 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm} checksum	{algorithm} checksum
+	{algorithm} checksum	{algorithm} yupay tupachina
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: uraykachiy tukusqa kaqtin qhawasqa
+	{algorithm}: checked when the download finishes	{algorithm}: uraykachiy tukukuptin qhawasqa
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} kukiyninkunata Windowspi kikinpaq hark'an, chayrayku yt-dlp mana atin ñawinchayta. Akllay Firefoxta "Akllanakuna → K'iti qillqaykuna" nisqapi, utaq llamk'achiy "Video uraykachiy" ñit'inata videopa hawanpi {browser}pi.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} Windowspi kukinkunata kikinllapaq hark'an, chayrayku yt-dlp mana ñawiriyta atinchu. Akllay Firefox nisqata Akllanakuna → Sitiospa yaykuna yupaykuna nisqapi, utaq {browser}pi video hawanpi Video uraykachiy ñit'inata llamk'achiy.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: k'askachisqa t'inkisqa
+	{browser}: the extension connected	{browser}: extension t'inkisqa
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: k'askachisqa {version} t'inkisqa
+	{browser}: the extension {version} connected	{browser}: extension {version} t'inkisqa
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} kay willañiqita qun: kayqa servidorninpa tiyananmi, aswanta qampa qayllaykipi, manataq web patapa dueñonpaqa.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} kay willañiqita haywan: servidorpa kashanmi, aswanta qayllaykipi, manataq webpa dueñonpa kashanchu.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
-	{column} contains	{column} kachkan
+	{column} contains	{column} ukhupi
 #. message or event log entry in the main window
 #. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
 #. {count} = a number (keep the braces as they are)
@@ -4933,51 +4933,51 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
-	{ext} File	{ext} Willañiqi
+	{ext} File	{ext} willañiqi
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	{file} mana chinkachisqa kayta atinchu qillqana patamanta: {error}
+	{file} could not be deleted from the disk: {error}	{file} mana diskmanta qulluyta atirqanchu: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be opened: {error}	{file} mana kichasqa kayta atinchu: {error}
+	{file} could not be opened: {error}	{file} mana kichayta atirqanchu: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} mana ñawinchasqa kayta atinchu qhawana paqta kayninpaq
+	{file} could not be read to check it	{file} mana ñawiriyta atirqanchu qhawanapaq
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} manaña kachkanchu maypi waqaychasqa karqan (kuyuchisqa icha chinkachisqa). Kutichiy, paña k'uchu menuyninpi, musuqmanta chaskiyta atin.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} manañan waqaychasqa kasqanpiñachu kachkan (kuyuchisqa icha qullusqa). Paña ñit'ina menupi Kutichiy nisqawan musuqmanta uraykachiyta atinki.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: willañiqi mana paqtanchu checksumninwan ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: willañiqi checksumninwan ({algorithm}) mana tupanchu
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: willañiqi paqtanchu checksumninwan ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: willañiqi checksumninwan ({algorithm}) tupanchu
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{total}manta {have} ({size} sapa huk)
+	{have} of {total} ({size} each)	{have} {total}manta ({size} sapa huk)
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{total}manta {have} raki ({size} sapa huk)
+	{have} of {total} pieces ({size} each)	{have} {total} rakimanta ({size} sapa huk)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
-	{h} hour(s) {m} min	{h} hora(s) {m} minutu(s)
+	{h} hour(s) {m} min	{h} hora {m} min
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} mana {adapter} nisqanmanta chayanqachu: mana chay rikch'aq (IPv4 utaq IPv6) chimpapurayniyuqchu
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} mana {adapter} nisqanta chayayta atinchu: chay rikch'aq (IPv4 utaq IPv6) chimpayuq mana kanchu
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, kikillanmanta
+	{language}, automatic	{language}, automatiko
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -4999,22 +4999,22 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	{name} uraykachisqa kayta mana atirqanchu: {error}
+	{name} could not be downloaded: {error}	{name} mana uraykachiyta atirqanchu: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name}qa 7z utaq RAR willañiqi. MDMqa chaykunata 7-Zipwanmi hurqun, ichaqa manaraqmi churachisqachu.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name}qa 7z utaq RAR khipumi. MDM chaykunata 7-Zipwanmi hurqun, ichaqa 7-Zipqa manam churasqachu.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name}qa huk sutichanawan hark'asqa kachkan:
+	{name} is protected by a password:	{name}qa pakasqa simiwan hark'asqami kachkan:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} mana {how} hina qusqachu.
+	{name} isn't offered as {how}.	{name}qa {how} hina manam qusqa kanchu.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5024,7 +5024,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} {total}manta akllasqa
+	{n} of {total} chosen	{total}manta {n} akllasqa
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -5032,36 +5032,36 @@
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{percent} {service}pi
+	{percent} at {service}	{service}pi {percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service}qa pisiyachinapaqmi mañakun; MDMqa huk minutupi huktawan purichinqa
+	{service} asks to slow down; MDM will try again in a minute	{service}qa aslla mañakuyta mañakun; MDMqa huk minutupi huktawan ruwasaq.
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service}qa kay computadorata ñawpaqta saqinaykita mañakun: emailniykita qhaway
+	{service} asks you to allow this computer first: see its email	{service}qa kay computadorata ñawpaqta autorizanaykita mañakun: chaskisqayki emailta qhaway
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} kay torrentta mana chaskiyta atinchu: manam pipas rakinchu, utaq manam k'askachaynin ñawinchayta atinchu
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} kay torrentta chaskiyta mana atinchu: manam pipas rakinchu, utaq k'askachayninta mana ñawiriyta atinchu
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service}qa manan kay willañiqita kunan pacha aypayta atinchu; MDMqa qhipaman huktawan purichinqa
+	{service} can't reach this file host right now; MDM will try again later	{service}qa kunan kay willañiqi hostman chayayta mana atinchu; MDMqa qhipaman huktawan ruwasaq
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	{service}qa manan kutichikuchkanchu; qhipaman huktawan purichiy
+	{service} is not responding; try again later	{service}qa mana kutichichkanchu; qhipaman huktawan ruwapay
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service}qa kay t'inkiyta manan chaskinchu (huk VPN utaq servidorpa direccionninchu?)
+	{service} refuses this connection (a VPN or server address?)	{service}qa kay t'inkiyta mana chaskinchu (VPN utaq servidorpa direccionnin?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service}qa manan kay willañiqita qunqa
+	{service} won't give this file	{service}qa kay willañiqita manan qunchu
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -5069,11 +5069,11 @@
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
-	{service}: the account is locked or not activated	{service}: willayqa hark'asqa utaq manan kawsachisqachu
+	{service}: the account is locked or not activated	{service}: cuentam hark'asqa utaq manaraq kawsarichisqachu
 #. text in errors.rs
 #. a debrid service's error: the file is gone from its host
 #, machine
-	{service}: the file is gone or unavailable on the file host	{service}: willañiqiqa chinkapun utaq manan willañiqi qhatupi kanchu
+	{service}: the file is gone or unavailable on the file host	{service}: willañiqiqa chinkapun utaq willañiqi qhatupi manan kanchu
 #. text in errors.rs
 #. a debrid service's error: the file has a password
 #, machine
@@ -5084,11 +5084,11 @@
 	{service}: this needs a premium account	{service}: kayqa huk premium willayta munakun
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: achka willañiqikuna hukllataq pacha willayniykiwan; MDMqa huktawan purichinqa
+	{service}: too many downloads at once through your account; MDM will try again	{service}: achka willañiqikuna kikin pachapi cuenta nisqaykiwan uraykachisqa; MDMqa huktawan yachaykuchinqa
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: kay willkaqpaq sayayniykichis tukusqañam
+	{service}: your limit for this file host is used up for now	{service}: kay willañiqi qhatupaq limitiykiqa kunan tukusqañam
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -5100,7 +5100,7 @@
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} nisyu hatunmi kay {file_system} unidadpaq (willañiqikuna 4 GBkama)
+	{size} is too big for this {file_system} drive (files up to 4 GB)	{size}qa kay {file_system} unidadpaq sinchita hatunmi (4 GBkama willañiqikuna)
 #. text in the download list (sizes, speeds, status)
 #. {s} = seconds (keep the braces as they are)
 #, machine
@@ -5125,12 +5125,12 @@
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
-	{what} can't go through a chosen network adapter ({adapter}) yet	{what} mana akllasqa antañiqiq t'inkiywan ({adapter}) kunanraq puriyta atinchu
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what}qa akllasqa {adapter} antaniqipiniraq puriyta manan atinchu
 #. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{what} could not be installed: {error}	{what} mana churachikuyta atirqanchu: {error}
+	{what} could not be installed: {error}	{what}ta churayta manan atirqanchu: {error}
 #. column title in the download list in the download list
 #. past participle: when the download was added
 #, machine
@@ -5229,7 +5229,7 @@ extension	Hide on this video	Kay wiqawpi pakay
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Alt ñit'iy t'inkita ñit'ispa, wamp'uq chayta uraykachinanpaq.
+extension	Hold Alt while clicking a link to let the browser download it.	Alt ñit'iyta hap'ispa t'inkita ñit'iy, wamp'uq uraykachinanpaq.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5441,7 +5441,7 @@ menu	&Add new download	Musaq &uraykachiyta yapay
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	&Add new download...	&Musuqta uraykachiyta yapay...
+menu	&Add new download...	&Musuq uraykachiyta yapay...
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5569,7 +5569,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	Qatiq MDM qallariptin llamk'anqa
+menu	Applies the next time MDM starts	MDM qallarimuptinmi llamk'anqa
 #. menu command in the main window
 #, machine
 menu	Arrange files	Khipukunata allichay
@@ -5675,7 +5675,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	Direct3D mana kaypi qallarinqachu: OpenGL siq'inqa
+menu	Direct3D didn't start here: OpenGL draws	Direct3D mana kaypi qallarirqanchu: OpenGL siq'in
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5710,7 +5710,7 @@ menu	Find Next (F3)	Qatiqta maskay (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
-menu	First and last pieces first	Ñawpaqtawan qhipaqtawan rakinakuna
+menu	First and last pieces first	Ñawpaq rakinakunata, qhipa rakinakunata ñawpaqta
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine
@@ -5731,7 +5731,7 @@ menu	From &text file...	&Qillqa khipumanta...
 menu	H&elp contents	&Yanapay imayna kasqan
 #. menu command in the main window
 #, machine
-menu	Hide drop target	Uraykachiy churanata pakay
+menu	Hide drop target	Uraykachina churanata pakay
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
@@ -5739,15 +5739,15 @@ menu	High contrast	Anchaq t'ikra
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	Manan qallariykullarqanchu: imarayku kasqan qillqasqapi kachkan
+menu	It couldn't start: the log says why	Qallariyta mana atirqanchu: qillqasqapi imarayku kasqan kachkan
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
-menu	Its first frame didn't show within 10 seconds	Chunka segundopi manan ñawpaq rikch'aynin rikhurirqanchu
+menu	Its first frame didn't show within 10 seconds	Ñawpaq rikch'aynin chunka segundokama mana rikurirqanchu
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Qhipa qallariynin ñawpaq rikch'ayninmanta ñawpaqta tukukurqan
+menu	Its last start ended before its first frame	Qhipa qallariynin ñawpaq rikch'aynin rikurinanpaq tukukurqan
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5755,7 +5755,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal manan kaypi qallariykullarqanchu: OpenGL siq'in
+menu	Metal didn't start here: OpenGL draws	Metal kaypi mana qallarikunchu: OpenGL siq'in
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5774,7 +5774,7 @@ menu	Native	Sapsi
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Manan kaypi siq'ina tarjetachu chaypaq controladorayuq kachkan
+menu	No graphics card here has a driver for it	Kaypi mana ima siq'ina tarjeta chaypaq controladorniyuq kachkan
 #. menu command in the main window
 #, machine
 menu	On Double click	Iskay kutita ñit'ispa
@@ -5794,7 +5794,7 @@ menu	Open folder	Karpita kichay
 #. menu command in the main window
 #. View → Theme: opens the folder where theme files go (TOML or JSON)
 #, machine
-menu	Open themes folder	Kallpachana qillqaqta kichar
+menu	Open themes folder	T'ikraykuna karpeta kichay
 #. menu command in the main window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -5808,7 +5808,7 @@ menu	OpenGL	OpenGL
 #. noun: opens the download's Properties window
 #. noun: opens the category's properties
 #, machine
-menu	Properties	Imaynakuna
+menu	Properties	Kaqninkuna
 #. menu command in the main window
 #. verb: download the file again from the start
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5821,14 +5821,14 @@ menu	Reannounce	Watiqmanta willay
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
-menu	Recheck files	Willanakunata watiqmanta tarkuy
+menu	Recheck files	Khipukunata watiqmanta qhawariy
 #. menu command in the main window
 #. verb: download the file again from the start
 #, machine
 menu	Redownload	Huktawan uraykachiy
 #. menu command in the main window
 #, machine
-menu	Refresh download address	Uraykachina chimpapurana musuqchay
+menu	Refresh download address	Uraykachina ñan yupayta musuqchay
 #. menu command in the main window
 #. verb: removes the download from the list
 #, machine
@@ -5911,12 +5911,12 @@ menu	Theme	Kallpachana
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	To &IDM export file...	&IDM willka hurquna...
+menu	To &IDM export file...	&IDM khipuman apachiy...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	To &text file...	&Qillqa willkaman...
+menu	To &text file...	&Qillqa khipuman...
 #. menu command in the main window
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
@@ -5949,7 +5949,7 @@ menu	Vulkan	Vulkan
 #. menu command in the main window
 #. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Vulkan didn't start here: OpenGL draws	Vulkan manan kaypi qallariykullarqanchu: OpenGL siq'in
+menu	Vulkan didn't start here: OpenGL draws	Vulkan kaypi mana qallarikurqanchu: OpenGL siq'in
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

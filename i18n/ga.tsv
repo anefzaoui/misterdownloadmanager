@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	An bhfuil tú cinnte gur mian leat {n} íoslódáil a scriosadh ó liosta íoslódálacha Mister Download Manager?|An bhfuil tú cinnte gur mian leat na {n} íoslódáil seo a scriosadh ó liosta íoslódálacha Mister Download Manager?|An bhfuil tú cinnte gur mian leat na {n} híoslódáil seo a scriosadh ó liosta íoslódálacha Mister Download Manager?|An bhfuil tú cinnte gur mian leat na {n} híoslódáil seo a scriosadh ó liosta íoslódálacha Mister Download Manager?|An bhfuil tú cinnte gur mian leat na {n} híoslódáil seo a scriosadh ó liosta íoslódálacha Mister Download Manager?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	An bhfuil tú cinnte gur mian leat {n} íoslódáil a scriosadh ó liosta íoslódálacha Mister Download Manager?|An bhfuil tú cinnte gur mian leat na {n} íoslódálacha seo a scriosadh ó liosta íoslódálacha Mister Download Manager?|An bhfuil tú cinnte gur mian leat na {n} n-íoslódálacha seo a scriosadh ó liosta íoslódálacha Mister Download Manager?|An bhfuil tú cinnte gur mian leat na {n} n-íoslódálacha seo a scriosadh ó liosta íoslódálacha Mister Download Manager?|An bhfuil tú cinnte gur mian leat na {n} n-íoslódálacha seo a scriosadh ó liosta íoslódálacha Mister Download Manager?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -27,7 +27,7 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Baintear {n} comhad chuig {folder}|Baintear {n} chomhad chuig {folder}|Baintear {n} gcomhad chuig {folder}|Baintear {n} gcomhad chuig {folder}|Baintear {n} gcomhad chuig {folder}
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Baineadh {n} comhad chuig {folder}|Baineadh {n} chomhad chuig {folder}|Baineadh {n} gcomhad chuig {folder}|Baineadh {n} gcomhad chuig {folder}|Baineadh {n} gcomhad chuig {folder}
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
 #. {n} = a number (keep the braces as they are)
@@ -48,11 +48,11 @@
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
 #, machine
-@plural	{host} allows {n} connection|{host} allows {n} connections	Ní cheadaíonn {host} ach {n} nasc|Ní cheadaíonn {host} ach {n} nasc|Ní cheadaíonn {host} ach {n} nasc|Ní cheadaíonn {host} ach {n} nasc|Ní cheadaíonn {host} ach {n} nasc
+@plural	{host} allows {n} connection|{host} allows {n} connections	Ceadaíonn {host} {n} nasc|Ceadaíonn {host} {n} nasc|Ceadaíonn {host} {n} nasc|Ceadaíonn {host} {n} nasc|Ceadaíonn {host} {n} nasc
 #. count in rssdlg.rs
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} article|{n} articles	{n} altán|{n} altán|{n} altán|{n} altán|{n} altán
+@plural	{n} article|{n} articles	{n} alt|{n} alt|{n} alt|{n} alt|{n} alt
 #. count in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -64,7 +64,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} á íoslódáil|{n} á íoslódáil|{n} á íoslódáil|{n} á íoslódáil|{n} á íoslódáil
+@plural	{n} downloading|{n} downloading	{n} á n-íoslódáil|{n} á n-íoslódáil|{n} á n-íoslódáil|{n} á n-íoslódáil|{n} á n-íoslódáil
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
@@ -85,12 +85,12 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Bhí ainm comhaid a bhí ann cheana féin ar {n} chomhad agus uimhriú air|Bhí ainm comhaid a bhí ann cheana féin ar {n} chomhad agus uimhriú air|Bhí ainm comhaid a bhí ann cheana féin ar {n} gcomhad agus uimhriú orthu|Bhí ainm comhaid a bhí ann cheana féin ar {n} gcomhad agus uimhriú orthu|Bhí ainm comhaid a bhí ann cheana féin ar {n} gcomhad agus uimhriú orthu
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	Rinneadh {n} comhad a raibh ainm comhaid ann cheana a uimhriú|Rinneadh {n} chomhad a raibh ainm comhaid ann cheana a uimhriú|Rinneadh {n} gcomhad a raibh ainm comhaid ann cheana a uimhriú|Rinneadh {n} gcomhad a raibh ainm comhaid ann cheana a uimhriú|Rinneadh {n} gcomhad a raibh ainm comhaid ann cheana a uimhriú
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} peer|{n} peers	{n} piar|{n} phiar|{n} piar|{n} piar|{n} piar
+@plural	{n} peer|{n} peers	{n} piara|{n} phiara|{n} piara|{n} piara|{n} piara
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -99,12 +99,12 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added|{n} trackers added	{n} rianaire curtha leis|{n} rianaire curtha leis|{n} rianaire curtha leis|{n} rianaire curtha leis|{n} rianaire curtha leis
+@plural	{n} tracker added|{n} trackers added	Cuireadh {n} rianaitheoir leis|Cuireadh {n} rianaitheoir leis|Cuireadh {n} rianaitheoir leis|Cuireadh {n} rianaitheoir leis|Cuireadh {n} rianaitheoir leis
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} rianaire: {peers}|{n} rianaire: {peers}|{n} rianaire: {peers}|{n} rianaire: {peers}|{n} rianaire: {peers}
+@plural	{n} tracker: {peers}|{n} trackers: {peers}	{n} rianaitheoir: {peers}|{n} rianaitheoir: {peers}|{n} rianaitheoir: {peers}|{n} rianaitheoir: {peers}|{n} rianaitheoir: {peers}
 #. count in playlistdlg.rs
 #. in Download video: a playlist title then how many videos it has ({count})
 #. {count} = a number (keep the braces as they are)
@@ -113,7 +113,7 @@
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
-@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} de {total} fhíseán liostaithe|{title}: {listed} de {total} fhíseán liostaithe|{title}: {listed} de {total} bhfíseán liostaithe|{title}: {listed} de {total} bhfíseán liostaithe|{title}: {listed} de {total} físeán liostaithe
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} as {total} fhíseán liostaithe|{title}: {listed} as {total} fhíseán liostaithe|{title}: {listed} as {total} bhfíseán liostaithe|{title}: {listed} as {total} bhfíseán liostaithe|{title}: {listed} as {total} físeán liostaithe
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
@@ -122,7 +122,7 @@
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	&Apply	&Cuir i bhFeidhm
+	&Apply	&Cuir i bhfeidhm
 #. text in the Scheduler window
 #. verb: close the window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -191,11 +191,11 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Is sé litir agus digit (0-9, a-f) é aitheantas cumraíochta NextDNS.
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Sé litir agus digit (0-9, a-f) atá in aitheantas cumraíochta NextDNS.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
-	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Ainm próifíle nó a fillteán. Folamh: an phróifíl a úsáideadh go deireanach. I gcás brabhsálaí atá bunaithe ar Chromium nach bhfuil liostaithe (Helium, Thorium...), roghnaigh Chromium agus fillteán a phróifíle.
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Ainm próifíle nó fillteán na próifíle. Folamh: an phróifíl a úsáideadh go deireanach. I gcás brabhsálaí atá bunaithe ar Chromium nach bhfuil liostaithe (Helium, Thorium...), roghnaigh Chromium agus fillteán na próifíle.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -207,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	Cuireann riail na hailt nua a mheaitseálann a teidil, de réir mar a thagann siad.
+	A rule adds the new articles whose titles it matches, as they come.	Cuireann riail na hailt nua a mheaitseálann lena teidil leis, de réir mar a thagann siad.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -467,7 +467,7 @@
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
 #, machine
-	Archive password	Pasfhocal cartlainne
+	Archive password	Pasfhocal na cartlainne
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -505,7 +505,7 @@
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	D'iarr na rianaitheoirí ar chomhghleacaithe arís
+	Asked the trackers for peers again	Iarradh ar na rianaitheoirí comhghleacaithe a aimsiú arís
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -671,7 +671,7 @@
 	Busy, try later	Gnóthach, bain triail as níos déanaí
 #. message or event log entry in the main window
 #, machine
-	by batch download	trí íoslódáil baisce
+	by batch download	trí íoslódáil bhaisce
 #. message or event log entry in the main window
 #, machine
 	by Link grabber	le Link grabber
@@ -747,7 +747,7 @@
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 #, machine
-	Certificate name:	Ainm na teastais:
+	Certificate name:	Ainm an teastais:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -794,7 +794,7 @@
 #. in Download a gallery, while gallery-dl checks the address (offline)
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the address with gallery-dl...	Ag seiceáil na seoltaí le gallery-dl...
+	Checking the address with gallery-dl...	Ag seiceáil an tseolta le gallery-dl...
 #. text in the Checksum window
 #. why Verify is greyed: the file is being checked
 #. the trailing ... means it is still going on: keep it
@@ -949,12 +949,12 @@
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Could not be read: {error}	Níorbh fhéidir a léamh: {error}
+	Could not be read: {error}	Níorbh fhéidir é a léamh: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Couldn't extract {name}: {why}	Níorbh fhéidir {name} a bhaint: {why}
+	Couldn't extract {name}: {why}	Níorbh fhéidir {name} a dhíphacáil: {why}
 #. window title in a dialog box
 #, machine
 	Create folder	Cruthaigh fillteán
@@ -997,7 +997,7 @@
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #. adverb: every day (the other choice is once, on a date)
 #, machine
-	Daily	Laethúil
+	Daily	Gach lá
 #. text in the Options window
 #, machine
 	Date order:	Ordú dátaí:
@@ -1040,7 +1040,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Scrios cartlanna tar éis bainte
+	Delete archives after extracting	Scrios cartlanna tar éis iad a bhaint
 #. window title in a dialog box
 #, machine
 	Delete category	Scrios an chatagóir
@@ -1078,7 +1078,7 @@
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 #, machine
-	DHT off	DHT as
+	DHT off	DHT múchta
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -1138,7 +1138,7 @@
 	Don't start downloading automatically from the following sites:	Ná cuir tús le híoslódáil go huathoibríoch ó na suíomhanna seo a leanas:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	Ná tóg comhaid níos lú ná (KB, 0 = aon mhéid):
+	Don't take files smaller than (KB, 0 = any size):	Ná híoslódáil comhaid atá níos lú ná (KB, 0 = aon mhéid):
 #. text in a download's progress window
 #, machine
 	Done	Déanta
@@ -1231,7 +1231,7 @@
 	Downloaded	Íoslódáladh
 #. page title in the Options window
 #, machine
-	Downloaded file types	Cineálacha comhad íoslódáilte
+	Downloaded file types	Cineálacha comhaid íoslódáilte
 #. text in a dialog box
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -1258,7 +1258,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
-	Downloading the update... {percent}	Á íoslódáil an nuashonraithe... {percent}
+	Downloading the update... {percent}	An nuashonrú á íoslódáil... {percent}
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -1275,7 +1275,7 @@
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Downloads stopped and will resume automatically at {time}.	Stopadh íoslódálacha agus atosóidh siad go huathoibríoch ag {time}.
+	Downloads stopped and will resume automatically at {time}.	Stopadh na híoslódálacha agus atosóidh siad go huathoibríoch ag {time}.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1294,18 +1294,18 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
-	Dropped links	Naisc thit
+	Dropped links	Naisc a scaoileadh
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Nasc íoslódála dúblach
 #. text in the Options window
 #. Options → Network adapter: what "Any" means
 #, machine
-	Each connection takes the system's route.	Tógann gach nasc bealach an chórais.
+	Each connection takes the system's route.	Úsáideann gach nasc bealach an chórais.
 #. text in the Link grabber window
 #. Link grabber, in the empty "Save to" box: each file goes to its category's folder (Options → Save to)
 #, machine
-	Each file's category folder	Fillteán catagóire gach comhaid
+	Each file's category folder	Fillteán chatagóir gach comhaid
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1347,7 +1347,7 @@
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
-	End and restart MDM	Cuir deireadh le MDM agus atosú
+	End and restart MDM	Cuir deireadh le MDM agus atosaigh é
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Cuir isteach nasc maighnéadach nó roghnaigh comhad .torrent
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Téann gach nasc tríd, ó {ip}.
+	Every connection goes through it, from {ip}.	Téann gach nasc tríd an gcuibheoir seo, ón seoladh {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1431,7 +1431,7 @@
 #. event log entry: the user gave the checksum the file must have
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	Expected checksum set ({algorithm})	Seiceáilsuim ionchais socraithe ({algorithm})
+	Expected checksum set ({algorithm})	Socraíodh an tsuim sheiceála ionchais ({algorithm})
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
@@ -1484,7 +1484,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
 #, machine
-	Feed address:	Seoladh fotha:
+	Feed address:	Seoladh an fhotha:
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the feeds and their articles
 #, machine
@@ -1496,7 +1496,7 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
-	Fetched again every 7 days. Changes apply when no torrent is running.	Faightear arís é gach 7 lá. Cuirtear athruithe i bhfeidhm nuair nach bhfuil aon torrent ag rith.
+	Fetched again every 7 days. Changes apply when no torrent is running.	Athghabhtar é gach 7 lá. Cuirtear athruithe i bhfeidhm nuair nach bhfuil aon torrent ag rith.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1545,7 +1545,7 @@
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	Téann comhaid chuig: {folder}
+	Files go to: {folder}	Sábháiltear comhaid i: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Comhaid sa scuaine
@@ -1594,7 +1594,7 @@
 #. text in the Download video window
 #. a note in Download video while FLAC is chosen: FLAC keeps the site's (already lossy) sound exactly, it can't make it better, the file is only bigger
 #, machine
-	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	Coinníonn FLAC an fhuaim go díreach, ach ní féidir leis cáilíocht a chur leis nach bhfuil ag fuaim an tsuímh: níl an comhad ach níos mó.
+	FLAC keeps the sound exactly, but it can't add quality the site's sound doesn't have: the file is only bigger.	Coinníonn FLAC an fhuaim mar atá sí, ach ní féidir leis cáilíocht nach bhfuil i bhfuaim an tsuímh a chur léi: ní dhéanann sé ach an comhad níos mó.
 #. text in categories.rs
 #, machine
 	Folder:	Fillteán:
@@ -1623,7 +1623,7 @@
 #. text in debrid.rs
 #. Options → Accounts: a debrid account without premium (it can't unlock links)
 #, machine
-	free account: links need premium	cuntas saor in aisce: teastaíonn préimh ó naisc
+	free account: links need premium	cuntas saor in aisce: teastaíonn cuntas préimhe chun naisc a dhíghlasáil
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
@@ -1802,7 +1802,7 @@
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	Bíodh
+	Have	Faighte
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Geimhrigh
+	Hibernate	Cuir ar suan geimhridh
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1838,7 +1838,7 @@
 #. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
-	Hide web pages	Folaigh leathanaigh ghréasáin
+	Hide web pages	Ná taispeáin leathanaigh ghréasáin
 #. text in the Options window
 #, machine
 	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Coinnigh Alt agus tú ag cliceáil ar nasc chun ligean don bhrabhsálaí é a íoslódáil in ionad Mister Download Manager.
@@ -2154,7 +2154,7 @@
 	Libya	An Libia
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Licenses and credits	Ceadúnais agus creidmheasanna
+	Licenses and credits	Ceadúnais agus creidiúintí
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2191,7 +2191,7 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Stopadh an liostú tar éis {n} físeán: {error}
+	Listing stopped after {n} videos: {error}	Stopadh an liostú tar éis {n} fhíseán: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -2201,7 +2201,7 @@
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Ag liostú na bhfíseán: {n} de {total}
+	Listing the videos: {n} of {total}	Ag liostú na bhfíseán: {n} as {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -2209,7 +2209,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Lithuania	An Liotuáin
+	Lithuania	an Liotuáin
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
@@ -2246,7 +2246,7 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Looking the page up...	Ag cuardach na leathanach...
+	Looking the page up...	Ag cuardach an leathanaigh...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2268,7 +2268,7 @@
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
-	Making the report readable: fetching the symbols ({done} of {total} MB)…	Ag déanamh na tuarascála inléite: ag fáil na siombailí ({done} de {total} MB)…
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	Ag déanamh na tuarascála inléite: ag fáil na siombailí ({done} as {total} MB)…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2276,11 +2276,11 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Malaysia	An Mhalaeisia
+	Malaysia	an Mhalaeisia
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Maldives	Na Maildiví
+	Maldives	Oileáin Mhaildíve
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2366,7 +2366,7 @@
 #. text in the Options window
 #. checkbox: the Minimize button hides MDM's windows to the notification area (system tray) instead of the taskbar
 #, machine
-	Minimize to the notification area	Íoslaghdaigh go dtí an limistéar fógra
+	Minimize to the notification area	Íoslaghdaigh go dtí an limistéar fógraí
 #. text in rssdlg.rs; text in the Add torrent window
 #. RSS feeds window: the unit after the minutes box
 #. Torrent settings: the unit after the minutes box
@@ -2506,7 +2506,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: words the article's title must contain
 #, machine
-	Must contain:	Ní mór a bheith ann:
+	Must contain:	Ní mór na focail seo a bheith ann:
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: words that make the rule skip an article
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	Gan fillteáin fós
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	Téann Níl ar ais, chun fillteán eile a roghnú.
+	No goes back, to choose another folder.	Roghnaigh Níl chun dul ar ais agus fillteán eile a roghnú.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2664,21 +2664,21 @@
 	No mail app opened.	Níor osclaíodh aon aip ríomhphoist.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	No mail app: the message is copied, paste it in your mail.	Níl aon aip ríomhphoist: cóipeáiltear an teachtaireacht, greamaigh í i do ríomhphost.
+	No mail app: the message is copied, paste it in your mail.	Níl aip ríomhphoist ann: cóipeáladh an teachtaireacht; greamaigh í isteach i do ríomhphost.
 #. text in errors.rs
 #, machine
-	no peer sent the torrent's file list in time	níor sheol aon piar liosta comhad an toirrint in am
+	no peer sent the torrent's file list in time	níor sheol aon phiaraí liosta comhad an torrent in am
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Níl aon phiaraí fós. B'fhéidir nach roinneann mórán daoine an torrent seo, nó go bhfuil balla dóiteáin, VPN nó an líonra ag cur bac ar BitTorrent.
 #. text in the Options window
 #, machine
-	No proxy/socks	Gan seachfhreastalaí/socks
+	No proxy/socks	Gan seachfhreastalaí/SOCKS
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Níor fhreagair aon chnuas eochracha córais, mar sin coimeádtar sínithe isteach agus pasfhocail i socruithe MDM, nach féidir ach leat a léamh.
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Níor fhreagair aon fháinne eochracha córais, mar sin coimeádtar sínithe isteach agus pasfhocail i socruithe MDM, nach féidir ach leat a léamh.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2708,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	Níl aon cheann ticáilte: gach fotha.
+	None ticked: every feed.	Níl tic curtha le haon cheann: gach fotha.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Dada: tagann piaraí ón DHT agus ó phiaraí eile
@@ -2734,7 +2734,7 @@
 	Norway	An Iorua
 #. text in the Checksum window
 #, machine
-	Not a checksum this can read	Ní suim sheiceála é seo is féidir a léamh
+	Not a checksum this can read	Ní suim sheiceála í seo is féidir a léamh
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
@@ -2757,7 +2757,7 @@
 #. text in helpers.rs
 #. Video helpers: no copy of this helper yet
 #, machine
-	Not installed yet	Gan suiteáilte fós
+	Not installed yet	Níl sé suiteáilte fós
 #. button in helpers.rs
 #, machine
 	Not now	Ní anois
@@ -2870,7 +2870,7 @@
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	Níl ach an chéad {n} físeán liostaithe.
+	Only the first {n} videos are listed.	Níl ach na chéad {n} fhíseán liostaithe.
 #. checkbox in a dialog box
 #, machine
 	Only while I'm using the computer	Amháin fad is atáim ag úsáid an ríomhaire
@@ -2977,7 +2977,7 @@
 #. text in the Checksum window
 #. why Verify / OK is greyed in Verify checksum
 #, machine
-	Paste the checksum the download's page gives	Greamaigh an seiceáil suime a thugann leathanach an íoslódála
+	Paste the checksum the download's page gives	Greamaigh an tsuim sheiceála atá ar leathanach an íoslódála
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
 #, machine
@@ -2985,11 +2985,11 @@
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
-	Pasted	Greamaíodh
+	Pasted	Greamaithe
 #. text in a download's progress window
 #. verb: pause the download
 #, machine
-	Pause	Sos
+	Pause	Cuir ar sos
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
@@ -3103,7 +3103,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Put a * in the address where the numbers or letters go	Cuir * sa seoladh ina dtéann na huimhreacha nó na litreacha
+	Put a * in the address where the numbers or letters go	Cuir * sa seoladh in ionad na n-uimhreacha nó na litreacha
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -3124,7 +3124,7 @@
 	Queue # {n}	Scuaine # {n}
 #. text in the Options window
 #, machine
-	Queue processing started	Próiseáil scuaine tosaithe
+	Queue processing started	Cuireadh tús le próiseáil na scuaine
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	Próiseáil scuaine stoptha/críochnaithe
@@ -3545,7 +3545,7 @@
 	Show warning before stopping downloads	Taispeáin rabhadh sula stopfar íoslódálacha
 #. text in a download's progress window
 #, machine
-	Shown while the torrent is downloading.	Taispeántar é fad is atá an toirint á íoslódáil.
+	Shown while the torrent is downloading.	Taispeántar é fad is atá an torrent á íoslódáil.
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
@@ -3561,7 +3561,7 @@
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Coimeádtar sínithe isteach agus pasfhocail sa chnuas eochracha macOS.
+	Sign-ins and passwords are kept in the macOS keychain.	Coimeádtar sínithe isteach agus pasfhocail i Keychain macOS.
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
 #, machine
@@ -3599,7 +3599,7 @@
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
-	Sites Logins	Logálacha Suíomhanna
+	Sites Logins	Logáil isteach ar shuíomhanna
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Seolann suíomhanna a gcáilíocht is fearr mar fhíseán agus fuaime ar leith, agus cuireann ffmpeg le chéile iad. Ar an gcóras seo úsáideann MDM do cheann féin: suiteáil ffmpeg le do bhainisteoir pacáiste.
@@ -3624,7 +3624,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Codladh
+	Sleep	Cuir ar fionraí
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3647,7 +3647,7 @@
 	Some	Cuid
 #. text in a dialog box
 #, machine
-	Some of the torrent's files are already in this folder:	Tá cuid de chomhaid an toirrint san fhillteán seo cheana:
+	Some of the torrent's files are already in this folder:	Tá cuid de chomhaid an torrent san fhillteán seo cheana:
 #. text in the Options window
 #, machine
 	Sound file	Comhad fuaime
@@ -3707,10 +3707,10 @@
 	Start Download	Tosaigh Íoslódáil
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
-	Start download at	Tosaigh íoslódáil ag
+	Start download at	Tosaigh an íoslódáil ag
 #. checkbox in the Scheduler window
 #, machine
-	Start download on Mister Download Manager startup	Tosaigh íoslódáil ar thosú Mister Download Manager
+	Start download on Mister Download Manager startup	Tosaigh an íoslódáil nuair a thosaíonn Mister Download Manager
 #. checkbox in the Options window
 #, machine
 	Start downloading immediately while displaying "Download File Info" dialog	Tosaigh ag íoslódáil láithreach agus an dialóg “Eolas Comhaid Íoslódála” á thaispeáint
@@ -3770,7 +3770,7 @@
 	Stop	Stop
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
-	Stop download at	Stop íoslódáil ag
+	Stop download at	Stop an íoslódáil ag
 #. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
@@ -3781,11 +3781,11 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
-	Stop sharing after sharing for	Stop roinnt tar éis roinnt ar feadh
+	Stop sharing after sharing for	Stop an roinnt tar éis roinnt ar feadh
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
-	Stop sharing at a share ratio of	Stop roinnt ag cóimheas roinnte de
+	Stop sharing at a share ratio of	Stop an roinnt ag cóimheas roinnte de
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -3920,13 +3920,13 @@
 	the .torrent file kept for it is gone	níl an comhad .torrent a coinníodh dó ann a thuilleadh
 #. text in a download's Properties window
 #, machine
-	The address must be an http(s) or ftp(s) address	Ní mór gur seoladh http(s) nó ftp(s) é an seoladh
+	The address must be an http(s) or ftp(s) address	Ní mór seoladh http(s) nó ftp(s) a bheith ann
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
 	The archive could not be moved to the Recycle Bin: it was kept	Níorbh fhéidir an chartlann a bhogadh chuig an Araid Athchúrsála: coinníodh í
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Trash: it was kept	Níorbh fhéidir an chartlann a bhogadh chuig an Araid Athchúrsála: coinníodh í
+	The archive could not be moved to the Trash: it was kept	Níorbh fhéidir an chartlann a bhogadh chuig an mBruscar: coinníodh í
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -3934,7 +3934,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Trash	Bogadh an chartlann chuig an Araid Athchúrsála
+	The archive was moved to the Trash	Bogadh an chartlann chuig an mBruscar
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	Teastaíonn ffmpeg (thart ar 80 MB) ó na cáilíochtaí is fearr, MP3, Opus agus FLAC.
@@ -3974,19 +3974,19 @@
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	The computer will be woken on {date} at {time}	Múisctear an ríomhaire ar {date} ag {time}
+	The computer will be woken on {date} at {time}	Dúiseofar an ríomhaire ar {date} ag {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will go to sleep in {n} seconds.	Rachaidh an ríomhaire a chodladh i {n} soicind.
+	The computer will go to sleep in {n} seconds.	Rachaidh an ríomhaire a chodladh i gceann {n} soicind.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will hibernate in {n} seconds.	Rachaidh an ríomhaire i gcodladh geimhridh i {n} soicind.
+	The computer will hibernate in {n} seconds.	Rachaidh an ríomhaire i ngeimhriú i gceann {n} soicind.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will shut down in {n} seconds.	Múchfar an ríomhaire i {n} soicind.
+	The computer will shut down in {n} seconds.	Múchfar an ríomhaire i gceann {n} soicind.
 #. text in errors.rs
 #, machine
 	the connection closed before the part was complete	dhún an nasc sular críochnaíodh an chuid
@@ -3996,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	Níor shroich an DHT aon duine. D'fhéadfadh balla dóiteáin, VPN nó an líonra a bheith ag cur bac ar UDP, a úsáideann an DHT agus an chuid is mó de na rianairí.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	Níor éirigh leis an DHT teagmháil a dhéanamh le haon duine. D'fhéadfadh balla dóiteáin, VPN nó an líonra a bheith ag cur bac ar UDP, a úsáideann an DHT agus an chuid is mó de na rianairí.
 #. text in errors.rs
 #, machine
 	the disk is full	tá an diosca lán
@@ -4023,14 +4023,14 @@
 	The download queue is done.	Tá an scuaine íoslódála críochnaithe.
 #. text in errors.rs
 #, machine
-	the downloaded program doesn't match its signed checksum	ní hionann an clár íoslódáilte agus a sheicshuim sínithe
+	the downloaded program doesn't match its signed checksum	ní mheaitseálann an clár íoslódáilte a sheicshuim sínithe
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
 	The downloads you add, or drop on this window, show here.	Taispeántar anseo na híoslódálacha a chuireann tú leis, nó a scaoileann tú ar an bhfuinneog seo.
 #. text in errors.rs
 #, machine
-	the drive or network share is no longer available	níl an tiomántán nó an comhroinnt líonra ar fáil a thuilleadh
+	the drive or network share is no longer available	níl an tiomántán ná an fillteán comhroinnte líonra ar fáil a thuilleadh
 #. text in errors.rs
 #, machine
 	the file changed on the server	d'athraigh an comhad ar an bhfreastalaí
@@ -4048,25 +4048,25 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	The file does NOT match ({algorithm})	NÍ hionann an comhad ({algorithm})
+	The file does NOT match ({algorithm})	Ní mheaitseálann an comhad ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	The file matches ({algorithm})	Is ionann an comhad ({algorithm})
+	The file matches ({algorithm})	Meaitseálann an comhad ({algorithm})
 #. text in a dialog box
 #, machine
-	The file saved as	An comhad sábháilte mar
+	The file saved as	An comhad a sábháladh mar
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	Na cineálacha comhaid nach bhfuil liostaithe in aon chatagóir eile
 #. text in the Checksum window
 #. tooltip of the box showing the checksum the file really has
 #, machine
-	The file's own checksum	Seiceáilsuim an chomhaid féin
+	The file's own checksum	Seicshuim an chomhaid féin
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	níl seiceáil {algorithm} an chomhaid ag teacht le chéile (coimeádtar na sonraí; íoslódáil arís é)
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	ní mheaitseálann seicshuim {algorithm} an chomhaid (coimeádtar na sonraí; íoslódáil arís é)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4077,11 +4077,11 @@
 	The folder could not be created: {error}	Níorbh fhéidir an fillteán a chruthú: {error}
 #. text in errors.rs
 #, machine
-	the folder {path} is not available (drive removed or network share offline?)	níl an fillteán {path} ar fáil (tiomántán bainte nó comhroinnt líonra as líne?)
+	the folder {path} is not available (drive removed or network share offline?)	níl an fillteán {path} ar fáil (tiomántán bainte nó fillteán comhroinnte líonra as líne?)
 #. text in crashui.rs
 #. crash report window: after Send opened the browser
 #, machine
-	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	D'oscail an fhoirm i do bhrabhsálaí. Tarraing comhad na tuarascála (agus an .dmp, má roghnaigh tú é) isteach ann, ansin cuir isteach.
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	D'oscail an fhoirm i do bhrabhsálaí. Tarraing comhad na tuarascála (agus an .dmp, má roghnaigh tú é) isteach ann, ansin seol isteach í.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -4159,11 +4159,11 @@
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Teastaíonn ón suíomh go bhfuil tú sínithe isteach, fiú le fianáin do bhrabhsálaí don leathanach seo. Sínigh isteach ann i do bhrabhsálaí, ansin bain triail eile as.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Ba mhaith leis an suíomh go mbeifeá sínithe isteach, fiú le fianáin do bhrabhsálaí don leathanach seo. Sínigh isteach ann i do bhrabhsálaí, ansin bain triail eile as.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Teastaíonn ón suíomh go bhfuil tú sínithe isteach, fiú le fianáin {browser}. Sínigh isteach ann i {browser}, ansin cuardaigh an leathanach arís.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Ba mhaith leis an suíomh go mbeifeá sínithe isteach, fiú le fianáin {browser}. Sínigh isteach ann in {browser}, ansin cuardaigh an leathanach arís.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4201,7 +4201,7 @@
 	The update is open in your system's package installer.	Tá an nuashonrú oscailte i suiteálaí pacáiste do chórais.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	An leathanach gréasáin as ar baineadh an comhad seo:
+	The web page from which this file was obtained:	An leathanach gréasáin óna bhfuarthas an comhad seo:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4219,7 +4219,7 @@
 	There is already a queue with this name	Tá scuaine leis an ainm seo cheana féin
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Níl na socruithe seo ar fáil nuair a bhíonn "Taispeáin dialóg críochnaithe íoslódála" casta air
+	These settings are unavailable when "Show download complete dialog" is turned on	Níl na socruithe seo ar fáil nuair atá “Taispeáin dialóg chríochnaithe na n-íoslódálacha” curtha ar siúl
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	Leanann siad ag íoslódáil má dhúnann tú an fhuinneog seo.
@@ -4229,11 +4229,11 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	Níl aon íoslódálacha sa chatagóir nó sa scuaine seo fós.
+	This category or queue holds no downloads yet.	Níl aon íoslódálacha sa chatagóir ná sa scuaine seo fós.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	Ní féidir lasc ama a mhúscailt an ríomhaire seo
+	This computer can't be woken by a timer	Ní féidir an ríomhaire seo a mhúscailt le lasc ama
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
@@ -4259,7 +4259,7 @@
 	this is a Google Drive folder, not a file	Fillteán Google Drive é seo, ní comhad
 #. text in errors.rs
 #, machine
-	this is not a magnet link or a .torrent file	ní nasc maighnéadach nó comhad .torrent é seo
+	this is not a magnet link or a .torrent file	ní nasc maighnéadach ná comhad .torrent é seo
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
@@ -4279,7 +4279,7 @@
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Coimeádann an chóip iniompartha seo sínithe isteach agus pasfhocail ina socruithe féin, criptithe do do chuntas Windows.
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Coimeádann an chóip iniompartha seo na sínithe isteach agus na pasfhocail ina socruithe féin, criptithe ionas nach mbeidh ach do chuntas Windows in ann iad a léamh.
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
 #, machine
@@ -4288,20 +4288,20 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this program isn't {name}	ní {name} an clár seo
+	this program isn't {name}	ní {name} é an clár seo
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Níl aon naisc dhiailithe ag an gcóras seo le crochadh suas
+	This system has no dial-up connections to hang up	Níl aon naisc dhiailithe ag an gcóras seo le dícheangal
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	tá ainm comhaid ag an toirrint seo nach bhfuil sábháilte le scríobh, mar sin níor cuireadh leis é: {name}
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	tá ainm comhaid ag an torrent seo nach bhfuil sábháilte le scríobh chuige, mar sin níor cuireadh leis é: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Tá an torrent seo sa liosta íoslódálacha cheana féin
 #. text in errors.rs
 #, machine
-	this torrent is not in the list	níl an toirrint seo sa liosta
+	this torrent is not in the list	níl an torrent seo sa liosta
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
@@ -4309,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Teastaíonn ón bhfíseán seo go bhfuil tú sínithe isteach. Bain úsáid as an gcnaipe Íoslódáil físeán os a chionn i do bhrabhsálaí, a chuireann do shíniú isteach ar aghaidh, nó roghnaigh do bhrabhsálaí in Roghanna → Logáil Isteach Suíomhanna → Fianáin le haghaidh suíomhanna físe.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Éilíonn an físeán seo go mbeidh tú sínithe isteach. Bain úsáid as an gcnaipe Íoslódáil físeán os a chionn i do bhrabhsálaí, a chuireann d’fhaisnéis sínithe isteach ar aghaidh, nó roghnaigh do bhrabhsálaí in Roghanna → Logáil Isteach Suíomhanna → Fianáin le haghaidh suíomhanna físe.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4317,7 +4317,7 @@
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
-	through a proxy in {country}	trí sheachfhreastalaí i {country}
+	through a proxy in {country}	trí sheachfhreastalaí in {country}
 #. text in a download's Properties window
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
@@ -4325,14 +4325,14 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Trí {service}: íoslódálann an tseirbhís an tuairt, ansin íoslódálann MDM a chuid comhad
+	Through {service}: the service downloads the torrent, then MDM its files	Trí {service}: íoslódálann an tseirbhís an torrent, ansin íoslódálann MDM a chuid comhad
 #. text in the Scheduler window
 #, machine
 	Thursday	Déardaoin
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	Cuir tic le "Tosaigh íoslódáil ag" ar dtús: múisctear an ríomhaire don am tosaithe
+	Tick "Start download at" first: the computer is woken for the start time	Cuir tic le "Tosaigh íoslódáil ag" ar dtús: músctar an ríomhaire ag an am tosaithe
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Am fágtha
@@ -4342,7 +4342,7 @@
 	Timor-Leste	Tíomór Thoir
 #. text in the Batch download window
 #, machine
-	To:	Go dtí:
+	To:	Chuig:
 #. text in the Scheduler window
 #. link under the calendar: {date} = today's date
 #, machine
@@ -4389,15 +4389,15 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	níorbh fhéidir torrentí a thosú: {error}
+	torrents could not start: {error}	níorbh fhéidir na torrents a thosú: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
-	Tracker	Rianaire
+	Tracker	Rianaitheoir
 #. text in a download's progress window
 #. tab title: the servers that list the peers
 #, machine
-	Trackers	Rianairí
+	Trackers	Rianaitheoirí
 #. text in the Add torrent window
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
@@ -4431,7 +4431,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Turks and Caicos Islands	Oileáin Turks agus Caicos
+	Turks and Caicos Islands	Oileáin na dTurcach agus Caicos
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 #, machine
@@ -4464,11 +4464,11 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a letter in From and in To	Clóscríobh litir in Ó agus in Go
+	Type a letter in From and in To	Clóscríobh litir sna réimsí Ó agus Go
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a number in From and in To	Clóscríobh uimhir in Ó agus in Go
+	Type a number in From and in To	Clóscríobh uimhir sna réimsí Ó agus Go
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -4497,7 +4497,7 @@
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
-	Type what to find, and tick at least one place to look	Clóscríobh cad atá le fáil, agus cuir tic le háit amháin ar a laghad le breathnú ann
+	Type what to find, and tick at least one place to look	Clóscríobh an téarma atá le cuardach agus cuir tic le háit amháin ar a laghad le cuardach inti
 #. text in a download's Properties window
 #, machine
 	Type:	Cineál:
@@ -4536,7 +4536,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	United States Minor Outlying Islands	Mion-Oileáin Imeallacha S.A.M.
+	United States Minor Outlying Islands	Mion-Oileáin Imeallacha na Stát Aontaithe
 #. text in a download's Properties window
 #, machine
 	Unknown	Anaithnid
@@ -4568,7 +4568,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Uruguay	Urugua
+	Uruguay	Uragua
 #. text in the Options window
 #, machine
 	Use advanced browser integration	Úsáid comhtháthú ardleibhéil brabhsálaí
@@ -4713,7 +4713,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Fan leis an liosta, nó stop an liostú
+	Wait for the list, or stop listing	Fan go mbeidh an liosta réidh, nó stop leis an liostú
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -4767,7 +4767,7 @@
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Níor fhreagair Bainisteoir Dintiúirí Windows, mar sin coimeádtar sínithe isteach agus pasfhocail i socruithe MDM, criptithe do do chuntas Windows.
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Níor fhreagair Bainisteoir Dintiúirí Windows, mar sin coimeádtar sínithe isteach agus pasfhocail i socruithe MDM, criptithe le haghaidh do chuntais Windows.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4951,11 +4951,11 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: NÍ hionann an comhad agus a sheiceáilsuim ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: NÍ MHAITHEANN an comhad lena sheicseum ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: Is ionann an comhad agus a sheiceáilsuim ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: Meaitseálann an comhad lena sheicseum ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -5039,25 +5039,25 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	iarrann {service} moilliú; déanfaidh MDM iarracht arís i nóiméad
+	{service} asks to slow down; MDM will try again in a minute	Iarrann {service} ort moilliú; déanfaidh MDM iarracht arís i nóiméad
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	iarrann {service} ort an ríomhaire seo a cheadú ar dtús: féach ar a ríomhphost
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	Ní féidir le {service} an toirint seo a fháil: níl aon duine á roinnt, nó ní féidir a nasc a léamh
+	{service} can't get this torrent: nobody shares it, or its link can't be read	Ní féidir le {service} an torrent seo a fháil: níl aon duine á roinnt, nó ní féidir a nasc a léamh
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	ní féidir le {service} an t-óstach comhaid seo a bhaint amach faoi láthair; déanfaidh MDM iarracht arís níos déanaí
+	{service} can't reach this file host right now; MDM will try again later	Ní féidir le {service} an t-óstach comhaid seo a bhaint amach faoi láthair; déanfaidh MDM iarracht arís níos déanaí
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	níl {service} ag freagairt; déan iarracht arís níos déanaí
+	{service} is not responding; try again later	Níl {service} ag freagairt; déan iarracht arís níos déanaí
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	diúltaíonn {service} don nasc seo (VPN nó seoladh freastalaí?)
+	{service} refuses this connection (a VPN or server address?)	Diúltaíonn {service} don nasc seo (VPN nó seoladh freastalaí?)
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
@@ -5096,7 +5096,7 @@
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
-	{size} ({bytes} Bytes)	{size} ({bytes} Beart)
+	{size} ({bytes} Bytes)	{size} ({bytes} beart)
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
@@ -5108,11 +5108,11 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
-	{title}: added by {rule}	{title}: curtha leis ag {rule}
+	{title}: added by {rule}	{title}: cuireadh leis ag {rule}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article is a torrent the list already has
 #, machine
-	{title}: already in the list	{title}: cheana féin sa liosta
+	{title}: already in the list	{title}: atá sa liosta cheana féin
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
@@ -5121,11 +5121,11 @@
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{title}: not added: {error}	{title}: gan cur leis: {error}
+	{title}: not added: {error}	{title}: níor cuireadh leis: {error}
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
-	{what} can't go through a chosen network adapter ({adapter}) yet	Ní féidir {what} a choinneáil leis an gcuibheoir líonra roghnaithe ({adapter}) fós
+	{what} can't go through a chosen network adapter ({adapter}) yet	Ní féidir {what} a sheoladh tríd an gcuibheoir líonra roghnaithe ({adapter}) fós
 #. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
@@ -5225,7 +5225,7 @@ extension	Help	Cabhair
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Folaigh ar an bhfíseán seo
+extension	Hide on this video	Folaigh don fhíseán seo
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5453,11 +5453,11 @@ menu	&Delete	&Scrios
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Delete All Completed	&Scrios Gach Críochnaithe
+menu	&Delete All Completed	&Scrios gach íoslódáil chríochnaithe
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Download Now	&Íoslódáil Anois
+menu	&Download Now	&Íoslódáil anois
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5493,7 +5493,7 @@ menu	&Paste	&Greamaigh
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Pause All	&Cuir Gach ceann ar Sos
+menu	&Pause All	&Cuir gach ceann ar sos
 #. menu command in the main window
 #. verb: removes the selected download from the list
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5521,11 +5521,11 @@ menu	&Scheduler and queues	&Sceidealóir agus scuainí
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Stop All	&Stop Gach ceann
+menu	&Stop All	&Stop gach ceann
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Stop Download	&Stop Íoslódáil
+menu	&Stop Download	&Stop an íoslódáil
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5545,7 +5545,7 @@ menu	&Video downloads	Íoslódálacha &físeáin
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Add &batch download	Cuir íoslódáil &bhaisc leis
+menu	Add &batch download	Cuir íoslódáil &bhaisce leis
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5569,7 +5569,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	Baineann sé feidhm as an chéad uair eile a thosaíonn MDM
+menu	Applies the next time MDM starts	Beidh feidhm leis an chéad uair eile a thosóidh MDM
 #. menu command in the main window
 #, machine
 menu	Arrange files	Eagraigh comhaid
@@ -5731,7 +5731,7 @@ menu	From &text file...	Ó chomhad &téacs...
 menu	H&elp contents	Ábhar &cabhair
 #. menu command in the main window
 #, machine
-menu	Hide drop target	Folaigh sprioc titime
+menu	Hide drop target	Folaigh an sprioc scaoilte
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
@@ -5747,7 +5747,7 @@ menu	Its first frame didn't show within 10 seconds	Níor taispeánadh a chéad f
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Tháinig deireadh lena thús deireanach roimh a chéad fhráma
+menu	Its last start ended before its first frame	Níor mhair an tosú deireanach go dtí an chéad fhráma
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5777,7 +5777,7 @@ menu	Native	Dúchasach
 menu	No graphics card here has a driver for it	Níl tiománaí ag aon chárta grafaicí anseo dó
 #. menu command in the main window
 #, machine
-menu	On Double click	Ar chliceáil dúbailte
+menu	On Double click	Ar chliceáil faoi dhó
 #. menu command in the main window
 #. verb: opens the downloaded file
 #. what double-clicking a download does — verb: open the file
@@ -5828,7 +5828,7 @@ menu	Recheck files	Athsheiceáil comhaid
 menu	Redownload	Íoslódáil arís
 #. menu command in the main window
 #, machine
-menu	Refresh download address	Athnuaigh seoladh íoslódála
+menu	Refresh download address	Athnuaigh seoladh na híoslódála
 #. menu command in the main window
 #. verb: removes the download from the list
 #, machine
@@ -5837,18 +5837,18 @@ menu	Remove	Bain
 #. verb: removes the selected download from the list and its file from the disk
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Remove with &files	Bain leis na &comhaid
+menu	Remove with &files	Bain na &comhaid freisin
 #. menu command in the main window
 #. verb: removes the download from the list and its file from the disk
 #, machine
-menu	Remove with files	Bain leis na comhaid
+menu	Remove with files	Bain na comhaid freisin
 #. menu command in the main window
 #, machine
 menu	Resume Download	Atosaigh Íoslódáil
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	S&cheduler	&Sceidealóir
+menu	S&cheduler	S&ceidealóir
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5857,7 +5857,7 @@ menu	S&ettings...	&Socruithe...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	S&top queue	Cu&r stad leis an scuaine
+menu	S&top queue	S&tad an scuaine
 #. menu command in the main window
 #. command: opens this queue's schedule (when it starts and stops)
 #, machine
@@ -5869,7 +5869,7 @@ menu	Select &all	Roghnaigh &uile
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Show &drop target	Taispeáin sprioc &titim
+menu	Show &drop target	Taispeáin sprioc &scaoilte
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Taispeáin Mister Download Manager
@@ -5880,17 +5880,17 @@ menu	Speed &Limiter	Teorainn &Luais
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Start &queue	Tosaigh &scuaine
+menu	Start &queue	Tosaigh &an scuaine
 #. menu command in the main window
 #, machine
 menu	Start now	Tosaigh anois
 #. menu command in the main window
 #. verb: stops the queue
 #, machine
-menu	Stop	Stop
+menu	Stop	Stad
 #. menu command in the main window
 #, machine
-menu	Stop Download	Stop Íoslódáil
+menu	Stop Download	Cuir an íoslódáil ar stad
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	Inis do &chara
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Cailleadh an cárta grafaicí faoi dhó i 10 nóiméad
+menu	The graphics card was lost twice in 10 minutes	Cailleadh an cárta grafaicí faoi dhó laistigh de 10 nóiméad
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5920,7 +5920,7 @@ menu	To &text file...	Chun comhad &téacs...
 #. menu command in the main window
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
-menu	Toolbar	Barra Uirlisí
+menu	Toolbar	Barra uirlisí
 #. menu command in the main window
 #. right-click menu: the submenu of a torrent's own commands
 #, machine
@@ -5972,17 +5972,17 @@ menubar	&Tasks	&Tascanna
 menubar	&View	&Amharc
 #. toolbar button in the main window
 #, machine
-toolbar	Add Torrent	Cuir Torrent Leis
+toolbar	Add Torrent	Cuir torrent leis
 #. toolbar button in the main window
 #, machine
-toolbar	Add URL	Cuir URL Leis
+toolbar	Add URL	Cuir URL leis
 #. toolbar button in the main window
 #. verb: delete the selected downloads
 #, machine
 toolbar	Delete	Scrios
 #. toolbar button in the main window
 #, machine
-toolbar	Delete Completed	Scrios Comhlánaithe
+toolbar	Delete Completed	Scrios na cinn chríochnaithe
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 #, machine
@@ -5997,17 +5997,17 @@ toolbar	Resume	Atosaigh
 toolbar	Scheduler	Sceidealóir
 #. toolbar button in the main window
 #, machine
-toolbar	Start Queue	Tosaigh Scuaine
+toolbar	Start Queue	Tosaigh an scuaine
 #. toolbar button in the main window
 #. verb: stop the selected downloads
 #, machine
 toolbar	Stop	Stop
 #. toolbar button in the main window
 #, machine
-toolbar	Stop All	Stop Uile
+toolbar	Stop All	Stop uile
 #. toolbar button in the main window
 #, machine
-toolbar	Stop Queue	Stop Scuaine
+toolbar	Stop Queue	Stop an scuaine
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine

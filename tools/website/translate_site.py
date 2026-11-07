@@ -42,6 +42,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT / "tools" / "i18n"))
 import sitei18n as si  # noqa: E402
 import translate as tr  # noqa: E402  (the app catalogs' tool: API call, checks, language data)
+import lingo  # noqa: E402  (each language's termbase and style guide, shared with the app)
 
 OUT = ROOT / "target" / "site"
 LOG = ROOT / "target" / "site-i18n"
@@ -126,7 +127,8 @@ How to write:
 - A heading or page title stays short. A button or link label stays short.
 
 Input: a JSON object. "page" is the page's title; "ui" lists names of MDM's own menus, buttons,
-windows and settings with their translation in MDM itself; "items" are the texts. Each item has
+windows and settings with their translation in MDM itself; "terms" gives this language's settled
+translation of terms the texts contain (use them); "items" are the texts. Each item has
 "id", "text" (what you translate), "where" it appears (heading, paragraph, button, list item, table
 cell, page title, page description for search results, image description, ...) and "section" (the
 heading above it). "page", "where" and "section" are context only.
@@ -284,7 +286,8 @@ def batches(rows: list[dict]) -> list[list[dict]]:
     return out
 
 
-def payload(batch: list[dict], terms: list[tuple[str, str]], reasons: dict[str, str] | None = None) -> dict:
+def payload(batch: list[dict], terms: list[tuple[str, str]], reasons: dict[str, str] | None = None,
+            code: str | None = None) -> dict:
     text = " ".join(r["seg"].text for r in batch)
     ui = {}
     for s, t in terms:
@@ -300,7 +303,12 @@ def payload(batch: list[dict], terms: list[tuple[str, str]], reasons: dict[str, 
         if reasons and r["seg"].key in reasons:
             it["problem"] = "Your last translation was refused: " + reasons[r["seg"].key] + ". Fix that."
         items.append(it)
-    return {"page": batch[0]["page"], "ui": ui, "items": items}
+    out = {"page": batch[0]["page"], "ui": ui, "items": items}
+    if code:
+        found = lingo.matching_terms(code, text)
+        if found:
+            out["terms"] = found
+    return out
 
 
 def run_language(code: str, rows: dict[str, dict], key: str, spend: tr.Spend, workers: int,
@@ -316,13 +324,14 @@ def run_language(code: str, rows: dict[str, dict], key: str, spend: tr.Spend, wo
                           keep=", ".join(n for n in KEEP if n not in OWN_SPELLING.get(code, {})),
                           spell="".join(f' Write "{n}" as "{s}".' for n, s in OWN_SPELLING.get(code, {}).items()),
                           variant=tr.VARIANTS.get(code, "Use the standard written form of this language."))
+    system += tr.style_section({"code": code, "english": meta["english"]})
     terms = ui_terms(code)
     lock = threading.Lock()
     failures: dict[str, dict] = {}
     done = [0]
 
     def attempt(batch, reasons=None):
-        out = tr.call(key, MODEL, system, payload(batch, terms, reasons), spend)
+        out = tr.call(key, MODEL, system, payload(batch, terms, reasons, code), spend)
         ok, bad = [], []
         for i, r in enumerate(batch):
             text = out.get(str(i))
@@ -368,6 +377,76 @@ def run_language(code: str, rows: dict[str, dict], key: str, spend: tr.Spend, wo
     return {"code": code, "missing": len(missing), "translated": done[0], "failed": len(failures)}
 
 
+SITE_REVIEW = """You are now the native reviewer of these translations, before they ship. Each item
+also has its "draft". Fix every draft a careful native reviewer would change: a wrong meaning, wrong
+grammar or agreement, an unnatural or word-for-word sentence, the wrong register, a term that isn't
+the settled one in "terms" or MDM's own name in "ui". Keep a draft that is already right exactly as
+it is: never rewrite for taste. Every rule above still holds (tags, names, numbers).
+
+Output one JSON object mapping every item's "id" to its final text (a string). Nothing else.
+"""
+
+
+def rereview_language(code: str, rows: dict[str, dict], key: str, spend: tr.Spend, workers: int) -> dict:
+    """Every translation the site's catalog has, reviewed in place (a reviewer proposes, the arbiter
+    accepts only clear fixes): the cheap pass that brings old machine text up to the style guide."""
+    lang = next(l for l in si.LANGS if l[0] == code)
+    cat = si.Catalog(code)
+    meta = next((l for l in tr.languages() if l["code"] == code), {"english": lang[4], "native": lang[3]})
+    system = RULES.format(english=meta["english"], native=meta["native"], code=code,
+                          keep=", ".join(n for n in KEEP if n not in OWN_SPELLING.get(code, {})),
+                          spell="".join(f' Write "{n}" as "{s}".' for n, s in OWN_SPELLING.get(code, {}).items()),
+                          variant=tr.VARIANTS.get(code, "Use the standard written form of this language."))
+    system += tr.style_section({"code": code, "english": meta["english"]}) + "\n" + SITE_REVIEW
+    arbiter = tr.ARBITER.format(english=meta["english"], native=meta["native"])
+    terms = ui_terms(code)
+    have = [r for r in rows.values() if cat.get(r["seg"]) is not None]
+    lock = threading.Lock()
+    changed = [0]
+
+    def job(batch):
+        if spend.over():
+            return
+        body = payload(batch, terms, None, code)
+        for i, r in enumerate(batch):
+            body["items"][i]["draft"] = cat.get(r["seg"])
+        try:
+            out = tr.call(key, tr.REVIEW_MODEL, system, body, spend, max_tokens=32000,
+                          reasoning={"effort": "low"})
+        except Exception as e:  # noqa: BLE001 — the drafts stay
+            print(f"{code}: review failed: {e}")
+            return
+        proposed = {}
+        for i, r in enumerate(batch):
+            text = out.get(str(i))
+            if not isinstance(text, str):
+                continue
+            text = respell(code, r["seg"].text, latin_digits(tr.clean(code, text.strip())))
+            if not PH.search(r["seg"].text):
+                text = re.sub(r"\s{2,}", " ", PH.sub("", text)).strip()
+            if text != cat.get(r["seg"]) and not why_not(code, r, text):
+                proposed[i] = text
+        if proposed and tr.ARBITER_MODEL:
+            items = [{"id": str(i), "english": batch[i]["seg"].text, "where": batch[i]["where"],
+                      "current": cat.get(batch[i]["seg"]), "proposed": t} for i, t in proposed.items()]
+            try:
+                verdict = tr.call(key, tr.ARBITER_MODEL, arbiter, {"rows": items}, spend, max_tokens=8192)
+            except Exception as e:  # noqa: BLE001
+                print(f"{code}: arbiter failed, changes dropped: {e}")
+                verdict = {}
+            proposed = {i: t for i, t in proposed.items() if verdict.get(str(i)) == "proposed"}
+        with lock:
+            for i, t in proposed.items():
+                cat.put(batch[i]["seg"], t)
+            changed[0] += len(proposed)
+            cat.save()
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        for f in as_completed([pool.submit(job, b) for b in batches(have)]):
+            f.result()
+    return {"code": code, "reviewed": len(have), "changed": changed[0]}
+
+
 def status(rows: dict[str, dict], codes: list[str]) -> None:
     total = len(rows)
     print(f"{total} texts on the site ({sum(len(r['seg'].text.split()) for r in rows.values())} words)")
@@ -389,6 +468,8 @@ def main() -> int:
     ap.add_argument("--budget", type=float, default=15.0, help="stop spending at this many dollars")
     ap.add_argument("--workers", type=int, default=16)
     ap.add_argument("--no-build", action="store_true", help="use target/site as it is")
+    ap.add_argument("--rereview", action="store_true",
+                    help="review every existing translation in place (translate.py's reviewer and arbiter)")
     args = ap.parse_args()
     codes = [c for c, *_ in si.LANGS] if (args.all or args.status) and not args.langs else (
         args.langs.split(",") if args.langs else [])
@@ -416,6 +497,15 @@ def main() -> int:
     spend = tr.Spend(args.budget)
     started = time.time()
     results = []
+    if args.rereview:
+        for code in codes:
+            r = rereview_language(code, rows, key, spend, args.workers)
+            print(f"  {code}: {r['reviewed']} reviewed, {r['changed']} changed, ${spend.cost:.2f} so far",
+                  flush=True)
+            if spend.over():
+                print(f"budget of ${args.budget:.2f} reached: run again to go on")
+                break
+        return 0
     for code in codes:
         r = run_language(code, rows, key, spend, args.workers, False)
         results.append(r)

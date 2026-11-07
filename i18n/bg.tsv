@@ -94,7 +94,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} selected|{n} selected	{n} избрано|{n} избрани
+@plural	{n} selected|{n} selected	избрано: {n}|избрани: {n}
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" не е IP адрес.
+	"{what}" isn't an IP address.	„{what}“ не е IP адрес.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -191,7 +191,7 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Идентификаторът за конфигурация на NextDNS е от шест букви и цифри (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Идентификаторът на конфигурацията на NextDNS съдържа шест букви и цифри (0-9, a-f).
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -215,7 +215,7 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
-	A tracker on this computer or the local network is never contacted: {line}	Тракер на този компютър или в локалната мрежа никога не се свързва: {line}
+	A tracker on this computer or the local network is never contacted: {line}	С тракер на този компютър или в локалната мрежа никога не се осъществява връзка: {line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -498,7 +498,7 @@
 	Aruba	Аруба
 #. option (radio button) in the Options window
 #, machine
-	As the system's region writes them	Както ги записва регионалната настройка на системата
+	As the system's region writes them	Както ги изписва регионалната настройка на системата
 #. text in the Options window
 #, machine
 	Ask it with:	Запитване с:
@@ -1107,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	Да не се започва изтегляне, а само да се добавят файлове към опашката
+	Do not start downloading, only add files to the queue	Не започвайте изтеглянето, а само добавяйте файловете към опашката
 #. text in a dialog box
 #, machine
 	Do you want to create it?	Искате ли да я създадете?
@@ -1129,16 +1129,16 @@
 	Don't ask again	Не питай отново
 #. checkbox in a dialog box
 #, machine
-	Don't show this dialog again	Да не се показва този диалогов прозорец отново
+	Don't show this dialog again	Не показвайте този диалогов прозорец отново
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	Да не се започва изтегляне автоматично от следните адреси:
+	Don't start downloading automatically from the following addresses:	Не започвайте автоматично изтеглянето от следните адреси:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	Да не се започва изтегляне автоматично от следните сайтове:
+	Don't start downloading automatically from the following sites:	Не започвайте автоматично изтеглянето от следните сайтове:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	Не вземайте файлове, по-малки от (КБ, 0 = всякакъв размер):
+	Don't take files smaller than (KB, 0 = any size):	Не изтегляйте файлове, по-малки от (КБ, 0 = всякакъв размер):
 #. text in a download's progress window
 #, machine
 	Done	Готово
@@ -1162,7 +1162,7 @@
 	Download complete	Изтеглянето завърши
 #. text in the Options window
 #, machine
-	Download failed	Изтеглянето не бе успешно
+	Download failed	Изтеглянето е неуспешно
 #. window title in a dialog box
 #, machine
 	Download File Info	Информация за изтеглен файл
@@ -1172,7 +1172,7 @@
 	Download in order	Изтегляне по ред
 #. button in a dialog box
 #, machine
-	Download Later	Изтегляне по-късно
+	Download Later	Изтеглете по-късно
 #. window title in a dialog box
 #, machine
 	Download later	Изтегляне по-късно
@@ -1187,7 +1187,7 @@
 	Download no more than {mb} MBytes\nevery {hours} hours	Изтегляне на не повече от {mb} МБ\nна всеки {hours} часа
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
-	Download Now	Изтегляне сега
+	Download Now	Изтеглете сега
 #. window title in the Options window
 #. window title: the download button the extension shows over videos
 #, machine
@@ -1203,11 +1203,11 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Изтегляне на поддържани връзки към файлови хостове чрез тези акаунти
+	Download supported file-host links through these accounts	Изтегляйте поддържаните връзки към файлови хостове чрез тези акаунти
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
-	Download through {service}	Изтегляне чрез {service}
+	Download through {service}	Изтегляйте чрез {service}
 #. window title in the Download video window
 #, machine
 	Download video from a page	Изтегляне на видео от страница
@@ -1223,7 +1223,7 @@
 #. RSS feeds window: add the selected article's torrent (opens Add torrent)
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Download...	Изтегляне...
+	Download...	Изтеглете...
 #. text in a download's progress window
 #. label before the amount received so far
 #. column title: bytes this connection received
@@ -1231,22 +1231,22 @@
 	Downloaded	Изтеглени
 #. page title in the Options window
 #, machine
-	Downloaded file types	Изтеглени типове файлове
+	Downloaded file types	Типове изтеглени файлове
 #. text in a dialog box
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
-	Downloaded {size} ({bytes} Bytes)	Изтеглени {size} ({bytes} байта)
+	Downloaded {size} ({bytes} Bytes)	Изтеглено {size} ({bytes} байта)
 #. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
-	Downloading	Изтегляне
+	Downloading	Изтегля се
 #. message or event log entry in the main window
 #, machine
-	Downloading again from the start	Изтегляне отново отначало
+	Downloading again from the start	Изтеглянето започна отново отначало
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying ffmpeg (about 80 MB)...	Изтегляне и проверка на ffmpeg (около 80 МБ)...
+	Downloading and verifying ffmpeg (about 80 MB)...	Изтегля се и се проверява ffmpeg (около 80 МБ)...
 #. text in gallerydlg.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1313,7 +1313,7 @@
 #. button in the Options window
 #. verb: edit the item
 #, machine
-	Edit	Редактиране
+	Edit	Редактирайте
 #. text in the Options window
 #, machine
 	Edit exception	Редактиране на изключение
@@ -1347,7 +1347,7 @@
 #. text in crashui.rs
 #. crash report window button: end the frozen MDM and start it again
 #, machine
-	End and restart MDM	Край и рестартиране на MDM
+	End and restart MDM	Затворете и рестартирайте MDM
 #. text in the Add torrent window
 #, machine
 	Enter a magnet link or choose a .torrent file	Въведете magnet връзка или изберете .torrent файл
@@ -1371,7 +1371,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: the episode filter can't be read
 #, machine
-	Episodes: like 1x2;1x5-8;2x1- (season x episode)	Епизоди: като 1x2;1x5-8;2x1- (сезон x епизод)
+	Episodes: like 1x2;1x5-8;2x1- (season x episode)	Епизоди: например 1x2;1x5-8;2x1- (сезон x епизод)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1435,13 +1435,13 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Експериментално: създадено от публичната API документация на услугите, все още не е потвърдено с реални акаунти.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Експериментално: създадено по публичната API документация на услугите, все още непроверено с реални акаунти.
 #. message or event log entry in the main window
 #, machine
 	Export	Експортиране
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	Разширете наличността на Manifest 2 Chrome разширения
+	Extend the availability of Manifest 2 Chrome extensions	Удължете периода на наличност на разширенията за Chrome с Manifest 2
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	Разширения, разделени с интервали, например MP4 MKV R0*
@@ -1627,7 +1627,7 @@
 #. text in helpers.rs
 #. a promise in the helpers window: the helpers are free, official and checked
 #, machine
-	Free, official and checked	Безплатно, официално и проверено
+	Free, official and checked	Безплатни, официални и проверени
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1687,7 +1687,7 @@
 #. text in gallerydlg.rs
 #. in Download a gallery, before gallery-dl is installed
 #, machine
-	Galleries use gallery-dl (about 23 MB, checked against its signature).	Галериите използват gallery-dl (около 23 МБ, проверено спрямо подписа му).
+	Galleries use gallery-dl (about 23 MB, checked against its signature).	Галериите използват gallery-dl (около 23 МБ, проверен спрямо подписа му).
 #. text in gallerydlg.rs
 #. in Download a gallery, on macOS and Linux other than x86-64 (no build to install)
 #, machine
@@ -1727,10 +1727,10 @@
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
-	Get ready for video downloads	Пригответе се за изтегляне на видеоклипове
+	Get ready for video downloads	Подгответе се за изтегляне на видеоклипове
 #. button in the Options window
 #, machine
-	Get System	Вземане на система
+	Get System	Системни настройки
 #. text in the Add torrent window
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
@@ -1798,7 +1798,7 @@
 	Haiti	Хаити
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Затваряне на модема след приключване
+	Hang up modem when done	Изключете модема след приключване
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -1827,14 +1827,14 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	Hide &categories	Скриване на &категории
+	Hide &categories	Скрийте &категориите
 #. button in a download's progress window
 #, machine
-	Hide tab	Скриване на раздел
+	Hide tab	Скрийте раздела
 #. text in a download's progress window; text in standard windows
 #. tooltip of a button in a download's progress window: hides the window to the notification area (system tray); the download goes on
 #, machine
-	Hide to the notification area	Скриване в областта за уведомяване
+	Hide to the notification area	Скрийте в областта за уведомяване
 #. checkbox in the Link grabber window; text in the Link grabber window; checkbox in the Options window
 #. Link grabber check box (IDM's "Hide HTML files"): links to web pages are not shown
 #, machine
@@ -1883,7 +1883,7 @@
 	If a duplicate download link is added:	Ако се добави дублираща се връзка за изтегляне:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Ако съществуващият файл е завършен, покажи диалогов прозорец за завършено изтегляне; в противен случай го възобнови.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Ако съществуващият файл е завършен, покажете диалоговия прозорец за завършено изтегляне; в противен случай възобновете изтеглянето.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -2008,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	щеше да запише {size}, повече от {limit} налично място или причина
+	it would write {size}, more than the {limit} there is room or reason for	щеше да запише {size}, което надвишава {limit} налично място или допустимия размер
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2030,7 +2030,7 @@
 	Jamaica	Ямайка
 #. text in the Scheduler window
 #, machine
-	January	Януари
+	January	януари
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2045,13 +2045,13 @@
 	Jordan	Йордания
 #. text in the Scheduler window
 #, machine
-	July	Юли
+	July	юли
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Jump to the download whose name starts with it	Преминаване към изтеглянето, чието име започва с него
 #. text in the Scheduler window
 #, machine
-	June	Юни
+	June	юни
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2112,7 +2112,7 @@
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
-	larger than a feed can be	по-голямо от допустимия размер за емисия
+	larger than a feed can be	по-голяма от допустимия размер на емисията
 #. text in the Batch download window
 #, machine
 	Last file:	Последен файл:
@@ -2222,7 +2222,7 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
-	Login	Вход
+	Login	Потребителско име
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
@@ -2298,7 +2298,7 @@
 	Map the port on the router (UPnP)	Картографиране на порта на рутера (UPnP)
 #. text in the Scheduler window
 #, machine
-	March	Март
+	March	март
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2432,7 +2432,7 @@
 	Monaco	Монако
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Monday	Понеделник
+	Monday	понеделник
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2456,7 +2456,7 @@
 #. button in a download's Properties window
 #. verb: move the file to another folder
 #, machine
-	Move	Преместване
+	Move	Преместете
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move a page up / down	Преместване на страница нагоре/надолу
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	Преместване на изтеглянията му в Общи
+	Move its downloads to General	Преместете изтеглянията ѝ в „Общи“
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Преместване или преименуване на избраното изтегляне
@@ -2478,7 +2478,7 @@
 	Move to folder	Преместване в папка
 #. message or event log entry in the main window
 #, machine
-	Move to queue	Преместване в опашка
+	Move to queue	Преместено в опашката
 #. text in the Scheduler window
 #, machine
 	Move up	Преместване нагоре
@@ -2534,7 +2534,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Имената във файла hosts и локалните имена (единични думи, .local, .lan) остават със системния DNS. Видео страниците и торент тракерите използват системния DNS засега.
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	Имената във файла hosts и локалните имена (единични думи, .local, .lan) остават със системния DNS. Видео страниците и торент тракерите засега използват системния DNS.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2567,7 +2567,7 @@
 	network error	мрежова грешка
 #. text in the Options window
 #, machine
-	Never show it on these sites:	Никога да не се показва на тези сайтове:
+	Never show it on these sites:	Никога не го показвайте на тези сайтове:
 #. button in the Options window
 #. button: create a new item
 #, machine
@@ -2661,7 +2661,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	Няма отворено приложение за поща.
+	No mail app opened.	Не беше отворено приложение за поща.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Няма приложение за поща: съобщението е копирано, поставете го във вашата поща.
@@ -2777,13 +2777,13 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Забележка: Интернет сървърите могат да прекъснат връзката, когато скоростта е твърде ограничена! Затова не се\nпрепоръчва използването на ограничител на скоростта за изтегляне от сървъри, които не поддържат функцията\n„възобновяване“.
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Забележка: Интернет сървърите могат да прекъснат връзката, когато скоростта е твърде ниска! Затова не се\nпрепоръчва използването на ограничител на скоростта за изтегляне от сървъри, които не поддържат функцията\n„възобновяване“.
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Забележка: Тези настройки не са свързани с обработката на опашката
 #. message or event log entry in the main window
 #, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Няма какво да се изтегли в {item}: пуснете връзки, .torrent файл или списък с адреси (.txt, .ef2).
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Няма какво да се изтегли от {item}: пуснете връзки, .torrent файл или списък с адреси (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	Ноември
@@ -2805,7 +2805,7 @@
 	Off	Изкл.
 #. text in the Add torrent window
 #, machine
-	Off: a finished torrent stops, like any download.	Изкл.: завършен торент спира, като всяко изтегляне.
+	Off: a finished torrent stops, like any download.	Изкл.: завършеният торент спира, както всяко изтегляне.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Предлагане за изтегляне на връзки, копирани в клипборда
@@ -2834,13 +2834,13 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
 #, machine
-	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	В Windows Chrome, Edge и Brave може да заключват бисквитките си. Firefox работи.
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	В Windows Chrome, Edge и Brave могат да заключват бисквитките си. Firefox работи.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Веднъж в
 #. text in extension.rs
 #, machine
-	Once it is added, this window says so. Chrome may also ask by itself at its next start.	След като бъде добавен, този прозорец ще го покаже. Chrome може също да попита сам при следващото си стартиране.
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	След като бъде добавено, този прозорец ще го покаже. Chrome може също да попита сам при следващото си стартиране.
 #. text in the Options window
 #, machine
 	One address per line; * stands for any text: example.com/private/*	Един адрес на ред; * означава произволен текст: example.com/private/*
@@ -2886,7 +2886,7 @@
 	Open folder	Отваряне на папката
 #. checkbox in the Add torrent window
 #, machine
-	Open magnet links and .torrent files with Mister Download Manager	Отваряне на magnet връзки и .torrent файлове с Mister Download Manager
+	Open magnet links and .torrent files with Mister Download Manager	Отваряйте връзки magnet и .torrent файлове с Mister Download Manager
 #. text in the tray icon's menu
 #, machine
 	Open Mister Download Manager	Отваряне на Mister Download Manager
@@ -3032,7 +3032,7 @@
 #. button in the Options window
 #. verb: plays the sound
 #, machine
-	Play	Възпроизвеждане
+	Play	Възпроизведете
 #. text in regional.rs; text in the Scheduler window
 #. after noon, after a time of day (12-hour clock). Its pair is "AM": write both the same way (this language's own short marks, or both kept as AM and PM)
 #, machine
@@ -3218,10 +3218,10 @@
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
-	Restart MDM	Рестартиране на MDM
+	Restart MDM	Рестартирайте MDM
 #. button in the Options window; text in the Options window
 #, machine
-	Restore the built-in categories	Възстановяване на вградените категории
+	Restore the built-in categories	Възстановете вградените категории
 #. text in a download's Properties window
 #. {result} = how the last attempt ended (a status or an error message)
 #, machine
@@ -3229,7 +3229,7 @@
 #. text in a download's progress window
 #. verb: continue the download
 #, machine
-	Resume	Продължаване
+	Resume	Продължете
 #. text in a download's progress window
 #. label: whether the server lets a stopped download continue (Yes / No)
 #, machine
@@ -3241,7 +3241,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
-	Retry	Повторен опит
+	Retry	Опитайте отново
 #. text in a download's progress window
 #. a connection's state: it failed and tries again, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -3317,7 +3317,7 @@
 	Sao Tome and Principe	Сао Томе и Принсипи
 #. text in the Options window; text in the Scheduler window
 #, machine
-	Saturday	Събота
+	Saturday	събота
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3367,7 +3367,7 @@
 #. button in playlistdlg.rs; button in the Add torrent window
 #. button in Download video for a playlist: tick every video
 #, machine
-	Select all	Избери всички
+	Select all	Изберете всички
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Select all downloads	Избиране на всички изтегляния
@@ -3452,7 +3452,7 @@
 	Set a socks5:// proxy in Options → Proxy / Socks first	Първо задайте socks5:// прокси в Опции → Прокси / SOCKS
 #. checkbox in the Options window
 #, machine
-	Set file creation date as provided by the server	Задаване на дата на създаване на файла, предоставена от сървъра
+	Set file creation date as provided by the server	Използване на датата на създаване на файла, предоставена от сървъра
 #. button in extension.rs; button in the Options window
 #. button in the browser extension's window: register MDM's helper with the browsers
 #. button in Test browser integration: register MDM's helper with the browsers
@@ -3503,34 +3503,34 @@
 	Sharing stopped: the share ratio reached {ratio}	Споделянето спря: съотношението на споделяне достигна {ratio}
 #. text in the download list
 #, machine
-	Show	Покажи
+	Show	Показване
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	Show &categories	Покажи &категории
+	Show &categories	Показване на &категориите
 #. text in the Options window
 #, machine
-	Show a dialog and ask what to do.	Показване на диалогов прозорец и питане какво да се прави.
+	Show a dialog and ask what to do.	Показване на диалогов прозорец и запитване какво да се направи.
 #. checkbox in the Options window
 #, machine
-	Show a download button over videos in browsers	Показване на бутон за изтегляне над видеоклипове в браузърите
+	Show a download button over videos in browsers	Показване на бутон за изтегляне върху видеоклиповете в браузърите
 #. button in the download list
 #, machine
-	Show all	Покажи всички
+	Show all	Показване на всички
 #. message or event log entry in the main window
 #. link in the empty download list: go to the All Downloads view
 #, machine
 	Show all downloads	Показване на всички изтегляния
 #. text in a download's progress window
 #, machine
-	Show details >>	Покажи подробности >>
+	Show details >>	Покажете подробности >>
 #. checkbox in the Options window; checkbox in a download's progress window
 #, machine
 	Show download complete dialog	Показване на диалогов прозорец за завършено изтегляне
 #. text in extension.rs
 #. button in the browser extension's window: open the tutorial that adds the extension
 #, machine
-	Show me how	Покажи ми как
+	Show me how	Покажете ми как
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on closing batch download dialogs	Показване на панела за избор на опашка при затваряне на диалогови прозорци за групово изтегляне
@@ -3542,7 +3542,7 @@
 	Show start download dialog	Показване на диалогов прозорец за стартиране на изтегляне
 #. checkbox in the Options window; checkbox in the Scheduler window
 #, machine
-	Show warning before stopping downloads	Показване на предупреждение преди спиране на изтегляния
+	Show warning before stopping downloads	Показване на предупреждение преди спиране на изтеглянията
 #. text in a download's progress window
 #, machine
 	Shown while the torrent is downloading.	Показва се, докато торентът се изтегля.
@@ -3557,7 +3557,7 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
-	Sign in in the browser	Влизане в браузъра
+	Sign in in the browser	Влезте през браузъра
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
@@ -3569,7 +3569,7 @@
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Данните за вход и паролите се съхраняват в диспечера на идентификационни данни на Windows.
+	Sign-ins and passwords are kept in Windows Credential Manager.	Данните за вход и паролите се съхраняват в Диспечера на идентификационните данни на Windows.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -3599,10 +3599,10 @@
 #. text in the Options window
 #. tab title: user names and passwords for sites
 #, machine
-	Sites Logins	Влизания в сайтове
+	Sites Logins	Данни за вход в сайтове
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Сайтовете изпращат най-доброто си качество като отделни видео и аудио, а ffmpeg ги обединява. В тази система MDM използва вашето: инсталирайте ffmpeg с вашия мениджър на пакети.
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Сайтовете изпращат най-доброто си качество като отделни видео и аудио, а ffmpeg ги обединява. В тази система MDM използва вашия ffmpeg: инсталирайте го с мениджъра на пакети.
 #. text in helpers.rs
 #, machine
 	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Сайтовете изпращат най-доброто си качество като отделни видео и аудио. ffmpeg ги обединява в един файл, който може да се възпроизвежда навсякъде.
@@ -3620,11 +3620,11 @@
 #. text in a download's progress window
 #. a torrent file the user chose not to download
 #, machine
-	Skipped	Пропуснато
+	Skipped	Пропуснат
 #. text in the queues
 #. what the computer does when the queue is done (verb: put it to sleep)
 #, machine
-	Sleep	Заспиване
+	Sleep	Приспиване
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3644,7 +3644,7 @@
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
-	Some	Някои
+	Some	Частично
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Някои от файловете на торента вече са в тази папка:
@@ -3889,7 +3889,7 @@
 	Tell a friend	Кажете на приятел
 #. group box title in the Options window
 #, machine
-	Temporary directory	Временна директория
+	Temporary directory	Временна папка
 #. button in the Options window
 #. button: asks the chosen DNS for an address, to see it works
 #, machine
@@ -3974,7 +3974,7 @@
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	The computer will be woken on {date} at {time}	Компютърът ще бъде събуден на {date} в {time}
+	The computer will be woken on {date} at {time}	Компютърът ще се събуди на {date} в {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4020,7 +4020,7 @@
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Мениджърът за изтегляния, който вече познавате, преработен да бъде по-бърз. Безплатен и с отворен код под GNU GPL, версия 3 или по-нова. Видеата се намират от yt-dlp; торентите работят с librqbit.
 #. text in a dialog box
 #, machine
-	The download queue is done.	Опашката за изтегляне е завършена.
+	The download queue is done.	Опашката за изтегляне е обработена.
 #. text in errors.rs
 #, machine
 	the downloaded program doesn't match its signed checksum	изтеглената програма не съответства на подписаната контролна сума
@@ -4130,7 +4130,7 @@
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	Защитената връзка не бе осъществена
+	the secure connection failed	защитената връзка е неуспешна
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4140,7 +4140,7 @@
 	the server answered {status}	сървърът отговори {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	сървърът не може да изпраща части от файла, така че не може да бъде възобновен
+	the server can't send parts of the file, so it can't be resumed	сървърът не може да изпраща части от файла, затова изтеглянето не може да бъде възобновено
 #. text in errors.rs
 #, machine
 	the server did not answer in time	сървърът не отговори навреме
@@ -4159,15 +4159,15 @@
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Сайтът изисква да сте влезли, дори с бисквитките на браузъра ви за тази страница. Влезте в него в браузъра си, след което опитайте отново.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Сайтът изисква да сте влезли, въпреки че са предоставени бисквитките на браузъра ви за тази страница. Влезте в сайта в браузъра си, след което опитайте отново.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Сайтът изисква да сте влезли, дори с бисквитките на {browser}. Влезте в него в {browser}, след което потърсете страницата отново.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Сайтът изисква да сте влезли, въпреки че са предоставени бисквитките на {browser}. Влезте в сайта в {browser}, след което потърсете страницата отново.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Символите не можаха да бъдат извлечени: някои редове от отчета показват адреси вместо имена (разработчиците все още могат да ги прочетат).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Символите не можаха да бъдат изтеглени: някои редове от отчета показват адреси вместо имена (разработчиците все пак могат да ги разчетат).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
@@ -4219,10 +4219,10 @@
 	There is already a queue with this name	Вече има опашка с това име
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Тези настройки са недостъпни, когато е включена опцията „Показване на диалогов прозорец за завършено изтегляне“
+	These settings are unavailable when "Show download complete dialog" is turned on	Тези настройки са недостъпни, когато е включена опцията „Показване на диалоговия прозорец за завършено изтегляне“
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	Те продължават да се изтеглят, ако затворите този прозорец.
+	They keep downloading if you close this window.	Изтеглянето им продължава, ако затворите този прозорец.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Този адрес вече е в списъка за изтегляния:
@@ -4271,7 +4271,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Тази магнитна връзка не посочва тракери и DHT е изключен, така че не може да бъде намерен никой партньор.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Тази магнитна връзка не посочва тракери и DHT е изключен, така че не може да бъде намерен нито един партньор.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -4291,11 +4291,11 @@
 	this program isn't {name}	тази програма не е {name}
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	Тази система няма dial-up връзки за прекъсване
+	This system has no dial-up connections to hang up	Тази система няма комутируеми връзки за прекъсване
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	този торент има име на файл, което не е безопасно за запис, така че не беше добавен: {name}
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	този торент има име на файл, което не е безопасно за запис, затова не беше добавен: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Този торент вече е в списъка за изтегляния
@@ -4332,7 +4332,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	Първо отметнете „Стартиране на изтеглянето в“: компютърът се събужда за началния час
+	Tick "Start download at" first: the computer is woken for the start time	Първо отметнете „Стартиране на изтеглянето в“: компютърът се събужда в началния час
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Оставащо време
@@ -4389,7 +4389,7 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	Торентите не можаха да стартират: {error}
+	torrents could not start: {error}	торентите не можаха да се стартират: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -4435,7 +4435,7 @@
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter off
 #, machine
-	Turn off	Изключване
+	Turn off	Изключете
 #. text in a dialog box
 #. title of the message when shutting down / sleep / hibernate failed
 #, machine
@@ -4445,11 +4445,11 @@
 	Turn off computer when done	Изключване на компютъра след приключване
 #. button in a dialog box
 #, machine
-	Turn off now	Изключване сега
+	Turn off now	Изключете сега
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter on
 #, machine
-	Turn on	Включване
+	Turn on	Включете
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4516,7 +4516,7 @@
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
-	Uncheck all	Отмаркирай всички
+	Uncheck all	Премахнете отметките от всички
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -4557,7 +4557,7 @@
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: download and install the new version, then restart
 #, machine
-	Update now	Актуализирай сега
+	Update now	Актуализирайте сега
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4576,10 +4576,10 @@
 #. Video helpers: button: pick a program (yt-dlp or ffmpeg) already on the computer
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Use another program...	Използване на друга програма...
+	Use another program...	Изберете друга програма...
 #. text in the Batch download window; checkbox in the Batch download window; text in a dialog box; checkbox in a dialog box
 #, machine
-	Use authorization	Използване на оторизация
+	Use authorization	Използване на удостоверяване
 #. text in the Options window
 #, machine
 	Use automatic configuration script	Използване на скрипт за автоматична конфигурация
@@ -4603,7 +4603,7 @@
 	Use Speed Limiter	Използване на ограничител на скоростта
 #. text in the Options window
 #, machine
-	Use system settings	Използване на системни настройки
+	Use system settings	Използване на системните настройки
 #. checkbox in the Add torrent window
 #. Torrent settings: use the SOCKS5 proxy set in Options → Proxy / Socks
 #, machine
@@ -4611,7 +4611,7 @@
 #. button in the Options window
 #. button: sign in with the token typed in
 #, machine
-	Use the token	Използване на токена
+	Use the token	Използвайте токена
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	Да ги използвате ли за този торент? Това, което съвпада, се запазва, останалото се заменя.
@@ -4670,7 +4670,7 @@
 	Verify	Проверка
 #. window title in the Checksum window; text in the Checksum window
 #, machine
-	Verify checksum	Проверка на контролна сума
+	Verify checksum	Проверка на контролната сума
 #. text in the download list (sizes, speeds, status)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -4741,7 +4741,7 @@
 	Web	Уеб
 #. text in the Scheduler window
 #, machine
-	Wednesday	Сряда
+	Wednesday	сряда
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4749,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	Съдържанието на архива отива:
+	What an archive holds goes:	Къде се записва съдържанието на архива:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4788,11 +4788,11 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Use the proxy"
 #, machine
-	With it, incoming connections, the DHT and local peers are off.	С него входящите връзки, DHT и локалните пиъри са изключени.
+	With it, incoming connections, the DHT and local peers are off.	С него входящите връзки, DHT и локалните партньори са изключени.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
-	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Думи: всички; | между алтернативи; * и ?. Епизоди: 1x2;1x5-8;2x1-. Всеки епизод веднъж.
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Думи: всички; | между алтернативите; * и ?. Епизоди: 1x2;1x5-8;2x1-. Всеки епизод се изтегля веднъж.
 #. group box title in the Options window
 #, machine
 	Write dates and times	Записване на дати и часове
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ и XZ; разделен архив (.part1.rar, .7z.001), след като\nвсички томове са налични. Вече съществуващ файл се запазва: новият се номерира.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ и XZ; многотомен архив (.part1.rar, .7z.001), след като\nвсички томове са налични. Вече съществуващ файл се запазва: новият се номерира.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} не е свързан: нищо не се изтегля, докато не се върне.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} не е свързан: нищо не се изтегля, докато не се свърже отново.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4907,7 +4907,7 @@
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} държи бисквитките си заключени за себе си в Windows, така че yt-dlp не може да ги прочете. Изберете Firefox в Опции → Влизания в сайтове или използвайте бутона „Изтегляне на видео“ над видеото в {browser}.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} държи бисквитките си заключени за себе си в Windows, така че yt-dlp не може да ги прочете. Изберете Firefox в Опции → Входове в сайтове или използвайте бутона „Изтегляне на видео“ над видеото в {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4933,7 +4933,7 @@
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 #, machine
-	{ext} File	{ext} файл
+	{ext} File	Файл {ext}
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	{file} не можа да бъде прочетен за проверка
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} вече не е там, където е бил записан (преместен или изтрит). „Изтегли отново“ в контекстното му меню го изтегля отново.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} вече не е там, където е бил записан (преместен или изтрит). „Изтеглете отново“ в контекстното му меню го изтегля отново.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4965,7 +4965,7 @@
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{have} от {total} части ({size} всяка)
+	{have} of {total} pieces ({size} each)	{have} от {total} части (по {size} всяка)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4977,7 +4977,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, автоматично
+	{language}, automatic	{language}, автоматично генерирани
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -5004,7 +5004,7 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} е 7z или RAR архив. MDM ги извлича със 7-Zip, който не е инсталиран.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} е 7z или RAR архив. MDM извлича такива архиви със 7-Zip, който не е инсталиран.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5039,7 +5039,7 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} моли да се забави; MDM ще опита отново след минута
+	{service} asks to slow down; MDM will try again in a minute	{service} иска да намалите скоростта; MDM ще опита отново след минута
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
@@ -5049,7 +5049,7 @@
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} не може да изтегли този торент: никой не го споделя или връзката му не може да бъде прочетена
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} не може да достигне този файлов хост в момента; MDM ще опита отново по-късно
+	{service} can't reach this file host right now; MDM will try again later	{service} не може да достигне този хостинг на файлове в момента; MDM ще опита отново по-късно
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -5061,7 +5061,7 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} няма да даде този файл
+	{service} won't give this file	{service} няма да предостави този файл
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -5130,7 +5130,7 @@
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{what} could not be installed: {error}	{what} не можа да бъде инсталиран: {error}
+	{what} could not be installed: {error}	{what} не можа да бъде инсталирана: {error}
 #. column title in the download list in the download list
 #. past participle: when the download was added
 #, machine
@@ -5188,7 +5188,7 @@ extension	Connected to Mister Download Manager {version}	Свързан с Miste
 #. text in the browser extension
 #. button beside a video, sound or stream in the toolbar button's popup: download it with the app; verb; short
 #, machine
-extension	Download	Изтегляне
+extension	Download	Изтеглете
 #. text in the browser extension
 #. command in the browser's right-click menu on a page: download the links of the whole page; keep the name Mister Download Manager as it is
 #, machine
@@ -5200,11 +5200,11 @@ extension	Download selected links with Mister Download Manager	Изтеглет�
 #. text in the browser extension
 #. the button over a video on a web page that downloads it; verb; short (it sits on the video)
 #, machine
-extension	Download video	Изтегляне на видео
+extension	Download video	Изтеглете видео
 #. text in the browser extension
 #. command in the browser's right-click menu on a link, picture, video or sound; keep the name Mister Download Manager as it is
 #, machine
-extension	Download with Mister Download Manager	Изтегляне с Mister Download Manager
+extension	Download with Mister Download Manager	Изтеглете с Mister Download Manager
 #. text in the browser extension
 #. shown in the toolbar button's popup after the site was excluded
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
@@ -5225,7 +5225,7 @@ extension	Help	Помощ
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	Скриване на този видеоклип
+extension	Hide on this video	Не показвайте на този видеоклип
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5308,7 +5308,7 @@ extension	Protected video: it can't be saved	Защитено видео: не �
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
-extension	Send downloads through this browser's proxy or VPN extension	Изпращане на изтегляния през прокси или VPN разширението на този браузър
+extension	Send downloads through this browser's proxy or VPN extension	Изпращайте изтеглянията през прокси или VPN разширението на този браузър
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5320,11 +5320,11 @@ extension	Support MDM	Подкрепете MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Приемане на изтегляния от този браузър
+extension	Take downloads from this browser	Приемайте изтегляния от този браузър
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
-extension	The connection to Mister Download Manager failed	Връзката с Mister Download Manager не бе осъществена
+extension	The connection to Mister Download Manager failed	Връзката с Mister Download Manager прекъсна
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
@@ -5332,7 +5332,7 @@ extension	The download button is off on this site	Бутонът за изтег
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	Подробностите за това изтегляне бяха твърде големи, за да бъдат предадени
+extension	This download's details were too large to hand over	Данните за това изтегляне бяха твърде големи, за да бъдат предадени
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5616,7 +5616,7 @@ menu	By Parent &Web Page	По родителска &уеб страница
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	By R&eferer	По &реферер
+menu	By R&eferer	По &препращаща страница
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5731,7 +5731,7 @@ menu	From &text file...	От &текстов файл...
 menu	H&elp contents	&Помощно съдържание
 #. menu command in the main window
 #, machine
-menu	Hide drop target	Скриване на целта за плъзгане
+menu	Hide drop target	Скрийте целта за плъзгане
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
@@ -5770,11 +5770,11 @@ menu	Move/Rename (Ctrl-M)	Преместване/Преименуване (Ctrl+
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
-menu	Native	Естествена
+menu	Native	Системна
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Нито една графична карта тук няма драйвер за него
+menu	No graphics card here has a driver for it	Тук няма графична карта с драйвер за него
 #. menu command in the main window
 #, machine
 menu	On Double click	При двойно щракване

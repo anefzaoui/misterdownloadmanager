@@ -6,12 +6,12 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	ลบ {n} ไฟล์ออกจากดิสก์ด้วย
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	ลบไฟล์ {n} ไฟล์ออกจากดิสก์ด้วย
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	คุณแน่ใจหรือไม่ว่าต้องการลบรายการดาวน์โหลด {n} รายการเหล่านี้ออกจากรายการดาวน์โหลดของ Mister Download Manager
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	ต้องการลบรายการดาวน์โหลด {n} รายการนี้ออกจากรายการดาวน์โหลดของ Mister Download Manager หรือไม่
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -43,7 +43,7 @@
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	and {n} other file|and {n} other files	และอีก {n} ไฟล์
+@plural	and {n} other file|and {n} other files	และไฟล์อื่นอีก {n} ไฟล์
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -69,7 +69,7 @@
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	มี {n} รายการถูกละเว้น (ลิงก์ หรือชื่อที่นำออกนอกโฟลเดอร์)
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	ละเว้น {n} รายการ (ลิงก์ หรือชื่อที่นำออกนอกโฟลเดอร์)
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -85,7 +85,7 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	มี {n} ไฟล์ที่มีชื่อไฟล์อยู่แล้วและถูกกำหนดหมายเลข
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} ไฟล์มีชื่อซ้ำกับไฟล์ที่มีอยู่แล้ว จึงเปลี่ยนชื่อโดยเติมหมายเลข
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -99,7 +99,7 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added|{n} trackers added	{n} ตัวติดตามถูกเพิ่ม
+@plural	{n} tracker added|{n} trackers added	เพิ่มตัวติดตาม {n} รายการแล้ว
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -219,7 +219,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	ไม่มีวอลุ่มของไฟล์
+	a volume of it is missing	ขาดวอลุ่มหนึ่งของไฟล์เก็บถาวร
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	เกี่ยวกับ Mister Download Manager
@@ -505,7 +505,7 @@
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	ขอ peer จากตัวติดตามอีกครั้ง
+	Asked the trackers for peers again	ขอ peer จากแทร็กเกอร์อีกครั้ง
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -1107,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	ไม่ต้องเริ่มดาวน์โหลด เพียงเพิ่มไฟล์ลงในคิว
+	Do not start downloading, only add files to the queue	ไม่เริ่มดาวน์โหลด เพิ่มไฟล์ลงในคิวเท่านั้น
 #. text in a dialog box
 #, machine
 	Do you want to create it?	คุณต้องการสร้างหรือไม่
@@ -1118,7 +1118,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Dominica	ดอมินีกา
+	Dominica	โดมินิกา
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1132,10 +1132,10 @@
 	Don't show this dialog again	ไม่ต้องแสดงกล่องโต้ตอบนี้อีก
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	ไม่ต้องเริ่มดาวน์โหลดโดยอัตโนมัติจากที่อยู่ต่อไปนี้:
+	Don't start downloading automatically from the following addresses:	ไม่เริ่มดาวน์โหลดโดยอัตโนมัติจากที่อยู่ต่อไปนี้:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	ไม่ต้องเริ่มดาวน์โหลดโดยอัตโนมัติจากไซต์ต่อไปนี้:
+	Don't start downloading automatically from the following sites:	ไม่เริ่มดาวน์โหลดโดยอัตโนมัติจากไซต์ต่อไปนี้:
 #. text in the Options window
 #, machine
 	Don't take files smaller than (KB, 0 = any size):	ไม่ดาวน์โหลดไฟล์ที่เล็กกว่า (KB, 0 = ทุกขนาด):
@@ -1294,7 +1294,7 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
-	Dropped links	ลิงก์ที่ลาก
+	Dropped links	ลิงก์ที่ลากมาวาง
 #. window title in a dialog box
 #, machine
 	Duplicate download link	ลิงก์ดาวน์โหลดซ้ำ
@@ -1339,7 +1339,7 @@
 	El Salvador	เอลซัลวาดอร์
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Email	อีเมล
+	Email	ส่งอีเมล
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	ทุกการเชื่อมต่อจะผ่านสิ่งนี้ จาก {ip}
+	Every connection goes through it, from {ip}.	ทุกการเชื่อมต่อจะผ่านอะแดปเตอร์นี้ โดยใช้ที่อยู่ {ip}
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1444,7 +1444,7 @@
 	Extend the availability of Manifest 2 Chrome extensions	ขยายความพร้อมใช้งานของส่วนขยาย Manifest 2 Chrome
 #. text in categories.rs
 #, machine
-	Extensions separated by spaces, for example MP4 MKV R0*	นามสกุลที่คั่นด้วยช่องว่าง เช่น MP4 MKV R0*
+	Extensions separated by spaces, for example MP4 MKV R0*	นามสกุลไฟล์ที่คั่นด้วยช่องว่าง เช่น MP4 MKV R0*
 #. button in extracting archives (a download's log, the Archive password window)
 #. button: extract the archive with the password typed
 #, machine
@@ -1701,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	ไม่ได้ติดตั้ง gallery-dl (เพิ่ม URL ด้วยที่อยู่ของแกลเลอรีจะติดตั้งให้)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	ไม่ได้ติดตั้ง gallery-dl (เพิ่ม URL พร้อมที่อยู่แกลเลอรีเพื่อติดตั้ง)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1730,7 +1730,7 @@
 	Get ready for video downloads	เตรียมพร้อมสำหรับการดาวน์โหลดวิดีโอ
 #. button in the Options window
 #, machine
-	Get System	รับระบบ
+	Get System	ใช้ค่าระบบ
 #. text in the Add torrent window
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
@@ -1873,7 +1873,7 @@
 	Hungary	ฮังการี
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	ฉันดาวน์โหลดด้วย Mister Download Manager: รวดเร็ว ฟรี และดูเหมือนตัวจัดการการดาวน์โหลดที่คุณรู้จักอยู่แล้ว {link}
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	ดาวน์โหลดด้วย Mister Download Manager: รวดเร็ว ฟรี และหน้าตาเหมือนตัวจัดการดาวน์โหลดที่คุ้นเคยอยู่แล้ว {link}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1883,7 +1883,7 @@
 	If a duplicate download link is added:	หากมีการเพิ่มลิงก์ดาวน์โหลดที่ซ้ำกัน:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	หากไฟล์ที่มีอยู่สมบูรณ์ ให้แสดงกล่องโต้ตอบดาวน์โหลดเสร็จสมบูรณ์ มิฉะนั้นให้ดำเนินการต่อ
+	If existing file is complete, show download complete dialog; otherwise resume it.	หากไฟล์ที่มีอยู่ดาวน์โหลดเสร็จแล้ว ให้แสดงกล่องโต้ตอบดาวน์โหลดเสร็จ มิฉะนั้นให้ดำเนินการต่อ
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -2088,7 +2088,7 @@
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
 #, machine
-	known once it has run	ทราบเมื่อทำงานแล้ว
+	known once it has run	ทราบเมื่อเริ่มทำงานแล้ว
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2165,11 +2165,11 @@
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
-	Limit uploading	จำกัดการอัปโหลด
+	Limit uploading	จำกัดความเร็วการอัปโหลด
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	จำกัดการอัปโหลดสำหรับทอร์เรนต์ทั้งหมดเป็น
+	Limit uploading for all torrents to	จำกัดความเร็วการอัปโหลดของทอร์เรนต์ทั้งหมดไม่เกิน
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2186,7 +2186,7 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	แสดงรายการที่เหลือ
+	List the rest	แสดงวิดีโอที่เหลือ
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -2521,7 +2521,7 @@
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
-	N.	ลบ.
+	N.	ลำดับที่
 #. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
@@ -2632,7 +2632,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
-	No day is ticked: the queue will not start	ไม่มีการเลือกวัน: คิวจะไม่เริ่มทำงาน
+	No day is ticked: the queue will not start	ไม่ได้เลือกวัน: คิวจะไม่เริ่มทำงาน
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -2661,13 +2661,13 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	ไม่มีแอปอีเมลเปิดอยู่
+	No mail app opened.	ไม่ได้เปิดแอปอีเมล
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	ไม่มีแอปอีเมล: ข้อความถูกคัดลอกแล้ว วางลงในอีเมลของคุณ
 #. text in errors.rs
 #, machine
-	no peer sent the torrent's file list in time	ไม่มีเพียร์ส่งรายการไฟล์ของทอร์เรนต์ทันเวลา
+	no peer sent the torrent's file list in time	ไม่มีเพียร์ส่งรายการไฟล์ของทอร์เรนต์มาทันเวลา
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
@@ -2678,11 +2678,11 @@
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	ไม่มีการตอบกลับจากพวงกุญแจของระบบ ดังนั้นการลงชื่อเข้าใช้และรหัสผ่านจะถูกเก็บไว้ในการตั้งค่าของ MDM ซึ่งมีเพียงคุณเท่านั้นที่อ่านได้
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	ไม่มีการตอบกลับจากพวงกุญแจระบบ จึงเก็บข้อมูลการลงชื่อเข้าใช้และรหัสผ่านไว้ในการตั้งค่าของ MDM ซึ่งอ่านได้เฉพาะบัญชีผู้ใช้เท่านั้น
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
-	No tracker added: it has them already	ไม่มีตัวติดตามถูกเพิ่ม: มีอยู่แล้ว
+	No tracker added: it has them already	ไม่ได้เพิ่มตัวติดตาม: มีอยู่แล้ว
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
@@ -2690,13 +2690,13 @@
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
-	No video found on this page. Play the video, then use the Download video button over it.	ไม่พบวิดีโอในหน้านี้ โปรดเล่นวิดีโอ จากนั้นใช้ปุ่มดาวน์โหลดวิดีโอที่อยู่ด้านบน
+	No video found on this page. Play the video, then use the Download video button over it.	ไม่พบวิดีโอในหน้านี้ เล่นวิดีโอ จากนั้นใช้ปุ่มดาวน์โหลดวิดีโอที่แสดงอยู่เหนือวิดีโอ
 #. text in the Download video window
 #, machine
 	No video this can download on that page	ไม่มีวิดีโอที่สามารถดาวน์โหลดได้ในหน้านั้น
 #. message or event log entry in the main window
 #, machine
-	No web addresses were found in {file}.	ไม่พบที่อยู่เว็บใน {file}
+	No web addresses were found in {file}.	ไม่พบที่อยู่เว็บใน {file}.
 #. text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -2708,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	ไม่ได้เลือก: ทุกฟีด
+	None ticked: every feed.	ไม่ได้เลือกฟีด: ใช้ทุกฟีด
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	ไม่มี: เพียร์มาจาก DHT และเพียร์อื่น ๆ
@@ -2734,7 +2734,7 @@
 	Norway	นอร์เวย์
 #. text in the Checksum window
 #, machine
-	Not a checksum this can read	ไม่ใช่เช็คซัมที่สามารถอ่านได้
+	Not a checksum this can read	ไม่ใช่ค่าเช็กซัมที่อ่านได้
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
@@ -2760,7 +2760,7 @@
 	Not installed yet	ยังไม่ได้ติดตั้ง
 #. button in helpers.rs
 #, machine
-	Not now	ยังไม่ใช่ตอนนี้
+	Not now	ไม่ใช่ตอนนี้
 #. text in helpers.rs
 #, machine
 	Not now? Get them later from Tasks → Download video from a page.	ยังไม่ใช่ตอนนี้ใช่ไหม ดาวน์โหลดในภายหลังได้จาก งาน → ดาวน์โหลดวิดีโอจากหน้าเว็บ
@@ -2773,7 +2773,7 @@
 	not supported by this service	บริการนี้ไม่รองรับ
 #. text in the Options window
 #, machine
-	Not used: file parts are written next to the file	ไม่ได้ใช้: ส่วนของไฟล์จะถูกเขียนถัดจากไฟล์
+	Not used: file parts are written next to the file	ไม่ได้ใช้งาน: ส่วนของไฟล์จะถูกเขียนถัดจากไฟล์
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -3099,7 +3099,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Puerto Rico	ปวยร์โตรีโก
+	Puerto Rico	เปอร์โตริโก
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -3159,7 +3159,7 @@
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Reannounce failed: {error}	Reannounce ล้มเหลว: {error}
+	Reannounce failed: {error}	การประกาศซ้ำล้มเหลว: {error}
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
@@ -3172,7 +3172,7 @@
 #. event log entry: Recheck failed, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Recheck failed: {error}	Recheck ล้มเหลว: {error}
+	Recheck failed: {error}	การตรวจสอบซ้ำล้มเหลว: {error}
 #. message or event log entry in the main window
 #. window title, verb: download the file again from the start
 #, machine
@@ -3214,7 +3214,7 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	แทนที่เครื่องหมายดอกจันเป็น
+	Replace asterisk to	แทนที่เครื่องหมายดอกจันด้วย
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -3533,7 +3533,7 @@
 	Show me how	แสดงวิธีให้ฉันดู
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on closing batch download dialogs	แสดงแผงเลือกคิวเมื่อปิดกล่องโต้ตอบการดาวน์โหลดเป็นชุด
+	Show queue selection panel on closing batch download dialogs	แสดงแผงเลือกคิวเมื่อปิดกล่องโต้ตอบดาวน์โหลดเป็นชุด
 #. checkbox in the Options window
 #, machine
 	Show queue selection panel on pressing "Download Later" button	แสดงแผงเลือกคิวเมื่อกดปุ่ม "ดาวน์โหลดภายหลัง"
@@ -3825,7 +3825,7 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	คำบรรยายใน {language} มาในการลองครั้งที่สอง: อยู่ข้างวิดีโอ ไม่ได้อยู่ในวิดีโอ
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	คำบรรยายภาษา {language} มาถึงในการลองครั้งที่สอง: เป็นไฟล์แยกอยู่ข้างวิดีโอ ไม่ได้อยู่ในวิดีโอ
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
@@ -3834,7 +3834,7 @@
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	ไม่สามารถดาวน์โหลดคำบรรยายใน {language} ได้: {site} ปฏิเสธ (คำขอมากเกินไป)
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	ดาวน์โหลดคำบรรยายภาษา {language} ไม่ได้: {site} ปฏิเสธคำขอ (มีคำขอมากเกินไป)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3848,7 +3848,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Suriname	ซูรินาเม
+	Suriname	ซูรินาม
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3917,16 +3917,16 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	ไฟล์ .torrent ที่เก็บไว้หายไป
+	the .torrent file kept for it is gone	ไฟล์ .torrent ที่เก็บไว้สำหรับรายการนี้หายไป
 #. text in a download's Properties window
 #, machine
-	The address must be an http(s) or ftp(s) address	ที่อยู่ต้องเป็นที่อยู่ http(s) หรือ ftp(s)
+	The address must be an http(s) or ftp(s) address	ที่อยู่ต้องเป็นที่อยู่แบบ http(s) หรือ ftp(s)
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Recycle Bin: it was kept	ไม่สามารถย้ายไฟล์เก็บถาวรไปยังถังรีไซเคิลได้: ไฟล์ยังคงอยู่
+	The archive could not be moved to the Recycle Bin: it was kept	ย้ายไฟล์เก็บถาวรไปยังถังรีไซเคิลไม่ได้: เก็บไฟล์ไว้
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Trash: it was kept	ไม่สามารถย้ายไฟล์เก็บถาวรไปยังถังขยะได้: ไฟล์ยังคงอยู่
+	The archive could not be moved to the Trash: it was kept	ย้ายไฟล์เก็บถาวรไปยังถังขยะไม่ได้: เก็บไฟล์ไว้
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -3941,15 +3941,15 @@
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	คุณภาพที่ดีที่สุด, MP3, Opus และ FLAC ต้องใช้ ffmpeg: ติดตั้งด้วยตัวจัดการแพ็คเกจของระบบของคุณ (หรือ Homebrew)
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	คุณภาพที่ดีที่สุด, MP3, Opus และ FLAC ต้องใช้ ffmpeg: ติดตั้งผ่านตัวจัดการแพ็กเกจของระบบ (หรือ Homebrew)
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	พร็อกซีของเบราว์เซอร์ (VPN หรือส่วนขยายพร็อกซี) ขอให้เข้าสู่ระบบที่ส่วนขยายนั้นมีเท่านั้น: ใช้แอปของ VPN เอง หรือเลือกอะแดปเตอร์เครือข่ายในตัวเลือก → พร็อกซี / SOCKS
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	พร็อกซีของเบราว์เซอร์ (ส่วนขยาย VPN หรือพร็อกซี) ขอข้อมูลเข้าสู่ระบบที่มีเฉพาะส่วนขยายนั้น: ใช้แอป VPN เอง หรือเลือกอะแดปเตอร์เครือข่ายของ VPN ในตัวเลือก → พร็อกซี / SOCKS
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
-	The browsers can find Mister Download Manager	เบราว์เซอร์สามารถค้นหา Mister Download Manager ได้
+	The browsers can find Mister Download Manager	เบราว์เซอร์ค้นหา Mister Download Manager ได้
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 #, machine
@@ -3965,31 +3965,31 @@
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The computer could not be turned off: {error}	คอมพิวเตอร์ไม่สามารถปิดได้: {error}
+	The computer could not be turned off: {error}	ปิดคอมพิวเตอร์ไม่ได้: {error}
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	คอมพิวเตอร์จะถูกปลุกหนึ่งนาทีก่อนเวลาเริ่มต้นและจะเปิดอยู่ขณะที่คิวกำลังทำงาน Mister Download Manager ต้องทำงานอยู่ (สามารถรอในพื้นที่แจ้งเตือนได้)
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	คอมพิวเตอร์จะถูกปลุกหนึ่งนาทีก่อนเวลาเริ่มต้นและจะไม่เข้าสู่โหมดพักระหว่างที่คิวทำงาน ต้องเปิด Mister Download Manager ไว้ (สามารถย่อไว้ในพื้นที่แจ้งเตือนได้)
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	The computer will be woken on {date} at {time}	คอมพิวเตอร์จะถูกปลุกในวันที่ {date} เวลา {time}
+	The computer will be woken on {date} at {time}	คอมพิวเตอร์จะเปิดขึ้นในวันที่ {date} เวลา {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will go to sleep in {n} seconds.	คอมพิวเตอร์จะเข้าสู่โหมดสลีปใน {n} วินาที
+	The computer will go to sleep in {n} seconds.	คอมพิวเตอร์จะเข้าสู่โหมดสลีปในอีก {n} วินาที
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will hibernate in {n} seconds.	คอมพิวเตอร์จะเข้าสู่โหมดไฮเบอร์เนตใน {n} วินาที
+	The computer will hibernate in {n} seconds.	คอมพิวเตอร์จะเข้าสู่โหมดไฮเบอร์เนตในอีก {n} วินาที
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will shut down in {n} seconds.	คอมพิวเตอร์จะปิดเครื่องใน {n} วินาที
+	The computer will shut down in {n} seconds.	คอมพิวเตอร์จะปิดเครื่องในอีก {n} วินาที
 #. text in errors.rs
 #, machine
-	the connection closed before the part was complete	การเชื่อมต่อปิดลงก่อนที่ส่วนจะเสร็จสมบูรณ์
+	the connection closed before the part was complete	การเชื่อมต่อถูกปิดก่อนที่ส่วนนี้จะเสร็จสมบูรณ์
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	การเชื่อมต่อขาดหายไประหว่างรับข้อมูล
@@ -4123,55 +4123,55 @@
 #. text in crashui.rs
 #. crash report window: after Copy report
 #, machine
-	The report is on your clipboard.	รายงานอยู่ในคลิปบอร์ดของคุณ
+	The report is on your clipboard.	รายงานอยู่ในคลิปบอร์ดแล้ว
 #. text in crashui.rs
 #, machine
-	The report is on your clipboard: paste it in a comment on the issue.	รายงานอยู่ในคลิปบอร์ดของคุณ: วางลงในความคิดเห็นเกี่ยวกับปัญหา
+	The report is on your clipboard: paste it in a comment on the issue.	รายงานอยู่ในคลิปบอร์ดแล้ว: วางลงในความคิดเห็นของปัญหา
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	การเชื่อมต่อที่ปลอดภัยล้มเหลว
+	the secure connection failed	การเชื่อมต่อแบบปลอดภัยล้มเหลว
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	การดาวน์โหลดที่เลือกยังไม่สมบูรณ์ คุณแน่ใจหรือไม่ว่าต้องการลบ\nออกจากรายการดาวน์โหลดของ Mister Download Manager
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	การดาวน์โหลดที่เลือกยังไม่เสร็จสมบูรณ์ ต้องการลบ\nออกจากรายการดาวน์โหลดของ Mister Download Manager หรือไม่
 #. text in errors.rs
 #, machine
 	the server answered {status}	เซิร์ฟเวอร์ตอบกลับ {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	เซิร์ฟเวอร์ไม่สามารถส่งส่วนของไฟล์ได้ จึงไม่สามารถดำเนินการต่อได้
+	the server can't send parts of the file, so it can't be resumed	เซิร์ฟเวอร์ไม่สามารถส่งข้อมูลบางส่วนของไฟล์ได้ จึงไม่สามารถดาวน์โหลดต่อได้
 #. text in errors.rs
 #, machine
-	the server did not answer in time	เซิร์ฟเวอร์ไม่ตอบกลับทันเวลา
+	the server did not answer in time	เซิร์ฟเวอร์ไม่ตอบกลับภายในเวลาที่กำหนด
 #. text in errors.rs
 #, machine
-	the server did not send the requested part	เซิร์ฟเวอร์ไม่ได้ส่งส่วนที่ร้องขอ
+	the server did not send the requested part	เซิร์ฟเวอร์ไม่ได้ส่งข้อมูลส่วนที่ร้องขอ
 #. text in errors.rs
 #, machine
 	the server is busy ({status}); try again later	เซิร์ฟเวอร์ไม่ว่าง ({status}); โปรดลองอีกครั้งในภายหลัง
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	เซิร์ฟเวอร์ส่งหน้าเว็บแทนไฟล์ (ต้องลงชื่อเข้าใช้หรือลิงก์หมดอายุหรือไม่)
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	เซิร์ฟเวอร์ส่งหน้าเว็บมาแทนไฟล์ (ต้องลงชื่อเข้าใช้หรือลิงก์หมดอายุหรือไม่)
 #. text in errors.rs
 #, machine
-	the server sent an unexpected part of the file ({detail})	เซิร์ฟเวอร์ส่งส่วนของไฟล์ที่ไม่คาดคิด ({detail})
+	the server sent an unexpected part of the file ({detail})	เซิร์ฟเวอร์ส่งข้อมูลส่วนที่ไม่คาดคิดของไฟล์ ({detail})
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	ไซต์ต้องการให้คุณลงชื่อเข้าใช้ แม้จะมีคุกกี้ของเบราว์เซอร์สำหรับหน้านี้ก็ตาม ลงชื่อเข้าใช้ในเบราว์เซอร์ของคุณ แล้วลองอีกครั้ง
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	ไซต์ต้องการให้ลงชื่อเข้าใช้ แม้จะมีคุกกี้ของเบราว์เซอร์สำหรับหน้านี้แล้วก็ตาม ลงชื่อเข้าใช้ในเบราว์เซอร์ แล้วลองอีกครั้ง
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	ไซต์ต้องการให้คุณลงชื่อเข้าใช้ แม้จะมีคุกกี้ของ {browser} ก็ตาม ลงชื่อเข้าใช้ใน {browser} แล้วค้นหาหน้านั้นอีกครั้ง
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	ไซต์ต้องการให้ลงชื่อเข้าใช้ แม้จะมีคุกกี้ของ {browser} แล้วก็ตาม ลงชื่อเข้าใช้ใน {browser} แล้วค้นหาหน้านั้นอีกครั้ง
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	ไม่สามารถดึงสัญลักษณ์ได้: บางบรรทัดของรายงานแสดงที่อยู่แทนชื่อ (นักพัฒนายังคงสามารถอ่านได้)
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	ดึงสัญลักษณ์ไม่ได้: บางบรรทัดของรายงานแสดงที่อยู่แทนชื่อ (นักพัฒนายังคงอ่านที่อยู่เหล่านั้นได้)
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	พวงกุญแจของระบบถูกล็อกและ MDM ไม่ได้ปลดล็อก ดังนั้นการลงชื่อเข้าใช้และรหัสผ่านจะถูกเก็บไว้ในการตั้งค่าของ MDM ซึ่งมีเพียงคุณเท่านั้นที่อ่านได้
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	พวงกุญแจของระบบถูกล็อก และ MDM ไม่ได้ปลดล็อก ดังนั้นข้อมูลการลงชื่อเข้าใช้และรหัสผ่านจึงถูกเก็บไว้ในการตั้งค่าของ MDM ซึ่งมีเพียงบัญชีผู้ใช้เท่านั้นที่อ่านได้
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	เวลาคือการเดินทางไปกลับ วัดจากการเชื่อมต่อของรายการดาวน์โหลดนี้ที่เปิดขึ้น
+	The time is a round trip, measured as this download's own connections opened.	เวลานี้คือเวลาไปกลับ โดยวัดจากการเชื่อมต่อที่รายการดาวน์โหลดนี้เปิดขึ้นเอง
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4187,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	ทอร์เรนต์ไม่อยู่ที่นั่นแล้ว
+	the torrent is no longer there	ไม่มีทอร์เรนต์นี้แล้ว
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4198,10 +4198,10 @@
 	The update couldn't be installed: {error}	ไม่สามารถติดตั้งการอัปเดตได้: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The update is open in your system's package installer.	การอัปเดตเปิดอยู่ในตัวติดตั้งแพคเกจของระบบของคุณ
+	The update is open in your system's package installer.	การอัปเดตเปิดอยู่ในตัวติดตั้งแพ็กเกจของระบบ
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	หน้าเว็บที่ได้รับไฟล์นี้:
+	The web page from which this file was obtained:	หน้าเว็บที่ได้รับไฟล์นี้มา:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4212,17 +4212,17 @@
 	Then move the archives to the Trash	จากนั้นย้ายไฟล์เก็บถาวรไปยังถังขยะ
 #. text in categories.rs
 #, machine
-	There is already a category with this name	มีหมวดหมู่นี้อยู่แล้ว
+	There is already a category with this name	มีหมวดหมู่ชื่อนี้อยู่แล้ว
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
-	There is already a queue with this name	มีคิวที่มีชื่อนี้อยู่แล้ว
+	There is already a queue with this name	มีคิวชื่อนี้อยู่แล้ว
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	การตั้งค่าเหล่านี้ไม่พร้อมใช้งานเมื่อเปิด "แสดงกล่องโต้ตอบดาวน์โหลดเสร็จสมบูรณ์"
+	These settings are unavailable when "Show download complete dialog" is turned on	การตั้งค่าเหล่านี้ใช้ไม่ได้เมื่อเปิด "แสดงกล่องโต้ตอบเมื่อดาวน์โหลดเสร็จ"
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	จะยังคงดาวน์โหลดต่อไปหากคุณปิดหน้าต่างนี้
+	They keep downloading if you close this window.	การดาวน์โหลดจะดำเนินต่อไปหากปิดหน้าต่างนี้
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	ที่อยู่นี้อยู่ในรายการดาวน์โหลดแล้ว:
@@ -4233,11 +4233,11 @@
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	คอมพิวเตอร์เครื่องนี้ไม่สามารถปลุกด้วยตัวจับเวลาได้
+	This computer can't be woken by a timer	คอมพิวเตอร์เครื่องนี้ไม่สามารถปลุกด้วยตัวตั้งเวลาได้
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer has no wake alarm that programs can set	คอมพิวเตอร์เครื่องนี้ไม่มีการปลุกที่โปรแกรมสามารถตั้งค่าได้
+	This computer has no wake alarm that programs can set	คอมพิวเตอร์เครื่องนี้ไม่มีสัญญาณปลุกที่โปรแกรมตั้งค่าได้
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4248,11 +4248,11 @@
 	This date has passed: the queue will not start	วันที่นี้ผ่านไปแล้ว: คิวจะไม่เริ่มทำงาน
 #. text in a dialog box
 #, machine
-	This folder does not exist:	โฟลเดอร์นี้ไม่มีอยู่จริง:
+	This folder does not exist:	ไม่มีโฟลเดอร์นี้:
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ไฟล์ Google Drive นี้ต้องการให้คุณลงชื่อเข้าใช้: ลงชื่อเข้าใช้ Google ในเบราว์เซอร์ของคุณ จากนั้นดาวน์โหลดจากที่นั่น
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	ไฟล์ Google Drive นี้ต้องลงชื่อเข้าใช้: ลงชื่อเข้าใช้ Google ในเบราว์เซอร์ แล้วดาวน์โหลดไฟล์จากที่นั่น
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -4309,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	วิดีโอนี้ต้องการให้คุณลงชื่อเข้าใช้ ใช้ปุ่มดาวน์โหลดวิดีโอที่อยู่เหนือวิดีโอในเบราว์เซอร์ของคุณ ซึ่งจะส่งการลงชื่อเข้าใช้ของคุณไป หรือเลือกเบราว์เซอร์ของคุณใน ตัวเลือก → การเข้าสู่ระบบไซต์ → คุกกี้สำหรับเว็บไซต์วิดีโอ
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	วิดีโอนี้ต้องลงชื่อเข้าใช้ ใช้ปุ่มดาวน์โหลดวิดีโอที่อยู่เหนือวิดีโอในเบราว์เซอร์ ซึ่งจะส่งข้อมูลการลงชื่อเข้าใช้ไปด้วย หรือเลือกเบราว์เซอร์ใน ตัวเลือก → การเข้าสู่ระบบไซต์ → คุกกี้สำหรับเว็บไซต์วิดีโอ
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4456,7 +4456,7 @@
 	Tuvalu	ตูวาลู
 #. text in helpers.rs
 #, machine
-	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ตัวช่วยฟรีสองตัวทำให้ทำงานได้ ดาวน์โหลดตอนนี้ และการบันทึกวิดีโอทำได้เพียงคลิกเดียวเมื่อคุณพบวิดีโอ
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	ตัวช่วยฟรีสองตัวทำให้ใช้งานได้ ดาวน์โหลดตอนนี้ แล้วบันทึกวิดีโอได้ในคลิกเดียวเมื่อพบวิดีโอ
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
@@ -4614,7 +4614,7 @@
 	Use the token	ใช้โทเค็น
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	ใช้สำหรับทอร์เรนต์นี้หรือไม่ สิ่งที่ตรงกันจะถูกเก็บไว้ ส่วนที่เหลือจะถูกแทนที่
+	Use them for this torrent? What matches it is kept, the rest replaced.	ต้องการใช้กับทอร์เรนต์นี้หรือไม่ สิ่งที่ตรงกันจะถูกเก็บไว้ ส่วนที่เหลือจะถูกแทนที่
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	ใช้พร็อกซีนี้สำหรับโปรโตคอลต่อไปนี้:
@@ -4624,7 +4624,7 @@
 	Use this rule	ใช้กฎนี้
 #. text in the Options window
 #, machine
-	Used by the list of downloads and the Scheduler.	ใช้โดยรายการดาวน์โหลดและตัวจัดกำหนดการ
+	Used by the list of downloads and the Scheduler.	ใช้กับรายการดาวน์โหลดและตัวจัดกำหนดการ
 #. text in the Options window
 #. column title: the user name
 #, machine
@@ -4726,7 +4726,7 @@
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
 #, machine
-	Wake the computer to run this queue	ปลุกคอมพิวเตอร์เพื่อเรียกใช้คิวนี้
+	Wake the computer to run this queue	ปลุกคอมพิวเตอร์เพื่อเริ่มคิวนี้
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4767,7 +4767,7 @@
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager ไม่ตอบสนอง ดังนั้นการลงชื่อเข้าใช้และรหัสผ่านจะถูกเก็บไว้ในการตั้งค่าของ MDM ซึ่งเข้ารหัสไว้สำหรับบัญชี Windows ของคุณ
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager ไม่ตอบสนอง ดังนั้นข้อมูลบัญชีและรหัสผ่านจึงถูกเก็บไว้ในการตั้งค่าของ MDM โดยเข้ารหัสไว้ให้บัญชี Windows นี้อ่านได้เท่านั้น
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4784,18 +4784,18 @@
 	Windows' power options don't allow wake timers	ตัวเลือกการใช้พลังงานของ Windows ไม่อนุญาตให้ใช้ตัวจับเวลาการปลุก
 #. message or event log entry in the main window
 #, machine
-	with Add URL	ด้วยเพิ่ม URL
+	with Add URL	ด้วยการเพิ่ม URL
 #. text in the Add torrent window
 #. Torrent settings, under "Use the proxy"
 #, machine
-	With it, incoming connections, the DHT and local peers are off.	เมื่อใช้สิ่งนี้ การเชื่อมต่อขาเข้า, DHT และเพียร์ภายในจะถูกปิด
+	With it, incoming connections, the DHT and local peers are off.	เมื่อใช้พร็อกซีนี้ การเชื่อมต่อขาเข้า, DHT และเพียร์ในเครือข่ายท้องถิ่นจะถูกปิด
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
-	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	คำ: ทั้งหมด; | ระหว่างทางเลือก; * และ ?. ตอน: 1x2;1x5-8;2x1-. แต่ละตอนครั้งเดียว
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	คำ: ต้องมีทั้งหมด; | ใช้คั่นตัวเลือก; * และ ?. ตอน: 1x2;1x5-8;2x1-. แต่ละตอนดาวน์โหลดได้ครั้งเดียว
 #. group box title in the Options window
 #, machine
-	Write dates and times	เขียนวันที่และเวลา
+	Write dates and times	รูปแบบวันที่และเวลา
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -4822,15 +4822,15 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	You have the latest version of Mister Download Manager ({version}).	คุณมี Mister Download Manager เวอร์ชันล่าสุด ({version})
+	You have the latest version of Mister Download Manager ({version}).	มี Mister Download Manager เวอร์ชันล่าสุด ({version}) แล้ว
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	You have version {version}.	คุณมีเวอร์ชัน {version}
+	You have version {version}.	มีเวอร์ชัน {version} แล้ว
 #. text in extension.rs
 #. a row of the browser extension's window when no browser was found by name
 #, machine
-	Your browser	เบราว์เซอร์ของคุณ
+	Your browser	เบราว์เซอร์
 #. text in the settings
 #. Options → DNS: the name of a DNS the user typed in, in messages: "your DNS (DNS over TLS)"
 #, machine
@@ -4847,31 +4847,31 @@
 #. text in helpers.rs
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
-	Your system's: {path}	ระบบของคุณ: {path}
+	Your system's: {path}	ของระบบ: {path}
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
-	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp ไม่สามารถอ่านคุกกี้ของ {browser} ในขณะที่ {browser} เปิดอยู่ได้ ปิด {browser} และค้นหาหน้านั้นอีกครั้ง หรือเลือก Firefox ใน ตัวเลือก → การเข้าสู่ระบบไซต์
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp อ่านคุกกี้ของ {browser} ไม่ได้ขณะที่ {browser} เปิดอยู่ ปิด {browser} แล้วเปิดหน้าเว็บอีกครั้ง หรือเลือก Firefox ใน ตัวเลือก → การเข้าสู่ระบบไซต์
 #. text in the Download video window
 #. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
 #, machine
-	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp ไม่สามารถรับคีย์สำหรับคุกกี้ของ {browser} จากพวงกุญแจของระบบได้ ปลดล็อกพวงกุญแจและค้นหาหน้านั้นอีกครั้ง
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp รับคีย์สำหรับคุกกี้ของ {browser} จากพวงกุญแจของระบบไม่ได้ ปลดล็อกพวงกุญแจแล้วเปิดหน้าเว็บอีกครั้ง
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp ไม่สามารถอ่านคุกกี้ของ {browser} ได้: {error}
+	yt-dlp couldn't read {browser}'s cookies: {error}	yt-dlp อ่านคุกกี้ของ {browser} ไม่ได้: {error}
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
-	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp ไม่พบคุกกี้ของ {browser} บนคอมพิวเตอร์เครื่องนี้ ตรวจสอบเบราว์เซอร์และโปรไฟล์ของเบราว์เซอร์ใน ตัวเลือก → การเข้าสู่ระบบไซต์
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp ไม่พบคุกกี้ของ {browser} ในคอมพิวเตอร์เครื่องนี้ ตรวจสอบเบราว์เซอร์และโปรไฟล์ใน ตัวเลือก → การเข้าสู่ระบบไซต์
 #. message or event log entry in the main window
 #, machine
-	yt-dlp is not installed (Tasks → Download video from a page installs it)	ไม่ได้ติดตั้ง yt-dlp (งาน → ดาวน์โหลดวิดีโอจากหน้าเว็บติดตั้ง)
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	ไม่ได้ติดตั้ง yt-dlp (งาน → ดาวน์โหลดวิดีโอจากหน้าเว็บ จะติดตั้งให้)
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
 #, machine
-	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp ลงชื่อเข้าใช้เว็บไซต์วิดีโอด้วยคุกกี้ของเบราว์เซอร์นี้ ซึ่งอ่านจากไฟล์บนคอมพิวเตอร์เครื่องนี้เท่านั้น ใช้เมื่อส่วนขยายของเบราว์เซอร์ไม่ได้ส่งคุกกี้ของหน้าเอง: ที่อยู่เว็บที่วางไว้, เพลย์ลิสต์
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp ลงชื่อเข้าใช้เว็บไซต์วิดีโอด้วยคุกกี้ของเบราว์เซอร์นี้ ซึ่งอ่านจากไฟล์ในคอมพิวเตอร์เครื่องนี้เท่านั้น ใช้เมื่อส่วนขยายของเบราว์เซอร์ไม่ได้ส่งคุกกี้ของหน้า เช่น ที่อยู่เว็บที่วางไว้หรือเพลย์ลิสต์
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ และ XZ; ไฟล์เก็บถาวรแบบแยกส่วน (.part1.rar, .7z.001)\nเมื่อมีทุกวอลุ่มแล้ว ไฟล์ที่มีอยู่แล้วจะถูกเก็บไว้: ไฟล์ใหม่จะถูกกำหนดหมายเลข
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ และ XZ; ไฟล์เก็บถาวรแบบแยกส่วน (.part1.rar, .7z.001)\nเมื่อมีครบทุกวอลุ่มแล้ว จะเก็บไฟล์เดิมไว้และกำหนดหมายเลขให้ไฟล์ใหม่
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	ไม่สามารถอ่าน {file} เพื่อตรวจสอบได้
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ไม่อยู่ในตำแหน่งที่บันทึกไว้แล้ว (ถูกย้ายหรือลบ) การดาวน์โหลดซ้ำในเมนูคลิกขวาจะดาวน์โหลดอีกครั้ง
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} ไม่อยู่ในตำแหน่งที่บันทึกไว้อีกต่อไป (ถูกย้ายหรือลบ) เลือกดาวน์โหลดซ้ำในเมนูคลิกขวาเพื่อดาวน์โหลดอีกครั้ง
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -5061,7 +5061,7 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} จะไม่ให้ไฟล์นี้
+	{service} won't give this file	{service} ไม่สามารถให้ไฟล์นี้ได้
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -5225,7 +5225,7 @@ extension	Help	วิธีใช้
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	ซ่อนบนวิดีโอนี้
+extension	Hide on this video	ซ่อนวิดีโอนี้
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	เรียกดู
+menu	Browse	เปิดโฟลเดอร์
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5719,7 +5719,7 @@ menu	Font	ฟอนต์
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &IDM export file...	จากไฟล์ส่งออก &IDM...
+menu	From &IDM export file...	นำเข้าจากไฟล์ส่งออกของ &IDM...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5770,7 +5770,7 @@ menu	Move/Rename (Ctrl-M)	ย้าย/เปลี่ยนชื่อ (Ctrl-M
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
-menu	Native	ดั้งเดิม
+menu	Native	ตามระบบ
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
@@ -5817,7 +5817,7 @@ menu	R&edownload	ดาวน์โหลดซ้ำ(&E)
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	ประกาศใหม่
+menu	Reannounce	แจ้งตัวติดตามอีกครั้ง
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	บอกเพื่อน(&F)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	การ์ดจอหายไปสองครั้งใน 10 นาที
+menu	The graphics card was lost twice in 10 minutes	การ์ดจอหยุดทำงานสองครั้งใน 10 นาที
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5916,7 +5916,7 @@ menu	To &IDM export file...	ส่งออกไปยังไฟล์ IDM(&I
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	To &text file...	ไปยังไฟล์ข้อความ(&T)...
+menu	To &text file...	ส่งออกเป็นไฟล์ข้อความ(&T)...
 #. menu command in the main window
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
@@ -5982,7 +5982,7 @@ toolbar	Add URL	เพิ่ม URL
 toolbar	Delete	ลบ
 #. toolbar button in the main window
 #, machine
-toolbar	Delete Completed	ลบที่เสร็จสมบูรณ์แล้ว
+toolbar	Delete Completed	ลบรายการที่เสร็จแล้ว
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 #, machine

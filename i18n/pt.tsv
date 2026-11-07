@@ -187,11 +187,11 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	Não é possível guardar um ficheiro deste torrent em segurança: {name}
+	A file of this torrent can't be saved safely: {name}	Não é possível guardar em segurança um ficheiro deste torrent: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Um ID de configuração NextDNS tem seis letras e dígitos (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Um ID de configuração do NextDNS tem seis letras e dígitos (0-9, a-f).
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -199,7 +199,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Um proxy transporta esta transferência: o local e a hora são do proxy, não do servidor.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Um proxy transporta esta transferência: o local e a hora são os do proxy, não os do servidor.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -211,7 +211,7 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	um servidor neste computador enviou a transferência para outro local, o que não passaria por {adapter}
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	um servidor neste computador enviou a transferência para outro local, o que não passaria pelo adaptador {adapter}
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -241,14 +241,14 @@
 	Accounts	Contas
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Add a download (Add URL)	Adicionar um download (Adicionar URL)
+	Add a download (Add URL)	Adicionar uma transferência (Adicionar URL)
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
 	Add an account	Adicionar uma conta
 #. text in the tray icon's menu
 #, machine
-	Add batch download	Adicionar download em lote
+	Add batch download	Adicionar transferência em lote
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -263,7 +263,7 @@
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	Adicionar muitos downloads
+	Add many downloads	Adicionar muitas transferências
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
@@ -271,7 +271,7 @@
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
-	Add new download	Adicionar novo download
+	Add new download	Adicionar nova transferência
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	Adicionar o duplicado e substituir o ficheiro existente
@@ -306,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	Adicionar {n} downloads à lista? Cada vídeo terá a sua própria linha.
+	Add {n} downloads to the list? Each video gets its own row.	Adicionar {n} transferências à lista? Cada vídeo terá a sua própria linha.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -397,7 +397,7 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Anexar também os dados de falha (.dmp): pode conter endereços, cookies e palavras-passe
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Anexar também os dados de falha (.dmp): podem conter endereços, cookies e palavras-passe
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Também eliminar o ficheiro do disco
@@ -530,7 +530,7 @@
 	Audio only, original {type}	Apenas áudio, {type} original
 #. text in the Scheduler window
 #, machine
-	August	Agosto
+	August	agosto
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -545,7 +545,7 @@
 	Automatically put in "{category}" category the following file types:	Colocar automaticamente na categoria "{category}" os seguintes tipos de ficheiro:
 #. text in the Options window
 #, machine
-	Automatically start downloading the following file types:	Iniciar automaticamente o download dos seguintes tipos de ficheiro:
+	Automatically start downloading the following file types:	Iniciar automaticamente a transferência dos seguintes tipos de ficheiro:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -697,7 +697,7 @@
 	Cancel	Cancelar
 #. text in errors.rs
 #, machine
-	cancelled	cancelado
+	cancelled	cancelada
 #. text in errors.rs
 #, machine
 	cannot connect to the server	não é possível ligar ao servidor
@@ -714,7 +714,7 @@
 	cannot resume: {detail}	não é possível retomar: {detail}
 #. group box title in the Options window; text in the Options window
 #, machine
-	Capture downloads from the following browsers:	Capturar transferências dos seguintes browsers:
+	Capture downloads from the following browsers:	Capturar transferências dos seguintes navegadores:
 #. text in extension.rs
 #. the headline of the window that offers the browser extension
 #, machine
@@ -759,7 +759,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	Alterar pasta para a categoria "{category}" na última selecionada
+	Change folder for "{category}" category on last selected	Alterar a pasta da categoria "{category}" na última selecionada
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -774,7 +774,7 @@
 #. checkbox in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. check box in the update window: look for a new version every time MDM starts
 #, machine
-	Check for updates at every start	Verificar atualizações a cada início
+	Check for updates at every start	Procurar atualizações em cada arranque
 #. text in helpers.rs
 #, machine
 	Check your connection, then try again, or get them later from the video window.	Verifique a sua ligação e tente novamente, ou obtenha-os mais tarde na janela de vídeo.
@@ -915,7 +915,7 @@
 	Connection	Ligação
 #. page title in the Options window
 #, machine
-	Connections and Limits	Ligações e Limites
+	Connections and Limits	Ligações e limites
 #. text in the Options window
 #, machine
 	Connections:	Ligações:
@@ -972,16 +972,16 @@
 	Curaçao	Curaçau
 #. text in the Options window
 #, machine
-	Customize "Download progress" dialog	Personalizar caixa de diálogo "Progresso da transferência"
+	Customize "Download progress" dialog	Personalizar a caixa de diálogo «Progresso da transferência»
 #. text in the Options window
 #, machine
 	Customize keys to prevent or force downloading with MDM	Personalizar teclas para impedir ou forçar a transferência com o MDM
 #. text in the Options window
 #, machine
-	Customize MDM Download panels in browsers	Personalizar painéis de transferência do MDM nos browsers
+	Customize MDM Download panels in browsers	Personalizar painéis de transferência do MDM nos navegadores
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	Personalizar itens de menu do MDM no menu de contexto dos browsers
+	Customize MDM menu items in context menu of browsers	Personalizar itens de menu do MDM no menu de contexto dos navegadores
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1010,10 +1010,10 @@
 	Day, month, year	Dia, mês, ano
 #. page title in the Options window
 #, machine
-	Debrid service accounts	Contas de serviço de desbridamento
+	Debrid service accounts	Contas de serviços Debrid
 #. text in the Scheduler window
 #, machine
-	December	Dezembro
+	December	dezembro
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one less
 #, machine
@@ -1025,7 +1025,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Default download directory for "{category}" category	Diretório de transferência predefinido para a categoria "{category}"
+	Default download directory for "{category}" category	Diretório de transferência predefinido para a categoria «{category}»
 #. page title in the Options window
 #, machine
 	Default download settings	Definições de transferência predefinidas
@@ -1040,7 +1040,7 @@
 #. checkbox in the Link grabber window
 #. Link grabber check box: after extracting, the archives go to the Recycle Bin
 #, machine
-	Delete archives after extracting	Eliminar arquivos após a extração
+	Delete archives after extracting	Eliminar ficheiros comprimidos após a extração
 #. window title in a dialog box
 #, machine
 	Delete category	Eliminar categoria
@@ -1050,18 +1050,18 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	Eliminar a categoria "{category}"? Os seus ficheiros permanecem onde estão.
+	Delete the category "{category}"? Its files stay where they are.	Eliminar a categoria «{category}»? Os ficheiros permanecem onde estão.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Eliminar a fila "{queue}"? As suas transferências permanecem na lista.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Eliminar a fila «{queue}»? As transferências permanecem na lista.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads (asks first)	Eliminar as transferências selecionadas (pergunta primeiro)
+	Delete the selected downloads (asks first)	Eliminar as transferências selecionadas (pedir confirmação primeiro)
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Delete the selected downloads and their files (asks first)	Eliminar as transferências selecionadas e os seus ficheiros (pergunta primeiro)
+	Delete the selected downloads and their files (asks first)	Eliminar as transferências selecionadas e os respetivos ficheiros (pedir confirmação primeiro)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1279,7 +1279,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	DR Congo	RD Congo
+	DR Congo	República Democrática do Congo
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Cada ligação passa por ele, a partir de {ip}.
+	Every connection goes through it, from {ip}.	Todas as ligações passam por ele, a partir de {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1480,7 +1480,7 @@
 	Faroe Islands	Ilhas Faroé
 #. text in the Scheduler window
 #, machine
-	February	Fevereiro
+	February	fevereiro
 #. text in rssdlg.rs
 #. RSS feeds window: label before the box where a feed's web address is typed
 #, machine
@@ -1511,7 +1511,7 @@
 	File	Ficheiro
 #. text in the Scheduler window
 #, machine
-	File Name	Nome do Ficheiro
+	File Name	Nome do ficheiro
 #. text in the Download video window
 #, machine
 	File name	Nome do ficheiro
@@ -1520,7 +1520,7 @@
 	File name or part of the name	Nome do ficheiro ou parte do nome
 #. window title in a download's Properties window
 #, machine
-	File Properties	Propriedades do Ficheiro
+	File Properties	Propriedades do ficheiro
 #. text in a download's progress window
 #, machine
 	File size	Tamanho do ficheiro
@@ -2008,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	escreveria {size}, mais do que o {limit} de espaço ou razão
+	it would write {size}, more than the {limit} there is room or reason for	escreveria {size}, mais do que o limite de {limit} permitido
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2030,7 +2030,7 @@
 	Jamaica	Jamaica
 #. text in the Scheduler window
 #, machine
-	January	Janeiro
+	January	janeiro
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2045,13 +2045,13 @@
 	Jordan	Jordânia
 #. text in the Scheduler window
 #, machine
-	July	Julho
+	July	julho
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Saltar para a transferência cujo nome começa com ele
+	Jump to the download whose name starts with it	Saltar para a transferência cujo nome começa por essa letra
 #. text in the Scheduler window
 #, machine
-	June	Junho
+	June	junho
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2069,7 +2069,7 @@
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
-	Kept with the torrent, after the trackers it has.	Mantido com o torrent, após os rastreadores que já tem.
+	Kept with the torrent, after the trackers it has.	Mantidos com o torrent, depois dos rastreadores existentes.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Atalhos de teclado
@@ -2169,7 +2169,7 @@
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	Limitar carregamento para todos os torrents para
+	Limit uploading for all torrents to	Limitar o carregamento de todos os torrents a
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2298,7 +2298,7 @@
 	Map the port on the router (UPnP)	Mapear a porta no router (UPnP)
 #. text in the Scheduler window
 #, machine
-	March	Março
+	March	março
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	Mover os seus downloads para Geral
+	Move its downloads to General	Mover as transferências para Geral
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Mover ou mudar o nome da transferência selecionada
@@ -2636,25 +2636,25 @@
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
-	No downloads here	Nenhum download aqui
+	No downloads here	Nenhuma transferência aqui
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 #, machine
-	No downloads match the filters	Nenhum download corresponde aos filtros
+	No downloads match the filters	Nenhuma transferência corresponde aos filtros
 #. message or event log entry in the main window
 #. title in the empty download list when there are no downloads at all
 #, machine
-	No downloads yet	Ainda não há downloads
+	No downloads yet	Ainda não há transferências
 #. text in a dialog box
 #, machine
-	No folders yet	Ainda sem pastas
+	No folders yet	Ainda não há pastas
 #. text in a dialog box
 #, machine
 	No goes back, to choose another folder.	Não volta atrás, para escolher outra pasta.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
-	No language matches the search	Nenhuma linguagem corresponde à pesquisa
+	No language matches the search	Nenhum idioma corresponde à pesquisa
 #. text in langpick.rs
 #, machine
 	No language matches.	Nenhum idioma corresponde.
@@ -2674,7 +2674,7 @@
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Ainda não há pares. Poucas pessoas podem partilhar este torrent, ou uma firewall, uma VPN ou a rede podem estar a bloquear o BitTorrent.
 #. text in the Options window
 #, machine
-	No proxy/socks	Sem proxy/socks
+	No proxy/socks	Sem proxy/SOCKS
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
@@ -2700,7 +2700,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
-	None	Nenhumas
+	None	Nenhum
 #. text in the Download video window
 #. in the Subtitles list of Download video: the video has no subtitles
 #, machine
@@ -2711,7 +2711,7 @@
 	None ticked: every feed.	Nenhum selecionado: todos os feeds.
 #. text in a download's progress window
 #, machine
-	None: peers come from the DHT and other peers	Nenhum: os pares vêm do DHT e de outros pares
+	None: peers come from the DHT and other peers	Nenhum: os pares vêm da DHT e de outros pares
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2766,7 +2766,7 @@
 	Not now? Get them later from Tasks → Download video from a page.	Agora não? Obtenha-os mais tarde em Tarefas → Transferir vídeo de uma página.
 #. text in a download's Properties window
 #, machine
-	not one server (peers, or a helper's)	não é um servidor (peers ou de um auxiliar)
+	not one server (peers, or a helper's)	não é de um servidor (de pares ou de um auxiliar)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2780,10 +2780,10 @@
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Nota: os servidores de Internet podem interromper a ligação quando a velocidade é demasiado limitada! Assim, não é\nrecomendado utilizar o Limitador de Velocidade para transferir de servidores que não suportam\na funcionalidade "retomar".
 #. text in the Options window
 #, machine
-	Note: These settings don't relate to queue processing	Nota: estas definições não se relacionam com o processamento da fila
+	Note: These settings don't relate to queue processing	Nota: estas definições não estão relacionadas com o processamento da fila
 #. message or event log entry in the main window
 #, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Nada para transferir em {item}: largue ligações, um ficheiro .torrent ou uma lista de endereços (.txt, .ef2).
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Não há nada para transferir em {item}: largue ligações, um ficheiro .torrent ou uma lista de endereços (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	Novembro
@@ -2805,7 +2805,7 @@
 	Off	Desativado
 #. text in the Add torrent window
 #, machine
-	Off: a finished torrent stops, like any download.	Desativado: um torrent concluído para, como qualquer transferência.
+	Off: a finished torrent stops, like any download.	Desativado: um torrent concluído é parado, como qualquer transferência.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	Oferecer para transferir ligações copiadas para a área de transferência
@@ -3028,7 +3028,7 @@
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
-	plain DNS	DNS simples
+	plain DNS	DNS sem encriptação
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -3214,7 +3214,7 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	Substituir asterisco por
+	Replace asterisk to	Substituir o asterisco por
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -3644,7 +3644,7 @@
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
-	Some	Alguns
+	Some	Algumas
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Alguns dos ficheiros do torrent já estão nesta pasta:
@@ -3704,19 +3704,19 @@
 	Start	Iniciar
 #. button in a dialog box
 #, machine
-	Start Download	Iniciar Transferência
+	Start Download	Iniciar transferência
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
 	Start download at	Iniciar transferência em
 #. checkbox in the Scheduler window
 #, machine
-	Start download on Mister Download Manager startup	Iniciar transferência no arranque do Mister Download Manager
+	Start download on Mister Download Manager startup	Iniciar transferência ao iniciar o Mister Download Manager
 #. checkbox in the Options window
 #, machine
-	Start downloading immediately while displaying "Download File Info" dialog	Iniciar transferência imediatamente ao apresentar o diálogo "Informações do Ficheiro de Transferência"
+	Start downloading immediately while displaying "Download File Info" dialog	Iniciar a transferência imediatamente ao apresentar a caixa de diálogo «Informações do ficheiro de transferência»
 #. text in the tray icon's menu
 #, machine
-	Start main download queue	Iniciar fila de transferência principal
+	Start main download queue	Iniciar a fila de transferência principal
 #. text in a download's progress window
 #, machine
 	Start positions and download progress by connections	Posições de início e progresso da transferência por ligações
@@ -3726,7 +3726,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Start {queue}	Iniciar {queue}
+	Start {queue}	A fila {queue} foi iniciada.
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
@@ -3735,11 +3735,11 @@
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Started with gallery-dl {version}	Iniciado com gallery-dl {version}
+	Started with gallery-dl {version}	Iniciada com gallery-dl {version}.
 #. text in the Options window
 #. the same tooltip where no notification area (system tray) shows MDM's icon (some Linux desktops): its window starts minimized instead
 #, machine
-	Started with the computer, it starts minimized: no notification area shows its icon here	Iniciado com o computador, inicia minimizado: nenhuma área de notificação mostra o ícone aqui
+	Started with the computer, it starts minimized: no notification area shows its icon here	Iniciado com o computador, inicia minimizado: não é apresentada nenhuma área de notificação com o ícone
 #. text in the Options window
 #. tooltip of "Launch Mister Download Manager on startup": started with the computer, MDM's window stays hidden, its icon in the notification area (system tray)
 #, machine
@@ -3747,7 +3747,7 @@
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	Iniciado com yt-dlp {version} ({format})
+	Started with yt-dlp {version} ({format})	Iniciada com yt-dlp {version} ({format}).
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3777,7 +3777,7 @@
 	Stop listing	Parar listagem
 #. text in the tray icon's menu
 #, machine
-	Stop main download queue	Parar fila de transferência principal
+	Stop main download queue	Parar a fila de transferência principal
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
@@ -3785,7 +3785,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
-	Stop sharing at a share ratio of	Parar de partilhar quando o rácio de partilha for
+	Stop sharing at a share ratio of	Parar de partilhar quando o rácio de partilha atingir
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
@@ -3793,7 +3793,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Stop {queue}	Parar {queue}
+	Stop {queue}	A fila {queue} foi parada.
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
@@ -3825,16 +3825,16 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	As legendas em {language} foram transferidas na segunda tentativa: estão ao lado do vídeo, não dentro dele.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	As legendas em {language} foram transferidas numa segunda tentativa: estão ao lado do vídeo, não dentro dele.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	As legendas em {language} não puderam ser transferidas: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	Não foi possível transferir as legendas em {language}: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	As legendas em {language} não puderam ser transferidas: {site} recusou (demasiados pedidos).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Não foi possível transferir as legendas em {language}: {site} recusou (demasiados pedidos).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3883,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Tarefas → Capturador de ligações, ou "Transferir todas as ligações" do navegador: os volumes de um arquivo dividido são um pacote, as outras ligações de uma página são outro.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Tarefas → Capturador de ligações, ou «Transferir todas as ligações» do navegador: os volumes de um arquivo dividido constituem um pacote; as outras ligações de uma página constituem outro.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Recomendar a um amigo
@@ -3917,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	o ficheiro .torrent guardado para ele desapareceu
+	the .torrent file kept for it is gone	o ficheiro .torrent guardado para essa transferência desapareceu
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	O endereço tem de ser um endereço http(s) ou ftp(s)
@@ -3961,15 +3961,15 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	The column filters hide every download in this view.	Os filtros de coluna ocultam todos os downloads nesta vista.
+	The column filters hide every download in this view.	Os filtros de coluna ocultam todas as transferências nesta vista.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The computer could not be turned off: {error}	O computador não pôde ser desligado: {error}
+	The computer could not be turned off: {error}	Não foi possível desligar o computador: {error}
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	O computador é ativado um minuto antes da hora de início e mantido ativo enquanto a fila é executada. Mister Download Manager tem de estar em execução (pode aguardar na área de notificação).
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	O computador é ativado um minuto antes da hora de início e mantém-se ativo enquanto a fila é executada. Mister Download Manager tem de estar em execução (pode aguardar na área de notificação).
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
@@ -3978,15 +3978,15 @@
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will go to sleep in {n} seconds.	O computador irá suspender em {n} segundos.
+	The computer will go to sleep in {n} seconds.	O computador entrará em suspensão dentro de {n} segundos.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will hibernate in {n} seconds.	O computador irá hibernar em {n} segundos.
+	The computer will hibernate in {n} seconds.	O computador hibernará dentro de {n} segundos.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will shut down in {n} seconds.	O computador irá encerrar em {n} segundos.
+	The computer will shut down in {n} seconds.	O computador será encerrado dentro de {n} segundos.
 #. text in errors.rs
 #, machine
 	the connection closed before the part was complete	a ligação foi fechada antes de a parte estar completa
@@ -4134,7 +4134,7 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	A transferência selecionada não está completa. Tem a certeza de que pretende eliminá-la\nda lista de transferências do Mister Download Manager?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	A transferência selecionada não está completa. Tem a certeza de que pretende eliminá-la\nda lista de transferências de Mister Download Manager?
 #. text in errors.rs
 #, machine
 	the server answered {status}	o servidor respondeu {status}
@@ -4152,7 +4152,7 @@
 	the server is busy ({status}); try again later	o servidor está ocupado ({status}); tente novamente mais tarde
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	o servidor enviou uma página web em vez do ficheiro (é necessário iniciar sessão ou a ligação expirou?)
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	o servidor enviou uma página Web em vez do ficheiro (é necessário iniciar sessão ou a ligação expirou?)
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	o servidor enviou uma parte inesperada do ficheiro ({detail})
@@ -4201,7 +4201,7 @@
 	The update is open in your system's package installer.	A atualização está aberta no instalador de pacotes do seu sistema.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	A página web de onde este ficheiro foi obtido:
+	The web page from which this file was obtained:	A página Web de onde este ficheiro foi obtido:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4219,7 +4219,7 @@
 	There is already a queue with this name	Já existe uma fila com este nome
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Estas definições não estão disponíveis quando "Mostrar diálogo de transferência concluída" está ativado
+	These settings are unavailable when "Show download complete dialog" is turned on	Estas definições não estão disponíveis quando «Mostrar diálogo de transferência concluída» está ativado
 #. text in helpers.rs
 #, machine
 	They keep downloading if you close this window.	Continuam a transferir se fechar esta janela.
@@ -4229,7 +4229,7 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	Esta categoria ou fila ainda não contém downloads.
+	This category or queue holds no downloads yet.	Esta categoria ou fila ainda não contém transferências.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
@@ -4271,7 +4271,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Este link magnético não nomeia nenhum rastreador e o DHT está desativado, pelo que não é possível encontrar nenhum par.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Esta ligação magnética não especifica nenhum rastreador e o DHT está desativado, pelo que não é possível encontrar pares.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -4749,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	O que um arquivo contém vai para:
+	What an archive holds goes:	O conteúdo do arquivo vai para:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4763,7 +4763,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
-	Windows allows wake timers only while plugged in	O Windows permite temporizadores de ativação apenas enquanto ligado à corrente
+	Windows allows wake timers only while plugged in	O Windows permite temporizadores de ativação apenas enquanto estiver ligado à corrente
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4867,7 +4867,7 @@
 	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	O yt-dlp não encontrou cookies do {browser} neste computador. Verifique o navegador e o seu perfil em Opções → Inícios de Sessão de Sites.
 #. message or event log entry in the main window
 #, machine
-	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp não está instalado (Tarefas → Transferir vídeo de uma página instala-o)
+	yt-dlp is not installed (Tasks → Download video from a page installs it)	O yt-dlp não está instalado (Tarefas → Transferir vídeo de uma página instala-o)
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
 #, machine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} não está ligado: nada é transferido até que volte.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} não está ligado: nada é transferido até voltar.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4911,16 +4911,16 @@
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
-	{browser}: the extension connected	{browser}: a extensão ligada
+	{browser}: the extension connected	{browser}: extensão ligada
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name, {version} the extension's version number
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	{browser}: the extension {version} connected	{browser}: a extensão {version} ligada
+	{browser}: the extension {version} connected	{browser}: extensão {version} ligada
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} serve este ficheiro: o local é o do seu servidor, muitas vezes perto de si, não o do proprietário do site.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} serve este ficheiro: o local é o do servidor, muitas vezes perto de si, não o do proprietário do site.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4937,25 +4937,25 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	{file} não pôde ser eliminado do disco: {error}
+	{file} could not be deleted from the disk: {error}	Não foi possível eliminar {file} do disco: {error}.
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be opened: {error}	{file} não pôde ser aberto: {error}
+	{file} could not be opened: {error}	Não foi possível abrir «{file}»: {error}.
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} não pôde ser lido para verificação
+	{file} could not be read to check it	Não foi possível ler {file} para o verificar.
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} já não está onde foi guardado (movido ou eliminado). Em "Transferir novamente", no menu de contexto, pode obtê-lo novamente.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} já não se encontra no local onde foi guardado (foi movido ou eliminado). A opção «Transferir novamente», no menu de contexto, permite transferi-lo de novo.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: o ficheiro NÃO corresponde à sua soma de verificação ({algorithm})
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: o ficheiro NÃO corresponde à soma de verificação ({algorithm})
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: o ficheiro corresponde à sua soma de verificação ({algorithm})
+	{file}: the file matches its checksum ({algorithm})	{file}: o ficheiro corresponde à soma de verificação ({algorithm})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4973,15 +4973,15 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} não pode ser alcançado através de {adapter}: não tem um endereço desse tipo (IPv4 ou IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	Não é possível aceder a {ip} através de {adapter}: não tem um endereço desse tipo (IPv4 ou IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, automático
+	{language}, automatic	{language}, automática
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} ligado, {known} conhecido
+	{live} connected, {known} known	{live} ligados, {known} conhecidos
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -4999,12 +4999,12 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	{name} não pôde ser transferido: {error}
+	{name} could not be downloaded: {error}	Não foi possível transferir {name}: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} é um arquivo 7z ou RAR. O MDM extrai-os com o 7-Zip, que não está instalado.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} é um arquivo 7z ou RAR. O MDM extrai esses arquivos com o 7-Zip, que não está instalado.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5014,7 +5014,7 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} não é oferecido como {how}.
+	{name} isn't offered as {how}.	{name} não é disponibilizado como {how}.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5024,7 +5024,7 @@
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{n} de {total} escolhidos
+	{n} of {total} chosen	{n} de {total} selecionados
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -5039,17 +5039,17 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} pede para abrandar; o MDM tentará novamente dentro de um minuto
+	{service} asks to slow down; MDM will try again in a minute	{service} pede para reduzir o ritmo; o MDM tentará novamente dentro de um minuto
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} pede-lhe para permitir este computador primeiro: veja o seu e-mail
+	{service} asks you to allow this computer first: see its email	{service} pede que autorize primeiro este computador: consulte o e-mail
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} não consegue obter este torrent: ninguém o partilha ou a sua ligação não pode ser lida
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} não consegue obter este torrent: ninguém o partilha ou não é possível ler a ligação
 #. text in errors.rs
 #, machine
-	{service} can't reach this file host right now; MDM will try again later	{service} não consegue aceder a este anfitrião de ficheiros neste momento; o MDM tentará novamente mais tarde
+	{service} can't reach this file host right now; MDM will try again later	{service} não consegue aceder a este alojamento de ficheiros neste momento; o MDM tentará novamente mais tarde
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
@@ -5569,7 +5569,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	Aplicado da próxima vez que o MDM iniciar
+menu	Applies the next time MDM starts	Aplicado na próxima vez que o MDM for iniciado
 #. menu command in the main window
 #, machine
 menu	Arrange files	Organizar ficheiros
@@ -5675,7 +5675,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	O Direct3D não iniciou aqui: o OpenGL desenha
+menu	Direct3D didn't start here: OpenGL draws	O Direct3D não iniciou neste computador: o OpenGL desenha
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5755,7 +5755,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	O Metal não iniciou aqui: o OpenGL desenha
+menu	Metal didn't start here: OpenGL draws	O Metal não arrancou aqui: o OpenGL desenha
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5774,7 +5774,7 @@ menu	Native	Nativo
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Nenhuma placa gráfica tem um controlador para ele
+menu	No graphics card here has a driver for it	Nenhuma placa gráfica tem um controlador para esse sistema
 #. menu command in the main window
 #, machine
 menu	On Double click	Ao Clicar Duas Vezes
@@ -5898,11 +5898,11 @@ menu	Support &MDM	Apoiar o &MDM
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Tell a &friend	Dizer a um &amigo
+menu	Tell a &friend	Recomendar a um &amigo
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	A placa gráfica foi perdida duas vezes em 10 minutos
+menu	The graphics card was lost twice in 10 minutes	A placa gráfica deixou de funcionar duas vezes em 10 minutos
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5920,7 +5920,7 @@ menu	To &text file...	Para ficheiro de &texto...
 #. menu command in the main window
 #. noun: the toolbar (submenu of View with its settings)
 #, machine
-menu	Toolbar	Barra de Ferramentas
+menu	Toolbar	Barra de ferramentas
 #. menu command in the main window
 #. right-click menu: the submenu of a torrent's own commands
 #, machine
@@ -5982,7 +5982,7 @@ toolbar	Add URL	Adicionar URL
 toolbar	Delete	Eliminar
 #. toolbar button in the main window
 #, machine
-toolbar	Delete Completed	Eliminar Concluídas
+toolbar	Delete Completed	Eliminar concluídas
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 #, machine
@@ -5997,17 +5997,17 @@ toolbar	Resume	Retomar
 toolbar	Scheduler	Agendador
 #. toolbar button in the main window
 #, machine
-toolbar	Start Queue	Iniciar Fila
+toolbar	Start Queue	Iniciar fila
 #. toolbar button in the main window
 #. verb: stop the selected downloads
 #, machine
 toolbar	Stop	Parar
 #. toolbar button in the main window
 #, machine
-toolbar	Stop All	Parar Tudo
+toolbar	Stop All	Parar tudo
 #. toolbar button in the main window
 #, machine
-toolbar	Stop Queue	Parar Fila
+toolbar	Stop Queue	Parar fila
 #. unit after a number in the download list (sizes, speeds, status)
 #. {n} = a number (keep the braces as they are)
 #, machine

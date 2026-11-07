@@ -85,7 +85,7 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} 个文件已存在同名文件，并已编号
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} 个文件因存在同名文件而已重新编号
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -99,7 +99,7 @@
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} tracker added|{n} trackers added	{n}个跟踪器已添加
+@plural	{n} tracker added|{n} trackers added	已添加 {n} 个跟踪器
 #. count in the Add torrent window
 #. where a magnet's peers came from: {n} = trackers asked; {peers} = "3 peers"
 #. {n} = a number (keep the braces as they are)
@@ -187,19 +187,19 @@
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	A file of this torrent can't be saved safely: {name}	此种子文件无法安全保存: {name}
+	A file of this torrent can't be saved safely: {name}	此种子中的文件无法安全保存：{name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 配置 ID 是六个字母和数字（0-9，a-f）。
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS 配置 ID 由六个字母和数字（0-9，a-f）组成。
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
-	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	配置文件的名称或其文件夹。为空时：使用上次使用的配置文件。对于未列出的基于 Chromium 的浏览器（Helium、Thorium...），请选择 Chromium 及其配置文件的文件夹。
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	配置文件的名称或其文件夹。留空：使用上次使用的配置文件。对于未列出的基于 Chromium 的浏览器（Helium、Thorium...），请选择 Chromium 及其配置文件文件夹。
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	此下载由代理服务器承载：位置和时间是代理服务器的，而非服务器的。
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	此下载由代理服务器承载：显示的是代理服务器的位置和时间，而非下载服务器的位置和时间。
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -207,11 +207,11 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	规则会添加标题匹配的新文章。
+	A rule adds the new articles whose titles it matches, as they come.	规则会在新文章发布时添加标题匹配的文章。
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	此计算机上的服务器将下载发送到其他位置，但无法通过 {adapter} 进行
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	此计算机上的服务器将下载发送到其他位置，无法通过 {adapter} 传输
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -234,18 +234,18 @@
 #. text in the Options window
 #. column title: the account's name at the service
 #, machine
-	Account	帐户
+	Account	账户
 #. text in the Options window
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 #, machine
-	Accounts	帐户
+	Accounts	账户
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Add a download (Add URL)	添加下载（添加 URL）
 #. window title in the Options window
 #. window title: adding a debrid service account (Real-Debrid…)
 #, machine
-	Add an account	添加帐户
+	Add an account	添加账户
 #. text in the tray icon's menu
 #, machine
 	Add batch download	添加批量下载
@@ -259,7 +259,7 @@
 #. button in rssdlg.rs
 #. RSS feeds window: button that subscribes to the feed whose address is typed
 #, machine
-	Add feed	添加源
+	Add feed	添加订阅源
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
@@ -284,7 +284,7 @@
 	Add the extension	添加扩展
 #. text in extension.rs
 #, machine
-	Add the free extension: files you download in your browser come here, and videos get a Download button.	添加免费扩展：您在浏览器中下载的文件会到这里，视频会获得一个下载按钮。
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	添加免费扩展：您在浏览器中下载的文件会出现在这里，视频会显示“下载”按钮。
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
@@ -306,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	将 {n} 个下载添加到列表？每个视频占一行。
+	Add {n} downloads to the list? Each video gets its own row.	要将 {n} 个下载添加到列表吗？每个视频占一行。
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -315,7 +315,7 @@
 #. message or event log entry in the main window
 #. event log entry: an RSS download rule added this torrent; {rule} is the rule's name, {feed} the feed's
 #, machine
-	Added by the RSS rule {rule} from {feed}	由 {feed} 的 RSS 规则 {rule} 添加
+	Added by the RSS rule {rule} from {feed}	由 RSS 规则 {rule} 从 {feed} 添加
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 #, machine
@@ -377,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	上传者所有
+	All the uploader's	上传者提供的所有字幕
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -403,7 +403,7 @@
 	Also delete the file from disk	同时从磁盘中删除文件
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	同时获取浏览器会打开的文件（PDF、音乐、视频）
+	Also take files the browser would open (PDF, music, video)	同时下载浏览器会打开的文件（PDF、音乐、视频）
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -411,7 +411,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Always into a folder named after it	始终放入以其命名的文件夹中
+	Always into a folder named after it	始终解压到以其命名的文件夹中
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	在 Mister Download Manager 启动时始终开启限速器
@@ -467,16 +467,16 @@
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
 #, machine
-	Archive password	存档密码
+	Archive password	压缩包密码
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
 #, machine
-	Archives	存档
+	Archives	压缩包
 #. text in the Options window
 #. Options page title: extracting downloaded archives, and Link grabber
 #, machine
-	Archives and Link grabber	存档和链接抓取器
+	Archives and Link grabber	压缩包和链接抓取器
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -505,7 +505,7 @@
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	已再次向跟踪器请求对等点
+	Asked the trackers for peers again	已再次向跟踪器请求节点
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
@@ -759,7 +759,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	更改上次选择的“{category}”类别的文件夹
+	Change folder for "{category}" category on last selected	上次选择下载时更改“{category}”类别的文件夹
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -879,7 +879,7 @@
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 #, machine
-	Complete	完成
+	Complete	已完成
 #. text in the download list (sizes, speeds, status)
 #. category name: compressed archives (zip, rar, 7z)
 #, machine
@@ -1132,13 +1132,13 @@
 	Don't show this dialog again	不再显示此对话框
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	不从以下地址自动开始下载:
+	Don't start downloading automatically from the following addresses:	不从以下地址自动开始下载：
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	不从以下站点自动开始下载:
+	Don't start downloading automatically from the following sites:	不从以下站点自动开始下载：
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	不获取小于（KB，0 = 任意大小）的文件：
+	Don't take files smaller than (KB, 0 = any size):	不下载小于（KB，0 = 任意大小）的文件：
 #. text in a download's progress window
 #, machine
 	Done	完成
@@ -1246,7 +1246,7 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying ffmpeg (about 80 MB)...	正在下载和验证 ffmpeg (约 80 MB)...
+	Downloading and verifying ffmpeg (about 80 MB)...	正在下载和验证 ffmpeg（约 80 MB）...
 #. text in gallerydlg.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1398,7 +1398,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Eswatini	斯威士兰
+	Eswatini	埃斯瓦蒂尼
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1431,7 +1431,7 @@
 #. event log entry: the user gave the checksum the file must have
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	Expected checksum set ({algorithm})	已设置预期校验和 ({algorithm})
+	Expected checksum set ({algorithm})	已设置预期校验和（{algorithm}）
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
@@ -1441,7 +1441,7 @@
 	Export	导出
 #. text in the Options window
 #, machine
-	Extend the availability of Manifest 2 Chrome extensions	延长 Manifest 2 Chrome 扩展的可用性
+	Extend the availability of Manifest 2 Chrome extensions	延长 Manifest 2 Chrome 扩展的可用期限
 #. text in categories.rs
 #, machine
 	Extensions separated by spaces, for example MP4 MKV R0*	扩展名用空格分隔，例如 MP4 MKV R0*
@@ -1730,7 +1730,7 @@
 	Get ready for video downloads	准备好下载视频
 #. button in the Options window
 #, machine
-	Get System	获取系统
+	Get System	从系统获取
 #. text in the Add torrent window
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
@@ -1747,7 +1747,7 @@
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
-	Goes on after the download finishes	下载完成后继续
+	Goes on after the download finishes	下载完成后继续做种
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
@@ -1887,7 +1887,7 @@
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	如果无法访问，请使用系统的 DNS
+	If it can't be reached, use the system's DNS	无法连接时使用系统 DNS
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	恢复下载时忽略文件修改时间更改
@@ -1899,7 +1899,7 @@
 	In a queue	在队列中
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	In the categories: the selected category's menu	在类别中：所选类别的菜单
+	In the categories: the selected category's menu	类别中：所选类别的菜单
 #. text in the Options window
 #. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
 #, machine
@@ -1952,7 +1952,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	当其包含多个项目时，放入以其命名的文件夹中
+	Into a folder named after it, when it holds several things	当其中包含多个项目时，放入以其命名的文件夹中
 #. text in a dialog box
 #, machine
 	Invalid address	地址无效
@@ -2401,10 +2401,10 @@
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
-	Mister Download Manager stopped responding	Mister Download Manager 停止响应
+	Mister Download Manager stopped responding	Mister Download Manager 已停止响应
 #. text in crashui.rs
 #, machine
-	Mister Download Manager stopped responding for a while	Mister Download Manager 停止响应了一段时间
+	Mister Download Manager stopped responding for a while	Mister Download Manager 已停止响应一段时间
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2417,7 +2417,7 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Mister Download Manager's own copy, version {version}	Mister Download Manager 的副本，版本 {version}
+	Mister Download Manager's own copy, version {version}	Mister Download Manager 自带副本，版本 {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	将其下载移动到“常规”
+	Move its downloads to General	将其中的下载移至“常规”
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	移动或重命名所选下载
@@ -2521,7 +2521,7 @@
 #. text in a download's progress window
 #. column title: connection number (abbreviation of Number)
 #, machine
-	N.	否
+	N.	序号
 #. text in the Link grabber window; text in the Add torrent window
 #. column title: file name
 #, machine
@@ -2534,7 +2534,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	主机文件中的名称和本地名称（单个词、.local、.lan）仍使用系统的 DNS。视频页面和 torrent 跟踪器目前使用系统的 DNS。
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	hosts 文件中的名称和本地名称（单个词、.local、.lan）仍使用系统的 DNS。视频页面和 torrent 跟踪器目前使用系统的 DNS。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2567,7 +2567,7 @@
 	network error	网络错误
 #. text in the Options window
 #, machine
-	Never show it on these sites:	从不在此网站显示：
+	Never show it on these sites:	从不在这些网站上显示：
 #. button in the Options window
 #. button: create a new item
 #, machine
@@ -2682,7 +2682,7 @@
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
-	No tracker added: it has them already	未添加跟踪器: 已存在
+	No tracker added: it has them already	未添加跟踪器：已有跟踪器
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
@@ -2777,7 +2777,7 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	注意：当速度限制过大时，Internet 服务器可能会断开连接！因此，不建议使用速度限制器从不支持“恢复”功能的服务器下载。
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	注意：当速度过低时，Internet 服务器可能会断开连接！因此，不建议使用速度限制器从不支持“断点续传”功能的服务器下载。
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	注意：这些设置与队列处理无关
@@ -2924,7 +2924,7 @@
 #. text in a download's progress window
 #. tab title: what happens when the download finishes
 #, machine
-	Options on completion	完成时选项
+	Options on completion	完成后选项
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -2993,7 +2993,7 @@
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
-	Pause the download first	请先暂停下载
+	Pause the download first	先暂停下载
 #. text in a download's progress window
 #. a download's status (state it is in, not a command): stopped for now
 #, machine
@@ -3028,7 +3028,7 @@
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (plain DNS)"
 #, machine
-	plain DNS	纯 DNS
+	plain DNS	未加密 DNS
 #. button in the Options window
 #. verb: plays the sound
 #, machine
@@ -3085,10 +3085,10 @@
 #. text in the Options window
 #. tab title
 #, machine
-	Proxy / Socks	代理/Socks
+	Proxy / Socks	代理/SOCKS
 #. page title in the Options window
 #, machine
-	Proxy / socks configuration	代理/Socks 配置
+	Proxy / socks configuration	代理/SOCKS 配置
 #. text in the settings
 #. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
 #, machine
@@ -3107,7 +3107,7 @@
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
-	Put them into the video	将它们放入视频
+	Put them into the video	将字幕嵌入视频
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3163,7 +3163,7 @@
 #. text in a download's progress window
 #. column title: how much came from the peer
 #, machine
-	Received	已接收
+	Received	接收量
 #. text in a download's progress window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -3179,7 +3179,7 @@
 	Redownload	重新下载
 #. text in a download's Properties window
 #, machine
-	Referer:	引用页:
+	Referer:	来源页：
 #. button in rssdlg.rs
 #. RSS feeds window: fetch the selected feed again now
 #, machine
@@ -3719,7 +3719,7 @@
 	Start main download queue	启动主下载队列
 #. text in a download's progress window
 #, machine
-	Start positions and download progress by connections	连接的起始位置和下载进度
+	Start positions and download progress by connections	各连接的起始位置和下载进度
 #. checkbox in a dialog box
 #, machine
 	Start the queue now	立即启动队列
@@ -3802,11 +3802,11 @@
 #. message or event log entry in the main window
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 #, machine
-	Stopped: the network adapter changed; starting again	已停止：网络适配器已更改；正在重新启动
+	Stopped: the network adapter changed; starting again	已停止：网络适配器已更改；正在重新启动下载
 #. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
-	Stopped: {adapter} is not connected; it goes on when it is back	已停止：{adapter} 未连接；连接后将继续
+	Stopped: {adapter} is not connected; it goes on when it is back	已停止：{adapter} 未连接；重新连接后将继续
 #. text in a download's progress window
 #, machine
 	Stops when the download finishes	下载完成后停止
@@ -3825,7 +3825,7 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} 字幕在第二次尝试时下载：它们在视频旁边，而不是在视频中。
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} 字幕在第二次尝试时才下载成功：字幕文件与视频文件分开保存。
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
@@ -3834,7 +3834,7 @@
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} 字幕无法下载: {site} 拒绝 (请求过多)。
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} 字幕无法下载：{site} 拒绝了请求（请求过多）。
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3883,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	任务 → 链接抓取器，或浏览器的“下载所有链接”：一个拆分\n存档的卷是一个包，页面上的其他链接是另一个包。
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	任务 → 链接抓取器，或浏览器中的“下载所有链接”：拆分压缩包的各个分卷\n作为一个包，页面上的其他链接作为另一个包。
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	告诉朋友
@@ -3923,18 +3923,18 @@
 	The address must be an http(s) or ftp(s) address	地址必须是 http(s) 或 ftp(s) 地址
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Recycle Bin: it was kept	无法将存档移至回收站：已保留
+	The archive could not be moved to the Recycle Bin: it was kept	无法将压缩包移至回收站：已保留
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Trash: it was kept	无法将存档移至废纸篓：已保留
+	The archive could not be moved to the Trash: it was kept	无法将压缩包移至废纸篓：已保留
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Recycle Bin	存档已移至回收站
+	The archive was moved to the Recycle Bin	压缩包已移至回收站
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Trash	存档已移至废纸篓
+	The archive was moved to the Trash	压缩包已移至废纸篓
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	最佳音质（MP3、Opus 和 FLAC）需要 ffmpeg（约 80 MB）。
@@ -3945,7 +3945,7 @@
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
-	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	浏览器的代理（VPN 或代理扩展）要求仅该扩展具有的登录名：请使用 VPN 自己的应用，或在“选项”→“代理/SOCKS”中选择其网络适配器
+	the browser's proxy (a VPN or proxy extension) asks for a login only that extension has: use the VPN's own app, or choose its network adapter in Options → Proxy / Socks	浏览器代理（VPN 或代理扩展）要求登录，但只有该扩展拥有登录信息：使用 VPN 自带的应用，或在“选项”→“代理/SOCKS”中选择相应的网络适配器
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 #, machine
@@ -3974,7 +3974,7 @@
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	The computer will be woken on {date} at {time}	电脑将于 {date} {time} 被唤醒
+	The computer will be woken on {date} at {time}	电脑将在 {date} {time} 唤醒
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -3989,7 +3989,7 @@
 	The computer will shut down in {n} seconds.	计算机将在 {n} 秒后关机。
 #. text in errors.rs
 #, machine
-	the connection closed before the part was complete	部分未完成时连接已关闭
+	the connection closed before the part was complete	连接在部分完成前已关闭
 #. text in errors.rs
 #, machine
 	the connection was lost while receiving data	接收数据时连接丢失
@@ -4017,7 +4017,7 @@
 	The download list could not be saved: {error}. Changes are kept while MDM runs.	无法保存下载列表：{error}。MDM运行时将保留更改。
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	您已经熟悉的下载管理器，经过重新构建，速度更快。在 GNU GPL 版本 3 或更高版本下免费开源。视频由 yt-dlp 查找；种子由 librqbit 运行。
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	您熟悉的下载管理器，经过重建，速度更快。基于 GNU GPL 第 3 版或更高版本免费开源。视频由 yt-dlp 查找；种子由 librqbit 处理。
 #. text in a dialog box
 #, machine
 	The download queue is done.	下载队列已完成。
@@ -4044,7 +4044,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The file could not be read: {error}	文件无法读取: {error}
+	The file could not be read: {error}	无法读取文件：{error}
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4055,7 +4055,7 @@
 	The file matches ({algorithm})	文件匹配 ({algorithm})
 #. text in a dialog box
 #, machine
-	The file saved as	文件另存为
+	The file saved as	文件保存为
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	未在任何其他类别中列出的文件类型
@@ -4070,11 +4070,11 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The files could not be chosen: {error}	无法选择文件: {error}
+	The files could not be chosen: {error}	无法选择文件：{error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The folder could not be created: {error}	无法创建文件夹: {error}
+	The folder could not be created: {error}	无法创建文件夹：{error}
 #. text in errors.rs
 #, machine
 	the folder {path} is not available (drive removed or network share offline?)	文件夹 {path} 不可用(驱动器已移除或网络共享脱机?)
@@ -4093,7 +4093,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The list could not be saved: {error}	列表无法保存: {error}
+	The list could not be saved: {error}	无法保存列表：{error}
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
@@ -4112,10 +4112,10 @@
 #. text in errors.rs
 #. error installing yt-dlp or ffmpeg; {what} = what its release lacks (a file name, or e.g. "LGPL Windows build")
 #, machine
-	the release has no {what}	此版本没有 {what}
+	the release has no {what}	此版本缺少 {what}
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	此版本的校验和列表未由其发布者的密钥签名
+	the release's checksum list is not signed by its publisher's key	此版本的校验和列表未使用发布者的密钥签名
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4140,13 +4140,13 @@
 	the server answered {status}	服务器响应 {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	服务器无法发送文件部分，因此无法恢复
+	the server can't send parts of the file, so it can't be resumed	服务器无法发送文件的部分内容，因此无法恢复下载
 #. text in errors.rs
 #, machine
 	the server did not answer in time	服务器未及时响应
 #. text in errors.rs
 #, machine
-	the server did not send the requested part	服务器未发送请求的部分
+	the server did not send the requested part	服务器未发送请求的文件部分
 #. text in errors.rs
 #, machine
 	the server is busy ({status}); try again later	服务器正忙({status})；请稍后重试
@@ -4464,11 +4464,11 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a letter in From and in To	在“从”和“到”中键入一个字母
+	Type a letter in From and in To	在“从”和“到”中输入一个字母
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Type a number in From and in To	在“从”和“到”中键入一个数字
+	Type a number in From and in To	在“从”和“到”中输入一个数字
 #. text in the settings
 #. Options → DNS: no server address was typed
 #, machine
@@ -4476,11 +4476,11 @@
 #. tooltip (why a control is greyed) in categories.rs
 #. why OK is greyed in the category dialog
 #, machine
-	Type the category's name	键入类别的名称
+	Type the category's name	输入类别名称
 #. text in a dialog box
 #. why Start Download is greyed in Download File Info
 #, machine
-	Type the file's name in Save As	在“另存为”中键入文件名
+	Type the file's name in Save As	在“另存为”中输入文件名
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
@@ -4488,7 +4488,7 @@
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
-	Type the queue's name	键入队列名称
+	Type the queue's name	输入队列名称
 #. text in the Options window
 #. Options → Add an account: waiting while the user types the code at the service's page; {page} its address, {time} minutes:seconds left
 #. {time} = a time of day (keep the braces as they are)
@@ -4497,7 +4497,7 @@
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
-	Type what to find, and tick at least one place to look	键入要查找的内容，并至少勾选一个查找位置
+	Type what to find, and tick at least one place to look	输入要查找的内容，并至少勾选一个查找位置
 #. text in a download's Properties window
 #, machine
 	Type:	类型:
@@ -4589,7 +4589,7 @@
 #. button in helpers.rs
 #. Video helpers: button: go back to the copy MDM downloads and checks itself
 #, machine
-	Use MDM's own copy	使用 MDM 自己的副本
+	Use MDM's own copy	使用 MDM 自带的副本
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -4713,7 +4713,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	等待列表，或停止列出
+	Wait for the list, or stop listing	等待列表，或停止列出视频
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -4730,7 +4730,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Wallis and Futuna	瓦利斯和富图纳
+	Wallis and Futuna	瓦利斯和富图纳群岛
 #. text in the Scheduler window
 #. Wednesday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -4784,7 +4784,7 @@
 	Windows' power options don't allow wake timers	Windows 的电源选项不允许唤醒计时器
 #. message or event log entry in the main window
 #, machine
-	with Add URL	通过添加 URL
+	with Add URL	通过“添加 URL”
 #. text in the Add torrent window
 #. Torrent settings, under "Use the proxy"
 #, machine
@@ -4792,7 +4792,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
-	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	词语：全部；替代项之间用 | 分隔；* 和 ? 是通配符。剧集：1x2;1x5-8;2x1-。每集一次。
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	词语：全部匹配；替代项之间用 | 分隔；* 和 ? 是通配符。剧集：1x2;1x5-8;2x1-。每集只匹配一次。
 #. group box title in the Options window
 #, machine
 	Write dates and times	写入日期和时间
@@ -4838,16 +4838,16 @@
 #. text in errors.rs
 #. a download's error: the signed-in Google account may not download this Drive file
 #, machine
-	your Google account has no access to this file, or its owner turned off downloading	您的 Google 帐户无权访问此文件，或者其所有者已关闭下载
+	your Google account has no access to this file, or its owner turned off downloading	您的 Google 帐户无权访问此文件，或者文件所有者已禁止下载
 #. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Your own program: {path} ({version})	您的程序: {path} ({version})
+	Your own program: {path} ({version})	您的程序：{path} ({version})
 #. text in helpers.rs
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
-	Your system's: {path}	您的系统: {path}
+	Your system's: {path}	您的系统：{path}
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
@@ -4855,7 +4855,7 @@
 #. text in the Download video window
 #. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
 #, machine
-	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp 无法从系统密钥环中获取 {browser} 的 Cookie 密钥。请解锁密钥环并再次查找该页面。
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp 无法从系统密钥环中获取 {browser} 的 Cookie 密钥。请解锁密钥环并重新查找该页面。
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
 #. {error} = an error message (keep the braces as they are)
@@ -4871,11 +4871,11 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
 #, machine
-	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp 使用此浏览器的 Cookie 登录视频网站，这些 Cookie 仅从此计算机上的文件读取。当浏览器扩展程序未传递页面本身的 Cookie 时使用：粘贴的地址、播放列表。
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp 使用此浏览器的 Cookie 登录视频网站，且仅从此计算机上的文件读取 Cookie。当浏览器扩展程序未传递页面本身的地址时使用，例如粘贴的地址或播放列表。
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
-	yt-dlp: finds the video	yt-dlp: 查找视频
+	yt-dlp: finds the video	yt-dlp：查找视频
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP、7Z、RAR、TAR、GZ 和 XZ；拆分存档（.part1.rar、.7z.001）在\n所有卷都存在时。已存在的文件将保留：新文件将编号。
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP、7Z、RAR、TAR、GZ 和 XZ；拆分压缩包（.part1.rar、.7z.001）仅在\n所有分卷都到齐后处理。已存在的文件将保留：新文件将编号。
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} 未连接：连接后才能下载任何内容。
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} 未连接：恢复连接后才能下载任何内容。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4903,7 +4903,7 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}：下载完成后检查
+	{algorithm}: checked when the download finishes	{algorithm}：下载完成后进行校验
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
@@ -4944,10 +4944,10 @@
 	{file} could not be opened: {error}	无法打开 {file}：{error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	无法读取 {file} 以进行检查
+	{file} could not be read to check it	无法读取 {file} 以进行校验
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} 不再位于其保存位置（已移动或删除）。右键单击菜单中的“重新下载”可再次获取它。
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} 已不在原来的保存位置（已移动或删除）。可通过右键菜单中的“重新下载”再次下载。
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4973,15 +4973,15 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	无法通过 {adapter} 访问 {ip}：它没有该类型的地址 (IPv4 或 IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	无法通过 {adapter} 访问 {ip}：该适配器没有此类地址（IPv4 或 IPv6）
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}，自动
+	{language}, automatic	{language}，自动生成
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
-	{live} connected, {known} known	{live} 已连接，{known} 已知
+	{live} connected, {known} known	{live} 个已连接，{known} 个已知
 #. text in the Scheduler window
 #. the calendar's title: {month} = a month's name, {year} = its year
 #, machine
@@ -4999,12 +4999,12 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	{name} 无法下载: {error}
+	{name} could not be downloaded: {error}	{name} 无法下载：{error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 是 7z 或 RAR 存档。MDM 使用 7-Zip 提取这些文件，但 7-Zip 未安装。
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 是 7z 或 RAR 压缩包。MDM 使用 7-Zip 提取这些压缩包，但尚未安装 7-Zip。
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5014,7 +5014,7 @@
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} 不以 {how} 形式提供。
+	{name} isn't offered as {how}.	{name} 不提供 {how} 形式。
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5028,25 +5028,25 @@
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} selected	已选择 {total} 中的 {n} 个
+	{n} of {total} selected	已选择 {total} 个中的 {n} 个
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
-	{percent} at {service}	{service} 上 {percent}
+	{percent} at {service}	{service} 上的进度：{percent}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} 要求放慢速度；MDM 将在一分钟后重试
+	{service} asks to slow down; MDM will try again in a minute	{service} 要求降低请求频率；MDM 将在一分钟后重试
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} 要求您先允许此计算机：请查看其电子邮件
+	{service} asks you to allow this computer first: see its email	{service} 要求您先授权此计算机：请查看其电子邮件
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} 无法获取此种子: 无人共享，或其链接无法读取
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} 无法获取此种子：无人共享，或其链接无法读取
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} 暂时无法访问此文件主机；MDM 将稍后重试
@@ -5057,11 +5057,11 @@
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
-	{service} refuses this connection (a VPN or server address?)	{service} 拒绝此连接（VPN 或服务器地址？）
+	{service} refuses this connection (a VPN or server address?)	{service} 拒绝此连接（可能是 VPN 或服务器地址？）
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} 不会提供此文件
+	{service} won't give this file	{service} 拒绝提供此文件
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -5160,7 +5160,7 @@ column	Size	大小
 #. column title in the download list in the download list
 #. noun: where the download comes from (Web or Torrent)
 #, machine
-column	Source	源
+column	Source	来源
 #. column title in the download list in the download list
 #. noun: the download's state or progress
 #, machine
@@ -5225,7 +5225,7 @@ extension	Help	帮助
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	在此视频上隐藏
+extension	Hide on this video	仅在此视频上隐藏
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5537,7 +5537,7 @@ menu	&Tutorials	教程(&U)
 #. menu command in standard windows
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Undo	&撤消
+menu	&Undo	撤销(&U)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	浏览
+menu	Browse	打开文件夹
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5675,7 +5675,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	Direct3D 未在此处启动: OpenGL 绘制
+menu	Direct3D didn't start here: OpenGL draws	Direct3D 未能启动：使用 OpenGL 绘制
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5700,7 +5700,7 @@ menu	Edit queue	编辑队列
 #. menu command in the main window
 #. verb: unpack the downloaded archive (zip, 7z, rar) into its folder
 #, machine
-menu	Extract	提取
+menu	Extract	解压
 #. menu command in the main window
 #, machine
 menu	Find (Ctrl-F)	查找 (Ctrl-F)
@@ -5739,7 +5739,7 @@ menu	High contrast	高对比度
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	无法启动: 日志中说明了原因
+menu	It couldn't start: the log says why	无法启动：日志中说明了原因
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
@@ -5770,11 +5770,11 @@ menu	Move/Rename (Ctrl-M)	移动/重命名 (Ctrl-M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
-menu	Native	本机
+menu	Native	原生
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	此处没有显卡有其驱动程序
+menu	No graphics card here has a driver for it	此处没有显卡配有该图形系统的驱动程序
 #. menu command in the main window
 #, machine
 menu	On Double click	双击时

@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	શું તમે Mister Download Manager ની ડાઉનલોડ્સની સૂચિમાંથી {n} ડાઉનલોડ કાઢી નાખવા માંગો છો?|શું તમે Mister Download Manager ની ડાઉનલોડ્સની સૂચિમાંથી આ {n} ડાઉનલોડ્સ કાઢી નાખવા માંગો છો?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	શું તમે Mister Download Managerની ડાઉનલોડ્સની સૂચિમાંથી {n} ડાઉનલોડ કાઢી નાખવા માંગો છો?|શું તમે Mister Download Managerની ડાઉનલોડ્સની સૂચિમાંથી આ {n} ડાઉનલોડ કાઢી નાખવા માંગો છો?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -64,7 +64,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} ડાઉનલોડ થઈ રહ્યું છે|{n} ડાઉનલોડ થઈ રહ્યાં છે
+@plural	{n} downloading|{n} downloading	{n} ડાઉનલોડ થઈ રહ્યું છે|{n} ડાઉનલોડ થઈ રહ્યા છે
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
@@ -191,11 +191,11 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS કન્ફિગરેશન ID છ અક્ષરો અને અંકો (0-9, a-f) નો હોય છે.
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS કન્ફિગરેશન ID છ અક્ષરો અથવા અંકો (0-9, a-f)નું બનેલું હોય છે.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
-	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	પ્રોફાઇલનું નામ અથવા તેનું ફોલ્ડર. ખાલી: છેલ્લે ઉપયોગમાં લેવાયેલ પ્રોફાઇલ. Chromium પર બનેલા બ્રાઉઝર માટે જે સૂચિબદ્ધ નથી (Helium, Thorium...), Chromium અને તેની પ્રોફાઇલનું ફોલ્ડર પસંદ કરો.
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	પ્રોફાઇલનું નામ અથવા તેનું ફોલ્ડર. ખાલી: છેલ્લે ઉપયોગમાં લેવાયેલી પ્રોફાઇલ. સૂચિબદ્ધ ન હોય તેવા Chromium આધારિત બ્રાઉઝર (Helium, Thorium...) માટે Chromium અને તેની પ્રોફાઇલનું ફોલ્ડર પસંદ કરો.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -207,7 +207,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	એક નિયમ નવા લેખોને ઉમેરે છે જેના શીર્ષકો તે મેળ ખાય છે, જેમ જેમ તે આવે છે.
+	A rule adds the new articles whose titles it matches, as they come.	નિયમ આવતા નવા લેખોમાંથી જેનાં શીર્ષકો સાથે મેળ ખાય છે તે લેખો ઉમેરે છે.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
@@ -328,7 +328,7 @@
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	Address changed to {host}	સરનામું {host} માં બદલ્યું
+	Address changed to {host}	સરનામું {host} પર બદલાયું
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -373,7 +373,7 @@
 	All files	બધી ફાઇલો
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	બધું સેટ છે: વીડિયોવાળા પેજ પર, ટાસ્ક → પેજમાંથી વીડિયો ડાઉનલોડ કરો નો ઉપયોગ કરો.
+	All set: on a page with a video, use Tasks → Download video from a page.	બધું સેટ છે: વીડિયોવાળા પેજ પર, Tasks → Download video from a page નો ઉપયોગ કરો.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
@@ -393,7 +393,7 @@
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
-	Already reported as issue #{number}: {title}	પહેલેથી જ ઇશ્યૂ #{number}: {title} તરીકે રિપોર્ટ થયેલ છે
+	Already reported as issue #{number}: {title}	પહેલેથી જ ઇશ્યૂ #{number} તરીકે રિપોર્ટ થઈ ચૂક્યું છે: {title}
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
@@ -545,7 +545,7 @@
 	Automatically put in "{category}" category the following file types:	નીચેના ફાઇલ પ્રકારોને આપમેળે "{category}" શ્રેણીમાં મૂકો:
 #. text in the Options window
 #, machine
-	Automatically start downloading the following file types:	નીચેના ફાઇલ પ્રકારોને આપમેળે ડાઉનલોડ કરવાનું શરૂ કરો:
+	Automatically start downloading the following file types:	નીચેના ફાઇલ પ્રકારોનું ડાઉનલોડ આપમેળે શરૂ કરો:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -630,7 +630,7 @@
 	Brazil	બ્રાઝિલ
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	{names} ને તે જેમ શિપ કરવામાં આવ્યા હતા તેમ પાછા લાવો: તેમના નામ, ફાઇલ પ્રકારો અને ફોલ્ડર્સ? તમારી પોતાની કેટેગરીઝ, જનરલ અને ટોરેન્ટ્સ જેમ છે તેમ રહેશે. જનરલમાં પહેલાથી ખસેડવામાં આવેલ ડાઉનલોડ્સ ત્યાં જ રહેશે.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	શું {names} ને શરૂઆતમાં જેમ મોકલવામાં આવ્યા હતા તેમ પાછા લાવવા માંગો છો: તેમનાં નામ, ફાઇલ પ્રકારો અને ફોલ્ડર્સ? તમારી પોતાની શ્રેણીઓ, જનરલ અને ટોરેન્ટ્સ જેમ છે તેમ રહેશે. જનરલમાં પહેલેથી ખસેડેલા ડાઉનલોડ્સ ત્યાં જ રહેશે.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -708,7 +708,7 @@
 #. text in the Checksum window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Cannot read the file: {error}	ફાઇલ વાંચી શકાતી નથી: {error}
+	Cannot read the file: {error}	ફાઇલ વાંચી શકાઈ નથી: {error}
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	ફરી શરૂ કરી શકાતું નથી: {detail}
@@ -893,7 +893,7 @@
 	Confirm before deleting downloads	ડાઉનલોડ્સ કાઢી નાખતા પહેલાં પુષ્ટિ કરો
 #. window title in a dialog box
 #, machine
-	Confirm deletion of downloads	ડાઉનલોડ્સ કાઢી નાખવાની પુષ્ટિ કરો
+	Confirm deletion of downloads	ડાઉનલોડ્સ કાઢી નાખવાની પુષ્ટિ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -975,7 +975,7 @@
 	Customize "Download progress" dialog	"ડાઉનલોડ પ્રગતિ" ડાયલોગ કસ્ટમાઇઝ કરો
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	MDM સાથે ડાઉનલોડિંગ અટકાવવા અથવા દબાણ કરવા માટે કી કસ્ટમાઇઝ કરો
+	Customize keys to prevent or force downloading with MDM	MDM સાથે ડાઉનલોડ અટકાવવા અથવા ચાલુ કરવા માટેની કી કસ્ટમાઇઝ કરો
 #. text in the Options window
 #, machine
 	Customize MDM Download panels in browsers	બ્રાઉઝર્સમાં MDM ડાઉનલોડ પેનલ્સ કસ્ટમાઇઝ કરો
@@ -1031,7 +1031,7 @@
 	Default download settings	ડિફૉલ્ટ ડાઉનલોડ સેટિંગ્સ
 #. text in the Options window
 #, machine
-	Default max. conn. number	ડિફૉલ્ટ મહત્તમ કનેક્શન નંબર
+	Default max. conn. number	ડિફૉલ્ટ મહત્તમ કનેક્શન સંખ્યા
 #. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
@@ -1050,12 +1050,12 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	"{category}" કેટેગરી કાઢી નાખો? તેની ફાઇલો જ્યાં છે ત્યાં જ રહેશે.
+	Delete the category "{category}"? Its files stay where they are.	શું તમે "{category}" શ્રેણી કાઢી નાખવા માંગો છો? તેની ફાઇલો જ્યાં છે ત્યાં જ રહેશે.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	કતાર "{queue}" કાઢી નાંખવી? તેના ડાઉનલોડ્સ સૂચિમાં રહેશે.
+	Delete the queue "{queue}"? Its downloads stay in the list.	શું તમે "{queue}" કતાર કાઢી નાખવા માંગો છો? તેના ડાઉનલોડ્સ સૂચિમાં રહેશે.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads (asks first)	પસંદ કરેલા ડાઉનલોડ્સ કાઢી નાંખો (પહેલાં પૂછે છે)
@@ -1093,11 +1093,11 @@
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
-	DNS over HTTPS	HTTPS પર DNS
+	DNS over HTTPS	HTTPS મારફતે DNS
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
 #, machine
-	DNS over TLS	TLS પર DNS
+	DNS over TLS	TLS મારફતે DNS
 #. window title in the Options window
 #. window title: the settings of the DNS chosen in Options → Connection
 #, machine
@@ -1107,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	ડાઉનલોડ કરવાનું શરૂ કરશો નહીં, ફક્ત કતારમાં ફાઇલો ઉમેરો
+	Do not start downloading, only add files to the queue	ડાઉનલોડ આપમેળે શરૂ ન થાય, ફક્ત કતારમાં ફાઇલો ઉમેરાય
 #. text in a dialog box
 #, machine
 	Do you want to create it?	શું તમે તેને બનાવવા માંગો છો?
@@ -1132,16 +1132,16 @@
 	Don't show this dialog again	આ ડાયલોગ ફરીથી બતાવશો નહીં
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	નીચેના સરનામાંઓ પરથી આપમેળે ડાઉનલોડ કરવાનું શરૂ કરશો નહીં:
+	Don't start downloading automatically from the following addresses:	નીચેના સરનામાંઓ પરથી આપમેળે ડાઉનલોડ શરૂ ન થાય:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	નીચેની સાઇટ્સ પરથી આપમેળે ડાઉનલોડ કરવાનું શરૂ કરશો નહીં:
+	Don't start downloading automatically from the following sites:	નીચેની સાઇટ્સ પરથી આપમેળે ડાઉનલોડ શરૂ ન થાય:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	નાની ફાઇલો ન લો (KB, 0 = કોઈપણ કદ):
+	Don't take files smaller than (KB, 0 = any size):	આ કદથી નાની ફાઇલો ડાઉનલોડ ન કરવી (KB, 0 = કોઈપણ કદ):
 #. text in a download's progress window
 #, machine
-	Done	થઈ ગયું
+	Done	પૂર્ણ થયું
 #. button in the Options window
 #. button (short): move the account down the list
 #, machine
@@ -1159,13 +1159,13 @@
 	Download a gallery	ગેલેરી ડાઉનલોડ કરો
 #. window title in a dialog box; text in a dialog box; text in the Options window
 #, machine
-	Download complete	ડાઉનલોડ પૂર્ણ
+	Download complete	ડાઉનલોડ પૂર્ણ થયું
 #. text in the Options window
 #, machine
-	Download failed	ડાઉનલોડ નિષ્ફળ
+	Download failed	ડાઉનલોડ નિષ્ફળ ગયું
 #. window title in a dialog box
 #, machine
-	Download File Info	ફાઇલ માહિતી ડાઉનલોડ કરો
+	Download File Info	ડાઉનલોડ ફાઇલની માહિતી
 #. text in the Add torrent window
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
@@ -1184,14 +1184,14 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MB થી વધુ ડાઉનલોડ કરશો નહીં\nદર {hours} કલાકે
+	Download no more than {mb} MBytes\nevery {hours} hours	{mb} MBથી વધુ ડાઉનલોડ નહીં\nદર {hours} કલાકે
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	હવે ડાઉનલોડ કરો
 #. window title in the Options window
 #. window title: the download button the extension shows over videos
 #, machine
-	Download panels	ડાઉનલોડ પેનલ
+	Download panels	ડાઉનલોડ પેનલો
 #. text in rssdlg.rs
 #. RSS feeds window: the tab of the rules that add articles by themselves
 #, machine
@@ -1203,7 +1203,7 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	આ એકાઉન્ટ્સ દ્વારા સપોર્ટેડ ફાઇલ-હોસ્ટ લિંક્સ ડાઉનલોડ કરો
+	Download supported file-host links through these accounts	આ એકાઉન્ટ્સ દ્વારા સપોર્ટેડ ફાઇલ હોસ્ટની લિંક્સ ડાઉનલોડ થાય
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
@@ -1214,7 +1214,7 @@
 #. text in helpers.rs
 #. the headline of the first start's helpers window
 #, machine
-	Download videos from YouTube and 1,000+ sites	YouTube અને 1,000+ સાઇટ્સ પરથી વીડિયો ડાઉનલોડ કરો
+	Download videos from YouTube and 1,000+ sites	YouTube અને 1,000+ સાઇટ્સ પરથી વિડિઓ ડાઉનલોડ કરો
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
@@ -1235,18 +1235,18 @@
 #. text in a dialog box
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
-	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} બાઇટ્સ) ડાઉનલોડ કરેલ
+	Downloaded {size} ({bytes} Bytes)	{size} ({bytes} બાઇટ્સ) ડાઉનલોડ થયું
 #. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
 	Downloading	ડાઉનલોડ થઈ રહ્યું છે
 #. message or event log entry in the main window
 #, machine
-	Downloading again from the start	ફરીથી શરૂઆતથી ડાઉનલોડ થઈ રહ્યું છે
+	Downloading again from the start	શરૂઆતથી ફરીથી ડાઉનલોડ થઈ રહ્યું છે
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg ડાઉનલોડ અને ચકાસી રહ્યું છે (લગભગ 80 MB)...
+	Downloading and verifying ffmpeg (about 80 MB)...	ffmpeg ડાઉનલોડ થઈ રહ્યું છે અને ચકાસાઈ રહ્યું છે (લગભગ 80 MB)...
 #. text in gallerydlg.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1431,7 +1431,7 @@
 #. event log entry: the user gave the checksum the file must have
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	Expected checksum set ({algorithm})	અપેક્ષિત ચેકસમ સેટ ({algorithm})
+	Expected checksum set ({algorithm})	અપેક્ષિત ચેકસમ સેટ થયું ({algorithm})
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
@@ -1663,7 +1663,7 @@
 #. option (radio button) in the Options window
 #. Options → Sites Logins → Cookies for video sites: read the cookies of the browser chosen in the list after it
 #, machine
-	From browser:	બ્રાઉઝરથી:
+	From browser:	બ્રાઉઝરમાંથી:
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -1701,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ઇન્સ્ટોલ કરેલ નથી (ગેલેરીના સરનામા સાથે URL ઉમેરો તેને ઇન્સ્ટોલ કરે છે)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl ઇન્સ્ટોલ કરેલ નથી (ગેલેરીના સરનામા સાથે URL ઉમેરવાથી તે ઇન્સ્ટોલ થાય છે)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1747,7 +1747,7 @@
 #. text in a download's progress window
 #. a torrent's sharing, when Torrent settings keep it on
 #, machine
-	Goes on after the download finishes	ડાઉનલોડ સમાપ્ત થયા પછી ચાલુ રહે છે
+	Goes on after the download finishes	ડાઉનલોડ પૂર્ણ થયા પછી ચાલુ રહે છે
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
@@ -1856,7 +1856,7 @@
 #. text in the Scheduler window
 #. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
 #, machine
-	How to allow it	તેને કેવી રીતે મંજૂરી આપવી
+	How to allow it	તેની મંજૂરી કેવી રીતે આપવી
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1873,7 +1873,7 @@
 	Hungary	હંગેરી
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	હું Mister Download Manager સાથે ડાઉનલોડ કરું છું: ઝડપી, મફત અને તે તમે પહેલાથી જાણો છો તે ડાઉનલોડ મેનેજર જેવું લાગે છે. {link}
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	હું Mister Download Managerથી ડાઉનલોડ કરું છું: ઝડપી, મફત અને તમે પહેલેથી જાણો છો તે ડાઉનલોડ મેનેજર જેવું. {link}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1883,11 +1883,11 @@
 	If a duplicate download link is added:	જો ડુપ્લિકેટ ડાઉનલોડ લિંક ઉમેરવામાં આવે તો:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	જો હાલની ફાઇલ પૂર્ણ હોય, તો ડાઉનલોડ પૂર્ણ સંવાદ બતાવો; અન્યથા તેને ફરી શરૂ કરો.
+	If existing file is complete, show download complete dialog; otherwise resume it.	જો હાલની ફાઇલ પૂર્ણ થઈ હોય, તો ડાઉનલોડ પૂર્ણ થવાનો સંવાદ બતાવો; અન્યથા તેને ફરી શરૂ કરો.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	જો તે પહોંચી ન શકાય, તો સિસ્ટમનો DNS વાપરો
+	If it can't be reached, use the system's DNS	જો તે પહોંચી શકાય તેમ ન હોય, તો સિસ્ટમનો DNS વાપરો
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	ડાઉનલોડ ફરી શરૂ કરતી વખતે ફાઇલ સંશોધન સમયના ફેરફારોને અવગણો
@@ -1948,7 +1948,7 @@
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Installing the update...	અપડેટ ઇન્સ્ટોલ કરી રહ્યું છે...
+	Installing the update...	અપડેટ ઇન્સ્ટોલ થઈ રહ્યું છે...
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -2008,11 +2008,11 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	તે {size} લખશે, જે {limit} જગ્યા અથવા કારણ કરતાં વધુ છે
+	it would write {size}, more than the {limit} there is room or reason for	તે {size} લખશે, જે ઉપલબ્ધ {limit} જગ્યા કરતાં વધુ છે
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, વગેરે, img100.jpg જેવા ક્રમિક ફાઇલ નામોના જૂથને MDM ડાઉનલોડ કતારમાં ઉમેરવાનું શક્ય છે.\nફાઇલ નામ પેટર્ન માટે એસ્ટરિસ્ક વાઇલ્ડકાર્ડનો ઉપયોગ કરો.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	img001.jpg, img002.jpg, વગેરે, img100.jpg જેવા ક્રમિક ફાઇલ નામોના જૂથને MDM ડાઉનલોડ કતારમાં ઉમેરી શકાય છે.\nફાઇલ નામની પેટર્ન માટે એસ્ટરિસ્ક વાઇલ્ડકાર્ડનો ઉપયોગ કરો.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2076,11 +2076,11 @@
 #. window title in the Options window
 #. window title: the keys that force or prevent downloading with MDM
 #, machine
-	Keys	કીઝ
+	Keys	કી
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
-	Keys...	કીઝ...
+	Keys...	કી...
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2088,7 +2088,7 @@
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
 #, machine
-	known once it has run	એકવાર ચાલ્યા પછી જાણીતું
+	known once it has run	ચાલ્યા પછી જાણી શકાય છે
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	તેના ડાઉનલોડ્સને સામાન્યમાં ખસેડો
+	Move its downloads to General	તેના ડાઉનલોડ્સને સામાન્ય શ્રેણીમાં ખસેડો
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	પસંદ કરેલા ડાઉનલોડને ખસેડો અથવા નામ બદલો
@@ -2478,7 +2478,7 @@
 	Move to folder	ફોલ્ડરમાં ખસેડો
 #. message or event log entry in the main window
 #, machine
-	Move to queue	કતારમાં ખસેડો
+	Move to queue	કતારમાં ખસેડ્યું
 #. text in the Scheduler window
 #, machine
 	Move up	ઉપર ખસેડો
@@ -2534,7 +2534,7 @@
 #. text in the Options window
 #. Options → DNS settings: what the DNS choice covers and what it doesn't
 #, machine
-	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	તમારી હોસ્ટ ફાઇલમાંના નામો અને સ્થાનિક નામો (એક શબ્દો, .local, .lan) સિસ્ટમના DNS સાથે રહે છે. વિડિઓ પૃષ્ઠો અને ટોરેન્ટ ટ્રેકર્સ હાલમાં સિસ્ટમના DNS નો ઉપયોગ કરે છે.
+	Names in your hosts file and local names (single words, .local, .lan) stay with the system's DNS. Video pages and torrent trackers use the system's DNS for now.	તમારી હોસ્ટ ફાઇલમાંનાં નામો અને સ્થાનિક નામો (એક શબ્દો, .local, .lan) માટે સિસ્ટમનું DNS જ વપરાય છે. વિડિઓ પૃષ્ઠો અને ટોરેન્ટ ટ્રેકર્સ માટે હાલમાં સિસ્ટમનું DNS વપરાય છે.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2578,7 +2578,7 @@
 	New Caledonia	ન્યૂ કેલેડોનિયા
 #. text in the Options window
 #, machine
-	New exception	નવી અપવાદ
+	New exception	નવો અપવાદ
 #. text in the Options window
 #, machine
 	New login	નવું લૉગિન
@@ -2620,7 +2620,7 @@
 #. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
-	No browser's extension has connected yet	કોઈ બ્રાઉઝરનું એક્સટેન્શન હજી સુધી કનેક્ટ થયું નથી
+	No browser's extension has connected yet	હજી સુધી કોઈ બ્રાઉઝર એક્સટેન્શન કનેક્ટ થયું નથી
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -2632,7 +2632,7 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
-	No day is ticked: the queue will not start	કોઈ દિવસ ટિક કરેલ નથી: કતાર શરૂ થશે નહીં
+	No day is ticked: the queue will not start	કોઈ દિવસ પસંદ નથી: કતાર શરૂ થશે નહીં
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	હજી સુધી કોઈ ફોલ્ડર નથી
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	ના પાછા જાય છે, અન્ય ફોલ્ડર પસંદ કરવા માટે.
+	No goes back, to choose another folder.	ના પસંદ કરો, તો બીજા ફોલ્ડર પર પાછા જશો.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2682,7 +2682,7 @@
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
-	No tracker added: it has them already	કોઈ ટ્રેકર ઉમેર્યું નથી: તેની પાસે તે પહેલેથી જ છે
+	No tracker added: it has them already	કોઈ ટ્રેકર ઉમેર્યું નથી: ટોરેન્ટમાં તે પહેલેથી જ છે
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
@@ -2696,7 +2696,7 @@
 	No video this can download on that page	આ પૃષ્ઠ પર કોઈ વિડિઓ ડાઉનલોડ કરી શકાતો નથી
 #. message or event log entry in the main window
 #, machine
-	No web addresses were found in {file}.	{file} માં કોઈ વેબ સરનામાં મળ્યા નથી.
+	No web addresses were found in {file}.	{file} માં કોઈ વેબ સરનામાં મળ્યાં નથી.
 #. text in the Download video window
 #. in the Subtitles list of Download video: download no subtitles
 #, machine
@@ -2746,7 +2746,7 @@
 	Not a tracker address: {line}	ટ્રેકરનું સરનામું નથી: {line}
 #. text in errors.rs
 #, machine
-	not enough disk space: {needed} needed, {free} free	પૂરતી ડિસ્ક જગ્યા નથી: {needed} જરૂરી, {free} ખાલી
+	not enough disk space: {needed} needed, {free} free	ડિસ્કમાં પૂરતી જગ્યા નથી: {needed} જરૂરી, {free} ખાલી
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
@@ -2766,7 +2766,7 @@
 	Not now? Get them later from Tasks → Download video from a page.	હમણાં નહીં? તેમને પછીથી કાર્યો → પૃષ્ઠ પરથી વીડિયો ડાઉનલોડ કરો માંથી મેળવો.
 #. text in a download's Properties window
 #, machine
-	not one server (peers, or a helper's)	એક સર્વર નથી (પીઅર્સ, અથવા સહાયકનું)
+	not one server (peers, or a helper's)	સર્વરનું નથી (પીઅર્સનું અથવા સહાયકનું)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
@@ -2780,7 +2780,7 @@
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	નોંધ: જ્યારે ઝડપ ખૂબ મર્યાદિત હોય ત્યારે ઇન્ટરનેટ સર્વર્સ કનેક્શન તોડી શકે છે! આમ, "ફરી શરૂ કરો" સુવિધાને સપોર્ટ ન કરતા સર્વર્સમાંથી ડાઉનલોડ કરવા માટે સ્પીડ લિમિટરનો ઉપયોગ કરવાની ભલામણ કરવામાં આવતી નથી.
 #. text in the Options window
 #, machine
-	Note: These settings don't relate to queue processing	નોંધ: આ સેટિંગ્સ કતાર પ્રક્રિયા સાથે સંબંધિત નથી
+	Note: These settings don't relate to queue processing	નોંધ: આ સેટિંગ્સ કતારની પ્રક્રિયા સાથે સંબંધિત નથી
 #. message or event log entry in the main window
 #, machine
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	{item} માં ડાઉનલોડ કરવા માટે કંઈ નથી: લિંક્સ, .torrent ફાઇલ અથવા સરનામાંઓની સૂચિ (.txt, .ef2) છોડો.
@@ -2805,7 +2805,7 @@
 	Off	બંધ
 #. text in the Add torrent window
 #, machine
-	Off: a finished torrent stops, like any download.	બંધ: પૂર્ણ થયેલ ટોરેન્ટ કોઈપણ ડાઉનલોડની જેમ અટકી જાય છે.
+	Off: a finished torrent stops, like any download.	બંધ: પૂર્ણ થયેલું ટોરેન્ટ અન્ય ડાઉનલોડની જેમ અટકી જાય છે.
 #. text in the Options window
 #, machine
 	Offer to download links copied to the clipboard	ક્લિપબોર્ડ પર કૉપિ કરેલી લિંક્સ ડાઉનલોડ કરવાની ઑફર કરો
@@ -2826,7 +2826,7 @@
 	On battery, Windows' power options don't allow wake timers	બૅટરી પર, Windowsના પાવર વિકલ્પો વેક ટાઈમરને મંજૂરી આપતા નથી
 #. text in a download's progress window
 #, machine
-	on download stop/resume	ડાઉનલોડ રોકવા/ફરી શરૂ કરવા પર
+	on download stop/resume	ડાઉનલોડ અટકાવવા/ફરી શરૂ કરવા પર
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
@@ -2837,13 +2837,13 @@
 	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Windows પર, Chrome, Edge અને Brave તેમની કૂકીઝને લૉક કરી શકે છે. Firefox કામ કરે છે.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
-	Once at	એકવાર
+	Once at	આ સમયે એકવાર
 #. text in extension.rs
 #, machine
-	Once it is added, this window says so. Chrome may also ask by itself at its next start.	એકવાર તે ઉમેરાઈ જાય, પછી આ વિન્ડો તે કહે છે. Chrome તેના આગલા પ્રારંભમાં પણ જાતે પૂછી શકે છે.
+	Once it is added, this window says so. Chrome may also ask by itself at its next start.	તે ઉમેરાઈ જાય પછી, આ વિન્ડોમાં તેની જાણ કરવામાં આવે છે. Chrome આગલી વખતે શરૂ થાય ત્યારે પણ પોતાની મેળે પૂછી શકે છે.
 #. text in the Options window
 #, machine
-	One address per line; * stands for any text: example.com/private/*	દર લીટી દીઠ એક સરનામું; * કોઈપણ ટેક્સ્ટ માટે છે: example.com/private/*
+	One address per line; * stands for any text: example.com/private/*	દરેક લીટીમાં એક સરનામું; * કોઈપણ ટેક્સ્ટ માટે વપરાય છે: example.com/private/*
 #. option (radio button) in the Scheduler window
 #, machine
 	One-time downloading	એક-વખતનું ડાઉનલોડિંગ
@@ -2854,10 +2854,10 @@
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
 #, machine
-	Only a finished download, or one not started yet, can be moved	ફક્ત પૂર્ણ થયેલ ડાઉનલોડ, અથવા હજી શરૂ ન થયેલ ડાઉનલોડ, ખસેડી શકાય છે
+	Only a finished download, or one not started yet, can be moved	ફક્ત પૂર્ણ થયેલું અથવા હજી શરૂ ન થયેલું ડાઉનલોડ જ ખસેડી શકાય છે
 #. message or event log entry in the main window
 #, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ફક્ત પૂર્ણ થયેલ ડાઉનલોડ, અથવા હજી શરૂ ન થયેલ ડાઉનલોડ, ખસેડી શકાય છે. તેને પહેલા રોકો અને પૂર્ણ કરો.
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	ફક્ત પૂર્ણ થયેલું અથવા હજી શરૂ ન થયેલું ડાઉનલોડ જ ખસેડી શકાય છે. પહેલાં તેને રોકો અને પૂર્ણ કરો.
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -2865,15 +2865,15 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
-	Only MP4 and MKV videos can hold subtitles	માત્ર MP4 અને MKV વિડિઓઝ સબટાઈટલ રાખી શકે છે
+	Only MP4 and MKV videos can hold subtitles	ફક્ત MP4 અને MKV વિડિઓમાં જ સબટાઇટલ રાખી શકાય છે
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Only the first {n} videos are listed.	ફક્ત પ્રથમ {n} વીડિયોની સૂચિ બનાવવામાં આવી છે.
+	Only the first {n} videos are listed.	ફક્ત પહેલા {n} વીડિયો જ સૂચિબદ્ધ છે.
 #. checkbox in a dialog box
 #, machine
-	Only while I'm using the computer	ફક્ત જ્યારે હું કમ્પ્યુટરનો ઉપયોગ કરું છું
+	Only while I'm using the computer	ફક્ત હું કમ્પ્યુટરનો ઉપયોગ કરતો હોઉં ત્યારે
 #. button in a dialog box; text in a dialog box; button in a download's Properties window
 #. verb: opens the downloaded file
 #. title of the message when a downloaded file can't be opened
@@ -2886,7 +2886,7 @@
 	Open folder	ફોલ્ડર ખોલો
 #. checkbox in the Add torrent window
 #, machine
-	Open magnet links and .torrent files with Mister Download Manager	મેગ્નેટ લિંક્સ અને .torrent ફાઇલો Mister Download Manager સાથે ખોલો
+	Open magnet links and .torrent files with Mister Download Manager	મેગ્નેટ લિંક્સ અને .torrent ફાઇલો Mister Download Manager વડે ખોલો
 #. text in the tray icon's menu
 #, machine
 	Open Mister Download Manager	Mister Download Manager ખોલો
@@ -2895,7 +2895,7 @@
 	Open the following file when done	પૂર્ણ થયા પછી નીચેની ફાઇલ ખોલો
 #. checkbox in the Scheduler window
 #, machine
-	Open the following file when done:	થઈ ગયા પછી નીચેની ફાઇલ ખોલો:
+	Open the following file when done:	પૂર્ણ થયા પછી નીચેની ફાઇલ ખોલો:
 #. button in the Options window
 #. button: open the service's page where the code is typed
 #, machine
@@ -2903,13 +2903,13 @@
 #. text in crashui.rs
 #. crash report window button: open the GitHub issue already filed (and copy the report to add it there)
 #, machine
-	Open the reported issue	રિપોર્ટ કરેલ સમસ્યા ખોલો
+	Open the reported issue	રિપોર્ટ કરેલી સમસ્યા ખોલો
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Open the selected download	પસંદ કરેલ ડાઉનલોડ ખોલો
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Open the selected download's menu	પસંદ કરેલ ડાઉનલોડનું મેનૂ ખોલો
+	Open the selected download's menu	પસંદ કરેલા ડાઉનલોડનું મેનૂ ખોલો
 #. message or event log entry in the main window; text in the Add torrent window
 #, machine
 	Open torrent file	ટોરેન્ટ ફાઇલ ખોલો
@@ -2924,7 +2924,7 @@
 #. text in a download's progress window
 #. tab title: what happens when the download finishes
 #, machine
-	Options on completion	પૂર્ણતા પર વિકલ્પો
+	Options on completion	પૂર્ણ થયા પછીના વિકલ્પો
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
@@ -2935,7 +2935,7 @@
 	Package	પેકેજ
 #. text in gallerydlg.rs; text in the Download video window
 #, machine
-	Page address	પૃષ્ઠ સરનામું
+	Page address	પૃષ્ઠનું સરનામું
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2981,7 +2981,7 @@
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API key (Premiumize: the only way to sign in; the key is on the service's Account page)
 #, machine
-	Paste your API key (from the service's Account page):	તમારી API કી પેસ્ટ કરો (સેવાના એકાઉન્ટ પૃષ્ઠમાંથી):
+	Paste your API key (from the service's Account page):	તમારી API કી પેસ્ટ કરો (સેવાના એકાઉન્ટ પૃષ્ઠ પરથી):
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 #, machine
@@ -3124,7 +3124,7 @@
 	Queue # {n}	કતાર # {n}
 #. text in the Options window
 #, machine
-	Queue processing started	કતાર પ્રક્રિયા શરૂ થઈ
+	Queue processing started	કતારની પ્રક્રિયા શરૂ થઈ
 #. text in the Options window
 #, machine
 	Queue processing stopped/finished	કતાર પ્રક્રિયા બંધ/પૂર્ણ થઈ
@@ -3214,7 +3214,7 @@
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 #, machine
-	Replace asterisk to	તારાંકિતને આનાથી બદલો
+	Replace asterisk to	તારાંકિત ચિહ્નને આનાથી બદલો
 #. text in crashui.rs
 #. crash report window button: start MDM again
 #, machine
@@ -3237,7 +3237,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
-	Resumed	ફરી શરૂ કર્યું
+	Resumed	ફરી શરૂ થયું
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
@@ -3507,7 +3507,7 @@
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	Show &categories	શ્રેણીઓ બતાવો(&c)
+	Show &categories	&શ્રેણીઓ બતાવો
 #. text in the Options window
 #, machine
 	Show a dialog and ask what to do.	એક ડાયલોગ બતાવો અને શું કરવું તે પૂછો.
@@ -3545,11 +3545,11 @@
 	Show warning before stopping downloads	ડાઉનલોડ રોકતા પહેલા ચેતવણી બતાવો
 #. text in a download's progress window
 #, machine
-	Shown while the torrent is downloading.	ટોરેન્ટ ડાઉનલોડ થઈ રહ્યું હોય ત્યારે બતાવેલ છે.
+	Shown while the torrent is downloading.	ટોરેન્ટ ડાઉનલોડ થઈ રહ્યું હોય ત્યારે બતાવવામાં આવે છે.
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
-	Shut down	બંધ કરો
+	Shut down	કમ્પ્યુટર બંધ કરો
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3730,7 +3730,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download started (just now)
 #, machine
-	Started	શરૂ કર્યું
+	Started	શરૂ થયું
 #. message or event log entry in the main window
 #. a gallery download's log: {version} = gallery-dl's version
 #. {version} = a version number (keep the braces as they are)
@@ -3747,11 +3747,11 @@
 #. message or event log entry in the main window
 #. {version} = a version number; {format} = a video format code (keep the braces as they are)
 #, machine
-	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) સાથે શરૂ કર્યું
+	Started with yt-dlp {version} ({format})	yt-dlp {version} ({format}) સાથે શરૂ થયું
 #. text in helpers.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Starting...	શરૂ કરી રહ્યું છે...
+	Starting...	શરૂ થઈ રહ્યું છે...
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 #, machine
@@ -3781,7 +3781,7 @@
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
-	Stop sharing after sharing for	આટલા સમય માટે શેર કર્યા પછી શેરિંગ બંધ કરો
+	Stop sharing after sharing for	આટલા સમય સુધી શેર કર્યા પછી શેરિંગ બંધ કરો
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": stop sharing a finished torrent once its share ratio (sent ÷ received) reaches the number in the box after it
 #, machine
@@ -3821,20 +3821,20 @@
 #. text in the Download video window
 #. label before the list of a video's subtitle languages
 #, machine
-	Subtitles	સબટાઈટલ
+	Subtitles	સબટાઇટલ્સ
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} માં સબટાઈટલ બીજી વાર પ્રયાસ કરવાથી આવ્યા: તે વીડિયોમાં નથી, પરંતુ તેની બાજુમાં છે.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	{language} ના સબટાઇટલ્સ બીજા પ્રયાસમાં મળ્યા: તે વીડિયોમાં નથી, પરંતુ તેની બાજુમાં છે.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
-	Subtitles in {language} couldn't be downloaded: {reason}	{language} માં સબટાઈટલ ડાઉનલોડ કરી શકાયા નથી: {reason}
+	Subtitles in {language} couldn't be downloaded: {reason}	{language} ના સબટાઇટલ્સ ડાઉનલોડ થઈ શક્યા નથી: {reason}
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} માં સબટાઈટલ ડાઉનલોડ કરી શકાયા નથી: {site} એ ના પાડી (ઘણી બધી વિનંતીઓ).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	{language} ના સબટાઇટલ્સ ડાઉનલોડ થઈ શક્યા નથી: {site} એ ના પાડી (ઘણી બધી વિનંતીઓને કારણે).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3883,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	કાર્યો → લિંક ગ્રેબર, અથવા બ્રાઉઝરનું "બધી લિંક્સ ડાઉનલોડ કરો": વિભાજિત\nઆર્કાઇવના વોલ્યુમો એક પેકેજ છે, પૃષ્ઠની અન્ય લિંક્સ બીજી છે.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	કાર્યો → લિંક ગ્રેબર, અથવા બ્રાઉઝરનું "બધી લિંક્સ ડાઉનલોડ કરો": વિભાજિત\nઆર્કાઇવના વોલ્યુમો એક પેકેજ તરીકે ગણાય છે, જ્યારે પૃષ્ઠની અન્ય લિંક્સ બીજું પેકેજ છે.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	મિત્રને કહો
@@ -3913,35 +3913,35 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	That is more than 100,000 files: make the range smaller	તે 100,000 થી વધુ ફાઇલો છે: શ્રેણી નાની કરો
+	That is more than 100,000 files: make the range smaller	તેમાં 100,000 કરતાં વધુ ફાઇલો છે: શ્રેણી નાની કરો
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	તેના માટે રાખવામાં આવેલી .torrent ફાઇલ જતી રહી છે
+	the .torrent file kept for it is gone	તેના માટે રાખવામાં આવેલી .torrent ફાઇલ ખોવાઈ ગઈ છે
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	સરનામું http(s) અથવા ftp(s) સરનામું હોવું આવશ્યક છે
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Recycle Bin: it was kept	આર્કાઇવને રીસાઇકલ બિનમાં ખસેડી શકાયો નથી: તેને રાખવામાં આવ્યો હતો
+	The archive could not be moved to the Recycle Bin: it was kept	આર્કાઇવને રીસાઇકલ બિનમાં ખસેડી શકાયું નથી: તેને રાખવામાં આવ્યું હતું
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Trash: it was kept	આર્કાઇવને ટ્રેશમાં ખસેડી શકાયો નથી: તેને રાખવામાં આવ્યો હતો
+	The archive could not be moved to the Trash: it was kept	આર્કાઇવને ટ્રેશમાં ખસેડી શકાયું નથી: તેને રાખવામાં આવ્યું હતું
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Recycle Bin	આર્કાઇવને રીસાઇકલ બિનમાં ખસેડવામાં આવ્યો હતો
+	The archive was moved to the Recycle Bin	આર્કાઇવને રીસાઇકલ બિનમાં ખસેડવામાં આવ્યું હતું
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Trash	આર્કાઇવને ટ્રેશમાં ખસેડવામાં આવ્યો હતો
+	The archive was moved to the Trash	આર્કાઇવને ટ્રેશમાં ખસેડવામાં આવ્યું હતું
 #. text in the Download video window
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	શ્રેષ્ઠ ગુણવત્તા, MP3, Opus અને FLAC ને ffmpeg (લગભગ 80 MB) ની જરૂર છે.
+	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	શ્રેષ્ઠ ગુણવત્તા, MP3, Opus અને FLAC માટે ffmpeg (લગભગ 80 MB) જરૂરી છે.
 #. text in the Download video window
 #. in Download video, on macOS and Linux (no button: the system installs it)
 #, machine
-	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	શ્રેષ્ઠ ગુણવત્તા, MP3, Opus અને FLAC ને ffmpeg ની જરૂર છે: તેને તમારા સિસ્ટમના પેકેજ મેનેજર (અથવા Homebrew) વડે ઇન્સ્ટોલ કરો.
+	The best qualities, MP3, Opus and FLAC need ffmpeg: install it with your system's package manager (or Homebrew).	શ્રેષ્ઠ ગુણવત્તા, MP3, Opus અને FLAC માટે ffmpeg જરૂરી છે: તેને તમારી સિસ્ટમના પેકેજ મેનેજર (અથવા Homebrew) વડે ઇન્સ્ટોલ કરો.
 #. text in the settings
 #. an error: the browser's VPN or proxy extension logs in to its proxy itself, and MDM can't; Options → Proxy / Socks → Network adapter is where an adapter can be chosen
 #, machine
@@ -3957,7 +3957,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	કોડ સમાપ્ત થઈ ગયો: ફરીથી સાઇન ઇન કરો
+	the code expired: sign in again	કોડની સમયમર્યાદા પૂરી થઈ ગઈ છે: ફરીથી સાઇન ઇન કરો
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -3969,12 +3969,12 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
-	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	કમ્પ્યુટરને શરૂઆતના સમયના એક મિનિટ પહેલાં વેક કરવામાં આવે છે અને કતાર ચાલતી હોય ત્યારે તેને જાગતું રાખવામાં આવે છે. Mister Download Manager ચાલતું હોવું જોઈએ (તે નોટિફિકેશન એરિયામાં રાહ જોઈ શકે છે).
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	કમ્પ્યુટર શરૂઆતના સમયની એક મિનિટ પહેલાં જાગે છે અને કતાર ચાલે ત્યાં સુધી જાગતું રહે છે. Mister Download Manager ચાલતું હોવું જરૂરી છે (તે નોટિફિકેશન એરિયામાં રાહ જોઈ શકે છે).
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	The computer will be woken on {date} at {time}	કમ્પ્યુટરને {date} ના રોજ {time} વાગ્યે વેક કરવામાં આવશે
+	The computer will be woken on {date} at {time}	કમ્પ્યુટર {date} ના રોજ {time} વાગ્યે ચાલુ કરવામાં આવશે
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4010,7 +4010,7 @@
 	The download limit ({mb} MBytes every {hours} hours) has been reached.	ડાઉનલોડ મર્યાદા (દર {hours} કલાકે {mb} MBytes) પહોંચી ગઈ છે.
 #. text in errors.rs
 #, machine
-	the download link has expired (refresh the download address)	ડાઉનલોડ લિંક સમાપ્ત થઈ ગઈ છે (ડાઉનલોડ સરનામું તાજું કરો)
+	the download link has expired (refresh the download address)	ડાઉનલોડ લિંકની સમયમર્યાદા પૂરી થઈ ગઈ છે (ડાઉનલોડ સરનામું તાજું કરો)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4134,44 +4134,44 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	પસંદ કરેલ ડાઉનલોડ પૂર્ણ નથી. શું તમે તેને\nMister Download Manager ની ડાઉનલોડ સૂચિમાંથી કાઢી નાખવા માંગો છો?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	પસંદ કરેલ ડાઉનલોડ પૂર્ણ નથી. શું તમે તેને\nMister Download Managerની ડાઉનલોડ સૂચિમાંથી કાઢી નાખવા માંગો છો?
 #. text in errors.rs
 #, machine
-	the server answered {status}	સર્વરે {status} જવાબ આપ્યો
+	the server answered {status}	સર્વરે {status}નો જવાબ આપ્યો
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	સર્વર ફાઇલના ભાગો મોકલી શકતું નથી, તેથી તેને ફરી શરૂ કરી શકાતું નથી
+	the server can't send parts of the file, so it can't be resumed	સર્વર ફાઇલના ભાગો મોકલી શકતું નથી, તેથી ડાઉનલોડ ફરી શરૂ કરી શકાતો નથી
 #. text in errors.rs
 #, machine
 	the server did not answer in time	સર્વરે સમયસર જવાબ આપ્યો નથી
 #. text in errors.rs
 #, machine
-	the server did not send the requested part	સર્વરે વિનંતી કરેલ ભાગ મોકલ્યો નથી
+	the server did not send the requested part	સર્વરે વિનંતી કરેલો ભાગ મોકલ્યો નથી
 #. text in errors.rs
 #, machine
 	the server is busy ({status}); try again later	સર્વર વ્યસ્ત છે ({status}); પછીથી ફરી પ્રયાસ કરો
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	સર્વરે ફાઇલને બદલે વેબ પેજ મોકલ્યું (સાઇન-ઇન જરૂરી છે અથવા લિંક સમાપ્ત થઈ ગઈ છે?)
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	સર્વરે ફાઇલને બદલે વેબ પેજ મોકલ્યું (સાઇન ઇન કરવું જરૂરી છે અથવા લિંકની સમયમર્યાદા પૂરી થઈ ગઈ છે?)
 #. text in errors.rs
 #, machine
-	the server sent an unexpected part of the file ({detail})	સર્વરે ફાઇલનો અણધારી ભાગ મોકલ્યો ({detail})
+	the server sent an unexpected part of the file ({detail})	સર્વરે ફાઇલનો અણધાર્યો ભાગ મોકલ્યો ({detail})
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	સાઇટ તમને સાઇન ઇન કરવા માંગે છે, આ પૃષ્ઠ માટે તમારા બ્રાઉઝરની કૂકીઝ સાથે પણ. તમારા બ્રાઉઝરમાં સાઇન ઇન કરો, પછી ફરી પ્રયાસ કરો.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	તમારા બ્રાઉઝરની આ પૃષ્ઠ માટેની કૂકીઝ હોવા છતાં, સાઇટમાં સાઇન ઇન કરવું જરૂરી છે. તમારા બ્રાઉઝરમાં સાઇન ઇન કરો, પછી ફરી પ્રયાસ કરો.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	સાઇટ તમને સાઇન ઇન કરવા માંગે છે, {browser}ની કૂકીઝ સાથે પણ. {browser}માં સાઇન ઇન કરો, પછી પૃષ્ઠને ફરીથી જુઓ.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	{browser}ની કૂકીઝ હોવા છતાં, સાઇટમાં સાઇન ઇન કરવું જરૂરી છે. {browser}માં સાઇન ઇન કરો, પછી પૃષ્ઠ ફરી શોધો.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	સિમ્બોલ્સ મેળવી શકાયા નથી: રિપોર્ટની કેટલીક લીટીઓ નામોને બદલે એડ્રેસ દર્શાવે છે (ડેવલપર્સ હજુ પણ તેમને વાંચી શકે છે).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	સિમ્બોલ્સ મેળવી શકાયા નથી: રિપોર્ટની કેટલીક લીટીઓમાં નામોને બદલે સરનામાં દેખાય છે (ડેવલપર્સ હજી પણ તેમને વાંચી શકે છે).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	સિસ્ટમ કીરીંગ લૉક કરેલી છે અને MDM તેને અનલૉક કરતું નથી, તેથી સાઇન-ઇન અને પાસવર્ડ MDMની સેટિંગ્સમાં રાખવામાં આવે છે, જે ફક્ત તમે જ વાંચી શકો છો.
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	સિસ્ટમ કીરીંગ લૉક છે અને MDM તેને અનલૉક કરતું નથી, તેથી સાઇન-ઇન અને પાસવર્ડ MDMની સેટિંગ્સમાં રાખવામાં આવે છે, જે ફક્ત તમે જ વાંચી શકો છો.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	સમય રાઉન્ડ ટ્રિપ છે, જે આ ડાઉનલોડના પોતાના કનેક્શન્સ ખોલવામાં આવે છે તે રીતે માપવામાં આવે છે.
+	The time is a round trip, measured as this download's own connections opened.	સમય રાઉન્ડ-ટ્રિપનો છે, જે આ ડાઉનલોડના પોતાના કનેક્શન્સ ખોલવામાં લાગતા સમયથી માપવામાં આવે છે.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4187,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	ટૉરેન્ટ હવે ત્યાં નથી
+	the torrent is no longer there	ટૉરેન્ટ હવે સક્રિય સત્રમાં નથી
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4201,11 +4201,11 @@
 	The update is open in your system's package installer.	અપડેટ તમારા સિસ્ટમના પેકેજ ઇન્સ્ટોલરમાં ખુલ્લું છે.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	વેબ પૃષ્ઠ જ્યાંથી આ ફાઇલ મેળવવામાં આવી હતી:
+	The web page from which this file was obtained:	આ ફાઇલ જે વેબ પૃષ્ઠ પરથી મેળવવામાં આવી હતી:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
-	Then move the archives to the Recycle Bin	પછી આર્કાઇવ્સને રીસાઇકલ બિનમાં ખસેડો
+	Then move the archives to the Recycle Bin	પછી આર્કાઇવ્સને રિસાઇકલ બિનમાં ખસેડો
 #. text in the Options window
 #. Options → Archives check box (Linux and macOS)
 #, machine
@@ -4219,10 +4219,10 @@
 	There is already a queue with this name	આ નામ સાથે પહેલેથી જ એક કતાર છે
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	"ડાઉનલોડ પૂર્ણ સંવાદ બતાવો" ચાલુ હોય ત્યારે આ સેટિંગ્સ અનુપલબ્ધ હોય છે
+	These settings are unavailable when "Show download complete dialog" is turned on	“ડાઉનલોડ પૂર્ણ સંવાદ બતાવો” ચાલુ હોય ત્યારે આ સેટિંગ્સ ઉપલબ્ધ નથી
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	જો તમે આ વિન્ડો બંધ કરશો તો પણ તેઓ ડાઉનલોડ થતા રહેશે.
+	They keep downloading if you close this window.	તમે આ વિન્ડો બંધ કરો તો પણ તેમનું ડાઉનલોડ ચાલુ રહેશે.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	આ સરનામું પહેલેથી જ ડાઉનલોડ્સની સૂચિમાં છે:
@@ -4233,11 +4233,11 @@
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	આ કમ્પ્યુટરને ટાઈમર દ્વારા વેક કરી શકાતું નથી
+	This computer can't be woken by a timer	આ કમ્પ્યુટરને ટાઇમર દ્વારા જગાડી શકાતું નથી
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer has no wake alarm that programs can set	આ કમ્પ્યુટરમાં કોઈ વેક એલાર્મ નથી જેને પ્રોગ્રામ્સ સેટ કરી શકે
+	This computer has no wake alarm that programs can set	આ કમ્પ્યુટરમાં પ્રોગ્રામ સેટ કરી શકે એવું કોઈ વેક એલાર્મ નથી
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4245,25 +4245,25 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
-	This date has passed: the queue will not start	આ તારીખ પસાર થઈ ગઈ છે: કતાર શરૂ થશે નહીં
+	This date has passed: the queue will not start	આ તારીખ વીતી ગઈ છે: કતાર શરૂ થશે નહીં
 #. text in a dialog box
 #, machine
 	This folder does not exist:	આ ફોલ્ડર અસ્તિત્વમાં નથી:
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	આ Google Drive ફાઇલ માટે તમારે સાઇન ઇન કરવાની જરૂર છે: તમારા બ્રાઉઝરમાં Google માં સાઇન ઇન કરો, પછી ત્યાંથી તેને ડાઉનલોડ કરો
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	આ Google Drive ફાઇલ માટે સાઇન ઇન કરવું જરૂરી છે: તમારા બ્રાઉઝરમાં Googleમાં સાઇન ઇન કરો, પછી ત્યાંથી ફાઇલ ડાઉનલોડ કરો
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
 	this is a Google Drive folder, not a file	આ એક Google Drive ફોલ્ડર છે, ફાઇલ નથી
 #. text in errors.rs
 #, machine
-	this is not a magnet link or a .torrent file	આ મેગ્નેટ લિંક અથવા .torrent ફાઇલ નથી
+	this is not a magnet link or a .torrent file	આ મેગ્નેટ લિંક કે .torrent ફાઇલ નથી
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
-	This is the installed copy, not a portable one	આ ઇન્સ્ટોલ કરેલી કૉપિ છે, પોર્ટેબલ નથી
+	This is the installed copy, not a portable one	આ ઇન્સ્ટોલ કરેલી કૉપિ છે, પોર્ટેબલ કૉપિ નથી
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -4271,7 +4271,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	આ મેગ્નેટ લિંક કોઈ ટ્રેકર્સનું નામ આપતી નથી અને DHT બંધ છે, તેથી કોઈ પીઅર શોધી શકાતો નથી.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	આ મેગ્નેટ લિંકમાં કોઈ ટ્રેકર નથી અને DHT બંધ છે, તેથી કોઈ પીઅર મળી શકતો નથી.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -4291,7 +4291,7 @@
 	this program isn't {name}	આ પ્રોગ્રામ {name} નથી
 #. text in a download's progress window
 #, machine
-	This system has no dial-up connections to hang up	આ સિસ્ટમમાં હેંગ અપ કરવા માટે કોઈ ડાયલ-અપ કનેક્શન્સ નથી
+	This system has no dial-up connections to hang up	આ સિસ્ટમમાં ડિસ્કનેક્ટ કરવા માટે કોઈ ડાયલ-અપ કનેક્શન નથી
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -4305,11 +4305,11 @@
 #. text in the Download video window
 #. the Download video window: the page's video is copy-protected
 #, machine
-	This video is protected (DRM): no tool can save it.	આ વિડિઓ સુરક્ષિત છે (DRM): કોઈ સાધન તેને સાચવી શકતું નથી.
+	This video is protected (DRM): no tool can save it.	આ વીડિયો સુરક્ષિત છે (DRM): કોઈ સાધન તેને સાચવી શકતું નથી.
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	આ વિડિઓ માટે તમારે સાઇન ઇન કરવાની જરૂર છે. તમારા બ્રાઉઝરમાં તેની ઉપરના ડાઉનલોડ વિડિઓ બટનનો ઉપયોગ કરો, જે તમારા સાઇન-ઇનને પસાર કરે છે, અથવા વિકલ્પો → સાઇટ્સ લૉગિન → વિડિઓ સાઇટ્સ માટે કૂકીઝમાં તમારું બ્રાઉઝર પસંદ કરો.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	આ વીડિયો માટે તમારે સાઇન ઇન કરેલું હોવું જરૂરી છે. તમારા બ્રાઉઝરમાં તેના પર દેખાતા “વિડિઓ ડાઉનલોડ કરો” બટનનો ઉપયોગ કરો, જે તમારા સાઇન-ઇનની માહિતી મોકલે છે, અથવા વિકલ્પો → સાઇટ્સના લૉગિન → વિડિઓ સાઇટ્સ માટેની કૂકીઝમાં તમારું બ્રાઉઝર પસંદ કરો.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4317,7 +4317,7 @@
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it: {country} is the proxy's country
 #, machine
-	through a proxy in {country}	{country} માં પ્રોક્સી દ્વારા
+	through a proxy in {country}	{country}ની પ્રોક્સી દ્વારા
 #. text in a download's Properties window
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
@@ -4325,14 +4325,14 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	{service} દ્વારા: સેવા ટોરન્ટ ડાઉનલોડ કરે છે, પછી MDM તેની ફાઇલો ડાઉનલોડ કરે છે
+	Through {service}: the service downloads the torrent, then MDM its files	{service} દ્વારા: સેવા ટોરેન્ટ ડાઉનલોડ કરે છે, પછી MDM તેની ફાઇલો ડાઉનલોડ કરે છે
 #. text in the Scheduler window
 #, machine
 	Thursday	ગુરુવાર
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	પહેલાં “ડાઉનલોડ શરૂ કરો” પર ટિક કરો: કમ્પ્યુટરને શરૂઆતના સમય માટે વેક કરવામાં આવે છે
+	Tick "Start download at" first: the computer is woken for the start time	પહેલાં “ડાઉનલોડ શરૂ કરો” પર ટિક કરો: શરૂ થવાના સમયે કમ્પ્યુટર ચાલુ કરવામાં આવશે
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	બાકી સમય
@@ -4342,7 +4342,7 @@
 	Timor-Leste	તિમોર-લેસ્ટે
 #. text in the Batch download window
 #, machine
-	To:	આને:
+	To:	પ્રતિ:
 #. text in the Scheduler window
 #. link under the calendar: {date} = today's date
 #, machine
@@ -4380,7 +4380,7 @@
 #. text in torrent downloads
 #. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
 #, machine
-	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	ટૉરેન્ટ સેટિંગ્સ પ્રોક્સીનો ઉપયોગ કરવાનું કહે છે, પરંતુ પ્રોક્સી / સોક્સમાં કોઈ SOCKS5 પ્રોક્સી નથી
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	ટોરેન્ટ સેટિંગ્સમાં પ્રોક્સીનો ઉપયોગ કરવાનું કહેવામાં આવ્યું છે, પરંતુ પ્રોક્સી / Socksમાં કોઈ SOCKS5 પ્રોક્સી નથી
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -4389,7 +4389,7 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	ટોરન્ટ શરૂ કરી શકાયા નથી: {error}
+	torrents could not start: {error}	ટોરેન્ટ્સ શરૂ થઈ શક્યાં નથી: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -4402,7 +4402,7 @@
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Trackers to add to {name}, one address a line:	{name} માં ઉમેરવા માટે ટ્રેકર્સ, એક લીટીમાં એક સરનામું:
+	Trackers to add to {name}, one address a line:	{name}માં ઉમેરવાના ટ્રેકર્સ, દરેક લીટીમાં એક સરનામું:
 #. text in a download's progress window
 #, machine
 	Transfer rate	ટ્રાન્સફર દર
@@ -4484,7 +4484,7 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
-	Type the name the server's certificate shows.	સર્વરના પ્રમાણપત્રમાં દર્શાવેલ નામ લખો.
+	Type the name the server's certificate shows.	સર્વરના પ્રમાણપત્રમાં દર્શાવેલું નામ લખો.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4726,7 +4726,7 @@
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
 #, machine
-	Wake the computer to run this queue	આ કતાર ચલાવવા માટે કમ્પ્યુટરને વેક કરો
+	Wake the computer to run this queue	આ કતાર ચલાવવા માટે કમ્પ્યુટરને જાગૃત કરો
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4749,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	આર્કાઇવમાં શું છે તે અહીં જાય છે:
+	What an archive holds goes:	આર્કાઇવની સામગ્રી અહીં જાય છે:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4759,11 +4759,11 @@
 	What's new:	નવું શું છે:
 #. text in the Batch download window
 #, machine
-	Wildcard size	વાઇલ્ડકાર્ડ કદ
+	Wildcard size	વાઇલ્ડકાર્ડનું કદ
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
-	Windows allows wake timers only while plugged in	Windows વેક ટાઈમરને ફક્ત પ્લગ ઇન હોય ત્યારે જ મંજૂરી આપે છે
+	Windows allows wake timers only while plugged in	Windows વેક ટાઇમરની મંજૂરી ફક્ત પ્લગ ઇન હોય ત્યારે આપે છે
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4774,25 +4774,25 @@
 	Windows refused	Windows એ ના પાડી
 #. text in langpick.rs
 #, machine
-	Windows' language	Windows ની ભાષા
+	Windows' language	Windowsની ભાષા
 #. text in langpick.rs
 #, machine
-	Windows' language ({language})	Windows ની ભાષા ({language})
+	Windows' language ({language})	Windowsની ભાષા ({language})
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
 #, machine
-	Windows' power options don't allow wake timers	Windowsના પાવર વિકલ્પો વેક ટાઈમરને મંજૂરી આપતા નથી
+	Windows' power options don't allow wake timers	Windowsના પાવર વિકલ્પો વેક ટાઇમરની મંજૂરી આપતા નથી
 #. message or event log entry in the main window
 #, machine
 	with Add URL	URL ઉમેરો સાથે
 #. text in the Add torrent window
 #. Torrent settings, under "Use the proxy"
 #, machine
-	With it, incoming connections, the DHT and local peers are off.	તેની સાથે, આવનારી કનેક્શન્સ, DHT અને સ્થાનિક પીઅર્સ બંધ હોય છે.
+	With it, incoming connections, the DHT and local peers are off.	તેનો ઉપયોગ કરવાથી, આવનારા કનેક્શનો, DHT અને સ્થાનિક પીઅર્સ બંધ થઈ જાય છે.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
-	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	શબ્દો: તે બધા; વિકલ્પો વચ્ચે |; * અને ?. એપિસોડ્સ: 1x2;1x5-8;2x1-. દરેક એપિસોડ એકવાર.
+	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	શબ્દો: બધા શબ્દો; વિકલ્પો વચ્ચે |; * અને ?. એપિસોડ: 1x2;1x5-8;2x1-. દરેક એપિસોડ એક જ વાર.
 #. group box title in the Options window
 #, machine
 	Write dates and times	તારીખો અને સમય લખો
@@ -4800,7 +4800,7 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Wrong password for {name}. Type it again:	{name} માટે ખોટો પાસવર્ડ. તેને ફરીથી ટાઇપ કરો:
+	Wrong password for {name}. Type it again:	{name} માટે પાસવર્ડ ખોટો છે. ફરીથી લખો:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -4822,7 +4822,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	You have the latest version of Mister Download Manager ({version}).	તમારી પાસે Mister Download Manager નું નવીનતમ સંસ્કરણ ({version}) છે.
+	You have the latest version of Mister Download Manager ({version}).	તમારી પાસે Mister Download Managerનું નવીનતમ સંસ્કરણ ({version}) છે.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -4855,7 +4855,7 @@
 #. text in the Download video window
 #. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
 #, machine
-	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp સિસ્ટમના કીરીંગમાંથી {browser}ની કૂકીઝની કી મેળવી શક્યું નથી. કીરીંગને અનલૉક કરો અને પૃષ્ઠને ફરીથી જુઓ.
+	yt-dlp couldn't get the key to {browser}'s cookies from the system's keyring. Unlock the keyring and look the page up again.	yt-dlp સિસ્ટમની કીરીંગમાંથી {browser}ની કૂકીઝની કી મેળવી શક્યું નથી. કીરીંગ અનલૉક કરો અને પૃષ્ઠ ફરીથી ખોલો.
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options; {browser} = its name, {error} = yt-dlp's words
 #. {error} = an error message (keep the braces as they are)
@@ -4871,7 +4871,7 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
 #, machine
-	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp આ બ્રાઉઝરની કૂકીઝ સાથે વિડિઓ સાઇટ્સમાં સાઇન ઇન કરે છે, જે ફક્ત આ કમ્પ્યુટર પરની તેની ફાઇલોમાંથી વાંચવામાં આવે છે. જ્યારે બ્રાઉઝરના એક્સ્ટેંશનએ પૃષ્ઠની પોતાની કૂકીઝ પસાર કરી નથી: પેસ્ટ કરેલું સરનામું, પ્લેલિસ્ટ.
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp આ બ્રાઉઝરની કૂકીઝનો ઉપયોગ કરીને વિડિઓ સાઇટ્સમાં સાઇન ઇન કરે છે. આ કૂકીઝ ફક્ત આ કમ્પ્યુટર પરની તેની ફાઇલોમાંથી વાંચવામાં આવે છે. બ્રાઉઝરનું એક્સ્ટેંશન પૃષ્ઠની પોતાની કૂકીઝ ન મોકલે ત્યારે આનો ઉપયોગ થાય છે: પેસ્ટ કરેલું સરનામું, પ્લેલિસ્ટ.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ અને XZ; એક વિભાજિત આર્કાઇવ (.part1.rar, .7z.001) એકવાર\nદરેક વોલ્યુમ અંદર હોય. ત્યાં પહેલેથી જ એક ફાઇલ રાખવામાં આવે છે: નવીને નંબર આપવામાં આવે છે.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ અને XZ; વિભાજિત આર્કાઇવ (.part1.rar, .7z.001)ના બધા વોલ્યુમ આવી જાય પછી જ. ત્યાં પહેલેથી ફાઇલ હોય તો તેને રાખવામાં આવે છે અને નવી ફાઇલને નંબર આપવામાં આવે છે.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4895,7 +4895,7 @@
 #. text in the Options window
 #. Options → Network adapter: the chosen adapter has no address now; nothing is sent until it's back; {adapter} its name
 #, machine
-	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} કનેક્ટેડ નથી: તે પાછું આવે ત્યાં સુધી કંઈપણ ડાઉનલોડ થશે નહીં.
+	{adapter} is not connected: nothing is downloaded until it is back.	{adapter} કનેક્ટેડ નથી: તે ફરી કનેક્ટ થાય ત્યાં સુધી કંઈપણ ડાઉનલોડ થશે નહીં.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4903,11 +4903,11 @@
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{algorithm}: checked when the download finishes	{algorithm}: ડાઉનલોડ સમાપ્ત થાય ત્યારે તપાસવામાં આવે છે
+	{algorithm}: checked when the download finishes	{algorithm}: ડાઉનલોડ પૂર્ણ થાય ત્યારે તપાસવામાં આવે છે
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} Windows પર તેની કૂકીઝને પોતાની પાસે લૉક રાખે છે, તેથી yt-dlp તેમને વાંચી શકતું નથી. વિકલ્પો → સાઇટ્સ લૉગિનમાં Firefox પસંદ કરો, અથવા {browser}માં વિડિઓ પરના ડાઉનલોડ વિડિઓ બટનનો ઉપયોગ કરો.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} Windows પર તેની કૂકીઝને ફક્ત પોતાના માટે જ લૉક રાખે છે, તેથી yt-dlp તેમને વાંચી શકતું નથી. વિકલ્પો → સાઇટ્સ લૉગિનમાં Firefox પસંદ કરો, અથવા {browser}માં વિડિઓ પરના ડાઉનલોડ વિડિઓ બટનનો ઉપયોગ કરો.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4920,11 +4920,11 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} આ ફાઇલ પ્રદાન કરે છે: સ્થાન તેના સર્વરનું છે, જે ઘણીવાર તમારી નજીક હોય છે, સાઇટ માલિકનું નહીં.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	આ ફાઇલ {cdn} દ્વારા આપવામાં આવે છે: તેનું સ્થાન તેના સર્વરનું છે, જે ઘણીવાર તમારી નજીક હોય છે; સાઇટ માલિકનું નહીં.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
-	{column} contains	{column} માં શામેલ છે
+	{column} contains	{column}માં છે
 #. message or event log entry in the main window
 #. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
 #. {count} = a number (keep the braces as they are)
@@ -4944,28 +4944,28 @@
 	{file} could not be opened: {error}	{file} ખોલી શકાયું નથી: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} તેને તપાસવા માટે વાંચી શકાયું નથી
+	{file} could not be read to check it	{file}ની તપાસ કરવા માટે તેને વાંચી શકાયું નથી
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} હવે તે જ્યાં સાચવવામાં આવ્યું હતું ત્યાં નથી (ખસેડવામાં આવ્યું અથવા કાઢી નાખવામાં આવ્યું). તેના રાઇટ-ક્લિક મેનૂમાં, ફરીથી ડાઉનલોડ કરો, તેને ફરીથી મેળવે છે.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} હવે જ્યાં સાચવવામાં આવી હતી ત્યાં નથી (ખસેડવામાં આવી છે અથવા કાઢી નાખવામાં આવી છે). તેને ફરીથી મેળવવા માટે, તેના રાઇટ-ક્લિક મેનૂમાં ફરીથી ડાઉનલોડ કરો પસંદ કરો.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: ફાઇલ તેના ચેકસમ ({algorithm}) સાથે મેળ ખાતી નથી
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: ફાઇલનો ચેકસમ ({algorithm}) સાથે મેળ ખાતો નથી
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: ફાઇલ તેના ચેકસમ ({algorithm}) સાથે મેળ ખાય છે
+	{file}: the file matches its checksum ({algorithm})	{file}: ફાઇલનો ચેકસમ ({algorithm}) સાથે મેળ ખાય છે
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{total} માંથી {have} (દરેક {size})
+	{have} of {total} ({size} each)	{total}માંથી {have} (દરેક {size})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{total} માંથી {have} ટુકડાઓ (દરેક {size})
+	{have} of {total} pieces ({size} each)	{total} ટુકડાઓમાંથી {have} (દરેક {size})
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4973,11 +4973,11 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} ને {adapter} દ્વારા પહોંચી શકાતું નથી: તેમાં તે પ્રકારનું કોઈ સરનામું નથી (IPv4 અથવા IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} સુધી {adapter} દ્વારા પહોંચી શકાતું નથી: તેમાં તે પ્રકારનું કોઈ સરનામું નથી (IPv4 અથવા IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, આપમેળે
+	{language}, automatic	{language}, આપમેળે બનાવેલા
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -5004,31 +5004,31 @@
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} એ 7z અથવા RAR આર્કાઇવ છે. MDM તેને 7-Zip વડે એક્સટ્રેક્ટ કરે છે, જે ઇન્સ્ટોલ કરેલ નથી.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} 7z અથવા RAR આર્કાઇવ છે. MDM તેને 7-Zip વડે એક્સટ્રેક્ટ કરે છે, પરંતુ 7-Zip ઇન્સ્ટોલ કરેલું નથી.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is protected by a password:	{name} પાસવર્ડ દ્વારા સુરક્ષિત છે:
+	{name} is protected by a password:	{name} પાસવર્ડથી સુરક્ષિત છે:
 #. text in the settings
 #. Options → DNS: this service can't be asked this way; {how} is e.g. "plain DNS"
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} isn't offered as {how}.	{name} {how} તરીકે ઓફર કરવામાં આવતું નથી.
+	{name} isn't offered as {how}.	{name} {how} તરીકે ઉપલબ્ધ નથી.
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} (auto)	{n} (ઓટો)
+	{n} (auto)	{n} (આપમેળે)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} chosen	{total} માંથી {n} પસંદ કરેલા
+	{n} of {total} chosen	{total}માંથી {n} પસંદ કરેલા
 #. text in the Link grabber window
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} of {total} selected	{total} માંથી {n} પસંદ કરેલા
+	{n} of {total} selected	{total}માંથી {n} પસંદ કરેલા
 #. text in the download list (sizes, speeds, status)
 #. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
 #, machine
@@ -5039,14 +5039,14 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} ધીમું થવાનું કહે છે; MDM એક મિનિટમાં ફરી પ્રયાસ કરશે
+	{service} asks to slow down; MDM will try again in a minute	{service} ધીમું કરવા કહે છે; MDM એક મિનિટમાં ફરી પ્રયાસ કરશે
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} તમને પહેલા આ કમ્પ્યુટરને મંજૂરી આપવા કહે છે: તેનો ઇમેઇલ જુઓ
+	{service} asks you to allow this computer first: see its email	{service} પહેલાં તમને આ કમ્પ્યુટરને મંજૂરી આપવા કહે છે: તેનો ઇમેઇલ જુઓ
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} આ ટૉરેન્ટ મેળવી શકતું નથી: કોઈ તેને શેર કરતું નથી, અથવા તેની લિંક વાંચી શકાતી નથી
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} આ ટૉરેન્ટ મેળવી શકતું નથી: કોઈ તેને શેર કરતું નથી અથવા તેની લિંક વાંચી શકાતી નથી
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} અત્યારે આ ફાઇલ હોસ્ટ સુધી પહોંચી શકતું નથી; MDM પછીથી ફરી પ્રયાસ કરશે
@@ -5084,11 +5084,11 @@
 	{service}: this needs a premium account	{service}: આને પ્રીમિયમ એકાઉન્ટની જરૂર છે
 #. text in errors.rs
 #, machine
-	{service}: too many downloads at once through your account; MDM will try again	{service}: તમારા એકાઉન્ટ દ્વારા એકસાથે ઘણા બધા ડાઉનલોડ્સ; MDM ફરી પ્રયાસ કરશે
+	{service}: too many downloads at once through your account; MDM will try again	{service}: તમારા એકાઉન્ટ દ્વારા એકસાથે ઘણા બધા ડાઉનલોડ થઈ રહ્યા છે; MDM ફરી પ્રયાસ કરશે
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: આ ફાઇલ હોસ્ટ માટે તમારી મર્યાદા અત્યારે પૂરી થઈ ગઈ છે
+	{service}: your limit for this file host is used up for now	{service}: આ ફાઇલ હોસ્ટ માટેની તમારી મર્યાદા અત્યારે પૂરી થઈ ગઈ છે
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -5225,7 +5225,7 @@ extension	Help	મદદ
 #. text in the browser extension
 #. menu command of the download button over a video: hide the button on this video only
 #, machine
-extension	Hide on this video	આ વીડિયો પર છુપાવો
+extension	Hide on this video	આ વિડિયો માટે છુપાવો
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
@@ -5261,11 +5261,11 @@ extension	Mister Download Manager isn't installed or didn't start	Mister Downloa
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ઇન્સ્ટોલ કરેલ નથી, અથવા તેનું બ્રાઉઝર ઇન્ટિગ્રેશન સેટ કરેલ નથી
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager ઇન્સ્ટોલ કરેલ નથી, અથવા તેનું બ્રાઉઝર ઇન્ટિગ્રેશન સેટ અપ કરેલું નથી
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager પછી આ બ્રાઉઝર જેવા જ પ્રોક્સી દ્વારા ડાઉનલોડ કરે છે. બ્રાઉઝર તમને એકવાર તેને મંજૂરી આપવા માટે પૂછે છે; આને બંધ કરવાથી તે પાછું ખેંચાઈ જાય છે.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager પછી આ બ્રાઉઝર જેવા જ પ્રોક્સી દ્વારા ડાઉનલોડ કરે છે. બ્રાઉઝર તમને એક વાર તેને મંજૂરી આપવા માટે પૂછે છે; આ બંધ કરવાથી તે મંજૂરી પાછી ખેંચાઈ જાય છે.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5274,16 +5274,16 @@ extension	More options	વધુ વિકલ્પો
 #. menu command of the download button over a video: never show the button on this web site again
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never on {site}	{site} પર ક્યારેય નહીં
+extension	Never on {site}	{site} પર ક્યારેય બતાવશો નહીં
 #. text in the browser extension
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	{site} માંથી ક્યારેય ડાઉનલોડ્સ ન લો
+extension	Never take downloads from {site}	હવેથી {site} માંથી ડાઉનલોડ્સ ક્યારેય ન લો
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	આ પૃષ્ઠ પર હજુ સુધી કોઈ વિડિઓ અથવા ધ્વનિ મળ્યા નથી. તેને ચલાવો, પછી આ ફરીથી ખોલો.
+extension	No video or sound found on this page yet. Play it, then open this again.	આ પૃષ્ઠ પર હજી સુધી કોઈ વિડિયો કે ધ્વનિ મળ્યાં નથી. તેને ચલાવો, પછી આ ફરીથી ખોલો.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5332,11 +5332,11 @@ extension	The download button is off on this site	આ સાઇટ પર ડા
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	આ ડાઉનલોડની વિગતો આપવા માટે ખૂબ મોટી હતી
+extension	This download's details were too large to hand over	આ ડાઉનલોડની વિગતો સોંપવા માટે ખૂબ મોટી હતી
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	આ એક્સ્ટેંશન જે બધું પ્રદાન કરે છે તેનો ઉપયોગ કરવા માટે Mister Download Manager અપડેટ કરો
+extension	Update Mister Download Manager to use everything this extension offers	આ એક્સ્ટેંશન જે કંઈ આપે છે તેનો ઉપયોગ કરવા માટે Mister Download Manager અપડેટ કરો
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5453,7 +5453,7 @@ menu	&Delete	&કાઢી નાખો
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Delete All Completed	બધા પૂર્ણ થયેલા કાઢી નાખો(&D)
+menu	&Delete All Completed	બધા પૂર્ણ થયેલા ડાઉનલોડ કાઢી નાખો(&D)
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5688,7 +5688,7 @@ menu	Download in order	ક્રમમાં ડાઉનલોડ કરો
 #. menu command in the main window
 #. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
-menu	Draw with	આનાથી ડ્રો કરો
+menu	Draw with	આના વડે રેન્ડર કરો
 #. menu command in the main window
 #. verb: save the download list to a file
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -5710,7 +5710,7 @@ menu	Find Next (F3)	આગલું શોધો (F3)
 #. menu command in the main window
 #. right-click → Torrent, a choice with a check mark (with Download in order): each file's first and last pieces first, which a video player needs to start
 #, machine
-menu	First and last pieces first	પ્રથમ અને છેલ્લો ભાગ પહેલાં
+menu	First and last pieces first	દરેક ફાઇલના પહેલા અને છેલ્લા ભાગો પહેલાં
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine
@@ -5743,7 +5743,7 @@ menu	It couldn't start: the log says why	તે શરૂ થઈ શક્યુ
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
-menu	Its first frame didn't show within 10 seconds	તેની પ્રથમ ફ્રેમ 10 સેકન્ડમાં દેખાઈ નથી
+menu	Its first frame didn't show within 10 seconds	તેની પ્રથમ ફ્રેમ 10 સેકન્ડમાં દેખાઈ નહોતી
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
@@ -5770,14 +5770,14 @@ menu	Move/Rename (Ctrl-M)	ખસેડો/નામ બદલો (Ctrl-M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
-menu	Native	મૂળ
+menu	Native	સિસ્ટમના રંગો
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
 menu	No graphics card here has a driver for it	અહીં કોઈ ગ્રાફિક્સ કાર્ડમાં તેના માટે ડ્રાઈવર નથી
 #. menu command in the main window
 #, machine
-menu	On Double click	ડબલ ક્લિક પર
+menu	On Double click	ડબલ ક્લિક કરવા પર
 #. menu command in the main window
 #. verb: opens the downloaded file
 #. what double-clicking a download does — verb: open the file
@@ -5817,7 +5817,7 @@ menu	R&edownload	ફરીથી ડાઉનલોડ કરો(&e)
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	ફરીથી જાહેરાત કરો
+menu	Reannounce	ટ્રેકર્સને ફરીથી જાણ કરો
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	મિત્રને કહો(&f)
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	ગ્રાફિક્સ કાર્ડ 10 મિનિટમાં બે વાર ખોવાઈ ગયું
+menu	The graphics card was lost twice in 10 minutes	ગ્રાફિક્સ કાર્ડ 10 મિનિટમાં બે વાર બંધ થઈ ગયું
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
@@ -5929,7 +5929,7 @@ menu	Torrent	ટૉરેન્ટ
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Torrent setti&ngs...	ટોરન્ટ સેટિંગ્સ(&n)...
+menu	Torrent setti&ngs...	ટૉરેન્ટ સેટિંગ્સ(&n)...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5972,7 +5972,7 @@ menubar	&Tasks	&કાર્યો
 menubar	&View	&જુઓ
 #. toolbar button in the main window
 #, machine
-toolbar	Add Torrent	ટોરન્ટ ઉમેરો
+toolbar	Add Torrent	ટૉરેન્ટ ઉમેરો
 #. toolbar button in the main window
 #, machine
 toolbar	Add URL	URL ઉમેરો
@@ -5982,7 +5982,7 @@ toolbar	Add URL	URL ઉમેરો
 toolbar	Delete	કાઢી નાખો
 #. toolbar button in the main window
 #, machine
-toolbar	Delete Completed	પૂર્ણ થયેલ કાઢી નાખો
+toolbar	Delete Completed	પૂર્ણ થયેલાં કાઢી નાખો
 #. toolbar button in the main window
 #. plural noun: opens the Options window (settings)
 #, machine

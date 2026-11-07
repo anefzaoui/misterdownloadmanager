@@ -11,7 +11,7 @@
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	آیا مطمئن هستید که می‌خواهید {n} دانلود را از لیست دانلودهای Mister Download Manager حذف کنید؟|آیا مطمئن هستید که می‌خواهید این {n} دانلود را از لیست دانلودهای Mister Download Manager حذف کنید؟
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	آیا مطمئن هستید که می‌خواهید {n} بارگیری را از فهرست بارگیری‌های Mister Download Manager حذف کنید؟|آیا مطمئن هستید که می‌خواهید این {n} بارگیری را از فهرست بارگیری‌های Mister Download Manager حذف کنید؟
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -38,7 +38,7 @@
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	اکنون با {n} مقاله مطابقت دارد (فقط موارد جدید را اضافه می‌کند):|اکنون با {n} مقاله مطابقت دارد (فقط موارد جدید را اضافه می‌کند):
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	اکنون شامل {n} مقاله است (فقط موارد جدید اضافه می‌شوند):|اکنون شامل {n} مقاله است (فقط موارد جدید اضافه می‌شوند):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
@@ -64,12 +64,12 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} در حال بارگیری|{n} در حال بارگیری
+@plural	{n} downloading|{n} downloading	{n} مورد در حال بارگیری|{n} مورد در حال بارگیری
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ورودی حذف شد (یک پیوند، یا نامی که به خارج از پوشه منتهی می‌شود)|{n} ورودی حذف شد (پیوندها، یا نام‌هایی که به خارج از پوشه منتهی می‌شوند)
+@plural	{n} entry was left out (a link, or a name leading outside the folder)|{n} entries were left out (links, or names leading outside the folder)	{n} ورودی نادیده گرفته شد (یک پیوند یا نامی که به خارج از پوشه منتهی می‌شود)|{n} ورودی نادیده گرفته شد (پیوندها یا نام‌هایی که به خارج از پوشه منتهی می‌شوند)
 #. count in the Batch download window; count in the Link grabber window; count in the Add torrent window
 #. how many files the pattern gives in all
 #. Link grabber: a package's row: {n} is its number of links
@@ -85,7 +85,7 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} فایل نام فایلی را داشت که از قبل در آنجا بود و شماره‌گذاری شد|{n} فایل نام فایلی را داشت که از قبل در آنجا بود و شماره‌گذاری شد
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	نام {n} فایل از قبل در آنجا وجود داشت و به آن‌ها شماره داده شد|نام {n} فایل از قبل در آنجا وجود داشت و به آن‌ها شماره داده شد
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -94,7 +94,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} selected|{n} selected	{n} انتخاب‌شده|{n} انتخاب‌شده
+@plural	{n} selected|{n} selected	{n} مورد انتخاب‌شده|{n} مورد انتخاب‌شده
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -117,7 +117,7 @@
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" یک آدرس IP نیست.
+	"{what}" isn't an IP address.	«{what}» یک آدرس IP نیست.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -145,14 +145,14 @@
 #. text in the Scheduler window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-	&Start now	&اکنون شروع شود
+	&Start now	&شروع فوری
 #. text in the Options window
 #, machine
 	(separate names by spaces)	(نام‌ها را با فاصله جدا کنید)
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
-	(the Torrents category's folder)	(پوشه رده تورنت‌ها)
+	(the Torrents category's folder)	(پوشه دسته تورنت‌ها)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -164,25 +164,25 @@
 #. window title in extracting archives (a download's log, the Archive password window)
 #. window title: 7-Zip (a program's name) must be installed
 #, machine
-	7-Zip needed	7-Zip مورد نیاز است
+	7-Zip needed	نیاز به 7-Zip
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	آرشیوهای 7z و RAR توسط 7-Zip ({path}) استخراج می‌شوند.
+	7z and RAR archives are extracted by 7-Zip ({path}).	آرشیوهای 7z و RAR با 7-Zip ({path}) استخراج می‌شوند.
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	آرشیوهای 7z و RAR به 7-Zip (7-zip.org) نیاز دارند که نصب نشده است.
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	برای استخراج آرشیوهای 7z و RAR به 7-Zip (7-zip.org) نیاز است که نصب نشده است.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	7z and RAR archives need 7-Zip, which isn't installed	آرشیوهای 7z و RAR به 7-Zip نیاز دارند که نصب نشده است
+	7z and RAR archives need 7-Zip, which isn't installed	برای استخراج آرشیوهای 7z و RAR به 7-Zip نیاز است که نصب نشده است
 #. text in a download's progress window
 #, machine
-	<< Hide details	<< مخفی کردن جزئیات
+	<< Hide details	<< پنهان کردن جزئیات
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	یک سرویس دی‌برید، پیوند یک میزبان فایل را با حساب پولی خودتان بارگیری می‌کند و یک پیوند مستقیم به MDM می‌دهد. فقط از حساب خودتان استفاده کنید: اشتراک‌گذاری یک حساب یا پیوندهای آن، شرایط سرویس‌ها را نقض می‌کند و می‌تواند منجر به تعلیق آن شود. بارگیری‌هایی که مرورگر از قبل شروع کرده است، به همان شکل باقی می‌مانند.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	سرویس دی‌برید، پیوند میزبان فایل را با حساب پولی شما بارگیری می‌کند و پیوند مستقیمی به MDM می‌دهد. فقط از حساب خودتان استفاده کنید: اشتراک‌گذاری حساب یا پیوندهای آن، شرایط استفاده سرویس‌ها را نقض می‌کند و ممکن است باعث تعلیق حساب شود. بارگیری‌هایی که مرورگر قبلا آغاز کرده است، بدون تغییر ادامه می‌یابند.
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -199,27 +199,27 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	یک پراکسی این دانلود را حمل می‌کند: مکان و زمان مربوط به پراکسی است، نه سرور.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	این بارگیری از طریق پراکسی انجام می‌شود: مکان و زمان مربوط به پراکسی است، نه سرور.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
-	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	گزارشی ذخیره شد. ارسال آن به توسعه‌دهندگان در GitHub به آن‌ها کمک می‌کند تا این مشکل را برطرف کنند؛ می‌توانید ابتدا تمام محتویات آن را در زیر بخوانید. هیچ چیز به خودی خود ارسال نمی‌شود: ارسال، فرم گزارش را در مرورگر شما باز می‌کند، که از قبل پر شده است، تا شما آن را بررسی و ارسال کنید.
+	A report was saved. Sending it to the developers on GitHub helps them fix this; you can read everything it holds below first. Nothing is sent by itself: Send opens the report form in your browser, filled in, for you to check and submit.	گزارشی ذخیره شد. ارسال آن به توسعه‌دهندگان در GitHub به آن‌ها کمک می‌کند تا این مشکل را برطرف کنند؛ می‌توانید ابتدا تمام محتویات آن را در زیر بخوانید. هیچ‌چیز به‌خودی‌خود ارسال نمی‌شود: با انتخاب «ارسال»، فرم گزارش ازپیش‌پرشده در مرورگر شما باز می‌شود تا آن را بررسی و ارسال کنید.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown when there are no rules yet
 #, machine
-	A rule adds the new articles whose titles it matches, as they come.	یک قانون، مقاله‌های جدیدی را که عنوانشان با آن مطابقت دارد، به‌محض آمدن اضافه می‌کند.
+	A rule adds the new articles whose titles it matches, as they come.	یک قانون، مقاله‌های جدیدی را که عنوانشان با آن مطابقت دارد، به‌محض انتشار اضافه می‌کند.
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	یک سرور در این رایانه، دانلود را به جای دیگری هدایت کرد که از طریق {adapter} انجام نمی‌شود
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	سروری در این رایانه، بارگیری را به جای دیگری هدایت کرد که از طریق {adapter} انجام نمی‌شد
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
-	A tracker on this computer or the local network is never contacted: {line}	با ردیاب روی این رایانه یا شبکه محلی هرگز تماس گرفته نمی‌شود: {line}
+	A tracker on this computer or the local network is never contacted: {line}	هرگز با ردیابی روی این رایانه یا شبکه محلی تماس گرفته نمی‌شود: {line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	یک جلد از آن گم شده است
+	a volume of it is missing	یکی از بخش‌های آن موجود نیست
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	درباره Mister Download Manager
@@ -230,7 +230,7 @@
 #. checkbox in the Add torrent window
 #. Torrent settings: other peers may connect to this computer
 #, machine
-	Accept incoming connections	پذیرش اتصالات ورودی
+	Accept incoming connections	پذیرش اتصال‌های ورودی
 #. text in the Options window
 #. column title: the account's name at the service
 #, machine
@@ -248,7 +248,7 @@
 	Add an account	افزودن یک حساب
 #. text in the tray icon's menu
 #, machine
-	Add batch download	افزودن دانلود دسته‌ای
+	Add batch download	افزودن بارگیری دسته‌ای
 #. text in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -259,19 +259,19 @@
 #. button in rssdlg.rs
 #. RSS feeds window: button that subscribes to the feed whose address is typed
 #, machine
-	Add feed	افزودن فید
+	Add feed	افزودن خوراک
 #. text in playlistdlg.rs
 #. title of the question asked before a playlist adds many downloads
 #, machine
-	Add many downloads	افزودن دانلودهای زیاد
+	Add many downloads	افزودن بارگیری‌های متعدد
 #. window title in extension.rs
 #. title of the window that offers the browser extension
 #, machine
-	Add Mister Download Manager to your browser	افزودن Mister Download Manager به مرورگر
+	Add Mister Download Manager to your browser	افزودن Mister Download Manager به مرورگر شما
 #. message or event log entry in the main window; text in the tray icon's menu
 #. link in the empty download list: opens Add URL
 #, machine
-	Add new download	افزودن دانلود جدید
+	Add new download	افزودن بارگیری جدید
 #. text in the Options window
 #, machine
 	Add the duplicate and overwrite the existing file	افزودن نسخه تکراری و بازنویسی فایل موجود
@@ -284,11 +284,11 @@
 	Add the extension	افزودن افزونه
 #. text in extension.rs
 #, machine
-	Add the free extension: files you download in your browser come here, and videos get a Download button.	افزونه رایگان را اضافه کنید: فایل‌هایی که در مرورگر خود دانلود می‌کنید به اینجا می‌آیند و ویدیوها دکمه دانلود دریافت می‌کنند.
+	Add the free extension: files you download in your browser come here, and videos get a Download button.	افزونه رایگان را اضافه کنید: فایل‌هایی که در مرورگر خود بارگیری می‌کنید به اینجا می‌آیند و ویدیوها دکمه بارگیری دریافت می‌کنند.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
-	Add them without starting them	آن‌ها را بدون شروع کردن اضافه کن
+	Add them without starting them	آن‌ها را بدون شروع بارگیری اضافه کنید
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -306,7 +306,7 @@
 #. asked before a playlist adds many downloads at once; {n} is how many
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Add {n} downloads to the list? Each video gets its own row.	آیا {n} دانلود به لیست اضافه شود؟ هر ویدیو ردیف مخصوص به خود را خواهد داشت.
+	Add {n} downloads to the list? Each video gets its own row.	آیا {n} بارگیری به فهرست اضافه شود؟ هر ویدیو ردیف جداگانه‌ای خواهد داشت.
 #. button in the Options window
 #. button: add a debrid service account (opens the sign-in)
 #. the trailing ... means it opens a window: keep it
@@ -324,19 +324,19 @@
 #. noun: the web address (URL)
 #. column title: the web address (URL)
 #, machine
-	Address	آدرس
+	Address	نشانی
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	Address changed to {host}	آدرس به {host} تغییر یافت
+	Address changed to {host}	نشانی به {host} تغییر یافت
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
-	Address:	آدرس:
+	Address:	نشانی:
 #. text in whereis.rs
 #. the tooltip of where a download's server is: its IP address
 #, machine
-	Address: {address}	آدرس: {address}
+	Address: {address}	نشانی: {address}
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
@@ -510,7 +510,7 @@
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	درخواست از سرویس...
+	Asking the service...	در حال درخواست از سرویس...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
@@ -519,15 +519,15 @@
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
-	Audio only {type}	فقط صدا {type}
+	Audio only {type}	فقط صدای {type}
 #. text in playlistdlg.rs
 #. a quality in Download video for a whole playlist: only the sound, as the site has it (not converted)
 #, machine
-	Audio only, original	فقط صدا، اصلی
+	Audio only, original	فقط صدای اصلی
 #. text in the Download video window
 #. a choice in the Download video window: only the sound, the site's own file as it is (not converted); {type} is WEBM, M4A…
 #, machine
-	Audio only, original {type}	فقط صدا، {type} اصلی
+	Audio only, original {type}	فقط صدای اصلی {type}
 #. text in the Scheduler window
 #, machine
 	August	اوت
@@ -668,7 +668,7 @@
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
-	Busy, try later	مشغول است، بعدا امتحان کنید
+	Busy, try later	سرور مشغول است، بعدا تلاش کنید
 #. message or event log entry in the main window
 #, machine
 	by batch download	با دانلود دسته‌ای
@@ -708,7 +708,7 @@
 #. text in the Checksum window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Cannot read the file: {error}	فایل قابل خواندن نیست: {error}
+	Cannot read the file: {error}	خواندن فایل امکان‌پذیر نبود: {error}
 #. text in errors.rs
 #, machine
 	cannot resume: {detail}	امکان ازسرگیری وجود ندارد: {detail}
@@ -759,7 +759,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	تغییر پوشه برای دسته «{category}» در آخرین انتخاب
+	Change folder for "{category}" category on last selected	تغییر پوشه دسته «{category}» به آخرین پوشه انتخاب‌شده
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -785,7 +785,7 @@
 #. message or event log entry in the main window
 #. event log entry: a torrent's files are being read and checked again (Recheck)
 #, machine
-	Checking every piece again	دوباره در حال بررسی هر قطعه
+	Checking every piece again	در حال بررسی دوباره همه قطعه‌ها
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -949,7 +949,7 @@
 #. RSS feeds window: the selected feed's last fetch failed, with why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Could not be read: {error}	قابل خواندن نبود: {error}
+	Could not be read: {error}	خواندن امکان‌پذیر نبود: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: {name} is the archive's file name, {why} the reason
 #. {name} = a file name (keep the braces as they are)
@@ -1107,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	شروع به بارگیری نکند، فقط فایل‌ها را به صف اضافه کند
+	Do not start downloading, only add files to the queue	فقط افزودن فایل‌ها به صف، بدون شروع بارگیری
 #. text in a dialog box
 #, machine
 	Do you want to create it?	آیا می‌خواهید آن را ایجاد کنید؟
@@ -1132,13 +1132,13 @@
 	Don't show this dialog again	این گفتگو را دوباره نشان نده
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	از آدرس‌های زیر به صورت خودکار بارگیری را شروع نکن:
+	Don't start downloading automatically from the following addresses:	بارگیری خودکار از آدرس‌های زیر آغاز نشود:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	از سایت‌های زیر به صورت خودکار بارگیری را شروع نکن:
+	Don't start downloading automatically from the following sites:	بارگیری خودکار از سایت‌های زیر آغاز نشود:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	فایل‌های کوچک‌تر از (KB، 0 = هر اندازه‌ای) را نگیر:
+	Don't take files smaller than (KB, 0 = any size):	فایل‌های کوچک‌تر از (KB، 0 = هر اندازه‌ای) بارگیری نشوند:
 #. text in a download's progress window
 #, machine
 	Done	انجام شد
@@ -1165,7 +1165,7 @@
 	Download failed	بارگیری ناموفق بود
 #. window title in a dialog box
 #, machine
-	Download File Info	اطلاعات فایل بارگیری
+	Download File Info	اطلاعات فایل بارگیری‌شده
 #. text in the Add torrent window
 #. Add torrent, a checkbox: download the files from their start, to watch a video while it downloads
 #, machine
@@ -1184,7 +1184,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	بیش از {mb} مگابایت\nهر {hours} ساعت بارگیری نکن
+	Download no more than {mb} MBytes\nevery {hours} hours	حداکثر {mb} مگابایت بارگیری شود\nدر هر {hours} ساعت
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	اکنون بارگیری کن
@@ -1242,7 +1242,7 @@
 	Downloading	در حال بارگیری
 #. message or event log entry in the main window
 #, machine
-	Downloading again from the start	دوباره از ابتدا در حال بارگیری
+	Downloading again from the start	بارگیری دوباره از ابتدا آغاز شد
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	هر اتصال از طریق آن و از {ip} انجام می‌شود.
+	Every connection goes through it, from {ip}.	همه اتصال‌ها از طریق آن و از نشانی {ip} برقرار می‌شوند.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1438,7 +1438,7 @@
 	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	آزمایشی: از مستندات API عمومی سرویس‌ها ساخته شده است، هنوز با حساب‌های واقعی تأیید نشده است.
 #. message or event log entry in the main window
 #, machine
-	Export	صادر کردن
+	Export	صادر شد
 #. text in the Options window
 #, machine
 	Extend the availability of Manifest 2 Chrome extensions	افزایش دسترسی به افزونه‌های Manifest 2 Chrome
@@ -1496,7 +1496,7 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
-	Fetched again every 7 days. Changes apply when no torrent is running.	هر 7 روز یکبار دوباره واکشی می‌شود. تغییرات زمانی اعمال می‌شوند که هیچ تورنتی در حال اجرا نباشد.
+	Fetched again every 7 days. Changes apply when no torrent is running.	هر 7 روز یک‌بار دوباره واکشی می‌شود. تغییرات زمانی اعمال می‌شوند که هیچ تورنتی در حال اجرا نباشد.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1545,7 +1545,7 @@
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	فایل‌ها به: {folder} می‌روند
+	Files go to: {folder}	فایل‌ها در این پوشه ذخیره می‌شوند: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	فایل‌ها در صف
@@ -1727,7 +1727,7 @@
 #. window title in helpers.rs
 #. title of the first start's window that offers yt-dlp and ffmpeg
 #, machine
-	Get ready for video downloads	برای دانلود ویدیو آماده شوید
+	Get ready for video downloads	آماده‌سازی برای بارگیری ویدیو
 #. button in the Options window
 #, machine
 	Get System	دریافت سیستم
@@ -1735,7 +1735,7 @@
 #. still going on; {n} = the seconds it has taken so far ("s" = seconds)
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Getting the file list from peers...  {n} s	در حال دریافت لیست فایل از همتایان... {n} ثانیه
+	Getting the file list from peers...  {n} s	در حال دریافت فهرست فایل‌ها از همتاها... {n} ثانیه
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1751,7 +1751,7 @@
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
-	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive این فایل را اکنون نمی‌دهد: {message} (ورود به Google در مرورگرتان اغلب کمک می‌کند؛ در غیر این صورت، بعدا دوباره امتحان کنید)
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google Drive فعلا این فایل را ارائه نمی‌کند: {message} (ورود به Google در مرورگرتان اغلب کمک می‌کند؛ در غیر این صورت، بعدا دوباره تلاش کنید)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1798,7 +1798,7 @@
 	Haiti	هائیتی
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	قطع مودم پس از اتمام
+	Hang up modem when done	قطع خودکار مودم پس از اتمام
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	هایبرنیت
+	Hibernate	به خواب زمستانی بردن
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1856,11 +1856,11 @@
 #. text in the Scheduler window
 #. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
 #, machine
-	How to allow it	چگونه آن را مجاز کنیم
+	How to allow it	چگونه آن را مجاز کنید
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
-	How to fix it	چگونه آن را رفع کنیم
+	How to fix it	چگونه آن را برطرف کنید
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -1873,7 +1873,7 @@
 	Hungary	مجارستان
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	من با Mister Download Manager دانلود می‌کنم: سریع، رایگان و شبیه به مدیر دانلودی است که از قبل می‌شناسید. {link}
+	I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}	من با Mister Download Manager بارگیری می‌کنم: سریع، رایگان و شبیه همان مدیر بارگیری‌ای است که از قبل می‌شناسید. {link}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1887,7 +1887,7 @@
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	اگر قابل دسترسی نیست، از DNS سیستم استفاده کنید
+	If it can't be reached, use the system's DNS	اگر قابل دسترسی نبود، از DNS سیستم استفاده کنید
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	نادیده گرفتن تغییرات زمان اصلاح فایل هنگام از سرگیری دانلود
@@ -2020,7 +2020,7 @@
 #. text in errors.rs
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	its files could not be written: {error}	فایل‌های آن قابل نوشتن نیست: {error}
+	its files could not be written: {error}	نوشتن فایل‌های آن امکان‌پذیر نبود: {error}
 #. text in errors.rs
 #, machine
 	its release information is not as expected: {detail}	اطلاعات انتشار آن مطابق انتظار نیست: {detail}
@@ -2620,7 +2620,7 @@
 #. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
-	No browser's extension has connected yet	هنوز هیچ افزونه مرورگری متصل نشده است
+	No browser's extension has connected yet	هنوز هیچ افزونه‌ای از مرورگر متصل نشده است
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	هنوز پوشه‌ای وجود ندارد
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	خیر به عقب برمی‌گردد تا پوشه دیگری را انتخاب کنید.
+	No goes back, to choose another folder.	با انتخاب «خیر» به عقب برمی‌گردید تا پوشه دیگری را انتخاب کنید.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2678,7 +2678,7 @@
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	هیچ جا کلیدی سیستمی پاسخ نداد، بنابراین اطلاعات ورود و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند که فقط شما می‌توانید آن‌ها را بخوانید.
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	هیچ دسته‌کلید سیستمی پاسخ نداد، بنابراین اطلاعات ورود و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند که فقط شما می‌توانید آن‌ها را بخوانید.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2686,7 +2686,7 @@
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
-	No trackers	ردیابی وجود ندارد
+	No trackers	هیچ ردیابی‌ای وجود ندارد
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
@@ -2734,7 +2734,7 @@
 	Norway	نروژ
 #. text in the Checksum window
 #, machine
-	Not a checksum this can read	این یک جمع کنترلی نیست که قابل خواندن باشد
+	Not a checksum this can read	این جمع کنترلی قابل خواندن نیست
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
@@ -3107,7 +3107,7 @@
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
-	Put them into the video	آن‌ها را درون ویدیو قرار بده
+	Put them into the video	آن‌ها را درون ویدیو قرار دهید
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3510,7 +3510,7 @@
 	Show &categories	نمایش &دسته‌ها
 #. text in the Options window
 #, machine
-	Show a dialog and ask what to do.	نمایش یک کادر محاوره‌ای و پرسش برای انجام کار.
+	Show a dialog and ask what to do.	نمایش کادر محاوره‌ای و پرسیدن اینکه چه کاری انجام شود.
 #. checkbox in the Options window
 #, machine
 	Show a download button over videos in browsers	نمایش دکمه دانلود روی ویدیوها در مرورگرها
@@ -3573,7 +3573,7 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	با نام {user} ({state}) وارد شدید
+	Signed in as {user} ({state})	با نام {user} ({state}) وارد شده‌اید
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
@@ -3825,7 +3825,7 @@
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name; its subtitles were to go inside the video, but came on a second try, so they're a separate file beside it
 #, machine
-	Subtitles in {language} came on a second try: they're beside the video, not in it.	زیرنویس‌ها به زبان {language} در تلاش دوم دریافت شدند: آن‌ها کنار ویدیو هستند، نه درون آن.
+	Subtitles in {language} came on a second try: they're beside the video, not in it.	زیرنویس‌های زبان {language} در تلاش دوم دریافت شدند: آن‌ها کنار ویدیو هستند، نه داخل آن.
 #. text in the download list (sizes, speeds, status)
 #. after a video download: {language} = a language's name, {reason} = the helper program's own (English) words
 #, machine
@@ -3917,7 +3917,7 @@
 #. text in torrent downloads
 #. an error: the copy of the .torrent file the app keeps is missing
 #, machine
-	the .torrent file kept for it is gone	فایل .torrent ذخیره‌شده برای آن از بین رفته است
+	the .torrent file kept for it is gone	فایل .torrent نگهداری‌شده برای آن پیدا نمی‌شود
 #. text in a download's Properties window
 #, machine
 	The address must be an http(s) or ftp(s) address	آدرس باید یک آدرس http(s) یا ftp(s) باشد
@@ -3957,7 +3957,7 @@
 #. text in debrid.rs
 #. Options → Accounts: the sign-in code ran out before it was used
 #, machine
-	the code expired: sign in again	کد منقضی شد: دوباره وارد شوید
+	the code expired: sign in again	کد منقضی شده است: دوباره وارد شوید
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
@@ -3965,7 +3965,7 @@
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The computer could not be turned off: {error}	رایانه خاموش نشد: {error}
+	The computer could not be turned off: {error}	خاموش کردن رایانه امکان‌پذیر نبود: {error}
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue"
 #, machine
@@ -4055,7 +4055,7 @@
 	The file matches ({algorithm})	فایل مطابقت دارد ({algorithm})
 #. text in a dialog box
 #, machine
-	The file saved as	فایل ذخیره شد با نام
+	The file saved as	فایل با نام زیر ذخیره شد
 #. text in the download list (sizes, speeds, status)
 #, machine
 	The file types that are not listed in any other category	انواع فایل‌هایی که در هیچ دسته‌بندی دیگری فهرست نشده‌اند
@@ -4085,7 +4085,7 @@
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
-	the FTP server answered {code} {reply}	سرور FTP پاسخ داد {code} {reply}
+	the FTP server answered {code} {reply}	سرور FTP با {code} {reply} پاسخ داد
 #. text in extension.rs
 #. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
 #, machine
@@ -4126,21 +4126,21 @@
 	The report is on your clipboard.	گزارش در کلیپ‌بورد شماست.
 #. text in crashui.rs
 #, machine
-	The report is on your clipboard: paste it in a comment on the issue.	گزارش در کلیپ‌بورد شماست: آن را در یک نظر در مورد مشکل بچسبانید.
+	The report is on your clipboard: paste it in a comment on the issue.	گزارش در کلیپ‌بورد شماست: آن را در دیدگاهی درباره مشکل بچسبانید.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
-	the secure connection failed	اتصال امن انجام نشد
+	the secure connection failed	اتصال امن برقرار نشد
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	دانلود انتخاب‌شده کامل نیست. آیا مطمئن هستید که می‌خواهید آن را از فهرست دانلودهای Mister Download Manager حذف کنید؟
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	بارگیری انتخاب‌شده کامل نشده است. آیا مطمئن هستید که می‌خواهید آن را از فهرست بارگیری‌های Mister Download Manager حذف کنید؟
 #. text in errors.rs
 #, machine
 	the server answered {status}	سرور پاسخ داد {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	سرور نمی‌تواند بخش‌هایی از فایل را ارسال کند، بنابراین نمی‌توان آن را از سر گرفت
+	the server can't send parts of the file, so it can't be resumed	سرور نمی‌تواند بخش‌هایی از فایل را ارسال کند، بنابراین ادامه بارگیری امکان‌پذیر نیست
 #. text in errors.rs
 #, machine
 	the server did not answer in time	سرور به موقع پاسخ نداد
@@ -4149,29 +4149,29 @@
 	the server did not send the requested part	سرور بخش درخواستی را ارسال نکرد
 #. text in errors.rs
 #, machine
-	the server is busy ({status}); try again later	سرور مشغول است ({status})؛ بعدا دوباره امتحان کنید
+	the server is busy ({status}); try again later	سرور مشغول است ({status})؛ بعدا دوباره تلاش کنید
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	سرور به جای فایل، یک صفحه وب ارسال کرد (نیاز به ورود یا انقضای پیوند؟)
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	سرور به‌جای فایل، صفحه‌ای وب فرستاد (ورود لازم است یا پیوند منقضی شده است؟)
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	سرور بخش غیرمنتظره‌ای از فایل را ارسال کرد ({detail})
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	سایت از شما می‌خواهد که وارد شوید، حتی با کوکی‌های مرورگرتان برای این صفحه. در مرورگر خود وارد شوید، سپس دوباره امتحان کنید.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	سایت از شما می‌خواهد وارد شوید، حتی با وجود کوکی‌های مرورگرتان برای این صفحه. در مرورگر وارد سایت شوید، سپس دوباره تلاش کنید.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	سایت از شما می‌خواهد که وارد شوید، حتی با کوکی‌های {browser}. در {browser} وارد شوید، سپس دوباره صفحه را جستجو کنید.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	سایت از شما می‌خواهد وارد شوید، حتی با وجود کوکی‌های {browser}. در {browser} وارد سایت شوید، سپس دوباره صفحه را پیدا کنید.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
-	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	نمادها قابل واکشی نبودند: برخی از خطوط گزارش به جای نام‌ها، آدرس‌ها را نشان می‌دهند (توسعه‌دهندگان همچنان می‌توانند آن‌ها را بخوانند).
+	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	نمادها دریافت نشدند: برخی از سطرهای گزارش به‌جای نام‌ها، نشانی‌ها را نشان می‌دهند (توسعه‌دهندگان همچنان می‌توانند آن‌ها را بخوانند).
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	جا کلیدی سیستم قفل است و MDM آن را باز نمی‌کند، بنابراین اطلاعات ورود و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند که فقط شما می‌توانید آن‌ها را بخوانید.
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	جاکلیدی سیستم قفل است و MDM قفل آن را باز نمی‌کند، بنابراین اطلاعات ورود و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند و فقط شما می‌توانید آن‌ها را بخوانید.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	زمان، رفت و برگشت است و با باز شدن اتصالات این دانلود اندازه‌گیری می‌شود.
+	The time is a round trip, measured as this download's own connections opened.	زمان، مدت رفت‌وبرگشت است و بر اساس زمان بازبودن اتصال‌های خود این بارگیری اندازه‌گیری می‌شود.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4191,7 +4191,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The trackers could not be added: {error}	ردیاب‌ها قابل افزودن نبودند: {error}
+	The trackers could not be added: {error}	افزودن ردیاب‌ها امکان‌پذیر نبود: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4201,7 +4201,7 @@
 	The update is open in your system's package installer.	به‌روزرسانی در نصب‌کننده بسته سیستم شما باز است.
 #. text in a download's Properties window
 #, machine
-	The web page from which this file was obtained:	صفحه وبی که این فایل از آن به دست آمده است:
+	The web page from which this file was obtained:	صفحه وبی که این فایل از آن دریافت شده است:
 #. text in the Options window
 #. Options → Archives check box
 #, machine
@@ -4212,32 +4212,32 @@
 	Then move the archives to the Trash	سپس بایگانی‌ها را به زباله‌دان منتقل کنید
 #. text in categories.rs
 #, machine
-	There is already a category with this name	دسته‌بندی با این نام از قبل وجود دارد
+	There is already a category with this name	دسته‌بندی‌ای با این نام از قبل وجود دارد
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
 	There is already a queue with this name	صفی با این نام از قبل وجود دارد
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	این تنظیمات زمانی که «نمایش گفتگوی تکمیل دانلود» روشن است، در دسترس نیستند
+	These settings are unavailable when "Show download complete dialog" is turned on	وقتی «نمایش گفت‌وگوی پایان بارگیری» روشن باشد، این تنظیمات در دسترس نیستند
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	اگر این پنجره را ببندید، آن‌ها به دانلود ادامه می‌دهند.
+	They keep downloading if you close this window.	اگر این پنجره را ببندید، بارگیری آن‌ها ادامه می‌یابد.
 #. text in a dialog box
 #, machine
-	This address is already in the list of downloads:	این آدرس از قبل در فهرست دانلودها موجود است:
+	This address is already in the list of downloads:	این نشانی از قبل در فهرست بارگیری‌ها وجود دارد:
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 #, machine
-	This category or queue holds no downloads yet.	این دسته یا صف هنوز هیچ دانلودی ندارد.
+	This category or queue holds no downloads yet.	این دسته‌بندی یا صف هنوز بارگیری‌ای ندارد.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 #, machine
-	This computer can't be woken by a timer	این رایانه نمی‌تواند توسط یک زمان‌سنج بیدار شود
+	This computer can't be woken by a timer	این رایانه را نمی‌توان با زمان‌سنج بیدار کرد
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer has no wake alarm that programs can set	این رایانه هشدار بیدارباشی ندارد که برنامه‌ها بتوانند آن را تنظیم کنند
+	This computer has no wake alarm that programs can set	این رایانه زنگ بیدارباشی ندارد که برنامه‌ها بتوانند تنظیم کنند
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4245,25 +4245,25 @@
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 #, machine
-	This date has passed: the queue will not start	این تاریخ گذشته است: صف شروع نخواهد شد
+	This date has passed: the queue will not start	این تاریخ گذشته است: صف شروع نمی‌شود
 #. text in a dialog box
 #, machine
 	This folder does not exist:	این پوشه وجود ندارد:
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	این فایل Google Drive نیاز به ورود شما دارد: در مرورگرتان وارد Google شوید، سپس آن را از آنجا دانلود کنید
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	برای دسترسی به این فایل Google Drive باید وارد شوید: در مرورگر وارد Google شوید، سپس فایل را از آنجا بارگیری کنید
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
 	this is a Google Drive folder, not a file	این یک پوشه Google Drive است، نه یک فایل
 #. text in errors.rs
 #, machine
-	this is not a magnet link or a .torrent file	این یک لینک مگنت یا فایل .torrent نیست
+	this is not a magnet link or a .torrent file	این پیوند مگنت یا فایل .torrent نیست
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
-	This is the installed copy, not a portable one	این نسخه نصب شده است، نه نسخه قابل حمل
+	This is the installed copy, not a portable one	این نسخه نصب‌شده است، نه نسخه قابل‌حمل
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -4275,7 +4275,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
-	This needs ffmpeg	این به ffmpeg نیاز دارد
+	This needs ffmpeg	این مورد به ffmpeg نیاز دارد
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4361,7 +4361,7 @@
 	Tonga	تونگا
 #. text in errors.rs
 #, machine
-	too many redirects	تعداد تغییر مسیرها زیاد است
+	too many redirects	تغییرمسیرهای بیش از حد
 #. value in a column's filter list in the download list; text in the Add torrent window
 #. where a download comes from: Web (web or FTP server) or Torrent (BitTorrent)
 #. noun: label before the torrent file or magnet link
@@ -4405,18 +4405,18 @@
 	Trackers to add to {name}, one address a line:	ردیاب‌هایی که باید به {name} اضافه شوند، هر آدرس در یک خط:
 #. text in a download's progress window
 #, machine
-	Transfer rate	نرخ انتقال
+	Transfer rate	سرعت انتقال
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Trinidad and Tobago	ترینیداد و توباگو
 #. button in helpers.rs
 #, machine
-	Try again	دوباره تلاش کنید
+	Try again	تلاش دوباره
 #. text in the Scheduler window
 #. Tuesday, as short as a calendar's column head (two letters in English)
 #, machine
-	Tu	سه‌
+	Tu	س
 #. text in the Scheduler window
 #, machine
 	Tuesday	سه‌شنبه
@@ -4445,7 +4445,7 @@
 	Turn off computer when done	پس از اتمام، رایانه را خاموش کن
 #. button in a dialog box
 #, machine
-	Turn off now	اکنون خاموش کن
+	Turn off now	اکنون خاموش کنید
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter on
 #, machine
@@ -4597,7 +4597,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	در صورت وجود خطاهای دانلود / برای دانلودهای رهگیری شده از مرورگر، از پراکسی/SOCKS درخواست مرورگر استفاده شود
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	در صورت بروز خطا در بارگیری‌ها، از پراکسی/SOCKS درخواست مرورگر برای بارگیری‌های رهگیری‌شده از مرورگر استفاده شود
 #. checkbox in a download's progress window
 #, machine
 	Use Speed Limiter	استفاده از محدودکننده سرعت
@@ -4611,7 +4611,7 @@
 #. button in the Options window
 #. button: sign in with the token typed in
 #, machine
-	Use the token	استفاده از رمز
+	Use the token	استفاده از توکن
 #. text in a dialog box
 #, machine
 	Use them for this torrent? What matches it is kept, the rest replaced.	از آن‌ها برای این تورنت استفاده شود؟ آنچه مطابقت دارد حفظ می‌شود، بقیه جایگزین می‌شوند.
@@ -4726,7 +4726,7 @@
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
 #, machine
-	Wake the computer to run this queue	بیدار کردن رایانه برای اجرای این صف
+	Wake the computer to run this queue	بیدار نگه‌داشتن رایانه برای اجرای این صف
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP، 7Z، RAR، TAR، GZ و XZ؛ یک بایگانی تقسیم‌شده (part1.rar.، 7z.001.) پس از اینکه هر جلد آن کامل شد. فایلی که از قبل وجود دارد حفظ می‌شود: فایل جدید شماره‌گذاری می‌شود.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP، 7Z، RAR، TAR، GZ و XZ؛ یک بایگانی چندبخشی (part1.rar.، 7z.001.) پس از کامل‌شدن همه بخش‌ها. فایل موجود حفظ می‌شود و برای فایل جدید شماره‌ای تعیین می‌شود.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4920,7 +4920,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: {cdn} is a content delivery network's name (Cloudflare…)
 #, machine
-	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	{cdn} این فایل را ارائه می‌دهد: مکان سرور آن است، اغلب نزدیک شما، نه مالک سایت.
+	{cdn} serves this file: the place is its server's, often near you, not the site owner's.	این فایل را {cdn} ارائه می‌دهد: مکان سرور آن است که اغلب نزدیک شماست، نه سرور مالک سایت.
 #. text in the download list
 #. {column} = a column title (keep the braces as they are)
 #, machine
@@ -4937,25 +4937,25 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be deleted from the disk: {error}	{file} از دیسک حذف نشد: {error}
+	{file} could not be deleted from the disk: {error}	حذف {file} از دیسک امکان‌پذیر نبود: {error}
 #. text in a dialog box
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	{file} could not be opened: {error}	{file} باز نشد: {error}
+	{file} could not be opened: {error}	باز کردن {file} امکان‌پذیر نبود: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} برای بررسی خوانده نشد
+	{file} could not be read to check it	خواندن {file} برای بررسی آن امکان‌پذیر نبود
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} دیگر در جایی که ذخیره شده بود نیست (منتقل یا حذف شده است). دانلود مجدد، در منوی راست‌کلیک آن، دوباره آن را دریافت می‌کند.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} دیگر در محل ذخیره‌شده خود نیست (منتقل یا حذف شده است). گزینه بارگیری مجدد در منوی راست‌کلیک آن، فایل را دوباره دریافت می‌کند.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file does NOT match its checksum ({algorithm})	{file}: فایل با جمع کنترلی آن ({algorithm}) مطابقت ندارد
+	{file}: the file does NOT match its checksum ({algorithm})	{file}: فایل با جمع کنترلی خود ({algorithm}) مطابقت ندارد
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	{file}: the file matches its checksum ({algorithm})	{file}: فایل با جمع کنترلی آن ({algorithm}) مطابقت دارد
+	{file}: the file matches its checksum ({algorithm})	{file}: فایل با جمع کنترلی خود ({algorithm}) مطابقت دارد
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4973,7 +4973,7 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} از طریق {adapter} قابل دسترسی نیست: آدرس از آن نوع (IPv4 یا IPv6) را ندارد
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	از طریق {adapter} نمی‌توان به {ip} دسترسی داشت: این آداپتور آدرسی از این نوع (IPv4 یا IPv6) ندارد
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -4999,12 +4999,12 @@
 #. {name} = yt-dlp or ffmpeg; {error} = why
 #. {name} = a file name; {error} = an error message (keep the braces as they are)
 #, machine
-	{name} could not be downloaded: {error}	{name} قابل دانلود نبود: {error}
+	{name} could not be downloaded: {error}	بارگیری {name} امکان‌پذیر نبود: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in the "7-Zip needed" window: {name} is the archive's file name; 7-Zip is a program's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} یک آرشیو 7z یا RAR است. MDM این‌ها را با 7-Zip استخراج می‌کند که نصب نشده است.
+	{name} is a 7z or RAR archive. MDM extracts those with 7-Zip, which isn't installed.	{name} یک بایگانی 7z یا RAR است. MDM آن‌ها را با 7-Zip استخراج می‌کند، اما 7-Zip نصب نشده است.
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -5039,21 +5039,21 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} درخواست کاهش سرعت دارد؛ MDM در یک دقیقه دوباره تلاش خواهد کرد
+	{service} asks to slow down; MDM will try again in a minute	{service} درخواست می‌کند سرعت را کاهش دهید؛ MDM یک دقیقه دیگر دوباره تلاش می‌کند
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} از شما می‌خواهد ابتدا این رایانه را مجاز کنید: ایمیل آن را ببینید
+	{service} asks you to allow this computer first: see its email	{service} می‌خواهد ابتدا این رایانه را مجاز کنید: ایمیل آن را ببینید
 #. text in errors.rs
 #, machine
-	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} نمی‌تواند این تورنت را دریافت کند: کسی آن را به اشتراک نمی‌گذارد، یا پیوند آن قابل خواندن نیست
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} نمی‌تواند این تورنت را دریافت کند: کسی آن را به اشتراک نگذاشته است یا پیوند آن قابل خواندن نیست
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} در حال حاضر نمی‌تواند به این میزبان فایل دسترسی پیدا کند؛ MDM بعدا دوباره تلاش خواهد کرد
 #. text in errors.rs
 #. a debrid service's error: it isn't answering
 #, machine
-	{service} is not responding; try again later	{service} پاسخ نمی‌دهد؛ بعدا دوباره امتحان کنید
+	{service} is not responding; try again later	{service} پاسخ نمی‌دهد؛ بعدا دوباره تلاش کنید
 #. text in errors.rs
 #. a debrid service's error: it refuses this computer's address (a VPN or a server address)
 #, machine
@@ -5116,7 +5116,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
-	{title}: not added: files of its names are already in {folder}	{title}: اضافه نشد: فایل‌هایی با نام آن از قبل در {folder} هستند
+	{title}: not added: files of its names are already in {folder}	{title}: افزوده نشد: فایل‌هایی با این نام از قبل در {folder} هستند
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
@@ -5229,7 +5229,7 @@ extension	Hide on this video	پنهان کردن در این ویدیو
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	هنگام کلیک روی پیوند، Alt را نگه دارید تا مرورگر آن را بارگیری کند.
+extension	Hold Alt while clicking a link to let the browser download it.	هنگام کلیک روی پیوند، کلید Alt را نگه دارید تا مرورگر آن را بارگیری کند.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5241,7 +5241,7 @@ extension	Live	زنده
 #. text in the browser extension
 #. heading in the toolbar button's popup over the list of the videos, sounds and streams the current web page has loaded
 #, machine
-extension	Media on this page	رسانه در این صفحه
+extension	Media on this page	رسانه‌های این صفحه
 #. text in the browser extension
 #. the extension's name in the browser's list of extensions and on its toolbar button; keep the name Mister Download Manager as it is
 #, machine
@@ -5257,15 +5257,15 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager نصب نشده است یا شروع نشد
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager نصب نشده است یا اجرا نشد
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager نصب نشده است، یا یکپارچه‌سازی مرورگر آن تنظیم نشده است
+extension	Mister Download Manager isn't installed, or its browser integration isn't set up	Mister Download Manager نصب نشده است یا یکپارچه‌سازی آن با مرورگر تنظیم نشده است
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager سپس از طریق همان پروکسی این مرورگر دانلود می‌کند. مرورگر یک بار از شما می‌خواهد که اجازه دهید؛ خاموش کردن این گزینه، آن را لغو می‌کند.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager سپس از طریق همان پروکسی این مرورگر بارگیری می‌کند. مرورگر یک‌بار از شما اجازه می‌گیرد؛ با خاموش کردن این گزینه، اجازه لغو می‌شود.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5279,11 +5279,11 @@ extension	Never on {site}	هرگز در {site}
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	هرگز دانلودها را از {site} نگیر
+extension	Never take downloads from {site}	هرگز بارگیری‌های {site} را دریافت نکنید
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
-extension	No video or sound found on this page yet. Play it, then open this again.	هنوز هیچ ویدیو یا صدایی در این صفحه یافت نشد. آن را پخش کنید، سپس دوباره این را باز کنید.
+extension	No video or sound found on this page yet. Play it, then open this again.	هنوز ویدیو یا صدایی در این صفحه پیدا نشده است. آن را پخش کنید و سپس این پنجره را دوباره باز کنید.
 #. text in the browser extension
 #. button in the toolbar button's popup; keep the name Mister Download Manager as it is
 #, machine
@@ -5296,7 +5296,7 @@ extension	Options...	گزینه‌ها...
 #. text in the browser extension
 #. status when the user switched off taking downloads in the toolbar button's popup
 #, machine
-extension	Paused: downloads stay with the browser	متوقف شد: دانلودها در مرورگر می‌مانند
+extension	Paused: downloads stay with the browser	متوقف شد: بارگیری‌ها در مرورگر می‌مانند
 #. text in the browser extension
 #. shown instead of the Download button beside a copy-protected (DRM) stream in the toolbar button's popup: it can't be downloaded; short
 #, machine
@@ -5304,11 +5304,11 @@ extension	Protected	محافظت‌شده
 #. text in the browser extension
 #. shown briefly on the download button when the video is copy-protected (DRM) and no tool can download it
 #, machine
-extension	Protected video: it can't be saved	ویدیوی محافظت‌شده: نمی‌توان آن را ذخیره کرد
+extension	Protected video: it can't be saved	ویدیوی محافظت‌شده: امکان ذخیره آن نیست
 #. text in the browser extension
 #. switch in the toolbar button's popup: on, the app downloads through the same proxy the browser uses (one a VPN or proxy extension sets); the browser then asks once to allow reading it
 #, machine
-extension	Send downloads through this browser's proxy or VPN extension	ارسال دانلودها از طریق پروکسی یا افزونه VPN این مرورگر
+extension	Send downloads through this browser's proxy or VPN extension	بارگیری‌ها از طریق پروکسی یا افزونه VPN این مرورگر ارسال شوند
 #. text in the browser extension
 #. shown briefly on the download button after it was clicked; keep the name Mister Download Manager as it is
 #, machine
@@ -5320,23 +5320,23 @@ extension	Support MDM	پشتیبانی از MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	دانلودها را از این مرورگر دریافت کن
+extension	Take downloads from this browser	دریافت بارگیری‌ها از این مرورگر
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
-extension	The connection to Mister Download Manager failed	اتصال به Mister Download Manager قطع شد
+extension	The connection to Mister Download Manager failed	اتصال به Mister Download Manager برقرار نشد
 #. text in the browser extension
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 #, machine
-extension	The download button is off on this site	دکمه دانلود در این سایت خاموش است
+extension	The download button is off on this site	دکمه بارگیری در این سایت خاموش است
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	جزئیات این دانلود برای انتقال بیش از حد بزرگ بود
+extension	This download's details were too large to hand over	جزئیات این بارگیری برای واگذاری بیش از حد بزرگ بود
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Update Mister Download Manager to use everything this extension offers	Mister Download Manager را به‌روزرسانی کنید تا از تمام قابلیت‌های این افزونه استفاده کنید
+extension	Update Mister Download Manager to use everything this extension offers	Mister Download Manager را به‌روزرسانی کنید تا از همه قابلیت‌های این افزونه استفاده کنید
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5569,7 +5569,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	دفعه بعد که MDM شروع به کار کند اعمال می‌شود
+menu	Applies the next time MDM starts	دفعه بعد که MDM شروع به کار کند، اعمال می‌شود
 #. menu command in the main window
 #, machine
 menu	Arrange files	مرتب‌سازی فایل‌ها
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	مرور
+menu	Browse	باز کردن پوشه
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5714,7 +5714,7 @@ menu	First and last pieces first	اولین و آخرین قطعات، اول
 #. menu command in the main window
 #. noun: the list's font (submenu)
 #, machine
-menu	Font	فونت
+menu	Font	قلم
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it

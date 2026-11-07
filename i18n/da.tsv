@@ -6,12 +6,12 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Slet også den {n} fil fra disken|Slet også de {n} filer fra disken
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Slet også {n} fil fra disken|Slet også {n} filer fra disken
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Er du sikker på, at du vil slette {n} download fra Mister Download Managers liste over downloads?|Er du sikker på, at du vil slette disse {n} downloads fra Mister Download Managers liste over downloads?
+@plural	Are you sure you want to delete {n} download from Mister Download Manager list of downloads?|Are you sure you want to delete these {n} downloads from Mister Download Manager list of downloads?	Vil du slette {n} download fra Mister Download Managers liste over downloads?|Vil du slette {n} downloads fra Mister Download Managers liste over downloads?
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers that answered
 #. {n} = a number (keep the braces as they are)
@@ -64,7 +64,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} downloader|{n} downloader
+@plural	{n} downloading|{n} downloading	{n} download i gang|{n} downloads i gang
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
@@ -191,7 +191,7 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Et NextDNS-konfigurations-id er seks bogstaver og cifre (0-9, a-f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	Et NextDNS-konfigurations-id består af seks bogstaver og cifre (0-9, a-f).
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
@@ -199,7 +199,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	En proxy udfører denne download: sted og tidspunkt er proxyens, ikke serverens.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	En proxy håndterer denne download: sted og tidspunkt er proxyens, ikke serverens.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -211,7 +211,7 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	en server på denne computer sendte overførslen et andet sted hen, hvilket ikke ville gå gennem {adapter}
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	en server på denne computer sendte downloadet et andet sted hen, hvilket ville omgå {adapter}
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
@@ -219,7 +219,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	en af dens diske mangler
+	a volume of it is missing	en af dens dele mangler
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Om Mister Download Manager
@@ -340,7 +340,7 @@
 #. window title in the Options window
 #. window title: the addresses whose downloads stay with the browser
 #, machine
-	Addresses left to the browser	Adresser overladt til browseren
+	Addresses left to the browser	Adresser, der håndteres af browseren
 #. button in the Options window
 #. the trailing ... means it opens a window: keep it
 #, machine
@@ -373,11 +373,11 @@
 	All files	Alle filer
 #. text in helpers.rs
 #, machine
-	All set: on a page with a video, use Tasks → Download video from a page.	Alt er klar: Brug Opgaver → Download video fra en side på en side med en video.
+	All set: on a page with a video, use Tasks → Download video from a page.	Alt er klar: På en side med en video skal du bruge Opgaver → Download video fra en side.
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Alle uploaders
+	All the uploader's	Alle uploaderens
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -397,13 +397,13 @@
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
-	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Vedhæft også crashdata (.dmp): de kan indeholde adresser, cookies og adgangskoder
+	Also attach the crash data (.dmp): it may hold addresses, cookies and passwords	Vedhæft også nedbrudsdata (.dmp): de kan indeholde adresser, cookies og adgangskoder
 #. text in a dialog box
 #, machine
 	Also delete the file from disk	Slet også filen fra disken
 #. checkbox in the Options window
 #, machine
-	Also take files the browser would open (PDF, music, video)	Tag også filer, som browseren ville åbne (PDF, musik, video)
+	Also take files the browser would open (PDF, music, video)	Overtag også filer, som browseren ville åbne (PDF, musik, video)
 #. message or event log entry in the main window
 #. View menu: a check item; dark mode on, whatever the system's setting
 #, machine
@@ -411,7 +411,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Always into a folder named after it	Altid i en mappe opkaldt efter den
+	Always into a folder named after it	Altid i en mappe med arkivets navn
 #. checkbox in a dialog box
 #, machine
 	Always turn on Speed Limiter on Mister Download Manager startup	Slå altid hastighedsbegrænser til ved opstart af Mister Download Manager
@@ -459,7 +459,7 @@
 #. text in the Options window
 #. Options → Network adapter: the first choice: no adapter is chosen, the system picks one for each connection
 #, machine
-	Any (the system chooses)	Alle (systemet vælger)
+	Any (the system chooses)	Tilfældig (systemet vælger)
 #. text in the Scheduler window
 #, machine
 	April	April
@@ -467,7 +467,7 @@
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
 #, machine
-	Archive password	Arkivadgangskode
+	Archive password	Adgangskode til arkiv
 #. group box title in the Options window; text in the Options window
 #. Options → Archives: group box title
 #. tab title: extracting downloaded archives, and Link grabber
@@ -674,7 +674,7 @@
 	by batch download	via batchdownload
 #. message or event log entry in the main window
 #, machine
-	by Link grabber	af Linkgrabber
+	by Link grabber	af linkgrabberen
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -832,7 +832,7 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the title of the window, and the tooltip of the button, that pick a browser profile's folder
 #, machine
-	Choose the profile's folder	Vælg profils mappe
+	Choose the profile's folder	Vælg profilens mappe
 #. text in helpers.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -1000,7 +1000,7 @@
 	Daily	Dagligt
 #. text in the Options window
 #, machine
-	Date order:	Datoformat:
+	Date order:	Datoorden:
 #. page title in the Options window
 #, machine
 	Dates and times	Datoer og klokkeslæt
@@ -1050,12 +1050,12 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Delete the category "{category}"? Its files stay where they are.	Slet kategorien "{category}"? Dens filer forbliver, hvor de er.
+	Delete the category "{category}"? Its files stay where they are.	Vil du slette kategorien "{category}"? Dens filer forbliver, hvor de er.
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
-	Delete the queue "{queue}"? Its downloads stay in the list.	Slet køen "{queue}"? Dens downloads forbliver på listen.
+	Delete the queue "{queue}"? Its downloads stay in the list.	Vil du slette køen "{queue}"? Dens downloads forbliver på listen.
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Delete the selected downloads (asks first)	Slet de valgte downloads (spørger først)
@@ -1107,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	Start ikke download, tilføj kun filer til køen
+	Do not start downloading, only add files to the queue	Start ikke downloads, tilføj kun filer til køen
 #. text in a dialog box
 #, machine
 	Do you want to create it?	Vil du oprette den?
@@ -1132,13 +1132,13 @@
 	Don't show this dialog again	Vis ikke denne dialogboks igen
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following addresses:	Start ikke download automatisk fra følgende adresser:
+	Don't start downloading automatically from the following addresses:	Start ikke downloads automatisk fra følgende adresser:
 #. text in the Options window
 #, machine
-	Don't start downloading automatically from the following sites:	Start ikke download automatisk fra følgende websteder:
+	Don't start downloading automatically from the following sites:	Start ikke downloads automatisk fra følgende websteder:
 #. text in the Options window
 #, machine
-	Don't take files smaller than (KB, 0 = any size):	Tag ikke filer, der er mindre end (KB, 0 = enhver størrelse):
+	Don't take files smaller than (KB, 0 = any size):	Hent ikke filer, der er mindre end (KB, 0 = enhver størrelse):
 #. text in a download's progress window
 #, machine
 	Done	Udført
@@ -1152,7 +1152,7 @@
 #. message or event log entry in the main window
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Download "{name}" igen fra starten? En færdig fil erstattes, når den nye download er fuldført.
+	Download "{name}" again from the start? A finished file is replaced when the new download completes.	Hent "{name}" igen fra starten? En færdig fil erstattes, når den nye download er fuldført.
 #. window title in gallerydlg.rs
 #. window title: download an image gallery's files (gallery-dl)
 #, machine
@@ -1184,7 +1184,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	Download ikke mere end {mb} MB\nhver {hours} time
+	Download no more than {mb} MBytes\nevery {hours} hours	Hent højst {mb} MB\nhver {hours} time
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Download nu
@@ -1203,22 +1203,22 @@
 #. checkbox in the Options window
 #. Options → Accounts: checkbox: links of the file hosts these services support are downloaded through the accounts
 #, machine
-	Download supported file-host links through these accounts	Download understøttede filhost-links via disse konti
+	Download supported file-host links through these accounts	Hent understøttede links til filhostingtjenester via disse konti
 #. text in a dialog box
 #. Download File Info: a check box, ticked when the download goes through the user's debrid account; {service} the service and the account, "Real-Debrid (labuser)". Unticked: downloaded directly
 #, machine
-	Download through {service}	Download via {service}
+	Download through {service}	Hent via {service}
 #. window title in the Download video window
 #, machine
 	Download video from a page	Download video fra en side
 #. text in helpers.rs
 #. the headline of the first start's helpers window
 #, machine
-	Download videos from YouTube and 1,000+ sites	Download videoer fra YouTube og mere end 1.000 websteder
+	Download videos from YouTube and 1,000+ sites	Hent videoer fra YouTube og over 1.000 websteder
 #. text in the Scheduler window
 #. {files} is a number box (with up/down arrows), drawn where it stands in the translation
 #, machine
-	Download {files} files at the same time	Download {files} filer samtidigt
+	Download {files} files at the same time	Hent {files} filer samtidigt
 #. button in rssdlg.rs
 #. RSS feeds window: add the selected article's torrent (opens Add torrent)
 #. the trailing ... means it opens a window: keep it
@@ -1228,10 +1228,10 @@
 #. label before the amount received so far
 #. column title: bytes this connection received
 #, machine
-	Downloaded	Downloadet
+	Downloaded	Hentet
 #. page title in the Options window
 #, machine
-	Downloaded file types	Downloadede filtyper
+	Downloaded file types	Hentede filtyper
 #. text in a dialog box
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 #, machine
@@ -1239,14 +1239,14 @@
 #. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
-	Downloading	Downloader
+	Downloading	Hentes
 #. message or event log entry in the main window
 #, machine
-	Downloading again from the start	Downloader igen fra starten
+	Downloading again from the start	Henter igen fra starten
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying ffmpeg (about 80 MB)...	Downloader og verificerer ffmpeg (ca. 80 MB)...
+	Downloading and verifying ffmpeg (about 80 MB)...	Henter og verificerer ffmpeg (ca. 80 MB)...
 #. text in gallerydlg.rs
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -1286,7 +1286,7 @@
 	Drag .torrent files or lists of addresses here	Træk .torrent-filer eller lister over adresser herhen
 #. text in droptarget.rs
 #, machine
-	Drag links here to download them	Træk links her for at downloade dem
+	Drag links here to download them	Træk links hertil for at hente dem
 #. text in a dialog box
 #. tooltip of the handle in Download complete: drag it to drop the downloaded file somewhere
 #, machine
@@ -1339,7 +1339,7 @@
 	El Salvador	El Salvador
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Email	Mail
+	Email	E-mail
 #. text in gallerydlg.rs
 #. in Download a gallery, after the "Files at most" box
 #, machine
@@ -1409,7 +1409,7 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 #, machine
-	Every connection goes through it, from {ip}.	Hver forbindelse går igennem den, fra {ip}.
+	Every connection goes through it, from {ip}.	Hver forbindelse går gennem den fra {ip}.
 #. text in the Options window
 #. label before an example date and time written the chosen way
 #, machine
@@ -1452,7 +1452,7 @@
 #. checkbox in the Options window
 #. Options → Archives check box (a Link grabber package has its own "Extract when done")
 #, machine
-	Extract archives when their download completes	Udpak arkiver, når deres download er fuldført
+	Extract archives when their download completes	Udpak arkiver, når overførslen er fuldført
 #. text in the Link grabber window
 #. Link grabber check box: extract the package's archives once they are downloaded
 #, machine
@@ -1541,11 +1541,11 @@
 #. text in gallerydlg.rs
 #. label before the box for how many of a gallery's files to download at most
 #, machine
-	Files at most	Filer højst
+	Files at most	Maks. antal filer
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	Filer går til: {folder}
+	Files go to: {folder}	Filer gemmes i: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Filer i køen
@@ -1555,7 +1555,7 @@
 	Find	Søg
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Find a download	Find download
+	Find a download	Find en download
 #. message or event log entry in the main window; window title in the Find window
 #, machine
 	Find file	Find fil
@@ -1694,7 +1694,7 @@
 	Galleries use gallery-dl: install it with your system's packages (Homebrew, pip), then choose it in Helpers.	Gallerier bruger gallery-dl: installer det med systemets pakker (Homebrew, pip), og vælg det derefter i Hjælpeprogrammer.
 #. text in gallerydlg.rs
 #, machine
-	gallery-dl can download this gallery's files.	gallery-dl kan downloade dette galleris filer.
+	gallery-dl can download this gallery's files.	gallery-dl kan hente dette galleris filer.
 #. text in gallerydlg.rs
 #, machine
 	gallery-dl can't read this address. Add it as a file instead (Add URL).	gallery-dl kan ikke læse denne adresse. Tilføj den i stedet som en fil (Tilføj URL).
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Dvale
+	Hibernate	Sæt i dvale
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1856,7 +1856,7 @@
 #. text in the Scheduler window
 #. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
 #, machine
-	How to allow it	Sådan tillades det
+	How to allow it	Sådan tillader du det
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1883,14 +1883,14 @@
 	If a duplicate download link is added:	Hvis et duplikeret downloadlink tilføjes:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Hvis eksisterende fil er komplet, vis dialogboks for download fuldført; ellers genoptag den.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Hvis den eksisterende fil er fuldført, skal dialogboksen for fuldført download vises; ellers skal den genoptages.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
 	If it can't be reached, use the system's DNS	Hvis den ikke kan nås, skal du bruge systemets DNS
 #. checkbox in the Options window
 #, machine
-	Ignore file modification time changes when resuming a download	Ignorer ændringer i filens ændringstidspunkt ved genoptagelse af en download
+	Ignore file modification time changes when resuming a download	Ignorer ændringer af filens ændringstidspunkt, når en download genoptages
 #. message or event log entry in the main window
 #, machine
 	Import	Importer
@@ -1939,7 +1939,7 @@
 #. link (opens a web page) in extension.rs
 #. link in the browser extension's window: the tutorial that adds it without the browser's store
 #, machine
-	Install it by hand	Installer manuelt
+	Install it by hand	Installer det manuelt
 #. text in the Download video window
 #. button: download and install the yt-dlp program
 #, machine
@@ -1975,7 +1975,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Isle of Man	Isle of Man
+	Isle of Man	Man
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1987,11 +1987,11 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is damaged, or not the archive its name says	den er beskadiget, eller ikke det arkiv dens navn siger
+	it is damaged, or not the archive its name says	den er beskadiget eller ikke det arkiv, som navnet angiver
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	det er ikke et arkiv MDM udpakker
+	it is not an archive MDM extracts	det er ikke et arkiv, som MDM kan udpakke
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2008,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	den ville skrive {size}, mere end de {limit} der er plads eller grund til
+	it would write {size}, more than the {limit} there is room or reason for	den ville skrive {size}, mere end {limit}, der er plads til eller grund til
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2048,7 +2048,7 @@
 	July	Juli
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Spring til den download, hvis navn starter med det
+	Jump to the download whose name starts with it	Spring til den download, hvis navn begynder med dette tegn
 #. text in the Scheduler window
 #, machine
 	June	Juni
@@ -2088,7 +2088,7 @@
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
 #, machine
-	known once it has run	kendt, når den er kørt
+	known once it has run	kendt, når den har kørt
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2191,7 +2191,7 @@
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Visning stoppet efter {n} videoer: {error}
+	Listing stopped after {n} videos: {error}	Visningen blev stoppet efter {n} videoer: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
@@ -2213,7 +2213,7 @@
 #. text in playlistdlg.rs
 #. button in Download video for a channel: list its next videos
 #, machine
-	Load more	Indlæs mere
+	Load more	Indlæs flere
 #. text in the Add torrent window
 #. where a magnet's peers came from: computers on your own network; {peers} = "3 peers"
 #, machine
@@ -2401,10 +2401,10 @@
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
-	Mister Download Manager stopped responding	Mister Download Manager svarede ikke
+	Mister Download Manager stopped responding	Mister Download Manager holdt op med at svare
 #. text in crashui.rs
 #, machine
-	Mister Download Manager stopped responding for a while	Mister Download Manager svarede ikke i et stykke tid
+	Mister Download Manager stopped responding for a while	Mister Download Manager holdt op med at svare i et stykke tid
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2417,7 +2417,7 @@
 #. Video helpers: {version} = the version of MDM's own copy
 #. {version} = a version number (keep the braces as they are)
 #, machine
-	Mister Download Manager's own copy, version {version}	Mister Download Manager's egen kopi, version {version}
+	Mister Download Manager's own copy, version {version}	Mister Download Managers egen kopi, version {version}
 #. text in the Scheduler window
 #. Monday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -2558,7 +2558,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Netherlands	Holland
+	Netherlands	Nederlandene
 #. text in the Options window
 #, machine
 	Network adapter:	Netværkskort:
@@ -2661,7 +2661,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 #, machine
-	No mail app opened.	Ingen mailapp åbnet.
+	No mail app opened.	Ingen mailapp blev åbnet.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	No mail app: the message is copied, paste it in your mail.	Ingen mailapp: Meddelelsen er kopieret, indsæt den i din mail.
@@ -2780,7 +2780,7 @@
 	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Bemærk: Internetservere kan afbryde forbindelsen, når hastigheden er for begrænset! Det anbefales derfor ikke at bruge Hastighedsbegrænser til at downloade fra servere, der ikke understøtter "genoptag"-funktionen.
 #. text in the Options window
 #, machine
-	Note: These settings don't relate to queue processing	Bemærk: Disse indstillinger vedrører ikke købehandling
+	Note: These settings don't relate to queue processing	Bemærk: Disse indstillinger vedrører ikke behandling af køen
 #. message or event log entry in the main window
 #, machine
 	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Intet at downloade i {item}: slip links, en .torrent-fil eller en liste over adresser (.txt, .ef2).
@@ -3107,7 +3107,7 @@
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
-	Put them into the video	Indsæt dem i videoen
+	Put them into the video	Indlejr dem i videoen
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3124,10 +3124,10 @@
 	Queue # {n}	Kø # {n}
 #. text in the Options window
 #, machine
-	Queue processing started	Købehandling startet
+	Queue processing started	Behandling af kø startet
 #. text in the Options window
 #, machine
-	Queue processing stopped/finished	Købehandling stoppet/færdig
+	Queue processing stopped/finished	Behandling af kø stoppet/afsluttet
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 #, machine
@@ -3452,7 +3452,7 @@
 	Set a socks5:// proxy in Options → Proxy / Socks first	Angiv først en socks5:// proxy i Indstillinger → Proxy / Socks
 #. checkbox in the Options window
 #, machine
-	Set file creation date as provided by the server	Angiv filoprettelsesdato som angivet af serveren
+	Set file creation date as provided by the server	Angiv filens oprettelsesdato som angivet af serveren
 #. button in extension.rs; button in the Options window
 #. button in the browser extension's window: register MDM's helper with the browsers
 #. button in Test browser integration: register MDM's helper with the browsers
@@ -3545,7 +3545,7 @@
 	Show warning before stopping downloads	Vis advarsel, før overførsler stoppes
 #. text in a download's progress window
 #, machine
-	Shown while the torrent is downloading.	Vises, mens torrenten overføres.
+	Shown while the torrent is downloading.	Vises, mens torrenten downloades.
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
@@ -3561,15 +3561,15 @@
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Login og adgangskoder opbevares i macOS-nøgleringen.
+	Sign-ins and passwords are kept in the macOS keychain.	Logins og adgangskoder opbevares i macOS-nøgleringen.
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
 #, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Login og adgangskoder opbevares i systemnøgleringen (Secret Service).
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Logins og adgangskoder opbevares i systemnøgleringen (Secret Service).
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
 #, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Login og adgangskoder opbevares i Windows Credential Manager.
+	Sign-ins and passwords are kept in Windows Credential Manager.	Logins og adgangskoder opbevares i Windows Credential Manager.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -3704,22 +3704,22 @@
 	Start	Start
 #. button in a dialog box
 #, machine
-	Start Download	Start overførsel
+	Start Download	Start download
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
-	Start download at	Start overførsel kl.
+	Start download at	Start download kl.
 #. checkbox in the Scheduler window
 #, machine
-	Start download on Mister Download Manager startup	Start overførsel ved opstart af Mister Download Manager
+	Start download on Mister Download Manager startup	Start download ved opstart af Mister Download Manager
 #. checkbox in the Options window
 #, machine
-	Start downloading immediately while displaying "Download File Info" dialog	Start overførsel med det samme, mens dialogboksen "Overførselsfilinfo" vises
+	Start downloading immediately while displaying "Download File Info" dialog	Start download med det samme, mens dialogboksen "Filoplysninger for download" vises
 #. text in the tray icon's menu
 #, machine
-	Start main download queue	Start hovedoverførselskø
+	Start main download queue	Start hoveddownloadkø
 #. text in a download's progress window
 #, machine
-	Start positions and download progress by connections	Startpositioner og overførselsprogress efter forbindelser
+	Start positions and download progress by connections	Startpositioner og downloadfremskridt efter forbindelser
 #. checkbox in a dialog box
 #, machine
 	Start the queue now	Start køen nu
@@ -3770,14 +3770,14 @@
 	Stop	Stop
 #. text in the Scheduler window; checkbox in the Scheduler window
 #, machine
-	Stop download at	Stop overførsel kl.
+	Stop download at	Stop download kl.
 #. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
 	Stop listing	Stop visning
 #. text in the tray icon's menu
 #, machine
-	Stop main download queue	Stop hovedoverførselskø
+	Stop main download queue	Stop hoveddownloadkø
 #. text in the Add torrent window
 #. Torrent settings, under "Keep sharing": or stop sharing a finished torrent after sharing it for the number of minutes in the box after it
 #, machine
@@ -3789,7 +3789,7 @@
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
-	Stop the torrent engine when no torrent is running	Stop torrent-motoren, når ingen torrent kører
+	Stop the torrent engine when no torrent is running	Stop torrentmotoren, når ingen torrents kører
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -3802,14 +3802,14 @@
 #. message or event log entry in the main window
 #. event log entry: the download stopped to start again through the network adapter as it is now (a VPN reconnected, another adapter chosen)
 #, machine
-	Stopped: the network adapter changed; starting again	Stoppet: netværkskortet blev ændret; starter igen
+	Stopped: the network adapter changed; starting again	Stoppet: netværksadapteren blev ændret; starter igen
 #. message or event log entry in the main window
 #. event log entry: the download stopped because the chosen network adapter (a VPN's, usually) went away; {adapter} its name
 #, machine
-	Stopped: {adapter} is not connected; it goes on when it is back	Stoppet: {adapter} er ikke forbundet; det fortsætter, når det er tilbage
+	Stopped: {adapter} is not connected; it goes on when it is back	Stoppet: {adapter} er ikke forbundet; download fortsætter, når forbindelsen er tilbage
 #. text in a download's progress window
 #, machine
-	Stops when the download finishes	Stopper, når overførslen er færdig
+	Stops when the download finishes	Stopper, når download er færdig
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -3834,7 +3834,7 @@
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Undertekster på {language} kunne ikke downloades: {site} afviste (for mange anmodninger).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Undertekster på {language} kunne ikke hentes: {site} afviste anmodningen (for mange anmodninger).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3883,7 +3883,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Opgaver → Linkgrabber eller browserens "Download alle links":\net opdelt arkivs volumener er én pakke, de andre links på en side en anden.
+	Tasks → Link grabber, or the browser's "Download all links": a split\narchive's volumes are one package, the other links of a page another.	Opgaver → Linkgrabber eller browserens "Download alle links":\nvolumenerne i et opdelt arkiv er én pakke, de andre links på en side en anden.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Tell a friend	Fortæl en ven
@@ -3926,7 +3926,7 @@
 	The archive could not be moved to the Recycle Bin: it was kept	Arkivet kunne ikke flyttes til Papirkurven: det blev bevaret
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	The archive could not be moved to the Trash: it was kept	Arkivet kunne ikke flyttes til Papirkurven: det blev bevaret
+	The archive could not be moved to the Trash: it was kept	Arkivet kunne ikke flyttes til papirkurven: det blev bevaret
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log: the downloaded archive, after it was extracted
 #, machine
@@ -3934,7 +3934,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. in a download's log (Linux and macOS): the downloaded archive, after it was extracted
 #, machine
-	The archive was moved to the Trash	Arkivet blev flyttet til Papirkurven
+	The archive was moved to the Trash	Arkivet blev flyttet til papirkurven
 #. text in the Download video window
 #, machine
 	The best qualities, MP3, Opus and FLAC need ffmpeg (about 80 MB).	De bedste kvaliteter, MP3, Opus og FLAC, kræver ffmpeg (ca. 80 MB).
@@ -4003,7 +4003,7 @@
 #. tooltip (why a control is greyed) in a download's Properties window
 #. tooltip of the greyed Open button in File Properties
 #, machine
-	The download isn't complete yet	Download er ikke færdig endnu
+	The download isn't complete yet	Downloaden er ikke færdig endnu
 #. text in a dialog box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
@@ -4014,7 +4014,7 @@
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The download list could not be saved: {error}. Changes are kept while MDM runs.	Downloadlisten kunne ikke gemmes: {error}. Ændringer bevares, mens MDM kører.
+	The download list could not be saved: {error}. Changes are kept while MDM runs.	Downloadlisten kunne ikke gemmes: {error}. Ændringerne bevares, mens MDM kører.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Den downloadmanager, du allerede kender, genopbygget til at være hurtigere. Gratis og open source under GNU GPL, version 3 eller nyere. Videoer findes af yt-dlp; torrents kører på librqbit.
@@ -4097,7 +4097,7 @@
 #. text in errors.rs; text in torrent downloads
 #. an error: the network adapter chosen in Options (a VPN's, usually) is off or gone; {adapter} its name
 #, machine
-	the network adapter {adapter} is not connected	netværkskortet {adapter} er ikke forbundet
+	the network adapter {adapter} is not connected	netværksadapteren {adapter} er ikke tilsluttet
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -4134,7 +4134,7 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Den valgte download er ikke fuldført. Er du sikker på, at du vil slette\nden fra Mister Download Managers liste over downloads?
+	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Den valgte download er ikke fuldført. Er du sikker på, at du vil slette\nden fra listen over downloads i Mister Download Manager?
 #. text in errors.rs
 #, machine
 	the server answered {status}	serveren svarede {status}
@@ -4152,18 +4152,18 @@
 	the server is busy ({status}); try again later	serveren er optaget ({status}); prøv igen senere
 #. text in errors.rs
 #, machine
-	the server sent a web page instead of the file (sign-in needed or the link expired?)	serveren sendte en webside i stedet for filen (login nødvendigt, eller linket udløbet?)
+	the server sent a web page instead of the file (sign-in needed or the link expired?)	serveren sendte en webside i stedet for filen (skal du logge ind, eller er linket udløbet?)
 #. text in errors.rs
 #, machine
 	the server sent an unexpected part of the file ({detail})	serveren sendte en uventet del af filen ({detail})
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although the browser's extension passed the page's cookies
 #, machine
-	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Siden vil have dig logget ind, selv med din browsers cookies til denne side. Log ind på den i din browser, og prøv derefter igen.
+	The site wants you signed in, even with your browser's cookies for this page. Sign in to it in your browser, then try again.	Siden kræver, at du er logget ind, selvom din browser har sidens cookies. Log ind på siden i din browser, og prøv igen.
 #. text in the Download video window
 #. the Download video window: the site asked for a sign-in although yt-dlp had the cookies of the browser chosen in Options; {browser} = its name
 #, machine
-	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Siden vil have dig logget ind, selv med {browser}s cookies. Log ind på den i {browser}, og slå derefter siden op igen.
+	The site wants you signed in, even with {browser}'s cookies. Sign in to it in {browser}, then look the page up again.	Siden kræver, at du er logget ind, selvom {browser} har sidens cookies. Log ind på siden i {browser}, og slå derefter siden op igen.
 #. text in crashui.rs
 #. crash report window: the symbols couldn't be downloaded; the report still works
 #, machine
@@ -4171,7 +4171,7 @@
 #. text in the Options window
 #. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systemnøgleringen er låst, og MDM låser den ikke op, så login og adgangskoder opbevares i MDM's indstillinger, som kun du kan læse.
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Systemets nøglering er låst, og MDM låser den ikke op, så loginoplysninger og adgangskoder gemmes i MDM's indstillinger, som kun du kan læse.
 #. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
@@ -4179,7 +4179,7 @@
 #. text in whereis.rs
 #. the tooltip of where a download's server is: how the time shown is measured
 #, machine
-	The time is a round trip, measured as this download's own connections opened.	Tiden er en retur, målt som denne downloads egne åbnede forbindelser.
+	The time is a round trip, measured as this download's own connections opened.	Tiden er en rundtur målt på denne downloads egne åbnede forbindelser.
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4219,10 +4219,10 @@
 	There is already a queue with this name	Der er allerede en kø med dette navn
 #. text in a download's progress window
 #, machine
-	These settings are unavailable when "Show download complete dialog" is turned on	Disse indstillinger er ikke tilgængelige, når "Vis dialogboks for fuldført download" er slået til
+	These settings are unavailable when "Show download complete dialog" is turned on	Disse indstillinger er ikke tilgængelige, når "Vis dialogboksen, når download er fuldført" er slået til
 #. text in helpers.rs
 #, machine
-	They keep downloading if you close this window.	De fortsætter med at downloade, hvis du lukker dette vindue.
+	They keep downloading if you close this window.	De fortsætter med at hente, hvis du lukker dette vindue.
 #. text in a dialog box
 #, machine
 	This address is already in the list of downloads:	Denne adresse er allerede på listen over downloads:
@@ -4252,7 +4252,7 @@
 #. text in errors.rs
 #. a download's error: a Google Drive file that isn't shared with everyone
 #, machine
-	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	denne Google Drev-fil kræver, at du logger på: log på Google i din browser, og download den derefter derfra
+	this Google Drive file needs you to sign in: sign in to Google in your browser, then download it from there	denne Google Drev-fil kræver, at du logger ind: log ind på Google i din browser, og hent den derefter derfra
 #. text in errors.rs
 #. a download's error: the address is a Google Drive folder, which isn't one file
 #, machine
@@ -4263,7 +4263,7 @@
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 #, machine
-	This is the installed copy, not a portable one	Dette er den installerede kopi, ikke en bærbar
+	This is the installed copy, not a portable one	Dette er den installerede kopi, ikke en bærbar version
 #. text in playlistdlg.rs
 #. in Download video, a playlist or channel that lists no video
 #, machine
@@ -4271,7 +4271,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Dette magnetlink navngiver ingen trackere, og DHT er slået fra, så der kan ikke findes nogen peer.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Dette magnetlink indeholder ingen trackere, og DHT er slået fra, så der kan ikke findes nogen peers.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
@@ -4279,7 +4279,7 @@
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Denne bærbare kopi opbevarer login og adgangskoder i sine egne indstillinger, krypteret for din Windows-konto.
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Denne bærbare kopi gemmer loginoplysninger og adgangskoder i sine egne indstillinger, krypteret, så kun din Windows-konto kan læse dem.
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
 #, machine
@@ -4295,7 +4295,7 @@
 #. text in errors.rs
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	denne torrent har et filnavn, der ikke er sikkert at skrive, så den blev ikke tilføjet: {name}
+	this torrent has a file name that isn't safe to write, so it wasn't added: {name}	denne torrent har et filnavn, der ikke er sikkert at skrive til, så den blev ikke tilføjet: {name}
 #. text in the Add torrent window
 #, machine
 	This torrent is already in the download list	Denne torrent er allerede på downloadlisten
@@ -4325,14 +4325,14 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Via {service}: tjenesten downloader torrenten, derefter downloader MDM dens filer
+	Through {service}: the service downloads the torrent, then MDM its files	Via {service}: Tjenesten henter torrenten, hvorefter MDM henter dens filer
 #. text in the Scheduler window
 #, machine
 	Thursday	Torsdag
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	Marker "Start download kl." først: computeren vækkes til starttidspunktet
+	Tick "Start download at" first: the computer is woken for the start time	Markér "Start download kl." først: computeren vækkes på starttidspunktet
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Tid tilbage
@@ -4456,11 +4456,11 @@
 	Tuvalu	Tuvalu
 #. text in helpers.rs
 #, machine
-	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	To gratis hjælpeprogrammer får det til at fungere. Hent dem nu, og det er kun et klik væk at gemme en video, når du finder en.
+	Two free helpers make it work. Get them now, and saving a video is one click away when you find one.	To gratis hjælpeprogrammer får det til at fungere. Hent dem nu, så er det kun ét klik væk at gemme en video, når du finder en.
 #. text in rssdlg.rs
 #. RSS feeds window: shown when there are no feeds yet
 #, machine
-	Type a feed's address above and click Add feed.	Skriv en feeds adresse ovenfor, og klik på Tilføj feed.
+	Type a feed's address above and click Add feed.	Skriv feedens adresse ovenfor, og klik på Tilføj feed.
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
@@ -4484,7 +4484,7 @@
 #. text in the settings
 #. Options → DNS over TLS: the server's name (as its certificate shows it) is missing
 #, machine
-	Type the name the server's certificate shows.	Indtast navnet, som serverens certifikat viser.
+	Type the name the server's certificate shows.	Indtast det navn, der står på serverens certifikat.
 #. text in the Scheduler window
 #. why OK is greyed when naming a new queue
 #, machine
@@ -4497,7 +4497,7 @@
 #. tooltip (why a control is greyed) in the Find window
 #. tooltip of the greyed Find button
 #, machine
-	Type what to find, and tick at least one place to look	Skriv hvad der skal søges efter, og marker mindst ét sted at søge
+	Type what to find, and tick at least one place to look	Skriv, hvad der skal søges efter, og markér mindst ét sted at søge
 #. text in a download's Properties window
 #, machine
 	Type:	Type:
@@ -4516,7 +4516,7 @@
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 #, machine
-	Uncheck all	Fravælg alle
+	Uncheck all	Fjern markeringen af alle
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are not complete yet
 #, machine
@@ -4536,7 +4536,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	United States Minor Outlying Islands	USA's mindre øer i Stillehavet
+	United States Minor Outlying Islands	USA's mindre afsidesliggende øer
 #. text in a download's Properties window
 #, machine
 	Unknown	Ukendt
@@ -4597,7 +4597,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Brug proxy/SOCKS fra en browsers anmodning, hvis der er downloadfejl /\nfor de downloads, der er opsnappet fra browseren
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Brug proxy/SOCKS fra en browsers anmodning, hvis der er downloadfejl /\nfor downloads, der er opsnappet fra browseren
 #. checkbox in a download's progress window
 #, machine
 	Use Speed Limiter	Brug hastighedsbegrænser
@@ -4614,7 +4614,7 @@
 	Use the token	Brug tokenet
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	Skal de bruges til denne torrent? Det, der matcher, bevares, resten erstattes.
+	Use them for this torrent? What matches it is kept, the rest replaced.	Vil du bruge dem til denne torrent? Det, der matcher, bevares, resten erstattes.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Brug denne proxy til følgende protokoller:
@@ -4624,7 +4624,7 @@
 	Use this rule	Brug denne regel
 #. text in the Options window
 #, machine
-	Used by the list of downloads and the Scheduler.	Bruges af listen over downloads og Planlæggeren.
+	Used by the list of downloads and the Scheduler.	Bruges af downloadlisten og planlæggeren.
 #. text in the Options window
 #. column title: the user name
 #, machine
@@ -4726,7 +4726,7 @@
 #. text in the Scheduler window
 #. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
 #, machine
-	Wake the computer to run this queue	Væk computeren for at køre denne kø
+	Wake the computer to run this queue	Væk computeren, så den kan køre denne kø
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4749,7 +4749,7 @@
 #. text in the Options window
 #. Options → Archives: a label before the list of where extracted files go
 #, machine
-	What an archive holds goes:	Hvad et arkiv indeholder, går:
+	What an archive holds goes:	Indholdet af et arkiv gemmes i:
 #. text in crashui.rs
 #. crash report window: label of the box where the user describes what they did
 #, machine
@@ -4759,19 +4759,19 @@
 	What's new:	Nyheder:
 #. text in the Batch download window
 #, machine
-	Wildcard size	Jokerstørrelse
+	Wildcard size	Jokertegnsstørrelse
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
-	Windows allows wake timers only while plugged in	Windows tillader kun vækketimere, når den er tilsluttet
+	Windows allows wake timers only while plugged in	Windows tillader kun vækketimere, når computeren er tilsluttet strøm
 #. text in the Options window
 #. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager svarede ikke, så login og adgangskoder opbevares i MDM's indstillinger, krypteret for din Windows-konto.
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager svarede ikke, så loginoplysninger og adgangskoder opbevares i MDM's indstillinger, krypteret, så kun din Windows-konto kan læse dem.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
-	Windows refused	Windows afviste
+	Windows refused	Windows afviste det
 #. text in langpick.rs
 #, machine
 	Windows' language	Windows-sprog
@@ -4851,7 +4851,7 @@
 #. text in the Download video window
 #. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
 #, machine
-	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp kan ikke læse {browser}s cookies, mens {browser} er åben. Luk {browser} og slå siden op igen, eller vælg Firefox i Indstillinger → Login til websteder.
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	yt-dlp kan ikke læse cookies fra {browser}, mens {browser} er åben. Luk {browser}, og slå siden op igen, eller vælg Firefox i Indstillinger → Logins til websteder.
 #. text in the Download video window
 #. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
 #, machine
@@ -4864,14 +4864,14 @@
 #. text in the Download video window
 #. the Download video window: the browser chosen in Options has no cookies on this computer (not installed, or another profile); {browser} = its name
 #, machine
-	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp fandt ingen cookies fra {browser} på denne computer. Kontroller browseren og dens profil i Indstillinger → Login til websteder.
+	yt-dlp found no cookies of {browser} on this computer. Check the browser and its profile in Options → Sites Logins.	yt-dlp fandt ingen cookies fra {browser} på denne computer. Kontroller browseren og dens profil i Indstillinger → Logins til websteder.
 #. message or event log entry in the main window
 #, machine
 	yt-dlp is not installed (Tasks → Download video from a page installs it)	yt-dlp er ikke installeret (Opgaver → Download video fra en side installerer det)
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of its choices
 #, machine
-	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp logger ind på videosider med denne browsers cookies, læst fra dens filer kun på denne computer. Bruges når browserens udvidelse ikke sendte sidens egne: en indsat adresse, en afspilningsliste.
+	yt-dlp signs in to video sites with this browser's cookies, read from its files on this computer only. Used when the browser's extension didn't pass the page's own: a pasted address, a playlist.	yt-dlp logger ind på videosider med denne browsers cookies, som kun læses fra dens filer på denne computer. Bruges, når browserens udvidelse ikke sendte sidens egne oplysninger: en indsat adresse, en afspilningsliste.
 #. text in helpers.rs
 #. helper name and what it does (yt-dlp is a program's name)
 #, machine
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ og XZ; et opdelt arkiv (.part1.rar, .7z.001),\nnår hvert volumen er inde. En fil, der allerede er der, bevares:\nden nye nummereres.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ og XZ; et opdelt arkiv (.part1.rar, .7z.001),\nnår alle dele er hentet. En fil, der allerede findes, bevares:\nden nye får et nummer.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4944,7 +4944,7 @@
 	{file} could not be opened: {error}	{file} kunne ikke åbnes: {error}
 #. text in the Checksum window
 #, machine
-	{file} could not be read to check it	{file} kunne ikke læses for at kontrollere den
+	{file} could not be read to check it	{file} kunne ikke læses, så den kunne kontrolleres
 #. text in a dialog box
 #, machine
 	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} er ikke længere der, hvor den blev gemt (flyttet eller slettet). Genhent den igen via dens højrekliksmenu.
@@ -5019,7 +5019,7 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} (auto)	{n} (auto)
+	{n} (auto)	{n} (automatisk)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -5116,7 +5116,7 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
-	{title}: not added: files of its names are already in {folder}	{title}: ikke tilføjet: filer med dets navne er allerede i {folder}
+	{title}: not added: files of its names are already in {folder}	{title}: ikke tilføjet: filer med dette navn findes allerede i {folder}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article could not be added, with why
 #. {error} = an error message (keep the braces as they are)
@@ -5229,7 +5229,7 @@ extension	Hide on this video	Skjul på denne video
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Hold Alt nede, mens du klikker på et link for at lade browseren downloade det.
+extension	Hold Alt while clicking a link to let the browser download it.	Hold Alt nede, mens du klikker på et link, for at lade browseren hente det.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5257,7 +5257,7 @@ extension	Mister Download Manager doesn't accept this copy of the extension	Mist
 #. text in the browser extension
 #. shown briefly on the download button when the app could not be reached; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager er ikke installeret eller startede ikke
+extension	Mister Download Manager isn't installed or didn't start	Mister Download Manager er ikke installeret eller blev ikke startet
 #. text in the browser extension
 #. status when the browser can't find the app's connection; keep the name Mister Download Manager as it is
 #, machine
@@ -5279,7 +5279,7 @@ extension	Never on {site}	Aldrig på {site}
 #. button in the toolbar button's popup: leave this web site's downloads to the browser from now on
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-extension	Never take downloads from {site}	Tag aldrig downloads fra {site}
+extension	Never take downloads from {site}	Overfør aldrig downloads fra {site}
 #. text in the browser extension
 #. shown in the toolbar button's popup when the current web page hasn't loaded any video, sound or stream yet
 #, machine
@@ -5320,7 +5320,7 @@ extension	Support MDM	Støt MDM
 #. text in the browser extension
 #. check box in the toolbar button's popup: on, downloads go to the app; off, the browser keeps them
 #, machine
-extension	Take downloads from this browser	Tag downloads fra denne browser
+extension	Take downloads from this browser	Overfør downloads fra denne browser
 #. text in the browser extension
 #. status when the connection to the app broke off (often security software blocking it); keep the name Mister Download Manager as it is
 #, machine
@@ -5332,7 +5332,7 @@ extension	The download button is off on this site	Downloadknappen er slået fra 
 #. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
-extension	This download's details were too large to hand over	Detaljerne for denne download var for store til at overføre
+extension	This download's details were too large to hand over	Oplysningerne om denne download var for store til at overføre
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
@@ -5457,7 +5457,7 @@ menu	&Delete All Completed	&Slet alle fuldførte
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Download Now	&Download nu
+menu	&Download Now	&Hent nu
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5580,7 +5580,7 @@ menu	Breeze	Breeze
 #. menu command in the main window
 #. verb: opens this category's download folder
 #, machine
-menu	Browse	Gennemse
+menu	Browse	Åbn mappe
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5633,12 +5633,12 @@ menu	By Transfer &Rate	Efter overførselsha&stighed
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	C&ustomize URL List...	Tilpas URL-liste...(&U)
+menu	C&ustomize URL List...	Tilpas &URL-liste...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Check for &updates...	Søg efter opdateringer...(&U)
+menu	Check for &updates...	Søg efter &opdateringer...
 #. menu command in the main window
 #. View → Theme: MDM's own look, the default (IDM's layout, Windows 11's controls)
 #, machine
@@ -5731,7 +5731,7 @@ menu	From &text file...	Fra &tekstfil...
 menu	H&elp contents	&Hjælpindhold
 #. menu command in the main window
 #, machine
-menu	Hide drop target	Skjul slippemål
+menu	Hide drop target	Skjul slipområde
 #. menu command in the main window
 #. View → Theme: black and white with strong edges, for low vision
 #, machine
@@ -5747,7 +5747,7 @@ menu	Its first frame didn't show within 10 seconds	Den første ramme blev ikke v
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Den sidste start sluttede før den første ramme
+menu	Its last start ended before its first frame	Den seneste opstart sluttede før det første billede
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5755,7 +5755,7 @@ menu	Metal	Metal
 #. menu command in the main window
 #. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Metal didn't start here: OpenGL draws	Metal startede ikke her: OpenGL tegner
+menu	Metal didn't start here: OpenGL draws	Metal kunne ikke startes her: OpenGL tegner
 #. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
@@ -5817,11 +5817,11 @@ menu	R&edownload	G&enhent
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	Genannoncér
+menu	Reannounce	Annoncér igen
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
-menu	Recheck files	Genkontrollér filer
+menu	Recheck files	Kontrollér filer igen
 #. menu command in the main window
 #. verb: download the file again from the start
 #, machine
@@ -5869,7 +5869,7 @@ menu	Select &all	Marker &alt
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Show &drop target	Vis &slipmål
+menu	Show &drop target	Vis &slipområde
 #. menu command in the main window
 #, machine
 menu	Show Mister Download Manager	Vis Mister Download Manager
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	Fortæl en &ven
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	Grafikkortet blev mistet to gange på 10 minutter
+menu	The graphics card was lost twice in 10 minutes	Grafikkortet gik ned to gange på 10 minutter
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine

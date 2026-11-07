@@ -195,11 +195,11 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
-	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	De naam van een profiel of de map ervan. Leeg: het laatst gebruikte profiel. Voor een browser die is gebaseerd op Chromium en die niet wordt vermeld (Helium, Thorium...), kiest u Chromium en de map van het profiel.
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	De naam van een profiel of de map ervan. Leeg: het laatst gebruikte profiel. Voor een browser op basis van Chromium die niet wordt vermeld (Helium, Thorium...), kiest u Chromium en de profielmap.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
-	A proxy carries this download: the place and the time are the proxy's, not the server's.	Een proxy draagt deze download: de plaats en de tijd zijn van de proxy, niet van de server.
+	A proxy carries this download: the place and the time are the proxy's, not the server's.	Deze download wordt via een proxy overgedragen: de locatie en tijd zijn die van de proxy, niet van de server.
 #. text in crashui.rs
 #. crash report window: what the report is and what Send does
 #, machine
@@ -211,15 +211,15 @@
 #. text in errors.rs
 #. an error: a server on this computer redirected the download to the internet, which would not go through the chosen network adapter; {adapter} its name
 #, machine
-	a server on this computer sent the download elsewhere, which would not go through {adapter}	een server op deze computer heeft de download elders naartoe gestuurd, wat niet via {adapter} zou gaan
+	a server on this computer sent the download elsewhere, which would not go through {adapter}	een server op deze computer heeft de download ergens anders naartoe gestuurd, waardoor deze niet via {adapter} zou gaan
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
-	A tracker on this computer or the local network is never contacted: {line}	Een tracker op deze computer of het lokale netwerk wordt nooit gecontacteerd: {line}
+	A tracker on this computer or the local network is never contacted: {line}	Er wordt nooit verbinding gemaakt met een tracker op deze computer of het lokale netwerk: {line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	een volume ontbreekt
+	a volume of it is missing	een volume ervan ontbreekt
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Over Mister Download Manager
@@ -328,7 +328,7 @@
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 #, machine
-	Address changed to {host}	Adres gewijzigd naar {host}
+	Address changed to {host}	Adres gewijzigd in {host}
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 #, machine
@@ -476,7 +476,7 @@
 #. text in the Options window
 #. Options page title: extracting downloaded archives, and Link grabber
 #, machine
-	Archives and Link grabber	Archieven en koppelingengrabber
+	Archives and Link grabber	Archieven en linkgrabber
 #. text in a dialog box
 #. {name} = a file name (keep the braces as they are)
 #, machine
@@ -759,7 +759,7 @@
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Change folder for "{category}" category on last selected	Map voor categorie "{category}" wijzigen op laatst geselecteerd
+	Change folder for "{category}" category on last selected	Map voor categorie "{category}" wijzigen op de laatst geselecteerde
 #. text in the Link grabber window
 #. Link grabber button (IDM's): tick every link
 #, machine
@@ -767,7 +767,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, at the bottom: "Check feeds every [30] minutes"
 #, machine
-	Check feeds every	Feeds controleren elke
+	Check feeds every	Feeds controleren om de
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Check for updates	Controleren op updates
@@ -1031,7 +1031,7 @@
 	Default download settings	Standaard downloadinstellingen
 #. text in the Options window
 #, machine
-	Default max. conn. number	Standaard max. aantal verb.
+	Default max. conn. number	Standaard max. aantal verbindingen
 #. message or event log entry in the main window; button in a dialog box; button in the Options window; button in rssdlg.rs
 #. button: deletes the category
 #. verb: delete the item
@@ -1107,7 +1107,7 @@
 	DNS:	DNS:
 #. checkbox in the Options window
 #, machine
-	Do not start downloading, only add files to the queue	Niet beginnen met downloaden, alleen bestanden aan de wachtrij toevoegen
+	Do not start downloading, only add files to the queue	Niet beginnen met downloaden, maar bestanden alleen aan de wachtrij toevoegen
 #. text in a dialog box
 #, machine
 	Do you want to create it?	Wilt u deze maken?
@@ -1141,7 +1141,7 @@
 	Don't take files smaller than (KB, 0 = any size):	Geen bestanden kleiner dan (KB, 0 = elke grootte) downloaden:
 #. text in a download's progress window
 #, machine
-	Done	Gereed
+	Done	Voltooid
 #. button in the Options window
 #. button (short): move the account down the list
 #, machine
@@ -1184,7 +1184,7 @@
 #. {mb} and {hours} are input boxes, drawn where they stand in the translation; keep the one line break: the second line sits under the first box
 #. {mb} = a number of megabytes; {hours} = a number of hours (keep the braces as they are)
 #, machine
-	Download no more than {mb} MBytes\nevery {hours} hours	Niet meer dan {mb} MB downloaden\nelke {hours} uur
+	Download no more than {mb} MBytes\nevery {hours} hours	Niet meer dan {mb} MB downloaden\nevery {hours} uur
 #. button in gallerydlg.rs; button in the Add torrent window; button in the Download video window
 #, machine
 	Download Now	Nu downloaden
@@ -1239,7 +1239,7 @@
 #. item in the Categories tree in the download list; value in a column's filter list in the download list
 #. a download's status (state it is in, not a command)
 #, machine
-	Downloading	Downloaden
+	Downloading	Bezig met downloaden
 #. message or event log entry in the main window
 #, machine
 	Downloading again from the start	Opnieuw downloaden vanaf het begin
@@ -1545,7 +1545,7 @@
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	Bestanden gaan naar: {folder}
+	Files go to: {folder}	Bestanden worden opgeslagen in: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Bestanden in de wachtrij
@@ -1701,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl is niet geïnstalleerd (URL toevoegen met het adres van een galerij installeert het)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl is niet geïnstalleerd (via URL toevoegen met het adres van een galerij wordt het geïnstalleerd)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1798,11 +1798,11 @@
 	Haiti	Haïti
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Hang up modem when done	Modem ophangen wanneer voltooid
+	Hang up modem when done	Modemverbinding verbreken wanneer klaar
 #. text in a download's progress window
 #. legend: pieces downloaded
 #, machine
-	Have	Hebben
+	Have	In bezit
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	Slaapstand
+	Hibernate	Slaapstand inschakelen
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -1860,7 +1860,7 @@
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
-	How to fix it	Oplossen
+	How to fix it	Hoe dit op te lossen
 #. checkbox in the Options window
 #, machine
 	http	http
@@ -1883,11 +1883,11 @@
 	If a duplicate download link is added:	Als een dubbele downloadlink wordt toegevoegd:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Als het bestaande bestand compleet is, dialoogvenster "Download voltooid" weergeven; anders hervatten.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Als het bestaande bestand volledig is gedownload, het dialoogvenster ‘Download voltooid’ weergeven; anders hervatten.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
-	If it can't be reached, use the system's DNS	Als het niet bereikbaar is, gebruik dan de DNS van het systeem
+	If it can't be reached, use the system's DNS	Als dit niet bereikbaar is, de DNS van het systeem gebruiken
 #. checkbox in the Options window
 #, machine
 	Ignore file modification time changes when resuming a download	Wijzigingen in de bestandswijzigingstijd negeren bij het hervatten van een download
@@ -1952,7 +1952,7 @@
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
-	Into a folder named after it, when it holds several things	In een map met dezelfde naam, wanneer het meerdere items bevat
+	Into a folder named after it, when it holds several things	In een map met dezelfde naam als het archief, als dit meerdere items bevat
 #. text in a dialog box
 #, machine
 	Invalid address	Ongeldig adres
@@ -2008,11 +2008,11 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	het zou {size} schrijven, meer dan de {limit} die er is aan ruimte of reden
+	it would write {size}, more than the {limit} there is room or reason for	het zou {size} schrijven, meer dan de beschikbare ruimte of de limiet van {limit}
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	Het is mogelijk om een groep sequentiële bestandsnamen zoals img001.jpg, img002.jpg, enz.,\nimg100.jpg toe te voegen aan de MDM-downloadwachtrij. Gebruik het asterisk-jokerteken voor het bestandsnaampatroon.
+	It's possible to add a group of sequential file names like img001.jpg, img002.jpg, etc.,\nimg100.jpg to MDM download queue. Use the asterisk wildcard for the file name pattern.	U kunt een reeks opeenvolgende bestandsnamen, zoals img001.jpg, img002.jpg, enz.,\nimg100.jpg toevoegen aan de MDM-downloadwachtrij. Gebruik het jokerteken * voor het patroon van de bestandsnaam.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2061,7 +2061,7 @@
 	KBytes/sec	KB/sec
 #. checkbox in the Add torrent window
 #, machine
-	Keep sharing torrents after they finish	Torrents blijven delen nadat ze voltooid zijn
+	Keep sharing torrents after they finish	Torrents blijven delen nadat ze zijn voltooid
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2069,7 +2069,7 @@
 #. text in the Add torrent window
 #. Add trackers: under the box
 #, machine
-	Kept with the torrent, after the trackers it has.	Blijft bij de torrent, na de trackers die het al heeft.
+	Kept with the torrent, after the trackers it has.	Wordt bij de torrent bewaard, na de trackers die deze al bevat.
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Keyboard shortcuts	Toetsenbordsneltoetsen
@@ -2088,7 +2088,7 @@
 #. text in a download's Properties window
 #. Properties, where a download's server is: not seen yet (it hasn't run)
 #, machine
-	known once it has run	bekend zodra uitgevoerd
+	known once it has run	bekend zodra deze is uitgevoerd
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2323,7 +2323,7 @@
 	Mauritius	Mauritius
 #. group box title in the Options window
 #, machine
-	Max. connections number	Max. aantal verbindingen
+	Max. connections number	Maximumaantal verbindingen
 #. text in standard windows
 #. a window's title-bar button: makes the window fill the screen
 #, machine
@@ -2358,7 +2358,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Micronesia	Micronesia
+	Micronesia	Micronesië
 #. text in standard windows
 #. a window's title-bar button: minimizes the window
 #, machine
@@ -2382,7 +2382,7 @@
 #. text in crashui.rs
 #. crash report window heading: MDM crashed and is gone
 #, machine
-	Mister Download Manager closed unexpectedly	Mister Download Manager is onverwachts afgesloten
+	Mister Download Manager closed unexpectedly	Mister Download Manager is onverwacht afgesloten
 #. window title in the Options window
 #, machine
 	Mister Download Manager Configuration	Mister Download Manager Configuratie
@@ -2462,7 +2462,7 @@
 	Move a page up / down	Pagina omhoog/omlaag verplaatsen
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Move between the categories and the download list	Verplaatsen tussen de categorieën en de downloadlijst
+	Move between the categories and the download list	Schakelen tussen de categorieën en de downloadlijst
 #. text in the Scheduler window
 #, machine
 	Move down	Omlaag verplaatsen
@@ -2620,7 +2620,7 @@
 #. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 #, machine
-	No browser's extension has connected yet	De extensie van geen enkele browser is nog verbonden
+	No browser's extension has connected yet	Er is nog geen browserextensie verbonden
 #. text in torrent downloads
 #. an error: the app has no folder for its own data
 #, machine
@@ -2664,7 +2664,7 @@
 	No mail app opened.	Geen e-mailapp geopend.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	No mail app: the message is copied, paste it in your mail.	Geen e-mailapp: het bericht is gekopieerd, plak het in uw e-mail.
+	No mail app: the message is copied, paste it in your mail.	Geen e-mailprogramma: het bericht is gekopieerd. Plak het in uw e-mailprogramma.
 #. text in errors.rs
 #, machine
 	no peer sent the torrent's file list in time	geen peer heeft de bestandslijst van de torrent op tijd verzonden
@@ -2678,7 +2678,7 @@
 #. text in the Options window
 #. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
 #, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Geen systeemsleutelhanger reageerde, dus aanmeldingen en wachtwoorden worden bewaard in de instellingen van MDM, die alleen u kunt lezen.
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Er heeft geen systeemsleutelhanger gereageerd, dus worden aanmeldgegevens en wachtwoorden bewaard in de instellingen van MDM, die alleen u kunt lezen.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2708,7 +2708,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	Geen aangevinkt: elke feed.
+	None ticked: every feed.	Geen enkele feed aangevinkt: alle feeds.
 #. text in a download's progress window
 #, machine
 	None: peers come from the DHT and other peers	Geen: peers komen van de DHT en andere peers
@@ -2777,13 +2777,13 @@
 #. text in a dialog box
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Opmerking: Internetservers kunnen de verbinding verbreken wanneer de snelheid te beperkt is! Het wordt daarom niet aanbevolen om de snelheidsbegrenzer te gebruiken om te downloaden van servers die de "hervatten"-functie niet ondersteunen.
+	Note: Internet servers may break connection when the speed is too limited! Thus it's not\nrecommended to use Speed Limiter to download from servers that do not support\n"resume" feature.	Opmerking: Internetservers kunnen de verbinding verbreken wanneer de snelheid te laag is! Het wordt daarom niet aanbevolen om de snelheidsbegrenzer te gebruiken bij het downloaden van servers die de functie ‘hervatten’ niet ondersteunen.
 #. text in the Options window
 #, machine
 	Note: These settings don't relate to queue processing	Opmerking: Deze instellingen hebben geen betrekking op de verwerking van wachtrijen
 #. message or event log entry in the main window
 #, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Niets te downloaden in {item}: drop koppelingen, een .torrent-bestand of een lijst met adressen (.txt, .ef2).
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Niets te downloaden in {item}: sleep koppelingen hierheen, een .torrent-bestand of een lijst met adressen (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	November
@@ -2826,7 +2826,7 @@
 	On battery, Windows' power options don't allow wake timers	Op batterij staan de energieopties van Windows geen wektimers toe
 #. text in a download's progress window
 #, machine
-	on download stop/resume	bij download stoppen/hervatten
+	on download stop/resume	bij stoppen/hervatten van de download
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
@@ -2857,7 +2857,7 @@
 	Only a finished download, or one not started yet, can be moved	Alleen een voltooide download, of een die nog niet is gestart, kan worden verplaatst
 #. message or event log entry in the main window
 #, machine
-	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Alleen een voltooide download, of een die nog niet is gestart, kan worden verplaatst. Stop deze eerst en voltooi deze.
+	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Alleen een voltooide download of een download die nog niet is gestart, kan worden verplaatst. Stop de download en voltooi deze eerst.
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
 #, machine
@@ -3103,7 +3103,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Put a * in the address where the numbers or letters go	Plaats een * in het adres waar de nummers of letters moeten komen
+	Put a * in the address where the numbers or letters go	Plaats een * in het adres waar de cijfers of letters moeten komen
 #. checkbox in the Download video window
 #. checkbox in Download video: subtitles go inside the video file instead of a separate .srt file beside it
 #, machine
@@ -3198,7 +3198,7 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
-	Remember this path for "{category}" category	Dit pad onthouden voor categorie "{category}"
+	Remember this path for "{category}" category	Dit pad onthouden voor de categorie "{category}"
 #. button in the Options window; button in rssdlg.rs
 #. verb: remove the item
 #. RSS feeds window: unsubscribe from the selected feed
@@ -3348,7 +3348,7 @@
 #. tab in the Scheduler window
 #. noun: tab title; when the queue starts and stops
 #, machine
-	Schedule	Schema
+	Schedule	Planning
 #. window title in the Scheduler window; text in the tray icon's menu
 #. noun: the tool that starts and stops queues on time
 #. noun: opens the Scheduler (the tool that starts queues on time)
@@ -3411,7 +3411,7 @@
 #. text in the Options window
 #. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
 #, machine
-	Send torrents and magnet links to the first account instead of to peers	Torrents en magneetlinks naar de eerste account sturen in plaats van naar peers
+	Send torrents and magnet links to the first account instead of to peers	Torrents en magneetlinks naar het eerste account sturen in plaats van naar peers
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3487,7 +3487,7 @@
 #. text in a download's progress window
 #. a torrent's General tab: how long it has been shared once finished, in all
 #, machine
-	Shared for	Gedeeld voor
+	Shared for	Gedeeld gedurende
 #. text in a download's progress window
 #. noun: sharing the torrent with others after it is downloaded
 #, machine
@@ -3496,7 +3496,7 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Sharing stopped after sharing for {time}	Delen gestopt na {time} delen
+	Sharing stopped after sharing for {time}	Delen gestopt nadat er {time} is gedeeld
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
@@ -3536,7 +3536,7 @@
 	Show queue selection panel on closing batch download dialogs	Wachtrijselectiepaneel weergeven bij het sluiten van batchdownloadvensters
 #. checkbox in the Options window
 #, machine
-	Show queue selection panel on pressing "Download Later" button	Wachtrijselectiepaneel weergeven bij het drukken op de knop "Later downloaden"
+	Show queue selection panel on pressing "Download Later" button	Wachtrijselectiepaneel weergeven bij het indrukken van de knop "Later downloaden"
 #. checkbox in the Options window
 #, machine
 	Show start download dialog	Dialoogvenster download starten weergeven
@@ -3774,7 +3774,7 @@
 #. text in playlistdlg.rs
 #. button in Download video: stop listing a playlist's videos (those listed stay)
 #, machine
-	Stop listing	Weergave stoppen
+	Stop listing	Lijstweergave stoppen
 #. text in the tray icon's menu
 #, machine
 	Stop main download queue	Hoofddownloadwachtrij stoppen
@@ -3789,7 +3789,7 @@
 #. checkbox in the Add torrent window
 #. Torrent settings: stop listening when nothing needs the torrent engine
 #, machine
-	Stop the torrent engine when no torrent is running	Stop de torrent-engine wanneer er geen torrent actief is
+	Stop the torrent engine when no torrent is running	De torrent-engine stoppen wanneer er geen torrent actief is
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 #, machine
@@ -3834,7 +3834,7 @@
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Ondertitels in {language} konden niet worden gedownload: {site} geweigerd (te veel aanvragen).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Ondertitels in {language} konden niet worden gedownload: {site} heeft de aanvraag geweigerd (te veel aanvragen).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3974,15 +3974,15 @@
 #. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	The computer will be woken on {date} at {time}	De computer wordt gewekt op {date} om {time}
+	The computer will be woken on {date} at {time}	De computer wordt op {date} om {time} gewekt
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will go to sleep in {n} seconds.	De computer gaat over {n} seconden in slaapstand.
+	The computer will go to sleep in {n} seconds.	De computer gaat over {n} seconden in de slaapstand.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
-	The computer will hibernate in {n} seconds.	De computer gaat over {n} seconden in de slaapstand.
+	The computer will hibernate in {n} seconds.	De computer gaat over {n} seconden in de sluimerstand.
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4115,7 +4115,7 @@
 	the release has no {what}	de release heeft geen {what}
 #. text in errors.rs
 #, machine
-	the release's checksum list is not signed by its publisher's key	de controlesomlijst van de release is niet ondertekend door de sleutel van de uitgever
+	the release's checksum list is not signed by its publisher's key	de controlesomlijst van de release is niet ondertekend met de sleutel van de uitgever
 #. text in crashui.rs
 #. crash report window: label above the report's text
 #, machine
@@ -4187,7 +4187,7 @@
 #. text in torrent downloads
 #. an error: the torrent is gone from the torrent session
 #, machine
-	the torrent is no longer there	de torrent is er niet meer
+	the torrent is no longer there	de torrent is niet langer beschikbaar
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4195,7 +4195,7 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	The update couldn't be installed: {error}	De update kan niet worden geïnstalleerd: {error}
+	The update couldn't be installed: {error}	De update kon niet worden geïnstalleerd: {error}
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	The update is open in your system's package installer.	De update is geopend in de pakketinstallatie van uw systeem.
@@ -4288,7 +4288,7 @@
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	this program isn't {name}	dit programma is geen {name}
+	this program isn't {name}	dit is niet het programma {name}
 #. text in a download's progress window
 #, machine
 	This system has no dial-up connections to hang up	Dit systeem heeft geen inbelverbindingen om te verbreken
@@ -4597,7 +4597,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Proxy/SOCKS van een browserverzoek gebruiken als er downloadfouten zijn /\nvoor de downloads die zijn onderschept van de browser
+	Use proxy/socks from a browser's request if there are download errors /\nfor the downloads intercepted from the browser	Proxy/SOCKS van een browserverzoek gebruiken als er downloadfouten zijn /\nvoor downloads die via de browser zijn onderschept
 #. checkbox in a download's progress window
 #, machine
 	Use Speed Limiter	Snelheidsbegrenzer gebruiken
@@ -4685,7 +4685,7 @@
 	Video	Video
 #. text in the Download video window
 #, machine
-	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Video-opzoekingen gebruiken yt-dlp (ongeveer 23 MB, gecontroleerd aan de hand van de handtekening).
+	Video lookups use yt-dlp (about 23 MB, checked against its signature).	Voor het ophalen van video's wordt yt-dlp gebruikt (ongeveer 23 MB, gecontroleerd aan de hand van de handtekening).
 #. text in playlistdlg.rs
 #. what a screen reader calls the list of a playlist's videos
 #, machine
@@ -4704,7 +4704,7 @@
 	Virgin Islands (U.S.)	Amerikaanse Maagdeneilanden
 #. text in the Options window
 #, machine
-	Virus checking settings	Instellingen viruscontrole
+	Virus checking settings	Instellingen voor viruscontrole
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
@@ -4719,7 +4719,7 @@
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 #, machine
-	Waiting	Wachten
+	Waiting	In wachtrij
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Wachten: de downloadlimiet is bereikt (Scheduler)
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ en XZ; een gesplitst archief (.part1.rar, .7z.001) zodra elk volume aanwezig is. Een bestand dat er al is, wordt behouden: het nieuwe wordt genummerd.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ en XZ; een gesplitst archief (.part1.rar, .7z.001) zodra alle volumes aanwezig zijn. Een bestand dat er al is, blijft behouden: het nieuwe bestand krijgt een nummer.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4907,7 +4907,7 @@
 #. text in the Download video window
 #. the Download video window: Chrome 127 and later (and Edge, Brave) on Windows encrypt their cookies so only they can read them; {browser} = its name
 #, machine
-	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} houdt zijn cookies op Windows voor zichzelf vergrendeld, zodat yt-dlp ze niet kan lezen. Kies Firefox in Opties → Sitelogins, of gebruik de knop Video downloaden boven de video in {browser}.
+	{browser} keeps its cookies locked to itself on Windows, so yt-dlp can't read them. Choose Firefox in Options → Sites Logins, or use the Download video button over the video in {browser}.	{browser} houdt zijn cookies op Windows voor zichzelf vergrendeld, zodat yt-dlp ze niet kan lezen. Kies Firefox in Opties → Aanmeldingen bij sites, of gebruik de knop Video downloaden boven de video in {browser}.
 #. text in extension.rs
 #. a check of Test browser integration: {browser} is a browser's name
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	{file} kon niet worden gelezen om het te controleren
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} staat niet meer op de opslaglocatie (verplaatst of verwijderd). Opnieuw downloaden, in het rechtermuisknopmenu, haalt het opnieuw op.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	{file} staat niet meer op de opslaglocatie (verplaatst of verwijderd). Met Opnieuw downloaden in het contextmenu haalt u het bestand opnieuw op.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4960,12 +4960,12 @@
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{have} van {total} ({size} elk)
+	{have} of {total} ({size} each)	{have} van {total} ({size} per stuk)
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} pieces ({size} each)	{have} van {total} delen ({size} elk)
+	{have} of {total} pieces ({size} each)	{have} van {total} delen ({size} per stuk)
 #. text in the download list (sizes, speeds, status)
 #. {h} = hours; {m} = minutes (keep the braces as they are)
 #, machine
@@ -4973,7 +4973,7 @@
 #. text in errors.rs
 #. an error: the server's address is IPv6 (or IPv4) and the chosen network adapter has none of that kind; {ip} the address, {adapter} the adapter's name
 #, machine
-	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} kan niet worden bereikt via {adapter}: het heeft geen adres van dat type (IPv4 of IPv6)
+	{ip} can't be reached through {adapter}: it has no address of that kind (IPv4 or IPv6)	{ip} kan niet worden bereikt via {adapter}: deze heeft geen adres van dat type (IPv4 of IPv6)
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
@@ -5019,7 +5019,7 @@
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
 #, machine
-	{n} (auto)	{n} (auto)
+	{n} (auto)	{n} (automatisch)
 #. text in playlistdlg.rs
 #. in Download video for a playlist: how many videos are ticked, of how many
 #. {n} = a number (keep the braces as they are)
@@ -5039,11 +5039,11 @@
 #. text in errors.rs
 #. a debrid service's error: too many requests; MDM waits and retries
 #, machine
-	{service} asks to slow down; MDM will try again in a minute	{service} vraagt om te vertragen; MDM probeert het over een minuut opnieuw
+	{service} asks to slow down; MDM will try again in a minute	{service} vraagt om het rustiger aan te doen; MDM probeert het over een minuut opnieuw
 #. text in errors.rs
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
-	{service} asks you to allow this computer first: see its email	{service} vraagt u om deze computer eerst toe te staan: zie de e-mail
+	{service} asks you to allow this computer first: see its email	{service} vraagt u deze computer eerst toe te staan: bekijk de e-mail
 #. text in errors.rs
 #, machine
 	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} kan deze torrent niet ophalen: niemand deelt deze, of de koppeling kan niet worden gelezen
@@ -5061,7 +5061,7 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} geeft dit bestand niet
+	{service} won't give this file	{service} levert dit bestand niet
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
@@ -5213,7 +5213,7 @@ extension	Downloads from {site} stay with the browser	Downloads van {site} blijv
 #. text in the browser extension
 #. tooltip of the download button over a video: it can be dragged to another place on the video's edge
 #, machine
-extension	Drag to move it along the video's edge	Slepen om te verplaatsen langs de rand van de video
+extension	Drag to move it along the video's edge	Sleep om de knop langs de rand van de video te verplaatsen
 #. text in the browser extension
 #. the extension's description in the browser's list of extensions; keep the name Mister Download Manager as it is
 #, machine
@@ -5265,7 +5265,7 @@ extension	Mister Download Manager isn't installed, or its browser integration is
 #. text in the browser extension
 #. tooltip of the switch Send downloads through this browser's proxy or VPN extension; keep the name Mister Download Manager as it is
 #, machine
-extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager downloadt dan via dezelfde proxy als deze browser. De browser vraagt u eenmalig om dit toe te staan; als u dit uitschakelt, wordt dat ongedaan gemaakt.
+extension	Mister Download Manager then downloads through the same proxy as this browser. The browser asks you once to allow it; turning this off takes that back.	Mister Download Manager downloadt dan via dezelfde proxy als deze browser. De browser vraagt u eenmalig om dit toe te staan; als u dit uitschakelt, wordt die toestemming ingetrokken.
 #. text in the browser extension
 #. the small arrow next to the Download video button that opens its menu (read aloud by screen readers)
 #, machine
@@ -5569,7 +5569,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	Wordt toegepast de volgende keer dat MDM start
+menu	Applies the next time MDM starts	Wordt toegepast wanneer MDM de volgende keer wordt gestart
 #. menu command in the main window
 #, machine
 menu	Arrange files	Bestanden rangschikken
@@ -5719,12 +5719,12 @@ menu	Font	Lettertype
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &IDM export file...	Vanaf &IDM-exportbestand...
+menu	From &IDM export file...	Uit &IDM-exportbestand...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	From &text file...	Vanaf &tekstbestand...
+menu	From &text file...	Uit &tekstbestand...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5774,7 +5774,7 @@ menu	Native	Systeemeigen
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Geen grafische kaart hier heeft er een stuurprogramma voor
+menu	No graphics card here has a driver for it	Geen enkele grafische kaart heeft hier een stuurprogramma voor
 #. menu command in the main window
 #, machine
 menu	On Double click	Bij dubbelklikken
@@ -5817,7 +5817,7 @@ menu	R&edownload	Opnieuw &downloaden
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	Opnieuw aankondigen
+menu	Reannounce	Trackers opnieuw aankondigen
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
@@ -5902,7 +5902,7 @@ menu	Tell a &friend	Een &vriend vertellen
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
-menu	The graphics card was lost twice in 10 minutes	De grafische kaart is twee keer in 10 minuten verloren gegaan
+menu	The graphics card was lost twice in 10 minutes	De grafische kaart is twee keer in 10 minuten uitgevallen
 #. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine

@@ -6,7 +6,7 @@
 #. never shown for a single file
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Dzēst arī {n} failu no diska|Dzēst arī {n} failu no diska|Dzēst arī {n} failus no diska
+@plural	Also delete the {n} file from disk|Also delete the {n} files from disk	Dzēst no diska arī {n} failu|Dzēst no diska arī {n} failu|Dzēst no diska arī {n} failus
 #. count in a dialog box
 #. never shown for a single download
 #. {n} = a number (keep the braces as they are)
@@ -27,7 +27,7 @@
 #. in a download's log: {n} is a number of files, {folder} where they went
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Izvilkts {n} fails uz {folder}|Izvilkti {n} faili uz {folder}|Izvilkti {n} faili uz {folder}
+@plural	Extracted {n} file to {folder}|Extracted {n} files to {folder}	Izvilkts {n} fails mapē {folder}|Izvilkti {n} faili mapē {folder}|Izvilkti {n} faili mapē {folder}
 #. count in the Add torrent window
 #. while a magnet link's file list is fetched; {n} = peers found so far (none answered yet)
 #. {n} = a number (keep the braces as they are)
@@ -38,12 +38,12 @@
 #. RSS feeds window, Download rules: how many articles the feeds hold now that the rule matches (it adds only new ones)
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Atbilst {n} rakstam tagad (tiek pievienoti tikai jauni):|Atbilst {n} rakstam tagad (tiek pievienoti tikai jauni):|Atbilst {n} rakstiem tagad (tiek pievienoti tikai jauni):
+@plural	Matches {n} article now (it adds new ones only):|Matches {n} articles now (it adds new ones only):	Pašlaik atbilst {n} rakstam (tiks pievienoti tikai jaunie):|Pašlaik atbilst {n} rakstam (tiks pievienoti tikai jaunie):|Pašlaik atbilst {n} rakstiem (tiks pievienoti tikai jaunie):
 #. count in a dialog box
 #. "files already there" question, under the first path: {n} = how many more
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	and {n} other file|and {n} other files	un {n} cits fails|un {n} cits fails|un {n} citi faili
+@plural	and {n} other file|and {n} other files	un vēl {n} fails|un vēl {n} fails|un vēl {n} faili
 #. count in a download's progress window
 #. a connection closed because the server allows only that many
 #. {host} = a server name such as "example.com"; {n} = a number (keep the braces as they are)
@@ -64,7 +64,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} downloading|{n} downloading	{n} lejupielādē|{n} lejupielādē|{n} lejupielādē
+@plural	{n} downloading|{n} downloading	{n} notiek lejupielāde|{n} notiek lejupielāde|{n} notiek lejupielādes
 #. count in extracting archives (a download's log, the Archive password window)
 #. in a download's log, after extracting: entries of the archive not written (links, names that would leave the folder)
 #. {n} = a number (keep the braces as they are)
@@ -85,7 +85,7 @@
 #. in a download's log, after extracting
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} failam jau bija tāds pats nosaukums un tas tika numurēts|{n} failiem jau bija tāds pats nosaukums un tie tika numurēti|{n} failiem jau bija tāds pats nosaukums un tie tika numurēti
+@plural	{n} file had the name of a file there already and was numbered|{n} files had the name of a file there already and were numbered	{n} failam jau bija tāds pats nosaukums, tāpēc tam piešķirts numurs|{n} failiem jau bija tāds pats nosaukums, tāpēc tiem piešķirts numurs|{n} failiem jau bija tāds pats nosaukums, tāpēc tiem piešķirts numurs
 #. count in the Add torrent window
 #. a number of peers (computers sharing a torrent), after where they came from
 #. {n} = a number (keep the braces as they are)
@@ -94,7 +94,7 @@
 #. count in the main window
 #. {n} = a number (keep the braces as they are)
 #, machine
-@plural	{n} selected|{n} selected	{n} atlasīts|{n} atlasīts|{n} atlasīti
+@plural	{n} selected|{n} selected	Atlasīti {n}|Atlasīts {n}|Atlasīti {n}
 #. count in the main window
 #. event log entry: trackers were added to the torrent
 #. {n} = a number (keep the braces as they are)
@@ -113,11 +113,11 @@
 #. count in playlistdlg.rs
 #. in Download video: a playlist title, then how many of its videos are listed so far ({listed}) of how many ({total})
 #, machine
-@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: {listed} no {total} video sarakstā|{title}: {listed} no {total} video sarakstā|{title}: {listed} no {total} video sarakstā
+@plural	{title}: {listed} of {total} video listed|{title}: {listed} of {total} videos listed	{title}: sarakstā {listed} no {total} video|{title}: sarakstā {listed} no {total} video|{title}: sarakstā {listed} no {total} video
 #. text in the settings
 #. Options → DNS: a server address typed isn't an IP address; {what} is what was typed
 #, machine
-	"{what}" isn't an IP address.	"{what}" nav ir IP adrese.
+	"{what}" isn't an IP address.	„{what}“ nav IP adrese.
 #. text in the Scheduler window
 #. verb: save the changes
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
@@ -152,7 +152,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
 #, machine
-	(the Torrents category's folder)	(kategorijas Torrenti mape)
+	(the Torrents category's folder)	(kategorijas „Torrenti“ mape)
 #. text in the Options window
 #. a 12-hour clock, with an example
 #, machine
@@ -168,21 +168,21 @@
 #. text in the Options window
 #. Options → Archives: {path} is where 7-Zip's program is
 #, machine
-	7z and RAR archives are extracted by 7-Zip ({path}).	7z un RAR arhīvus izvelk 7-Zip ({path}).
+	7z and RAR archives are extracted by 7-Zip ({path}).	7z un RAR arhīvus izvelk ar 7-Zip ({path}).
 #. text in the Options window
 #. Options → Archives, when 7-Zip isn't installed
 #, machine
-	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	7z un RAR arhīviem nepieciešams 7-Zip (7-zip.org), kas nav instalēts.
+	7z and RAR archives need 7-Zip (7-zip.org), which isn't installed.	Lai izvilktu 7z un RAR arhīvus, nepieciešams 7-Zip (7-zip.org), kas nav instalēts.
 #. text in extracting archives (a download's log, the Archive password window)
 #, machine
-	7z and RAR archives need 7-Zip, which isn't installed	7z un RAR arhīviem nepieciešams 7-Zip, kas nav instalēts
+	7z and RAR archives need 7-Zip, which isn't installed	Lai izvilktu 7z un RAR arhīvus, nepieciešams 7-Zip, kas nav instalēts
 #. text in a download's progress window
 #, machine
-	<< Hide details	<< Paslēpt detaļas
+	<< Hide details	<< Paslēpt detalizētu informāciju
 #. text in the Options window
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
-	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid pakalpojums lejupielādē failu mitināšanas saiti ar jūsu pašu apmaksāto kontu un nodrošina MDM ar tiešu saiti. Izmantojiet tikai savu kontu: konta vai tā saišu koplietošana pārkāpj pakalpojumu noteikumus un var izraisīt tā apturēšanu. Lejupielādes, ko pārlūkprogramma jau ir sākusi, paliek nemainīgas.
+	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Debrid pakalpojums lejupielādē failu mitināšanas pakalpojuma saiti, izmantojot jūsu apmaksāto kontu, un nodrošina MDM ar tiešu saiti. Izmantojiet tikai savu kontu: konta vai tā saišu kopīgošana pārkāpj pakalpojumu lietošanas noteikumus un var izraisīt konta darbības apturēšanu. Lejupielādes, ko pārlūkprogramma jau ir sākusi, paliek nemainīgas.
 #. text in errors.rs
 #. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
 #. {name} = a file name (keep the braces as they are)
@@ -191,11 +191,11 @@
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
-	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS konfigurācijas ID ir seši burti un cipari (0–9, a–f).
+	A NextDNS configuration ID is six letters and digits (0-9, a-f).	NextDNS konfigurācijas ID sastāv no sešiem burtiem un cipariem (0–9, a–f).
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: the tooltip of the profile box
 #, machine
-	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Profila nosaukums vai tā mape. Tukšs: pēdējais izmantotais profils. Pārlūkprogrammai, kas veidota uz Chromium un nav sarakstā (Helium, Thorium...), izvēlieties Chromium un tās profila mapi.
+	A profile's name or its folder. Empty: the profile used last. For a browser built on Chromium that isn't listed (Helium, Thorium...), choose Chromium and its profile's folder.	Profila nosaukums vai tā mape. Tukšs: pēdējais izmantotais profils. Pārlūkprogrammai, kas veidota uz Chromium bāzes un nav sarakstā (Helium, Thorium...), izvēlieties Chromium un tās profila mapi.
 #. text in whereis.rs
 #. the tooltip of where a download's server is, when a proxy carries the download
 #, machine
@@ -215,11 +215,11 @@
 #. text in the Add torrent window
 #. Add trackers: MDM never contacts a tracker on this computer or the local network
 #, machine
-	A tracker on this computer or the local network is never contacted: {line}	Izsekotājs šajā datorā vai lokālajā tīklā nekad netiek kontaktēts: {line}
+	A tracker on this computer or the local network is never contacted: {line}	Ar izsekotāju šajā datorā vai lokālajā tīklā nekad netiek izveidots savienojums: {line}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	a volume of it is missing	trūkst tā sējuma
+	a volume of it is missing	trūkst kāda tā sējuma
 #. window title in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	About Mister Download Manager	Par Mister Download Manager
@@ -288,7 +288,7 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: add the torrents to the list without starting them
 #, machine
-	Add them without starting them	Pievienot tos, nesākot
+	Add them without starting them	Pievienot tos, nesākot lejupielādi
 #. message or event log entry in the main window; text in the Link grabber window
 #. Link grabber button: add the ticked links to the download queue without starting them (IDM's OK)
 #, machine
@@ -348,7 +348,7 @@
 #. text in extension.rs
 #. a check of Test browser integration (Options → General)
 #, machine
-	Advanced browser integration is on	Paplašinātā pārlūkprogrammas integrācija ir ieslēgta
+	Advanced browser integration is on	Uzlabotā pārlūkprogrammas integrācija ir ieslēgta
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -356,7 +356,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Aland Islands	Olandes salas
+	Aland Islands	Ālandu salas
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -377,7 +377,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: every language the video's uploader gave
 #, machine
-	All the uploader's	Visi augšupielādētāja
+	All the uploader's	Visas augšupielādētāja valodas
 #. text in the Options window
 #. checkbox under the number of connections per download; {n} is 32
 #. {n} = a number (keep the braces as they are)
@@ -393,7 +393,7 @@
 #. text in crashui.rs
 #. crash report window: the same problem has an issue on GitHub already; {number} and {title} are the issue's
 #, machine
-	Already reported as issue #{number}: {title}	Jau ziņots kā problēma Nr. {number}: {title}
+	Already reported as issue #{number}: {title}	Jau ziņots par problēmu Nr. {number}: {title}
 #. checkbox in crashui.rs
 #. crash report window: checkbox; the .dmp file holds what MDM had in memory
 #, machine
@@ -447,7 +447,7 @@
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
-	Answered in {ms} ms: {ip}	Atbildēts {ms} ms: {ip}
+	Answered in {ms} ms: {ip}	Atbilde saņemta pēc {ms} ms: {ip}
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -462,7 +462,7 @@
 	Any (the system chooses)	Jebkurš (sistēma izvēlas)
 #. text in the Scheduler window
 #, machine
-	April	Aprīlis
+	April	aprīlis
 #. window title in extracting archives (a download's log, the Archive password window); text in extracting archives (a download's log, the Archive password window); text in the Link grabber window
 #. what a screen reader calls the Archive password window's box
 #. what a screen reader calls Link grabber's password box
@@ -498,24 +498,24 @@
 	Aruba	Aruba
 #. option (radio button) in the Options window
 #, machine
-	As the system's region writes them	Kā raksta sistēmas reģions
+	As the system's region writes them	Kā to raksta sistēmas reģionā
 #. text in the Options window
 #, machine
-	Ask it with:	Jautāt ar:
+	Ask it with:	Jautāt, izmantojot:
 #. message or event log entry in the main window
 #. event log entry: the torrent's trackers were asked for peers again (Reannounce)
 #, machine
-	Asked the trackers for peers again	Izsekotājiem vēlreiz pieprasīti vienādrangi
+	Asked the trackers for peers again	Atkārtoti pieprasīja vienādranga savienojumus izsekotājiem.
 #. text in the Options window
 #. Options → Add an account: the sign-in is starting or being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking the service...	Jautā pakalpojumam...
+	Asking the service...	Notiek autentificēšanās pakalpojumā...
 #. text in the Options window
 #. Options → DNS settings: the test is running
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Asking...	Jautā...
+	Asking...	Notiek pieprasīšana...
 #. text in the Download video window
 #. a choice in the Download video window: only the sound; {type} is MP3, M4A…
 #, machine
@@ -530,7 +530,7 @@
 	Audio only, original {type}	Tikai audio, oriģināls {type}
 #. text in the Scheduler window
 #, machine
-	August	Augusts
+	August	augusts
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -545,7 +545,7 @@
 	Automatically put in "{category}" category the following file types:	Automātiski ievietot kategorijā "{category}" šādus failu tipus:
 #. text in the Options window
 #, machine
-	Automatically start downloading the following file types:	Automātiski sākt šādu failu tipu lejupielādi:
+	Automatically start downloading the following file types:	Automātiski sākt lejupielādēt šādus failu tipus:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -553,7 +553,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Bahamas	Bahamu Salas
+	Bahamas	Bahamu salas
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -568,7 +568,7 @@
 	Barbados	Barbadosa
 #. window title in the Batch download window
 #, machine
-	Batch download	Lejupielādēt pakešrežīmā
+	Batch download	Lejupielāde partijā
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -600,7 +600,7 @@
 #. text in the Add torrent window
 #. Torrent settings: the address of an IP blocklist (empty: none)
 #, machine
-	Block the addresses in this list (P2P or eMule format):	Bloķēt adreses šajā sarakstā (P2P vai eMule formāts):
+	Block the addresses in this list (P2P or eMule format):	Bloķēt šajā sarakstā norādītās adreses (P2P vai eMule formātā):
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -615,7 +615,7 @@
 	Bosnia and Herzegovina	Bosnija un Hercegovina
 #. text in helpers.rs
 #, machine
-	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Abi programmas ir atvērtā koda. MDM tās iegūst no oficiālajiem izdevumiem ar savu lejupielādētāju un pirms palaišanas pārbauda katra faila parakstu. Aptuveni 100 MB, vienreiz.
+	Both are open source. MDM gets them from their official releases with its own downloader and checks each file's signature before it runs. About 100 MB, once.	Abas ir atvērtā pirmkoda programmas. MDM tās iegūst no oficiālajiem laidieniem, izmantojot savu lejupielādētāju, un pirms palaišanas pārbauda katra faila parakstu. Aptuveni 100 MB, vienreiz.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -630,7 +630,7 @@
 	Brazil	Brazīlija
 #. text in the Options window
 #, machine
-	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Atjaunot {names} sākotnējo stāvokli: nosaukumus, failu tipus un mapes? Jūsu pašu kategorijas, Vispārīgā un Torenti paliks nemainīgi. Jau pārvietotās lejupielādes uz Vispārīgo paliks tur.
+	Bring back {names} as they were shipped: their names, file types and folders? Your own categories, General and Torrents stay as they are. Downloads already moved to General stay there.	Vai atjaunot {names} sākotnējā stāvoklī, kā tās tika piegādātas: to nosaukumus, failu tipus un mapes? Jūsu izveidotās kategorijas, kategorijas Vispārīgā un Torenti paliks nemainītas. Lejupielādes, kas jau pārvietotas uz kategoriju Vispārīgā, tur arī paliks.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -645,7 +645,7 @@
 	Browse...	Pārlūkot...
 #. text in extension.rs
 #, machine
-	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Pārlūkprogrammas integrācija šajā datorā nav iestatīta, tāpēc neviena pārlūkprogramma vēl nevar sasniegt Mister Download Manager.
+	Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.	Šajā datorā nav iestatīta pārlūkprogrammas integrācija, tāpēc neviena pārlūkprogramma vēl nevar piekļūt lietotnei Mister Download Manager.
 #. page title in the Options window
 #, machine
 	Browser/System Integration	Pārlūkprogrammas/sistēmas integrācija
@@ -664,7 +664,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Burundi	Burundija
+	Burundi	Burundi
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server asked to try later (429, 503)
 #, machine
@@ -804,7 +804,7 @@
 #. Video helpers: a program just chosen is being checked
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Checking the program...	Programmas pārbaude...
+	Checking the program...	Notiek programmas pārbaude...
 #. text in helpers.rs
 #. a downloaded helper's signature and checksum are being checked; {name} = yt-dlp or ffmpeg
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -866,7 +866,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Cocos (Keeling) Islands	Kokosu (Kīlinga) Salas
+	Cocos (Keeling) Islands	Kokosu (Kīlinga) salas
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -922,7 +922,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Cook Islands	Kuka Salas
+	Cook Islands	Kuka salas
 #. group box title in the Options window
 #. Options → Sites Logins: group box title: yt-dlp signs in to video sites with a browser's cookies
 #, machine
@@ -975,13 +975,13 @@
 	Customize "Download progress" dialog	Pielāgot dialoglodziņu “Lejupielādes norise”
 #. text in the Options window
 #, machine
-	Customize keys to prevent or force downloading with MDM	Pielāgot taustiņus, lai novērstu vai piespiestu lejupielādi ar MDM
+	Customize keys to prevent or force downloading with MDM	Pielāgot taustiņus, lai novērstu vai piespiestu lejupielādi, izmantojot MDM
 #. text in the Options window
 #, machine
 	Customize MDM Download panels in browsers	Pielāgot MDM lejupielādes paneļus pārlūkprogrammās
 #. text in the Options window
 #, machine
-	Customize MDM menu items in context menu of browsers	Pielāgot MDM izvēlnes vienumus pārlūkprogrammu kontekstizvēlnē
+	Customize MDM menu items in context menu of browsers	Pielāgot MDM izvēlnes vienumus pārlūkprogrammu kontekstizvēlnēs
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1093,11 +1093,11 @@
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over HTTPS)"
 #, machine
-	DNS over HTTPS	DNS pāri HTTPS
+	DNS over HTTPS	DNS, izmantojot HTTPS
 #. text in the settings
 #. a way of asking a DNS, in its name in messages: "Cloudflare (DNS over TLS)"
 #, machine
-	DNS over TLS	DNS pāri TLS
+	DNS over TLS	DNS, izmantojot TLS
 #. window title in the Options window
 #. window title: the settings of the DNS chosen in Options → Connection
 #, machine
@@ -1254,11 +1254,11 @@
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Downloading and verifying yt-dlp...	Lejupielādē un verificē yt-dlp...
+	Downloading and verifying yt-dlp...	Notiek yt-dlp lejupielāde un pārbaude...
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Check for updates, while Update now downloads; {percent} like "42%"
 #, machine
-	Downloading the update... {percent}	Lejupielādē atjauninājumu... {percent}
+	Downloading the update... {percent}	Notiek atjauninājuma lejupielāde... {percent}
 #. text in helpers.rs
 #. {name} = yt-dlp or ffmpeg; {n} of {total} = which helper of how many; {percent} = how far, e.g. 45%
 #. {name} = a file name; {n} = a number (keep the braces as they are)
@@ -1271,15 +1271,15 @@
 #. text in the tray icon's menu
 #. tray menu: a submenu of the downloads now running; choosing one shows its progress window
 #, machine
-	Downloads in progress	Notiek lejupielādes
+	Downloads in progress	Notiekošās lejupielādes
 #. text in a dialog box
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Downloads stopped and will resume automatically at {time}.	Lejupielādes apturētas un automātiski atsāksies plkst. {time}.
+	Downloads stopped and will resume automatically at {time}.	Lejupielādes apturētas un tiks automātiski atsāktas plkst. {time}.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	DR Congo	Kongo DR
+	DR Congo	Kongo Demokrātiskā Republika
 #. text in droptarget.rs
 #. the drop target's tooltip on macOS and Linux (they hand over files only)
 #, machine
@@ -1294,7 +1294,7 @@
 #. message or event log entry in the main window
 #. in Import, where the addresses came from: dragged onto the window
 #, machine
-	Dropped links	Nometušās saites
+	Dropped links	Nomestās saites
 #. window title in a dialog box
 #, machine
 	Duplicate download link	Dublēta lejupielādes saite
@@ -1313,7 +1313,7 @@
 #. button in the Options window
 #. verb: edit the item
 #, machine
-	Edit	Reģistrēt
+	Edit	Rediģēt
 #. text in the Options window
 #, machine
 	Edit exception	Rediģēt izņēmumu
@@ -1350,7 +1350,7 @@
 	End and restart MDM	Beigt un restartēt MDM
 #. text in the Add torrent window
 #, machine
-	Enter a magnet link or choose a .torrent file	Ievadiet magnētsaiti vai izvēlieties .torrent failu
+	Enter a magnet link or choose a .torrent file	Ievadiet magnētisko saiti vai izvēlieties .torrent failu
 #. text in the Scheduler window
 #, machine
 	Enter a name for the new queue that will be	Ievadiet nosaukumu jaunajai rindai, kas būs
@@ -1398,7 +1398,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Eswatini	Svatini
+	Eswatini	Esvatīni
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1435,7 +1435,7 @@
 #. text in the Options window
 #. Options → Accounts: a note that the debrid services' support (Real-Debrid, AllDebrid, Premiumize) is new and not yet tried with real paid accounts
 #, machine
-	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimentāli: veidots no pakalpojumu publiskās API dokumentācijas, vēl nav apstiprināts ar reāliem kontiem.
+	Experimental: built from the services' public API documentation, not yet confirmed with real accounts.	Eksperimentāli: izstrādāts, izmantojot pakalpojumu publisko API dokumentāciju; vēl nav pārbaudīts ar reāliem kontiem.
 #. message or event log entry in the main window
 #, machine
 	Export	Eksportēt
@@ -1469,7 +1469,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Falkland Islands	Folklenda Salas
+	Falkland Islands	Folklenda salas
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (over 150 ms)
 #, machine
@@ -1477,7 +1477,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Faroe Islands	Fēru Salas
+	Faroe Islands	Fēru salas
 #. text in the Scheduler window
 #, machine
 	February	Februāris
@@ -1496,7 +1496,7 @@
 #. text in the Add torrent window
 #. Torrent settings, at the bottom
 #, machine
-	Fetched again every 7 days. Changes apply when no torrent is running.	Atkal ielādēts ik pēc 7 dienām. Izmaiņas stājas spēkā, kad netiek palaists neviens torrents.
+	Fetched again every 7 days. Changes apply when no torrent is running.	Tiek izgūts atkārtoti ik pēc 7 dienām. Izmaiņas stājas spēkā, kad nedarbojas neviens torrentuzdevums.
 #. text in helpers.rs
 #. helper name and what it does (ffmpeg is a program's name)
 #, machine
@@ -1545,7 +1545,7 @@
 #. text in the Add torrent window
 #. {folder} = the folder the torrent's files are saved in
 #, machine
-	Files go to: {folder}	Faili tiek saglabāti: {folder}
+	Files go to: {folder}	Faili tiek saglabāti mapē: {folder}
 #. text in the Scheduler window; tab in the Scheduler window
 #, machine
 	Files in the queue	Faili rindā
@@ -1555,10 +1555,10 @@
 	Find	Atrast
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Find a download	Atrast lejupielādi
+	Find a download	Meklēt lejupielādi
 #. message or event log entry in the main window; window title in the Find window
 #, machine
-	Find file	Atrast failu
+	Find file	Meklēt failu
 #. button in the Options window
 #. button: open the service's page that shows the user's API token
 #, machine
@@ -1566,17 +1566,17 @@
 #. checkbox in the Add torrent window
 #. Torrent settings: local peer discovery
 #, machine
-	Find peers on the local network	Atrast vienādranga tīklus lokālajā tīklā
+	Find peers on the local network	Meklēt vienādranga lietotājus lokālajā tīklā
 #. text in the Add torrent window
 #. Torrent settings: the DHT, the network peers use to find each other
 #, machine
-	Find peers through the DHT	Atrast vienādranga tīklus, izmantojot DHT
+	Find peers through the DHT	Meklēt vienādranga lietotājus, izmantojot DHT
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Find the next match	Atrast nākamo atbilstību
 #. text in the Find window
 #, machine
-	Find:	Atrast:
+	Find:	Meklēt:
 #. item in the Categories tree in the main window
 #. adjective: the downloads that are complete
 #, machine
@@ -1611,7 +1611,7 @@
 	For your Windows account only. Another app chosen in "Open with" stays first.	Tikai jūsu Windows kontam. Cita lietotne, kas izvēlēta sadaļā “Atvērt ar”, paliek pirmā.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Force processes to terminate	Piespiest procesus pārtraukt
+	Force processes to terminate	Piespiedu kārtā pārtraukt procesus
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 #, machine
@@ -1642,7 +1642,7 @@
 	French Southern Territories	Francijas Dienvidu teritorijas
 #. text in the Scheduler window
 #, machine
-	Friday	Piektdiena
+	Friday	piektdiena
 #. message or event log entry in the main window
 #. where a download came from, in its log: an image gallery, by gallery-dl
 #, machine
@@ -1667,7 +1667,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	From must come before To	No jābūt pirms Līdz
+	From must come before To	No jānorāda pirms lauka „Līdz”
 #. message or event log entry in the main window
 #, machine
 	from the browser	no pārlūkprogrammas
@@ -1701,7 +1701,7 @@
 #. message or event log entry in the main window
 #. a gallery download's error: the helper program it needs is missing
 #, machine
-	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl nav instalēts (Pievienot URL ar galerijas adresi to instalē)
+	gallery-dl is not installed (Add URL with a gallery's address installs it)	gallery-dl nav instalēts (Pievienojot galerijas adresi ar „Pievienot URL“, tas tiek instalēts)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1751,7 +1751,7 @@
 #. text in errors.rs
 #. a download's error; {message} = Google Drive's own explanation, in the language Google chose (often: too many people downloaded the file lately)
 #, machine
-	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google disks šobrīd nedos šo failu: {message} (bieži palīdz pierakstīšanās Google savā pārlūkprogrammā; pretējā gadījumā mēģiniet vēlreiz vēlāk)
+	Google Drive won't give this file now: {message} (signing in to Google in your browser often helps; otherwise, try again later)	Google disks pašlaik nedos šo failu: {message} (bieži palīdz pierakstīšanās Google kontā pārlūkprogrammā; pretējā gadījumā mēģiniet vēlreiz vēlāk)
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1806,7 +1806,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Heard Island and McDonald Islands	Hērda Sala un Makdonalda Salas
+	Heard Island and McDonald Islands	Hērda sala un Makdonalda salas
 #. button in the Options window
 #. noun: button that opens the help
 #, machine
@@ -1814,7 +1814,7 @@
 #. window title in helpers.rs
 #. window title: where MDM takes its helper programs (yt-dlp, ffmpeg, gallery-dl) from
 #, machine
-	Helpers	Palīglīdzekļi
+	Helpers	Palīgprogrammas
 #. button in gallerydlg.rs; button in the Download video window
 #. button in Download video: where MDM takes yt-dlp and ffmpeg from
 #. the trailing ... means it opens a window: keep it
@@ -1841,7 +1841,7 @@
 	Hide web pages	Paslēpt tīmekļa lapas
 #. text in the Options window
 #, machine
-	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Turot Alt un noklikšķinot uz saites, ļaujiet pārlūkprogrammai to lejupielādēt, nevis Mister Download Manager.
+	Hold Alt while clicking a link to let the browser download it instead of Mister Download Manager.	Turiet nospiestu taustiņu Alt un noklikšķiniet uz saites, lai to lejupielādētu pārlūkprogrammā, nevis lietotnē Mister Download Manager.
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Home page	Mājaslapa
@@ -1856,7 +1856,7 @@
 #. text in the Scheduler window
 #. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
 #, machine
-	How to allow it	Kā atļaut
+	How to allow it	Kā to atļaut
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1877,13 +1877,13 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Iceland	Īslande
+	Iceland	Islande
 #. text in the Options window
 #, machine
 	If a duplicate download link is added:	Ja tiek pievienota dublēta lejupielādes saite:
 #. text in the Options window
 #, machine
-	If existing file is complete, show download complete dialog; otherwise resume it.	Ja esošais fails ir pabeigts, rādīt lejupielādes pabeigšanas dialoglodziņu; pretējā gadījumā atsākt to.
+	If existing file is complete, show download complete dialog; otherwise resume it.	Ja esošā faila lejupielāde ir pabeigta, rādīt lejupielādes pabeigšanas dialoglodziņu; pretējā gadījumā atsākt lejupielādi.
 #. text in the Options window
 #. Options → DNS settings: checkbox: when the chosen DNS can't be reached, use the system's instead
 #, machine
@@ -1948,7 +1948,7 @@
 #. Check for updates, after Update now downloaded it: unpacking and putting the new version in place
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Installing the update...	Atjauninājuma instalēšana...
+	Installing the update...	Notiek atjauninājuma instalēšana...
 #. text in the Options window
 #. Options → Archives: where extracted files go
 #, machine
@@ -1975,7 +1975,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Isle of Man	Mena Sala
+	Isle of Man	Menas sala
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -1991,7 +1991,7 @@
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
-	it is not an archive MDM extracts	tas nav arhīvs, ko MDM izvelk
+	it is not an archive MDM extracts	tas nav arhīvs, ko MDM spēj izvilkt
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 #, machine
@@ -2008,7 +2008,7 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); sizes like "4.00 GB"
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	it would write {size}, more than the {limit} there is room or reason for	tas ierakstītu {size}, vairāk nekā ir vietas vai iemesla {limit}
+	it would write {size}, more than the {limit} there is room or reason for	tas ierakstītu {size}, pārsniedzot {limit}, ko atļauj pieejamā vieta vai nepieciešamība
 #. text in the Batch download window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -2030,7 +2030,7 @@
 	Jamaica	Jamaika
 #. text in the Scheduler window
 #, machine
-	January	Janvāris
+	January	janvāris
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2045,13 +2045,13 @@
 	Jordan	Jordānija
 #. text in the Scheduler window
 #, machine
-	July	Jūlijs
+	July	jūlijs
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Jump to the download whose name starts with it	Pāriet uz lejupielādi, kuras nosaukums sākas ar to
+	Jump to the download whose name starts with it	Pāriet uz lejupielādi, kuras nosaukums sākas ar šo rakstzīmi
 #. text in the Scheduler window
 #, machine
-	June	Jūnijs
+	June	jūnijs
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2112,7 +2112,7 @@
 #. message or event log entry in the main window
 #. RSS: a feed bigger than MDM reads (5 MB)
 #, machine
-	larger than a feed can be	lielāks, nekā plūsma var būt
+	larger than a feed can be	lielāka par plūsmas maksimālo lielumu
 #. text in the Batch download window
 #, machine
 	Last file:	Pēdējais fails:
@@ -2154,22 +2154,22 @@
 	Libya	Lībija
 #. link (opens a web page) in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	Licenses and credits	Licences un atsauces
+	Licenses and credits	Licences un pateicības
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Liechtenstein	Lihtenšteina
 #. checkbox in a dialog box
 #, machine
-	Limit all downloads together to	Ierobežot visas lejupielādes kopā līdz
+	Limit all downloads together to	Ierobežot visu lejupielāžu kopējo ātrumu līdz
 #. text in a download's progress window
 #. a torrent's progress window, Speed Limiter tab: a limit for what this torrent sends to others
 #, machine
-	Limit uploading	Ierobežot augšupielādi
+	Limit uploading	Ierobežot augšupielādes ātrumu
 #. text in the Add torrent window
 #. Torrent settings: an upload speed limit for all torrents together, followed by a box with the speed and "KBytes/sec"
 #, machine
-	Limit uploading for all torrents to	Ierobežot augšupielādi visiem torrentiem līdz
+	Limit uploading for all torrents to	Ierobežot visu torrentu augšupielādes ātrumu līdz
 #. window title in the Link grabber window; group box title in the Options window
 #. Options → Archives: group box title
 #, machine
@@ -2186,22 +2186,22 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 #, machine
-	List the rest	Uzskaitīt pārējo
+	List the rest	Turpināt uzskaitīšanu
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
 #, machine
-	Listing stopped after {n} videos: {error}	Uzskaitīšana apturēta pēc {n} videoklipiem: {error}
+	Listing stopped after {n} videos: {error}	Videoklipu uzskaitīšana apturēta pēc {n} videoklipiem: {error}
 #. text in playlistdlg.rs
 #. in Download video, while a channel is listed: {n} videos listed so far
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n}	Videoklipu uzskaitīšana: {n}
+	Listing the videos: {n}	Uzskaitīti videoklipi: {n}
 #. text in playlistdlg.rs
 #. in Download video, while a playlist is listed: {n} videos listed so far, {total} in all
 #. {n} = a number (keep the braces as they are)
 #, machine
-	Listing the videos: {n} of {total}	Videoklipu uzskaitīšana: {n} no {total}
+	Listing the videos: {n} of {total}	Uzskaitīti videoklipi: {n} no {total}
 #. message or event log entry in the main window
 #. the kind of file the Import dialog lists (text files with addresses)
 #, machine
@@ -2222,11 +2222,11 @@
 #. noun: the user name for the server (an input box follows)
 #. noun: the user name and password section
 #, machine
-	Login	Pieteikšanās
+	Login	Lietotājvārds
 #. checkbox in the Options window
 #. Options → Archives → Link grabber check box (IDM's Download all links looks every link up)
 #, machine
-	Look links up when they arrive (name, size, online)	Meklēt saites, kad tās pienāk (nosaukums, izmērs, tiešsaistē)
+	Look links up when they arrive (name, size, online)	Meklēt informāciju par saitēm to saņemšanas brīdī (nosaukums, izmērs, pieejamība)
 #. text in the Add torrent window; button in the Download video window
 #, machine
 	Look up	Meklēt
@@ -2242,7 +2242,7 @@
 #. text in crashui.rs
 #. crash report window: looking on GitHub for an issue about the same problem
 #, machine
-	Looking for this problem on GitHub…	Meklēju šo problēmu vietnē GitHub…
+	Looking for this problem on GitHub…	Tiek meklēta šī problēma vietnē GitHub…
 #. text in the Download video window
 #. the trailing ... means it is still going on: keep it
 #, machine
@@ -2268,7 +2268,7 @@
 #. text in crashui.rs
 #. crash report window: downloading the symbols that turn addresses into function names; {done} and {total} are megabytes
 #, machine
-	Making the report readable: fetching the symbols ({done} of {total} MB)…	Padarīt ziņojumu lasāmu: ielādē simbolus ({done} no {total} MB)…
+	Making the report readable: fetching the symbols ({done} of {total} MB)…	Notiek ziņojuma sagatavošana lasāmā formā: tiek iegūti simboli ({done} no {total} MB)…
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2298,18 +2298,18 @@
 	Map the port on the router (UPnP)	Kartēt portu maršrutētājā (UPnP)
 #. text in the Scheduler window
 #, machine
-	March	Marts
+	March	marts
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
-	Marshall Islands	Māršala Salas
+	Marshall Islands	Māršala salas
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
 	Martinique	Martinika
 #. checkbox in the Find window
 #, machine
-	Match case	Atbilstības reģistrs
+	Match case	Reģistrjutīgs
 #. checkbox in the Find window
 #, machine
 	Match whole string only	Atbilst tikai visai virknei
@@ -2469,7 +2469,7 @@
 #. text in a dialog box
 #. choice in Delete category: what happens to the category's downloads
 #, machine
-	Move its downloads to General	Pārvietot lejupielādes uz Vispārīgi
+	Move its downloads to General	Pārvietot lejupielādes uz kategoriju „Vispārīgi“
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Move or rename the selected download	Pārvietot vai pārdēvēt atlasīto lejupielādi
@@ -2628,7 +2628,7 @@
 #. text in torrent downloads
 #. an error: the app has no folder for its torrent data
 #, machine
-	no data folder for torrents	nav datu mapes torrentiem
+	no data folder for torrents	Nav torrentu datu mapes
 #. text in the Scheduler window
 #. tooltip on the Scheduler's weekdays when none is ticked
 #, machine
@@ -2650,7 +2650,7 @@
 	No folders yet	Vēl nav mapju
 #. text in a dialog box
 #, machine
-	No goes back, to choose another folder.	Nē atgriežas, lai izvēlētos citu mapi.
+	No goes back, to choose another folder.	Atlasot „Nē“, atgriezīsieties, lai izvēlētos citu mapi.
 #. tooltip (why a control is greyed) in langpick.rs
 #. tooltip of the greyed OK button in the language picker
 #, machine
@@ -2667,11 +2667,11 @@
 	No mail app: the message is copied, paste it in your mail.	Nav pasta lietotnes: ziņojums ir kopēts, ielīmējiet to savā pastā.
 #. text in errors.rs
 #, machine
-	no peer sent the torrent's file list in time	neviens vienādranga lietotājs laikā nenosūtīja torenta failu sarakstu
+	no peer sent the torrent's file list in time	neviens vienādranga lietotājs laikā nenosūtīja torrentu failu sarakstu
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds without a peer
 #, machine
-	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Vēl nav vienaudžu. Šo torrentu var koplietot maz cilvēku, vai arī ugunsmūris, VPN vai tīkls var bloķēt BitTorrent.
+	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	Vēl nav neviena vienādranga lietotāja. Iespējams, šo torrentu koplieto maz cilvēku vai arī ugunsmūris, VPN vai tīkls bloķē BitTorrent.
 #. text in the Options window
 #, machine
 	No proxy/socks	Nav starpniekservera/SOCKS
@@ -2682,7 +2682,7 @@
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
-	No tracker added: it has them already	Nav pievienots neviens izsekotājs: tie jau ir pieejami
+	No tracker added: it has them already	Nav pievienots neviens izsekotājs: tie jau ir pievienoti
 #. text in the Add torrent window
 #. the magnet link names no tracker (a server that lists a torrent's peers)
 #, machine
@@ -2690,7 +2690,7 @@
 #. text in the Download video window
 #. the Download video window: yt-dlp found no video on the page
 #, machine
-	No video found on this page. Play the video, then use the Download video button over it.	Šajā lapā nav atrasts neviens video. Atskaņojiet video, pēc tam izmantojiet pogu "Lejupielādēt video" virs tā.
+	No video found on this page. Play the video, then use the Download video button over it.	Šajā lapā nav atrasts neviens video. Atskaņojiet video, pēc tam izmantojiet pogu „Lejupielādēt video“ virs tā.
 #. text in the Download video window
 #, machine
 	No video this can download on that page	Šajā lapā nav video, ko var lejupielādēt
@@ -2708,10 +2708,10 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: no feed ticked means the rule watches all of them
 #, machine
-	None ticked: every feed.	Neviens nav atzīmēts: katra plūsma.
+	None ticked: every feed.	Nav atzīmēta neviena plūsma: visas plūsmas.
 #. text in a download's progress window
 #, machine
-	None: peers come from the DHT and other peers	Nav: vienādranga datori nāk no DHT un citiem vienādranga datoriem
+	None: peers come from the DHT and other peers	Nav: vienādranga lietotāji tiek atrasti, izmantojot DHT un citus vienādranga lietotājus
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -2734,23 +2734,23 @@
 	Norway	Norvēģija
 #. text in the Checksum window
 #, machine
-	Not a checksum this can read	Nav kontrolsumma, ko var nolasīt
+	Not a checksum this can read	Nav nolasāma kontrolsumma
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: a regular expression that can't be read, with why
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	Not a regular expression: {error}	Nav regulāra izteiksme: {error}
+	Not a regular expression: {error}	Tā nav regulāra izteiksme: {error}
 #. text in the Add torrent window
 #. Add trackers: a line that isn't a tracker's address (http, https or udp)
 #, machine
-	Not a tracker address: {line}	Nav izsekotāja adrese: {line}
+	Not a tracker address: {line}	Tā nav izsekotāja adrese: {line}
 #. text in errors.rs
 #, machine
 	not enough disk space: {needed} needed, {free} free	nepietiek vietas diskā: nepieciešams {needed}, brīvs {free}
 #. text in rssdlg.rs
 #. RSS feeds window: the selected feed hasn't been fetched yet
 #, machine
-	Not fetched yet	Vēl nav ielādēts
+	Not fetched yet	Vēl nav ielādēta
 #. value in a column's filter list in the download list
 #, machine
 	Not in a queue	Nav rindā
@@ -2766,11 +2766,11 @@
 	Not now? Get them later from Tasks → Download video from a page.	Ne tagad? Iegūstiet tos vēlāk no Uzdevumi → Lejupielādēt video no lapas.
 #. text in a download's Properties window
 #, machine
-	not one server (peers, or a helper's)	nav viens serveris (līdzdalītāji vai palīgs)
+	not one server (peers, or a helper's)	nav viens no serveriem (līdzdalībniekiem vai palīgiem)
 #. text in debrid.rs
 #. Options → Accounts: the service doesn't take this file host (shouldn't happen when signing in)
 #, machine
-	not supported by this service	šis pakalpojums neatbalsta
+	not supported by this service	šis pakalpojums to neatbalsta
 #. text in the Options window
 #, machine
 	Not used: file parts are written next to the file	Netiek izmantots: failu daļas tiek rakstītas blakus failam
@@ -2783,7 +2783,7 @@
 	Note: These settings don't relate to queue processing	Piezīme: šie iestatījumi nav saistīti ar rindu apstrādi
 #. message or event log entry in the main window
 #, machine
-	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Nekas nav lejupielādējams {item}: nometiet saites, .torrent failu vai adrešu sarakstu (.txt, .ef2).
+	Nothing to download in {item}: drop links, a .torrent file, or a list of addresses (.txt, .ef2).	Nav nekā lejupielādējama no {item}: nometiet saites, .torrent failu vai adrešu sarakstu (.txt, .ef2).
 #. text in the Scheduler window
 #, machine
 	November	Novembris
@@ -2830,11 +2830,11 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 #, machine
-	On macOS, only an administrator can schedule a wake	Operētājsistēmā macOS tikai administrators var ieplānot modināšanu
+	On macOS, only an administrator can schedule a wake	Operētājsistēmā macOS tikai administrators var ieplānot datora modināšanu
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
 #, machine
-	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Operētājsistēmā Windows pārlūkprogrammas Chrome, Edge un Brave var bloķēt savus sīkfailus. Firefox darbojas.
+	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	Operētājsistēmā Windows pārlūkprogrammas Chrome, Edge un Brave var bloķēt sīkfailus. Firefox darbojas.
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Vienreiz plkst.
@@ -2865,7 +2865,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
-	Only MP4 and MKV videos can hold subtitles	Tikai MP4 un MKV video var saturēt subtitrus
+	Only MP4 and MKV videos can hold subtitles	Tikai MP4 un MKV videoklipos var iekļaut subtitrus
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -2928,7 +2928,7 @@
 #. text in the Options window
 #. Options → Add an account: label before the field for the service's API token (the other way to sign in)
 #, machine
-	Or paste your API token:	Vai ielīmējiet savu API pilnvaru:
+	Or paste your API token:	Vai arī ielīmējiet API pilnvaru:
 #. text in the Link grabber window
 #. Link grabber: the box that edits the selected package
 #, machine
@@ -3135,7 +3135,7 @@
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites: a note under the choices
 #, machine
-	Read on this computer only, and sent only to the video's site.	Lasīts tikai šajā datorā un nosūtīts tikai uz video vietni.
+	Read on this computer only, and sent only to the video's site.	Lasāms tikai šajā datorā un nosūtīts tikai uz video vietni.
 #. text in crashui.rs
 #. crash report window: shown while the crash dump is being read
 #, machine
@@ -3154,7 +3154,7 @@
 #. text in helpers.rs
 #. the helpers are downloaded, checked and ready; {list} = names and versions, e.g. "yt-dlp 2026.10.26, ffmpeg 9.0"
 #, machine
-	Ready: {list}	Gatavs: {list}
+	Ready: {list}	Gatavi: {list}
 #. message or event log entry in the main window
 #. event log entry: Reannounce failed, with the reason
 #. {error} = an error message (keep the braces as they are)
@@ -3237,7 +3237,7 @@
 #. message or event log entry in the main window
 #. event log entry, past tense: the download resumed (just now)
 #, machine
-	Resumed	Atsākts
+	Resumed	Atsākta
 #. button in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. button: check for updates again
 #, machine
@@ -3328,14 +3328,14 @@
 #. text in gallerydlg.rs; text in the Options window; text in the Add torrent window; text in the Download video window
 #. tab title: where downloads are saved
 #, machine
-	Save to	Saglabāt mapē
+	Save to	Saglabāšanas vieta
 #. group box title in the Options window
 #. the trailing ... means it is still going on: keep it
 #, machine
-	Save To...	Saglabāt mapē...
+	Save To...	Saglabāšanas vieta...
 #. text in a download's progress window; text in a download's Properties window
 #, machine
-	Save To:	Saglabāt mapē:
+	Save To:	Saglabāšanas vieta:
 #. text in the Link grabber window; text in rssdlg.rs
 #. Link grabber: the folder the package's files go to (a label before its box)
 #. RSS feeds window, Download rules: the folder the rule's torrents go to
@@ -3423,7 +3423,7 @@
 	Sent	Nosūtīts
 #. text in the Scheduler window
 #, machine
-	September	Septembris
+	September	septembris
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3496,11 +3496,11 @@
 #. event log entry, past tense: a finished torrent stopped being shared to others after the time set in Torrent settings; {time} = e.g. 1 hour(s) 15 min
 #. {time} = a time of day (keep the braces as they are)
 #, machine
-	Sharing stopped after sharing for {time}	Kopīgošana apturēta pēc kopīgošanas uz {time}
+	Sharing stopped after sharing for {time}	Koplietošana apturēta pēc {time} ilgas koplietošanas
 #. message or event log entry in the main window
 #. event log entry, past tense: a finished torrent stopped being shared to others because its share ratio (sent ÷ received) reached the limit set in Torrent settings; {ratio} = e.g. 2.00
 #, machine
-	Sharing stopped: the share ratio reached {ratio}	Kopīgošana apturēta: kopīgošanas koeficients sasniedza {ratio}
+	Sharing stopped: the share ratio reached {ratio}	Koplietošana apturēta: koplietošanas koeficients sasniedza {ratio}
 #. text in the download list
 #, machine
 	Show	Rādīt
@@ -3545,7 +3545,7 @@
 	Show warning before stopping downloads	Rādīt brīdinājumu pirms lejupielāžu apturēšanas
 #. text in a download's progress window
 #, machine
-	Shown while the torrent is downloading.	Rādīts, kamēr tiek lejupielādēts torrents.
+	Shown while the torrent is downloading.	Tiek rādīts, kamēr tiek lejupielādēts torrents.
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
@@ -3557,7 +3557,7 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
-	Sign in in the browser	Pierakstīties pārlūkprogrammā
+	Sign in in the browser	Pieteikties pārlūkprogrammā
 #. text in the Options window
 #. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
 #, machine
@@ -3573,11 +3573,11 @@
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
-	Signed in as {user} ({state})	Pierakstījies kā {user} ({state})
+	Signed in as {user} ({state})	Pieteicies kā {user} ({state})
 #. text in the Options window
 #. Options → Accounts: the account's sign-in can't be read (signed out, or the settings came from another computer)
 #, machine
-	signed out: sign in again	izrakstījies: pierakstieties vēlreiz
+	signed out: sign in again	nav pieteicies: piesakieties vēlreiz
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3588,7 +3588,7 @@
 	Sint Maarten	Sintmārtena
 #. checkbox in the Find window
 #, machine
-	Site name/Download link/Parent web page/Referer	Vietnes nosaukums/Lejupielādes saite/Vecāka tīmekļa lapa/Referer
+	Site name/Download link/Parent web page/Referer	Vietnes nosaukums/Lejupielādes saite/Vecāka tīmekļa lapa/Atsauces lapa
 #. text in the Options window
 #. column title: the site (and path) a login is for
 #, machine
@@ -3602,10 +3602,10 @@
 	Sites Logins	Vietņu pieteikšanās
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Vietnes sūta savu labāko kvalitāti kā atsevišķu video un audio, un ffmpeg tos savieno. Šajā sistēmā MDM izmanto jūsu: instalējiet ffmpeg ar savu pakotņu pārvaldnieku.
+	Sites send their best quality as separate video and audio, and ffmpeg joins them. On this system MDM uses yours: install ffmpeg with your package manager.	Vietnes nodrošina vislabāko kvalitāti, sūtot video un audio atsevišķi, un ffmpeg tos apvieno. Šajā sistēmā MDM izmanto jūsu ffmpeg: instalējiet ffmpeg, izmantojot pakotņu pārvaldnieku.
 #. text in helpers.rs
 #, machine
-	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Vietnes sūta savu labāko kvalitāti kā atsevišķu video un audio. ffmpeg tos apvieno vienā failā, ko var atskaņot jebkurā vietā.
+	Sites send their best quality as separate video and audio. ffmpeg puts them together into one file that plays anywhere.	Vietnes nodrošina vislabāko kvalitāti, sūtot video un audio atsevišķi. ffmpeg tos apvieno vienā failā, ko var atskaņot jebkurā ierīcē.
 #. text in the Link grabber window; text in a download's progress window; text in the Scheduler window; text in the Add torrent window
 #. column title: the file's size
 #. column title: file size
@@ -3613,7 +3613,7 @@
 	Size	Lielums
 #. text in the Download video window
 #, machine
-	size unknown	lielums nezināms
+	size unknown	izmērs nav zināms
 #. text in a download's Properties window
 #, machine
 	Size:	Lielums:
@@ -3644,7 +3644,7 @@
 #. text in a download's progress window
 #. legend: pieces partly downloaded
 #, machine
-	Some	Daži
+	Some	Dažas
 #. text in a dialog box
 #, machine
 	Some of the torrent's files are already in this folder:	Daži torenta faili jau atrodas šajā mapē:
@@ -3834,7 +3834,7 @@
 #. after a video download: {language} = a language's name, {site} = a web site's name (youtube.com); the site refused because it was asked too often
 #. {site} = a web site's name such as "example.com" (keep the braces as they are)
 #, machine
-	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Subtitrus valodā {language} nevarēja lejupielādēt: {site} atteicās (pārāk daudz pieprasījumu).
+	Subtitles in {language} couldn't be downloaded: {site} refused (too many requests).	Subtitrus valodā {language} nevarēja lejupielādēt: {site} atteica pieprasījumu (pārāk daudz pieprasījumu).
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3996,7 +3996,7 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: the DHT got no answer from anyone
 #, machine
-	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT nevienu nesasniedza. Ugunsmūris, VPN vai tīkls var bloķēt UDP, ko izmanto DHT un lielākā daļa izsekotāju.
+	The DHT reached no one. A firewall, a VPN or the network may be blocking UDP, which the DHT and most trackers use.	DHT neizdevās sazināties ne ar vienu. Ugunsmūris, VPN vai tīkls var bloķēt UDP, ko izmanto DHT un lielākā daļa izsekotāju.
 #. text in errors.rs
 #, machine
 	the disk is full	disks ir pilns
@@ -4010,14 +4010,14 @@
 	The download limit ({mb} MBytes every {hours} hours) has been reached.	Lejupielādes ierobežojums ({mb} MB ik pēc {hours} stundām) ir sasniegts.
 #. text in errors.rs
 #, machine
-	the download link has expired (refresh the download address)	lejupielādes saite ir beigusies (atjaunojiet lejupielādes adresi)
+	the download link has expired (refresh the download address)	lejupielādes saitei beidzies derīguma termiņš (atjaunojiet lejupielādes adresi)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The download list could not be saved: {error}. Changes are kept while MDM runs.	Lejupielādes sarakstu nevarēja saglabāt: {error}. Izmaiņas tiek saglabātas, kamēr MDM darbojas.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
-	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Lejupielādes pārvaldnieks, ko jau pazīstat, pārbūvēts, lai būtu ātrāks. Bezmaksas un atvērtā koda saskaņā ar GNU GPL, 3. vai jaunāku versiju. Video tiek atrasti ar yt-dlp; torrenti darbojas ar librqbit.
+	The download manager you already know, rebuilt to be faster. Free and open source under the GNU GPL, version 3 or later. Videos are found by yt-dlp; torrents run on librqbit.	Lejupielāžu pārvaldnieks, ko jau pazīstat, pārbūvēts, lai darbotos ātrāk. Bezmaksas atvērtā pirmkoda programmatūra saskaņā ar GNU GPL 3. vai jaunāku versiju. Videoklipus atrod yt-dlp; torrentus nodrošina librqbit.
 #. text in a dialog box
 #, machine
 	The download queue is done.	Lejupielādes rinda ir pabeigta.
@@ -4033,7 +4033,7 @@
 	the drive or network share is no longer available	disks vai tīkla koplietojums vairs nav pieejams
 #. text in errors.rs
 #, machine
-	the file changed on the server	fails mainījās serverī
+	the file changed on the server	fails serverī ir mainījies
 #. message or event log entry in the main window
 #, machine
 	The file could not be moved	Failu nevarēja pārvietot
@@ -4066,7 +4066,7 @@
 #. text in errors.rs
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
-	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	faila {algorithm} kontrolsumma nesakrīt (dati tiek saglabāti; lejupielādējiet to vēlreiz)
+	the file's {algorithm} checksum doesn't match (the data is kept; redownload it)	faila {algorithm} kontrolsumma nesakrīt (dati tiek saglabāti; lejupielādējiet failu vēlreiz)
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 #, machine
@@ -4081,7 +4081,7 @@
 #. text in crashui.rs
 #. crash report window: after Send opened the browser
 #, machine
-	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Veidlapa tika atvērta jūsu pārlūkprogrammā. Ievelciet tajā ziņojuma failu (un .dmp, ja izvēlējāties), pēc tam iesniedziet.
+	The form opened in your browser. Drag the report's file (and the .dmp, if you chose to) into it, then submit.	Veidlapa tika atvērta jūsu pārlūkprogrammā. Ievelciet tajā ziņojuma failu (un .dmp, ja izvēlējāties to pievienot), pēc tam iesniedziet ziņojumu.
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 #, machine
@@ -4126,7 +4126,7 @@
 	The report is on your clipboard.	Ziņojums ir jūsu starpliktuvē.
 #. text in crashui.rs
 #, machine
-	The report is on your clipboard: paste it in a comment on the issue.	Ziņojums ir jūsu starpliktuvē: ielīmējiet to komentārā par problēmu.
+	The report is on your clipboard: paste it in a comment on the issue.	Ziņojums ir jūsu starpliktuvē: ielīmējiet to komentārā pie problēmas.
 #. text in errors.rs
 #. an FTPS (or other TLS) connection could not be secured
 #, machine
@@ -4137,10 +4137,10 @@
 	The selected download is not complete. Are you sure you want to delete\nit from Mister Download Manager list of downloads?	Atlasītā lejupielāde nav pabeigta. Vai tiešām vēlaties to dzēst\nno Mister Download Manager lejupielāžu saraksta?
 #. text in errors.rs
 #, machine
-	the server answered {status}	serveris atbildēja {status}
+	the server answered {status}	serveris atbildēja ar {status}
 #. text in errors.rs
 #, machine
-	the server can't send parts of the file, so it can't be resumed	serveris nevar nosūtīt faila daļas, tāpēc to nevar atsākt
+	the server can't send parts of the file, so it can't be resumed	serveris nevar nosūtīt faila daļas, tāpēc lejupielādi nevar atsākt
 #. text in errors.rs
 #, machine
 	the server did not answer in time	serveris neatbildēja laikā
@@ -4205,7 +4205,7 @@
 #. text in the Options window
 #. Options → Archives check box
 #, machine
-	Then move the archives to the Recycle Bin	Pēc tam pārvietot arhīvus uz miskasti
+	Then move the archives to the Recycle Bin	Pēc tam pārvietot arhīvus uz atkritni
 #. text in the Options window
 #. Options → Archives check box (Linux and macOS)
 #, machine
@@ -4237,7 +4237,7 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 #, machine
-	This computer has no wake alarm that programs can set	Šim datoram nav modinātāja, ko programmas varētu iestatīt
+	This computer has no wake alarm that programs can set	Šim datoram nav modināšanas taimera, ko programmas varētu iestatīt
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4271,11 +4271,11 @@
 #. text in the Add torrent window
 #. a magnet link's lookup, after 30 seconds: it can't find any peer at all
 #, machine
-	This magnet link names no trackers and the DHT is off, so no peer can be found.	Šī magnētsaite nenosauc nevienu trakeri, un DHT ir izslēgts, tāpēc nevar atrast nevienu vienādrangu.
+	This magnet link names no trackers and the DHT is off, so no peer can be found.	Šajā magnētiskajā saitē nav norādīts neviens izsekotājs, un DHT ir izslēgts, tāpēc nevar atrast nevienu vienādranga tīkla dalībnieku.
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
-	This needs ffmpeg	Nepieciešams ffmpeg
+	This needs ffmpeg	Nepieciešama programma ffmpeg
 #. text in the Options window
 #. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
 #, machine
@@ -4309,7 +4309,7 @@
 #. text in the Download video window
 #. the Download video window: the video needs the user to be signed in
 #, machine
-	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Šim videoklipam ir nepieciešams, lai jūs būtu pieteicies. Izmantojiet pogu Lejupielādēt video virs tā savā pārlūkprogrammā, kas nodod jūsu pieteikšanos, vai izvēlieties savu pārlūkprogrammu sadaļā Opcijas → Vietņu pieteikšanās → Sīkfaili video vietnēm.
+	This video needs you to be signed in. Use the Download video button over it in your browser, which passes your sign-in on, or choose your browser in Options → Sites Logins → Cookies for video sites.	Lai lejupielādētu šo video, jums ir jāpiesakās. Izmantojiet pogu Lejupielādēt video virs tā savā pārlūkprogrammā, kas nodod jūsu pieteikšanās datus, vai izvēlieties savu pārlūkprogrammu sadaļā Opcijas → Vietņu pieteikšanās → Sīkfaili video vietnēm.
 #. text in whereis.rs
 #. where a download's server is, when a proxy carries it (the proxy's place not known)
 #, machine
@@ -4325,14 +4325,14 @@
 #. message or event log entry in the main window
 #. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
 #, machine
-	Through {service}: the service downloads the torrent, then MDM its files	Caur {service}: pakalpojums lejupielādē torrentu, tad MDM tā failus
+	Through {service}: the service downloads the torrent, then MDM its files	Caur {service}: pakalpojums lejupielādē torrentu, pēc tam MDM lejupielādē tā failus
 #. text in the Scheduler window
 #, machine
 	Thursday	Ceturtdiena
 #. text in the Scheduler window
 #. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
 #, machine
-	Tick "Start download at" first: the computer is woken for the start time	Vispirms atzīmējiet "Sākt lejupielādi plkst.": dators tiek pamodināts sākuma laikam
+	Tick "Start download at" first: the computer is woken for the start time	Vispirms atzīmējiet „Sākt lejupielādi plkst.“: dators tiks pamodināts norādītajā sākuma laikā
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Atlicis laiks
@@ -4369,7 +4369,7 @@
 	Torrent	Torrents
 #. text in the download list (sizes, speeds, status)
 #, machine
-	Torrent downloads (magnet links and .torrent files)	Torrentu lejupielādes (magnet saites un .torrent faili)
+	Torrent downloads (magnet links and .torrent files)	Torrentu lejupielādes (magnētiskās saites un .torrent faili)
 #. message or event log entry in the main window; text in the Add torrent window
 #. the kind of file the Open dialog lists
 #, machine
@@ -4380,7 +4380,7 @@
 #. text in torrent downloads
 #. an error: Torrent settings ask for the proxy, and Options → Proxy / Socks has no SOCKS5 one
 #, machine
-	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrents iestatījumos norādīts izmantot starpniekserveri, bet starpniekserverī / SOCKS nav SOCKS5 starpniekservera
+	Torrent settings say to use the proxy, but Proxy / Socks has no SOCKS5 proxy	Torrenta iestatījumos norādīts izmantot starpniekserveri, bet sadaļā Starpniekserveris / SOCKS nav SOCKS5 starpniekservera
 #. text in the download list (sizes, speeds, status)
 #. category name: torrent downloads (BitTorrent)
 #, machine
@@ -4389,7 +4389,7 @@
 #. an error, with the reason
 #. {error} = an error message (keep the braces as they are)
 #, machine
-	torrents could not start: {error}	torrentus nevarēja startēt: {error}
+	torrents could not start: {error}	torrentus nevarēja palaist: {error}
 #. text in a download's progress window
 #. column title: a server that lists the peers
 #, machine
@@ -4402,7 +4402,7 @@
 #. Add trackers: above the box; {name} is the torrent's name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Trackers to add to {name}, one address a line:	Izsekotāji, kas jāpievieno {name}, viena adrese rindiņā:
+	Trackers to add to {name}, one address a line:	Izsekotāji, ko pievienot {name}, viena adrese katrā rindiņā:
 #. text in a download's progress window
 #, machine
 	Transfer rate	Pārraides ātrums
@@ -4593,7 +4593,7 @@
 #. text in the Batch download window
 #. why Batch download's OK is greyed
 #, machine
-	Use one * only	Izmantojiet tikai vienu *
+	Use one * only	Izmantot tikai vienu *
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
@@ -4614,7 +4614,7 @@
 	Use the token	Izmantot pilnvaru
 #. text in a dialog box
 #, machine
-	Use them for this torrent? What matches it is kept, the rest replaced.	Izmantot tos šim torentam? Tas, kas atbilst, tiek saglabāts, pārējais tiek aizstāts.
+	Use them for this torrent? What matches it is kept, the rest replaced.	Vai izmantot tos šim torrentam? Atbilstošie tiek saglabāti, pārējie aizstāti.
 #. label in the Options window
 #, machine
 	Use this proxy for the following protocols:	Izmantot šo starpniekserveri šādiem protokoliem:
@@ -4624,7 +4624,7 @@
 	Use this rule	Izmantot šo noteikumu
 #. text in the Options window
 #, machine
-	Used by the list of downloads and the Scheduler.	Izmanto lejupielāžu saraksts un Plānotājs.
+	Used by the list of downloads and the Scheduler.	To izmanto lejupielāžu saraksts un plānotājs.
 #. text in the Options window
 #. column title: the user name
 #, machine
@@ -4713,7 +4713,7 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 #, machine
-	Wait for the list, or stop listing	Pagaidiet sarakstu vai apturiet uzskaitīšanu
+	Wait for the list, or stop listing	Uzgaidiet, līdz tiek izveidots saraksts, vai apturiet tā veidošanu
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
@@ -4784,11 +4784,11 @@
 	Windows' power options don't allow wake timers	Windows enerģijas opcijas neatļauj modināšanas taimerus
 #. message or event log entry in the main window
 #, machine
-	with Add URL	ar pievienošanas URL
+	with Add URL	ar URL pievienošanu
 #. text in the Add torrent window
 #. Torrent settings, under "Use the proxy"
 #, machine
-	With it, incoming connections, the DHT and local peers are off.	Ar to ienākošie savienojumi, DHT un lokālie vienādranga tīkli ir izslēgti.
+	With it, incoming connections, the DHT and local peers are off.	Ja tas ir ieslēgts, ienākošie savienojumi, DHT un vietējie vienādranga dalībnieki tiek izslēgti.
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: under the boxes; | separates alternatives, * and ? are wildcards, 1x2 is season 1 episode 2
 #, machine
@@ -4800,7 +4800,7 @@
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
 #, machine
-	Wrong password for {name}. Type it again:	Nepareiza parole failam {name}. Ievadiet to vēlreiz:
+	Wrong password for {name}. Type it again:	Nepareiza parole arhīvam {name}. Ievadiet to vēlreiz:
 #. text in the main window (menus, toolbar, Categories pane)
 #, machine
 	x	x
@@ -4887,7 +4887,7 @@
 #. text in the Options window
 #. \\n starts a new line: break lines where they fit the translation
 #, machine
-	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ un XZ; sadalīts arhīvs (.part1.rar, .7z.001) pēc\nvisu sējumu saņemšanas. Jau esošs fails tiek saglabāts: jaunais tiek numurēts.
+	ZIP, 7Z, RAR, TAR, GZ and XZ; a split archive (.part1.rar, .7z.001) once\nevery volume is in. A file there already is kept: the new one is numbered.	ZIP, 7Z, RAR, TAR, GZ un XZ; sadalīts arhīvs (.part1.rar, .7z.001) pēc\nvisu sējumu saņemšanas. Jau esošs fails tiek saglabāts: jaunajam tiek piešķirts numurs.
 #. text in the Options window
 #. Options → Network adapter: an adapter with no address now (a VPN switched off, a cable out); {adapter} its name
 #, machine
@@ -4947,7 +4947,7 @@
 	{file} could not be read to check it	Failu {file} nevarēja nolasīt, lai to pārbaudītu
 #. text in a dialog box
 #, machine
-	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Fails {file} vairs nav saglabāšanas vietā (pārvietots vai izdzēsts). Atkārtota lejupielāde, izmantojot kontekstizvēlni, to iegūst vēlreiz.
+	{file} is no longer where it was saved (moved or deleted). Redownload, in its right-click menu, gets it again.	Fails {file} vairs neatrodas vietā, kur tas tika saglabāts (ir pārvietots vai izdzēsts). Lai to lejupielādētu vēlreiz, izmantojiet kontekstizvēlnes komandu Atkārtoti lejupielādēt.
 #. text in the Checksum window
 #. {algorithm} = a checksum algorithm such as "SHA-256" (keep the braces as they are)
 #, machine
@@ -4960,7 +4960,7 @@
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
-	{have} of {total} ({size} each)	{have} no {total} (katrs {size})
+	{have} of {total} ({size} each)	{have} no {total} (katra {size})
 #. text in a download's progress window
 #. {have} and {total} = numbers of pieces; {size} = one piece's size
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
@@ -4977,7 +4977,7 @@
 #. text in the Download video window
 #. in the Subtitles list of Download video: {language} = a language's name; the site made these subtitles automatically (speech recognition)
 #, machine
-	{language}, automatic	{language}, automātiski
+	{language}, automatic	{language}, automātiski ģenerēti
 #. text in a download's progress window
 #. {live} = peers connected now; {known} = peers heard of
 #, machine
@@ -5061,11 +5061,11 @@
 #. text in errors.rs
 #. a debrid service's error: it won't give this file (not allowed)
 #, machine
-	{service} won't give this file	{service} nedos šo failu
+	{service} won't give this file	{service} neizsniegs šo failu
 #. text in errors.rs
 #. a download's error through a debrid account (Real-Debrid…): its sign-in no longer works
 #, machine
-	{service}: sign in again (Options → Accounts)	{service}: pierakstieties vēlreiz (Opcijas → Konti)
+	{service}: sign in again (Options → Accounts)	{service}: piesakieties vēlreiz (Opcijas → Konti)
 #. text in errors.rs
 #. a debrid service's error: the account is locked, banned or not activated
 #, machine
@@ -5088,7 +5088,7 @@
 #. text in errors.rs
 #. a debrid service's error: the account's limit (traffic) for this host is used up
 #, machine
-	{service}: your limit for this file host is used up for now	{service}: jūsu limits šim failu resursdatoram pašlaik ir izmantots
+	{service}: your limit for this file host is used up for now	{service}: šim failu mitinātājam pašlaik ir iztērēts limits
 #. text in errors.rs
 #. a debrid service's error in its own words (English); {service} its name
 #, machine
@@ -5108,11 +5108,11 @@
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: {title} was added by the rule {rule}
 #, machine
-	{title}: added by {rule}	{title}: pievienoja {rule}
+	{title}: added by {rule}	{title}: pievienots ar noteikumu {rule}
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: a rule's article is a torrent the list already has
 #, machine
-	{title}: already in the list	{title}: jau sarakstā
+	{title}: already in the list	{title}: jau ir sarakstā
 #. message or event log entry in the main window
 #. RSS feeds window, under the rules: not added, because files of its names are already in the folder (MDM never writes into them unasked)
 #, machine
@@ -5125,7 +5125,7 @@
 #. text in errors.rs
 #. an error: {what} (e.g. "ftps://", "Video pages (yt-dlp)") can't be held to the chosen network adapter yet, so it isn't sent; {adapter} its name
 #, machine
-	{what} can't go through a chosen network adapter ({adapter}) yet	{what} vēl nevar izmantot izvēlēto tīkla adapteri ({adapter})
+	{what} can't go through a chosen network adapter ({adapter}) yet	{what} vēl nevar novirzīt caur izvēlēto tīkla adapteri ({adapter})
 #. text in gallerydlg.rs; text in the Download video window
 #. an error: {what} = a helper program (yt-dlp, ffmpeg), {error} = why
 #. {error} = an error message (keep the braces as they are)
@@ -5134,7 +5134,7 @@
 #. column title in the download list in the download list
 #. past participle: when the download was added
 #, machine
-column	Added	Pievienots
+column	Added	Pievienota
 #. column title in the download list in the download list
 #. noun: the download's description
 #, machine
@@ -5167,7 +5167,7 @@ column	Source	Avots
 column	Status	Statuss
 #. column title in the download list in the download list
 #, machine
-column	Time left	Atlicis laiks
+column	Time left	Atlikušais laiks
 #. column title in the download list in the download list
 #, machine
 column	Transfer rate	Pārsūtīšanas ātrums
@@ -5229,7 +5229,7 @@ extension	Hide on this video	Paslēpt šajā video
 #. text in the browser extension
 #. hint in the toolbar button's popup; Alt is the keyboard key
 #, machine
-extension	Hold Alt while clicking a link to let the browser download it.	Turot Alt un noklikšķinot uz saites, ļaujiet pārlūkprogrammai to lejupielādēt.
+extension	Hold Alt while clicking a link to let the browser download it.	Turiet nospiestu Alt un noklikšķiniet uz saites, lai ļautu pārlūkprogrammai to lejupielādēt.
 #. text in the browser extension
 #. link under a connection problem in the toolbar button's popup, to the help page's section for it
 #, machine
@@ -5376,7 +5376,7 @@ key	Delete	Dzēst
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
-key	Drag on blank space	Velciet uz tukšas vietas
+key	Drag on blank space	Velciet tukšā vietā
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
@@ -5529,7 +5529,7 @@ menu	&Stop Download	&Apturēt lejupielādi
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	&Tray icon	&Ikonu josla
+menu	&Tray icon	&Ikona paziņojumu apgabalā
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -5545,16 +5545,16 @@ menu	&Video downloads	&Video lejupielādes
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Add &batch download	Pievienot &pakešlejupielādi
+menu	Add &batch download	Pievienot &paketveida lejupielādi
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
 #, machine
-menu	Add &magnet link...	Pievienot &magnētsaiti...
+menu	Add &magnet link...	Pievienot &magnētsaite...
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Add batch download from &clipboard	Pievienot pakešlejuplādi no starpliktuves(&c)
+menu	Add batch download from &clipboard	Pievienot paketveida lejupielādi no &starpliktuves
 #. menu command in the main window
 #, machine
 menu	Add category	Pievienot kategoriju
@@ -5569,7 +5569,7 @@ menu	Adwaita	Adwaita
 #. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
-menu	Applies the next time MDM starts	Tiks lietots nākamajā MDM startēšanas reizē
+menu	Applies the next time MDM starts	Stājas spēkā nākamajā MDM startēšanas reizē
 #. menu command in the main window
 #, machine
 menu	Arrange files	Sakārtot failus
@@ -5675,7 +5675,7 @@ menu	Direct3D	Direct3D
 #. menu command in the main window
 #. View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
 #, machine
-menu	Direct3D didn't start here: OpenGL draws	Direct3D šeit nesāka: zīmē OpenGL
+menu	Direct3D didn't start here: OpenGL draws	Direct3D šeit netika palaists: zīmē OpenGL
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #. the trailing ... means it opens a window: keep it
@@ -5739,7 +5739,7 @@ menu	High contrast	Augsts kontrasts
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
 #, machine
-menu	It couldn't start: the log says why	Nevarēja startēt: žurnālā ir iemesls
+menu	It couldn't start: the log says why	Nevarēja startēt: skatiet iemeslu žurnālā
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
 #, machine
@@ -5747,7 +5747,7 @@ menu	Its first frame didn't show within 10 seconds	Pirmais kadrs netika parādī
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
-menu	Its last start ended before its first frame	Pēdējā startēšana beidzās pirms pirmā kadra
+menu	Its last start ended before its first frame	Pēdējā startēšana beidzās, pirms tika parādīts pirmais kadrs
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -5770,11 +5770,11 @@ menu	Move/Rename (Ctrl-M)	Pārvietot/pārdēvēt (Ctrl+M)
 #. menu command in the main window
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
-menu	Native	Vietējais
+menu	Native	Sistēmas
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
 #, machine
-menu	No graphics card here has a driver for it	Nevienai grafikas kartei nav draivera
+menu	No graphics card here has a driver for it	Nevienai šeit esošajai grafikas kartei nav šīs grafikas sistēmas draivera
 #. menu command in the main window
 #, machine
 menu	On Double click	Veicot dubultklikšķi
@@ -5817,7 +5817,7 @@ menu	R&edownload	Lejupielādēt &atkārtoti
 #. menu command in the main window
 #. right-click → Torrent: ask the torrent's trackers for peers again now
 #, machine
-menu	Reannounce	Atkārtoti paziņot
+menu	Reannounce	Atkārtoti paziņot izsekotājiem
 #. menu command in the main window
 #. right-click → Torrent: read every piece of the torrent's files again and check it
 #, machine
@@ -5837,11 +5837,11 @@ menu	Remove	Noņemt
 #. verb: removes the selected download from the list and its file from the disk
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Remove with &files	Noņemt ar &failiem
+menu	Remove with &files	Noņemt lejupielādi un &failu
 #. menu command in the main window
 #. verb: removes the download from the list and its file from the disk
 #, machine
-menu	Remove with files	Noņemt ar failiem
+menu	Remove with files	Noņemt lejupielādi un failu
 #. menu command in the main window
 #, machine
 menu	Resume Download	Atsākt lejupielādi
@@ -5898,7 +5898,7 @@ menu	Support &MDM	Atbalstīt &MDM
 #. menu command in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
-menu	Tell a &friend	Pastāstīt &draudzenēm
+menu	Tell a &friend	Pastāstīt &draugam
 #. menu command in the main window
 #. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
 #, machine
