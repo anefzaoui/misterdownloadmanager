@@ -335,6 +335,23 @@ fn app() -> eframe::Result {
             ),
         );
     }
+    // Linux: the libraries the window loads when it opens (#265). Without them it can't open
+    // (winit stopped at start): MDM says what's missing, in its language, and how to install it.
+    #[cfg(target_os = "linux")]
+    {
+        i18n::set_lang(loaded.settings.language.as_deref());
+        let ws = unix::window_system();
+        if !ws.missing.is_empty() {
+            crash::clean_exit();
+            unix::tell_window_failed(&unix::missing_text(&ws.missing, true));
+            std::process::exit(1);
+        }
+        if !ws.x11_missing.is_empty() {
+            let text = unix::missing_text(&ws.x11_missing, false);
+            eprintln!("{text}");
+            tracing::warn!("{text}");
+        }
+    }
     // Secrets from before (sealed, or kept as they were) go to the system's keychain now; the
     // list is saved with their references once it holds them (secrets.rs, #44).
     let _ = loaded.settings.for_disk();
@@ -378,7 +395,7 @@ fn app() -> eframe::Result {
         viewport: viewport.clone(),
         // Linux: X11 (XWayland) over Wayland when both are there, so menus open where clicked.
         #[cfg(target_os = "linux")]
-        event_loop_builder: unix::prefer_x11(),
+        event_loop_builder: unix::event_loop_hook(),
         ..Default::default()
     };
     let result = renderer::run("misterdownloadmanager", &plan, options, move |cc| {
