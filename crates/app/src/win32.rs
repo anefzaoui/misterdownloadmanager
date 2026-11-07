@@ -2983,24 +2983,34 @@ pub fn mark_downloaded(path: &std::path::Path, url: &str, referrer: Option<&str>
     let _ = std::fs::write(stream, text);
 }
 
-/// Browser integration is registered: a browser looking for the native host (Chrome's key,
+/// Where browser integration stands: a browser looking for the native host (Chrome's key,
 /// which Chromium browsers read; Firefox's) finds a manifest that exists, for this user or for
-/// everyone (Options → General → Test browser integration).
-pub fn host_registered() -> bool {
+/// everyone, naming a helper program that is there (Options → General → Test browser
+/// integration).
+pub fn host_registration() -> crate::extension::Registration {
+    use crate::extension::Registration;
     use windows_sys::Win32::System::Registry::{HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE};
-    [
+    let mut broken = None;
+    for key in [
         r"Software\Google\Chrome\NativeMessagingHosts\com.misterdownloadmanager.host",
         r"Software\Mozilla\NativeMessagingHosts\com.misterdownloadmanager.host",
-    ]
-    .iter()
-    .any(|key| {
-        [HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE]
-            .into_iter()
-            .any(|root| {
-                reg_string_in(root, key, "")
-                    .is_some_and(|p| std::path::Path::new(p.trim().trim_matches('"')).is_file())
-            })
-    })
+    ] {
+        for root in [HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE] {
+            let Some(manifest) = reg_string_in(root, key, "") else {
+                continue;
+            };
+            let manifest = std::path::PathBuf::from(manifest.trim().trim_matches('"'));
+            if !manifest.is_file() {
+                continue;
+            }
+            match mdm_ipc::browsers::manifest_program(&manifest) {
+                Some(p) if p.is_file() => return Registration::Ready,
+                Some(p) => broken = broken.or(Some(p)),
+                None => {}
+            }
+        }
+    }
+    broken.map_or(Registration::Missing, Registration::HelperMissing)
 }
 
 /// Options → Sites Logins' passwords, encrypted for this Windows account (DPAPI) before the list

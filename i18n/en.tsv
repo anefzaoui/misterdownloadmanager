@@ -2027,6 +2027,9 @@
 #. text in a dialog box
 	No addresses yet	No addresses yet
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+	No browser MDM can connect to was found	No browser MDM can connect to was found
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 	No browser's extension has connected yet	No browser's extension has connected yet
 #. text in torrent downloads
@@ -2707,6 +2710,10 @@
 #. message or event log entry in the main window
 #. event log: File Properties: the download goes through the debrid account again
 	Set to download through the debrid account	Set to download through the debrid account
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+	Setting it up failed: {error}	Setting it up failed: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3165,6 +3172,9 @@
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 	the FTP server answered {code} {reply}	the FTP server answered {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+	The helper program the browsers start is missing	The helper program the browsers start is missing
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	The list could not be saved: {error}
