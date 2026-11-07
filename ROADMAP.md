@@ -388,7 +388,7 @@ Everything below ships together, in version 0.5.0.
   dark, and how to make, try and share your own
   ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260))
 - ✅ Thanks to the people who make MDM possible: everyone who sent a pull request, opened an issue
-  or commented on GitHub, as round photos on the home page and the README, on a
+  or commented on GitHub, as round photos in the home page's first view and the README, on a
   [Contributors](https://misterdownloadmanager.com/contributors.html) page with what each one did,
   at the end of each release on the News page, and in each release's notes on GitHub
 - ✅ Themes ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): today's look stays the default. Every colour, size and spacing now
