@@ -5567,9 +5567,17 @@ menu	Add trackers...	ట్రాకర్‌లను జోడించు...
 #, machine
 menu	Adwaita	Adwaita
 #. menu command in the main window
+#. View → Theme: a style theme's name (Windows 7's glassy look), a name: keep "Aero" as written
+#, machine
+menu	Aero	Aero
+#. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
 menu	Applies the next time MDM starts	తదుపరిసారి MDM ప్రారంభమైనప్పుడు వర్తిస్తుంది
+#. menu command in the main window
+#. View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
+#, machine
+menu	Aqua	Aqua
 #. menu command in the main window
 #, machine
 menu	Arrange files	ఫైల్‌లను అమర్చండి
@@ -5748,6 +5756,10 @@ menu	Its first frame didn't show within 10 seconds	దాని మొదటి 
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
 menu	Its last start ended before its first frame	దాని చివరి ప్రారంభం దాని మొదటి ఫ్రేమ్‌కు ముందే ముగిసింది
+#. menu command in the main window
+#. View → Theme: a style theme's name (Windows XP's look), a name: keep "Luna" as written
+#, machine
+menu	Luna	Luna
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine
@@ -6357,3 +6369,13 @@ extension	Wait a moment, then try again.	ఒక క్షణం వేచి ఉ
 #. pairing failed: the code was wrong
 #, machine
 extension	Wrong code.	తప్పు కోడ్.
+#. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	మీ స్వంత ప్రోగ్రామ్ ({version}) చాలా పాతది: MDMకి {oldest} లేదా కొత్తది అవసరం
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} చాలా పాతది: MDMకి {oldest} లేదా కొత్తది అవసరం

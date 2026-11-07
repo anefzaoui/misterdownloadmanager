@@ -149,6 +149,24 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   edge, a tick in the text's colour), a focus frame, KDE's Breeze icons (LGPL-3.0-or-later) and,
   on Windows, a title bar MDM draws in KDE's style: the title centred, round buttons that fill
   under the pointer (Close in red).
+- **Themes: Luna, Aero and Aqua** ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)),
+  after Windows XP, Windows 7 and Mac OS X (Leopard), the layout kept, each with a light and a
+  dark side and icons drawn for MDM in its era's manner. **Luna**: buttons shaded from white with
+  a dark blue edge and an orange glow under the pointer, green ticks, square text boxes,
+  progress in green blocks and, on Windows, a deep blue title bar with the title in bold and
+  square buttons (Close red). **Aero**: glossy buttons in two halves that turn light blue under
+  the pointer, quiet check boxes, a glossy green progress bar and a glassy title bar, the title
+  on a soft glow, its buttons hung from the top (Close wider and red). **Aqua**: gel buttons round
+  at the ends (the default one blue), glossy check boxes, a blue focus ring, a blue gel progress
+  bar and a grey title bar with the title centred and small round graphite buttons whose glyphs
+  show under the pointer. Every glyph and shade is MDM's own drawing; none of Microsoft's or
+  Apple's pictures or fonts are used.
+- **Metro, Adwaita and Breeze: MDM's own icons where theirs had none**: Metro's Hide to the
+  notification area, Adwaita's PDF, torrent file and Hide to the notification area, and Breeze's
+  PDF and Hide to the notification area, drawn for MDM in each one's style (the one-colour ones
+  in the theme's text colour). An icon set can now hold one-colour pictures (`-symbolic.png`),
+  drawn in the theme's text colour as its one-colour drawings are, and pictures at 32 and 48
+  pixels, used on a screen scaled to 150 % and more: the style themes' pictures stay sharp there.
 - **The Firefox add-on is on addons.mozilla.org**: [Mister Download Manager](https://addons.mozilla.org/firefox/addon/mister-download-manager/),
   installed with one click and kept up to date by Firefox (and by Zen and LibreWolf). MDM's
   **Add Mister Download Manager to your browser** window opens it for them; the website, the
@@ -555,6 +573,24 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Get System and the Scheduler's "when done" drop-down fit in every language**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #247): Options →
+  Proxy's title takes two lines where one leaves Get System too little room (Bulgarian,
+  Armenian, Tamil), and where it ran over the page's icon or past the window's left edge
+  (Greek, Finnish, Catalan, Estonian, Latvian, Lithuanian, Malayalam, Serbian, Afrikaans). In
+  Greek and Malayalam, the Scheduler's "Turn off computer when done" and its choices have
+  shorter machine translations, so the drop-down fits beside the caption; in Belarusian, Welsh,
+  French, Russian, Tamil and Ukrainian, the longer ones the translation review brought (such as
+  Russian's Hibernate) are back to their earlier, shorter wording. English is unchanged.
+- **Galleries work with the gallery-dl a Linux distribution ships**
+  ([#236](https://github.com/anefzaoui/misterdownloadmanager/issues/236)): with Ubuntu 24.04's
+  gallery-dl 1.26.9 chosen in Helpers, every gallery failed at once ("unrecognized arguments:
+  --no-input"): MDM passed options that only newer releases know. MDM now reads the chosen
+  gallery-dl's version and passes only what that release accepts, from 1.20 (Ubuntu 22.04) to
+  today's; checked against every release from 1.17 to 1.32. An older one (Debian 11's 1.17) is
+  refused when chosen, saying it is too old and which version MDM needs, and one chosen before is
+  passed over for MDM's own copy, which Helpers says. gallery-dl 1.30.0, whose version starts
+  with an empty line, is no longer taken for another program.
 - **Brave Origin connects on Linux, and the AppImage's helper is always there**
   ([#253](https://github.com/anefzaoui/misterdownloadmanager/issues/253)): Brave Origin keeps
   its settings in a folder of its own (`~/.config/BraveSoftware/Brave-Origin`), which MDM didn't

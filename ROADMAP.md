@@ -13,6 +13,17 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Options → Proxy's Get System and the Scheduler's "when done" drop-down fit in the last
+  languages that still cut them (Bulgarian, Armenian, Macedonian, Tamil; Greek, Malayalam, and
+  six the translation review lengthened), and the Proxy
+  page's title no longer runs over its icon or past the window's edge in Greek, Finnish, Catalan
+  and a few more: a title too long for one line beside Get System takes two
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
+- ✅ Linux: galleries work with the gallery-dl the distribution ships (Ubuntu 24.04's 1.26.9
+  failed at once): MDM passes only the options that release accepts, from 1.20 on, and an older
+  one gives way to MDM's own copy, saying why; the lab's test streams are real ones, which ffmpeg
+  6.1 and 8 download to the end
+  ([#236](https://github.com/anefzaoui/misterdownloadmanager/issues/236))
 - ✅ Run MDM on a server without a window (Docker, Unraid, any Linux machine), and send it
   downloads from the phone or the browser extension
   ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157))
@@ -135,6 +146,10 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Themes: Breeze, KDE Plasma's look (its focus frame, check boxes, buttons and title bar on
   Windows, KDE's Breeze icons)
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- ✅ Themes: Luna, Aero and Aqua, the looks of Windows XP, Windows 7 and Mac OS X (shaded and
+  glossy buttons, their check boxes and progress bars, their title bars on Windows, icons drawn
+  for MDM); Metro, Adwaita and Breeze get MDM's own icons where theirs had none
   ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
 - ✅ Dark mode: grey notes and error texts readable (4.5:1), Options' failed checks no longer dark
   red on the dark dialog ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
@@ -322,9 +337,9 @@ Everything below ships together, in one release, as version 0.3.0.
 - 🔄 Themes ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): today's look stays the default. Every colour, size and spacing now
   comes from the chosen theme (the classic look pixel for pixel the same); **View → Theme** with
   Classic, Native (follows the system's accent and contrast on Windows, Linux and macOS) and High
-  contrast; then style themes with their own control shapes, a drawn title bar on Windows and their
-  own icons: Metro first, then Adwaita and Breeze, then Luna, Aero and Aqua with icons drawn for
-  MDM. Theme files can be added by anyone, and Base16 and pywal schemes imported
+  contrast; style themes with their own control shapes, a drawn title bar on Windows and their own
+  icons: Metro, Adwaita, Breeze, Luna, Aero and Aqua (all six in). Next: theme files can be added
+  by anyone, and Base16 and pywal schemes imported
 - 🔄 Linux supported like Windows, no longer experimental: every change is now checked on Ubuntu
   (GNOME) as well as Windows, then on KDE, Cinnamon and Xfce ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - 🔄 Before the release: every screenshot taken again on Windows and Linux (smaller files, WebP),

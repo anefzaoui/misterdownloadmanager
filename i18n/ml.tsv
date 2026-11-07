@@ -1823,7 +1823,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: hibernate it)
 #, machine
-	Hibernate	ഹൈബർനേറ്റ് ചെയ്യുക
+	Hibernate	ഹൈബർനേറ്റ്
 #. message or event log entry in the main window
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
@@ -3549,7 +3549,7 @@
 #. text in the queues
 #. what the computer does when the queue is done (verb: shut down the computer)
 #, machine
-	Shut down	ഷട്ട് ഡൗൺ ചെയ്യുക
+	Shut down	ഷട്ട് ഡൗൺ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4442,7 +4442,7 @@
 	Turn off computer	കമ്പ്യൂട്ടർ ഓഫ് ചെയ്യുക
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 #, machine
-	Turn off computer when done	പൂർത്തിയാകുമ്പോൾ കമ്പ്യൂട്ടർ ഓഫ് ചെയ്യുക
+	Turn off computer when done	പൂർത്തിയായാൽ കമ്പ്യൂട്ടർ ഓഫാക്കുക
 #. button in a dialog box
 #, machine
 	Turn off now	ഇപ്പോൾ ഓഫ് ചെയ്യുക
@@ -4840,6 +4840,11 @@
 #, machine
 	your Google account has no access to this file, or its owner turned off downloading	നിങ്ങളുടെ Google അക്കൗണ്ടിന് ഈ ഫയലിലേക്ക് ആക്‌സസ് ഇല്ല, അല്ലെങ്കിൽ അതിന്റെ ഉടമ ഡൗൺലോഡ് ചെയ്യുന്നത് ഓഫാക്കി
 #. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	നിങ്ങളുടെ സ്വന്തം പ്രോഗ്രാം ({version}) വളരെ പഴയതാണ്: MDM-ന് {oldest} അല്ലെങ്കിൽ പുതിയത് ആവശ്യമാണ്
+#. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -5015,6 +5020,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} {how} ആയി ലഭ്യമല്ല.
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} വളരെ പഴയതാണ്: MDM-ന് {oldest} അല്ലെങ്കിൽ പുതിയത് ആവശ്യമാണ്
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
@@ -5567,9 +5577,17 @@ menu	Add trackers...	ട്രാക്കറുകൾ ചേർക്കുക.
 #, machine
 menu	Adwaita	Adwaita
 #. menu command in the main window
+#. View → Theme: a style theme's name (Windows 7's glassy look), a name: keep "Aero" as written
+#, machine
+menu	Aero	Aero
+#. menu command in the main window
 #. View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
 #, machine
 menu	Applies the next time MDM starts	അടുത്ത തവണ MDM ആരംഭിക്കുമ്പോൾ ബാധകമാകും
+#. menu command in the main window
+#. View → Theme: a style theme's name (Mac OS X's look), a name: keep "Aqua" as written
+#, machine
+menu	Aqua	Aqua
 #. menu command in the main window
 #, machine
 menu	Arrange files	ഫയലുകൾ ക്രമീകരിക്കുക
@@ -5748,6 +5766,10 @@ menu	Its first frame didn't show within 10 seconds	ഇതിന്റെ ആദ�
 #. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
 #, machine
 menu	Its last start ended before its first frame	ഇതിന്റെ അവസാന ആരംഭം ആദ്യ ഫ്രെയിം കാണുന്നതിന് മുമ്പ് അവസാനിച്ചു
+#. menu command in the main window
+#. View → Theme: a style theme's name (Windows XP's look), a name: keep "Luna" as written
+#, machine
+menu	Luna	Luna
 #. menu command in the main window
 #. View → Draw with: a graphics system's name (Apple's), usually kept as is
 #, machine

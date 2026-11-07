@@ -695,18 +695,22 @@ fn no_line_start(c: char) -> bool {
 /// for its place).
 pub fn progress_bar(p: &Painter, rc: Rect, fraction: Option<f32>, time: f64) {
     let c = crate::theme::colors();
+    // The era themes: XP's blocks, the glossy bars of Windows 7 and Mac OS X.
+    let (from, to) = match fraction {
+        Some(f) => (0.0, f.clamp(0.0, 1.0)),
+        None => {
+            let t = (time * 0.6).fract() as f32;
+            ((t * 1.4 - 0.4).max(0.0), (t * 1.4).min(1.0))
+        }
+    };
+    if era_bar(p, rect(rc), from, to, c.progress_bar, rtl()) {
+        return;
+    }
     // Windows 8: a bordered bar, filled.
     if crate::theme::current().controls.progress == crate::palette::ProgressLook::Bar {
         let border = crate::theme::metrics().border;
         p.rect_filled(rect(rc), 0.0, c.meter_track);
         let inner = rc.shrink(border);
-        let (from, to) = match fraction {
-            Some(f) => (0.0, f.clamp(0.0, 1.0)),
-            None => {
-                let t = (time * 0.6).fract() as f32;
-                ((t * 1.4 - 0.4).max(0.0), (t * 1.4).min(1.0))
-            }
-        };
         if to > from {
             let w = inner.width();
             p.rect_filled(
@@ -738,13 +742,6 @@ pub fn progress_bar(p: &Painter, rc: Rect, fraction: Option<f32>, time: f64) {
         0.5,
         track,
     );
-    let (from, to) = match fraction {
-        Some(f) => (0.0, f.clamp(0.0, 1.0)),
-        None => {
-            let t = (time * 0.6).fract() as f32;
-            ((t * 1.4 - 0.4).max(0.0), (t * 1.4).min(1.0))
-        }
-    };
     if to > from {
         let w = rc.width();
         p.rect_filled(
@@ -1645,6 +1642,143 @@ pub fn solid(p: &Painter, rc: Rect, c: Color32) {
     p.add(egui::Shape::mesh(mesh));
 }
 
+/// Fills `rc`, its corners rounded by `radius`, shading from top to bottom through `stops`
+/// (each a place in the height, 0 at the top and 1 at the bottom, and its colour, in order).
+/// Two stops at one place make a sharp change (Windows 7's glossy halves). The era themes'
+/// buttons, boxes, bars and title bars are drawn with it (#45).
+pub fn fill_shaded(p: &Painter, rc: Rect, radius: f32, stops: &[(f32, Color32)]) {
+    fill_shaded_corners(p, rc, radius, radius, stops);
+}
+
+/// [`fill_shaded`] with the top corners rounded by `top` and the bottom ones by `bottom` (a
+/// button hung from a title bar's edge).
+pub fn fill_shaded_corners(p: &Painter, rc: Rect, top: f32, bottom: f32, stops: &[(f32, Color32)]) {
+    let (Some(first), Some(last)) = (stops.first(), stops.last()) else {
+        return;
+    };
+    if rc.width() <= 0.0 || rc.height() <= 0.0 {
+        return;
+    }
+    let most = rc.width().min(rc.height()) / 2.0;
+    let (rt, rb) = (top.clamp(0.0, most), bottom.clamp(0.0, most));
+    // How far in from the sides the shape is at `y`: its corners' curve.
+    let inset = |y: f32| {
+        let (r, d) = if y < rc.top() + rt {
+            (rt, rc.top() + rt - y)
+        } else if y > rc.bottom() - rb {
+            (rb, y - (rc.bottom() - rb))
+        } else {
+            return 0.0;
+        };
+        r - (r * r - d * d).max(0.0).sqrt()
+    };
+    let lerp = |a: Color32, b: Color32, t: f32| {
+        let m = |x: u8, y: u8| (x as f32 + (y as f32 - x as f32) * t).round() as u8;
+        Color32::from_rgba_premultiplied(
+            m(a.r(), b.r()),
+            m(a.g(), b.g()),
+            m(a.b(), b.b()),
+            m(a.a(), b.a()),
+        )
+    };
+    let mut all = Vec::with_capacity(stops.len() + 2);
+    all.push((0.0, first.1));
+    all.extend(stops.iter().map(|&(t, c)| (t.clamp(0.0, 1.0), c)));
+    all.push((1.0, last.1));
+    let h = rc.height();
+    let mut mesh = egui::Mesh::default();
+    for w in all.windows(2) {
+        let ((t0, c0), (t1, c1)) = (w[0], w[1]);
+        if t1 <= t0 {
+            continue;
+        }
+        let (y0, y1) = (rc.top() + t0 * h, rc.top() + t1 * h);
+        // A row a pixel high where a corner curves, else the band whole.
+        let mut ys = vec![y0];
+        let mut y = y0.floor() + 1.0;
+        while y < y1 {
+            if y < rc.top() + rt || y > rc.bottom() - rb {
+                ys.push(y);
+            }
+            y += 1.0;
+        }
+        for edge in [rc.top() + rt, rc.bottom() - rb] {
+            if edge > y0 && edge < y1 {
+                ys.push(edge);
+            }
+        }
+        ys.push(y1);
+        ys.sort_by(f32::total_cmp);
+        ys.dedup();
+        for pair in ys.windows(2) {
+            let (ya, yb) = (pair[0], pair[1]);
+            let ca = lerp(c0, c1, (ya - y0) / (y1 - y0));
+            let cb = lerp(c0, c1, (yb - y0) / (y1 - y0));
+            let (ia, ib) = (inset(ya), inset(yb));
+            let i = mesh.vertices.len() as u32;
+            mesh.colored_vertex(pos2(rc.left() + ia, ya), ca);
+            mesh.colored_vertex(pos2(rc.right() - ia, ya), ca);
+            mesh.colored_vertex(pos2(rc.left() + ib, yb), cb);
+            mesh.colored_vertex(pos2(rc.right() - ib, yb), cb);
+            mesh.add_triangle(i, i + 1, i + 2);
+            mesh.add_triangle(i + 1, i + 3, i + 2);
+        }
+    }
+    p.add(egui::Shape::mesh(mesh));
+}
+
+/// How an era theme's glossy parts shade (#45): Windows XP's soft fall from white, Windows 7's
+/// two halves, Mac OS X's gel (a bright top, a dark middle, light coming back at the bottom).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Shine {
+    Luna,
+    Aero,
+    Aqua,
+}
+
+impl Shine {
+    /// The theme's shine, from its button style; None for the flat looks.
+    pub fn of_theme() -> Option<Self> {
+        Self::of_button(crate::theme::current().controls.button)
+    }
+
+    fn of_button(look: crate::palette::ButtonLook) -> Option<Self> {
+        use crate::palette::ButtonLook as B;
+        match look {
+            B::Fluent | B::Breeze => None,
+            B::Luna => Some(Shine::Luna),
+            B::Aero => Some(Shine::Aero),
+            B::Aqua => Some(Shine::Aqua),
+        }
+    }
+
+    /// A face of colour `f` shaded toward the theme's shine `g` (`gloss`), top to bottom, for
+    /// [`fill_shaded`].
+    pub fn stops(self, f: Color32, g: Color32) -> [(f32, Color32); 4] {
+        use crate::derive::mix;
+        match self {
+            Shine::Luna => [
+                (0.0, mix(f, g, 0.85)),
+                (0.4, mix(f, g, 0.6)),
+                (0.85, mix(f, g, 0.2)),
+                (1.0, f),
+            ],
+            Shine::Aero => [
+                (0.0, mix(f, g, 0.75)),
+                (0.5, mix(f, g, 0.5)),
+                (0.5, mix(f, g, 0.25)),
+                (1.0, f),
+            ],
+            Shine::Aqua => [
+                (0.0, mix(f, g, 0.85)),
+                (0.5, mix(f, g, 0.4)),
+                (0.5, f),
+                (1.0, mix(f, g, 0.45)),
+            ],
+        }
+    }
+}
+
 /// `rc` on whole screen pixels at `ppp` pixels a point (125 %, 150 % scaling put a 1 pt line
 /// across two pixels, blurred or uneven), never thinner than one pixel. At 100 % it is `rc`.
 fn snap(ppp: f32, rc: Rect) -> Rect {
@@ -1732,6 +1866,9 @@ pub fn field_frame(p: &Painter, rc: Rect, look: FieldLook) {
 pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
     let radius = control_radius().min(rc.height() / 4.0).floor();
     let c = crate::theme::colors();
+    if era_bar(p, rc, 0.0, fraction.clamp(0.0, 1.0), c.meter_fill, false) {
+        return;
+    }
     let border = crate::theme::metrics().border;
     p.rect_filled(rc, radius, c.meter_track);
     let inner = rc.shrink(border);
@@ -1746,6 +1883,86 @@ pub fn meter(p: &Painter, rc: Rect, fraction: f32) {
         Stroke::new(border, c.meter_edge),
         StrokeKind::Inside,
     );
+}
+
+/// An era theme's bar (`palette::ProgressLook::Blocks` or `Gloss`) in `rc` (on screen): a
+/// shaded track inside its edge, filled from `from` to `to` (fractions of its inside, from its
+/// left, or from its right when `mirrored`) in `fill`: in blocks (Windows XP), or glossy as
+/// the theme's buttons (Windows 7, Mac OS X). False, drawing nothing, for the other looks.
+fn era_bar(p: &Painter, rc: Rect, from: f32, to: f32, fill: Color32, mirrored: bool) -> bool {
+    use crate::derive::mix;
+    use crate::palette::ProgressLook;
+    let look = crate::theme::current().controls.progress;
+    if !matches!(look, ProgressLook::Blocks | ProgressLook::Gloss) {
+        return false;
+    }
+    let c = crate::theme::colors();
+    let m = crate::theme::metrics();
+    let blocks = look == ProgressLook::Blocks;
+    let radius = if blocks {
+        m.button_radius
+    } else {
+        control_radius()
+    }
+    .min((rc.height() / 2.0).floor());
+    fill_shaded(
+        p,
+        rc,
+        radius,
+        &[
+            (0.0, mix(c.meter_track, c.meter_edge, 0.3)),
+            (0.35, c.meter_track),
+            (1.0, c.meter_track),
+        ],
+    );
+    let inner = rc.shrink(if blocks { 2.0 + m.border } else { m.border });
+    let w = inner.width();
+    // A part of the inside, `a` to `b` of it from the bar's start.
+    let span = |a: f32, b: f32| {
+        if mirrored {
+            Rect::from_min_max(
+                pos2(inner.right() - b, inner.top()),
+                pos2(inner.right() - a, inner.bottom()),
+            )
+        } else {
+            Rect::from_min_max(
+                pos2(inner.left() + a, inner.top()),
+                pos2(inner.left() + b, inner.bottom()),
+            )
+        }
+    };
+    let (a, b) = ((from * w).round(), (to * w).round());
+    if b > a && w > 0.0 {
+        if blocks {
+            // Windows XP: blocks 2 points apart, lighter across their middle; whole ones, the
+            // last cut at the bar's end.
+            let stops = [(0.0, fill), (0.45, mix(fill, c.gloss, 0.55)), (1.0, fill)];
+            let bw = (inner.height() * 0.6).round().max(4.0);
+            let mut x = (a / (bw + 2.0)).floor() * (bw + 2.0);
+            while x < b {
+                let block = span(x.max(a), (x + bw).min(w));
+                if block.width() > 0.0 {
+                    fill_shaded(p, block, 0.0, &stops);
+                }
+                x += bw + 2.0;
+            }
+        } else {
+            let shine = Shine::of_theme().unwrap_or(Shine::Aero);
+            fill_shaded(
+                p,
+                span(a, b),
+                (radius - m.border).max(0.0),
+                &shine.stops(fill, c.gloss),
+            );
+        }
+    }
+    p.rect_stroke(
+        rc,
+        radius,
+        Stroke::new(m.border, c.meter_edge),
+        StrokeKind::Inside,
+    );
+    true
 }
 
 /// A box whose value is wrong (a number out of range, an address that isn't one, a schedule
@@ -2603,6 +2820,47 @@ pub fn checkbox_caption_end(p: &Painter, x: f32, caption: &str) -> f32 {
     x + 16.0 + text_width(p, crate::i18n::t(caption))
 }
 
+/// `s` in one line where it is no wider than `room` px in `font`, else in two, broken where the
+/// wider of the two is narrowest: at a space, after a slash or a hyphen, or between two
+/// characters of Chinese or Japanese (a title given a second line where a control beside it
+/// needs the room). Still one line where it has no such place.
+pub fn fit_lines(p: &Painter, font: FontId, s: &str, room: f32) -> Vec<String> {
+    let width = |t: &str| text_width_font(p, font.clone(), t);
+    if width(s) <= room {
+        return vec![s.to_owned()];
+    }
+    let g: Vec<(usize, &str)> = s.grapheme_indices(true).collect();
+    let mut best: Option<(f32, String, String)> = None;
+    for k in 1..g.len() {
+        let (at, here) = g[k];
+        let before = g[k - 1].1;
+        let first = |gr: &str| gr.chars().next().unwrap_or(' ');
+        let (a, b) = if before == " " {
+            (&s[..g[k - 1].0], &s[at..])
+        } else if here != " "
+            && (before == "/"
+                || before == "-"
+                || ((cjk(first(before)) || cjk(first(here))) && !here.chars().all(no_line_start)))
+        {
+            (&s[..at], &s[at..])
+        } else {
+            continue;
+        };
+        let (a, b) = (a.trim_end(), b.trim_start());
+        if a.is_empty() || b.is_empty() {
+            continue;
+        }
+        let w = width(a).max(width(b));
+        if best.as_ref().is_none_or(|(bw, ..)| w < *bw) {
+            best = Some((w, a.to_owned(), b.to_owned()));
+        }
+    }
+    match best {
+        Some((_, a, b)) => vec![a, b],
+        None => vec![s.to_owned()],
+    }
+}
+
 /// How wide a [`combo_light`] must be for each of its translated `items` to show whole before
 /// its chevron (the widest decides, so the box keeps its size as the choice changes): at least
 /// `min` (its English width: English items fit it, so English never changes), at most `max`
@@ -3374,22 +3632,7 @@ fn button_face(
     let state = State::of(&resp, enabled);
     let p = ui.painter();
     let face = button_colors(kind, state, crate::theme::colors());
-    let rounding = control_radius();
-    p.rect_filled(rc, rounding, face.fill);
-    p.rect_stroke(
-        rc,
-        rounding,
-        Stroke::new(crate::theme::metrics().border, face.border),
-        StrokeKind::Inside,
-    );
-    let inset = 3.0;
-    hline(
-        p,
-        rc.left() + inset,
-        rc.right() - inset - 1.0,
-        rc.bottom() - 1.0,
-        face.bottom,
-    );
+    let radius = paint_button(p, rc, kind, state, &face, Shape::Push);
     // "&Start now": the letter after '&' is underlined and Alt+letter presses it.
     let (shown, mnemonic) = match label.split_once('&') {
         Some((before, after)) if !after.is_empty() => (format!("{before}{after}"), Some(before)),
@@ -3428,13 +3671,101 @@ fn button_face(
         resp
     };
     if resp.has_focus() || (default_focus && ui.ctx().memory(|m| m.focused().is_none())) {
-        focus_ring(ui.painter(), rc.shrink(2.0));
+        focus_ring_round(ui.painter(), rc.shrink(2.0), (radius - 2.0).max(0.0));
     }
     if cut {
         resp.on_hover_text(label.replace('&', ""))
     } else {
         resp
     }
+}
+
+/// A push button's face, edge and bottom line in the theme's button style (`palette::ButtonLook`):
+/// flat (Windows 11, KDE), or shaded toward the theme's `gloss` (Luna, Aero, Aqua), as `shape`
+/// says it is used. Every button and every part drawn as one comes here. Its corners' radius.
+fn paint_button(
+    p: &Painter,
+    rc: Rect,
+    kind: ButtonKind,
+    state: State,
+    face: &Face,
+    shape: Shape,
+) -> f32 {
+    use crate::palette::ButtonLook;
+    let c = crate::theme::colors();
+    let m = crate::theme::metrics();
+    let look = crate::theme::current().controls.button;
+    let part = shape != Shape::Push;
+    let radius = match look {
+        _ if shape == Shape::DropDown => control_radius(),
+        _ if part => control_radius().min((rc.height() / 3.0).floor()),
+        ButtonLook::Fluent | ButtonLook::Breeze => control_radius(),
+        ButtonLook::Luna | ButtonLook::Aero => m.button_radius,
+        // Mac OS X's push buttons are round at the ends.
+        ButtonLook::Aqua => (rc.height() / 2.0).floor(),
+    };
+    let Some(shine) = Shine::of_button(look) else {
+        p.rect_filled(rc, radius, face.fill);
+        p.rect_stroke(
+            rc,
+            radius,
+            Stroke::new(m.border, face.border),
+            StrokeKind::Inside,
+        );
+        // The bottom edge: a push button's and a drop-down's 3 points in from its ends, a small
+        // part's from its corners (none on one too low for it).
+        if shape != Shape::Small || rc.height() >= 14.0 {
+            let inset = if shape == Shape::Small { radius } else { 3.0 };
+            hline(
+                p,
+                rc.left() + inset,
+                rc.right() - inset - 1.0,
+                rc.bottom() - 1.0,
+                face.bottom,
+            );
+        }
+        return radius;
+    };
+    fill_shaded(p, rc, radius, &shine.stops(face.fill, c.gloss));
+    // Windows XP: a glow inside the edge, orange under the pointer, blue on the default button
+    // (its own border's colour; the edge itself stays dark).
+    let mut border = face.border;
+    if look == ButtonLook::Luna && state != State::Disabled {
+        let glow = match (state, kind) {
+            (State::Hot, _) => Some(c.button_glow),
+            (State::Pressed, _) => None,
+            (_, ButtonKind::Default) => {
+                border = c.button_border;
+                Some(face.border)
+            }
+            _ => None,
+        };
+        if let Some(glow) = glow.filter(|g| g.a() > 0) {
+            p.rect_stroke(
+                rc.shrink(m.border),
+                (radius - m.border).max(0.0),
+                Stroke::new(2.0, glow),
+                StrokeKind::Inside,
+            );
+        }
+    }
+    p.rect_stroke(
+        rc,
+        radius,
+        Stroke::new(m.border, border),
+        StrokeKind::Inside,
+    );
+    radius
+}
+
+/// What a face drawn by [`paint_button`] is: a push button, a small button-like part (a spin
+/// box's halves, an icon button: its corners no rounder than a third of its height) or a
+/// drop-down.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Shape {
+    Push,
+    Small,
+    DropDown,
 }
 
 /// A button's colours.
@@ -3461,6 +3792,14 @@ fn button_colors_in(
     look: crate::palette::ButtonLook,
 ) -> Face {
     let pressed = state == State::Pressed;
+    // Mac OS X: the default button is the accent's gel, its edge a shade darker.
+    if look == crate::palette::ButtonLook::Aqua && kind == ButtonKind::Default {
+        let face = button_colors_in(ButtonKind::Accent, state, c, look);
+        return Face {
+            border: crate::derive::shade(face.fill, -0.12),
+            ..face
+        };
+    }
     if kind == ButtonKind::Accent {
         // The accent filled, a shade lighter under the pointer and darker pressed.
         let (fill, text) = match state {
@@ -3488,9 +3827,12 @@ fn button_colors_in(
         }
         ButtonKind::Disabled => (c.button_disabled_border, c.button_disabled_border),
     };
-    // KDE: the edge in the accent under the pointer and pressed (its face tinted pressed, by
-    // the theme's colours).
-    let breeze = look == crate::palette::ButtonLook::Breeze;
+    // KDE and Windows 7: the edge in the accent under the pointer and pressed (its face tinted,
+    // by the theme's colours).
+    let breeze = matches!(
+        look,
+        crate::palette::ButtonLook::Breeze | crate::palette::ButtonLook::Aero
+    );
     let (border, bottom) = if breeze && matches!(state, State::Hot | State::Pressed) {
         (c.accent, c.accent)
     } else {
@@ -3620,6 +3962,12 @@ pub fn keyboard_in_use(ctx: &egui::Context) -> bool {
 
 /// The keyboard focus around `rc`: a dotted rectangle, every other pixel, in the theme's ink.
 pub fn focus_ring(p: &Painter, rc: Rect) {
+    focus_ring_round(p, rc, control_radius());
+}
+
+/// [`focus_ring`] whose ring or frame (where the theme draws one) has corners of `radius`: a
+/// control rounded otherwise than the others (Mac OS X's push buttons, round at the ends).
+pub fn focus_ring_round(p: &Painter, rc: Rect, radius: f32) {
     // Only once the keyboard is in use in this window, as Windows shows focus rectangles.
     if !keyboard_in_use(p.ctx()) {
         return;
@@ -3628,22 +3976,12 @@ pub fn focus_ring(p: &Painter, rc: Rect) {
     // GNOME: a rounded ring, as wide as two points, the controls' corners.
     match crate::theme::current().controls.focus {
         crate::palette::FocusLook::Ring => {
-            p.rect_stroke(
-                rc,
-                control_radius(),
-                Stroke::new(2.0, ink),
-                StrokeKind::Inside,
-            );
+            p.rect_stroke(rc, radius, Stroke::new(2.0, ink), StrokeKind::Inside);
             return;
         }
         // KDE: a frame one point wide.
         crate::palette::FocusLook::Frame => {
-            p.rect_stroke(
-                rc,
-                control_radius(),
-                Stroke::new(1.0, ink),
-                StrokeKind::Inside,
-            );
+            p.rect_stroke(rc, radius, Stroke::new(1.0, ink), StrokeKind::Inside);
             return;
         }
         crate::palette::FocusLook::Dotted => {}
@@ -3771,7 +4109,127 @@ pub fn row_check(
     resp.clicked()
 }
 
+/// An era theme's check box (or, `round`, radio button) in `rc` (13 × 13), `on` when checked:
+/// Windows XP's, Windows 7's or Mac OS X's (`palette::CheckLook`). False, drawing nothing, for
+/// the other looks.
+fn era_check(p: &Painter, rc: Rect, on: bool, state: State, round: bool) -> bool {
+    use crate::derive::mix;
+    use crate::palette::CheckLook;
+    let look = crate::theme::current().controls.check;
+    if !matches!(look, CheckLook::Luna | CheckLook::Aero | CheckLook::Aqua) {
+        return false;
+    }
+    let c = crate::theme::colors();
+    let m = crate::theme::metrics();
+    let radius = if round { 6.5 } else { m.check_radius };
+    let disabled = state == State::Disabled;
+    let (fill_c, edge) = fluent_box(state);
+    let fill_c = fill_c.unwrap_or(c.field_disabled);
+    let stroke = |rc: Rect, r: f32, ink: Color32| {
+        p.rect_stroke(rc, r, Stroke::new(m.border, ink), StrokeKind::Inside);
+    };
+    // The mark: a tick, or a radio's dot (shaded as the theme's gloss shades).
+    let mark = |ink: Color32, width: f32| {
+        if round {
+            let dot = Rect::from_center_size(rc.center(), vec2(5.0, 5.0));
+            fill_shaded(p, dot, 2.5, &[(0.0, mix(ink, c.gloss, 0.45)), (1.0, ink)]);
+        } else {
+            p.line(
+                vec![
+                    pos2(rc.left() + 3.0, rc.top() + 6.0),
+                    pos2(rc.left() + 5.5, rc.top() + 8.5),
+                    pos2(rc.left() + 10.0, rc.top() + 3.5),
+                ],
+                Stroke::new(width, ink),
+            );
+        }
+    };
+    match look {
+        // Windows XP: a dark edge, the inside shaded from its top, an orange glow inside under
+        // the pointer; a thick tick (a dot) in the checked colour.
+        CheckLook::Luna => {
+            let inner = rc.shrink(m.border);
+            fill_shaded(
+                p,
+                inner,
+                (radius - m.border).max(0.0),
+                &[(0.0, mix(fill_c, edge, 0.18)), (1.0, fill_c)],
+            );
+            if state == State::Hot && c.button_glow.a() > 0 {
+                stroke(inner, (radius - 1.0).max(0.0), c.button_glow);
+                stroke(inner.shrink(1.0), (radius - 2.0).max(0.0), c.button_glow);
+            }
+            stroke(rc, radius, edge);
+            if on {
+                let ink = if disabled {
+                    c.check_on_disabled
+                } else {
+                    fluent_accent(state)
+                };
+                mark(ink, 2.5);
+            }
+        }
+        // Windows 7: a quiet edge (the accent's under the pointer), a white margin and a
+        // shaded square inside; the tick in the mark's colour.
+        CheckLook::Aero => {
+            p.rect_filled(rc, radius, c.field);
+            stroke(rc, radius, edge);
+            if !round || !on {
+                let inner = rc.shrink(3.0);
+                fill_shaded(
+                    p,
+                    inner,
+                    if round { 3.5 } else { 0.0 },
+                    &[(0.0, mix(fill_c, edge, 0.35)), (1.0, fill_c)],
+                );
+            }
+            if on {
+                let ink = if disabled {
+                    c.check_on_disabled
+                } else if round {
+                    fluent_accent(state)
+                } else {
+                    c.check_mark
+                };
+                mark(ink, 2.0);
+            }
+        }
+        // Mac OS X: a glossy box, round corners; checked, the accent's gel and a dark mark.
+        CheckLook::Aqua => {
+            let face = if on && !disabled {
+                fluent_accent(state)
+            } else {
+                fill_c
+            };
+            fill_shaded(p, rc, radius, &Shine::Aqua.stops(face, c.gloss));
+            let edge = if on && !disabled {
+                crate::derive::shade(face, -0.15)
+            } else {
+                edge
+            };
+            stroke(rc, radius, edge);
+            if on {
+                let ink = if disabled {
+                    c.check_on_disabled
+                } else {
+                    c.check_mark
+                };
+                if round {
+                    p.circle_filled(rc.center(), 2.5, ink);
+                } else {
+                    mark(ink, 2.0);
+                }
+            }
+        }
+        _ => {}
+    }
+    true
+}
+
 pub fn check_box_glyph(p: &Painter, rc: Rect, checked: bool, state: State) {
+    if era_check(p, rc, checked, state, false) {
+        return;
+    }
     // KDE: the box's edge in the accent under the pointer; checked, the accent's edge around
     // its inside tinted with it, a tick in the text's colour.
     if crate::theme::current().controls.check == crate::palette::CheckLook::Breeze {
@@ -4047,8 +4505,17 @@ pub fn radio_light_until(
     );
     let c = glyph + vec2(6.5, 6.5);
     let state = State::of(&resp, enabled);
-    // KDE: as its check box, round; the dot in the text's colour.
-    if crate::theme::current().controls.check == crate::palette::CheckLook::Breeze {
+    // The era themes: their own round radios.
+    if era_check(
+        &p,
+        Rect::from_center_size(c, vec2(13.0, 13.0)),
+        selected,
+        state,
+        true,
+    ) {
+        // Drawn.
+    } else if crate::theme::current().controls.check == crate::palette::CheckLook::Breeze {
+        // KDE: as its check box, round; the dot in the text's colour.
         let (fill_c, edge) = breeze_box(state, selected);
         if let Some(f) = fill_c {
             p.circle_filled(c, 6.0, f);
@@ -4707,23 +5174,7 @@ pub fn button_like(p: &Painter, rc: Rect, state: State) {
         ButtonKind::Normal
     };
     let face = button_colors(kind, state, crate::theme::colors());
-    let radius = control_radius().min((rc.height() / 3.0).floor());
-    p.rect_filled(rc, radius, face.fill);
-    p.rect_stroke(
-        rc,
-        radius,
-        Stroke::new(crate::theme::metrics().border, face.border),
-        StrokeKind::Inside,
-    );
-    if rc.height() >= 14.0 {
-        hline(
-            p,
-            rc.left() + radius,
-            rc.right() - radius - 1.0,
-            rc.bottom() - 1.0,
-            face.bottom,
-        );
-    }
+    paint_button(p, rc, kind, state, &face, Shape::Small);
 }
 
 pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
@@ -4740,24 +5191,17 @@ pub fn dropdown_frame_light(p: &Painter, rc: Rect, state: State) {
         if open { State::Hot } else { state },
         crate::theme::colors(),
     );
-    let border = if open { accent() } else { face.border };
-    let rounding = control_radius();
-    p.rect_filled(rc, rounding, face.fill);
-    p.rect_stroke(
-        rc,
-        rounding,
-        Stroke::new(crate::theme::metrics().border, border),
-        StrokeKind::Inside,
-    );
-    if !open {
-        hline(
-            p,
-            rc.left() + 3.0,
-            rc.right() - 4.0,
-            rc.bottom() - 1.0,
-            face.bottom,
-        );
-    }
+    // Open: the accent all round (its bottom too: the list is out).
+    let face = if open {
+        Face {
+            border: accent(),
+            bottom: accent(),
+            ..face
+        }
+    } else {
+        face
+    };
+    paint_button(p, rc, kind, state, &face, Shape::DropDown);
 }
 
 /// The accent (Windows' blue): borders of open and focused controls.
@@ -5006,8 +5450,13 @@ pub fn to_tray_button(ui: &mut Ui, rc: Rect, id: &str, tip: &str) -> Response {
 /// `c` in `ink`. The title bar's hide button, and the tab-row button where the system draws the
 /// title bar.
 fn to_tray_glyph(p: &Painter, c: Pos2, ink: Stroke, rtl: bool) {
-    let s = if rtl { -1.0 } else { 1.0 };
-    let at = |x: f32, y: f32| c + vec2(s * x, y);
+    to_tray_glyph_sized(p, c, ink, rtl, 1.0);
+}
+
+/// [`to_tray_glyph`] `size` times as large.
+fn to_tray_glyph_sized(p: &Painter, c: Pos2, ink: Stroke, rtl: bool, size: f32) {
+    let s = if rtl { -size } else { size };
+    let at = |x: f32, y: f32| c + vec2(s * x, size * y);
     // The dash, where Minimize's is (y + 0.5 keeps a 1 px line on the pixel grid).
     p.line_segment([at(-5.0, 0.5), at(1.0, 0.5)], ink);
     // The arrow from the dash's end, down to the end side at 45°, and its open head; the head's
@@ -5061,8 +5510,10 @@ pub mod caption {
     /// How the theme's title bar is laid out (`palette::CaptionLook`).
     #[derive(Clone, Copy)]
     struct Style {
-        /// One button's width, and the room after the last one at the window's end.
+        /// One button's width (Close's its own: Windows 7's is wider), and the room after the
+        /// last one at the window's end.
         button_w: f32,
+        close_w: f32,
         end: f32,
         /// GNOME's round buttons (a circle this wide, tinted at rest), else Windows' tiles the
         /// bar's height.
@@ -5074,18 +5525,28 @@ pub mod caption {
         bold: bool,
         /// A button under the pointer or pressed draws its glyph in the bar's colour (KDE).
         invert: bool,
+        /// The era themes (#45): the bar and its buttons shaded in the era's way, each button
+        /// a tile of this size (a zero width: its place's) with a face of its own at rest, hung
+        /// from the bar's top (`hang`, Windows 7) or centred in it.
+        era: Option<Shine>,
+        tile: egui::Vec2,
+        hang: bool,
     }
 
     fn style() -> Style {
         use crate::palette::CaptionLook;
         let windows = Style {
             button_w: CAPTION_BUTTON_W,
+            close_w: CAPTION_BUTTON_W,
             end: 0.0,
             circle: None,
             icon: true,
             centred: false,
             bold: false,
             invert: false,
+            era: None,
+            tile: egui::Vec2::ZERO,
+            hang: false,
         };
         match crate::theme::current().controls.caption {
             CaptionLook::System => windows,
@@ -5096,24 +5557,89 @@ pub mod caption {
             // libadwaita's header bar: 24-point round buttons 6 apart, no icon, a bold title.
             CaptionLook::Adwaita => Style {
                 button_w: 30.0,
+                close_w: 30.0,
                 end: 4.0,
                 circle: Some(24.0),
                 icon: false,
                 centred: true,
                 bold: true,
-                invert: false,
+                ..windows
             },
             // KDE's Breeze: the icon, the title centred, 18-point round buttons shown only
             // under the pointer, in the title's colour with the glyph in the bar's.
             CaptionLook::Breeze => Style {
                 button_w: 26.0,
+                close_w: 26.0,
                 end: 4.0,
                 circle: Some(18.0),
-                icon: true,
                 centred: true,
-                bold: false,
                 invert: true,
+                ..windows
             },
+            // Windows XP: the icon and a bold title, 21-point square buttons with a light edge.
+            CaptionLook::Luna => Style {
+                button_w: 23.0,
+                close_w: 23.0,
+                end: 5.0,
+                bold: true,
+                era: Some(Shine::Luna),
+                tile: vec2(21.0, 21.0),
+                ..windows
+            },
+            // Windows 7: the icon and the title, buttons 20 points high hung from the bar's
+            // top, side by side, Close wider.
+            CaptionLook::Aero => Style {
+                button_w: 27.0,
+                close_w: 46.0,
+                end: 6.0,
+                era: Some(Shine::Aero),
+                tile: vec2(0.0, 20.0),
+                hang: true,
+                ..windows
+            },
+            // Mac OS X: no icon, the title centred, round 15-point buttons.
+            CaptionLook::Aqua => Style {
+                button_w: 23.0,
+                close_w: 23.0,
+                end: 8.0,
+                icon: false,
+                centred: true,
+                era: Some(Shine::Aqua),
+                tile: vec2(15.0, 15.0),
+                ..windows
+            },
+        }
+    }
+
+    /// The bar's colour: the active one, or the theme's inactive one while the window isn't
+    /// the active one (where it has one).
+    fn bar_colour(active: bool) -> Color32 {
+        let inactive = crate::theme::colors().caption_inactive;
+        if !active && inactive.a() > 0 {
+            inactive
+        } else {
+            CAPTION_BG()
+        }
+    }
+
+    /// An era's bar, shaded from its top: XP's light edge on a deep colour, Windows 7's glassy
+    /// halves, Mac OS X's light grey falling to the bar's colour.
+    fn bar_stops(era: Shine, bar: Color32, g: Color32) -> Vec<(f32, Color32)> {
+        use crate::derive::{mix, shade};
+        match era {
+            Shine::Luna => vec![
+                (0.0, mix(bar, g, 0.45)),
+                (0.12, mix(bar, g, 0.12)),
+                (0.5, bar),
+                (1.0, shade(bar, -0.06)),
+            ],
+            Shine::Aero => vec![
+                (0.0, mix(bar, g, 0.45)),
+                (0.5, mix(bar, g, 0.2)),
+                (0.5, bar),
+                (1.0, mix(bar, g, 0.1)),
+            ],
+            Shine::Aqua => vec![(0.0, mix(bar, g, 0.6)), (1.0, bar)],
         }
     }
 
@@ -5155,13 +5681,24 @@ pub mod caption {
         }
 
         /// Its glyph: the theme's icon set's where it has one, else Segoe Fluent's shapes drawn
-        /// as our own 1 px vectors, 10 px across (Restore's two squares while maximized).
-        fn glyph(self, ui: &Ui, p: &Painter, c: Pos2, ink: Color32, maximized: bool) {
-            let px = 16.0 * ui.ctx().pixels_per_point();
+        /// as our own vectors, 10 px across and 1 px wide at `size` 1 and `width` 1 (Restore's
+        /// two squares while maximized).
+        #[allow(clippy::too_many_arguments)]
+        fn glyph(
+            self,
+            ui: &Ui,
+            p: &Painter,
+            c: Pos2,
+            ink: Color32,
+            maximized: bool,
+            size: f32,
+            width: f32,
+        ) {
+            let px = 16.0 * size * ui.ctx().pixels_per_point();
             if let Some((src, tint)) =
                 crate::themeicons::source(self.need(maximized), px, ink, true)
             {
-                let rc = Rect::from_center_size(c, vec2(16.0, 16.0));
+                let rc = Rect::from_center_size(c, vec2(16.0, 16.0) * size);
                 let img = egui::Image::new(src);
                 if let Ok(egui::load::TexturePoll::Ready { texture }) =
                     img.load_for_size(ui.ctx(), rc.size())
@@ -5175,21 +5712,22 @@ pub mod caption {
                     return;
                 }
             }
-            let s = Stroke::new(1.0, ink);
+            let s = Stroke::new(width, ink);
+            let v = |x: f32, y: f32| c + vec2(x, y) * size;
             if self == CaptionButton::Maximize && maximized {
                 p.rect_stroke(
-                    Rect::from_center_size(c + vec2(-1.0, 1.0), vec2(8.0, 8.0)),
+                    Rect::from_center_size(v(-1.0, 1.0), vec2(8.0, 8.0) * size),
                     1.0,
                     s,
                     egui::StrokeKind::Inside,
                 );
                 p.line(
                     vec![
-                        c + vec2(-1.5, -3.5),
-                        c + vec2(-1.5, -4.5),
-                        c + vec2(4.5, -4.5),
-                        c + vec2(4.5, 1.5),
-                        c + vec2(3.5, 1.5),
+                        v(-1.5, -3.5),
+                        v(-1.5, -4.5),
+                        v(4.5, -4.5),
+                        v(4.5, 1.5),
+                        v(3.5, 1.5),
                     ],
                     s,
                 );
@@ -5197,21 +5735,21 @@ pub mod caption {
             }
             match self {
                 CaptionButton::Minimize => {
-                    p.line_segment([c + vec2(-5.0, 0.5), c + vec2(5.0, 0.5)], s);
+                    p.line_segment([v(-5.0, 0.5), v(5.0, 0.5)], s);
                 }
                 CaptionButton::Maximize => {
                     p.rect_stroke(
-                        Rect::from_center_size(c, vec2(9.0, 9.0)),
+                        Rect::from_center_size(c, vec2(9.0, 9.0) * size),
                         1.0,
                         s,
                         egui::StrokeKind::Inside,
                     );
                 }
                 CaptionButton::Close => {
-                    p.line_segment([c + vec2(-5.0, -5.0), c + vec2(5.0, 5.0)], s);
-                    p.line_segment([c + vec2(-5.0, 5.0), c + vec2(5.0, -5.0)], s);
+                    p.line_segment([v(-5.0, -5.0), v(5.0, 5.0)], s);
+                    p.line_segment([v(-5.0, 5.0), v(5.0, -5.0)], s);
                 }
-                CaptionButton::ToTray => to_tray_glyph(p, c, s, rtl()),
+                CaptionButton::ToTray => to_tray_glyph_sized(p, c, s, rtl(), size),
             }
         }
     }
@@ -5274,6 +5812,23 @@ pub mod caption {
         let pressed = enabled && (resp.is_pointer_button_down_on() || frame_pressed);
         let close = b == CaptionButton::Close;
         let st = style();
+        let maximized = ui.ctx().input(|i| i.viewport().maximized) == Some(true);
+        if let Some(era) = st.era {
+            era_button(
+                ui,
+                &resp,
+                rc,
+                b,
+                era,
+                (hover, pressed, enabled, active),
+                maximized,
+            );
+            let clicked = resp.clicked();
+            if b == CaptionButton::ToTray {
+                resp.on_hover_text(name);
+            }
+            return clicked;
+        }
         let circle = st.circle;
         let fill = match (pressed, hover, close) {
             (true, _, true) => Some(close_pressed()),
@@ -5305,8 +5860,7 @@ pub mod caption {
         } else {
             CAPTION_INK()
         };
-        let maximized = ui.ctx().input(|i| i.viewport().maximized) == Some(true);
-        b.glyph(ui, p, rc.center().round(), ink, maximized);
+        b.glyph(ui, p, rc.center().round(), ink, maximized, 1.0, 1.0);
         let ring = match circle {
             Some(d) => Rect::from_center_size(rc.center(), vec2(d, d)),
             None => rc.shrink(3.0),
@@ -5317,6 +5871,119 @@ pub mod caption {
             resp.on_hover_text(name);
         }
         clicked
+    }
+
+    /// An era theme's caption button (#45) in its place `rc`: a shaded tile with an edge, its
+    /// own face at rest (Close red; Mac OS X's graphite until the pointer is on it), lighter
+    /// under the pointer and darker pressed, faded while greyed or the window inactive; the
+    /// glyph light on it (Windows 7's with a shadow), or Mac OS X's dark one shown only under
+    /// the pointer. There, our Hide button is a plain picture in the bar, as a toolbar's.
+    fn era_button(
+        ui: &Ui,
+        resp: &Response,
+        rc: Rect,
+        b: CaptionButton,
+        era: Shine,
+        (hover, pressed, enabled, active): (bool, bool, bool, bool),
+        maximized: bool,
+    ) {
+        use crate::derive::{mix, shade};
+        let p = ui.painter();
+        let c = crate::theme::colors();
+        let st = style();
+        let close = b == CaptionButton::Close;
+        let bar = bar_colour(active);
+        let at = rc.center().round();
+        if era == Shine::Aqua && b == CaptionButton::ToTray {
+            if hover || pressed {
+                let tint = if pressed {
+                    CAPTION_PRESSED()
+                } else {
+                    CAPTION_HOVER()
+                };
+                p.rect_filled(Rect::from_center_size(at, vec2(22.0, 22.0)), 4.0, tint);
+            }
+            let ink = if enabled && active {
+                CAPTION_INK()
+            } else {
+                caption_ink_inactive()
+            };
+            b.glyph(ui, p, at, ink, maximized, 1.0, 1.0);
+            show_focus(ui, resp, Rect::from_center_size(at, vec2(22.0, 22.0)));
+            return;
+        }
+        let size = vec2(
+            if st.tile.x > 0.0 {
+                st.tile.x
+            } else {
+                rc.width()
+            },
+            st.tile.y,
+        );
+        let tile = if st.hang {
+            Rect::from_min_size(pos2(at.x - size.x / 2.0, rc.top()), size)
+        } else {
+            Rect::from_center_size(at, size)
+        };
+        let base = if close && (era != Shine::Aqua || hover || pressed) {
+            CLOSE_HOVER()
+        } else {
+            CAPTION_BUTTON()
+        };
+        let base = if pressed {
+            shade(base, -0.1)
+        } else if hover {
+            mix(base, c.gloss, 0.3)
+        } else {
+            base
+        };
+        let base = if enabled && active {
+            base
+        } else {
+            mix(base, bar, 0.55)
+        };
+        let (top, bottom) = match era {
+            Shine::Luna => (3.0, 3.0),
+            Shine::Aero => (0.0, 4.0),
+            Shine::Aqua => (size.y / 2.0, size.y / 2.0),
+        };
+        fill_shaded_corners(p, tile, top, bottom, &era.stops(base, c.gloss));
+        let edge = match era {
+            Shine::Luna => c.gloss.gamma_multiply(0.9),
+            Shine::Aero => shade(bar, -0.35),
+            Shine::Aqua => shade(base, -0.2),
+        };
+        let corners = egui::CornerRadius {
+            nw: top as u8,
+            ne: top as u8,
+            sw: bottom as u8,
+            se: bottom as u8,
+        };
+        p.rect_stroke(tile, corners, Stroke::new(1.0, edge), StrokeKind::Inside);
+        let (size, width) = match era {
+            Shine::Luna => (0.8, 2.0),
+            Shine::Aero => (0.9, 1.5),
+            Shine::Aqua => (0.55, 1.4),
+        };
+        let at = tile.center().round();
+        if era == Shine::Aqua {
+            // Mac OS X shows its buttons' glyphs only under the pointer.
+            if hover || pressed {
+                b.glyph(ui, p, at, CAPTION_INK(), maximized, size, width);
+            }
+        } else {
+            let ink = if enabled && active {
+                CLOSE_INK()
+            } else {
+                CLOSE_INK().gamma_multiply(0.7)
+            };
+            if era == Shine::Aero {
+                let shadow = Color32::from_black_alpha(110);
+                b.glyph(ui, p, at + vec2(1.0, 1.0), shadow, maximized, size, width);
+            }
+            b.glyph(ui, p, at, ink, maximized, size, width);
+        }
+        show_focus(ui, resp, tile);
     }
 
     /// What a drawn title bar did: the button pressed, and where its buttons and its icon are (in
@@ -5338,21 +6005,42 @@ pub mod caption {
         title: &str,
         buttons: &[(CaptionButton, bool)],
     ) -> TitleBar {
-        let active = ui.ctx().input(|i| i.viewport().focused) != Some(false);
+        // MDM_TEST_ACTIVE: every bar drawn as the active window's (pictures of windows off the
+        // screens, which never have the focus).
+        static ALWAYS_ACTIVE: std::sync::LazyLock<bool> =
+            std::sync::LazyLock::new(|| std::env::var_os("MDM_TEST_ACTIVE").is_some());
+        let active = *ALWAYS_ACTIVE || ui.ctx().input(|i| i.viewport().focused) != Some(false);
         let rtl = rtl();
         let p = ui.painter().clone();
-        p.rect_filled(rect, 0.0, CAPTION_BG());
+        let st = style();
+        let bar = bar_colour(active);
+        match st.era {
+            Some(era) => fill_shaded(
+                &p,
+                rect,
+                0.0,
+                &bar_stops(era, bar, crate::theme::colors().gloss),
+            ),
+            None => {
+                p.rect_filled(rect, 0.0, bar);
+            }
+        }
         let mut pressed = None;
         let mut rects = Vec::with_capacity(buttons.len());
-        let st = style();
-        let bw = st.button_w;
-        for (i, (b, enabled)) in buttons.iter().enumerate() {
-            let k = i as f32;
-            let x0 = if rtl {
-                rect.left() + st.end + k * bw
+        // From the window's end inwards, each as wide as its kind is.
+        let mut from_end = st.end;
+        for (b, enabled) in buttons {
+            let bw = if *b == CaptionButton::Close {
+                st.close_w
             } else {
-                rect.right() - st.end - (k + 1.0) * bw
+                st.button_w
             };
+            let x0 = if rtl {
+                rect.left() + from_end
+            } else {
+                rect.right() - from_end - bw
+            };
+            from_end += bw;
             let rc = Rect::from_min_size(pos2(x0, rect.top()), vec2(bw, rect.height()));
             if caption_button(ui, rc, *b, *enabled, active) {
                 pressed = Some(*b);
@@ -5361,7 +6049,7 @@ pub mod caption {
         }
         // The frame's word on Maximize holds for this bar only.
         FRAME_MAX.with(|c| c.set((false, false)));
-        let buttons_w = st.end + bw * buttons.len() as f32;
+        let buttons_w = from_end;
         // Without an icon, the title keeps a little room from the bar's start.
         let icon_w = if st.icon { CAPTION_ICON_W } else { 12.0 };
         if st.icon {
@@ -5406,7 +6094,35 @@ pub mod caption {
         } else {
             (anchor, x)
         };
-        let drawn = p.text(pos2(x, rect.center().y), anchor, &shown, font, ink);
+        let galley = p.layout_no_wrap(shown.clone(), font.clone(), ink);
+        let drawn = anchor.anchor_size(pos2(x, rect.center().y), galley.size());
+        let c = crate::theme::colors();
+        match st.era {
+            // Windows XP: a dark shadow under the title.
+            Some(Shine::Luna) => {
+                let shadow = crate::derive::shade(bar, -0.25);
+                let g = p.layout_no_wrap(shown.clone(), font.clone(), shadow);
+                p.galley(drawn.min + vec2(1.0, 1.0), g, shadow);
+            }
+            // Windows 7: the title on a soft glow (the light variant's dark title).
+            Some(Shine::Aero) if !c.dark => {
+                let glow = egui::epaint::Shadow {
+                    offset: [0, 0],
+                    blur: 14,
+                    spread: 1,
+                    color: c.gloss.gamma_multiply(0.75),
+                };
+                p.add(glow.as_shape(drawn.expand2(vec2(6.0, 0.0)), 8));
+            }
+            // Mac OS X: a light line under the title, as if pressed into the bar.
+            Some(Shine::Aqua) if !c.dark => {
+                let light = c.gloss.gamma_multiply(0.7);
+                let g = p.layout_no_wrap(shown.clone(), font.clone(), light);
+                p.galley(drawn.min + vec2(0.0, 1.0), g, light);
+            }
+            _ => {}
+        }
+        p.galley(drawn.min, galley, ink);
         let label = ui.interact(drawn, widget_id(ui, "caption-title"), Sense::hover());
         // The window's own name says the title to screen readers (where the system speaks for
         // the title bar); elsewhere the label does.
@@ -5627,6 +6343,31 @@ mod tests {
             // Cut: as wide as the label and the usual room.
             let cut = (text + 2.0).floor();
             assert_eq!(button_fit_width(p, label, cut, 300.0), (text + 16.0).ceil());
+        });
+    }
+
+    #[test]
+    fn a_title_takes_a_second_line_only_where_one_is_too_long() {
+        with_painter(|p| {
+            let font = tahoma_bold();
+            let s = "Proxy socks configuration page";
+            let whole = text_width_font(p, font.clone(), s);
+            // Room for it: one line, as it is.
+            assert_eq!(fit_lines(p, font.clone(), s, whole), vec![s]);
+            // Short of room: two lines, broken where the wider is narrowest.
+            let two = fit_lines(p, font.clone(), s, whole - 1.0);
+            assert_eq!(two, vec!["Proxy socks", "configuration page"]);
+            // After a slash or a hyphen, the mark kept on the first line.
+            let two = fit_lines(p, font.clone(), "Proxyserver/SOCKS-konfiguration", 10.0);
+            assert_eq!(two.concat(), "Proxyserver/SOCKS-konfiguration");
+            assert!(two[0].ends_with('/') || two[0].ends_with('-'), "{two:?}");
+            // A word with no place to break stays whole.
+            assert_eq!(
+                fit_lines(p, font.clone(), "Konfiguration", 10.0),
+                vec!["Konfiguration"]
+            );
+            // Chinese breaks between its characters.
+            assert_eq!(fit_lines(p, font, "代理服务器配置", 10.0).len(), 2);
         });
     }
 
@@ -6153,6 +6894,18 @@ mod tests {
                     assert_ne!(hot.border, rest.border, "hot takes the accent's edge");
                     assert_ne!(pressed.fill, rest.fill, "pressed tints the face");
                     assert_eq!(pressed.bottom, pressed.border, "one edge all round");
+                    continue;
+                }
+                // The era themes: pressed deepens the face; under the pointer the face lightens
+                // (Windows 7, Mac OS X) or Windows XP's glow shows inside the edge.
+                use crate::palette::ButtonLook as B;
+                if matches!(look, B::Luna | B::Aero | B::Aqua) {
+                    assert_ne!(pressed.fill, rest.fill, "pressed deepens the face");
+                    if look == B::Luna {
+                        assert!(c.button_glow.a() > 0, "XP glows under the pointer");
+                    } else {
+                        assert_ne!(hot.fill, rest.fill, "hot differs from rest");
+                    }
                     continue;
                 }
                 assert_ne!(pressed.text, rest.text, "pressed dims the label");

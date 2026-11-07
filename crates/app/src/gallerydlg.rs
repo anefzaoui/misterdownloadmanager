@@ -151,10 +151,9 @@ impl GalleryDialog {
             && self.checked.as_ref().is_none_or(|(p, _)| *p != page)
         {
             let slot: Slot<bool> = Arc::new(Mutex::new(None));
-            let (out, exe, url, ctx) =
-                (slot.clone(), t.exe.clone(), page.clone(), ui.ctx().clone());
+            let (out, tool, url, ctx) = (slot.clone(), t.clone(), page.clone(), ui.ctx().clone());
             std::thread::spawn(move || {
-                let res = mdm_tools::gallery::handles(&exe, &url).map_err(|e| e.to_string());
+                let res = mdm_tools::gallery::handles(&tool, &url).map_err(|e| e.to_string());
                 *out.lock().unwrap() = Some(res);
                 ctx.request_repaint();
             });

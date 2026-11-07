@@ -1360,31 +1360,31 @@ impl OptionsDialog {
             .image(true)
             .paint_at(ui, r(o, 21.0, 50.0, 32.0, 32.0));
         // Get System as wide as its label in this language (#192), its right end kept. A
-        // translated title ends where the English one does, unless the button needs that room:
-        // then the title moves left (no further than 8 px after the icon) and ends 8 px before it.
+        // translated title ends where the English one does, unless the button needs that room or
+        // it would start less than 8 px after the icon: then it ends 8 px before the button, in
+        // two lines where one doesn't fit there.
+        let font = winui::tahoma_bold();
         let english_end =
-            112.0 + winui::text_width_font(&p, winui::tahoma_bold(), "Proxy / socks configuration");
-        let title_w = page_title_width(&p, winui::tahoma_bold(), "Proxy / socks configuration");
+            112.0 + winui::text_width_font(&p, font.clone(), "Proxy / socks configuration");
         // The icon ends at 53; the button never moves right of its English place.
-        let from = (53.0 + 8.0 + title_w + 8.0).min(307.0);
+        let (start, max_w) = (53.0 + 8.0, 160.0);
+        let get_whole = winui::button_fit_width(&p, "Get System", 93.0, max_w);
+        let room = (400.0 - get_whole).min(307.0) - 8.0 - start;
+        let (lines, title_w) =
+            page_title_lines(&p, font.clone(), "Proxy / socks configuration", room);
+        let from = (start + title_w + 8.0).min(307.0);
         let (get_x, get_w) =
-            winui::button_row(&p, &[("Get System", 307.0, 93.0)], 0.0, from, 160.0)[0];
-        if get_x - 8.0 < english_end {
-            page_title_ending(
-                &p,
-                winui::tahoma_bold(),
-                o.x + get_x - 8.0,
-                o.y + 69.0,
-                "Proxy / socks configuration",
-            );
-        } else {
+            winui::button_row(&p, &[("Get System", 307.0, 93.0)], 0.0, from, max_w)[0];
+        if lines.len() == 1 && get_x - 8.0 >= english_end && english_end - title_w >= start {
             page_title(
                 &p,
-                winui::tahoma_bold(),
+                font,
                 o.x + 112.0,
                 o.y + 69.0,
                 "Proxy / socks configuration",
             );
+        } else {
+            page_title_ending(&p, font, o.x + get_x - 8.0, o.y + 69.0, &lines);
         }
         let s = &mut self.s;
         if winui::button_light(
@@ -4179,22 +4179,42 @@ fn page_title(p: &egui::Painter, font: egui::FontId, x: f32, baseline: f32, engl
     winui::text_font(p, font, x, baseline, shown, LIGHT_TEXT());
 }
 
-/// How wide [`page_title`] draws `english` translated.
-fn page_title_width(p: &egui::Painter, font: egui::FontId, english: &str) -> f32 {
-    winui::text_width_font(p, font, crate::i18n::t(english))
+/// `english` translated, as [`page_title_ending`] draws it in `room` px: one line where it fits,
+/// else two ([`winui::fit_lines`]); and how wide it is drawn.
+fn page_title_lines(
+    p: &egui::Painter,
+    font: egui::FontId,
+    english: &str,
+    room: f32,
+) -> (Vec<String>, f32) {
+    let lines = winui::fit_lines(p, font.clone(), crate::i18n::t(english), room);
+    let w = lines
+        .iter()
+        .map(|l| winui::text_width_font(p, font.clone(), l))
+        .fold(0.0, f32::max);
+    (lines, w)
 }
 
-/// [`page_title`] ending at English x `end` (a control after it needs the room up to there).
+/// A page title's `lines` ([`page_title_lines`]) ending at English x `end` (a control after it
+/// needs the room up to there): one line on `baseline`, two around it (beside the page's icon),
+/// each starting where the wider one does.
 fn page_title_ending(
     p: &egui::Painter,
     font: egui::FontId,
     end: f32,
     baseline: f32,
-    english: &str,
+    lines: &[String],
 ) {
-    let shown = crate::i18n::t(english);
-    let x = end - winui::text_width_font(p, font.clone(), shown);
-    winui::text_font(p, font, x, baseline, shown, LIGHT_TEXT());
+    let w = lines
+        .iter()
+        .map(|l| winui::text_width_font(p, font.clone(), l))
+        .fold(0.0, f32::max);
+    // Bold Tahoma's rows are 15 px apart; two lines share the one line's middle.
+    let first = baseline - 7.5 * (lines.len() as f32 - 1.0);
+    for (i, line) in lines.iter().enumerate() {
+        let y = (first + 15.0 * i as f32).round();
+        winui::text_font(p, font.clone(), end - w, y, line, LIGHT_TEXT());
+    }
 }
 
 /// Group box (`#dcdcdc` frame) with its caption (translated here) at x + 9.
