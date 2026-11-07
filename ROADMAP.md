@@ -13,6 +13,12 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the
+  command line, the window, the desktop entry and icon, browser integration and uninstall; the
+  .deb and .rpm now bring the keyboard library MDM's window needs under X11, and require the
+  glibc their programs were built for (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+
 - ✅ The extension's popup shows **Open Mister Download Manager** whole: it was cut to "Open Mister
   Do…" on Linux and in longer languages; Options moves below it when both don't fit on one line
   (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))

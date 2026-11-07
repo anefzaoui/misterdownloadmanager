@@ -538,6 +538,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **The Linux .deb and .rpm bring what MDM's window needs** (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
+  libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start
+  under X11 and XWayland. They now require it, and EGL for Wayland windows. They also require the
+  glibc the programs were built against, read from the programs themselves, instead of a fixed
+  version: a package built on a newer system no longer installs on an older one where it can't
+  start.
 - **The extension's popup: Open Mister Download Manager shows whole**
   ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on Linux, whose fonts
   are wider, and in longer languages, the button was cut to "Open Mister Do…". Each button is now
