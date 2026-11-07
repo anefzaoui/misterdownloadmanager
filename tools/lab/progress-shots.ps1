@@ -9,6 +9,10 @@
 #   cargo build --release -p mdm-app -p mdm-cli -p mdm-labserver
 #   cargo build --release -p mdm-torrent --example swarm
 #   tools\lab\progress-shots.ps1 -Bin target\release
+#
+# On a machine without MDM (GitHub's runner, docs-shots.yml), yt-dlp comes from -YtDlp:
+#
+#   tools\lab\progress-shots.ps1 -Bin target\debug -YtDlp <yt-dlp.exe> -Work C:\Demo\p -At 40,40
 param(
   [string]$Bin = "target\release",
   [string]$OutDir = "docs\images",
@@ -19,8 +23,18 @@ param(
   # The torrent's other details tabs too ("peers", "trackers", "pieces", "general"), each
   # as progress-torrent-<tab>.png (/show progress:<tab>).
   [string[]]$TorrentTabs = @(),
-  # Dark mode (Windows' app mode must be dark too, as MDM follows it); the same file names.
-  [switch]$Dark
+  # Dark mode (View → Always dark, whatever Windows' own mode); the same file names, or with
+  # -Suffix ("-dark") after each.
+  [switch]$Dark,
+  [string]$Suffix = "",
+  # A yt-dlp.exe to use instead of your own MDM's (its tools folder): on a machine without MDM
+  # (GitHub's runner, docs-shots.yml).
+  [string]$YtDlp = "",
+  # The run's temporary folder (its path shows in the torrent's window); default
+  # target\progress-shots in this checkout.
+  [string]$Work = "",
+  # Where the windows open instead of far off the screens (MDM_OFFSCREEN_AT, as docs-shots.ps1).
+  [string]$At = ""
 )
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
@@ -29,7 +43,7 @@ $exe = Join-Path $bin "misterdownloadmanager.exe"
 $cli = Join-Path $bin "misterdownloadmanager-cli.exe"
 $out = if ([IO.Path]::IsPathRooted($OutDir)) { $OutDir } else { Join-Path $root $OutDir }
 # Under the repository (ignored target/): the temp folder's path names the user.
-$work = Join-Path $root "target\progress-shots"
+$work = if ($Work) { $Work } else { Join-Path $root "target\progress-shots" }
 Add-Type @"
 using System; using System.Text; using System.Collections.Generic; using System.Runtime.InteropServices;
 public static class PS2 {
@@ -74,13 +88,15 @@ function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$pre
   $list = [ordered]@{
     next_id = 2; version = 2; items = @($item)
     settings = [ordered]@{
-      language = "en"; language_asked = $true; helpers_asked = $true; extension_never_ask = $true; dark_mode_support = [bool]$Dark; category_dirs = $dirs
+      language = "en"; language_asked = $true; helpers_asked = $true; extension_never_ask = $true
+      dark_mode_support = [bool]$Dark; always_dark = [bool]$Dark; update_check = $false; category_dirs = $dirs
     }
   }
   if ($prepare) { & $prepare $dir }
   [IO.File]::WriteAllText("$dir\data\downloads.json", ($list | ConvertTo-Json -Depth 8))
   $env:MDM_DATA_DIR = "$dir\data"
   $env:MDM_OFFSCREEN = "1"
+  if ($At) { $env:MDM_OFFSCREEN_AT = $At }
   $app = Start-Process -PassThru $exe
   try {
     Start-Sleep 3
@@ -96,26 +112,26 @@ function Scenario([string]$name, [hashtable]$item, [int]$wait, [scriptblock]$pre
     if (-not $title) { throw "${name}: no progress window (" + (([PS2]::Of([uint32]$app.Id)) -join " | ") + ")" }
     # Its title starts with the percentage, which changes: match what follows it.
     $pattern = [WildcardPattern]::Escape($title) -replace '^\d+(\.\d+)?% ', '*'
-    $file = Join-Path $out "progress-$name.png"
+    $file = Join-Path $out "progress-$name$Suffix.png"
     for ($try = 0; $try -lt 20; $try++) {
       Start-Sleep -Milliseconds 1500
       & "$PSScriptRoot\cap-own.ps1" -ProcessId $app.Id -Title $pattern -Out $file | Out-Null
       if (-not (Blank $file)) { break }
     }
-    "  progress-$name.png  ($title)"
+    "  progress-$name$Suffix.png  ($title)"
     foreach ($tab in $tabs) {
       & $exe /show "progress:$tab"
-      $file = Join-Path $out "progress-$name-$tab.png"
+      $file = Join-Path $out "progress-$name-$tab$Suffix.png"
       for ($try = 0; $try -lt 20; $try++) {
         Start-Sleep -Milliseconds 1500
         & "$PSScriptRoot\cap-own.ps1" -ProcessId $app.Id -Title $pattern -Out $file | Out-Null
         if (-not (Blank $file)) { break }
       }
-      "  progress-$name-$tab.png"
+      "  progress-$name-$tab$Suffix.png"
     }
   } finally {
     Stop-Process -Id $app.Id -ErrorAction SilentlyContinue
-    Remove-Item Env:MDM_DATA_DIR, Env:MDM_OFFSCREEN -ErrorAction SilentlyContinue
+    Remove-Item Env:MDM_DATA_DIR, Env:MDM_OFFSCREEN, Env:MDM_OFFSCREEN_AT -ErrorAction SilentlyContinue
   }
 }
 
