@@ -6,6 +6,7 @@
 #   SHA256SUMS.txt, its notes from CHANGELOG.md (Help -> Check for updates sees it at once). The
 #   release waits for Windows and the extensions: a failed Linux or macOS build leaves those out.
 # - Run by hand (Actions -> Release -> Run workflow) it only builds and keeps them as artifacts.
+# - Once published, package-managers.yml can take it to WinGet and the AUR.
 # Code signing turns on by itself once these repository secrets exist:
 #   CODESIGN_PFX_BASE64  the certificate (.pfx), base64
 #   CODESIGN_PASSWORD    its password
@@ -337,3 +338,7 @@ jobs:
           # The website links to the latest published release: rebuild it now that the files are
           # there (a release made with this token starts no workflow by itself).
           gh workflow run pages.yml --ref main
+          # WinGet and the AUR (package-managers.yml).
+          if ("${{ vars.WINGET_SUBMIT }}" -eq "true" -or "${{ vars.AUR_SUBMIT }}" -eq "true") {
+            gh workflow run package-managers.yml --ref main -f tag="${{ github.ref_name }}"
+          }

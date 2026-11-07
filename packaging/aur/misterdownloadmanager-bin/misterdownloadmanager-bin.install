@@ -1,0 +1,13 @@
+# Browser integration: MDM registers its native messaging host for the browsers it finds, in your
+# home folder, each time it starts (as from the .deb); nothing is written for everyone.
+
+post_install() {
+  echo "Start Mister Download Manager once to connect it to your browsers, then add its extension"
+  echo "(Firefox: addons.mozilla.org, Chrome and the others: the Chrome Web Store)."
+}
+
+post_remove() {
+  echo "Browser integration stays registered in each user's home folder; to remove it, delete"
+  echo "com.misterdownloadmanager.host.json from the browsers' NativeMessagingHosts folders"
+  echo "(~/.mozilla/native-messaging-hosts, ~/.config/<browser>/NativeMessagingHosts)."
+}

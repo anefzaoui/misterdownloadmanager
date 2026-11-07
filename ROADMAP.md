@@ -13,6 +13,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Ready for WinGet, the AUR and the Microsoft Store: the WinGet manifests, the AUR package
+  (`misterdownloadmanager-bin`, checked on Arch) and the Store listing are prepared; they are
+  listed after 0.3.0 ships
 - ✅ Download File Info's Preview, Options → Proxy's Get System and the Scheduler's "when done"
   drop-down fit their translated text (Russian and others), after #212
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192))
@@ -314,6 +317,12 @@ Everything below ships together, in one release, as version 0.3.0.
 - 🔍 Linux display issues ([#29](https://github.com/anefzaoui/misterdownloadmanager/issues/29))
 
 ## Planned
+
+### Where to get MDM
+
+- 📋 On WinGet (`winget install AhmedNefzaoui.MisterDownloadManager`) and the AUR
+  (`misterdownloadmanager-bin`), after 0.3.0 ships
+- 📋 In the Microsoft Store
 
 ### Downloads and windows
 

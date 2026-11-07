@@ -1,0 +1,45 @@
+# Maintainer: Ahmed Nefzaoui
+#
+# The release's .deb, unpacked: the same programs, desktop entry, icon and browser extension as
+# the .deb and .rpm (tools/installer/build-linux.sh), nothing compiled here. Kept in
+# github.com/anefzaoui/misterdownloadmanager under packaging/aur/; packaging/aur/update.sh moves
+# it to a new release.
+
+pkgname=misterdownloadmanager-bin
+_pkgname=misterdownloadmanager
+pkgver=0.2.4
+pkgrel=1
+pkgdesc='Download manager: several connections per file, resume, browser integration, videos and torrents'
+arch=('x86_64')
+url='https://misterdownloadmanager.com/'
+license=('GPL-3.0-or-later')
+# The programs link only glibc and libgcc; the window opens the rest at run time (eframe and
+# winit: OpenGL or Vulkan, Wayland or X11, the keyboard; the tray and the theme over D-Bus), so
+# namcap says these "may not be needed": they are.
+depends=('glibc' 'libgcc' 'dbus' 'hicolor-icon-theme' 'libglvnd' 'libx11' 'libxcb'
+  'libxcursor' 'libxi' 'libxkbcommon' 'libxkbcommon-x11' 'libxrender' 'wayland')
+optdepends=('xdg-desktop-portal: file and folder pickers, and the dark or light theme'
+  'zenity: file and folder pickers without a portal'
+  'xdg-utils: open downloaded files and their folders'
+  'org.freedesktop.secrets: keep Sites Logins passwords in the keyring'
+  'vulkan-icd-loader: View -> Draw with -> Vulkan'
+  'yt-dlp: use the system yt-dlp instead of the copy MDM downloads'
+  'ffmpeg: use the system ffmpeg instead of the copy MDM downloads')
+provides=("$_pkgname")
+conflicts=("$_pkgname")
+# Stripped by build-linux.sh (0.3.0 on; 0.2.4's keep their symbol table); the release's -symbols
+# zip holds the debug information.
+options=('!strip' '!debug')
+install="$pkgname.install"
+_suffix=-experimental
+_deb="MisterDownloadManager-$pkgver-linux-$CARCH$_suffix.deb"
+source_x86_64=("$_deb::https://github.com/anefzaoui/misterdownloadmanager/releases/download/v$pkgver/$_deb")
+sha256sums_x86_64=('3a752239b620c978d1e2e621d5cbdad496ce565fa0a66bbc074a958e620abb0f')
+
+package() {
+  # makepkg has unpacked the .deb (an ar archive) into control.tar.* and data.tar.*.
+  bsdtar -xf data.tar.* -C "$pkgdir" --no-same-owner
+  chmod -R u=rwX,go=rX "$pkgdir/usr/share"
+  install -d "$pkgdir/usr/share/licenses/$pkgname"
+  ln -s "/usr/share/doc/$_pkgname/ATTRIBUTION.md" "$pkgdir/usr/share/licenses/$pkgname/ATTRIBUTION.md"
+}

@@ -126,6 +126,20 @@ help make them as solid as the Windows version.
 | `...-linux-x86_64-experimental.rpm` | Fedora, openSUSE, RHEL. |
 | `...-linux-x86_64-experimental.tar.gz` | The plain programs, for any distro. |
 
+### Install with a package manager (coming with 0.3.0)
+
+Once 0.3.0 is out, MDM will be in these too. **They aren't live yet**: until then, take the files
+above.
+
+| Where | How |
+| --- | --- |
+| **WinGet** (Windows 10 and 11) | `winget install AhmedNefzaoui.MisterDownloadManager` (for everyone: add `--scope machine`) |
+| **AUR** (Arch, Manjaro, EndeavourOS) | `yay -S misterdownloadmanager-bin`, or any AUR helper |
+| **Microsoft Store** | Later |
+
+WinGet runs the same installer as the download page; the AUR package holds the same files as
+the `.deb`.
+
 ## 🌍 In your language
 
 Every language Windows 11 offers, **86 in all**. MDM asks on its first start, and you can change

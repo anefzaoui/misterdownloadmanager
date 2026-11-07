@@ -1,0 +1,142 @@
+# WinGet and the AUR (packaging/README.md).
+# - On a pull request that changes packaging/: checks the WinGet manifests (winget validate) and
+#   builds the AUR package from its release with namcap. Nothing is sent anywhere.
+# - Run for a release (release.yml's publish job starts it, or by hand with the tag): the
+#   winget-pkgs pull request and the AUR package. Off by default. "Dry run" builds both and
+#   sends neither.
+name: Package managers
+
+on:
+  pull_request:
+    paths:
+      - "packaging/**"
+      - ".github/workflows/package-managers.yml"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The published release, e.g. v0.3.0"
+        required: true
+      dry_run:
+        description: "Build and check only: open no pull request, push nothing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  WINGET_ID: AhmedNefzaoui.MisterDownloadManager
+  KOMAC_VERSION: 2.17.2
+  KOMAC_SHA256: b03b020eec98acfb0b53e284a6e21815b884be33de6785b97e7a120f0e748966
+
+jobs:
+  winget-check:
+    if: github.event_name == 'pull_request'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: winget validate
+        shell: pwsh
+        run: |
+          # The runner's winget is older than the manifests' schema (1.11 knows up to 1.10, and
+          # warns): the latest one.
+          Install-Module Microsoft.WinGet.Client -Force -Scope CurrentUser -Repository PSGallery
+          Repair-WinGetPackageManager -Latest -Force
+          winget --version
+          $dirs = Get-ChildItem packaging/winget/manifests -Recurse -Filter *.installer.yaml | ForEach-Object DirectoryName
+          foreach ($d in $dirs) {
+            winget validate --manifest $d
+            if ($LASTEXITCODE) { throw "winget validate failed: $d" }
+          }
+
+  aur-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the package from its release, and namcap
+        run: |
+          pacman -Syu --noconfirm --needed namcap
+          useradd -m builder
+          cp -r packaging/aur /home/builder/aur
+          chown -R builder /home/builder/aur
+          v=$(sed -n 's/^pkgver=//p' packaging/aur/misterdownloadmanager-bin/PKGBUILD)
+          # The committed checksum and .SRCINFO match the release they name.
+          su builder -c "cd ~/aur && bash update.sh $v && cd misterdownloadmanager-bin && makepkg --nodeps --noconfirm && namcap PKGBUILD *.pkg.tar.zst"
+          diff -u packaging/aur/misterdownloadmanager-bin/PKGBUILD /home/builder/aur/misterdownloadmanager-bin/PKGBUILD
+          diff -u packaging/aur/misterdownloadmanager-bin/.SRCINFO /home/builder/aur/misterdownloadmanager-bin/.SRCINFO
+
+  winget:
+    if: >-
+      github.event_name == 'workflow_dispatch' && (vars.WINGET_SUBMIT == 'true' || inputs.dry_run)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Komac
+        run: |
+          f=komac-$KOMAC_VERSION-x86_64-unknown-linux-gnu.tar.gz
+          curl -fsSLO "https://github.com/russellbanks/Komac/releases/download/v$KOMAC_VERSION/$f"
+          echo "$KOMAC_SHA256  $f" | sha256sum -c -
+          tar -xzf "$f" komac
+
+      # Komac reads the last version in winget-pkgs and puts the new installer in its place (its
+      # hash, both scopes and the ProductCode read from the installer).
+      - name: The winget-pkgs pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.WINGET_TOKEN || github.token }}
+          TAG: ${{ inputs.tag }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          KOMAC_CREATED_WITH: "misterdownloadmanager's package-managers workflow"
+        run: |
+          v="${TAG#v}"
+          url="https://github.com/${{ github.repository }}/releases/download/v$v/MisterDownloadManager-$v-setup.exe"
+          notes="https://github.com/${{ github.repository }}/releases/tag/v$v"
+          if [ "$DRY_RUN" = "true" ]; then
+            ./komac update "$WINGET_ID" --version "$v" --urls "$url" --release-notes-url "$notes" --dry-run
+          else
+            ./komac update "$WINGET_ID" --version "$v" --urls "$url" --release-notes-url "$notes" --submit
+          fi
+
+  aur:
+    if: >-
+      github.event_name == 'workflow_dispatch' && (vars.AUR_SUBMIT == 'true' || inputs.dry_run)
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: PKGBUILD and .SRCINFO for the release, built and checked
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          pacman -Syu --noconfirm --needed git openssh namcap
+          useradd -m builder
+          cp -r packaging/aur /home/builder/aur
+          chown -R builder /home/builder/aur
+          su builder -c "cd ~/aur && bash update.sh $TAG && cd misterdownloadmanager-bin && makepkg --nodeps --noconfirm && namcap PKGBUILD *.pkg.tar.zst"
+
+      - name: Push to the AUR
+        if: ${{ !inputs.dry_run }}
+        env:
+          TAG: ${{ inputs.tag }}
+          AUR_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+        run: |
+          [ -n "$AUR_KEY" ] || { echo "::error::no AUR key"; exit 1; }
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$AUR_KEY" > ~/.ssh/aur
+          chmod 600 ~/.ssh/aur
+          ssh-keyscan -t ed25519 aur.archlinux.org > ~/.ssh/known_hosts 2>/dev/null
+          ssh-keygen -lf ~/.ssh/known_hosts | grep -q "SHA256:RFzBCUItH9LZS0cKB5UE6ceAYhBD5C8GeOBip8Z11+4" ||
+            { echo "::error::aur.archlinux.org's host key isn't the published one"; exit 1; }
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/aur -o IdentitiesOnly=yes"
+          git clone ssh://aur@aur.archlinux.org/misterdownloadmanager-bin.git aur-repo
+          src=/home/builder/aur/misterdownloadmanager-bin
+          cp "$src/PKGBUILD" "$src/.SRCINFO" "$src/misterdownloadmanager-bin.install" aur-repo/
+          cd aur-repo
+          git add PKGBUILD .SRCINFO misterdownloadmanager-bin.install
+          if git diff --cached --quiet; then echo "The AUR has this version already."; exit 0; fi
+          git -c user.name="Ahmed Nefzaoui" -c user.email="${{ vars.AUR_EMAIL || 'anefzaoui@users.noreply.github.com' }}" \
+            commit -m "Mister Download Manager ${TAG#v}"
+          git push origin HEAD:master

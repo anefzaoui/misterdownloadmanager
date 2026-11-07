@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.12.0.schema.json
+
+PackageIdentifier: AhmedNefzaoui.MisterDownloadManager
+PackageVersion: 0.2.4
+Platform:
+- Windows.Desktop
+MinimumOSVersion: 10.0.0.0
+InstallerType: inno
+InstallModes:
+- interactive
+- silent
+- silentWithProgress
+UpgradeBehavior: install
+Protocols:
+- magnet
+FileExtensions:
+- torrent
+Dependencies:
+  PackageDependencies:
+  - PackageIdentifier: Microsoft.VCRedist.2015+.x64
+ProductCode: '{667DB4D8-32C2-4487-A0E5-5825BF29778C}_is1'
+ReleaseDate: 2026-11-01
+AppsAndFeaturesEntries:
+- DisplayName: Mister Download Manager
+  Publisher: Ahmed Nefzaoui
+  ProductCode: '{667DB4D8-32C2-4487-A0E5-5825BF29778C}_is1'
+Installers:
+- Architecture: x64
+  Scope: user
+  InstallerUrl: https://github.com/anefzaoui/misterdownloadmanager/releases/download/v0.2.4/MisterDownloadManager-0.2.4-setup.exe
+  InstallerSha256: C33253EED7A1054BC4E99944149DADE09C7B414BF5AFF3471B7CE35817AE9641
+  InstallerSwitches:
+    Custom: /CURRENTUSER
+  InstallationMetadata:
+    DefaultInstallLocation: '%LocalAppData%\Programs\Mister Download Manager'
+- Architecture: x64
+  Scope: machine
+  InstallerUrl: https://github.com/anefzaoui/misterdownloadmanager/releases/download/v0.2.4/MisterDownloadManager-0.2.4-setup.exe
+  InstallerSha256: C33253EED7A1054BC4E99944149DADE09C7B414BF5AFF3471B7CE35817AE9641
+  InstallerSwitches:
+    Custom: /ALLUSERS
+  ElevationRequirement: elevatesSelf
+  InstallationMetadata:
+    DefaultInstallLocation: '%ProgramFiles%\Mister Download Manager'
+ManifestType: installer
+ManifestVersion: 1.12.0

@@ -6,3 +6,5 @@ tools/installer/languages/*.isl text eol=crlf
 crates/*/tests/fixtures/** -text
 # Scripts that run inside Linux (mdm-lab copies them in from a Windows checkout).
 tools/lab/wsl/*.sh text eol=lf
+# The AUR package's files run on Arch (makepkg reads them as they are).
+packaging/aur/** text eol=lf

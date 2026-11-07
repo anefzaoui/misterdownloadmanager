@@ -5,7 +5,8 @@ name: CI
 # Pushes to main only: a pull request's branch is tested once as the pull request (a bare push:
 # ran everything twice), and a release tag's commit was already tested on main.
 # A change to the website or the docs alone builds nothing here (the app embeds none of it; the
-# Website workflow builds the site). The app's own catalogs, i18n/*.tsv, still run everything.
+# Website workflow builds the site), nor one to packaging/ alone (package-managers.yml checks
+# it). The app's own catalogs, i18n/*.tsv, still run everything.
 on:
   push:
     branches: [main]
@@ -14,6 +15,7 @@ on:
       - "tools/website/**"
       - "i18n/site/**"
       - "docs/**"
+      - "packaging/**"
       - "**/*.md"
   pull_request:
     paths-ignore:
@@ -21,6 +23,7 @@ on:
       - "tools/website/**"
       - "i18n/site/**"
       - "docs/**"
+      - "packaging/**"
       - "**/*.md"
 
 # A newer commit on a pull request makes its older run moot: cancel it (main runs to the end).
