@@ -13,12 +13,13 @@ The website's primary visitor is a Windows user who uses, or used, Internet Down
 that works the same way. Many are not technical. Many arrive by searching "IDM alternative" in
 their own language: the site is published in 21 languages, Arabic and Persian right to left.
 
-Secondary visitors: Mac and Linux users (experimental builds), people reading the help pages
+Secondary visitors: Linux users (supported, tested on GNOME, KDE Plasma, Xfce and Cinnamon), Mac
+users (experimental builds), people reading the help pages
 while using the app, and contributors (code, translations, bug reports) arriving from GitHub.
 
 ## Product Purpose
 
-Mister Download Manager (MDM) is a free, open-source (GPL-3.0) download manager for Windows,
+Mister Download Manager (MDM) is a free, open-source (GPL-3.0) download manager for Windows and Linux,
 laid out the way IDM users expect: same windows, menus and workflow, rebuilt from scratch in
 Rust. The website's job is to get the right visitor to download it with confidence, then to
 help them use it (help pages, FAQ, tutorials).
@@ -39,8 +40,8 @@ maker (Tonec), or as a crack or copy of it.
 ## Operating Context
 
 - Visitors compare against IDM, often with IDM installed or remembered.
-- Download is from GitHub Releases: a Windows installer, a portable zip, a plain zip; macOS and
-  Linux builds marked experimental. The browser extension ships for Chrome, Edge, Brave, Opera,
+- Download is from GitHub Releases: a Windows installer, a portable zip, a plain zip; Linux
+  packages (.deb, .rpm, AppImage, tar.gz); macOS builds marked experimental. The browser extension ships for Chrome, Edge, Brave, Opera,
   Vivaldi and Firefox.
 - Help pages are read alongside the running app, often to find a menu or setting.
 - Contact and support happen on GitHub only (issues, discussions); there is no email or form.
@@ -74,7 +75,7 @@ maker (Tonec), or as a crack or copy of it.
 2. Prove, don't claim: every speed statement points to the benchmark; every image is the real app.
 3. Free means free: no dark patterns, no upsell, no data collection beyond the visit counter.
 4. Every language is first-class: no page reads as a translation of an English layout.
-5. Honest about limits: experimental builds, missing features and IDM's own strengths are stated
+5. Honest about limits: experimental builds (macOS), what Linux lacks yet, missing features and IDM's own strengths are stated
    plainly.
 
 ## Accessibility & Inclusion

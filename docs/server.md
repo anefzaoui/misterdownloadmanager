@@ -108,7 +108,7 @@ an address: `misterdownloadmanager /d https://example.com/file.zip`.
 
 ## Send downloads from your browser
 
-In the browser extension's menu, **Send downloads to → Another MDM**: type the server's address,
+In the browser extension's menu, **Send downloads to → Another Mister Download Manager (a server)**: type the server's address,
 open it once in that browser to accept its certificate, then enter a pairing code (`pair`
 above). Downloads the extension catches, and **Download with Mister Download Manager** on a link,
 then go to the server instead of this computer. The browser's cookies are not sent to the server:

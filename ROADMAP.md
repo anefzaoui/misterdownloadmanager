@@ -7,9 +7,9 @@ issue, where the details and the discussion are. Released changes are in
 
 ✅ done, not released yet · 🔄 being built · 📋 planned · 🔍 looking into it
 
-## The next release: 0.3.0
+## The next release
 
-Everything below ships together, in one release, as version 0.3.0.
+Everything below ships together, in the next release.
 
 ### Done
 
@@ -88,7 +88,7 @@ Everything below ships together, in one release, as version 0.3.0.
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))
 - ✅ When the browser keeps a download, MDM says why: each one is in MDM's log with the setting
   that decided, and the extension's button shows the last one. The extension from the Chrome Web
-  Store needs MDM 0.3.0 (0.2.x serves only the copy in MDM's folder)
+  Store needs this release (0.2.x serves only the copy in MDM's folder)
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ More file types taken from the browser by default: DMG, PKG, DEB, RPM, APPIMAGE, MSIX, APPX,
   CAB, JAR, XZ, ZST, WEBM, FLAC, OPUS and others; a list never edited gains them
@@ -365,20 +365,33 @@ Everything below ships together, in one release, as version 0.3.0.
   [Themes](https://misterdownloadmanager.com/themes.html) page with every built-in theme, light and
   dark, and how to make, try and share your own
   ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260))
-
-### Being built
-
-- 🔄 Themes ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): today's look stays the default. Every colour, size and spacing now
+- ✅ Themes ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45)): today's look stays the default. Every colour, size and spacing now
   comes from the chosen theme (the classic look pixel for pixel the same); **View → Theme** with
   Classic, Native (follows the system's accent and contrast on Windows, Linux and macOS) and High
   contrast; style themes with their own control shapes, a drawn title bar on Windows and their own
-  icons: Metro, Adwaita, Breeze, Luna, Aero and Aqua (all six in). Next: theme files can be added
-  by anyone, and Base16 and pywal schemes imported
-- 🔄 Linux supported like Windows, no longer experimental: every change is now checked on Ubuntu
-  (GNOME) as well as Windows, then on KDE, Cinnamon and Xfce ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
-- 🔄 Before the release: every screenshot taken again on Windows and Linux (smaller files, WebP),
-  and every page of the docs, the README and the website brought up to date
+  icons: Metro, Adwaita, Breeze, Luna, Aero and Aqua; and theme files anyone can make, try and
+  share, in TOML or JSON, built on any theme (`inherits`), with their own icons
+  ([the guide](docs/themes.md))
+- ✅ Linux, no longer experimental: every change is checked on Ubuntu (GNOME) as well as Windows,
+  and on KDE Plasma, Cinnamon and Xfce; Wayland sessions (through XWayland, menus under their
+  titles on sway too); the .deb and .rpm installed in clean Ubuntu, Debian and Fedora systems, the
+  AppImage and the tar.gz; the tray, Dark Mode support and Launch on startup on all four desktops;
+  the Snap Firefox, Google Chrome and Brave reaching MDM
+  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)). The release files keep
+  "-experimental" in their names for now
+- ✅ Every screenshot taken again on Windows and Linux (smaller files, WebP), and every page of the
+  docs, the README and the website brought up to date
   ([#186](https://github.com/anefzaoui/misterdownloadmanager/issues/186))
+
+### Being built
+
+- 🔄 Themes: Base16 and pywal colour schemes imported as themes
+  ([#45](https://github.com/anefzaoui/misterdownloadmanager/issues/45))
+- 🔄 Linux, what's left ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)):
+  screen readers (Orca) reading MDM's windows; browsers installed as a Flatpak (Firefox from
+  Flathub may reach MDM through the desktop, as the Snap does: to check); native Wayland windows
+  (`MDM_WAYLAND=1`) placing their menus, which needs popup windows the window library doesn't
+  have yet, so XWayland stays the default; Vulkan as the default renderer (below)
 
 ### Bugs being looked into
 

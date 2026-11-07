@@ -45,7 +45,7 @@ When none of this helps, the browser keeps the download, so nothing is lost. The
 - MDM must be running at that time. Closing the window is fine (it stays in the tray); **Tasks → Exit** is not.
 - Did you click **Apply** after setting the time?
 - **Daily** starts only on the ticked days. **Once at** starts only on that date.
-- A computer that is asleep doesn't run anything until it wakes.
+- A computer that is asleep doesn't run anything until it wakes, unless the queue has **Wake the computer to run this queue** ticked (on Windows it needs **Allow wake timers** in the power plan; the Scheduler says when it's off). See [Wake the computer to run a queue](queues-and-scheduler.md#wake-the-computer-to-run-a-queue).
 
 ## A video won't download
 
@@ -83,19 +83,27 @@ On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with Ope
 - If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and **View → Draw with** says so and why. Choosing it again tries it again at the next start.
 - On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (`mesa-vulkan-drivers` on Ubuntu and Debian, `vulkan-radeon` or `vulkan-intel` on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.
 - If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.
-- If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.
+- If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself. Lost twice in 10 minutes, it goes back to OpenGL, and **View → Draw with** says why.
 - Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.
-- A freeze or crash report says which one was drawing: include it when you report a problem.
+- A freeze or crash report says which one was drawing: include it when you report a problem. A freeze report also says whether MDM was busy, waiting, or hardly ran at all (a computer too busy to run it); see [Crash reports](crash-reports.md).
 
 ## The setup or MDM won't start
 
 - If Windows says **Windows protected your PC**, click **More info**, check that the file is `MisterDownloadManager-<version>-setup.exe` from the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page, then click **Run anyway**.
 - MDM runs only once. Starting it again brings the running copy's window to the front. If nothing appears, look for MDM's icon in the notification area.
+- **Linux, from the AppImage or the tar.gz:** if the system lacks a library MDM's window needs (such as `libxkbcommon-x11`), MDM names it on the terminal and in a message box, with the command that installs it (`sudo apt install libxkbcommon-x11-0`, or your distribution's). The .deb and .rpm bring these libraries themselves. In a Wayland session MDM opens its window on Wayland instead.
+- **Linux, the first start is slow:** MDM looks up the system's fonts for every script once, all together, while it starts (fontconfig); a first start on a busy computer can take a few seconds more. Install your distribution's Noto fonts if some scripts or symbols show as boxes.
+
+## HTTPS downloads fail with "no certificates" (Linux)
+
+A minimal Linux system (often with the AppImage, the tar.gz or a build from source) may have no CA certificates, which MDM needs to check a secure server. Plain `http://` and `ftp://` downloads still work; each `https://` or `ftps://` one stops at once saying the computer has no certificates to check the server with. Install the `ca-certificates` package (`sudo apt install ca-certificates`, `sudo dnf install ca-certificates`), then resume the download. The .deb and .rpm bring it.
 
 ## Where your data is
 
 - Installed or the plain zip: `%APPDATA%\misterdownloadmanager`. The list and settings are in `downloads.json`.
 - Portable: the `data` folder next to `misterdownloadmanager.exe`.
+- Linux: `~/.local/share/misterdownloadmanager`; a Mac: `~/Library/Application Support/misterdownloadmanager`.
+- Passwords (Sites Logins, the proxy, debrid accounts) are in the system's keychain, not in `downloads.json`; see [Options → Sites Logins](options.md#sites-logins).
 
 To back up your list, quit MDM (**Tasks → Exit**) and copy `downloads.json`.
 

@@ -25,7 +25,9 @@ In Arabic, Hebrew, Persian, Urdu and Uyghur the whole window is mirrored: the me
 
 ## Numbers and dates
 
-Numbers and the dates in the list (**Last Try Date**, **Added**) follow the region set in Windows (**Settings → Time & language → Language & region → Regional format**), so digits, separators and the date order look the way you are used to. In English, MDM writes them as IDM does (`Oct 30 21:44:12 2026`).
+**Numbers** (counts, sizes, speeds, percentages and the list's columns) are written the way the interface language writes them, whatever the Windows region: German `10.200` and `1,50 MB`, French `10 200`, Hindi `1,00,000`. When your system's region is in that same language, its own way wins (Swiss German `10’200`, or a separator you set in Windows). In English, MDM writes plain digits, as IDM does (`10200`, `1.50 MB`).
+
+**Dates and times** in the list (**Last Try Date**, **Added**) and the Scheduler follow the system's region by default (on Windows **Settings → Time & language → Language & region → Regional format**; on macOS and Linux, your language's usual way), or your own date order, clock and first day of the week in [Options → Regional](options.md#regional). In English the list keeps IDM's own date text (`Oct 30 21:44:12 2026`).
 
 A translation longer than the English ends in **...** where it doesn't fit; point at it to read it whole.
 
@@ -44,11 +46,11 @@ context	source	translation
 ```
 
 - **source** is the English text; leave it as it is. Change only **translation**.
-- A row with a `#, machine` line above it was translated by machine. When you have checked it (and corrected it if needed), delete that `#, machine` line. From then on the row is yours: machine translation never replaces it.
+- A row with a `#, machine` line above it was translated by machine. When you have checked it (and corrected it if needed), delete that `#, machine` line. From then on the row is yours: machine translation never replaces it, and a check on every pull request makes sure no change drops it or marks it machine again.
 - Lines starting with `#.` are notes for translators: where the text appears and what it means.
 - Keep `{name}` slots, such as `{n}` or `{file}`, exactly as they are. You can move them within the sentence.
 - `&` marks the keyboard letter of a menu item or button. Keep one `&` before a letter of your translation.
-- `tools/i18n/glossary.tsv` explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language.
+- `tools/i18n/glossary.tsv` explains the key terms (download, queue, category, connection, resume…). Translate each one the same way everywhere, the way Windows says it in your language. `i18n/style/<code>.md` is each language's style guide: how it writes commands, questions and labels, and the terms reviewers settled.
 
 To send your changes:
 

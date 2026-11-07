@@ -42,7 +42,8 @@ A picture's own address (one ending in `.jpg` or `.png`) downloads as a file, as
 - **Where it comes from:** MDM downloads gallery-dl from its releases on Codeberg. It accepts it only when the release's checksum list is signed by gallery-dl's author's key, pinned in MDM, and the program matches that list. It keeps the previous version and never goes back to an older one. On Windows and on Linux (x86-64) MDM installs it; on macOS, install it with Homebrew (`brew install gallery-dl`) or pip and choose it in **Helpers...**.
 - **Your own copy:** **Helpers...** (in the gallery window or the video window) lists yt-dlp, ffmpeg and gallery-dl, and **Use another program...** takes your own copy of each instead of MDM's.
 - **How it asks:** gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.
-- **Network adapter:** like yt-dlp, gallery-dl can't be held to one network adapter. While one is chosen (**Options → Proxy / Socks → Network adapter**), galleries don't start.
+- **Network adapter:** while one is chosen (**Options → Proxy / Socks → [Network adapter](options.md#proxy--socks)**), galleries go through it too, as video pages do: MDM gives gallery-dl a proxy of its own on this computer, opens every connection through the adapter and looks the names up with the DNS you chose. When the adapter disconnects, the gallery stops with the other downloads; nothing goes out through your normal connection.
+- **The gallery-dl of your Linux distribution:** chosen in **Helpers...**, the one your distribution ships works too, from 1.20 (Ubuntu 22.04) on: MDM passes only the options that version knows. One older than that (Debian 11's 1.17) is refused, saying which version MDM needs.
 
 ## On the command line
 
