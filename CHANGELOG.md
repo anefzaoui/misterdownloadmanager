@@ -29,8 +29,8 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   queues, Scheduler and browser hand-overs running; its icon, or starting MDM again, shows the
   window as before. The same on Linux and macOS; where no notification area shows MDM's icon
   (some Linux desktops), it starts minimized, and the option's tooltip says so (it waits for
-  one up to 20 seconds, its window hidden: a desktop's can come up after MDM at sign-in). The startup entry
-  now passes `/startup` (new on the [command line](docs/command-line.md)); an entry written by
+  one up to 30 seconds after its icon is made, its window hidden: a desktop's can come up after
+  MDM at sign-in). The startup entry now passes `/startup` (new on the [command line](docs/command-line.md)); an entry written by
   an earlier version or its installer is written again at the next start, and the installer
   writes the new one.
 - **Sign-ins in the system's keychain**

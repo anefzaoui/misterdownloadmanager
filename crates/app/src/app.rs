@@ -274,9 +274,11 @@ fn next_trim(done: u32) -> Duration {
 
 /// Started with the session (#226), the window waits hidden until the notification area is
 /// known: MDM's own tray icon created and a tray there to show it. A desktop's tray can come
-/// after MDM (GNOME's AppIndicator extension at sign-in), and MDM's icon after its own first
-/// look: this long they are waited for, the window still hidden, before it shows minimized.
-const TRAY_GRACE: Duration = Duration::from_secs(20);
+/// after MDM (GNOME's AppIndicator extension at sign-in answered 11.5 s after MDM's icon, on
+/// the lab's VM), and MDM's icon after its own first look: this long they are waited for,
+/// counted from MDM's icon (from the start while it has none), the window still hidden,
+/// before it shows minimized.
+const TRAY_GRACE: Duration = Duration::from_secs(30);
 
 /// Where a start with the session (#226) leaves the window, decided here alone.
 #[derive(Debug, PartialEq)]
@@ -289,12 +291,13 @@ enum AtLogin {
     Minimize,
 }
 
-/// `since` the start: whether MDM's tray `icon` was created and a tray `host` shows it (Windows,
-/// macOS: always one; Linux: a StatusNotifierWatcher, #59).
-fn at_login(since: Duration, icon: bool, host: bool) -> AtLogin {
-    if icon && host {
+/// `since` the start, and since MDM's tray `icon` was created (None: not yet): whether a tray
+/// `host` shows it (Windows, macOS: always one; Linux: a StatusNotifierWatcher, #59). The
+/// grace counts from the icon, so a slow start of MDM's own doesn't eat the desktop's time.
+fn at_login(since: Duration, icon: Option<Duration>, host: bool) -> AtLogin {
+    if icon.is_some() && host {
         AtLogin::Tray
-    } else if since >= TRAY_GRACE {
+    } else if icon.unwrap_or(since) >= TRAY_GRACE {
         AtLogin::Minimize
     } else {
         AtLogin::Wait
@@ -489,8 +492,10 @@ pub struct App {
     trim_when_hidden: Option<Instant>,
     trims_since_hidden: u32,
     /// Started with the session, the window hidden until the notification area is known
-    /// (#226, [`at_login`]): when, and when it was last looked at.
+    /// (#226, [`at_login`]): when, when MDM's tray icon was first seen, and when it was last
+    /// looked at.
     at_login: Option<Instant>,
+    at_login_icon: Option<Instant>,
     at_login_checked: Option<Instant>,
     exiting: bool,
     /// Clipboard watching (Options → General): the text last seen (outer None: not looked
@@ -949,6 +954,7 @@ impl App {
                 .then(|| Instant::now() + next_trim(0)),
             trims_since_hidden: 0,
             at_login: (start == crate::Start::Session).then(Instant::now),
+            at_login_icon: None,
             at_login_checked: None,
             exiting: false,
             confirm_delete: None,
@@ -2572,9 +2578,12 @@ impl App {
             return;
         }
         self.at_login_checked = Some(Instant::now());
-        let icon = self.tray.is_some();
+        if self.tray.is_some() && self.at_login_icon.is_none() {
+            self.at_login_icon = Some(Instant::now());
+        }
+        let icon = self.at_login_icon.map(|t| t.elapsed());
         let since = started.elapsed();
-        match at_login(since, icon, icon && self.tray_shown()) {
+        match at_login(since, icon, icon.is_some() && self.tray_shown()) {
             AtLogin::Wait => {}
             AtLogin::Tray => {
                 tracing::info!(
@@ -2585,8 +2594,9 @@ impl App {
             }
             AtLogin::Minimize => {
                 tracing::info!(
-                    "started with the session: no notification area within {} s: minimized",
-                    TRAY_GRACE.as_secs()
+                    "started with the session: no notification area within {} s of the icon: minimized ({} ms on)",
+                    TRAY_GRACE.as_secs(),
+                    since.as_millis()
                 );
                 self.at_login = None;
                 self.trim_when_hidden = None;
@@ -7875,19 +7885,30 @@ mod at_login_tests {
     #[test]
     fn the_window_waits_for_the_tray_then_stays_there_or_shows_minimized() {
         let s = Duration::from_secs;
+        let icon = |d| Some(s(d));
         // The tray first (Windows, KDE): MDM's icon registered, the window stays hidden.
-        assert_eq!(at_login(s(0), true, true), AtLogin::Tray);
+        assert_eq!(at_login(s(0), icon(0), true), AtLogin::Tray);
         // The decision first (XFCE: MDM looked before its own icon had registered; GNOME: the
-        // AppIndicator extension's tray came 2 s after MDM): waited for, hidden, then the tray.
-        assert_eq!(at_login(s(0), false, false), AtLogin::Wait);
-        assert_eq!(at_login(s(0), true, false), AtLogin::Wait);
-        assert_eq!(at_login(s(2), true, true), AtLogin::Tray);
-        assert_eq!(at_login(TRAY_GRACE - s(1), true, true), AtLogin::Tray);
+        // AppIndicator extension's tray came 11.5 s after MDM's icon): waited for, hidden, then
+        // the tray.
+        assert_eq!(at_login(s(0), None, false), AtLogin::Wait);
+        assert_eq!(at_login(s(0), icon(0), false), AtLogin::Wait);
+        assert_eq!(at_login(s(13), icon(12), true), AtLogin::Tray);
+        assert_eq!(
+            at_login(s(60), TRAY_GRACE.checked_sub(s(1)), true),
+            AtLogin::Tray
+        );
+        // The grace counts from MDM's icon: a slow start of its own leaves the desktop its time.
+        assert_eq!(at_login(TRAY_GRACE + s(5), icon(5), false), AtLogin::Wait);
         // No tray within the grace period (a desktop without one, #59; Windows' taskbar not
         // there to take the icon): shown, minimized.
-        assert_eq!(at_login(TRAY_GRACE, true, false), AtLogin::Minimize);
-        assert_eq!(at_login(TRAY_GRACE, false, false), AtLogin::Minimize);
-        assert_eq!(at_login(s(60), false, true), AtLogin::Minimize);
+        assert_eq!(
+            at_login(TRAY_GRACE, Some(TRAY_GRACE), false),
+            AtLogin::Minimize
+        );
+        // No icon at all (the tray couldn't be made): the grace from the start.
+        assert_eq!(at_login(TRAY_GRACE, None, false), AtLogin::Minimize);
+        assert_eq!(at_login(s(60), None, true), AtLogin::Minimize);
     }
 }
 
