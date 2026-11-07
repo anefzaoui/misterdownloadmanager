@@ -427,7 +427,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   Cinnamon). Where it doesn't, as on XFCE, MDM stayed light under a dark theme. It now reads the
   theme the desktop gives its programs (a name such as Adwaita-dark, Mint-Y-Dark or Greybird-dark
   is dark), GNOME's own dark style setting when there is no portal, and GTK's settings with no
-  desktop at all, and it follows changes as they happen. The portal still comes first.
+  desktop at all, and it follows changes as they happen. The portal still comes first. A change
+  now shows at once too: the window waited for its next theme check, up to 20 s on a busy
+  machine, on every desktop.
 - **Menus without a black band across their top**
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
   Insider build (22635), every menu and submenu showed a black band a title bar tall across its
