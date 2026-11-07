@@ -140,9 +140,15 @@ pub fn main(args: Vec<String>) -> ExitCode {
     }
 
     let ctx = egui::Context::default();
-    let mut app =
-        crate::app::App::new(&ctx, rt.handle().clone(), commands, sink, loaded, crate::Start::Shown)
-            .headless(downloads);
+    let mut app = crate::app::App::new(
+        &ctx,
+        rt.handle().clone(),
+        commands,
+        sink,
+        loaded,
+        crate::Start::Shown,
+    )
+    .headless(downloads);
     let mut told = false;
     loop {
         let out = ctx.run_pass(egui::RawInput::default(), |ctx| app.tick(ctx));
