@@ -467,7 +467,8 @@ fn command_line(program: &str, args: &[&str]) -> Option<String> {
 }
 
 /// GNOME's `color-scheme`: prefer-dark or prefer-light; None for "default" (no preference).
-#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+// Linux only: the desktop theme fallback, and `xdgicons` (its INI reader) is built for Linux.
+#[cfg(target_os = "linux")]
 fn scheme_word(s: &str) -> Option<bool> {
     match s {
         "prefer-dark" => Some(true),
@@ -478,14 +479,16 @@ fn scheme_word(s: &str) -> Option<bool> {
 
 /// Is a GTK theme's name a dark one? A word of it (split at anything but letters and digits)
 /// is "dark", in any case: `Adwaita-dark`, `Adwaita:dark` (GTK_THEME's variant), `Mint-Y-Dark`.
-#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+// Linux only: the desktop theme fallback, and `xdgicons` (its INI reader) is built for Linux.
+#[cfg(target_os = "linux")]
 fn theme_name_dark(name: &str) -> bool {
     name.split(|c: char| !c.is_ascii_alphanumeric())
         .any(|word| word.eq_ignore_ascii_case("dark"))
 }
 
 /// GTK's `settings.ini`: `gtk-application-prefer-dark-theme`, else the theme's name.
-#[cfg_attr(not(target_os = "linux"), allow(dead_code))]
+// Linux only: the desktop theme fallback, and `xdgicons` (its INI reader) is built for Linux.
+#[cfg(target_os = "linux")]
 fn gtk_settings_dark(text: &str) -> Option<bool> {
     use crate::xdgicons::ini_value;
     let prefer = ini_value(text, "Settings", "gtk-application-prefer-dark-theme");
