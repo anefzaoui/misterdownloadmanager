@@ -1392,6 +1392,9 @@
 	In a queue	In a queue
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	In the categories: the selected category's menu	In the categories: the selected category's menu
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+	in the locked keyring	in the locked keyring
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 	Increase	Increase
@@ -1954,6 +1957,9 @@
 	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.	No peers yet. Few people may share this torrent, or a firewall, a VPN or the network may be blocking BitTorrent.
 #. text in the Options window
 	No proxy/socks	No proxy/socks
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 	No tracker added: it has them already	No tracker added: it has them already
@@ -2244,6 +2250,9 @@
 	Proxy / Socks	Proxy / Socks
 #. page title in the Options window
 	Proxy / socks configuration	Proxy / socks configuration
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+	proxy server	proxy server
 #. label in the Options window
 	Proxy server address	Proxy server address
 #. text in countries.rs
@@ -2580,6 +2589,15 @@
 #. button in the Options window
 #. button: sign in to the debrid service in the browser, by typing a code there
 	Sign in in the browser	Sign in in the browser
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+	Sign-ins and passwords are kept in the macOS keychain.	Sign-ins and passwords are kept in the macOS keychain.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Sign-ins and passwords are kept in the system keyring (Secret Service).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+	Sign-ins and passwords are kept in Windows Credential Manager.	Sign-ins and passwords are kept in Windows Credential Manager.
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 	Signed in as {user} ({state})	Signed in as {user} ({state})
@@ -3003,6 +3021,9 @@
 #. crash report window: the symbols couldn't be downloaded; the report still works
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).
 #. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.
+#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 	The system's DNS	The system's DNS
 #. text in whereis.rs
@@ -3078,6 +3099,12 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 	This needs ffmpeg	This needs ffmpeg
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -3431,6 +3458,9 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 	Windows allows wake timers only while plugged in	Windows allows wake timers only while plugged in
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 	Windows refused	Windows refused

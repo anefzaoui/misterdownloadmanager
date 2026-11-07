@@ -19,6 +19,9 @@ For downloads already in the list:
 
 The **Q** column now shows a queue icon for each of them.
 
+![Download File Info with Download Later ringed](images/help/overnight-later.webp)
+*Download Later puts it in a queue instead of starting it.*
+
 ## 2. Set the start time
 
 1. Click **Scheduler** on the toolbar (or **Downloads → Scheduler**).
@@ -27,7 +30,8 @@ The **Q** column now shows a queue icon for each of them.
 4. Choose **Daily** and tick the days, or **Once at** and pick a date.
 5. To stop in the morning whatever is left, tick **Stop download at** and set a time, for example 7:00:00 AM.
 
-![The Scheduler](images/scheduler.png)
+![The Scheduler's Schedule tab: Start download at, Once at or Daily, and Stop download at](images/help/overnight-start.webp)
+*1 the start time, 2 once or daily, 3 a stop time if you want one.*
 
 ## 3. Choose how many run at once
 
@@ -41,6 +45,9 @@ Back on the **Schedule** tab:
 
 - Tick **Turn off computer when done** and choose **Shut down**, **Sleep** or **Hibernate**. MDM shows a 30-second countdown first, so you can still cancel if you're at the computer.
 - Or tick **Exit Mister Download Manager when done**.
+
+![The Scheduler's choices for when the queue is done, Turn off computer when done among them](images/help/overnight-done.webp)
+*When the queue is done: open a file, quit MDM, or turn the computer off.*
 
 ## 5. Apply and leave MDM running
 

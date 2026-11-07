@@ -33,9 +33,23 @@ param(
   [string]$At = "",
   # The run's temporary folder, whose path shows in some windows (Add torrent's); default
   # target\docs-shots in this checkout. From a worktree, the main checkout's target keeps it short.
-  [string]$Work = ""
+  [string]$Work = "",
+  # Other shots than the built-in list, each "<name>=<what>" (the help pages' shot list,
+  # tools/shots/make.py): <what> is a /show argument (options:connection), "@main" (the main
+  # window), "@menu:<show argument>" (a menu: every window of ours, composed), or
+  # "@download:<path>" (Download File Info for the lab server's <path>, as a browser hands it),
+  # or "@complete:<path>" (the Download complete window once that small file is in).
+  # With -Torrent, "@torrent" is its Add torrent window. "a+b" runs /show a first, then shoots b
+  # ("theme:metro+@main").
+  [string[]]$Show = @(),
+  # Beside each picture, <name>.ui.json: its controls' names and places (ui-rects.ps1).
+  [switch]$Ui
 )
 $ErrorActionPreference = "Stop"
+# With -Show, its list instead of the built-in one (unless -Only names some of those too). From
+# `powershell -File`, a list comes as one string: split at its commas.
+$Show = @($Show | ForEach-Object { $_ -split "," } | Where-Object { $_ })
+if ($Show.Count -and $Only.Count -eq 0) { $Only = @("-") }
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $Exe = (Resolve-Path $Exe).Path
 $Server = (Resolve-Path $Server).Path
@@ -97,21 +111,41 @@ function Blank([string]$file) {
     return $true
   } finally { $bmp.Dispose() }
 }
-function Shot([int]$procId, [string]$title, [string]$name) {
+function Shot([int]$procId, [string]$title, [string]$name, [switch]$All) {
   # A progress window's title starts with its percentage, which changes as it downloads: match
   # what follows it. Wildcard characters in a title are taken literally.
   $title = [WildcardPattern]::Escape($title) -replace '^\d+(\.\d+)?% ', '*'
+  # -All: every window of ours composed (a menu over the main window), not one by its title.
+  $by = if ($All) { @{} } else { @{ Title = $title } }
   # A window off the screens can take a moment to paint: shot again until its client area isn't
   # a single colour (up to 10 s).
   $file = Join-Path $out "$name.png"
   for ($try = 0; $try -lt 20; $try++) {
     Start-Sleep -Milliseconds 500
-    & "$PSScriptRoot\cap-own.ps1" -ProcessId $procId -Title $title -Out $file | Out-Null
+    & "$PSScriptRoot\cap-own.ps1" -ProcessId $procId @by -Out $file | Out-Null
     if (-not (Blank $file)) { break }
+  }
+  if ($Ui) {
+    try { & "$PSScriptRoot\ui-rects.ps1" -ProcessId $procId @by -Out (Join-Path $out "$name.ui.json") | Out-Null }
+    catch { Write-Warning "${name}: no controls ($_)" }
   }
   "  $name.png  ($title)"
 }
 
+# MDM starts itself again when its renderer fails (a lost Direct3D device, renderer.rs): the
+# shots go on in the new copy, ours too (our program, started after this run with /updated).
+$started = Get-Date
+function Ours { Get-CimInstance Win32_Process -Filter "Name='$(Split-Path -Leaf $Exe)'" |
+  Where-Object { $_.ExecutablePath -eq $Exe -and $_.CreationDate -ge $started } }
+function Follow {
+  if (-not $script:app.HasExited) { return }
+  $n = @(Ours | Where-Object { $_.CommandLine -like "*/updated*" })[0]
+  if (-not $n) { throw "MDM ended" }
+  Write-Warning "MDM started again (pid $($n.ProcessId)); the shots go on there"
+  $script:app = Get-Process -Id $n.ProcessId
+  Start-Sleep 4
+  $script:main = @(Titles $script:app.Id | Where-Object { $_ -like "Mister Download Manager*" })[0]
+}
 $srv = $null; $app = $null
 try {
   if (Test-Path $work) { Remove-Item $work -Recurse -Force }
@@ -169,16 +203,13 @@ try {
   $main = @(Titles $app.Id | Where-Object { $_ -like "Mister Download Manager*" })[0]
 
   # Each window opened by name through the app's own command line (/show, mdm_ipc), so no
-  # click or key ever goes to the screen. name = /show argument.
+  # click or key ever goes to the screen. name = /show argument. These are the README's and the
+  # site's pictures and the few docs pages not yet in the help's shot list; the help pages'
+  # own come from tools/shots/shots.toml (-Show).
   $windows = [ordered]@{
-    "add-url" = "addurl"; "batch" = "batch"; "find" = "find"; "speed-limiter" = "speedlimit"
-    "properties" = "properties"; "scheduler" = "scheduler"; "about" = "about"
-    "options-general" = "options:general"; "options-connection" = "options:connection"
-    "options-save-to" = "options:saveto"; "options-panels" = "options:panels"; "options-regional" = "options:regional"
-    "options-file-types" = "options:types"; "options-archives" = "options:archives"
-    "grabber" = "grabber"
-    "language-picker" = "language"; "helpers" = "helpers"; "extension" = "extension"
-    "delete-confirm" = "delete"; "progress" = "progress"
+    "add-url" = "addurl"; "speed-limiter" = "speedlimit"; "scheduler" = "scheduler"
+    "options-connection" = "options:connection"; "grabber" = "grabber"
+    "language-picker" = "language"; "progress" = "progress"
   }
   if ($Torrent -and (Want "add-torrent")) {
     $before = @(Titles $app.Id)
@@ -214,6 +245,78 @@ try {
     foreach ($w in $also) { Close-Ours $app.Id $w }
     Start-Sleep -Milliseconds 600
   }
+  # -Show's list (the help pages' shots), in its order.
+  foreach ($entry in $Show) {
+    Follow
+    $name, $what = $entry -split "=", 2
+    # "theme:metro+@main": /show theme:metro first (no window of its own), then the shot.
+    $parts = @($what -split "\+")
+    $what = $parts[-1]
+    foreach ($p in $parts[0..($parts.Count - 2)]) {
+      if ($parts.Count -lt 2) { break }
+      & $Exe /show $p
+      Start-Sleep -Milliseconds 1500
+    }
+    $before = @(Titles $app.Id)
+    if ($what -eq "@main") {
+      if ($Show.IndexOf($entry) -eq 0) { Start-Sleep 10 }
+      Shot $app.Id $main $name
+      continue
+    }
+    if ($what -like "@menu:*") {
+      & $Exe /show $what.Substring(6)
+      for ($i = 0; $i -lt 50 -and -not (@(Titles $app.Id) -like "misterdownloadmanager menu*"); $i++) { Start-Sleep -Milliseconds 200 }
+      Start-Sleep -Milliseconds 1200
+      Shot $app.Id "" $name -All
+      # The menu's windows are ours: closed like any other.
+      Close-Ours $app.Id "misterdownloadmanager menu*"
+      Start-Sleep -Milliseconds 800
+      continue
+    }
+    if ($what -eq "@torrent") {
+      if (-not $Torrent) { Write-Warning "${name}: no -Torrent"; continue }
+      $copy = Join-Path $work (Split-Path -Leaf $Torrent)
+      if (-not (Test-Path $copy)) { Copy-Item (Resolve-Path $Torrent).Path $copy }
+      & $Exe $copy
+    } elseif ($what -like "@complete:*") {
+      # A small download, silent: the shot is its Download complete window once it's done.
+      & $Exe /d "$base/$($what.Substring(10))" /p "$work\Downloads" /n
+      $t = $null
+      for ($i = 0; $i -lt 75 -and -not $t; $i++) {
+        Start-Sleep -Milliseconds 200
+        $t = @(Titles $app.Id | Where-Object { $before -notcontains $_ -and $_ -like "Download complete*" })[0]
+      }
+      if (-not $t) { Write-Warning "${name}: no Download complete window"; continue }
+      Start-Sleep -Milliseconds 1500
+      Shot $app.Id $t $name
+      @(Titles $app.Id | Where-Object { $before -notcontains $_ }) | ForEach-Object { Close-Ours $app.Id ([WildcardPattern]::Escape($_)) }
+      Start-Sleep -Milliseconds 600
+      continue
+    } elseif ($what -like "@download:*") {
+      # As a browser hands it over: no /n, so Download File Info asks.
+      & $Exe /d "$base/$($what.Substring(10))"
+    } else {
+      & $Exe /show $what
+    }
+    try { $t = New-Window $app.Id $before } catch { Write-Warning "${name}: no window"; continue }
+    # Options → Download panels opens a dialog over Options: that dialog is the shot.
+    $also = @()
+    if ($what -eq "options:panels") {
+      for ($i = 0; $i -lt 50; $i++) {
+        $new = @(Titles $app.Id | Where-Object { $before -notcontains $_ })
+        if ($new.Count -ge 2) { break }
+        Start-Sleep -Milliseconds 200
+      }
+      $also = @($t)
+      $t = @($new | Where-Object { $_ -ne $also[0] })[0]
+      if (-not $t) { Write-Warning "${name}: no dialog"; Close-Ours $app.Id $also[0]; continue }
+    }
+    Start-Sleep -Milliseconds 1500
+    Shot $app.Id $t $name
+    Close-Ours $app.Id $t
+    foreach ($w in $also) { Close-Ours $app.Id $w }
+    Start-Sleep -Milliseconds 600
+  }
   # The main window last: by now every small file has finished (a fresh .zip can sit at 100%
   # for a moment while an antivirus scan holds it).
   if ((Want "main-light") -or (Want "main-dark") -or (Want "arabic-main")) {
@@ -244,6 +347,8 @@ try {
   }
 } finally {
   if ($app) { Stop-Process -Id $app.Id -ErrorAction SilentlyContinue }
+  # A copy started again by itself, and its crash monitor: ours as well.
+  Ours | ForEach-Object { Stop-Process -Id $_.ProcessId -ErrorAction SilentlyContinue }
   if ($srv) { Stop-Process -Id $srv.Id -ErrorAction SilentlyContinue }
   Remove-Item Env:MDM_DATA_DIR, Env:MDM_ZOOM, Env:MDM_OFFSCREEN, Env:MDM_OFFSCREEN_AT, Env:MDM_CRASH_TEST -ErrorAction SilentlyContinue
   # The downloads (a 6 GB file partly fetched) don't stay behind.

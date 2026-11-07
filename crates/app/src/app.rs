@@ -477,6 +477,8 @@ pub struct App {
     duplicate_cleared: bool,
     downloads: PathBuf,
     dirty: bool,
+    /// `secrets::Vault::confirmed` when last seen.
+    secrets_confirmed: u64,
     last_save: Instant,
     /// Writes the list off the window's thread.
     saver: store::Saver,
@@ -903,6 +905,7 @@ impl App {
             duplicate_cleared: false,
             downloads,
             dirty: false,
+            secrets_confirmed: 0,
             last_save: Instant::now(),
             saver: store::Saver::new(),
             theme_checked: None,
@@ -1693,8 +1696,9 @@ impl App {
             "add-trackers" if first.is_some() => self.run(Cmd::TorrentAddTrackers, first, ctx),
             // rss:rules opens it on its Download rules tab.
             "rss" => self.run(Cmd::RssFeeds(tab == "rules"), None, ctx),
-            // menu:torrent opens it with its Torrent submenu open.
-            "menu" if first.is_some() => {
+            // menu:torrent opens it with its Torrent submenu open. A number (menu:3) is the
+            // menu bar's, below, with downloads in the list or not.
+            "menu" if first.is_some() && !tab.starts_with(|c: char| c.is_ascii_digit()) => {
                 if let Some(id) = first {
                     self.selection.set(id);
                 }
@@ -4626,6 +4630,16 @@ impl App {
             if self.last_save.elapsed() > Duration::from_secs(30) {
                 self.dirty = true;
             }
+        }
+        // The keychain took a secret (#44): saved again, with its reference in its place.
+        let vault = crate::secrets::vault();
+        if vault.pending() {
+            ctx.request_repaint_after(Duration::from_millis(250));
+        }
+        let confirmed = vault.confirmed();
+        if confirmed != self.secrets_confirmed {
+            self.secrets_confirmed = confirmed;
+            self.dirty = true;
         }
         if self.dirty && self.last_save.elapsed() > Duration::from_secs(1) {
             // Written on the saver's thread (store::Saver); refused at once when the list

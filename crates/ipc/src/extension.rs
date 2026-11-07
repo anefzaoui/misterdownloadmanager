@@ -47,14 +47,15 @@ pub fn store_page() -> Option<String> {
 }
 
 /// The tutorial that adds the extension: from the stores, and by hand (a build of its own, or
-/// a browser that can't use its store).
-pub const GUIDE_PAGE: &str =
-    "https://misterdownloadmanager.com/help/guide-catch-browser-downloads.html";
+/// a browser that can't use its store). Its file in docs/: the app opens it on the website, in
+/// the interface language (the app's help::page_url).
+pub const GUIDE_DOC: &str = "guide-catch-browser-downloads.md";
 
 /// The help page for a browser that doesn't reach Mister Download Manager, at the section for
-/// `why` (the native host's reasons, and the app's own checks).
-pub fn help_page(why: &str) -> String {
-    format!("https://misterdownloadmanager.com/help/browser-help.html#{why}")
+/// `why` (the native host's reasons, and the app's own checks): its file in docs/ and the
+/// section, as GUIDE_DOC.
+pub fn help_doc(why: &str) -> String {
+    format!("browser-help.md#{why}")
 }
 
 /// Marks the data folder once a browser has started the host for the extension.

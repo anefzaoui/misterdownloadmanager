@@ -1884,6 +1884,10 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	በምድቦች ውስጥ፦ የተመረጠው ምድብ ምናሌ
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	በተቆለፈው ቁልፍ መያዣ ውስጥ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2646,6 +2650,10 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	ምንም ፕሮክሲ/SOCKS የለም
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	ምንም የስርዓት ቁልፍ መያዣ ምላሽ አልሰጠም፣ ስለዚህ የመግቢያ መረጃዎች እና የይለፍ ቃሎች እርስዎ ብቻ ሊያነቧቸው በሚችሉት የMDM ቅንብሮች ውስጥ ይቀመጣሉ።
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -3045,6 +3053,10 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	የፕሮክሲ / SOCKS ውቅር
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	የፕሮክሲ አገልጋይ
 #. label in the Options window
 #, machine
 	Proxy server address	የፕሮክሲ አገልጋይ አድራሻ
@@ -3501,6 +3513,18 @@
 #. button: sign in to the debrid service in the browser, by typing a code there
 #, machine
 	Sign in in the browser	በአሳሹ ውስጥ ይግቡ
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	የመግቢያ መረጃዎች እና የይለፍ ቃሎች በmacOS ቁልፍ መያዣ ውስጥ ይቀመጣሉ።
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	የመግቢያ መረጃዎች እና የይለፍ ቃሎች በስርዓት ቁልፍ መያዣ (Secret Service) ውስጥ ይቀመጣሉ።
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	የመግቢያ መረጃዎች እና የይለፍ ቃሎች በWindows ምስክርነት አስተዳዳሪ ውስጥ ይቀመጣሉ።
 #. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
@@ -4080,6 +4104,10 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	ምልክቶቹ ሊመጡ አልቻሉም፦ አንዳንድ የሪፖርቱ መስመሮች ከስሞች ይልቅ አድራሻዎችን ያሳያሉ (ገንቢዎቹ አሁንም ሊያነቧቸው ይችላሉ)።
 #. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	የስርዓት ቁልፍ መያዣው ተቆልፏል እና MDM አይከፍተውም፣ ስለዚህ የመግቢያ መረጃዎች እና የይለፍ ቃሎች እርስዎ ብቻ ሊያነቧቸው በሚችሉት የMDM ቅንብሮች ውስጥ ይቀመጣሉ።
+#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	የስርዓቱ DNS
@@ -4183,6 +4211,10 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	ይህ ffmpeg ያስፈልገዋል
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ይህ ተንቀሳቃሽ ቅጂ የመግቢያ መረጃዎችን እና የይለፍ ቃሎችን እርስዎ ብቻ ሊያነቧቸው በሚችሉት የራሱ ቅንብሮች ውስጥ ያቆያል።
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)

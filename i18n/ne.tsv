@@ -5906,3 +5906,43 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/सेकेन्ड
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	लक गरिएको किरिङमा
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	कुनै प्रणाली किरिङले जवाफ दिएन, त्यसैले साइन-इन र पासवर्डहरू MDM को सेटिङहरूमा राखिएका छन्, जुन तपाईंले मात्र पढ्न सक्नुहुन्छ।
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	प्रोक्सी सर्भर
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	साइन-इन र पासवर्डहरू macOS किचेनमा राखिएका छन्।
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	साइन-इन र पासवर्डहरू प्रणाली किरिङ (Secret Service) मा राखिएका छन्।
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	साइन-इन र पासवर्डहरू Windows Credential Manager मा राखिएका छन्।
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	प्रणाली किरिङ लक गरिएको छ र MDM ले यसलाई अनलक गर्दैन, त्यसैले साइन-इन र पासवर्डहरू MDM को सेटिङहरूमा राखिएका छन्, जुन तपाईंले मात्र पढ्न सक्नुहुन्छ।
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	यो पोर्टेबल प्रतिलिपिले साइन-इन र पासवर्डहरू आफ्नै सेटिङहरूमा राख्छ, जुन तपाईंको Windows खाताको लागि इन्क्रिप्ट गरिएको छ।
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	यो पोर्टेबल प्रतिलिपिले साइन-इन र पासवर्डहरू आफ्नै सेटिङहरूमा राख्छ, जुन तपाईंले मात्र पढ्न सक्नुहुन्छ।
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager ले जवाफ दिएन, त्यसैले साइन-इन र पासवर्डहरू MDM को सेटिङहरूमा राखिएका छन्, जुन तपाईंको Windows खाताको लागि इन्क्रिप्ट गरिएको छ।
