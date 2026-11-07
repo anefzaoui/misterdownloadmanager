@@ -89,7 +89,7 @@ From top to bottom:
   - **Tasks** — add downloads, torrents, batch downloads and videos; Link grabber; show the drop target; import and export the list; exit.
   - **File** — the selected download: **Stop Download**, **Remove**, **Download Now**, **Redownload**.
   - **Downloads** — **Pause All**, **Stop All**, **Delete All Completed**, **Find**, the **Scheduler**, queues, the **Speed Limiter** and **Options**.
-  - **View** — show or hide the categories, sort the list (**Arrange files**), **Dark Mode support**, **Always dark**, **Theme**, **Draw with** (Windows: Direct3D, or OpenGL) and **Language**.
+  - **View** — show or hide the categories, sort the list (**Arrange files**), **Dark Mode support**, **Always dark**, **Theme**, **Draw with** (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and **Language**.
   - **Help** — help pages, tutorials, **Keyboard shortcuts**, **Report a problem**, **Check for updates** and **About**.
 - **Toolbar.** **Add URL**, **Add Torrent**, **Resume**, **Stop**, **Stop All**, **Delete**, **Delete Completed**, **Options**, **Scheduler**, **Start Queue**, **Stop Queue**. The small arrow next to **Add Torrent**, **Start Queue** and **Stop Queue** opens more choices.
 - **Categories** (left). Choose what the list shows: **All Downloads**, **Unfinished**, **Finished** and **Queues**, each with its categories. Drag the gap between the pane and the list to make it wider.
@@ -111,10 +111,23 @@ MDM follows your system: when Windows (or your desktop's light/dark preference o
   contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It
   follows them when you change them.
 - **High contrast**: black and white, a bright accent, every edge drawn, text at 7:1 or more.
+- **Metro**: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar
+  with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's
+  Fluent UI System Icons).
+- **Adwaita**: GNOME's look: round corners, flat grey buttons, a rounded focus ring, GNOME's
+  check boxes, a header bar with the title in bold and round buttons (on Windows, where MDM
+  draws it), and GNOME's Adwaita icons, in colour for files and categories, one colour in the
+  toolbar.
+- **Breeze**: KDE Plasma's look: rounded corners, buttons and boxes that take the accent's edge
+  under the pointer or when focused, KDE's check boxes and focus frame, KDE's title bar with the
+  title centred and round buttons (on Windows, where MDM draws it), and KDE's Breeze icons.
 
 Each has a light and a dark side: **Dark Mode support** and **Always dark** choose between
 them as before. Theme files you put in the themes folder (**View → Theme → Open themes folder**)
-are listed there too.
+are listed there too. A theme in a folder of its own (`<name>/theme.toml`) can bring its icons in
+`icons/16` and `icons/24`, each named for what it shows (`tb-add-url.svg`, `cat-music.png`…):
+SVG or PNG files keep their colours, and `-symbolic.svg` ones, as GNOME and KDE name them, take
+the theme's text colour.
 
 ## The tray icon
 

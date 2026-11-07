@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "در Firefox، وقتی <g1>ارسال دانلودها از طریق پروکسی یا افزونه VPN این مرورگر</g1> را در پنجره بازشو آن روشن می‌کنید (Firefox ابتدا از شما می‌پرسد)، هنگامی که مرورگر از پروکسی برای دانلود استفاده می‌کند (که توسط VPN یا افزونه پروکسی یا در تنظیمات آن تنظیم شده است)، افزونه <g2>آدرس پروکسی</g2> یا <g3>اسکریپت پیکربندی خودکار پروکسی</g3> را ارسال می‌کند تا MDM از طریق همان پروکسی دانلود کند. هرگز اطلاعات ورود به پروکسی را نمی‌خواند یا ارسال نمی‌کند. فقط اشاره می‌کند که پروکسی درخواست یکی را کرده است، بنابراین MDM می‌تواند به شما بگوید که نمی‌تواند از آن پروکسی استفاده کند. در حالت خاموش (همانطور که نصب شده است)، هیچ چیز از پروکسی مرورگر را نمی‌خواند. افزونه برای Chrome و سایر مرورگرهای Chromium هنوز این کار را انجام نمی‌دهد."
+   "text": "در Firefox، وقتی <g1>ارسال دانلودها از طریق پروکسی یا افزونه VPN این مرورگر</g1> را در پنجره بازشو آن روشن می‌کنید (Firefox ابتدا از شما می‌پرسد)، اگر مرورگر برای دانلودی از پروکسی استفاده کند (که توسط یک VPN یا افزونه پروکسی، یا در تنظیمات آن تنظیم شده باشد)، افزونه <g2>آدرس پروکسی</g2> یا <g3>اسکریپت پیکربندی خودکار پروکسی</g3> آن را ارسال می‌کند تا MDM از همان پروکسی دانلود کند. هرگز اطلاعات ورود به پروکسی را نمی‌خواند یا ارسال نمی‌کند. فقط اشاره می‌کند که یک پروکسی درخواست شده است، تا MDM بتواند به شما بگوید که نمی‌تواند از آن پروکسی استفاده کند. وقتی خاموش باشد (مانند حالت نصب شده)، هیچ اطلاعاتی از پروکسی مرورگر نمی‌خواند. افزونه Chrome و سایر مرورگرهای Chromium هنوز این کار را انجام نمی‌دهد."
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -206,6 +206,10 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
+  "04bb12464d3a29f6": {
+   "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
+   "text": "گزینه <g1>بیدار کردن رایانه برای اجرای این صف</g1> را، زیر زمان شروع، علامت بزنید تا رایانه‌ای که در زمان شروع در حالت خواب است، برای اجرای آن بیدار شود. این گزینه به <g2>شروع دانلود در</g2> نیاز دارد."
+  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "در خط فرمان"
@@ -361,6 +365,10 @@
   "08084c2a5ca0a411": {
    "source": "Right-click a category for:",
    "text": "برای موارد زیر روی یک دسته راست کلیک کنید:"
+  },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>نما</g1> — نمایش یا پنهان کردن دسته‌ها، مرتب‌سازی فهرست (<g2>مرتب‌سازی فایل‌ها</g2>)، <g3>پشتیبانی از حالت تاریک</g3>، <g4>همیشه تیره</g4>، <g5>پوسته</g5>، <g6>ترسیم با</g6> (OpenGL، یا Direct3D در Windows، Vulkan در Linux، Metal در macOS) و <g7>زبان</g7>."
   },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
@@ -608,7 +616,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "یک افزونه VPN یا پروکسی، فقط برای مرورگر یک پروکسی است. در Firefox، <g1>ارسال دانلودها از طریق پروکسی یا افزونه VPN این مرورگر</g1> را در پنجره بازشوی نوار ابزار افزونه روشن کنید: Firefox یک بار از شما می‌پرسد که آیا به افزونه اجازه می‌دهید پروکسی مرورگر را بخواند، و سپس MDM آنچه را که از مرورگر می‌گیرد از طریق همان پروکسی دانلود می‌کند (با <g2>گزینه‌ها ← پروکسی / SOCKS ← استفاده از پروکسی/ساکس از درخواست مرورگر</g2>، که به طور پیش‌فرض روشن است؛ به <g3>گزینه‌ها</g3> مراجعه کنید). آن را خاموش کنید تا این اجازه را پس بگیرید. Chrome، Edge، Brave، Opera و Vivaldi هنوز این قابلیت را ارائه نمی‌دهند: فعلا، همان پروکسی را در <g4>گزینه‌ها ← پروکسی / SOCKS</g4> MDM تنظیم کنید."
+   "text": "افزونه VPN یا پروکسی فقط برای مرورگر یک پروکسی است. در Firefox، <g1>ارسال دانلودها از طریق پروکسی یا افزونه VPN این مرورگر</g1> را در پنجره بازشوی نوار ابزار افزونه روشن کنید: Firefox یک بار از شما می‌پرسد که آیا به افزونه اجازه می‌دهید پروکسی مرورگر را بخواند، و MDM سپس آنچه را که از مرورگر می‌گیرد از طریق همان پروکسی دانلود می‌کند (با <g2>گزینه‌ها ← پروکسی / SOCKS ← استفاده از پروکسی/SOCKS از درخواست مرورگر</g2>، که به طور پیش‌فرض روشن است؛ به <g3>گزینه‌ها</g3> مراجعه کنید). برای پس گرفتن آن اجازه، آن را خاموش کنید. Chrome، Edge، Brave، Opera و Vivaldi هنوز این قابلیت را ارائه نمی‌دهند: فعلا، همان پروکسی را در <g4>گزینه‌ها ← پروکسی / SOCKS</g4> MDM تنظیم کنید."
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1386,6 +1394,10 @@
    "source": "<g1>Look links up when they arrive (name, size, online)</g1> — Link grabber asks each server about its file (on by default).",
    "text": "<g1>جستجوی پیوندها هنگام رسیدن (نام، اندازه، آنلاین)</g1> — دریافت‌کننده پیوند از هر سرور درباره فایل آن سؤال می‌کند (به‌طور پیش‌فرض روشن است)."
   },
+  "216583d42da33e52": {
+   "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
+   "text": "در macOS فقط یک مدیر می‌تواند بیدارباش را برنامه‌ریزی کند، بنابراین این گزینه خاکستری است. MDM رمز عبور مدیر را درخواست نمی‌کند. یک مدیر می‌تواند مک را هر روز یک دقیقه قبل از شروع صف بیدار کند، مثلا ساعت 10:59 شب برای صفی که ساعت 11:00 شب شروع می‌شود:"
+  },
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "از آن برای بارگذاری بیش از حد، حمله یا دور زدن محدودیت‌های سرورهایی که مالک آن‌ها نیستید، استفاده نکنید."
@@ -1573,6 +1585,10 @@
   "25b4db9aa4024862": {
    "source": "The current speed.",
    "text": "سرعت فعلی."
+  },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "اگر Direct3D، Vulkan یا Metal نتوانند روی رایانه شما شروع به کار کنند (عدم وجود درایور برای آن، برخی ماشین‌های مجازی)، یا اولین پنجره آن ظرف 10 ثانیه نمایش داده نشود، MDM با OpenGL ترسیم می‌کند و <g1>نما ← ترسیم با</g1> این موضوع و دلیل آن را نشان می‌دهد. انتخاب مجدد آن، در شروع بعدی دوباره آن را امتحان می‌کند."
   },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
@@ -1898,6 +1914,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>کشور</g1> از جدولی از محدوده‌های آدرس که همراه MDM ارائه می‌شود (<g2>IP to Country Lite by DB-IP</g2>، CC BY 4.0) و در رایانه شما جستجو می‌شود، به دست می‌آید. MDM هرگز آدرس را برای پرسیدن مکان آن به جایی ارسال نمی‌کند. این جدول با هر نسخه به‌روزرسانی می‌شود؛ آدرسی که از آن زمان جابه‌جا شده باشد ممکن است کشور قدیمی خود را نشان دهد."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "آخرین به‌روزرسانی در 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>مرور</g1> — پوشه آن را در اکسپلورر باز کنید."
@@ -1944,7 +1964,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "هر رنگ و اندازه‌ای که یک کنترل با آن ترسیم می‌شود، از پوسته فعال (#45) می‌آید: <x1/> نقش‌های خود (<x2/>، <x3/> و غیره) را با مقادیر ظاهر کلاسیک اعلام می‌کند، نقاشان مشترک (<x4/>، <x5/>، <x6/>، <x7/>) آن‌ها را از طریق <x8/> و <x9/> می‌خوانند و وضعیت هر کنترل را از آن‌ها تعیین می‌کنند، و <x10/> فایل‌های پوسته (TOML یا JSON در پوشه <x11/> داده‌ها) را می‌خواند که هر یک از آن‌ها را تغییر می‌دهند. جایی که یک پنجره کنترل‌های خود را قرار می‌دهد، طرح‌بندی آن باقی می‌ماند. همینطور آیکون‌های قبل از نام فایل‌ها (<x12/>): لیست‌های تصویری سیستم پوسته Windows، Finder در macOS (NSWorkspace)، پوسته آیکون دسکتاپ Linux (<x13/>، shared-mime-info و Icon Theme Specification). هر نوع یک بار در هر اندازه پیکسل، در یک رشته پس‌زمینه جستجو می‌شود. آیکون‌های Tango (بسته‌بندی شده) تا زمانی که آیکون سیستم آماده شود، و هر جا که سیستم آیکونی ندارد، جایگزین می‌شوند."
+   "text": "هر رنگ و اندازه‌ای که یک کنترل با آن ترسیم می‌شود از پوسته فعال (#45) می‌آید: <x1/> نقش‌های خود را (<x2/>، <x3/>…) با مقادیر ظاهر کلاسیک اعلام می‌کند، نقاشان مشترک (<x4/>، <x5/>، <x6/>، <x7/>) آنها را از طریق <x8/> و <x9/> می‌خوانند و وضعیت‌های هر کنترل را از آنها تعیین می‌کنند، و <x10/> فایل‌های پوسته (TOML یا JSON در پوشه <x11/> داده‌ها) را می‌خواند که هر یک از آنها را تغییر می‌دهند. جایی که یک پنجره کنترل‌های خود را قرار می‌دهد، طرح‌بندی آن باقی می‌ماند. همینطور آیکون‌های قبل از نام فایل‌ها (<x12/>): لیست‌های تصویری سیستمی پوسته Windows، Finder macOS (NSWorkspace)، پوسته آیکون دسکتاپ Linux (<x13/>، shared-mime-info و Icon Theme Specification). هر نوع یک بار در هر اندازه پیکسل، در یک رشته پس‌زمینه جستجو می‌شود. آیکون‌های Tango (بسته‌بندی شده) تا زمانی که آیکون سیستم آماده شود، و هر جا که سیستم آیکونی ندارد، جایگزین می‌شوند."
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2122,6 +2142,10 @@
    "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
    "text": "قوانین فقط به مقالاتی نگاه می‌کنند که از آخرین باری که فید دریافت شده است جدید هستند، و اولین دریافت یک فید فقط آنچه را که در آن است فهرست می‌کند. بنابراین اضافه کردن یک فید یا یک قانون هرگز یک backlog کامل را دانلود نمی‌کند. <g1>اکنون با ... مقاله مطابقت دارد</g1> نشان می‌دهد که کدام یک از مقالات موجود در فیدها اکنون با قانون مطابقت دارند، برای بررسی آن؛ آن‌ها را به صورت دستی دانلود کنید. تورنتی که لیست قبلا دارد دوباره اضافه نمی‌شود، و همچنین تورنتی که فایل‌های آن قبلا در پوشه هستند: MDM هرگز بدون پرسش در فایل‌هایی که خودش نساخته است نمی‌نویسد. خط پایین برگه می‌گوید که قوانین آخرین بار چه کاری انجام داده‌اند، و تورنتی که یک قانون اضافه کرده است در گزارش رویداد خود این را می‌گوید."
   },
+  "326233a6912ae49d": {
+   "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
+   "text": "تایمر systemd یک کاربر نمی‌تواند رایانه را بیدار کند، و <x1/> به روت نیاز دارد، بنابراین بدون این تنظیم MDM نمی‌تواند رایانه را بیدار کند. MDM هرگز رمز عبور مدیر را درخواست نمی‌کند."
+  },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
    "text": "بله. MDM با یک سرور MCP ارائه می‌شود، <x1/> آن را به Claude Desktop، Claude Code، Cursor، VS Code یا دستیار دیگری که از MCP پشتیبانی می‌کند اضافه کنید، و می‌توانید با کلمات خودتان از آن بخواهید که بارگیری‌ها را فهرست کند، اضافه کند، متوقف کند، از سر بگیرد یا حذف کند. این فقط با MDM روی رایانه شما کار می‌کند و به API اتوماسیون روشن نیاز دارد. به <g2>دستیارهای هوش مصنوعی</g2> مراجعه کنید."
@@ -2248,7 +2272,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>استفاده از پروکسی/ساکس از درخواست مرورگر…</g1> — به طور پیش‌فرض روشن است. دانلودی که MDM از مرورگر می‌گیرد، از طریق پروکسی که مرورگر برای آن استفاده کرده است، انجام می‌شود. این همان پروکسی است که یک افزونه VPN یا پروکسی تنظیم کرده، پروکسی دستی خود مرورگر، یا اسکریپت پیکربندی خودکار پروکسی آن. بدون آن، دانلود از آدرس شما انجام می‌شود و محتوایی که به کشور VPN یا آدرس آن محدود شده است، با شکست مواجه می‌شود. افزونه مرورگر آن پروکسی را می‌خواند و با هر دانلود به MDM می‌دهد، پس از اینکه شما اجازه دادید: در Firefox، <g2>ارسال دانلودها از طریق پروکسی یا افزونه VPN این مرورگر</g2> را در پنجره بازشوی نوار ابزار افزونه روشن کنید (Firefox یک بار از شما می‌پرسد). Chrome، Edge، Brave، Opera و Vivaldi هنوز پروکسی را تحویل نمی‌دهند: در آنجا، همان پروکسی را در <g3>گزینه‌ها ← پروکسی / SOCKS</g3> تنظیم کنید."
+   "text": "<g1>استفاده از پروکسی/SOCKS از درخواست مرورگر…</g1> — به‌طور پیش‌فرض روشن است. دانلودی که MDM از مرورگر دریافت می‌کند، از پروکسی‌ای عبور می‌کند که مرورگر برای آن استفاده کرده است. این همان پروکسی است که یک VPN یا افزونه پروکسی تنظیم کرده، پروکسی دستی خود مرورگر، یا اسکریپت پیکربندی خودکار پروکسی آن. بدون آن، دانلود از آدرس شما انجام می‌شود و محتوایی که به کشور VPN یا آدرس آن محدود شده است، با شکست مواجه می‌شود. افزونه مرورگر آن پروکسی را می‌خواند و با هر دانلود به MDM می‌دهد، پس از اینکه شما اجازه دهید: در Firefox، <g2>ارسال دانلودها از طریق پروکسی یا افزونه VPN این مرورگر</g2> را در پنجره بازشوی نوار ابزار افزونه روشن کنید (Firefox یک بار از شما می‌پرسد). Chrome، Edge، Brave، Opera و Vivaldi هنوز پروکسی را منتقل نمی‌کنند: در آنجا، همان پروکسی را در <g3>گزینه‌ها ← پروکسی / SOCKS</g3> تنظیم کنید."
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3326,6 +3350,10 @@
    "source": "JSON for scripts and programs",
    "text": "JSON برای اسکریپت‌ها و برنامه‌ها"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "در Windows، MDM پنجره‌های خود را با Direct3D 12 ترسیم می‌کند؛ در Linux و macOS، با OpenGL، یا با Vulkan (Linux) یا Metal (macOS) در صورت انتخاب آنها. ممکن است درایور گرافیک همچنان بد کار کند: پنجره‌ای که برای چند ثانیه ثابت می‌ماند، سوسو می‌زند، یا رنگ‌ها یا بلوک‌های اشتباهی را نشان می‌دهد. دیگری را امتحان کنید: <g1>نما ← ترسیم با ← OpenGL</g1> (یا <g2>Direct3D</g2>، <g3>Vulkan</g3>، <g4>Metal</g4>) را انتخاب کنید، سپس MDM را ببندید (<g5>وظایف ← خروج</g5>) و دوباره آن را اجرا کنید. انتخاب گزینه اول به همین روش بازمی‌گردد."
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "وقتی <g1>گزینه‌ها ← بایگانی‌ها ← استخراج بایگانی‌ها پس از اتمام دانلود</g1> روشن باشد (به طور پیش‌فرض خاموش است)، برای هر دانلود دیگر،"
@@ -3562,6 +3590,10 @@
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>نسخه‌ای از جای دیگر؟</g1> آن را حذف کنید و افزونه را همانطور که پنجره <g2>افزودن Mister Download Manager به مرورگر</g2> MDM نشان می‌دهد اضافه کنید (به <g3>یکپارچه‌سازی مرورگر</g3> مراجعه کنید)."
   },
+  "5922c26d865c882f": {
+   "source": "The wake follows the schedule: change the start time or the days, untick the option or delete the queue, and the wake moves or goes away. MDM sets it again each time it starts. Nothing stays behind in the system when MDM quits or is uninstalled.",
+   "text": "بیدار شدن از برنامه پیروی می‌کند: زمان شروع یا روزها را تغییر دهید، تیک گزینه را بردارید یا صف را حذف کنید، و بیدار شدن جابجا می‌شود یا از بین می‌رود. MDM هر بار که شروع می‌شود آن را دوباره تنظیم می‌کند. هیچ چیز پس از خروج یا حذف MDM در سیستم باقی نمی‌ماند."
+  },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
    "text": "در <g1>اطلاعات فایل بارگیری</g1>: <g2>شروع دانلود</g2>"
@@ -3788,7 +3820,7 @@
   },
   "5f91bf43437c9761": {
    "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
-   "text": "<g1>نما</g1> — دسته‌ها را نشان می‌دهد یا پنهان می‌کند، فهرست را مرتب می‌کند (<g2>مرتب‌سازی فایل‌ها</g2>)، <g3>پشتیبانی از حالت تاریک</g3>، <g4>همیشه تیره</g4>، <g5>پوسته</g5>، <g6>ترسیم با</g6> (Windows: Direct3D یا OpenGL) و <g7>زبان</g7>."
+   "text": "<g1>نما</g1> — دسته‌ها را نمایش یا پنهان می‌کند، فهرست را مرتب می‌کند (<g2>مرتب‌سازی فایل‌ها</g2>)، <g3>پشتیبانی از حالت تاریک</g3>، <g4>همیشه تیره</g4>، <g5>پوسته</g5>، <g6>ترسیم با</g6> (Windows: Direct3D یا OpenGL) و <g7>زبان</g7>."
   },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
@@ -3809,6 +3841,10 @@
   "601260a4be471ed2": {
    "source": "The box under the list edits the package you selected:",
    "text": "جعبه زیر لیست، بسته‌ای را که انتخاب کرده‌اید ویرایش می‌کند:"
+  },
+  "6038a4d72bef82d8": {
+   "source": "removes it.",
+   "text": "آن را حذف می‌کند."
   },
   "603f376b07905d51": {
    "source": "Q",
@@ -4340,7 +4376,7 @@
   },
   "6c93571eac4f03c3": {
    "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
-   "text": "در Firefox، MDM پروکسی را که درخواست خود مرورگر برای فایل گرفته است، از جمله پروکسی‌هایی که افزونه VPN برای هر درخواست انتخاب می‌کند، می‌بیند."
+   "text": "در Firefox، MDM پروکسی‌ای را می‌بیند که درخواست خود مرورگر برای فایل از آن عبور کرده است، از جمله پروکسی‌هایی که یک افزونه VPN برای هر درخواست انتخاب می‌کند."
   },
   "6cfaa56a34e8372a": {
    "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
@@ -4561,6 +4597,10 @@
   "71fe7ca9a5b99066": {
    "source": "<g1>New</g1> — make your own category. <g2>Edit...</g2> changes the selected one: its folder, and for your own categories its name and file types.",
    "text": "<g1>جدید</g1> — دسته خود را بسازید. <g2>ویرایش...</g2> دسته انتخاب شده را تغییر می‌دهد: پوشه آن، و برای دسته‌های خودتان نام و انواع فایل آن."
+  },
+  "720b69230bc62f14": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
+   "text": "تصاویر یک گالری (یک رده ویکی‌مدیا کامانز، یک آلبوم فلیکر، ...) را در پوشه‌ای به نام آن در <x1/> بارگیری کنید؛ <x2/> حداکثر به همان تعداد، اولین مواردی که سایت فهرست می‌کند را می‌گیرد. اگر دوباره شروع شود، فقط موارد جدید را واکشی می‌کند."
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -5278,6 +5318,10 @@
    "source": "Put downloads in a queue",
    "text": "بارگیری‌ها را در یک صف قرار دهید"
   },
+  "83771adf9df51604": {
+   "source": "Windows wakes a computer only if its power plan allows wake timers. If it doesn't, the Scheduler says so, and <g1>Change</g1> opens the setting: <g2>Power Options → Change plan settings → Change advanced power settings → Sleep → Allow wake timers</g2>. Choose <g3>Enable</g3>: <g4>Important Wake Timers Only</g4> lets only Windows' own important timers wake the computer. On laptops the setting is often off on battery, so the computer is woken only while plugged in.",
+   "text": "Windows رایانه را تنها در صورتی بیدار می‌کند که طرح برق آن اجازه تایمرهای بیدارباش را بدهد. اگر اینطور نباشد، زمان‌بند این را می‌گوید و <g1>تغییر</g1> تنظیمات را باز می‌کند: <g2>گزینه‌های برق → تغییر تنظیمات طرح → تغییر تنظیمات پیشرفته برق → خواب → اجازه تایمرهای بیدارباش</g2>. <g3>فعال کردن</g3> را انتخاب کنید: <g4>فقط تایمرهای بیدارباش مهم</g4> فقط به تایمرهای مهم خود Windows اجازه می‌دهد رایانه را بیدار کنند. در لپ‌تاپ‌ها این تنظیم اغلب در حالت باتری خاموش است، بنابراین رایانه فقط در حالی که به برق وصل است بیدار می‌شود."
+  },
   "837e0b4660975a88": {
    "source": "Select or unselect one more download",
    "text": "انتخاب یا لغو انتخاب یک دانلود دیگر"
@@ -5518,6 +5562,10 @@
    "source": "When MDM isn't running",
    "text": "هنگامی که MDM در حال اجرا نیست"
   },
+  "8964c9e8c41b70ca": {
+   "source": "On Linux only an administrator may set the computer's wake alarm, so the option is greyed until an administrator allows it. To let the users in a <x1/> group set it, an administrator runs, once:",
+   "text": "در Linux فقط یک مدیر می‌تواند زنگ بیدارباش رایانه را تنظیم کند، بنابراین این گزینه تا زمانی که یک مدیر اجازه ندهد خاکستری است. برای اینکه کاربران در گروه <x1/> بتوانند آن را تنظیم کنند، یک مدیر یک بار اجرا می‌کند:"
+  },
   "89c2ac8b048f39e1": {
    "source": "The next choice of a drop-down list or radio group; a number up or down",
    "text": "انتخاب بعدی یک لیست کشویی یا گروه رادیویی؛ یک عدد بالا یا پایین"
@@ -5600,7 +5648,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "مجوزهای آن و دلیل آنها: <g1>downloads</g1> برای مشاهده و تحویل دانلودها؛ <g2>cookies</g2> تا دانلودهای وارد شده در MDM کار کنند؛ <g3>nativeMessaging</g3> برای گفتگو با MDM؛ <g4>contextMenus</g4> برای آیتم‌های کلیک راست؛ <g5>storage</g5> برای تنظیمات آن؛ <g6>webRequest</g6> برای مشاهده فرم‌های ارسال شده و جریان‌های ویدیویی بارگذاری شده (هیچ چیز را تغییر نمی‌دهد)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome، Edge و سایر مرورگرهای Chromium) برای دانلود فایل‌هایی که مرورگر باز می‌کند (یک PDF) به جای باز کردن آنها، برای انواع فایل‌هایی که MDM پشتیبانی می‌کند؛ در Firefox، <g8>webRequestBlocking</g8> این کار را انجام می‌دهد؛ <g9>scripting</g9> برای خواندن لینک‌های یک صفحه وقتی شما درخواست می‌کنید، و برای افزودن دکمه ویدیو به صفحات از قبل باز شده هنگام نصب افزونه؛ <g10>proxy</g10> (Firefox، اختیاری: فقط زمانی درخواست می‌شود که آن را در پنجره بازشو روشن کنید) برای خواندن اینکه مرورگر از کدام پروکسی استفاده می‌کند، تا دانلودهای گرفته شده از مرورگری که پشت VPN یا افزونه پروکسی است نیز از طریق آن انجام شود (هرگز پروکسی مرورگر را تغییر نمی‌دهد)؛ دسترسی به همه سایت‌ها زیرا دانلودها و ویدیوها می‌توانند از هر سایتی باشند."
+   "text": "مجوزهای آن و دلیل آنها: <g1>downloads</g1> برای مشاهده و انتقال دانلودها؛ <g2>cookies</g2> تا دانلودهای وارد شده در MDM کار کنند؛ <g3>nativeMessaging</g3> برای ارتباط با MDM؛ <g4>contextMenus</g4> برای گزینه‌های کلیک راست؛ <g5>storage</g5> برای تنظیمات آن؛ <g6>webRequest</g6> برای مشاهده فرم‌های ارسال شده و جریان‌های ویدیویی بارگذاری شده (هیچ چیز را تغییر نمی‌دهد)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome، Edge و سایر مرورگرهای Chromium) برای دانلود فایل‌هایی که مرورگر باز می‌کند (مانک یک PDF) به جای باز کردن آنها، برای انواع فایل‌هایی که MDM پشتیبانی می‌کند؛ در Firefox، <g8>webRequestBlocking</g8> این کار را انجام می‌دهد؛ <g9>scripting</g9> برای خواندن لینک‌های یک صفحه وقتی شما درخواست می‌کنید، و برای افزودن دکمه ویدیو به صفحاتی که هنگام نصب افزونه از قبل باز هستند؛ <g10>proxy</g10> (Firefox، اختیاری: فقط زمانی درخواست می‌شود که آن را در پنجره بازشو روشن کنید) برای خواندن اینکه مرورگر از کدام پروکسی استفاده می‌کند، تا دانلودهایی که از مرورگری پشت یک VPN یا افزونه پروکسی گرفته می‌شوند نیز از آن عبور کنند (هرگز پروکسی مرورگر را تغییر نمی‌دهد)؛ دسترسی به همه سایت‌ها به این دلیل که دانلودها و ویدیوها می‌توانند از هر سایتی باشند."
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5745,6 +5793,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 گیبی‌بایت در 1.0 ثانیه</g1> <g2>IDM: 5.5 ثانیه</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>کارت شبکه</g1> — <g2>هر کدام (سیستم انتخاب می‌کند)</g2> پیش‌فرض است. یک کارت شبکه، معمولا کارت شبکه VPN خود را انتخاب کنید تا هر اتصالی که MDM باز می‌کند، از طریق آن برقرار شود، یا اصلا برقرار نشود. این شامل دانلودها، FTP، تورنت‌ها، DNS انتخابی شما، دانلودهای خود MDM و بررسی به‌روزرسانی می‌شود. این ویژگی مانند یک سوئیچ قطع‌کننده عمل می‌کند: وقتی کارت شبکه قطع می‌شود، یا VPN خاموش می‌شود، هیچ چیزی از طریق اتصال عادی شما خارج نمی‌شود. دانلودهای در حال اجرا با پیام «… متصل نیست» متوقف می‌شوند و با بازگشت کارت شبکه دوباره شروع به کار می‌کنند. خط زیر لیست، آدرس کارت شبکه را نشان می‌دهد، یا اینکه متصل نیست."
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -5914,6 +5966,10 @@
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> همه را انتخاب می‌کند."
   },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "هنوز به کارت شبکه متصل نیستند، بنابراین در حالی که یکی انتخاب شده است، شروع نمی‌شوند:"
+  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>پنجره برای ثانیه‌ها در حالی که یک دانلود بزرگ در حال نوشتن بود متوقف می‌شد</g1>: MDM لیست خود را در رشته پنجره ذخیره می‌کرد، و ذخیره منتظر دیسک می‌ماند. اکنون در رشته خودش ذخیره می‌کند (گزارش‌های خرابی جدید آن را شناسایی کردند)."
@@ -5950,6 +6006,10 @@
    "source": "Downloads",
    "text": "بارگیری‌ها"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "آخرین به‌روزرسانی در 2026-11-07 · شامل برنامه، افزونه مرورگر و misterdownloadmanager.com می‌شود"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>توضیحات یا بخشی از توضیحات</g1> — یادداشت‌های شما."
@@ -5960,7 +6020,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>گرفتن مشکلات.</g1> وقتی MDM از کار می‌افتد (یک استثنای Windows، یک سیگنال در Linux، یک استثنای Mach در macOS)، دچار وحشت می‌شود یا فریز می‌کند، از مانیتور یک دامپ می‌خواهد. فریز به معنای فریمی از پنجره است که بیش از 8 ثانیه اجرا می‌شود، و توسط یک رشته نگهبان که زمان خواب را نادیده می‌گیرد، مشاهده می‌شود. این رشته هر دو بخش یک فریم را زمان‌بندی می‌کند: آنچه MDM مدیریت می‌کند (دستوراتی که وارد می‌شوند، ساعت دانلودها، صف‌ها و زمان‌بند)، که در حالت کوچک‌شده نیز اجرا می‌شود، و ترسیم؛ هرگز انتظار بین فریم‌ها را زمان‌بندی نمی‌کند. نگهبان همچنین اندازه‌گیری می‌کند که در این میان رشته پنجره چقدر زمان پردازنده را به خود اختصاص داده است، و گزارش می‌گوید که این به چه معناست: تمام مدت اجرا شده است (یک حلقه)، در یک قفل یا روی ورودی/خروجی منتظر مانده است (یک بن‌بست)، یا به سختی در کد معمولی اجرا شده است، که به معنای کامپیوتری است که بیش از حد مشغول است و نمی‌تواند MDM را اجرا کند یا در بارگذاری آن از دیسک کند است، که به احتمال زیاد اشکال MDM نیست (این موارد یک امضا دارند، <x2/>). macOS هنوز آن را اندازه‌گیری نمی‌کند. سپس مانیتور یک <g3>minidump</g3> از هر رشته را از بیرون، از طریق <x4/> و <x5/> می‌نویسد. یک فرآیند از کار افتاده هرگز دامپ خود را نمی‌نویسد، که Firefox، Crashpad و Sentry نیز همین کار را می‌کنند."
+   "text": "<g1>گرفتن مشکلات.</g1> وقتی MDM از کار می‌افتد (یک استثنای Windows، یک سیگنال در Linux، یک استثنای Mach در macOS)، دچار وحشت می‌شود یا فریز می‌کند، از مانیتور درخواست یک دامپ می‌کند. فریز به معنای فریمی از پنجره است که بیش از 8 ثانیه اجرا می‌شود، و توسط یک رشته نگهبان که زمان خواب را نادیده می‌گیرد، مشاهده می‌شود. این رشته هر دو بخش یک فریم را زمان‌بندی می‌کند: آنچه MDM مدیریت می‌کند (دستوراتی که وارد می‌شوند، ساعت دانلودها، صف‌ها و زمان‌بند)، که در حالت کوچک‌شده نیز اجرا می‌شود، و ترسیم؛ هرگز انتظار بین فریم‌ها را زمان‌بندی نمی‌کند. نگهبان همچنین اندازه‌گیری می‌کند که رشته پنجره در این مدت چقدر زمان پردازنده دریافت کرده است، و گزارش می‌گوید که این به چه معناست: تمام مدت اجرا شده است (یک حلقه)، در یک قفل یا روی ورودی/خروجی منتظر مانده است (یک بن‌بست)، یا به سختی در کد معمولی اجرا شده است، که به معنای کامپیوتری است که بیش از حد مشغول است تا MDM را اجرا کند یا در بارگذاری آن از دیسک کند است، که به احتمال زیاد اشکال MDM نیست (این موارد یک امضا مشترک دارند، <x2/>). macOS هنوز آن را اندازه‌گیری نمی‌کند. سپس مانیتور یک <g3>minidump</g3> از هر رشته را از بیرون، از طریق <x4/> و <x5/> می‌نویسد. یک فرآیند از کار افتاده هرگز دامپ خود را نمی‌نویسد، که Firefox، Crashpad و Sentry نیز به همین روش عمل می‌کنند."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6242,6 +6302,10 @@
    "source": "<g1>As the system's region writes them</g1> (the default) — Windows' region settings (Settings → Time &amp; language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.",
    "text": "<g1>همان‌طور که منطقه سیستم می‌نویسد</g1> (پیش‌فرض) — تنظیمات منطقه Windows (تنظیمات → زمان و زبان → منطقه)؛ در macOS و Linux، روش معمول زبان شما. در انگلیسی، لیست متن تاریخ خود IDM را حفظ می‌کند."
   },
+  "9d2e5b317ca7d67a": {
+   "source": "MDM wakes the computer a minute before the start time, so the network is back when the queue starts.",
+   "text": "MDM رایانه را یک دقیقه قبل از زمان شروع بیدار می‌کند تا شبکه هنگام شروع صف آماده باشد."
+  },
   "9d5b2429780e94aa": {
    "source": "Latest",
    "text": "آخرین"
@@ -6352,7 +6416,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "یک پنجره egui که در مختصات پیکسلی ثابت ترسیم شده است، به علاوه یک نمای فوری برای هر گفتگو. <x1/> وضعیت (دانلودها، صف‌ها، تنظیمات، انتخاب لیست) را نگه می‌دارد و دستورات منو، نوار ابزار، کلید و IPC را به اقدامات تبدیل می‌کند. هر گفتگو ماژول خاص خود را دارد و یک <x2/> (باز، بسته، انجام شده با یک مقدار) را برمی‌گرداند. فراخوانی‌های فقط Windows به <x3/> و معادل‌های Linux و macOS آنها به <x4/> (شروع با جلسه، میزبان مرورگرها، صداها، نمایش در پوشه، کنترل‌کننده خرابی) محدود می‌شوند؛ هر فایل دیگر Rust ایمن و قابل حمل است. فونت‌ها از سیستم می‌آیند: پوشه Fonts Windows، فونت‌های سیستمی macOS، fontconfig در Linux (<x5/>)."
+   "text": "یک پنجره egui که با مختصات پیکسلی ثابت ترسیم شده است، به علاوه یک درگاه دید فوری برای هر گفتگو. <x1/> وضعیت (دانلودها، صف‌ها، تنظیمات، انتخاب لیست) را نگه می‌دارد و دستورات منو، نوار ابزار، کلید و IPC را به اقدامات تبدیل می‌کند. هر گفتگو ماژول خاص خود را دارد و یک <x2/> (باز، بسته، انجام شده با یک مقدار) را برمی‌گرداند. فراخوانی‌های فقط Windows به <x3/> و معادل‌های Linux و macOS آنها به <x4/> (شروع با جلسه، میزبان مرورگرها، صداها، نمایش در پوشه، کنترل‌کننده خرابی) محدود می‌شوند؛ هر فایل دیگری Rust ایمن و قابل حمل است. فونت‌ها از سیستم می‌آیند: پوشه Fonts Windows، فونت‌های سیستمی macOS، fontconfig در Linux (<x5/>)."
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -6636,7 +6700,7 @@
   },
   "a796d15297b81a60": {
    "source": "<g1>High contrast</g1>: black and white, a bright accent, every edge drawn, text at 7:1 or more.",
-   "text": "<g1>کنتراست بالا</g1>: سیاه و سفید، یک رنگ برجسته روشن، ترسیم تمام لبه‌ها، متن با نسبت 7:1 یا بیشتر."
+   "text": "<g1>کنتراست بالا</g1>: سیاه و سفید، یک رنگ برجسته روشن، هر لبه ترسیم شده، متن با نسبت 7:1 یا بیشتر."
   },
   "a7a3f7c6b7a38022": {
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
@@ -7054,6 +7118,10 @@
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
    "text": "آزمایش‌های واحد و بارگیری‌های سرتاسری را در برابر <x1/> با خطاهای تزریق شده (اتصالات کند، قطع شده و رد شده، سرورهای بدون محدوده، فایل‌های در حال تغییر) اجرا می‌کند. <x2/> مقایسه سرعت منتشر شده را اجرا می‌کند؛ داده‌های خام آن در <x3/> است."
   },
+  "b1f35176aca676c5": {
+   "source": "While the queue runs, the computer doesn't go to sleep. When the queue is done, the computer's own sleep settings apply again: a computer nobody is using goes back to sleep by itself. <g1>Turn off computer when done → Sleep</g1> sends it back to sleep at once.",
+   "text": "در حالی که صف در حال اجراست، رایانه به حالت خواب نمی‌رود. پس از اتمام صف، تنظیمات خواب خود رایانه دوباره اعمال می‌شود: رایانه‌ای که کسی از آن استفاده نمی‌کند، خودبه‌خود به حالت خواب بازمی‌گردد. <g1>خاموش کردن رایانه پس از اتمام → خواب</g1> آن را بلافاصله به حالت خواب می‌فرستد."
+  },
   "b208caa24e13c211": {
    "source": "<g1>Shift+Up / Shift+Down</g1> makes the selection longer or shorter.",
    "text": "<g1>Shift+بالا / Shift+پایین</g1> انتخاب را طولانی‌تر یا کوتاه‌تر می‌کند."
@@ -7162,6 +7230,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Manager همان طرح‌بندی آشنای IDM را حفظ می‌کند، لیست دانلودهای IDM شما را منتقل می‌کند و هیچ هزینه‌ای ندارد: رایگان و متن‌باز، بدون دوره آزمایشی، بدون تبلیغات و بدون نیاز به ثبت‌نام. در ادامه، نه مدیر دانلود رایگان دیگر که مردم به جای IDM استفاده می‌کنند، با مقایسه‌ای صادقانه آورده شده‌اند."
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "در Linux، Vulkan به درایور Vulkan کارت گرافیک شما نیاز دارد: Mesa's (<x1/> در اوبونتو و دبیان، <x2/> یا <x3/> در آرچ) برای AMD و Intel، درایور خود NVIDIA برای NVIDIA."
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage را می‌توان با ابزارهای AppImage (AppImageLauncher، Gear Lever، AppImageUpdate) نیز به‌روزرسانی کرد: این ابزارها آدرس به‌روزرسانی‌های خود را دارند و هر نسخه فایل <x1/> مخصوص به خود را دارد، بنابراین این ابزارها فقط قسمت‌های تغییر یافته را دانلود می‌کنند. این قابلیت از AppImage نسخه بعد از 0.2.4 شروع می‌شود."
@@ -7225,6 +7297,10 @@
   "b66ef1366b1ed932": {
    "source": "Children",
    "text": "کودکان"
+  },
+  "b68461ac7025e237": {
+   "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
+   "text": "سپس خارج شده و دوباره وارد می‌شود. تنظیمات پس از راه‌اندازی مجدد باقی می‌ماند. رایانه یک زنگ بیدارباش دارد: اگر برنامه دیگری آن را تنظیم کرده باشد، MDM آن را دست‌نخورده می‌گذارد و این را می‌گوید."
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -7646,6 +7722,14 @@
    "source": "From the clipboard",
    "text": "از کلیپ‌بورد"
   },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "تورنت‌ها در Windows؛"
+  },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "اگر هیچ‌کدام نتوانند شروع به کار کنند، MDM با یک رندر نرم‌افزاری (Microsoft در Windows، Mesa در Linux) ترسیم می‌کند، بنابراین پنجره همچنان باز می‌شود (Remote Desktop، یک ماشین مجازی بدون درایور گرافیک). این کار می‌کند، اما پردازنده را مشغول‌تر نگه می‌دارد."
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8020,7 +8104,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>آزمایش آن.</g1> <x2/> یک فریز، وحشت و از کار افتادن واقعی (<x3/>) را اجرا می‌کند و امضای هر گزارش را بررسی می‌کند. برای امتحان آن در برنامه، MDM را با <x4/> شروع کنید، سپس <x5/> (یک بن‌بست؛ یا <x6/>، 12 ثانیه از یک رشته پنجره مشغول، <x7/>، <x8/>، <x9/>) را اجرا کنید. <x10/> این کار را در یک کپی از برنامه خارج از صفحه نمایش، با پنجره‌ای قابل مشاهده و کوچک‌شده انجام می‌دهد."
+   "text": "<g1>آزمایش آن.</g1> <x2/> یک فریز واقعی، وحشت و از کار افتادگی (<x3/>) را اجرا می‌کند و امضای هر گزارش را بررسی می‌کند. برای امتحان آن در برنامه، MDM را با <x4/> شروع کنید، سپس <x5/> (یک بن‌بست؛ یا <x6/>، 12 ثانیه از یک رشته پنجره مشغول، <x7/>، <x8/>، <x9/>) را اجرا کنید. <x10/> این کار را در یک کپی از برنامه خارج از صفحه نمایش، با پنجره‌ای قابل مشاهده و کوچک‌شده انجام می‌دهد."
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8036,7 +8120,7 @@
   },
   "cda67136f4731916": {
    "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too.",
-   "text": "هر کدام یک حالت روشن و یک حالت تیره دارند: <g1>پشتیبانی از حالت تاریک</g1> و <g2>همیشه تیره</g2> مانند قبل بین آن‌ها انتخاب می‌کنند. فایل‌های پوسته‌ای که در پوشه پوسته‌ها قرار می‌دهید (<g3>نما ← پوسته ← باز کردن پوشه پوسته‌ها</g3>) نیز در آنجا فهرست می‌شوند."
+   "text": "هر کدام یک سمت روشن و یک سمت تیره دارند: <g1>پشتیبانی از حالت تاریک</g1> و <g2>همیشه تیره</g2> مانند قبل بین آنها انتخاب می‌کنند. فایل‌های پوسته‌ای که در پوشه پوسته‌ها قرار می‌دهید (<g3>نما ← پوسته ← باز کردن پوشه پوسته‌ها</g3>) نیز در آنجا فهرست می‌شوند."
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -8256,7 +8340,7 @@
   },
   "d351cad9276045ed": {
    "source": "<g1>Classic</g1>: MDM's own look, the default.",
-   "text": "<g1>کلاسیک</g1>: ظاهر اصلی MDM، پیش‌فرض."
+   "text": "<g1>کلاسیک</g1>: ظاهر خود MDM، پیش‌فرض."
   },
   "d354d0b6bb0bfffe": {
    "source": "Subtitles",
@@ -8518,6 +8602,10 @@
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "لیست کردن و اقدام بر روی بارگیری‌ها به API اتوماسیون MDM نیاز دارد که تا زمانی که شما آن را روشن نکنید، خاموش است. در حالی که MDM در حال اجرا است، این را یک بار اجرا کنید (روشن می‌ماند):"
   },
+  "d9862086c382da0c": {
+   "source": "Wake the computer to run a queue",
+   "text": "بیدار کردن رایانه برای اجرای یک صف"
+  },
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
    "text": "<g1><g2>دانلود یک ویدئو از یک صفحه</g2></g1> — کیفیت را انتخاب کرده و یک ویدئو را ذخیره کنید."
@@ -8736,7 +8824,7 @@
   },
   "e04f69d547a21d71": {
    "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
-   "text": "<g1>بومی</g1>: رنگ‌های سیستم شما. رنگ برجسته Windows (تنظیمات ← شخصی‌سازی ← رنگ‌ها) و در صورت فعال بودن، پوسته کنتراست آن؛ رنگ برجسته دسکتاپ و تنظیم کنتراست بالاتر آن در Linux (GNOME 47 و بالاتر، KDE Plasma)؛ رنگ برجسته در macOS. با تغییر آن‌ها، این پوسته نیز تغییر می‌کند."
+   "text": "<g1>بومی</g1>: رنگ‌های سیستم شما. رنگ برجسته Windows (تنظیمات ← شخصی‌سازی ← رنگ‌ها) و در صورت فعال بودن، پوسته کنتراست آن؛ رنگ برجسته دسکتاپ و تنظیم کنتراست بالاتر آن در Linux (GNOME 47 و بالاتر، KDE Plasma)؛ رنگ برجسته در macOS. با تغییر آنها، MDM نیز از آنها پیروی می‌کند."
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -8749,6 +8837,10 @@
   "e06846d728e8b2d9": {
    "source": "Options: Archives",
    "text": "گزینه‌ها: بایگانی‌ها"
+  },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(TLS ضمنی؛ <x1/> با TLS خوب است)."
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
@@ -9090,6 +9182,10 @@
    "source": "Add to Firefox",
    "text": "افزودن به Firefox"
   },
+  "e8b5d61bef6a7b3c": {
+   "source": "The line under the option says when the computer will next be woken, or why it can't be.",
+   "text": "خط زیر گزینه نشان می‌دهد که رایانه در چه زمانی بعدی بیدار خواهد شد، یا چرا نمی‌تواند بیدار شود."
+  },
   "e8cba16e3299c9aa": {
    "source": "Several files are downloaded one after another, sorted by name.",
    "text": "چندین فایل یکی پس از دیگری، بر اساس نام مرتب شده، بارگیری می‌شوند."
@@ -9418,9 +9514,17 @@
    "source": "Installer",
    "text": "نصب‌کننده"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "صفحات ویدئویی (yt-dlp نمی‌تواند به یک کارت شبکه متصل شود)؛"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "اگر ویدئو بارگیری نمی‌شود، به <g1>دانلودهای ویدئو</g1> مراجعه کنید."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "یک ویدیو را بارگیری می‌کند؛ <x1/> یک انتخابگر کیفیت را از <x2/> می‌گیرد (<x3/> = بهترین فایل تکی؛ <x4/> = فقط صدا همانطور که سایت دارد، بدون تبدیل؛ <x5/>، <x6/>، <x7/> یا <x8/> = صدا به صورت MP3 با آن بیت‌ریت، <x9/> با بهترین بیت‌ریت متغیر؛ <x10/> = به صورت Opus؛ <x11/> = به صورت FLAC، بدون افت کیفیت اما نه بهتر از صدای سایت؛ تبدیل‌ها نیاز به ffmpeg دارند). <x12/> زیرنویس‌ها را در کنار آن ذخیره می‌کند: کدهای زبان از <x13/> (<x14/>)، یا <x15/> برای هر زیرنویسی که آپلودکننده داده است؛ <x16/> به جای آن زیرنویس‌های خودکار سایت را می‌گیرد؛ <x17/> آنها را در ویدیو قرار می‌دهد (نیاز به ffmpeg، MP4 یا MKV)."
   },
   "f25612dbbaabbb5b": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's <g1>Media on this page</g1> shows such a stream as <g2>Protected</g2> and doesn't send it.",
@@ -9570,6 +9674,10 @@
    "source": "Download the installer",
    "text": "نصب‌کننده را بارگیری کنید"
   },
+  "f72ae9448e3d6366": {
+   "source": "Video pages through yt-dlp and ffmpeg (run as separate programs)",
+   "text": "صفحات ویدئو از طریق yt-dlp و ffmpeg (به عنوان برنامه‌های جداگانه اجرا می‌شوند)"
+  },
   "f763bb66cf2403ec": {
    "source": "<g1>Numbers</g1> are typed in one kind of box everywhere: arrows step them, a value out of range is outlined in red and set right when you leave the box (some were changed silently before).",
    "text": "<g1>اعداد</g1> در همه جا در یک نوع جعبه تایپ می‌شوند: فلش‌ها آن‌ها را گام به گام تغییر می‌دهند، مقداری خارج از محدوده با رنگ قرمز مشخص می‌شود و هنگام خروج از جعبه به درستی تنظیم می‌شود (برخی قبلا بی‌صدا تغییر می‌کردند)."
@@ -9718,6 +9826,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "<g1>ذخیره در</g1> و <g2>نام فایل</g2> را بررسی کنید. نام از عنوان ویدئو گرفته شده است؛ اگر دوست دارید آن را تغییر دهید."
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>مترو</g1>: ظاهر تخت Windows 8: گوشه‌های مربع، دکمه‌ها و کادرهای تخت، نوار عنوان رنگی با عنوان در مرکز (در Windows، جایی که MDM آن را ترسیم می‌کند)، و آیکون‌های تک‌رنگ (Microsoft's Fluent UI System Icons)."
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "آنچه IDM هنوز انجام می‌دهد و MDM انجام نمی‌دهد"
@@ -9750,6 +9862,10 @@
    "source": "After a cut connection",
    "text": "پس از قطع اتصال"
   },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "پنجره‌ها با OpenGL (glow از eframe) یا با API گرافیکی خود سیستم از طریق wgpu از eframe، فقط با همان بک‌اند ترسیم می‌شوند: Direct3D 12 در Windows (پیش‌فرض آنجا)، Vulkan در Linux، Metal در macOS (انتخاب‌ها آنجا؛ OpenGL پیش‌فرض آنها باقی می‌ماند). نما → ترسیم با یکی را انتخاب می‌کند. یک مسیر کد آن را در هر سیستم انجام می‌دهد (<x1/>): وقتی انتخاب شده نمی‌تواند شروع شود، دیگری امتحان می‌شود، بنابراین پنجره‌ها همیشه باز می‌شوند؛ شروعی که اولین فریم آن نمی‌آید، یا کارت گرافیک دو بار از دست رفته، با دلیل آن به خاطر سپرده می‌شود، که منو آن را نشان می‌دهد."
+  },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",
    "text": "MDM فایل‌های BitTorrent را از پیوندهای مگنت و فایل‌های <x1/> دانلود می‌کند. تورنت‌ها در همان فهرست سایر دانلودها ظاهر می‌شوند که در ستون <g3>منبع</g3> با <g2>تورنت</g2> مشخص شده‌اند و می‌توانند مانند آن‌ها در صف قرار گرفته و زمان‌بندی شوند."
@@ -9757,6 +9873,10 @@
   "fb3cc6240014e2b2": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
    "text": "MDM را با برنامه نصب، نصب کنید و یکپارچه‌سازی مرورگر را تنظیم کن را تیک‌خورده نگه دارید. در Firefox، صفحه افزونه را در addons.mozilla.org باز کنید و روی افزودن به Firefox کلیک کنید. در Chrome، Edge، Brave، Opera و Vivaldi، صفحه آن را در Chrome Web Store باز کنید و روی افزودن به Chrome کلیک کنید (Edge دریافت را نشان می‌دهد و ابتدا می‌پرسد که آیا اجازه نصب افزونه‌ها از فروشگاه‌های دیگر را می‌دهید). نمی‌توانید از فروشگاه استفاده کنید؟ صفحه افزونه‌های مرورگر را باز کنید، حالت توسعه‌دهنده را روشن کنید، بارگذاری نشده را انتخاب کنید و پوشه extension\\chromium را در پوشه MDM انتخاب کنید. آموزش، این مراحل را توضیح می‌دهد."
+  },
+  "fb7be2f77bb10a9c": {
+   "source": "MDM has to be running (it can sit in the notification area). The computer has to be asleep, not shut down.",
+   "text": "MDM باید در حال اجرا باشد (می‌تواند در ناحیه اعلان قرار گیرد). رایانه باید در حالت خواب باشد، نه خاموش."
   },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",

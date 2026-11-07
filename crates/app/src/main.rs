@@ -47,6 +47,7 @@ mod settings;
 mod store;
 mod theme;
 mod themefile;
+mod themeicons;
 mod torrentdlg;
 mod torrents;
 mod transfer;
@@ -55,6 +56,7 @@ mod tray;
 mod unix;
 mod update;
 mod videodlg;
+mod wake;
 mod whereis;
 #[cfg(windows)]
 mod win32;
@@ -169,7 +171,8 @@ fn main() -> std::process::ExitCode {
         // or a pipe. On Linux and macOS the launcher became this process, terminal and all.
         #[cfg(windows)]
         win32::cli_console(cli.launcher);
-        return mdm_cli::main(cli.args);
+        // Downloads go through the debrid accounts of Options → Accounts (#44).
+        return mdm_cli::main_with(cli.args, Some(&debrid::CliAccounts));
     }
     match app() {
         Ok(()) => std::process::ExitCode::SUCCESS,

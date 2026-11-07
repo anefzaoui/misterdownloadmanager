@@ -222,18 +222,24 @@ pub fn bar(
             px(&p, q.x, q.y, ink.gamma_multiply(a));
         }
     };
-    let expanded = resp.hovered() || resp.dragged();
+    // Windows 8's and the classic bars: arrows always shown, a square thumb the bar's width.
+    let classic = crate::theme::current().controls.scroll == crate::palette::ScrollLook::Classic;
+    let expanded = classic || resp.hovered() || resp.dragged();
     if thumb > 0.0 {
         if expanded {
-            // 6 px thumb at v 6..11 with rounded caps.
             let ink = ink_of(Part::Thumb);
-            for (i, row) in CAP.iter().enumerate() {
-                for (j, g) in row.iter().enumerate() {
-                    dot(s + i as f32, 6.0 + j as f32, *g, ink);
-                    dot(e - i as f32, 6.0 + j as f32, *g, ink);
+            if classic {
+                span(at(s, 2.0), at(e, THICK - 3.0), ink);
+            } else {
+                // 6 px thumb at v 6..11 with rounded caps.
+                for (i, row) in CAP.iter().enumerate() {
+                    for (j, g) in row.iter().enumerate() {
+                        dot(s + i as f32, 6.0 + j as f32, *g, ink);
+                        dot(e - i as f32, 6.0 + j as f32, *g, ink);
+                    }
                 }
+                span(at(s + 4.0, 6.0), at(e - 4.0, 11.0), ink);
             }
-            span(at(s + 4.0, 6.0), at(e - 4.0, 11.0), ink);
             // Arrows: up/left tip at u 6 (left: 5), down/right tip at len − 6.
             let first = if vertical { 6.0 } else { 5.0 };
             for (i, row) in UP.iter().enumerate() {

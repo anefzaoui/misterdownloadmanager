@@ -221,6 +221,10 @@ pub struct Settings {
     pub debrid_accounts: Vec<DebridAccount>,
     /// "Download supported file-host links through these accounts".
     pub debrid_on: bool,
+    /// Options → Accounts (#44): magnet links and .torrent files go to the first account, whose
+    /// service downloads them; their files then come over HTTP. No peer connections. Off: as
+    /// before, through the torrent engine.
+    pub debrid_torrents: bool,
     /// Sounds: download complete, download failed, queue started, queue stopped/finished.
     pub sounds: [(bool, String); 4],
     /// The local automation API (beyond IDM): status queries over the command channel. Off by
@@ -401,6 +405,7 @@ impl Default for Settings {
             site_logins: Vec::new(),
             debrid_accounts: Vec::new(),
             debrid_on: true,
+            debrid_torrents: false,
             sounds: Default::default(),
             automation_api: false,
             torrent_keep_sharing: false,

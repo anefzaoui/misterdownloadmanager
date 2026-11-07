@@ -8,7 +8,14 @@
 fn main() {
     catalogs();
     commit();
-    let windows = std::env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("windows");
+    let os = std::env::var("CARGO_CFG_TARGET_OS").unwrap_or_default();
+    let windows = os == "windows";
+    // `cfg(gpu)`: wgpu is built, with this system's own graphics API (renderer.rs, #89, #206):
+    // Direct3D 12 on Windows, Vulkan on Linux, Metal on macOS (Cargo.toml).
+    println!("cargo::rustc-check-cfg=cfg(gpu)");
+    if matches!(os.as_str(), "windows" | "linux" | "macos") {
+        println!("cargo::rustc-cfg=gpu");
+    }
     if windows && std::env::var("CARGO_CFG_TARGET_ENV").as_deref() == Ok("msvc") {
         println!("cargo:rustc-link-arg-bins=/SUBSYSTEM:WINDOWS,5.02");
     }

@@ -107,8 +107,8 @@ enum Cmd {
     Theme(&'static str),
     /// View → Theme → Open themes folder.
     OpenThemesFolder,
-    /// View → Draw with → OpenGL / Direct3D (#89), from the next start.
-    #[cfg(windows)]
+    /// View → Draw with → OpenGL / Direct3D, Vulkan or Metal (#89, #206), from the next start.
+    #[cfg(gpu)]
     DrawWith(crate::renderer::Api),
     /// View → Language: a catalog's code, or follow Windows (`None`).
     Language(Option<&'static str>),
@@ -489,6 +489,12 @@ pub struct App {
     ticked: Option<Instant>,
     /// The main window's caption matches the mode.
     caption_set: bool,
+    /// Windows: whether the main window's title bar is ours (a style theme's, #45), as applied
+    /// to its frame; None until the window exists. And the window, once it is.
+    #[cfg_attr(not(windows), allow(dead_code))]
+    drawn_frame: Option<bool>,
+    #[cfg_attr(not(windows), allow(dead_code))]
+    main_hwnd: Option<isize>,
     list: list::ListState,
     icons: ShellIcons,
     /// Open top-level menu (index into `chrome::menus()`).
@@ -508,6 +514,8 @@ pub struct App {
     failures: HashMap<u64, (Instant, u32)>,
     /// Seconds since local midnight at the last scheduler tick.
     clock: u32,
+    /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
+    wake: crate::wake::Waker,
     /// Commands from ipc.rs (command line, second launch, browser).
     commands: std::sync::mpsc::Receiver<ipc::Incoming>,
 }
@@ -673,17 +681,19 @@ fn sort_key(it: &Item, col: usize, queued: bool) -> (f64, String) {
 }
 
 /// Silk icons standing in for IDM's XP-era category icons.
+/// A theme's icon set may replace them (`crate::themeicons`).
 fn category_icon(c: Category) -> IconKey {
-    IconKey::Silk(match c {
-        Category::Compressed => "page_white_zip",
-        Category::Documents => "page_white",
-        Category::Music => "music",
-        Category::Programs => "application_xp",
-        Category::Video => "film",
-        Category::General => "page_white",
-        Category::Torrents => "folder_link",
-        Category::Custom(_) => "folder",
-    })
+    let (need, silk) = match c {
+        Category::Compressed => ("cat-compressed", "page_white_zip"),
+        Category::Documents => ("cat-documents", "page_white"),
+        Category::Music => ("cat-music", "music"),
+        Category::Programs => ("cat-programs", "application_xp"),
+        Category::Video => ("cat-video", "film"),
+        Category::General => ("cat-documents", "page_white"),
+        Category::Torrents => ("cat-torrents", "folder_link"),
+        Category::Custom(_) => ("cat-folder", "folder"),
+    };
+    IconKey::Themed(need, silk)
 }
 
 impl App {
@@ -900,6 +910,9 @@ impl App {
             themes_changed: crate::themefile::changed(),
             ticked: None,
             caption_set: false,
+            // The system's title bar is the frame's own: nothing to apply for it.
+            drawn_frame: Some(false),
+            main_hwnd: None,
             list,
             icons: ShellIcons,
             open_menu: None,
@@ -911,6 +924,7 @@ impl App {
             queues,
             failures: HashMap::new(),
             clock: seconds_now(),
+            wake: Default::default(),
             commands,
         }
     }
@@ -1119,7 +1133,8 @@ impl App {
                     .map_or(String::new(), model::date_text),
                 it.error.clone().unwrap_or_else(|| it.description.clone()),
                 it.added.as_deref().map_or(String::new(), model::date_text),
-                if it.torrent.is_some() {
+                // A torrent through a debrid account is a torrent too (#44).
+                if it.torrent.is_some() || it.remote.is_some() {
                     // i18n: where a download comes from: BitTorrent (shown on a small colored label)
                     "Torrent".into()
                 } else {
@@ -1194,6 +1209,7 @@ impl App {
             },
         );
         self.name_guessed(id, fi.name_guessed());
+        self.set_direct(id, fi.direct);
         self.selection.set(id);
         if matches!(start, Start::Now) {
             // Later: the answer is closed (its download starts some other time).
@@ -1233,6 +1249,7 @@ impl App {
                 crate::i18n::mark("with Add URL")
             },
         );
+        self.set_direct(id, fi.direct);
         fi.early = Some(id);
         if let Some(k) = fi.take_kept() {
             self.kept_answers.insert(id, k);
@@ -1378,10 +1395,19 @@ impl App {
         item.size = size;
         item.description = description;
         item.login = login;
+        // The browser had started it: the host is already sending the file (#44).
+        item.direct = crate::debrid::browser_started(&context);
         item.context = context;
         self.items.push(item);
         self.dirty = true;
         id
+    }
+
+    /// Download `id` skips the debrid accounts, or goes through them again (#44).
+    fn set_direct(&mut self, id: u64, direct: bool) {
+        if let Some(item) = self.item(id) {
+            item.direct = direct;
+        }
     }
 
     /// Download `id`'s name is only its address's guess (`guessed`): the server names it when
@@ -1435,19 +1461,9 @@ impl App {
         }
     }
 
-    /// The unlocker for a download of `url` (#44): through the first account whose service takes
-    /// its host, unless turned off, or the browser had already started this download itself (it
-    /// came with the browser's own size or type, `ipc::Command`): that answer is the file already.
-    fn debrid_for(
-        &self,
-        url: &url::Url,
-        context: &ipc::Command,
-    ) -> Option<std::sync::Arc<dyn mdm_engine::Unlocker>> {
-        let browser_started = context.size.is_some() || context.mime.is_some();
-        if !self.settings.debrid_on || browser_started {
-            return None;
-        }
-        self.debrid.unlocker_for(url)
+    /// Which account downloads go through (#44), for the windows that show and change it.
+    pub fn debrid_route(&self) -> crate::debrid::Route {
+        crate::debrid::Route::new(&self.debrid, &self.settings)
     }
 
     fn network_adapter_tick(&mut self, ctx: &egui::Context) {
@@ -1667,8 +1683,9 @@ impl App {
                     ctx.set_zoom_factor(z);
                 }
             }
-            // Direct3D's device lost on purpose; MDM starts again (renderer.rs).
-            #[cfg(windows)]
+            // The system's graphics API's device lost on purpose (Direct3D, Vulkan, Metal); MDM
+            // starts again (renderer.rs).
+            #[cfg(gpu)]
             "renderer-lost" if crate::offscreen() => crate::renderer::test_device_lost(),
             "helpers" => self.helpers = Some(crate::helpers::Helpers::new()),
             "torrent-settings" => self.run(Cmd::TorrentSettings, None, ctx),
@@ -1952,7 +1969,7 @@ impl App {
             crate::torrents::is_torrent_url(u, cmd.name.as_deref(), cmd.mime.as_deref())
         };
         if !cmd.silent && (torrent(&url) || final_url.as_ref().is_some_and(torrent)) {
-            let parts = self.request_parts(&url, None, &cmd);
+            let parts = self.request_parts(&url, None, &cmd, crate::debrid::browser_started(&cmd));
             self.show_window(ctx);
             self.open_torrent_dialog_with(
                 Some(url.to_string()),
@@ -2003,11 +2020,15 @@ impl App {
     /// one Options → Sites Logins has for its address, else an FTP address's own (its resume
     /// state keeps the address without the password); the browser's Referer, Cookie,
     /// User-Agent and form (`context`); Options' connections, proxy and User-Agent.
+    ///
+    /// Through the first debrid account whose service takes its host (#44), unless turned off
+    /// or `direct` (`Item::direct`).
     pub fn request_parts(
         &self,
         url: &url::Url,
         login: Option<&(String, String)>,
         context: &ipc::Command,
+        direct: bool,
     ) -> RequestParts {
         let site_login = self.settings.site_login(url);
         let url_login = mdm_engine::ftp::is_ftp(url)
@@ -2035,7 +2056,7 @@ impl App {
             dns: self.settings.dns(),
             route: self.route.clone(),
             // Through a debrid account when one takes this host (#44).
-            unlocker: self.debrid_for(url, context),
+            unlocker: self.debrid_route().unlocker(url, direct),
             global: Some(self.global.clone()),
             host_limits: Some(self.host_limits.clone()),
             ignore_mtime: self.settings.ignore_mtime,
@@ -2089,13 +2110,19 @@ impl App {
             self.start_torrent(id, show);
             return;
         }
-        let Some((url, login, context, own_limit, checksum)) = self.item(id).map(|i| {
+        // A torrent through a debrid account (#44).
+        if self.item(id).is_some_and(|i| i.remote.is_some()) {
+            self.start_remote(id, show);
+            return;
+        }
+        let Some((url, login, context, own_limit, checksum, direct)) = self.item(id).map(|i| {
             (
                 i.url.clone(),
                 i.login.clone(),
                 i.context.clone(),
                 i.own_limit,
                 i.checksum.clone(),
+                i.direct,
             )
         }) else {
             return;
@@ -2110,7 +2137,8 @@ impl App {
             self.dirty = true;
             return;
         }
-        let RequestParts { headers, mut opts } = self.request_parts(&url, login.as_ref(), &context);
+        let RequestParts { headers, mut opts } =
+            self.request_parts(&url, login.as_ref(), &context, direct);
         // Download File Info's open answer for it, if it has one (#28); used once.
         let kept = self.kept_answers.remove(&id);
         // The file's own remembered limit, else the Speed Limiter's.
@@ -2634,9 +2662,10 @@ impl App {
             );
             return;
         }
+        let route = self.debrid_route();
         if let Some(item) = self.items.iter().find(|i| i.id == id) {
             self.properties
-                .push(crate::properties::Properties::new(item));
+                .push(crate::properties::Properties::new(item, route));
         }
     }
 
@@ -2646,6 +2675,26 @@ impl App {
         item.description = c.description;
         item.login = c.login;
         item.context.referer = c.referer;
+        // "Through …" changed (#44): the next start goes the new way. The service's link is
+        // dropped from the resume state: directly, it continues from the host's own address;
+        // through the account, from a new link the service gives. The size and validators
+        // still have to match.
+        if let Some(direct) = c.direct {
+            item.direct = direct;
+            let state = mdm_engine::state::state_path(&item.dest);
+            if let Ok(mut saved) = mdm_engine::state::ResumeState::load(&state) {
+                saved.final_url = saved.url.clone();
+                let _ = saved.write(&state);
+            }
+            item.note(if direct {
+                // i18n: event log: File Properties: the download no longer goes through the debrid account
+                crate::i18n::t("Set to download directly, not through the debrid account")
+                    .to_owned()
+            } else {
+                // i18n: event log: File Properties: the download goes through the debrid account again
+                crate::i18n::t("Set to download through the debrid account").to_owned()
+            });
+        }
         if let Some(url) = c.address {
             // Refresh download address: the resume state follows, so the download continues
             // from the new address (its size and validators still have to match).
@@ -3048,13 +3097,32 @@ impl App {
         self.open_torrent_dialog_with(source, None, ctx);
     }
 
-    /// Add torrent for a .torrent on the web (#39): fetched with `remote`'s request.
+    /// Add torrent for a .torrent on the web (#39): fetched with `remote`'s request. A magnet
+    /// link goes straight to the debrid account when torrents go through it (#44): Add torrent
+    /// would ask peers for what it holds.
     fn open_torrent_dialog_with(
         &mut self,
         source: Option<String>,
         remote: Option<crate::torrents::Remote>,
         ctx: &egui::Context,
     ) {
+        if remote.is_none()
+            && self.torrent_account().is_some()
+            && let Some(magnet) = source
+                .as_deref()
+                .and_then(mdm_torrent::Source::magnet)
+                .and_then(|s| match s {
+                    mdm_torrent::Source::Magnet(m) => url::Url::parse(&m).ok(),
+                    mdm_torrent::Source::File(_) => None,
+                })
+        {
+            let dir = self
+                .settings
+                .category_dir(Category::Torrents, &self.downloads);
+            self.add_remote_torrent(magnet, dir, Category::Torrents, true);
+            self.show_window(ctx);
+            return;
+        }
         if self.torrent_dlg.is_some() {
             return;
         }
@@ -3070,8 +3138,120 @@ impl App {
         ));
     }
 
-    /// Add torrent → Download Now / Later.
+    /// The debrid account torrents go to (#44): Options → Accounts' "Torrents and magnet links
+    /// through the first account", with an account there.
+    fn torrent_account(&self) -> Option<(u64, mdm_debrid::ServiceKind)> {
+        (self.settings.debrid_on && self.settings.debrid_torrents)
+            .then(|| self.debrid.torrent_account())
+            .flatten()
+    }
+
+    /// A torrent through the debrid account (#44): a row whose files come over HTTP once the
+    /// service has them, into `dir` (a torrent of several files in a folder of its own there).
+    fn add_remote_torrent(
+        &mut self,
+        magnet: url::Url,
+        dir: PathBuf,
+        category: Category,
+        start_now: bool,
+    ) {
+        let Some((account, service)) = self.torrent_account() else {
+            return;
+        };
+        let name = magnet
+            .query_pairs()
+            .find(|(k, _)| k == "dn")
+            .map(|(_, v)| mdm_engine::naming::sanitize(&v))
+            .filter(|n| !n.is_empty())
+            .unwrap_or_else(|| "torrent".to_owned());
+        let id = self.push_item(
+            magnet,
+            dir.join(&name),
+            category,
+            String::new(),
+            None,
+            None,
+            Default::default(),
+            crate::i18n::mark("from a magnet link"),
+        );
+        if let Some(item) = self.item(id) {
+            item.note(crate::i18n::fmt(
+                // i18n: event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+                crate::i18n::t(
+                    "Through {service}: the service downloads the torrent, then MDM its files",
+                ),
+                &[("service", service.name())],
+            ));
+            item.remote = Some(model::RemoteSpec {
+                account,
+                transfer: None,
+                folder: dir,
+            });
+        }
+        self.selection.set(id);
+        if start_now {
+            self.start(id, true);
+        } else {
+            self.queue_later(vec![id], self.settings.queue_panel_later);
+        }
+        self.dirty = true;
+    }
+
+    /// Start (or continue) a torrent through its debrid account (#44).
+    fn start_remote(&mut self, id: u64, show: bool) {
+        let limit = self.settings.speed_limit();
+        let Some((url, spec, own)) = self
+            .item(id)
+            .and_then(|i| Some((i.url.clone(), i.remote.clone()?, i.own_limit)))
+        else {
+            return;
+        };
+        // The files' requests: Options' connections, proxy, DNS and adapter; the service's own
+        // unlocking is the torrent job's (not a host's link).
+        let mut net = self
+            .request_parts(&url, None, &Default::default(), true)
+            .opts;
+        net.speed_limit = own.or(limit);
+        let rt = self.rt.clone();
+        let _guard = rt.enter();
+        let job = mdm_debrid::torrents::RemoteTorrent::start(
+            &self.debrid,
+            mdm_debrid::torrents::Order {
+                account: spec.account,
+                magnet: url,
+                transfer: spec.transfer.clone(),
+                folder: spec.folder.clone(),
+                net,
+                poll: std::time::Duration::from_secs(5),
+            },
+        );
+        let Some(item) = self.item(id) else { return };
+        item.note(if spec.transfer.is_some() {
+            crate::i18n::t("Resumed")
+        } else {
+            crate::i18n::t("Started")
+        });
+        item.live = Some(Live::new(model::Job::Remote(job), item.downloaded));
+        item.status = Status::Downloading;
+        item.error = None;
+        item.last_try = Some(model::now_stamp());
+        self.dirty = true;
+        if show && !self.progress.iter().any(|p| p.id == id) {
+            self.progress
+                .push(Progress::new(id, self.settings.show_complete));
+        }
+    }
+
+    /// Add torrent → Download Now / Later. Through the debrid account when torrents go there
+    /// (#44): the .torrent's magnet link (its hash, name and trackers), all its files.
     fn add_torrent(&mut self, add: crate::torrentdlg::TorrentAdd) {
+        if self.torrent_account().is_some()
+            && let Some(magnet) =
+                mdm_torrent::magnet_link(&add.meta.torrent).and_then(|m| url::Url::parse(&m).ok())
+        {
+            self.add_remote_torrent(magnet, add.dir.clone(), add.category, add.start_now);
+            return;
+        }
         let meta = &add.meta;
         if let Err(e) = crate::torrents::save_torrent(&meta.info_hash, &meta.torrent) {
             self.notice = Some((
@@ -3833,6 +4013,16 @@ impl App {
                 self.queue_done(q);
             }
         }
+        // The next wake follows the schedules (set again when they change), and a queue that
+        // wakes the computer keeps it awake while it runs (#142).
+        self.wake.sync(&self.queues);
+        let waking = self
+            .queues
+            .iter()
+            .find(|q| q.running && q.schedule.wake)
+            .map(|q| q.name.clone());
+        self.wake
+            .keep_awake(waking.is_some(), waking.as_deref().unwrap_or_default());
     }
 
     /// Scheduler → Download limits: stop at the limit, go on when the window has room.
@@ -4068,10 +4258,10 @@ impl App {
                     let _ = open::that_detached(dir);
                 }
             }
-            #[cfg(windows)]
+            #[cfg(gpu)]
             Cmd::DrawWith(api) => {
                 // Chosen again after it failed here: its next start is tried.
-                if api == crate::renderer::Api::Direct3D {
+                if Some(api) == crate::renderer::GPU {
                     crate::renderer::forget_failure();
                 }
                 tracing::info!("draw with {api:?} from the next start");
@@ -4696,14 +4886,14 @@ impl App {
                 I("Support &MDM", Cmd::Support, true, false),
             ],
         };
-        // View → Theme (MDM's, #45), after Always dark; then Draw with (#89), Windows only:
-        // Linux and macOS draw with OpenGL only (renderer.rs).
+        // View → Theme (MDM's, #45), after Always dark; then Draw with (#89, #206), where wgpu is
+        // built (Windows, Linux, macOS: renderer.rs).
         if let Some(at) = menu
             .iter()
             .position(|e| matches!(e, I(_, Cmd::ToggleAlwaysDark, ..)))
         {
             menu.insert(at + 1, self.theme_menu());
-            #[cfg(windows)]
+            #[cfg(gpu)]
             menu.insert(at + 2, self.draw_with_menu());
         }
         menu
@@ -4728,6 +4918,13 @@ impl App {
             true,
             on("high-contrast"),
         ));
+        items.push(Sep);
+        // i18n: View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
+        items.push(Radio("Metro", Cmd::Theme("metro"), true, on("metro")));
+        // i18n: View → Theme: a style theme's name (GNOME's look, the Linux desktop), a name: keep "Adwaita" as written
+        items.push(Radio("Adwaita", Cmd::Theme("adwaita"), true, on("adwaita")));
+        // i18n: View → Theme: a style theme's name (KDE Plasma's look, the Linux desktop), a name: keep "Breeze" as written
+        items.push(Radio("Breeze", Cmd::Theme("breeze"), true, on("breeze")));
         for e in self.theme_list.iter().filter(|e| e.path.is_some()) {
             if !files {
                 items.push(Sep);
@@ -4744,32 +4941,76 @@ impl App {
         Sub("Theme", true, items)
     }
 
-    /// View → Draw with (#89): OpenGL or Direct3D, used from the next start; a greyed line says
-    /// when what draws now isn't the choice.
-    #[cfg(windows)]
+    /// View → Draw with (#89, #206): OpenGL or the system's own graphics API (Direct3D on
+    /// Windows, Vulkan on Linux, Metal on macOS), used from the next start. Greyed lines say when
+    /// what draws now isn't the choice: the system's API failed here (and why), or the choice
+    /// waits for the next start.
+    #[cfg(gpu)]
     fn draw_with_menu(&self) -> MenuEntry<Cmd> {
-        use crate::renderer::{self, Api};
+        use crate::renderer::{self, Api, Why};
         use MenuEntry::{Item as I, Radio, Sep, Sub};
         let off = |label| I(label, Cmd::None, false, false);
-        let chosen = self.settings.renderer.unwrap_or(renderer::DEFAULT);
-        let (gl, d3d) = (chosen == Api::OpenGl, chosen == Api::Direct3D);
+        let chosen = renderer::chosen(self.settings.renderer);
+        let gpu = renderer::GPU.unwrap_or(Api::OpenGl);
+        let on = chosen == gpu;
+        let draw = Cmd::DrawWith(gpu);
+        // Its choice, and the note when it failed here.
+        let (choice, failed_note) = match gpu {
+            Api::Direct3D => (
+                // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
+                Radio("Direct3D", draw, true, on),
+                // i18n: View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
+                off("Direct3D didn't start here: OpenGL draws"),
+            ),
+            Api::Vulkan => (
+                // i18n: View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+                Radio("Vulkan", draw, true, on),
+                // i18n: View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+                off("Vulkan didn't start here: OpenGL draws"),
+            ),
+            _ => (
+                // i18n: View → Draw with: a graphics system's name (Apple's), usually kept as is
+                Radio("Metal", draw, true, on),
+                // i18n: View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+                off("Metal didn't start here: OpenGL draws"),
+            ),
+        };
         let mut items = vec![
             // i18n: View → Draw with: a graphics system's name, usually kept as is
-            Radio("OpenGL", Cmd::DrawWith(Api::OpenGl), true, gl),
-            // i18n: View → Draw with: a graphics system's name (Microsoft's), usually kept as is
-            Radio("Direct3D", Cmd::DrawWith(Api::Direct3D), true, d3d),
+            Radio(
+                "OpenGL",
+                Cmd::DrawWith(Api::OpenGl),
+                true,
+                chosen == Api::OpenGl,
+            ),
+            choice,
         ];
+        let failed = renderer::gpu_failed().filter(|_| on);
         if renderer::active().is_some_and(|a| a != chosen) {
             items.push(Sep);
-            items.push(if chosen == Api::Direct3D && renderer::direct3d_failed() {
-                // i18n: View → Draw with: a greyed note; Direct3D failed on this computer, so OpenGL draws the windows
-                off("Direct3D didn't start here: OpenGL draws")
-            } else {
+            let last = match failed {
+                Some(why) => {
+                    items.push(failed_note);
+                    // Why, under it ("it": Direct3D, Vulkan or Metal).
+                    match why {
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+                        Why::NoAdapter => off("No graphics card here has a driver for it"),
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+                        Why::NoFirstFrame => off("Its first frame didn't show within 10 seconds"),
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+                        Why::EndedEarly => off("Its last start ended before its first frame"),
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+                        Why::LostTwice => off("The graphics card was lost twice in 10 minutes"),
+                        // i18n: View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+                        Why::Other => off("It couldn't start: the log says why"),
+                    }
+                }
                 // i18n: View → Draw with: a greyed note under the choices; the choice takes effect when MDM is started again
-                off("Applies the next time MDM starts")
-            });
+                None => off("Applies the next time MDM starts"),
+            };
+            items.push(last);
         }
-        // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+        // i18n: View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
         Sub("Draw with", true, items)
     }
 
@@ -5113,7 +5354,7 @@ impl App {
         let mut branch =
             |label, open: bool, icon, badge, view: View, b: Branch, child: fn(Category) -> View| {
                 rows.push((
-                    row(0, label, Some(open), IconKey::Silk(icon), badge, Some(view)),
+                    row(0, label, Some(open), icon, badge, Some(view)),
                     Some(view),
                     b,
                 ));
@@ -5139,7 +5380,7 @@ impl App {
         branch(
             "All Downloads",
             self.all_open,
-            "folder",
+            IconKey::Themed("cat-all", "folder"),
             None,
             View::All,
             Branch::All,
@@ -5149,7 +5390,7 @@ impl App {
             // i18n: adjective: the downloads that are not complete yet
             "Unfinished",
             self.unfinished_open,
-            "folder_go",
+            IconKey::Themed("cat-unfinished", "folder_go"),
             None,
             View::Unfinished(None),
             Branch::Unfinished,
@@ -5159,7 +5400,7 @@ impl App {
             // i18n: adjective: the downloads that are complete
             "Finished",
             self.finished_open,
-            "folder",
+            IconKey::Themed("cat-finished", "folder"),
             Some("tick"),
             View::Finished(None),
             Branch::Finished,
@@ -5172,7 +5413,7 @@ impl App {
                 // i18n: plural noun: the download queues
                 "Queues",
                 Some(self.queues_open),
-                IconKey::Silk("folder"),
+                IconKey::Themed("cat-queues", "folder"),
                 Some("page_white_stack"),
                 None,
             ),
@@ -5216,6 +5457,78 @@ impl App {
         self.popup = Some((kind, at, self.popup_serial));
     }
 
+    /// The main window's title bar where the theme draws its own (Windows only: elsewhere the
+    /// window manager owns the title bar): the frame is switched to ours or back as the theme
+    /// changes, the bar drawn at the top of `full`; returns what is left for the layout.
+    fn drawn_caption(&mut self, ui: &mut Ui, full: egui::Rect) -> egui::Rect {
+        #[cfg(windows)]
+        {
+            use crate::winui::caption::{self, CAPTION_H, CaptionButton};
+            let want =
+                crate::theme::current().controls.caption != crate::palette::CaptionLook::System;
+            if self.drawn_frame != Some(want)
+                && let Some(h) = crate::win32::drawn_frame(crate::MAIN_TITLE, want)
+            {
+                self.drawn_frame = Some(want);
+                self.main_hwnd = Some(h);
+                ui.ctx().request_repaint();
+            }
+            if !want || self.drawn_frame != Some(true) {
+                return full;
+            }
+            let rect = egui::Rect::from_min_size(full.min, egui::vec2(full.width(), CAPTION_H));
+            if let Some(h) = self.main_hwnd {
+                let m = crate::win32::max_button_state(h);
+                caption::frame_maximize(m.hot, m.pressed);
+            }
+            let buttons = [
+                (CaptionButton::Close, true),
+                (CaptionButton::Maximize, true),
+                (CaptionButton::Minimize, true),
+            ];
+            let bar = caption::title_bar(ui, rect, crate::MAIN_TITLE, &buttons);
+            if let Some(h) = self.main_hwnd {
+                let ppp = ui.ctx().pixels_per_point();
+                let px = |r: egui::Rect| {
+                    let (a, b) = ((r.min - full.min) * ppp, (r.max - full.min) * ppp);
+                    [
+                        a.x.round() as i32,
+                        a.y.round() as i32,
+                        b.x.round() as i32,
+                        b.y.round() as i32,
+                    ]
+                };
+                crate::win32::set_caption_hits(
+                    h,
+                    crate::win32::CaptionHits {
+                        strip_h: (CAPTION_H * ppp).round() as i32,
+                        icon: px(bar.icon),
+                        buttons: bar.buttons.iter().map(|r| px(*r)).collect(),
+                        max_button: Some(1),
+                    },
+                );
+            }
+            let ctx = ui.ctx();
+            match bar.pressed {
+                Some(CaptionButton::Close) => ctx.send_viewport_cmd(egui::ViewportCommand::Close),
+                Some(CaptionButton::Minimize) => {
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(true))
+                }
+                Some(CaptionButton::Maximize) => {
+                    let max = ctx.input(|i| i.viewport().maximized) == Some(true);
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Maximized(!max));
+                }
+                _ => {}
+            }
+            egui::Rect::from_min_max(egui::pos2(full.min.x, full.min.y + CAPTION_H), full.max)
+        }
+        #[cfg(not(windows))]
+        {
+            let _ = ui;
+            full
+        }
+    }
+
     fn toggle(&mut self, b: Branch) {
         match b {
             Branch::All => self.all_open = !self.all_open,
@@ -5229,11 +5542,14 @@ impl App {
     fn paint(&mut self, ui: &mut Ui) {
         let ctx = ui.ctx().clone();
         let full = ui.max_rect();
+        // The client area, laid out from the right in a right-to-left interface (winui).
+        let _surface = winui::Surface::enter(full.min.x, full.max.x);
+        // A style theme's title bar, drawn above the layout (Windows; #45), mirrored right to
+        // left as the progress window's.
+        let full = self.drawn_caption(ui, full);
         let o = full.min;
         let (w, h) = (full.width(), full.height());
         let mut chosen: Option<(Cmd, Option<u64>)> = None;
-        // The client area, laid out from the right in a right-to-left interface (winui).
-        let _surface = winui::Surface::enter(o.x, o.x + w);
 
         // The menu bar from the keyboard: F10 or Alt pressed alone opens its first menu, Alt and a
         // menu's underlined letter that menu (Windows and Linux); on macOS, whose apps have no
@@ -5745,11 +6061,13 @@ impl App {
             self.file_info_waiting.push_back((new, context));
             return;
         }
-        let request = self.request_parts(&new.url, new.login.as_ref(), &context);
+        let direct = crate::debrid::browser_started(&context);
+        let request = self.request_parts(&new.url, new.login.as_ref(), &context, direct);
         let mut fi = FileInfo::new(
             new,
             context,
             request,
+            self.debrid_route(),
             self.downloads.clone(),
             self.settings.category_dirs.clone(),
             &self.rt,
@@ -6267,7 +6585,7 @@ impl App {
                 user_agent: d.user_agent.clone(),
                 ..Default::default()
             };
-            let parts = self.request_parts(&url, None, &context);
+            let parts = self.request_parts(&url, None, &context, false);
             let slot: std::sync::Arc<std::sync::Mutex<Option<_>>> = Default::default();
             let (out, ctx) = (slot.clone(), ctx.clone());
             self.rt.spawn(async move {
@@ -6667,8 +6985,12 @@ impl App {
                 // A .torrent's address (#39): Add torrent fetches it and shows what it holds.
                 Outcome::Done(new) if crate::torrents::is_torrent_url(&new.url, None, None) => {
                     self.add_url = None;
-                    let parts =
-                        self.request_parts(&new.url, new.login.as_ref(), &Default::default());
+                    let parts = self.request_parts(
+                        &new.url,
+                        new.login.as_ref(),
+                        &Default::default(),
+                        false,
+                    );
                     let remote = crate::torrents::Remote {
                         url: new.url.clone(),
                         parts,
@@ -6992,6 +7314,7 @@ impl App {
                 &mut self.icons,
                 &self.items,
                 &self.queues,
+                self.wake.error.as_deref(),
                 &mut actions,
             );
             for a in actions {
@@ -7034,10 +7357,13 @@ impl App {
                 );
                 self.dirty = true;
             }
-            // The address was edited after the early start: that download is the old address's.
-            // It goes; the new one starts early in its turn (start_early).
+            // The address was edited after the early start, or "Download through" changed (#44):
+            // that download is the old one's. It goes; the new one starts early in its turn
+            // (start_early).
             if let Some(id) = fi.early
-                && self.item(id).is_some_and(|i| i.url != fi.url)
+                && self
+                    .item(id)
+                    .is_some_and(|i| i.url != fi.url || i.direct != fi.direct)
             {
                 self.stop(id);
                 self.after_stop.push((id, None));
@@ -7352,6 +7678,8 @@ impl Drop for App {
     fn drop(&mut self) {
         // An archive being extracted stops; its staging folder goes with it.
         self.extracts.stop();
+        // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
+        self.wake.clear();
         self.keep_unseen();
         // What the saver has in hand first, then the last state, written here and now.
         self.saver.flush();

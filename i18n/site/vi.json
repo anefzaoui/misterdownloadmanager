@@ -4,7 +4,7 @@
  "segments": {
   "0001df97223dc970": {
    "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
-   "text": "Trong Firefox, khi bạn bật <g1>Gửi các bản tải xuống qua proxy hoặc tiện ích VPN của trình duyệt này</g1> trong cửa sổ bật lên của nó (Firefox sẽ hỏi bạn trước), khi trình duyệt sử dụng proxy cho một bản tải xuống (được đặt bởi tiện ích VPN hoặc proxy, hoặc trong cài đặt của nó), tiện ích sẽ chuyển <g2>địa chỉ của proxy</g2>, hoặc <g3>tập lệnh cấu hình tự động proxy</g3> của nó, để MDM tải xuống qua cùng một proxy. Nó không bao giờ đọc hoặc chuyển thông tin đăng nhập của proxy. Nó chỉ ghi nhận rằng một proxy đã yêu cầu một cái, để MDM có thể cho bạn biết rằng nó không thể sử dụng proxy đó. Khi tắt (như cài đặt), nó không đọc bất cứ điều gì về proxy của trình duyệt. Tiện ích dành cho Chrome và các trình duyệt Chromium khác chưa thực hiện điều này."
+   "text": "Trong Firefox, khi bạn bật <g1>Gửi các bản tải xuống qua proxy hoặc tiện ích VPN của trình duyệt này</g1> trong cửa sổ bật lên của nó (Firefox sẽ hỏi bạn trước), khi trình duyệt sử dụng proxy cho một bản tải xuống (được đặt bởi tiện ích VPN hoặc proxy, hoặc trong cài đặt của nó), tiện ích sẽ chuyển <g2>địa chỉ của proxy</g2>, hoặc <g3>tập lệnh cấu hình tự động proxy</g3> của nó, để MDM tải xuống qua cùng một proxy. Nó không bao giờ đọc hoặc chuyển thông tin đăng nhập của proxy. Nó chỉ ghi nhận rằng một proxy đã yêu cầu một cái, để MDM có thể cho bạn biết rằng nó không thể sử dụng proxy đó. Khi tắt (như đã cài đặt), nó không đọc bất cứ điều gì về proxy của trình duyệt. Tiện ích cho Chrome và các trình duyệt Chromium khác chưa thực hiện điều này."
   },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
@@ -206,6 +206,10 @@
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
   },
+  "04bb12464d3a29f6": {
+   "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
+   "text": "Đánh dấu vào <g1>Đánh thức máy tính để chạy hàng đợi này</g1>, bên dưới thời gian bắt đầu, và máy tính đang ngủ vào thời gian bắt đầu sẽ được đánh thức. Cần có <g2>Bắt đầu tải xuống lúc</g2>."
+  },
   "050edc04316dd70a": {
    "source": "On the command line",
    "text": "Trên dòng lệnh"
@@ -361,6 +365,10 @@
   "08084c2a5ca0a411": {
    "source": "Right-click a category for:",
    "text": "Nhấp chuột phải vào một danh mục để:"
+  },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>Xem</g1> — hiển thị hoặc ẩn các danh mục, sắp xếp danh sách (<g2>Sắp xếp tệp</g2>), <g3>Hỗ trợ Chế độ tối</g3>, <g4>Luôn tối</g4>, <g5>Chủ đề</g5>, <g6>Vẽ bằng</g6> (OpenGL, hoặc Direct3D trên Windows, Vulkan trên Linux, Metal trên macOS) và <g7>Ngôn ngữ</g7>."
   },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
@@ -608,7 +616,7 @@
   },
   "0f0281b39f2ac4c5": {
    "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
-   "text": "Tiện ích VPN hoặc proxy chỉ là proxy cho trình duyệt. Trong Firefox, hãy bật <g1>Gửi các bản tải xuống qua proxy hoặc tiện ích VPN của trình duyệt này</g1> trong cửa sổ bật lên trên thanh công cụ của tiện ích: Firefox sẽ hỏi bạn một lần để cho phép tiện ích đọc proxy của trình duyệt, và MDM sau đó sẽ tải xuống những gì nó lấy từ trình duyệt thông qua cùng một proxy (với <g2>Tùy chọn → Proxy / Socks → Sử dụng proxy/socks từ yêu cầu của trình duyệt</g2>, bật theo mặc định; xem <g3>Tùy chọn</g3>). Tắt nó đi để thu hồi quyền đó. Chrome, Edge, Brave, Opera và Vivaldi chưa cung cấp tính năng này: hiện tại, hãy đặt cùng một proxy trong <g4>Tùy chọn → Proxy / Socks</g4> của MDM."
+   "text": "Tiện ích VPN hoặc proxy chỉ là một proxy cho trình duyệt. Trong Firefox, hãy bật <g1>Gửi các bản tải xuống qua proxy hoặc tiện ích VPN của trình duyệt này</g1> trong cửa sổ bật lên trên thanh công cụ của tiện ích: Firefox sẽ hỏi bạn một lần để cho phép tiện ích đọc proxy của trình duyệt, và MDM sau đó sẽ tải xuống những gì nó lấy từ trình duyệt thông qua cùng một proxy (với <g2>Tùy chọn → Proxy / Socks → Sử dụng proxy/socks từ yêu cầu của trình duyệt</g2>, bật theo mặc định; xem <g3>Tùy chọn</g3>). Tắt nó đi để thu hồi quyền đó. Chrome, Edge, Brave, Opera và Vivaldi chưa cung cấp tính năng này: hiện tại, hãy đặt cùng một proxy trong <g4>Tùy chọn → Proxy / Socks</g4> của MDM."
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -1386,6 +1394,10 @@
    "source": "<g1>Look links up when they arrive (name, size, online)</g1> — Link grabber asks each server about its file (on by default).",
    "text": "<g1>Tra cứu liên kết khi chúng đến (tên, kích thước, trực tuyến)</g1> — Trình lấy liên kết hỏi từng máy chủ về tệp của nó (mặc định là bật)."
   },
+  "216583d42da33e52": {
+   "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
+   "text": "Trên macOS, chỉ quản trị viên mới có thể lên lịch đánh thức, vì vậy tùy chọn này bị mờ. MDM không yêu cầu mật khẩu quản trị viên. Một quản trị viên có thể cho phép máy Mac đánh thức mỗi ngày một phút trước khi hàng đợi bắt đầu, ví dụ lúc 10:59 PM cho một hàng đợi bắt đầu lúc 11:00 PM:"
+  },
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "không sử dụng nó để làm quá tải, tấn công hoặc vượt qua giới hạn của các máy chủ mà bạn không sở hữu."
@@ -1573,6 +1585,10 @@
   "25b4db9aa4024862": {
    "source": "The current speed.",
    "text": "Tốc độ hiện tại."
+  },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "Nếu Direct3D, Vulkan hoặc Metal không thể khởi động trên máy tính của bạn (không có trình điều khiển, một số máy ảo), hoặc cửa sổ đầu tiên của nó không hiển thị trong vòng 10 giây, MDM sẽ vẽ bằng OpenGL, và <g1>Xem → Vẽ bằng</g1> sẽ cho biết điều đó và lý do. Chọn lại sẽ thử lại vào lần khởi động tiếp theo."
   },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
@@ -1898,6 +1914,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>Quốc gia</g1> đến từ bảng dải địa chỉ đi kèm với MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), được tra cứu trên máy tính của bạn. MDM không bao giờ gửi địa chỉ đi bất cứ đâu để hỏi vị trí. Bảng được cập nhật theo mỗi bản phát hành; một địa chỉ đã di chuyển kể từ đó có thể hiển thị quốc gia cũ của nó."
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "Cập nhật lần cuối 2026-11-07"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>Duyệt</g1> — mở thư mục của nó trong Explorer."
@@ -1944,7 +1964,7 @@
   },
   "2d99670ca729da8a": {
    "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "Mọi màu sắc và kích thước mà một điều khiển được vẽ đều đến từ chủ đề đang hoạt động (#45): <x1/> khai báo các vai trò của nó (<x2/>, <x3/>…) với các giá trị của giao diện cổ điển, các trình vẽ chung (<x4/>, <x5/>, <x6/>, <x7/>) đọc chúng thông qua <x8/> và <x9/> và quyết định trạng thái của từng điều khiển từ chúng, và <x10/> đọc các tệp chủ đề (TOML hoặc JSON trong thư mục <x11/> của thư mục dữ liệu) thay đổi bất kỳ giá trị nào trong số đó. Vị trí một cửa sổ đặt các điều khiển của nó vẫn là bố cục của nó. Tương tự với các biểu tượng trước tên tệp (<x12/>): danh sách hình ảnh hệ thống của Windows shell, của macOS Finder (NSWorkspace), chủ đề biểu tượng của máy tính để bàn Linux (<x13/>, shared-mime-info và Icon Theme Specification). Mỗi loại được tra cứu một lần cho mỗi kích thước pixel, trên một luồng nền. Các biểu tượng của Tango (được đóng gói) được sử dụng cho đến khi biểu tượng của hệ thống sẵn sàng và ở bất cứ nơi nào hệ thống không có."
+   "text": "Mọi màu sắc và kích thước mà một điều khiển được vẽ đều đến từ chủ đề đang hoạt động (#45): <x1/> khai báo các vai trò của nó (<x2/>, <x3/>…) với các giá trị của giao diện cổ điển, các trình vẽ chung (<x4/>, <x5/>, <x6/>, <x7/>) đọc chúng thông qua <x8/> và <x9/> và quyết định trạng thái của từng điều khiển từ đó, và <x10/> đọc các tệp chủ đề (TOML hoặc JSON trong thư mục <x11/> của thư mục dữ liệu) thay đổi bất kỳ giá trị nào trong số đó. Vị trí mà một cửa sổ đặt các điều khiển của nó vẫn là bố cục của nó. Tương tự với các biểu tượng trước tên tệp (<x12/>): danh sách hình ảnh hệ thống của Windows shell, của macOS Finder (NSWorkspace), chủ đề biểu tượng của máy tính để bàn Linux (<x13/>, shared-mime-info và Icon Theme Specification). Mỗi loại được tra cứu một lần cho mỗi kích thước pixel, trên một luồng nền. Các biểu tượng của Tango (được đóng gói) sẽ thay thế cho đến khi biểu tượng của hệ thống sẵn sàng và ở bất cứ nơi nào hệ thống không có."
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2122,6 +2142,10 @@
    "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
    "text": "Các quy tắc chỉ xem xét các bài viết mới kể từ lần tìm nạp nguồn cấp dữ liệu gần nhất, và lần tìm nạp đầu tiên của nguồn cấp dữ liệu chỉ liệt kê những gì có sẵn. Vì vậy, việc thêm một nguồn cấp dữ liệu hoặc một quy tắc không bao giờ tải xuống toàn bộ danh sách tồn đọng. <g1>Khớp ... bài viết hiện tại</g1> hiển thị những bài viết nào mà các nguồn cấp dữ liệu hiện có khớp với quy tắc, để kiểm tra nó; tải xuống những bài viết đó bằng tay. Một torrent đã có trong danh sách sẽ không được thêm lại, và cũng không phải là một torrent có các tệp đã có trong thư mục: MDM không bao giờ ghi vào các tệp mà nó không tạo ra mà không hỏi. Dòng dưới cùng của thẻ cho biết các quy tắc đã làm gì lần cuối, và một torrent mà một quy tắc đã thêm sẽ nói như vậy trong nhật ký sự kiện của nó."
   },
+  "326233a6912ae49d": {
+   "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
+   "text": "Bộ hẹn giờ systemd của người dùng không thể đánh thức máy tính, và <x1/> cần quyền root, vì vậy nếu không có cài đặt này, MDM không thể đánh thức máy tính. MDM không bao giờ yêu cầu mật khẩu quản trị viên."
+  },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
    "text": "Có. MDM đi kèm với một máy chủ MCP, <x1/>: bạn có thể thêm nó vào Claude Desktop, Claude Code, Cursor, VS Code hoặc một trợ lý khác hỗ trợ MCP, và bạn có thể dùng lời nói của mình để yêu cầu liệt kê, thêm, tạm dừng, tiếp tục hoặc xóa các mục tải xuống. Nó chỉ hoạt động với MDM trên máy tính của bạn và cần bật API tự động hóa. Xem <g2>Trợ lý AI</g2>."
@@ -2248,7 +2272,7 @@
   },
   "36d5bb353cf00059": {
    "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
-   "text": "<g1>Sử dụng proxy/socks từ yêu cầu của trình duyệt…</g1> — bật theo mặc định. Một bản tải xuống mà MDM lấy từ trình duyệt sẽ đi qua proxy mà trình duyệt đã sử dụng cho nó. Đó là proxy mà tiện ích VPN hoặc proxy đã đặt, proxy thủ công của trình duyệt hoặc tập lệnh cấu hình tự động proxy của nó. Nếu không có nó, bản tải xuống sẽ xuất phát từ địa chỉ của bạn và nội dung bị giới hạn ở quốc gia của VPN hoặc địa chỉ của nó sẽ không thành công. Tiện ích mở rộng của trình duyệt đọc proxy đó và chuyển nó cho MDM với mỗi bản tải xuống, sau khi bạn cho phép: trong Firefox, bật <g2>Gửi các bản tải xuống qua proxy hoặc tiện ích VPN của trình duyệt này</g2> trong cửa sổ bật lên trên thanh công cụ của tiện ích (Firefox sẽ hỏi bạn một lần). Chrome, Edge, Brave, Opera và Vivaldi chưa chuyển proxy: ở đó, hãy đặt cùng một proxy trong <g3>Tùy chọn → Proxy / Socks</g3>."
+   "text": "<g1>Sử dụng proxy/socks từ yêu cầu của trình duyệt…</g1> — bật theo mặc định. Một bản tải xuống mà MDM lấy từ trình duyệt sẽ đi qua proxy mà trình duyệt đã sử dụng cho nó. Đó là proxy mà tiện ích VPN hoặc proxy đã đặt, proxy thủ công của trình duyệt hoặc tập lệnh tự động cấu hình proxy của nó. Nếu không có nó, bản tải xuống sẽ xuất phát từ địa chỉ của bạn và nội dung bị giới hạn ở quốc gia của VPN hoặc địa chỉ của nó sẽ không thành công. Tiện ích mở rộng của trình duyệt đọc proxy đó và chuyển nó cho MDM với mỗi bản tải xuống, sau khi bạn cho phép: trong Firefox, bật <g2>Gửi các bản tải xuống qua proxy hoặc tiện ích VPN của trình duyệt này</g2> trong cửa sổ bật lên trên thanh công cụ của tiện ích (Firefox sẽ hỏi bạn một lần). Chrome, Edge, Brave, Opera và Vivaldi chưa chuyển proxy: ở đó, hãy đặt cùng một proxy trong <g3>Tùy chọn → Proxy / Socks</g3>."
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -3326,6 +3350,10 @@
    "source": "JSON for scripts and programs",
    "text": "JSON cho các tập lệnh và chương trình"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "Trên Windows, MDM vẽ các cửa sổ của nó bằng Direct3D 12; trên Linux và macOS, bằng OpenGL, hoặc bằng Vulkan (Linux) hoặc Metal (macOS) khi bạn chọn chúng. Trình điều khiển đồ họa vẫn có thể hoạt động sai: một cửa sổ đứng yên trong vài giây, nhấp nháy, hoặc hiển thị màu sắc hoặc khối sai. Hãy thử cái khác: chọn <g1>Xem → Vẽ bằng → OpenGL</g1> (hoặc <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), sau đó thoát MDM (<g5>Tác vụ → Thoát</g5>) và khởi động lại. Chọn cái đầu tiên sẽ quay lại theo cùng một cách."
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "khi <g1>Tùy chọn → Lưu trữ → Giải nén các tệp lưu trữ khi quá trình tải xuống hoàn tất</g1> được bật (mặc định là tắt), đối với bất kỳ lượt tải xuống nào khác,"
@@ -3562,6 +3590,10 @@
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>Một bản sao từ nơi khác?</g1> Gỡ bỏ nó và thêm tiện ích mở rộng như cửa sổ <g2>Thêm Mister Download Manager vào trình duyệt của bạn</g2> của MDM hiển thị (xem <g3>Tích hợp trình duyệt</g3>)."
   },
+  "5922c26d865c882f": {
+   "source": "The wake follows the schedule: change the start time or the days, untick the option or delete the queue, and the wake moves or goes away. MDM sets it again each time it starts. Nothing stays behind in the system when MDM quits or is uninstalled.",
+   "text": "Việc đánh thức tuân theo lịch trình: thay đổi thời gian bắt đầu hoặc các ngày, bỏ chọn tùy chọn hoặc xóa hàng đợi, và việc đánh thức sẽ di chuyển hoặc biến mất. MDM đặt lại mỗi khi nó khởi động. Không có gì còn lại trong hệ thống khi MDM thoát hoặc được gỡ cài đặt."
+  },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
    "text": "Trong <g1>Thông tin tệp tải xuống</g1>: <g2>Bắt đầu tải xuống</g2>"
@@ -3788,7 +3820,7 @@
   },
   "5f91bf43437c9761": {
    "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
-   "text": "<g1>Xem</g1> — hiện hoặc ẩn các danh mục, sắp xếp danh sách (<g2>Sắp xếp tệp</g2>), <g3>Hỗ trợ Chế độ tối</g3>, <g4>Luôn tối</g4>, <g5>Chủ đề</g5>, <g6>Vẽ bằng</g6> (Windows: Direct3D hoặc OpenGL) và <g7>Ngôn ngữ</g7>."
+   "text": "<g1>Xem</g1> — hiện hoặc ẩn các danh mục, sắp xếp danh sách (<g2>Sắp xếp tệp</g2>), <g3>Hỗ trợ Chế độ tối</g3>, <g4>Luôn tối</g4>, <g5>Chủ đề</g5>, <g6>Vẽ bằng</g6> (Windows: Direct3D, hoặc OpenGL) và <g7>Ngôn ngữ</g7>."
   },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
@@ -3809,6 +3841,10 @@
   "601260a4be471ed2": {
    "source": "The box under the list edits the package you selected:",
    "text": "Hộp bên dưới danh sách chỉnh sửa gói bạn đã chọn:"
+  },
+  "6038a4d72bef82d8": {
+   "source": "removes it.",
+   "text": "xóa nó."
   },
   "603f376b07905d51": {
    "source": "Q",
@@ -4562,6 +4598,10 @@
    "source": "<g1>New</g1> — make your own category. <g2>Edit...</g2> changes the selected one: its folder, and for your own categories its name and file types.",
    "text": "<g1>Mới</g1> — tạo danh mục của riêng bạn. <g2>Sửa...</g2> thay đổi danh mục đã chọn: thư mục của nó, và đối với các danh mục của riêng bạn là tên và loại tệp của nó."
   },
+  "720b69230bc62f14": {
+   "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
+   "text": "Tải xuống các ảnh của một thư viện (một danh mục Wikimedia Commons, một album Flickr, ...) vào một thư mục được đặt tên theo nó bên trong <x1/>; <x2/> tải xuống tối đa bấy nhiêu ảnh, những ảnh đầu tiên mà trang web liệt kê. Nếu chạy lại, nó chỉ tải những ảnh mới."
+  },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
    "text": "1.2.0 desktop beta<g1>25 Tháng Mười 2026</g1>"
@@ -5278,6 +5318,10 @@
    "source": "Put downloads in a queue",
    "text": "Đưa lượt tải xuống vào hàng đợi"
   },
+  "83771adf9df51604": {
+   "source": "Windows wakes a computer only if its power plan allows wake timers. If it doesn't, the Scheduler says so, and <g1>Change</g1> opens the setting: <g2>Power Options → Change plan settings → Change advanced power settings → Sleep → Allow wake timers</g2>. Choose <g3>Enable</g3>: <g4>Important Wake Timers Only</g4> lets only Windows' own important timers wake the computer. On laptops the setting is often off on battery, so the computer is woken only while plugged in.",
+   "text": "Windows chỉ đánh thức máy tính nếu gói năng lượng của nó cho phép bộ hẹn giờ đánh thức. Nếu không, Bộ lập lịch sẽ thông báo, và <g1>Thay đổi</g1> sẽ mở cài đặt: <g2>Tùy chọn nguồn điện → Thay đổi cài đặt gói → Thay đổi cài đặt nguồn điện nâng cao → Ngủ → Cho phép bộ hẹn giờ đánh thức</g2>. Chọn <g3>Bật</g3>: <g4>Chỉ bộ hẹn giờ đánh thức quan trọng</g4> chỉ cho phép các bộ hẹn giờ quan trọng của Windows đánh thức máy tính. Trên máy tính xách tay, cài đặt này thường bị tắt khi dùng pin, vì vậy máy tính chỉ được đánh thức khi cắm điện."
+  },
   "837e0b4660975a88": {
    "source": "Select or unselect one more download",
    "text": "Chọn hoặc bỏ chọn thêm một bản tải xuống"
@@ -5518,6 +5562,10 @@
    "source": "When MDM isn't running",
    "text": "Khi MDM không chạy"
   },
+  "8964c9e8c41b70ca": {
+   "source": "On Linux only an administrator may set the computer's wake alarm, so the option is greyed until an administrator allows it. To let the users in a <x1/> group set it, an administrator runs, once:",
+   "text": "Trên Linux, chỉ quản trị viên mới có thể đặt báo thức đánh thức máy tính, vì vậy tùy chọn này bị mờ cho đến khi quản trị viên cho phép. Để cho phép người dùng trong một nhóm <x1/> đặt nó, quản trị viên chạy, một lần:"
+  },
   "89c2ac8b048f39e1": {
    "source": "The next choice of a drop-down list or radio group; a number up or down",
    "text": "Lựa chọn tiếp theo của một danh sách thả xuống hoặc nhóm radio; một số tăng hoặc giảm"
@@ -5600,7 +5648,7 @@
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "Các quyền của tiện ích và lý do: <g1>downloads</g1> để xem và chuyển các bản tải xuống; <g2>cookies</g2> để các bản tải xuống đã đăng nhập hoạt động trong MDM; <g3>nativeMessaging</g3> để giao tiếp với MDM; <g4>contextMenus</g4> cho các mục nhấp chuột phải; <g5>storage</g5> cho cài đặt của nó; <g6>webRequest</g6> để xem các biểu mẫu đã gửi và các luồng video đã tải (nó không thay đổi gì); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge và các trình duyệt Chromium khác) để tải xuống các tệp mà trình duyệt sẽ mở (một tệp PDF) thay vì mở, đối với các loại mà MDM hỗ trợ; trong Firefox, <g8>webRequestBlocking</g8> thực hiện điều đó; <g9>scripting</g9> để đọc các liên kết của một trang khi bạn yêu cầu và để thêm nút video vào các trang đã mở khi tiện ích được cài đặt; <g10>proxy</g10> (Firefox, tùy chọn: chỉ được yêu cầu khi bạn bật nó trong cửa sổ bật lên) để đọc proxy mà trình duyệt sử dụng, để các bản tải xuống từ trình duyệt phía sau VPN hoặc tiện ích proxy cũng đi qua nó (nó không bao giờ thay đổi proxy của trình duyệt); quyền truy cập vào tất cả các trang web vì các bản tải xuống và video có thể đến từ bất kỳ trang web nào."
+   "text": "Các quyền của nó và lý do: <g1>downloads</g1> để xem và chuyển các bản tải xuống; <g2>cookies</g2> để các bản tải xuống đã đăng nhập hoạt động trong MDM; <g3>nativeMessaging</g3> để giao tiếp với MDM; <g4>contextMenus</g4> cho các mục nhấp chuột phải; <g5>storage</g5> cho các cài đặt của nó; <g6>webRequest</g6> để xem các biểu mẫu đã gửi và các luồng video đã tải (nó không thay đổi gì); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge và các trình duyệt Chromium khác) để các tệp mà trình duyệt sẽ mở (một PDF) được tải xuống thay thế, đối với các loại mà MDM chấp nhận; trong Firefox, <g8>webRequestBlocking</g8> thực hiện điều đó; <g9>scripting</g9> để đọc các liên kết của một trang khi bạn yêu cầu, và để thêm nút video vào các trang đã mở khi tiện ích được cài đặt; <g10>proxy</g10> (Firefox, tùy chọn: chỉ được yêu cầu khi bạn bật nó trong cửa sổ bật lên) để đọc proxy mà trình duyệt sử dụng, để các bản tải xuống được lấy từ một trình duyệt đằng sau tiện ích VPN hoặc proxy cũng đi qua nó (nó không bao giờ thay đổi proxy của trình duyệt); quyền truy cập vào tất cả các trang web vì các bản tải xuống và video có thể đến từ bất kỳ trang web nào."
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5745,6 +5793,10 @@
   "8fc3e18c3fa6303a": {
    "source": "<g1>1 GiB in 1.0 s</g1> <g2>IDM: 5.5 s</g2>",
    "text": "<g1>1 GiB trong 1,0 giây</g1> <g2>IDM: 5,5 giây</g2>"
+  },
+  "8fcae1435dddb9aa": {
+   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, torrents, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
+   "text": "<g1>Bộ điều hợp mạng</g1> — <g2>Bất kỳ (hệ thống tự chọn)</g2> là mặc định. Chọn một bộ điều hợp, thường là của VPN của bạn, và mọi kết nối MDM mở ra sẽ đi qua nó, hoặc không đi qua đâu cả. Điều này bao gồm các lượt tải xuống, FTP, torrent, DNS bạn đã chọn, các lượt tải xuống của MDM và kiểm tra cập nhật. Nó hoạt động như một công tắc ngắt mạch: khi bộ điều hợp bị ngắt kết nối, hoặc VPN bị tắt, không có gì đi ra qua kết nối thông thường của bạn. Các lượt tải xuống đang chạy sẽ dừng với thông báo \"… không được kết nối\" và bắt đầu lại khi bộ điều hợp hoạt động trở lại. Dòng bên dưới danh sách hiển thị địa chỉ của bộ điều hợp, hoặc cho biết nó không được kết nối."
   },
   "8fd5190974156ab1": {
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
@@ -5914,6 +5966,10 @@
    "source": "<g1>Ctrl+A</g1> selects all.",
    "text": "<g1>Ctrl+A</g1> chọn tất cả."
   },
+  "94c4559a957526ad": {
+   "source": "Not held to the adapter yet, so they don't start while one is chosen:",
+   "text": "Chưa được giữ vào bộ điều hợp, vì vậy chúng không bắt đầu khi một bộ điều hợp được chọn:"
+  },
   "94d68d235164409c": {
    "source": "<g1>The window froze for seconds while a big download was writing</g1>: MDM saved its list on the window's thread, and the save waited for the disk. It saves on a thread of its own now (the new crash reports caught it).",
    "text": "<g1>Cửa sổ bị treo trong vài giây khi một bản tải xuống lớn đang ghi</g1>: MDM đã lưu danh sách của nó trên luồng của cửa sổ, và việc lưu đợi đĩa. Nó lưu trên một luồng riêng của nó bây giờ (các báo cáo sự cố mới đã phát hiện ra điều này)."
@@ -5950,6 +6006,10 @@
    "source": "Downloads",
    "text": "Tải xuống"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Cập nhật lần cuối 2026-11-07 · áp dụng cho ứng dụng, tiện ích mở rộng trình duyệt và misterdownloadmanager.com"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>Mô tả hoặc một phần của mô tả</g1> — ghi chú của bạn."
@@ -5960,7 +6020,7 @@
   },
   "95f874ce586a0506": {
    "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>Bắt lỗi.</g1> Khi MDM gặp sự cố (ngoại lệ trên Windows, tín hiệu trên Linux, ngoại lệ Mach trên macOS), hoảng loạn hoặc bị treo, nó sẽ yêu cầu trình giám sát tạo một bản ghi. Treo là khi một khung cửa sổ chạy quá 8 giây, được phát hiện bởi một luồng giám sát bỏ qua thời gian ngủ. Nó tính thời gian cả hai phần của một khung: những gì MDM xử lý (các lệnh đến, đồng hồ tải xuống, hàng đợi và Bộ lập lịch), cũng chạy ở chế độ thu nhỏ, và việc vẽ; không bao giờ tính thời gian chờ giữa các khung. Trình giám sát cũng đo lượng thời gian xử lý mà luồng cửa sổ nhận được trong khi đó, và báo cáo cho biết điều đó có nghĩa là gì: nó chạy liên tục (một vòng lặp), nó chờ trong khóa hoặc trên I/O (một bế tắc), hoặc nó hầu như không chạy trong mã thông thường, có nghĩa là máy tính quá bận để chạy MDM hoặc chậm tải nó từ đĩa, rất có thể không phải lỗi của MDM (những lỗi này chia sẻ một chữ ký, <x2/>). macOS chưa đo điều này. Trình giám sát sau đó ghi một <g3>minidump</g3> của mọi luồng từ bên ngoài, thông qua <x4/> và <x5/>. Một tiến trình bị lỗi không bao giờ tự ghi bản ghi của nó, đây cũng là cách Firefox, Crashpad và Sentry thực hiện."
+   "text": "<g1>Phát hiện sự cố.</g1> Khi MDM gặp sự cố (ngoại lệ Windows, tín hiệu trên Linux, ngoại lệ Mach trên macOS), hoảng loạn hoặc bị treo, nó sẽ yêu cầu trình giám sát tạo một bản ghi. Treo là khi một khung cửa sổ chạy quá 8 giây, được phát hiện bởi một luồng giám sát bỏ qua thời gian ngủ. Nó tính thời gian cả hai phần của một khung: những gì MDM xử lý (các lệnh đến, đồng hồ của các lượt tải xuống, hàng đợi và Bộ lập lịch), cũng chạy khi thu nhỏ, và việc vẽ; không bao giờ là thời gian chờ giữa các khung. Luồng giám sát cũng đo lượng thời gian bộ xử lý mà luồng cửa sổ đã nhận được trong khi đó, và báo cáo cho biết điều đó có nghĩa là gì: nó đã chạy liên tục (một vòng lặp), nó đã chờ trong một khóa hoặc trên I/O (một bế tắc), hoặc nó hầu như không chạy trong mã thông thường, đó là một máy tính quá bận để chạy MDM hoặc chậm để tải nó từ đĩa, rất có thể không phải là lỗi của MDM (những lỗi đó chia sẻ một chữ ký, <x2/>). macOS chưa đo lường điều đó. Trình giám sát sau đó ghi một <g3>minidump</g3> của mọi luồng từ bên ngoài, thông qua <x4/> và <x5/>. Một tiến trình bị lỗi không bao giờ tự ghi bản ghi của nó, đó cũng là cách Firefox, Crashpad và Sentry thực hiện."
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6242,6 +6302,10 @@
    "source": "<g1>As the system's region writes them</g1> (the default) — Windows' region settings (Settings → Time &amp; language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.",
    "text": "<g1>Theo cách viết của khu vực hệ thống</g1> (mặc định) — cài đặt khu vực của Windows (Cài đặt → Thời gian &amp; ngôn ngữ → Khu vực); trên macOS và Linux, cách thông thường của ngôn ngữ của bạn. Trong tiếng Anh, danh sách giữ nguyên văn bản ngày của IDM."
   },
+  "9d2e5b317ca7d67a": {
+   "source": "MDM wakes the computer a minute before the start time, so the network is back when the queue starts.",
+   "text": "MDM đánh thức máy tính một phút trước thời gian bắt đầu, để mạng hoạt động trở lại khi hàng đợi bắt đầu."
+  },
   "9d5b2429780e94aa": {
    "source": "Latest",
    "text": "Mới nhất"
@@ -6352,7 +6416,7 @@
   },
   "a02445ca780f3ef8": {
    "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
-   "text": "Một cửa sổ egui được vẽ theo tọa độ pixel cố định, cộng thêm một khung nhìn tức thời cho mỗi hộp thoại. <x1/> giữ trạng thái (tải xuống, hàng đợi, cài đặt, lựa chọn danh sách) và biến các lệnh menu, thanh công cụ, phím và IPC thành hành động. Mỗi hộp thoại là một mô-đun riêng và trả về một <x2/> (mở, đóng, hoàn thành với một giá trị). Các lệnh gọi chỉ dành cho Windows được giới hạn trong <x3/> và các lệnh tương ứng trên Linux và macOS trong <x4/> (bắt đầu bằng phiên, máy chủ của trình duyệt, âm thanh, hiển thị trong thư mục, trình xử lý sự cố); mọi tệp khác đều an toàn, Rust di động. Phông chữ đến từ hệ thống: thư mục Fonts của Windows, phông chữ hệ thống của macOS, fontconfig trên Linux (<x5/>)."
+   "text": "Một cửa sổ egui được vẽ theo tọa độ pixel cố định, cộng với một khung nhìn tức thời cho mỗi hộp thoại. <x1/> giữ trạng thái (tải xuống, hàng đợi, cài đặt, lựa chọn danh sách) và biến các lệnh menu, thanh công cụ, phím và IPC thành hành động. Mỗi hộp thoại là một mô-đun riêng và trả về một <x2/> (mở, đóng, hoàn thành với một giá trị). Các lệnh gọi chỉ dành cho Windows được giới hạn trong <x3/> và các lệnh tương ứng trên Linux và macOS được giới hạn trong <x4/> (bắt đầu với phiên, máy chủ của trình duyệt, âm thanh, hiển thị trong thư mục, trình xử lý sự cố); mọi tệp khác đều an toàn, Rust di động. Phông chữ đến từ hệ thống: thư mục Fonts của Windows, phông chữ hệ thống của macOS, fontconfig trên Linux (<x5/>)."
   },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
@@ -7054,6 +7118,10 @@
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
    "text": "chạy các bài kiểm tra đơn vị và tải xuống end-to-end chống lại <x1/> với các lỗi được chèn (kết nối chậm, bị ngắt và bị từ chối, máy chủ không có phạm vi, tệp thay đổi). <x2/> chạy so sánh tốc độ đã xuất bản; dữ liệu thô của nó nằm trong <x3/>."
   },
+  "b1f35176aca676c5": {
+   "source": "While the queue runs, the computer doesn't go to sleep. When the queue is done, the computer's own sleep settings apply again: a computer nobody is using goes back to sleep by itself. <g1>Turn off computer when done → Sleep</g1> sends it back to sleep at once.",
+   "text": "Trong khi hàng đợi chạy, máy tính không đi vào chế độ ngủ. Khi hàng đợi hoàn tất, các cài đặt ngủ của máy tính sẽ được áp dụng lại: máy tính không có người dùng sẽ tự động đi vào chế độ ngủ. <g1>Tắt máy tính khi hoàn tất → Ngủ</g1> sẽ đưa máy tính trở lại chế độ ngủ ngay lập tức."
+  },
   "b208caa24e13c211": {
    "source": "<g1>Shift+Up / Shift+Down</g1> makes the selection longer or shorter.",
    "text": "<g1>Shift+Mũi tên lên / Shift+Mũi tên xuống</g1> làm cho vùng chọn dài hơn hoặc ngắn hơn."
@@ -7162,6 +7230,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Manager giữ nguyên bố cục quen thuộc với người dùng IDM, chuyển danh sách tải xuống từ IDM của bạn sang và hoàn toàn miễn phí: mã nguồn mở, không dùng thử, không quảng cáo và không cần đăng ký. Bên dưới là so sánh trung thực chín trình quản lý tải xuống miễn phí khác mà mọi người dùng thay thế IDM."
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "Trên Linux, Vulkan cần trình điều khiển Vulkan của card đồ họa của bạn: Mesa (<x1/> trên Ubuntu và Debian, <x2/> hoặc <x3/> trên Arch) cho AMD và Intel, trình điều khiển riêng của NVIDIA cho NVIDIA."
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage cũng có thể được cập nhật bằng các công cụ AppImage (AppImageLauncher, Gear Lever, AppImageUpdate): nó mang địa chỉ của các bản cập nhật, và mỗi bản phát hành có tệp <x1/> riêng, vì vậy các công cụ đó chỉ tải xuống những phần đã thay đổi. Điều này bắt đầu với AppImage của phiên bản sau 0.2.4."
@@ -7225,6 +7297,10 @@
   "b66ef1366b1ed932": {
    "source": "Children",
    "text": "Trẻ em"
+  },
+  "b68461ac7025e237": {
+   "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
+   "text": "sau đó đăng xuất và đăng nhập lại. Cài đặt vẫn giữ nguyên sau khi khởi động lại. Máy tính có một báo thức đánh thức: nếu một chương trình khác đã đặt nó, MDM sẽ bỏ qua và thông báo."
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -7646,6 +7722,14 @@
    "source": "From the clipboard",
    "text": "Từ bảng tạm"
   },
+  "c1efc95d5de8c996": {
+   "source": "torrents on Windows;",
+   "text": "torrent trên Windows;"
+  },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Nếu cả hai đều không thể khởi động, MDM sẽ vẽ bằng một trình kết xuất phần mềm (của Microsoft trên Windows, của Mesa trên Linux), vì vậy cửa sổ vẫn mở (Remote Desktop, máy ảo không có trình điều khiển đồ họa). Nó hoạt động, nhưng làm cho bộ xử lý bận rộn hơn."
+  },
   "c281dc13eb22554f": {
    "source": "Brave",
    "text": "Brave"
@@ -8020,7 +8104,7 @@
   },
   "cd00d2b47225467c": {
    "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
-   "text": "<g1>Kiểm tra.</g1> <x2/> chạy một tình huống treo, hoảng loạn và lỗi thực sự (<x3/>) và kiểm tra chữ ký của từng báo cáo. Để thử trong ứng dụng, hãy khởi động MDM với <x4/>, sau đó chạy <x5/> (một bế tắc; hoặc <x6/>, 12 giây của một luồng cửa sổ bận rộn, <x7/>, <x8/>, <x9/>). <x10/> thực hiện điều đó trong một bản sao của ứng dụng ngoài màn hình, cửa sổ của nó hiển thị và thu nhỏ."
+   "text": "<g1>Kiểm tra.</g1> <x2/> chạy một sự cố treo, hoảng loạn và lỗi thực sự (<x3/>) và kiểm tra chữ ký của mỗi báo cáo. Để thử trong ứng dụng, hãy khởi động MDM với <x4/>, sau đó chạy <x5/> (một bế tắc; hoặc <x6/>, 12 giây của một luồng cửa sổ bận rộn, <x7/>, <x8/>, <x9/>). <x10/> thực hiện điều đó trong một bản sao của ứng dụng ngoài màn hình, cửa sổ của nó hiển thị và thu nhỏ."
   },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
@@ -8518,6 +8602,10 @@
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "Việc liệt kê và thực hiện hành động trên các bản tải xuống cần API tự động hóa của MDM, API này sẽ tắt cho đến khi bạn bật nó. Khi MDM đang chạy, hãy chạy lệnh này một lần (nó sẽ luôn bật):"
   },
+  "d9862086c382da0c": {
+   "source": "Wake the computer to run a queue",
+   "text": "Đánh thức máy tính để chạy hàng đợi"
+  },
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
    "text": "<g1><g2>Tải xuống video từ một trang</g2></g1> — chọn chất lượng và lưu video."
@@ -8736,7 +8824,7 @@
   },
   "e04f69d547a21d71": {
    "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
-   "text": "<g1>Gốc</g1>: màu sắc của hệ thống. Màu nhấn của Windows (Cài đặt → Cá nhân hóa → Màu sắc) và, khi bật, chủ đề tương phản của nó; màu nhấn của màn hình nền và cài đặt độ tương phản cao hơn trên Linux (GNOME 47 trở lên, KDE Plasma); màu nhấn trên macOS. Nó sẽ theo các thay đổi của bạn."
+   "text": "<g1>Gốc</g1>: màu sắc của hệ thống. Màu nhấn của Windows (Cài đặt → Cá nhân hóa → Màu sắc) và, khi bật, chủ đề tương phản của nó; màu nhấn của màn hình nền và cài đặt độ tương phản cao hơn trên Linux (GNOME 47 trở lên, KDE Plasma); màu nhấn trên macOS. Nó sẽ tuân theo khi bạn thay đổi chúng."
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -8749,6 +8837,10 @@
   "e06846d728e8b2d9": {
    "source": "Options: Archives",
    "text": "Tùy chọn: Lưu trữ"
+  },
+  "e0e426203d8a6245": {
+   "source": "(implicit TLS; <x1/> with TLS is fine).",
+   "text": "(TLS ngầm; <x1/> với TLS thì ổn)."
   },
   "e0f4ab5df9c8188d": {
    "source": "A running queue starts its downloads in list order, a few at a time (four by default). When one fails, it moves to the end of the queue and is tried again 30 seconds later. The queue stops when nothing is left to download.",
@@ -9090,6 +9182,10 @@
    "source": "Add to Firefox",
    "text": "Thêm vào Firefox"
   },
+  "e8b5d61bef6a7b3c": {
+   "source": "The line under the option says when the computer will next be woken, or why it can't be.",
+   "text": "Dòng bên dưới tùy chọn cho biết khi nào máy tính sẽ được đánh thức tiếp theo, hoặc tại sao không thể đánh thức."
+  },
   "e8cba16e3299c9aa": {
    "source": "Several files are downloaded one after another, sorted by name.",
    "text": "Một số tệp được tải xuống lần lượt, sắp xếp theo tên."
@@ -9418,9 +9514,17 @@
    "source": "Installer",
    "text": "Trình cài đặt"
   },
+  "f208414e0c06341b": {
+   "source": "video pages (yt-dlp can't be held to an adapter);",
+   "text": "các trang video (yt-dlp không thể được giữ vào một bộ điều hợp);"
+  },
   "f232ea1acad0ee9e": {
    "source": "If the video won't download, see <g1>Video downloads</g1>.",
    "text": "Nếu video không tải xuống được, hãy xem <g1>Tải xuống video</g1>."
+  },
+  "f250025808108785": {
+   "source": "Download a video; <x1/> takes a quality's selector from <x2/> (<x3/> = the best single file; <x4/> = the sound alone as the site has it, not converted; <x5/>, <x6/>, <x7/> or <x8/> = the sound as an MP3 at that bitrate, <x9/> at its best variable one; <x10/> = as Opus; <x11/> = as FLAC, lossless but no better than the site's sound; conversions need ffmpeg). <x12/> saves subtitles beside it: language codes from <x13/> (<x14/>), or <x15/> for every one the uploader gave; <x16/> takes the site's automatic captions instead; <x17/> puts them into the video (needs ffmpeg, MP4 or MKV).",
+   "text": "Tải xuống một video; <x1/> chọn chất lượng từ <x2/> (<x3/> = tệp đơn tốt nhất; <x4/> = chỉ âm thanh như trang web cung cấp, không chuyển đổi; <x5/>, <x6/>, <x7/> hoặc <x8/> = âm thanh dưới dạng MP3 ở tốc độ bit đó, <x9/> ở tốc độ bit biến đổi tốt nhất; <x10/> = dưới dạng Opus; <x11/> = dưới dạng FLAC, không mất dữ liệu nhưng không tốt hơn âm thanh của trang web; chuyển đổi cần ffmpeg). <x12/> lưu phụ đề bên cạnh: mã ngôn ngữ từ <x13/> (<x14/>), hoặc <x15/> cho mọi phụ đề mà người tải lên đã cung cấp; <x16/> thay vào đó lấy phụ đề tự động của trang web; <x17/> đưa chúng vào video (cần ffmpeg, MP4 hoặc MKV)."
   },
   "f25612dbbaabbb5b": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded, and MDM doesn't try. The browser extension's <g1>Media on this page</g1> shows such a stream as <g2>Protected</g2> and doesn't send it.",
@@ -9570,6 +9674,10 @@
    "source": "Download the installer",
    "text": "Tải xuống trình cài đặt"
   },
+  "f72ae9448e3d6366": {
+   "source": "Video pages through yt-dlp and ffmpeg (run as separate programs)",
+   "text": "Các trang video thông qua yt-dlp và ffmpeg (chạy dưới dạng các chương trình riêng biệt)"
+  },
   "f763bb66cf2403ec": {
    "source": "<g1>Numbers</g1> are typed in one kind of box everywhere: arrows step them, a value out of range is outlined in red and set right when you leave the box (some were changed silently before).",
    "text": "<g1>Số</g1> được nhập vào một loại hộp ở mọi nơi: các mũi tên điều chỉnh chúng, một giá trị ngoài phạm vi được viền đỏ và đặt lại đúng khi bạn rời khỏi hộp (một số đã được thay đổi âm thầm trước đây)."
@@ -9718,6 +9826,10 @@
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "Kiểm tra <g1>Lưu vào</g1> và <g2>Tên tệp</g2>. Tên đến từ tiêu đề của video; thay đổi nếu bạn muốn."
   },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>Metro</g1>: giao diện phẳng của Windows 8: các góc vuông, nút và hộp phẳng, thanh tiêu đề có màu với tiêu đề căn giữa (trên Windows, nơi MDM vẽ nó) và các biểu tượng một màu (Fluent UI System Icons của Microsoft)."
+  },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
    "text": "Những gì IDM vẫn làm được mà MDM chưa có"
@@ -9750,6 +9862,10 @@
    "source": "After a cut connection",
    "text": "Sau khi mất kết nối"
   },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "Các cửa sổ được vẽ bằng OpenGL (glow của eframe) hoặc bằng API đồ họa của hệ thống thông qua wgpu của eframe, chỉ với một backend đó: Direct3D 12 trên Windows (mặc định ở đó), Vulkan trên Linux, Metal trên macOS (các lựa chọn ở đó; OpenGL vẫn là mặc định của chúng). Xem → Vẽ bằng chọn một. Một đường dẫn mã thực hiện điều đó trên mọi hệ thống (<x1/>): khi cái được chọn không thể khởi động, cái kia sẽ được thử, vì vậy các cửa sổ luôn mở; một lần khởi động mà khung hình đầu tiên không xuất hiện, hoặc một card đồ họa bị mất hai lần, sẽ được ghi nhớ cùng với lý do của nó, điều mà menu hiển thị."
+  },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",
    "text": "MDM tải xuống các tệp BitTorrent từ liên kết magnet và tệp <x1/>. Các torrent xuất hiện trong cùng một danh sách với các bản tải xuống khác, được đánh dấu <g2>Torrent</g2> trong cột <g3>Nguồn</g3>, và có thể được xếp hàng và lên lịch như các bản tải xuống khác."
@@ -9757,6 +9873,10 @@
   "fb3cc6240014e2b2": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
    "text": "Cài đặt MDM bằng trình cài đặt và giữ nguyên tùy chọn Thiết lập tích hợp trình duyệt. Với Firefox, mở trang tiện ích trên addons.mozilla.org và nhấp vào Thêm vào Firefox. Với Chrome, Edge, Brave, Opera và Vivaldi, mở trang tiện ích trên Chrome Web Store và nhấp vào Thêm vào Chrome (Edge hiển thị Tải, và trước tiên sẽ hỏi bạn có cho phép tiện ích từ các cửa hàng khác không). Không thể dùng cửa hàng? Mở trang tiện ích của trình duyệt, bật Chế độ nhà phát triển, chọn Tải tiện ích đã giải nén và chọn thư mục extension\\chromium trong thư mục của MDM. Hướng dẫn sẽ chỉ rõ các bước."
+  },
+  "fb7be2f77bb10a9c": {
+   "source": "MDM has to be running (it can sit in the notification area). The computer has to be asleep, not shut down.",
+   "text": "MDM phải đang chạy (nó có thể nằm trong vùng thông báo). Máy tính phải đang ở chế độ ngủ, không phải tắt máy."
   },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",
