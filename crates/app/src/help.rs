@@ -412,11 +412,52 @@ impl Updates {
                         download = Some(rel.clone());
                     }
                 }
-                // Under the answer: how Update now is going, else the automatic check's switch.
-                // In English, as the text pens take it (a right-to-left window placed the status
-                // over its buttons when given the mirrored rect).
-                let status_rc =
-                    egui::Rect::from_min_size(o + vec2(11.0, bottom), vec2(255.0, 21.0));
+                // Update now when this copy's file is in the signed release (and it hasn't just
+                // failed); else Download opens the release's page.
+                let asset = download.as_ref().and_then(|rel| {
+                    crate::update::asset_for(install, &rel.version, &rel.assets)
+                        .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))))
+                });
+                let close_label = if self.job.is_some() {
+                    // i18n: button: stop downloading the update
+                    crate::i18n::mark("Cancel")
+                } else if download.is_some() {
+                    // i18n: button: not now (download the update later)
+                    crate::i18n::mark("Later")
+                } else {
+                    crate::i18n::mark("OK")
+                };
+                // The first button: Retry after a failed check, Update now or Download for a new
+                // version.
+                let first = if matches!(result, Some(Err(_))) {
+                    Some("Retry")
+                } else if download.is_some() {
+                    Some(if asset.is_some() {
+                        "Update now"
+                    } else {
+                        "Download"
+                    })
+                } else {
+                    None
+                };
+                // The buttons as wide as their labels in this language (#192), the row ending
+                // where it ends in English.
+                let row: Vec<(&str, f32)> = first
+                    .into_iter()
+                    .chain([close_label])
+                    .map(|l| (l, 73.0))
+                    .collect();
+                let placed = winui::buttons_to_right(&p, 429.0, 9.0, &row, 150.0);
+                let (first_at, close_at) = (placed[0], placed[placed.len() - 1]);
+                // Under the answer: how Update now is going, else the automatic check's switch,
+                // up to 8 px before the buttons (as in English with two). In English, as the text
+                // pens take it (a right-to-left window placed the status over its buttons when
+                // given the mirrored rect).
+                let status_right = (first_at.0 - 8.0).min(266.0);
+                let status_rc = egui::Rect::from_min_size(
+                    o + vec2(11.0, bottom),
+                    vec2(status_right - 11.0, 21.0),
+                );
                 if let Some(job) = &self.job {
                     let fraction = job.progress.fraction();
                     let line = crate::i18n::fmt(
@@ -469,23 +510,14 @@ impl Updates {
                         // i18n: check box in the update window: look for a new version every time MDM starts
                         "Check for updates at every start",
                         true,
-                        Some(o.x + 266.0),
+                        Some(o.x + status_right),
                     );
                 }
-                let close_label = if self.job.is_some() {
-                    // i18n: button: stop downloading the update
-                    crate::i18n::mark("Cancel")
-                } else if download.is_some() {
-                    // i18n: button: not now (download the update later)
-                    crate::i18n::mark("Later")
-                } else {
-                    crate::i18n::mark("OK")
-                };
                 // Enter presses the default button, as in the other dialogs.
                 let mut enter = winui::enter_pressed(ui);
                 // A check that failed can be tried again.
+                let at = r(o, first_at.0, bottom, first_at.1, 21.0);
                 if matches!(result, Some(Err(_))) {
-                    let at = r(o, 274.0, bottom, 73.0, 21.0);
                     // i18n: button: check for updates again
                     let retry = winui::button(ui, at, "Retry", ButtonKind::Default, false, None);
                     if retry.clicked() || enter {
@@ -495,11 +527,6 @@ impl Updates {
                     }
                 }
                 if let Some(rel) = &download {
-                    // Update now when this copy's file is in the signed release (and it
-                    // hasn't just failed); else Download opens the release's page.
-                    let asset = crate::update::asset_for(install, &rel.version, &rel.assets)
-                        .filter(|_| !matches!(self.status, Some(UpdateStatus::Failed(_))));
-                    let at = r(o, 274.0, bottom, 73.0, 21.0);
                     if let Some(asset) = asset {
                         let idle = self.job.is_none();
                         let kind = if idle {
@@ -533,7 +560,7 @@ impl Updates {
                 };
                 let close = winui::button(
                     ui,
-                    r(o, 356.0, bottom, 73.0, 21.0),
+                    r(o, close_at.0, bottom, close_at.1, 21.0),
                     close_label,
                     kind,
                     false,
@@ -892,6 +919,17 @@ impl TellFriend {
                 );
                 crate::dialogs::grow_to(ui.ctx(), "tell-a-friend", lines, 5);
                 let o = o + vec2(0.0, extra);
+                // The buttons as wide as their labels in this language (#192), the row ending
+                // where it ends in English.
+                let [copy_at, email_at, close_at] = winui::buttons_to_right(
+                    &p,
+                    409.0,
+                    9.0,
+                    &[("Copy", 73.0), ("Email", 73.0), ("Close", 73.0)],
+                    130.0,
+                )[..] else {
+                    unreachable!("three buttons")
+                };
                 if let Some((said, failed)) = self.said {
                     // Short of the buttons beside it (a long translation: "...", whole on hover).
                     let c = if failed {
@@ -906,13 +944,13 @@ impl TellFriend {
                         o.y + 150.0,
                         crate::i18n::t(said),
                         c,
-                        o.x + 166.0,
+                        o.x + copy_at.0 - 6.0,
                         "copied",
                     );
                 }
                 let copy = winui::button(
                     ui,
-                    r(o, 172.0, 136.0, 73.0, 21.0),
+                    r(o, copy_at.0, 136.0, copy_at.1, 21.0),
                     "Copy",
                     ButtonKind::Default,
                     false,
@@ -922,7 +960,7 @@ impl TellFriend {
                     || winui::enter_pressed(ui);
                 let email = winui::button(
                     ui,
-                    r(o, 254.0, 136.0, 73.0, 21.0),
+                    r(o, email_at.0, 136.0, email_at.1, 21.0),
                     "Email",
                     ButtonKind::Normal,
                     false,
@@ -931,7 +969,7 @@ impl TellFriend {
                 .clicked();
                 let close = winui::button(
                     ui,
-                    r(o, 336.0, 136.0, 73.0, 21.0),
+                    r(o, close_at.0, 136.0, close_at.1, 21.0),
                     "Close",
                     ButtonKind::Normal,
                     false,

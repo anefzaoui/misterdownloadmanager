@@ -402,9 +402,17 @@ impl Properties {
                 winui::full_on_hover(ui, rect, "props-result", &result);
             }
         }
+        // As wide as its label in this language (#192), into the room before OK.
+        let (open_x, open_w) = winui::button_row_from_left(
+            &ui.painter().clone(),
+            &[("Open", 259.0, 73.0)],
+            8.0,
+            385.0,
+            120.0,
+        )[0];
         let open = winui::button_light(
             ui,
-            r(o, 259.0, 390.0, 73.0, 21.0),
+            r(o, open_x, 390.0, open_w, 21.0),
             // i18n: verb: opens the file
             "Open",
             if complete {

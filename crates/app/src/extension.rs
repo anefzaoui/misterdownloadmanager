@@ -163,11 +163,21 @@ impl Extension {
                 },
                 ink,
             );
+            let label = if page.is_none() {
+                // i18n: button in the browser extension's window: open the tutorial that adds the extension
+                "Show me how"
+            } else {
+                // i18n: button in the browser extension's window: open the extension's page in that browser
+                "Add the extension"
+            };
+            // As wide as its label in this language (#192).
+            let (add_x, add_w) =
+                winui::buttons_to_right(&p, W - 18.0, 8.0, &[(label, 150.0)], 220.0)[0];
             // This browser's extension is there already: said, before its button.
             if is_seen(&self.seen, name) {
                 winui::text_right(
                     &p,
-                    o.x + W - 18.0 - 150.0 - 10.0,
+                    o.x + add_x - 10.0,
                     o.y + y + 16.0,
                     &format!(
                         "\u{2714} {}",
@@ -177,16 +187,9 @@ impl Extension {
                     winui::SUCCESS(),
                 );
             }
-            let label = if page.is_none() {
-                // i18n: button in the browser extension's window: open the tutorial that adds the extension
-                "Show me how"
-            } else {
-                // i18n: button in the browser extension's window: open the extension's page in that browser
-                "Add the extension"
-            };
             let add = winui::button(
                 ui,
-                r(o, W - 18.0 - 150.0, y, 150.0, 25.0),
+                r(o, add_x, y, add_w, 25.0),
                 label,
                 if k == 0 {
                     ButtonKind::Accent
@@ -218,6 +221,9 @@ impl Extension {
         // extension could reach the app, so that comes first, with the fix.
         let y = h - 84.0;
         if !self.registered {
+            // As wide as its label in this language (#192); the paragraph ends 10 px before it.
+            let (fix_x, fix_w) =
+                winui::buttons_to_right(&p, W - 18.0, 8.0, &[("Set it up", 110.0)], 180.0)[0];
             winui::paragraph(
                 &p,
                 o.x + 18.0,
@@ -226,12 +232,12 @@ impl Extension {
                     "Browser integration isn't set up on this computer, so no browser can reach Mister Download Manager yet.",
                 ),
                 winui::ERROR(),
-                o.x + W - 18.0 - 120.0,
+                o.x + fix_x - 10.0,
                 14.0,
             );
             let fix = winui::button(
                 ui,
-                r(o, W - 18.0 - 110.0, y - 4.0, 110.0, 25.0),
+                r(o, fix_x, y - 4.0, fix_w, 25.0),
                 // i18n: button in the browser extension's window: register MDM's helper with the browsers
                 "Set it up",
                 ButtonKind::Accent,
@@ -279,9 +285,18 @@ impl Extension {
         {
             crate::help::open_page(mdm_ipc::extension::GUIDE_DOC);
         }
+        // As wide as their labels in this language (#192), Don't ask again only while no
+        // extension has reached MDM.
+        let row: Vec<(&str, f32)> = if self.connected {
+            vec![("Close", 90.0)]
+        } else {
+            vec![("Don't ask again", 130.0), ("Close", 90.0)]
+        };
+        let placed = winui::buttons_to_right(&p, W - 18.0, 8.0, &row, 200.0);
+        let close_at = placed[placed.len() - 1];
         let close = winui::button(
             ui,
-            r(o, W - 18.0 - 90.0, y, 90.0, 25.0),
+            r(o, close_at.0, y, close_at.1, 25.0),
             "Close",
             ButtonKind::Default,
             false,
@@ -294,7 +309,7 @@ impl Extension {
             // i18n: button in the browser extension's window: stop offering it at each start
             let never = winui::button(
                 ui,
-                r(o, W - 18.0 - 90.0 - 8.0 - 130.0, y, 130.0, 25.0),
+                r(o, placed[0].0, y, placed[0].1, 25.0),
                 "Don't ask again",
                 ButtonKind::Normal,
                 false,

@@ -1775,6 +1775,20 @@ impl App {
             "extension" => self.extension = Some(crate::extension::Extension::new()),
             "language" => self.run(Cmd::ChooseLanguage, None, ctx),
             "shortcuts" => self.run(Cmd::Shortcuts, None, ctx),
+            // The Help menu's windows and Download a gallery, for screenshots (#192). updates
+            // asks GitHub, as Help → Check for updates does.
+            "tell-friend" => self.run(Cmd::TellFriend, None, ctx),
+            "updates" => self.run(Cmd::CheckUpdates, None, ctx),
+            "checksum" if first.is_some() => self.run(Cmd::VerifyChecksum, first, ctx),
+            "gallery" => {
+                let dir = self
+                    .settings
+                    .category_dir(Category::General, &self.downloads);
+                self.gallery_dlg = Some(crate::gallerydlg::GalleryDialog::new(
+                    dir,
+                    "https://commons.wikimedia.org/wiki/Category:Sunsets",
+                ));
+            }
             "speedlimit" => self.run(Cmd::LimiterSettings, None, ctx),
             "properties" if first.is_some() => self.run(Cmd::Properties, first, ctx),
             "delete" if first.is_some() => self.run(Cmd::Remove, first, ctx),
@@ -1866,6 +1880,8 @@ impl App {
                 if tab == "panels" {
                     self.options = self.options.take().map(|o| o.with_panels());
                 }
+                // A window over a page (screenshots, #192): options:test, options:account.
+                self.options = self.options.take().map(|o| o.with_window(tab));
             }
             _ => {}
         }
