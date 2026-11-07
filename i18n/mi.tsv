@@ -5245,6 +5245,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	Purihia
 #, machine
 extension	How to fix it	Me pēhea te whakatika
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	He iti iho i te rahi moroiti i roto i Ngā Kōwhiringa → Ngā momo kōnae.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	Kei roto tōna wāhitau i Ngā Kōwhiringa → Ngā momo kōnae, ngā wāhitau ka waiho ki te pūtirotiro.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	Kei roto tōna pae i Ngā Kōwhiringa → Ngā momo kōnae, ngā pae ka waiho ki te pūtirotiro.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	Kāore tōna momo i roto i Ngā Kōwhiringa → Ngā momo kōnae.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	I waiho ki te pūtirotiro: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Ora
@@ -5340,6 +5361,18 @@ extension	The connection to Mister Download Manager failed	I rahua te hononga ki
 #, machine
 extension	The download button is off on this site	Kua weto te pātene tikiake i tēnei pae
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	Kāore te toronga i whakaaetia ki te pānui i tēnei pae (te urunga pae o te pūtirotiro).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	I waiho te tikiake whakamutunga ki te pūtirotiro.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	Kāore tēnei pūtirotiro i tohua i roto i Ngā Kōwhiringa → Whānui.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	He nui rawa ngā taipitopito o tēnei tikiake kia tukuna atu
@@ -5347,6 +5380,10 @@ extension	This download's details were too large to hand over	He nui rawa ngā t
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Whakahōu i a Mister Download Manager kia whakamahi i ngā mea katoa e tukuna ana e tēnei toronga
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	Kua weto te Whakamahi i te whakauru pūtirotiro matatau i roto i Ngā Kōwhiringa → Whānui.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

@@ -84,7 +84,7 @@
     "message": "Invia i download tramite il proxy o l'estensione VPN di questo browser"
   },
   "popup_proxy_title": {
-    "message": "Mister Download Manager scarica quindi tramite lo stesso proxy di questo browser. Il browser chiederà una sola volta di consentirlo; disattivando questa opzione, l'autorizzazione verrà revocata."
+    "message": "Mister Download Manager scaricherà così tramite lo stesso proxy di questo browser. Il browser ti chiederà l'autorizzazione una sola volta; disattivando l'opzione la revochi."
   },
   "popup_exclude_site": {
     "message": "Non acquisire mai download da $site$",
@@ -118,6 +118,39 @@
   },
   "popup_fix": {
     "message": "Come risolvere"
+  },
+  "popup_declined": {
+    "message": "Lasciato al browser: $name$",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "setup.png"
+      }
+    }
+  },
+  "popup_declined_unnamed": {
+    "message": "L'ultimo download è stato lasciato al browser."
+  },
+  "declined_file_type": {
+    "message": "Il suo tipo non è in Opzioni → Tipi di file."
+  },
+  "declined_site": {
+    "message": "Il suo sito è in Opzioni → Tipi di file, siti lasciati al browser."
+  },
+  "declined_address": {
+    "message": "Il suo indirizzo è in Opzioni → Tipi di file, indirizzi lasciati al browser."
+  },
+  "declined_small": {
+    "message": "È più piccolo della dimensione minima in Opzioni → Tipi di file."
+  },
+  "declined_browser": {
+    "message": "Questo browser non è selezionato in Opzioni → Generale."
+  },
+  "declined_integration_off": {
+    "message": "L'opzione \"Usa integrazione browser avanzata\" è disattivata in Opzioni → Generale."
+  },
+  "declined_site_access": {
+    "message": "L'estensione non è autorizzata a leggere questo sito (accesso al sito del browser)."
   },
   "popup_alt": {
     "message": "Tieni premuto Alt mentre fai clic su un collegamento per farlo scaricare al browser."

@@ -5245,6 +5245,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	Haltu A
 #, machine
 extension	How to fix it	Hvernig á að laga þetta
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	Hún er minni en lágmarksstærðin í Valkostir → Skráartegundir.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	Heimilisfang hennar er í Valkostir → Skráartegundir, heimilisföng sem eru skilin eftir fyrir vafrann.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	Vefsvæði hennar er í Valkostir → Skráartegundir, vefsvæði sem eru skilin eftir fyrir vafrann.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	Tegund hennar er ekki í Valkostir → Skráartegundir.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	Skilið eftir fyrir vafrann: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Beint
@@ -5340,6 +5361,18 @@ extension	The connection to Mister Download Manager failed	Tengingin við Mister
 #, machine
 extension	The download button is off on this site	Niðurhalshnappurinn er óvirkur á þessari síðu
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	Viðbótin hefur ekki leyfi til að lesa þetta vefsvæði (aðgangur vafrans að vefsvæðinu).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	Síðasta niðurhalið var skilið eftir fyrir vafrann.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	Þessi vafri er ekki merktur í Valkostir → Almennt.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Upplýsingar um þetta niðurhal voru of stórar til að afhenda
@@ -5347,6 +5380,10 @@ extension	This download's details were too large to hand over	Upplýsingar um þ
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Uppfærðu Mister Download Manager til að nota allt sem þessi viðbót býður upp á
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	„Nota ítarlega samþættingu vafra“ er óvirkt í Valkostir → Almennt.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

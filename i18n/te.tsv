@@ -5235,6 +5235,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	బ్�
 #, machine
 extension	How to fix it	దీన్ని ఎలా పరిష్కరించాలి
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	ఇది ఎంపికలు → ఫైల్ రకాలులో కనీస పరిమాణం కంటే చిన్నది.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	దీని చిరునామా ఎంపికలు → ఫైల్ రకాలు, బ్రౌజర్‌కు వదిలివేయబడిన చిరునామాలులో ఉంది.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	దీని సైట్ ఎంపికలు → ఫైల్ రకాలు, బ్రౌజర్‌కు వదిలివేయబడిన సైట్‌లులో ఉంది.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	దీని రకం ఎంపికలు → ఫైల్ రకాలులో లేదు.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	బ్రౌజర్‌కు వదిలివేయబడింది: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	ప్రత్యక్ష ప్రసారం
@@ -5330,6 +5351,18 @@ extension	The connection to Mister Download Manager failed	Mister Download Manag
 #, machine
 extension	The download button is off on this site	ఈ సైట్‌లో డౌన్‌లోడ్ బటన్ ఆఫ్ చేయబడింది
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	ఈ సైట్‌ను చదవడానికి పొడిగింపుకు అనుమతి లేదు (బ్రౌజర్ సైట్ యాక్సెస్).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	చివరి డౌన్‌లోడ్ బ్రౌజర్‌కు వదిలివేయబడింది.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	ఈ బ్రౌజర్ ఎంపికలు → సాధారణలో టిక్ చేయబడలేదు.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	ఈ డౌన్‌లోడ్ వివరాలు అందించడానికి చాలా పెద్దవిగా ఉన్నాయి
@@ -5337,6 +5370,10 @@ extension	This download's details were too large to hand over	ఈ డౌన్�
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	ఈ పొడిగింపు అందించే ప్రతిదాన్ని ఉపయోగించడానికి Mister Download Managerని అప్‌డేట్ చేయండి
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	ఎంపికలు → సాధారణలో అధునాతన బ్రౌజర్ ఇంటిగ్రేషన్‌ను ఉపయోగించు అనేది ఆఫ్ చేయబడింది.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

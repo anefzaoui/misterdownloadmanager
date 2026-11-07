@@ -15,6 +15,8 @@ Everything below ships together, in one release, as version 0.3.0.
 
 - ✅ Linux: Update now asks the package manager which package MDM is; a copy installed by
   another package manager (pacman) is left to the system's updates, with a plain message
+- ✅ Update now finds the Linux and macOS release files whether or not their names end in
+  "-experimental"
 - ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the
   command line, the window, the desktop entry and icon, browser integration and uninstall; the
   .deb and .rpm now bring the keyboard library MDM's window needs under X11 and the CA
@@ -66,6 +68,13 @@ Everything below ships together, in one release, as version 0.3.0.
   link that asks to "confirm you're not a bot" works when you're signed in there; and the button
   over videos now passes the page's cookies to the download as well as to the look-up
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229))
+- ✅ When the browser keeps a download, MDM says why: each one is in MDM's log with the setting
+  that decided, and the extension's button shows the last one. The extension from the Chrome Web
+  Store needs MDM 0.3.0 (0.2.x serves only the copy in MDM's folder)
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
+- ✅ More file types taken from the browser by default: DMG, PKG, DEB, RPM, APPIMAGE, MSIX, APPX,
+  CAB, JAR, XZ, ZST, WEBM, FLAC, OPUS and others; a list never edited gains them
+  ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208))
 - ✅ The window no longer freezes on Linux when the system's sleep service (logind) or keyring
   (Secret Service) is slow or doesn't answer: keeping the computer awake for a woken queue is
   asked in the background, a keyring that doesn't answer at start is waited for once instead of
@@ -333,6 +342,11 @@ Everything below ships together, in one release, as version 0.3.0.
   inside the page ([#169](https://github.com/anefzaoui/misterdownloadmanager/issues/169))
 - ✅ Help opens the website's help pages, in the interface language when the website has it
   ([#227](https://github.com/anefzaoui/misterdownloadmanager/issues/227))
+- ✅ Website: a page for every feature, old and new, with its real window, where it is in the app
+  and what it can't do yet; tiles of them all on the home page; and a
+  [Themes](https://misterdownloadmanager.com/themes.html) page with every built-in theme, light and
+  dark, and how to make, try and share your own
+  ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260))
 
 ### Being built
 

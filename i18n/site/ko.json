@@ -46,13 +46,13 @@
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
    "text": "두 프로그램은 모두 MDM 데이터 폴더의 <x1/> 폴더에 보관됩니다."
   },
-  "01742a721637a688": {
-   "source": "<g1>Automatically start downloading the following file types</g1> — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; <x2/> matches any characters, as in <x3/>. <g4>Default</g4> puts the original list back.",
-   "text": "<g1>다음 파일 형식 자동 다운로드 시작</g1> — 브라우저가 전달하는(및 클립보드가 가져오는) 파일 형식입니다. 공백으로 구분하고, <x2/>는 <x3/>와 같이 모든 문자와 일치합니다. <g4>기본값</g4>은 원래 목록으로 되돌립니다."
-  },
   "017e6920369637f6": {
    "source": "<g1>One look for every kind of control</g1>, in both themes: text boxes, read-only fields, check boxes, buttons, drop-downs, tabs, lists and their headers, popups and progress bars are each drawn one way everywhere (dark mode drew some windows' controls in an older style, with bright borders). A number and its arrows are one box now, as Windows 11's are; text is centred in controls of any height; one blue for selection and focus.",
    "text": "<g1>두 테마에서 모든 컨트롤이 같은 모양으로 표시됩니다</g1>: 텍스트 상자, 읽기 전용 입력란, 확인란, 버튼, 드롭다운, 탭, 목록과 머리글, 팝업, 진행률 표시줄이 어디서나 같은 방식으로 표시됩니다. 이전에는 다크 모드의 일부 창에서 밝은 테두리가 있는 구식 컨트롤이 표시되었습니다. 이제 숫자 입력란과 화살표가 Windows 11처럼 하나의 상자로 표시됩니다. 컨트롤 높이에 관계없이 텍스트가 가운데에 정렬되고, 선택과 포커스에는 같은 파란색을 사용합니다."
+  },
+  "018b2949529218d0": {
+   "source": "<g1>Options → File types → Automatically start downloading the following file types</g1> must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, DMG, DEB, RPM, APPIMAGE, MP3, MP4, MKV, WEBM, PDF and many more.",
+   "text": "<g1>옵션 → 파일 형식 → 다음 파일 형식 자동 다운로드 시작</g1>에 파일 형식이 나열되어야 합니다. 목록은 일반적인 형식인 ZIP, RAR, 7Z, EXE, MSI, ISO, DMG, DEB, RPM, APPIMAGE, MP3, MP4, MKV, WEBM, PDF 등으로 시작합니다."
   },
   "01b91d4b38df7f4a": {
    "source": "<g1>Launch Mister Download Manager on startup</g1> — start MDM when you sign in to Windows. Off by default. Greyed in a <g2>portable copy</g2>, which writes nothing to the registry.",
@@ -809,6 +809,10 @@
   "1214d36ab497a361": {
    "source": "What it understands",
    "text": "지원하는 요청"
+  },
+  "124817fe7912fea6": {
+   "source": "When the browser keeps a download, the extension's button says which of these left it there, with the file's name, and MDM's log has a line for each one (<x1/> in <g2>MDM's data folder</g2>).",
+   "text": "브라우저가 다운로드를 유지하면 확장 프로그램 버튼에 파일 이름과 함께 다운로드를 남긴 항목이 표시되며, MDM 로그에는 각 항목에 대한 줄이 있습니다(<g2>MDM 데이터 폴더</g2>의 <x1/>)."
   },
   "12696d50b6f54aa3": {
    "source": "The tray icon",
@@ -2993,6 +2997,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "다운로드 목록 →"
+  },
+  "424df5ff0d11d26b": {
+   "source": "<g1>Automatically start downloading the following file types</g1> — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; <x2/> matches any characters, as in <x3/>. <g4>Default</g4> puts the original list back. The list starts with the usual archives, programs and installers (Windows, macOS and Linux ones: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), music and videos, and PDF. A list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>다음 파일 형식 자동 다운로드 시작</g1> — 브라우저가 넘겨주거나 클립보드가 감지하는 파일 형식입니다. 공백으로 구분하고, <x2/>는 <x3/>처럼 모든 문자와 일치합니다. <g4>기본값</g4>을 누르면 원래 목록으로 돌아갑니다. 목록은 일반적인 압축 파일, 프로그램 및 설치 파일(Windows, macOS, Linux용: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), 음악 및 비디오, PDF로 시작합니다. 한 번도 변경하지 않은 목록에는 새 버전에서 추가된 형식이 포함되고, 편집한 목록은 그대로 유지됩니다."
   },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
@@ -6141,6 +6149,10 @@
   "8ba3e471bdf1018f": {
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>수동 프록시/SOCKS 구성</g1> — 프록시 주소와 <g2>포트</g2>를 입력합니다. 필요한 경우 <g3>사용자 이름</g3>과 <g4>암호</g4>도 입력한 다음, 프록시에서 사용할 프로토콜(<g5>http</g5>, <g6>https</g6>)을 선택합니다. SOCKS 프록시의 경우 주소를 <x7/> 형식으로 입력합니다."
+  },
+  "8bd06bcd07c716e2": {
+   "source": "<g1>MDM 0.2.x with the extension from the Chrome Web Store?</g1> The store's copy needs MDM 0.3.0 or later. Update MDM with <g2>Help → Check for updates...</g2>. Until then, remove the store's copy and load the one in MDM's folder instead (<x3/>, see <g4>Browser integration</g4>).",
+   "text": "<g1>Chrome 웹 스토어의 확장 프로그램이 설치된 MDM 0.2.x를 사용 중이신가요?</g1> 스토어 버전은 MDM 0.3.0 이상이 필요합니다. <g2>도움말 → 업데이트 확인...</g2>을 통해 MDM을 업데이트하세요. 그때까지는 스토어 버전을 제거하고 MDM 폴더에 있는 확장 프로그램을 대신 로드하세요(<x3/>, <g4>브라우저 통합</g4> 참조)."
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
@@ -10037,10 +10049,6 @@
   "e7f94851f01d41a6": {
    "source": "Open the extensions page: <x1/>, <x2/> or <x3/>.",
    "text": "확장 프로그램 페이지를 엽니다: <x1/>, <x2/> 또는 <x3/>."
-  },
-  "e803616ce211e6e6": {
-   "source": "<g1>Options → File types → Automatically start downloading the following file types</g1> must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF and many more.",
-   "text": "<g1>옵션 → 파일 형식 → 다음 파일 형식 자동 다운로드 시작</g1>에 파일 형식이 나열되어 있어야 합니다. 목록은 일반적인 파일 형식(ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF 등)으로 시작합니다."
   },
   "e8106b0dea9e8b3a": {
    "source": "Options, Connection page",
