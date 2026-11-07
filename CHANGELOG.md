@@ -542,6 +542,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on Linux, whose fonts
   are wider, and in longer languages, the button was cut to "Open Mister Do…". Each button is now
   as wide as its text, and Options moves below it when both don't fit on one line.
+- **The crash report window's status line stays inside the window**
+  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): the line above the
+  check box ("The symbols couldn't be fetched: …", an issue's title, a translation) ran past the
+  window's right edge, or its left edge in Persian. It is now cut with "…" at the margin and shown
+  whole under the pointer. Its title ("Mister Download Manager crash report") is now in MDM's
+  language too; it was always in the system's. On Windows that also gives its title bar MDM's
+  light or dark again in every language: outside English it kept Windows' own mode.
 - **Three more controls fit their translated text**
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
   and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**
