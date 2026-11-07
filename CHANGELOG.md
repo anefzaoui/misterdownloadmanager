@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **View → Interface size** ([#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262)):
+  every window larger, 100 % to 200 %, on top of the system's display scale; **Ctrl +**,
+  **Ctrl −** and **Ctrl 0** in any MDM window, as in a browser. Every open window follows at once
+  (dialogs, menus, the drop target) and MDM starts at that size, the crash report window too. A
+  window larger than the screen opens as large as the screen allows and scrolls the rest, its
+  title bar on the screen.
 - **The website: a page for every feature, and a Themes page**
   ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260)): each feature has a page
   of its own, with the real window, where to find it in the app, since which version, and what it
@@ -587,6 +593,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Sharper text on Windows** ([#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262)):
+  Segoe UI and Tahoma are grid-fitted across as well as up and down, and each letter starts on a
+  whole pixel, as Windows draws its own grey text: upright strokes were two grey pixels wide at
+  100 % and 125 %, which read as blurred.
+- Menus opened near the screen's right or bottom edge flip inside it at every display scale and
+  interface size: the screen's edge was measured in pixels and the menu in points.
 - **Update now finds the Linux and macOS files by either name**: a release's AppImage, .deb,
   .rpm, .tar.gz and .dmg were named `…-experimental`; MDM now looks for the name without it
   first and still takes the older one, so Update now keeps working whichever a release uses.

@@ -88,8 +88,8 @@ pub struct Settings {
     pub delete_files_too: bool,
     /// Categories pane frame width (IDM: 143, frame x 6..149); dragged with the splitter.
     pub categories_width: u32,
-    /// The main window as last left: position and size (points: x, y, width, height), and
-    /// maximized.
+    /// The main window as last left: position and size (x, y, width, height, in points at 100 %
+    /// interface size: the system's own logical pixels), and maximized.
     pub window: Option<[i32; 4]>,
     pub window_maximized: bool,
     /// The Categories pane shown, its branches open (All, Unfinished, Finished, Queues),
@@ -108,6 +108,9 @@ pub struct Settings {
     /// View → Draw with (#89): OpenGL or Direct3D (Windows only), used from the next start.
     /// None: MDM's default (`renderer::DEFAULT`), which may change.
     pub renderer: Option<crate::renderer::Api>,
+    /// View → Interface size (#262), percent: 100, 125, 150, 175 or 200 (crate::scale). Every
+    /// window drawn that much larger than the display's own scale makes it.
+    pub interface_size: u16,
     /// Scheduler → Download limits: "Download no more than `limits_mb` MBytes every
     /// `limits_hours` hours" (IDM defaults 200 / 5), with a warning before stopping.
     pub limits_on: bool,
@@ -361,6 +364,7 @@ impl Default for Settings {
             always_dark: false,
             theme: "classic".into(),
             renderer: None,
+            interface_size: 100,
             limits_on: false,
             limits_mb: 200,
             limits_hours: 5,

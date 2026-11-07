@@ -43,6 +43,7 @@ mod remote;
 mod renderer;
 mod rss;
 mod rssdlg;
+mod scale;
 mod scheduler;
 mod scrollbar;
 mod secrets;
@@ -310,15 +311,12 @@ fn app() -> eframe::Result {
     // Downloads run on a Tokio runtime; the UI thread only reads snapshots.
     let rt = tokio::runtime::Runtime::new().expect("tokio runtime");
     let handle = rt.handle().clone();
-    // MDM_ZOOM=2: everything drawn twice as large (sharp 2× screenshots; checks the windows'
-    // sizing at high display scaling).
-    let zoom = std::env::var("MDM_ZOOM")
-        .ok()
-        .and_then(|z| z.parse::<f32>().ok())
-        .filter(|z| (0.5..=4.0).contains(z));
-    let z = zoom.unwrap_or(1.0);
     // The list and settings, read before the window opens: it comes back where it was left.
     let loaded = store::load();
+    // View → Interface size (#262), or MDM_ZOOM=2 (everything drawn twice as large: sharp 2×
+    // screenshots, the windows' sizing at high display scaling). The window is made before the
+    // zoom applies: its sizes are given zoomed here.
+    let z = scale::startup(loaded.settings.interface_size);
     // The log (release builds too) and the crash monitor.
     if let Some(data) = mdm_ipc::data_dir() {
         mdm_crash::logs::init(&data, mdm_crash::logs::APP);
@@ -345,7 +343,7 @@ fn app() -> eframe::Result {
     let saved = loaded
         .settings
         .window
-        .filter(|_| zoom.is_none() && !offscreen())
+        .filter(|_| scale::test_zoom().is_none() && !offscreen())
         .filter(|[x, y, w, h]| *w >= 600 && *h >= 300 && on_a_screen(x + 40, y + 10));
     let size = saved.map_or([930.0 * z, 470.0 * z], |[_, _, w, h]| [w as f32, h as f32]);
     let mut viewport = quiet(
@@ -382,9 +380,7 @@ fn app() -> eframe::Result {
         ..Default::default()
     };
     let result = renderer::run("misterdownloadmanager", &plan, options, move |cc| {
-        if let Some(z) = zoom {
-            cc.egui_ctx.set_zoom_factor(z);
-        }
+        scale::start(&cc.egui_ctx, z);
         let _ = window.set(cc.egui_ctx.clone());
         app::App::new(&cc.egui_ctx, handle, commands, sink, loaded, start)
     });

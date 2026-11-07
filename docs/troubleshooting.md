@@ -65,6 +65,14 @@ Task Manager shows several figures, and they mean different things:
 
 Closed to the notification area, MDM gives its memory back to Windows: **Memory** drops to under 10 MB within seconds and stays low while it waits. Downloads, queues and the scheduler go on as before. The list of every language (**View → Language**) loads fonts for every script while it's open; MDM lets them go when it closes.
 
+## The text is too small or blurry
+
+MDM keeps Internet Download Manager's compact sizes. On a large or high-resolution screen, choose **View → Interface size** (125 %, 150 %, 175 % or 200 %), or press **Ctrl +** and **Ctrl −** in any MDM window, as in a browser; **Ctrl 0** goes back to 100 %. Every window follows at once, and MDM starts at that size next time. It comes on top of Windows' own display scale (**Settings → System → Display → Scale**).
+
+A window larger than the screen at that size (Options at 200 % on a 1366 × 768 screen) opens as large as the screen allows, and the rest scrolls: with the scroll bars, the mouse wheel, or **Tab** to the next control.
+
+MDM tells Windows it draws for each monitor's own scale, so Windows never stretches its windows into blur, and it draws Windows' fonts grid-fitted to whole pixels. If the text still looks blurred, tell us your screen's resolution and Windows' display scale when you [report it](https://github.com/anefzaoui/misterdownloadmanager/issues).
+
 ## The window freezes or draws wrongly
 
 On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose **View → Draw with → OpenGL** (or **Direct3D**, **Vulkan**, **Metal**), then quit MDM (**Tasks → Exit**) and start it again. Choosing the first one goes back the same way.

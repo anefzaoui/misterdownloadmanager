@@ -240,6 +240,9 @@ impl Progress {
         // Windows: the title bar is ours (#63), drawn in the client above IDM's layout, so the
         // hide button sits in it, left of Minimize, as in IDM. Elsewhere the system draws it.
         let client = [body[0], body[1] + TITLE_H];
+        // As large as the screen allows at the interface size (#262): the rest scrolls.
+        let shown = crate::dialogs::shown_size(ctx, client);
+        let vid = ViewportId::from_hash_of(("progress", self.id));
         let buttons = caption_buttons(self.tray);
         let key = egui::Id::unique(("progress-pos", self.id));
         let title_now = title.clone();
@@ -247,7 +250,7 @@ impl Progress {
         let mut builder = crate::quiet(ViewportBuilder::default())
             .with_visible(false)
             .with_title(title)
-            .with_inner_size(client)
+            .with_inner_size(shown)
             // IDM's progress window has 2 px borders and a fixed size. On Windows the sizing
             // frame is asked for and win32::progress_frame trims its borders, disables resizing
             // and gives the caption to the client, which draws it; elsewhere the window is simply
@@ -263,75 +266,77 @@ impl Progress {
         let minimize_hides = self.tray && self.minimize_to_tray;
         // The window, once its frame is applied (Windows: its caption parts go to its hit test).
         let hwnd = ctx.data(|d| d.get_temp::<isize>(key.with("hwnd")));
-        let action = ctx.show_viewport_immediate(
-            ViewportId::from_hash_of(("progress", self.id)),
-            builder,
-            |ui, _| {
-                // Painted in the pass that closes it too (see dialogs::close_requested).
-                let close = crate::dialogs::close_requested(ui);
-                if !close
-                    && minimize_hides
-                    && ui.ctx().input(|i| i.viewport().minimized == Some(true))
-                {
-                    return Action::Hide;
-                }
-                let action = egui::CentralPanel::no_frame()
-                    .frame(egui::Frame::new().fill(winui::BG()))
-                    .show(ui, |ui| {
-                        let o = ui.max_rect().min;
-                        // The client area, laid out from the right in a right-to-left interface.
-                        let _surface = winui::Surface::enter(o.x, o.x + client[0]);
-                        let caption = draw_caption(ui, o, client[0], &title_now, &buttons, hwnd);
-                        let action = self.body(ui, o + vec2(0.0, TITLE_H), item, snap, frac);
-                        // The system menu's "Hide to the notification area" (Alt+Space).
-                        #[cfg(windows)]
-                        if let Some(h) = hwnd
-                            && crate::win32::take_hide_asked(h)
-                        {
-                            return Action::Hide;
+        let action = ctx.show_viewport_immediate(vid, builder, |ui, _| {
+            // Painted in the pass that closes it too (see dialogs::close_requested).
+            let close = crate::dialogs::close_requested(ui);
+            if !close && minimize_hides && ui.ctx().input(|i| i.viewport().minimized == Some(true))
+            {
+                return Action::Hide;
+            }
+            let action = egui::CentralPanel::no_frame()
+                .frame(egui::Frame::new().fill(winui::BG()))
+                .show(ui, |ui| {
+                    let o = ui.max_rect().min;
+                    // The window's width, laid out from the right in a right-to-left
+                    // interface (the title bar; the layout under it has its own).
+                    let _surface = winui::Surface::enter(o.x, o.x + shown[0]);
+                    let caption = draw_caption(ui, o, shown[0], &title_now, &buttons, hwnd);
+                    // The layout under the title bar, scrolled when the window is smaller.
+                    let below = egui::Rect::from_min_max(o + vec2(0.0, TITLE_H), ui.max_rect().max);
+                    let mut rest = ui.new_child(egui::UiBuilder::new().max_rect(below));
+                    let action = crate::dialogs::scroll(&mut rest, key, body, |ui, o| {
+                        let _surface = winui::Surface::enter(o.x, o.x + body[0]);
+                        self.body(ui, o, item, snap, frac)
+                    });
+                    // The system menu's "Hide to the notification area" (Alt+Space).
+                    #[cfg(windows)]
+                    if let Some(h) = hwnd
+                        && crate::win32::take_hide_asked(h)
+                    {
+                        return Action::Hide;
+                    }
+                    match caption {
+                        Some(CaptionButton::Close) => Action::Close,
+                        Some(CaptionButton::ToTray) => Action::Hide,
+                        Some(CaptionButton::Minimize) if minimize_hides => Action::Hide,
+                        Some(CaptionButton::Minimize) => {
+                            ui.ctx()
+                                .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
+                            action
                         }
-                        match caption {
-                            Some(CaptionButton::Close) => Action::Close,
-                            Some(CaptionButton::ToTray) => Action::Hide,
-                            Some(CaptionButton::Minimize) if minimize_hides => Action::Hide,
-                            Some(CaptionButton::Minimize) => {
-                                ui.ctx()
-                                    .send_viewport_cmd(egui::ViewportCommand::Minimized(true));
-                                action
-                            }
-                            _ => action,
-                        }
-                    })
-                    .inner;
-                if close {
-                    return Action::Close;
-                }
-                // Escape hides the window (the download goes on), as the × does.
-                if matches!(action, Action::None) && winui::escape_pressed(ui) {
-                    Action::Close
-                } else {
-                    action
-                }
-            },
-        );
+                        _ => action,
+                    }
+                })
+                .inner;
+            if close {
+                return Action::Close;
+            }
+            // Escape hides the window (the download goes on), as the × does.
+            if matches!(action, Action::None) && winui::escape_pressed(ui) {
+                Action::Close
+            } else {
+                action
+            }
+        });
+        // Elsewhere the window manager is asked for its size at a new interface size (#262).
+        crate::dialogs::follow_scale(ctx, vid, key, shown);
         // Apply the frame while the window is still hidden, and again whenever the client size
-        // (details), the scale (another display) or the system menu's item changes.
+        // (details), the scale (another display, the interface size) or the system menu's item
+        // changes.
         #[cfg(windows)]
         {
-            let scale = ctx.input_for(ViewportId::from_hash_of(("progress", self.id)), |i| {
-                i.pixels_per_point
-            });
+            let scale = ctx.input_for(vid, |i| i.pixels_per_point);
             let hide = buttons
                 .iter()
                 .any(|(b, _)| *b == CaptionButton::ToTray)
                 .then(|| crate::i18n::t("Hide to the notification area").to_owned());
-            let want: Framed = (client, (scale * 1000.0).round() as u32, hide);
+            let want: Framed = (shown, (scale * 1000.0).round() as u32, hide);
             if ctx
                 .data(|d| d.get_temp::<Framed>(key.with("framed")))
                 .as_ref()
                 != Some(&want)
                 && let Some(h) =
-                    crate::win32::thin_frame(&title_now, client, scale, want.2.as_deref())
+                    crate::win32::thin_frame(&title_now, shown, scale, want.2.as_deref())
             {
                 ctx.data_mut(|d| {
                     d.insert_temp(key.with("framed"), want);
@@ -342,7 +347,7 @@ impl Progress {
         let closing = matches!(action, Action::Close | Action::Cancel | Action::Hide);
         crate::dialogs::keep_theme(
             ctx,
-            ViewportId::from_hash_of(("progress", self.id)),
+            vid,
             key,
             &title_now,
             crate::theme::dark_surface(),

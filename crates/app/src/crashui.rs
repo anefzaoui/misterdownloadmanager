@@ -82,10 +82,13 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     // (`win32::caption_dark` in `update`).
     let settings = crate::store::load().settings;
     crate::i18n::set_lang(settings.language.as_deref());
+    // And its interface size (#262): the window is made before the zoom applies, so its size is
+    // given zoomed (brought inside the screen at its first frame).
+    let zoom = crate::scale::startup(settings.interface_size);
     let builder = crate::quiet(
         ViewportBuilder::default()
             .with_title(crate::i18n::t("Mister Download Manager crash report"))
-            .with_inner_size(CLIENT)
+            .with_inner_size([CLIENT[0] * zoom, CLIENT[1] * zoom])
             .with_resizable(false)
             .with_maximize_button(false)
             .with_icon(crate::app_icon()),
@@ -110,6 +113,7 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
     plan.watched = false;
     let data = m.data.clone();
     crate::renderer::run("misterdownloadmanager-crash", &plan, options, move |cc| {
+        crate::scale::start(&cc.egui_ctx, zoom);
         crate::theme::select(&crate::theme::startup_id(&settings.theme), &cc.egui_ctx);
         crate::theme::apply(&cc.egui_ctx);
         crate::theme::language_fonts(&cc.egui_ctx);
@@ -178,6 +182,8 @@ struct ReportWindow {
     icon: Option<egui::TextureHandle>,
     /// Windows' caption follows the window's theme (set once the window exists).
     caption_set: bool,
+    /// Brought inside the screen once it exists (scale::fit_window, #262).
+    fitted: bool,
 }
 
 impl ReportWindow {
@@ -194,6 +200,7 @@ impl ReportWindow {
             told: None,
             icon: None,
             caption_set: false,
+            fitted: false,
         }
     }
 
@@ -304,6 +311,12 @@ impl eframe::App for ReportWindow {
             ));
             self.caption_set = true;
         }
+        // Inside the screen at a large interface size (#262); what doesn't fit scrolls.
+        if !self.fitted && ui.ctx().input(|i| i.viewport().outer_rect).is_some() {
+            self.fitted = true;
+            let layout = egui::vec2(CLIENT[0], CLIENT[1]);
+            crate::scale::fit_window(ui.ctx(), egui::vec2(120.0, 120.0), Some(layout));
+        }
         // Re-asserted as the main window does (winit can set it back from Windows' own mode).
         #[cfg(windows)]
         crate::win32::caption_dark(
@@ -320,9 +333,11 @@ impl eframe::App for ReportWindow {
         egui::CentralPanel::no_frame()
             .frame(egui::Frame::new().fill(winui::BG()))
             .show(ui, |ui| {
-                let o = ui.max_rect().min;
-                let _surface = winui::Surface::enter(o.x, o.x + CLIENT[0]);
-                self.body(ui, o);
+                let id = egui::Id::unique("crash-report");
+                crate::scale::pane(ui, id, egui::vec2(CLIENT[0], CLIENT[1]), |ui, o| {
+                    let _surface = winui::Surface::enter(o.x, o.x + CLIENT[0]);
+                    self.body(ui, o);
+                });
             });
     }
 }

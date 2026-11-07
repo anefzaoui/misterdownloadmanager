@@ -13,6 +13,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ **View → Interface size**: every window larger, 100 % to 200 %, with Ctrl + / Ctrl − / Ctrl 0
+  as in a browser; a window larger than the screen scrolls. Sharper text on Windows (part of
+  [#262](https://github.com/anefzaoui/misterdownloadmanager/issues/262))
 - ✅ Update now finds the Linux and macOS release files whether or not their names end in
   "-experimental"
 - ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the

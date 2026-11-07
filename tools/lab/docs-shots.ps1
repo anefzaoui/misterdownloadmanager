@@ -176,7 +176,8 @@ try {
   # /show crash-test:freeze for the crash report window's shot.
   $env:MDM_CRASH_TEST = "1"
   $env:MDM_DATA_DIR = "$work\data"
-  $env:MDM_ZOOM = "$Zoom"
+  # Only when asked: MDM_ZOOM overrides View → Interface size (-Settings '"interface_size":150').
+  if ($Zoom -ne 1) { $env:MDM_ZOOM = "$Zoom" } else { Remove-Item Env:MDM_ZOOM -ErrorAction SilentlyContinue }
   $env:MDM_OFFSCREEN = "1"
   if ($At) { $env:MDM_OFFSCREEN_AT = $At }
   $app = Start-Process -PassThru $Exe
