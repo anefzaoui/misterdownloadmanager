@@ -362,19 +362,15 @@ async function chromium(bin, profile, dl, page, ready) {
         if (r.exceptionDetails) throw new Error(`in the extension: ${r.exceptionDetails.text} ${expression}`);
         return r.result.value;
       },
-      // Another extension (the folder `dir`), loaded beside ours: its service worker's `evaluate`
-      // (the proxy case's stand-in VPN extension sets the browser's proxy there, as one does).
-      loadExtension: async (dir) => {
+      // Another extension (the folder `dir`), loaded beside ours, and its page `page` open in a tab:
+      // that tab's `evaluate` and `close` (the proxy case's stand-in VPN extension sets the
+      // browser's proxy there, as one does). A page, not its service worker: the browser may
+      // stop an idle worker, a page keeps its extension API while open.
+      loadExtension: async (dir, page) => {
         const { id: other } = await cdp.send("Extensions.loadUnpacked", { path: dir });
-        const worker = await until("the other extension's service worker", 15000, async () =>
-          (await cdp.send("Target.getTargets")).targetInfos.find((t) => t.type === "service_worker" && t.url.includes(other)),
-        );
-        const s = (await cdp.send("Target.attachToTarget", { targetId: worker.targetId, flatten: true })).sessionId;
-        return async (expression) => {
-          const r = await cdp.send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true }, s);
-          if (r.exceptionDetails) throw new Error(`in ${dir}: ${r.exceptionDetails.exception?.description || r.exceptionDetails.text}`);
-          return r.result.value;
-        };
+        const t = await tab(`chrome-extension://${other}/${page}`);
+        await until("the other extension's page", 10000, () => t.evaluate("document.readyState === 'complete' && typeof chrome === 'object' && Boolean(chrome.proxy)").catch(() => false));
+        return t;
       },
       close: () => {
         killTree(proc);
@@ -1079,15 +1075,16 @@ async function throughProxy(t, label, wantMdm) {
 }
 
 // A stand-in VPN extension: it has the "proxy" permission and sets the browser's proxy
-// (chrome.proxy.settings.set), as real VPN and proxy extensions do.
+// (chrome.proxy.settings.set, from its page), as real VPN and proxy extensions do.
 function vpnExtension() {
   const dir = path.join(work, "vpn-extension");
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(
     path.join(dir, "manifest.json"),
-    JSON.stringify({ manifest_version: 3, name: "MDM e2e stand-in VPN", version: "1.0", permissions: ["proxy"], background: { service_worker: "sw.js" } }),
+    JSON.stringify({ manifest_version: 3, name: "MDM e2e stand-in VPN", version: "1.0", permissions: ["proxy"] }),
   );
-  fs.writeFileSync(path.join(dir, "sw.js"), "// Driven over DevTools by e2e.mjs.\n");
+  // Its page, driven over DevTools by e2e.mjs.
+  fs.writeFileSync(path.join(dir, "page.html"), "<!doctype html><title>stand-in VPN</title>");
   return dir;
 }
 
@@ -1117,7 +1114,8 @@ async function proxyInChromium(t) {
   if (!ext.alone.length || !ext.with.includes(ext.alone[0])) throw new Error(`"proxy" alone: ${JSON.stringify(ext.alone)}`);
   done.push(`"proxy" required; Chrome's warnings with it ${JSON.stringify(ext.with)}, the same as without it ("proxy" alone: ${JSON.stringify(ext.alone)})`);
 
-  const vpn = await s.loadExtension(vpnExtension());
+  const vpnPage = await s.loadExtension(vpnExtension(), "page.html");
+  const vpn = vpnPage.evaluate;
   const setProxy = async (value) => {
     await vpn(`chrome.proxy.settings.set({ value: ${JSON.stringify(value)}, scope: "regular" }).then(() => "set")`);
     await sleep(500);
@@ -1168,6 +1166,7 @@ async function proxyInChromium(t) {
   } finally {
     await popup.close();
     await vpn(`chrome.proxy.settings.clear({ scope: "regular" }).then(() => "cleared")`).catch(() => {});
+    await vpnPage.close();
   }
   // An ordinary download goes as before, with no proxy set.
   const file = `e2e-noproxy-${t.name}.zip`;
