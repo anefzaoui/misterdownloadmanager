@@ -17,6 +17,8 @@ Everything below ships together, in one release, as version 0.3.0.
   ones, from the tar.gz and the AppImage) is named at start, on the terminal and in a message box,
   with the command that installs it, instead of a crash; in a Wayland session the window opens
   on Wayland instead ([#265](https://github.com/anefzaoui/misterdownloadmanager/issues/265))
+- ✅ Linux: plain HTTP downloads work on a system without CA certificates, and HTTPS ones say to
+  install them ([#264](https://github.com/anefzaoui/misterdownloadmanager/issues/264))
 - ✅ Update now finds the Linux and macOS release files whether or not their names end in
   "-experimental"
 - ✅ Linux packages checked in clean Ubuntu 24.04, Debian 12 and Fedora 45 systems: install, the
