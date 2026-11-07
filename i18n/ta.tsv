@@ -5542,7 +5542,7 @@ menu	Download &video from a page...	ஒரு பக்கத்திலிர�
 #, machine
 menu	Download in order	வரிசைப்படி பதிவிறக்கு
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	இதனுடன் வரையவும்
 #. menu command in the main window
@@ -5593,6 +5593,26 @@ menu	Hide drop target	இழுத்துவிடும் இலக்கை
 #, machine
 menu	High contrast	உயர் மாறுபாடு
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	அது தொடங்க முடியவில்லை: பதிவு ஏன் என்று கூறுகிறது
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	அதன் முதல் சட்டம் 10 வினாடிகளுக்குள் காட்டப்படவில்லை
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	அதன் கடைசி தொடக்கம் அதன் முதல் சட்டத்திற்கு முன் முடிந்தது
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal இங்கு தொடங்கவில்லை: OpenGL வரைகிறது
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	மெட்ரோ
@@ -5607,6 +5627,10 @@ menu	Move/Rename (Ctrl-M)	நகர்த்து/மறுபெயரிட�
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	நேட்டிவ்
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	இங்குள்ள எந்த கிராபிக்ஸ் கார்டிலும் அதற்கான டிரைவர் இல்லை
 #. menu command in the main window
 #, machine
 menu	On Double click	இருமுறை கிளிக் செய்யும்போது
@@ -5732,6 +5756,10 @@ menu	Support &MDM	MDM-ஐ ஆ&தரிக்கவும்
 #, machine
 menu	Tell a &friend	ஒரு &நண்பருக்குத் தெரிவி
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	கிராபிக்ஸ் கார்டு 10 நிமிடங்களில் இருமுறை தொலைந்துவிட்டது
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	தீம்
@@ -5770,6 +5798,14 @@ menu	Turn of&f	ஆ&ஃப் செய்
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	சரிபார்ப்புத் தொகையைச் சரிபார்க்கவும்...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan இங்கு தொடங்கவில்லை: OpenGL வரைகிறது
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

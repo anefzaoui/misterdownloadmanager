@@ -5542,7 +5542,7 @@ menu	Download &video from a page...	從頁面下載影片(&V)...
 #, machine
 menu	Download in order	依序下載
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	繪製方式
 #. menu command in the main window
@@ -5593,6 +5593,26 @@ menu	Hide drop target	隱藏拖放目標
 #, machine
 menu	High contrast	高對比
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	無法啟動：記錄檔說明原因
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	第一個畫面未在 10 秒內顯示
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	上次啟動在第一個畫面顯示前結束
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal 未在此處啟動：OpenGL 繪製
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	都會
@@ -5607,6 +5627,10 @@ menu	Move/Rename (Ctrl-M)	移動/重新命名 (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	原生
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	此處沒有顯示卡有其驅動程式
 #. menu command in the main window
 #, machine
 menu	On Double click	按兩下時
@@ -5732,6 +5756,10 @@ menu	Support &MDM	支援 &MDM
 #, machine
 menu	Tell a &friend	告訴朋友(&F)
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	顯示卡在 10 分鐘內遺失兩次
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	佈景主題
@@ -5770,6 +5798,14 @@ menu	Turn of&f	關閉(&F)
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	驗證總和檢查碼...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan 未在此處啟動：OpenGL 繪製
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

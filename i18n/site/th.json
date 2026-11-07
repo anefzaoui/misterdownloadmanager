@@ -2,6 +2,10 @@
  "language": "th",
  "note": "Machine translation of the website (tools/website/translate_site.py); fix a row's text to improve it.",
  "segments": {
+  "0001df97223dc970": {
+   "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
+   "text": "ใน Firefox เมื่อคุณเปิด <g1>ส่งการดาวน์โหลดผ่านพร็อกซีหรือส่วนขยาย VPN ของเบราว์เซอร์นี้</g1> ในป๊อปอัป (Firefox จะถามคุณก่อน) เมื่อเบราว์เซอร์ใช้พร็อกซีสำหรับการดาวน์โหลด (ตั้งค่าโดย VPN หรือส่วนขยายพร็อกซี หรือในการตั้งค่า) ส่วนขยายจะส่ง <g2>ที่อยู่ของพร็อกซี</g2> หรือ <g3>สคริปต์การกำหนดค่าพร็อกซีอัตโนมัติ</g3> เพื่อให้ MDM ดาวน์โหลดผ่านพร็อกซีเดียวกัน มันจะไม่อ่านหรือส่งข้อมูลการเข้าสู่ระบบของพร็อกซี มันจะบันทึกเพียงว่าพร็อกซีร้องขอ เพื่อให้ MDM สามารถแจ้งคุณได้ว่าไม่สามารถใช้พร็อกซีนั้นได้ เมื่อปิด (ตามที่ติดตั้ง) จะไม่อ่านข้อมูลพร็อกซีของเบราว์เซอร์ ส่วนขยายสำหรับ Chrome และเบราว์เซอร์ Chromium อื่น ๆ ยังไม่มีฟังก์ชันนี้"
+  },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
    "text": "ส่วนขยายเชื่อมต่อแล้ว แต่การตั้งค่าของ MDM เองปล่อยให้เบราว์เซอร์จัดการการดาวน์โหลดนี้ ตรวจสอบใน MDM:"
@@ -166,10 +170,6 @@
    "source": "Contribute",
    "text": "ร่วมสนับสนุน"
   },
-  "0392cd7e700db53e": {
-   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
-   "text": "อัปเดตล่าสุด 2026-11-06 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
-  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "คำตอบเกี่ยวกับ Mister Download Manager: ฟรีหรือไม่ ปลอดภัยหรือไม่ เปรียบเทียบกับ IDM อย่างไร, เบราว์เซอร์, วิดีโอ, ทอร์เรนต์, ความเร็ว, Mac และ Linux และอื่นๆ"
@@ -181,10 +181,6 @@
   "043086b485508c73": {
    "source": "If some of the torrent's files are already in the folder, MDM asks before using them. <g1>Yes</g1> keeps them for the torrent: MDM checks them, keeps what matches the torrent and downloads the rest, which is how you continue a download started elsewhere or share files you already have. <g2>No</g2> (the default) goes back, so you can choose another folder and nothing of yours is overwritten.",
    "text": "หากไฟล์บางส่วนของทอร์เรนต์อยู่ในโฟลเดอร์อยู่แล้ว MDM จะถามก่อนใช้งาน <g1>ใช่</g1> เพื่อเก็บไฟล์เหล่านั้นไว้สำหรับทอร์เรนต์: MDM จะตรวจสอบไฟล์ เก็บไฟล์ที่ตรงกับทอร์เรนต์ และดาวน์โหลดส่วนที่เหลือ ซึ่งเป็นวิธีที่คุณสามารถดาวน์โหลดต่อจากที่อื่น หรือแชร์ไฟล์ที่คุณมีอยู่แล้ว <g2>ไม่</g2> (ค่าเริ่มต้น) จะย้อนกลับไป เพื่อให้คุณสามารถเลือกโฟลเดอร์อื่นได้ และไม่มีไฟล์ของคุณถูกเขียนทับ"
-  },
-  "045b50361ed710f2": {
-   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request. In Chrome, Edge, Brave, Opera and Vivaldi it sees the browser's proxy settings.",
-   "text": "ใน Firefox, MDM จะเห็นพร็อกซีที่คำขอของเบราว์เซอร์สำหรับไฟล์ใช้ รวมถึงพร็อกซีที่ส่วนขยาย VPN เลือกสำหรับแต่ละคำขอ ใน Chrome, Edge, Brave, Opera และ Vivaldi จะเห็นการตั้งค่าพร็อกซีของเบราว์เซอร์"
   },
   "04767f8b4224f77b": {
    "source": "MDM refuses a torrent with file names your system can't write safely, says which name, and writes nothing.",
@@ -362,6 +358,10 @@
    "source": "Right-click a category for:",
    "text": "คลิกขวาที่หมวดหมู่เพื่อ:"
   },
+  "0809f66ed7e37c8f": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (OpenGL, or Direct3D on Windows, Vulkan on Linux, Metal on macOS) and <g7>Language</g7>.",
+   "text": "<g1>มุมมอง</g1> — แสดงหรือซ่อนหมวดหมู่, จัดเรียงรายการ (<g2>จัดเรียงไฟล์</g2>), <g3>รองรับโหมดมืด</g3>, <g4>มืดตลอดเวลา</g4>, <g5>ชุดรูปแบบ</g5>, <g6>วาดด้วย</g6> (OpenGL, หรือ Direct3D บน Windows, Vulkan บน Linux, Metal บน macOS) และ <g7>ภาษา</g7>"
+  },
   "0830de009b68f05d": {
    "source": "No, unless you want it to. While a torrent downloads it trades pieces with other people, as every torrent client does. When it finishes, it stops, like any…",
    "text": "ไม่ เว้นแต่คุณต้องการ ในขณะที่ทอร์เรนต์กำลังดาวน์โหลด มันจะแลกเปลี่ยนชิ้นส่วนกับผู้อื่น เช่นเดียวกับไคลเอนต์ทอร์เรนต์ทุกตัว เมื่อดาวน์โหลดเสร็จสิ้น มันจะหยุดลง เช่นเดียวกับ…"
@@ -437,10 +437,6 @@
   "09c82864f82bd0f8": {
    "source": "Menu bar.",
    "text": "แถบเมนู"
-  },
-  "09d11cac644c01da": {
-   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "Firefox (จาก addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera และ Vivaldi ผ่านส่วนขยายเบราว์เซอร์ของ MDM รวมถึงเบราว์เซอร์ที่สร้างขึ้นจากเบราว์เซอร์เหล่านี้ เช่น Zen และ LibreWolf, Helium ส่วนขยายจะส่งการดาวน์โหลดไปยัง MDM พร้อมคุกกี้และตัวอ้างอิง ทำให้ไฟล์ที่ต้องเข้าสู่ระบบยังคงใช้งานได้ และเพิ่ม ดาวน์โหลดด้วย Mister Download Manager ไปยังเมนูคลิกขวา และปุ่ม ดาวน์โหลดวิดีโอ เหนือวิดีโอ ดูที่ การผสานรวมกับเบราว์เซอร์"
   },
   "09e228aaadb34e64": {
    "source": "Each download is then held to that speed. <g1>Downloads → Speed Limiter → Turn off</g1> gives full speed again. Tick <g2>Always turn on Speed Limiter on Mister Download Manager startup</g2> to have it on every time.",
@@ -605,6 +601,10 @@
   "0ed664dd48040f18": {
    "source": "Security",
    "text": "ความปลอดภัย"
+  },
+  "0f0281b39f2ac4c5": {
+   "source": "A VPN or proxy extension is a proxy for the browser only. In Firefox, switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in the extension's toolbar popup: Firefox asks you once to allow the extension to read the browser's proxy, and MDM then downloads what it takes from the browser through the same proxy (with <g2>Options → Proxy / Socks → Use proxy/socks from a browser's request</g2>, on by default; see <g3>Options</g3>). Switch it off to take that permission back. Chrome, Edge, Brave, Opera and Vivaldi don't offer this yet: for now, set the same proxy in MDM's <g4>Options → Proxy / Socks</g4>.",
+   "text": "ส่วนขยาย VPN หรือพร็อกซีเป็นพร็อกซีสำหรับเบราว์เซอร์เท่านั้น ใน Firefox ให้เปิด <g1>ส่งการดาวน์โหลดผ่านพร็อกซีหรือส่วนขยาย VPN ของเบราว์เซอร์นี้</g1> ในป๊อปอัปแถบเครื่องมือของส่วนขยาย: Firefox จะขออนุญาตคุณหนึ่งครั้งเพื่อให้ส่วนขยายอ่านพร็อกซีของเบราว์เซอร์ได้ และ MDM จะดาวน์โหลดสิ่งที่ได้รับจากเบราว์เซอร์ผ่านพร็อกซีเดียวกัน (ด้วย <g2>ตัวเลือก → พร็อกซี / SOCKS → ใช้พร็อกซี/SOCKS จากคำขอของเบราว์เซอร์</g2> ซึ่งเปิดใช้งานโดยค่าเริ่มต้น; ดู <g3>ตัวเลือก</g3>) ปิดใช้งานเพื่อยกเลิกการอนุญาตนั้น Chrome, Edge, Brave, Opera และ Vivaldi ยังไม่มีคุณสมบัตินี้: สำหรับตอนนี้ ให้ตั้งค่าพร็อกซีเดียวกันใน <g4>ตัวเลือก → พร็อกซี / SOCKS</g4> ของ MDM"
   },
   "0f09c75008b1a460": {
    "source": "<g1>Questions</g1> (\"Create this folder?\", delete, a duplicate download, the turn-off countdown) could open behind the window that asked them; they stay in front now.",
@@ -862,10 +862,6 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>เบราว์เซอร์</g1> คลิกขวาที่หน้าเว็บเพื่อเลือก <g2>ดาวน์โหลดลิงก์ทั้งหมดด้วย Mister Download Manager</g2> หรือเลือกบางส่วนของหน้าเว็บเพื่อเลือก <g3>ดาวน์โหลดลิงก์ที่เลือกด้วย Mister Download Manager</g3> ตัวอ้างอิงและคุกกี้ของหน้าเว็บจะถูกส่งไปพร้อมกับแต่ละลิงก์"
   },
-  "14df350fc9bc4825": {
-   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
-   "text": "บน Windows หน้าต่างจะถูกวาดด้วย Direct3D 12 (wgpu ของ eframe โดยใช้แบ็กเอนด์ Direct3D 12 เท่านั้น) หรือด้วย OpenGL (glow ของ eframe) เมื่อเลือกจาก มุมมอง → วาดด้วย; ส่วน Linux และ macOS ใช้ OpenGL หากตัวเลือกที่เลือกไม่สามารถเริ่มต้นได้ ระบบจะลองใช้อีกตัวเลือกหนึ่ง เพื่อให้หน้าต่างเปิดได้เสมอ"
-  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "โดยค่าเริ่มต้น MDM จะดาวน์โหลดชิ้นส่วนที่เพียร์มีน้อยที่สุดก่อน เช่นเดียวกับที่โปรแกรม BitTorrent ทำโดยทั่วไป ด้วยวิธีนี้ ชิ้นส่วนที่เพียร์มีเพียงรายเดียวจะถูกดึงมาก่อนที่เพียร์นั้นจะจากไป และ MDM สามารถส่งต่อไปยังผู้อื่นได้เร็วขึ้น ในการทดสอบสวอร์มของ MDM พบว่าเสร็จสิ้นเร็วพอๆ กับการดาวน์โหลดตามลำดับ และเป็นลำดับเดียวที่เสร็จสิ้นเมื่อผู้ถือชิ้นส่วนที่หายากเพียงรายเดียวจากไป"
@@ -897,10 +893,6 @@
   "15ce0de13b8b0839": {
    "source": "Yes. MDM accepts IDM's familiar command-line switches, comes with misterdownloadmanager-cli for downloads from a terminal, and has a local, token-protected…",
    "text": "ได้ MDM รองรับสวิตช์บรรทัดคำสั่งที่คุ้นเคยของ IDM มาพร้อมกับ misterdownloadmanager-cli สำหรับการดาวน์โหลดจากเทอร์มินัล และมี API ระบบอัตโนมัติในเครื่องที่ป้องกันด้วยโทเค็น…"
-  },
-  "15e53ab6d7a4fe85": {
-   "source": "A row with a <x1/> line above it was translated by machine. When you have checked it (and corrected it if needed), delete that <x2/> line.",
-   "text": "แถวที่มีเส้น <x1/> อยู่ด้านบนถูกแปลโดยเครื่องจักร เมื่อคุณตรวจสอบแล้ว (และแก้ไขหากจำเป็น) ให้ลบเส้น <x2/> นั้นออก"
   },
   "1610e7aea9f29651": {
    "source": "a <x1/> file or <x2/> link",
@@ -1018,10 +1010,6 @@
    "source": "<g1>Server</g1> — where the server is: its country's flag and name, and how long a round trip to it takes. See <g2>Where the server is</g2>. It stays blank when the browser handed the download over with its name and size, since MDM didn't need to ask the server.",
    "text": "<g1>เซิร์ฟเวอร์</g1> — ตำแหน่งของเซิร์ฟเวอร์: ธงและชื่อประเทศ และเวลาที่ใช้ในการส่งข้อมูลไปกลับ ดูที่ <g2>ตำแหน่งของเซิร์ฟเวอร์</g2> ช่องนี้จะว่างเปล่าเมื่อเบราว์เซอร์ส่งการดาวน์โหลดมาพร้อมกับชื่อและขนาด เนื่องจาก MDM ไม่จำเป็นต้องสอบถามเซิร์ฟเวอร์"
   },
-  "1970ad20e03db6c3": {
-   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
-   "text": "<g1>การตรวจจับปัญหา</g1> เมื่อ MDM หยุดทำงาน (ข้อผิดพลาดของ Windows, สัญญาณบน Linux, ข้อผิดพลาดของ Mach บน macOS), เกิดข้อผิดพลาดร้ายแรง, หรือค้าง, โปรแกรมจะขอไฟล์ดัมพ์จากมอนิเตอร์ การค้างคือเฟรมของหน้าต่างที่ทำงานนานกว่า 8 วินาที ซึ่งถูกตรวจจับโดยเธรดเฝ้าระวังที่ละเว้นเวลาที่หยุดทำงาน เธรดเฝ้าระวังยังวัดว่าเธรดหน้าต่างใช้เวลาประมวลผลไปเท่าใด และรายงานจะบอกว่านั่นหมายถึงอะไร: มันทำงานตลอดเวลา (วนซ้ำ), มันรออยู่ในล็อกหรือบน I/O (การติดตาย), หรือมันแทบไม่ได้ทำงานในโค้ดปกติ ซึ่งหมายถึงคอมพิวเตอร์ยุ่งเกินไปที่จะรัน MDM หรือโหลดจากดิสก์ช้า ซึ่งส่วนใหญ่ไม่ใช่ข้อผิดพลาดของ MDM (สิ่งเหล่านี้มีลายเซ็นเดียวกัน <x2/>) macOS ยังไม่ได้วัดสิ่งนี้ จากนั้นมอนิเตอร์จะเขียน <g3>มินิดัมพ์</g3> ของทุกเธรดจากภายนอก ผ่าน <x4/> และ <x5/> กระบวนการที่หยุดทำงานจะไม่เขียนดัมพ์ของตัวเอง ซึ่งเป็นวิธีที่ Firefox, Crashpad และ Sentry ทำเช่นกัน"
-  },
   "19810b030c072070": {
    "source": "Path",
    "text": "เส้นทาง"
@@ -1037,10 +1025,6 @@
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "คำตอบสั้นๆ สำหรับคำถามที่พบบ่อยที่สุด พร้อมลิงก์ไปยังคู่มือฉบับเต็ม"
-  },
-  "19bbae838750029a": {
-   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
-   "text": "สิทธิ์การอนุญาตและเหตุผล: <g1>downloads</g1> เพื่อดูและส่งต่อการดาวน์โหลด; <g2>cookies</g2> เพื่อให้การดาวน์โหลดที่ลงชื่อเข้าใช้ทำงานใน MDM; <g3>nativeMessaging</g3> เพื่อสื่อสารกับ MDM; <g4>contextMenus</g4> สำหรับรายการคลิกขวา; <g5>storage</g5> สำหรับการตั้งค่า; <g6>webRequest</g6> เพื่อดูแบบฟอร์มที่ส่งและสตรีมวิดีโอที่โหลด (ไม่มีการเปลี่ยนแปลงใดๆ); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge และเบราว์เซอร์ Chromium อื่นๆ) เพื่อให้ไฟล์ที่เบราว์เซอร์จะเปิด (เช่น PDF) ถูกดาวน์โหลดแทน สำหรับประเภทที่ MDM รองรับ; ใน Firefox, <g8>webRequestBlocking</g8> ทำหน้าที่นั้น; <g9>scripting</g9> เพื่ออ่านลิงก์ของหน้าเมื่อคุณร้องขอ และเพื่อเพิ่มปุ่มวิดีโอไปยังหน้าที่เปิดอยู่แล้วเมื่อติดตั้งส่วนขยาย; <g10>proxy</g10> เพื่ออ่านว่าเบราว์เซอร์ใช้พร็อกซีใด เพื่อให้การดาวน์โหลดที่มาจากเบราว์เซอร์ที่อยู่เบื้องหลัง VPN หรือส่วนขยายพร็อกซีผ่านพร็อกซีนั้นด้วย (ไม่มีการเปลี่ยนแปลงพร็อกซีของเบราว์เซอร์); การเข้าถึงทุกเว็บไซต์เนื่องจากการดาวน์โหลดและวิดีโอสามารถมาจากเว็บไซต์ใดก็ได้"
   },
   "19ef176da302a2b4": {
    "source": "When the browser can't hand a download to MDM, it keeps the download itself, so nothing is lost. The extension's toolbar button then shows a red !. Click it…",
@@ -1082,21 +1066,9 @@
    "source": "<g1>It's free, for good.</g1> No trial that runs out, no licence key, no ads. The GNU GPL guarantees it stays free.",
    "text": "<g1>ฟรีตลอดไป</g1> ไม่มีการทดลองใช้ที่หมดอายุ ไม่มีคีย์ลิขสิทธิ์ ไม่มีโฆษณา GNU GPL รับประกันว่าจะยังคงฟรี"
   },
-  "1accfe27df04b7d9": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support…",
-   "text": "รองรับ Google Chrome, Microsoft Edge, Brave, Opera และ Vivaldi ผ่านส่วนขยายเบราว์เซอร์ MDM รวมถึงเบราว์เซอร์ที่สร้างขึ้นจากเบราว์เซอร์เหล่านี้ เช่น Helium ส่วนการรองรับ Firefox…"
-  },
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 วินาที</g1><g2></g2>"
-  },
-  "1ad91cd214e9ba4e": {
-   "source": "On Windows the torrent engine can't bind to an adapter yet. So torrents don't start while one is chosen (\"torrents can't go through a chosen network adapter on Windows yet\"), rather than going around it. Tracker names are still looked up by the system's DNS.",
-   "text": "บน Windows เอ็นจิ้นทอร์เรนต์ยังไม่สามารถผูกกับอะแดปเตอร์ได้ ดังนั้น ทอร์เรนต์จะไม่เริ่มทำงานในขณะที่เลือกอะแดปเตอร์ไว้ (\"ทอร์เรนต์ยังไม่สามารถผ่านอะแดปเตอร์เครือข่ายที่เลือกบน Windows ได้\") แทนที่จะเลี่ยงผ่านมัน ชื่อตัวติดตามยังคงถูกค้นหาโดย DNS ของระบบ"
-  },
-  "1ae1f6b28d64deef": {
-   "source": "The browser extension comes with the app and as its own download for <g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> and <g2>Firefox</g2>. Store listings are on the way. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
-   "text": "ส่วนขยายเบราว์เซอร์มาพร้อมกับแอป และดาวน์โหลดแยกต่างหากสำหรับ <g1>Chrome, Edge, Brave, Opera และ Vivaldi</g1> และ <g2>Firefox</g2> รายการในสโตร์กำลังจะมา ไฟล์ทั้งหมดสร้างจากซอร์สโค้ดสาธารณะโดย GitHub Actions และแสดงพร้อมกับ SHA-256 checksum"
   },
   "1afe0a44e06cfa4b": {
    "source": "To check MDM's side, open <g1>Options → General</g1> in MDM and click <g2>Test browser integration...</g2>. It checks that browser integration is on, that this is the installed copy, that the browsers can find MDM, and which browsers' extension has connected; <g3>How to fix it</g3> opens the section for the first that fails.",
@@ -1318,10 +1290,6 @@
    "source": "Windows, macOS, Linux (Java)",
    "text": "Windows, macOS, Linux (Java)"
   },
-  "1ec161dd36dfe603": {
-   "source": "<g1>Mister Download Manager</g1> appears in the list. Leave it turned on. Pin its button to the toolbar to see at a glance whether the browser reaches MDM. Opera and Vivaldi take it the same way.",
-   "text": "<g1>Mister Download Manager</g1> จะปรากฏในรายการ เปิดใช้งานไว้ ปักหมุดปุ่มของมันไว้ที่แถบเครื่องมือเพื่อดูได้อย่างรวดเร็วว่าเบราว์เซอร์เชื่อมต่อกับ MDM ได้หรือไม่ Opera และ Vivaldi ก็ใช้วิธีเดียวกัน"
-  },
   "1ed401e594a9c102": {
    "source": "0.03 s",
    "text": "0.03 วินาที"
@@ -1402,10 +1370,6 @@
    "source": "The download list",
    "text": "รายการดาวน์โหลด"
   },
-  "20e4fa05d9c374d9": {
-   "source": "Click <g1>Load Temporary Add-on</g1> and choose <x2/>.",
-   "text": "คลิก <g1>โหลดส่วนเสริมชั่วคราว</g1> และเลือก <x2/>"
-  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "หน้าต่างหลักของ Mister Download Manager: เค้าโครงคลาสสิกพร้อมแถบเครื่องมือ หมวดหมู่ และรายการดาวน์โหลด"
@@ -1425,10 +1389,6 @@
   "21b4ad12f925276a": {
    "source": "Delete the <x1/> folder (or make it read-only) and the same copy behaves like the plain zip: it keeps its data in <x2/>.",
    "text": "ลบโฟลเดอร์ <x1/> (หรือทำให้เป็นแบบอ่านอย่างเดียว) และสำเนาเดียวกันจะทำงานเหมือนไฟล์ zip ธรรมดา: จะเก็บข้อมูลไว้ใน <x2/>"
-  },
-  "21b6b286e6b24cb5": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: Direct3D, or OpenGL) and <g6>Language</g6>.",
-   "text": "<g1>มุมมอง</g1> — แสดงหรือซ่อนหมวดหมู่, จัดเรียงรายการ (<g2>จัดเรียงไฟล์</g2>), <g3>รองรับโหมดมืด</g3>, <g4>มืดตลอดเวลา</g4>, <g5>วาดด้วย</g5> (Windows: Direct3D หรือ OpenGL) และ <g6>ภาษา</g6>"
   },
   "21bc1db419022796": {
    "source": "<g1>Statcounter</g1> counts visits so we know which pages people read and where they come from. Its script records the page you open, the page that linked to it, your browser, system and screen size, and your approximate location from your IP address, and sets a cookie to tell new visitors from returning ones. We see these as statistics in Statcounter's dashboard; we don't use them to identify you, and we don't sell or share them. See <g2>Statcounter's privacy policy</g2>. Blocking cookies or scripts for statcounter.com in your browser, or a content blocker, keeps you out of the count; the site works the same.",
@@ -1606,6 +1566,10 @@
    "source": "The current speed.",
    "text": "ความเร็วปัจจุบัน"
   },
+  "25bdccac1d0ecb03": {
+   "source": "If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so and why. Choosing it again tries it again at the next start.",
+   "text": "หาก Direct3D, Vulkan หรือ Metal ไม่สามารถเริ่มต้นบนคอมพิวเตอร์ของคุณได้ (ไม่มีไดรเวอร์, เครื่องเสมือนบางเครื่อง) หรือหน้าต่างแรกไม่แสดงภายใน 10 วินาที MDM จะวาดด้วย OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะระบุสาเหตุ การเลือกอีกครั้งจะลองใหม่อีกครั้งในการเริ่มต้นครั้งถัดไป"
+  },
   "25e1ffe092788c2a": {
    "source": "<g1>Download File Info</g1>, the progress window and <g2>Properties</g2> show where a download's server is: its country's flag and name, then the time a round trip to it takes, such as <g3>about 24 ms (near)</g3>.",
    "text": "<g1>ข้อมูลไฟล์ดาวน์โหลด</g1>, หน้าต่างแสดงความคืบหน้า และ <g2>คุณสมบัติ</g2> จะแสดงตำแหน่งของเซิร์ฟเวอร์ที่ดาวน์โหลด: ธงและชื่อประเทศของเซิร์ฟเวอร์ จากนั้นเป็นเวลาที่ใช้ในการเดินทางไปกลับ เช่น <g3>ประมาณ 24 มิลลิวินาที (ใกล้)</g3>"
@@ -1766,10 +1730,6 @@
    "source": "How it works",
    "text": "วิธีการทำงาน"
   },
-  "2991dd6051b6e56c": {
-   "source": "By hand for now, while the Chrome Web Store reviews the extension. Its files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own download, <x4/> (unzip it first).",
-   "text": "ตอนนี้ต้องทำด้วยตนเอง ในระหว่างที่ Chrome Web Store กำลังตรวจสอบส่วนขยาย ไฟล์ของมันอยู่ในโฟลเดอร์ <x1/> ที่ติดตั้ง MDM: <x2/> หากคุณติดตั้งสำหรับตัวเอง หรือ <x3/> หากคุณติดตั้งสำหรับทุกคน ทุกรุ่นยังมีไฟล์เหล่านี้ให้ดาวน์โหลดแยกต่างหาก <x4/> (ต้องแตกไฟล์ก่อน)"
-  },
   "29b29fea4e1dcc73": {
    "source": "Download limits",
    "text": "ขีดจำกัดการดาวน์โหลด"
@@ -1793,10 +1753,6 @@
   "2a6ff2c6c070bf78": {
    "source": "MDM comes with an MCP server, misterdownloadmanager-mcp, so an AI assistant that supports MCP (Claude Desktop, Claude Code, Cursor, VS Code and others) can…",
    "text": "MDM มาพร้อมกับเซิร์ฟเวอร์ MCP, misterdownloadmanager-mcp ดังนั้นผู้ช่วย AI ที่รองรับ MCP (Claude Desktop, Claude Code, Cursor, VS Code และอื่นๆ) สามารถ..."
-  },
-  "2a73a935ac5fc81d": {
-   "source": "Open <x1/> and click <g2>This Firefox</g2>.",
-   "text": "เปิด <x1/> และคลิก <g2>Firefox นี้</g2>"
   },
   "2a86bffcb4952c03": {
    "source": "<g1>Logging in.</g1> Write the login in the address (<x2/>), tick <g3>Use authorization</g3>, or save it in <g4>Options → Sites Logins</g4>. Without one, MDM logs in as <x5/>. The path is relative to the folder the login starts in; to start from the server's root, write <x6/> after the server (<x7/>).",
@@ -1938,6 +1894,10 @@
    "source": "<g1>The country</g1> comes from a table of address ranges that comes with MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0), looked up on your computer. MDM never sends the address anywhere to ask where it is. The table is updated with each release; an address that has moved since may show its old country.",
    "text": "<g1>ประเทศ</g1> มาจากตารางช่วงที่อยู่ IP ที่มาพร้อมกับ MDM (<g2>IP to Country Lite by DB-IP</g2>, CC BY 4.0) ซึ่งค้นหาบนคอมพิวเตอร์ของคุณ MDM จะไม่ส่งที่อยู่ไปยังที่ใดเพื่อสอบถามตำแหน่ง ตารางจะได้รับการอัปเดตทุกครั้งที่ออกเวอร์ชันใหม่ ที่อยู่ที่มีการเปลี่ยนแปลงตำแหน่งอาจแสดงประเทศเก่า"
   },
+  "2cd03d5c814bd111": {
+   "source": "Last updated 2026-11-07",
+   "text": "อัปเดตล่าสุด: 7 พฤศจิกายน 2569"
+  },
   "2ce984608b61ca9b": {
    "source": "<g1>Browse</g1> — open its folder in Explorer.",
    "text": "<g1>เรียกดู</g1> — เปิดโฟลเดอร์ใน Explorer"
@@ -1981,6 +1941,10 @@
   "2d91701284b91b0a": {
    "source": "Source code",
    "text": "ซอร์สโค้ด"
+  },
+  "2d99670ca729da8a": {
+   "source": "Every colour and size a control is drawn with comes from the active theme (#45): <x1/> declares its roles (<x2/>, <x3/>…) with the classic look's values, the shared painters (<x4/>, <x5/>, <x6/>, <x7/>) read them through <x8/> and <x9/> and decide each control's states from them, and <x10/> reads theme files (TOML or JSON in the data folder's <x11/>) that change any of them. Where a window puts its controls stays its layout. So do the icons before file names (<x12/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x13/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
+   "text": "ทุกสีและขนาดที่ใช้ในการวาดส่วนควบคุมมาจากชุดรูปแบบที่ใช้งานอยู่ (#45): <x1/> ประกาศบทบาทของมัน (<x2/>, <x3/>…) ด้วยค่าของรูปลักษณ์คลาสสิก, ตัววาดที่ใช้ร่วมกัน (<x4/>, <x5/>, <x6/>, <x7/>) อ่านค่าเหล่านั้นผ่าน <x8/> และ <x9/> และตัดสินสถานะของส่วนควบคุมแต่ละส่วนจากค่าเหล่านั้น, และ <x10/> อ่านไฟล์ชุดรูปแบบ (TOML หรือ JSON ใน <x11/> ของโฟลเดอร์ข้อมูล) ที่เปลี่ยนแปลงค่าใดๆ เหล่านั้น ตำแหน่งที่หน้าต่างวางส่วนควบคุมยังคงเป็นเค้าโครงของมัน เช่นเดียวกับไอคอนก่อนชื่อไฟล์ (<x12/>): รายการรูปภาพระบบของ Windows shell, ของ macOS Finder (NSWorkspace), ชุดรูปแบบไอคอนของเดสก์ท็อป Linux (<x13/>, shared-mime-info และ Icon Theme Specification) แต่ละประเภทจะถูกค้นหาหนึ่งครั้งต่อขนาดพิกเซล บนเธรดพื้นหลัง ไอคอนของ Tango (ที่มาพร้อมเครื่อง) จะถูกใช้แทนจนกว่าไอคอนของระบบจะพร้อมใช้งาน และในที่ที่ระบบไม่มี"
   },
   "2d9d101be2d0f3be": {
    "source": "FTP and FTPS (<x1/>) go through the same planner, workers and state: a segment is <x2/> + <x3/> on a control session instead of a ranged <x4/>, <x5/> and <x6/> stand in for the headers, and sessions are pooled per download and reused between segments.",
@@ -2178,10 +2142,6 @@
    "source": "Closing the window with its close box keeps the download running.",
    "text": "การปิดหน้าต่างด้วยปุ่มปิดจะทำให้การดาวน์โหลดดำเนินต่อไป"
   },
-  "335df06d95749e68": {
-   "source": "Chrome, Edge, Brave, Opera, Vivaldi; Firefox in testing",
-   "text": "Chrome, Edge, Brave, Opera, Vivaldi; Firefox กำลังทดสอบ"
-  },
   "336d90cdead9909e": {
    "source": "Delete the selected downloads and their files (asks first)",
    "text": "ลบรายการดาวน์โหลดที่เลือกและไฟล์ (ถามก่อน)"
@@ -2242,10 +2202,6 @@
    "source": "Connections to this computer itself (<x1/>) aren't bound. A proxy on this computer carries the downloads, and where it sends them is up to it.",
    "text": "การเชื่อมต่อไปยังคอมพิวเตอร์เครื่องนี้เอง (<x1/>) จะไม่ถูกผูก พร็อกซีบนคอมพิวเตอร์เครื่องนี้จะจัดการการดาวน์โหลด และจะส่งไปที่ใดขึ้นอยู่กับพร็อกซีนั้น"
   },
-  "354fca97a75c4b55": {
-   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
-   "text": "หาก Direct3D ไม่สามารถเริ่มต้นบนคอมพิวเตอร์ของคุณได้ (ไม่มีไดรเวอร์ Direct3D 12, เครื่องเสมือนบางเครื่อง) MDM จะแสดงผลด้วย OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะระบุไว้ การเลือก <g2>Direct3D</g2> อีกครั้งจะลองใหม่อีกครั้งในการเริ่มต้นครั้งถัดไป"
-  },
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "การเลือกภาษาเมื่อเริ่มต้นใช้งานครั้งแรก"
@@ -2289,6 +2245,10 @@
   "36c38f86ce86be0d": {
    "source": "The Speed Limiter keeps MDM from using all of your connection.",
    "text": "ตัวจำกัดความเร็วจะป้องกันไม่ให้ MDM ใช้การเชื่อมต่อของคุณทั้งหมด"
+  },
+  "36d5bb353cf00059": {
+   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download, once you allow it: in Firefox, switch on <g2>Send downloads through this browser's proxy or VPN extension</g2> in the extension's toolbar popup (Firefox asks you once). Chrome, Edge, Brave, Opera and Vivaldi don't hand the proxy over yet: there, set the same proxy in <g3>Options → Proxy / Socks</g3>.",
+   "text": "<g1>ใช้พร็อกซี/SOCKS จากคำขอของเบราว์เซอร์…</g1> — เปิดใช้งานโดยค่าเริ่มต้น การดาวน์โหลดที่ MDM รับจากเบราว์เซอร์จะผ่านพร็อกซีที่เบราว์เซอร์ใช้สำหรับสิ่งนั้น นั่นคือพร็อกซีที่ส่วนขยาย VPN หรือพร็อกซีตั้งค่าไว้ พร็อกซีที่ตั้งค่าด้วยตนเองของเบราว์เซอร์ หรือสคริปต์การกำหนดค่าพร็อกซีอัตโนมัติของเบราว์เซอร์ หากไม่มีสิ่งนี้ การดาวน์โหลดจะออกจากที่อยู่ของคุณเอง และเนื้อหาที่จำกัดเฉพาะประเทศของ VPN หรือที่อยู่ของ VPN จะล้มเหลว ส่วนขยายของเบราว์เซอร์จะอ่านพร็อกซีนั้นและส่งให้ MDM พร้อมกับการดาวน์โหลดแต่ละครั้ง เมื่อคุณอนุญาต: ใน Firefox ให้เปิด <g2>ส่งการดาวน์โหลดผ่านพร็อกซีหรือส่วนขยาย VPN ของเบราว์เซอร์นี้</g2> ในป๊อปอัปแถบเครื่องมือของส่วนขยาย (Firefox จะถามคุณเพียงครั้งเดียว) Chrome, Edge, Brave, Opera และ Vivaldi ยังไม่ส่งมอบพร็อกซี: ในกรณีนั้น ให้ตั้งค่าพร็อกซีเดียวกันใน <g3>ตัวเลือก → พร็อกซี / SOCKS</g3>"
   },
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
@@ -2445,10 +2405,6 @@
   "3a17506ba8b8934c": {
    "source": "Right-click any text box for <g1>Cut</g1>, <g2>Copy</g2>, <g3>Paste</g3>, <g4>Delete</g4> and <g5>Select all</g5>.",
    "text": "คลิกขวาที่กล่องข้อความใดก็ได้เพื่อ <g1>ตัด</g1>, <g2>คัดลอก</g2>, <g3>วาง</g3>, <g4>ลบ</g4> และ <g5>เลือกทั้งหมด</g5>"
-  },
-  "3a3fcee9f3378a95": {
-   "source": "<g1>Memory</g1> (on the Processes tab) is what MDM holds for itself alone, its <g2>private working set</g2>. With the window open and nothing downloading, that is about 50 MB.",
-   "text": "<g1>หน่วยความจำ</g1> (บนแท็บกระบวนการ) คือสิ่งที่ MDM เก็บไว้สำหรับตัวเองเท่านั้น ซึ่งเป็น <g2>ชุดการทำงานส่วนตัว</g2> หากเปิดหน้าต่างไว้และไม่มีการดาวน์โหลดใดๆ จะอยู่ที่ประมาณ 50 MB"
   },
   "3a41fb2fde8f40a7": {
    "source": "MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and <g1>Download</g1> opens the <g2>Releases</g2> page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.",
@@ -2622,10 +2578,6 @@
    "source": "For all downloads together",
    "text": "สำหรับการดาวน์โหลดทั้งหมดรวมกัน"
   },
-  "3e7256dcef6e5886": {
-   "source": "Browser extension: submitted to the stores, awaiting approval. <g1><g2><x3/>Firefox</g2> <g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g1>",
-   "text": "ส่วนขยายเบราว์เซอร์: ส่งไปยังร้านค้าแล้ว รอการอนุมัติ <g1><g2><x3/>Firefox</g2> <g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g1>"
-  },
   "3e7e4a8239d377cb": {
    "source": "You don't need to start MDM first. When the browser hands over a download and MDM isn't running, the helper starts it and passes the download on.",
    "text": "คุณไม่จำเป็นต้องเริ่ม MDM ก่อน เมื่อเบราว์เซอร์ส่งการดาวน์โหลดและ MDM ไม่ได้ทำงาน ตัวช่วยจะเริ่ม MDM และส่งการดาวน์โหลดต่อไป"
@@ -2653,10 +2605,6 @@
   "3ec9f591006bbd23": {
    "source": "The installer. Pick this one unless you have a reason not to. It can set up browser integration and open <x1/> files and magnet links with MDM.",
    "text": "ตัวติดตั้ง เลือกตัวนี้เว้นแต่คุณจะมีเหตุผลอื่น มันสามารถตั้งค่าการรวมเข้ากับเบราว์เซอร์ และเปิดไฟล์ <x1/> และลิงก์แม่เหล็กด้วย MDM ได้"
-  },
-  "3f1a155dbf3600d3": {
-   "source": "<g1>Firefox</g1> (<x2/>, in testing)",
-   "text": "<g1>Firefox</g1> (<x2/>, อยู่ระหว่างการทดสอบ)"
   },
   "3f2e32c284681794": {
    "source": "If Windows says <g1>Windows protected your PC</g1>, click <g2>More info</g2>, check that the file is <x3/> from the <g4>Releases</g4> page, then click <g5>Run anyway</g5>.",
@@ -2710,10 +2658,6 @@
    "source": "More in <g1>Connections and speed</g1>.",
    "text": "เพิ่มเติมใน <g1>การเชื่อมต่อและความเร็ว</g1>"
   },
-  "40a17209f38d66d2": {
-   "source": "MDM draws its windows with OpenGL. On Windows, some graphics drivers' OpenGL can hold a window still for seconds, or draw it wrongly. Choose <g1>View → Draw with → Direct3D</g1> to draw with Direct3D 12 instead, from the next start; <g2>View → Draw with → OpenGL</g2> goes back.",
-   "text": "MDM แสดงผลหน้าต่างด้วย OpenGL บน Windows ไดรเวอร์กราฟิกบางตัวของ OpenGL อาจทำให้หน้าต่างค้างเป็นเวลาหลายวินาที หรือแสดงผลผิดพลาดได้ เลือก <g1>มุมมอง → วาดด้วย → Direct3D</g1> เพื่อแสดงผลด้วย Direct3D 12 แทนในการเปิดครั้งถัดไป; <g2>มุมมอง → วาดด้วย → OpenGL</g2> จะกลับไปใช้แบบเดิม"
-  },
   "40a26ac3ae7dcbbc": {
    "source": "If the link has expired (common for links from sites you sign in to, or links with a time limit in them), get a new one: right-click → <g1>Refresh download address</g1>. See <g2>Resume a broken download</g2>.",
    "text": "หากลิงก์หมดอายุ (พบบ่อยสำหรับลิงก์จากเว็บไซต์ที่คุณลงชื่อเข้าใช้ หรือลิงก์ที่มีการจำกัดเวลา) ให้รับลิงก์ใหม่: คลิกขวา → <g1>รีเฟรชที่อยู่ดาวน์โหลด</g1> ดู <g2>ดำเนินการดาวน์โหลดที่เสียต่อ</g2>"
@@ -2761,10 +2705,6 @@
   "41cec323989a52f8": {
    "source": "Crash reports",
    "text": "รายงานข้อขัดข้อง"
-  },
-  "41d7fb067ecb2748": {
-   "source": "Firefox (from <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them: Zen and LibreWolf, Helium. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g2>Download with Mister Download Manager</g2> to the right-click menu and a <g3>Download video</g3> button over videos. See <g4>Browser integration</g4>.",
-   "text": "Firefox (จาก <g1>addons.mozilla.org</g1>), Google Chrome, Microsoft Edge, Brave, Opera และ Vivaldi ผ่านส่วนขยายเบราว์เซอร์ของ MDM รวมถึงเบราว์เซอร์ที่สร้างขึ้นจากเบราว์เซอร์เหล่านี้ เช่น Zen และ LibreWolf, Helium ส่วนขยายจะส่งการดาวน์โหลดไปยัง MDM พร้อมคุกกี้และตัวอ้างอิง ทำให้ไฟล์ที่ต้องเข้าสู่ระบบยังคงใช้งานได้ และเพิ่ม <g2>ดาวน์โหลดด้วย Mister Download Manager</g2> ไปยังเมนูคลิกขวา และปุ่ม <g3>ดาวน์โหลดวิดีโอ</g3> เหนือวิดีโอ ดูที่ <g4>การผสานรวมกับเบราว์เซอร์</g4>"
   },
   "4208f79380d548a0": {
    "source": "<g1>ffmpeg</g1> (about 80 MB) joins a video and its sound when a site keeps them apart, which most sites do for the higher qualities, and turns the sound into an MP3, Opus or FLAC file. Click <g2>Install ffmpeg</g2> when MDM offers it. MDM checks it against the checksums its release publishes.",
@@ -2814,10 +2754,6 @@
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
    "text": "การเปิดตัวครั้งแรก: ตัวจัดการการดาวน์โหลดฟรีสำหรับ Windows ที่จัดวางในแบบที่ผู้ใช้ Internet Download Manager คาดหวัง พร้อมรุ่นทดลองสำหรับ macOS และ Linux"
   },
-  "43bc6e18a0433b8b": {
-   "source": "Firefox removes a temporary add-on when it closes, so you have to load it again after each restart.",
-   "text": "Firefox จะลบส่วนเสริมชั่วคราวเมื่อปิด ดังนั้นคุณต้องโหลดใหม่หลังจากรีสตาร์ททุกครั้ง"
-  },
   "43cb42591f1e4934": {
    "source": "<g1>No proxy/socks</g1> — connect directly. This is the default.",
    "text": "<g1>ไม่มีพร็อกซี/SOCKS</g1> — เชื่อมต่อโดยตรง นี่คือค่าเริ่มต้น"
@@ -2833,10 +2769,6 @@
   "4409b6268f79d30a": {
    "source": "<g1>Pasting.</g1> Choose <g2>Tasks → Link grabber...</g2> and press <g3>Ctrl+V</g3>: every web address in the copied text is added.",
    "text": "<g1>วาง</g1> เลือก <g2>งาน → ตัวคว้าลิงก์...</g2> แล้วกด <g3>Ctrl+V</g3>: ที่อยู่เว็บทุกรายการในข้อความที่คัดลอกจะถูกเพิ่มเข้ามา"
-  },
-  "440d7c9f4a9ff3a8": {
-   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. In Firefox, then open <g2>the add-on's page on addons.mozilla.org</g2> and click <g3>Add to Firefox</g3>. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose <g4>Load unpacked</g4> and pick the <x5/> folder in MDM's folder. The <g6>tutorial</g6> walks through it.",
-   "text": "ติดตั้ง MDM ด้วยโปรแกรมติดตั้งและทำเครื่องหมายที่ <g1>ตั้งค่าการผสานรวมกับเบราว์เซอร์</g1> ไว้ ใน Firefox ให้เปิด <g2>หน้าส่วนเสริมบน addons.mozilla.org</g2> แล้วคลิก <g3>เพิ่มลงใน Firefox</g3> ใน Chrome, Edge, Brave, Opera และ Vivaldi ให้โหลดด้วยตนเองไปก่อน ในระหว่างที่ Chrome Web Store กำลังตรวจสอบ: เปิดหน้าส่วนขยายของเบราว์เซอร์ เปิดโหมดนักพัฒนา เลือก <g4>โหลดส่วนขยายที่ไม่ได้แพ็ก</g4> และเลือกโฟลเดอร์ <x5/> ในโฟลเดอร์ของ MDM <g6>บทช่วยสอน</g6> จะอธิบายขั้นตอนทั้งหมด"
   },
   "441473c88f5bb354": {
    "source": "Not listed",
@@ -2909,10 +2841,6 @@
   "45bc5ceaa76685a9": {
    "source": "A download the browser had already started (MDM took it over from the browser) is downloaded as it is: the host is already sending the file.",
    "text": "การดาวน์โหลดที่เบราว์เซอร์เริ่มไปแล้ว (MDM รับช่วงต่อจากเบราว์เซอร์) จะถูกดาวน์โหลดตามเดิม: โฮสต์กำลังส่งไฟล์อยู่แล้ว"
-  },
-  "45cafb7bca129310": {
-   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Chrome, Edge, Brave and Firefox, which downloads it takes, and what happens when MDM isn't running.",
-   "text": "<g1><g2>การผสานรวมกับเบราว์เซอร์</g2></g1> — ส่วนขยายสำหรับ Chrome, Edge, Brave และ Firefox, การดาวน์โหลดที่โปรแกรมรับมา, และสิ่งที่เกิดขึ้นเมื่อ MDM ไม่ทำงาน"
   },
   "45ce55f4ec4843d8": {
    "source": "<g1>Start now</g1> and <g2>Stop</g2> run or halt the selected queue straight away.",
@@ -3386,6 +3314,10 @@
    "source": "JSON for scripts and programs",
    "text": "JSON สำหรับสคริปต์และโปรแกรม"
   },
+  "53220733cbddcf56": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose <g1>View → Draw with → OpenGL</g1> (or <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>), then quit MDM (<g5>Tasks → Exit</g5>) and start it again. Choosing the first one goes back the same way.",
+   "text": "บน Windows, MDM วาดหน้าต่างด้วย Direct3D 12; บน Linux และ macOS ด้วย OpenGL หรือด้วย Vulkan (Linux) หรือ Metal (macOS) เมื่อคุณเลือก การ์ดจออาจยังทำงานผิดปกติได้: หน้าต่างค้างเป็นวินาที, กระพริบ, หรือแสดงสีหรือบล็อกผิดปกติ ลองใช้อีกตัวเลือกหนึ่ง: เลือก <g1>มุมมอง → วาดด้วย → OpenGL</g1> (หรือ <g2>Direct3D</g2>, <g3>Vulkan</g3>, <g4>Metal</g4>) จากนั้นออกจาก MDM (<g5>งาน → ออก</g5>) แล้วเริ่มใหม่ การเลือกตัวเลือกแรกจะกลับไปเป็นแบบเดิม"
+  },
   "53463dc2311b18e1": {
    "source": "when <g1>Options → Archives → Extract archives when their download completes</g1> is on (off by default), for any other download,",
    "text": "เมื่อเปิด <g1>ตัวเลือก → ไฟล์เก็บถาวร → แตกไฟล์เก็บถาวรเมื่อดาวน์โหลดเสร็จสมบูรณ์</g1> (ปิดอยู่โดยค่าเริ่มต้น) สำหรับการดาวน์โหลดอื่น ๆ"
@@ -3449,10 +3381,6 @@
   "54ccaa53103fedbb": {
    "source": "What it takes",
    "text": "สิ่งที่ต้องทำ"
-  },
-  "54e5466052010a84": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); add the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "MDM จะตั้งค่าการผสานรวมกับเบราว์เซอร์เองทุกครั้งที่เริ่มต้นบน Linux และ macOS (จะพบเบราว์เซอร์ที่ติดตั้งในขณะนั้น); เพิ่มส่วนขยายตามที่ระบุใน <g1>การผสานรวมกับเบราว์เซอร์</g1> เบราว์เซอร์ที่ติดตั้งเป็น Flatpak หรือ Snap อาจไม่สามารถเข้าถึง MDM ได้"
   },
   "54e89626cca7cb41": {
    "source": "Click <g1>Scheduler</g1> on the toolbar (or <g2>Downloads → Scheduler</g2>).",
@@ -3650,10 +3578,6 @@
    "source": "Getting set up",
    "text": "การตั้งค่า"
   },
-  "59e78792626130dd": {
-   "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension: Firefox's from <g1>its add-ons store</g1>, the others by hand for now. Without the extension, copy a link and MDM opens the download window. <g2>More</g2>",
-   "text": "Firefox, Chrome, Edge, Brave, Opera และ Vivaldi ผ่านส่วนขยาย: สำหรับ Firefox จาก <g1>ร้านค้าส่วนเสริม</g1> ส่วนเบราว์เซอร์อื่น ๆ ต้องเพิ่มด้วยตนเองไปก่อน หากไม่มีส่วนขยาย ให้คัดลอกลิงก์แล้ว MDM จะเปิดหน้าต่างดาวน์โหลด <g2>เพิ่มเติม</g2>"
-  },
   "5a277738c32493f8": {
    "source": "Support MDM",
    "text": "สนับสนุน MDM"
@@ -3706,10 +3630,6 @@
    "source": "Unzip anywhere, a USB stick too; everything stays in its folder",
    "text": "แตกไฟล์ที่ไหนก็ได้ รวมถึงแฟลชไดรฟ์ USB; ทุกอย่างจะอยู่ในโฟลเดอร์ของมัน"
   },
-  "5b4c0d90aeddada8": {
-   "source": "Is the extension loaded and turned on? Look for <g1>Mister Download Manager</g1> on the browser's extensions page. In Firefox, a temporary add-on is gone after a restart. See <g2>Browser integration</g2>.",
-   "text": "ส่วนขยายโหลดและเปิดอยู่หรือไม่? มองหา <g1>Mister Download Manager</g1> ในหน้าส่วนขยายของเบราว์เซอร์ ใน Firefox ส่วนเสริมชั่วคราวจะหายไปหลังจากการรีสตาร์ท ดู <g2>การทำงานร่วมกับเบราว์เซอร์</g2>"
-  },
   "5bc4b6e9ef830d3c": {
    "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
    "text": "<g1>Linux และ macOS</g1>: ในการตั้งค่าของ MDM ในโฟลเดอร์ข้อมูลที่คุณเท่านั้นที่สามารถอ่านได้ (0700) ยังไม่ได้อยู่ในพวงกุญแจของระบบ การเก็บไว้ในพวงกุญแจมีแผนจะดำเนินการ"
@@ -3745,10 +3665,6 @@
   "5cf4f742d0a41f0e": {
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "ดาวน์โหลดแกลเลอรีลงในโฟลเดอร์ที่ตั้งชื่อตามแกลเลอรีนั้น ดู <g1>บรรทัดคำสั่งและการทำงานอัตโนมัติ</g1>"
-  },
-  "5d132ac4f8b0c1aa": {
-   "source": "A freeze or crash report says which one was drawing.",
-   "text": "รายงานการค้างหรือข้อผิดพลาดจะระบุว่าใช้ตัวใดในการแสดงผล"
   },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
@@ -4058,10 +3974,6 @@
    "source": "The Scheduler",
    "text": "ตัวจัดกำหนดการ"
   },
-  "63b637699436b285": {
-   "source": "Store listings for Chrome, Edge and Firefox are on the way and will make this one click. The <g1>step-by-step guide</g1> shows each browser.",
-   "text": "รายการในสโตร์สำหรับ Chrome, Edge และ Firefox กำลังจะมาถึง ซึ่งจะทำให้การติดตั้งทำได้ในคลิกเดียว <g1>คู่มือทีละขั้นตอน</g1> จะแสดงวิธีการสำหรับแต่ละเบราว์เซอร์"
-  },
   "63ce30d5a4972748": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.",
    "text": "เพิ่มส่วนขยายไปยังเบราว์เซอร์แต่ละตัวที่คุณใช้ ดังนี้: Firefox จากร้านค้าส่วนเสริมของมัน ส่วนเบราว์เซอร์อื่น ๆ จาก Chrome Web Store"
@@ -4242,10 +4154,6 @@
    "source": "Queue downloads for later →",
    "text": "จัดคิวการดาวน์โหลดไว้สำหรับภายหลัง →"
   },
-  "690e87be87eb0c8f": {
-   "source": "<g1>Use proxy/socks from a browser's request…</g1> — on by default. A download MDM takes from the browser goes through the proxy the browser used for it. That's the one a VPN or proxy extension set, the browser's own manual proxy, or its proxy auto-config script. Without it, the download would leave from your own address, and content limited to the VPN's country, or to its address, would fail. The browser extension reads that proxy and hands it to MDM with each download.",
-   "text": "<g1>ใช้พร็อกซี/SOCKS จากคำขอของเบราว์เซอร์…</g1> — เปิดใช้งานโดยค่าเริ่มต้น การดาวน์โหลดที่ MDM รับมาจากเบราว์เซอร์จะผ่านพร็อกซีที่เบราว์เซอร์ใช้สำหรับสิ่งนั้น นั่นคือพร็อกซีที่ส่วนขยาย VPN หรือพร็อกซีตั้งค่าไว้ พร็อกซีที่ตั้งค่าด้วยตนเองของเบราว์เซอร์ หรือสคริปต์การกำหนดค่าพร็อกซีอัตโนมัติ หากไม่มีสิ่งนี้ การดาวน์โหลดจะออกจากที่อยู่ของคุณเอง และเนื้อหาที่จำกัดเฉพาะประเทศของ VPN หรือที่อยู่ของ VPN จะล้มเหลว ส่วนขยายเบราว์เซอร์จะอ่านพร็อกซีนั้นและส่งให้ MDM พร้อมกับการดาวน์โหลดแต่ละครั้ง"
-  },
   "690eeaa22bdb80c0": {
    "source": "Yes: HTTP and SOCKS proxies, and proxy auto-config (PAC) scripts, in <g1>Options → Proxy / Socks</g1>. See <g2>Options</g2>.",
    "text": "ใช่: พร็อกซี HTTP และ SOCKS และสคริปต์การกำหนดค่าพร็อกซีอัตโนมัติ (PAC) ใน <g1>ตัวเลือก → พร็อกซี / SOCKS</g1> ดู <g2>ตัวเลือก</g2>"
@@ -4413,6 +4321,10 @@
   "6c8e32cd2774b905": {
    "source": "Torrents — Mister Download Manager help",
    "text": "ทอร์เรนต์ — วิธีใช้ Mister Download Manager"
+  },
+  "6c93571eac4f03c3": {
+   "source": "In Firefox, MDM sees the proxy the browser's own request for the file took, including the ones a VPN extension picks for each request.",
+   "text": "ใน Firefox, MDM จะเห็นพร็อกซีที่คำขอของเบราว์เซอร์เองใช้สำหรับไฟล์ รวมถึงพร็อกซีที่ส่วนขยาย VPN เลือกสำหรับแต่ละคำขอ"
   },
   "6cfaa56a34e8372a": {
    "source": "A torrent can contain anything, and anyone can make one. Only open programs from people you trust, and scan them if in doubt.",
@@ -4586,10 +4498,6 @@
    "source": "MDM opens <g1>Download File Info</g1> instead of the browser downloading the file. Click <g2>Start Download</g2>.",
    "text": "MDM จะเปิด <g1>ข้อมูลไฟล์ดาวน์โหลด</g1> แทนที่เบราว์เซอร์จะดาวน์โหลดไฟล์ คลิก <g2>เริ่มการดาวน์โหลด</g2>"
   },
-  "70949fe6f15631f5": {
-   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Draw with</g5> (Windows: OpenGL or Direct3D) and <g6>Language</g6>.",
-   "text": "<g1>มุมมอง</g1> — แสดงหรือซ่อนหมวดหมู่, จัดเรียงรายการ (<g2>จัดเรียงไฟล์</g2>), <g3>รองรับโหมดมืด</g3>, <g4>มืดตลอดเวลา</g4>, <g5>วาดด้วย</g5> (Windows: OpenGL หรือ Direct3D) และ <g6>ภาษา</g6>"
-  },
   "709db3121ce7df32": {
    "source": "What stays on your computer",
    "text": "สิ่งที่อยู่บนคอมพิวเตอร์ของคุณ"
@@ -4630,10 +4538,6 @@
    "source": "<g1>Download list</g1> (right). One row per download. See <g2>The download list</g2>.",
    "text": "<g1>รายการดาวน์โหลด</g1> (ขวา) หนึ่งแถวต่อหนึ่งการดาวน์โหลด ดู <g2>รายการดาวน์โหลด</g2>"
   },
-  "71ee3c989cceb48b": {
-   "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them.",
-   "text": "<g1>สตรีม</g1>: HLS (<x2/>) และ DASH (<x3/>) ซึ่งเป็นวิธีที่เว็บไซต์ส่วนใหญ่ใช้เล่นวิดีโอขนาดยาว แต่ละสตรีมจะแสดงเพียงครั้งเดียว ไม่ว่าโปรแกรมเล่นจะสลับคุณภาพไปกี่ครั้งก็ตาม พร้อมด้วยคุณภาพ (<x4/>) และความยาว หากส่วนขยายสามารถอ่านได้"
-  },
   "71f8e678aea06824": {
    "source": "<g1>All files and checksums</g1><g2>Version 0.2.4 on GitHub Releases, with SHA256SUMS.txt</g2>",
    "text": "<g1>ไฟล์และเช็คซัมทั้งหมด</g1><g2>เวอร์ชัน 0.2.4 บน GitHub Releases พร้อม SHA256SUMS.txt</g2>"
@@ -4645,10 +4549,6 @@
   "720b69230bc62f14": {
    "source": "Download a gallery's pictures (a Wikimedia Commons category, a Flickr album, ...) into a folder named after it inside <x1/>; <x2/> takes at most that many, the first the site lists. Started again, it fetches only the new ones.",
    "text": "ดาวน์โหลดรูปภาพในแกลเลอรี (หมวดหมู่ Wikimedia Commons, อัลบั้ม Flickr, ...) ลงในโฟลเดอร์ที่ตั้งชื่อตามนั้นภายใน <x1/>; <x2/> รับได้มากที่สุดเท่าที่ระบุ โดยเป็นรายการแรกที่เว็บไซต์แสดง หากเริ่มใหม่ จะดึงเฉพาะรายการใหม่เท่านั้น"
-  },
-  "720d6bdebec42762": {
-   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1>: by hand for now, while the Chrome Web Store reviews it. It comes with the app, in its <x2/> folder, and <g3>as its own download</g3> (<x4/>: unzip, then <g5>Load unpacked</g5> on the browser's extensions page with Developer mode on). The <g6>step-by-step guide</g6> shows each browser.",
-   "text": "<g1>Chrome, Edge, Brave, Opera และ Vivaldi</g1>: ตอนนี้ต้องติดตั้งด้วยตนเอง ในขณะที่ Chrome Web Store กำลังตรวจสอบอยู่ ส่วนขยายนี้มาพร้อมกับแอป ในโฟลเดอร์ <x2/> และ <g3>เป็นการดาวน์โหลดแยกต่างหาก</g3> (<x4/>: แตกไฟล์ จากนั้น <g5>โหลดส่วนขยายที่ไม่ได้แพ็ค</g5> ในหน้าส่วนขยายของเบราว์เซอร์โดยเปิดโหมดนักพัฒนา) <g6>คู่มือทีละขั้นตอน</g6> จะแสดงวิธีสำหรับแต่ละเบราว์เซอร์"
   },
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
@@ -4813,6 +4713,10 @@
   "76569424bfaa0f84": {
    "source": "<g1>Synchronization queue</g1> — finished downloads stay in it instead of leaving. It is the only queue that takes finished downloads.",
    "text": "<g1>กำลังซิงโครไนซ์คิว</g1> — การดาวน์โหลดที่เสร็จสิ้นแล้วจะยังคงอยู่ในคิวนี้แทนที่จะออกจากคิว เป็นคิวเดียวที่รับการดาวน์โหลดที่เสร็จสิ้นแล้ว"
+  },
+  "766e2dfcd1a477ea": {
+   "source": "A VPN or proxy extension",
+   "text": "ส่วนขยาย VPN หรือพร็อกซี"
   },
   "76ca1f61789efab8": {
    "source": "MDM didn't start in time",
@@ -5046,10 +4950,6 @@
    "source": "<g1></g1>Open (GPL-3.0)",
    "text": "<g1></g1>โอเพนซอร์ส (GPL-3.0)"
   },
-  "7c2056684aa2bec5": {
-   "source": "Chrome, Edge and Brave",
-   "text": "Chrome, Edge และ Brave"
-  },
   "7c5a4c12e8dbea2f": {
    "source": "Apple Silicon",
    "text": "Apple Silicon"
@@ -5117,14 +5017,6 @@
   "7d71c5be1f245ab6": {
    "source": "<g1>Commit size</g1> is memory MDM has reserved, whether in use or not.",
    "text": "<g1>ขนาดที่จัดสรร</g1> คือหน่วยความจำที่ MDM ได้จองไว้ ไม่ว่าจะใช้งานอยู่หรือไม่ก็ตาม"
-  },
-  "7d9082fb6f1abec9": {
-   "source": "Firefox 140 or later is needed.",
-   "text": "ต้องใช้ Firefox เวอร์ชัน 140 หรือใหม่กว่า"
-  },
-  "7d9cbd5bf6ab33e4": {
-   "source": "<g1>Options → Proxy / Socks → Network adapter</g1> holds MDM's connections to one adapter, usually a VPN's (<g2>Options</g2>). On Linux and macOS the torrent engine binds every socket to it: peers, trackers, the DHT and its listening port. UPnP and local peer discovery are turned off then, because they talk to the local network rather than through the adapter. If the adapter goes away, the engine stops, and it starts again through the adapter when it's back.",
-   "text": "<g1>ตัวเลือก → พร็อกซี / SOCKS → อะแดปเตอร์เครือข่าย</g1> จะเชื่อมต่อ MDM กับอะแดปเตอร์หนึ่งตัว ซึ่งมักจะเป็นของ VPN (<g2>ตัวเลือก</g2>) บน Linux และ macOS เอ็นจิ้นทอร์เรนต์จะผูกทุกซ็อกเก็ตเข้ากับอะแดปเตอร์นั้น: เพียร์, ตัวติดตาม, DHT และพอร์ตการฟังของมัน UPnP และการค้นหาเพียร์ในเครื่องจะถูกปิดใช้งาน เนื่องจากจะสื่อสารกับเครือข่ายในเครื่องแทนที่จะผ่านอะแดปเตอร์ หากอะแดปเตอร์หายไป เอ็นจิ้นจะหยุดทำงาน และจะเริ่มทำงานอีกครั้งผ่านอะแดปเตอร์เมื่อกลับมา"
   },
   "7db9ed501785d447": {
    "source": "<g1>Quality</g1> applies to every video: <g2>Best quality</g2>, <g3>Up to</g3> a height (each video at that height, or the nearest below it), <g4>Audio only, original</g4>, <g5>Audio only MP3</g5>, <g6>Audio only OPUS</g6> or <g7>Audio only FLAC</g7>. Without ffmpeg, only the qualities that come with their sound are offered, and no MP3, Opus or FLAC.",
@@ -5398,6 +5290,10 @@
    "source": "It stores its own settings (paused or not, MDM's file types and excluded sites, its connection status, where you dragged the video button on each of the last 200 sites; nothing from private windows) in the browser's extension storage, on your computer.",
    "text": "ส่วนขยายจะจัดเก็บการตั้งค่าของตัวเอง (หยุดชั่วคราวหรือไม่, ประเภทไฟล์ของ MDM และเว็บไซต์ที่ยกเว้น, สถานะการเชื่อมต่อ, ตำแหน่งที่คุณลากปุ่มวิดีโอบน 200 เว็บไซต์ล่าสุด; ไม่มีข้อมูลจากหน้าต่างส่วนตัว) ในพื้นที่เก็บข้อมูลส่วนขยายของเบราว์เซอร์ บนคอมพิวเตอร์ของคุณ"
   },
+  "83d008fc3c256167": {
+   "source": "Themes",
+   "text": "ชุดรูปแบบ"
+  },
   "83d81da9ed13c6e6": {
    "source": "MDM asks each service well under its request limit: Real-Debrid at most 120 times a minute (it allows 250), AllDebrid 300 (it allows 600), Premiumize 60 (it publishes no limit). When a service says it's asked too often, MDM waits.",
    "text": "MDM ขอจากแต่ละบริการต่ำกว่าขีดจำกัดการร้องขอ: Real-Debrid สูงสุด 120 ครั้งต่อนาที (อนุญาต 250), AllDebrid 300 (อนุญาต 600), Premiumize 60 (ไม่เผยแพร่ขีดจำกัด) เมื่อบริการแจ้งว่าถูกขอถี่เกินไป MDM จะรอ"
@@ -5465,14 +5361,6 @@
   "853ac467ba7801e6": {
    "source": "Put downloads in a queue →",
    "text": "จัดคิวรายการดาวน์โหลด →"
-  },
-  "855283d97ca22cdb": {
-   "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others by hand for now, while the Chrome Web Store reviews it.",
-   "text": "เพิ่มส่วนขยายไปยังเบราว์เซอร์แต่ละตัวที่คุณใช้ ดังนี้: Firefox จากร้านค้าส่วนเสริม ส่วนเบราว์เซอร์อื่น ๆ ต้องเพิ่มด้วยตนเองไปก่อน ในระหว่างที่ Chrome Web Store กำลังตรวจสอบ"
-  },
-  "859b311c937bc36f": {
-   "source": "In Chrome, Edge or Brave",
-   "text": "ใน Chrome, Edge หรือ Brave"
   },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
@@ -5630,10 +5518,6 @@
    "source": "<g1>Download Now</g1> adds each video as its own download and starts the main queue, which runs as many at once as you set in the <g2>Scheduler</g2> (<g3>Download N files at the same time</g3>). <g4>Later</g4> adds them without starting. Adding more than 500 at once asks first.",
    "text": "<g1>ดาวน์โหลดเดี๋ยวนี้</g1> จะเพิ่มวิดีโอแต่ละรายการเป็นการดาวน์โหลดแยกกัน และเริ่มคิวหลัก ซึ่งจะทำงานพร้อมกันตามจำนวนที่คุณตั้งค่าไว้ใน <g2>ตัวจัดกำหนดการ</g2> (<g3>ดาวน์โหลด N ไฟล์พร้อมกัน</g3>) <g4>ภายหลัง</g4> จะเพิ่มรายการโดยไม่เริ่มการดาวน์โหลด การเพิ่มมากกว่า 500 รายการพร้อมกันจะมีการสอบถามก่อน"
   },
-  "89fc33b1b049584c": {
-   "source": "It hands your browser's downloads to MDM with their cookies, adds <g1>Download with Mister Download Manager</g1> to the right-click menu and puts a <g2>Download video</g2> button over videos. It comes with the app, in its <x3/> folder, and on its own:",
-   "text": "ส่วนขยายนี้จะส่งการดาวน์โหลดจากเบราว์เซอร์ของคุณไปยัง MDM พร้อมคุกกี้ และเพิ่ม <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> ในเมนูคลิกขวา รวมถึงปุ่ม <g2>ดาวน์โหลดวิดีโอ</g2> เหนือวิดีโอ ส่วนขยายนี้มาพร้อมกับแอปในโฟลเดอร์ <x3/> และแยกต่างหาก:"
-  },
   "89fd713eb7dedf38": {
    "source": "Starts the main download queue.",
    "text": "เริ่มคิวการดาวน์โหลดหลัก"
@@ -5701,6 +5585,10 @@
   "8ba3e471bdf1018f": {
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>การกำหนดค่าพร็อกซี/SOCKS ด้วยตนเอง</g1> — พิมพ์ที่อยู่พร็อกซี, <g2>พอร์ต</g2> และ <g3>ชื่อผู้ใช้</g3> กับ <g4>รหัสผ่าน</g4> หากจำเป็น จากนั้นเลือกโปรโตคอลที่เกี่ยวข้อง (<g5>http</g5>, <g6>https</g6>) สำหรับพร็อกซี SOCKS ให้เขียนที่อยู่เป็น <x7/>"
+  },
+  "8bdb8ef261917fb7": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "สิทธิ์การอนุญาตและเหตุผล: <g1>downloads</g1> เพื่อดูและส่งมอบการดาวน์โหลด; <g2>cookies</g2> เพื่อให้การดาวน์โหลดที่ลงชื่อเข้าใช้ทำงานใน MDM; <g3>nativeMessaging</g3> เพื่อสื่อสารกับ MDM; <g4>contextMenus</g4> สำหรับรายการคลิกขวา; <g5>storage</g5> สำหรับการตั้งค่า; <g6>webRequest</g6> เพื่อดูแบบฟอร์มที่ส่งและสตรีมวิดีโอที่โหลด (ไม่เปลี่ยนแปลงอะไร); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge และเบราว์เซอร์ Chromium อื่น ๆ) เพื่อให้ไฟล์ที่เบราว์เซอร์จะเปิด (เช่น PDF) ถูกดาวน์โหลดแทน สำหรับประเภทที่ MDM รองรับ; ใน Firefox, <g8>webRequestBlocking</g8> ทำหน้าที่นั้น; <g9>scripting</g9> เพื่ออ่านลิงก์ของหน้าเมื่อคุณร้องขอ และเพื่อเพิ่มปุ่มวิดีโอไปยังหน้าที่เปิดอยู่แล้วเมื่อติดตั้งส่วนขยาย; <g10>proxy</g10> (Firefox, ไม่บังคับ: จะถูกร้องขอเมื่อคุณเปิดใช้งานในป๊อปอัปเท่านั้น) เพื่ออ่านว่าเบราว์เซอร์ใช้พร็อกซีใด เพื่อให้การดาวน์โหลดที่มาจากเบราว์เซอร์ที่อยู่เบื้องหลัง VPN หรือส่วนขยายพร็อกซีผ่านพร็อกซีนั้นด้วย (ไม่เคยเปลี่ยนพร็อกซีของเบราว์เซอร์); การเข้าถึงทุกเว็บไซต์เนื่องจากการดาวน์โหลดและวิดีโอสามารถมาจากเว็บไซต์ใดก็ได้"
   },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
@@ -5854,10 +5742,6 @@
    "source": "<g1>Reading the dump.</g1> The monitor reads the dump with Mozilla's <x2/>. It uses the release's Breakpad symbols when they are found. A build from source can also read the native debug info beside it (its <x3/>, DWARF) when built with <x4/>; the shipped app goes without that reader, several MB. The report's <g5>Signature</g5> (for example <x6/>) stays the same across reports of one problem, and the window searches existing issues for it.",
    "text": "<g1>การอ่านไฟล์ดัมพ์</g1> มอนิเตอร์จะอ่านไฟล์ดัมพ์ด้วย <x2/> ของ Mozilla โดยจะใช้สัญลักษณ์ Breakpad ของรุ่นเมื่อพบ การสร้างจากซอร์สโค้ดสามารถอ่านข้อมูลดีบักแบบเนทีฟที่อยู่ข้างๆ ได้ด้วย (เช่น <x3/>, DWARF) เมื่อสร้างด้วย <x4/>; แอปที่จัดส่งจะไม่มีตัวอ่านนั้น ซึ่งมีขนาดหลาย MB <g5>ลายเซ็น</g5>ของรายงาน (เช่น <x6/>) จะยังคงเหมือนเดิมสำหรับรายงานปัญหาเดียวกัน และหน้าต่างจะค้นหาปัญหาที่มีอยู่ด้วยลายเซ็นนี้"
   },
-  "8fe29a431a6dd71a": {
-   "source": "Right-click a link, a video, a sound or a picture and choose <g1>Download with Mister Download Manager</g1>. MDM downloads it whatever its type: you asked for it, so the file types list and the excluded sites don't apply here (they only decide which downloads MDM takes over by itself). A video that plays as a stream goes to the <g2>Download video</g2> window.",
-   "text": "คลิกขวาที่ลิงก์ วิดีโอ เสียง หรือรูปภาพ แล้วเลือก <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> MDM จะดาวน์โหลดไม่ว่าจะเป็นชนิดใด: คุณร้องขอ ดังนั้นรายการชนิดไฟล์และเว็บไซต์ที่ยกเว้นจึงไม่นำมาใช้ที่นี่ (จะตัดสินใจเฉพาะการดาวน์โหลดที่ MDM จะรับช่วงต่อเองเท่านั้น) วิดีโอที่เล่นเป็นสตรีมจะไปที่หน้าต่าง <g2>ดาวน์โหลดวิดีโอ</g2>"
-  },
   "8fe7cc9878663c27": {
    "source": "To watch a video while it downloads, tick <g1>Download in order</g1> (see <g2>Download in order</g2>).",
    "text": "หากต้องการดูวิดีโอขณะดาวน์โหลด ให้เลือก <g1>ดาวน์โหลดตามลำดับ</g1> (ดู <g2>ดาวน์โหลดตามลำดับ</g2>)"
@@ -5914,14 +5798,6 @@
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "บริการ Debrid เช่น Real-Debrid, AllDebrid หรือ Premiumize คือบัญชีแบบชำระเงินที่ดาวน์โหลดไฟล์จากโฮสต์ไฟล์บนเซิร์ฟเวอร์ของตนเอง โดยจะส่ง..."
   },
-  "91f65bb0d07ece23": {
-   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
-   "text": "หาก Direct3D ไม่สามารถเริ่มต้นบนคอมพิวเตอร์ของคุณได้ (ไม่มีไดรเวอร์ Direct3D 12, เครื่องเสมือนบางเครื่อง) หรือหน้าต่างแรกไม่แสดงภายใน 10 วินาที MDM จะวาดด้วย OpenGL และ <g1>มุมมอง → วาดด้วย</g1> จะระบุเช่นนั้น การเลือก <g2>Direct3D</g2> อีกครั้งจะลองใหม่อีกครั้งในการเริ่มต้นครั้งถัดไป"
-  },
-  "920f5f8c86e123ee": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds Download with Mister Download Manager to the right-click menu and a Download video button over videos. See Browser integration.",
-   "text": "รองรับ Google Chrome, Microsoft Edge, Brave, Opera และ Vivaldi ผ่านส่วนขยายเบราว์เซอร์ MDM รวมถึงเบราว์เซอร์ที่สร้างขึ้นจากเบราว์เซอร์เหล่านี้ เช่น Helium ส่วนการรองรับ Firefox ซึ่งครอบคลุม Zen และ LibreWolf ด้วยนั้น ได้เขียนขึ้นและอยู่ระหว่างการทดสอบ ส่วนขยายจะส่งการดาวน์โหลดไปยัง MDM พร้อมคุกกี้และผู้แนะนำ ทำให้ไฟล์ที่อยู่หลังการลงชื่อเข้าใช้ยังคงใช้งานได้ และเพิ่ม ดาวน์โหลดด้วย Mister Download Manager ไปยังเมนูคลิกขวา และปุ่ม ดาวน์โหลดวิดีโอ เหนือวิดีโอ ดู การผสานรวมกับเบราว์เซอร์"
-  },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
    "text": "ตัวเลขทั้งหมด"
@@ -5945,10 +5821,6 @@
   "927f1c13042cb4ea": {
    "source": "<g1>Start downloading immediately while displaying \"Download File Info\" dialog</g1> — on by default, so the download is already under way while you choose a folder.",
    "text": "<g1>เริ่มดาวน์โหลดทันทีขณะแสดงกล่องโต้ตอบ \"ข้อมูลไฟล์ดาวน์โหลด\"</g1> — เปิดอยู่โดยค่าเริ่มต้น ดังนั้นการดาวน์โหลดจึงกำลังดำเนินอยู่ขณะที่คุณเลือกโฟลเดอร์"
-  },
-  "92964c9bc3c4b26a": {
-   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>).",
-   "text": "<g1>การทดสอบ</g1> <x2/> รันการค้างจริง, ข้อผิดพลาดร้ายแรง และการหยุดทำงาน (<x3/>) และตรวจสอบลายเซ็นของแต่ละรายงาน หากต้องการลองในแอป ให้เริ่ม MDM ด้วย <x4/> จากนั้นรัน <x5/> (การติดตาย; หรือ <x6/>, 12 วินาทีของเธรดหน้าต่างที่ยุ่ง, <x7/>, <x8/>, <x9/>)"
   },
   "92a32cec880dee6e": {
    "source": "How do I install the browser extension? — Mister Download Manager",
@@ -5989,10 +5861,6 @@
   "9353e613d2835a1f": {
    "source": "Find by name",
    "text": "ค้นหาตามชื่อ"
-  },
-  "938b387bfbc70706": {
-   "source": "Browser extension: <g1><x2/>Add to Firefox</g1>. For Chrome, Edge, Brave and Opera, by hand for now, while the Chrome Web Store reviews it. <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>",
-   "text": "ส่วนขยายเบราว์เซอร์: <g1><x2/>เพิ่มใน Firefox</g1> สำหรับ Chrome, Edge, Brave และ Opera ต้องเพิ่มด้วยตนเองไปก่อน ในระหว่างที่ Chrome Web Store กำลังตรวจสอบ <g3><g4><x5/>Chrome</g4> <g6><x7/>Edge</g6> <g8><x9/>Brave</g8> <g10><x11/>Opera</g10></g3>"
   },
   "93a9d8c882d29583": {
    "source": "Tick <g1>Use Speed Limiter</g1>.",
@@ -6074,6 +5942,10 @@
    "source": "Downloads",
    "text": "การดาวน์โหลด"
   },
+  "95bb2c4ecf20a6d7": {
+   "source": "Last updated 2026-11-07 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "อัปเดตล่าสุด 2026-11-07 · ใช้กับแอป ส่วนขยายเบราว์เซอร์ และ misterdownloadmanager.com"
+  },
   "95e0579f795bdd56": {
    "source": "<g1>Description or part of the description</g1> — your notes.",
    "text": "<g1>คำอธิบายหรือส่วนหนึ่งของคำอธิบาย</g1> — บันทึกย่อของคุณ"
@@ -6081,6 +5953,10 @@
   "95eaeb2d8a26031c": {
    "source": "Filter the list",
    "text": "กรองรายการ"
+  },
+  "95f874ce586a0506": {
+   "source": "<g1>Catching problems.</g1> When MDM crashes (a Windows exception, a signal on Linux, a Mach exception on macOS), panics, or freezes, it asks the monitor for a dump. A freeze is a frame of the window running more than 8 s, seen by a watchdog thread that ignores time spent asleep. It times both parts of a frame: what MDM handles (the commands that come in, the clock of downloads, queues and the Scheduler), which runs minimized too, and the drawing; never the wait between frames. The watchdog also measures how much processor time the window thread got meanwhile, and the report says what that means: it ran all along (a loop), it waited in a lock or on I/O (a deadlock), or it hardly ran in ordinary code, which is a computer too busy to run MDM or slow to load it from disk, most likely not MDM's bug (those share one signature, <x2/>). macOS doesn't measure it yet. The monitor then writes a <g3>minidump</g3> of every thread from outside, through <x4/> and <x5/>. A crashed process never writes its own dump, which is how Firefox, Crashpad and Sentry do it too.",
+   "text": "<g1>การตรวจจับปัญหา</g1> เมื่อ MDM เกิดข้อผิดพลาด (ข้อยกเว้นของ Windows, สัญญาณบน Linux, ข้อยกเว้น Mach บน macOS), เกิดอาการ panic หรือค้าง โปรแกรมจะขอ dump จาก monitor อาการค้างคือเฟรมของหน้าต่างที่ทำงานนานกว่า 8 วินาที ซึ่งถูกตรวจจับโดยเธรด watchdog ที่ไม่สนใจเวลาที่ใช้ในการพักเครื่อง โดยจะจับเวลาทั้งสองส่วนของเฟรม: สิ่งที่ MDM จัดการ (คำสั่งที่เข้ามา, นาฬิกาของการดาวน์โหลด, คิว และตัวจัดกำหนดการ) ซึ่งทำงานแบบย่อขนาดด้วย และการวาดภาพ; ไม่ใช่การรอระหว่างเฟรม Watchdog ยังวัดว่าเธรดหน้าต่างได้รับเวลาประมวลผลเท่าใดในระหว่างนั้น และรายงานจะบอกว่านั่นหมายถึงอะไร: มันทำงานตลอดเวลา (วนลูป), มันรออยู่ใน lock หรือบน I/O (deadlock), หรือมันแทบไม่ได้ทำงานในโค้ดปกติ ซึ่งหมายถึงคอมพิวเตอร์ยุ่งเกินไปที่จะรัน MDM หรือโหลดจากดิสก์ช้า ซึ่งส่วนใหญ่มักไม่ใช่ข้อผิดพลาดของ MDM (สิ่งเหล่านี้มีลายเซ็นเดียวกัน <x2/>) macOS ยังไม่ได้วัดสิ่งนี้ จากนั้น monitor จะเขียน <g3>minidump</g3> ของทุกเธรดจากภายนอก ผ่าน <x4/> และ <x5/> กระบวนการที่ล้มเหลวจะไม่เขียน dump ของตัวเอง ซึ่งเป็นวิธีที่ Firefox, Crashpad และ Sentry ทำเช่นกัน"
   },
   "95ff4e3f1e52b773": {
    "source": "portable.zip — runs from a folder or USB stick",
@@ -6366,10 +6242,6 @@
    "source": "Latest",
    "text": "ล่าสุด"
   },
-  "9d6226802f0baf4b": {
-   "source": "<g1>Firefox</g1><g2>Mozilla · in testing</g2>",
-   "text": "<g1>Firefox</g1><g2>Mozilla · กำลังทดสอบ</g2>"
-  },
   "9d9eb270f47daa62": {
    "source": "Check <g1>Download limits</g1> in the Scheduler. When the limit is reached, downloads wait with <g2>Waiting: the download limit is reached (Scheduler)</g2>.",
    "text": "ตรวจสอบ <g1>ขีดจำกัดการดาวน์โหลด</g1> ในตัวจัดกำหนดการ เมื่อถึงขีดจำกัด การดาวน์โหลดจะรอพร้อมข้อความ <g2>กำลังรอ: ถึงขีดจำกัดการดาวน์โหลดแล้ว (ตัวจัดกำหนดการ)</g2>"
@@ -6474,6 +6346,10 @@
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built…",
    "text": "MDM ไม่มีแอดแวร์ สปายแวร์ ข้อเสนอแบบรวม หรือการติดตามใดๆ ซอร์สโค้ดทั้งหมดเป็นสาธารณะ ทุกคนสามารถตรวจสอบได้ว่าโปรแกรมทำอะไร และทุกเวอร์ชันที่เผยแพร่ก็สร้างขึ้น..."
   },
+  "a02445ca780f3ef8": {
+   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>).",
+   "text": "หน้าต่าง egui หนึ่งบานจะถูกวาดไปยังพิกเซลพิกัดคงที่ บวกกับวิวพอร์ตทันทีหนึ่งวิวพอร์ตต่อกล่องโต้ตอบ <x1/> เก็บสถานะ (การดาวน์โหลด, คิว, การตั้งค่า, การเลือกรายการ) และเปลี่ยนคำสั่งเมนู, แถบเครื่องมือ, คีย์ และ IPC ให้เป็นการกระทำ กล่องโต้ตอบแต่ละกล่องเป็นโมดูลของตัวเองและส่งคืน <x2/> (เปิด, ปิด, ทำเสร็จพร้อมค่า) การเรียกใช้เฉพาะ Windows จะถูกจำกัดไว้ที่ <x3/> และคู่ของ Linux และ macOS จะถูกจำกัดไว้ที่ <x4/> (เริ่มต้นด้วยเซสชัน, โฮสต์ของเบราว์เซอร์, เสียง, แสดงในโฟลเดอร์, ตัวจัดการข้อผิดพลาด); ไฟล์อื่นๆ ทั้งหมดปลอดภัยและเป็น Rust แบบพกพา ฟอนต์มาจากระบบ: โฟลเดอร์ Fonts ของ Windows, ฟอนต์ระบบของ macOS, fontconfig บน Linux (<x5/>)"
+  },
   "a04886db62535b92": {
    "source": "A translation longer than the English ends in <g1>...</g1> where it doesn't fit; point at it to read it whole.",
    "text": "คำแปลที่ยาวกว่าภาษาอังกฤษจะลงท้ายด้วย <g1>...</g1> หากไม่พอดี; ชี้ไปที่คำแปลนั้นเพื่ออ่านทั้งหมด"
@@ -6481,10 +6357,6 @@
   "a05a0538e9ea2498": {
    "source": "<g1>File Properties</g1> shows a download's type, status, size and folder, its address, your description, the page it came from (<g2>Referer</g2>), where its server is (<g3>country and round trip</g3>, as its last run saw them) and a login for the site. <g4>Last try</g4> and <g5>Result</g5> tell you how its last attempt went.",
    "text": "<g1>คุณสมบัติของไฟล์</g1> จะแสดงประเภท สถานะ ขนาด และโฟลเดอร์ของไฟล์ที่ดาวน์โหลด ที่อยู่ คำอธิบายของคุณ หน้าที่มาของไฟล์ (<g2>Referer</g2>) ที่ตั้งของเซิร์ฟเวอร์ (<g3>ประเทศและเวลาตอบสนอง</g3> ตามที่เห็นในการทำงานครั้งล่าสุด) และข้อมูลการเข้าสู่ระบบสำหรับเว็บไซต์นั้น <g4>การลองครั้งล่าสุด</g4> และ <g5>ผลลัพธ์</g5> จะบอกคุณว่าความพยายามครั้งล่าสุดเป็นอย่างไร"
-  },
-  "a06fa72ad54fa126": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, load it by hand for now, while the Chrome Web Store reviews it: open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
-   "text": "ติดตั้ง MDM ด้วยตัวติดตั้งและคง ตั้งค่าการรวมเบราว์เซอร์ ไว้ ใน Firefox ให้เปิดหน้าส่วนเสริมบน addons.mozilla.org แล้วคลิก เพิ่มไปยัง Firefox ใน Chrome, Edge, Brave, Opera และ Vivaldi ให้โหลดด้วยตนเองไปก่อน ในระหว่างที่ Chrome Web Store กำลังตรวจสอบ: เปิดหน้าส่วนขยายของเบราว์เซอร์ เปิดโหมดนักพัฒนา เลือก โหลดส่วนขยายที่ไม่ได้แพ็ค และเลือกโฟลเดอร์ extension\\chromium ในโฟลเดอร์ของ MDM บทช่วยสอนจะแนะนำขั้นตอนต่างๆ"
   },
   "a09cf46e49e64bbb": {
    "source": "A sweep through every window for the small things that make a program feel finished: how each control looks and answers the mouse and the keyboard, dark mode everywhere, screen readers, and a long list of fixes found by reviewing all of it (issue #7 and more).",
@@ -6502,10 +6374,6 @@
    "source": "What each one says it offers, on its own website or in its code's README. A dash means it isn't among the features it lists, not that it can't be done.",
    "text": "สิ่งที่แต่ละโปรแกรมระบุว่ามีให้ บนเว็บไซต์ของตนเองหรือใน README ของโค้ด ขีดกลางหมายถึงไม่ได้อยู่ในคุณสมบัติที่ระบุไว้ ไม่ได้หมายความว่าทำไม่ได้"
   },
-  "a0d1f871bdc969b4": {
-   "source": "Chrome, Edge, Brave, Opera and Vivaldi through the extension; Firefox is in testing. Without the extension, copy a link and MDM opens the download window. <g1>More</g1>",
-   "text": "Chrome, Edge, Brave, Opera และ Vivaldi ผ่านส่วนขยาย; Firefox อยู่ระหว่างการทดสอบ หากไม่มีส่วนขยาย ให้คัดลอกลิงก์แล้ว MDM จะเปิดหน้าต่างดาวน์โหลด <g1>เพิ่มเติม</g1>"
-  },
   "a0f44b2041902a09": {
    "source": "gallery-dl checks the address on your computer, without going online. When the line reads <g1>gallery-dl can download this gallery's files</g1>, you're ready.",
    "text": "gallery-dl จะตรวจสอบที่อยู่บนคอมพิวเตอร์ของคุณโดยไม่ต้องเชื่อมต่ออินเทอร์เน็ต เมื่อข้อความแสดงว่า <g1>gallery-dl สามารถดาวน์โหลดไฟล์ของแกลเลอรีนี้ได้</g1> แสดงว่าพร้อมใช้งานแล้ว"
@@ -6521,10 +6389,6 @@
   "a11ff1df96b6c18c": {
    "source": "<g1><g2>Command line and automation</g2></g1> — IDM's command-line switches, the <x3/> tool, and the automation API other programs can use.",
    "text": "<g1><g2>บรรทัดคำสั่งและการทำงานอัตโนมัติ</g2></g1> — สวิตช์บรรทัดคำสั่งของ IDM, เครื่องมือ <x3/>, และ API การทำงานอัตโนมัติที่โปรแกรมอื่นสามารถใช้ได้"
-  },
-  "a1280a73f600eb05": {
-   "source": "When the browser uses a proxy for that download (set by a VPN or proxy extension, or in its settings), the extension passes <g1>the proxy's address</g1>, or its <g2>proxy auto-config script</g2>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy.",
-   "text": "เมื่อเบราว์เซอร์ใช้พร็อกซีสำหรับการดาวน์โหลดนั้น (ตั้งค่าโดย VPN หรือส่วนขยายพร็อกซี หรือในการตั้งค่า) ส่วนขยายจะส่ง<g1>ที่อยู่ของพร็อกซี</g1> หรือ<g2>สคริปต์การกำหนดค่าพร็อกซีอัตโนมัติ</g2> เพื่อให้ MDM ดาวน์โหลดผ่านพร็อกซีเดียวกัน จะไม่มีการอ่านหรือส่งข้อมูลการเข้าสู่ระบบของพร็อกซี จะบันทึกเฉพาะว่าพร็อกซีร้องขอข้อมูลดังกล่าว เพื่อให้ MDM สามารถแจ้งคุณได้ว่าไม่สามารถใช้พร็อกซีนั้นได้"
   },
   "a135171e6e928076": {
    "source": "Home",
@@ -6586,10 +6450,6 @@
    "source": "Learn the download list →",
    "text": "เรียนรู้รายการดาวน์โหลด →"
   },
-  "a30f62455a77a82a": {
-   "source": "An add-on loaded with <g1>Load Temporary Add-on</g1> is removed when Firefox closes, so for now it has to be loaded again after each restart (see <g2>Browser integration</g2>). A signed add-on that Firefox keeps is on the way.",
-   "text": "ส่วนเสริมที่โหลดด้วย <g1>โหลดส่วนเสริมชั่วคราว</g1> จะถูกลบออกเมื่อ Firefox ปิด ดังนั้นตอนนี้จึงต้องโหลดใหม่ทุกครั้งหลังจากการรีสตาร์ท (ดู <g2>การรวมเบราว์เซอร์</g2>) ส่วนเสริมที่ลงชื่อแล้วซึ่ง Firefox จะเก็บไว้กำลังจะมา"
-  },
   "a332d36c2ada2664": {
    "source": "User names and passwords for sites that ask for them. <g1>New</g1> adds a row: the site (with a path if the login is only for part of it), the user name and the password. <g2>Edit</g2> and <g3>Remove</g3> change or delete the selected row. MDM uses the login for every download from that site. A login typed in <g4>Add URL</g4> (<g5>Use authorization</g5>) takes priority for that one download.",
    "text": "ชื่อผู้ใช้และรหัสผ่านสำหรับไซต์ที่ร้องขอ <g1>ใหม่</g1> เพิ่มแถว: ไซต์ (พร้อมพาธหากการเข้าสู่ระบบใช้ได้เฉพาะบางส่วน), ชื่อผู้ใช้ และรหัสผ่าน <g2>แก้ไข</g2> และ <g3>เอาออก</g3> เปลี่ยนหรือลบแถวที่เลือก MDM ใช้การเข้าสู่ระบบสำหรับการดาวน์โหลดทุกครั้งจากไซต์นั้น การเข้าสู่ระบบที่พิมพ์ใน <g4>เพิ่ม URL</g4> (<g5>ใช้การอนุญาต</g5>) จะมีความสำคัญสำหรับการดาวน์โหลดนั้นๆ"
@@ -6617,10 +6477,6 @@
   "a3fad5053e035413": {
    "source": "Torrents and your security — Mister Download Manager help",
    "text": "ทอร์เรนต์และความปลอดภัยของคุณ — วิธีใช้ Mister Download Manager"
-  },
-  "a411ca96569c91a2": {
-   "source": "<g1>Chrome</g1><g2>Google</g2>",
-   "text": "<g1>Chrome</g1><g2>Google</g2>"
   },
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
@@ -6665,10 +6521,6 @@
   "a50025a18eca7051": {
    "source": "MDM's interface comes in 86 languages: every display language Windows 11 offers, from Afrikaans to Vietnamese, including both Chinese scripts, Spanish for Spain and Mexico, French for France and Canada, Portuguese for Portugal and Brazil, and Serbian in Cyrillic and Latin.",
    "text": "อินเทอร์เฟซของ MDM มี 86 ภาษา: ทุกภาษาที่ Windows 11 มีให้เลือกแสดงผล ตั้งแต่ภาษาแอฟริกันไปจนถึงภาษาเวียดนาม รวมถึงอักษรจีนทั้งสองแบบ, ภาษาสเปนสำหรับสเปนและเม็กซิโก, ภาษาฝรั่งเศสสำหรับฝรั่งเศสและแคนาดา, ภาษาโปรตุเกสสำหรับโปรตุเกสและบราซิล และภาษาเซอร์เบียทั้งแบบซีริลลิกและละติน"
-  },
-  "a52b4fbee3f29f57": {
-   "source": "<g1>Chrome, Edge, Brave, Opera and Vivaldi</g1> (<x2/>: unzip, then <g3>Load unpacked</g3> on the browser's extensions page with Developer mode on)",
-   "text": "<g1>Chrome, Edge, Brave, Opera และ Vivaldi</g1> (<x2/>: แตกไฟล์ แล้วเลือก <g3>โหลดส่วนขยายที่ไม่ได้แพ็ก</g3> ในหน้าส่วนขยายของเบราว์เซอร์เมื่อเปิดโหมดนักพัฒนา)"
   },
   "a52f4d11aad99887": {
    "source": "Select all downloads",
@@ -6770,21 +6622,17 @@
    "source": "MDM doesn't use a temporary folder: every connection writes straight into the final file's place, so there is nothing to put together at the end.",
    "text": "MDM ไม่ใช้โฟลเดอร์ชั่วคราว: การเชื่อมต่อทุกครั้งจะเขียนตรงไปยังตำแหน่งของไฟล์สุดท้าย ดังนั้นจึงไม่มีอะไรต้องนำมารวมกันในตอนท้าย"
   },
-  "a75a919684323859": {
-   "source": "<g1>File Properties</g1> shows a download's type, status, size and folder, its address, your description, the page it came from (<g2>Referer</g2>) and a login for the site. <g3>Last try</g3> and <g4>Result</g4> tell you how its last attempt went.",
-   "text": "<g1>คุณสมบัติของไฟล์</g1> แสดงประเภท สถานะ ขนาด และโฟลเดอร์ของการดาวน์โหลด ที่อยู่ คำอธิบายของคุณ หน้าที่มา (<g2>Referer</g2>) และการเข้าสู่ระบบสำหรับเว็บไซต์ <g3>ลองครั้งล่าสุด</g3> และ <g4>ผลลัพธ์</g4> จะบอกคุณว่าความพยายามครั้งล่าสุดเป็นอย่างไร"
-  },
   "a76617f8c395dcdd": {
    "source": "Can other programs or scripts control MDM? — Mister Download Manager",
    "text": "โปรแกรมหรือสคริปต์อื่นควบคุม MDM ได้ไหม — Mister Download Manager"
   },
+  "a796d15297b81a60": {
+   "source": "<g1>High contrast</g1>: black and white, a bright accent, every edge drawn, text at 7:1 or more.",
+   "text": "<g1>ความคมชัดสูง</g1>: ขาวดำ, เน้นสีสดใส, วาดขอบทุกด้าน, ข้อความมีอัตราส่วน 7:1 หรือมากกว่า"
+  },
   "a7a3f7c6b7a38022": {
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
    "text": "<g1>ไอคอนไฟล์ในรายการดาวน์โหลด</g1>ถูกวาดทับบนบานหน้าต่างหมวดหมู่เมื่อเลื่อนรายการไปด้านข้าง (โครงสร้างหมวดหมู่และตัวจัดกำหนดการมีข้อผิดพลาดเดียวกัน)"
-  },
-  "a7d84ef6d2022e62": {
-   "source": "Browser integration is set up by MDM itself at each start on Linux and macOS (the browsers installed then are found); load the extension as in <g1>Browser integration</g1>. Browsers installed as a Flatpak or a Snap may not be able to reach MDM.",
-   "text": "MDM จะตั้งค่าการผสานรวมกับเบราว์เซอร์เองทุกครั้งที่เริ่มต้นบน Linux และ macOS (จะพบเบราว์เซอร์ที่ติดตั้งไว้ในขณะนั้น); โหลดส่วนขยายตามที่ระบุใน <g1>การผสานรวมกับเบราว์เซอร์</g1> เบราว์เซอร์ที่ติดตั้งเป็น Flatpak หรือ Snap อาจไม่สามารถเข้าถึง MDM ได้"
   },
   "a801181e521c3efe": {
    "source": "Start and stop a queue",
@@ -6974,10 +6822,6 @@
    "source": "The download manager you already know. Rebuilt to be faster.",
    "text": "โปรแกรมช่วยดาวน์โหลดที่คุณคุ้นเคย สร้างใหม่ให้เร็วขึ้น"
   },
-  "aca7e2c7c8203a37": {
-   "source": "Browser integration needs one more step in each browser: loading the extension. <g1>Browser integration</g1> shows how.",
-   "text": "การรวมเข้ากับเบราว์เซอร์ต้องมีอีกหนึ่งขั้นตอนในแต่ละเบราว์เซอร์: การโหลดส่วนขยาย <g1>การรวมเข้ากับเบราว์เซอร์</g1> แสดงวิธีการ"
-  },
   "acb8437ecc383f9f": {
    "source": "Opens the checked package in your system's package installer, which asks for your password.",
    "text": "เปิดแพ็กเกจที่ตรวจสอบแล้วในตัวติดตั้งแพ็กเกจของระบบ ซึ่งจะขอรหัสผ่านของคุณ"
@@ -7013,10 +6857,6 @@
   "ad3c6a42f352d837": {
    "source": "<g1>Category</g1> — chosen from the file's type (Compressed, Documents, Music, Programs, Video or General). Each category has its own folder. <g2>+</g2> beside it makes a new category.",
    "text": "<g1>หมวดหมู่</g1> — เลือกจากประเภทของไฟล์ (บีบอัด, เอกสาร, เพลง, โปรแกรม, วิดีโอ หรือทั่วไป) แต่ละหมวดหมู่มีโฟลเดอร์ของตัวเอง เครื่องหมาย <g2>+</g2> ข้าง ๆ จะสร้างหมวดหมู่ใหม่"
-  },
-  "ad45e0dd35085a55": {
-   "source": "<g1>Network adapter</g1> — <g2>Any (the system chooses)</g2> is the default. Pick an adapter, usually your VPN's, and every connection MDM opens goes out through it, or not at all. That covers downloads, FTP, the DNS you chose, MDM's own downloads and the update check. It works as a kill switch: when the adapter disconnects, or the VPN is switched off, nothing goes out through your normal connection. Running downloads stop with \"… is not connected\" and start again when the adapter is back. The line under the list shows the adapter's address, or that it isn't connected.",
-   "text": "<g1>อะแดปเตอร์เครือข่าย</g1> — <g2>ใดก็ได้ (ระบบเลือกเอง)</g2> คือค่าเริ่มต้น เลือกอะแดปเตอร์ โดยปกติคือของ VPN ของคุณ และการเชื่อมต่อทุกครั้งที่ MDM เปิดจะส่งผ่านอะแดปเตอร์นั้น หรือไม่ส่งเลย ซึ่งครอบคลุมการดาวน์โหลด, FTP, DNS ที่คุณเลือก, การดาวน์โหลดของ MDM เอง และการตรวจสอบการอัปเดต มันทำงานเหมือนสวิตช์ตัดการทำงาน: เมื่ออะแดปเตอร์ตัดการเชื่อมต่อ หรือ VPN ถูกปิด จะไม่มีอะไรส่งออกผ่านการเชื่อมต่อปกติของคุณ การดาวน์โหลดที่กำลังดำเนินอยู่จะหยุดด้วยข้อความ \"… ไม่ได้เชื่อมต่อ\" และจะเริ่มใหม่เมื่ออะแดปเตอร์กลับมาใช้งานได้ บรรทัดใต้รายการจะแสดงที่อยู่ของอะแดปเตอร์ หรือสถานะว่าไม่ได้เชื่อมต่อ"
   },
   "ad59a2dd8a67146e": {
    "source": "Click <g1>Find</g1>. The first match is selected.",
@@ -7133,10 +6973,6 @@
   "afae30c6c42a7afb": {
    "source": "If Mister Download Manager closes unexpectedly or stops responding, a <g1>crash report</g1> window opens. It shows what happened, lets you read the whole report, and can send it to the developers on GitHub. Each report helps fix the problem for everyone.",
    "text": "หาก Mister Download Manager ปิดโดยไม่คาดคิดหรือหยุดตอบสนอง หน้าต่าง <g1>รายงานข้อขัดข้อง</g1> จะเปิดขึ้นมา ซึ่งจะแสดงสิ่งที่เกิดขึ้น ให้คุณอ่านรายงานฉบับเต็ม และสามารถส่งไปยังนักพัฒนาบน GitHub ได้ รายงานแต่ละฉบับช่วยแก้ไขปัญหาสำหรับทุกคน"
-  },
-  "afb13e3cfd9283df": {
-   "source": "Set up the extension once, and every download link you click in Firefox, Chrome, Edge or Brave goes to MDM.",
-   "text": "ตั้งค่าส่วนขยายเพียงครั้งเดียว ลิงก์ดาวน์โหลดทุกลิงก์ที่คุณคลิกใน Firefox, Chrome, Edge หรือ Brave จะถูกส่งไปยัง MDM"
   },
   "afc32cfba2a08d06": {
    "source": "Choose a download",
@@ -7318,6 +7154,10 @@
    "source": "Mister Download Manager keeps the layout IDM users know, brings your IDM list over, and costs nothing: free and open source, with no trial, no ads and no sign-up. Below it, nine other free download managers people use instead of IDM, compared honestly.",
    "text": "Mister Download Manager มีเลย์เอาต์ที่ผู้ใช้ IDM คุ้นเคย สามารถนำเข้ารายการดาวน์โหลดจาก IDM ของคุณได้ และไม่มีค่าใช้จ่าย: ฟรีและโอเพนซอร์ส ไม่มีช่วงทดลองใช้ ไม่มีโฆษณา และไม่ต้องลงทะเบียน ด้านล่างนี้คือโปรแกรมจัดการการดาวน์โหลดฟรีอีกเก้าโปรแกรมที่ผู้คนใช้แทน IDM ซึ่งเปรียบเทียบกันอย่างตรงไปตรงมา"
   },
+  "b447fbc7b60ab7d5": {
+   "source": "On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (<x1/> on Ubuntu and Debian, <x2/> or <x3/> on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.",
+   "text": "บน Linux, Vulkan ต้องการไดรเวอร์ Vulkan ของการ์ดจอของคุณ: Mesa's (<x1/> บน Ubuntu และ Debian, <x2/> หรือ <x3/> บน Arch) สำหรับ AMD และ Intel, ไดรเวอร์ของ NVIDIA เองสำหรับ NVIDIA"
+  },
   "b45cf41d19dc2fdc": {
    "source": "The AppImage can also be updated by AppImage tools (AppImageLauncher, Gear Lever, AppImageUpdate): it carries the address of its updates, and each release has its <x1/> file, so those tools download only the parts that changed. This starts with the AppImage of the version after 0.2.4.",
    "text": "AppImage สามารถอัปเดตได้ด้วยเครื่องมือ AppImage (AppImageLauncher, Gear Lever, AppImageUpdate) โดยจะระบุที่อยู่ของการอัปเดต และแต่ละเวอร์ชันจะมีไฟล์ <x1/> ของตัวเอง ดังนั้นเครื่องมือเหล่านี้จะดาวน์โหลดเฉพาะส่วนที่เปลี่ยนแปลงเท่านั้น ซึ่งจะเริ่มตั้งแต่ AppImage เวอร์ชัน 0.2.4 เป็นต้นไป"
@@ -7446,10 +7286,6 @@
    "source": "On <g1>Q</g1>, tick <g2>In a queue</g2> or <g3>Not in a queue</g3>.",
    "text": "ที่ <g1>คิว</g1> ให้เลือก <g2>อยู่ในคิว</g2> หรือ <g3>ไม่ได้อยู่ในคิว</g3>"
   },
-  "b7da4b8cc0d5495e": {
-   "source": "<g1><g2>Browser integration</g2></g1> — the extension for Firefox (from addons.mozilla.org), Chrome, Edge and Brave, which downloads it takes, and what happens when MDM isn't running.",
-   "text": "<g1><g2>การเชื่อมต่อกับเบราว์เซอร์</g2></g1> — ส่วนขยายสำหรับ Firefox (จาก addons.mozilla.org), Chrome, Edge และ Brave, การดาวน์โหลดที่ส่วนขยายจัดการ, และสิ่งที่เกิดขึ้นเมื่อ MDM ไม่ได้ทำงาน"
-  },
   "b7e47ad1f6a91134": {
    "source": "The app comes in 86 languages, every one Windows 11 offers. It follows your computer's language, and you can switch any time in View → Language.",
    "text": "แอปมีให้เลือก 86 ภาษา ซึ่งเป็นภาษาเดียวกับที่ Windows 11 มีให้เลือก โดยจะใช้ภาษาตามคอมพิวเตอร์ของคุณ และคุณสามารถเปลี่ยนได้ตลอดเวลาที่ มุมมอง → ภาษา"
@@ -7501,10 +7337,6 @@
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 ภาษา รวมถึงแบบขวาไปซ้าย"
-  },
-  "b95c95d9143dace0": {
-   "source": "Firefox (from addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them…",
-   "text": "Firefox (จาก addons.mozilla.org), Google Chrome, Microsoft Edge, Brave, Opera และ Vivaldi ผ่านส่วนขยายเบราว์เซอร์ของ MDM รวมถึงเบราว์เซอร์ที่สร้างขึ้นจากเบราว์เซอร์เหล่านี้…"
   },
   "b95ce4f23354e44d": {
    "source": "AI assistants (MCP) — Mister Download Manager help",
@@ -7594,10 +7426,6 @@
    "source": "App",
    "text": "แอป"
   },
-  "bbb4a37acc8f6a42": {
-   "source": "The windows are drawn with OpenGL (eframe's glow). On Windows, View → Draw with chooses Direct3D 12 instead (eframe's wgpu, with its Direct3D 12 backend only), from the next start. <x1/> falls back to the other one when the chosen one can't start, so the windows always open.",
-   "text": "หน้าต่างต่างๆ ถูกวาดด้วย OpenGL (glow ของ eframe) บน Windows, มุมมอง → วาดด้วย จะเลือก Direct3D 12 แทน (wgpu ของ eframe, โดยใช้แบ็กเอนด์ Direct3D 12 เท่านั้น) ตั้งแต่การเริ่มต้นครั้งถัดไป <x1/> จะเปลี่ยนไปใช้อีกตัวหนึ่งเมื่อตัวที่เลือกไม่สามารถเริ่มต้นได้ ดังนั้นหน้าต่างจะเปิดเสมอ"
-  },
   "bbef617a2c908337": {
    "source": "Catch downloads from your browser — Mister Download Manager help",
    "text": "ดักจับการดาวน์โหลดจากเบราว์เซอร์ของคุณ — วิธีใช้ Mister Download Manager"
@@ -7609,10 +7437,6 @@
   "bc1065924c4077d9": {
    "source": "The Pieces tab: a square for each piece, filled once it's here",
    "text": "แท็บ Pieces: สี่เหลี่ยมสำหรับแต่ละชิ้นส่วน จะถูกเติมเมื่อมาถึง"
-  },
-  "bc21a99be8efd606": {
-   "source": "By hand for now, while the Chrome Web Store reviews the extension:",
-   "text": "ตอนนี้ต้องทำด้วยตนเอง ในขณะที่ Chrome Web Store กำลังตรวจสอบส่วนขยาย:"
   },
   "bc21bd767c7774ea": {
    "source": "The terms for using Mister Download Manager and misterdownloadmanager.com: free software under the GNU GPL 3.0, used at your own risk, for downloads you have the right to make.",
@@ -7665,10 +7489,6 @@
   "bd38ebc1b5f00936": {
    "source": "Scenario",
    "text": "สถานการณ์"
-  },
-  "bd77253f80822cfe": {
-   "source": "Install MDM with the setup and keep <g1>Set up browser integration</g1> ticked. Then load the extension in your browser from MDM's <x2/> folder: open the browser's extensions page, turn on Developer mode and choose <g3>Load unpacked</g3>. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The <g4>tutorial</g4> walks through it.",
-   "text": "ติดตั้ง MDM ด้วยโปรแกรมติดตั้งและทำเครื่องหมายที่ <g1>ตั้งค่าการรวมเบราว์เซอร์</g1> จากนั้นโหลดส่วนขยายในเบราว์เซอร์ของคุณจากโฟลเดอร์ <x2/> ของ MDM: เปิดหน้าส่วนขยายของเบราว์เซอร์, เปิดโหมดนักพัฒนา และเลือก <g3>โหลดส่วนขยายที่ไม่ได้แพ็ค</g3> รายการในร้านค้าสำหรับ Chrome, Edge และ Firefox กำลังจะมา ซึ่งจะทำให้การดำเนินการนี้เป็นเพียงคลิกเดียว <g4>บทช่วยสอน</g4> จะแนะนำขั้นตอนต่างๆ"
   },
   "bda4c8ea3c9ccb34": {
    "source": "Download the AppImage",
@@ -7786,10 +7606,6 @@
    "source": "Download overnight",
    "text": "ดาวน์โหลดข้ามคืน"
   },
-  "c15bd3350cc4e4a5": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. Then load the extension in your browser from MDM's extension folder: open the browser's extensions page, turn on Developer mode and choose Load unpacked. Store listings for Chrome, Edge and Firefox are on the way, which will make this a single click. The tutorial walks through it.",
-   "text": "ติดตั้ง MDM ด้วยโปรแกรมติดตั้ง และทำเครื่องหมายที่ช่อง ตั้งค่าการรวมเบราว์เซอร์ ไว้ จากนั้นโหลดส่วนขยายในเบราว์เซอร์ของคุณจากโฟลเดอร์ส่วนขยายของ MDM: เปิดหน้าส่วนขยายของเบราว์เซอร์ เปิดโหมดนักพัฒนา และเลือก โหลดส่วนขยายที่ไม่ได้แพ็ค รายการในร้านค้าสำหรับ Chrome, Edge และ Firefox กำลังจะมา ซึ่งจะทำให้การติดตั้งทำได้ในคลิกเดียว บทช่วยสอนจะแนะนำขั้นตอนทั้งหมด"
-  },
   "c16bf35f546c4e5c": {
    "source": "<g1>Update now</g1> in Help → Check for updates: MDM downloads the new version, checks it, puts it in place and restarts, on Windows (setup, portable and plain zip), Mac and Linux (AppImage, .tar.gz; a .deb or .rpm opens in the system's installer). It installs only files listed in a checksum list signed by MDM's release key, which every release now carries (<x2/>). The first update this way will be from 0.2.1 to the next version.",
    "text": "<g1>อัปเดตเดี๋ยวนี้</g1> ในวิธีใช้ → ตรวจหาการอัปเดต: MDM จะดาวน์โหลดเวอร์ชันใหม่, ตรวจสอบ, ติดตั้งและรีสตาร์ท บน Windows (โปรแกรมติดตั้ง, แบบพกพาและไฟล์ zip ธรรมดา), Mac และ Linux (AppImage, .tar.gz; ไฟล์ .deb หรือ .rpm จะเปิดในโปรแกรมติดตั้งของระบบ) มันจะติดตั้งเฉพาะไฟล์ที่ระบุในรายการตรวจสอบผลรวมที่ลงนามโดยคีย์เผยแพร่ของ MDM ซึ่งทุกเวอร์ชันตอนนี้มี (<x2/>) การอัปเดตครั้งแรกด้วยวิธีนี้จะเป็นจาก 0.2.1 ไปยังเวอร์ชันถัดไป"
@@ -7829,6 +7645,10 @@
   "c1efc95d5de8c996": {
    "source": "torrents on Windows;",
    "text": "ทอร์เรนต์บน Windows;"
+  },
+  "c20a850dfc745632": {
+   "source": "If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "หากไม่สามารถเริ่มต้นได้ทั้งคู่ MDM จะวาดด้วยซอฟต์แวร์เรนเดอร์ (ของ Microsoft บน Windows, ของ Mesa บน Linux) เพื่อให้หน้าต่างยังคงเปิดได้ (Remote Desktop, เครื่องเสมือนที่ไม่มีไดรเวอร์กราฟิก) ซึ่งใช้งานได้ แต่จะทำให้โปรเซสเซอร์ทำงานหนักขึ้น"
   },
   "c281dc13eb22554f": {
    "source": "Brave",
@@ -8018,10 +7838,6 @@
    "source": "Your account, your rules",
    "text": "บัญชีของคุณ กฎของคุณ"
   },
-  "c7be639a8acd89dc": {
-   "source": "Set up the extension once, and every download link you click in Chrome, Edge or Brave goes to MDM. (Firefox works too, but its support is still being tested.)",
-   "text": "ตั้งค่าส่วนขยายเพียงครั้งเดียว ลิงก์ดาวน์โหลดทุกรายการที่คุณคลิกใน Chrome, Edge หรือ Brave จะถูกส่งไปยัง MDM (Firefox ก็ใช้งานได้เช่นกัน แต่การสนับสนุนยังอยู่ระหว่างการทดสอบ)"
-  },
   "c7c2a61fcf5da6b1": {
    "source": "Use your own copies",
    "text": "ใช้สำเนาของคุณเอง"
@@ -8093,10 +7909,6 @@
   "c991e64b857c5509": {
    "source": "<g1>Reannounce</g1> — asks the torrent's trackers for peers again now, instead of waiting for their next round. It works while the torrent runs or is shared.",
    "text": "<g1>ประกาศใหม่</g1> — ขอ peer จากตัวติดตามของทอร์เรนต์อีกครั้งทันที แทนที่จะรอรอบถัดไป มันทำงานในขณะที่ทอร์เรนต์กำลังทำงานหรือกำลังแชร์"
-  },
-  "c9d39512b1b393af": {
-   "source": "Google Chrome, Microsoft Edge, Brave, Opera and Vivaldi, through the MDM browser extension, and browsers built on them such as Helium. Firefox support, which also covers Zen and LibreWolf, is written and in testing. The extension hands downloads to MDM with their cookies and referrer, so files behind a sign-in still work, and it adds <g1>Download with Mister Download Manager</g1> to the right-click menu and a <g2>Download video</g2> button over videos. See <g3>Browser integration</g3>.",
-   "text": "รองรับ Google Chrome, Microsoft Edge, Brave, Opera และ Vivaldi ผ่านส่วนขยายเบราว์เซอร์ MDM รวมถึงเบราว์เซอร์ที่สร้างขึ้นจากเบราว์เซอร์เหล่านี้ เช่น Helium ส่วนการรองรับ Firefox ซึ่งครอบคลุม Zen และ LibreWolf ด้วยนั้น ได้เขียนขึ้นและอยู่ระหว่างการทดสอบ ส่วนขยายจะส่งการดาวน์โหลดไปยัง MDM พร้อมคุกกี้และผู้แนะนำ ทำให้ไฟล์ที่อยู่หลังการลงชื่อเข้าใช้ยังคงใช้งานได้ และเพิ่ม <g1>ดาวน์โหลดด้วย Mister Download Manager</g1> ไปยังเมนูคลิกขวา และปุ่ม <g2>ดาวน์โหลดวิดีโอ</g2> เหนือวิดีโอ ดู <g3>การผสานรวมกับเบราว์เซอร์</g3>"
   },
   "c9da130585eae7fa": {
    "source": "The site has no ads and no other trackers. Its fonts and scripts are served from the site itself. Your choice of light or dark mode is remembered in your browser's local storage and never sent anywhere.",
@@ -8210,6 +8022,10 @@
    "source": "Want subtitles? Pick a language in <g1>Subtitles</g1>. They're saved beside the video, or inside it if you tick <g2>Put them into the video</g2> (see <g3>Subtitles</g3>).",
    "text": "ต้องการคำบรรยายใช่ไหม? เลือกภาษาใน <g1>คำบรรยาย</g1> ไฟล์จะถูกบันทึกไว้ข้างวิดีโอ หรือฝังอยู่ในวิดีโอหากคุณเลือก <g2>ใส่ลงในวิดีโอ</g2> (ดู <g3>คำบรรยาย</g3>)"
   },
+  "cd00d2b47225467c": {
+   "source": "<g1>Testing it.</g1> <x2/> runs a real freeze, panic and crash (<x3/>) and checks each report's signature. To try it in the app, start MDM with <x4/>, then run <x5/> (a deadlock; or <x6/>, 12 s of a busy window thread, <x7/>, <x8/>, <x9/>). <x10/> does that in a copy of the app off the screens, its window visible and minimized.",
+   "text": "<g1>การทดสอบ</g1> <x2/> รันการค้าง, panic และ crash จริง (<x3/>) และตรวจสอบลายเซ็นของแต่ละรายงาน หากต้องการลองในแอป ให้เริ่ม MDM ด้วย <x4/> จากนั้นรัน <x5/> (deadlock; หรือ <x6/>, 12 วินาทีของเธรดหน้าต่างที่ยุ่ง, <x7/>, <x8/>, <x9/>) <x10/> ทำสิ่งนั้นในสำเนาของแอปที่อยู่นอกหน้าจอ โดยหน้าต่างของมันจะมองเห็นได้และย่อขนาด"
+  },
   "cd259ac663c10ccb": {
    "source": "Download a gallery",
    "text": "ดาวน์โหลดแกลเลอรี"
@@ -8221,6 +8037,10 @@
   "cd673e3701cb16c6": {
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>อนุญาตการเชื่อมต่อมากกว่า 32 รายการ</g1> — เพิ่มจำนวนสูงสุดเป็น 128 สำหรับตัวเลขด้านบนและสำหรับข้อยกเว้น เซิร์ฟเวอร์ส่วนใหญ่อนุญาตการเชื่อมต่อจากที่อยู่เดียวได้น้อยกว่ามาก MDM จะสังเกตเห็นและขอจำนวนที่น้อยลง หากปิดอีกครั้ง ตัวเลขที่สูงกว่าจะกลับมาเป็น 32"
+  },
+  "cda67136f4731916": {
+   "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too.",
+   "text": "แต่ละธีมมีทั้งแบบสว่างและแบบมืด: <g1>รองรับโหมดมืด</g1> และ <g2>มืดตลอดเวลา</g2> จะเลือกสลับระหว่างสองแบบนี้เหมือนเดิม ไฟล์ธีมที่คุณใส่ในโฟลเดอร์ธีม (<g3>มุมมอง → ชุดรูปแบบ → เปิดโฟลเดอร์ชุดรูปแบบ</g3>) ก็จะแสดงอยู่ในนั้นด้วย"
   },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
@@ -8366,10 +8186,6 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "การดาวน์โหลดแต่ละรายการที่กำลังทำงานอยู่จะมีหน้าต่างความคืบหน้าของตัวเอง หน้าต่างนี้จะเปิดขึ้นเมื่อการดาวน์โหลดเริ่มต้นขึ้น หากต้องการเปิดอีกครั้ง ให้ดับเบิลคลิกที่การดาวน์โหลดในรายการ"
   },
-  "d12f8750c4987536": {
-   "source": "Last updated 2026-11-06",
-   "text": "อัปเดตล่าสุด 2026-11-06"
-  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "ไฟล์จากทอร์เรนต์จะถูกทำเครื่องหมายว่า <g1>ดาวน์โหลดจากอินเทอร์เน็ต</g1> เช่นเดียวกับการดาวน์โหลดของเบราว์เซอร์ Windows SmartScreen จะตรวจสอบโปรแกรมก่อนที่จะรันครั้งแรก และ Office จะเปิดเอกสารใน Protected View บน Mac, Gatekeeper จะตรวจสอบแอป"
@@ -8437,6 +8253,10 @@
   "d325a1b1c8ab0caa": {
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
    "text": "Mister Download Manager, ส่วนขยายเบราว์เซอร์ และเว็บไซต์นี้ทำอะไรกับข้อมูลของคุณ: แอปและส่วนขยายไม่เก็บข้อมูลใด ๆ; เว็บไซต์นับจำนวนการเข้าชมด้วย Statcounter"
+  },
+  "d351cad9276045ed": {
+   "source": "<g1>Classic</g1>: MDM's own look, the default.",
+   "text": "<g1>คลาสสิก</g1>: รูปลักษณ์เฉพาะของ MDM ซึ่งเป็นค่าเริ่มต้น"
   },
   "d354d0b6bb0bfffe": {
    "source": "Subtitles",
@@ -8642,17 +8462,9 @@
    "source": "Benchmark scenario",
    "text": "สถานการณ์การทดสอบ"
   },
-  "d830def677dfb3f0": {
-   "source": "One egui window painted to fixed pixel coordinates, plus one immediate viewport per dialog. <x1/> holds the state (downloads, queues, settings, the list's selection) and turns menu, toolbar, key and IPC commands into actions. Each dialog is its own module and returns an <x2/> (open, closed, done with a value). Windows-only calls are confined to <x3/> and their Linux and macOS counterparts to <x4/> (starting with the session, the browsers' host, sounds, show in folder, the crash handler); every other file is safe, portable Rust. Fonts come from the system: Windows' Fonts folder, macOS's system fonts, fontconfig on Linux (<x5/>). So do the icons before file names (<x6/>): the Windows shell's system image lists, macOS Finder's (NSWorkspace), the Linux desktop's icon theme (<x7/>, shared-mime-info and the Icon Theme Specification). Each type is looked up once per pixel size, on a background thread. Tango's icons (bundled) stand in until the system's icon is ready, and wherever the system has none.",
-   "text": "หน้าต่าง egui หนึ่งบานที่วาดไปยังพิกเซลพิกัดคงที่ บวกกับวิวพอร์ตทันทีหนึ่งวิวพอร์ตต่อกล่องโต้ตอบ <x1/> เก็บสถานะ (การดาวน์โหลด, คิว, การตั้งค่า, การเลือกรายการ) และเปลี่ยนคำสั่งเมนู, แถบเครื่องมือ, คีย์ และ IPC ให้เป็นการกระทำ กล่องโต้ตอบแต่ละกล่องเป็นโมดูลของตัวเองและส่งคืน <x2/> (เปิด, ปิด, ทำเสร็จพร้อมค่า) การเรียกใช้เฉพาะ Windows จะถูกจำกัดไว้ที่ <x3/> และคู่ของมันบน Linux และ macOS จะถูกจำกัดไว้ที่ <x4/> (เริ่มต้นด้วยเซสชัน, โฮสต์ของเบราว์เซอร์, เสียง, แสดงในโฟลเดอร์, ตัวจัดการข้อผิดพลาด); ไฟล์อื่นๆ ทุกไฟล์ปลอดภัย, เป็น Rust แบบพกพา ฟอนต์มาจากระบบ: โฟลเดอร์ Fonts ของ Windows, ฟอนต์ระบบของ macOS, fontconfig บน Linux (<x5/>) เช่นเดียวกับไอคอนก่อนชื่อไฟล์ (<x6/>): รายการรูปภาพระบบของ Windows shell, macOS Finder's (NSWorkspace), ธีมไอคอนของเดสก์ท็อป Linux (<x7/>, shared-mime-info และ Icon Theme Specification) แต่ละประเภทจะถูกค้นหาหนึ่งครั้งต่อขนาดพิกเซล บนเธรดพื้นหลัง ไอคอนของ Tango (ที่มาพร้อมเครื่อง) จะถูกใช้แทนจนกว่าไอคอนของระบบจะพร้อม และในที่ที่ระบบไม่มี"
-  },
   "d835a1659f05d750": {
    "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them. A stream whose address doesn't end in <x5/> or <x6/>, served as plain text, is found too: when you open the list (or press the download button over its player) and the player plays a stream, the extension reads the first few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.",
    "text": "<g1>สตรีม</g1>: HLS (<x2/>) และ DASH (<x3/> ซึ่งเป็นวิธีที่เว็บไซต์ส่วนใหญ่ใช้เล่นวิดีโอขนาดยาว สตรีมแต่ละรายการจะแสดงเพียงครั้งเดียว ไม่ว่าเครื่องเล่นจะสลับคุณภาพไปกี่ครั้งก็ตาม โดยจะแสดงคุณภาพ (<x4/>) และความยาวเมื่อส่วนขยายสามารถอ่านได้ สตรีมที่อยู่ไม่ได้ลงท้ายด้วย <x5/> หรือ <x6/> ซึ่งให้บริการเป็นข้อความธรรมดา ก็จะถูกพบด้วย: เมื่อคุณเปิดรายการ (หรือกดปุ่มดาวน์โหลดเหนือเครื่องเล่น) และเครื่องเล่นกำลังเล่นสตรีม ส่วนขยายจะอ่านข้อมูลไม่กี่กิโลไบต์แรกที่เครื่องเล่นดึงมาเพื่อจดจำสตรีมนั้น จะไม่มีการอ่านข้อมูลใดๆ จนกว่าคุณจะร้องขอ"
-  },
-  "d83a2cb66a2a3629": {
-   "source": "<g1>Working set</g1> (Details tab, add the column) adds memory shared with other programs. MDM draws its windows with the graphics card, so the graphics driver's memory counts here too, about 85 MB in all.",
-   "text": "<g1>ชุดการทำงาน</g1> (แท็บรายละเอียด เพิ่มคอลัมน์) จะเพิ่มหน่วยความจำที่ใช้ร่วมกับโปรแกรมอื่น MDM วาดหน้าต่างด้วยการ์ดกราฟิก ดังนั้นหน่วยความจำของไดรเวอร์กราฟิกจึงนับรวมที่นี่ด้วย ประมาณ 85 MB ทั้งหมด"
   },
   "d840a217a694ce9e": {
    "source": "5. No warranty",
@@ -8729,10 +8541,6 @@
   "da6e8c125b6f0d96": {
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
    "text": "หากเว็บไซต์แทนที่ไฟล์ด้วยเวอร์ชันใหม่ ส่วนที่ MDM มีจะไม่เข้ากันอีกต่อไป คลิกขวาที่รายการดาวน์โหลดแล้วเลือก <g1>ดาวน์โหลดใหม่</g1> เพื่อเริ่มใหม่ตั้งแต่ต้น ไฟล์ที่ดาวน์โหลดเสร็จแล้วจะถูกแทนที่เมื่อการดาวน์โหลดใหม่เสร็จสมบูรณ์เท่านั้น"
-  },
-  "da79240d48094d5f": {
-   "source": "Install MDM with the setup and keep Set up browser integration ticked. Then load the extension in your browser from MDM's extension folder: open the…",
-   "text": "ติดตั้ง MDM ด้วยโปรแกรมติดตั้ง และทำเครื่องหมายที่ช่อง ตั้งค่าการรวมเบราว์เซอร์ จากนั้นโหลดส่วนขยายในเบราว์เซอร์ของคุณจากโฟลเดอร์ส่วนขยายของ MDM: เปิด…"
   },
   "da81e23f7451bda1": {
    "source": "Terms of use — Mister Download Manager",
@@ -8834,10 +8642,6 @@
    "source": "Runs nearly everywhere, with HTTP, BitTorrent, magnet and ed2k, and a REST API",
    "text": "ทำงานได้เกือบทุกที่ รองรับ HTTP, BitTorrent, magnet และ ed2k พร้อม REST API"
   },
-  "dd95eb457eff61cf": {
-   "source": "Browsers installed as a Flatpak or a Snap run in a sandbox that may keep them from starting programs outside it, so they may not be able to reach MDM. Flatpak browsers (such as Zen's <x1/>) can't start MDM's helper, so MDM doesn't list them in <g2>Add Mister Download Manager to your browser</g2>. Install the browser from your distribution's packages (or the browser maker's own <x3/>, <x4/>, tarball or AppImage) to use browser integration.",
-   "text": "เบราว์เซอร์ที่ติดตั้งเป็น Flatpak หรือ Snap ทำงานในแซนด์บ็อกซ์ที่อาจป้องกันไม่ให้เริ่มโปรแกรมภายนอก ดังนั้นอาจไม่สามารถเข้าถึง MDM ได้ เบราว์เซอร์ Flatpak (เช่น Zen's <x1/>) ไม่สามารถเริ่มตัวช่วยของ MDM ได้ ดังนั้น MDM จึงไม่แสดงรายการใน <g2>เพิ่ม Mister Download Manager ไปยังเบราว์เซอร์ของคุณ</g2> ติดตั้งเบราว์เซอร์จากแพ็คเกจของการแจกจ่ายของคุณ (หรือ <x3/>, <x4/>, tarball หรือ AppImage ของผู้ผลิตเบราว์เซอร์เอง) เพื่อใช้การรวมเบราว์เซอร์"
-  },
   "dda60fa3176775af": {
    "source": "<g1>Move/Rename</g1> (<g2>Ctrl+M</g2>) moves or renames the file of a finished download, or of one that hasn't started yet.",
    "text": "<g1>ย้าย/เปลี่ยนชื่อ</g1> (<g2>Ctrl+M</g2>) ย้ายหรือเปลี่ยนชื่อไฟล์ของการดาวน์โหลดที่เสร็จสมบูรณ์แล้ว หรือที่ยังไม่เริ่ม"
@@ -8929,6 +8733,10 @@
   "e04b6de25915105e": {
    "source": "Open a pull request on <g1>GitHub</g1> with the edited catalog, or",
    "text": "เปิด pull request บน <g1>GitHub</g1> พร้อมแค็ตตาล็อกที่แก้ไขแล้ว หรือ"
+  },
+  "e04f69d547a21d71": {
+   "source": "<g1>Native</g1>: your system's colours. Windows' accent colour (Settings → Personalization → Colors) and, when it is on, its contrast theme; the desktop's accent colour and its higher contrast setting on Linux (GNOME 47 and later, KDE Plasma); the accent colour on macOS. It follows them when you change them.",
+   "text": "<g1>ดั้งเดิม</g1>: สีของระบบของคุณ สีเน้นของ Windows (การตั้งค่า → การปรับเปลี่ยนในแบบของคุณ → สี) และเมื่อเปิดใช้งาน ธีมคอนทราสต์ของ Windows; สีเน้นของเดสก์ท็อปและการตั้งค่าคอนทราสต์ที่สูงขึ้นบน Linux (GNOME 47 และใหม่กว่า, KDE Plasma); สีเน้นบน macOS โดยจะติดตามการเปลี่ยนแปลงเมื่อคุณเปลี่ยน"
   },
   "e0610521a37bb854": {
    "source": "New",
@@ -9049,10 +8857,6 @@
   "e393d2a019bf4cc9": {
    "source": "<g1>Download selected links</g1> and <g2>Download all links</g2> read the links of the page (or of your selection) when you choose them, and pass them to MDM with the page's address and its site's cookies.",
    "text": "<g1>ดาวน์โหลดลิงก์ที่เลือก</g1> และ <g2>ดาวน์โหลดลิงก์ทั้งหมด</g2> จะอ่านลิงก์ของหน้าเว็บ (หรือส่วนที่คุณเลือก) เมื่อคุณเลือก และส่งไปยัง MDM พร้อมกับที่อยู่ของหน้าเว็บและคุกกี้ของเว็บไซต์นั้น"
-  },
-  "e39c7ec3d5c0fd70": {
-   "source": "The browser extension: for Firefox, from its add-ons store. For Chrome, Edge, Brave, Opera and Vivaldi it comes with the app and as <g1>its own download</g1>, added by hand for now, while the Chrome Web Store reviews it. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
-   "text": "ส่วนขยายเบราว์เซอร์: สำหรับ Firefox สามารถดาวน์โหลดได้จากร้านค้าส่วนเสริม สำหรับ Chrome, Edge, Brave, Opera และ Vivaldi จะมาพร้อมกับแอปพลิเคชันและเป็น <g1>ไฟล์ดาวน์โหลดแยกต่างหาก</g1> ซึ่งต้องเพิ่มด้วยตนเองไปก่อน ในระหว่างที่ Chrome Web Store กำลังตรวจสอบ ไฟล์ทุกไฟล์ถูกสร้างขึ้นจากซอร์สโค้ดสาธารณะโดย GitHub Actions และแสดงพร้อมกับค่า SHA-256 checksum"
   },
   "e3c6eff03600d825": {
    "source": "Where the time goes",
@@ -9354,6 +9158,10 @@
    "source": "Choose <g1>Tasks → Torrent settings...</g1> (or the arrow next to <g2>Add Torrent</g2>):",
    "text": "เลือก <g1>Tasks → Torrent settings...</g1> (หรือลูกศรข้าง <g2>Add Torrent</g2>):"
   },
+  "eb2157973bc61b4f": {
+   "source": "<g1>View → Theme</g1> changes MDM's look at once, keeping its layout:",
+   "text": "<g1>มุมมอง → ชุดรูปแบบ</g1> จะเปลี่ยนรูปลักษณ์ของ MDM ทันที โดยยังคงเค้าโครงเดิมไว้:"
+  },
   "eb54002890a30cf8": {
    "source": "<g1>Ctrl+M</g1> or <g2>F2</g2>",
    "text": "<g1>Ctrl+M</g1> หรือ <g2>F2</g2>"
@@ -9393,10 +9201,6 @@
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
    "text": "ฉันสามารถย้ายรายการดาวน์โหลดจาก IDM ไปยัง Mister Download Manager ได้หรือไม่?"
-  },
-  "eccd08c375bd5161": {
-   "source": "On Windows, if OpenGL can't start, MDM tries Direct3D, then Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver).",
-   "text": "บน Windows หาก OpenGL ไม่สามารถเริ่มต้นได้ MDM จะลองใช้ Direct3D จากนั้นใช้ซอฟต์แวร์เรนเดอร์ของ Microsoft เพื่อให้หน้าต่างยังคงเปิดได้ (Remote Desktop, เครื่องเสมือนที่ไม่มีไดรเวอร์กราฟิก)"
   },
   "eccf339359202e1e": {
    "source": "By default, downloads go to the Downloads folder of the computer you're using. To keep them on the stick:",
@@ -9690,10 +9494,6 @@
    "source": "The list shows the order they will run in. Use the arrow buttons under it to move a download up or down.",
    "text": "รายการจะแสดงลำดับการทำงาน ใช้ปุ่มลูกศรด้านล่างเพื่อเลื่อนไฟล์ดาวน์โหลดขึ้นหรือลง"
   },
-  "f3b0722f5a504a62": {
-   "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge and Brave, load it by hand for now, while the Chrome Web Store reviews it. <g3>Browser integration</g3> shows how.",
-   "text": "การผสานรวมกับเบราว์เซอร์ต้องมีอีกหนึ่งขั้นตอนในแต่ละเบราว์เซอร์: การเพิ่มส่วนขยาย ใน Firefox ให้คลิก <g1>เพิ่มไปยัง Firefox</g1> บน <g2>หน้าของส่วนขยายบน addons.mozilla.org</g2>; ใน Chrome, Edge และ Brave ให้โหลดด้วยตนเองไปก่อน ในขณะที่ Chrome Web Store กำลังตรวจสอบอยู่ <g3>การผสานรวมกับเบราว์เซอร์</g3> แสดงวิธีการ"
-  },
   "f3d28d86765197f1": {
    "source": "Intel",
    "text": "Intel"
@@ -9769,10 +9569,6 @@
   "f61cdf89eb50599c": {
    "source": "The zips hold the same programs as the setup: the app, <x1/> (downloads from the command line; see <g2>Command line and automation</g2>) and the <x3/> folder.",
    "text": "ไฟล์ zip มีโปรแกรมเดียวกันกับตัวติดตั้ง: แอป, <x1/> (ดาวน์โหลดจากบรรทัดคำสั่ง; ดู <g2>บรรทัดคำสั่งและระบบอัตโนมัติ</g2>) และโฟลเดอร์ <x3/>"
-  },
-  "f6809253500ba067": {
-   "source": "Load the extension in each browser you use, as below. The extension's files are in the <x1/> folder where MDM is installed: <x2/> if you installed it for yourself, or <x3/> if you installed it for everyone. Every release also has them as their own downloads: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; unzip it first) and <x5/>.",
-   "text": "โหลดส่วนขยายในแต่ละเบราว์เซอร์ที่คุณใช้ ตามด้านล่างนี้ ไฟล์ของส่วนขยายอยู่ในโฟลเดอร์ <x1/> ที่ติดตั้ง MDM: <x2/> หากคุณติดตั้งสำหรับตัวเอง หรือ <x3/> หากคุณติดตั้งสำหรับทุกคน ทุกรุ่นยังมีให้ดาวน์โหลดแยกต่างหาก: <x4/> (Chrome, Edge, Brave, Opera, Vivaldi; ต้องแตกไฟล์ก่อน) และ <x5/>"
   },
   "f6ab5be4ad52a472": {
    "source": "Trackers",
@@ -9862,10 +9658,6 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "เลือก <g1>คิวการดาวน์โหลดหลัก</g1> ทางด้านซ้าย แท็บ <g2>กำหนดการ</g2> จะเปิดขึ้น"
   },
-  "f9536693258dfe06": {
-   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
-   "text": "บน Windows, MDM วาดหน้าต่างด้วย Direct3D 12; บน Linux และ macOS, ด้วย OpenGL ไดรเวอร์กราฟิกยังคงทำงานผิดปกติได้: หน้าต่างที่ค้างอยู่เป็นวินาที, กระพริบ, หรือแสดงสีหรือบล็อกผิดพลาด บน Windows ให้ลองใช้อีกแบบ: เลือก <g1>มุมมอง → วาดด้วย → OpenGL</g1> จากนั้นปิด MDM (<g2>งาน → ออก</g2>) และเริ่มใหม่ <g3>มุมมอง → วาดด้วย → Direct3D</g3> กลับไปใช้วิธีเดิมได้"
-  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "ใน <g1>ไดเรกทอรีดาวน์โหลดเริ่มต้นสำหรับหมวดหมู่ \"ทั่วไป\"</g1> คลิก <g2>เรียกดู</g2> และเลือกโฟลเดอร์บนสติ๊ก เช่น <x3/>"
@@ -9910,10 +9702,6 @@
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "โดยค่าเริ่มต้น ใช้แปดการเชื่อมต่อต่อการดาวน์โหลด และสูงสุด 32 การเชื่อมต่อ หากคุณเลือกใน ตัวเลือก → การเชื่อมต่อ หรือ 128 การเชื่อมต่อ หลังจากทำเครื่องหมาย อนุญาตให้มีการเชื่อมต่อมากกว่า 32 การเชื่อมต่อ ที่นั่น MDM จะใช้การเชื่อมต่อน้อยลง…"
   },
-  "fa50579a78c9b2ef": {
-   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
-   "text": "หากทั้งสองไม่สามารถเริ่มต้นได้ MDM จะวาดด้วยซอฟต์แวร์เรนเดอร์ของ Microsoft ดังนั้นหน้าต่างยังคงเปิดได้ (Remote Desktop, เครื่องเสมือนที่ไม่มีไดรเวอร์กราฟิก) มันทำงานได้ แต่จะทำให้โปรเซสเซอร์ทำงานหนักขึ้น"
-  },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
    "text": "แทนที่โปรแกรมในโฟลเดอร์ (โฟลเดอร์ <x1/> ของสำเนาแบบพกพาจะถูกเก็บไว้)"
@@ -9929,6 +9717,10 @@
   "fa6e95ec9b6285a4": {
    "source": "Check <g1>Save to</g1> and <g2>File name</g2>. The name comes from the video's title; change it if you like.",
    "text": "ตรวจสอบ <g1>บันทึกไปที่</g1> และ <g2>ชื่อไฟล์</g2> ชื่อจะมาจากชื่อวิดีโอ คุณสามารถเปลี่ยนได้ตามต้องการ"
+  },
+  "fa8e04c072819d0f": {
+   "source": "<g1>Metro</g1>: Windows 8's flat look: square corners, flat buttons and boxes, a coloured title bar with the title centred (on Windows, where MDM draws it), and one-colour icons (Microsoft's Fluent UI System Icons).",
+   "text": "<g1>เมโทร</g1>: รูปลักษณ์แบบเรียบของ Windows 8: มุมเหลี่ยม, ปุ่มและกล่องแบบเรียบ, แถบชื่อเรื่องสีพร้อมชื่อเรื่องอยู่ตรงกลาง (บน Windows ที่ MDM วาด), และไอคอนสีเดียว (Microsoft's Fluent UI System Icons)"
   },
   "fa92082584a3b68a": {
    "source": "What IDM still does that MDM doesn't",
@@ -9961,6 +9753,10 @@
   "fb1900915c99672a": {
    "source": "After a cut connection",
    "text": "หลังจากที่การเชื่อมต่อถูกตัด"
+  },
+  "fb26f9e65b7f456b": {
+   "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
+   "text": "หน้าต่างถูกวาดด้วย OpenGL (glow ของ eframe) หรือด้วย API กราฟิกของระบบเองผ่าน wgpu ของ eframe โดยใช้แบ็กเอนด์นั้นเพียงอย่างเดียว: Direct3D 12 บน Windows (ค่าเริ่มต้นที่นั่น), Vulkan บน Linux, Metal บน macOS (ตัวเลือกที่นั่น; OpenGL ยังคงเป็นค่าเริ่มต้น) มุมมอง → วาดด้วย เลือกหนึ่งตัวเลือก เส้นทางโค้ดเดียวทำได้บนทุกระบบ (<x1/>): เมื่อตัวเลือกที่เลือกไม่สามารถเริ่มต้นได้ ตัวเลือกอื่นจะถูกลองใช้ ดังนั้นหน้าต่างจึงเปิดเสมอ; การเริ่มต้นที่เฟรมแรกไม่มา หรือการ์ดกราฟิกหายไปสองครั้ง จะถูกจดจำพร้อมเหตุผล ซึ่งเมนูจะแสดง"
   },
   "fb2ec8c40af11f70": {
    "source": "MDM downloads BitTorrent files from magnet links and <x1/> files. Torrents appear in the same list as other downloads, marked <g2>Torrent</g2> in the <g3>Source</g3> column, and can be queued and scheduled like them.",
