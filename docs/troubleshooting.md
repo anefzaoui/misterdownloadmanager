@@ -104,6 +104,7 @@ When there is one, **Update now** downloads it, checks it, puts it in place and 
 | Mac | Replaces the app in Applications. |
 | Linux, the AppImage or the .tar.gz | Replaces the AppImage, or the programs in their folder. |
 | Linux, the .deb or .rpm | Opens the checked package in your system's package installer, which asks for your password. |
+| Linux, another package manager's package (pacman, ...) | Nothing: the window says so, and your system's updates bring the new version. |
 
 MDM installs an update only when the release's list of checksums is signed by MDM's release key and the file matches it; anything else is refused, and **Download** opens the [Releases](https://github.com/anefzaoui/misterdownloadmanager/releases) page instead. Updating this way starts with version 0.2.1: earlier versions open the Releases page.
 

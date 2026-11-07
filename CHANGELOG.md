@@ -567,6 +567,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Update now on Linux asks the package manager which package MDM is**: a copy in /usr/bin
+  was taken for the .deb on a Debian-like system and for the .rpm anywhere else, so a copy
+  installed with another package manager (pacman on Arch) would have fetched and opened an .rpm.
+  MDM now asks dpkg, rpm and pacman which one owns its program; the .deb and .rpm update as
+  before, and a copy of another package manager is left to the system's updates: Check for
+  updates shows the new version's notes and says to update it there.
 - **The Linux .deb and .rpm bring what MDM's window needs** (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
   libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start
