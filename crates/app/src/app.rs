@@ -12,7 +12,8 @@ use mdm_engine::{Destination, Download, Options, Request};
 use reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
 
 use crate::chrome::{
-    self, IconKey, MenuEntry, PopupResult, ShellIcons, ToolbarEvent, TreeEvent, TreeRow,
+    self, IconKey, MenuBarEvent, MenuEntry, PopupResult, ShellIcons, ToolbarEvent, TreeEvent,
+    TreeRow,
 };
 use crate::dialogs::{self, AddUrl, Complete, FileInfo, Outcome, Start};
 use crate::icons::Icon;
@@ -5782,7 +5783,7 @@ impl App {
             self.alt_down = alt;
             if let Some(i) = open {
                 self.alt_alone = false;
-                self.open_menu = Some(i);
+                self.open_menu = chrome::menubar_next(self.open_menu, MenuBarEvent::Open(i));
                 chrome::start_keyboard(&ctx, &format!("menu-{i}"));
             }
         } else {
@@ -5790,43 +5791,43 @@ impl App {
             self.alt_alone = false;
         }
 
-        // Menu bar and its popups.
+        // Menu bar and its popups: which menu is open is chrome::menubar_next's to say.
         if let Some(i) = chrome::menu_bar(ui, o, w, self.open_menu) {
-            let clicked = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
-            self.open_menu = if self.open_menu == Some(i) && clicked {
-                None
-            } else {
-                Some(i)
-            };
+            let released = ui.input(|x| x.pointer.any_released()) || chrome::menubar_collapse(&ctx);
+            self.open_menu =
+                chrome::menubar_next(self.open_menu, MenuBarEvent::Title { i, released });
         }
         if let Some(i) = self.open_menu {
             let x = chrome::menus(ui.painter())[i].1;
             let entries = self.menu_entries(i);
             // Under the item's leading edge (the menu's top-right in RTL).
             let at = pos2(winui::mx(o.x + x), o.y + chrome::MENU_H - 1.0);
-            match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries, &|c: &Cmd| {
+            let event = match chrome::popup(&ctx, &format!("menu-{i}"), at, &entries, &|c: &Cmd| {
                 c.hint()
             }) {
-                PopupResult::Open => {}
+                PopupResult::Open => None,
                 PopupResult::Neighbor(d) => {
                     let n = chrome::menus(ui.painter()).len() as i32;
                     let j = (i as i32 + d).rem_euclid(n) as usize;
-                    self.open_menu = Some(j);
                     chrome::start_keyboard(&ctx, &format!("menu-{j}"));
+                    Some(MenuBarEvent::Open(j))
                 }
                 PopupResult::Chosen(c) => {
                     chosen = Some((c, None));
-                    self.open_menu = None;
+                    Some(MenuBarEvent::Chosen)
                 }
                 PopupResult::Dismissed => {
-                    // Clicks on the bar itself are handled by `menu_bar`.
-                    let on_bar = ctx
-                        .pointer_interact_pos()
-                        .is_some_and(|p| p.y < o.y + chrome::MENU_H);
-                    if !on_bar {
-                        self.open_menu = None;
-                    }
+                    // Shut by a press on a title: its click (on release) is `menu_bar`'s. Not
+                    // by Escape with the pointer merely resting on the bar.
+                    let press =
+                        ui.input(|x| x.pointer.press_origin().filter(|_| x.pointer.any_pressed()));
+                    let press_on_title = press
+                        .is_some_and(|at| chrome::menubar_title_at(ui.painter(), o, at).is_some());
+                    Some(MenuBarEvent::Dismissed { press_on_title })
                 }
+            };
+            if let Some(event) = event {
+                self.open_menu = chrome::menubar_next(self.open_menu, event);
             }
         }
 

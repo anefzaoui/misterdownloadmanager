@@ -521,6 +521,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **A menu shut with Escape opens again at the first click on its title**: a menu opened from
+  the menu bar and shut with Escape, the pointer still on its title, was left marked open. On
+  Linux the next click on that title only "shut" it, and a second click was needed; on Windows
+  Escape seemed to do nothing (the menu came back at once). Escape, or MDM losing the focus, now
+  shuts the menu whatever the pointer rests on; a press on a title still shuts its own menu or
+  opens another.
 - **Open folder no longer freezes the window on Linux**
   ([#222](https://github.com/anefzaoui/misterdownloadmanager/issues/222)): Download complete's
   **Open folder** asks the desktop's file manager (over D-Bus) to show the file, and MDM waited

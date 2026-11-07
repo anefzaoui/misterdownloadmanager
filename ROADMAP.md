@@ -13,6 +13,8 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ A menu of the menu bar shut with Escape opens again at the first click on its title (on
+  Linux it took two; on Windows, Escape with the pointer on the title left the menu open)
 - ✅ Started with the computer, MDM waits in the notification area instead of opening its window
   in front, on Windows, Linux and macOS (minimized where no notification area shows its icon);
   startup entries written before are updated, and the installer writes the new one
