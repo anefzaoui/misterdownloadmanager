@@ -4100,6 +4100,22 @@ extension	It didn't work. Try again.	It didn't work. Try again.
 #. pairing failed: the other MDM shows no pairing code; Pair a device is its button
 extension	It shows no code now: click Pair a device there first.	It shows no code now: click Pair a device there first.
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+extension	It's smaller than the minimum size in Options → File types.	It's smaller than the minimum size in Options → File types.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+extension	Its address is in Options → File types, addresses left to the browser.	Its address is in Options → File types, addresses left to the browser.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+extension	Its site is in Options → File types, sites left to the browser.	Its site is in Options → File types, sites left to the browser.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+extension	Its type isn't in Options → File types.	Its type isn't in Options → File types.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+extension	Left to the browser: {name}	Left to the browser: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 extension	Live	Live
 #. text in the browser extension
@@ -4190,6 +4206,15 @@ extension	The connection to Mister Download Manager failed	The connection to Mis
 #. shown briefly on the download button over a video when the app's settings keep the button off on this web site
 extension	The download button is off on this site	The download button is off on this site
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+extension	The extension isn't allowed to read this site (the browser's site access).	The extension isn't allowed to read this site (the browser's site access).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+extension	The last download was left to the browser.	The last download was left to the browser.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+extension	This browser isn't ticked in Options → General.	This browser isn't ticked in Options → General.
+#. text in the browser extension
 #. choice under Send downloads to: the Mister Download Manager on this computer
 extension	This computer	This computer
 #. text in the browser extension
@@ -4198,6 +4223,9 @@ extension	This download's details were too large to hand over	This download's de
 #. text in the browser extension
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 extension	Update Mister Download Manager to use everything this extension offers	Update Mister Download Manager to use everything this extension offers
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+extension	Use advanced browser integration is off in Options → General.	Use advanced browser integration is off in Options → General.
 #. text in the browser extension
 #. pairing failed: codes tried too fast
 extension	Wait a moment, then try again.	Wait a moment, then try again.

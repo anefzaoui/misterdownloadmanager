@@ -5245,6 +5245,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	Mainten
 #, machine
 extension	How to fix it	Comment le résoudre
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	La taille est inférieure à la taille minimale dans Options → Types de fichiers.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	Son adresse se trouve dans Options → Types de fichiers, adresses laissées au navigateur.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	Son site se trouve dans Options → Types de fichiers, sites laissés au navigateur.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	Son type ne figure pas dans Options → Types de fichiers.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	Laissé au navigateur : {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	En direct
@@ -5340,6 +5361,18 @@ extension	The connection to Mister Download Manager failed	La connexion à Miste
 #, machine
 extension	The download button is off on this site	Le bouton de téléchargement est désactivé sur ce site
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	L’extension n’est pas autorisée à lire ce site (accès au site du navigateur).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	Le dernier téléchargement a été laissé au navigateur.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	Ce navigateur n’est pas coché dans Options → Général.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Les détails de ce téléchargement étaient trop volumineux pour être transférés
@@ -5347,6 +5380,10 @@ extension	This download's details were too large to hand over	Les détails de ce
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Mettez à jour Mister Download Manager pour utiliser toutes les fonctionnalités de cette extension
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	L’option « Utiliser l’intégration avancée du navigateur » est désactivée dans Options → Général.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

@@ -5245,6 +5245,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	Držite
 #, machine
 extension	How to fix it	Kako to popraviti
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	Manje je od minimalne veličine u Opcijama → Tipovi datoteka.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	Njegova adresa je u Opcijama → Tipovi datoteka, adrese prepuštene pregledaču.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	Njegov sajt je u Opcijama → Tipovi datoteka, sajtovi prepušteni pregledaču.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	Njegov tip nije u Opcijama → Tipovi datoteka.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	Prepušteno pregledaču: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	Uživo
@@ -5340,6 +5361,18 @@ extension	The connection to Mister Download Manager failed	Veza sa aplikacijom M
 #, machine
 extension	The download button is off on this site	Dugme za preuzimanje je isključeno na ovom sajtu
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	Proširenju nije dozvoljeno da čita ovaj sajt (pristup sajtu pregledača).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	Poslednje preuzimanje je prepušteno pregledaču.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	Ovaj pregledač nije označen u Opcijama → Opšte.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	Detalji ovog preuzimanja su bili preveliki za prenos
@@ -5347,6 +5380,10 @@ extension	This download's details were too large to hand over	Detalji ovog preuz
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	Ažurirajte Mister Download Manager da biste koristili sve što ova ekstenzija nudi
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	„Koristi naprednu integraciju pregledača“ je isključeno u Opcijama → Opšte.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

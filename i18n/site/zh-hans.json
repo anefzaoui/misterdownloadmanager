@@ -46,13 +46,13 @@
    "source": "Both are kept in a <x1/> folder in MDM's data folder.",
    "text": "两者都保存在 MDM 数据文件夹中的 <x1/> 文件夹里。"
   },
-  "01742a721637a688": {
-   "source": "<g1>Automatically start downloading the following file types</g1> — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; <x2/> matches any characters, as in <x3/>. <g4>Default</g4> puts the original list back.",
-   "text": "<g1>自动下载以下文件类型</g1> — 浏览器移交（和剪贴板获取）的文件类型。用空格分隔；<x2/>匹配任何字符，如<x3/>。<g4>默认</g4>会恢复原始列表。"
-  },
   "017e6920369637f6": {
    "source": "<g1>One look for every kind of control</g1>, in both themes: text boxes, read-only fields, check boxes, buttons, drop-downs, tabs, lists and their headers, popups and progress bars are each drawn one way everywhere (dark mode drew some windows' controls in an older style, with bright borders). A number and its arrows are one box now, as Windows 11's are; text is centred in controls of any height; one blue for selection and focus.",
    "text": "<g1>两种主题下的所有控件外观统一</g1>：文本框、只读字段、复选框、按钮、下拉菜单、选项卡、列表及其标题、弹出窗口和进度条在各处的绘制方式都一致（以前深色模式下，某些窗口中的控件使用旧样式，边框较亮）。数字和箭头现在位于同一个框中，就像 Windows 11 中一样；不同高度的控件中文本都居中显示；选中项和焦点统一使用蓝色。"
+  },
+  "018b2949529218d0": {
+   "source": "<g1>Options → File types → Automatically start downloading the following file types</g1> must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, DMG, DEB, RPM, APPIMAGE, MP3, MP4, MKV, WEBM, PDF and many more.",
+   "text": "<g1>选项 → 文件类型 → 自动下载以下文件类型</g1>中必须列出文件类型。列表以常用类型开头：ZIP、RAR、7Z、EXE、MSI、ISO、DMG、DEB、RPM、APPIMAGE、MP3、MP4、MKV、WEBM、PDF 等等。"
   },
   "01b91d4b38df7f4a": {
    "source": "<g1>Launch Mister Download Manager on startup</g1> — start MDM when you sign in to Windows. Off by default. Greyed in a <g2>portable copy</g2>, which writes nothing to the registry.",
@@ -809,6 +809,10 @@
   "1214d36ab497a361": {
    "source": "What it understands",
    "text": "支持的操作"
+  },
+  "124817fe7912fea6": {
+   "source": "When the browser keeps a download, the extension's button says which of these left it there, with the file's name, and MDM's log has a line for each one (<x1/> in <g2>MDM's data folder</g2>).",
+   "text": "当浏览器保留某个下载时，扩展程序按钮会显示是哪个下载留下了它，以及文件名。MDM 的日志中会为每个下载生成一行记录（<x1/> 在<g2>MDM 的数据文件夹</g2>中）。"
   },
   "12696d50b6f54aa3": {
    "source": "The tray icon",
@@ -2993,6 +2997,10 @@
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "下载列表 →"
+  },
+  "424df5ff0d11d26b": {
+   "source": "<g1>Automatically start downloading the following file types</g1> — the file types the browser hands over (and the clipboard picks up). Separate them by spaces; <x2/> matches any characters, as in <x3/>. <g4>Default</g4> puts the original list back. The list starts with the usual archives, programs and installers (Windows, macOS and Linux ones: DMG, PKG, DEB, RPM, APPIMAGE, MSIX), music and videos, and PDF. A list you never changed gains the types a new version adds; one you edited stays as it is.",
+   "text": "<g1>自动下载以下文件类型</g1> — 浏览器移交（和剪贴板获取）的文件类型。用空格分隔；<x2/> 匹配任何字符，如 <x3/>。<g4>默认</g4> 恢复原始列表。列表以常见的压缩包、程序和安装程序（Windows、macOS 和 Linux：DMG、PKG、DEB、RPM、APPIMAGE、MSIX）、音乐和视频以及 PDF 开头。您从未更改的列表会添加新版本增加的类型；您编辑过的列表保持不变。"
   },
   "427cc05e98da7048": {
    "source": "<g1>Extract when done</g1>: ticked by itself when the package holds an archive.",
@@ -6141,6 +6149,10 @@
   "8ba3e471bdf1018f": {
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>手动代理/SOCKS 配置</g1> — 输入代理地址和<g2>端口</g2>；如果需要，还要输入<g3>用户名</g3>和<g4>密码</g4>，然后勾选代理支持的协议（<g5>http</g5>、<g6>https</g6>）。使用 SOCKS 代理时，地址格式为 <x7/>。"
+  },
+  "8bd06bcd07c716e2": {
+   "source": "<g1>MDM 0.2.x with the extension from the Chrome Web Store?</g1> The store's copy needs MDM 0.3.0 or later. Update MDM with <g2>Help → Check for updates...</g2>. Until then, remove the store's copy and load the one in MDM's folder instead (<x3/>, see <g4>Browser integration</g4>).",
+   "text": "<g1>MDM 0.2.x 版本，并安装了 Chrome 网上应用店的扩展程序？</g1> 网上应用店的版本需要 MDM 0.3.0 或更高版本。请通过<g2>帮助 → 检查更新...</g2>来更新 MDM。在此之前，请卸载网上应用店的版本，并加载 MDM 文件夹中的扩展程序（<x3/>，请参阅<g4>浏览器集成</g4>）。"
   },
   "8bdb8ef261917fb7": {
    "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",

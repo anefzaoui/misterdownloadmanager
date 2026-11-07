@@ -5235,6 +5235,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	लि�
 #, machine
 extension	How to fix it	कसरी ठीक गर्ने
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	यो विकल्पहरू → फाइल प्रकारहरूमा न्यूनतम आकार भन्दा सानो छ।
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	यसको ठेगाना विकल्पहरू → फाइल प्रकारहरूमा छ, ब्राउजरमा छोडिएका ठेगानाहरू।
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	यसको साइट विकल्पहरू → फाइल प्रकारहरूमा छ, ब्राउजरमा छोडिएका साइटहरू।
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	यसको प्रकार विकल्पहरू → फाइल प्रकारहरूमा छैन।
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	ब्राउजरमा छोडियो: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	प्रत्यक्ष
@@ -5330,6 +5351,18 @@ extension	The connection to Mister Download Manager failed	Mister Download Manag
 #, machine
 extension	The download button is off on this site	यस साइटमा डाउनलोड बटन बन्द छ
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	एक्सटेन्सनलाई यो साइट पढ्न अनुमति छैन (ब्राउजरको साइट पहुँच)।
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	अन्तिम डाउनलोड ब्राउजरमा छोडियो।
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	यो ब्राउजर विकल्पहरू → सामान्यमा टिक गरिएको छैन।
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	यो डाउनलोडको विवरण पठाउन धेरै ठूलो थियो
@@ -5337,6 +5370,10 @@ extension	This download's details were too large to hand over	यो डाउ�
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	यो एक्सटेन्सनले प्रदान गर्ने सबै कुरा प्रयोग गर्न Mister Download Manager अपडेट गर्नुहोस्
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	विकल्पहरू → सामान्यमा उन्नत ब्राउजर एकीकरण प्रयोग गर्नुहोस् बन्द छ।
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine

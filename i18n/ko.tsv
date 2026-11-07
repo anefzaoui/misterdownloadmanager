@@ -5235,6 +5235,27 @@ extension	Hold Alt while clicking a link to let the browser download it.	Alt 키
 #, machine
 extension	How to fix it	해결 방법
 #. text in the browser extension
+#. why a download stayed with the browser: the file is smaller than the app's minimum size setting
+#, machine
+extension	It's smaller than the minimum size in Options → File types.	옵션 → 파일 형식에서 최소 크기보다 작습니다.
+#. text in the browser extension
+#. why a download stayed with the browser: its address matches the app's list of addresses not to take
+#, machine
+extension	Its address is in Options → File types, addresses left to the browser.	옵션 → 파일 형식, 브라우저에 남겨진 주소에 해당 주소가 있습니다.
+#. text in the browser extension
+#. why a download stayed with the browser: its web site is on the app's list of sites not to take downloads from
+#, machine
+extension	Its site is in Options → File types, sites left to the browser.	옵션 → 파일 형식, 브라우저에 남겨진 사이트에 해당 사이트가 있습니다.
+#. text in the browser extension
+#. why a download stayed with the browser: its file type isn't on the app's list; Options and File types are the app's window and its page, as the app names them
+#, machine
+extension	Its type isn't in Options → File types.	옵션 → 파일 형식에 해당 형식이 없습니다.
+#. text in the browser extension
+#. in the toolbar button's popup: the last download the extension let the browser keep instead of handing it to the app; followed by why (one of the declined_* texts)
+#. {name} = a file name (keep the braces as they are)
+#, machine
+extension	Left to the browser: {name}	브라우저에 남겨짐: {name}
+#. text in the browser extension
 #. beside a stream in the toolbar button's popup: it is a live broadcast (no fixed length); short
 #, machine
 extension	Live	라이브
@@ -5330,6 +5351,18 @@ extension	The connection to Mister Download Manager failed	Mister Download Manag
 #, machine
 extension	The download button is off on this site	이 사이트에서는 다운로드 단추가 꺼져 있습니다.
 #. text in the browser extension
+#. why a download stayed with the browser: the user limited the extension's access to web sites in the browser, so it can't pass the sign-in on
+#, machine
+extension	The extension isn't allowed to read this site (the browser's site access).	확장 프로그램이 이 사이트를 읽을 수 없습니다(브라우저의 사이트 액세스).
+#. text in the browser extension
+#. in the toolbar button's popup when the last download the browser kept came from a private window (its name isn't kept); followed by why (one of the declined_* texts)
+#, machine
+extension	The last download was left to the browser.	마지막 다운로드는 브라우저에 남겨졌습니다.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's Options don't capture downloads from this browser (its box is unticked in the list of browsers)
+#, machine
+extension	This browser isn't ticked in Options → General.	옵션 → 일반에서 이 브라우저가 선택되지 않았습니다.
+#. text in the browser extension
 #. status when a download carried too much data (very large cookies) to give to the app
 #, machine
 extension	This download's details were too large to hand over	이 다운로드의 세부 정보가 너무 커서 전달할 수 없습니다.
@@ -5337,6 +5370,10 @@ extension	This download's details were too large to hand over	이 다운로드�
 #. status when the app is older than the extension; keep the name Mister Download Manager as it is
 #, machine
 extension	Update Mister Download Manager to use everything this extension offers	이 확장에서 제공하는 모든 기능을 사용하려면 Mister Download Manager을(를) 업데이트하세요.
+#. text in the browser extension
+#. why a download stayed with the browser: the app's setting 'Use advanced browser integration' is off; keep the setting's name as the app shows it
+#, machine
+extension	Use advanced browser integration is off in Options → General.	옵션 → 일반에서 고급 브라우저 통합 사용이 꺼져 있습니다.
 #. key name or combination in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. translate key names as the keyboard shows them (e.g. Strg for Ctrl)
 #, machine
