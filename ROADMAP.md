@@ -167,7 +167,9 @@ Everything below ships together, in the next release.
   without making it; store packages and theme windows are checked there too (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ Firefox: reading the browser's proxy (#42) is an opt-in, a switch in the extension's popup, so
-  the extension's update asks for no new permission
+  the extension's update asks for no new permission; a VPN add-on's proxy goes with the downloads
+  taken before Firefox's file dialog too, and addresses on this computer skip the proxy, as in
+  Firefox
 - ✅ Chrome and the other Chromium browsers: downloads go through the browser's proxy or VPN
   extension too (#42), with the same switch, off as installed: a fixed server for each scheme and
   its bypass list, or an auto-config script

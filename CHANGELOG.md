@@ -371,7 +371,8 @@ choose. And Linux, checked on a real desktop with every change.
   Vivaldi can't make that permission optional, so their extension has it from the install; Chrome
   counts it under the access to every site the extension already has, so the update asks for
   nothing new. There the extension reads the browser's proxy settings: the server for the
-  download's scheme (honouring their bypass list), or their auto-config script.
+  download's scheme (honouring their bypass list), or their auto-config script. Addresses on
+  this computer (localhost, 127.0.0.1) go straight to it, as the browser sends them.
 - **Zen, Helium and other browsers built on Firefox or Chromium** ([#41](https://github.com/anefzaoui/misterdownloadmanager/issues/41)):
   the extension reaches MDM in them, also when one is the only browser on Linux or macOS (Zen
   reads Firefox's folder, which MDM now creates; Helium its own). **Add Mister Download Manager
