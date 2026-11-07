@@ -13,6 +13,9 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ The extension's popup shows **Open Mister Download Manager** whole: it was cut to "Open Mister
+  Do…" on Linux and in longer languages; Options moves below it when both don't fit on one line
+  (part of [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
 - ✅ A window closed with its title bar's × keeps its contents until it goes, instead of turning
   black for a moment (seconds on Linux) ([#207](https://github.com/anefzaoui/misterdownloadmanager/issues/207))
 - ✅ A freeze while MDM handles a command, or minimized, opens the crash report window and writes

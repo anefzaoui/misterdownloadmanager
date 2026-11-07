@@ -415,6 +415,10 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **The extension's popup: Open Mister Download Manager shows whole**
+  ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on Linux, whose fonts
+  are wider, and in longer languages, the button was cut to "Open Mister Do…". Each button is now
+  as wide as its text, and Options moves below it when both don't fit on one line.
 - **Menus without a black band across their top**
   ([#208](https://github.com/anefzaoui/misterdownloadmanager/issues/208)): on a Windows 11
   Insider build (22635), every menu and submenu showed a black band a title bar tall across its
