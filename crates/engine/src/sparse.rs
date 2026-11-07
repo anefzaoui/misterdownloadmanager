@@ -7,7 +7,8 @@
 //! (`ftruncate` already makes sparse files) this is a no-op.
 //!
 //! The engine's unsafe code: one `DeviceIoControl` call here (and, in its test, one
-//! `GetCompressedFileSizeW`), and the free-space probe's two calls in `crate::disk`.
+//! `GetCompressedFileSizeW`), and the free-space probe's calls in `crate::disk`: two on Windows,
+//! one on macOS (with its CoreFoundation key, and the release of what it returns).
 #![allow(unsafe_code)]
 
 use std::fs::File;
