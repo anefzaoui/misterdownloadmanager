@@ -4827,6 +4827,11 @@
 #, machine
 	your Google account has no access to this file, or its owner turned off downloading	तुमच्या Google खात्याक ह्या फायलाक प्रवेश ना, वा ताच्या मालकान डाउनलोड करप बंद केलां
 #. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	तुमचो स्वताचो प्रोग्राम ({version}) खूब पोरनो आसा: MDM-क {oldest} वा ताचे परस नवो जाय पडटा
+#. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -4835,6 +4840,10 @@
 #. Video helpers (macOS, Linux): {path} = the system's ffmpeg
 #, machine
 	Your system's: {path}	तुमच्या सिस्टमाचो: {path}
+#. text in the Download video window
+#. the Download video window: yt-dlp couldn't read the cookies of the browser chosen in Options (Chrome, Edge...), which holds them while it runs; {browser} = its name
+#, machine
+	yt-dlp can't read {browser}'s cookies while {browser} is open. Close {browser} and look the page up again, or choose Firefox in Options → Sites Logins.	{browser} उगडो आसतना yt-dlp-क {browser} चे कुकी वाचपाक मेळना. {browser} बंद करात आनी परत पान सोदात, वा ऑप्शन्स → साइट लॉगइन्स हातूंत Firefox निवडात.
 #. text in the Download video window
 #. the Download video window (Linux, macOS): the key to the browser's cookies is in the system's keyring (GNOME Keyring, KWallet, the macOS keychain), which didn't give it; {browser} = its name
 #, machine
@@ -4998,6 +5007,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} {how} म्हूण दिवंक ना.
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} खूब पोरनो आसा: MDM-क {oldest} वा ताचे परस नवो जाय पडटा
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)

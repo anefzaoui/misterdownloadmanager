@@ -4827,6 +4827,11 @@
 #, machine
 	your Google account has no access to this file, or its owner turned off downloading	మీ Google ఖాతాకు ఈ ఫైల్‌కు యాక్సెస్ లేదు లేదా దాని యజమాని డౌన్‌లోడ్ చేయడాన్ని ఆఫ్ చేశారు
 #. text in helpers.rs
+#. Video helpers: the person's own gallery-dl is too old and not used; {version} = its version, {oldest} = the oldest MDM can use
+#. {version} = a version number (keep the braces as they are)
+#, machine
+	Your own program ({version}) is too old: MDM needs {oldest} or newer	మీ స్వంత ప్రోగ్రామ్ ({version}) చాలా పాతది: MDMకి {oldest} లేదా కొత్తది అవసరం
+#. text in helpers.rs
 #. Video helpers: {path} = the program the person chose, {version} = its version
 #. {version} = a version number (keep the braces as they are)
 #, machine
@@ -5002,6 +5007,11 @@
 #. {name} = a file name (keep the braces as they are)
 #, machine
 	{name} isn't offered as {how}.	{name} {how}గా అందించబడదు.
+#. text in errors.rs
+#. error: a program chosen as a helper is too old; {name} = gallery-dl, {version} = its version, {oldest} = the oldest one MDM can use
+#. {name} = a file name; {version} = a version number (keep the braces as they are)
+#, machine
+	{name} {version} is too old: MDM needs {oldest} or newer	{name} {version} చాలా పాతది: MDMకి {oldest} లేదా కొత్తది అవసరం
 #. text in the Options window
 #. a number of connections the app learned by itself for a server
 #. {n} = a number (keep the braces as they are)
