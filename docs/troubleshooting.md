@@ -67,10 +67,11 @@ Closed to the notification area, MDM gives its memory back to Windows: **Memory*
 
 ## The window freezes or draws wrongly
 
-On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose **View → Draw with → OpenGL**, then quit MDM (**Tasks → Exit**) and start it again. **View → Draw with → Direct3D** goes back the same way.
+On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL, or with Vulkan (Linux) or Metal (macOS) when you choose them. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. Try the other one: choose **View → Draw with → OpenGL** (or **Direct3D**, **Vulkan**, **Metal**), then quit MDM (**Tasks → Exit**) and start it again. Choosing the first one goes back the same way.
 
-- If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and **View → Draw with** says so. Choosing **Direct3D** again tries it again at the next start.
-- If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.
+- If Direct3D, Vulkan or Metal can't start on your computer (no driver for it, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and **View → Draw with** says so and why. Choosing it again tries it again at the next start.
+- On Linux, Vulkan needs your graphics card's Vulkan driver: Mesa's (`mesa-vulkan-drivers` on Ubuntu and Debian, `vulkan-radeon` or `vulkan-intel` on Arch) for AMD and Intel, NVIDIA's own driver for NVIDIA.
+- If neither can start, MDM draws with a software renderer (Microsoft's on Windows, Mesa's on Linux), so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.
 - If the graphics card is reset while MDM runs (a driver update), MDM starts again by itself.
 - Updating the graphics driver from the card maker's site (Intel, AMD or NVIDIA) fixes many of these problems.
 - A freeze or crash report says which one was drawing: include it when you report a problem.

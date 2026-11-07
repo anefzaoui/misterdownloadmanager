@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Μια υπηρεσία debrid κατεβάζει έναν σύνδεσμο φιλοξενίας αρχείων με τον δικό σας πληρωμένο λογαριασμό και δίνει στο MDM έναν απευθείας σύνδεσμο. Χρησιμοποιήστε μόνο τον δικό σας λογαριασμό: η κοινή χρήση ενός λογαριασμού ή των συνδέσμων του παραβιάζει τους όρους των υπηρεσιών και μπορεί να οδηγήσει σε αναστολή του. Οι λήψεις που έχουν ήδη ξεκινήσει από το πρόγραμμα περιήγησης παραμένουν ως έχουν.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	Δεν είναι δυνατή η ασφαλής αποθήκευση ενός αρχείου αυτού του torrent: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -431,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	Άλλο DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Άλλο πρόγραμμα έχει ορίσει το ξυπνητήρι αφύπνισης του υπολογιστή
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -739,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Τσαντ
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Αλλαγή
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1824,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Χονγκ Κονγκ
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Πώς να το επιτρέψετε
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2351,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Η εφαρμογή Mister Download Manager αντιμετώπισε ένα εσωτερικό σφάλμα
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Το Mister Download Manager εκτελεί την ουρά "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2762,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Ομάν
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	Σε λειτουργία μπαταρίας, οι επιλογές ενέργειας των Windows δεν επιτρέπουν χρονοδιακόπτες αφύπνισης
 #. text in a download's progress window
 #, machine
 	on download stop/resume	κατά τη διακοπή/συνέχιση λήψης
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	Στο macOS, μόνο ένας διαχειριστής μπορεί να προγραμματίσει αφύπνιση
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Μία φορά στις
@@ -2788,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Μόνο μια ολοκληρωμένη λήψη ή μια που δεν έχει ξεκινήσει ακόμα μπορεί να μετακινηθεί. Διακόψτε την και ολοκληρώστε την πρώτα.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Μόνο ένας διαχειριστής μπορεί να το επιτρέψει
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3322,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Στείλτε το σε ένα φίλο:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Αποστολή torrent και συνδέσμων magnet στον πρώτο λογαριασμό αντί για τους ομότιμους
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3859,6 +3897,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	Ο υπολογιστής δεν μπόρεσε να απενεργοποιηθεί: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Ο υπολογιστής αφυπνίζεται ένα λεπτό πριν από την ώρα έναρξης και παραμένει ενεργός όσο εκτελείται η ουρά. Το Mister Download Manager πρέπει να εκτελείται (μπορεί να περιμένει στην περιοχή ειδοποιήσεων).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Ο υπολογιστής θα αφυπνιστεί στις {date} και ώρα {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4098,6 +4145,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Αυτή η κατηγορία ή ουρά δεν περιέχει λήψεις ακόμα.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	Αυτός ο υπολογιστής δεν μπορεί να αφυπνιστεί από χρονοδιακόπτη
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	Αυτός ο υπολογιστής δεν διαθέτει ξυπνητήρι αφύπνισης που μπορούν να ορίσουν τα προγράμματα
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4174,9 +4229,17 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	Μέσω {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	Μέσω {service}: η υπηρεσία κατεβάζει το torrent και μετά το MDM τα αρχεία του
 #. text in the Scheduler window
 #, machine
 	Thursday	Πέμπτη
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Επιλέξτε πρώτα "Έναρξη λήψης στις": ο υπολογιστής αφυπνίζεται για την ώρα έναρξης
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Χρόνος που απομένει
@@ -4575,6 +4638,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Αναμονή: το όριο λήψεων έχει επιτευχθεί (Χρονοπρογραμματιστής)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Αφύπνιση του υπολογιστή για εκτέλεση αυτής της ουράς
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4608,6 +4675,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Μέγεθος χαρακτήρα μπαλαντέρ
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Τα Windows επιτρέπουν χρονοδιακόπτες αφύπνισης μόνο όταν είναι συνδεδεμένα στην πρίζα
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4618,6 +4689,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Γλώσσα Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Οι επιλογές ενέργειας των Windows δεν επιτρέπουν χρονοδιακόπτες αφύπνισης
 #. message or event log entry in the main window
 #, machine
 	with Add URL	με Προσθήκη URL
@@ -4840,6 +4915,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} από {total} επιλεγμένα
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} στο {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4851,6 +4930,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	Το {service} σας ζητά να επιτρέψετε πρώτα αυτόν τον υπολογιστή: δείτε το email του
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	Το {service} δεν μπορεί να λάβει αυτό το torrent: κανείς δεν το μοιράζεται ή ο σύνδεσμός του δεν μπορεί να διαβαστεί
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	Το {service} δεν μπορεί να φτάσει αυτόν τον φιλοξενούμενο αρχείων αυτήν τη στιγμή. Το MDM θα προσπαθήσει ξανά αργότερα
@@ -5490,7 +5572,7 @@ menu	Download &video from a page...	&Λήψη βίντεο από μια σελ�
 #, machine
 menu	Download in order	Λήψη με σειρά
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Σχεδίαση με
 #. menu command in the main window
@@ -5541,6 +5623,26 @@ menu	Hide drop target	Απόκρυψη στόχου απόθεσης
 #, machine
 menu	High contrast	Υψηλή αντίθεση
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	Δεν μπόρεσε να ξεκινήσει: το αρχείο καταγραφής λέει γιατί
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	Το πρώτο του καρέ δεν εμφανίστηκε εντός 10 δευτερολέπτων
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	Η τελευταία του εκκίνηση έληξε πριν από το πρώτο του καρέ
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Το Metal δεν ξεκίνησε εδώ: σχεδιάζει το OpenGL
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Μέτρο
@@ -5555,6 +5657,10 @@ menu	Move/Rename (Ctrl-M)	Μετακίνηση/Μετονομασία (Ctrl-M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Εγγενές
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Καμία κάρτα γραφικών εδώ δεν έχει πρόγραμμα οδήγησης για αυτό
 #. menu command in the main window
 #, machine
 menu	On Double click	Σε διπλό κλικ
@@ -5680,6 +5786,10 @@ menu	Support &MDM	Υποστηρίξτε το &MDM
 #, machine
 menu	Tell a &friend	Πείτε το σε ένα &φίλο
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	Η κάρτα γραφικών χάθηκε δύο φορές μέσα σε 10 λεπτά
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Θέμα
@@ -5718,6 +5828,14 @@ menu	Turn of&f	Απενεργο&ποίηση
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Επαλήθευση αθροίσματος ελέγχου...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Το Vulkan δεν ξεκίνησε εδώ: σχεδιάζει το OpenGL
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine

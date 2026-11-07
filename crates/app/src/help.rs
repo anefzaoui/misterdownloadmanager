@@ -1,6 +1,7 @@
-//! The Help menu (D-020): the user guide in the repository's docs/, the home page, problem reports on GitHub
-//! (pre-filled), update checks against GitHub Releases (on demand, and at every start and once
-//! a day while running), About, Keyboard shortcuts and Tell a friend.
+//! The Help menu (D-020): the user guide and the home page on the website (docs/ made into
+//! pages, in the interface language), problem reports on GitHub (pre-filled), update checks
+//! against GitHub Releases (on demand, and at every start and once a day while running), About,
+//! Keyboard shortcuts and Tell a friend.
 
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
@@ -10,7 +11,7 @@ use egui::{pos2, vec2};
 use crate::dialogs::{Outcome, window};
 use crate::winui::{self, ButtonKind, r};
 
-/// The repository: home page, user guide (`docs/`), problem reports, source, licences.
+/// The repository: problem reports, releases, source, licences.
 pub const REPO: &str = "https://github.com/anefzaoui/misterdownloadmanager";
 /// The creator's GitHub Sponsors page: Help → Support MDM, About's last line. The website, the
 /// extension's popup and the repository's Sponsor button (.github/FUNDING.yml) point there too.
@@ -23,15 +24,56 @@ pub const CHECK_EVERY: i64 = 24 * 3600;
 /// The check at start waits this long (the window, the list and the downloads first).
 pub const CHECK_AFTER_START: std::time::Duration = std::time::Duration::from_secs(5);
 
-/// Open a page of the user guide (`"README.md"`, `"video.md"`, `"README.md#tutorials"`…, in
-/// the repository's docs/) in the browser; `""` is the home page (the repository).
-pub fn open_page(path: &str) {
-    let url = if path.is_empty() {
-        REPO.to_owned()
-    } else {
-        format!("{REPO}/blob/main/docs/{path}")
+/// The official website: the home page and the user guide, docs/*.md made into pages by
+/// tools/website/build.py. GitHub (REPO) keeps what is GitHub's: issues, releases, the source.
+pub const SITE: &str = "https://misterdownloadmanager.com";
+
+/// The website's languages besides English, its folders (`/de/help/`): tools/website/sitei18n.py's
+/// LANGS, which a test keeps this list equal to. English is at the root.
+const SITE_LANGS: &[&str] = &[
+    "es", "pt-br", "pt", "fr", "de", "ru", "ar", "zh-hans", "ja", "ko", "tr", "it", "id", "vi",
+    "hi", "fa", "pl", "uk", "nl", "th", "bn",
+];
+
+/// The website's folder for the interface language `code` (a catalog's code: `de`, `pt-br`,
+/// `es-mx`…): the language itself, else its base language (`es-mx` reads `/es/`, `fr-ca`
+/// `/fr/`), else none, English. `zh-hant` stays English: the site has Simplified Chinese only.
+fn site_lang(code: &str) -> Option<&'static str> {
+    let code = code.to_ascii_lowercase();
+    let base = code.split(['-', '_']).next().unwrap_or_default();
+    SITE_LANGS
+        .iter()
+        .find(|l| **l == code)
+        .or_else(|| SITE_LANGS.iter().find(|l| **l == base))
+        .copied()
+}
+
+/// The website's address of a user guide page in the language `lang` (an interface language
+/// code): `doc` is the page's file in docs/ with an optional section (`"video.md"`,
+/// `"README.md#tutorials"`; the guide's contents are README.md), `""` the home page. The mapping
+/// is build.py's: docs/README.md is /help/, docs/<page>.md /help/<page>.html.
+pub fn page_url(doc: &str, lang: &str) -> String {
+    let (file, anchor) = match doc.split_once('#') {
+        Some((file, anchor)) => (file, format!("#{anchor}")),
+        None => (doc, String::new()),
     };
-    let _ = open::that_detached(url);
+    let path = match file {
+        "" => "/".to_owned(),
+        "README.md" => "/help/".to_owned(),
+        page => format!("/help/{}.html", page.strip_suffix(".md").unwrap_or(page)),
+    };
+    let folder = site_lang(lang).map(|l| format!("/{l}")).unwrap_or_default();
+    format!("{SITE}{folder}{path}{anchor}")
+}
+
+/// Open a page of the user guide on the website, in the interface language when the site has
+/// it (`doc` as page_url takes it: `"video.md"`, `"README.md#tutorials"`, `""` the home page).
+/// Never in an off-screen test run (MDM_OFFSCREEN), whose clicks come from scripts, not from a
+/// person at the browser.
+pub fn open_page(doc: &str) {
+    if !crate::offscreen() {
+        let _ = open::that_detached(page_url(doc, crate::i18n::code()));
+    }
 }
 
 /// Help → Support MDM and About's link: the Sponsors page in the browser. Asked for only: MDM
@@ -807,7 +849,7 @@ impl TellFriend {
             crate::i18n::t(
                 "I download with Mister Download Manager: fast, free, and it looks like the download manager you already know. {link}",
             ),
-            &[("link", REPO)],
+            &[("link", SITE)],
         )
     }
 
@@ -1043,6 +1085,181 @@ mod tests {
             "Other",
         ] {
             assert!(named(option), "{option}");
+        }
+    }
+
+    #[test]
+    fn help_pages_are_the_websites_in_the_interface_language() {
+        let at = |doc, lang| page_url(doc, lang);
+        assert_eq!(
+            at("README.md", "en"),
+            "https://misterdownloadmanager.com/help/"
+        );
+        assert_eq!(
+            at("README.md#tutorials", "en"),
+            "https://misterdownloadmanager.com/help/#tutorials"
+        );
+        assert_eq!(
+            at("video.md", "de"),
+            "https://misterdownloadmanager.com/de/help/video.html"
+        );
+        assert_eq!(
+            at("queues-and-scheduler.md#the-scheduler-window", "ar"),
+            "https://misterdownloadmanager.com/ar/help/queues-and-scheduler.html#the-scheduler-window"
+        );
+        assert_eq!(at("", "fr"), "https://misterdownloadmanager.com/fr/");
+        assert_eq!(at("", "en"), "https://misterdownloadmanager.com/");
+        // The site's folders: its own codes, a region read as its language, else English.
+        for (lang, folder) in [
+            ("pt-br", "/pt-br"),
+            ("pt", "/pt"),
+            ("zh-hans", "/zh-hans"),
+            ("es-mx", "/es"),
+            ("fr-ca", "/fr"),
+            ("zh-hant", ""),
+            ("sv", ""),
+            ("ca-es-valencia", ""),
+            ("he", ""),
+            ("", ""),
+        ] {
+            assert_eq!(
+                at("options.md", lang),
+                format!("https://misterdownloadmanager.com{folder}/help/options.html"),
+                "{lang}"
+            );
+        }
+    }
+
+    /// The repository's root.
+    fn root() -> std::path::PathBuf {
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
+    }
+
+    #[test]
+    fn the_site_languages_are_the_websites() {
+        // tools/website/sitei18n.py: `LANGS = [` then one `("code", …),` per language.
+        let py = std::fs::read_to_string(root().join("tools/website/sitei18n.py")).unwrap();
+        let list = py.split("\nLANGS = [").nth(1).unwrap();
+        let codes: Vec<&str> = list
+            .split("\n]")
+            .next()
+            .unwrap()
+            .lines()
+            .filter_map(|l| l.trim().strip_prefix("(\"")?.split('"').next())
+            .collect();
+        assert_eq!(codes, SITE_LANGS);
+    }
+
+    /// Every user guide page the program links to (`doc` as page_url takes it): the literal
+    /// pages given to open_page and the Help menu (`Cmd::HelpPage`) in the app's source, the
+    /// extension window's tutorial and help sections, and every website help address written in
+    /// a crate or in the browser extension.
+    fn linked_docs() -> Vec<String> {
+        let mut docs = vec![mdm_ipc::extension::GUIDE_DOC.to_owned()];
+        // The sections Options' Test browser integration opens (extension::checks' reasons).
+        for why in ["options", "not-installed"] {
+            docs.push(mdm_ipc::extension::help_doc(why));
+        }
+        let calls = regex::Regex::new(r#"(?:open_page|HelpPage)\(\s*"([^"]+)""#).unwrap();
+        let site =
+            regex::Regex::new(r"https://misterdownloadmanager\.com/help/([\w.-]*)(#[\w-]+)?")
+                .unwrap();
+        let mut files = vec![];
+        let mut dirs = vec![root().join("crates"), root().join("extension")];
+        while let Some(dir) = dirs.pop() {
+            for e in std::fs::read_dir(dir).unwrap().flatten() {
+                let path = e.path();
+                if path.is_dir() {
+                    dirs.push(path);
+                } else if path.extension().is_some_and(|x| x == "rs" || x == "js") {
+                    files.push(path);
+                }
+            }
+        }
+        let app = root().join("crates").join("app");
+        for f in files {
+            let text = std::fs::read_to_string(&f).unwrap();
+            if f.starts_with(&app) {
+                docs.extend(calls.captures_iter(&text).map(|c| c[1].to_owned()));
+            }
+            for c in site.captures_iter(&text) {
+                let page = match &c[1] {
+                    "" => "README.md".to_owned(),
+                    p => format!("{}.md", p.strip_suffix(".html").unwrap_or(p)),
+                };
+                docs.push(format!("{page}{}", c.get(2).map_or("", |a| a.as_str())));
+            }
+        }
+        docs.sort();
+        docs.dedup();
+        docs
+    }
+
+    /// A heading's section id as the website's Markdown (Python-Markdown's toc) makes it: its
+    /// own `{#id}`, else its text in lower case, letters, digits, `_` and `-` kept, spaces `-`.
+    fn heading_id(line: &str) -> Option<String> {
+        let text = line.trim_start_matches('#');
+        if text.len() == line.len() || !text.starts_with(' ') {
+            return None;
+        }
+        if let Some((_, id)) = text.split_once("{#") {
+            return Some(id.trim_end().trim_end_matches('}').to_owned());
+        }
+        let link = regex::Regex::new(r"\[([^\]]*)\]\([^)]*\)").unwrap();
+        let kept: String = link
+            .replace_all(text, "$1")
+            .chars()
+            .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '_' | '-' | ' '))
+            .collect::<String>()
+            .trim()
+            .to_lowercase();
+        let dashes = regex::Regex::new(r"[-\s]+").unwrap();
+        Some(dashes.replace_all(&kept, "-").into())
+    }
+
+    #[test]
+    fn every_linked_help_page_and_section_is_in_the_guide() {
+        let docs = linked_docs();
+        assert!(docs.len() >= 8, "{docs:?}");
+        for doc in &docs {
+            let (file, anchor) = doc.split_once('#').unwrap_or((doc, ""));
+            let Ok(text) = std::fs::read_to_string(root().join("docs").join(file)) else {
+                panic!("{doc}: docs/{file} isn't there: the website has no such page");
+            };
+            if !anchor.is_empty() {
+                let ids: Vec<String> = text.lines().filter_map(heading_id).collect();
+                assert!(
+                    ids.iter().any(|id| id == anchor),
+                    "{doc}: no section #{anchor} in docs/{file} ({ids:?})"
+                );
+            }
+        }
+    }
+
+    /// The same pages on a built website: `python tools/website/build.py` (MDM_SITE_PREVIEW=1
+    /// is enough, English), then `MDM_SITE_DIR=target/site cargo test -p mdm-app --
+    /// --ignored linked_help_pages_are_on_the_built_site`: each page is a file there, with its
+    /// section's id.
+    #[test]
+    #[ignore = "needs the website built, in MDM_SITE_DIR"]
+    fn linked_help_pages_are_on_the_built_site() {
+        let out = std::path::PathBuf::from(std::env::var("MDM_SITE_DIR").expect("MDM_SITE_DIR"));
+        for doc in linked_docs() {
+            let url = page_url(&doc, "en");
+            let path = url.strip_prefix(SITE).unwrap();
+            let (path, anchor) = path.split_once('#').unwrap_or((path, ""));
+            let mut file = out.join(path.trim_start_matches('/'));
+            if path.ends_with('/') {
+                file.push("index.html");
+            }
+            let Ok(html) = std::fs::read_to_string(&file) else {
+                panic!("{doc}: {url} isn't built ({})", file.display());
+            };
+            if !anchor.is_empty() {
+                let id = format!("id=\"{anchor}\"");
+                assert!(html.contains(&id), "{doc}: {url} has no #{anchor}");
+            }
+            println!("{doc} -> {url}: ok");
         }
     }
 }

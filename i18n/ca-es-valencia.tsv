@@ -183,6 +183,11 @@
 #. Options → Accounts: what these accounts are, and the services' rule against sharing
 #, machine
 	A debrid service downloads a file host's link with your own paid account and gives MDM a direct link. Use only your own account: sharing an account or its links breaks the services' terms and can get it suspended. Downloads the browser already started stay as they are.	Un servei de debridament baixa un enllaç d'un allotjament de fitxers amb el vostre compte de pagament i dona a MDM un enllaç directe. Utilitzeu només el vostre compte: compartir un compte o els seus enllaços infringeix les condicions del servei i pot provocar-ne la suspensió. Les baixades que el navegador ja ha iniciat es mantenen tal com estan.
+#. text in errors.rs
+#. a torrent through a debrid service: one of its files has a name that would be written outside its folder; nothing was written. {name} the file's name as the service gave it
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	A file of this torrent can't be saved safely: {name}	No es pot guardar un fitxer d'aquest torrent de manera segura: {name}
 #. text in the settings
 #. Options → DNS: the NextDNS configuration ID typed isn't one
 #, machine
@@ -431,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	Un altre DNS...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Un altre programa ha definit l'alarma d'activació de l'ordinador
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -739,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Txad
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Canvia
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1824,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Hong Kong
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Com permetre-ho
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -2351,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager ha trobat un error intern
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager està executant la cua «{queue}»
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2762,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Oman
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	Amb la bateria, les opcions d'energia de Windows no permeten els temporitzadors d'activació
 #. text in a download's progress window
 #, machine
 	on download stop/resume	en aturar/reprendre la baixada
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	En macOS, només un administrador pot programar una activació
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Una vegada a les
@@ -2788,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Només es pot moure una baixada acabada o una que encara no s'ha iniciat. Atureu-la i acabeu-la primer.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Només un administrador pot permetre-ho
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3322,6 +3356,10 @@
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	Send this to a friend:	Envia això a un amic:
+#. text in the Options window
+#. Options → Accounts: checkbox: magnet links and .torrent files go to the first account's service, which downloads them; MDM then downloads the files from it (no connections to peers)
+#, machine
+	Send torrents and magnet links to the first account instead of to peers	Envia els torrents i els enllaços magnet al primer compte en lloc d'enviar-los als parells
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -3859,6 +3897,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	L'ordinador no s'ha pogut apagar: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	L'ordinador s'activa un minut abans de l'hora d'inici i es manté actiu mentre s'executa la cua. Mister Download Manager ha d'estar en execució (pot esperar a l'àrea de notificació).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	L'ordinador s'activarà el {date} a les {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4098,6 +4145,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Aquesta categoria o cua encara no conté baixades.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	Aquest ordinador no es pot activar amb un temporitzador
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	Aquest ordinador no té cap alarma d'activació que els programes puguen definir
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4174,9 +4229,17 @@
 #. File Properties: a check box beside the login, ticked when the download goes through the user's debrid account; {service} the service, "Real-Debrid". Unticked: downloaded directly
 #, machine
 	Through {service}	A través de {service}
+#. message or event log entry in the main window
+#. event log: a torrent goes through the user's debrid account, not to peers; {service} its name ("Real-Debrid")
+#, machine
+	Through {service}: the service downloads the torrent, then MDM its files	A través de {service}: el servei baixa el torrent i, a continuació, MDM en baixa els fitxers
 #. text in the Scheduler window
 #, machine
 	Thursday	Dijous
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Marca primer «Inicia la baixada a»: l'ordinador s'activa per a l'hora d'inici
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Temps restant
@@ -4575,6 +4638,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Esperant: s'ha arribat al límit de baixades (Planificador)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Activa l'ordinador per a executar aquesta cua
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4608,6 +4675,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Grandària del comodí
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
+#, machine
+	Windows allows wake timers only while plugged in	Windows permet els temporitzadors d'activació només mentre està endollat
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4618,6 +4689,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Idioma de Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Les opcions d'energia de Windows no permeten els temporitzadors d'activació
 #. message or event log entry in the main window
 #, machine
 	with Add URL	amb Afig URL
@@ -4840,6 +4915,10 @@
 #. {n} = a number (keep the braces as they are)
 #, machine
 	{n} of {total} selected	{n} de {total} seleccionats
+#. text in the download list (sizes, speeds, status)
+#. a torrent's status while the user's debrid service downloads it, before MDM gets its files; {service} the service ("Real-Debrid"), {percent} how far it is ("45%")
+#, machine
+	{percent} at {service}	{percent} a {service}
 #. text in errors.rs
 #, machine
 	{problem} ({cause})	{problem} ({cause})
@@ -4851,6 +4930,9 @@
 #. a debrid service's error: it wants the user to allow this computer (it sent an email)
 #, machine
 	{service} asks you to allow this computer first: see its email	{service} et demana que permeteres aquest ordinador primer: consulta el seu correu electrònic
+#. text in errors.rs
+#, machine
+	{service} can't get this torrent: nobody shares it, or its link can't be read	{service} no pot obtindre aquest torrent: ningú el comparteix o l'enllaç no es pot llegir
 #. text in errors.rs
 #, machine
 	{service} can't reach this file host right now; MDM will try again later	{service} no pot arribar a aquest allotjament de fitxers ara mateix; MDM ho tornarà a intentar més tard
@@ -5490,7 +5572,7 @@ menu	Download &video from a page...	Descarrega &vídeo d'una pàgina...
 #, machine
 menu	Download in order	Baixa en ordre
 #. menu command in the main window
-#. View menu: submenu choosing what draws MDM's windows: OpenGL or Direct3D (graphics systems)
+#. View menu: submenu choosing what draws MDM's windows: OpenGL, or Direct3D, Vulkan or Metal (graphics systems)
 #, machine
 menu	Draw with	Dibuixa amb
 #. menu command in the main window
@@ -5541,6 +5623,26 @@ menu	Hide drop target	Amaga la destinació d'arrossegament
 #, machine
 menu	High contrast	Contrast alt
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: another error, written in MDM's log
+#, machine
+menu	It couldn't start: the log says why	No s'ha pogut iniciar: el registre indica el motiu
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the window stayed empty, so MDM started again with OpenGL
+#, machine
+menu	Its first frame didn't show within 10 seconds	El seu primer fotograma no s'ha mostrat en 10 segons
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: MDM crashed or was closed while starting with it
+#, machine
+menu	Its last start ended before its first frame	El seu últim inici ha acabat abans del seu primer fotograma
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Apple's), usually kept as is
+#, machine
+menu	Metal	Metal
+#. menu command in the main window
+#. View → Draw with: a greyed note; Metal failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Metal didn't start here: OpenGL draws	Metal no s'ha iniciat ací: dibuixa OpenGL
+#. menu command in the main window
 #. View → Theme: a style theme's name (Windows 8's flat look); keep "Metro" unless your language writes it otherwise
 #, machine
 menu	Metro	Metro
@@ -5555,6 +5657,10 @@ menu	Move/Rename (Ctrl-M)	Mou/Canvia el nom (Ctrl+M)
 #. View → Theme: the system's own colours (its accent colour, its high contrast)
 #, machine
 menu	Native	Natiu
+#. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: no graphics card here has a driver for that graphics system ("it")
+#, machine
+menu	No graphics card here has a driver for it	Cap targeta gràfica té un controlador per a això
 #. menu command in the main window
 #, machine
 menu	On Double click	En doble clic
@@ -5680,6 +5786,10 @@ menu	Support &MDM	Donar &suport a MDM
 #, machine
 menu	Tell a &friend	Digues-ho a un &amic
 #. menu command in the main window
+#. View → Draw with: a greyed note under "… didn't start here"; why: the graphics card stopped working twice (a driver update or reset)
+#, machine
+menu	The graphics card was lost twice in 10 minutes	La targeta gràfica s'ha perdut dues vegades en 10 minuts
+#. menu command in the main window
 #. View menu: submenu choosing MDM's look (colours, sizes, icons): Classic, Native…
 #, machine
 menu	Theme	Tema
@@ -5718,6 +5828,14 @@ menu	Turn of&f	Desacti&va
 #. the trailing ... means it opens a window: keep it
 #, machine
 menu	Verify checksum...	Verifica la suma de comprovació...
+#. menu command in the main window
+#. View → Draw with: a graphics system's name (Khronos', used on Linux), usually kept as is
+#, machine
+menu	Vulkan	Vulkan
+#. menu command in the main window
+#. View → Draw with: a greyed note; Vulkan failed on this computer, so OpenGL draws the windows
+#, machine
+menu	Vulkan didn't start here: OpenGL draws	Vulkan no s'ha iniciat ací: dibuixa OpenGL
 #. menu bar title in the main window (menus, toolbar, Categories pane)
 #. & marks the keyboard shortcut letter: keep one & before a letter of the translation
 #, machine
