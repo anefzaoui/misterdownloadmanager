@@ -2,9 +2,17 @@
  "language": "ar",
  "note": "Machine translation of the website (tools/website/translate_site.py); fix a row's text to improve it.",
  "segments": {
+  "0001df97223dc970": {
+   "source": "In Firefox, once you switch on <g1>Send downloads through this browser's proxy or VPN extension</g1> in its popup (Firefox asks you first), when the browser uses a proxy for a download (set by a VPN or proxy extension, or in its settings), the extension passes <g2>the proxy's address</g2>, or its <g3>proxy auto-config script</g3>, so MDM downloads through the same proxy. It never reads or passes the proxy's login. It notes only that a proxy asked for one, so MDM can tell you it can't use that proxy. Switched off (as installed), it reads nothing of the browser's proxy. The extension for Chrome and the other Chromium browsers doesn't do this yet.",
+   "text": "في Firefox، بمجرد تشغيل <g1>إرسال التنزيلات من خلال وكيل هذا المتصفح أو ملحق VPN</g1> في نافذته المنبثقة (يطلب منك Firefox الإذن أولا)، عندما يستخدم المتصفح وكيلا لتنزيل (يتم تعيينه بواسطة VPN أو ملحق وكيل، أو في إعداداته)، يمرر الملحق <g2>عنوان الوكيل</g2>، أو <g3>برنامج تكوين الوكيل التلقائي</g3>، بحيث يقوم MDM بالتنزيل من خلال نفس الوكيل. لا يقرأ أو يمرر أبدا معلومات تسجيل الدخول الخاصة بالوكيل. يلاحظ فقط أن الوكيل طلب ذلك، حتى يتمكن MDM من إخبارك بأنه لا يمكنه استخدام هذا الوكيل. عند إيقاف تشغيله (كما هو مثبت)، لا يقرأ أي شيء عن وكيل المتصفح. الملحق الخاص بـ Chrome ومتصفحات Chromium الأخرى لا يقوم بذلك بعد."
+  },
   "0004ade2a3d1d57f": {
    "source": "The extension is connected, but MDM's own settings leave this download to the browser. Check, in MDM:",
    "text": "الامتداد متصل، لكن إعدادات MDM تترك هذا التنزيل للمتصفح. تحقق في MDM مما يلي:"
+  },
+  "001408812fbef8cb": {
+   "source": "RSS feeds: the feeds MDM follows and their items",
+   "text": "موجزات RSS: الموجزات التي يتابعها MDM وعناصرها"
   },
   "00161c105e829376": {
    "source": "Every message to MDM also says which browser it comes from (its name, as the browser tells it) and the extension's version.",
@@ -85,6 +93,10 @@
   "02627b049e4a7241": {
    "source": "Image galleries",
    "text": "معارض الصور"
+  },
+  "02676ddab1e18999": {
+   "source": "Click a download link in the browser: Download File Info opens in MDM.",
+   "text": "انقر على رابط تنزيل في المتصفح: تفتح نافذة معلومات ملف التنزيل في MDM."
   },
   "026a1b767daa1fa2": {
    "source": "<g1>File name or part of the name</g1> — on by default.",
@@ -169,6 +181,10 @@
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "إجابات حول Mister Download Manager: هل هو مجاني، هل هو آمن، كيف يقارن بـ IDM، المتصفحات، مقاطع الفيديو، التورنت، السرعة، Mac و Linux، والمزيد."
+  },
+  "03fe2d590fecb966": {
+   "source": "Enter new address to download with the copied address filled in",
+   "text": "أدخل عنوانا جديدا للتنزيل مع العنوان المنسوخ"
   },
   "04102d03299ae7e2": {
    "source": "Starts the main download queue; <x1/>.",
@@ -274,6 +290,10 @@
    "source": "Under <g1>Add to queue</g1>, pick <g2>Main download queue</g2>. Leave <g3>Start the queue now</g3> unticked. Click <g4>OK</g4>.",
    "text": "تحت <g1>إضافة إلى قائمة الانتظار</g1>، اختر <g2>قائمة انتظار التنزيل الرئيسية</g2>. اترك <g3>بدء قائمة الانتظار الآن</g3> غير معلمة. انقر على <g4>موافق</g4>."
   },
+  "060740273a407a0d": {
+   "source": "Options, Save to: a category's folder",
+   "text": "الخيارات، حفظ في: مجلد الفئة"
+  },
   "062e786e54295c85": {
    "source": "We'd rather you knew. IDM has a site grabber for whole websites, store-listed browser extensions, and many years of polish and compatibility fixes. MDM is new; if something you rely on is missing, <g1>ask for it</g1>.",
    "text": "نفضل أن تعرف. يمتلك IDM أداة سحب مواقع كاملة، وإضافات متصفح مدرجة في المتاجر، وسنوات عديدة من التحسينات وإصلاحات التوافق. MDM جديد؛ إذا كان هناك شيء تعتمد عليه مفقودا، <g1>اطلبه</g1>."
@@ -306,6 +326,10 @@
    "source": "Uninstall MDM from Windows <g1>Settings → Apps</g1>. The uninstaller asks whether to delete your download list and settings too. Your downloaded files are never touched.",
    "text": "قم بإلغاء تثبيت MDM من <g1>إعدادات ← التطبيقات</g1> في Windows. يسألك برنامج إلغاء التثبيت عما إذا كنت تريد حذف قائمة التنزيلات والإعدادات الخاصة بك أيضا. لا يتم المساس بملفاتك التي تم تنزيلها أبدا."
   },
+  "06f1e7a5c9a5fcfc": {
+   "source": "Help → About: the version you have.",
+   "text": "تعليمات ← حول: الإصدار الذي لديك."
+  },
   "06f2b21b4750b749": {
    "source": "How do I report a bug or ask for a feature?",
    "text": "كيف أبلغ عن خطأ أو أطلب ميزة؟"
@@ -325,6 +349,14 @@
   "07367459e6405a5a": {
    "source": "<g1>Screen readers</g1> (Narrator, NVDA): every window, dialogs and menus included, now tells them what each control is, its name and its state; the download list reads each download.",
    "text": "<g1>قارئات الشاشة</g1> (Narrator, NVDA): كل نافذة، بما في ذلك مربعات الحوار والقوائم، تخبرهم الآن بماهية كل عنصر تحكم، اسمه وحالته؛ قائمة التنزيلات تقرأ كل تنزيل."
+  },
+  "0748049168576df3": {
+   "source": "Options on its Downloads page: the start download dialog, Download complete and duplicate links",
+   "text": "الخيارات في صفحة التنزيلات: مربع حوار بدء التنزيل، اكتمل التنزيل والروابط المكررة"
+  },
+  "074e15c2678ecadd": {
+   "source": "Sounds: a sound for each event.",
+   "text": "الأصوات: صوت لكل حدث."
   },
   "076e2912a172401a": {
    "source": "13th Gen Intel(R) Core(TM) i5-13400F, 63.8 GB RAM, Windows-11-10.0.26200-SP0. labserver (this repo), 127.0.0.1:8097, generated content. both at defaults: 8 connections.",
@@ -534,6 +566,10 @@
    "source": "Before you start",
    "text": "قبل أن تبدأ"
   },
+  "0c13eec2a2e5a6da": {
+   "source": "Download File Info with the file's name, size and folder",
+   "text": "معلومات ملف التنزيل مع اسم الملف وحجمه ومجلده"
+  },
   "0c1ddab7d81578c6": {
    "source": "<g1>Options → General → Use advanced browser integration</g1> must be on. Turn it off to send nothing to MDM.",
    "text": "يجب أن يكون <g1>الخيارات ← عام ← استخدام تكامل المتصفح المتقدم</g1> قيد التشغيل. أوقفه لعدم إرسال أي شيء إلى MDM."
@@ -557,6 +593,10 @@
   "0cdaa5a3dd07f272": {
    "source": "Archives (zip, 7z, rar, tar, gz, xz), and <g1>Link grabber</g1>.",
    "text": "الأرشيفات (zip، 7z، rar، tar، gz، xz)، و<g1>أداة التقاط الروابط</g1>."
+  },
+  "0d2938337aca310a": {
+   "source": "The Subtitles list of the video window, with Put them into the video",
+   "text": "قائمة الترجمات في نافذة الفيديو، مع وضعها في الفيديو"
   },
   "0d7f42041638ea02": {
    "source": "Portable: the <x1/> folder next to <x2/>.",
@@ -666,6 +706,10 @@
    "source": "<g1>Check for updates</g1>: the release notes scroll (the wheel, a trackpad, their scroll bar, and the arrow, Page and Home/End keys); their lines no longer break mid-sentence, and links show as their text (issue #5).",
    "text": "<g1>التحقق من وجود تحديثات</g1>: ملاحظات الإصدار تمرر (العجلة، لوحة التتبع، شريط التمرير الخاص بها، ومفاتيح الأسهم، Page و Home/End)؛ أسطرها لم تعد تنقطع في منتصف الجملة، وتظهر الروابط كنصها (المشكلة #5)."
   },
+  "1058e8be7cc50b7e": {
+   "source": "High contrast",
+   "text": "تباين عال"
+  },
   "10b8609f61290221": {
    "source": "<g1>SHA-256 checksums</g1><g2>for every file</g2>",
    "text": "<g1>SHA-256 مجموعات التحقق</g1><g2>لكل ملف</g2>"
@@ -697,6 +741,10 @@
   "1118f34ca5d1ce1f": {
    "source": "<g1>Put them into the video</g1> puts them inside the file instead, as tracks you switch on in the player. It needs ffmpeg, and an MP4 or MKV video.",
    "text": "<g1>وضعها في الفيديو</g1> يضعها داخل الملف بدلا من ذلك، كمسارات تقوم بتشغيلها في المشغل. يتطلب ذلك ffmpeg، وفيديو MP4 أو MKV."
+  },
+  "1151e5853122592c": {
+   "source": "RSS feeds, and the rules that pick what to download.",
+   "text": "موجزات RSS، والقواعد التي تختار ما سيتم تنزيله."
   },
   "115de9018b2cce4b": {
    "source": "Star it on GitHub",
@@ -790,6 +838,10 @@
    "source": "Yes. Copy a link to a file and MDM offers to download it at once (Options → General → Offer to download links copied to the clipboard, on by default). You can also paste links into Add URL, drag them onto the drop target, add a whole batch, or use the command line. See Adding downloads.",
    "text": "نعم. انسخ رابطا لملف، وسيعرض MDM تنزيله فورا (الخيارات → عام → عرض تنزيل الروابط المنسوخة إلى الحافظة، مفعل افتراضيا). يمكنك أيضا لصق الروابط في إضافة URL، أو سحبها إلى هدف الإفلات، أو إضافة دفعة كاملة، أو استخدام سطر الأوامر. راجع إضافة التنزيلات."
   },
+  "13ba3a9158c6660d": {
+   "source": "Tasks → Torrent settings...",
+   "text": "المهام ← إعدادات التورنت..."
+  },
   "13bdd66fc5e4c600": {
    "source": "Server allowing 2 connections",
    "text": "الخادم يسمح باتصالين"
@@ -805,6 +857,10 @@
   "13fab708d8179610": {
    "source": "<g1>A content delivery network</g1> (Cloudflare, Amazon CloudFront, Fastly, Akamai and others) serves a file from a server near you, not from the site owner's. The tooltip says so: the place is the network's server, not where the site is.",
    "text": "<g1>شبكة توصيل المحتوى</g1> (Cloudflare، Amazon CloudFront، Fastly، Akamai وغيرها) تقدم ملفا من خادم قريب منك، وليس من خادم مالك الموقع. تظهر تلميحة الأدوات ذلك: المكان هو خادم الشبكة، وليس مكان الموقع."
+  },
+  "141df6a54c91efda": {
+   "source": "Helpers...: use your own yt-dlp or ffmpeg instead.",
+   "text": "المساعدات...: استخدم نسختك الخاصة من yt-dlp أو ffmpeg بدلا من ذلك."
   },
   "141ec6fe9135de0f": {
    "source": "Use Help → Report a problem in MDM: it opens the bug report form on GitHub with your version, system and language filled in. Or open the form yourself.…",
@@ -833,10 +889,6 @@
   "148aecda526cf657": {
    "source": "Or choose <g1>Tasks → Download video from a page...</g1>, paste the address into <g2>Page address</g2> and click <g3>Look up</g3>.",
    "text": "أو اختر <g1>المهام ← تنزيل الفيديو من صفحة...</g1>، الصق العنوان في <g2>عنوان الصفحة</g2> وانقر على <g3>بحث</g3>."
-  },
-  "1490025afdf34bc3": {
-   "source": "File Properties",
-   "text": "خصائص الملف"
   },
   "149e0f5a36de6161": {
    "source": "Which systems does it run on? — Mister Download Manager",
@@ -873,6 +925,10 @@
   "1556b44c4789c7e5": {
    "source": "Organising",
    "text": "التنظيم"
+  },
+  "15656108318a1c05": {
+   "source": "<g1>Breeze</g1>: KDE Plasma's look: rounded corners, buttons and boxes that take the accent's edge under the pointer or when focused, KDE's check boxes and focus frame, KDE's title bar with the title centred and round buttons (on Windows, where MDM draws it), and KDE's Breeze icons.",
+   "text": "<g1>Breeze</g1>: مظهر كيدي بلازما: زوايا مستديرة، أزرار ومربعات تأخذ حافة اللون المميز تحت المؤشر أو عند التركيز، مربعات اختيار وإطار تركيز كيدي، شريط عنوان كيدي مع العنوان في المنتصف وأزرار مستديرة (على Windows، حيث يرسمها MDM)، وأيقونات Breeze الخاصة بكيدي."
   },
   "1570f55bb1a43ac7": {
    "source": "Queue big files during the day and let MDM download them at night, when nobody needs the connection. It can turn the computer off when it is done.",
@@ -929,6 +985,10 @@
   "1745fe3e724c0846": {
    "source": "<g1><g2>Link grabber and archives</g2></g1> — many links at once, in packages; zip, 7z and rar archives extracted when they are downloaded.",
    "text": "<g1><g2>أداة التقاط الروابط والأرشيفات</g2></g1> — روابط متعددة دفعة واحدة، في حزم؛ يتم فك ضغط أرشيفات zip و7z وrar عند تنزيلها."
+  },
+  "178857076aff1609": {
+   "source": "Archives: extract when downloaded, and where the files go.",
+   "text": "الأرشيفات: استخراج عند التنزيل، ومكان حفظ الملفات."
   },
   "178c8da6e827d8a3": {
    "source": "Leave MDM running. Closing the main window is fine: MDM keeps going in the tray. Don't use <g1>Tasks → Exit</g1>.",
@@ -1018,6 +1078,10 @@
    "source": "Sites Logins",
    "text": "تسجيلات دخول المواقع"
   },
+  "19a3fe3b4ef2bca1": {
+   "source": "All Downloads, Unfinished, Finished and Queues, each by category.",
+   "text": "جميع التنزيلات، غير المكتملة، المكتملة، وقوائم الانتظار، كل منها حسب الفئة."
+  },
   "19a5a4d2defa62ce": {
    "source": "Short answers to what people ask most, each with a link to the full guide.",
    "text": "إجابات مختصرة على أكثر الأسئلة شيوعا، مع رابط للدليل الكامل لكل منها."
@@ -1065,6 +1129,10 @@
   "1ad613281f369cb2": {
    "source": "<g1>5.5 s</g1><g2></g2>",
    "text": "<g1>5.5 ثانية</g1><g2></g2>"
+  },
+  "1adaa7c4de6bc9e1": {
+   "source": "Paste the new link into Address, then resume.",
+   "text": "الصق الرابط الجديد في حقل العنوان، ثم استأنف التحميل."
   },
   "1afe0a44e06cfa4b": {
    "source": "To check MDM's side, open <g1>Options → General</g1> in MDM and click <g2>Test browser integration...</g2>. It checks that browser integration is on, that this is the installed copy, that the browsers can find MDM, and which browsers' extension has connected; <g3>How to fix it</g3> opens the section for the first that fails.",
@@ -1137,6 +1205,10 @@
   "1bc816518d6f87cb": {
    "source": "<g1>Save to</g1>: the folder its torrents go to; empty, the Torrents category's folder. <g2>Add them without starting them</g2> adds them as <g3>Download Later</g3> would.",
    "text": "<g1>حفظ في</g1>: المجلد الذي تذهب إليه تورنتاته؛ فارغ، مجلد فئة التورنتات. <g2>إضافتها دون بدء تشغيلها</g2> تضيفها كما تفعل <g3>تنزيل لاحقا</g3>."
+  },
+  "1bcf62be8def689c": {
+   "source": "Download File Info with Download Later ringed",
+   "text": "معلومات ملف التنزيل مع التنزيل لاحقا محاطة بدائرة"
   },
   "1be93bd020009908": {
    "source": "<g1>The keyboard focus got lost</g1> when a button greyed itself or Escape closed a drop-down: Tab started over at the top of the window. It now moves on, or comes back, as in Windows.",
@@ -1230,6 +1302,10 @@
    "source": "Median CPU time each app used during a run, and its peak memory. MDM draws its window with the GPU, which takes more memory than IDM's classic Windows controls.",
    "text": "متوسط وقت استخدام المعالج لكل تطبيق أثناء التشغيل، وذروة استهلاك الذاكرة. يرسم MDM نافذته باستخدام معالج الرسوميات (GPU)، مما يستهلك ذاكرة أكبر من عناصر تحكم Windows التقليدية التي يستخدمها IDM."
   },
+  "1d6ccabe01271561": {
+   "source": "The progress window: speed, time left and each connection's share of the file",
+   "text": "نافذة التقدم: السرعة، والوقت المتبقي، وحصة كل اتصال من الملف"
+  },
   "1da156143837aec9": {
    "source": "Click <g1>Add Torrent</g1> on the toolbar to choose a <x2/> file. Or click the arrow next to it and choose <g3>Open torrent file...</g3> or <g4>Add magnet link...</g4> (also under <g5>Tasks</g5>).",
    "text": "انقر على <g1>إضافة تورنت</g1> في شريط الأدوات لاختيار ملف <x2/>. أو انقر على السهم بجانبه واختر <g3>فتح ملف تورنت...</g3> أو <g4>إضافة رابط magnet...</g4> (موجودة أيضا ضمن <g5>المهام</g5>)."
@@ -1314,10 +1390,6 @@
    "source": "A torrent's progress window on its Pieces tab: a square for each piece, filled once it's here.",
    "text": "نافذة تقدم التورنت في علامة تبويب الأجزاء: مربع لكل جزء، يمتلئ بمجرد وصوله."
   },
-  "1f9b1c3bb92ecf66": {
-   "source": "Find file",
-   "text": "البحث عن ملف"
-  },
   "1fa9954a1941617d": {
    "source": "MDM opens the web page the link came from (when it knows it), and the download's <g1>File Properties</g1>.",
    "text": "يفتح MDM صفحة الويب التي جاء منها الرابط (عندما يعرفها)، و<g1>خصائص الملف</g1> الخاصة بالتنزيل."
@@ -1366,6 +1438,10 @@
    "source": "The download list",
    "text": "قائمة التنزيلات"
   },
+  "2129b0c6ab15598e": {
+   "source": "Test browser integration... says whether the browser reaches MDM.",
+   "text": "اختبار تكامل المتصفح... يخبرك ما إذا كان المتصفح يصل إلى MDM."
+  },
   "213db710c552a56e": {
    "source": "Mister Download Manager's main window: the classic layout with toolbar, categories and download list.",
    "text": "النافذة الرئيسية لبرنامج Mister Download Manager: التصميم الكلاسيكي مع شريط الأدوات والفئات وقائمة التنزيلات."
@@ -1377,6 +1453,10 @@
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
    "text": "عدم استخدامه لإثقال أو مهاجمة أو تجاوز حدود الخوادم التي لا تملكها."
+  },
+  "219d3a9eddb4a1de": {
+   "source": "It downloads like any other file, in its own row and window.",
+   "text": "يتم تنزيله كأي ملف آخر، في صفه ونافذته الخاصة."
   },
   "21aa032bde745310": {
    "source": "A download's first request (<x1/>) follows redirects and the pages that lead on to a file by themselves (a waiting page's refresh). Sites whose links aren't the file's address have a module in <x2/> (Google Drive: <x3/>): it turns the link into the file's address, reads the site's own pages (a confirmation form, an error page) and names its refusals (<x4/>), with pure functions tested without a network. The lab server plays such a site on its real host names for the end-to-end tests (<x5/>).",
@@ -1449,6 +1529,10 @@
   "23581ac5b064e529": {
    "source": "<g1>Home</g1> / <g2>End</g2>",
    "text": "<g1>Home</g1> / <g2>End</g2>"
+  },
+  "2365e47d5b9e0466": {
+   "source": "Accounts: your debrid accounts.",
+   "text": "الحسابات: حساباتك الخاصة بخدمات Debrid."
   },
   "23758e159e5ed6c1": {
    "source": "<g1>The mouse wheel scrolls as many lines a notch as Windows' mouse settings say</g1>, in every list, tree and text box; Page Up / Page Down in the download list go to the edge of what's shown first, as in Explorer; text boxes of several lines have the lists' scroll bar.",
@@ -1549,6 +1633,10 @@
   "258b3fe2653f7ccb": {
    "source": "The top branches show how many downloads they hold. <g1>View → Hide categories</g1> gives the list the whole window.",
    "text": "تظهر الفروع العلوية عدد التنزيلات التي تحتويها. <g1>عرض ← إخفاء الفئات</g1> يمنح القائمة النافذة بأكملها."
+  },
+  "259b061fde6fe554": {
+   "source": "File Properties: the file's name, address, folder, size, status and description",
+   "text": "خصائص الملف: اسم الملف، العنوان، المجلد، الحجم، الحالة والوصف"
   },
   "25a8339210f17932": {
    "source": "Save to",
@@ -1689,6 +1777,10 @@
   "28363ce0cfaf4e8e": {
    "source": "The browser extension, from the browsers' own stores: the Chrome Web Store's is for Edge, Brave, Opera and Vivaldi too. It also comes with the app and as <g1>its own download</g1>, to add by hand. Every file is built from the public source by GitHub Actions and listed with its SHA-256 checksum.",
    "text": "ملحق المتصفح، من متاجر المتصفحات نفسها: متجر Chrome Web Store يعمل أيضا مع Edge وBrave وOpera وVivaldi. يأتي أيضا مع التطبيق وكـ<g1>تنزيل خاص به</g1>، للإضافة يدويا. يتم بناء كل ملف من المصدر العام بواسطة GitHub Actions ويتم إدراجه مع مجموع التحقق SHA-256 الخاص به."
+  },
+  "285bca50f6f03a0a": {
+   "source": "Start Download: the progress window shows it coming in.",
+   "text": "بدء التنزيل: تعرض نافذة التقدم الملف وهو قيد التنزيل."
   },
   "286a2be607456e48": {
    "source": "Set <g1>Maximum download speed</g1> in KBytes/sec. The new limit applies at once.",
@@ -1858,6 +1950,10 @@
    "source": "<g1><x2/> Star it on GitHub</g1><g3>Report a bug</g3><g4>Contribute</g4><g5>Translate</g5>",
    "text": "<g1><x2/> ضع نجمة على GitHub</g1><g3>أبلغ عن خطأ</g3><g4>ساهم</g4><g5>ترجم</g5>"
   },
+  "2c8960ad3757fc4f": {
+   "source": "The video window listing a video's qualities with their sizes",
+   "text": "نافذة الفيديو التي تعرض جودات الفيديو مع أحجامها"
+  },
   "2c8a809f2055d36d": {
    "source": "86, built in",
    "text": "86، مدمجة"
@@ -1949,10 +2045,6 @@
   "2da0ca29fb1349d1": {
    "source": "Linux",
    "text": "Linux"
-  },
-  "2da8521a51622a70": {
-   "source": "A torrent's progress window, on its Files tab",
-   "text": "نافذة تقدم التورنت، على علامة تبويب الملفات الخاصة بها"
   },
   "2dc02541cd79bcaa": {
    "source": "<g1>Options → File types → Don't start downloading automatically from the following sites</g1> must not list the site. Names are separated by spaces, and <x2/> matches any part, as in <x3/>. <g4>Edit list ...</g4> below it lists whole addresses to leave alone, one per line (<x5/>).",
@@ -2062,6 +2154,10 @@
    "source": "Internet Download Manager is the long-established paid download manager for Windows, and the design we grew up with. Here is what can be checked. Where it's ahead, we say so.",
    "text": "Internet Download Manager هو مدير التنزيلات المدفوع والمعروف منذ فترة طويلة لنظام Windows، وهو التصميم الذي نشأنا عليه. إليك ما يمكن التحقق منه. وحيثما يتفوق، نذكر ذلك."
   },
+  "2fcb7506d45a47ba": {
+   "source": "Options on its Accounts page: debrid service accounts",
+   "text": "الخيارات في صفحة الحسابات: حسابات خدمة Debrid"
+  },
   "2fd7c78a2f4da033": {
    "source": "\"What is MDM downloading right now, and how long is left?\"",
    "text": "\"ما الذي يقوم MDM بتنزيله الآن، وكم من الوقت المتبقي؟\""
@@ -2150,6 +2246,10 @@
    "source": "Type part of the file's name.",
    "text": "اكتب جزءا من اسم الملف."
   },
+  "33cb6035f72e6370": {
+   "source": "Choose the subtitles; tick Put them into the video to keep them inside the file.",
+   "text": "اختر الترجمات؛ ضع علامة في مربع وضعها في الفيديو لإبقائها داخل الملف."
+  },
   "33e932958a661bfe": {
    "source": "<g1>Category</g1> — choose a category to see and change its settings below.",
    "text": "<g1>الفئة</g1> — اختر فئة لعرض وتغيير إعداداتها أدناه."
@@ -2190,6 +2290,10 @@
    "source": "Free, open-source download manager for Windows, with macOS and Linux to try. The IDM layout you know, 5× faster in our benchmark: every connection at once, crash-safe resume, torrents, video from web pages, browser integration, 86 languages.",
    "text": "مدير تنزيلات مجاني ومفتوح المصدر لنظام Windows، مع إصدارات تجريبية لنظامي macOS وLinux. تصميم IDM الذي تعرفه، أسرع 5 مرات في معيارنا: كل اتصال في وقت واحد، استئناف آمن من الأعطال، تورنت، فيديو من صفحات الويب، تكامل المتصفح، 86 لغة."
   },
+  "35092e177f7efaa5": {
+   "source": "Download complete with Open and Open folder",
+   "text": "اكتمل التنزيل مع فتح وفتح المجلد"
+  },
   "3513f93cb0fa7d72": {
    "source": "<g1>Far</g1> (red): over 150 ms, usually another continent. A far server is often slower, and more connections help it most.",
    "text": "<g1>بعيد</g1> (أحمر): أكثر من 150 مللي ثانية، وعادة ما يكون في قارة أخرى. غالبا ما يكون الخادم البعيد أبطأ، وتساعده الاتصالات المتعددة أكثر."
@@ -2201,6 +2305,10 @@
   "3569ffbab6981371": {
    "source": "Choosing a language on first start",
    "text": "اختيار اللغة عند التشغيل الأول"
+  },
+  "359e57bd1bf0613c": {
+   "source": "The main window's toolbar and categories in the Breeze theme",
+   "text": "شريط أدوات النافذة الرئيسية والفئات في نسق Breeze"
   },
   "35a4c0860287599b": {
    "source": "Status",
@@ -2249,6 +2357,10 @@
   "36ef08c42af60d54": {
    "source": "Firefox, Chrome, Edge, Brave, Opera and Vivaldi through the extension, from <g1>Firefox's add-ons store</g1> and <g2>the Chrome Web Store</g2>. Without the extension, copy a link and MDM opens the download window. <g3>More</g3>",
    "text": "Firefox وChrome وEdge وBrave وOpera وVivaldi عبر الملحق، من <g1>متجر إضافات Firefox</g1> و<g2>متجر Chrome Web Store</g2>. بدون الملحق، انسخ رابطا وسيفتح MDM نافذة التنزيل. <g3>المزيد</g3>"
+  },
+  "36fa729abf3d65b0": {
+   "source": "Regional: dates and times as the system writes them, or your own way.",
+   "text": "إقليمي: التواريخ والأوقات كما يكتبها النظام، أو بطريقتك الخاصة."
   },
   "37018c365c78d873": {
    "source": "MDM is made by Ahmed Nefzaoui, an independent developer, and is open to contributions from anyone on GitHub. Bug reports, translations and code are all…",
@@ -2418,6 +2530,10 @@
    "source": "MDM and IDM, side by side",
    "text": "MDM و IDM، جنبا إلى جنب"
   },
+  "3a67923adc7f1f4d": {
+   "source": "Find file: a name to look for, with where to look",
+   "text": "البحث عن ملف: اسم للبحث عنه، مع تحديد مكان البحث"
+  },
   "3aaf9872ed0f4888": {
    "source": "About 40, separate downloads",
    "text": "حوالي 40، تنزيلات منفصلة"
@@ -2433,6 +2549,10 @@
   "3b1375cf2165155e": {
    "source": "The full guide is in the <g1>contributing guide</g1>, and <g2>Languages</g2> in the help explains the picker and right-to-left layouts.",
    "text": "الدليل الكامل موجود في <g1>دليل المساهمة</g1>، و<g2>اللغات</g2> في المساعدة يشرح أداة الاختيار والتخطيطات من اليمين إلى اليسار."
+  },
+  "3b2a82d357778526": {
+   "source": "1 the queues, 2 Download limits, 3 the queue's schedule, 4 its files.",
+   "text": "1 قوائم الانتظار، 2 حدود التنزيل، 3 جدول قائمة الانتظار، 4 ملفاتها."
   },
   "3b32226a0e012424": {
    "source": "If existing file is complete, show download complete dialog; otherwise resume it.",
@@ -2666,6 +2786,10 @@
    "source": "In the Scheduler's time and date boxes, <g1>Up</g1> / <g2>Down</g2> and the number keys change the selected part, and <g3>Left</g3> / <g4>Right</g4> move between parts. In the calendar, the arrows move a day or a week, <g5>Page Up</g5> / <g6>Page Down</g6> a month, and <g7>Enter</g7> picks the day.",
    "text": "في مربعات الوقت والتاريخ في الجدولة، مفتاحا <g1>Up</g1> / <g2>Down</g2> ومفاتيح الأرقام تغير الجزء المحدد، ومفتاحا <g3>Left</g3> / <g4>Right</g4> يتنقلان بين الأجزاء. في التقويم، الأسهم تحرك يوما أو أسبوعا، ومفتاحا <g5>Page Up</g5> / <g6>Page Down</g6> يحركان شهرا، ومفتاح <g7>Enter</g7> يختار اليوم."
   },
+  "40b46adc61bd2f95": {
+   "source": "Tick Also delete the file from disk only if you want the file gone too.",
+   "text": "ضع علامة في حذف الملف من القرص أيضا فقط إذا كنت تريد حذف الملف كذلك."
+  },
   "40c8dcda0be79537": {
    "source": "Download a file — Mister Download Manager help",
    "text": "تنزيل ملف — مساعدة Mister Download Manager"
@@ -2710,6 +2834,10 @@
    "source": "Then choose:",
    "text": "ثم اختر:"
   },
+  "420fd4269607a080": {
+   "source": "Pick a quality, then Download Now.",
+   "text": "اختر الجودة، ثم تنزيل الآن."
+  },
   "42284b459dc526d2": {
    "source": "The download list →",
    "text": "قائمة التنزيلات →"
@@ -2730,6 +2858,10 @@
    "source": "gallery-dl itself",
    "text": "gallery-dl نفسه"
   },
+  "42fd429771459bdb": {
+   "source": "A playlist: every video ticked, one quality for all.",
+   "text": "قائمة تشغيل: كل فيديو محدد، جودة واحدة للكل."
+  },
   "432cbb1ffee89925": {
    "source": "<g1>Your downloads are yours to answer for.</g1> Respect copyright and the terms of the sites you download from. With torrents, remember that a torrent client also shares what it downloads.",
    "text": "<g1>أنت مسؤول عن تنزيلاتك.</g1> احترم حقوق الطبع والنشر وشروط المواقع التي تقوم بالتنزيل منها. مع التورنت، تذكر أن عميل التورنت يشارك أيضا ما يقوم بتنزيله."
@@ -2745,6 +2877,10 @@
   "438a47f34fb3d4b7": {
    "source": "Browser integration — Mister Download Manager help",
    "text": "تكامل المتصفح — مساعدة Mister Download Manager"
+  },
+  "43b468d3bb0d57bb": {
+   "source": "Sites Logins: a user name and password per site.",
+   "text": "تسجيلات دخول المواقع: اسم مستخدم وكلمة مرور لكل موقع."
   },
   "43bb74214b2e4ee2": {
    "source": "The first release: a free download manager for Windows, laid out the way Internet Download Manager users expect, with experimental builds for macOS and Linux.",
@@ -2890,6 +3026,10 @@
    "source": "Deleting a queue asks first; a running queue stops when deleted; the toolbar's Start / Stop Queue arrows always work.",
    "text": "حذف قائمة انتظار يسأل أولا؛ تتوقف قائمة انتظار قيد التشغيل عند حذفها؛ تعمل أسهم بدء/إيقاف قائمة الانتظار في شريط الأدوات دائما."
   },
+  "478d7ed20f2fa436": {
+   "source": "Enter new address to download, with the Address box, Use authorization and OK",
+   "text": "أدخل عنوانا جديدا للتنزيل، مع مربع العنوان، استخدام التخويل وموافق"
+  },
   "479315841001935e": {
    "source": "<g1><x2/></g1>, a separate command-line tool: download files, videos and torrents in a terminal, with progress, without the app.",
    "text": "<g1><x2/></g1>، أداة سطر أوامر منفصلة: تنزيل الملفات ومقاطع الفيديو والتورنت في طرفية، مع إظهار التقدم، بدون التطبيق."
@@ -3006,6 +3146,10 @@
    "source": "Connections and resuming in detail →",
    "text": "الاتصالات والاستئناف بالتفصيل →"
   },
+  "4aa48dc3c710de33": {
+   "source": "Torrent settings: sharing, limits and what others can see",
+   "text": "إعدادات التورنت: المشاركة، والحدود، وما يمكن للآخرين رؤيته"
+  },
   "4ac401467a9a37d2": {
    "source": "The downloads join the <g1>Main download queue</g1>, ready to start (<g2>Start</g2> starts it too). <g3>Tasks → Import → From IDM export file</g3> reads an <x4/> file, with each download's referrer and cookies.",
    "text": "تنضم التنزيلات إلى <g1>قائمة انتظار التنزيل الرئيسية</g1>، جاهزة للبدء (يبدأها <g2>بدء</g2> أيضا). تقرأ <g3>المهام → استيراد → من ملف تصدير IDM</g3> ملف <x4/>، مع مرجع كل تنزيل وملفات تعريف الارتباط الخاصة به."
@@ -3022,13 +3166,17 @@
    "source": "Browser integration",
    "text": "تكامل المتصفح"
   },
-  "4b6527605342a06c": {
-   "source": "Confirm deletion of downloads",
-   "text": "تأكيد حذف التنزيلات"
+  "4b51fc3d56783820": {
+   "source": "When the queue is done: open a file, quit MDM, or turn the computer off.",
+   "text": "عند انتهاء قائمة الانتظار: افتح ملفا، أو أغلق MDM، أو أوقف تشغيل الكمبيوتر."
   },
   "4b6da766cbb50be6": {
    "source": "MDM opens <g1>Download a gallery</g1> instead of downloading the page as a file. The first time, click <g2>Install gallery-dl</g2>.",
    "text": "يفتح MDM نافذة <g1>تنزيل معرض</g1> بدلا من تنزيل الصفحة كملف. في المرة الأولى، انقر على <g2>تثبيت gallery-dl</g2>."
+  },
+  "4b92d52aa9b80afe": {
+   "source": "The video window after Look up: the qualities with their sizes, Save to, File name and Subtitles",
+   "text": "نافذة الفيديو بعد بحث: الجودات مع أحجامها، حفظ في، اسم الملف والترجمات"
   },
   "4bb4facbe0bd1a6b": {
    "source": "Can it download from Netflix or other paid streaming services? — Mister Download Manager",
@@ -3050,6 +3198,10 @@
    "source": "On Windows that button is in the window's title bar, left of Minimize, and in the title bar's menu (Alt+Space). On Linux and macOS it's at the end of the tab row.",
    "text": "في Windows، هذا الزر موجود في شريط عنوان النافذة، على يسار تصغير، وفي قائمة شريط العنوان (Alt+Space). في Linux و macOS، هو في نهاية صف الألسنة."
   },
+  "4c0b75cb39374b7b": {
+   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails. A link from a file host that one of your debrid accounts (<g17>Options → Accounts</g17>) supports goes through that account, as in the app, and <x18/> says <x19/>; <x20/> downloads the address itself (<g21>Debrid service accounts</g21>).",
+   "text": "تنزيل ملف بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، اختياريا باسم (<x5/>). <x6/> يختار DNS: <x7/> (الافتراضي)؛ خدمة وكيفية طلبها، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ عناوين خوادم DNS، <x13/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام. <x14/> يرسل كل اتصال عبر محول شبكة واحد، باسمه (<x15/>، <x16/>) أو أحد عناوينه؛ عندما لا يكون متصلا، لا يتم إرسال أي شيء ويفشل التنزيل. رابط من مضيف ملف يدعمه أحد حسابات Debrid الخاصة بك (<g17>الخيارات → الحسابات</g17>) يمر عبر هذا الحساب، كما هو الحال في التطبيق، و<x18/> يقول <x19/>؛ <x20/> يقوم بتنزيل العنوان نفسه (<g21>حسابات خدمة Debrid</g21>)."
+  },
   "4c19de5f19dbf774": {
    "source": "Turn on <g1>Developer mode</g1>.",
    "text": "شغل <g1>وضع المطور</g1>."
@@ -3057,6 +3209,10 @@
   "4c75f1e3123da2b1": {
    "source": "— plain FTP.",
    "text": "— FTP عادي."
+  },
+  "4c9e560c0ba0c3aa": {
+   "source": "Options on its Connection page: connections per download, the network adapter and per-server exceptions",
+   "text": "الخيارات في صفحة الاتصال: الاتصالات لكل تنزيل، محول الشبكة والاستثناءات لكل خادم"
   },
   "4caffeedea3b4eb6": {
    "source": "<g1>Options → General → Capture downloads from the following browsers</g1> must have your browser ticked.",
@@ -3085,6 +3241,10 @@
   "4d0868248400f576": {
    "source": "<g1>No video this can download on that page</g1> means yt-dlp found nothing on the page. Check that the address is the video's own page.",
    "text": "<g1>لا يوجد فيديو يمكن تنزيله في هذه الصفحة</g1> يعني أن yt-dlp لم يجد شيئا في الصفحة. تحقق من أن العنوان هو صفحة الفيديو نفسها."
+  },
+  "4d13242235854bbc": {
+   "source": "The main window's toolbar and categories in the High contrast theme",
+   "text": "شريط أدوات النافذة الرئيسية والفئات في نسق التباين العالي"
   },
   "4d35cd399872baf1": {
    "source": "Open the selected download (a double-click follows right-click → <g1>On Double click</g1>)",
@@ -3234,6 +3394,10 @@
    "source": "Download Mister Download Manager 0.2.4, the free, open-source download manager: Windows installer and portable zip, macOS .dmg and Linux AppImage, .deb and .rpm, plus the browser extension. No ads, no bundled software.",
    "text": "تنزيل Mister Download Manager 0.2.4، مدير التنزيل المجاني مفتوح المصدر: مثبت Windows وملف zip محمول، و .dmg لنظام macOS و AppImage و .deb و .rpm لنظام Linux، بالإضافة إلى ملحق المتصفح. لا إعلانات، لا برامج مجمعة."
   },
+  "512f824da85ef410": {
+   "source": "Point each category's folder at the stick.",
+   "text": "اجعل مجلد كل فئة يشير إلى الذاكرة المتنقلة."
+  },
   "513950a1b23ca382": {
    "source": "This needs nothing more from you: the extension already sees what the browser downloads in order to hand downloads over. What it notes stays in the browser's memory and is forgotten when the browser closes.",
    "text": "هذا لا يتطلب منك شيئا إضافيا: الإضافة ترى بالفعل ما يقوم المتصفح بتنزيله لتسليم التنزيلات. ما تسجله يبقى في ذاكرة المتصفح وينسى عند إغلاق المتصفح."
@@ -3286,6 +3450,10 @@
    "source": "Delivered",
    "text": "تم التسليم"
   },
+  "521c77988a37435f": {
+   "source": "The main window's toolbar and categories in the Adwaita theme",
+   "text": "شريط أدوات النافذة الرئيسية والفئات في نسق Adwaita"
+  },
   "522f96e0598b861e": {
    "source": "Select them (<g1>Ctrl+click</g1> for several).",
    "text": "حددها (<g1>Ctrl+نقر</g1> لعدة ملفات)."
@@ -3297,6 +3465,10 @@
   "524561570dcfa44c": {
    "source": "<g1>GitHub Pages</g1> hosts it. GitHub receives your IP address and browser details when you visit and may keep them in its server logs for security; see the <g2>GitHub Privacy Statement</g2>. Download links lead to GitHub Releases.",
    "text": "تستضيفه <g1>صفحات GitHub</g1>. يتلقى GitHub عنوان IP الخاص بك وتفاصيل المتصفح عند زيارتك وقد يحتفظ بها في سجلات الخادم الخاصة به لأغراض الأمان؛ راجع <g2>بيان خصوصية GitHub</g2>. تؤدي روابط التنزيل إلى إصدارات GitHub."
+  },
+  "52568481c8f45946": {
+   "source": "Classic",
+   "text": "كلاسيكي"
   },
   "52e22e811026c469": {
    "source": "9.0.9<g1>1 Nov 2026</g1>",
@@ -3406,6 +3578,10 @@
    "source": "Click <g1>Yes</g1> to delete, or <g2>No</g2> to keep everything.",
    "text": "انقر على <g1>نعم</g1> للحذف، أو <g2>لا</g2> للاحتفاظ بكل شيء."
   },
+  "557accf0aacea5ac": {
+   "source": "Link grabber listing the links of a page in packages, with their names, sizes and whether they are online",
+   "text": "أداة التقاط الروابط تسرد روابط صفحة في حزم، مع أسمائها وأحجامها وما إذا كانت متصلة بالإنترنت"
+  },
   "558bb1c07f16684f": {
    "source": "It notes the addresses of video streams (HLS and DASH playlists) a page's player loads, in memory for that tab, so the <g1>Download video</g1> button can pass the stream on. Its button reads the page only to find video and sound players and place itself. Clicking it passes the page's address, the video's address, the page's title, the site's cookies, the page that embeds the player and your browser's User-Agent to MDM.",
    "text": "يقوم بتدوين عناوين تدفقات الفيديو (قوائم تشغيل HLS وDASH) التي يحملها مشغل الصفحة، في الذاكرة لتلك علامة التبويب، حتى يتمكن زر <g1>تنزيل الفيديو</g1> من تمرير التدفق. يقرأ زرها الصفحة فقط للعثور على مشغلات الفيديو والصوت ووضع نفسه. يؤدي النقر عليه إلى تمرير عنوان الصفحة، وعنوان الفيديو، وعنوان الصفحة، وملفات تعريف الارتباط الخاصة بالموقع، والصفحة التي تحتوي على المشغل، ووكيل المستخدم الخاص بمتصفحك إلى MDM."
@@ -3433,10 +3609,6 @@
   "5672aa47684fc0f8": {
    "source": "Lines starting with <x1/> are notes for translators: where the text appears and what it means.",
    "text": "الأسطر التي تبدأ بـ <x1/> هي ملاحظات للمترجمين: أين يظهر النص وماذا يعني."
-  },
-  "569a2206af5da6b3": {
-   "source": "Options, General page",
-   "text": "الخيارات، صفحة عام"
   },
   "569b5b4f390246d8": {
    "source": "Command line and automation",
@@ -3514,6 +3686,10 @@
    "source": "The report",
    "text": "التقرير"
   },
+  "587c035cfef7393d": {
+   "source": "Download complete: Open the file, or Open folder.",
+   "text": "اكتمل التنزيل: افتح الملف، أو افتح المجلد."
+  },
   "5887d550311226da": {
    "source": "Open that menu (Windows and Linux)",
    "text": "فتح تلك القائمة (Windows و Linux)"
@@ -3586,6 +3762,10 @@
    "source": "<g1>Drag and drop on the main window</g1>: drop a link to add it, several links or a list (.txt, .ef2) to choose them in Import, a .torrent file to add it.",
    "text": "<g1>السحب والإفلات على النافذة الرئيسية</g1>: إسقاط رابط لإضافته، أو عدة روابط أو قائمة (.txt, .ef2) لاختيارها في الاستيراد، أو ملف .torrent لإضافته."
   },
+  "5a7146ca6411e2e2": {
+   "source": "Right-click a category → Properties: its name, file types and folder.",
+   "text": "انقر بزر الفأرة الأيمن على فئة → خصائص: اسمها، أنواع الملفات والمجلد."
+  },
   "5ab4860fe21cf34f": {
    "source": "<g1></g1>Up to 32, or 128 if you allow it; re-split as they go",
    "text": "<g1></g1>حتى 32، أو 128 إذا سمحت بذلك؛ يعاد تقسيمها أثناء التقدم"
@@ -3626,6 +3806,10 @@
    "source": "Unzip anywhere, a USB stick too; everything stays in its folder",
    "text": "فك الضغط في أي مكان، حتى على ذاكرة USB؛ كل شيء يبقى في مجلده"
   },
+  "5bbe458adfedffc9": {
+   "source": "1 must be on, and 2 your browser ticked.",
+   "text": "يجب أن يكون 1 قيد التشغيل، وأن يكون متصفحك المحدد هو 2."
+  },
   "5bc4b6e9ef830d3c": {
    "source": "<g1>Linux and macOS</g1>: in MDM's settings, in a data folder only you may read (0700), not yet in the system's keychain. Keeping it in the keychain is planned.",
    "text": "<g1>Linux و macOS</g1>: في إعدادات MDM، في مجلد بيانات لا يمكنك قراءته إلا أنت (0700)، وليس بعد في سلسلة مفاتيح النظام. من المخطط الاحتفاظ به في سلسلة المفاتيح."
@@ -3633,6 +3817,10 @@
   "5bf2df1735e69b20": {
    "source": "<g1>Paste</g1> from other programs into any text box (Ctrl+V, ⌘V): MDM kept a clipboard of its own.",
    "text": "<g1>لصق</g1> من برامج أخرى في أي مربع نص (Ctrl+V، ⌘V): احتفظ MDM بحافظة خاصة به."
+  },
+  "5bf587c2bc605e37": {
+   "source": "The Categories pane: All Downloads with a category per file type, Unfinished, Finished and Queues",
+   "text": "جزء الفئات: جميع التنزيلات مع فئة لكل نوع ملف، غير مكتمل، مكتمل وقوائم الانتظار"
   },
   "5c048bb2fcbcc1ce": {
    "source": "Who makes Mister Download Manager? — Mister Download Manager",
@@ -3661,6 +3849,10 @@
   "5cf4f742d0a41f0e": {
    "source": "downloads a gallery into a folder named after it. See <g1>Command line and automation</g1>.",
    "text": "ينزل معرضا إلى مجلد يحمل اسمه. انظر <g1>سطر الأوامر والأتمتة</g1>."
+  },
+  "5d335ae1978e28c3": {
+   "source": "A video's progress window while yt-dlp brings it in",
+   "text": "نافذة تقدم الفيديو بينما يقوم yt-dlp بتنزيله"
   },
   "5d3b0743b7418c7e": {
    "source": "Choose <g1>Help → Report a problem</g1>. It opens the bug report form on GitHub with your MDM version, your system and its version, how MDM was installed and its interface language already filled in. Describe what happened, what you expected and the steps that make it happen. For a download, include the address if you can share it, and the reason shown under <g2>Status</g2>.",
@@ -3922,6 +4114,10 @@
    "source": "The first / last item of an open menu",
    "text": "العنصر الأول / الأخير في قائمة مفتوحة"
   },
+  "6252af3e97f3ba17": {
+   "source": "A category's properties: its name, file types and folder",
+   "text": "خصائص الفئة: اسمها، أنواع الملفات والمجلد"
+  },
   "6272eb3a6dd2005b": {
    "source": "The download list and settings are in <x1/> (<x2/>). A portable copy keeps them in its <x3/> folder instead. Downloaded files go to your <g4>Downloads</g4> folder, sorted into a folder per category; you can change that in <g5>Options → Save to</g5>.",
    "text": "توجد قائمة التنزيلات والإعدادات في <x1/> (<x2/>). تحتفظ نسخة محمولة بها في مجلد <x3/> الخاص بها بدلا من ذلك. تذهب الملفات التي تم تنزيلها إلى مجلد <g4>التنزيلات</g4> الخاص بك، مرتبة في مجلد لكل فئة؛ يمكنك تغيير ذلك في <g5>الخيارات ← حفظ في</g5>."
@@ -3965,10 +4161,6 @@
   "63a9ff90215698fd": {
    "source": "MDM's torrents don't use <g1>encryption</g1> (sometimes called \"protocol encryption\"). That kind of encryption only hides the traffic from simple filters. It never hides who you are, so MDM doesn't claim to offer it. Some peers that require it won't connect.",
    "text": "لا تستخدم تورنتات MDM <g1>التشفير</g1> (يسمى أحيانا \"تشفير البروتوكول\"). هذا النوع من التشفير يخفي حركة المرور فقط عن المرشحات البسيطة. لا يخفي هويتك أبدا، لذلك لا يدعي MDM أنه يقدمه. بعض الأقران الذين يطلبونه لن يتصلوا."
-  },
-  "63ac412dcec0525a": {
-   "source": "The Scheduler",
-   "text": "الجدولة"
   },
   "63ce30d5a4972748": {
    "source": "Add the extension to each browser you use, as below: Firefox from its add-ons store, the others from the Chrome Web Store.",
@@ -4062,6 +4254,10 @@
    "source": "License",
    "text": "الترخيص"
   },
+  "6685cbbaa02eceef": {
+   "source": "The progress window shows it coming in.",
+   "text": "نافذة التقدم تظهر الملف وهو ينزل."
+  },
   "66987ab567339aa6": {
    "source": "Free IDM alternative",
    "text": "بديل مجاني لـ IDM"
@@ -4073,6 +4269,14 @@
   "66b76acd18192191": {
    "source": "<g1>Properties</g1> — change its name, its file types and its folder. General and Torrents only change their folder. A renamed category keeps its folder; a built-in one keeps its name in your language until you rename it.",
    "text": "<g1>خصائص</g1> — لتغيير اسمها وأنواع ملفاتها ومجلدها. الفئتان عام والتورنت تغيران مجلديهما فقط. الفئة التي أعيد تسميتها تحتفظ بمجلدها؛ والفئة المضمنة تحتفظ باسمها بلغتك حتى تعيد تسميتها."
+  },
+  "66c64617aa9effd4": {
+   "source": "1 the category, 2 where the file goes, 3 start now, 4 or put it in a queue.",
+   "text": "1 الفئة، 2 مكان حفظ الملف، 3 البدء الآن، 4 أو وضعه في قائمة الانتظار."
+  },
+  "66d91ca51ba2e6e6": {
+   "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too. A theme in a folder of its own (<x4/>) can bring its icons in <x5/> and <x6/>, each named for what it shows (<x7/>, <x8/>…): SVG or PNG files keep their colours, and <x9/> ones, as GNOME and KDE name them, take the theme's text colour.",
+   "text": "لكل منها جانب فاتح وآخر داكن: <g1>دعم الوضع الداكن</g1> و<g2>داكن دائما</g2> يختاران بينهما كما كان من قبل. ملفات النسق التي تضعها في مجلد السمات (<g3>عرض ← النسق ← فتح مجلد السمات</g3>) تظهر هناك أيضا. يمكن للنسق الموجود في مجلد خاص به (<x4/>) أن يجلب أيقوناته في <x5/> و<x6/>، كل منها مسمى بما يعرضه (<x7/>، <x8/>…): ملفات SVG أو PNG تحتفظ بألوانها، وتلك <x9/>، كما تسميها جنوم وكيدي، تأخذ لون نص النسق."
   },
   "670bb10cde757ad1": {
    "source": "MDM never writes the token to its event log, crash reports, the automation API or the command line's output.",
@@ -4093,6 +4297,10 @@
   "676c0b5817404515": {
    "source": "To route <g1>everything</g1> through another network, use a VPN for the whole computer.",
    "text": "لتوجيه <g1>كل شيء</g1> عبر شبكة أخرى، استخدم VPN للكمبيوتر بأكمله."
+  },
+  "67b09013b9c7d05d": {
+   "source": "Yes downloads both helpers in the background, once.",
+   "text": "نعم، يقوم بتنزيل المساعدين في الخلفية مرة واحدة."
   },
   "67b7e3e016904e39": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to…",
@@ -4169,10 +4377,6 @@
   "6976d3a5455f9216": {
    "source": "Typing the start of a name while the list has the focus jumps to the first download whose name starts with it.",
    "text": "كتابة بداية اسم بينما القائمة في التركيز يقفز إلى أول تنزيل يبدأ اسمه بذلك."
-  },
-  "69ae5ffd3be508d8": {
-   "source": "Add torrent",
-   "text": "إضافة تورنت"
   },
   "69cc300453b87a26": {
    "source": "Yes, with no trial, no paid edition, no ads and no sign-up. It is free software under the GNU GPL, version 3.",
@@ -4258,6 +4462,10 @@
    "source": "MDM isn't installed, or browser integration isn't set up",
    "text": "MDM غير مثبت، أو تكامل المتصفح غير معد"
   },
+  "6b05e78186187bf5": {
+   "source": "Ctrl+F, type part of the name, then Find.",
+   "text": "اضغط Ctrl+F، اكتب جزءا من الاسم، ثم اضغط بحث."
+  },
   "6b0911ac05d6e883": {
    "source": "Linux, the AppImage or the .tar.gz",
    "text": "Linux، AppImage أو .tar.gz"
@@ -4269,6 +4477,10 @@
   "6b1f32baf0de106c": {
    "source": "<g1><g2>Portable mode</g2></g1> — run MDM from a folder or a USB stick without installing it.",
    "text": "<g1><g2>الوضع المحمول</g2></g1> — تشغيل MDM من مجلد أو محرك أقراص USB دون تثبيته."
+  },
+  "6b4da849d7465ea3": {
+   "source": "Options, File types: the file types MDM takes from the browser, and the sites it leaves alone",
+   "text": "الخيارات، أنواع الملفات: أنواع الملفات التي يلتقطها MDM من المتصفح، والمواقع التي يتركها وشأنها"
   },
   "6b6efc5ebc7172c7": {
    "source": "Run the highlighted item",
@@ -4365,6 +4577,10 @@
   "6dc00f6ca0aab78e": {
    "source": "<g1>What an archive holds goes</g1> — into a folder named after it when it holds several things (the default), always into such a folder, or straight into the archive's folder.",
    "text": "<g1>محتويات الأرشيف تذهب</g1> — إلى مجلد يحمل اسمه عندما يحتوي على عدة أشياء (الافتراضي)، دائما إلى مثل هذا المجلد، أو مباشرة إلى مجلد الأرشيف."
+  },
+  "6ddb957d293eb435": {
+   "source": "1 the menu bar, 2 the toolbar, 3 the categories, 4 the download list.",
+   "text": "1 شريط القوائم، 2 شريط الأدوات، 3 الفئات، 4 قائمة التنزيلات."
   },
   "6de1faa1813fee7e": {
    "source": "<g1>5</g1> of 10",
@@ -4498,6 +4714,10 @@
    "source": "What stays on your computer",
    "text": "ما يبقى على جهاز الكمبيوتر الخاص بك"
   },
+  "70aaa86487419e0d": {
+   "source": "Link grabber: untick what you don't want, then Add to queue.",
+   "text": "أداة التقاط الروابط: ألغ تحديد ما لا تريده، ثم إضافة إلى قائمة الانتظار."
+  },
   "70ae16056b2c6783": {
    "source": "Replaces the AppImage, or the programs in their folder.",
    "text": "يستبدل AppImage، أو البرامج في مجلدها."
@@ -4549,6 +4769,10 @@
   "7232d28a0b1af03b": {
    "source": "1.2.0 desktop beta<g1>25 Oct 2026</g1>",
    "text": "1.2.0 إصدار تجريبي لسطح المكتب<g1>25 أكتوبر 2026</g1>"
+  },
+  "7245ff310e79465b": {
+   "source": "The command line's <x1/> and <x2/> use the same accounts, and say <x3/>; <x4/> downloads the address itself (<g5>command line</g5>).",
+   "text": "تستخدم <x1/> و<x2/> في سطر الأوامر نفس الحسابات، وتقول <x3/>؛ <x4/> تنزل العنوان نفسه (<g5>سطر الأوامر</g5>)."
   },
   "7253386d6cdbc23f": {
    "source": "Cap each file instead",
@@ -4622,6 +4846,10 @@
    "source": "MDM didn't answer in time",
    "text": "MDM لم يستجب في الوقت المحدد"
   },
+  "73bbfe3db01da3ea": {
+   "source": "Options, General with Test browser integration...",
+   "text": "الخيارات، عام مع اختبار تكامل المتصفح..."
+  },
   "73f13dca46cb9d2c": {
    "source": "<g1><g2>Yes</g2></g1><g3>via yt-dlp</g3>",
    "text": "<g1><g2>نعم</g2></g1><g3>عبر yt-dlp</g3>"
@@ -4669,6 +4897,10 @@
   "75072594c2f7adda": {
    "source": "Run <x1/> from there.",
    "text": "شغل <x1/> من هناك."
+  },
+  "7537997de54b70e3": {
+   "source": "Once it is set up, a download link goes like this:",
+   "text": "بعد الإعداد، يتم التقاط رابط التنزيل كالتالي:"
   },
   "755c9430c92ad5b4": {
    "source": "Save it in this folder (else the category's folder from <g1>Options → Save to</g1>).",
@@ -4882,6 +5114,10 @@
    "source": "Tick <g1>Limit all downloads together to</g1> and type a speed in KBytes/sec. A good start is about two thirds of your connection's speed. (1 MByte/sec is about 1000 KBytes/sec.)",
    "text": "ضع علامة في <g1>تحديد جميع التنزيلات معا إلى</g1> واكتب السرعة بالكيلوبايت/ثانية. البداية الجيدة هي حوالي ثلثي سرعة اتصالك. (1 ميجابايت/ثانية تعادل حوالي 1000 كيلوبايت/ثانية.)"
   },
+  "7ad7c17f54ce45b0": {
+   "source": "Add torrent with a torrent's files as a folder tree, the folder they go to, and Download Now",
+   "text": "إضافة تورنت مع ملفات التورنت كشجرة مجلدات، والمجلد الذي ستذهب إليه، وتنزيل الآن"
+  },
   "7ae273da4ef67ce4": {
    "source": "Give the video's page address to <g1>Add URL</g1> (<g2>Ctrl+N</g2>). MDM recognises video pages and opens the video window, already looking the page up.",
    "text": "أدخل عنوان صفحة الفيديو في <g1>إضافة URL</g1> (<g2>Ctrl+N</g2>). يتعرف MDM على صفحات الفيديو ويفتح نافذة الفيديو، ويبدأ بالبحث في الصفحة."
@@ -4954,6 +5190,10 @@
    "source": "Vivaldi",
    "text": "Vivaldi"
   },
+  "7ca97bd5e93217a8": {
+   "source": "Its progress window: each file and how much of it is here.",
+   "text": "نافذة التقدم الخاصة به: كل ملف ومقدار ما تم تنزيله منه هنا."
+  },
   "7caa819cbb46080c": {
    "source": "MDM doesn't accept this copy of the extension",
    "text": "MDM لا يقبل هذه النسخة من الإضافة"
@@ -4993,6 +5233,10 @@
   "7d32e887febf85b0": {
    "source": "Right-click the download and choose <g1>Refresh download address</g1>.",
    "text": "انقر بزر الفأرة الأيمن على التنزيل واختر <g1>تحديث عنوان التنزيل</g1>."
+  },
+  "7d3af2ef0e680bca": {
+   "source": "The progress window of a download coming in over several connections",
+   "text": "نافذة تقدم التنزيل لملف يتم تنزيله عبر عدة اتصالات"
   },
   "7d3f9b3b48edb259": {
    "source": "<g1>Show queue selection panel on closing batch download dialogs</g1> — the same for batch downloads.",
@@ -5057,6 +5301,10 @@
   "7e48cc23f12b2ed9": {
    "source": "Download",
    "text": "تنزيل"
+  },
+  "7e7bffb22a4c1aa5": {
+   "source": "<g1>Adwaita</g1>: GNOME's look: round corners, flat grey buttons, a rounded focus ring, GNOME's check boxes, a header bar with the title in bold and round buttons (on Windows, where MDM draws it), and GNOME's Adwaita icons, in colour for files and categories, one colour in the toolbar.",
+   "text": "<g1>Adwaita</g1>: مظهر جنوم: زوايا مستديرة، أزرار رمادية مسطحة، حلقة تركيز مستديرة، مربعات اختيار جنوم، شريط عنوان مع العنوان بخط عريض وأزرار مستديرة (على Windows، حيث يرسمها MDM)، وأيقونات Adwaita الخاصة بجنوم، ملونة للملفات والفئات، بلون واحد في شريط الأدوات."
   },
   "7e997f3f6fbc646c": {
    "source": "The extension can't read this site",
@@ -5278,6 +5526,10 @@
    "source": "The connection to MDM failed",
    "text": "فشل الاتصال بـ MDM"
   },
+  "83c56a18063f42f2": {
+   "source": "MDM keeps the choice with the download, after a restart too.",
+   "text": "يحتفظ MDM بالخيار مع التنزيل، حتى بعد إعادة التشغيل."
+  },
   "83caac9f938cc79a": {
    "source": "How a program talks to MDM",
    "text": "كيف يتحدث البرنامج إلى MDM"
@@ -5306,6 +5558,10 @@
    "source": "Torrents and your security",
    "text": "التورنت وأمنك"
   },
+  "847919d6970d2f79": {
+   "source": "View → Draw with: the other way of drawing.",
+   "text": "عرض ← الرسم باستخدام: طريقة الرسم الأخرى."
+  },
   "848c27d765afb666": {
    "source": "5. Apply and leave MDM running",
    "text": "5. تطبيق وترك MDM يعمل"
@@ -5329,6 +5585,10 @@
   "84a8b37a9cdcaee5": {
    "source": "Translations",
    "text": "الترجمات"
+  },
+  "84b4301bea02e666": {
+   "source": "Download complete, with Open, Open with..., Open folder and Close",
+   "text": "اكتمل التنزيل، مع فتح، فتح باستخدام...، فتح المجلد وإغلاق"
   },
   "84ca82a68f7ffa9e": {
    "source": "<g1>Sort:</g1> click a column title. Click again to reverse the order, and a third time to go back to the order of addition. <g2>View → Arrange files</g2> does the same from the menu.",
@@ -5357,6 +5617,10 @@
   "853ac467ba7801e6": {
    "source": "Put downloads in a queue →",
    "text": "وضع التنزيلات في قائمة انتظار →"
+  },
+  "8581b3f6f6759cc7": {
+   "source": "Proxy / Socks: no proxy, the system's, or your own.",
+   "text": "الوكيل / SOCKS: لا يوجد وكيل، أو وكيل النظام، أو وكيلك الخاص."
   },
   "85e94ab3cbe76c66": {
    "source": "Download Mister Download Manager 0.2.4 — free for Windows, macOS and Linux",
@@ -5433,6 +5697,14 @@
   "880dcd6570293c2e": {
    "source": "Downloading may be against some sites' terms. Checking that is up to you.",
    "text": "قد يكون التنزيل مخالفا لشروط بعض المواقع. التحقق من ذلك يعود إليك."
+  },
+  "883db0149fcc4d63": {
+   "source": "Options on its General page: start with the system, the clipboard, browser integration and the browsers MDM takes downloads from",
+   "text": "الخيارات في صفحتها العامة: البدء مع النظام، الحافظة، تكامل المتصفح والمتصفحات التي يأخذ منها MDM التنزيلات"
+  },
+  "8854151459f022ea": {
+   "source": "The Scheduler: the queues on the left with Download limits, the selected queue's Schedule tab on the right",
+   "text": "الجدولة: قوائم الانتظار على اليسار مع حدود التنزيل، وعلامة تبويب الجدولة لقائمة الانتظار المحددة على اليمين"
   },
   "887417a3d46d42f9": {
    "source": "The same list is in MDM under <g1>Help → Keyboard shortcuts</g1>, and the menus show each command's keys beside it. On a Mac, <g2>⌘</g2> (Command) takes the place of <g3>Ctrl</g3>: <g4>⌘N</g4> adds a download.",
@@ -5582,6 +5854,18 @@
    "source": "<g1>Manual proxy/socks configuration</g1> — type the proxy's address, <g2>Port</g2>, and a <g3>UserName</g3> and <g4>Password</g4> if it needs them, then tick the protocols it is for (<g5>http</g5>, <g6>https</g6>). For a SOCKS proxy, write the address as <x7/>.",
    "text": "<g1>تكوين وكيل/SOCKS يدوي</g1> — اكتب عنوان الوكيل، <g2>المنفذ</g2>، و<g3>اسم المستخدم</g3> و<g4>كلمة المرور</g4> إذا كان يحتاجها، ثم حدد البروتوكولات التي ينطبق عليها (<g5>http</g5>، <g6>https</g6>). بالنسبة لوكيل SOCKS، اكتب العنوان كـ <x7/>."
   },
+  "8bdb8ef261917fb7": {
+   "source": "Its permissions, and why: <g1>downloads</g1> to see and hand over downloads; <g2>cookies</g2> so signed-in downloads work in MDM; <g3>nativeMessaging</g3> to talk to MDM; <g4>contextMenus</g4> for the right-click items; <g5>storage</g5> for its settings; <g6>webRequest</g6> to see forms submitted and video streams loaded (it changes nothing); <g7>declarativeNetRequestWithHostAccess</g7> (Chrome, Edge and other Chromium browsers) to have the files the browser would open (a PDF) downloaded instead, for the types MDM takes; in Firefox, <g8>webRequestBlocking</g8> does that; <g9>scripting</g9> to read a page's links when you ask, and to add the video button to pages already open when the extension is installed; <g10>proxy</g10> (Firefox, optional: asked for only when you switch it on in the popup) to read which proxy the browser uses, so downloads taken from a browser behind a VPN or proxy extension go through it too (it never changes the browser's proxy); access to all sites because downloads and videos can come from any site.",
+   "text": "أذوناته، ولماذا: <g1>التنزيلات</g1> لرؤية التنزيلات وتسليمها؛ <g2>ملفات تعريف الارتباط</g2> لكي تعمل التنزيلات التي تم تسجيل الدخول إليها في MDM؛ <g3>nativeMessaging</g3> للتحدث مع MDM؛ <g4>contextMenus</g4> لعناصر النقر بزر الفأرة الأيمن؛ <g5>التخزين</g5> لإعداداته؛ <g6>webRequest</g6> لرؤية النماذج المرسلة وتدفقات الفيديو المحملة (لا يغير شيئا)؛ <g7>declarativeNetRequestWithHostAccess</g7> (Chrome و Edge ومتصفحات Chromium الأخرى) لتنزيل الملفات التي سيفتحها المتصفح (ملف PDF) بدلا من ذلك، لأنواع الملفات التي يتعامل معها MDM؛ في Firefox، يقوم <g8>webRequestBlocking</g8> بذلك؛ <g9>scripting</g9> لقراءة روابط الصفحة عندما تطلب ذلك، ولإضافة زر الفيديو إلى الصفحات المفتوحة بالفعل عند تثبيت الملحق؛ <g10>proxy</g10> (Firefox، اختياري: يطلب فقط عند تشغيله في النافذة المنبثقة) لقراءة الوكيل الذي يستخدمه المتصفح، بحيث تمر التنزيلات المأخوذة من متصفح خلف VPN أو ملحق وكيل من خلاله أيضا (لا يغير أبدا وكيل المتصفح)؛ الوصول إلى جميع المواقع لأن التنزيلات ومقاطع الفيديو يمكن أن تأتي من أي موقع."
+  },
+  "8bdde34517b27efd": {
+   "source": "Options on its Archives page: extracting archives when they are downloaded, and Link grabber's look-ups",
+   "text": "الخيارات في صفحة الأرشيفات: استخراج الأرشيفات عند تنزيلها، وعمليات البحث في أداة التقاط الروابط"
+  },
+  "8bdfaff0af16d86a": {
+   "source": "MDM lists the qualities: pick one.",
+   "text": "يعرض MDM الجودات: اختر واحدة."
+  },
   "8bf5db6373827a5f": {
    "source": "Media on this page",
    "text": "الوسائط في هذه الصفحة"
@@ -5633,6 +5917,10 @@
   "8d5482092a09013b": {
    "source": "Some pages play a video without a link to it, and some players hide it from the download button too. The toolbar button lists what the page has loaded, so you can still save it:",
    "text": "بعض الصفحات تشغل الفيديو دون رابط إليه، وبعض المشغلات تخفيه عن زر التنزيل أيضا. زر شريط الأدوات يسرد ما حملته الصفحة، لذا لا يزال بإمكانك حفظه:"
+  },
+  "8d682522748bdfae": {
+   "source": "Adwaita",
+   "text": "Adwaita"
   },
   "8d6911b8ed8eb4d4": {
    "source": "<g1>How it asks:</g1> gallery-dl asks sites as MDM, one picture a second at most. Wikimedia's servers refuse tools that ask faster or without a name. It uses no configuration file of yours.",
@@ -5709,10 +5997,6 @@
   "8f81187a957c46df": {
    "source": "<g1><g2>Download overnight</g2></g1> — queue files and let the Scheduler start them at night.",
    "text": "<g1><g2>التنزيل ليلا</g2></g1> — ضع الملفات في قائمة الانتظار ودع الجدولة تبدأها في الليل."
-  },
-  "8f81a67ecf66f6f4": {
-   "source": "Batch download",
-   "text": "تنزيل دفعي"
   },
   "8f843b10d98aa225": {
    "source": "<g1>BitTorrent</g1><g2>DHT and trackers</g2>",
@@ -5866,10 +6150,6 @@
    "source": "Keep some speed for everything else →",
    "text": "احتفظ ببعض السرعة للباقي →"
   },
-  "93f6a01041910b90": {
-   "source": "Download a file with up to 8 connections (<x1/>, 1 to 128), showing progress. <x2/> pauses it; <x3/> continues. <x4/> checks the finished file: hex MD5, SHA-1, SHA-256, SHA-512 or CRC32, optionally named (<x5/>). <x6/> picks the DNS: <x7/> (the default); a service and how to ask it, <x8/>, <x9/>, <x10/>, <x11/>, <x12/>; DNS servers' addresses, <x13/>; or a DNS-over-HTTPS address. It never falls back to the system's DNS. <x14/> sends every connection through one network adapter, by its name (<x15/>, <x16/>) or one of its addresses; when it isn't connected, nothing is sent and the download fails.",
-   "text": "نزل ملفا بما يصل إلى 8 اتصالات (<x1/>، من 1 إلى 128)، مع إظهار التقدم. <x2/> يوقفه مؤقتا؛ <x3/> يتابعه. <x4/> يتحقق من الملف المكتمل: MD5 سداسي عشري، SHA-1، SHA-256، SHA-512 أو CRC32، مع تسمية اختيارية (<x5/>). <x6/> يختار DNS: <x7/> (الافتراضي)؛ خدمة وكيفية طلبها، <x8/>، <x9/>، <x10/>، <x11/>، <x12/>؛ عناوين خوادم DNS، <x13/>؛ أو عنوان DNS-over-HTTPS. لا يعود أبدا إلى DNS الخاص بالنظام. <x14/> يرسل كل اتصال عبر محول شبكة واحد، باسمه (<x15/>، <x16/>) أو أحد عناوينه؛ عندما لا يكون متصلا، لا يتم إرسال أي شيء ويفشل التنزيل."
-  },
   "94138b99718bf4a0": {
    "source": "Mister Download Manager (\"MDM\", \"the software\") and the website misterdownloadmanager.com (\"the site\") are made by Ahmed Nefzaoui and contributors (\"we\"). By using the software or the site you accept these terms. If you don't, please don't use them.",
    "text": "برنامج Mister Download Manager (\"MDM\"، \"البرنامج\") وموقع misterdownloadmanager.com (\"الموقع\") من تطوير أحمد نفزاوي والمساهمين (\"نحن\"). باستخدامك للبرنامج أو الموقع، فإنك توافق على هذه الشروط. إذا كنت لا توافق، يرجى عدم استخدامهما."
@@ -5954,9 +6234,17 @@
    "source": "portable.zip — runs from a folder or USB stick",
    "text": "portable.zip — يعمل من مجلد أو ذاكرة USB"
   },
+  "961eaa849deedf28": {
+   "source": "Download File Info for a ZIP file: its address, the Compressed category, the folder it goes to, its size, and the Download Later, Start Download and Cancel buttons",
+   "text": "معلومات ملف التنزيل لملف ZIP: عنوانه، فئة مضغوط، المجلد الذي سيحفظ فيه، حجمه، وأزرار تنزيل لاحقا، بدء التنزيل وإلغاء الأمر"
+  },
   "962a389b4aee01a7": {
    "source": "Does it support FTP? — Mister Download Manager",
    "text": "هل يدعم FTP؟ — Mister Download Manager"
+  },
+  "963552ab075ccbdb": {
+   "source": "MDM offers yt-dlp and ffmpeg on its first start, with Yes, download them (recommended) and Not now",
+   "text": "يقدم MDM أدوات yt-dlp وffmpeg عند تشغيله لأول مرة، مع خياري نعم، قم بتنزيلهما (موصى به) وليس الآن"
   },
   "964baafe2e54e20e": {
    "source": "For a Mac with Apple Silicon (M1 or later: <g1>Apple menu → About This Mac</g1> shows a <g2>Chip</g2>). Open it and drag Mister Download Manager to Applications. macOS asks before its first start, because the app isn't notarized by Apple: right-click it and choose <g3>Open</g3> (on macOS 15 and later: <g4>System Settings → Privacy &amp; Security → Open Anyway</g4>).",
@@ -6006,9 +6294,9 @@
    "source": "Web",
    "text": "الويب"
   },
-  "972397ae79a717a8": {
-   "source": "A <x1/> line every half second, then <x2/>, or <x3/> after <x4/> (<x5/> is the file <x6/> takes).",
-   "text": "سطر <x1/> كل نصف ثانية، ثم <x2/>، أو <x3/> بعد <x4/> (<x5/> هو الملف الذي يأخذه <x6/>)."
+  "97408a3a460ac468": {
+   "source": "Untick what you don't want, then Download Now.",
+   "text": "ألغ تحديد ما لا تريده، ثم انقر على تنزيل الآن."
   },
   "974c25dc825af253": {
    "source": "Install MDM with the setup and keep <g1>Set up browser integration (Chrome, Edge, Brave, Firefox)</g1> ticked. This registers the helper. (The portable copy can't do this; see <g2>Portable mode</g2>.)",
@@ -6049,6 +6337,10 @@
   "9808fa9b8d4c51e1": {
    "source": "Point at a video on a web page and a small <g1>Download video</g1> button appears at its edge. Click it and MDM's <g2>Download video from a page</g2> window opens and looks up the qualities it can download. It takes the video you clicked: its own file when it plays one, or the stream the player loaded (HLS or DASH), else the page. When the button can't tell which one you mean, the toolbar button's <g3>Media on this page</g3> lists them all. Embedded players work too, and your sign-in for the site, the page that embeds the player and your browser's User-Agent go with it, so videos for members, or that play only on the site that embeds them, can be downloaded. Sound players get the button too.",
    "text": "وجه المؤشر إلى فيديو على صفحة ويب وسيظهر زر <g1>تنزيل الفيديو</g1> صغير على حافته. انقر عليه وستفتح نافذة <g2>تنزيل الفيديو من صفحة</g2> الخاصة بـ MDM وتبحث عن الجودات التي يمكن تنزيلها. تأخذ الفيديو الذي نقرت عليه: ملفه الخاص عندما يشغل واحدا، أو التدفق الذي حمله المشغل (HLS أو DASH)، وإلا فالصفحة. عندما لا يستطيع الزر تحديد أي واحد تقصد، يسرد زر شريط الأدوات <g3>الوسائط في هذه الصفحة</g3> جميعها. تعمل المشغلات المضمنة أيضا، وتسجيل دخولك للموقع، والصفحة التي تضمن المشغل، ووكيل المستخدم لمتصفحك تذهب معه، لذا يمكن تنزيل مقاطع الفيديو للأعضاء، أو التي تشغل فقط على الموقع الذي يضمنها. تحصل مشغلات الصوت على الزر أيضا."
+  },
+  "981faeae41148137": {
+   "source": "Check the folder, then Start Download.",
+   "text": "تحقق من المجلد، ثم انقر على بدء التنزيل."
   },
   "9822af08356b9bf1": {
    "source": "Save it under this name.",
@@ -6113,6 +6405,10 @@
   "99c3f60a725ee399": {
    "source": "<g1><g2>Video downloads</g2></g1> — download a video from its page (YouTube, Vimeo and many more) with yt-dlp.",
    "text": "<g1><g2>تنزيلات الفيديو</g2></g1> — تنزيل فيديو من صفحته (YouTube وVimeo والعديد غيرها) باستخدام yt-dlp."
+  },
+  "99e97ad515986dce": {
+   "source": "Options on its Sites Logins page: a list of sites with their user names",
+   "text": "الخيارات في صفحة تسجيلات دخول المواقع: قائمة بالمواقع مع أسماء المستخدمين الخاصة بها"
   },
   "9a26fd6f740cf884": {
    "source": "<g1>Show details &gt;&gt;</g1> (open by default) adds the connection view:",
@@ -6254,6 +6550,10 @@
    "source": "Headless downloads with progress (<x1/>, <x2/>), videos, torrents and the automation API's commands: a library the app's program runs (<x3/>), and <x4/>, a small launcher that starts it with the same arguments, terminal and exit code",
    "text": "تنزيلات بدون واجهة مع التقدم (<x1/>، <x2/>)، ومقاطع الفيديو، والتورنت، وأوامر واجهة برمجة التطبيقات للأتمتة: مكتبة يشغلها برنامج التطبيق (<x3/>)، و<x4/>، وهو مشغل صغير يبدأ تشغيلها بنفس الوسائط والطرفية ورمز الخروج"
   },
+  "9e0e5a0d4f9234b3": {
+   "source": "Downloads → Find (Ctrl+F).",
+   "text": "التنزيلات → بحث (Ctrl+F)."
+  },
   "9e0f0149f9728f26": {
    "source": "Download in order",
    "text": "تنزيل بالترتيب"
@@ -6306,6 +6606,10 @@
    "source": "Select part of a page and right-click it for <g1>Download selected links with Mister Download Manager</g1>, or right-click the page for <g2>Download all links with Mister Download Manager</g2>: the links open in <g3><g4>Link grabber</g4></g3>, sorted into packages, where you tick the ones you want.",
    "text": "حدد جزءا من الصفحة وانقر عليه بزر الفأرة الأيمن لاختيار <g1>تنزيل الروابط المحددة باستخدام Mister Download Manager</g1>، أو انقر بزر الفأرة الأيمن على الصفحة لاختيار <g2>تنزيل جميع الروابط باستخدام Mister Download Manager</g2>: ستفتح الروابط في <g3><g4>أداة التقاط الروابط</g4></g3>، مرتبة في حزم، حيث يمكنك تحديد الروابط التي تريدها."
   },
+  "9efdcb6a62e4c3f8": {
+   "source": "File Properties with the download's address",
+   "text": "خصائص الملف مع عنوان التحميل"
+  },
   "9f1b18ba278b131b": {
    "source": "<g1>The app's own command line</g1>, the same switches as IDM's: hand a download to the running app from a script, a batch file or another program.",
    "text": "<g1>سطر أوامر التطبيق الخاص</g1>، نفس مفاتيح IDM: تسليم تنزيل إلى التطبيق قيد التشغيل من نص برمجي، ملف دفعي أو برنامج آخر."
@@ -6329,10 +6633,6 @@
   "9fe363ab929197a2": {
    "source": "Videos protected with DRM (most paid streaming services) can't be downloaded.",
    "text": "لا يمكن تنزيل مقاطع الفيديو المحمية بتقنية DRM (معظم خدمات البث المدفوعة)."
-  },
-  "a012e724fe1c9a46": {
-   "source": "Options, Save to page",
-   "text": "صفحة الخيارات، حفظ في"
   },
   "a015c3ccc9319dfa": {
    "source": "MDM contains no adware, spyware, bundled offers or tracking. Its whole source code is public, so anyone can check what it does, and every release is built…",
@@ -6470,6 +6770,10 @@
    "source": "Torrents and your security — Mister Download Manager help",
    "text": "التورنت وأمانك — مساعدة Mister Download Manager"
   },
+  "a410e1f12c6dc5bd": {
+   "source": "Options, General: Use advanced browser integration and the list of browsers MDM takes downloads from",
+   "text": "الخيارات، عام: استخدام تكامل المتصفح المتقدم وقائمة المتصفحات التي يتلقى MDM التنزيلات منها"
+  },
   "a419d7027655348e": {
    "source": "Run <x1/> with MDM running.",
    "text": "شغل <x1/> مع تشغيل MDM."
@@ -6482,9 +6786,9 @@
    "source": "A torrent names the trackers MDM asks for peers. MDM doesn't contact a tracker on your own computer or your local network (<x1/>, <x2/>, <x3/> and the like), so a torrent can't make MDM send requests into the network it sits in. <g4>Add trackers...</g4> follows the same rule: it refuses such an address and tells you why, rather than keeping one that would never be asked.",
    "text": "التورنت يسمي المتتبعات التي يطلبها MDM من الأقران. لا يتصل MDM بمتتبع على جهاز الكمبيوتر الخاص بك أو شبكتك المحلية (<x1/>، <x2/>، <x3/> وما شابه)، لذلك لا يمكن للتورنت أن يجعل MDM يرسل طلبات إلى الشبكة التي يتواجد فيها. <g4>إضافة متتبعات...</g4> تتبع نفس القاعدة: ترفض مثل هذا العنوان وتخبرك بالسبب، بدلا من الاحتفاظ بعنوان لن يتم طلبه أبدا."
   },
-  "a4573dce0e5e5aa1": {
-   "source": "Continue a paused or broken download from the <x1/> file next to it.",
-   "text": "متابعة تنزيل متوقف مؤقتا أو معطل من ملف <x1/> المجاور له."
+  "a44d436e19996493": {
+   "source": "It downloads like any other file.",
+   "text": "يتم تنزيله كأي ملف آخر."
   },
   "a45f25e5b3e6d530": {
    "source": "Download a torrent, or only some of its files. If some of its files are already in the folder, it stops and names them; <x1/> uses them instead (what matches is kept, the rest downloaded).",
@@ -6541,6 +6845,10 @@
   "a5c20256467ea927": {
    "source": "MDM is a tool, like a web browser. You agree to use it lawfully, and in particular:",
    "text": "MDM هو أداة، مثل متصفح الويب. أنت توافق على استخدامه بشكل قانوني، وعلى وجه الخصوص:"
+  },
+  "a5d84d26b1b8e85b": {
+   "source": "Continue a paused or broken download from the <x1/> file next to it. Through a debrid account, as <x2/>: the service gives a new link when the old one expired; <x3/> continues from the address itself.",
+   "text": "متابعة تنزيل متوقف مؤقتا أو معطل من ملف <x1/> المجاور له. عبر حساب Debrid، كما في <x2/>: تقدم الخدمة رابطا جديدا عندما ينتهي صلاحية الرابط القديم؛ <x3/> يتابع من العنوان نفسه."
   },
   "a6126fa5772b9188": {
    "source": "<g1>Capture downloads from the following browsers</g1> — untick a browser to leave its downloads alone.",
@@ -6626,6 +6934,10 @@
    "source": "<g1>The download list's file icons</g1> were drawn over the Categories pane when the list was scrolled sideways (the Categories tree and the Scheduler had the same fault).",
    "text": "<g1>أيقونات ملفات قائمة التنزيلات</g1> كانت ترسم فوق جزء الفئات عندما كانت القائمة تمرر جانبيا (كانت شجرة الفئات والجدولة بها نفس الخطأ)."
   },
+  "a7c07115ddb8e577": {
+   "source": "One asterisk in the address, then numbers or letters from–to.",
+   "text": "نجمة واحدة في العنوان، ثم أرقام أو أحرف من-إلى."
+  },
   "a801181e521c3efe": {
    "source": "Start and stop a queue",
    "text": "بدء وإيقاف قائمة انتظار"
@@ -6657,6 +6969,10 @@
   "a8e296926efbf0e1": {
    "source": "<g1>Main download queue</g1> — where <g2>Download Later</g2>, batch downloads and imported lists go. A download leaves it when it is finished.",
    "text": "<g1>قائمة انتظار التنزيل الرئيسية</g1> — حيث تذهب تنزيلات <g2>تنزيل لاحقا</g2>، والتنزيلات المجمعة، والقوائم المستوردة. يغادر التنزيل هذه القائمة عند انتهائه."
+  },
+  "a90ae03353c0b71c": {
+   "source": "The Scheduler's Schedule tab: Start download at, Once at or Daily, and Stop download at",
+   "text": "علامة تبويب الجدولة في المجدول: بدء التنزيل في، مرة واحدة في أو يوميا، وإيقاف التنزيل عند"
   },
   "a92aab543157b440": {
    "source": "Select the previous / next download",
@@ -6882,6 +7198,10 @@
    "source": "<g1>Options' OK undid changes made meanwhile</g1> (the toolbar's Speed Limiter, Torrent settings…), and the Scheduler's Close undid downloads added to or removed from a queue.",
    "text": "<g1>زر موافق في الخيارات ألغى التغييرات التي تمت في هذه الأثناء</g1> (محدد السرعة في شريط الأدوات، إعدادات التورنت...)، وزر إغلاق في المجدول ألغى التنزيلات المضافة أو المحذوفة من قائمة الانتظار."
   },
+  "ae340036beffb1d6": {
+   "source": "Options on its Regional page: the system's way of writing dates and times, or your own",
+   "text": "الخيارات في صفحة إقليمي: طريقة النظام لكتابة التواريخ والأوقات، أو طريقتك الخاصة"
+  },
   "ae57f4de9d9b528e": {
    "source": "Windows, macOS, Linux, Android",
    "text": "Windows، macOS، Linux، Android"
@@ -6974,6 +7294,14 @@
    "source": "Queues",
    "text": "قوائم الانتظار"
   },
+  "b04b3bc32e03686a": {
+   "source": "Download File Info in MDM for a file clicked in the browser",
+   "text": "معلومات ملف التنزيل في MDM لملف تم النقر عليه في المتصفح"
+  },
+  "b05f1388075b4b26": {
+   "source": "The Scheduler's choices for when the queue is done, Turn off computer when done among them",
+   "text": "خيارات المجدول لما يحدث عند انتهاء قائمة الانتظار، إيقاف تشغيل الكمبيوتر عند الانتهاء من بينها"
+  },
   "b0c0ef4ee0008226": {
    "source": "— FTP secured with TLS from the start of the session (explicit FTPS, <x1/>, usually port 21). Use it when the server says it supports TLS.",
    "text": "— FTP مؤمن باستخدام TLS من بداية الجلسة (FTPS صريح، <x1/>، عادة المنفذ 21). استخدمه عندما يقول الخادم إنه يدعم TLS."
@@ -7026,6 +7354,10 @@
    "source": "Up to 32, re-split as they go",
    "text": "حتى 32، يتم إعادة تقسيمها أثناء التقدم"
   },
+  "b1627f2f79cc28d7": {
+   "source": "The View menu open, with Dark Mode support and Always dark",
+   "text": "قائمة العرض مفتوحة، مع دعم الوضع الداكن وداكن دائما"
+  },
   "b176d8e72c00581c": {
    "source": "Price",
    "text": "السعر"
@@ -7054,6 +7386,10 @@
    "source": "Browser integration needs one more step in each browser: adding the extension. In Firefox, click <g1>Add to Firefox</g1> on <g2>its page on addons.mozilla.org</g2>; in Chrome, Edge, Brave, Opera and Vivaldi, <g3>Add to Chrome</g3> on <g4>its page in the Chrome Web Store</g4>. <g5>Browser integration</g5> shows how.",
    "text": "يتطلب دمج المتصفح خطوة إضافية في كل متصفح: إضافة الملحق. في Firefox، انقر على <g1>أضف إلى Firefox</g1> في <g2>صفحته على addons.mozilla.org</g2>؛ وفي Chrome وEdge وBrave وOpera وVivaldi، انقر على <g3>أضف إلى Chrome</g3> في <g4>صفحته في سوق Chrome الإلكتروني</g4>. يوضح <g5>دمج المتصفح</g5> كيفية القيام بذلك."
   },
+  "b260dbdaf5dd80a2": {
+   "source": "Add Mister Download Manager to your browser: each browser found, with a button to its store page",
+   "text": "أضف Mister Download Manager إلى مستعرضك: كل متصفح تم العثور عليه، مع زر لصفحة متجره"
+  },
   "b2679b7b14f46791": {
    "source": "The video then downloads like any other file, with its own row in the list and its progress window. yt-dlp brings it in over one stream of its own, so the window's connections table stays empty.",
    "text": "ثم ينزل الفيديو كأي ملف آخر، مع صفه الخاص في القائمة ونافذة تقدمه. يجلب yt-dlp الفيديو عبر تدفق خاص به، لذا تظل طاولة الاتصالات في النافذة فارغة."
@@ -7069,6 +7405,10 @@
   "b27190934c8836f3": {
    "source": "<g1><g2>Torrents</g2></g1> — magnet links and .torrent files, choosing files, and sharing.",
    "text": "<g1><g2>التورنت</g2></g1> — روابط المغناطيس وملفات .torrent، اختيار الملفات، والمشاركة."
+  },
+  "b27695aee6ec8848": {
+   "source": "Find file: a name to look for",
+   "text": "البحث عن ملف: الاسم المراد البحث عنه"
   },
   "b298f93960114202": {
    "source": ", with or without <x1/>;",
@@ -7114,10 +7454,6 @@
    "source": "<g1>Exceptions</g1> — a different number for some servers. <g2>New</g2> adds one (the server's name and the number of connections); <g3>Edit</g3> and <g4>Delete</g4> change or remove the selected one. Rows marked <g5>(auto)</g5> are limits MDM learned by itself from servers that refused more connections. They can't be edited and fade away by themselves.",
    "text": "<g1>استثناءات</g1> — رقم مختلف لبعض الخوادم. <g2>جديد</g2> يضيف واحدا (اسم الخادم وعدد الاتصالات)؛ <g3>تحرير</g3> و <g4>حذف</g4> يغيران أو يزيلان المحدد. الصفوف المميزة بـ <g5>(تلقائي)</g5> هي حدود تعلمها MDM بنفسه من الخوادم التي رفضت المزيد من الاتصالات. لا يمكن تحريرها وتتلاشى من تلقاء نفسها."
   },
-  "b32ef7002c1dde78": {
-   "source": "The main window in dark mode",
-   "text": "النافذة الرئيسية في الوضع الداكن"
-  },
   "b34461e3c513158b": {
    "source": "The extension is newer than MDM",
    "text": "الإضافة أحدث من MDM"
@@ -7133,6 +7469,10 @@
   "b3a72c4b8c2a9746": {
    "source": "Press <g1>Ctrl+F</g1> (or <g2>Downloads → Find</g2>), type part of the name and click <g3>Find</g3>. <g4>F3</g4> jumps to the next match. You can also search descriptions and addresses. Step by step in <g5>Find a download in a long list</g5>.",
    "text": "اضغط <g1>Ctrl+F</g1> (أو <g2>التنزيلات ← بحث</g2>)، اكتب جزءا من الاسم وانقر <g3>بحث</g3>. <g4>F3</g4> يقفز إلى المطابقة التالية. يمكنك أيضا البحث في الأوصاف والعناوين. خطوة بخطوة في <g5>البحث عن تنزيل في قائمة طويلة</g5>."
+  },
+  "b3ca971adc7126d9": {
+   "source": "View → Theme switches at once, keeping the layout.",
+   "text": "عرض ← النسق يغير النسق فورا مع الحفاظ على التخطيط."
   },
   "b40e59277aab9ad5": {
    "source": "Imports an IDM list",
@@ -7186,9 +7526,21 @@
    "source": "Languages",
    "text": "اللغات"
   },
+  "b52a39cec850241e": {
+   "source": "File types: what the browser hands over, and the sites left alone.",
+   "text": "أنواع الملفات: ما يسلمه المتصفح، والمواقع التي تترك وشأنها."
+  },
   "b52e4bb8abebdaa1": {
    "source": "256 KiB file",
    "text": "ملف بحجم 256 كيلوبايت"
+  },
+  "b53503e9d42a4135": {
+   "source": "Options → General → Edit...: turn the button off, or list sites it never shows on.",
+   "text": "الخيارات ← عام ← تحرير...: أوقف تشغيل الزر، أو ادرج المواقع التي لا يظهر عليها أبدا."
+  },
+  "b5377276e996b945": {
+   "source": "The button over a video. Drag it where you like; it stays there.",
+   "text": "الزر فوق الفيديو. اسحبه حيثما تريد؛ سيبقى هناك."
   },
   "b585eac57a3ace26": {
    "source": "On another computer",
@@ -7538,6 +7890,10 @@
    "source": "Open the first menu (<g1>Tasks</g1>); on a Mac <g2>Ctrl+F2</g2>",
    "text": "فتح القائمة الأولى (<g1>المهام</g1>)؛ على جهاز Mac <g2>Ctrl+F2</g2>"
   },
+  "bf727e1120314cd9": {
+   "source": "The main window's toolbar and categories in the Classic theme",
+   "text": "شريط أدوات النافذة الرئيسية والفئات في النسق الكلاسيكي"
+  },
   "bf8eed08aa80a086": {
    "source": "<g1>86 languages, right to left too</g1> It speaks your computer's language. Arabic, Hebrew, Persian and Urdu lay out right to left.",
    "text": "<g1>86 لغة، بما في ذلك من اليمين إلى اليسار</g1> يتحدث لغة جهاز الكمبيوتر الخاص بك. العربية والعبرية والفارسية والأردية تعرض من اليمين إلى اليسار."
@@ -7558,6 +7914,10 @@
    "source": "<g1>Free download managers</g1><g2>Checked November 2026 · each name links to its official site</g2>",
    "text": "<g1>مديرو التنزيلات المجانية</g1><g2>تم الفحص في نوفمبر 2026 · كل اسم يربط بموقعه الرسمي</g2>"
   },
+  "bff471a9ca1ca134": {
+   "source": "MDM's own window opens each browser's store page for you.",
+   "text": "تفتح نافذة MDM الخاصة صفحة متجر كل متصفح لك."
+  },
   "bffdc103f06c4113": {
    "source": "In the download's progress window, open the <g1>Speed Limiter</g1> tab:",
    "text": "في نافذة تقدم التنزيل، افتح علامة التبويب <g1>محدد السرعة</g1>:"
@@ -7573,6 +7933,10 @@
   "c01576558166d25e": {
    "source": "How is MDM different from IDM? — Mister Download Manager",
    "text": "بماذا يختلف MDM عن IDM؟ — Mister Download Manager"
+  },
+  "c0588cff3fa8dcb7": {
+   "source": "Batch download: an address with an asterisk, what replaces it, and the first, second and last file",
+   "text": "تنزيل دفعي: عنوان به علامة نجمية، ما يحل محلها، والملف الأول والثاني والأخير"
   },
   "c08d6a11df84016a": {
    "source": "<g1><g2>Carry MDM on a USB stick</g2></g1> — the portable copy, with downloads saved to the stick.",
@@ -7594,6 +7958,10 @@
    "source": "<g1>Downloads still go to the computer's Downloads folder</g1> unless you change it. To keep them with MDM, set each category's folder in <g2>Options → Save to</g2>. <g3>Carry MDM on a USB stick</g3> shows how.",
    "text": "<g1>لا تزال التنزيلات تذهب إلى مجلد التنزيلات بالكمبيوتر</g1> ما لم تقم بتغيير ذلك. للاحتفاظ بها مع MDM، قم بتعيين مجلد كل فئة في <g2>الخيارات ← حفظ في</g2>. يوضح <g3>حمل MDM على ذاكرة USB</g3> كيفية القيام بذلك."
   },
+  "c149996bb80b8d95": {
+   "source": "Pieces: the torrent's map, filling in.",
+   "text": "الأجزاء: خريطة التورنت، وهي قيد التعبئة."
+  },
   "c15931e3d969d63f": {
    "source": "Download overnight",
    "text": "التنزيل ليلا"
@@ -7609,6 +7977,10 @@
   "c19775344147036b": {
    "source": "<g1>Open</g1> — open the file.",
    "text": "<g1>فتح</g1> — افتح الملف."
+  },
+  "c19e7b5dcccb7c52": {
+   "source": "Save to: each category's file types and folder.",
+   "text": "حفظ في: أنواع ملفات كل فئة ومجلدها."
   },
   "c1a12a7fb17ad7d1": {
    "source": "<g1>Fix a translation</g1><g2>Five minutes on GitHub, no programming.</g2>",
@@ -7686,6 +8058,14 @@
    "source": "A connection that is far slower than the others is dropped and opened again.",
    "text": "يتم إسقاط الاتصال الأبطأ بكثير من الآخرين وإعادة فتحه."
   },
+  "c3bbc73f092cecb9": {
+   "source": "Options on its Sounds page: a sound for each event",
+   "text": "الخيارات في صفحة الأصوات: صوت لكل حدث"
+  },
+  "c3d39f291e3ad7b6": {
+   "source": "View → Draw with open: OpenGL and Direct3D",
+   "text": "عرض ← الرسم باستخدام مفتوح: OpenGL وDirect3D"
+  },
   "c3da286564016a74": {
    "source": "Which addresses open the gallery window",
    "text": "العناوين التي تفتح نافذة المعرض"
@@ -7694,13 +8074,13 @@
    "source": "<g1>Add torrent</g1> opens. Paste a magnet link into <g2>Torrent</g2>, or click <g3>...</g3> to choose a <x4/> file, then click <g5>Look up</g5>.",
    "text": "تفتح نافذة <g1>إضافة تورنت</g1>. الصق رابط magnet في <g2>تورنت</g2>، أو انقر على <g3>...</g3> لاختيار ملف <x4/>، ثم انقر على <g5>بحث</g5>."
   },
-  "c3f79c61d6c29240": {
-   "source": "The video helpers offered on first start",
-   "text": "مساعدات الفيديو المعروضة عند التشغيل الأول"
-  },
   "c4102de250d826ec": {
    "source": "50 MiB, every 2nd connection cut after 2 MiB, 4 MB/s",
    "text": "50 ميجابايت، كل اتصال ثان يقطع بعد 2 ميجابايت، 4 ميجابايت/ثانية"
+  },
+  "c48962c07ea187bc": {
+   "source": "The video helpers window: yt-dlp and ffmpeg, each with its version and Use another program...",
+   "text": "نافذة مساعدات الفيديو: yt-dlp و ffmpeg، كل منهما بإصداره واستخدام برنامج آخر..."
   },
   "c493cf1e8ba7e4c3": {
    "source": "Ctrl+N",
@@ -8030,10 +8410,6 @@
    "source": "<g1>Allow more than 32 connections</g1> — raises the most to 128, for the number above and for the exceptions. Most servers allow far fewer from one address; MDM notices and asks those for fewer. Turned off again, any higher number comes back to 32.",
    "text": "<g1>السماح بأكثر من 32 اتصالا</g1> — يرفع الحد الأقصى إلى 128، للرقم أعلاه وللاستثناءات. تسمح معظم الخوادم بعدد أقل بكثير من عنوان واحد؛ يلاحظ MDM ذلك ويطلب عددا أقل. عند إيقاف تشغيله مرة أخرى، يعود أي رقم أعلى إلى 32."
   },
-  "cda67136f4731916": {
-   "source": "Each has a light and a dark side: <g1>Dark Mode support</g1> and <g2>Always dark</g2> choose between them as before. Theme files you put in the themes folder (<g3>View → Theme → Open themes folder</g3>) are listed there too.",
-   "text": "لكل منها جانب فاتح وجانب داكن: <g1>دعم الوضع الداكن</g1> و<g2>داكن دائما</g2> يختاران بينهما كما كان من قبل. ملفات السمات التي تضعها في مجلد السمات (<g3>عرض ← النسق ← فتح مجلد السمات</g3>) مدرجة هناك أيضا."
-  },
   "cda8d2bd08f07beb": {
    "source": "Torrent settings",
    "text": "إعدادات التورنت"
@@ -8050,9 +8426,17 @@
    "source": "<g1><g2>AI assistants (MCP)</g2></g1> — let Claude, Cursor, VS Code or another MCP assistant list, add, pause and remove your downloads.",
    "text": "<g1><g2>مساعدو الذكاء الاصطناعي (MCP)</g2></g1> — دع Claude أو Cursor أو VS Code أو أي مساعد MCP آخر يقوم بسرد وإضافة وإيقاف مؤقت وإزالة تنزيلاتك."
   },
+  "cde4bac9e610fb2e": {
+   "source": "Confirm deletion of downloads, with Also delete the file from disk",
+   "text": "تأكيد حذف التنزيلات، مع حذف الملف من القرص أيضا"
+  },
   "ce31d32b225369aa": {
    "source": "Dependencies point inward: <x1/>, <x2/>, <x3/> and <x4/> use <x5/> and <x6/>; the engine knows nothing of the UI. The app sees the engine only through its events (progress, segment table snapshots, finished, failed).",
    "text": "تتجه التبعيات إلى الداخل: <x1/>، <x2/>، <x3/> و <x4/> تستخدم <x5/> و <x6/>؛ المحرك لا يعرف شيئا عن واجهة المستخدم. يرى التطبيق المحرك فقط من خلال أحداثه (التقدم، لقطات جدول التجزئة، الانتهاء، الفشل)."
+  },
+  "ce3d5af083f413b7": {
+   "source": "The main window: the menu bar, the toolbar, the categories on the left and the download list on the right",
+   "text": "النافذة الرئيسية: شريط القوائم، شريط الأدوات، الفئات على اليسار وقائمة التنزيلات على اليمين"
   },
   "ce3fd49165d30cfd": {
    "source": "Type a name",
@@ -8210,6 +8594,10 @@
    "source": "<g1>Double-click</g1> or press <g2>Enter</g2> on an unfinished download to see its progress window.",
    "text": "<g1>انقر نقرا مزدوجا</g1> أو اضغط <g2>Enter</g2> على تنزيل غير مكتمل لرؤية نافذة تقدمه."
   },
+  "d219d352d27ccb2e": {
+   "source": "Click a column title to sort; its funnel filters.",
+   "text": "انقر على عنوان العمود للفرز؛ قمع الفرز يقوم بالترشيح."
+  },
   "d2271f55bc0c25a7": {
    "source": "Silent: no <g1>Download File Info</g1> window, the download starts (or is queued, with <x2/>) at once.",
    "text": "صامت: لا توجد نافذة <g1>معلومات ملف التنزيل</g1>، يبدأ التنزيل (أو يوضع في قائمة الانتظار، مع <x2/>) على الفور."
@@ -8241,6 +8629,10 @@
   "d2ef5107c69b686f": {
    "source": "Maturity",
    "text": "النضج"
+  },
+  "d319d72c656458a2": {
+   "source": "1 the start time, 2 once or daily, 3 a stop time if you want one.",
+   "text": "1 وقت البدء، 2 مرة واحدة أو يوميا، 3 وقت الإيقاف إذا أردت ذلك."
   },
   "d325a1b1c8ab0caa": {
    "source": "What Mister Download Manager, its browser extension and this website do with your data: the app and extension collect nothing; the website counts visits with Statcounter.",
@@ -8313,6 +8705,10 @@
   "d4d5842bd505f598": {
    "source": "Choose the quality",
    "text": "اختر الجودة"
+  },
+  "d4d7c61fea5acca1": {
+   "source": "View → Theme open: Classic, Native, High contrast, Metro, Adwaita and Breeze",
+   "text": "قائمة عرض ← النسق مفتوحة: كلاسيكي، أصلي، تباين عال، مترو، Adwaita وBreeze"
   },
   "d4ea6092b5c9f6be": {
    "source": "<g1>Helpers are verified before they run.</g1> yt-dlp is checked against its developers' signing key, and ffmpeg against its published checksums.",
@@ -8394,6 +8790,10 @@
    "source": "Files from a torrent",
    "text": "الملفات من التورنت"
   },
+  "d69665ba65ca0ca6": {
+   "source": "Download Later puts it in a queue instead of starting it.",
+   "text": "يضعها التنزيل لاحقا في قائمة انتظار بدلا من بدء التنزيل."
+  },
   "d6a1d73b9bbfddf3": {
    "source": "Download Mister Download Manager 0.2.4",
    "text": "تنزيل Mister Download Manager 0.2.4"
@@ -8453,6 +8853,10 @@
   "d82903fa7d227c82": {
    "source": "Benchmark scenario",
    "text": "سيناريو المقارنة المعيارية"
+  },
+  "d82bc40d598cdc1d": {
+   "source": "Downloads: which windows show, and what a duplicate link does.",
+   "text": "التنزيلات: النوافذ التي تظهر، وما يفعله الرابط المكرر."
   },
   "d835a1659f05d750": {
    "source": "<g1>Streams</g1>: HLS (<x2/>) and DASH (<x3/>), the way most sites play long videos. Each stream is listed once, however many qualities its player switched between, with its qualities (<x4/>) and its length when the extension can read them. A stream whose address doesn't end in <x5/> or <x6/>, served as plain text, is found too: when you open the list (or press the download button over its player) and the player plays a stream, the extension reads the first few kilobytes of what that player fetched to recognise it. Nothing is read until you ask.",
@@ -8518,6 +8922,10 @@
    "source": "<g1>Through a proxy</g1>, MDM only sees the proxy, so it says <g2>through a proxy</g2> (with the proxy's country when it knows it) instead of guessing the server's. A VPN that works at the system level can't be seen: the country is then the server's, but the time includes the VPN's detour.",
    "text": "<g1>عبر وكيل</g1>، يرى MDM الوكيل فقط، لذلك يقول <g2>عبر وكيل</g2> (مع بلد الوكيل عندما يعرفه) بدلا من تخمين خادم الوكيل. لا يمكن رؤية شبكة VPN التي تعمل على مستوى النظام: يكون البلد حينئذ هو بلد الخادم، ولكن الوقت يشمل تحويلة VPN."
   },
+  "d9dde89e1b709127": {
+   "source": "Add URL: the copied address is already there. Click OK.",
+   "text": "إضافة URL: العنوان المنسوخ موجود بالفعل. انقر على موافق."
+  },
   "da12a252ee14babe": {
    "source": "To stop in the morning whatever is left, tick <g1>Stop download at</g1> and set a time, for example 7:00:00 AM.",
    "text": "لإيقاف ما تبقى في الصباح، ضع علامة في مربع <g1>إيقاف التنزيل عند</g1> واضبط وقتا، على سبيل المثال 7:00:00 صباحا."
@@ -8529,6 +8937,10 @@
   "da5804cb7ae48112": {
    "source": "Some servers report a new date for the same file every time. Tick <g1>Options → Downloads → Ignore file modification time changes when resuming a download</g1>.",
    "text": "بعض الخوادم تبلغ عن تاريخ جديد لنفس الملف في كل مرة. ضع علامة في <g1>الخيارات ← التنزيلات ← تجاهل تغييرات وقت تعديل الملف عند استئناف التنزيل</g1>."
+  },
+  "da6586417d8dd463": {
+   "source": "Done: Open the file, or Open folder.",
+   "text": "تم: افتح الملف، أو افتح المجلد."
   },
   "da6e8c125b6f0d96": {
    "source": "If the site replaced the file with a new version, the parts MDM has don't fit any more. Right-click the download and choose <g1>Redownload</g1> to start again from the beginning. A finished file is only replaced when the new download completes.",
@@ -8606,6 +9018,10 @@
    "source": "Open <g1>Downloads → Options</g1> and the <g2>Save to</g2> tab.",
    "text": "افتح <g1>التنزيلات ← الخيارات</g1> وعلامة التبويب <g2>حفظ في</g2>."
   },
+  "dcabc8a97e80dd97": {
+   "source": "Downloads → Speed Limiter → Settings...: one speed for all of MDM.",
+   "text": "التنزيلات ← محدد السرعة ← إعدادات...: سرعة واحدة لكل MDM."
+  },
   "dce175995531cf3a": {
    "source": "<g1>Don't start downloading automatically from the following sites</g1> — sites whose downloads stay in the browser, separated by spaces. <x2/> covers every part of a site. <g3>Default</g3> puts the original list back.",
    "text": "<g1>عدم بدء التنزيل تلقائيا من المواقع التالية</g1> — المواقع التي تبقى تنزيلاتها في المتصفح، مفصولة بمسافات. <x2/> يغطي كل جزء من الموقع. <g3>افتراضي</g3> يعيد القائمة الأصلية."
@@ -8682,6 +9098,10 @@
    "source": "<g1>Never take downloads from</g1> the current site: adds it to MDM's excluded sites.",
    "text": "<g1>عدم أخذ التنزيلات أبدا من</g1> الموقع الحالي: يضيفه إلى المواقع المستبعدة في MDM."
   },
+  "dee4ab42b514acda": {
+   "source": "The language list on first start: every language with its flag, its own name and its English name",
+   "text": "قائمة اللغات عند التشغيل الأول: كل لغة بعلمها، اسمها الخاص واسمها الإنجليزي"
+  },
   "dee52466980c445e": {
    "source": "<g1>Sites to leave alone:</g1> <g2>Options → File types → Don't start downloading automatically from the following sites</g2>. Add the site's name, for example <x3/> or <x4/>.",
    "text": "<g1>المواقع التي يجب تجاهلها:</g1> <g2>الخيارات ← أنواع الملفات ← عدم بدء التنزيل تلقائيا من المواقع التالية</g2>. أضف اسم الموقع، على سبيل المثال <x3/> أو <x4/>."
@@ -8738,10 +9158,6 @@
    "source": "<g1>An older MDM?</g1> Update MDM: a newer extension may have an ID an old helper doesn't know.",
    "text": "<g1>MDM أقدم؟</g1> حدث MDM: قد يكون للإضافة الأحدث معرف لا يعرفه المساعد القديم."
   },
-  "e06846d728e8b2d9": {
-   "source": "Options: Archives",
-   "text": "الخيارات: الأرشيفات"
-  },
   "e0e426203d8a6245": {
    "source": "(implicit TLS; <x1/> with TLS is fine).",
    "text": "(TLS ضمني؛ <x1/> مع TLS لا بأس به)."
@@ -8753,6 +9169,10 @@
   "e0ff4397ed1204f3": {
    "source": "Resume a broken download",
    "text": "استئناف تنزيل متوقف"
+  },
+  "e10bdd13fc258ac7": {
+   "source": "Options on its Proxy / Socks page",
+   "text": "الخيارات في صفحة الوكيل / SOCKS"
   },
   "e12180fcb123a038": {
    "source": "<g1><g2></g2>0.03 s</g1><g3></g3>",
@@ -8770,6 +9190,10 @@
    "source": "<g1>Help → Check for updates...</g1> tells you whether a newer version is out, and what is new in it. <g2>Check for updates at every start</g2> in that window lets MDM look by itself: a few seconds after it starts, and once a day while it stays open. When there's a new version, its window opens in front.",
    "text": "يخبرك <g1>تعليمات ← التحقق من وجود تحديثات...</g1> ما إذا كان هناك إصدار أحدث، وما هو الجديد فيه. يتيح <g2>التحقق من وجود تحديثات عند كل بدء تشغيل</g2> في تلك النافذة لـ MDM البحث بنفسه: بعد بضع ثوان من بدء تشغيله، ومرة واحدة يوميا أثناء بقائه مفتوحا. عندما يكون هناك إصدار جديد، تفتح نافذته في المقدمة."
   },
+  "e15d599e6927add3": {
+   "source": "Options on its Save to page: a category, its file types and its folder",
+   "text": "الخيارات في صفحة حفظ في: فئة، أنواع ملفاتها ومجلدها"
+  },
   "e1713d442d1eea6d": {
    "source": "Yes. Put downloads in a queue and let the Scheduler start it at a set time, stop it at another, and even shut down or put the computer to sleep when the…",
    "text": "نعم. ضع التنزيلات في قائمة انتظار ودع الجدولة تبدأها في وقت محدد، وتوقفها في وقت آخر، بل وتغلق الكمبيوتر أو تضعه في وضع السكون عند الانتهاء من قائمة الانتظار."
@@ -8781,6 +9205,10 @@
   "e1846d6a94dee510": {
    "source": "misterdownloadmanager-cli",
    "text": "misterdownloadmanager-cli"
+  },
+  "e1cb5a9a23d26236": {
+   "source": "The video window listing a playlist's videos, each with its length and a box to tick, and one quality for all",
+   "text": "نافذة الفيديو التي تعرض فيديوهات قائمة التشغيل، كل منها بمدته ومربع لتحديده، وجودة واحدة للكل"
   },
   "e1db876325f14b62": {
    "source": "Downloads still work, but some of the extension's features need a newer MDM. Update it with <g1>Help → Check for updates...</g1> in MDM.",
@@ -8809,6 +9237,10 @@
   "e255969933938cdb": {
    "source": "Where MDM keeps its data",
    "text": "أين يحتفظ MDM ببياناته"
+  },
+  "e260c4204233b0f7": {
+   "source": "1 Dark Mode support follows the system; 2 Always dark keeps MDM dark.",
+   "text": "1 دعم الوضع الداكن يتبع إعدادات النظام؛ 2 داكن دائما يبقي MDM داكنا."
   },
   "e2e30d683ce66b3d": {
    "source": "<g1>Zen on Windows:</g1> Zen 1.21.15b and later have a bug of their own that keeps add-ons from reaching their helper program (<g2>zen-browser/desktop#15432</g2>), with any add-on that uses one. Until Zen fixes it, Zen 1.21.14b works.",
@@ -8866,6 +9298,10 @@
    "source": "A bar of the whole file, showing where each connection started and how far it has got (<g1>Start positions and download progress by connections</g1>).",
    "text": "شريط للملف بأكمله، يوضح أين بدأ كل اتصال ومدى تقدمه (<g1>مواضع البدء وتقدم التنزيل حسب الاتصالات</g1>)."
   },
+  "e4068d69914b5fb5": {
+   "source": "Paste the page's address and click Look up.",
+   "text": "الصق عنوان الصفحة ثم انقر على بحث."
+  },
   "e43e3d237d7c2e91": {
    "source": "The automation API",
    "text": "واجهة برمجة تطبيقات الأتمتة"
@@ -8889,6 +9325,10 @@
   "e4770c93a995f627": {
    "source": "The right-click menu has everything you can do with a download: <g1>Open</g1>, <g2>Open with...</g2>, <g3>Open folder</g3>, <g4>Move/Rename</g4>, <g5>Redownload</g5>, <g6>Resume Download</g6>, <g7>Stop Download</g7>, <g8>Refresh download address</g8>, <g9>Verify checksum...</g9>, <g10>Remove</g10>, <g11>Add to queue</g11> and <g12>Properties</g12>.",
    "text": "تحتوي قائمة النقر بزر الفأرة الأيمن على كل ما يمكنك فعله بتنزيل: <g1>فتح</g1>، <g2>فتح باستخدام...</g2>، <g3>فتح المجلد</g3>، <g4>نقل/إعادة تسمية</g4>، <g5>إعادة التنزيل</g5>، <g6>استئناف التنزيل</g6>، <g7>إيقاف التنزيل</g7>، <g8>تحديث عنوان التنزيل</g8>، <g9>التحقق من المجموع الاختباري...</g9>، <g10>إزالة</g10>، <g11>إضافة إلى قائمة الانتظار</g11> و<g12>خصائص</g12>."
+  },
+  "e49c7399c2758861": {
+   "source": "Pick your language. View → Language changes it later.",
+   "text": "اختر لغتك. يمكنك تغييرها لاحقا من عرض ← اللغة."
   },
   "e4ada2c56399759e": {
    "source": "Where can I get help?",
@@ -8921,6 +9361,10 @@
   "e54db90504acbb23": {
    "source": "It comes <g1>without any warranty</g1>: use it at your own risk.",
    "text": "يأتي <g1>بدون أي ضمان</g1>: استخدمه على مسؤوليتك الخاصة."
+  },
+  "e568fd104b5e2ebf": {
+   "source": "About Mister Download Manager: its version, licence and links",
+   "text": "حول Mister Download Manager: إصداره، ترخيصه، وروابطه"
   },
   "e571a12e9be69853": {
    "source": "Move through an open menu",
@@ -9046,10 +9490,6 @@
    "source": "<g1>Options → File types → Automatically start downloading the following file types</g1> must list the file's type. The list starts with the usual ones: ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF and many more.",
    "text": "يجب أن تسرد <g1>الخيارات ← أنواع الملفات ← بدء تنزيل أنواع الملفات التالية تلقائيا</g1> نوع الملف. تبدأ القائمة بالأنواع المعتادة: ZIP, RAR, 7Z, EXE, MSI, ISO, MP3, MP4, MKV, PDF وغيرها الكثير."
   },
-  "e8106b0dea9e8b3a": {
-   "source": "Options, Connection page",
-   "text": "الخيارات، صفحة الاتصال"
-  },
   "e83c41319a0a187b": {
    "source": "Free alternatives to Internet Download Manager",
    "text": "بدائل مجانية لبرنامج Internet Download Manager"
@@ -9094,6 +9534,10 @@
    "source": "Browser integration in detail (Firefox, private windows, what is sent) →",
    "text": "تكامل المتصفح بالتفصيل (Firefox، النوافذ الخاصة، ما يتم إرساله) →"
   },
+  "e90381936acd9332": {
+   "source": "Download video from a page, with the Page address box and Look up",
+   "text": "تنزيل الفيديو من صفحة، مع مربع عنوان الصفحة وبحث"
+  },
   "e931037e5c0b1a7d": {
    "source": "2. The software's licence",
    "text": "2. ترخيص البرنامج"
@@ -9130,6 +9574,10 @@
    "source": "MDM itself extracts zip archives (AES-encrypted and Deflate64 ones too), tar, tar.gz and tar.xz archives, and single <x1/> and <x2/> files.",
    "text": "يستخرج MDM نفسه أرشيفات zip (بما في ذلك تلك المشفرة بـ AES و Deflate64)، وأرشيفات tar و tar.gz و tar.xz، وملفات <x1/> و <x2/> الفردية."
   },
+  "eabe68f4e81c09a6": {
+   "source": "Breeze",
+   "text": "Breeze"
+  },
   "eac1d064497401fd": {
    "source": "It comes with every download of MDM, next to the app (the installer puts it in MDM's folder). It works on its own: the app needn't run, except for <x1/> and <x2/>.",
    "text": "يأتي مع كل تنزيل لـ MDM، بجانب التطبيق (يضعه المثبت في مجلد MDM). يعمل بمفرده: لا يحتاج التطبيق إلى التشغيل، باستثناء <x1/> و <x2/>."
@@ -9162,6 +9610,10 @@
    "source": "Note",
    "text": "ملاحظة"
   },
+  "ebb02e1568d6f55f": {
+   "source": "Speed Limiter settings: the maximum speed for all downloads",
+   "text": "إعدادات محدد السرعة: السرعة القصوى لجميع التنزيلات"
+  },
   "ebcf280686ba7509": {
    "source": "Good at",
    "text": "مميز في"
@@ -9189,6 +9641,10 @@
   "ec9fc85159e7d49f": {
    "source": "Download a file",
    "text": "تنزيل ملف"
+  },
+  "eca543b2b3233fe8": {
+   "source": "The numbers are the steps above: 3 the address, 4 a login if the server needs one, 5 OK.",
+   "text": "الأرقام هي الخطوات أعلاه: 3 العنوان، 4 تسجيل الدخول إذا كان الخادم يتطلب ذلك، 5 موافق."
   },
   "eccb9b55c0aaf056": {
    "source": "Can I move my downloads from IDM to Mister Download Manager?",
@@ -9293,6 +9749,10 @@
   "eef7cd8b9e89ab48": {
    "source": "<g1>The app icon on macOS</g1>: the Dock showed a small, blurry icon while MDM ran; it keeps the app's own now. Elsewhere windows take their icon from a large size (sharp at any scaling).",
    "text": "<g1>أيقونة التطبيق على macOS</g1>: أظهر Dock أيقونة صغيرة وغير واضحة أثناء تشغيل MDM؛ يحتفظ الآن بأيقونة التطبيق الخاصة. في أماكن أخرى، تأخذ النوافذ أيقونتها من حجم كبير (واضحة بأي مقياس)."
+  },
+  "ef078e7bf8101d03": {
+   "source": "1 the file types MDM takes, 2 the sites it leaves to the browser.",
+   "text": "1 أنواع الملفات التي يلتقطها MDM، 2 المواقع التي يتركها للمتصفح."
   },
   "ef0fe27d24f63c0a": {
    "source": "<g1>Timing.</g1> End to end: from issuing the command to the finished file under its final name, polled every millisecond on a monotonic clock. MDM renames its finished file into place; IDM creates the final file early and fills it, so for IDM the moment it reaches full size counts. Transfer: the server's first request to its last byte, read on the same clock through a calibration request before each run.",
@@ -9562,6 +10022,10 @@
    "source": "The zips hold the same programs as the setup: the app, <x1/> (downloads from the command line; see <g2>Command line and automation</g2>) and the <x3/> folder.",
    "text": "تحتوي الملفات المضغوطة على نفس البرامج الموجودة في برنامج التثبيت: التطبيق، <x1/> (للتنزيل من سطر الأوامر؛ انظر <g2>سطر الأوامر والأتمتة</g2>) ومجلد <x3/>."
   },
+  "f62658da18e6b6b3": {
+   "source": "Download one link directly instead",
+   "text": "تنزيل رابط واحد مباشرة بدلا من ذلك"
+  },
   "f6ab5be4ad52a472": {
    "source": "Trackers",
    "text": "المتتبعات"
@@ -9694,9 +10158,17 @@
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "ثمانية اتصالات لكل عملية تنزيل افتراضيا، وما يصل إلى 32 إذا اخترت ذلك في الخيارات → الاتصال، أو 128 بعد تحديد السماح بأكثر من 32 اتصالا هناك. يستخدم MDM عددا أقل…"
   },
+  "fa3e7e0e783830a9": {
+   "source": "A torrent's progress window on its Files tab",
+   "text": "نافذة تقدم التورنت في علامة تبويب الملفات الخاصة به"
+  },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
    "text": "يستبدل البرامج في مجلدها (يتم الاحتفاظ بمجلد <x1/> للنسخة المحمولة)."
+  },
+  "fa5f14a1aee829e9": {
+   "source": "first when the download goes through a debrid account, then a <x1/> line every half second, then <x2/>, or <x3/> after <x4/> (<x5/> is the file <x6/> takes).",
+   "text": "أولا عندما يمر التنزيل عبر حساب Debrid، ثم سطر <x1/> كل نصف ثانية، ثم <x2/>، أو <x3/> بعد <x4/> (<x5/> هو الملف الذي يأخذه <x6/>)."
   },
   "fa6a5141054cb2c6": {
    "source": "The layout is familiar on purpose: the toolbar, the categories, the download list, the progress window with every connection, queues and the scheduler. The…",
@@ -9745,6 +10217,10 @@
   "fb1900915c99672a": {
    "source": "After a cut connection",
    "text": "بعد انقطاع الاتصال"
+  },
+  "fb19ef868e245f12": {
+   "source": "<g1>Download File Info</g1> says which account a link goes through: <g2>Download through Real-Debrid (your account)</g2>, ticked. Untick it to download that one link directly, without the service. MDM looks the address up again the new way, so the name and size shown are the ones you will get. A download the browser had already started shows it unticked.",
+   "text": "تخبر <g1>معلومات ملف التنزيل</g1> عن الحساب الذي يمر عبره الرابط: <g2>تنزيل عبر Real-Debrid (حسابك)</g2>، محدد. ألغ التحديد لتنزيل هذا الرابط مباشرة، بدون الخدمة. يبحث MDM عن العنوان مرة أخرى بالطريقة الجديدة، لذا فإن الاسم والحجم المعروضين هما ما ستحصل عليه. التنزيل الذي بدأه المتصفح بالفعل يظهر غير محدد."
   },
   "fb26f9e65b7f456b": {
    "source": "The windows are drawn with OpenGL (eframe's glow) or with the system's own graphics API through eframe's wgpu, with that one backend only: Direct3D 12 on Windows (the default there), Vulkan on Linux, Metal on macOS (choices there; OpenGL stays their default). View → Draw with picks one. One code path does it on every system (<x1/>): when the chosen one can't start, the other one is tried, so the windows always open; a start whose first frame doesn't come, or a graphics card lost twice, is remembered with its reason, which the menu shows.",
@@ -9806,6 +10282,10 @@
    "source": "Options →",
    "text": "الخيارات →"
   },
+  "fcac3d319058fc98": {
+   "source": "Options on its File types page: the file types the browser hands to MDM and the sites it leaves alone",
+   "text": "الخيارات في صفحة أنواع الملفات: أنواع الملفات التي يسلمها المتصفح إلى MDM والمواقع التي يتركها وشأنها"
+  },
   "fcc5ef8ee172d45e": {
    "source": "Proxies",
    "text": "الوكلاء"
@@ -9866,6 +10346,10 @@
    "source": "Browser extension",
    "text": "إضافة المتصفح"
   },
+  "fe1e9bfa950043a0": {
+   "source": "File Properties: change the address or the folder of a download.",
+   "text": "خصائص الملف: تغيير عنوان أو مجلد التنزيل."
+  },
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>كل اتصال، مباشر</g3> <g4>يعرض كل اتصال وهو يمتلئ، مع السرعة والوقت المتبقي. الاستئناف الآمن ضد الأعطال يكمل من حيث توقف.</g4>"
@@ -9893,6 +10377,10 @@
   "fea945c5c18cacc1": {
    "source": "Why is MDM faster than a browser?",
    "text": "لماذا MDM أسرع من المتصفح؟"
+  },
+  "feaa1885a7fdd962": {
+   "source": "Connection: how many connections, through which network adapter.",
+   "text": "الاتصال: عدد الاتصالات، وعبر أي محول شبكة."
   },
   "fec39583e98965c8": {
    "source": "What's new in version 0.2.0 <g1>2026-10-31</g1>",
@@ -9930,6 +10418,10 @@
    "source": "<g1>Your AI assistant, only if you connect one.</g1> MDM's MCP server (<x2/>) talks only to the MDM on your computer. But if you add it to an AI assistant (Claude, Cursor, VS Code…) and turn on the automation API, the assistant can read your download list, and what it reads (file names, addresses, folders) goes to that assistant's AI service, under its privacy terms. Nothing of this happens unless you set it up; see <g3>AI assistants</g3>.",
    "text": "<g1>مساعدك الذكاء الاصطناعي، فقط إذا قمت بتوصيل واحد.</g1> يتصل خادم MCP الخاص بـ MDM (<x2/>) فقط بـ MDM على جهاز الكمبيوتر الخاص بك. ولكن إذا أضفته إلى مساعد ذكاء اصطناعي (Claude، Cursor، VS Code…) وقمت بتشغيل واجهة برمجة تطبيقات الأتمتة، يمكن للمساعد قراءة قائمة التنزيلات الخاصة بك، وما يقرأه (أسماء الملفات، العناوين، المجلدات) يذهب إلى خدمة الذكاء الاصطناعي الخاصة بهذا المساعد، بموجب شروط الخصوصية الخاصة به. لا يحدث أي من هذا إلا إذا قمت بإعداده؛ انظر <g3>مساعدي الذكاء الاصطناعي</g3>."
   },
+  "ff91da638125787d": {
+   "source": "The download list with its columns: Source, File Name, Q, Size, Status, Time left, Transfer rate and more",
+   "text": "قائمة التنزيلات مع أعمدتها: المصدر، اسم الملف، قائمة الانتظار، الحجم، الحالة، الوقت المتبقي، معدل النقل والمزيد"
+  },
   "ffa04c1a8eba0f68": {
    "source": "Report a vulnerability",
    "text": "الإبلاغ عن ثغرة أمنية"
@@ -9941,6 +10433,14 @@
   "ffbc009bfa4aa85a": {
    "source": "Drag a link from your browser onto it. MDM adds it as if you had used <g1>Add URL</g1>.",
    "text": "اسحب رابطا من متصفحك إليه. يضيفه MDM كما لو كنت قد استخدمت <g1>إضافة URL</g1>."
+  },
+  "ffde1525f0903fb6": {
+   "source": "General: how MDM starts, and what it takes from the clipboard and the browsers.",
+   "text": "عام: كيف يبدأ MDM، وماذا يأخذ من الحافظة والمتصفحات."
+  },
+  "ffeedec50b9a371f": {
+   "source": "For a download already in the list, <g1>File Properties</g1> has the same choice beside the login: <g2>Through Real-Debrid</g2>. It can be changed while the download isn't running. The next start goes the new way, and continues from what is already downloaded when the file is the same.",
+   "text": "بالنسبة لتنزيل موجود بالفعل في القائمة، تحتوي <g1>خصائص الملف</g1> على نفس الخيار بجانب تسجيل الدخول: <g2>عبر Real-Debrid</g2>. يمكن تغييره بينما لا يكون التنزيل قيد التشغيل. تبدأ المرة التالية بالطريقة الجديدة، وتستمر من ما تم تنزيله بالفعل عندما يكون الملف هو نفسه."
   },
   "fffd298a8c5fc91a": {
    "source": "your download addresses or file names;",
