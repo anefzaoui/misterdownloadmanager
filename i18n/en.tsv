@@ -121,6 +121,9 @@
 #. text in rssdlg.rs
 #. RSS feeds window, Download rules: shown in the empty Save to box
 	(the Torrents category's folder)	(the Torrents category's folder)
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+	.torrent file	.torrent file
 #. text in the Options window
 #. a 12-hour clock, with an example
 	12-hour (9:41 PM)	12-hour (9:41 PM)
@@ -185,6 +188,9 @@
 #. text in the Options window
 #. tab title: the user's debrid service accounts (Real-Debrid…)
 	Accounts	Accounts
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+	Add	Add
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	Add a download (Add URL)	Add a download (Add URL)
 #. window title in the Options window
@@ -244,6 +250,12 @@
 #. message or event log entry in the main window
 #. {source} = how the download was added, e.g. "from the browser" (keep the braces as they are)
 	Added {source}	Added {source}
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+	Added.	Added.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+	Added. MDM is reading the torrent: it joins the list in a moment.	Added. MDM is reading the torrent: it joins the list in a moment.
 #. text in the Batch download window; text in a dialog box; label in the Options window; text in a download's progress window
 #. noun: the web address (URL)
 #. column title: the web address (URL)
@@ -251,6 +263,9 @@
 #. message or event log entry in the main window
 #. {host} = a server name such as "example.com" (keep the braces as they are)
 	Address changed to {host}	Address changed to {host}
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+	Address or magnet link	Address or magnet link
 #. text in the Options window; text in a download's Properties window
 #. Options → DNS over HTTPS: label before the server's https:// address
 	Address:	Address:
@@ -278,6 +293,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Algeria	Algeria
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+	All	All
 #. item in the Categories tree in the main window
 	All Downloads	All Downloads
 #. message or event log entry in the main window
@@ -407,6 +425,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Austria	Austria
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+	Automatic (by file type)	Automatic (by file type)
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Automatically put in "{category}" category the following file types:	Automatically put in "{category}" category the following file types:
@@ -519,7 +540,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Canada	Canada
-#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; button in the Scheduler window; button in the Add torrent window; button in the Download video window
+#. button in the Batch download window; button in categories.rs; text in the Checksum window; button in a dialog box; button in extracting archives (a download's log, the Archive password window); button in the Find window; button in gallerydlg.rs; text in the Link grabber window; text in the Help menu's windows (About, updates, shortcuts, Tell a friend); button in langpick.rs; button in the Options window; button in a download's progress window; text in remote.rs; button in the Scheduler window; button in the Add torrent window; button in the Download video window
 #. button: stop downloading the update
 	Cancel	Cancel
 #. text in errors.rs
@@ -544,7 +565,8 @@
 	Categories	Categories
 #. page title in the Options window
 	Categories, file types, folders	Categories, file types, folders
-#. text in a dialog box; text in the Options window
+#. text in a dialog box; text in the Options window; text in remote.rs
+#. remote control page (on a phone): label of the category choice for a new download
 	Category	Category
 #. text in categories.rs
 #. title of the folder picker of the category dialog
@@ -557,6 +579,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Central African Republic	Central African Republic
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+	Certificate (SHA-256): {fingerprint}	Certificate (SHA-256): {fingerprint}
 #. text in the Options window
 #. Options → DNS over TLS: label before the name the server's certificate shows
 	Certificate name:	Certificate name:
@@ -617,6 +642,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	China	China
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+	Choose a .torrent file	Choose a .torrent file
 #. text in langpick.rs
 	Choose a language	Choose a language
 #. text in langpick.rs
@@ -650,13 +678,19 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Cocos (Keeling) Islands	Cocos (Keeling) Islands
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+	Code	Code
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+	Code:	Code:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Colombia	Colombia
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Comoros	Comoros
-#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window; text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): finished
 	Complete	Complete
@@ -784,6 +818,9 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Delete the category "{category}"? Its files stay where they are.	Delete the category "{category}"? Its files stay where they are.
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+	Delete the file too	Delete the file too
 #. message or event log entry in the main window; text in the Scheduler window
 #. asked before deleting a queue; its downloads stay in the list
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
@@ -801,6 +838,9 @@
 	Description or part of the description	Description or part of the description
 #. text in a download's Properties window
 	Description:	Description:
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+	Device	Device
 #. text in the Add torrent window
 #. the DHT (finding peers without trackers) is turned off in Torrent settings
 	DHT off	DHT off
@@ -847,7 +887,8 @@
 	Don't start downloading automatically from the following sites:	Don't start downloading automatically from the following sites:
 #. text in the Options window
 	Don't take files smaller than (KB, 0 = any size):	Don't take files smaller than (KB, 0 = any size):
-#. text in a download's progress window
+#. text in the Options window; text in a download's progress window
+#. button: close the window (the device is paired)
 	Done	Done
 #. button in the Options window
 #. button (short): move the account down the list
@@ -918,7 +959,7 @@
 #. text in a dialog box
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	Downloaded {size} ({bytes} Bytes)	Downloaded {size} ({bytes} Bytes)
-#. item in the Categories tree in the download list; value in a column's filter list in the download list
+#. item in the Categories tree in the download list; value in a column's filter list in the download list; text in remote.rs
 #. a download's status (state it is in, not a command)
 	Downloading	Downloading
 #. message or event log entry in the main window
@@ -1024,7 +1065,7 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Eritrea	Eritrea
-#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. text in a dialog box; item in the Categories tree in the download list; value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. in Download File Info, where the size goes: the address didn't answer
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): it failed
@@ -1047,6 +1088,9 @@
 #. text in the Options window
 #. Options → Network adapter: every connection goes out through the chosen adapter, from this address (none goes another way); {ip} its address
 	Every connection goes through it, from {ip}.	Every connection goes through it, from {ip}.
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+	Every local network address	Every local network address
 #. text in the Options window
 #. label before an example date and time written the chosen way
 	Example:	Example:
@@ -1168,8 +1212,9 @@
 	Find the next match	Find the next match
 #. text in the Find window
 	Find:	Find:
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are complete
+#. remote control page (on a phone): tab: downloads finished
 	Finished	Finished
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -1193,6 +1238,12 @@
 	For your Windows account only. Another app chosen in "Open with" stays first.	For your Windows account only. Another app chosen in "Open with" stays first.
 #. checkbox in a download's progress window; checkbox in the Scheduler window
 	Force processes to terminate	Force processes to terminate
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+	Forget this device	Forget this device
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+	Forget this device? It needs a new code to connect again.	Forget this device? It needs a new code to connect again.
 #. text in the Scheduler window
 #. Friday, as short as a calendar's column head (two letters in English)
 	Fr	Fr
@@ -1223,6 +1274,9 @@
 	from a magnet link	from a magnet link
 #. message or event log entry in the main window
 	from a page (yt-dlp)	from a page (yt-dlp)
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+	from a paired device	from a paired device
 #. message or event log entry in the main window
 #. where a download came from, in its log: a playlist or channel, by yt-dlp
 	from a playlist (yt-dlp)	from a playlist (yt-dlp)
@@ -1464,6 +1518,10 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Israel	Israel
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+	It could not start: {error}	It could not start: {error}
 #. text in extracting archives (a download's log, the Archive password window)
 #. why an archive wasn't extracted (after "Couldn't extract {name}: ")
 	it holds too many files or folders	it holds too many files or folders
@@ -1564,6 +1622,9 @@
 	larger than a feed can be	larger than a feed can be
 #. text in the Batch download window
 	Last file:	Last file:
+#. text in the Options window
+#. column title: when the device last reached MDM
+	Last seen	Last seen
 #. text in a download's Properties window
 #. {last} = the date and time of the last attempt to download
 	Last try  {last}	Last try  {last}
@@ -1582,6 +1643,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Lesotho	Lesotho
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+	Let phones and computers on the local network control MDM	Let phones and computers on the local network control MDM
 #. option (radio button) in the Batch download window
 #. the * in the address runs through letters
 	Letters	Letters
@@ -1617,6 +1681,9 @@
 #. text in playlistdlg.rs
 #. button in Download video: go on listing a playlist from where it stopped
 	List the rest	List the rest
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+	Listen on:	Listen on:
 #. text in playlistdlg.rs
 #. in Download video, yt-dlp stopped part-way through a playlist; {n} = how many were listed, {error} = why
 #. {n} = a number; {error} = an error message (keep the braces as they are)
@@ -1736,6 +1803,28 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Mayotte	Mayotte
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+	MDM can't be reached on the network now: Options → Remote says why.	MDM can't be reached on the network now: Options → Remote says why.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+	MDM cannot download this address.	MDM cannot download this address.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+	MDM could not add it.	MDM could not add it.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+	MDM could not do it.	MDM could not do it.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+	MDM does not answer. Check that it is running and on the same network.	MDM does not answer. Check that it is running and on the same network.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+	MDM does not answer. Trying again...	MDM does not answer. Trying again...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+	MDM shows no code now. Click Pair a device there first.	MDM shows no code now. Click Pair a device there first.
 #. text in whereis.rs
 #. how far a download's server is, by its round trip (60 to 150 ms)
 	medium	medium
@@ -1812,6 +1901,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Montserrat	Montserrat
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+	More	More
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Morocco	Morocco
@@ -1904,6 +1996,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	New Caledonia	New Caledonia
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+	New code	New code
 #. text in the Options window
 	New exception	New exception
 #. text in the Options window
@@ -1946,6 +2041,9 @@
 #. message or event log entry in the main window
 #. title in the empty download list (this category or queue has no downloads)
 	No downloads here	No downloads here
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+	No downloads here.	No downloads here.
 #. message or event log entry in the main window
 #. title in the empty download list, when the column filters hide every download
 	No downloads match the filters	No downloads match the filters
@@ -1961,6 +2059,9 @@
 	No language matches the search	No language matches the search
 #. text in langpick.rs
 	No language matches.	No language matches.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+	No local network now: it starts when the computer joins one.	No local network now: it starts when the computer joins one.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Email found no mail program
 	No mail app opened.	No mail app opened.
@@ -2068,6 +2169,9 @@
 #. text in the Add torrent window
 	Off: a finished torrent stops, like any download.	Off: a finished torrent stops, like any download.
 #. text in the Options window
+#. Options → Remote → Status: the remote control is off
+	Off: nothing on the network can reach MDM.	Off: nothing on the network can reach MDM.
+#. text in the Options window
 	Offer to download links copied to the clipboard	Offer to download links copied to the clipboard
 #. text in the Link grabber window
 #. Link grabber, a link's status: the server hasn't the file; {status} is the HTTP code (404)
@@ -2085,9 +2189,18 @@
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
 	On macOS, only an administrator can schedule a wake	On macOS, only an administrator can schedule a wake
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+	On the phone, scan this code with the camera, or open the address and enter the code.	On the phone, scan this code with the camera, or open the address and enter the code.
 #. text in the Options window
 #. Options → Sites Logins → Cookies for video sites, a Chrome-like browser chosen on Windows
 	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.	On Windows, Chrome, Edge and Brave may lock their cookies. Firefox works.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+	On. On the phone, open this address:	On. On the phone, open this address:
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 	Once at	Once at
 #. text in extension.rs
@@ -2110,6 +2223,9 @@
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 	Only MP4 and MKV videos can hold subtitles	Only MP4 and MKV videos can hold subtitles
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.
 #. text in playlistdlg.rs
 #. in Download video, a list longer than MDM lists: only its first {n} videos are shown
 #. {n} = a number (keep the braces as they are)
@@ -2161,6 +2277,25 @@
 	Package	Package
 #. text in gallerydlg.rs; text in the Download video window
 	Page address	Page address
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+	Pair	Pair
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+	Pair a device	Pair a device
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+	Pair a device...	Pair a device...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+	Pair with Mister Download Manager	Pair with Mister Download Manager
+#. text in the Options window
+#. column title: when the device was paired
+	Paired	Paired
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+	Paired devices:	Paired devices:
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Pakistan	Pakistan
@@ -2198,8 +2333,9 @@
 #. text in the Link grabber window
 #. Link grabber: where links came from: the clipboard (pasted with Ctrl+V)
 	Pasted	Pasted
-#. text in a download's progress window
+#. text in a download's progress window; text in remote.rs
 #. verb: pause the download
+#. remote control page (on a phone): button: pause a download
 	Pause	Pause
 #. text in a download's Properties window
 #. tooltip of the greyed Move button in File Properties
@@ -2241,7 +2377,11 @@
 	Poland	Poland
 #. label in the Options window
 	Port	Port
-#. text in the Add torrent window
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+	Port {port} is used by another program: choose another.	Port {port} is used by another program: choose another.
+#. text in the Options window; text in the Add torrent window
+#. Options → Remote: label before the port number box
 #. Torrent settings: the port to listen on (empty: any)
 	Port:	Port:
 #. text in countries.rs
@@ -2303,6 +2443,9 @@
 	Queue processing started	Queue processing started
 #. text in the Options window
 	Queue processing stopped/finished	Queue processing stopped/finished
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+	Queued	Queued
 #. item in the Categories tree in the main window; text in the Scheduler window
 #. plural noun: the download queues
 	Queues	Queues
@@ -2356,8 +2499,15 @@
 #. text in a dialog box
 #. {category} = a category name such as "Music" (keep the braces as they are)
 	Remember this path for "{category}" category	Remember this path for "{category}" category
-#. button in the Options window; button in rssdlg.rs
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+	Remote	Remote
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+	Remote control	Remote control
+#. button in the Options window; text in remote.rs; button in rssdlg.rs
 #. verb: remove the item
+#. remote control page (on a phone): button: remove a download from the list
 #. RSS feeds window: unsubscribe from the selected feed
 	Remove	Remove
 #. text in the Scheduler window
@@ -2365,6 +2515,10 @@
 #. text in a dialog box
 #. choice in Delete category: its downloads leave the list (not their files; running ones move to General)
 	Remove its downloads from the list (running ones move to General)	Remove its downloads from the list (running ones move to General)
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+	Remove {name} from the list?	Remove {name} from the list?
 #. text in the Batch download window
 #. group box title: what the * in the address is replaced with (numbers or letters)
 	Replace asterisk to	Replace asterisk to
@@ -2719,8 +2873,9 @@
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Sri Lanka	Sri Lanka
-#. text in the Link grabber window
+#. text in the Link grabber window; text in remote.rs
 #. Link grabber button: download the ticked links now
+#. remote control page (on a phone): button: start a download or a queue
 	Start	Start
 #. button in a dialog box
 	Start Download	Start Download
@@ -2732,6 +2887,9 @@
 	Start downloading immediately while displaying "Download File Info" dialog	Start downloading immediately while displaying "Download File Info" dialog
 #. text in the tray icon's menu
 	Start main download queue	Start main download queue
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+	Start now	Start now
 #. text in a download's progress window
 	Start positions and download progress by connections	Start positions and download progress by connections
 #. checkbox in a dialog box
@@ -2761,14 +2919,15 @@
 #. text in the Options window
 #. column title: the account's state (premium, days left)
 	State	State
-#. text in the Link grabber window; text in a download's progress window; text in the Scheduler window
+#. text in the Link grabber window; group box title in the Options window; text in a download's progress window; text in the Scheduler window
 #. noun: label before the download's state
 #. column title: the download's state
 	Status	Status
 #. text in a download's Properties window
 #. label before the download's state
 	Status:	Status:
-#. text in the Add torrent window
+#. text in remote.rs; text in the Add torrent window
+#. remote control page (on a phone): button: stop a queue
 	Stop	Stop
 #. text in the Scheduler window; checkbox in the Scheduler window
 	Stop download at	Stop download at
@@ -2789,7 +2948,7 @@
 #. message or event log entry in the main window
 #. {queue} = a queue name such as "Main queue" (keep the braces as they are)
 	Stop {queue}	Stop {queue}
-#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status)
+#. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in remote.rs
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): stopped by the user
 	Stopped	Stopped
@@ -2904,6 +3063,9 @@
 #. text in extension.rs
 #. a check of Test browser integration: the browsers find MDM's helper program
 	The browsers can find Mister Download Manager	The browsers can find Mister Download Manager
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+	The changes apply when you click OK.	The changes apply when you click OK.
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #. Tell a friend: Copy failed (another program holds the clipboard)
 	The clipboard is busy: try again.	The clipboard is busy: try again.
@@ -3104,18 +3266,30 @@
 #. message or event log entry in the main window
 #. in the empty download list, under its title
 	This category or queue holds no downloads yet.	This category or queue holds no downloads yet.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+	This code can't be used any more.	This code can't be used any more.
 #. text in win32.rs
 #. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
 	This computer can't be woken by a timer	This computer can't be woken by a timer
 #. text in the Scheduler window
 #. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
 	This computer has no wake alarm that programs can set	This computer has no wake alarm that programs can set
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+	This computer only (127.0.0.1)	This computer only (127.0.0.1)
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 	this computer or the local network	this computer or the local network
 #. text in the Scheduler window
 #. tooltip on the Scheduler's date when it is in the past
 	This date has passed: the queue will not start	This date has passed: the queue will not start
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+	This device's name	This device's name
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+	This file is too large to be a torrent.	This file is too large to be a torrent.
 #. text in a dialog box
 	This folder does not exist:	This folder does not exist:
 #. text in errors.rs
@@ -3126,6 +3300,9 @@
 	this is a Google Drive folder, not a file	this is a Google Drive folder, not a file
 #. text in errors.rs
 	this is not a magnet link or a .torrent file	this is not a magnet link or a .torrent file
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+	This is not a torrent file.	This is not a torrent file.
 #. text in extension.rs
 #. a check of Test browser integration: a portable copy can't be connected
 	This is the installed copy, not a portable one	This is the installed copy, not a portable one
@@ -3266,6 +3443,9 @@
 #. text in the tray icon's menu
 #. verb: turn the Speed Limiter on
 	Turn on	Turn on
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+	Turn on the remote control first.	Turn on the remote control first.
 #. text in countries.rs
 #. a country's name (where a download's server is)
 	Tuvalu	Tuvalu
@@ -3316,8 +3496,9 @@
 #. text in the Link grabber window
 #. Link grabber button (IDM's): untick every link
 	Uncheck all	Uncheck all
-#. item in the Categories tree in the main window
+#. item in the Categories tree in the main window; text in remote.rs
 #. adjective: the downloads that are not complete yet
+#. remote control page (on a phone): tab: downloads not finished yet
 	Unfinished	Unfinished
 #. text in countries.rs
 #. a country's name (where a download's server is)
@@ -3457,14 +3638,25 @@
 #. why an archive wasn't extracted (after "Couldn't extract {name}: "); {n} is the volume's number
 #. {n} = a number (keep the braces as they are)
 	volume {n} of it is missing	volume {n} of it is missing
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+	Wait a moment, then try again.	Wait a moment, then try again.
 #. tooltip (why a control is greyed) in the Download video window
 #. why Download Now is greyed: a playlist's videos are still being listed
 	Wait for the list, or stop listing	Wait for the list, or stop listing
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+	Wait in {queue}	Wait in {queue}
 #. value in a column's filter list in the download list; text in the download list (sizes, speeds, status); text in a download's progress window
 #. a download's status (state it is in, not a command)
 #. a download's status (state it is in, not a command): waiting in a queue for its turn
 #. a download's status (state it is in, not a command): waiting in a queue
 	Waiting	Waiting
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+	Waiting for the device. The code works for {time}.	Waiting for the device. The code works for {time}.
 #. message or event log entry in the main window
 	Waiting: the download limit is reached (Scheduler)	Waiting: the download limit is reached (Scheduler)
 #. text in the Scheduler window
@@ -3492,6 +3684,9 @@
 	What were you doing when it happened? (optional)	What were you doing when it happened? (optional)
 #. text in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 	What's new:	What's new:
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+	When	When
 #. text in the Batch download window
 	Wildcard size	Wildcard size
 #. text in the Scheduler window
@@ -3520,6 +3715,13 @@
 	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.	Words: all of them; | between alternatives; * and ?. Episodes: 1x2;1x5-8;2x1-. Each episode once.
 #. group box title in the Options window
 	Write dates and times	Write dates and times
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+	Wrong code. Show a new code in MDM and try again.	Wrong code. Show a new code in MDM and try again.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+	Wrong code. Tries left: {n}	Wrong code. Tries left: {n}
 #. text in extracting archives (a download's log, the Archive password window)
 #. in Archive password: {name} is the archive's file name
 #. {name} = a file name (keep the braces as they are)
@@ -3621,6 +3823,13 @@
 #. {count} = "2 downloading"; {speed} = all of them together, like "1.25 MB/sec"
 #. {count} = a number (keep the braces as they are)
 	{count}, {speed}	{count}, {speed}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+	{device} is paired. It can control MDM now.	{device} is paired. It can control MDM now.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	{done} of {size}	{done} of {size}
 #. text in a download's Properties window
 #. a kind of file, by its extension: {ext} = "ZIP", "PDF"…
 	{ext} File	{ext} File
@@ -3747,6 +3956,10 @@
 #. text in a download's Properties window
 #. {size} = a file size such as "4.2 MB"; {bytes} = a number of bytes (keep the braces as they are)
 	{size} ({bytes} Bytes)	{size} ({bytes} Bytes)
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+	{size} free	{size} free
 #. text in errors.rs
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 	{size} is too big for this {file_system} drive (files up to 4 GB)	{size} is too big for this {file_system} drive (files up to 4 GB)

@@ -211,7 +211,7 @@ try {
   # own come from tools/shots/shots.toml (-Show).
   $windows = [ordered]@{
     "add-url" = "addurl"; "speed-limiter" = "speedlimit"; "scheduler" = "scheduler"
-    "options-connection" = "options:connection"; "grabber" = "grabber"
+    "options-connection" = "options:connection"; "options-remote" = "options:remote"; "grabber" = "grabber"
     "language-picker" = "language"; "progress" = "progress"
   }
   if ($Torrent -and (Want "add-torrent")) {

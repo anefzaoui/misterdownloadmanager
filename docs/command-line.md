@@ -111,10 +111,11 @@ Other programs can ask the running app what it is downloading, and pause, start,
 
 | Fields (besides `token`) | Answer |
 |---|---|
-| `{"query": "list"}` | Every download and the total speed: `{"downloads": [{"id", "file", "url", "path", "status", "size", "downloaded", "speed", "added", "error"}], "speed": bytes per second}`. `status` is `Queued`, `Downloading`, `Stopped`, `Complete` or `Error`; `size` is `null` while unknown; `error` (why it failed) is there only for a download in `Error`. Only while the API is on. |
+| `{"query": "list"}` | Every download and the total speed: `{"downloads": [{"id", "file", "url", "path", "status", "size", "downloaded", "speed", "added", "category", "error"}], "speed": bytes per second, "queues": [{"name", "running", "ids"}], "categories": [{"key", "name"}], "free": bytes}`. `status` is `Queued`, `Downloading`, `Stopped`, `Complete` or `Error`; `size` is `null` while unknown; `error` (why it failed) is there only for a download in `Error`; `category` is a category's `key`; `free` is the free space where downloads go (`null` when unknown). Only while the API is on. |
 | `{"action": "pause", "ids": [3, 4]}` | Acts on downloads by id: `"pause"`, `"start"`, `"remove"` (file kept) or `"delete"` (file deleted too). Answers `{"done": [3], "skipped": [{"id": 4, "why": "not running"}]}`; a running download must be paused before it is removed or deleted. Only while the API is on. |
+| `{"action": "start_queue", "queue": "Main download queue"}` | Starts (or with `"stop_queue"`, stops) the queue of that name (a name from the list's `queues`). Answers `{"done": [], "skipped": []}`, or `{"error": …, "code": "unknown-queue"}`. Only while the API is on. |
 | `{"api": true}` / `{"api": false}` | Turns the API on or off: `{"api": true}`. |
-| `{"url": "https://…", "dir": "D:\\Files", "name": "a.zip", "silent": true}` | Adds a download, as the command line's `/d /p /f /n` do (`"later": true` is `/a`); `ok`. Also with the API off, like the command line. |
+| `{"url": "https://…", "dir": "D:\\Files", "name": "a.zip", "silent": true}` | Adds a download, as the command line's `/d /p /f /n` do (`"later": true` is `/a`); `ok`. `"category"` (a key from the list's `categories`) puts it in that category's folder instead of the one its type picks; `"queue"` (a queue's name) is the queue it waits in with `"later"`. Also with the API off, like the command line. |
 | `{"start_queue": true}` | Starts the main download queue; `ok`. |
 
 An unknown question or action is answered `{"error": "…"}`, as is a question while the API is off (then with `"code": "api-off"`, for programs to check: the error text may change). A wrong token is answered `denied`.
