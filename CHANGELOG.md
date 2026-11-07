@@ -22,6 +22,15 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Control MDM from your phone** ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141)):
+  **Options → Remote**, off by default. A phone or another computer on the local network, paired
+  with a code (or a QR code) MDM shows, opens a page MDM serves over HTTPS: it adds links, magnet
+  links and `.torrent` files, shows the list with its progress, pauses, starts and removes
+  downloads, and starts and stops the queues, in the phone's language. Only paired devices are
+  answered, each removable in Options, and only on the computer's private network addresses.
+  [Guide](docs/remote-control.md).
+- The automation API's list also gives the queues, the categories and the free space; it starts
+  and stops a queue by name, and an added address can choose its category and queue.
 - **Cookies for video sites**
   ([#229](https://github.com/anefzaoui/misterdownloadmanager/issues/229)): Options → Sites Logins
   can let yt-dlp read a browser's cookies on this computer (Firefox, Chrome, Edge, Brave, Opera,

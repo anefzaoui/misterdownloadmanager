@@ -63,8 +63,20 @@ pub struct Command {
     pub api: Option<bool>,
     /// Automation API: `"pause"`, `"start"`, `"remove"` (off the list, its file kept) or
     /// `"delete"` (with its file) the downloads `ids`; answered with what was done and skipped.
+    /// `"start_queue"` / `"stop_queue"` start or stop the queue named `queue`.
     pub action: Option<String>,
     pub ids: Vec<u64>,
+    /// A category for `url` (its `key` in the list's `categories`); none: by the file's type.
+    pub category: Option<String>,
+    /// A queue by name: where `url` waits (with `later`), or the one `action` starts or stops.
+    pub queue: Option<String>,
+    /// Sent by the remote control (#141, crates/remote) on behalf of a paired device, never read
+    /// from a request line: no window opens for it, and it may only add, list and act.
+    #[serde(skip)]
+    pub remote: bool,
+    /// The remote control: an uploaded .torrent file's bytes (never read from a request line).
+    #[serde(skip)]
+    pub torrent_file: Option<Vec<u8>>,
     /// `/exit` (beyond IDM): the running app saves and quits (the installer, before an upgrade
     /// or an uninstall). Starts nothing when no app runs.
     pub exit: bool,
@@ -103,6 +115,39 @@ impl Command {
 pub struct Incoming {
     pub cmd: Command,
     pub reply: Option<std::sync::mpsc::SyncSender<String>>,
+}
+
+/// The app's command channel from inside its own process (the remote control, #141): where
+/// commands go, and what wakes the app to read them.
+#[derive(Clone)]
+pub struct Sink {
+    tx: Sender<Incoming>,
+    wake: std::sync::Arc<dyn Fn() + Send + Sync>,
+}
+
+impl Sink {
+    pub fn new(tx: Sender<Incoming>, wake: std::sync::Arc<dyn Fn() + Send + Sync>) -> Sink {
+        Sink { tx, wake }
+    }
+
+    /// Hand `cmd` to the app and wait up to `wait` for its one-line answer (blocking). None:
+    /// the app is quitting or didn't answer in time.
+    pub fn ask(&self, cmd: Command, wait: Duration) -> Option<String> {
+        let (rtx, rrx) = std::sync::mpsc::sync_channel(1);
+        self.tx
+            .send(Incoming {
+                cmd,
+                reply: Some(rtx),
+            })
+            .ok()?;
+        (self.wake)();
+        rrx.recv_timeout(wait).ok()
+    }
+
+    /// Wake the app (to show something that changed: a device paired).
+    pub fn wake(&self) {
+        (self.wake)();
+    }
 }
 
 #[derive(Serialize, Deserialize)]

@@ -12,6 +12,47 @@ pub struct ListAnswer {
     pub downloads: Vec<DownloadInfo>,
     /// The total download speed, bytes per second.
     pub speed: u64,
+    /// The queues, in the Scheduler's order (the first is the main queue).
+    #[serde(default)]
+    pub queues: Vec<QueueInfo>,
+    /// The categories a new download can go to (General first).
+    #[serde(default)]
+    pub categories: Vec<CategoryInfo>,
+    /// Free space where downloads go (the General category's folder), bytes; null when unknown.
+    #[serde(default)]
+    pub free: Option<u64>,
+}
+
+/// One queue of the list.
+#[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
+pub struct QueueInfo {
+    /// Its name: what `queue` takes (a built-in queue's in English, as shipped).
+    pub name: String,
+    /// Is it running?
+    pub running: bool,
+    /// Its downloads' ids, in its order.
+    pub ids: Vec<u64>,
+}
+
+/// One category of the list.
+#[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
+pub struct CategoryInfo {
+    /// What `category` takes and a download's `category` says (a built-in category's English
+    /// name, as shipped).
+    pub key: String,
+    /// Its name as the user sees it: a built-in one's English name (translated where it is
+    /// shown) unless the user renamed it.
+    pub name: String,
+}
+
+/// An address added (`url`): the download's id, or `pending` while a torrent's files are looked
+/// up (it joins the list once they are known).
+#[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
+pub struct AddAnswer {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<u64>,
+    #[serde(default)]
+    pub pending: bool,
 }
 
 /// One download of the list.
@@ -35,6 +76,9 @@ pub struct DownloadInfo {
     pub speed: u64,
     /// When it was added, as the list shows it; null for downloads from before that column.
     pub added: Option<String>,
+    /// Its category's `key` (see [`CategoryInfo`]).
+    #[serde(default)]
+    pub category: String,
     /// Why it failed, for a download in `Error`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub error: Option<String>,
@@ -101,6 +145,7 @@ pub fn schema() -> serde_json::Value {
     let _ = generator.subschema_for::<ListAnswer>();
     let _ = generator.subschema_for::<ActAnswer>();
     let _ = generator.subschema_for::<ApiAnswer>();
+    let _ = generator.subschema_for::<AddAnswer>();
     let _ = generator.subschema_for::<ErrorAnswer>();
     let defs = generator.take_definitions(true);
     serde_json::json!({

@@ -6015,3 +6015,272 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/സെക്കൻഡ്
+#. text in remote.rs
+#. remote control page (on a phone): button that picks a .torrent file on the phone
+#, machine
+	.torrent file	.torrent ഫയൽ
+#. text in remote.rs
+#. remote control page (on a phone): button: add the download
+#, machine
+	Add	ചേർക്കുക
+#. text in remote.rs
+#. remote control page (on a phone): a download was added
+#, machine
+	Added.	ചേർത്തു.
+#. text in remote.rs
+#. remote control page (on a phone): a magnet link or .torrent file was added; MDM reads the torrent's files first
+#, machine
+	Added. MDM is reading the torrent: it joins the list in a moment.	ചേർത്തു. MDM ടോറന്റ് വായിക്കുന്നു: ഇത് ഒരു നിമിഷത്തിനുള്ളിൽ ലിസ്റ്റിൽ ചേരും.
+#. text in remote.rs
+#. remote control page (on a phone): label of the box where a download's address or a magnet link is typed
+#, machine
+	Address or magnet link	വിലാസം അല്ലെങ്കിൽ മാഗ്നറ്റ് ലിങ്ക്
+#. text in remote.rs
+#. remote control page (on a phone): tab: every download
+#, machine
+	All	എല്ലാം
+#. text in remote.rs
+#. remote control page (on a phone): category choice: the category follows the file's type
+#, machine
+	Automatic (by file type)	സ്വയമേവ (ഫയൽ തരം അനുസരിച്ച്)
+#. text in the Options window
+#. Options → Remote → Status: the certificate's fingerprint, which the phone's browser shows when it warns about it; {fingerprint} = hex digits
+#, machine
+	Certificate (SHA-256): {fingerprint}	സർട്ടിഫിക്കറ്റ് (SHA-256): {fingerprint}
+#. text in remote.rs
+#. remote control page (on a phone): what the ".torrent file" button does (screen readers)
+#, machine
+	Choose a .torrent file	.torrent ഫയൽ തിരഞ്ഞെടുക്കുക
+#. text in remote.rs
+#. remote control page (on a phone): label of the pairing code's box (8 digits)
+#, machine
+	Code	കോഡ്
+#. text in the Options window
+#. Options → Remote → Pair a device: label before the 8-digit code
+#, machine
+	Code:	കോഡ്:
+#. text in remote.rs
+#. remote control page (on a phone): checkbox when removing a download: delete its file from the computer too
+#, machine
+	Delete the file too	ഫയലും ഇല്ലാതാക്കുക
+#. text in the Options window
+#. column title: a paired phone's or computer's name
+#, machine
+	Device	ഉപകരണം
+#. text in the Options window
+#. Options → Remote → Listen on: the default: each of the computer's private local network addresses (never one the internet reaches)
+#, machine
+	Every local network address	എല്ലാ പ്രാദേശിക നെറ്റ്‌വർക്ക് വിലാസങ്ങളും
+#. text in remote.rs
+#. remote control page (on a phone): menu command: unpair this phone or computer from MDM
+#, machine
+	Forget this device	ഈ ഉപകരണം മറക്കുക
+#. text in remote.rs
+#. remote control page (on a phone): question before unpairing this phone
+#, machine
+	Forget this device? It needs a new code to connect again.	ഈ ഉപകരണം മറക്കണോ? വീണ്ടും കണക്റ്റ് ചെയ്യാൻ ഇതിന് ഒരു പുതിയ കോഡ് ആവശ്യമാണ്.
+#. message or event log entry in the main window
+#. where a download came from (its Properties): a phone or computer paired in Options → Remote
+#, machine
+	from a paired device	ഒരു ജോടിയാക്കിയ ഉപകരണത്തിൽ നിന്ന്
+#. text in the Options window
+#. Options → Remote → Status: it could not start; {error} = the system's reason
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	It could not start: {error}	ഇതിന് ആരംഭിക്കാൻ കഴിഞ്ഞില്ല: {error}
+#. text in the Options window
+#. column title: when the device last reached MDM
+#, machine
+	Last seen	അവസാനം കണ്ടത്
+#. checkbox in the Options window
+#. Options → Remote check box (off by default)
+#, machine
+	Let phones and computers on the local network control MDM	പ്രാദേശിക നെറ്റ്‌വർക്കിലെ ഫോണുകൾക്കും കമ്പ്യൂട്ടറുകൾക്കും MDM നിയന്ത്രിക്കാൻ അനുവദിക്കുക
+#. text in the Options window
+#. Options → Remote: label before the choice of the address MDM listens on
+#, machine
+	Listen on:	ഇതിൽ ശ്രദ്ധിക്കുക:
+#. text in the Options window
+#. Options → Remote → Pair a device: the remote control isn't listening (no network, port taken): the Remote page says why
+#, machine
+	MDM can't be reached on the network now: Options → Remote says why.	MDM-നെ ഇപ്പോൾ നെറ്റ്‌വർക്കിൽ എത്തിച്ചേരാൻ കഴിയില്ല: ഓപ്ഷനുകൾ → റിമോട്ട് എന്തുകൊണ്ടെന്ന് പറയുന്നു.
+#. text in remote.rs
+#. remote control page (on a phone): the address typed isn't one MDM downloads (not http, https, ftp or magnet)
+#, machine
+	MDM cannot download this address.	MDM-ന് ഈ വിലാസം ഡൗൺലോഡ് ചെയ്യാൻ കഴിയില്ല.
+#. text in remote.rs
+#. remote control page (on a phone): adding a download failed
+#, machine
+	MDM could not add it.	MDM-ന് ഇത് ചേർക്കാൻ കഴിഞ്ഞില്ല.
+#. text in remote.rs
+#. remote control page (on a phone): an action failed
+#, machine
+	MDM could not do it.	MDM-ന് അത് ചെയ്യാൻ കഴിഞ്ഞില്ല.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached while pairing
+#, machine
+	MDM does not answer. Check that it is running and on the same network.	MDM പ്രതികരിക്കുന്നില്ല. ഇത് പ്രവർത്തിക്കുന്നുണ്ടെന്നും അതേ നെറ്റ്‌വർക്കിലാണെന്നും പരിശോധിക്കുക.
+#. text in remote.rs
+#. remote control page (on a phone): MDM can't be reached now; the page keeps trying by itself
+#. the trailing ... means it is still going on: keep it
+#, machine
+	MDM does not answer. Trying again...	MDM പ്രതികരിക്കുന്നില്ല. വീണ്ടും ശ്രമിക്കുന്നു...
+#. text in remote.rs
+#. remote control page (on a phone): no pairing code is shown in MDM; "Pair a device" is MDM's button
+#, machine
+	MDM shows no code now. Click Pair a device there first.	MDM ഇപ്പോൾ കോഡ് കാണിക്കുന്നില്ല. ആദ്യം അവിടെ ഒരു ഉപകരണം ജോടിയാക്കുക ക്ലിക്ക് ചെയ്യുക.
+#. text in remote.rs
+#. remote control page (on a phone): its menu's button
+#, machine
+	More	കൂടുതൽ
+#. button in the Options window
+#. Options → Remote → Pair a device: button: show a new code
+#, machine
+	New code	പുതിയ കോഡ്
+#. text in remote.rs
+#. remote control page (on a phone): the list shown is empty
+#, machine
+	No downloads here.	ഇവിടെ ഡൗൺലോഡുകളൊന്നുമില്ല.
+#. text in the Options window
+#. Options → Remote → Status: on, but the computer has no local network address now
+#, machine
+	No local network now: it starts when the computer joins one.	ഇപ്പോൾ പ്രാദേശിക നെറ്റ്‌വർക്കില്ല: കമ്പ്യൂട്ടർ ഒന്നിൽ ചേരുമ്പോൾ ഇത് ആരംഭിക്കുന്നു.
+#. text in the Options window
+#. Options → Remote → Status: the remote control is off
+#, machine
+	Off: nothing on the network can reach MDM.	ഓഫ്: നെറ്റ്‌വർക്കിൽ ഒന്നിനും MDM-നെ സമീപിക്കാൻ കഴിയില്ല.
+#. text in remote.rs
+#. remote control page (on a phone): how to pair; "Options", "Remote" and "Pair a device" are MDM's dialog, tab and button
+#, machine
+	On the computer, open Options, then Remote, and click Pair a device. Enter the code it shows.	കമ്പ്യൂട്ടറിൽ, ഓപ്ഷനുകൾ തുറക്കുക, തുടർന്ന് റിമോട്ട്, ഒരു ഉപകരണം ജോടിയാക്കുക ക്ലിക്ക് ചെയ്യുക. അത് കാണിക്കുന്ന കോഡ് നൽകുക.
+#. text in the Options window
+#. Options → Remote → Pair a device: how to pair
+#, machine
+	On the phone, scan this code with the camera, or open the address and enter the code.	ഫോണിൽ, ക്യാമറ ഉപയോഗിച്ച് ഈ കോഡ് സ്കാൻ ചെയ്യുക, അല്ലെങ്കിൽ വിലാസം തുറന്ന് കോഡ് നൽകുക.
+#. text in the Options window
+#. Options → Remote → Status: on; the address follows in a box below
+#, machine
+	On. On the phone, open this address:	ഓൺ. ഫോണിൽ, ഈ വിലാസം തുറക്കുക:
+#. text in the Options window
+#. Options → Remote, at the bottom of the page
+#, machine
+	Only paired devices see or change anything. The first time, the phone's browser warns about MDM's own certificate: its fingerprint is the one above.	ജോടിയാക്കിയ ഉപകരണങ്ങൾക്ക് മാത്രമേ എന്തെങ്കിലും കാണാനോ മാറ്റാനോ കഴിയൂ. ആദ്യമായി, ഫോണിന്റെ ബ്രൗസർ MDM-ന്റെ സ്വന്തം സർട്ടിഫിക്കറ്റിനെക്കുറിച്ച് മുന്നറിയിപ്പ് നൽകുന്നു: അതിന്റെ ഫിംഗർപ്രിന്റ് മുകളിലുള്ളതാണ്.
+#. text in remote.rs
+#. remote control page (on a phone): button: pair this phone with MDM
+#, machine
+	Pair	ജോടിയാക്കുക
+#. window title in the Options window
+#. window title: Options → Remote → Pair a device...
+#, machine
+	Pair a device	ഒരു ഉപകരണം ജോടിയാക്കുക
+#. button in the Options window
+#. Options → Remote button: shows a code (and a QR code) that pairs a phone
+#. the trailing ... means it opens a window: keep it
+#, machine
+	Pair a device...	ഒരു ഉപകരണം ജോടിയാക്കുക...
+#. text in remote.rs
+#. remote control page (on a phone): title of the pairing screen
+#, machine
+	Pair with Mister Download Manager	Mister Download Manager മായി ജോടിയാക്കുക
+#. text in the Options window
+#. column title: when the device was paired
+#, machine
+	Paired	ജോടിയാക്കിയത്
+#. text in the Options window
+#. Options → Remote: label above the list of paired phones and computers
+#, machine
+	Paired devices:	ജോടിയാക്കിയ ഉപകരണങ്ങൾ:
+#. text in the Options window
+#. Options → Remote → Status: another program uses the port; {port} = its number
+#, machine
+	Port {port} is used by another program: choose another.	പോർട്ട് {port} മറ്റൊരു പ്രോഗ്രാം ഉപയോഗിക്കുന്നു: മറ്റൊന്ന് തിരഞ്ഞെടുക്കുക.
+#. text in remote.rs
+#. remote control page (on a phone): a download's state: added, waiting to start
+#, machine
+	Queued	വരിയിൽ
+#. text in the Options window
+#. tab title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote	വിദൂര നിയന്ത്രണം
+#. text in the Options window
+#. Options page title: control MDM from a phone or another computer on the local network
+#, machine
+	Remote control	വിദൂര നിയന്ത്രണം
+#. text in remote.rs
+#. remote control page (on a phone): question before removing a download; {name} its file name
+#. {name} = a file name (keep the braces as they are)
+#, machine
+	Remove {name} from the list?	ലിസ്റ്റിൽ നിന്ന് {name} നീക്കം ചെയ്യണോ?
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: start the download at once
+#, machine
+	Start now	ഇപ്പോൾ ആരംഭിക്കുക
+#. text in the Options window
+#. Options → Remote → Status: the settings were changed; they apply on OK
+#, machine
+	The changes apply when you click OK.	നിങ്ങൾ ശരി ക്ലിക്ക് ചെയ്യുമ്പോൾ മാറ്റങ്ങൾ പ്രയോഗിക്കും.
+#. text in the Options window
+#. Options → Remote → Pair a device: the code ran out (10 minutes, or 5 wrong tries)
+#, machine
+	This code can't be used any more.	ഈ കോഡ് ഇനി ഉപയോഗിക്കാൻ കഴിയില്ല.
+#. text in the Options window
+#. Options → Remote → Listen on: only programs on this computer can connect (127.0.0.1)
+#, machine
+	This computer only (127.0.0.1)	ഈ കമ്പ്യൂട്ടർ മാത്രം (127.0.0.1)
+#. text in remote.rs
+#. remote control page (on a phone): label of the box naming this phone (shown in MDM's list of paired devices)
+#, machine
+	This device's name	ഈ ഉപകരണത്തിന്റെ പേര്
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen is too large for a .torrent file
+#, machine
+	This file is too large to be a torrent.	ഈ ഫയൽ ടോറന്റ് ആകാൻ കഴിയാത്തത്ര വലുതാണ്.
+#. text in remote.rs
+#. remote control page (on a phone): the file chosen isn't a .torrent file
+#, machine
+	This is not a torrent file.	ഇതൊരു ടോറന്റ് ഫയലല്ല.
+#. tooltip (why a control is greyed) in the Options window
+#. why Options → Remote → Pair a device... is greyed
+#, machine
+	Turn on the remote control first.	ആദ്യം വിദൂര നിയന്ത്രണം ഓണാക്കുക.
+#. text in remote.rs
+#. remote control page (on a phone): codes were tried too fast
+#, machine
+	Wait a moment, then try again.	ഒരു നിമിഷം കാത്തിരിക്കുക, എന്നിട്ട് വീണ്ടും ശ്രമിക്കുക.
+#. text in remote.rs
+#. remote control page (on a phone): "When" choice: the download waits in a queue; {queue} its name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Wait in {queue}	{queue} ൽ കാത്തിരിക്കുക
+#. text in the Options window
+#. Options → Remote → Pair a device: how long the code stays valid; {time} = minutes:seconds ("9:58")
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	Waiting for the device. The code works for {time}.	ഉപകരണത്തിനായി കാത്തിരിക്കുന്നു. കോഡ് {time} വരെ പ്രവർത്തിക്കും.
+#. text in remote.rs
+#. remote control page (on a phone): label of the choice: start the new download now, or let it wait in a queue
+#, machine
+	When	എപ്പോൾ
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed and the code is void now
+#, machine
+	Wrong code. Show a new code in MDM and try again.	തെറ്റായ കോഡ്. MDM-ൽ ഒരു പുതിയ കോഡ് കാണിച്ച് വീണ്ടും ശ്രമിക്കുക.
+#. text in remote.rs
+#. remote control page (on a phone): pairing failed; {n} = how many more codes may be tried
+#. {n} = a number (keep the braces as they are)
+#, machine
+	Wrong code. Tries left: {n}	തെറ്റായ കോഡ്. ശേഷിക്കുന്ന ശ്രമങ്ങൾ: {n}
+#. text in the Options window
+#. Options → Remote → Pair a device: done; {device} = the name it was given
+#, machine
+	{device} is paired. It can control MDM now.	{device} ജോടിയാക്കി. ഇതിന് ഇപ്പോൾ MDM നിയന്ത്രിക്കാൻ കഴിയും.
+#. text in remote.rs
+#. remote control page (on a phone): progress; {done} and {size} are sizes ("1.2 MB of 7.5 MB")
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{done} of {size}	{size} ൽ {done}
+#. text in remote.rs
+#. remote control page (on a phone): free disk space on the computer; {size} e.g. "120 GB"
+#. {size} = a file size such as "4.2 MB" (keep the braces as they are)
+#, machine
+	{size} free	{size} സൗജന്യം

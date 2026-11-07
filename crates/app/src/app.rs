@@ -453,6 +453,12 @@ pub struct App {
     torrents_started: bool,
     /// The torrent session, started on first use (D-014).
     torrent_host: crate::torrents::Host,
+    /// The remote control (#141): paired phones and computers on the local network.
+    pub remote: Option<mdm_remote::Remote>,
+    /// Torrents a paired device sent, their files being looked up (`remote::poll_torrents`).
+    pub remote_torrents: Vec<crate::remote::Lookup>,
+    /// Free space where downloads go, and when it was last looked up (`free_space`).
+    free_space: std::sync::Arc<std::sync::Mutex<(Option<Instant>, Option<u64>)>>,
     /// Options → Proxy / Socks → Network adapter (#35): the watch, the route seen last frame, and
     /// the downloads stopped because it changed, to start again when it allows.
     netwatch: crate::netwatch::NetWatch,
@@ -742,6 +748,7 @@ impl App {
         cc: &eframe::CreationContext<'_>,
         rt: tokio::runtime::Handle,
         commands: std::sync::mpsc::Receiver<ipc::Incoming>,
+        sink: ipc::Sink,
         loaded: store::Loaded,
         start: crate::Start,
     ) -> Self {
@@ -846,6 +853,8 @@ impl App {
             _ => View::All,
         };
         let show_categories = settings.show_categories;
+        // The remote control (#141): off unless Options → Remote turned it on.
+        let remote = crate::remote::start(&rt, sink, &settings);
         // Started with the session where a window can't be hidden (Wayland, #226): minimized.
         if start == crate::Start::Minimized {
             tracing::info!("started with the session: minimized (a window can't be hidden here)");
@@ -929,6 +938,9 @@ impl App {
             blocklist_busy: Default::default(),
             torrents_started: false,
             torrent_host: crate::torrents::Host::new(),
+            remote,
+            remote_torrents: Vec::new(),
+            free_space: Default::default(),
             netwatch: Default::default(),
             debrid: Default::default(),
             debrid_from: 0,
@@ -1947,6 +1959,7 @@ impl App {
                     "archives" => 10,
                     "sounds" => 8,
                     "regional" => 9,
+                    "remote" | "pair" => 11,
                     _ => 0,
                 };
                 self.run(Cmd::Options, None, ctx);
@@ -1958,6 +1971,10 @@ impl App {
                 }
                 // A window over a page (screenshots, #192): options:test, options:account.
                 self.options = self.options.take().map(|o| o.with_window(tab));
+                // Remote → Pair a device... (the docs' screenshots, #141).
+                if tab == "pair" {
+                    self.options = self.options.take().map(|o| o.with_pairing());
+                }
             }
             _ => {}
         }
@@ -2091,7 +2108,17 @@ impl App {
                 .clone()
                 .unwrap_or_else(|| mdm_engine::naming::file_name(None, &url));
             let name = mdm_engine::naming::sanitize(&name);
-            let category = Category::of(&name);
+            // The automation API's `category` (by its key) and `queue` (by name), when given.
+            let category = cmd
+                .category
+                .as_deref()
+                .and_then(|k| Category::all().into_iter().find(|c| c.key() == k))
+                .unwrap_or_else(|| Category::of(&name));
+            let queue = cmd
+                .queue
+                .as_deref()
+                .and_then(|n| self.queues.iter().position(|q| q.name == n))
+                .unwrap_or(0);
             let dir = cmd
                 .dir
                 .clone()
@@ -2108,7 +2135,7 @@ impl App {
             let id = self.push_item(url, dest, category, String::new(), size, None, cmd, source);
             self.name_guessed(id, guessed);
             if later {
-                self.queues[0].items.push(id);
+                self.queues[queue].items.push(id);
             } else {
                 self.start(id, true);
             }
@@ -3454,7 +3481,9 @@ impl App {
         }
         self.selection.set(id);
         if add.start_now {
-            self.start(id, true);
+            self.start(id, !add.quiet);
+        } else if let Some(q) = add.queue.filter(|q| *q < self.queues.len()) {
+            self.queues[q].items.push(id);
         } else {
             self.queue_later(vec![id], self.settings.queue_panel_later);
         }
@@ -3721,6 +3750,8 @@ impl App {
             from_magnet,
             // RSS rules download as torrents usually do: the rarest pieces first.
             in_order: false,
+            queue: None,
+            quiet: false,
         });
         let feed = self
             .rss
@@ -3897,18 +3928,49 @@ impl App {
     /// The automation API's answer (a JSON line, shaped by `ipc::api`): `api` turns it on or
     /// off; `query: "list"` gives every download and the total speed, `action` acts on
     /// downloads ([`App::act`]) — only while it is on.
+    ///
+    /// A paired device's command (the remote control, #141) is answered while Options → Remote
+    /// is on, whatever the automation API's switch: it may list, add and act, nothing else.
     fn answer(&mut self, cmd: &ipc::Command) -> String {
         use ipc::api::{ApiAnswer, DownloadInfo, ErrorAnswer, ListAnswer, line};
-        if let Some(on) = cmd.api {
+        if cmd.remote {
+            if !self.settings.remote_on {
+                return line(&ErrorAnswer {
+                    error: "the remote control is off".into(),
+                    code: Some("remote-off".into()),
+                });
+            }
+            if cmd.url.is_some() || cmd.torrent_file.is_some() {
+                return self.remote_add(cmd.clone());
+            }
+        } else if let Some(on) = cmd.api {
             self.settings.automation_api = on;
             self.dirty = true;
             return line(&ApiAnswer { api: on });
-        }
-        if !self.settings.automation_api {
+        } else if !self.settings.automation_api {
             return line(&ErrorAnswer {
                 error: "the automation API is off (misterdownloadmanager-cli api on)".into(),
                 code: Some(ipc::api::API_OFF.into()),
             });
+        }
+        if let Some(action @ ("start_queue" | "stop_queue")) = cmd.action.as_deref() {
+            let at = cmd
+                .queue
+                .as_deref()
+                .and_then(|n| self.queues.iter().position(|q| q.name == n));
+            let Some(q) = at else {
+                return line(&ErrorAnswer {
+                    error: "no such queue".into(),
+                    code: Some("unknown-queue".into()),
+                });
+            };
+            if action == "start_queue" {
+                self.start_queue(q);
+            } else {
+                self.stop_queue(q);
+            }
+            self.dirty = true;
+            return line(&ipc::api::ActAnswer::default());
         }
         if let Some(action) = cmd.action.as_deref() {
             return match self.act(action, &cmd.ids) {
@@ -3924,13 +3986,26 @@ impl App {
                     .map(|i| DownloadInfo {
                         id: i.id,
                         file: i.file_name.clone(),
-                        url: i.url.to_string(),
-                        path: i.dest.to_string_lossy().into_owned(),
+                        // A paired device sees no folder of the computer's, nor a password in
+                        // an address.
+                        url: if cmd.remote {
+                            let mut u = i.url.clone();
+                            let _ = u.set_password(None);
+                            u.to_string()
+                        } else {
+                            i.url.to_string()
+                        },
+                        path: if cmd.remote {
+                            String::new()
+                        } else {
+                            i.dest.to_string_lossy().into_owned()
+                        },
                         status: format!("{:?}", i.status),
                         size: i.size,
                         downloaded: i.downloaded,
                         speed: if i.live.is_some() { i.rate() as u64 } else { 0 },
                         added: i.added.clone(),
+                        category: i.category.key().into_owned(),
                         error: i.error.clone().filter(|_| i.status == Status::Error),
                     })
                     .collect();
@@ -3940,15 +4015,219 @@ impl App {
                     .filter(|i| i.live.is_some())
                     .map(|i| i.rate())
                     .sum();
+                let queues = self
+                    .queues
+                    .iter()
+                    .map(|q| ipc::api::QueueInfo {
+                        name: q.name.clone(),
+                        running: q.running,
+                        ids: q.items.clone(),
+                    })
+                    .collect();
+                let categories = Category::all()
+                    .into_iter()
+                    .map(|c| ipc::api::CategoryInfo {
+                        key: c.key().into_owned(),
+                        name: c.label().into_owned(),
+                    })
+                    .collect();
                 line(&ListAnswer {
                     downloads,
                     speed: speed as u64,
+                    queues,
+                    categories,
+                    free: self.free_space(),
                 })
             }
             other => line(&ErrorAnswer {
                 error: format!("unknown query {other:?}"),
                 code: None,
             }),
+        }
+    }
+
+    /// Free space where downloads go (General's folder), looked up off this thread at most every
+    /// 10 s (a network share can be slow to answer).
+    fn free_space(&mut self) -> Option<u64> {
+        let (checked, free) = *self.free_space.lock().unwrap();
+        if checked.is_none_or(|t| t.elapsed() >= Duration::from_secs(10)) {
+            self.free_space.lock().unwrap().0 = Some(Instant::now());
+            let dir = self
+                .settings
+                .category_dir(Category::General, &self.downloads);
+            let slot = self.free_space.clone();
+            self.rt.spawn_blocking(move || {
+                // The folder may not exist yet: its nearest existing parent's volume.
+                let at = dir
+                    .ancestors()
+                    .find(|d| d.is_dir())
+                    .map(std::path::Path::to_owned);
+                let free = at
+                    .and_then(|d| mdm_engine::disk::volume_of(&d))
+                    .map(|v| v.free);
+                slot.lock().unwrap().1 = free;
+            });
+        }
+        free
+    }
+
+    /// A download a paired device sent (#141): an address added as a silent command line's is,
+    /// or a magnet link or .torrent file as Add torrent's Download Now with every file, in the
+    /// category and queue it chose (by file type, and started now, when it chose none). No
+    /// window opens. Answered with its id, or `pending` while a torrent's files are looked up.
+    fn remote_add(&mut self, mut cmd: ipc::Command) -> String {
+        use ipc::api::{AddAnswer, ErrorAnswer, line};
+        let fail = |code: &str, error: &str| {
+            line(&ErrorAnswer {
+                error: error.into(),
+                code: Some(code.into()),
+            })
+        };
+        let category = match cmd.category.as_deref() {
+            None => None,
+            Some(key) => match Category::all().into_iter().find(|c| c.key() == key) {
+                Some(c) => Some(c),
+                None => return fail("unknown-category", "no such category"),
+            },
+        };
+        let queue = match cmd.queue.as_deref() {
+            None => None,
+            Some(name) => match self.queues.iter().position(|q| q.name == name) {
+                Some(q) => Some(q),
+                None => return fail("unknown-queue", "no such queue"),
+            },
+        };
+        // Later: in the queue chosen, else the main queue; else started now.
+        let queue = cmd.later.then(|| queue.unwrap_or(0));
+        let text = cmd.url.clone().unwrap_or_default();
+        let torrent = match cmd.torrent_file.take() {
+            Some(bytes) => Some((mdm_torrent::Source::File(bytes), false)),
+            None => mdm_torrent::Source::magnet(text.trim()).map(|m| (m, true)),
+        };
+        if let Some((source, from_magnet)) = torrent {
+            let slot: crate::remote::Slot = Default::default();
+            let (out, host, known) = (
+                slot.clone(),
+                self.torrent_host.clone(),
+                self.torrent_hashes(),
+            );
+            self.rt.spawn(async move {
+                let res = match host.session(known).await {
+                    Ok(t) => t
+                        .metadata(&source, crate::torrentdlg::METADATA_WAIT, None)
+                        .await
+                        .map_err(|e| crate::errors::torrent(&e)),
+                    Err(e) => Err(e),
+                };
+                *out.lock().unwrap() = Some(res);
+            });
+            self.remote_torrents.push(crate::remote::Lookup {
+                slot,
+                category,
+                queue,
+                from_magnet,
+            });
+            return line(&AddAnswer {
+                id: None,
+                pending: true,
+            });
+        }
+        let Some(url) = url::Url::parse(text.trim())
+            .ok()
+            .filter(mdm_engine::supported)
+        else {
+            return fail("unsupported", "not an address MDM downloads");
+        };
+        // Already in the list: no one at the computer to ask, so Options' choice, with "ask"
+        // taken as "add it again" (under a numbered name).
+        if let Some(dup) = self.items.iter().find(|i| i.url == url).map(|i| i.id) {
+            match self.settings.duplicate_action {
+                2 => self.overwrite(dup),
+                3 => {
+                    return line(&AddAnswer {
+                        id: Some(dup),
+                        pending: false,
+                    });
+                }
+                _ => {}
+            }
+        }
+        let name = mdm_engine::naming::sanitize(&mdm_engine::naming::file_name(None, &url));
+        let category = category.unwrap_or_else(|| Category::of(&name));
+        let dir = self.settings.category_dir(category, &self.downloads);
+        let dest = mdm_engine::naming::destination(&dir, &name);
+        cmd.remote = false;
+        let id = self.push_item(
+            url,
+            dest,
+            category,
+            String::new(),
+            None,
+            None,
+            cmd,
+            // i18n: where a download came from (its Properties): a phone or computer paired in Options → Remote
+            crate::i18n::mark("from a paired device"),
+        );
+        self.name_guessed(id, true);
+        match queue {
+            Some(q) => self.queues[q].items.push(id),
+            None => self.start(id, false),
+        }
+        self.dirty = true;
+        line(&AddAnswer {
+            id: Some(id),
+            pending: false,
+        })
+    }
+
+    /// The torrents a paired device sent whose files are known now: added with every file
+    /// (into the category's folder), as an RSS rule adds one; never over files already there.
+    fn poll_remote_torrents(&mut self) {
+        let mut ready = Vec::new();
+        self.remote_torrents
+            .retain(|l| match l.slot.lock().unwrap().take() {
+                Some(res) => {
+                    ready.push((res, l.category, l.queue, l.from_magnet));
+                    false
+                }
+                None => true,
+            });
+        for (res, category, queue, from_magnet) in ready {
+            let meta = match res {
+                Ok(meta) => meta,
+                Err(e) => {
+                    tracing::warn!("remote control: a torrent could not be read: {e}");
+                    continue;
+                }
+            };
+            if self.torrent_hashes().contains(&meta.info_hash) {
+                continue;
+            }
+            let category = category.unwrap_or_else(|| crate::torrentdlg::category_of(&meta));
+            let dir = crate::model::category_folder(
+                category,
+                &self.downloads,
+                &self.settings.category_dirs,
+            );
+            if !meta.existing_in(&dir).is_empty() {
+                tracing::warn!(
+                    "remote control: {}: its files are already in {}",
+                    meta.name,
+                    dir.display()
+                );
+                continue;
+            }
+            self.add_torrent(crate::torrentdlg::TorrentAdd {
+                meta,
+                dir,
+                files: None,
+                category,
+                start_now: queue.is_none(),
+                from_magnet,
+                in_order: false,
+                queue,
+                quiet: true,
+            });
         }
     }
 
@@ -4021,6 +4300,10 @@ impl App {
         }
         self.settings = new;
         crate::regional::set(&self.settings.regional);
+        // Options → Remote: listening started, stopped or moved.
+        if let Some(r) = &self.remote {
+            r.apply(crate::remote::config(&self.settings));
+        }
         if self.settings.proxy_mode == 2 {
             crate::pacfetch::refresh(&self.settings.proxy_script, &self.rt);
         }
@@ -4587,11 +4870,14 @@ impl App {
             }
             Cmd::Options => {
                 if self.options.is_none() {
-                    self.options = Some(crate::options::OptionsDialog::new(
-                        &self.settings,
-                        &self.downloads,
-                        self.host_limits.learned(),
-                    ));
+                    self.options = Some(
+                        crate::options::OptionsDialog::new(
+                            &self.settings,
+                            &self.downloads,
+                            self.host_limits.learned(),
+                        )
+                        .with_remote(self.remote.clone()),
+                    );
                 } else {
                     dialogs::raise(ctx, dialogs::dialog_viewport("options"));
                 }
@@ -7463,8 +7749,12 @@ impl App {
             match d.show(ctx, &self.downloads) {
                 Outcome::Open => {}
                 Outcome::Closed => {
-                    // Cancel: categories the dialog added, changed or restored are undone.
+                    // Cancel: categories the dialog added, changed or restored are undone, and
+                    // the remote control listens as before Pair a device... moved it.
                     self.settings.publish_categories();
+                    if let Some(r) = &self.remote {
+                        r.apply(crate::remote::config(&self.settings));
+                    }
                     self.options = None;
                 }
                 Outcome::Done(new) => {
@@ -7671,6 +7961,7 @@ impl eframe::App for App {
         self.network_adapter_tick(ctx);
         self.debrid_tick();
         self.poll(ctx);
+        self.poll_remote_torrents();
         // What failed in any window, told here (dialogs::tell).
         if let Some((title, text)) = dialogs::told().pop() {
             self.notice = Some((title, text));
