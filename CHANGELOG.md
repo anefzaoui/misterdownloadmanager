@@ -567,6 +567,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Update now finds the Linux and macOS files by either name**: a release's AppImage, .deb,
+  .rpm, .tar.gz and .dmg were named `…-experimental`; MDM now looks for the name without it
+  first and still takes the older one, so Update now keeps working whichever a release uses.
 - **The Linux .deb and .rpm bring what MDM's window needs** (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
   libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start
