@@ -3,7 +3,8 @@
 # in step. See tools/shots/README.md.
 #
 #   id       the file: docs/images/help/<id>.webp (light) and <id>-dark.webp
-#   page     the docs page it is on, and `under` the heading it sits under
+#   page     the docs page it is on, and `under` the heading it sits under; or a website file
+#            (website/...) that lists it for the site's own pages
 #   take     what to open, as tools/lab/docs-shots.ps1 -Show takes it: a /show argument
 #            ("options:connection"), "@main", "@menu:<show argument>" (a menu, over the main
 #            window), "@download:<lab server path>" (Download File Info, as a browser hands a
@@ -621,3 +622,95 @@ crop = [18, 172, 380, 208]
 ring = ["Test browser integration..."]
 alt = "Options, General with Test browser integration..."
 caption = "Test browser integration... says whether the browser reaches MDM."
+
+# ---- The website (misterdownloadmanager.com) ------------------------------------------------------
+# Pictures the site's own pages show (tools/website/build.py), not a help page: `page` names the
+# website file that lists them, where `make.py check` looks for "images/help/<id>.webp".
+
+[[shot]]
+id = "site-theme-classic"
+page = "website/content/themes.toml"
+take = "theme:classic+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the Classic theme"
+caption = "Classic"
+
+[[shot]]
+id = "site-theme-native"
+page = "website/content/themes.toml"
+take = "theme:native+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the Native theme"
+caption = "Native"
+
+[[shot]]
+id = "site-theme-high-contrast"
+page = "website/content/themes.toml"
+take = "theme:high-contrast+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the High contrast theme"
+caption = "High contrast"
+
+[[shot]]
+id = "site-theme-metro"
+page = "website/content/themes.toml"
+take = "theme:metro+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the Metro theme"
+caption = "Metro"
+
+[[shot]]
+id = "site-theme-adwaita"
+page = "website/content/themes.toml"
+take = "theme:adwaita+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the Adwaita theme"
+caption = "Adwaita"
+
+[[shot]]
+id = "site-theme-breeze"
+page = "website/content/themes.toml"
+take = "theme:breeze+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the Breeze theme"
+caption = "Breeze"
+
+[[shot]]
+id = "site-theme-luna"
+page = "website/content/themes.toml"
+take = "theme:luna+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the Luna theme"
+caption = "Luna"
+
+[[shot]]
+id = "site-theme-aero"
+page = "website/content/themes.toml"
+take = "theme:aero+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the Aero theme"
+caption = "Aero"
+
+[[shot]]
+id = "site-theme-aqua"
+page = "website/content/themes.toml"
+take = "theme:aqua+@main"
+# The title bar, the menus, the toolbar, the categories and the list's rows: the theme's look.
+crop = [0, 0, 930, 300]
+alt = "The main window in the Aqua theme"
+caption = "Aqua"
+
+[[shot]]
+id = "site-gallery"
+page = "website/content/features/galleries.md"
+take = "gallery"
+alt = "Download a gallery: a gallery's address, gallery-dl offered for install, the folder its files go to and how many at most"
+caption = "Download a gallery"

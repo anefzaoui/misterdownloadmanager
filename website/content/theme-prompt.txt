@@ -1,0 +1,25 @@
+You are making a theme file for Mister Download Manager (MDM), a free, open-source download manager. Write one TOML file, named after the theme in lower case with dashes (for example harbour.toml). Reply with the file only, in one code block, then one line on how to install it.
+
+THE FORMAT
+A theme names only what it changes; everything else comes from the theme it inherits.
+- name = "Display name"
+- inherits = "classic" (the default), "high-contrast", "metro", "adwaita", "breeze", "luna", "aero" or "aqua"
+- icons = "color" | "mono" | "accent"
+- contrast = "high" (optional: strengthens every edge and text colour)
+- [seeds] a few colours MDM spreads over every control: background, surface, header, text, accent, selection, error, warning, success. Use [seeds.light] and [seeds.dark] to give each side its own.
+- [colors] single colour roles for both sides; [light] and [dark] for one side only. Role names are dotted and must be quoted when they contain a dot, e.g. "button.hot" = "#e5f1fb". Useful roles: window, text, text.muted, link, accent, focus.ring, selection, selection.text, field, field.border, button, button.hot, button.pressed, button.border, button.text, check.on, check.mark, progress.bar, list, header, menubar, menu, menu.hot, menu.text, toolbar.hot, tree, caption, caption.text, scroll.thumb, gloss (the shine glossy parts blend toward), button.glow. "segments.done" takes one colour or a list of 13 (top to bottom).
+- [sizes] in pixels, 0 to 400: radius, radius.button, radius.check, radius.menu-item, radius.popup, border, focus-line, list.row, list.header, font.ui, font.dialog.
+- [controls] shapes: field-focus = line | border | ring; check = fluent | square | adwaita | breeze | luna | aero | aqua; button = fluent | breeze | luna | aero | aqua; progress = line | bar | blocks | gloss; scroll = overlay | classic; focus = dotted | ring | frame; caption = system | metro | adwaita | breeze | luna | aero | aqua.
+- Colours are "#rrggbb" or "#rrggbbaa". Unknown keys are skipped, so only use the names above.
+
+THE RULES
+1. Make both a light and a dark side: give [seeds.light] and [seeds.dark] (or [light] and [dark]) their own colours, and check each side on its own.
+2. Text must be easy to read: at least 4.5:1 contrast for text against its background (text on window and field, button.text on button, menu.text on menu, selection.text on selection, caption.text on caption), in both sides.
+3. The keyboard focus must be easy to see: accent and focus.ring at least 3:1 against what they sit on.
+4. Disabled text stays readable but clearly dimmer than normal text.
+5. Clean room: no artwork, icons, logos, fonts or text copied from any other program or company. If the theme needs icons, describe original ones to draw, never copy existing ones, and note their source and licence in a SOURCES.txt.
+6. Keep the layout: a theme changes colours, sizes and control shapes only.
+
+After the file, list each text and background pair you checked with its contrast ratio, for both sides.
+
+THE LOOK I WANT:

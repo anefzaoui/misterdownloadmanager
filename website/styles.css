@@ -1050,6 +1050,151 @@ html.lb-on { overflow: hidden; }
   .vs-bar { width: calc(var(--t) * 60%); }
 }
 
+/* ---- Coming with the next version (build.py coming_banner) -------------------------------------- */
+/* A sticker on label stock, its rule dashed like the race's lane before the file moves: in transit,
+   not delivered. Never green (green is Download's and delivered's). */
+.coming { display: flex; align-items: flex-start; gap: 10px; width: fit-content; max-width: 100%; margin: 0;
+  padding: 11px 16px 12px; border-radius: 6px; background: var(--paper); color: var(--ink);
+  outline: 1.5px dashed var(--ink); outline-offset: -5px; }
+.coming svg { flex: none; width: 20px; height: 20px; margin-top: 1px; }
+.coming b { font-size: 16.5px; font-weight: 800; font-stretch: 86%; }
+.coming small { display: block; margin-top: 2px; font-size: 14px; line-height: 1.45; color: var(--ink-2); }
+.coming-page { margin-bottom: clamp(20px, 3vw, 28px); padding: 14px 20px 15px; box-shadow: var(--shadow-sheet); outline-offset: -6px; }
+.prose .coming-section { margin-block: .7em 1.1em; background: var(--paper-2); }
+.coming-tag { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px 3px 6px; border-radius: 4px;
+  font-size: 12px; font-weight: 700; line-height: 1.35; outline-width: 1.5px; outline-offset: -1.5px; }
+.coming-tag svg { width: 13px; height: 13px; margin: 0; }
+
+/* ---- Contents: every feature, a ruled packing list (build.py manifest) --------------------------- */
+
+.mf-group { display: grid; grid-template-columns: 196px minmax(0, 1fr); overflow: hidden; border-top: 1.5px solid var(--ink); }
+.sheet-band + .mf-group { border-top: 0; }
+.mf-name { margin: 0; padding: 20px clamp(18px, 3vw, 28px); color: var(--ink-3);
+  font-size: 12.5px; font-weight: 750; font-stretch: 74%; letter-spacing: .05em; line-height: 1.3; text-transform: uppercase; }
+.mf-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); margin: 0 -1px -1px 0; padding: 0; list-style: none; border-inline-start: 1px solid var(--line); }
+/* Hairlines between the cells: each draws its end and bottom edge; the outer ones fall outside. */
+.mf-list li { min-width: 0; box-shadow: inset -1px -1px 0 var(--line); }
+[dir="rtl"] .mf-list { margin: 0 0 -1px -1px; }
+[dir="rtl"] .mf-list li { box-shadow: inset 1px -1px 0 var(--line); }
+.mf-list a { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: start; gap: 4px 12px; height: 100%; padding: 17px 20px 19px; color: var(--ink); text-decoration: none; }
+.mf-list a:hover { background: var(--paper-2); }
+.mf-list a:focus-visible { outline-offset: -4px; }
+.mf-list b { grid-column: 1; font-size: 17.5px; font-weight: 750; font-stretch: 86%; line-height: 1.2; }
+.mf-list a:hover b { text-decoration: underline; text-underline-offset: 3px; }
+.mf-list span:not(.coming) { grid-column: 1; font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
+.mf-list .coming-tag { grid-column: 1; justify-self: start; margin-top: 8px; }
+.mf-arrow { grid-column: 2; grid-row: 1; width: 18px; height: 18px; margin-top: 2px; color: var(--ink-3); transition: translate .2s cubic-bezier(.16, 1, .3, 1); }
+.mf-list a:hover .mf-arrow { translate: 3px 0; color: var(--ink); }
+[dir="rtl"] .mf-arrow { transform: scaleX(-1); }
+[dir="rtl"] .mf-list a:hover .mf-arrow { translate: -3px 0; }
+.features-index { margin-bottom: var(--gap-section); }
+@media (max-width: 720px) {
+  .mf-group { grid-template-columns: minmax(0, 1fr); }
+  .mf-name { padding-bottom: 4px; }
+  .mf-list { border-inline-start: 0; }
+}
+
+/* ---- A feature's page: its window as the parcel, its facts on a label stuck to it ---------------- */
+
+.feature-top { margin-bottom: clamp(36px, 5vw, 56px); }
+.feature-parcel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 330px); align-items: start; }
+.feature-shot { grid-column: 1; grid-row: 1; justify-self: end; margin: 0; min-width: 0; }
+.feature-shot img { width: auto; max-width: 100%; border-radius: 8px; box-shadow: var(--shadow-lift); }
+/* Under the window's end corner, overlapping only its foot, whatever the window's height. */
+.feature-label { position: relative; z-index: 1; grid-column: 2; grid-row: 2; margin-top: -84px; margin-inline-start: -40px;
+  transform: rotate(1.6deg); transform-origin: 30% 80%; box-shadow: var(--shadow-card); }
+[dir="rtl"] .feature-label { transform: rotate(-1.6deg); }
+.feature-label .wb-band img { width: 32px; height: 32px; }
+.feature-label .fields > div { border-inline-start: 0; }
+.feature-label .fields > .wide { grid-column: 1 / -1; }
+.feature-label .fields > .pair { border-inline-start: 1.5px solid var(--ink); }
+.feature-label .fields dd { font-size: 15.5px; }
+.feature-label .fields dd a { text-decoration: underline; text-underline-offset: 3px; }
+.feature-parcel.no-shot { grid-template-columns: minmax(0, 420px); }
+.feature-parcel.no-shot .feature-label { grid-column: 1; grid-row: 1; margin: 0; transform: rotate(-1deg); }
+[dir="rtl"] .feature-parcel.no-shot .feature-label { transform: rotate(1deg); }
+.feature-body { margin-top: 0; }
+.more-features ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0 24px; }
+.prose .more-features li, .prose .more-features li + li { margin: 0; padding: 5px 0; }
+.feature-label dd code { font-size: .86em; white-space: nowrap; }
+@media (max-width: 980px) {
+  .feature-parcel { grid-template-columns: minmax(0, 1fr); }
+  .feature-shot { justify-self: start; }
+  .feature-label { grid-column: 1; grid-row: 2; justify-self: end; width: min(100% - 8px, 400px); margin: -18px 4px 0 0; transform: rotate(1deg); }
+  [dir="rtl"] .feature-label { margin: -18px 0 0 4px; transform: rotate(-1deg); }
+  .feature-parcel.no-shot .feature-label { margin: 0; }
+}
+
+/* ---- Themes (build.py build_themes) --------------------------------------------------------------- */
+
+.themes { margin-bottom: clamp(36px, 5vw, 56px); }
+.themes-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-bottom: 20px; }
+.themes-bar p { font-size: 15px; font-weight: 650; color: var(--on-board-2); font-variant-numeric: tabular-nums; }
+.variant-seg { display: inline-flex; border-radius: 8px; box-shadow: inset 0 0 0 1.5px var(--on-board); overflow: hidden; }
+.variant-seg button { min-width: 76px; padding: 9px 16px; border: 0; background: none; color: var(--on-board); font: 650 14.5px/1.2 var(--font); cursor: pointer; }
+.variant-seg button + button { box-shadow: inset 1.5px 0 0 var(--on-board); }
+[dir="rtl"] .variant-seg button + button { box-shadow: inset -1.5px 0 0 var(--on-board); }
+.variant-seg button:hover { background: color-mix(in srgb, var(--on-board) 12%, transparent); }
+.variant-seg button[aria-pressed="true"] { background: var(--on-board); color: var(--board); }
+.variant-seg button:focus-visible { outline-color: var(--on-board); outline-offset: -5px; }
+.theme-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin: 0; padding: 0; list-style: none; }
+/* Two rows a tile, shared across its row, so pictures and words line up side by side. */
+.theme-tile { display: grid; grid-row: span 2; grid-template-rows: subgrid; gap: 0; min-width: 0; overflow: hidden;
+  border-radius: var(--radius); background: var(--paper); color: var(--ink); box-shadow: var(--shadow-sheet); }
+.theme-shot { margin: 0; background: var(--paper-2); border-bottom: 1.5px solid var(--ink); }
+.theme-shot img { width: 100%; cursor: zoom-in; }
+.theme-note { padding: 12px 18px; font-size: 13.5px; line-height: 1.45; color: var(--ink-3); }
+.theme-text { display: block; padding: 16px 20px 20px; }
+.theme-text h3 { font-size: 23px; font-weight: 800; font-stretch: 80%; }
+.theme-text p { margin-top: 6px; font-size: 15px; line-height: 1.5; color: var(--ink-2); max-width: 56ch; }
+.theme-text .coming-tag { margin-top: 12px; }
+/* The visitor's choice of side, over the site's own theme. */
+.themes .theme-grid[data-variant="light"] .for-light, .themes .theme-grid[data-variant="dark"] .for-dark { display: block; }
+.themes .theme-grid[data-variant="light"] .for-dark, .themes .theme-grid[data-variant="dark"] .for-light { display: none; }
+/* Make your own: an empty label, its outline dashed on the board. */
+.theme-own { background: none; color: var(--on-board); box-shadow: none; outline: 2px dashed color-mix(in srgb, var(--on-board) 70%, transparent); outline-offset: -2px; }
+.theme-own a { grid-row: 1 / span 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; min-height: 220px; padding: 32px 24px; color: inherit; text-align: center; text-decoration: none; border-radius: var(--radius); }
+.theme-own a:hover { background: color-mix(in srgb, var(--on-board) 8%, transparent); }
+.theme-own a:focus-visible { outline-color: var(--on-board); outline-offset: -8px; }
+.theme-plus { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 12px; outline: 2px dashed currentColor; outline-offset: -2px; }
+.theme-plus svg { width: 34px; height: 34px; }
+.theme-own .theme-text { padding: 0; }
+.theme-own b { display: block; font-size: 23px; font-weight: 800; font-stretch: 80%; line-height: 1.1; }
+.theme-own .theme-text span { display: block; margin-top: 6px; font-size: 15px; color: var(--on-board-2); }
+@media (max-width: 760px) { .theme-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
+
+/* The three steps, numbered at poster scale: the order is the instruction. */
+.make-steps { margin: 1.4em 0 0; padding: 0; list-style: none; counter-reset: make; }
+.make-steps > li { position: relative; max-width: none; margin: 0; padding: 26px 0 0 84px; border-top: 1.5px solid var(--ink); counter-increment: make; }
+[dir="rtl"] .make-steps > li { padding: 26px 84px 0 0; }
+.make-steps > li + li { margin-top: 2.4em; }
+.make-steps > li::before { content: counter(make); position: absolute; inset-inline-start: 0; top: 22px; width: 60px;
+  font: 900 72px/.9 var(--font); font-stretch: 68%; font-variant-numeric: tabular-nums; color: var(--ink); text-align: center; }
+.make-steps > li > h3 { margin-top: 0; font-size: clamp(24px, 2.4vw, 30px); font-stretch: 78%; }
+.make-steps h4 { margin-top: 2em; font-size: 19px; }
+.make-steps ul li, .make-steps p { max-width: 68ch; }
+.make-steps > li > * + * { margin-top: 1em; }
+.prose .os-paths { margin-block: 1em; border-bottom: 1.5px solid var(--ink); }
+.prose .fields.os-paths { grid-template-columns: minmax(0, 1fr); }
+.prose .os-paths > div { border-inline-start: 0; }
+.prose .os-paths dd { overflow-x: auto; white-space: nowrap; }
+.prose .os-paths code { white-space: nowrap; }
+.keys-ref { margin-top: 0 !important; }
+.keys-ref + .keys-ref { border-top: 0; }
+.prose .keys-ref summary { padding: 12px 0; font-weight: 700; cursor: pointer; }
+.keys-ref:last-of-type { border-bottom: 1px solid var(--line); }
+.prose table.keys td:first-child { white-space: nowrap; }
+.prompt-box { position: relative; }
+.prompt-box pre { max-height: 380px; overflow: auto; }
+.prompt-box pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.prompt-box .copy-btn:not([hidden]) + pre { padding-top: 60px; }
+.copy-btn { position: absolute; top: 10px; inset-inline-end: 12px; z-index: 1; height: 38px; padding: 0 14px; gap: 8px; font-size: 14.5px; background: var(--paper); }
+.prose .copy-btn svg { width: 17px; height: 17px; }
+@media (max-width: 720px) {
+  .make-steps > li, [dir="rtl"] .make-steps > li { padding: 20px 0 0; }
+  .make-steps > li::before { position: static; display: block; width: auto; margin-bottom: 8px; text-align: start; font-size: 44px; }
+}
+
 /* ---- Other languages (tools/website/sitei18n.py)------------------------------------------------ */
 
 /* Arrows that point somewhere point the other way. */

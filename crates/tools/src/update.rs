@@ -96,24 +96,30 @@ impl Install {
         Install::Source,
     ];
 
-    /// The release file of `version` that replaces this kind of copy (the names
-    /// tools/installer/*.sh and build.ps1 give them).
-    pub fn asset(self, version: &str) -> Option<String> {
-        let tail = match self {
-            Install::Installer => "setup.exe",
-            Install::PortableZip => "portable.zip",
-            Install::PlainZip => "x64.zip",
+    /// The release files of `version` that replace this kind of copy (the names
+    /// tools/installer/*.sh and build.ps1 give them), the one to take first first. The Linux and
+    /// macOS files were named `…-experimental` up to 0.2.x; a release may name them either way,
+    /// so both are looked for, the plain name first. None for a build from source.
+    pub fn assets(self, version: &str) -> Vec<String> {
+        let (tail, ext) = match self {
+            Install::Installer => ("setup", ".exe"),
+            Install::PortableZip => ("portable", ".zip"),
+            Install::PlainZip => ("x64", ".zip"),
             // One app per processor (tools/installer/build-macos.sh, #25). 0.2.4 and older look
             // for the universal one, find it missing and offer the release's page instead.
-            Install::Dmg if cfg!(target_arch = "aarch64") => "macos-arm64-experimental.dmg",
-            Install::Dmg => "macos-x86_64-experimental.dmg",
-            Install::AppImage => "linux-x86_64-experimental.AppImage",
-            Install::Deb => "linux-x86_64-experimental.deb",
-            Install::Rpm => "linux-x86_64-experimental.rpm",
-            Install::TarGz => "linux-x86_64-experimental.tar.gz",
-            Install::Source => return None,
+            Install::Dmg if cfg!(target_arch = "aarch64") => ("macos-arm64", ".dmg"),
+            Install::Dmg => ("macos-x86_64", ".dmg"),
+            Install::AppImage => ("linux-x86_64", ".AppImage"),
+            Install::Deb => ("linux-x86_64", ".deb"),
+            Install::Rpm => ("linux-x86_64", ".rpm"),
+            Install::TarGz => ("linux-x86_64", ".tar.gz"),
+            Install::Source => return Vec::new(),
         };
-        Some(format!("MisterDownloadManager-{version}-{tail}"))
+        let name = |tail: &str| format!("MisterDownloadManager-{version}-{tail}{ext}");
+        match self {
+            Install::Installer | Install::PortableZip | Install::PlainZip => vec![name(tail)],
+            _ => vec![name(tail), name(&format!("{tail}-experimental"))],
+        }
     }
 }
 
@@ -373,13 +379,32 @@ Connection: close
     #[test]
     fn every_kind_has_its_release_file() {
         assert_eq!(
-            Install::Installer.asset("0.2.2").as_deref(),
-            Some("MisterDownloadManager-0.2.2-setup.exe")
+            Install::Installer.assets("0.2.2"),
+            ["MisterDownloadManager-0.2.2-setup.exe"]
         );
         assert_eq!(
-            Install::TarGz.asset("1.0.0").as_deref(),
-            Some("MisterDownloadManager-1.0.0-linux-x86_64-experimental.tar.gz")
+            Install::PortableZip.assets("0.2.2"),
+            ["MisterDownloadManager-0.2.2-portable.zip"]
         );
+        assert_eq!(
+            Install::PlainZip.assets("0.2.2"),
+            ["MisterDownloadManager-0.2.2-x64.zip"]
+        );
+        // Linux and macOS: the plain name first, then the one up to 0.2.x.
+        for (install, ext) in [
+            (Install::TarGz, ".tar.gz"),
+            (Install::AppImage, ".AppImage"),
+            (Install::Deb, ".deb"),
+            (Install::Rpm, ".rpm"),
+        ] {
+            assert_eq!(
+                install.assets("1.0.0"),
+                [
+                    format!("MisterDownloadManager-1.0.0-linux-x86_64{ext}"),
+                    format!("MisterDownloadManager-1.0.0-linux-x86_64-experimental{ext}"),
+                ]
+            );
+        }
         // The .dmg for the Mac's own processor.
         let arch = if cfg!(target_arch = "aarch64") {
             "arm64"
@@ -387,12 +412,13 @@ Connection: close
             "x86_64"
         };
         assert_eq!(
-            Install::Dmg.asset("1.0.0"),
-            Some(format!(
-                "MisterDownloadManager-1.0.0-macos-{arch}-experimental.dmg"
-            ))
+            Install::Dmg.assets("1.0.0"),
+            [
+                format!("MisterDownloadManager-1.0.0-macos-{arch}.dmg"),
+                format!("MisterDownloadManager-1.0.0-macos-{arch}-experimental.dmg"),
+            ]
         );
-        assert_eq!(Install::Source.asset("1.0.0"), None);
+        assert!(Install::Source.assets("1.0.0").is_empty());
         let labels: std::collections::HashSet<_> = Install::ALL.iter().map(|i| i.label()).collect();
         assert_eq!(labels.len(), Install::ALL.len());
     }

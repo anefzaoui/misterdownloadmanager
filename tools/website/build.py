@@ -52,6 +52,11 @@ CWS = "https://chromewebstore.google.com/detail/mister-download-manager/ejoleppd
 # (the app's Help menu and About, the extension's popup and .github/FUNDING.yml point there too).
 SPONSORS = "https://github.com/sponsors/anefzaoui"
 NAME = "Mister Download Manager"
+# The next release, as the site announces it. What is in the source but not in a download yet
+# says "Coming with version <this>" (coming_banner(): the feature pages, the Themes page, the
+# features' tiles), shown for a feature whose `since` is this version or later. At that release
+# set it to "" and every banner goes at once; a published release at or past it hides them too.
+UPCOMING = "0.5"
 CARGO_VERSION = re.search(r'(?m)^version\s*=\s*"([^"]+)"', (ROOT / "Cargo.toml").read_text("utf-8")).group(1)
 
 
@@ -233,6 +238,10 @@ ICONS = """<svg width="0" height="0" class="defs" aria-hidden="true">
   <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8.5-5-8.5-11A4.5 4.5 0 0 1 12 6.6a4.5 4.5 0 0 1 8.5 2.9c0 6-8.5 11-8.5 11z"/></symbol>
   <symbol id="i-tag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></g></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
   <symbol id="p-https" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5M12 14.5v2.5"/></g></symbol>
   <symbol id="p-ftp" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h6l2 2h10v10H3z"/><path d="M12 16v-5m-2.5 2.5L12 11l2.5 2.5"/></g></symbol>
@@ -244,7 +253,8 @@ ICONS = """<svg width="0" height="0" class="defs" aria-hidden="true">
 </svg>"""
 
 NAV = [
-    ("Features", "/#features", "home"),
+    ("Features", "/features/", "features"),
+    ("Themes", "/themes.html", "themes"),
     ("Download", "/download.html", "download"),
     ("Help", "/help/", "help"),
     ("FAQ", "/faq/", "faq"),
@@ -401,7 +411,8 @@ def footer() -> str:
             <li><a href="/download.html#macos">macOS</a></li>
             <li><a href="/download.html#linux">Linux</a></li>
             <li><a href="/download.html#extension">Browser extension</a></li>
-            <li><a href="/#features">Features</a></li>
+            <li><a href="/features/">Features</a></li>
+            <li><a href="/themes.html">Themes</a></li>
             <li><a href="/benchmark.html">Benchmark</a></li>
             <li><a href="/idm-alternative.html">Free IDM alternative</a></li>
           </ul>
@@ -1088,6 +1099,9 @@ def fill(text: str) -> str:
     text = text.replace("<!--@stores-->", store_buttons()).replace("<!--@amo-->", amo_button())
     text = text.replace("<!--@cws-->", cws_button())
     text = text.replace("{{AMO}}", AMO).replace("{{CWS}}", CWS)
+    if "<!--@features-->" in text:
+        text = text.replace("<!--@features-->", manifest(feature_list()))
+    text = coming_marks(text.replace("<!--@coming-->", coming_banner()))
     text = text.replace("<!--@fields-->", waybill_fields()).replace("<!--@barcode-->", barcode.svg(f"MDM {VERSION}"))
     return (text.replace("{{VERSION}}", VERSION).replace("{{REPO}}", REPO).replace("{{SITE}}", SITE)
             .replace("{{SPONSORS}}", SPONSORS).replace("{{SOFTWARE_LD}}", json.dumps(SOFTWARE_LD, ensure_ascii=False, separators=(",", ":"))))
@@ -1105,6 +1119,331 @@ def build_templated(name: str, path: str, section: str, priority: str) -> None:
     target.write_text(text, "utf-8", newline="\n")
     if name != "404.html":
         PAGES.append((path, priority))
+
+
+# ---- Features: website/content/features/*.md, and the Themes page --------------------------------
+
+FEATURES_DIR = CONTENT / "features"
+# The features' groups, in the order the tiles and the index show them.
+GROUPS = [("downloading", "Downloading"), ("organising", "Organising"), ("network", "Network"),
+          ("app", "The app")]
+# docs/images files the feature and theme pages show (copied to /help/images/ as the help's are).
+FEATURE_IMAGES: set[str] = set()
+
+
+def vparts(v: str) -> tuple[int, ...]:
+    return tuple(int(x) for x in re.findall(r"\d+", v or "")) or (0,)
+
+
+def upcoming() -> str:
+    """UPCOMING while it is still to come: "" once it is unset or a release at or past it is out."""
+    return UPCOMING if UPCOMING and vparts(VERSION) < vparts(UPCOMING) else ""
+
+
+def is_coming(since: str) -> bool:
+    """First in UPCOMING (or later): in the source, not in the download yet."""
+    up = upcoming()
+    return bool(up) and vparts(since) >= vparts(up)
+
+
+def coming_banner(kind: str = "page") -> str:
+    """The one "Coming with version 0.5" mark, wherever something isn't in the download yet: on
+    a page ("page"), on a part of one ("section"), on a tile ("tag"). Empty once UPCOMING is out
+    (see UPCOMING), so every one goes at once."""
+    up = upcoming()
+    if not up:
+        return ""
+    if kind == "tag":
+        return f'<span class="coming coming-tag"><svg aria-hidden="true"><use href="#i-clock"/></svg>Coming with version {up}</span>'
+    note = (f"It's in the source code now, not yet in the download (version {VERSION})." if kind == "page"
+            else f"This part isn't in the download (version {VERSION}) yet.")
+    return (f'<p class="coming coming-{kind}"><svg aria-hidden="true"><use href="#i-clock"/></svg>'
+            f'<span><b>Coming with version {up}</b> <small>{note}</small></span></p>')
+
+
+def coming_marks(text: str) -> str:
+    """<!--@coming 0.5--> in a page: the section's banner while that version is to come."""
+    return re.sub(r"(?:<p>\s*)?<!--@coming ([\d.]+)-->(?:\s*</p>)?",
+                  lambda m: coming_banner("section") if is_coming(m.group(1)) else "", text)
+
+
+def feature_list() -> list[dict]:
+    """Every feature file's front matter (and its body), by group, then `order`."""
+    out = []
+    for f in sorted(FEATURES_DIR.glob("*.md")):
+        meta, body = front(f.read_text("utf-8"))
+        meta = {k.strip(): v.strip() for k, v in meta.items()}
+        for key in ("name", "line", "group", "order", "since"):
+            if not meta.get(key):
+                sys.exit(f"{f.relative_to(ROOT)}: no {key}")
+        if meta["group"] not in dict(GROUPS):
+            sys.exit(f"{f.relative_to(ROOT)}: group {meta['group']!r} isn't one of {[g for g, _ in GROUPS]}")
+        meta.update(slug=f.stem, body=body, file=f, href=meta.get("href") or f"/features/{f.stem}.html")
+        out.append(meta)
+    rank = {g: i for i, (g, _) in enumerate(GROUPS)}
+    return sorted(out, key=lambda m: (rank[m["group"]], int(m["order"])))
+
+
+def picture(src: str, alt: str, lazy: bool = False) -> str:
+    """A screenshot and its night version, the site's theme choosing which shows: `images/...`
+    (docs/images, as the help pages have them) or `/assets/screens/<x>-light.webp` (the home
+    page's)."""
+    load = ' loading="lazy" decoding="async"' if lazy else ' decoding="async"'
+    if src.startswith("/assets/"):
+        dark = src.replace("-light.", "-dark.")
+        size = image_size(WEB / src.lstrip("/"))
+        dsize = image_size(WEB / dark.lstrip("/")) if dark != src else None
+        url, durl = src, dark
+    else:
+        name = src.removeprefix("images/")
+        size = image_size(ROOT / "docs" / "images" / name)
+        d = dark_of(name)
+        dsize = image_size(ROOT / "docs" / "images" / d) if d else None
+        url, durl = f"/help/images/{name}", f"/help/images/{d}"
+        FEATURE_IMAGES.update({name} | ({d} if d else set()))
+    if not size:
+        sys.exit(f"picture {src}: no such picture")
+    dims = f' width="{size[0]}" height="{size[1]}"'
+    if not dsize:
+        return f'<img src="{url}"{dims} alt="{esc(alt)}"{load}>'
+    return (f'<img class="for-light" src="{url}"{dims} alt="{esc(alt)}"{load}>'
+            f'<img class="for-dark" src="{durl}" width="{dsize[0]}" height="{dsize[1]}" alt="{esc(alt)}" loading="lazy" decoding="async">')
+
+
+def manifest(feats: list[dict], heading: str = "h3") -> str:
+    """Every feature in one ruled packing list, by group, each a link to its page: the home
+    page's contents and /features/."""
+    rows = []
+    for g, label in GROUPS:
+        items = "".join(
+            f'<li><a href="{m["href"]}"><b>{esc(m["name"])}</b><span>{esc(m["line"])}</span>'
+            f'{coming_banner("tag") if is_coming(m["since"]) else ""}'
+            f'<svg class="mf-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>'
+            for m in feats if m["group"] == g)
+        rows.append(f'<div class="mf-group"><{heading} class="mf-name">{label}</{heading}>'
+                    f'<ul class="mf-list" role="list">{items}</ul></div>')
+    soon = sum(is_coming(m["since"]) for m in feats)
+    fine = f"{len(feats)} features, every one free" + (f" · {soon} coming with version {upcoming()}" if soon else "")
+    return (f'<div class="sheet sheet-labelled manifest"><p class="sheet-band"><b>Contents</b>'
+            f'<span>{fine}</span></p>{"".join(rows)}</div>')
+
+
+def site_md(text: str) -> str:
+    """A feature page's Markdown, written as docs/ pages are (their links and pictures), as HTML."""
+    here = ROOT / "docs" / "x.md"
+    text = re.sub(r"(!?\[[^\]]*\])\(([^)\s]+)\)", lambda m: f"{m.group(1)}({doc_link(m.group(2), here)})", text)
+    used = set(re.findall(r"/help/images/([\w./-]+)", text))
+    FEATURE_IMAGES.update(used | {d for d in map(dark_of, used) if d})
+    return coming_marks(help_figures(md(text)))
+
+
+def help_href(ref: str) -> str:
+    page, _, frag = ref.partition("#")
+    return doc_link(page, ROOT / "docs" / "x.md") + (f"#{frag}" if frag else "")
+
+
+def feature_label(m: dict) -> str:
+    """A feature's facts in the waybill's field grammar, stuck on its picture."""
+    if is_coming(m["since"]):
+        since = f'<dd>Version {esc(upcoming())} <small>coming</small></dd>'
+    else:
+        since = f'<dd><a href="/news.html#v{esc(m["since"])}">Version {esc(m["since"])}</a> <small>and later</small></dd>'
+    rows = []
+    if m.get("where"):
+        where = re.sub(r"`([^`]+)`", r'<code translate="no">\1</code>', esc(m["where"]))
+        rows.append(f'<div class="wide"><dt>In the app</dt><dd>{where}</dd></div>')
+    rows.append(f"<div><dt>Since</dt>{since}</div>")
+    rows.append('<div class="pair"><dt>Postage</dt><dd>Free</dd></div>')
+    if m.get("help"):
+        rows.append(f'<div class="wide"><dt>Full guide</dt><dd><a href="{help_href(m["help"])}">Step by step in the help</a></dd></div>')
+    return (f'<aside class="waybill feature-label" aria-label="At a glance"><div class="wb-band">'
+            f'<img src="/assets/logo-64.png" width="32" height="32" alt=""><span class="wb-from"><b>{esc(m["name"])}</b>'
+            f'<small>Mister Download Manager</small></span></div><dl class="fields">{"".join(rows)}</dl></aside>')
+
+
+def build_features() -> None:
+    feats = feature_list()
+    index_trail = [("Home", "/"), ("Features", "/features/")]
+    for m in feats:
+        if m["href"] != f"/features/{m['slug']}.html":
+            continue  # a feature with a page of its own elsewhere (Themes)
+        for key in ("title", "headline", "lede", "description"):
+            if not m.get(key):
+                sys.exit(f"{m['file'].relative_to(ROOT)}: no {key}")
+        path = m["href"]
+        trail = index_trail + [(m["name"], path)]
+        shot = (f'<figure class="feature-shot" data-lightbox>{picture(m["shot"], m.get("shot_alt") or m["name"])}</figure>'
+                if m.get("shot") else "")
+        others = [x for x in feats if x["group"] == m["group"] and x is not m]
+        more = "".join(f'<li><a href="{x["href"]}">{esc(x["name"])}</a></li>' for x in others)
+        group = dict(GROUPS)[m["group"]]
+        body = f"""{page_head(esc(m["headline"]), esc(m["lede"]), trail)}
+    <div class="wrap feature-top">
+      {coming_banner() if is_coming(m["since"]) else ""}
+      <div class="feature-parcel{"" if shot else " no-shot"}">{shot}{feature_label(m)}</div>
+    </div>
+    <div class="wrap narrow page-body prose feature-body">
+      {site_md(m["body"])}
+      <aside class="related more-features"><h2>More in {esc(group)}</h2><ul>{more}<li><a href="/features/">Every feature</a></li></ul></aside>
+      {page_tools(f"website/content/features/{m['slug']}.md", path, m["name"])}
+      {cta_band()}
+    </div>"""
+        ld = [crumbs_ld(trail), {"@context": "https://schema.org", "@type": "WebPage", "name": m["title"],
+                                 "description": m["description"], "inLanguage": "en",
+                                 "about": {"@type": "SoftwareApplication", "name": NAME}}]
+        write(path, f'{m["title"]} — {NAME}', m["description"], body, section="features", jsonld=ld, priority="0.7")
+    body = f"""{page_head("Everything it does", "Every feature has a page of its own: what it does, where it is in the app, and the real window. All of it is free, in every copy.", index_trail)}
+    <div class="wrap features-index">
+      {manifest(feats, "h2")}
+    </div>"""
+    write("/features/", f"Features — {NAME}",
+          f"Every feature of {NAME}: acceleration and resume, the browser extension, video, torrents, the scheduler, the link grabber, themes and more.",
+          body, section="features", jsonld=[crumbs_ld(index_trail)], priority="0.8")
+
+
+# ---- Themes: website/content/themes.toml, and the theme file format from the app's own code -----
+
+THEME_SAMPLE = '''name = "Harbour"
+inherits = "classic"
+icons = "color"
+
+[seeds.light]
+background = "#eef3f6"
+surface = "#ffffff"
+text = "#11202b"
+accent = "#0f6c8c"
+
+[seeds.dark]
+background = "#14212a"
+surface = "#0e171d"
+text = "#e8f0f4"
+accent = "#5cc3e6"
+
+[sizes]
+radius = 6
+
+[controls]
+focus = "ring"'''
+
+
+def theme_keys() -> dict[str, list[tuple[str, str]]]:
+    """The keys a theme file can set, read from crates/app/src/palette.rs (the colour roles and
+    the sizes with their descriptions, the control styles), so the page never drifts from what
+    the app reads (themefile.rs)."""
+    src = (ROOT / "crates" / "app" / "src" / "palette.rs").read_text("utf-8")
+    keys = re.findall(r'(?m)^\s+[a-z_0-9]+: "([a-z0-9.-]+)", "([^"]+)" =', src)
+    sizes = [k for k in keys if k[0] in ("border", "focus-line") or k[0].startswith(("radius", "chevron.width", "font.", "list.row", "list.header", "tooltip."))]
+    colors = [k for k in keys if k not in sizes]
+    styles: dict[str, list[str]] = {}
+    for k, v in re.findall(r'\("([a-z-]+)", "([a-z-]+)"\) =>', src):
+        styles.setdefault(k, []).append(v)
+    if len(colors) < 50 or len(sizes) < 5 or len(styles) < 4:
+        sys.exit("crates/app/src/palette.rs: the theme keys couldn't be read (build.py theme_keys)")
+    return {"colors": colors, "sizes": sizes, "controls": [(k, ", ".join(v)) for k, v in styles.items()]}
+
+
+def keys_table(rows: list[tuple[str, str]], head: str) -> str:
+    body = "".join(f'<tr><td><code translate="no">{esc(k)}</code></td><td>{esc(d)}</td></tr>' for k, d in rows)
+    return f'<div class="table-wrap"><table class="keys"><thead><tr><th>Key</th><th>{head}</th></tr></thead><tbody>{body}</tbody></table></div>'
+
+
+def build_themes() -> None:
+    import tomllib
+    data = tomllib.loads((CONTENT / "themes.toml").read_text("utf-8"))
+    themes = data["theme"]
+    keys = theme_keys()
+    since = next(m["since"] for m in feature_list() if m["href"] == "/themes.html")
+    tiles = []
+    for i, th in enumerate(themes):
+        tag = coming_banner("tag") if th.get("tag") and is_coming(since) else ""
+        note = f'<p class="theme-note">{esc(th["note"])}</p>' if th.get("note") else ""
+        tiles.append(f"""<li class="theme-tile">
+          <figure class="theme-shot" data-lightbox>{picture(th["shot"], f"The main window in the {th['name']} theme", lazy=i > 3)}{note}</figure>
+          <div class="theme-text"><h3>{esc(th["name"])}</h3><p>{esc(th["feel"])}</p>{tag}</div>
+        </li>""")
+    tiles.append("""<li class="theme-tile theme-own"><a href="#make-your-own">
+          <span class="theme-plus"><svg aria-hidden="true"><use href="#i-plus"/></svg></span>
+          <span class="theme-text"><b>Make your own theme</b><span>A text file of colours and sizes, tried in seconds. Three steps.</span></span></a></li>""")
+    prompt = (CONTENT / "theme-prompt.txt").read_text("utf-8").strip()
+    builtin = ", ".join(f"<code>{esc(t['id'])}</code>" for t in themes if t["id"] != "native"
+                        and (ROOT / "crates" / "app" / "assets" / "themes" / f"{t['id']}.toml").is_file())
+    trail = [("Home", "/"), ("Themes", "/themes.html")]
+    themes_dir = f"{REPO}/tree/main/crates/app/assets/themes"
+    body = f"""{page_head("The same window, your way", "View → Theme changes how MDM looks at once and keeps everything where it was. Pick one of the built-in looks, each with a light and a dark side, or make your own in a text file.", trail)}
+    <div class="wrap themes">
+      {coming_banner()}
+      <div class="themes-bar">
+        <p>{len(themes)} built-in themes · light and dark</p>
+        <div class="variant-seg" role="group" aria-label="Show the themes" data-variant-switch hidden>
+          <button type="button" aria-pressed="true" data-variant="light">Light</button><button type="button" aria-pressed="false" data-variant="dark">Dark</button>
+        </div>
+      </div>
+      <ul class="theme-grid" role="list" data-variant-grid>
+        {"".join(tiles)}
+      </ul>
+    </div>
+    <div class="wrap narrow page-body prose make-own" id="make-your-own">
+      <h2>Make your own theme</h2>
+      <p>A theme is one small text file, in <a href="https://toml.io/">TOML</a> (or JSON). It names only what it changes; everything else comes from the theme it builds on. You don't need to build MDM or know how to program.</p>
+      <ol class="make-steps">
+        <li id="make-it"><h3>Make it</h3>
+          <p>Start with a few colours, then add more as you go:</p>
+          <pre><code translate="no">{esc(THEME_SAMPLE)}</code></pre>
+          <ul>
+            <li><code>inherits</code> is the theme yours starts from: <code>classic</code> (the default), {builtin}, or another theme file in the same folder.</li>
+            <li><code>[seeds]</code> are a handful of colours (<code>background</code>, <code>surface</code>, <code>header</code>, <code>text</code>, <code>accent</code>, <code>selection</code>, <code>error</code>, <code>warning</code>, <code>success</code>) that MDM spreads over every control. <code>[seeds.light]</code> and <code>[seeds.dark]</code> give each side its own.</li>
+            <li><code>[colors]</code> sets single colour roles on both sides, <code>[light]</code> and <code>[dark]</code> on one side only: <code>#rrggbb</code>, or <code>#rrggbbaa</code> with transparency.</li>
+            <li><code>[sizes]</code> are corner radii, border widths, font sizes and row heights, in pixels. <code>[controls]</code> chooses the shape of text boxes, check boxes, buttons, progress bars, scroll bars, the focus mark and the title bar.</li>
+            <li><code>icons</code> is <code>color</code>, <code>mono</code> or <code>accent</code>. A theme in a folder of its own (<code>my-theme/theme.toml</code>) can bring its icons in <code>icons/16</code> and <code>icons/24</code>, each named for what it shows (<code>tb-add-url.svg</code>, <code>cat-music.png</code>); <code>-symbolic</code> ones take the theme's text colour.</li>
+            <li><code>contrast = "high"</code> strengthens every edge and text colour on top.</li>
+          </ul>
+          <p>A key MDM doesn't know, or a value it can't read, is skipped and written to MDM's log (the <code>logs</code> folder beside the themes folder), so a file made for a newer MDM still loads. The built-in themes are written the same way: <a href="{themes_dir}">read them on GitHub</a>.</p>
+          <details class="keys-ref"><summary>Every colour role ({len(keys["colors"])})</summary>{keys_table(keys["colors"], "What it colours")}</details>
+          <details class="keys-ref"><summary>Every size ({len(keys["sizes"])})</summary>{keys_table(keys["sizes"], "What it sets")}</details>
+          <details class="keys-ref"><summary>Every control style ({len(keys["controls"])})</summary>{keys_table(keys["controls"], "Its styles")}</details>
+          <h4 id="ai-prompt">Or let an AI assistant write it</h4>
+          <p>Copy this prompt into your AI assistant and describe the look you want at its end. It gives the assistant the format, the keys and the rules: readable text and a visible focus in both sides, and nothing copied from anyone else's artwork. Look at both sides yourself before you share the result.</p>
+          <div class="prompt-box">
+            <button class="btn btn-line copy-btn" type="button" data-copy="theme-prompt" hidden><svg class="os-ico" aria-hidden="true"><use href="#i-copy"/></svg><span data-copy-label>Copy the prompt</span></button>
+            <pre id="theme-prompt"><code translate="no">{esc(prompt)}</code></pre>
+          </div>
+        </li>
+        <li id="try-it"><h3>Try it, without building MDM</h3>
+          <p>Put the file in MDM's themes folder. <b>View → Theme → Open themes folder</b> opens it, and makes it the first time. It is in MDM's data folder:</p>
+          <dl class="fields os-paths">
+            <div><dt>Windows</dt><dd><code translate="no">%APPDATA%\\misterdownloadmanager\\themes</code></dd></div>
+            <div><dt>Linux</dt><dd><code translate="no">~/.local/share/misterdownloadmanager/themes</code></dd></div>
+            <div><dt>macOS</dt><dd><code translate="no">~/Library/Application Support/misterdownloadmanager/themes</code></dd></div>
+            <div><dt>Portable copy</dt><dd><code translate="no">data\\themes</code> beside the program</dd></div>
+          </dl>
+          <p>Within two seconds it shows in <b>View → Theme</b>, under the built-in themes, by the <code>name</code> it gives itself. Pick it and the whole window changes at once. After you edit the file, pick it again in <b>View → Theme</b> to see the change. <b>View → Dark Mode support</b> and <b>Always dark</b> switch between its light and dark side.</p>
+        </li>
+        <li id="share-it"><h3>Share it</h3>
+          <p>Made something others would like? Open a <a href="{REPO}/pulls">pull request on GitHub</a> that adds it to <a href="{themes_dir}"><code>crates/app/assets/themes</code></a>, with:</p>
+          <ul>
+            <li>the <code>.toml</code> file, and its folder of icons if it has one;</li>
+            <li>screenshots of the main window in its light and its dark side;</li>
+            <li>a <code>SOURCES.txt</code> beside any icons, saying who drew them and under which licence. Icons must be your own or under a licence that lets MDM share them (GPL-3.0), never copied from another program.</li>
+          </ul>
+          <p>Not sure yet? <a href="{REPO}/discussions">Show it in the discussions</a> first. The <a href="/contributing.html">contributing guide</a> explains how pull requests work here.</p>
+        </li>
+      </ol>
+      {page_tools("website/content/themes.toml", "/themes.html", "Themes")}
+      {cta_band()}
+    </div>"""
+    write("/themes.html", f"Themes — {NAME}",
+          f"{len(themes)} built-in looks for {NAME}, each light and dark: "
+          + ", ".join(t["name"] for t in themes) + ". Or make your own in a text file.",
+          body, section="themes", jsonld=[crumbs_ld(trail)], priority="0.7")
+
+
+def copy_feature_images() -> None:
+    dst = OUT / "help" / "images"
+    for name in FEATURE_IMAGES:
+        src = ROOT / "docs" / "images" / name
+        if src.is_file():
+            (dst / name).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst / name)
 
 
 # ---- For AI assistants and search: llms.txt, llms-full.txt (llmstxt.org) ----------------------
@@ -1203,6 +1542,9 @@ def main() -> None:
     build_languages()
     build_repo_pages()
     build_content_pages()
+    build_features()
+    build_themes()
+    copy_feature_images()
     build_llms()
     # The same pages in every language with a catalog (i18n/site/<lang>.json), under /<lang>/.
     # MDM_SITE_ENGLISH_ONLY=1 (translate_site.py's own build): English pages only.

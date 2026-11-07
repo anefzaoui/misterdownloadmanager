@@ -26,12 +26,14 @@ pub enum Next {
     Opened,
 }
 
-/// The release file this copy updates from, when `assets` (name, address) has it and the
-/// signature of the release's checksum list.
+/// The release file this copy updates from, when `assets` (name, address) has it (by either of
+/// its names, [`Install::assets`]) and the signature of the release's checksum list.
 pub fn asset_for(install: Install, version: &str, assets: &[(String, String)]) -> Option<String> {
-    let name = install.asset(version)?;
     let has = |n: &str| assets.iter().any(|(a, _)| a == n);
-    (has(&name) && has("SHA256SUMS.txt") && has("SHA256SUMS.txt.sig")).then_some(name)
+    if !(has("SHA256SUMS.txt") && has("SHA256SUMS.txt.sig")) {
+        return None;
+    }
+    install.assets(version).into_iter().find(|n| has(n))
 }
 
 /// Where update files are kept until the next start.
@@ -291,5 +293,40 @@ mod tests {
         assert_eq!(asset_for(Install::Installer, "0.2.2", &unsigned), None);
         assert_eq!(asset_for(Install::PortableZip, "0.2.2", &full), None);
         assert_eq!(asset_for(Install::Source, "0.2.2", &full), None);
+    }
+
+    /// Linux's and macOS's files lose "-experimental" in a release: a copy finds its file by
+    /// either name, the plain one first.
+    #[test]
+    fn a_release_names_linux_files_either_way() {
+        let release = |names: &[&str]| -> Vec<(String, String)> {
+            names
+                .iter()
+                .chain(&["SHA256SUMS.txt", "SHA256SUMS.txt.sig"])
+                .map(|n| (n.to_string(), format!("https://x/{n}")))
+                .collect()
+        };
+        let old = "MisterDownloadManager-0.3.0-linux-x86_64-experimental.AppImage";
+        let new = "MisterDownloadManager-0.3.0-linux-x86_64.AppImage";
+        let deb = "MisterDownloadManager-0.3.0-linux-x86_64.deb";
+        for (assets, want) in [
+            (release(&[old]), Some(old)),
+            (release(&[new, deb]), Some(new)),
+            (release(&[old, new]), Some(new)),
+            (release(&[deb]), None),
+        ] {
+            assert_eq!(
+                asset_for(Install::AppImage, "0.3.0", &assets).as_deref(),
+                want,
+                "{assets:?}"
+            );
+        }
+        assert_eq!(
+            asset_for(Install::Deb, "0.3.0", &release(&[new, deb])).as_deref(),
+            Some(deb)
+        );
+        // Unsigned: neither.
+        let unsigned = vec![(new.to_string(), format!("https://x/{new}"))];
+        assert_eq!(asset_for(Install::AppImage, "0.3.0", &unsigned), None);
     }
 }

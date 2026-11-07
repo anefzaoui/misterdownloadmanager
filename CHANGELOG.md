@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **The website: a page for every feature, and a Themes page**
+  ([#260](https://github.com/anefzaoui/misterdownloadmanager/issues/260)): each feature has a page
+  of its own, with the real window, where to find it in the app, since which version, and what it
+  can't do yet; the home page lists them all, by group. The Themes page shows every built-in theme
+  in its light and dark side, and how to make your own theme file, try it without building MDM,
+  and share it, with a prompt to give an AI assistant. What isn't in a release yet says so.
 - **Run MDM on a server** ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157)):
   `misterdownloadmanager --headless` runs MDM without a window (a home server, a NAS, Docker,
   Unraid), its folders and port set by flags or the environment; a `Dockerfile`, a Compose file
@@ -589,6 +595,9 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   youtube.com's sign-in reaches every YouTube host, and a host's own cookie stays with that host.
   With an older extension, a YouTube page's cookies (or a site's mobile page's, m. and mobile.)
   go to the whole site.
+- **Update now finds the Linux and macOS files by either name**: a release's AppImage, .deb,
+  .rpm, .tar.gz and .dmg were named `…-experimental`; MDM now looks for the name without it
+  first and still takes the older one, so Update now keeps working whichever a release uses.
 - **The Linux .deb and .rpm bring what MDM's window needs** (part of
   [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on a system without
   libxkbcommon-x11 (a minimal install, a container), MDM installed from them stopped at start
