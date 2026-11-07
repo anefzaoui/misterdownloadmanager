@@ -1,4 +1,5 @@
 # Mister Download Manager on a server (#157): docs/server.md.
+#   mkdir -p docker/config /srv/downloads    # first, as the user below: Docker would make them root's
 #   docker compose -f docker/compose.yml up -d --build
 #   docker compose -f docker/compose.yml logs mdm         # the address and a pairing code
 #   docker compose -f docker/compose.yml exec mdm misterdownloadmanager-cli pair

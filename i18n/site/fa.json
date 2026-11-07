@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "به دنبال جایگزین رایگان برای Internet Download Manager (IDM) هستید؟ Mister Download Manager رایگان و متن‌باز است، ظاهری شبیه IDM دارد و لیست IDM شما را وارد می‌کند. آن را با Free Download Manager، AB Download Manager، Motrix، Neat، JDownloader و موارد دیگر مقایسه کنید."
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "<g1>docker/unraid.xml</g1> یک الگو است: آن را در <x2/> روی فلش درایو کپی کنید، سپس <g3>Docker → Add Container</g3> و <g4>misterdownloadmanager</g4> را انتخاب کنید. این <x5/> را به <x6/>، <x7/> را به یک اشتراک، پورت 8463 را نگاشت می‌کند و به عنوان <x8/> (99:100) اجرا می‌شود، همانطور که اشتراک‌های Unraid انتظار دارند. تصویر باید ابتدا (بالا) روی سرور ساخته شود یا به یک رجیستری که استفاده می‌کنید، ارسال شود."
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "API را روشن یا خاموش می‌کند: <x1/>."
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "مرورگر فایل را با یک اتصال دریافت می‌کند. MDM هم‌زمان از سرور چندین بخش از فایل را درخواست می‌کند، تا 32 اتصال (اگر اجازه دهید 128 اتصال)، و…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "سپس آن را اجرا کنید، با یک پوشه برای تنظیمات و یک پوشه برای دانلودها. هر دو پوشه را ابتدا ایجاد کنید، به عنوان کاربری که MDM با آن اجرا خواهد شد: پوشه‌ای که Docker برای شما می‌سازد متعلق به <x1/> است و MDM نمی‌تواند از آن استفاده کند."
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7582,10 +7582,6 @@
    "source": "Played in real time from the medians.",
    "text": "پخش شده در زمان واقعی از میانه‌ها."
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "سپس آن را اجرا کنید، با یک پوشه برای تنظیمات و یکی برای دانلودها:"
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 زبان، از جمله راست به چپ"
@@ -10209,6 +10205,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>هر اتصال، زنده</g3> <g4>هر اتصال با پر شدن آن، با سرعت و زمان باقی‌مانده نمایش داده می‌شود. ازسرگیری ایمن در برابر خرابی از جایی که متوقف شده بود ادامه می‌دهد.</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1> یک الگو است: آن را در <x2/> روی فلش درایو کپی کنید، سپس <g3>Docker → Add Container</g3> را انتخاب کرده و <g4>misterdownloadmanager</g4> را برگزینید. این الگو <x5/> را به <x6/>، <x7/> را به یک اشتراک، پورت 8463 را نگاشت می‌کند و به عنوان <x8/> (99:100) اجرا می‌شود، همانطور که اشتراک‌های Unraid انتظار دارند. تصویر باید ابتدا (بالا) روی سرور ساخته شود یا به یک رجیستری که استفاده می‌کنید، ارسال شود. اگر لاگ کانتینر می‌گوید یک پوشه متعلق به کاربر دیگری است، یک بار آن را به <x9/> بدهید: <x10/>."
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

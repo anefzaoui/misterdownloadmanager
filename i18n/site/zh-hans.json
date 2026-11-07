@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "正在寻找 Internet Download Manager (IDM) 的免费替代品？Mister Download Manager 是一款免费、开源的下载管理器，界面布局与 IDM 相似，并可导入您的 IDM 列表。将其与 Free Download Manager、AB Download Manager、Motrix、Neat、JDownloader 等进行比较。"
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "<g1>docker/unraid.xml</g1> 是一个模板：将其复制到闪存驱动器上的<x2/>，然后<g3>Docker → 添加容器</g3>并选择<g4>misterdownloadmanager</g4>。它将<x5/>映射到<x6/>，将<x7/>映射到共享，端口为 8463，并以<x8/>（99:100）运行，正如 Unraid 的共享所期望的那样。镜像必须首先在服务器上构建（如上所述），或推送到您使用的注册表。"
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "开启或关闭 API：<x1/>。"
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "浏览器通过一个连接获取文件。MDM 会同时向服务器请求文件的多个部分，最多 32 个连接（如果允许，可达 128 个），并且…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "然后运行它，并为其设置和下载分别指定一个文件夹。请先创建这两个文件夹，并确保它们属于 MDM 将运行的用户：Docker 为您创建的文件夹属于 <x1/>，MDM 无法使用它。"
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7582,10 +7582,6 @@
    "source": "Played in real time from the medians.",
    "text": "根据中位数实时播放。"
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "然后运行它，并为其设置和下载文件指定文件夹："
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 种语言，也支持从右到左"
@@ -10209,6 +10205,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>所有连接，实时显示</g3> <g4>每个连接的进度、速度和剩余时间都会实时显示。防崩溃续传功能可从中断处继续下载。</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1> 是一个模板：将其复制到闪存驱动器上的 <x2/>，然后选择 <g3>Docker → 添加容器</g3> 并选择 <g4>misterdownloadmanager</g4>。它将 <x5/> 映射到 <x6/>，将 <x7/> 映射到一个共享，端口为 8463，并以 <x8/> (99:100) 身份运行，正如 Unraid 的共享所期望的那样。镜像必须先在服务器上构建（如上所述），或者推送到您使用的注册表。如果容器日志显示某个文件夹属于其他用户，请将其一次性授予 <x9/>：<x10/>。"
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

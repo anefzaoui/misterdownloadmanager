@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "क्या आप Internet Download Manager (IDM) का कोई मुफ्त विकल्प ढूंढ रहे हैं? Mister Download Manager मुफ्त और ओपन सोर्स है, IDM जैसा दिखता है, और आपकी IDM सूची को इम्पोर्ट करता है। इसकी तुलना Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader और अन्य से करें।"
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "<g1>docker/unraid.xml</g1> एक टेम्पलेट है: इसे फ्लैश ड्राइव पर <x2/> पर कॉपी करें, फिर <g3>Docker → Add Container</g3> और <g4>misterdownloadmanager</g4> चुनें। यह <x5/> को <x6/>, <x7/> को एक शेयर, पोर्ट 8463 पर मैप करता है, और <x8/> (99:100) के रूप में चलता है, जैसा कि Unraid के शेयर उम्मीद करते हैं। इमेज को पहले (ऊपर) सर्वर पर बनाया जाना चाहिए या आपके द्वारा उपयोग की जाने वाली रजिस्ट्री में धकेला जाना चाहिए।"
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "API को चालू या बंद करता है: <x1/>।"
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "एक ब्राउज़र एक कनेक्शन पर फ़ाइल लाता है। MDM सर्वर से एक साथ फ़ाइल के कई हिस्से मांगता है, 32 कनेक्शन तक (यदि आप अनुमति देते हैं तो 128), और…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "फिर इसे चलाएँ, इसकी सेटिंग्स के लिए एक फ़ोल्डर और डाउनलोड के लिए एक फ़ोल्डर के साथ। दोनों फ़ोल्डर पहले बनाएँ, उस उपयोगकर्ता के रूप में जिसके रूप में MDM चलेगा: Docker द्वारा आपके लिए बनाया गया फ़ोल्डर <x1/> का होता है, और MDM इसका उपयोग नहीं कर सकता।"
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7582,10 +7582,6 @@
    "source": "Played in real time from the medians.",
    "text": "मीडियन से वास्तविक समय में चलाया गया।"
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "फिर इसे चलाएँ, इसकी सेटिंग्स के लिए एक फ़ोल्डर और डाउनलोड के लिए एक फ़ोल्डर के साथ:"
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 भाषाएँ, दाएँ से बाएँ भी"
@@ -10209,6 +10205,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>हर कनेक्शन, लाइव</g3> <g4>हर कनेक्शन को भरते ही उसकी गति और बचे हुए समय के साथ दिखाया जाता है। क्रैश-सेफ़ रेज़्यूम वहीं से शुरू होता है जहाँ यह रुका था।</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1> एक टेम्पलेट है: इसे फ्लैश ड्राइव पर <x2/> पर कॉपी करें, फिर <g3>Docker → Add Container</g3> चुनें और <g4>misterdownloadmanager</g4> चुनें। यह <x5/> को <x6/>, <x7/> को एक शेयर पर, पोर्ट 8463 पर मैप करता है, और <x8/> (99:100) के रूप में चलता है, जैसा कि Unraid के शेयर उम्मीद करते हैं। इमेज को पहले (ऊपर) सर्वर पर बनाना होगा या आपके द्वारा उपयोग की जाने वाली रजिस्ट्री पर पुश करना होगा। यदि कंटेनर का लॉग कहता है कि एक फ़ोल्डर किसी अन्य उपयोगकर्ता का है, तो इसे एक बार <x9/> को दें: <x10/>।"
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

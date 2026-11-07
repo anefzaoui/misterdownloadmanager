@@ -57,7 +57,11 @@ pub fn main(args: Vec<String>) -> ExitCode {
         return ExitCode::FAILURE;
     };
     if let Err(e) = mdm_ipc::private_dir(&data) {
-        eprintln!("The data folder {} can't be used: {e}", data.display());
+        eprintln!(
+            "The data folder {} can't be used: {e}{}",
+            data.display(),
+            not_ours(&e)
+        );
         return ExitCode::FAILURE;
     }
     let Some(_instance) = mdm_ipc::instance_lock() else {
@@ -111,9 +115,13 @@ pub fn main(args: Vec<String>) -> ExitCode {
     crate::remote::set_hosts(hosts.as_deref());
     let downloads = setting(&args, "downloads", "MDM_DOWNLOADS").map(PathBuf::from);
     if let Some(d) = &downloads
-        && let Err(e) = std::fs::create_dir_all(d)
+        && let Err(e) = writable(d)
     {
-        eprintln!("The downloads folder {} can't be used: {e}", d.display());
+        eprintln!(
+            "The downloads folder {} can't be used: {e}{}",
+            d.display(),
+            not_ours(&e)
+        );
         return ExitCode::FAILURE;
     }
 
@@ -157,6 +165,26 @@ pub fn main(args: Vec<String>) -> ExitCode {
     println!("Stopping: the list is saved.");
     drop(app);
     ExitCode::SUCCESS
+}
+
+/// The folder, made if it isn't there, and a file written in it: a folder MDM can't write fails
+/// at start, not at each download.
+fn writable(dir: &std::path::Path) -> std::io::Result<()> {
+    std::fs::create_dir_all(dir)?;
+    let probe = dir.join(format!(".mdm-write-test-{}", std::process::id()));
+    std::fs::write(&probe, b"")?;
+    std::fs::remove_file(&probe)
+}
+
+/// What to do when a folder belongs to another user: Docker makes a folder it mounts that isn't
+/// there yet (`-v /srv/mdm-config:/config`) as root's, and MDM runs as another user.
+fn not_ours(e: &std::io::Error) -> &'static str {
+    if e.kind() == std::io::ErrorKind::PermissionDenied {
+        "\nIt belongs to another user: make it before the first start, owned by the user MDM runs \
+         as (`mkdir`, then `chown` it or give Docker that user with `--user`)."
+    } else {
+        ""
+    }
 }
 
 /// Say where the remote control listens, with a pairing code while no device is paired; true
@@ -236,5 +264,18 @@ mod tests {
         // An empty value is no value.
         let empty: Vec<String> = vec!["--downloads".into(), " ".into()];
         assert_eq!(setting(&empty, "downloads", "MDM_TEST_UNSET_DL"), None);
+    }
+
+    /// A downloads folder is made and written to at start, leaving nothing behind; a folder of
+    /// another user's gets the hint.
+    #[test]
+    fn folders_are_checked_at_start() {
+        let dir = tempfile::tempdir().unwrap();
+        let d = dir.path().join("Downloads");
+        writable(&d).unwrap();
+        assert_eq!(std::fs::read_dir(&d).unwrap().count(), 0);
+        let denied = std::io::Error::from(std::io::ErrorKind::PermissionDenied);
+        assert!(not_ours(&denied).contains("chown"));
+        assert_eq!(not_ours(&std::io::Error::other("full")), "");
     }
 }

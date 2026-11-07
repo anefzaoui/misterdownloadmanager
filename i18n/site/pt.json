@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Procura uma alternativa gratuita ao Internet Download Manager (IDM)? O Mister Download Manager é gratuito e de código aberto, com um esquema semelhante ao do IDM, e importa a sua lista do IDM. Compare-o com o Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader e outros."
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "O <g1>docker/unraid.xml</g1> é um modelo: copie-o para <x2/> na pen, depois <g3>Docker → Adicionar Contentor</g3> e escolha <g4>misterdownloadmanager</g4>. Mapeia <x5/> para <x6/>, <x7/> para uma partilha, a porta 8463, e é executado como <x8/> (99:100), como as partilhas do Unraid esperam. A imagem deve ser construída primeiro (acima), no servidor ou enviada para um registo que utilize."
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "Ativa ou desativa a API: <x1/>."
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "Um navegador obtém um ficheiro através de uma única ligação. O MDM pede ao servidor várias partes do ficheiro de uma só vez, até 32 ligações (128 se o permitir), e…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "Depois, execute-o, com uma pasta para as suas definições e outra para as transferências. Crie ambas as pastas primeiro, como o utilizador com que o MDM será executado: uma pasta que o Docker cria para si pertence a <x1/> e o MDM não a pode usar."
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7578,10 +7578,6 @@
    "source": "Played in real time from the medians.",
    "text": "Reproduzido em tempo real a partir das medianas."
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "Depois execute-o, com uma pasta para as suas definições e outra para as transferências:"
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 idiomas, também da direita para a esquerda"
@@ -10205,6 +10201,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Todas as ligações, em direto</g3> <g4>Cada ligação desenhada à medida que preenche, com a velocidade e o tempo restante. A retoma segura após falhas continua de onde parou.</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1> é um modelo: copie-o para <x2/> na pen, depois <g3>Docker → Adicionar Contentor</g3> e escolha <g4>misterdownloadmanager</g4>. Mapeia <x5/> para <x6/>, <x7/> para uma partilha, a porta 8463, e executa como <x8/> (99:100), como as partilhas do Unraid esperam. A imagem deve ser construída primeiro (acima), no servidor ou enviada para um registo que utilize. Se o registo do contentor disser que uma pasta pertence a outro utilizador, atribua-a a <x9/> uma vez: <x10/>."
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

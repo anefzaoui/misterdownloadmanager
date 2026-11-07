@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Bạn đang tìm kiếm một lựa chọn thay thế miễn phí cho Internet Download Manager (IDM)? Mister Download Manager là phần mềm miễn phí và mã nguồn mở, có giao diện giống IDM và có thể nhập danh sách tải xuống từ IDM của bạn. Hãy so sánh nó với Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader và nhiều phần mềm khác."
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "<g1>docker/unraid.xml</g1> là một mẫu: sao chép nó vào <x2/> trên ổ đĩa flash, sau đó <g3>Docker → Thêm Container</g3> và chọn <g4>misterdownloadmanager</g4>. Nó ánh xạ <x5/> tới <x6/>, <x7/> tới một thư mục chia sẻ, cổng 8463, và chạy dưới dạng <x8/> (99:100), như các thư mục chia sẻ của Unraid mong đợi. Image phải được xây dựng trước (ở trên), trên máy chủ hoặc được đẩy lên một registry bạn sử dụng."
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "Bật hoặc tắt API: <x1/>."
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "Trình duyệt tải một tệp qua một kết nối. MDM yêu cầu máy chủ gửi nhiều phần của tệp cùng lúc, tối đa 32 kết nối (128 nếu bạn cho phép), và…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "Sau đó chạy MDM, với một thư mục cho cài đặt và một thư mục cho các tệp tải xuống. Hãy tạo cả hai thư mục trước, với tư cách người dùng mà MDM sẽ chạy: một thư mục do Docker tạo cho bạn thuộc về <x1/> và MDM không thể sử dụng nó."
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7582,10 +7582,6 @@
    "source": "Played in real time from the medians.",
    "text": "Phát theo thời gian thực từ các giá trị trung vị."
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "Sau đó chạy nó, với một thư mục cho các cài đặt của nó và một thư mục cho các bản tải xuống:"
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 ngôn ngữ, kể cả từ phải sang trái"
@@ -10209,6 +10205,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Mọi kết nối, trực tiếp</g3> <g4>Mỗi kết nối được vẽ khi nó đầy, với tốc độ và thời gian còn lại. Tiếp tục tải an toàn sau sự cố từ nơi nó dừng lại.</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1> là một mẫu: sao chép nó vào <x2/> trên ổ đĩa flash, sau đó <g3>Docker → Thêm Container</g3> và chọn <g4>misterdownloadmanager</g4>. Nó ánh xạ <x5/> tới <x6/>, <x7/> tới một thư mục chia sẻ, cổng 8463 và chạy với tư cách <x8/> (99:100), như các thư mục chia sẻ của Unraid yêu cầu. Hình ảnh phải được xây dựng trước (ở trên), trên máy chủ hoặc được đẩy tới một registry mà bạn sử dụng. Nếu nhật ký của container cho biết một thư mục thuộc về người dùng khác, hãy cấp quyền cho <x9/> một lần: <x10/>."
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

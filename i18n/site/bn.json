@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Internet Download Manager (IDM)-এর একটি বিনামূল্যের বিকল্প খুঁজছেন? Mister Download Manager বিনামূল্যে ও ওপেন সোর্স, IDM-এর মতো দেখতে, এবং আপনার IDM তালিকা ইম্পোর্ট করে। এটিকে Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader এবং আরও অনেক কিছুর সাথে তুলনা করুন।"
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "<g1>docker/unraid.xml</g1> একটি টেমপ্লেট: এটি ফ্ল্যাশ ড্রাইভে <x2/> এ কপি করুন, তারপর <g3>Docker → Add Container</g3> এবং <g4>misterdownloadmanager</g4> নির্বাচন করুন। এটি <x5/> কে <x6/> এ, <x7/> কে একটি শেয়ারে, পোর্ট 8463 এ ম্যাপ করে এবং <x8/> (99:100) হিসাবে চলে, যেমন আনরেইডের শেয়ারগুলি আশা করে। ইমেজটি প্রথমে তৈরি করতে হবে (উপরে), সার্ভারে বা আপনি যে রেজিস্ট্রি ব্যবহার করেন সেখানে পুশ করতে হবে।"
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "API চালু বা বন্ধ করে: <x1/>।"
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "একটি ব্রাউজার একটি সংযোগের মাধ্যমে একটি ফাইল নিয়ে আসে। MDM সার্ভারকে একই সাথে ফাইলের বেশ কয়েকটি অংশ আনতে বলে, 32টি সংযোগ পর্যন্ত (আপনি অনুমতি দিলে 128টি), এবং…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "তারপর সেটি চালান, সেটিংগুলির জন্য একটি ফোল্ডার এবং ডাউনলোডগুলির জন্য একটি ফোল্ডার সহ। MDM যে ব্যবহারকারী হিসাবে চলবে, সেই ব্যবহারকারী হিসাবে প্রথমে উভয় ফোল্ডার তৈরি করুন: ডকার আপনার জন্য যে ফোল্ডার তৈরি করে তা <x1/> এর অন্তর্গত, এবং MDM এটি ব্যবহার করতে পারে না।"
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7582,10 +7582,6 @@
    "source": "Played in real time from the medians.",
    "text": "মধ্যমা থেকে রিয়েল টাইমে চালানো হয়েছে।"
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "তারপর এটি চালান, এর সেটিংসের জন্য একটি ফোল্ডার এবং ডাউনলোডের জন্য একটি ফোল্ডার সহ:"
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86টি ভাষা, ডান থেকে বামেও"
@@ -10209,6 +10205,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>প্রতিটি সংযোগ, লাইভ</g3> <g4>প্রতিটি সংযোগ পূরণ হওয়ার সাথে সাথে আঁকা হয়, গতি এবং বাকি সময় সহ। ক্র্যাশ-সেফ রেজিউম যেখানে থেমেছিল সেখান থেকে শুরু হয়।</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1> একটি টেমপ্লেট: এটি ফ্ল্যাশ ড্রাইভে <x2/> এ কপি করুন, তারপর <g3>Docker → Add Container</g3> এবং <g4>misterdownloadmanager</g4> নির্বাচন করুন। এটি <x5/> কে <x6/> এ, <x7/> কে একটি শেয়ারে, পোর্ট 8463 এ ম্যাপ করে এবং <x8/> (99:100) হিসাবে চলে, যেমন Unraid এর শেয়ারগুলি আশা করে। ইমেজটি প্রথমে তৈরি করতে হবে (উপরে), সার্ভারে বা আপনার ব্যবহৃত একটি রেজিস্ট্রিতে পুশ করতে হবে। যদি কন্টেইনারের লগ বলে যে একটি ফোল্ডার অন্য ব্যবহারকারীর অন্তর্গত, তাহলে একবার <x9/> কে এটি দিন: <x10/>।"
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

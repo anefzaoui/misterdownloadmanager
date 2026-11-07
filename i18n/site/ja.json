@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Internet Download Manager (IDM) の無料代替ソフトをお探しですか？Mister Download Manager は無料でオープンソースであり、IDM と同じレイアウトで、IDM のリストをインポートできます。Free Download Manager、AB Download Manager、Motrix、Neat、JDownloader などと比較してみてください。"
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "<g1>docker/unraid.xml</g1>はテンプレートです。フラッシュドライブの<x2/>にコピーし、<g3>Docker → コンテナを追加</g3>を選択して<g4>misterdownloadmanager</g4>を選びます。これは<x5/>を<x6/>に、<x7/>を共有フォルダーに、ポート8463をマッピングし、Unraidの共有フォルダーが期待するように<x8/>（99:100）として実行されます。イメージは、サーバー上で、または使用するレジストリにプッシュして、最初にビルドする必要があります（上記参照）。"
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "APIをオンまたはオフにします：<x1/>。"
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "ブラウザは1つの接続でファイルをダウンロードします。MDMは、最大32接続（許可すれば128接続）で、サーバーにファイルの複数の部分を同時に要求し、さらに…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "次に、設定用とダウンロード用のフォルダーを指定して実行します。MDMが実行されるユーザーとして、両方のフォルダーを最初に作成してください。Dockerが作成するフォルダーは<x1/>に属し、MDMはそれを使用できません。"
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7582,10 +7582,6 @@
    "source": "Played in real time from the medians.",
    "text": "中央値からリアルタイムで再生。"
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "次に、設定用フォルダーとダウンロード用フォルダーを指定して実行します："
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86言語、右から左への表示にも対応"
@@ -10209,6 +10205,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>すべての接続をリアルタイムで</g3> <g4>各接続の進捗状況、速度、残り時間を表示。クラッシュしても中断したところから安全に再開。</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1>はテンプレートです。これをフラッシュドライブの<x2/>にコピーし、<g3>Docker → コンテナを追加</g3>を選択して<g4>misterdownloadmanager</g4>を選びます。<x5/>を<x6/>に、<x7/>を共有フォルダーに、ポート8463をマッピングし、Unraidの共有フォルダーが期待するように<x8/>（99:100）として実行します。イメージは、サーバー上で、または使用するレジストリにプッシュして、最初にビルドする必要があります（上記参照）。コンテナのログにフォルダーが別のユーザーに属していると表示された場合は、一度<x9/>に割り当ててください。<x10/>。"
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Szukasz darmowej alternatywy dla Internet Download Manager (IDM)? Mister Download Manager jest darmowy i open source, ma układ jak IDM i importuje Twoją listę IDM. Porównaj go z Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader i innymi."
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "<g1>docker/unraid.xml</g1> to szablon: skopiuj go do <x2/> na dysku flash, następnie <g3>Docker → Dodaj kontener</g3> i wybierz <g4>misterdownloadmanager</g4>. Mapuje <x5/> na <x6/>, <x7/> na udział, port 8463 i działa jako <x8/> (99:100), zgodnie z oczekiwaniami udziałów Unraid. Obraz musi być najpierw zbudowany (powyżej), na serwerze lub przesłany do używanego rejestru."
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "Włącza lub wyłącza API: <x1/>."
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "Przeglądarka pobiera plik, używając jednego połączenia. MDM prosi serwer o kilka części pliku naraz, do 32 połączeń (128, jeśli na to zezwolisz), i…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "Następnie uruchom go, wskazując folder na ustawienia i folder na pobrane pliki. Utwórz oba foldery wcześniej, jako użytkownik, pod którym MDM będzie działać: folder utworzony przez Docker należy do <x1/> i MDM nie może go używać."
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7582,10 +7582,6 @@
    "source": "Played in real time from the medians.",
    "text": "Odtwarzane w czasie rzeczywistym na podstawie median."
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "Następnie uruchom go, z folderem na ustawienia i jednym na pobrane pliki:"
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 języków, także od prawej do lewej"
@@ -10209,6 +10205,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Każde połączenie, na żywo</g3> <g4>Każde połączenie rysowane w miarę zapełniania, z prędkością i pozostałym czasem. Wznawianie po awarii od miejsca, w którym się zatrzymało.</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1> to szablon: skopiuj go do <x2/> na dysku flash, następnie <g3>Docker → Add Container</g3> i wybierz <g4>misterdownloadmanager</g4>. Mapuje on <x5/> do <x6/>, <x7/> do udziału, port 8463 i działa jako <x8/> (99:100), zgodnie z oczekiwaniami udziałów Unraid. Obraz musi być najpierw zbudowany (powyżej), na serwerze lub przesłany do używanego rejestru. Jeśli dziennik kontenera wskazuje, że folder należy do innego użytkownika, przypisz go raz do <x9/>: <x10/>."
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

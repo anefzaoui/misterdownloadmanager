@@ -294,10 +294,6 @@
    "source": "Looking for a free alternative to Internet Download Manager (IDM)? Mister Download Manager is free and open source, laid out like IDM, and imports your IDM list. Compare it with Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader and more.",
    "text": "Mencari alternatif gratis untuk Internet Download Manager (IDM)? Mister Download Manager gratis dan sumber terbuka, tampilannya seperti IDM, dan mengimpor daftar IDM Anda. Bandingkan dengan Free Download Manager, AB Download Manager, Motrix, Neat, JDownloader, dan lainnya."
   },
-  "0653a393fa30cb53": {
-   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use.",
-   "text": "<g1>docker/unraid.xml</g1> adalah templat: salin ke <x2/> di flash drive, lalu <g3>Docker → Tambah Kontainer</g3> dan pilih <g4>misterdownloadmanager</g4>. Ini memetakan <x5/> ke <x6/>, <x7/> ke berbagi, port 8463, dan berjalan sebagai <x8/> (99:100), seperti yang diharapkan oleh berbagi Unraid. Citra harus dibuat terlebih dahulu (di atas), di server atau didorong ke registri yang Anda gunakan."
-  },
   "0679d081a8cd40ea": {
    "source": "Turns the API on or off: <x1/>.",
    "text": "Menghidupkan atau mematikan API: <x1/>."
@@ -3317,6 +3313,10 @@
   "50b87de554adf9c4": {
    "source": "A browser fetches a file over one connection. MDM asks the server for several parts of the file at once, up to 32 connections (128 if you allow it), and…",
    "text": "Peramban mengambil satu berkas melalui satu koneksi. MDM meminta beberapa bagian berkas dari server sekaligus, hingga 32 koneksi (128 jika Anda mengizinkannya), dan…"
+  },
+  "50cd41fe93c743c2": {
+   "source": "Then run it, with a folder for its settings and one for the downloads. Make both folders first, as the user MDM will run as: a folder Docker makes for you belongs to <x1/>, and MDM can't use it.",
+   "text": "Lalu jalankan, dengan satu folder untuk pengaturannya dan satu lagi untuk unduhan. Buat kedua folder itu terlebih dahulu, sebagai pengguna yang akan menjalankan MDM: folder yang dibuat Docker untuk Anda adalah milik <x1/>, dan MDM tidak dapat menggunakannya."
   },
   "50cd97f982c04418": {
    "source": "Keep some speed for everything else — Mister Download Manager help",
@@ -7582,10 +7582,6 @@
    "source": "Played in real time from the medians.",
    "text": "Diputar secara real time dari median."
   },
-  "b93c892b6f64e746": {
-   "source": "Then run it, with a folder for its settings and one for the downloads:",
-   "text": "Kemudian jalankan, dengan satu folder untuk pengaturannya dan satu untuk unduhan:"
-  },
   "b941fb1eda0104d8": {
    "source": "86 languages, right to left too",
    "text": "86 bahasa, juga kanan ke kiri"
@@ -10209,6 +10205,10 @@
   "fe3606d7fc5eae65": {
    "source": "<g1><g2></g2></g1> <g3>Every connection, live</g3> <g4>Each connection drawn as it fills, with the speed and the time left. Crash-safe resume picks up where it stopped.</g4>",
    "text": "<g1><g2></g2></g1> <g3>Setiap koneksi, langsung</g3> <g4>Setiap koneksi digambar saat terisi, dengan kecepatan dan sisa waktu. Melanjutkan unduhan yang terhenti dengan aman dari titik terakhir.</g4>"
+  },
+  "fe37ffc179d02087": {
+   "source": "<g1>docker/unraid.xml</g1> is a template: copy it to <x2/> on the flash drive, then <g3>Docker → Add Container</g3> and pick <g4>misterdownloadmanager</g4>. It maps <x5/> to <x6/>, <x7/> to a share, the port 8463, and runs as <x8/> (99:100), as Unraid's shares expect. The image must be built first (above), on the server or pushed to a registry you use. If the container's log says a folder belongs to another user, give it to <x9/> once: <x10/>.",
+   "text": "<g1>docker/unraid.xml</g1> adalah templat: salin ke <x2/> di flash drive, lalu <g3>Docker → Add Container</g3> dan pilih <g4>misterdownloadmanager</g4>. Ini memetakan <x5/> ke <x6/>, <x7/> ke sebuah share, port 8463, dan berjalan sebagai <x8/> (99:100), seperti yang diharapkan oleh share Unraid. Image harus dibuat terlebih dahulu (di atas), di server atau didorong ke registry yang Anda gunakan. Jika log kontainer mengatakan sebuah folder milik pengguna lain, berikan ke <x9/> sekali: <x10/>."
   },
   "fe3ad5eb0f0ce650": {
    "source": "The software is provided <g1>\"as is\", without warranty of any kind</g1>, express or implied, including the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to its quality and performance is with you. See sections 15 and 16 of the GPL. Keep backups of anything important.",

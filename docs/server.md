@@ -26,9 +26,11 @@ one). The image is small, about 175 MB: Debian's slim base, MDM's two programs a
 certificates downloads are checked against. It needs no desktop libraries: MDM loads those only
 to open a window, which a server never does.
 
-Then run it, with a folder for its settings and one for the downloads:
+Then run it, with a folder for its settings and one for the downloads. Make both folders first,
+as the user MDM will run as: a folder Docker makes for you belongs to `root`, and MDM can't use it.
 
 ```sh
+mkdir -p /srv/mdm-config /srv/downloads
 docker run -d --name mdm --restart unless-stopped \
   -p 8463:8463 \
   -v /srv/mdm-config:/config \
@@ -75,7 +77,9 @@ no web page can reach MDM through a name of its own.
 `/boot/config/plugins/dockerMan/templates-user/` on the flash drive, then **Docker → Add
 Container** and pick **misterdownloadmanager**. It maps `/config` to `appdata`, `/downloads` to a
 share, the port 8463, and runs as `nobody:users` (99:100), as Unraid's shares expect. The image
-must be built first (above), on the server or pushed to a registry you use.
+must be built first (above), on the server or pushed to a registry you use. If the container's
+log says a folder belongs to another user, give it to `nobody:users` once:
+`chown -R 99:100 /mnt/user/appdata/misterdownloadmanager`.
 
 ## Without Docker
 
