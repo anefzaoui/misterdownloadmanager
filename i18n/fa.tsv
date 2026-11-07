@@ -436,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS دیگر...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	برنامه دیگری هشدار بیدارباش رایانه را تنظیم کرده است
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -744,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	چاد
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	تغییر
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1829,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	هنگ کنگ
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	چگونه آن را مجاز کنیم
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1872,10 +1884,6 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	در دسته‌ها: منوی دسته انتخاب‌شده
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	در جا کلیدی قفل شده
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2360,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager با خطای داخلی مواجه شد
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager در حال اجرای صف «{queue}» است
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2633,10 +2646,6 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	بدون پراکسی/SOCKS
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	هیچ جا کلیدی سیستمی پاسخ نداد، بنابراین اطلاعات ورود و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند که فقط شما می‌توانید آن‌ها را بخوانید.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2775,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	عمان
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	در حالت باتری، گزینه‌های برق Windows اجازه زمان‌سنج‌های بیدارباش را نمی‌دهند
 #. text in a download's progress window
 #, machine
 	on download stop/resume	در توقف/ادامه دانلود
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	در macOS، فقط یک مدیر می‌تواند بیدارباش را زمان‌بندی کند
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	یک بار در
@@ -2801,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	فقط یک بارگیری تمام‌شده یا بارگیری که هنوز شروع نشده است، قابل انتقال است. ابتدا آن را متوقف کرده و به پایان برسانید.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	فقط یک مدیر می‌تواند این را مجاز کند
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3024,10 +3045,6 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	پیکربندی پروکسی / SOCKS
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	سرور پراکسی
 #. label in the Options window
 #, machine
 	Proxy server address	نشانی سرور پراکسی
@@ -3485,18 +3502,6 @@
 #, machine
 	Sign in in the browser	ورود به سیستم در مرورگر
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	اطلاعات ورود و گذرواژه‌ها در جا کلیدی macOS نگهداری می‌شوند.
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	اطلاعات ورود و گذرواژه‌ها در جا کلیدی سیستم (Secret Service) نگهداری می‌شوند.
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	ورودها و گذرواژه‌ها در Windows Credential Manager نگهداری می‌شوند.
-#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	با نام {user} ({state}) وارد شدید
@@ -3884,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	رایانه خاموش نشد: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	رایانه یک دقیقه قبل از زمان شروع بیدار می‌شود و در حین اجرای صف بیدار می‌ماند. Mister Download Manager باید در حال اجرا باشد (می‌تواند در ناحیه اعلان منتظر بماند).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	رایانه در {date} در ساعت {time} بیدار خواهد شد
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4066,10 +4080,6 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	نمادها قابل واکشی نبودند: برخی از خطوط گزارش به جای نام‌ها، آدرس‌ها را نشان می‌دهند (توسعه‌دهندگان همچنان می‌توانند آن‌ها را بخوانند).
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	جا کلیدی سیستم قفل است و MDM آن را باز نمی‌کند، بنابراین اطلاعات ورود و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند که فقط شما می‌توانید آن‌ها را بخوانید.
-#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	DNS سیستم
@@ -4127,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	این دسته یا صف هنوز هیچ دانلودی ندارد.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	این رایانه نمی‌تواند توسط یک زمان‌سنج بیدار شود
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	این رایانه هشدار بیدارباشی ندارد که برنامه‌ها بتوانند آن را تنظیم کنند
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4165,14 +4183,6 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	این به ffmpeg نیاز دارد
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	این نسخه قابل حمل، ورودها و گذرواژه‌ها را در تنظیمات خود نگهداری می‌کند، که برای حساب Windows شما رمزگذاری شده‌اند.
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	این نسخه قابل حمل، اطلاعات ورود و گذرواژه‌ها را در تنظیمات خود نگه می‌دارد، که فقط شما می‌توانید آن‌ها را بخوانید.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4218,6 +4228,10 @@
 #. text in the Scheduler window
 #, machine
 	Thursday	پنجشنبه
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	ابتدا «شروع دانلود در» را علامت بزنید: رایانه برای زمان شروع بیدار می‌شود
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	زمان باقی‌مانده
@@ -4616,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	در انتظار: محدودیت دانلود رسیده است (زمان‌بندی)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	بیدار کردن رایانه برای اجرای این صف
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4649,10 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	اندازه نویسه عام
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager پاسخ نداد، بنابراین ورودها و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند، که برای حساب Windows شما رمزگذاری شده‌اند.
+	Windows allows wake timers only while plugged in	Windows زمان‌سنج‌های بیدارباش را فقط در حالت اتصال به برق مجاز می‌داند
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4663,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	زبان Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	گزینه‌های برق Windows اجازه زمان‌سنج‌های بیدارباش را نمی‌دهند
 #. message or event log entry in the main window
 #, machine
 	with Add URL	با افزودن URL
@@ -5884,3 +5906,43 @@ unit	{n} MB	{n} مگابایت
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} مگابایت/ثانیه
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	در جا کلیدی قفل شده
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	هیچ جا کلیدی سیستمی پاسخ نداد، بنابراین اطلاعات ورود و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند که فقط شما می‌توانید آن‌ها را بخوانید.
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	سرور پراکسی
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	اطلاعات ورود و گذرواژه‌ها در جا کلیدی macOS نگهداری می‌شوند.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	اطلاعات ورود و گذرواژه‌ها در جا کلیدی سیستم (Secret Service) نگهداری می‌شوند.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	ورودها و گذرواژه‌ها در Windows Credential Manager نگهداری می‌شوند.
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	جا کلیدی سیستم قفل است و MDM آن را باز نمی‌کند، بنابراین اطلاعات ورود و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند که فقط شما می‌توانید آن‌ها را بخوانید.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	این نسخه قابل حمل، ورودها و گذرواژه‌ها را در تنظیمات خود نگهداری می‌کند، که برای حساب Windows شما رمزگذاری شده‌اند.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	این نسخه قابل حمل، اطلاعات ورود و گذرواژه‌ها را در تنظیمات خود نگه می‌دارد، که فقط شما می‌توانید آن‌ها را بخوانید.
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Windows Credential Manager پاسخ نداد، بنابراین ورودها و گذرواژه‌ها در تنظیمات MDM نگهداری می‌شوند، که برای حساب Windows شما رمزگذاری شده‌اند.

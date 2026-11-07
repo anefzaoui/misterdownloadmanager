@@ -170,6 +170,10 @@
    "source": "Contribute",
    "text": "기여하기"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "최종 업데이트: 2026-11-06 · 앱, 브라우저 확장 프로그램 및 misterdownloadmanager.com에 적용됩니다."
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Mister Download Manager에 대한 답변: 무료인지, 안전한지, IDM과의 비교, 브라우저, 비디오, 토렌트, 속도, Mac 및 Linux 등."
@@ -201,6 +205,10 @@
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
+  },
+  "04bb12464d3a29f6": {
+   "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
+   "text": "시작 시각 아래에 있는 <g1>이 큐를 실행하기 위해 컴퓨터 절전 모드 해제</g1>를 선택하면, 시작 시각에 절전 모드인 컴퓨터가 켜집니다. <g2>다운로드 시작 시각</g2>이 필요합니다."
   },
   "050edc04316dd70a": {
    "source": "On the command line",
@@ -862,6 +870,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>브라우저.</g1> 페이지를 마우스 오른쪽 버튼으로 클릭하여 <g2>Mister Download Manager으로 모든 링크 다운로드</g2>를 선택하거나, 페이지의 일부를 선택하여 <g3>Mister Download Manager으로 선택한 링크 다운로드</g3>를 선택합니다. 페이지의 리퍼러와 쿠키는 각 링크와 함께 전송됩니다."
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "Windows에서는 Direct3D 12(eframe의 wgpu, Direct3D 12 백엔드만 사용) 또는 보기 → 다음으로 그리기에서 선택한 경우 OpenGL(eframe의 glow)로 창이 그려집니다. Linux 및 macOS는 OpenGL을 사용합니다. 선택한 방식이 시작되지 않으면 다른 방식이 시도되므로 창은 항상 열립니다."
+  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "기본적으로 MDM은 BitTorrent 프로그램이 일반적으로 하는 것처럼 가장 적은 피어가 가진 조각을 먼저 다운로드합니다. 그렇게 하면 한 피어만 가진 조각이 해당 피어가 떠나기 전에 가져와지고, MDM은 이를 다른 피어에게 더 빨리 전달할 수 있습니다. MDM의 테스트 스웜에서는 순서대로 다운로드하는 것만큼 빠르게 완료되었으며, 희귀한 조각의 유일한 소유자가 떠났을 때 완료된 유일한 순서였습니다."
@@ -1377,6 +1389,10 @@
   "214a5490cbec850d": {
    "source": "<g1>Look links up when they arrive (name, size, online)</g1> — Link grabber asks each server about its file (on by default).",
    "text": "<g1>링크 도착 시 조회(이름, 크기, 온라인)</g1> — 링크 그래버가 각 서버에 파일에 대해 문의합니다(기본적으로 켜짐)."
+  },
+  "216583d42da33e52": {
+   "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
+   "text": "macOS에서는 관리자만 절전 모드 해제를 예약할 수 있으므로 옵션이 회색으로 표시됩니다. MDM은 관리자 암호를 요청하지 않습니다. 관리자는 큐가 시작되기 1분 전, 예를 들어 오후 11시에 시작하는 큐의 경우 오후 10시 59분에 Mac이 매일 절전 모드에서 해제되도록 설정할 수 있습니다."
   },
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
@@ -2121,6 +2137,10 @@
   "321b96d0efb29bed": {
    "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
    "text": "규칙은 피드를 마지막으로 가져온 이후의 새 기사만 확인하며, 피드의 첫 번째 가져오기는 현재 있는 내용만 나열합니다. 따라서 피드나 규칙을 추가해도 전체 백로그가 다운로드되지 않습니다. <g1>현재 ...개 기사와 일치</g1>는 규칙이 현재 피드에 있는 기사 중 어떤 기사와 일치하는지 보여주어 확인하는 데 사용됩니다. 해당 기사는 수동으로 다운로드하세요. 목록에 이미 있는 토렌트는 다시 추가되지 않으며, 파일이 이미 폴더에 있는 토렌트도 마찬가지입니다. MDM은 묻지 않고 자신이 만들지 않은 파일에 절대 쓰지 않습니다. 탭의 하단 줄에는 규칙이 마지막으로 수행한 작업이 표시되며, 규칙이 추가한 토렌트는 이벤트 로그에 표시됩니다."
+  },
+  "326233a6912ae49d": {
+   "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
+   "text": "사용자의 systemd 타이머는 컴퓨터를 절전 모드에서 해제할 수 없으며, <x1/>에는 루트 권한이 필요하므로 이 설정 없이는 MDM이 컴퓨터를 절전 모드에서 해제할 수 없습니다. MDM은 관리자 암호를 요청하지 않습니다."
   },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
@@ -3550,6 +3570,10 @@
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>다른 곳에서 가져온 복사본입니까?</g1> 이를 제거하고 MDM의 <g2>브라우저에 Mister Download Manager 추가</g2> 창에 표시된 대로 확장 프로그램을 추가하세요(<g3>브라우저 통합</g3> 참조)."
   },
+  "5922c26d865c882f": {
+   "source": "The wake follows the schedule: change the start time or the days, untick the option or delete the queue, and the wake moves or goes away. MDM sets it again each time it starts. Nothing stays behind in the system when MDM quits or is uninstalled.",
+   "text": "절전 모드 해제는 일정에 따릅니다. 시작 시각이나 요일을 변경하거나, 옵션을 선택 해제하거나, 큐를 삭제하면 절전 모드 해제가 이동하거나 사라집니다. MDM은 시작할 때마다 다시 설정합니다. MDM이 종료되거나 제거될 때 시스템에 아무것도 남지 않습니다."
+  },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
    "text": "<g1>파일 정보 다운로드</g1>에서: <g2>다운로드 시작</g2>"
@@ -3774,6 +3798,10 @@
    "source": "What Update now does",
    "text": "지금 업데이트 기능"
   },
+  "5f91bf43437c9761": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
+   "text": "<g1>보기</g1> — 카테고리 표시 또는 숨기기, 목록 정렬(<g2>파일 정렬</g2>), <g3>다크 모드 지원</g3>, <g4>항상 어둡게</g4>, <g5>테마</g5>, <g6>다음으로 그리기</g6> (Windows: Direct3D 또는 OpenGL) 및 <g7>언어</g7>."
+  },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
    "text": "<g1>다운로드 → 속도 제한 → 설정...</g1> — 속도 제한입니다. <g2>연결 및 속도</g2>를 참조하십시오."
@@ -3793,6 +3821,10 @@
   "601260a4be471ed2": {
    "source": "The box under the list edits the package you selected:",
    "text": "목록 아래 상자는 선택한 패키지를 편집합니다."
+  },
+  "6038a4d72bef82d8": {
+   "source": "removes it.",
+   "text": "제거합니다."
   },
   "603f376b07905d51": {
    "source": "Q",
@@ -5266,6 +5298,10 @@
    "source": "Put downloads in a queue",
    "text": "다운로드를 대기열에 넣기"
   },
+  "83771adf9df51604": {
+   "source": "Windows wakes a computer only if its power plan allows wake timers. If it doesn't, the Scheduler says so, and <g1>Change</g1> opens the setting: <g2>Power Options → Change plan settings → Change advanced power settings → Sleep → Allow wake timers</g2>. Choose <g3>Enable</g3>: <g4>Important Wake Timers Only</g4> lets only Windows' own important timers wake the computer. On laptops the setting is often off on battery, so the computer is woken only while plugged in.",
+   "text": "Windows는 전원 관리 옵션에서 절전 모드 해제 타이머를 허용하는 경우에만 컴퓨터를 절전 모드에서 해제합니다. 허용하지 않으면 예약 관리자에서 이를 알리고, <g1>변경</g1>을 클릭하면 설정이 열립니다. <g2>전원 옵션 → 전원 관리 옵션 설정 변경 → 고급 전원 관리 옵션 설정 변경 → 절전 → 절전 모드 해제 타이머 허용</g2>으로 이동합니다. <g3>사용</g3>을 선택합니다. <g4>중요 절전 모드 해제 타이머만</g4>은 Windows 자체의 중요한 타이머만 컴퓨터를 절전 모드에서 해제하도록 허용합니다. 노트북에서는 배터리 사용 시 이 설정이 꺼져 있는 경우가 많으므로, 컴퓨터는 전원에 연결되어 있을 때만 절전 모드에서 해제됩니다."
+  },
   "837e0b4660975a88": {
    "source": "Select or unselect one more download",
    "text": "다운로드 하나 더 선택 또는 선택 취소"
@@ -5505,6 +5541,10 @@
   "89630e927a663dc9": {
    "source": "When MDM isn't running",
    "text": "MDM이 실행 중이 아닐 때"
+  },
+  "8964c9e8c41b70ca": {
+   "source": "On Linux only an administrator may set the computer's wake alarm, so the option is greyed until an administrator allows it. To let the users in a <x1/> group set it, an administrator runs, once:",
+   "text": "Linux에서는 관리자만 컴퓨터의 절전 모드 해제 알람을 설정할 수 있으므로, 관리자가 허용할 때까지 옵션이 회색으로 표시됩니다. <x1/> 그룹의 사용자가 이를 설정할 수 있도록 하려면 관리자가 다음 명령을 한 번 실행합니다."
   },
   "89c2ac8b048f39e1": {
    "source": "The next choice of a drop-down list or radio group; a number up or down",
@@ -5797,6 +5837,10 @@
   "91ebb9f0dfb7f3d7": {
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid, AllDebrid, Premiumize와 같은 디브리드 서비스는 파일 호스트에서 자체 서버로 파일을 다운로드하는 유료 계정입니다. 호스트의 대기 시간, 속도 제한 및 캡차 없이 일반적인 직접 링크를 제공합니다. MDM에 계정을 등록하면 서비스가 지원하는 호스트의 링크가 서비스를 통해 잠금 해제된 다음, MDM이 다른 파일처럼 모든 연결, 일시 중지 및 재개를 사용하여 다운로드합니다."
+  },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "컴퓨터에서 Direct3D를 시작할 수 없거나(Direct3D 12 드라이버 없음, 일부 가상 머신) 첫 번째 창이 10초 이내에 표시되지 않으면 MDM은 OpenGL로 그리며, <g1>보기 → 다음으로 그리기</g1>에 그렇게 표시됩니다. <g2>Direct3D</g2>를 다시 선택하면 다음 시작 시 다시 시도합니다."
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -6237,6 +6281,10 @@
   "9d17cb869478b3ac": {
    "source": "<g1>As the system's region writes them</g1> (the default) — Windows' region settings (Settings → Time &amp; language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.",
    "text": "<g1>시스템 지역 설정에 따름</g1>(기본값) — Windows의 지역 설정(설정 → 시간 및 언어 → 지역)을 따릅니다. macOS 및 Linux에서는 해당 언어의 일반적인 방식을 따릅니다. 영어에서는 목록이 IDM 자체의 날짜 텍스트를 유지합니다."
+  },
+  "9d2e5b317ca7d67a": {
+   "source": "MDM wakes the computer a minute before the start time, so the network is back when the queue starts.",
+   "text": "MDM은 큐가 시작될 때 네트워크가 다시 연결되도록 시작 시각 1분 전에 컴퓨터를 절전 모드에서 해제합니다."
   },
   "9d5b2429780e94aa": {
    "source": "Latest",
@@ -7046,6 +7094,10 @@
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
    "text": "주입된 오류(느린 연결, 끊긴 연결, 거부된 연결, 범위가 없는 서버, 변경되는 파일)가 있는 <x1/>에 대해 단위 테스트 및 엔드투엔드 다운로드를 실행합니다. <x2/>는 게시된 속도 비교를 실행합니다. 원시 데이터는 <x3/>에 있습니다."
   },
+  "b1f35176aca676c5": {
+   "source": "While the queue runs, the computer doesn't go to sleep. When the queue is done, the computer's own sleep settings apply again: a computer nobody is using goes back to sleep by itself. <g1>Turn off computer when done → Sleep</g1> sends it back to sleep at once.",
+   "text": "큐가 실행되는 동안 컴퓨터는 절전 모드로 들어가지 않습니다. 큐가 완료되면 컴퓨터 자체의 절전 설정이 다시 적용됩니다. 아무도 사용하지 않는 컴퓨터는 자동으로 절전 모드로 돌아갑니다. <g1>완료 시 컴퓨터 끄기 → 절전</g1>은 컴퓨터를 즉시 절전 모드로 보냅니다."
+  },
   "b208caa24e13c211": {
    "source": "<g1>Shift+Up / Shift+Down</g1> makes the selection longer or shorter.",
    "text": "<g1>Shift+위 / Shift+아래</g1>는 선택 영역을 길게 또는 짧게 만듭니다."
@@ -7221,6 +7273,10 @@
   "b66ef1366b1ed932": {
    "source": "Children",
    "text": "어린이"
+  },
+  "b68461ac7025e237": {
+   "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
+   "text": "그런 다음 로그아웃했다가 다시 로그인합니다. 이 설정은 다시 시작한 후에도 유지됩니다. 컴퓨터에는 하나의 절전 모드 해제 알람이 있습니다. 다른 프로그램이 설정한 경우 MDM은 이를 그대로 두고 알립니다."
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -8186,6 +8242,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "실행 중인 각 다운로드에는 자체 진행 창이 있습니다. 다운로드가 시작될 때 열리며, 다시 열려면 목록에서 다운로드를 두 번 클릭하세요."
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "최종 업데이트: 2026-11-06"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "토렌트의 파일은 브라우저의 다운로드와 마찬가지로 <g1>인터넷에서 다운로드됨</g1>으로 표시됩니다. Windows SmartScreen은 프로그램이 처음 실행되기 전에 확인하고, Office는 문서를 보호된 보기로 엽니다. Mac에서는 Gatekeeper가 앱을 확인합니다."
@@ -8517,6 +8577,10 @@
   "d9702d61beba459f": {
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "다운로드 목록을 만들고 조치하려면 MDM의 자동화 API가 필요하며, 이 API는 켤 때까지 꺼져 있습니다. MDM이 실행 중인 상태에서 다음을 한 번 실행하세요(계속 켜져 있습니다):"
+  },
+  "d9862086c382da0c": {
+   "source": "Wake the computer to run a queue",
+   "text": "큐 실행을 위해 컴퓨터 절전 모드 해제"
   },
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
@@ -9094,6 +9158,10 @@
    "source": "Add to Firefox",
    "text": "Firefox에 추가"
   },
+  "e8b5d61bef6a7b3c": {
+   "source": "The line under the option says when the computer will next be woken, or why it can't be.",
+   "text": "옵션 아래 줄에는 컴퓨터가 다음에 절전 모드에서 해제될 시각 또는 해제될 수 없는 이유가 표시됩니다."
+  },
   "e8cba16e3299c9aa": {
    "source": "Several files are downloaded one after another, sorted by name.",
    "text": "여러 파일은 이름순으로 정렬되어 하나씩 다운로드됩니다."
@@ -9658,6 +9726,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "왼쪽에서 <g1>기본 다운로드 대기열</g1>을 선택합니다. <g2>예약</g2> 탭이 열립니다."
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "Windows에서 MDM은 Direct3D 12로 창을 그리고, Linux 및 macOS에서는 OpenGL로 그립니다. 그래픽 드라이버가 여전히 오작동할 수 있습니다. 창이 몇 초 동안 멈추거나, 깜박이거나, 잘못된 색상이나 블록을 표시할 수 있습니다. Windows에서는 다른 것을 시도해 보세요. <g1>보기 → 다음으로 그리기 → OpenGL</g1>을 선택한 다음 MDM을 종료(<g2>작업 → 끝내기</g2>)하고 다시 시작하세요. <g3>보기 → 다음으로 그리기 → Direct3D</g3>는 같은 방식으로 돌아갑니다."
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "<g1>\"일반\" 범주의 기본 다운로드 디렉터리</g1>에서 <g2>찾아보기</g2>를 클릭하고 스틱의 폴더(예: <x3/>)를 선택하세요."
@@ -9701,6 +9773,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "기본적으로 다운로드당 8개의 연결을 사용하며, 옵션 → 연결에서 선택하면 최대 32개, 32개 이상의 연결 허용을 선택하면 128개까지 사용할 수 있습니다. MDM은 더 적게 사용합니다…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "둘 다 시작할 수 없으면 MDM은 Microsoft의 소프트웨어 렌더러로 그리므로 창이 여전히 열립니다(원격 데스크톱, 그래픽 드라이버가 없는 가상 머신). 작동은 하지만 프로세서가 더 바빠집니다."
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
@@ -9765,6 +9841,10 @@
   "fb3cc6240014e2b2": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
    "text": "설치 프로그램을 사용하여 MDM을 설치하고 브라우저 통합 설정이 선택되어 있는지 확인하세요. Firefox에서는 addons.mozilla.org에서 부가 기능 페이지를 열고 Firefox에 추가를 클릭하세요. Chrome, Edge, Brave, Opera, Vivaldi에서는 Chrome 웹 스토어에서 해당 페이지를 열고 Chrome에 추가를 클릭하세요 (Edge는 가져오기를 표시하며, 먼저 다른 스토어의 확장 프로그램을 허용할지 묻습니다). 스토어를 사용할 수 없나요? 브라우저의 확장 프로그램 페이지를 열고 개발자 모드를 켠 다음, 압축 해제된 확장 프로그램 로드를 선택하고 MDM 폴더 내의 extension\\chromium 폴더를 선택하세요. 튜토리얼에서 자세히 안내합니다."
+  },
+  "fb7be2f77bb10a9c": {
+   "source": "MDM has to be running (it can sit in the notification area). The computer has to be asleep, not shut down.",
+   "text": "MDM이 실행 중이어야 합니다(알림 영역에 있을 수 있습니다). 컴퓨터는 절전 모드여야 하며, 종료된 상태가 아니어야 합니다."
   },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",

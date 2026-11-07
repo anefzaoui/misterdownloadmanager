@@ -436,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS ផ្សេងទៀត...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	កម្មវិធីផ្សេងទៀតបានកំណត់ម៉ោងរោទ៍ដាស់កុំព្យូទ័រ
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -744,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	ឆាដ
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	ផ្លាស់ប្ដូរ
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1829,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	ហុងកុង
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	របៀបអនុញ្ញាត
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1872,10 +1884,6 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	នៅក្នុងប្រភេទ៖ ម៉ឺនុយប្រភេទដែលបានជ្រើសរើស
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	នៅក្នុងកូនសោដែលចាក់សោ
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2360,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager បានជួបកំហុសផ្ទៃក្នុង
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager កំពុងដំណើរការជួរ «{queue}»
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2633,10 +2646,6 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	គ្មានប្រូកស៊ី/SOCKS
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	គ្មានកូនសោប្រព័ន្ធណាមួយឆ្លើយតបទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2775,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	អូម៉ង់
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	នៅពេលប្រើថ្ម ជម្រើសថាមពលរបស់ Windows មិនអនុញ្ញាតឱ្យកម្មវិធីកំណត់ម៉ោងដាស់នោះទេ
 #. text in a download's progress window
 #, machine
 	on download stop/resume	នៅពេលបញ្ឈប់/បន្តការទាញយក
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	នៅលើ macOS មានតែអ្នកគ្រប់គ្រងប៉ុណ្ណោះដែលអាចកំណត់ពេលដាស់បាន
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	ម្ដងនៅម៉ោង
@@ -2801,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	មានតែការទាញយកដែលបានបញ្ចប់ ឬមិនទាន់ចាប់ផ្តើមទេ ទើបអាចផ្លាស់ទីបាន។ បញ្ឈប់វា ហើយបញ្ចប់វាជាមុនសិន។
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	មានតែអ្នកគ្រប់គ្រងប៉ុណ្ណោះដែលអាចអនុញ្ញាតរឿងនេះបាន
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3024,10 +3045,6 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	ការកំណត់រចនាសម្ព័ន្ធប្រូកស៊ី / SOCKS
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	ម៉ាស៊ីនមេប្រូកស៊ី
 #. label in the Options window
 #, machine
 	Proxy server address	អាសយដ្ឋានម៉ាស៊ីនមេប្រូកស៊ី
@@ -3485,18 +3502,6 @@
 #, machine
 	Sign in in the browser	ចូល​ក្នុង​កម្មវិធី​រុករក
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកូនសោ macOS ។
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកូនសោប្រព័ន្ធ (Secret Service)។
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកម្មវិធីគ្រប់គ្រងព័ត៌មានសម្ងាត់របស់ Windows ។
-#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	បាន​ចូល​ជា {user} ({state})
@@ -3884,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	កុំព្យូទ័រមិនអាចបិទបានទេ៖ {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	កុំព្យូទ័រត្រូវបានដាស់មួយនាទីមុនពេលចាប់ផ្ដើម ហើយរក្សាឱ្យភ្ញាក់ដដែលខណៈពេលដែលជួរកំពុងដំណើរការ។ Mister Download Manager ត្រូវតែដំណើរការ (វាអាចរង់ចាំនៅក្នុងតំបន់ជូនដំណឹង)។
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	កុំព្យូទ័រនឹងត្រូវបានដាស់នៅថ្ងៃទី {date} វេលាម៉ោង {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4066,10 +4080,6 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	និមិត្តសញ្ញាមិនអាចទាញយកបានទេ៖ បន្ទាត់មួយចំនួននៃរបាយការណ៍បង្ហាញអាសយដ្ឋានជំនួសឱ្យឈ្មោះ (អ្នកអភិវឌ្ឍន៍នៅតែអាចអានវាបាន)។
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	កូនសោប្រព័ន្ធត្រូវបានចាក់សោ ហើយ MDM មិនដោះសោវាទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
-#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	DNS របស់ប្រព័ន្ធ
@@ -4127,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	ប្រភេទ ឬជួរនេះមិនទាន់មានការទាញយកនៅឡើយទេ។
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	កុំព្យូទ័រនេះមិនអាចដាស់ដោយកម្មវិធីកំណត់ម៉ោងបានទេ
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	កុំព្យូទ័រនេះគ្មានម៉ោងរោទ៍ដាស់ដែលកម្មវិធីអាចកំណត់បានទេ
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4165,14 +4183,6 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	នេះត្រូវការ ffmpeg
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ច្បាប់ចម្លងចល័តនេះរក្សាទុកការចូល និងពាក្យសម្ងាត់នៅក្នុងការកំណត់របស់វា ដែលបានអ៊ិនគ្រីបសម្រាប់គណនី Windows របស់អ្នក។
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ច្បាប់ចម្លងចល័តនេះរក្សាទុកការចូល និងពាក្យសម្ងាត់នៅក្នុងការកំណត់របស់វា ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4218,6 +4228,10 @@
 #. text in the Scheduler window
 #, machine
 	Thursday	ថ្ងៃព្រហស្បតិ៍
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	ធីក «ចាប់ផ្ដើមទាញយកនៅ» ជាមុនសិន៖ កុំព្យូទ័រត្រូវបានដាស់សម្រាប់ពេលចាប់ផ្ដើម
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	ពេលវេលាដែលនៅសល់
@@ -4616,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	កំពុងរង់ចាំ៖ ដែនកំណត់ទាញយកត្រូវបានឈានដល់ (កម្មវិធីកំណត់ពេល)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	ដាស់កុំព្យូទ័រដើម្បីដំណើរការជួរនេះ
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4649,10 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	ទំហំ Wildcard
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	កម្មវិធីគ្រប់គ្រងព័ត៌មានសម្ងាត់របស់ Windows មិនបានឆ្លើយតបទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលបានអ៊ិនគ្រីបសម្រាប់គណនី Windows របស់អ្នក។
+	Windows allows wake timers only while plugged in	Windows អនុញ្ញាតឱ្យកម្មវិធីកំណត់ម៉ោងដាស់បានតែពេលដោតខ្សែប៉ុណ្ណោះ
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4663,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	ភាសារបស់ Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	ជម្រើសថាមពលរបស់ Windows មិនអនុញ្ញាតឱ្យកម្មវិធីកំណត់ម៉ោងដាស់នោះទេ
 #. message or event log entry in the main window
 #, machine
 	with Add URL	ជាមួយ បន្ថែម URL
@@ -5884,3 +5906,43 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/វិនាទី
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	នៅក្នុងកូនសោដែលចាក់សោ
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	គ្មានកូនសោប្រព័ន្ធណាមួយឆ្លើយតបទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	ម៉ាស៊ីនមេប្រូកស៊ី
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកូនសោ macOS ។
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកូនសោប្រព័ន្ធ (Secret Service)។
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	ការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងកម្មវិធីគ្រប់គ្រងព័ត៌មានសម្ងាត់របស់ Windows ។
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	កូនសោប្រព័ន្ធត្រូវបានចាក់សោ ហើយ MDM មិនដោះសោវាទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	ច្បាប់ចម្លងចល័តនេះរក្សាទុកការចូល និងពាក្យសម្ងាត់នៅក្នុងការកំណត់របស់វា ដែលបានអ៊ិនគ្រីបសម្រាប់គណនី Windows របស់អ្នក។
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	ច្បាប់ចម្លងចល័តនេះរក្សាទុកការចូល និងពាក្យសម្ងាត់នៅក្នុងការកំណត់របស់វា ដែលមានតែអ្នកប៉ុណ្ណោះដែលអាចអានបាន។
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	កម្មវិធីគ្រប់គ្រងព័ត៌មានសម្ងាត់របស់ Windows មិនបានឆ្លើយតបទេ ដូច្នេះការចូល និងពាក្យសម្ងាត់ត្រូវបានរក្សាទុកនៅក្នុងការកំណត់របស់ MDM ដែលបានអ៊ិនគ្រីបសម្រាប់គណនី Windows របស់អ្នក។

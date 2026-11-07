@@ -170,6 +170,10 @@
    "source": "Contribute",
    "text": "贡献"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "最后更新日期：2026年11月6日 · 适用于应用程序、浏览器扩展和misterdownloadmanager.com"
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "关于 Mister Download Manager 的解答：它是否免费、是否安全、与 IDM 的比较、浏览器、视频、种子、速度、Mac 和 Linux 等。"
@@ -201,6 +205,10 @@
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome、Firefox、Edge<g1><g2>3</g2></g1>"
+  },
+  "04bb12464d3a29f6": {
+   "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
+   "text": "勾选开始时间下方的<g1>唤醒电脑以运行此队列</g1>，电脑将在开始时间被唤醒。此功能需要<g2>在以下时间开始下载</g2>。"
   },
   "050edc04316dd70a": {
    "source": "On the command line",
@@ -862,6 +870,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>浏览器。</g1>右键单击页面，选择<g2>使用 Mister Download Manager 下载所有链接</g2>，或选择页面的一部分，选择<g3>使用 Mister Download Manager 下载选定链接</g3>。页面的引用页和 Cookie 会随每个链接一起发送。"
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "在 Windows 上，窗口通过 Direct3D 12（eframe 的 wgpu，仅使用其 Direct3D 12 后端）绘制，或者当“视图”→“绘制方式”选择 OpenGL 时，通过 OpenGL（eframe 的 glow）绘制；Linux 和 macOS 使用 OpenGL。当所选方式无法启动时，会尝试另一种方式，因此窗口总能打开。"
+  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "默认情况下，MDM 会像其他 BitTorrent 程序一样，优先下载拥有最少对等点的分块。这样，当某个分块只有一个对等点拥有时，它会在该对等点离开前被获取，MDM 也能更快地将其传递给其他对等点。在 MDM 的测试群中，它的完成速度与按顺序下载一样快，并且是唯一一种在稀有分块的唯一持有者离开时仍能完成下载的顺序。"
@@ -1377,6 +1389,10 @@
   "214a5490cbec850d": {
    "source": "<g1>Look links up when they arrive (name, size, online)</g1> — Link grabber asks each server about its file (on by default).",
    "text": "<g1>链接到达时查找它们（名称、大小、在线）</g1>——链接抓取器会向每个服务器询问其文件信息（默认开启）。"
+  },
+  "216583d42da33e52": {
+   "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
+   "text": "在 macOS 上，只有管理员才能安排唤醒，因此该选项是灰色的。MDM 不会要求管理员密码。管理员可以设置 Mac 在队列开始前一分钟每天唤醒，例如，对于晚上 11:00 开始的队列，在晚上 10:59 唤醒："
   },
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
@@ -2121,6 +2137,10 @@
   "321b96d0efb29bed": {
    "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
    "text": "规则只查看自上次获取源以来新增的文章，并且源的首次获取只列出当前存在的内容。因此，添加源或规则永远不会下载整个积压内容。<g1>现在匹配...篇文章</g1>显示了源中当前哪些文章与规则匹配，以供检查；请手动下载这些文章。列表中已有的种子不会再次添加，其文件已在文件夹中的种子也不会再次添加：MDM 绝不会在未经询问的情况下写入它未创建的文件。选项卡的底行显示规则上次执行的操作，规则添加的种子会在其事件日志中说明。"
+  },
+  "326233a6912ae49d": {
+   "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
+   "text": "用户的 systemd 计时器无法唤醒电脑，并且<x1/>需要 root 权限，因此没有此设置，MDM 无法唤醒电脑。MDM 从不要求管理员密码。"
   },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
@@ -3550,6 +3570,10 @@
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>来自其他地方的副本？</g1> 删除它，并按照 MDM 的<g2>将 Mister Download Manager 添加到您的浏览器</g2>窗口所示添加扩展程序（请参阅<g3>浏览器集成</g3>）。"
   },
+  "5922c26d865c882f": {
+   "source": "The wake follows the schedule: change the start time or the days, untick the option or delete the queue, and the wake moves or goes away. MDM sets it again each time it starts. Nothing stays behind in the system when MDM quits or is uninstalled.",
+   "text": "唤醒功能遵循计划：更改开始时间或日期，取消勾选选项或删除队列，唤醒功能会随之移动或消失。MDM 每次启动时都会重新设置。MDM 退出或卸载后，系统中不会留下任何东西。"
+  },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
    "text": "在<g1>下载文件信息</g1>中：<g2>开始下载</g2>"
@@ -3774,6 +3798,10 @@
    "source": "What Update now does",
    "text": "“立即更新”执行的操作"
   },
+  "5f91bf43437c9761": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
+   "text": "<g1>视图</g1> — 显示或隐藏类别，对列表进行排序（<g2>整理文件</g2>），<g3>深色模式支持</g3>，<g4>始终为深色</g4>，<g5>主题</g5>，<g6>绘制方式</g6>（Windows：Direct3D 或 OpenGL）和<g7>语言</g7>。"
+  },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
    "text": "<g1>下载 → 速度限制器 → 设置…</g1> — 速度限制。请参阅<g2>连接和速度</g2>。"
@@ -3793,6 +3821,10 @@
   "601260a4be471ed2": {
    "source": "The box under the list edits the package you selected:",
    "text": "列表下方的框编辑您选择的包："
+  },
+  "6038a4d72bef82d8": {
+   "source": "removes it.",
+   "text": "将其删除。"
   },
   "603f376b07905d51": {
    "source": "Q",
@@ -5266,6 +5298,10 @@
    "source": "Put downloads in a queue",
    "text": "将下载添加到队列"
   },
+  "83771adf9df51604": {
+   "source": "Windows wakes a computer only if its power plan allows wake timers. If it doesn't, the Scheduler says so, and <g1>Change</g1> opens the setting: <g2>Power Options → Change plan settings → Change advanced power settings → Sleep → Allow wake timers</g2>. Choose <g3>Enable</g3>: <g4>Important Wake Timers Only</g4> lets only Windows' own important timers wake the computer. On laptops the setting is often off on battery, so the computer is woken only while plugged in.",
+   "text": "Windows 仅在其电源计划允许唤醒计时器时才会唤醒电脑。如果不允许，计划程序会提示，<g1>更改</g1>会打开设置：<g2>电源选项 → 更改计划设置 → 更改高级电源设置 → 睡眠 → 允许唤醒计时器</g2>。选择<g3>启用</g3>：<g4>仅重要唤醒计时器</g4>只允许 Windows 自身的重要计时器唤醒电脑。在笔记本电脑上，此设置在电池供电时通常是关闭的，因此电脑只会在插入电源时被唤醒。"
+  },
   "837e0b4660975a88": {
    "source": "Select or unselect one more download",
    "text": "选择或取消选择一个下载"
@@ -5505,6 +5541,10 @@
   "89630e927a663dc9": {
    "source": "When MDM isn't running",
    "text": "MDM 未运行时"
+  },
+  "8964c9e8c41b70ca": {
+   "source": "On Linux only an administrator may set the computer's wake alarm, so the option is greyed until an administrator allows it. To let the users in a <x1/> group set it, an administrator runs, once:",
+   "text": "在 Linux 上，只有管理员才能设置电脑的唤醒闹钟，因此该选项在管理员允许之前是灰色的。要让<x1/>组中的用户设置它，管理员需运行一次："
   },
   "89c2ac8b048f39e1": {
    "source": "The next choice of a drop-down list or radio group; a number up or down",
@@ -5797,6 +5837,10 @@
   "91ebb9f0dfb7f3d7": {
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Real-Debrid、AllDebrid 或 Premiumize 等网盘服务是一种付费帐户，它从文件主机下载文件到自己的服务器。它会返回一个..."
+  },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "如果 Direct3D 无法在您的计算机上启动（没有 Direct3D 12 驱动程序，某些虚拟机），或者其第一个窗口在 10 秒内没有显示，MDM 会使用 OpenGL 绘制，并且<g1>视图 → 绘制方式</g1>会显示这一点。再次选择<g2>Direct3D</g2>会在下次启动时再次尝试。"
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -6237,6 +6281,10 @@
   "9d17cb869478b3ac": {
    "source": "<g1>As the system's region writes them</g1> (the default) — Windows' region settings (Settings → Time &amp; language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.",
    "text": "<g1>按系统区域设置写入</g1>（默认） — Windows 的区域设置（设置 → 时间和语言 → 区域）；在 macOS 和 Linux 上，使用您语言的常用方式。在英语中，列表保留 IDM 自己的日期文本。"
+  },
+  "9d2e5b317ca7d67a": {
+   "source": "MDM wakes the computer a minute before the start time, so the network is back when the queue starts.",
+   "text": "MDM 会在开始时间前一分钟唤醒电脑，以便队列开始时网络已恢复。"
   },
   "9d5b2429780e94aa": {
    "source": "Latest",
@@ -7046,6 +7094,10 @@
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
    "text": "针对注入故障（慢速、丢弃和拒绝连接、无范围服务器、文件更改）的 <x1/> 运行单元测试和端到端下载。<x2/> 运行已发布的速度比较；其原始数据在 <x3/> 中。"
   },
+  "b1f35176aca676c5": {
+   "source": "While the queue runs, the computer doesn't go to sleep. When the queue is done, the computer's own sleep settings apply again: a computer nobody is using goes back to sleep by itself. <g1>Turn off computer when done → Sleep</g1> sends it back to sleep at once.",
+   "text": "队列运行时，电脑不会进入睡眠状态。队列完成后，电脑自身的睡眠设置将再次生效：无人使用的电脑会自行进入睡眠状态。<g1>完成后关闭计算机 → 睡眠</g1>会立即让电脑进入睡眠状态。"
+  },
   "b208caa24e13c211": {
    "source": "<g1>Shift+Up / Shift+Down</g1> makes the selection longer or shorter.",
    "text": "<g1>Shift+向上 / Shift+向下</g1>使选择变长或变短。"
@@ -7221,6 +7273,10 @@
   "b66ef1366b1ed932": {
    "source": "Children",
    "text": "儿童"
+  },
+  "b68461ac7025e237": {
+   "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
+   "text": "然后注销并重新登录。重启后设置仍然有效。电脑只有一个唤醒闹钟：如果其他程序已设置，MDM 会保留它并提示。"
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -8186,6 +8242,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "每个正在进行的下载都有自己的进度窗口。它在下载开始时打开；要再次打开它，请双击列表中的下载。"
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "上次更新日期：2026-11-06"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "来自种子的文件被标记为<g1>从互联网下载</g1>，就像浏览器的下载一样。Windows SmartScreen 在程序首次运行前检查它，Office 在受保护视图中打开文档。在 Mac 上，Gatekeeper 检查应用程序。"
@@ -8517,6 +8577,10 @@
   "d9702d61beba459f": {
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "列出和操作下载需要 MDM 的自动化 API，该 API 在您开启之前是关闭的。在 MDM 运行的情况下，运行此命令一次（它会保持开启）："
+  },
+  "d9862086c382da0c": {
+   "source": "Wake the computer to run a queue",
+   "text": "唤醒电脑以运行队列"
   },
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
@@ -9094,6 +9158,10 @@
    "source": "Add to Firefox",
    "text": "添加到 Firefox"
   },
+  "e8b5d61bef6a7b3c": {
+   "source": "The line under the option says when the computer will next be woken, or why it can't be.",
+   "text": "选项下方的文字会显示电脑下次唤醒的时间，或无法唤醒的原因。"
+  },
   "e8cba16e3299c9aa": {
    "source": "Several files are downloaded one after another, sorted by name.",
    "text": "多个文件会按名称排序，一个接一个地下载。"
@@ -9658,6 +9726,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "在左侧选择<g1>主下载队列</g1>。<g2>计划</g2>选项卡将打开。"
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "在 Windows 上，MDM 使用 Direct3D 12 绘制窗口；在 Linux 和 macOS 上，使用 OpenGL。显卡驱动程序仍然可能出现异常：窗口卡住几秒、闪烁或显示错误的颜色或色块。在 Windows 上，请尝试另一种方式：选择<g1>视图 → 绘制方式 → OpenGL</g1>，然后退出 MDM（<g2>任务 → 退出</g2>）并重新启动。通过<g3>视图 → 绘制方式 → Direct3D</g3>可以以同样的方式切换回来。"
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "在<g1>“常规”类别的默认下载目录</g1>中，点击<g2>浏览</g2>并选择 U 盘上的一个文件夹，例如<x3/>。"
@@ -9701,6 +9773,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "默认情况下，每个下载使用八个连接。如果您在选项 → 连接中选择，最多可达32个；勾选允许超过32个连接后，可达128个。当服务器允许的连接数较少时，MDM会使用较少的连接…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "如果两者都无法启动，MDM 会使用 Microsoft 的软件渲染器绘制，因此窗口仍然会打开（远程桌面，没有显卡驱动程序的虚拟机）。它能工作，但会使处理器更繁忙。"
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
@@ -9765,6 +9841,10 @@
   "fb3cc6240014e2b2": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
    "text": "使用安装程序安装 MDM，并勾选“设置浏览器集成”。在 Firefox 中，打开 addons.mozilla.org 上的附加组件页面，然后点击“添加到 Firefox”。在 Chrome、Edge、Brave、Opera 和 Vivaldi 中，打开 Chrome 网上应用店中的扩展程序页面，然后点击“添加到 Chrome”（Edge 显示“获取”，并首先询问是否允许来自其他商店的扩展程序）。无法使用商店？打开浏览器的扩展程序页面，开启“开发者模式”，选择“加载已解压的扩展程序”，然后选择 MDM 文件夹中的 extension\\chromium 文件夹。教程会详细介绍此过程。"
+  },
+  "fb7be2f77bb10a9c": {
+   "source": "MDM has to be running (it can sit in the notification area). The computer has to be asleep, not shut down.",
+   "text": "MDM 必须正在运行（它可以驻留在通知区域）。电脑必须处于睡眠状态，而不是已关机。"
   },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",

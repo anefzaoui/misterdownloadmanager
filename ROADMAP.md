@@ -13,6 +13,14 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Done
 
+- ✅ Linux builds and window shots in minutes: a WSL2 machine builds any branch in about 5
+  minutes (under one after a change) and shoots every window in any language in about a second
+  each, never showing on the screen; the Linux desktops still check what needs them (part of
+  [#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164))
+- ✅ The Scheduler wakes the computer from sleep to run a queue, and keeps it awake while the
+  queue runs: on Windows when the power plan allows wake timers (the Scheduler says when it
+  doesn't), on Linux once an administrator allows it, and on macOS it says why it can't
+  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 - ✅ A finished download no longer fails with "part file still in use" on a busy computer, and
   the rest of the engine tests that failed now and then there (slow connections, a prompt stop,
   speed limits, links that expire, sparse files and a few more) wait for what they check, not for
@@ -262,8 +270,6 @@ Everything below ships together, in one release, as version 0.3.0.
 
 ### Downloads and windows
 
-- 📋 The Scheduler wakes the computer from sleep to run a queue
-  ([#142](https://github.com/anefzaoui/misterdownloadmanager/issues/142))
 
 ### Network
 

@@ -516,6 +516,8 @@ pub struct App {
     failures: HashMap<u64, (Instant, u32)>,
     /// Seconds since local midnight at the last scheduler tick.
     clock: u32,
+    /// Scheduler → "Wake the computer to run this queue": the wake set with the system (#142).
+    wake: crate::wake::Waker,
     /// Commands from ipc.rs (command line, second launch, browser).
     commands: std::sync::mpsc::Receiver<ipc::Incoming>,
 }
@@ -925,6 +927,7 @@ impl App {
             queues,
             failures: HashMap::new(),
             clock: seconds_now(),
+            wake: Default::default(),
             commands,
         }
     }
@@ -4013,6 +4016,16 @@ impl App {
                 self.queue_done(q);
             }
         }
+        // The next wake follows the schedules (set again when they change), and a queue that
+        // wakes the computer keeps it awake while it runs (#142).
+        self.wake.sync(&self.queues);
+        let waking = self
+            .queues
+            .iter()
+            .find(|q| q.running && q.schedule.wake)
+            .map(|q| q.name.clone());
+        self.wake
+            .keep_awake(waking.is_some(), waking.as_deref().unwrap_or_default());
     }
 
     /// Scheduler → Download limits: stop at the limit, go on when the window has room.
@@ -7314,6 +7327,7 @@ impl App {
                 &mut self.icons,
                 &self.items,
                 &self.queues,
+                self.wake.error.as_deref(),
                 &mut actions,
             );
             for a in actions {
@@ -7677,6 +7691,8 @@ impl Drop for App {
     fn drop(&mut self) {
         // An archive being extracted stops; its staging folder goes with it.
         self.extracts.stop();
+        // No wake for a queue MDM won't be there to start (Linux's alarm would outlive it).
+        self.wake.clear();
         self.keep_unseen();
         // What the saver has in hand first, then the last state, written here and now.
         self.saver.flush();

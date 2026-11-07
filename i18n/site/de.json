@@ -170,6 +170,10 @@
    "source": "Contribute",
    "text": "Mitwirken"
   },
+  "0392cd7e700db53e": {
+   "source": "Last updated 2026-11-06 · applies to the app, the browser extension and misterdownloadmanager.com",
+   "text": "Zuletzt aktualisiert am 06.11.2026 · gilt für die App, die Browser-Erweiterung und misterdownloadmanager.com"
+  },
   "03eaf59587da32f8": {
    "source": "Answers about Mister Download Manager: is it free, is it safe, how it compares with IDM, browsers, videos, torrents, speed, Mac and Linux, and more.",
    "text": "Antworten zu Mister Download Manager: Ist es kostenlos, ist es sicher, wie es sich von IDM unterscheidet, Browser, Videos, Torrents, Geschwindigkeit, Mac und Linux und mehr."
@@ -201,6 +205,10 @@
   "04b07d5b693f4e2d": {
    "source": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>",
    "text": "Chrome, Firefox, Edge<g1><g2>3</g2></g1>"
+  },
+  "04bb12464d3a29f6": {
+   "source": "Tick <g1>Wake the computer to run this queue</g1>, under the start time, and a computer that is asleep at the start time is woken for it. It needs <g2>Start download at</g2>.",
+   "text": "Aktivieren Sie <g1>Computer wecken, um diese Warteschlange auszuführen</g1> unter der Startzeit, und ein Computer, der zur Startzeit im Ruhezustand ist, wird dafür geweckt. Dies erfordert <g2>Download starten um</g2>."
   },
   "050edc04316dd70a": {
    "source": "On the command line",
@@ -862,6 +870,10 @@
    "source": "<g1>The browser.</g1> Right-click a page for <g2>Download all links with Mister Download Manager</g2>, or select part of it for <g3>Download selected links with Mister Download Manager</g3>. The page's referrer and cookies go with each link.",
    "text": "<g1>Der Browser.</g1> Klicken Sie mit der rechten Maustaste auf eine Seite für <g2>Alle Links mit Mister Download Manager herunterladen</g2>, oder wählen Sie einen Teil davon für <g3>Ausgewählte Links mit Mister Download Manager herunterladen</g3>. Der Referrer und die Cookies der Seite werden mit jedem Link mitgesendet."
   },
+  "14df350fc9bc4825": {
+   "source": "On Windows, the windows are drawn with Direct3D 12 (eframe's wgpu, with its Direct3D 12 backend only), or with OpenGL (eframe's glow) when View → Draw with chooses it; Linux and macOS use OpenGL. When the chosen one can't start, the other one is tried, so the windows always open.",
+   "text": "Unter Windows werden die Fenster mit Direct3D 12 (eframe's wgpu, nur mit dessen Direct3D 12-Backend) oder mit OpenGL (eframe's glow) gezeichnet, wenn Ansicht → Zeichnen mit dies auswählt; Linux und macOS verwenden OpenGL. Wenn die gewählte Option nicht gestartet werden kann, wird die andere versucht, sodass die Fenster immer geöffnet werden."
+  },
   "14fdd504d3380998": {
    "source": "By default MDM downloads the pieces that the fewest peers have first, as BitTorrent programs usually do. That way a piece only one peer has is fetched before that peer leaves, and MDM can pass it on to others sooner. On MDM's test swarms it finished just as fast as downloading in order, and it was the only order that finished when a scarce piece's only holder left.",
    "text": "Standardmäßig lädt MDM zuerst die Teile herunter, die die wenigsten Peers haben, wie es BitTorrent-Programme üblicherweise tun. Auf diese Weise wird ein Teil, den nur ein Peer besitzt, abgerufen, bevor dieser Peer die Verbindung trennt, und MDM kann ihn schneller an andere weitergeben. In MDMs Testschwärmen war der Download genauso schnell abgeschlossen wie beim Herunterladen in Reihenfolge, und es war die einzige Reihenfolge, die abgeschlossen wurde, als der einzige Inhaber eines knappen Teils die Verbindung trennte."
@@ -1377,6 +1389,10 @@
   "214a5490cbec850d": {
    "source": "<g1>Look links up when they arrive (name, size, online)</g1> — Link grabber asks each server about its file (on by default).",
    "text": "<g1>Links beim Eintreffen nachschlagen (Name, Größe, online)</g1> – der Link-Grabber fragt jeden Server nach seiner Datei (standardmäßig an)."
+  },
+  "216583d42da33e52": {
+   "source": "On macOS only an administrator can schedule a wake, so the option is greyed. MDM doesn't ask for an administrator's password. An administrator can have the Mac wake every day a minute before the queue starts, for example at 10:59 PM for a queue that starts at 11:00 PM:",
+   "text": "Unter macOS kann nur ein Administrator ein Wecken planen, daher ist die Option ausgegraut. MDM fragt nicht nach einem Administratorpasswort. Ein Administrator kann den Mac jeden Tag eine Minute vor dem Start der Warteschlange wecken lassen, zum Beispiel um 22:59 Uhr für eine Warteschlange, die um 23:00 Uhr startet:"
   },
   "219b4865ef43eb2a": {
    "source": "not to use it to overload, attack or get around the limits of servers you don't own.",
@@ -2121,6 +2137,10 @@
   "321b96d0efb29bed": {
    "source": "Rules only look at articles that are new since the feed was last fetched, and a feed's first fetch only lists what is there. So adding a feed or a rule never downloads a whole backlog. <g1>Matches ... articles now</g1> shows which of the articles the feeds hold now the rule matches, to check it; download those by hand. A torrent the list already has isn't added again, and neither is one whose files are already in the folder: MDM never writes into files it didn't make without asking. The bottom line of the tab says what the rules did last, and a torrent a rule added says so in its event log.",
    "text": "Regeln berücksichtigen nur Artikel, die seit dem letzten Abruf des Feeds neu sind, und der erste Abruf eines Feeds listet nur das auf, was vorhanden ist. Das Hinzufügen eines Feeds oder einer Regel lädt also niemals einen ganzen Rückstand herunter. <g1>Entspricht jetzt ... Artikeln</g1> zeigt an, welche der Artikel, die die Feeds jetzt enthalten, die Regel abgleicht, um sie zu überprüfen; laden Sie diese manuell herunter. Ein Torrent, den die Liste bereits enthält, wird nicht erneut hinzugefügt, und auch keiner, dessen Dateien sich bereits im Ordner befinden: MDM schreibt niemals ohne Nachfrage in Dateien, die es nicht selbst erstellt hat. Die untere Zeile der Registerkarte gibt an, was die Regeln zuletzt getan haben, und ein Torrent, den eine Regel hinzugefügt hat, wird in seinem Ereignisprotokoll entsprechend vermerkt."
+  },
+  "326233a6912ae49d": {
+   "source": "A user's systemd timer can't wake the computer, and <x1/> needs root, so without this setting MDM can't wake the computer. MDM never asks for an administrator's password.",
+   "text": "Ein systemd-Timer eines Benutzers kann den Computer nicht wecken, und <x1/> benötigt Root-Rechte, daher kann MDM ohne diese Einstellung den Computer nicht wecken. MDM fragt niemals nach einem Administratorpasswort."
   },
   "327c76a006445d54": {
    "source": "Yes. MDM comes with an MCP server, <x1/>: add it to Claude Desktop, Claude Code, Cursor, VS Code or another assistant that supports MCP, and you can ask it in your own words to list, add, pause, resume or remove downloads. It works with the MDM on your computer only, and needs the automation API on. See <g2>AI assistants</g2>.",
@@ -3550,6 +3570,10 @@
    "source": "<g1>A copy from elsewhere?</g1> Remove it and add the extension as MDM's <g2>Add Mister Download Manager to your browser</g2> window shows (see <g3>Browser integration</g3>).",
    "text": "<g1>Eine Kopie von anderswo?</g1> Entfernen Sie sie und fügen Sie die Erweiterung hinzu, wie das Fenster <g2>Mister Download Manager zu Ihrem Browser hinzufügen</g2> von MDM zeigt (siehe <g3>Browserintegration</g3>)."
   },
+  "5922c26d865c882f": {
+   "source": "The wake follows the schedule: change the start time or the days, untick the option or delete the queue, and the wake moves or goes away. MDM sets it again each time it starts. Nothing stays behind in the system when MDM quits or is uninstalled.",
+   "text": "Das Wecken folgt dem Zeitplan: Ändern Sie die Startzeit oder die Tage, deaktivieren Sie die Option oder löschen Sie die Warteschlange, und das Wecken verschiebt sich oder entfällt. MDM stellt es bei jedem Start neu ein. Es bleibt nichts im System zurück, wenn MDM beendet oder deinstalliert wird."
+  },
   "5934223575270924": {
    "source": "In <g1>Download File Info</g1>: <g2>Start Download</g2>",
    "text": "In <g1>Dateiinformationen herunterladen</g1>: <g2>Download starten</g2>"
@@ -3774,6 +3798,10 @@
    "source": "What Update now does",
    "text": "Was „Jetzt aktualisieren“ tut"
   },
+  "5f91bf43437c9761": {
+   "source": "<g1>View</g1> — show or hide the categories, sort the list (<g2>Arrange files</g2>), <g3>Dark Mode support</g3>, <g4>Always dark</g4>, <g5>Theme</g5>, <g6>Draw with</g6> (Windows: Direct3D, or OpenGL) and <g7>Language</g7>.",
+   "text": "<g1>Ansicht</g1> – zeigt oder verbirgt die Kategorien, sortiert die Liste (<g2>Dateien anordnen</g2>), <g3>Dark Mode-Unterstützung</g3>, <g4>Immer dunkel</g4>, <g5>Design</g5>, <g6>Zeichnen mit</g6> (Windows: Direct3D oder OpenGL) und <g7>Sprache</g7>."
+  },
   "5fcf81378fa34b81": {
    "source": "<g1>Downloads → Speed Limiter → Settings...</g1> — speed limits. See <g2>Connections and speed</g2>.",
    "text": "<g1>Downloads → Geschwindigkeitsbegrenzer → Einstellungen...</g1> – Geschwindigkeitsbegrenzungen. Siehe <g2>Verbindungen und Geschwindigkeit</g2>."
@@ -3793,6 +3821,10 @@
   "601260a4be471ed2": {
    "source": "The box under the list edits the package you selected:",
    "text": "Das Feld unter der Liste bearbeitet das von Ihnen ausgewählte Paket:"
+  },
+  "6038a4d72bef82d8": {
+   "source": "removes it.",
+   "text": "entfernt es."
   },
   "603f376b07905d51": {
    "source": "Q",
@@ -5266,6 +5298,10 @@
    "source": "Put downloads in a queue",
    "text": "Downloads in eine Warteschlange legen"
   },
+  "83771adf9df51604": {
+   "source": "Windows wakes a computer only if its power plan allows wake timers. If it doesn't, the Scheduler says so, and <g1>Change</g1> opens the setting: <g2>Power Options → Change plan settings → Change advanced power settings → Sleep → Allow wake timers</g2>. Choose <g3>Enable</g3>: <g4>Important Wake Timers Only</g4> lets only Windows' own important timers wake the computer. On laptops the setting is often off on battery, so the computer is woken only while plugged in.",
+   "text": "Windows weckt einen Computer nur, wenn sein Energiesparplan Weck-Timer zulässt. Wenn nicht, weist der Zeitplaner darauf hin, und <g1>Ändern</g1> öffnet die Einstellung: <g2>Energieoptionen → Energiesparplaneinstellungen ändern → Erweiterte Energieeinstellungen ändern → Energie sparen → Zeitgeber zur Aktivierung zulassen</g2>. Wählen Sie <g3>Aktivieren</g3>: <g4>Nur wichtige Aktivierungszeitgeber</g4> lässt nur die wichtigen Timer von Windows den Computer wecken. Bei Laptops ist die Einstellung im Akkubetrieb oft deaktiviert, sodass der Computer nur geweckt wird, wenn er angeschlossen ist."
+  },
   "837e0b4660975a88": {
    "source": "Select or unselect one more download",
    "text": "Einen weiteren Download auswählen oder abwählen"
@@ -5505,6 +5541,10 @@
   "89630e927a663dc9": {
    "source": "When MDM isn't running",
    "text": "Wenn MDM nicht läuft"
+  },
+  "8964c9e8c41b70ca": {
+   "source": "On Linux only an administrator may set the computer's wake alarm, so the option is greyed until an administrator allows it. To let the users in a <x1/> group set it, an administrator runs, once:",
+   "text": "Unter Linux darf nur ein Administrator den Weckalarm des Computers einstellen, daher ist die Option ausgegraut, bis ein Administrator dies zulässt. Damit die Benutzer in einer <x1/>-Gruppe dies einstellen können, führt ein Administrator einmal Folgendes aus:"
   },
   "89c2ac8b048f39e1": {
    "source": "The next choice of a drop-down list or radio group; a number up or down",
@@ -5797,6 +5837,10 @@
   "91ebb9f0dfb7f3d7": {
    "source": "A debrid service, such as Real-Debrid, AllDebrid or Premiumize, is a paid account that downloads files from file hosts on its own servers. It hands back a…",
    "text": "Ein Debrid-Dienst, wie Real-Debrid, AllDebrid oder Premiumize, ist ein kostenpflichtiges Konto, das Dateien von Filehostern auf eigenen Servern herunterlädt. Er gibt einen…"
+  },
+  "91f65bb0d07ece23": {
+   "source": "If Direct3D can't start on your computer (no Direct3D 12 driver, some virtual machines), or its first window doesn't show within 10 seconds, MDM draws with OpenGL, and <g1>View → Draw with</g1> says so. Choosing <g2>Direct3D</g2> again tries it again at the next start.",
+   "text": "Wenn Direct3D auf Ihrem Computer nicht starten kann (kein Direct3D 12-Treiber, einige virtuelle Maschinen) oder das erste Fenster nicht innerhalb von 10 Sekunden angezeigt wird, zeichnet MDM mit OpenGL, und <g1>Ansicht → Zeichnen mit</g1> zeigt dies an. Wenn Sie erneut <g2>Direct3D</g2> wählen, wird es beim nächsten Start erneut versucht."
   },
   "921eb4967f2c69f3": {
    "source": "All the numbers",
@@ -6237,6 +6281,10 @@
   "9d17cb869478b3ac": {
    "source": "<g1>As the system's region writes them</g1> (the default) — Windows' region settings (Settings → Time &amp; language → Region); on macOS and Linux, your language's usual way. In English the list keeps IDM's own date text.",
    "text": "<g1>Wie in den Systemeinstellungen festgelegt</g1> (Standard) – die Regionseinstellungen von Windows (Einstellungen → Zeit &amp; Sprache → Region); unter macOS und Linux die übliche Art Ihrer Sprache. Im Englischen behält die Liste den ursprünglichen Datumstext von IDM bei."
+  },
+  "9d2e5b317ca7d67a": {
+   "source": "MDM wakes the computer a minute before the start time, so the network is back when the queue starts.",
+   "text": "MDM weckt den Computer eine Minute vor der Startzeit, damit das Netzwerk wieder verfügbar ist, wenn die Warteschlange startet."
   },
   "9d5b2429780e94aa": {
    "source": "Latest",
@@ -7046,6 +7094,10 @@
    "source": "runs unit tests and end-to-end downloads against <x1/> with injected faults (slow, dropped and refused connections, servers without ranges, changing files). <x2/> runs the published speed comparison; its raw data is in <x3/>.",
    "text": "führt Unit-Tests und End-to-End-Downloads gegen <x1/> mit injizierten Fehlern (langsame, abgebrochene und abgelehnte Verbindungen, Server ohne Bereiche, sich ändernde Dateien) aus. <x2/> führt den veröffentlichten Geschwindigkeitsvergleich aus; seine Rohdaten befinden sich in <x3/>."
   },
+  "b1f35176aca676c5": {
+   "source": "While the queue runs, the computer doesn't go to sleep. When the queue is done, the computer's own sleep settings apply again: a computer nobody is using goes back to sleep by itself. <g1>Turn off computer when done → Sleep</g1> sends it back to sleep at once.",
+   "text": "Während die Warteschlange läuft, geht der Computer nicht in den Ruhezustand. Wenn die Warteschlange beendet ist, gelten wieder die eigenen Ruhezustandseinstellungen des Computers: Ein Computer, der nicht benutzt wird, geht von selbst wieder in den Ruhezustand. <g1>Computer nach Abschluss ausschalten → Ruhezustand</g1> versetzt ihn sofort wieder in den Ruhezustand."
+  },
   "b208caa24e13c211": {
    "source": "<g1>Shift+Up / Shift+Down</g1> makes the selection longer or shorter.",
    "text": "<g1>Umschalt+Auf / Umschalt+Ab</g1> verlängert oder verkürzt die Auswahl."
@@ -7221,6 +7273,10 @@
   "b66ef1366b1ed932": {
    "source": "Children",
    "text": "Kinder"
+  },
+  "b68461ac7025e237": {
+   "source": "then signs out and in again. The setting stays after a restart. The computer has one wake alarm: if another program has set it, MDM leaves it alone and says so.",
+   "text": "dann abmelden und wieder anmelden. Die Einstellung bleibt nach einem Neustart erhalten. Der Computer hat einen Weckalarm: Wenn ein anderes Programm ihn eingestellt hat, lässt MDM ihn in Ruhe und weist darauf hin."
   },
   "b68fb1f513d1da2c": {
    "source": "9. Changes",
@@ -8186,6 +8242,10 @@
    "source": "Each running download has its own progress window. It opens when the download starts; to open it again, double-click the download in the list.",
    "text": "Jeder laufende Download hat sein eigenes Fortschrittsfenster. Es öffnet sich, wenn der Download startet; um es erneut zu öffnen, doppelklicken Sie in der Liste auf den Download."
   },
+  "d12f8750c4987536": {
+   "source": "Last updated 2026-11-06",
+   "text": "Zuletzt aktualisiert am 06.11.2026"
+  },
   "d1595b21d176c816": {
    "source": "Files from torrents are marked as <g1>downloaded from the internet</g1>, like a browser's downloads. Windows SmartScreen checks a program before it first runs, and Office opens documents in Protected View. On a Mac, Gatekeeper checks apps.",
    "text": "Dateien von Torrents werden als <g1>aus dem Internet heruntergeladen</g1> markiert, wie Downloads eines Browsers. Windows SmartScreen überprüft ein Programm, bevor es zum ersten Mal ausgeführt wird, und Office öffnet Dokumente in der geschützten Ansicht. Auf einem Mac überprüft Gatekeeper Apps."
@@ -8517,6 +8577,10 @@
   "d9702d61beba459f": {
    "source": "Listing and acting on downloads needs MDM's automation API, which is off until you turn it on. With MDM running, run this once (it stays on):",
    "text": "Das Auflisten und Bearbeiten von Downloads erfordert die Automatisierungs-API von MDM, die deaktiviert ist, bis Sie sie aktivieren. Führen Sie dies einmal aus, während MDM läuft (es bleibt aktiviert):"
+  },
+  "d9862086c382da0c": {
+   "source": "Wake the computer to run a queue",
+   "text": "Computer wecken, um eine Warteschlange auszuführen"
   },
   "d9b76e3e6afd2fa9": {
    "source": "<g1><g2>Download a video from a page</g2></g1> — pick a quality and save a video.",
@@ -9094,6 +9158,10 @@
    "source": "Add to Firefox",
    "text": "Zu Firefox hinzufügen"
   },
+  "e8b5d61bef6a7b3c": {
+   "source": "The line under the option says when the computer will next be woken, or why it can't be.",
+   "text": "Die Zeile unter der Option gibt an, wann der Computer das nächste Mal geweckt wird oder warum dies nicht möglich ist."
+  },
   "e8cba16e3299c9aa": {
    "source": "Several files are downloaded one after another, sorted by name.",
    "text": "Mehrere Dateien werden nacheinander heruntergeladen, nach Namen sortiert."
@@ -9658,6 +9726,10 @@
    "source": "Select <g1>Main download queue</g1> on the left. The <g2>Schedule</g2> tab opens.",
    "text": "Links die <g1>Haupt-Downloadwarteschlange</g1> auswählen. Der Reiter <g2>Zeitplan</g2> öffnet sich."
   },
+  "f9536693258dfe06": {
+   "source": "On Windows, MDM draws its windows with Direct3D 12; on Linux and macOS, with OpenGL. A graphics driver can still misbehave: a window that holds still for seconds, flickers, or shows wrong colours or blocks. On Windows, try the other one: choose <g1>View → Draw with → OpenGL</g1>, then quit MDM (<g2>Tasks → Exit</g2>) and start it again. <g3>View → Draw with → Direct3D</g3> goes back the same way.",
+   "text": "Unter Windows zeichnet MDM seine Fenster mit Direct3D 12; unter Linux und macOS mit OpenGL. Ein Grafiktreiber kann sich dennoch falsch verhalten: ein Fenster, das sekundenlang stillsteht, flackert oder falsche Farben oder Blöcke anzeigt. Unter Windows versuchen Sie die andere Option: Wählen Sie <g1>Ansicht → Zeichnen mit → OpenGL</g1>, beenden Sie dann MDM (<g2>Aufgaben → Beenden</g2>) und starten Sie es erneut. <g3>Ansicht → Zeichnen mit → Direct3D</g3> kehrt auf dieselbe Weise zurück."
+  },
   "f972a60cffbd9bed": {
    "source": "In <g1>Default download directory for \"General\" category</g1>, click <g2>Browse</g2> and choose a folder on the stick, for example <x3/>.",
    "text": "Klicken Sie in <g1>Standard-Download-Verzeichnis für die Kategorie „Standard“</g1> auf <g2>Durchsuchen</g2> und wählen Sie einen Ordner auf dem Stick, zum Beispiel <x3/>."
@@ -9701,6 +9773,10 @@
   "fa1e28b3c6e2e46e": {
    "source": "Eight per download by default, and up to 32 if you choose in Options → Connection, or 128 after ticking Allow more than 32 connections there. MDM uses fewer…",
    "text": "Standardmäßig acht pro Download und bis zu 32, wenn Sie dies unter Optionen → Verbindung auswählen, oder 128, nachdem Sie dort Mehr als 32 Verbindungen zulassen angekreuzt haben. MDM verwendet weniger…"
+  },
+  "fa50579a78c9b2ef": {
+   "source": "If neither can start, MDM draws with Microsoft's software renderer, so the window still opens (Remote Desktop, a virtual machine without a graphics driver). It works, but keeps the processor busier.",
+   "text": "Wenn keines von beiden starten kann, zeichnet MDM mit Microsofts Software-Renderer, sodass das Fenster trotzdem geöffnet wird (Remote Desktop, eine virtuelle Maschine ohne Grafiktreiber). Es funktioniert, hält den Prozessor aber stärker beschäftigt."
   },
   "fa55ccb9217efbb9": {
    "source": "Replaces the programs in their folder (a portable copy's <x1/> folder is kept).",
@@ -9761,6 +9837,10 @@
   "fb3cc6240014e2b2": {
    "source": "Install MDM with the setup and keep Set up browser integration ticked. In Firefox, then open the add-on's page on addons.mozilla.org and click Add to Firefox. In Chrome, Edge, Brave, Opera and Vivaldi, open its page in the Chrome Web Store and click Add to Chrome (Edge shows Get, and first asks to allow extensions from other stores). Can't use a store? Open the browser's extensions page, turn on Developer mode, choose Load unpacked and pick the extension\\chromium folder in MDM's folder. The tutorial walks through it.",
    "text": "Installieren Sie MDM mit dem Setup und lassen Sie die Option Browser-Integration einrichten aktiviert. Öffnen Sie dann in Firefox die Add-on-Seite auf addons.mozilla.org und klicken Sie auf Zu Firefox hinzufügen. In Chrome, Edge, Brave, Opera und Vivaldi öffnen Sie die Seite im Chrome Web Store und klicken auf Zu Chrome hinzufügen (Edge zeigt Hinzufügen und fragt zuerst, ob Erweiterungen aus anderen Stores zugelassen werden sollen). Können Sie keinen Store verwenden? Öffnen Sie die Erweiterungsseite des Browsers, aktivieren Sie den Entwicklermodus, wählen Sie Entpackte Erweiterung laden und wählen Sie den Ordner extension\\chromium im MDM-Ordner. Das Tutorial führt Sie durch die Schritte."
+  },
+  "fb7be2f77bb10a9c": {
+   "source": "MDM has to be running (it can sit in the notification area). The computer has to be asleep, not shut down.",
+   "text": "MDM muss ausgeführt werden (es kann im Infobereich sitzen). Der Computer muss sich im Ruhezustand befinden, nicht heruntergefahren sein."
   },
   "fb833006931d511e": {
    "source": "Is MDM available in my language?",

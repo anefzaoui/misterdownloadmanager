@@ -436,6 +436,10 @@
 #. the trailing ... means it is still going on: keep it
 #, machine
 	Another DNS...	DNS khác...
+#. text in unix.rs
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's one wake alarm is already set by something else
+#, machine
+	Another program has set the computer's wake alarm	Một chương trình khác đã đặt báo thức đánh thức máy tính
 #. text in the Options window
 #. Options → DNS settings: the test's answer; {ms} milliseconds, {ip} the address found
 #, machine
@@ -744,6 +748,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Chad	Chad
+#. text in the Scheduler window
+#. link after "Windows' power options don't allow wake timers": opens Power Options' advanced settings, where it can be changed
+#, machine
+	Change	Thay đổi
 #. text in the Options window
 #. {category} = a category name such as "Music" (keep the braces as they are)
 #, machine
@@ -1829,6 +1837,10 @@
 #. a country's name (where a download's server is)
 #, machine
 	Hong Kong	Hồng Kông
+#. text in the Scheduler window
+#. link after why the computer can't be woken (Linux, macOS): opens the guide's page that shows how an administrator can allow it
+#, machine
+	How to allow it	Cách cho phép
 #. button in the Options window
 #. button in Test browser integration: open the help page's section for the problem
 #, machine
@@ -1872,10 +1884,6 @@
 #. what a keyboard shortcut does in the Help menu's windows (About, updates, shortcuts, Tell a friend)
 #, machine
 	In the categories: the selected category's menu	Trong các danh mục: menu của danh mục đã chọn
-#. text in the Options window
-#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
-#, machine
-	in the locked keyring	trong chuỗi khóa bị khóa
 #. text in standard windows
 #. a spin box's arrow, for screen readers: one more
 #, machine
@@ -2360,6 +2368,11 @@
 #. crash report window heading: an internal error, MDM still running
 #, machine
 	Mister Download Manager hit an internal error	Mister Download Manager gặp lỗi nội bộ
+#. text in wake.rs
+#. why the computer isn't going to sleep, in the system's list of programs that keep it awake; {queue} = the queue's name
+#. {queue} = a queue name such as "Main queue" (keep the braces as they are)
+#, machine
+	Mister Download Manager is running the queue "{queue}"	Mister Download Manager đang chạy hàng đợi "{queue}"
 #. text in crashui.rs
 #. crash report window heading: MDM's window doesn't answer (frozen)
 #, machine
@@ -2633,10 +2646,6 @@
 #. text in the Options window
 #, machine
 	No proxy/socks	Không có proxy/socks
-#. text in the Options window
-#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Không có chuỗi khóa hệ thống nào phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
 #. message or event log entry in the main window
 #. event log entry: Add trackers changed nothing, the torrent had them all
 #, machine
@@ -2775,9 +2784,17 @@
 #. a country's name (where a download's server is)
 #, machine
 	Oman	Oman
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off, on battery
+#, machine
+	On battery, Windows' power options don't allow wake timers	Khi dùng pin, tùy chọn nguồn của Windows không cho phép hẹn giờ đánh thức
 #. text in a download's progress window
 #, machine
 	on download stop/resume	khi tải xuống dừng/tiếp tục
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (macOS): scheduling a wake needs an administrator's password
+#, machine
+	On macOS, only an administrator can schedule a wake	Trên macOS, chỉ quản trị viên mới có thể lên lịch đánh thức
 #. text in the Scheduler window; option (radio button) in the Scheduler window
 #, machine
 	Once at	Một lần vào lúc
@@ -2801,6 +2818,10 @@
 #. message or event log entry in the main window
 #, machine
 	Only a finished download, or one not started yet, can be moved. Stop it and finish it first.	Chỉ có thể di chuyển bản tải xuống đã hoàn tất hoặc chưa bắt đầu. Dừng và hoàn tất trước.
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer's wake alarm can be set by an administrator only
+#, machine
+	Only an administrator can allow this	Chỉ quản trị viên mới có thể cho phép điều này
 #. tooltip (why a control is greyed) in the Download video window
 #. why "Put them into the video" is greyed: the chosen file type can't hold subtitles
 #, machine
@@ -3024,10 +3045,6 @@
 #. page title in the Options window
 #, machine
 	Proxy / socks configuration	Cấu hình proxy / socks
-#. text in the settings
-#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
-#, machine
-	proxy server	máy chủ proxy
 #. label in the Options window
 #, machine
 	Proxy server address	Địa chỉ máy chủ proxy
@@ -3485,18 +3502,6 @@
 #, machine
 	Sign in in the browser	Đăng nhập trong trình duyệt
 #. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
-#, machine
-	Sign-ins and passwords are kept in the macOS keychain.	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa macOS.
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
-#, machine
-	Sign-ins and passwords are kept in the system keyring (Secret Service).	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa hệ thống (Dịch vụ Bí mật).
-#. text in the Options window
-#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
-#, machine
-	Sign-ins and passwords are kept in Windows Credential Manager.	Thông tin đăng nhập và mật khẩu được giữ trong Trình quản lý Thông tin xác thực của Windows.
-#. text in the Options window
 #. Options → Add an account: signed in; {user} the account's name, {state} premium or not
 #, machine
 	Signed in as {user} ({state})	Đã đăng nhập với tên {user} ({state})
@@ -3884,6 +3889,15 @@
 #. {error} = an error message (keep the braces as they are)
 #, machine
 	The computer could not be turned off: {error}	Không thể tắt máy tính: {error}
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue"
+#, machine
+	The computer is woken a minute before the start time and kept awake while the queue runs. Mister Download Manager has to be running (it can wait in the notification area).	Máy tính được đánh thức một phút trước thời gian bắt đầu và được giữ ở trạng thái hoạt động trong khi hàng đợi chạy. Mister Download Manager phải đang chạy (nó có thể đợi trong vùng thông báo).
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue": when it will happen; {date} = e.g. 06/11/2026, {time} = e.g. 22:59:00
+#. {time} = a time of day (keep the braces as they are)
+#, machine
+	The computer will be woken on {date} at {time}	Máy tính sẽ được đánh thức vào {date} lúc {time}
 #. text in a dialog box
 #. {n} = a number (keep the braces as they are)
 #, machine
@@ -4066,10 +4080,6 @@
 #, machine
 	The symbols couldn't be fetched: some lines of the report show addresses instead of names (the developers can still read them).	Không thể tìm nạp các ký hiệu: một số dòng của báo cáo hiển thị địa chỉ thay vì tên (các nhà phát triển vẫn có thể đọc chúng).
 #. text in the Options window
-#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
-#, machine
-	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Chuỗi khóa hệ thống bị khóa và MDM không mở khóa, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
-#. text in the Options window
 #. Options → Connection → DNS: the operating system's own DNS (the default)
 #, machine
 	The system's DNS	DNS của hệ thống
@@ -4127,6 +4137,14 @@
 #. in the empty download list, under its title
 #, machine
 	This category or queue holds no downloads yet.	Danh mục hoặc hàng đợi này chưa chứa bản tải xuống nào.
+#. text in win32.rs
+#. the Scheduler, under "Wake the computer to run this queue": Windows set the timer but can't wake this computer with it
+#, machine
+	This computer can't be woken by a timer	Máy tính này không thể được đánh thức bằng bộ hẹn giờ
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Linux): the computer has no clock chip with a wake alarm that Linux shows
+#, machine
+	This computer has no wake alarm that programs can set	Máy tính này không có báo thức đánh thức mà chương trình có thể đặt
 #. text in whereis.rs
 #. where a download's server is: on this computer or the local network (no country)
 #, machine
@@ -4165,14 +4183,6 @@
 #. why "Put them into the video" is greyed: ffmpeg (a helper program) is not installed
 #, machine
 	This needs ffmpeg	Cần có ffmpeg
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, được mã hóa cho tài khoản Windows của bạn.
-#. text in the Options window
-#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
-#, machine
-	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, chỉ bạn mới có thể đọc.
 #. text in errors.rs
 #. error: a program chosen as yt-dlp or ffmpeg didn't answer as one; {name} = yt-dlp or ffmpeg
 #. {name} = a file name (keep the braces as they are)
@@ -4218,6 +4228,10 @@
 #. text in the Scheduler window
 #, machine
 	Thursday	Thứ Năm
+#. text in the Scheduler window
+#. tooltip on the Scheduler's "Wake the computer to run this queue" while "Start download at" is off
+#, machine
+	Tick "Start download at" first: the computer is woken for the start time	Trước tiên hãy chọn "Bắt đầu tải xuống lúc": máy tính được đánh thức vào thời gian bắt đầu
 #. text in a download's progress window; text in the Scheduler window
 #, machine
 	Time left	Thời gian còn lại
@@ -4616,6 +4630,10 @@
 #. message or event log entry in the main window
 #, machine
 	Waiting: the download limit is reached (Scheduler)	Đang chờ: đã đạt đến giới hạn tải xuống (Bộ lập lịch)
+#. text in the Scheduler window
+#. checkbox in the Scheduler, under the start time: wake the computer from sleep shortly before the queue starts, and keep it awake while the queue runs
+#, machine
+	Wake the computer to run this queue	Đánh thức máy tính để chạy hàng đợi này
 #. text in countries.rs
 #. a country's name (where a download's server is)
 #, machine
@@ -4649,10 +4667,10 @@
 #. text in the Batch download window
 #, machine
 	Wildcard size	Kích thước ký tự đại diện
-#. text in the Options window
-#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): "Allow wake timers" is on when plugged in, off on battery
 #, machine
-	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Trình quản lý Thông tin xác thực của Windows không phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, được mã hóa cho tài khoản Windows của bạn.
+	Windows allows wake timers only while plugged in	Windows chỉ cho phép hẹn giờ đánh thức khi cắm điện
 #. text in a dialog box
 #. why the computer could not be put to sleep (fills {error})
 #, machine
@@ -4663,6 +4681,10 @@
 #. text in langpick.rs
 #, machine
 	Windows' language ({language})	Ngôn ngữ của Windows ({language})
+#. text in the Scheduler window
+#. the Scheduler, under "Wake the computer to run this queue" (Windows): its power option "Allow wake timers" is off
+#, machine
+	Windows' power options don't allow wake timers	Tùy chọn nguồn của Windows không cho phép hẹn giờ đánh thức
 #. message or event log entry in the main window
 #, machine
 	with Add URL	với Thêm URL
@@ -5884,3 +5906,43 @@ unit	{n} MB	{n} MB
 #. {n} = a number (keep the braces as they are)
 #, machine
 unit	{n} MB/sec	{n} MB/giây
+#. text in the Options window
+#. Options → Accounts: the account's sign-in is in the system's keyring (Linux), which is locked now; MDM never unlocks it
+#, machine
+	in the locked keyring	trong chuỗi khóa bị khóa
+#. text in the Options window
+#. Options → Accounts: no system keyring/keychain answered (none runs, e.g. a desktop without one), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	No system keyring answered, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Không có chuỗi khóa hệ thống nào phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
+#. text in the settings
+#. the proxy's password in the system's keychain (Credential Manager, the keyring): its name there, followed by the proxy's address
+#, machine
+	proxy server	máy chủ proxy
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (the macOS login keychain)
+#, machine
+	Sign-ins and passwords are kept in the macOS keychain.	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa macOS.
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Linux: GNOME Keyring, KeePassXC... through the Secret Service)
+#, machine
+	Sign-ins and passwords are kept in the system keyring (Secret Service).	Thông tin đăng nhập và mật khẩu được giữ trong chuỗi khóa hệ thống (Dịch vụ Bí mật).
+#. text in the Options window
+#. Options → Accounts: where the debrid accounts' sign-ins and the other passwords are kept (Windows' own Credential Manager, in Control Panel)
+#, machine
+	Sign-ins and passwords are kept in Windows Credential Manager.	Thông tin đăng nhập và mật khẩu được giữ trong Trình quản lý Thông tin xác thực của Windows.
+#. text in the Options window
+#. Options → Accounts (Linux): the system keyring is locked (MDM never unlocks it: that would ask for its password), so the sign-ins stay in MDM's settings folder, which only the user's account may read
+#, machine
+	The system keyring is locked and MDM doesn't unlock it, so sign-ins and passwords are kept in MDM's settings, which only you can read.	Chuỗi khóa hệ thống bị khóa và MDM không mở khóa, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, chỉ bạn mới có thể đọc.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings, encrypted so that only this Windows account can read them
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, encrypted for your Windows account.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, được mã hóa cho tài khoản Windows của bạn.
+#. text in the Options window
+#. Options → Accounts: a portable copy (it writes nothing outside its folder) keeps the sign-ins in its own settings folder, which only the user's account may read
+#, machine
+	This portable copy keeps sign-ins and passwords in its own settings, which only you can read.	Bản sao di động này giữ thông tin đăng nhập và mật khẩu trong cài đặt riêng của nó, chỉ bạn mới có thể đọc.
+#. text in the Options window
+#. Options → Accounts: Windows Credential Manager didn't answer, so the sign-ins stay in MDM's settings, encrypted so that only this Windows account can read them
+#, machine
+	Windows Credential Manager didn't answer, so sign-ins and passwords are kept in MDM's settings, encrypted for your Windows account.	Trình quản lý Thông tin xác thực của Windows không phản hồi, vì vậy thông tin đăng nhập và mật khẩu được giữ trong cài đặt của MDM, được mã hóa cho tài khoản Windows của bạn.
