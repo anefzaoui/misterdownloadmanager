@@ -94,7 +94,9 @@ pub fn monitor_main(m: MonitorArgs) -> eframe::Result {
             .with_icon(crate::app_icon()),
     );
     let builder = if crate::offscreen() {
-        builder.with_position([-20000.0, -20000.0])
+        // Where the main window goes too: on a runner's screen (MDM_OFFSCREEN_AT), whose software
+        // OpenGL draws nothing off the screens (docs-shots.yml).
+        builder.with_position(crate::offscreen_at())
     } else {
         builder
     };

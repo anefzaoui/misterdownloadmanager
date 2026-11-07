@@ -144,7 +144,7 @@ fn write_clipboard(off: bool, text: String) -> Option<String> {
 /// That is for a machine whose screen nobody watches (the docs screenshots on GitHub's runner,
 /// .github/workflows/docs-shots.yml): there the software OpenGL (Mesa's llvmpipe) presents
 /// through GDI, which draws nothing off the screens.
-fn offscreen_at() -> [f32; 2] {
+pub fn offscreen_at() -> [f32; 2] {
     std::env::var("MDM_OFFSCREEN_AT")
         .ok()
         .and_then(|v| {
