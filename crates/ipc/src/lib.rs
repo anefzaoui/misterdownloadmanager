@@ -77,6 +77,9 @@ pub struct Command {
     /// The remote control: an uploaded .torrent file's bytes (never read from a request line).
     #[serde(skip)]
     pub torrent_file: Option<Vec<u8>>,
+    /// The remote control (#157, `misterdownloadmanager-cli pair`): show a new pairing code;
+    /// answered with it, the page's addresses and a QR code to scan ([`api::PairAnswer`]).
+    pub pair: bool,
     /// `/exit` (beyond IDM): the running app saves and quits (the installer, before an upgrade
     /// or an uninstall). Starts nothing when no app runs.
     pub exit: bool,
@@ -107,7 +110,7 @@ pub struct Command {
 impl Command {
     /// Asks for an answer (a JSON line) rather than "ok".
     pub fn wants_reply(&self) -> bool {
-        self.query.is_some() || self.api.is_some() || self.action.is_some()
+        self.query.is_some() || self.api.is_some() || self.action.is_some() || self.pair
     }
 }
 
@@ -176,12 +179,23 @@ struct Envelope {
     cmd: Command,
 }
 
+/// The data folder a headless run was given (`--data`, #157), before anything reads it.
+static DATA_DIR: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
+
+/// Use `dir` as the data folder from now on (over `MDM_DATA_DIR`): `--headless --data <dir>`.
+pub fn set_data_dir(dir: PathBuf) {
+    let _ = DATA_DIR.set(dir);
+}
+
 /// The app's data folder, `%APPDATA%\misterdownloadmanager` (list, settings, channel, crash
 /// log). The folder of the app's former codename, `idmnext`, is moved here once.
 ///
 /// `MDM_DATA_DIR` overrides it (a separate instance with its own list and channel: tests,
 /// screenshots). Portable mode: a writable `data` folder next to the program holds it all.
 pub fn data_dir() -> Option<PathBuf> {
+    if let Some(dir) = DATA_DIR.get() {
+        return Some(dir.clone());
+    }
     if let Some(dir) = std::env::var_os("MDM_DATA_DIR") {
         return Some(PathBuf::from(dir));
     }

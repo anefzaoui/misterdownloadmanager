@@ -1932,6 +1932,10 @@
 #. text in a dialog box
 	No addresses yet	لا توجد عناوين بعد
 #. text in extension.rs
+#. a check of Test browser integration (Linux, macOS): MDM found no browser it can connect to (one installed as a Flatpak isn't found)
+#, machine
+	No browser MDM can connect to was found	لم يتم العثور على أي مستعرض يمكن لـ MDM الاتصال به
+#. text in extension.rs
 #. a check of Test browser integration: no browser's extension has reached MDM
 	No browser's extension has connected yet	لم يتصل أي ملحق مستعرض بعد
 #. text in torrent downloads
@@ -2553,6 +2557,11 @@
 #. message or event log entry in the main window
 #. event log: File Properties: the download goes through the debrid account again
 	Set to download through the debrid account	تم التعيين للتنزيل عبر حساب debrid
+#. text in extension.rs
+#. a check of Test browser integration: setting it up failed; {error} is the system's own message, in English
+#. {error} = an error message (keep the braces as they are)
+#, machine
+	Setting it up failed: {error}	فشل الإعداد: {error}
 #. button in the Options window
 #. button: opens the DNS's details (how it's asked, its servers, a test)
 #. the trailing ... means it opens a window: keep it
@@ -3003,6 +3012,10 @@
 #. text in errors.rs
 #. {code} is the FTP server's reply number (such as 550), {reply} the words it sent with it (left as sent)
 	the FTP server answered {code} {reply}	استجاب خادم FTP بالرمز {code} {reply}
+#. text in extension.rs
+#. a check of Test browser integration: the browsers are set up, but the small helper program they start (misterdownloadmanager-nmhost) is gone
+#, machine
+	The helper program the browsers start is missing	برنامج المساعد الذي تبدأه المستعرضات مفقود
 #. message or event log entry in the main window
 #. {error} = an error message (keep the braces as they are)
 	The list could not be saved: {error}	تعذر حفظ القائمة: {error}
@@ -4728,3 +4741,63 @@ unit	{n} MB/sec	{n} ميغابايت/ثانية
 #. {size} = a file size such as "4.2 MB" (keep the braces as they are)
 #, machine
 	{size} free	{size} مجانا
+#. text in the browser extension
+#. choice under Send downloads to: an MDM running on another computer of the network, such as a home server; keep the name Mister Download Manager as it is
+#, machine
+extension	Another Mister Download Manager (a server)	Mister Download Manager آخر (خادم)
+#. text in the browser extension
+#. the name this browser gets in the other MDM's list of paired devices
+#, machine
+extension	Browser extension	ملحق المتصفح
+#. text in the browser extension
+#. the toolbar button's status while downloads go to another MDM
+#, machine
+extension	Downloads go to {address}	تنتقل التنزيلات إلى {address}
+#. text in the browser extension
+#. the address typed isn't an https:// address
+#, machine
+extension	Enter its https:// address.	أدخل عنوان https:// الخاص به.
+#. text in the browser extension
+#. pairing failed for another reason
+#, machine
+extension	It didn't work. Try again.	لم ينجح الأمر. حاول مرة أخرى.
+#. text in the browser extension
+#. pairing failed: the other MDM shows no pairing code; Pair a device is its button
+#, machine
+extension	It shows no code now: click Pair a device there first.	لا يعرض أي رمز الآن: انقر فوق "إقران جهاز" هناك أولا.
+#. text in the browser extension
+#. pairing failed: the other MDM didn't answer
+#, machine
+extension	Not reached. Open its address once in this browser and accept its certificate, then try again.	لم يتم الوصول إليه. افتح عنوانه مرة واحدة في هذا المتصفح واقبل شهادته، ثم حاول مرة أخرى.
+#. text in the browser extension
+#. button: open the other MDM's address in a tab (to accept its certificate once)
+#, machine
+extension	Open it	افتحه
+#. text in the browser extension
+#. help under the pairing boxes; Options, Remote and Pair a device are the app's window, tab and button; keep misterdownloadmanager-cli pair as it is
+#, machine
+extension	Open its address once and accept its certificate, then enter a code from its Options, Remote, Pair a device (or misterdownloadmanager-cli pair).	افتح عنوانه مرة واحدة واقبل شهادته، ثم أدخل رمزا من خياراته، عن بعد، إقران جهاز (أو misterdownloadmanager-cli pair).
+#. text in the browser extension
+#. button: pair this browser with the other MDM using the code
+#, machine
+extension	Pair	إقران
+#. text in the browser extension
+#. placeholder of the box for the 8-digit code the other MDM shows
+#, machine
+extension	Pairing code	رمز الإقران
+#. text in the browser extension
+#. heading in the toolbar button's popup, above the choice of where downloads go
+#, machine
+extension	Send downloads to	إرسال التنزيلات إلى
+#. text in the browser extension
+#. choice under Send downloads to: the Mister Download Manager on this computer
+#, machine
+extension	This computer	هذا الكمبيوتر
+#. text in the browser extension
+#. pairing failed: codes tried too fast
+#, machine
+extension	Wait a moment, then try again.	انتظر لحظة، ثم حاول مرة أخرى.
+#. text in the browser extension
+#. pairing failed: the code was wrong
+#, machine
+extension	Wrong code.	رمز خاطئ.

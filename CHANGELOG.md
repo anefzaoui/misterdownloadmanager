@@ -22,6 +22,12 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Added
 
+- **Run MDM on a server** ([#157](https://github.com/anefzaoui/misterdownloadmanager/issues/157)):
+  `misterdownloadmanager --headless` runs MDM without a window (a home server, a NAS, Docker,
+  Unraid), its folders and port set by flags or the environment; a `Dockerfile`, a Compose file
+  and an Unraid template come with it. Phones pair with the code it prints (or
+  `misterdownloadmanager-cli pair`), and the browser extension can **send downloads to another
+  MDM**. [Guide](docs/server.md).
 - **Control MDM from your phone** ([#141](https://github.com/anefzaoui/misterdownloadmanager/issues/141)):
   **Options → Remote**, off by default. A phone or another computer on the local network, paired
   with a code (or a QR code) MDM shows, opens a page MDM serves over HTTPS: it adds links, magnet
@@ -418,6 +424,11 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Changed
 
+- **Better translations in every language.** Every machine-translated text of the program and
+  of the website was read again against the English, with a style guide for each language (how
+  it writes commands, questions and labels) and the terms native reviewers settled, and fixed
+  where it was wrong or unnatural. Texts a person reviewed (all of Italian and Arabic) were left
+  as they are. New texts are translated the same way from now on.
 - **Developers: the host connection limit test tells a reconnect from a connection too many**
   ([#224](https://github.com/anefzaoui/misterdownloadmanager/issues/224)). A server sees that a
   client dropped an answer only when it next writes to it, so on a busy computer a connection
@@ -556,6 +567,17 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Brave Origin connects on Linux, and the AppImage's helper is always there**
+  ([#253](https://github.com/anefzaoui/misterdownloadmanager/issues/253)): Brave Origin keeps
+  its settings in a folder of its own (`~/.config/BraveSoftware/Brave-Origin`), which MDM didn't
+  know, so its extension said MDM wasn't installed. MDM now sets up Brave Origin, the Beta, Dev
+  and Nightly versions of Brave, Chrome and Edge, and Vivaldi's snapshot; on macOS, Brave reads
+  Chrome's folder, which MDM now writes for it. From the AppImage, MDM copies the helper program
+  the browsers start out of the AppImage under a new name and swaps it in, so a browser still
+  running the old copy no longer keeps the new one out, and puts it back at each start if it went
+  missing. A copy or setup that fails is written to MDM's log, and **Test browser integration**
+  says when the helper program is missing, when no browser was found, or why setting it up
+  failed.
 - **The extension's popup: Open Mister Download Manager shows whole**
   ([#164](https://github.com/anefzaoui/misterdownloadmanager/issues/164)): on Linux, whose fonts
   are wider, and in longer languages, the button was cut to "Open Mister Do…". Each button is now
@@ -567,6 +589,14 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
   whole under the pointer. Its title ("Mister Download Manager crash report") is now in MDM's
   language too; it was always in the system's. On Windows that also gives its title bar MDM's
   light or dark again in every language: outside English it kept Windows' own mode.
+- **Leaving a submenu no longer closes the whole menu**
+  ([#250](https://github.com/anefzaoui/misterdownloadmanager/issues/250)): on Linux, with a
+  submenu open (Tasks → Import, Downloads → Speed Limiter), moving the pointer back onto its menu,
+  to another item, closed the menu itself as well. Some window managers (KWin, sway) give a
+  submenu's window the focus; when the submenu closed, its window handed the focus on, and for a
+  moment no window of MDM had it, which counted as MDM losing the focus. A menu now closes for
+  that only when the focus stays away (a click in another program). A submenu also closes when
+  the pointer rests on another item without moving, instead of waiting for the next move.
 - **Three more controls fit their translated text**
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
   and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**
