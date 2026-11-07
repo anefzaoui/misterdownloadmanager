@@ -2603,6 +2603,47 @@ pub fn checkbox_caption_end(p: &Painter, x: f32, caption: &str) -> f32 {
     x + 16.0 + text_width(p, crate::i18n::t(caption))
 }
 
+/// `s` in one line where it is no wider than `room` px in `font`, else in two, broken where the
+/// wider of the two is narrowest: at a space, after a slash or a hyphen, or between two
+/// characters of Chinese or Japanese (a title given a second line where a control beside it
+/// needs the room). Still one line where it has no such place.
+pub fn fit_lines(p: &Painter, font: FontId, s: &str, room: f32) -> Vec<String> {
+    let width = |t: &str| text_width_font(p, font.clone(), t);
+    if width(s) <= room {
+        return vec![s.to_owned()];
+    }
+    let g: Vec<(usize, &str)> = s.grapheme_indices(true).collect();
+    let mut best: Option<(f32, String, String)> = None;
+    for k in 1..g.len() {
+        let (at, here) = g[k];
+        let before = g[k - 1].1;
+        let first = |gr: &str| gr.chars().next().unwrap_or(' ');
+        let (a, b) = if before == " " {
+            (&s[..g[k - 1].0], &s[at..])
+        } else if here != " "
+            && (before == "/"
+                || before == "-"
+                || ((cjk(first(before)) || cjk(first(here))) && !here.chars().all(no_line_start)))
+        {
+            (&s[..at], &s[at..])
+        } else {
+            continue;
+        };
+        let (a, b) = (a.trim_end(), b.trim_start());
+        if a.is_empty() || b.is_empty() {
+            continue;
+        }
+        let w = width(a).max(width(b));
+        if best.as_ref().is_none_or(|(bw, ..)| w < *bw) {
+            best = Some((w, a.to_owned(), b.to_owned()));
+        }
+    }
+    match best {
+        Some((_, a, b)) => vec![a, b],
+        None => vec![s.to_owned()],
+    }
+}
+
 /// How wide a [`combo_light`] must be for each of its translated `items` to show whole before
 /// its chevron (the widest decides, so the box keeps its size as the choice changes): at least
 /// `min` (its English width: English items fit it, so English never changes), at most `max`
@@ -5627,6 +5668,31 @@ mod tests {
             // Cut: as wide as the label and the usual room.
             let cut = (text + 2.0).floor();
             assert_eq!(button_fit_width(p, label, cut, 300.0), (text + 16.0).ceil());
+        });
+    }
+
+    #[test]
+    fn a_title_takes_a_second_line_only_where_one_is_too_long() {
+        with_painter(|p| {
+            let font = tahoma_bold();
+            let s = "Proxy socks configuration page";
+            let whole = text_width_font(p, font.clone(), s);
+            // Room for it: one line, as it is.
+            assert_eq!(fit_lines(p, font.clone(), s, whole), vec![s]);
+            // Short of room: two lines, broken where the wider is narrowest.
+            let two = fit_lines(p, font.clone(), s, whole - 1.0);
+            assert_eq!(two, vec!["Proxy socks", "configuration page"]);
+            // After a slash or a hyphen, the mark kept on the first line.
+            let two = fit_lines(p, font.clone(), "Proxyserver/SOCKS-konfiguration", 10.0);
+            assert_eq!(two.concat(), "Proxyserver/SOCKS-konfiguration");
+            assert!(two[0].ends_with('/') || two[0].ends_with('-'), "{two:?}");
+            // A word with no place to break stays whole.
+            assert_eq!(
+                fit_lines(p, font.clone(), "Konfiguration", 10.0),
+                vec!["Konfiguration"]
+            );
+            // Chinese breaks between its characters.
+            assert_eq!(fit_lines(p, font, "代理服务器配置", 10.0).len(), 2);
         });
     }
 

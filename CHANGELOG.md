@@ -529,6 +529,13 @@ Each release's notes on GitHub come from its section here (`## [X.Y.Z]`, see
 
 ### Fixed
 
+- **Get System and the Scheduler's "when done" drop-down fit in every language**
+  ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #247): Options →
+  Proxy's title takes two lines where one leaves Get System too little room (Bulgarian,
+  Armenian, Tamil), and where it ran over the page's icon or past the window's left edge
+  (Greek, Finnish, Catalan, Estonian, Latvian, Lithuanian, Malayalam, Serbian, Afrikaans). In
+  Greek and Malayalam, the Scheduler's "Turn off computer when done" and its choices have
+  shorter machine translations, so the drop-down fits beside the caption. English is unchanged.
 - **Three more controls fit their translated text**
   ([#192](https://github.com/anefzaoui/misterdownloadmanager/issues/192), after #212): in Russian
   and a few other languages, Download File Info's **Preview**, Options → Proxy's **Get System**
