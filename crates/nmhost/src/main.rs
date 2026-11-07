@@ -901,8 +901,10 @@ fn register(all_users: bool) -> Result<(), String> {
     let (chromium, firefox) = (chromium_manifest(&program), firefox_manifest(&program));
     let dirs = host_dirs(all_users, Some(&program));
     // A browser that reads the package's manifest for everyone, naming this program, needs none
-    // in the home folder: one written there by an earlier MDM is taken away, so uninstalling the
-    // package leaves nothing behind (#266). One naming another program (an AppImage's copy) stays.
+    // in the home folder: one written there before is taken away, so uninstalling the package
+    // leaves nothing behind (#266). The browser reads a user's manifest first, so one naming
+    // another program (an earlier MDM, an AppImage's copy) would win over the package's: the MDM
+    // registered last is the one the browsers start, as when each wrote its own.
     let mut covered = 0;
     if !all_users {
         for (dir, _) in host_dirs(false, None) {
@@ -911,9 +913,7 @@ fn register(all_users: bool) -> Result<(), String> {
             }
             covered += 1;
             let manifest = dir.join(format!("{HOST_NAME}.json"));
-            if mdm_ipc::browsers::names_program(&manifest, &program)
-                && std::fs::remove_file(&manifest).is_ok()
-            {
+            if std::fs::remove_file(&manifest).is_ok() {
                 println!(
                     "removed {} (the browser reads the one for everyone)",
                     manifest.display()
